@@ -575,6 +575,9 @@ Workspace.prototype = {
             this._lightbox.destroy();
             this._lightbox = null;
         }
+        if (this._frame) {
+            this._frame.set_opacity(showLightbox ? 150 : 255);
+        }
     },
 
     /**
