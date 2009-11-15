@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.25.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 08:04+0100\n"
-"PO-Revision-Date: 2009-02-10 08:06+0100\n"
+"Project-Id-Version: metacity 2.29.x\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2009-11-15 14:56+0100\n"
+"PO-Revision-Date: 2009-11-15 15:06+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,10 @@ msgstr "Skrivebord"
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
 msgstr "Håndtering av vinduer"
+
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "Klokkehendelse"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -37,13 +41,14 @@ msgid ""
 msgstr ""
 "<big><b><tt>%s</tt> svarer ikke.</b></big>\n"
 "\n"
-"<i>Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge programmet til å avslutte helt.</i>"
+"<i>Du kan velge å vente en kort stund for å se om det fortsetter eller "
+"tvinge programmet til å avslutte helt.</i>"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:107
+#: ../src/core/delete.c:115
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:109
+#: ../src/core/delete.c:115
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
@@ -52,12 +57,12 @@ msgstr "_Tvungen nedstenging"
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -112,7 +117,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
 
 #: ../src/core/main.c:132
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -121,52 +126,57 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Opphavsrett © 2001-%s Havoc Pennington, Red Hat, Inc, og andre\n"
+"Opphavsrett © 2001-%s Havoc Pennington, Red Hat., Inc, og andre.\n"
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
-"Det gis INGEN garanti ikke engang for EGNETHET FOR ET SPESIFIKT FORMÅL.\n"
+"Det gis INGEN garanti ikke engang for SALGBARHET eller EGNETHET FOR ET SPESIFIKT FORMÅL.\n"
 
-#: ../src/core/main.c:269
+#: ../src/core/main.c:270
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: ../src/core/main.c:275
+#: ../src/core/main.c:276
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstatt kjørende vindushåndterer med Metacity"
 
-#: ../src/core/main.c:281
+#: ../src/core/main.c:282
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: ../src/core/main.c:286
+#: ../src/core/main.c:287
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: ../src/core/main.c:292
+#: ../src/core/main.c:293
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: ../src/core/main.c:298
+#: ../src/core/main.c:299
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/main.c:304
+#: ../src/core/main.c:305
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: ../src/core/main.c:310
+#: ../src/core/main.c:311
 msgid "Turn compositing on"
 msgstr "Slå på «compositing»"
 
-#: ../src/core/main.c:316
+#: ../src/core/main.c:317
 msgid "Turn compositing off"
 msgstr "Slå av «compositing»"
 
-#: ../src/core/main.c:535
+#: ../src/core/main.c:323
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "Ikke vis vinduer som er maksimert og ikke har dekorasjoner i fullskjermmodus"
+
+#: ../src/core/main.c:545
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:551
+#: ../src/core/main.c:561
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -174,7 +184,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:607
+#: ../src/core/main.c:620
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -190,24 +200,24 @@ msgstr "Feil under omstart: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor område %d til %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -215,12 +225,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -229,17 +239,17 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -248,22 +258,22 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Feil under setting av status for compositor: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -272,18 +282,18 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
@@ -293,25 +303,18 @@ msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
-#, fuzzy
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
-"Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;"
-"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkeren er ganske liberal "
-"og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;"
-"Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle "
-"strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr "Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: ../src/core/schema-bindings.c:177
-#, fuzzy
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -321,73 +324,68 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;"
-"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkeren er ganske liberal "
-"og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;"
-"Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle "
-"strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+"Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen.\n"
+"\n"
+"Denne tastaturbindingen kan reverseres ved å holde nede «shift»-tasten; derfor kan ikke «shift» være en av tastene som brukes."
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:862
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1093
+#: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1189
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukjent attributt %s på <%s>-element"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1219
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1461
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1812
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
-msgstr ""
-"Feil under oppstart av metacity-dialog for å advare om programmer som ikke "
-"støtter sesjonshåndtering: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr "Disse vinduene støtter ikke &quot;lagre aktiv konfigurasjon&quot; og vil måtte startes på nytt manuelt neste gang du logger inn."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -427,13 +425,13 @@ msgstr "Feil i vindushåndterer: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:581 ../src/metacity.desktop.in.h:1
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5625
+#: ../src/core/window.c:5630
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -449,7 +447,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6190
+#: ../src/core/window.c:6195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -459,17 +457,38 @@ msgstr ""
 "men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
 "ikke fornuftig.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:244
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:377
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1358
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (som superbruker)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (som %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (som en annen bruker)"
+
+#: ../src/core/window-props.c:1429
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
@@ -579,17 +598,14 @@ msgid "Move between windows, using a popup window"
 msgstr "Bytt mellom vinduer med en dialog"
 
 #: ../src/include/all-keybindings.h:160
-#, fuzzy
 msgid "Move backward between windows, using a popup window"
 msgstr "Bytt fokus baklengs mellom vinduer med dialog"
 
 #: ../src/include/all-keybindings.h:163
-#, fuzzy
 msgid "Move between panels and the desktop, using a popup window"
-msgstr "Bla gjennom paneler og skrivebordet med oppsprettvindu"
+msgstr "Bla gjennom paneler og skrivebordet med dialog"
 
 #: ../src/include/all-keybindings.h:166
-#, fuzzy
 msgid "Move backward between panels and the desktop, using a popup window"
 msgstr "Bla bakover gjennom paneler og skrivebordet med bruk av dialog"
 
@@ -598,7 +614,6 @@ msgid "Move between windows of an application immediately"
 msgstr "Bla gjennom et programs vinduer med en gang"
 
 #: ../src/include/all-keybindings.h:174
-#, fuzzy
 msgid "Move backward between windows of an application immediately"
 msgstr "Bla bakover gjennom et programs vinduer med en gang"
 
@@ -607,7 +622,6 @@ msgid "Move between windows immediately"
 msgstr "Flytt fokus mellom vinduer med en gang"
 
 #: ../src/include/all-keybindings.h:180
-#, fuzzy
 msgid "Move backward between windows immediately"
 msgstr "Bla bakover gjennom vinduer med en gang"
 
@@ -620,9 +634,8 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Bla bakover gjennom paneler og skrivebordet med en gang"
 
 #: ../src/include/all-keybindings.h:191
-#, fuzzy
 msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Skjul alle vinduer og fokuser skrivebordet"
+msgstr "Skjul alle vinduer og sett fokus til skrivebordet"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
@@ -657,9 +670,8 @@ msgid "Toggle maximization state"
 msgstr "Endre tilstand for maksimering"
 
 #: ../src/include/all-keybindings.h:264
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Senk vinduet under andre vinduer"
+msgstr "Slå av/på om vinduet skal vises over alle andre vinduer"
 
 #: ../src/include/all-keybindings.h:266
 msgid "Maximize window"
@@ -690,9 +702,8 @@ msgid "Resize window"
 msgstr "Endre størrelse på vindu"
 
 #: ../src/include/all-keybindings.h:281
-#, fuzzy
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Bytt mellom vising av vindu på alle arbeidsområder"
+msgstr "Slå av/på om vinduet skal vises på alle arbeidsområder eller bare ett"
 
 #: ../src/include/all-keybindings.h:285
 msgid "Move window to workspace 1"
@@ -759,9 +770,8 @@ msgid "Move window one workspace down"
 msgstr "Flytt vindu ett arbeidsområde ned"
 
 #: ../src/include/all-keybindings.h:342
-#, fuzzy
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Hev vindu hvis skjult, senk det ellers"
+msgstr "Hev vindu hvis skjult av et annet vindu, senk det ellers"
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
@@ -780,49 +790,40 @@ msgid "Maximize window horizontally"
 msgstr "Maksimer vinduet horisontalt"
 
 #: ../src/include/all-keybindings.h:358
-#, fuzzy
 msgid "Move window to north-west (top left) corner"
-msgstr "Flytt vindu til nord-vestlig hjørne"
+msgstr "Flytt vindu til nord-vestlig hjørne (øverst til venstre)"
 
 #: ../src/include/all-keybindings.h:361
-#, fuzzy
 msgid "Move window to north-east (top right) corner"
-msgstr "Flytt vindu til nord-østlig hjørne"
+msgstr "Flytt vindu til nord-østlig hjørne (øverst til høyre)"
 
 #: ../src/include/all-keybindings.h:364
-#, fuzzy
 msgid "Move window to south-west (bottom left) corner"
-msgstr "Flytt vindu til syd-østlig hjørne"
+msgstr "Flytt vindu til syd-østlig hjørne (nederst til venstre)"
 
 #: ../src/include/all-keybindings.h:367
-#, fuzzy
 msgid "Move window to south-east (bottom right) corner"
-msgstr "Flytt vindu til syd-østlig hjørne"
+msgstr "Flytt vindu til syd-østlig hjørne (nederst til høyre)"
 
 #: ../src/include/all-keybindings.h:371
-#, fuzzy
 msgid "Move window to north (top) side of screen"
-msgstr "Flytt vindu til nordsiden av skjermen"
+msgstr "Flytt vindu til nordsiden av skjermen (øverst)"
 
 #: ../src/include/all-keybindings.h:374
-#, fuzzy
 msgid "Move window to south (bottom) side of screen"
-msgstr "Flytt vindu til sydsiden av skjermen"
+msgstr "Flytt vindu til sydsiden av skjermen (nederst)"
 
 #: ../src/include/all-keybindings.h:377
-#, fuzzy
 msgid "Move window to east (right) side of screen"
-msgstr "Flytt vindu til østsiden av skjermen"
+msgstr "Flytt vindu til østsiden av skjermen (høyre)"
 
 #: ../src/include/all-keybindings.h:380
-#, fuzzy
 msgid "Move window to west (left) side of screen"
-msgstr "Flytt vindu til vestsiden av skjermen"
+msgstr "Flytt vindu til vestsiden av skjermen (venstre)"
 
 #: ../src/include/all-keybindings.h:383
-#, fuzzy
 msgid "Move window to center of screen"
-msgstr "Flytt vindu til østsiden av skjermen"
+msgstr "Flytt vindu til midten av skjermen"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -1274,47 +1275,47 @@ msgstr "Skrift for vindutittel"
 msgid "Usage: %s\n"
 msgstr " Bruk: %s\n"
 
-#: ../src/ui/frames.c:1120
+#: ../src/ui/frames.c:1121
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: ../src/ui/frames.c:1123
+#: ../src/ui/frames.c:1124
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: ../src/ui/frames.c:1126
+#: ../src/ui/frames.c:1127
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: ../src/ui/frames.c:1129
+#: ../src/ui/frames.c:1130
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: ../src/ui/frames.c:1132
+#: ../src/ui/frames.c:1133
 msgid "Restore Window"
 msgstr "Gjenopprett vindu"
 
-#: ../src/ui/frames.c:1135
+#: ../src/ui/frames.c:1136
 msgid "Roll Up Window"
 msgstr "Rull opp vindu"
 
-#: ../src/ui/frames.c:1138
+#: ../src/ui/frames.c:1139
 msgid "Unroll Window"
 msgstr "Rull ned vindu"
 
-#: ../src/ui/frames.c:1141
+#: ../src/ui/frames.c:1142
 msgid "Keep Window On Top"
 msgstr "Plasser vindu i forgrunnen"
 
-#: ../src/ui/frames.c:1144
+#: ../src/ui/frames.c:1145
 msgid "Remove Window From Top"
 msgstr "Fjern vindu fra forgrunnen"
 
-#: ../src/ui/frames.c:1147
+#: ../src/ui/frames.c:1148
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbeidsområde"
 
-#: ../src/ui/frames.c:1150
+#: ../src/ui/frames.c:1151
 msgid "Put Window On Only One Workspace"
 msgstr "Plasser vindu kun på ett arbeidsområde"
 
@@ -1508,55 +1509,6 @@ msgstr "Mod4"
 #: ../src/ui/metaaccellabel.c:160
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Kunne ikke lese «%s» som et heltall"
-
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "«%s» svarer ikke."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
-"programmet til å avslutte helt."
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Tittel"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasse"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Disse vinduene støtter ikke «lagre aktiv konfigurasjon» og vil måtte startes "
-"på nytt manuelt neste gang du logger inn."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Det var en feil under kjøring av «%s»:\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1842,6 +1794,16 @@ msgstr "Attributt «%s» gjentatt to ganger på samme <%s>-element"
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attributt «%s» er ugyldig på <%s>-element i denne konteksten"
 
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kunne ikke lese «%s» som et heltall"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
+
 #: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
@@ -1934,13 +1896,10 @@ msgstr "Element <%s> er ikke tillatt under <%s>"
 
 #: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-#, fuzzy
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr ""
-"Kan ikke spesifisere både button_width/button_height og aspektrate for "
-"knapper"
+msgstr "Kan ikke oppgi både «button_width»/«button_height» og «aspect_ratio» for knapper"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
@@ -2162,9 +2121,9 @@ msgstr "Ingen tekst er tillatt inne i element <%s>"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<name> spesifisert to ganger for dette tema"
+msgstr "<%s> oppgitt to ganger for dette temaet"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
@@ -2224,109 +2183,109 @@ msgstr "/Vinduer/_Alle dokker"
 msgid "/Windows/Des_ktop"
 msgstr "/Vinduer/S_krivebord"
 
-#: ../src/ui/theme-viewer.c:137
+#: ../src/ui/theme-viewer.c:138
 msgid "Open another one of these windows"
 msgstr "Åpne et til av disse vinduene"
 
-#: ../src/ui/theme-viewer.c:144
+#: ../src/ui/theme-viewer.c:145
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknapp med et «åpne»-ikon"
 
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:152
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknapp med et «avslutt»-ikon"
 
-#: ../src/ui/theme-viewer.c:244
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
 
-#: ../src/ui/theme-viewer.c:327
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falsk menyoppføring %d\n"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Vindu uten innhold"
 
-#: ../src/ui/theme-viewer.c:363
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:380
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Normalt programvindu"
 
-#: ../src/ui/theme-viewer.c:384
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Dialogboks"
 
-#: ../src/ui/theme-viewer.c:388
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Modal dialogboks"
 
-#: ../src/ui/theme-viewer.c:392
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Verktøypalett"
 
-#: ../src/ui/theme-viewer.c:396
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Avrevet meny"
 
-#: ../src/ui/theme-viewer.c:400
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Kant"
 
-#: ../src/ui/theme-viewer.c:728
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test av knappeplassering %d"
 
-#: ../src/ui/theme-viewer.c:757
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for å tegne en vindusramme"
 
-#: ../src/ui/theme-viewer.c:800
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:807
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Feil under lasting av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Lastet tema «%s» på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:854
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Normal tittelskrift"
 
-#: ../src/ui/theme-viewer.c:860
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Liten tittelskrift"
 
-#: ../src/ui/theme-viewer.c:866
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Stor tittelskrift"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Knappeplasseringer"
 
-#: ../src/ui/theme-viewer.c:876
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Ytelsestest"
 
-#: ../src/ui/theme-viewer.c:923
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Vindutittel skal her"
 
-#: ../src/ui/theme-viewer.c:1027
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2337,39 +2296,39 @@ msgstr ""
 "%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
-#: ../src/ui/theme-viewer.c:1248
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "Feil var ventet men ingen ble gitt"
 
-#: ../src/ui/theme-viewer.c:1254
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Feil %d var ventet men %d ble gitt"
 
-#: ../src/ui/theme-viewer.c:1260
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Feil ikke ventet men en ble returnert: %s"
 
-#: ../src/ui/theme-viewer.c:1264
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1267
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1332
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
