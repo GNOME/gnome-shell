@@ -729,10 +729,11 @@ cogl_end_gl (void)
 }
 
 static CoglTextureUnit *
-_cogl_texture_unit_new (void)
+_cogl_texture_unit_new (int index_)
 {
   CoglTextureUnit *unit = g_new0 (CoglTextureUnit, 1);
   unit->matrix_stack = _cogl_matrix_stack_new ();
+  unit->index = index_;
   return unit;
 }
 
@@ -766,7 +767,7 @@ _cogl_get_texture_unit (int index_)
   /* NB: if we now insert a new layer before l, that will maintain order.
    */
 
-  unit = _cogl_texture_unit_new ();
+  unit = _cogl_texture_unit_new (index_);
 
   /* Note: see comment after for() loop above */
   ctx->texture_units =
