@@ -596,15 +596,15 @@ MoreLink.prototype = {
 
         let expander = new St.Bin({ style_class: "more-link-expander" });
         this.actor.add(expander, { expand: true, y_fill: false });
+    },
 
-        this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
-            if (this.pane == null) {
-                // Ensure the pane is created; the activated handler will call setPane
-                this.emit('activated');
-            }
-            this._pane.toggle();
-            return true;
-        }));
+    activate: function() {
+        if (this.pane == null) {
+            // Ensure the pane is created; the activated handler will call setPane
+            this.emit('activated');
+        }
+        this._pane.toggle();
+        return true;
     },
 
     setPane: function (pane) {
@@ -637,7 +637,8 @@ SectionHeader.prototype = {
         this.actor = new St.Bin({ style_class: "section-header",
                                   x_align: St.Align.START,
                                   x_fill: true,
-                                  y_fill: true });
+                                  y_fill: true,
+                                  reactive: !suppressBrowse });
         this._innerBox = new St.BoxLayout({ style_class: "section-header-inner" });
         this.actor.set_child(this._innerBox);
 
@@ -662,7 +663,12 @@ SectionHeader.prototype = {
         if (!suppressBrowse) {
             this.moreLink = new MoreLink();
             this._innerBox.add(this.moreLink.actor, { x_align: St.Align.END });
+            this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         }
+    },
+
+    _onButtonPress: function() {
+        this.moreLink.activate();
     },
 
     setTitle : function(title) {
