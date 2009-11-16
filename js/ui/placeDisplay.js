@@ -284,7 +284,7 @@ PlacesManager.prototype = {
     getDefaultPlaces: function () {
         let places = [this._home];
 
-        if (this._isDesktopHome)
+        if (!this._isDesktopHome)
             places.push(this._desktopMenu);
 
         if (this._network)
