@@ -440,16 +440,18 @@ SwitcherList.prototype = {
     addItem : function(item) {
         // We want the St.Bin's padding to be clickable (since it will
         // be part of the highlighted background color), so we put the
-        // bin inside the ButtonBox rather than vice versa.
+        // bin inside the Clickable rather than vice versa.
         let bin = new St.Bin({ style_class: 'item-box' });
-        let bbox = new Shell.ButtonBox({ reactive: true });
+        let bbox = new St.Clickable({ reactive: true,
+                                      x_fill: true,
+                                      y_fill: true });
 
         bin.add_actor(item);
-        bbox.append(bin, Big.BoxPackFlags.NONE);
+        bbox.set_child(bin);
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('activate', Lang.bind(this, function () {
+        bbox.connect('clicked', Lang.bind(this, function () {
                                                this._itemActivated(n);
                                           }));
         bbox.connect('enter-event', Lang.bind(this, function () {
@@ -681,7 +683,7 @@ AppSwitcher.prototype = {
         this.icons.push(appIcon);
         this.addItem(appIcon.actor);
 
-        // SwitcherList creates its own Shell.ButtonBox; we want to
+        // SwitcherList creates its own St.Clickable; we want to
         // avoid intercepting the events it wants.
         appIcon.actor.reactive = false;
 

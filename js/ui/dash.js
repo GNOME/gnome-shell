@@ -16,7 +16,6 @@ const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
-const Button = imports.ui.button;
 const Main = imports.ui.main;
 
 const DEFAULT_PADDING = 4;

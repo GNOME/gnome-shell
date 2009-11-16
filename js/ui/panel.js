@@ -13,7 +13,6 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const Button = imports.ui.button;
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 const StatusMenu = imports.ui.statusMenu;
@@ -274,11 +273,12 @@ Panel.prototype = {
 
         /* Button on the left side of the panel. */
         /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
-        this.button = new Button.Button(_("Activities"), PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
-                                        PANEL_FOREGROUND_COLOR, DEFAULT_FONT);
-        this.button.actor.height = PANEL_HEIGHT;
+        let label = new St.Label({ text: _("Activities") });
+        this.button = new St.Clickable({ name: 'panelActivities' });
+        this.button.set_child(label);
+        this.button.height = PANEL_HEIGHT;
 
-        this._leftBox.append(this.button.actor, Big.BoxPackFlags.NONE);
+        this._leftBox.append(this.button, Big.BoxPackFlags.NONE);
 
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
@@ -402,8 +402,9 @@ Panel.prototype = {
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
         // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
-        this.button.actor.connect('button-press-event', Lang.bind(this, function(b, e) {
-            if (e.get_button() == 1 && e.get_click_count() == 1 && !Main.overview.animationInProgress) {
+        this.button.connect('clicked', Lang.bind(this, function(b) {
+            let event = Clutter.get_current_event();
+            if (!Main.overview.animationInProgress) {
                 this._maybeToggleOverviewOnClick();
                 return true;
             } else {
@@ -414,10 +415,10 @@ Panel.prototype = {
         // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
         // and to be released when it is exited regardless of how it was triggered.
         Main.overview.connect('showing', Lang.bind(this, function() {
-            this.button.actor.active = true;
+            this.button.active = true;
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.button.actor.active = false;
+            this.button.active = false;
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
