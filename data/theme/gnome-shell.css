@@ -70,15 +70,52 @@ StTooltip {
 
 /* Panel */
 
+#panel {
+    color: #ffffff;
+    font-size: 16px;
+    background-gradient-direction: vertical;
+    background-gradient-start: #161616;
+    background-gradient-end: #000000;
+}
+
+#panelLeft, #panelCenter, #panelRight {
+    spacing: 4px;
+}
+
+#panelLeft {
+    padding-right: 4px;
+}
+
+#panelRight {
+    padding-left: 4px;
+}
+
+.panel-button:pressed {
+    background-color: rgba(50,76,111,0.98);
+    border-radius: 4px;
+}
+
+#appMenu {
+    spacing: 4px;
+}
+
+.app-menu-icon {
+    width: 24px;
+    height: 24px;
+}
+
 .panel-button {
     padding: 4px 12px 3px;
     border-radius: 5px;
     font: 16px sans-serif;
-    color: white;
 }
 
 .panel-button:active, .panel-button:checked {
     background-color: #314a6c;
+}
+
+#panelStatus {
+    spacing: 4px;
 }
 
 /* Overlay */
@@ -331,16 +368,6 @@ StTooltip {
   spacing: 4px;
 }
 
-/* Panel */
-
-#panelActivities {
-    color: #ffffff;
-}
-
-#panelActivities:pressed {
-    background-color: rgba(50,76,111,0.98);
-}
-
 /* Calendar popup */
 
 #calendarPopup {
@@ -426,9 +453,3 @@ StTooltip {
     background: rgba(255,255,255,0.33);
 }
 
-/* Status Menu */
-#StatusMenu {
-    spacing: 4px;
-    font: 16px sans-serif;
-    color: white;
-}
