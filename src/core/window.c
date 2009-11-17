@@ -138,7 +138,8 @@ enum {
   PROP_DECORATED,
   PROP_FULLSCREEN,
   PROP_WINDOW_TYPE,
-  PROP_USER_TIME
+  PROP_USER_TIME,
+  PROP_DEMANDS_ATTENTION
 };
 
 enum
@@ -207,6 +208,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_USER_TIME:
       g_value_set_uint (value, win->net_wm_user_time);
+      break;
+    case PROP_DEMANDS_ATTENTION:
+      g_value_set_boolean (value, win->wm_state_demands_attention);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -295,6 +299,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                                       G_MAXUINT,
                                                       0,
                                                       G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_DEMANDS_ATTENTION,
+                                   g_param_spec_boolean ("demands-attention",
+                                                         "Demands Attention",
+                                                         "Whether the window has _NET_WM_STATE_DEMANDS_ATTENTION set",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",
@@ -2399,6 +2411,7 @@ meta_window_show (MetaWindow *window)
   MetaWindow *focus_window;
   gboolean toplevel_was_mapped;
   gboolean toplevel_now_mapped;
+  gboolean notify_demands_attention = FALSE;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
@@ -2533,7 +2546,13 @@ meta_window_show (MetaWindow *window)
        * which we are going to call ourselves here a few lines down.
        */
       if (overlap)
-        window->wm_state_demands_attention = TRUE;
+        {
+          if (!window->wm_state_demands_attention)
+            {
+              window->wm_state_demands_attention = TRUE;
+              notify_demands_attention = TRUE;
+            }
+        }
     }
 
   /* Shaded means the frame is mapped but the window is not */
@@ -2651,6 +2670,9 @@ meta_window_show (MetaWindow *window)
    * See http://bugzilla.gnome.org/show_bug.cgi?id=573922
    */
   window->initial_timestamp_set = FALSE;
+
+  if (notify_demands_attention)
+    g_object_notify (G_OBJECT (window), "demands-attention");
 }
 
 static void
@@ -8594,6 +8616,10 @@ meta_window_set_demands_attention (MetaWindow *window)
   gboolean obscured = FALSE;
 
   MetaWorkspace *workspace = window->screen->active_workspace;
+
+  if (window->wm_state_demands_attention)
+    return;
+
   if (workspace!=window->workspace)
     {
       /* windows on other workspaces are necessarily obscured */
@@ -8637,6 +8663,7 @@ meta_window_set_demands_attention (MetaWindow *window)
 
       window->wm_state_demands_attention = TRUE;
       set_net_wm_state (window);
+      g_object_notify (G_OBJECT (window), "demands-attention");
     }
   else
     {
@@ -8655,8 +8682,12 @@ meta_window_unset_demands_attention (MetaWindow *window)
   meta_topic (META_DEBUG_WINDOW_OPS,
       "Marking %s as not needing attention\n", window->desc);
 
-  window->wm_state_demands_attention = FALSE;
-  set_net_wm_state (window);
+  if (window->wm_state_demands_attention)
+    {
+      window->wm_state_demands_attention = FALSE;
+      set_net_wm_state (window);
+      g_object_notify (G_OBJECT (window), "demands-attention");
+    }
 }
 
 MetaFrame *
