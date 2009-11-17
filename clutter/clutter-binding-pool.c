@@ -787,7 +787,7 @@ clutter_binding_entry_invoke (ClutterBindingEntry *entry,
   g_value_set_object (&params[0], gobject);
 
   g_value_init (&params[1], G_TYPE_STRING);
-  g_value_set_string (&params[1], entry->name);
+  g_value_set_static_string (&params[1], entry->name);
 
   g_value_init (&params[2], G_TYPE_UINT);
   g_value_set_uint (&params[2], entry->key_val);
