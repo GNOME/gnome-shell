@@ -17,7 +17,6 @@ dist_images_DATA =				\
 	add-workspace.svg			\
 	app-well-glow.png			\
 	close-black.svg				\
-	info.svg				\
 	magnifier.svg				\
 	remove-workspace.svg
 

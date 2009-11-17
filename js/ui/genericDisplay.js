@@ -13,7 +13,6 @@ const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
-const Button = imports.ui.button;
 const DND = imports.ui.dnd;
 const Link = imports.ui.link;
 const Main = imports.ui.main;
@@ -43,8 +42,6 @@ const PREVIEW_BOX_CORNER_RADIUS = 10;
 const PREVIEW_PLACING = 3/4;
 const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
 
-const INFORMATION_BUTTON_SIZE = 16;
-
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents
  * it by highlighting it with a different background color than the default.
@@ -68,43 +65,13 @@ GenericDisplayItem.prototype = {
                                      }));
 
         let draggable = DND.makeDraggable(this.actor);
-        draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
 
         this._iconBin = new St.Bin();
         this.actor.add(this._iconBin);
 
-        this._infoText = new St.BoxLayout({ style_class: "generic-display-item-text",
+        this._infoText = new St.BoxLayout({ style_class: 'generic-display-item-text',
                                              vertical: true });
         this.actor.add(this._infoText, { expand: true, y_fill: false });
-
-        let infoIconUri = "file://" + global.imagedir + "info.svg";
-        let infoIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                      infoIconUri,
-                                                                      INFORMATION_BUTTON_SIZE,
-                                                                      INFORMATION_BUTTON_SIZE);
-        this._informationButton = new Button.IconButton(this.actor, INFORMATION_BUTTON_SIZE, infoIcon);
-        let buttonBox = new Big.Box({ width: INFORMATION_BUTTON_SIZE + 2 * DEFAULT_PADDING,
-                                      height: INFORMATION_BUTTON_SIZE,
-                                      padding_left: DEFAULT_PADDING, padding_right: DEFAULT_PADDING,
-                                      y_align: Big.BoxAlignment.CENTER });
-        buttonBox.append(this._informationButton.actor, Big.BoxPackFlags.NONE);
-        this.actor.add(buttonBox, { x_fill: false, x_align: St.Align.END });
-
-        // Connecting to the button-press-event for the information button ensures that the actor,
-        // which is a draggable actor, does not get the button-press-event and doesn't initiate
-        // the dragging, which then prevents us from getting the button-release-event for the button.
-        this._informationButton.actor.connect('button-press-event',
-                                              Lang.bind(this,
-                                                        function() {
-                                                            return true;
-                                                        }));
-        this._informationButton.actor.connect('button-release-event',
-                                              Lang.bind(this,
-                                                        function() {
-                                                            // Selects the item by highlighting it and displaying its details
-                                                            this.emit('show-details');
-                                                            return true;
-                                                        }));
 
         this._name = null;
         this._description = null;
@@ -136,16 +103,10 @@ GenericDisplayItem.prototype = {
 
     //// Public methods ////
 
-    // Shows the information button when the item was drawn under the mouse pointer.
-    onDrawnUnderPointer: function() {
-        this._informationButton.show();
-    },
-
     // Highlights the item by setting a different background color than the default 
     // if isSelected is true, removes the highlighting otherwise.
     markSelected: function(isSelected) {
         this.actor.set_style_pseudo_class(isSelected ? "selected" : null);
-        this._informationButton.forceShow(isSelected)
     },
 
     /*
@@ -271,16 +232,9 @@ GenericDisplayItem.prototype = {
     // Returns a preview icon for the item.
     _createPreviewIcon: function() {
         throw new Error("Not implemented");
-    },
+    }
 
     //// Private methods ////
-
-    // Hides the information button once the item starts being dragged.
-    _onDragBegin : function (draggable, time) {
-        // For some reason, we are not getting leave-event signal when we are dragging an item,
-        // so we should remove the link manually.
-        this._informationButton.actor.hide();
-    }
 };
 
 Signals.addSignalMethods(GenericDisplayItem.prototype);
@@ -637,26 +591,7 @@ GenericDisplay.prototype = {
             this.selectFirstItem();
         }
 
-        Mainloop.idle_add(Lang.bind(this, this._checkInformationIcon),
-                          Meta.PRIORITY_BEFORE_REDRAW);
-
         this.emit('redisplayed');
-    },
-
-    // Check if the pointer is over one of the items and display the information button if it is.
-    // We want to do this between finishing our changes to the display and the point where
-    // the display is redrawn.
-    _checkInformationIcon: function() {
-        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                  x, y);
-        if (actor != null) {
-            let item = this._findDisplayedByActor(actor);
-            if (item != null) {
-               item.onDrawnUnderPointer();
-            }
-        }
-        return false;
     },
 
     //// Pure virtual protected methods ////
