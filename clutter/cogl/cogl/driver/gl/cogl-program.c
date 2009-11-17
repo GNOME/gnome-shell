@@ -34,32 +34,31 @@
 
 #include <glib.h>
 
-/* Expecting ARB functions not to be defined */
-#define glCreateProgramObjectARB        ctx->drv.pf_glCreateProgramObjectARB
-#define glAttachObjectARB               ctx->drv.pf_glAttachObjectARB
-#define glUseProgramObjectARB           ctx->drv.pf_glUseProgramObjectARB
-#define glLinkProgramARB                ctx->drv.pf_glLinkProgramARB
-#define glGetUniformLocationARB         ctx->drv.pf_glGetUniformLocationARB
-#define glUniform1fARB                  ctx->drv.pf_glUniform1fARB
-#define glUniform2fARB                  ctx->drv.pf_glUniform2fARB
-#define glUniform3fARB                  ctx->drv.pf_glUniform3fARB
-#define glUniform4fARB                  ctx->drv.pf_glUniform4fARB
-#define glUniform1fvARB                 ctx->drv.pf_glUniform1fvARB
-#define glUniform2fvARB                 ctx->drv.pf_glUniform2fvARB
-#define glUniform3fvARB                 ctx->drv.pf_glUniform3fvARB
-#define glUniform4fvARB                 ctx->drv.pf_glUniform4fvARB
-#define glUniform1iARB                  ctx->drv.pf_glUniform1iARB
-#define glUniform2iARB                  ctx->drv.pf_glUniform2iARB
-#define glUniform3iARB                  ctx->drv.pf_glUniform3iARB
-#define glUniform4iARB                  ctx->drv.pf_glUniform4iARB
-#define glUniform1ivARB                 ctx->drv.pf_glUniform1ivARB
-#define glUniform2ivARB                 ctx->drv.pf_glUniform2ivARB
-#define glUniform3ivARB                 ctx->drv.pf_glUniform3ivARB
-#define glUniform4ivARB                 ctx->drv.pf_glUniform4ivARB
-#define glUniformMatrix2fvARB           ctx->drv.pf_glUniformMatrix2fvARB
-#define glUniformMatrix3fvARB           ctx->drv.pf_glUniformMatrix3fvARB
-#define glUniformMatrix4fvARB           ctx->drv.pf_glUniformMatrix4fvARB
-#define glDeleteObjectARB               ctx->drv.pf_glDeleteObjectARB
+#define glCreateProgramObject        ctx->drv.pf_glCreateProgramObject
+#define glAttachObject               ctx->drv.pf_glAttachObject
+#define glUseProgramObject           ctx->drv.pf_glUseProgramObject
+#define glLinkProgram                ctx->drv.pf_glLinkProgram
+#define glGetUniformLocation         ctx->drv.pf_glGetUniformLocation
+#define glUniform1f                  ctx->drv.pf_glUniform1f
+#define glUniform2f                  ctx->drv.pf_glUniform2f
+#define glUniform3f                  ctx->drv.pf_glUniform3f
+#define glUniform4f                  ctx->drv.pf_glUniform4f
+#define glUniform1fv                 ctx->drv.pf_glUniform1fv
+#define glUniform2fv                 ctx->drv.pf_glUniform2fv
+#define glUniform3fv                 ctx->drv.pf_glUniform3fv
+#define glUniform4fv                 ctx->drv.pf_glUniform4fv
+#define glUniform1i                  ctx->drv.pf_glUniform1i
+#define glUniform2i                  ctx->drv.pf_glUniform2i
+#define glUniform3i                  ctx->drv.pf_glUniform3i
+#define glUniform4i                  ctx->drv.pf_glUniform4i
+#define glUniform1iv                 ctx->drv.pf_glUniform1iv
+#define glUniform2iv                 ctx->drv.pf_glUniform2iv
+#define glUniform3iv                 ctx->drv.pf_glUniform3iv
+#define glUniform4iv                 ctx->drv.pf_glUniform4iv
+#define glUniformMatrix2fv           ctx->drv.pf_glUniformMatrix2fv
+#define glUniformMatrix3fv           ctx->drv.pf_glUniformMatrix3fv
+#define glUniformMatrix4fv           ctx->drv.pf_glUniformMatrix4fv
+#define glDeleteObject               ctx->drv.pf_glDeleteObject
 
 static void _cogl_program_free (CoglProgram *program);
 
@@ -71,7 +70,7 @@ _cogl_program_free (CoglProgram *program)
   /* Frees program resources but its handle is not
      released! Do that separately before this! */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glDeleteObjectARB (program->gl_handle);
+  glDeleteObject (program->gl_handle);
 }
 
 CoglHandle
@@ -81,7 +80,7 @@ cogl_create_program (void)
   _COGL_GET_CONTEXT (ctx, 0);
 
   program = g_slice_new (CoglProgram);
-  program->gl_handle = glCreateProgramObjectARB ();
+  program->gl_handle = glCreateProgramObject ();
 
   return _cogl_program_handle_new (program);
 }
@@ -101,7 +100,7 @@ cogl_program_attach_shader (CoglHandle program_handle,
   program = _cogl_program_pointer_from_handle (program_handle);
   shader = _cogl_shader_pointer_from_handle (shader_handle);
 
-  glAttachObjectARB (program->gl_handle, shader->gl_handle);
+  glAttachObject (program->gl_handle, shader->gl_handle);
 }
 
 void
@@ -115,7 +114,7 @@ cogl_program_link (CoglHandle handle)
 
   program = _cogl_program_pointer_from_handle (handle);
 
-  glLinkProgramARB (program->gl_handle);
+  glLinkProgram (program->gl_handle);
 }
 
 void
@@ -141,7 +140,7 @@ cogl_program_use (CoglHandle handle)
       gl_handle = program->gl_handle;
     }
 
-  glUseProgramObjectARB (gl_handle);
+  glUseProgramObject (gl_handle);
 }
 
 int
@@ -156,7 +155,7 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 
   program = _cogl_program_pointer_from_handle (handle);
 
-  return glGetUniformLocationARB (program->gl_handle, uniform_name);
+  return glGetUniformLocation (program->gl_handle, uniform_name);
 }
 
 void
@@ -164,7 +163,7 @@ cogl_program_uniform_1f (int uniform_no,
                          gfloat  value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glUniform1fARB (uniform_no, value);
+  glUniform1f (uniform_no, value);
 }
 
 void
@@ -172,7 +171,7 @@ cogl_program_uniform_1i (int uniform_no,
                          gint    value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glUniform1iARB (uniform_no, value);
+  glUniform1i (uniform_no, value);
 }
 
 void
@@ -186,16 +185,16 @@ cogl_program_uniform_float (int  uniform_no,
   switch (size)
     {
     case 1:
-      glUniform1fvARB (uniform_no, count, value);
+      glUniform1fv (uniform_no, count, value);
       break;
     case 2:
-      glUniform2fvARB (uniform_no, count, value);
+      glUniform2fv (uniform_no, count, value);
       break;
     case 3:
-      glUniform3fvARB (uniform_no, count, value);
+      glUniform3fv (uniform_no, count, value);
       break;
     case 4:
-      glUniform4fvARB (uniform_no, count, value);
+      glUniform4fv (uniform_no, count, value);
       break;
     default:
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
@@ -213,16 +212,16 @@ cogl_program_uniform_int (int  uniform_no,
   switch (size)
     {
     case 1:
-      glUniform1ivARB (uniform_no, count, value);
+      glUniform1iv (uniform_no, count, value);
       break;
     case 2:
-      glUniform2ivARB (uniform_no, count, value);
+      glUniform2iv (uniform_no, count, value);
       break;
     case 3:
-      glUniform3ivARB (uniform_no, count, value);
+      glUniform3iv (uniform_no, count, value);
       break;
     case 4:
-      glUniform4ivARB (uniform_no, count, value);
+      glUniform4iv (uniform_no, count, value);
       break;
     default:
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
@@ -241,13 +240,13 @@ cogl_program_uniform_matrix (int   uniform_no,
   switch (size)
     {
     case 2 :
-      glUniformMatrix2fvARB (uniform_no, count, transpose, value);
+      glUniformMatrix2fv (uniform_no, count, transpose, value);
       break;
     case 3 :
-      glUniformMatrix3fvARB (uniform_no, count, transpose, value);
+      glUniformMatrix3fv (uniform_no, count, transpose, value);
       break;
     case 4 :
-      glUniformMatrix4fvARB (uniform_no, count, transpose, value);
+      glUniformMatrix4fv (uniform_no, count, transpose, value);
       break;
     default :
       g_warning ("%s called with invalid size parameter", G_STRFUNC);

@@ -42,11 +42,11 @@
 
 #ifdef HAVE_COGL_GL
 
-#define glGenBuffers ctx->drv.pf_glGenBuffersARB
-#define glBindBuffer ctx->drv.pf_glBindBufferARB
-#define glBufferData ctx->drv.pf_glBufferDataARB
-#define glBufferSubData ctx->drv.pf_glBufferSubDataARB
-#define glDeleteBuffers ctx->drv.pf_glDeleteBuffersARB
+#define glGenBuffers ctx->drv.pf_glGenBuffers
+#define glBindBuffer ctx->drv.pf_glBindBuffer
+#define glBufferData ctx->drv.pf_glBufferData
+#define glBufferSubData ctx->drv.pf_glBufferSubData
+#define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 
 #elif defined (HAVE_COGL_GLES2)
