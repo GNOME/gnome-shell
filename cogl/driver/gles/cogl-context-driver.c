@@ -28,22 +28,19 @@
 #include "cogl-context.h"
 #include "cogl-gles2-wrapper.h"
 
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f)
+#define COGL_FEATURE_FUNCTION(ret, name, args) \
+  _context->drv.pf_ ## name = NULL;
+#define COGL_FEATURE_END()
+
 void
-_cogl_create_context_driver (CoglContext *context)
+_cogl_create_context_driver (CoglContext *_context)
 {
-  context->drv.pf_glGenRenderbuffers = NULL;
-  context->drv.pf_glBindRenderbuffer = NULL;
-  context->drv.pf_glRenderbufferStorage = NULL;
-  context->drv.pf_glGenFramebuffers = NULL;
-  context->drv.pf_glBindFramebuffer = NULL;
-  context->drv.pf_glFramebufferTexture2D = NULL;
-  context->drv.pf_glFramebufferRenderbuffer = NULL;
-  context->drv.pf_glCheckFramebufferStatus = NULL;
-  context->drv.pf_glDeleteFramebuffers = NULL;
+  #include "cogl-feature-functions.h"
 
   /* Init the GLES2 wrapper */
 #ifdef HAVE_COGL_GLES2
-  cogl_gles2_wrapper_init (&context->drv.gles2);
+  cogl_gles2_wrapper_init (&_context->drv.gles2);
 #endif
 }
 

@@ -99,6 +99,8 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
+	$(srcdir)/cogl-feature-private.h                \
+	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\
 	$(srcdir)/cogl-color.c				\
 	$(srcdir)/cogl-vertex-buffer-private.h 		\

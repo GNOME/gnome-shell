@@ -33,13 +33,12 @@
 
 #include <glib.h>
 
-/* Expecting ARB functions not to be defined */
-#define glCreateShaderObjectARB         ctx->drv.pf_glCreateShaderObjectARB
-#define glGetObjectParameterivARB       ctx->drv.pf_glGetObjectParameterivARB
-#define glGetInfoLogARB                 ctx->drv.pf_glGetInfoLogARB
-#define glCompileShaderARB              ctx->drv.pf_glCompileShaderARB
-#define glShaderSourceARB               ctx->drv.pf_glShaderSourceARB
-#define glDeleteObjectARB               ctx->drv.pf_glDeleteObjectARB
+#define glCreateShaderObject         ctx->drv.pf_glCreateShaderObject
+#define glGetObjectParameteriv       ctx->drv.pf_glGetObjectParameteriv
+#define glGetInfoLog                 ctx->drv.pf_glGetInfoLog
+#define glCompileShader              ctx->drv.pf_glCompileShader
+#define glShaderSource               ctx->drv.pf_glShaderSource
+#define glDeleteObject               ctx->drv.pf_glDeleteObject
 
 static void _cogl_shader_free (CoglShader *shader);
 
@@ -51,7 +50,7 @@ _cogl_shader_free (CoglShader *shader)
   /* Frees shader resources but its handle is not
      released! Do that separately before this! */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glDeleteObjectARB (shader->gl_handle);
+  glDeleteObject (shader->gl_handle);
 }
 
 CoglHandle
@@ -74,7 +73,7 @@ cogl_create_shader (CoglShaderType type)
     }
 
   shader = g_slice_new (CoglShader);
-  shader->gl_handle = glCreateShaderObjectARB (gl_type);
+  shader->gl_handle = glCreateShaderObject (gl_type);
 
   return _cogl_shader_handle_new (shader);
 }
@@ -91,7 +90,7 @@ cogl_shader_source (CoglHandle   handle,
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  glShaderSourceARB (shader->gl_handle, 1, &source, NULL);
+  glShaderSource (shader->gl_handle, 1, &source, NULL);
 }
 
 void
@@ -105,7 +104,7 @@ cogl_shader_compile (CoglHandle handle)
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  glCompileShaderARB (shader->gl_handle);
+  glCompileShader (shader->gl_handle);
 }
 
 gchar *
@@ -121,7 +120,7 @@ cogl_shader_get_info_log (CoglHandle handle)
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  glGetInfoLogARB (shader->gl_handle, 511, &len, buffer);
+  glGetInfoLog (shader->gl_handle, 511, &len, buffer);
   buffer[len]='\0';
 
   return g_strdup (buffer);
@@ -143,7 +142,7 @@ cogl_shader_get_type (CoglHandle  handle)
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  GE (glGetObjectParameterivARB (shader->gl_handle, GL_SHADER_TYPE, &type));
+  GE (glGetObjectParameteriv (shader->gl_handle, GL_SHADER_TYPE, &type));
   if (type == GL_VERTEX_SHADER)
     return COGL_SHADER_TYPE_VERTEX;
   else if (type == GL_FRAGMENT_SHADER)
@@ -168,7 +167,7 @@ cogl_shader_is_compiled (CoglHandle handle)
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  GE (glGetObjectParameterivARB (shader->gl_handle, GL_COMPILE_STATUS, &status));
+  GE (glGetObjectParameteriv (shader->gl_handle, GL_COMPILE_STATUS, &status));
   if (status == GL_TRUE)
     return TRUE;
   else

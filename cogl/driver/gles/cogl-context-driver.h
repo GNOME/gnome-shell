@@ -27,25 +27,26 @@
 #include "cogl.h"
 #include "cogl-gles2-wrapper.h"
 
-typedef struct _CoglContextDriver
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f)
 
+#define COGL_FEATURE_FUNCTION(ret, name, args) \
+  ret (* pf_ ## name) args;
+
+#define COGL_FEATURE_END()
+
+typedef struct _CoglContextDriver
 {
-  COGL_PFNGLGENRENDERBUFFERSPROC                pf_glGenRenderbuffers;
-  COGL_PFNGLDELETERENDERBUFFERSPROC             pf_glDeleteRenderbuffers;
-  COGL_PFNGLBINDRENDERBUFFERPROC                pf_glBindRenderbuffer;
-  COGL_PFNGLRENDERBUFFERSTORAGEPROC             pf_glRenderbufferStorage;
-  COGL_PFNGLGENFRAMEBUFFERSPROC                 pf_glGenFramebuffers;
-  COGL_PFNGLBINDFRAMEBUFFERPROC                 pf_glBindFramebuffer;
-  COGL_PFNGLFRAMEBUFFERTEXTURE2DPROC            pf_glFramebufferTexture2D;
-  COGL_PFNGLFRAMEBUFFERRENDERBUFFERPROC         pf_glFramebufferRenderbuffer;
-  COGL_PFNGLCHECKFRAMEBUFFERSTATUSPROC          pf_glCheckFramebufferStatus;
-  COGL_PFNGLDELETEFRAMEBUFFERSPROC              pf_glDeleteFramebuffers;
-  COGL_PFNGLGENERATEMIPMAPPROC                  pf_glGenerateMipmap;
+  /* This defines a list of function pointers */
+#include "cogl-feature-functions.h"
 
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper  gles2;
 #endif
 } CoglContextDriver;
+
+#undef COGL_FEATURE_BEGIN
+#undef COGL_FEATURE_FUNCTION
+#undef COGL_FEATURE_END
 
 #endif /* __COGL_CONTEXT_DRIVER_H */
 

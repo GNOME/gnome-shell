@@ -27,59 +27,13 @@
 
 #include "cogl-context.h"
 
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f)
+#define COGL_FEATURE_FUNCTION(ret, name, args) \
+  _context->drv.pf_ ## name = NULL;
+#define COGL_FEATURE_END()
+
 void
 _cogl_create_context_driver (CoglContext *_context)
 {
-  _context->drv.pf_glGenRenderbuffers = NULL;
-  _context->drv.pf_glBindRenderbuffer = NULL;
-  _context->drv.pf_glRenderbufferStorage = NULL;
-  _context->drv.pf_glGenFramebuffers = NULL;
-  _context->drv.pf_glBindFramebuffer = NULL;
-  _context->drv.pf_glFramebufferTexture2D = NULL;
-  _context->drv.pf_glFramebufferRenderbuffer = NULL;
-  _context->drv.pf_glCheckFramebufferStatus = NULL;
-  _context->drv.pf_glDeleteFramebuffers = NULL;
-
-  _context->drv.pf_glBlitFramebufferEXT = NULL;
-  _context->drv.pf_glRenderbufferStorageMultisampleEXT = NULL;
-
-  _context->drv.pf_glCreateProgramObjectARB = NULL;
-  _context->drv.pf_glCreateShaderObjectARB = NULL;
-  _context->drv.pf_glShaderSourceARB = NULL;
-  _context->drv.pf_glCompileShaderARB = NULL;
-  _context->drv.pf_glAttachObjectARB = NULL;
-  _context->drv.pf_glLinkProgramARB = NULL;
-  _context->drv.pf_glUseProgramObjectARB = NULL;
-  _context->drv.pf_glGetUniformLocationARB = NULL;
-  _context->drv.pf_glDeleteObjectARB = NULL;
-  _context->drv.pf_glGetInfoLogARB = NULL;
-  _context->drv.pf_glGetObjectParameterivARB = NULL;
-  _context->drv.pf_glUniform1fARB = NULL;
-  _context->drv.pf_glUniform2fARB = NULL;
-  _context->drv.pf_glUniform3fARB = NULL;
-  _context->drv.pf_glUniform4fARB = NULL;
-  _context->drv.pf_glUniform1fvARB = NULL;
-  _context->drv.pf_glUniform2fvARB = NULL;
-  _context->drv.pf_glUniform3fvARB = NULL;
-  _context->drv.pf_glUniform4fvARB = NULL;
-  _context->drv.pf_glUniform1iARB = NULL;
-  _context->drv.pf_glUniform2iARB = NULL;
-  _context->drv.pf_glUniform3iARB = NULL;
-  _context->drv.pf_glUniform4iARB = NULL;
-  _context->drv.pf_glUniform1ivARB = NULL;
-  _context->drv.pf_glUniform2ivARB = NULL;
-  _context->drv.pf_glUniform3ivARB = NULL;
-  _context->drv.pf_glUniform4ivARB = NULL;
-  _context->drv.pf_glUniformMatrix2fvARB = NULL;
-  _context->drv.pf_glUniformMatrix3fvARB = NULL;
-  _context->drv.pf_glUniformMatrix4fvARB = NULL;
-
-  _context->drv.pf_glDrawRangeElements = NULL;
-  _context->drv.pf_glActiveTexture = NULL;
-  _context->drv.pf_glClientActiveTexture = NULL;
-
-  _context->drv.pf_glBlendFuncSeparate = NULL;
-  _context->drv.pf_glBlendEquationSeparate = NULL;
-
-
+  #include "cogl-feature-functions.h"
 }

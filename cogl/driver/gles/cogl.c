@@ -30,12 +30,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
-
-typedef struct _CoglGLSymbolTableEntry
-{
-  const char *name;
-  void *ptr;
-} CoglGLSymbolTableEntry;
+#include "cogl-feature-private.h"
 
 gboolean
 cogl_check_extension (const gchar *name, const gchar *ext)
@@ -63,31 +58,39 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 gboolean
-_cogl_resolve_gl_symbols (CoglGLSymbolTableEntry *symbol_table,
-                          const char *suffix)
-{
-  int i;
-  gboolean status = TRUE;
-  for (i = 0; symbol_table[i].name; i++)
-    {
-      char *full_name = g_strdup_printf ("%s%s", symbol_table[i].name, suffix);
-      *((CoglFuncPtr *)symbol_table[i].ptr) = cogl_get_proc_address (full_name);
-      g_free (full_name);
-      if (!*((CoglFuncPtr *)symbol_table[i].ptr))
-        {
-          status = FALSE;
-          break;
-        }
-    }
-  return status;
-}
-
-gboolean
 _cogl_check_driver_valid (GError **error)
 {
   /* The GLES backend doesn't have any particular version requirements */
   return TRUE;
 }
+
+/* Define a set of arrays containing the functions required from GL
+   for each feature */
+#define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
+                           namespaces, extension_names, feature_flags)  \
+  static const CoglFeatureFunction cogl_feature_ ## name ## _funcs[] = {
+#define COGL_FEATURE_FUNCTION(ret, name, args)                          \
+  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, drv.pf_ ## name) },
+#define COGL_FEATURE_END()                      \
+  };
+#include "cogl-feature-functions.h"
+
+/* Define an array of features */
+#undef COGL_FEATURE_BEGIN
+#define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
+                           namespaces, extension_names, feature_flags)  \
+  { min_gl_major, min_gl_minor, namespaces,                             \
+      extension_names, feature_flags,                                   \
+      cogl_feature_ ## name ## _funcs },
+#undef COGL_FEATURE_FUNCTION
+#define COGL_FEATURE_FUNCTION(ret, name, args)
+#undef COGL_FEATURE_END
+#define COGL_FEATURE_END()
+
+static const CoglFeatureData cogl_feature_data[] =
+  {
+#include "cogl-feature-functions.h"
+  };
 
 void
 _cogl_features_init (void)
@@ -96,32 +99,17 @@ _cogl_features_init (void)
   int              max_clip_planes = 0;
   GLint            num_stencil_bits = 0;
   const char      *gl_extensions;
+  int              i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
-  if (cogl_check_extension ("GL_OES_framebuffer_object", gl_extensions))
-    {
-      g_assert (0);
-      CoglGLSymbolTableEntry symbol_table[] = {
-            {"glGenRenderbuffers", &ctx->drv.pf_glGenRenderbuffers},
-            {"glDeleteRenderbuffers", &ctx->drv.pf_glDeleteRenderbuffers},
-            {"glBindRenderbuffer", &ctx->drv.pf_glBindRenderbuffer},
-            {"glRenderbufferStorage", &ctx->drv.pf_glRenderbufferStorage},
-            {"glGenFramebuffers", &ctx->drv.pf_glGenFramebuffers},
-            {"glBindFramebuffer", &ctx->drv.pf_glBindFramebuffer},
-            {"glFramebufferTexture2D", &ctx->drv.pf_glFramebufferTexture2D},
-            {"glFramebufferRenderbuffer", &ctx->drv.pf_glFramebufferRenderbuffer},
-            {"glCheckFramebufferStatus", &ctx->drv.pf_glCheckFramebufferStatus},
-            {"glDeleteFramebuffers", &ctx->drv.pf_glDeleteFramebuffers},
-            {"glGenerateMipmap", &ctx->drv.pf_glGenerateMipmap},
-            {NULL, NULL}
-      };
-
-      if (_cogl_resolve_gl_symbols (symbol_table, "OES"))
-        flags |= COGL_FEATURE_OFFSCREEN;
-    }
+  for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
+    if (_cogl_feature_check (cogl_feature_data + i,
+                             0, 0,
+                             gl_extensions))
+        flags |= cogl_feature_data[i].feature_flags;
 
   GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
