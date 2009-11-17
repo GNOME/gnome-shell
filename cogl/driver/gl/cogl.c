@@ -213,7 +213,8 @@ _cogl_features_init (void)
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
-  if (cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
+      cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
     {
 #ifdef HAVE_CLUTTER_OSX
       if (really_enable_npot ())
