@@ -14,6 +14,11 @@ m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [1])
 m4_define([clutter_micro_version], [3])
 
+m4_define([clutter_release_status],
+          [m4_if(m4_eval(clutter_micro_version % 2), [1], [git],
+                 [m4_if(m4_eval(clutter_minor_version % 2), [1], [snapshot],
+                                                                 [release])])])
+
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 
 # change this only when breaking the API
@@ -57,12 +62,14 @@ CLUTTER_MICRO_VERSION=clutter_micro_version
 CLUTTER_VERSION=clutter_version
 CLUTTER_API_VERSION=clutter_api_version
 CLUTTER_MAJORMINOR=clutter_major_version.clutter_minor_version
+CLUTTER_RELEASE_STATUS=clutter_release_status
 AC_SUBST(CLUTTER_MAJOR_VERSION)
 AC_SUBST(CLUTTER_MINOR_VERSION)
 AC_SUBST(CLUTTER_MICRO_VERSION)
 AC_SUBST(CLUTTER_VERSION)
 AC_SUBST(CLUTTER_API_VERSION)
 AC_SUBST(CLUTTER_MAJORMINOR)
+AC_SUBST(CLUTTER_RELEASE_STATUS)
 
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
 m4_define([lt_revision], [clutter_interface_age])
@@ -845,46 +852,70 @@ AC_OUTPUT
 dnl === Summary ===============================================================
 
 echo ""
-echo "                     Clutter    $VERSION"
-echo "                   ===================="
+echo "Clutter - $VERSION (${CLUTTER_RELEASE_STATUS})"
+
 echo ""
-echo "                      prefix:   ${prefix}"
+echo " • Global:"
+echo "        Prefix: ${prefix}"
+echo "        Flavour: ${CLUTTER_WINSYS}/${COGL_DRIVER}"
+echo "        Target library: ${CLUTTER_WINSYS_LIB}"
+
 echo ""
-echo "                     Flavour:   ${CLUTTER_WINSYS}/${COGL_DRIVER}"
-if test "x$CLUTTER_WINSYS" = "xeglx" || test "x$CLUTTER_WINSYS" = "xglx"; then
-  echo "                      XInput:   ${xinput}"
+echo " • Compiler options:"
+echo "        Clutter debug level: ${enable_debug}"
+echo "        COGL debug level: ${enable_cogl_debug}"
+echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
+
+echo ""
+echo " • Documentation:"
+echo "        Build API Reference: ${enable_gtk_doc}"
+echo "        Build Manual: ${enable_manual}"
+
+echo ""
+echo " • Extra:"
+echo "        Build introspection data: ${enable_introspection}"
+echo "        Build test suite: ${enable_glibtest}"
+
+echo ""
+echo " • COGL Backend:"
+echo "        Driver: ${COGL_DRIVER}"
+echo "        GL header: ${CLUTTER_GL_HEADER}"
+
+if test "x$experimental_image" = "xno"; then
+echo "        Image backend: ${COGL_IMAGE_BACKEND}"
+else
+echo "        Image backend: ${COGL_IMAGE_BACKEND} (WARNING: Experimental)"
 fi
-echo "                  GL headers:   ${CLUTTER_GL_HEADER}"
-echo "               Image backend:   ${COGL_IMAGE_BACKEND}"
-echo "              Target library:   ${CLUTTER_WINSYS_LIB}"
-echo "         Clutter debug level:   ${enable_debug}"
-echo "            COGL debug level:   ${enable_cogl_debug}"
-echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
-echo "     Build API documentation:   ${enable_gtk_doc}"
-echo "  Build manual documentation:   ${enable_manual}"
-echo "    Build introspection data:   ${enable_introspection}"
+
+if test "x$COGL_DRIVER" = "xgles"; then
+echo "        Use GLES 2.0 Wrapper: ${use_gles2_wrapper}"
+fi
+
+echo ""
+echo " • Clutter Backend:"
+
+if test "x$experimental_backend" = "xno"; then
+echo "        Windowing system: ${CLUTTER_WINSYS}"
+else
+echo "        Windowing system: ${CLUTTER_WINSYS} (WARNING: Experimental)"
+fi
+
+if test "x$CLUTTER_WINSYS" = "xglx" ||
+   test "x$CLUTTER_WINSYS" = "xeglx"; then
+echo "        Enable XInput 1.0: ${xinput}"
+echo "        Enable X11 tests: ${x11_tests}"
+fi
+
 echo ""
 
-# you can add more configuration options or flags that will bring up the
-# the experimental/unstable warning summary.
-
-if test "x$experimental_backend" = "xyes"; then
-  experimental_stuff="$experimental_stuff   Clutter backend:  ${CLUTTER_WINSYS}\n"
-fi
-
-if test "x$experimental_image" = "xyes"; then
-  experimental_stuff="$experimental_stuff     Image backend:  ${COGL_IMAGE_BACKEND}\n"
-fi
-
-if test "x$experimental_stuff" != "x"; then
-  echo ""
-  echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-  echo " *WARNING*"
-  echo ""
-  echo "  The stability of your build might be affected by one or more"
-  echo "  experimental backends or experimental and unsupported features:"
-  echo ""
-  echo -e "$experimental_stuff"
-  echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-  echo ""
+if test "x$experimental_backend" = "xyes" ||
+   test "x$experimental_image" = "xyes"; then
+echo ""
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo " *WARNING*"
+echo ""
+echo "  The stability of your build might be affected by one or more"
+echo "  experimental backends or experimental and unsupported features"
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo ""
 fi
