@@ -5178,8 +5178,7 @@ meta_window_configure_request (MetaWindow *window,
     {
       MetaWindow *active_window;
       active_window = window->display->expected_focus_window;
-      if (meta_prefs_get_disable_workarounds () ||
-          !meta_prefs_get_raise_on_click ())
+      if (meta_prefs_get_disable_workarounds ())
         {
           meta_topic (META_DEBUG_STACK,
                       "%s sent an xconfigure stacking request; this is "
