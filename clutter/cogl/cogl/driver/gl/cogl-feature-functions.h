@@ -306,9 +306,9 @@ COGL_FEATURE_FUNCTION (void, glClientActiveTexture,
 COGL_FEATURE_END ()
 
 /* Optional, declared in 1.4 */
-COGL_FEATURE_BEGIN (in_1_4, 1, 4,
-                    "\0",
-                    "\0",
+COGL_FEATURE_BEGIN (blend_func_separate, 1, 4,
+                    "EXT\0",
+                    "blend_func_separate\0",
                     0)
 COGL_FEATURE_FUNCTION (void, glBlendFuncSeparate,
                        (GLenum                srcRGB,
@@ -318,9 +318,9 @@ COGL_FEATURE_FUNCTION (void, glBlendFuncSeparate,
 COGL_FEATURE_END ()
 
 /* Optional, declared in 2.0 */
-COGL_FEATURE_BEGIN (in_2_0, 2, 0,
-                    "\0",
-                    "\0",
+COGL_FEATURE_BEGIN (blend_equation_separate, 2, 0,
+                    "EXT\0",
+                    "blend_equation_separate\0",
                     0)
 COGL_FEATURE_FUNCTION (void, glBlendEquationSeparate,
                        (GLenum                modeRGB,
