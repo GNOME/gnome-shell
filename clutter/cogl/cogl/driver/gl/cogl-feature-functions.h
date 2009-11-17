@@ -100,6 +100,8 @@ COGL_FEATURE_FUNCTION (void, glRenderbufferStorageMultisample,
                         GLsizei               height))
 COGL_FEATURE_END ()
 
+/* The function names in OpenGL 2.0 are different so we can't easily
+   just check for GL 2.0 */
 COGL_FEATURE_BEGIN (shaders_glsl, 255, 255,
                     "ARB\0",
                     "shader_objects\0"
@@ -237,7 +239,7 @@ COGL_FEATURE_FUNCTION (void, glUniformMatrix4fv,
 
 COGL_FEATURE_END ()
 
-COGL_FEATURE_BEGIN (vbos, 255, 255,
+COGL_FEATURE_BEGIN (vbos, 1, 5,
                     "ARB\0",
                     "vertex_buffer_object\0",
                     COGL_FEATURE_VBOS)
