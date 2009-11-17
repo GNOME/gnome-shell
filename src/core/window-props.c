@@ -1406,6 +1406,15 @@ reload_wm_hints (MetaWindow    *window,
   if (!initial && (window->wm_hints_urgent != old_urgent))
     g_object_notify (G_OBJECT (window), "urgent");
 
+  /*
+   * Do not emit signal for the initial property load, let the constructor to
+   * take care of it once the MetaWindow is fully constructed.
+   *
+   * Only emit if the property is both changed and set.
+   */
+  if (!initial && window->wm_hints_urgent && !old_urgent)
+    g_signal_emit_by_name (window->display, "window-marked-urgent", window);
+
   meta_icon_cache_property_changed (&window->icon_cache,
                                     window->display,
                                     XA_WM_HINTS);

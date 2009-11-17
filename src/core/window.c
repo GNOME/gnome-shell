@@ -1125,6 +1125,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   if (window->wm_state_demands_attention)
     g_signal_emit_by_name (window->display, "window-demands-attention", window);
 
+  if (window->wm_hints_urgent)
+    g_signal_emit_by_name (window->display, "window-marked-urgent", window);
+
   return window;
 }
 
