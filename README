@@ -1,4 +1,4 @@
-Clutter 1.0 README
+Clutter 1.2 README
 ==================
 
 Clutter is an open source software library for creating fast, visually
@@ -6,21 +6,21 @@ rich and animated graphical user interfaces.
 
 Clutter currently requires:
 
-  * GLib >= 2.16.0
-  * Cairo >= 1.6
-  * PangoCairo >= 1.20
-  * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
-  * GLX, SDL, WGL or an EGL Implementation
-  * JSON-GLib >= 0.8 (optional)
-  * GDK-Pixbuf >= 2.0 (optional)
+  • GLib >= 2.16.0
+  • Cairo >= 1.6
+  • PangoCairo >= 1.20
+  • OpenGL >= 1.2, OpenGL ES 1.1 or OpenGL ES 2.0
+  • GLX, SDL, WGL or an EGL Implementation
+  • JSON-GLib >= 0.8 (optional)
+  • GDK-Pixbuf >= 2.0 (optional)
 
 If you are building the API reference you will also need:
 
-  * GTK-Doc >= 1.11
+  • GTK-Doc >= 1.11
 
 If you are building the Introspection data you will also need:
 
-  * GObject-Introspection >= 0.6.4
+  • GObject-Introspection >= 0.6.4
 
 
 The official website is:
@@ -142,9 +142,9 @@ HACKING
 If you want to hack on and improve Clutter, check the contained TODO
 file for pending tasks, the HACKING file for general implementation guidelines,
 HACKING.backends for backend-specific implementation issues. The CODING_STYLE
-file contains the rules for writing code conformant to the style guidelines used
-throughout Clutter. Remember: the coding style is mandatory; patches not conforming
-to it will be rejected.
+file contains the rules for writing code conformant to the style guidelines
+used throughout Clutter. Remember: the coding style is mandatory; patches
+not conforming to it will be rejected.
 
 BUGS
 ====
@@ -157,12 +157,12 @@ You will need a Bugzilla account.
 
 In the report you should include:
 
-  * what system you're running Clutter on;
-  * which version of Clutter you are using;
-  * which version of GLib and OpenGL you are using;
-  * which video card and which drivers you are using, including output of
+  • what system you're running Clutter on;
+  • which version of Clutter you are using;
+  • which version of GLib and OpenGL you are using;
+  • which video card and which drivers you are using, including output of
     glxinfo and xdpyinfo (if applicable);
-  * how to reproduce the bug.
+  • how to reproduce the bug.
 
 If you cannot reproduce the bug with one of the tests that come with Clutter
 source code, you should include a small test case displaying the bad
