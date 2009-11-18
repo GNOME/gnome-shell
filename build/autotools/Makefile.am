@@ -4,6 +4,7 @@ EXTRA_DIST = \
 	Makefile.am.silent	\
 	Makefile.am.marshal	\
 	Makefile.am.enums	\
+	Makefile.am.changelog	\
 	dolt.m4			\
 	introspection.m4	\
 	gtk-doc.m4		\
