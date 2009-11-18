@@ -20,6 +20,7 @@ const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
+const NotificationDaemon = imports.ui.notificationDaemon;
 const ShellDBus = imports.ui.shellDBus;
 const Sidebar = imports.ui.sidebar;
 const WindowManager = imports.ui.windowManager;
@@ -35,6 +36,7 @@ let runDialog = null;
 let lookingGlass = null;
 let wm = null;
 let messaging = null;
+let notificationDaemon = null;
 let notificationPopup = null;
 let recorder = null;
 let shellDBusService = null;
@@ -106,6 +108,7 @@ function start() {
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
     messaging = new Messaging.Messaging();
+    notificationDaemon = new NotificationDaemon.NotificationDaemon();
     notificationPopup = new MessageTray.Notification();
 
     global.screen.connect('toggle-recording', function() {
