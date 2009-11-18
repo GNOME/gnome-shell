@@ -41,9 +41,9 @@ check_pixel (GLubyte *pixel, guint32 color)
     g_print ("  expected = %x, %x, %x, %x\n",
              r, g, b, a);
   /* FIXME - allow for hardware in-precision */
-  g_assert (pixel[RED] == r);
-  g_assert (pixel[GREEN] == g);
-  g_assert (pixel[BLUE] == b);
+  g_assert_cmpint (pixel[RED], ==, r);
+  g_assert_cmpint (pixel[GREEN], ==, g);
+  g_assert_cmpint (pixel[BLUE], ==, b);
 
   /* FIXME
    * We ignore the alpha, since we don't know if our render target is
