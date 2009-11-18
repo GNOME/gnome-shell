@@ -32,12 +32,13 @@ test-report full-report:
 pkgconfig_DATA = $(pcfiles)
 pkgconfigdir   = $(libdir)/pkgconfig
 
-EXTRA_DIST = 			\
-	ChangeLog.SVN		\
-	clutter.pc.in 		\
-	HACKING 		\
-	HACKING.backends 	\
-	CODING_STYLE
+EXTRA_DIST = 				\
+	ChangeLog.pre-git-import	\
+	clutter.pc.in 			\
+	HACKING 			\
+	HACKING.backends 		\
+	CODING_STYLE			\
+	$(NULL)
 
 CLEANFILES = $(pcfiles)
 
@@ -48,17 +49,11 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags
 # Extra clean files so that maintainer-clean removes *everything*
 MAINTAINERCLEANFILES = 	\
 	aclocal.m4 	\
-	compile 	\
 	config.guess 	\
 	config.h.in 	\
-	config.sub 	\
         configure 	\
-	depcomp 	\
 	gtk-doc.make 	\
-	install-sh 	\
-	ltmain.sh 	\
 	Makefile.in 	\
-	missing 	\
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.changelog
