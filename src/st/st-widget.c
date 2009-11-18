@@ -63,8 +63,11 @@ struct _StWidgetPrivate
   gboolean      has_tooltip : 1;
   gboolean      is_style_dirty : 1;
   gboolean      draw_bg_color : 1;
+  gboolean      draw_border_internal : 1;
 
   StTooltip    *tooltip;
+
+  StTextDirection   direction;
 };
 
 /**
@@ -356,31 +359,101 @@ static void
 st_widget_real_draw_background (StWidget *self)
 {
   StWidgetPrivate *priv = self->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterActorBox allocation = { 0, };
+  gfloat w, h;
+  guint8 opacity;
+
+  clutter_actor_get_allocation_box (actor, &allocation);
+  w = allocation.x2 - allocation.x1;
+  h = allocation.y2 - allocation.y1;
+
+  opacity = clutter_actor_get_paint_opacity (actor);
 
   /* Default implementation just draws the background
    * colour and the image on top
    */
   if (priv->draw_bg_color)
     {
-      ClutterActor *actor = CLUTTER_ACTOR (self);
-      ClutterActorBox allocation = { 0, };
       ClutterColor bg_color = priv->bg_color;
-      gfloat w, h;
 
-      bg_color.alpha = clutter_actor_get_paint_opacity (actor)
-                       * bg_color.alpha
-                       / 255;
-
-      clutter_actor_get_allocation_box (actor, &allocation);
-
-      w = allocation.x2 - allocation.x1;
-      h = allocation.y2 - allocation.y1;
+      bg_color.alpha = opacity * bg_color.alpha / 255;
 
       cogl_set_source_color4ub (bg_color.red,
                                 bg_color.green,
                                 bg_color.blue,
                                 bg_color.alpha);
       cogl_rectangle (0, 0, w, h);
+    }
+
+  if (priv->draw_border_internal)
+    {
+      StThemeNode *node = st_widget_get_theme_node (self);
+      int side;
+      double border_top, border_right, border_bottom, border_left;
+
+      border_top = st_theme_node_get_border_width (node, ST_SIDE_TOP);
+      border_right = st_theme_node_get_border_width (node, ST_SIDE_RIGHT);
+      border_bottom = st_theme_node_get_border_width (node, ST_SIDE_BOTTOM);
+      border_left = st_theme_node_get_border_width (node, ST_SIDE_LEFT);
+
+      for (side = 0; side < 4; side++)
+        {
+          ClutterColor color;
+
+          switch (side)
+          {
+            case ST_SIDE_TOP:
+              if (border_top <= 0)
+                continue;
+              break;
+            case ST_SIDE_RIGHT:
+              if (border_right <= 0)
+                continue;
+              break;
+            case ST_SIDE_BOTTOM:
+              if (border_bottom <= 0)
+                continue;
+              break;
+            case ST_SIDE_LEFT:
+              if (border_left <= 0)
+                continue;
+              break;
+          }
+
+          st_theme_node_get_border_color (node, side, &color);
+
+          color.alpha = (color.alpha * opacity) / 0xff;
+
+          cogl_set_source_color4ub (color.red,
+                                    color.green,
+                                    color.blue,
+                                    color.alpha);
+
+          /* Note top and bottom extend to the ends, left/right
+           * are constrained by them.  See comment above about CSS
+           * conformance.
+           */
+          switch (side)
+          {
+            case ST_SIDE_TOP:
+              cogl_rectangle (0, 0,
+                              w, border_top);
+              break;
+            case ST_SIDE_RIGHT:
+              cogl_rectangle (w - border_right, border_top,
+                              w, h - border_bottom);
+              break;
+            case ST_SIDE_BOTTOM:
+              cogl_rectangle (0, h - border_bottom,
+                              w, h);
+              break;
+            case ST_SIDE_LEFT:
+              cogl_rectangle (0, border_top,
+                              border_left, h - border_bottom);
+              break;
+            }
+        }
     }
 
   if (priv->border_image)
@@ -491,6 +564,7 @@ st_widget_real_style_changed (StWidget *self)
   ClutterColor border_color = { 0, };
   StSide side;
   StCorner corner;
+  gboolean uniform_border_width;
 
   /* application has request this widget is not stylable */
   if (!priv->is_stylable)
@@ -520,33 +594,6 @@ st_widget_real_style_changed (StWidget *self)
 
   texture_cache = st_texture_cache_get_default ();
 
-  /* StThemeNode supports different widths and colors for different sides
-   * of the border, and different radii for the different corners. We take
-   * the different border widths into account when positioning, but our current
-   * drawing code (using BigRectangle) can only handle a single width, color,
-   * and radius, so we arbitrarily pick the first non-zero width and radius,
-   * and use that.
-   */
-  for (side = ST_SIDE_TOP; side <= ST_SIDE_LEFT; side++)
-    {
-      double width = st_theme_node_get_border_width (theme_node, side);
-      if (width > 0.5)
-	{
-	  border_width = (int)(0.5 + width);
-	  st_theme_node_get_border_color (theme_node, side, &border_color);
-	  break;
-	}
-    }
-
-  for (corner = ST_CORNER_TOPLEFT; corner <= ST_CORNER_BOTTOMLEFT; corner++)
-    {
-      double radius = st_theme_node_get_border_radius (theme_node, corner);
-      if (radius > 0.5)
-	{
-	  border_radius = (int)(0.5 + radius);
-	  break;
-	}
-    }
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
    * see http://www.w3.org/TR/css3-background/ for more accurate details.
@@ -565,6 +612,8 @@ st_widget_real_style_changed (StWidget *self)
    *   zero width or a border image is being used.
    *
    * Deviations from the above as implemented here:
+   *  - Nonuniform border widths combined with a non-zero border radius result
+   *    in the border radius being ignored
    *  - The combination of border image and a non-zero border radius is
    *    not supported; the background color will be drawn with square
    *    corners.
@@ -575,6 +624,44 @@ st_widget_real_style_changed (StWidget *self)
    * The first two allow us always draw with no more than single border_image
    * and a single background image above it.
    */
+
+  /* Check whether all border widths are the same.  Also, acquire the
+   * first nonzero border width as well as the border color.
+   */
+  uniform_border_width = TRUE;
+  border_width = st_theme_node_get_border_width (theme_node, ST_SIDE_TOP);
+  if (border_width > 0.5)
+    border_width = (int)(0.5 + border_width);
+  for (side = 0; side < 4; side++)
+    {
+      double width = st_theme_node_get_border_width (theme_node, side);
+      if (width > 0.5)
+        width = (int)(0.5 + width);
+      if (width > 0)
+        {
+          border_width = width;
+          st_theme_node_get_border_color (theme_node, side, &border_color);
+        }
+      if ((int)width != border_width)
+        {
+          uniform_border_width = FALSE;
+          break;
+        }
+    }
+
+  /* Pick the first nonzero border radius, but only if we have a uniform border. */
+  if (uniform_border_width)
+    {
+      for (corner = 0; corner < 4; corner++)
+        {
+          double radius = st_theme_node_get_border_radius (theme_node, corner);
+          if (radius > 0.5)
+            {
+              border_radius = (int)(0.5 + radius);
+              break;
+            }
+        }
+    }
 
   border_image = st_theme_node_get_border_image (theme_node);
   if (border_image)
@@ -607,9 +694,9 @@ st_widget_real_style_changed (StWidget *self)
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
-  else if ((border_width > 0 && border_color.alpha != 0) ||
-	   (border_radius > 0 && priv->bg_color.alpha != 0))
+  else if (border_radius > 0)
     {
+      priv->draw_border_internal = FALSE;
       priv->draw_bg_color = FALSE;
       priv->border_image = g_object_new (BIG_TYPE_RECTANGLE,
 					 "color", &priv->bg_color,
@@ -620,6 +707,19 @@ st_widget_real_style_changed (StWidget *self)
 
       clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
 
+      has_changed = TRUE;
+      relayout_needed = TRUE;
+    }
+  else if (border_width > 0 && border_color.alpha != 0)
+    {
+      priv->draw_bg_color = TRUE;
+      priv->draw_border_internal = TRUE;
+      has_changed = TRUE;
+      relayout_needed = TRUE;
+    }
+  else if (priv->draw_border_internal)
+    {
+      priv->draw_border_internal = FALSE;
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
@@ -1052,7 +1152,7 @@ st_widget_get_style_pseudo_class (StWidget *actor)
 /**
  * st_widget_set_style_pseudo_class:
  * @actor: a #StWidget
- * @pseudo_class: a new pseudo class string
+ * @pseudo_class: (allow-none): a new pseudo class string
  *
  * Set the style pseudo class
  */
@@ -1172,6 +1272,40 @@ st_widget_ensure_style (StWidget *widget)
 
   if (widget->priv->is_style_dirty)
     st_widget_recompute_style (widget, NULL);
+}
+
+static StTextDirection default_direction = ST_TEXT_DIRECTION_LTR;
+
+StTextDirection
+st_widget_get_default_direction (void)
+{
+  return default_direction;
+}
+
+void
+st_widget_set_default_direction (StTextDirection dir)
+{
+  g_return_if_fail (dir != ST_TEXT_DIRECTION_NONE);
+
+  default_direction = dir;
+}
+
+StTextDirection
+st_widget_get_direction (StWidget *self)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (self), ST_TEXT_DIRECTION_LTR);
+
+  if (self->priv->direction != ST_TEXT_DIRECTION_NONE)
+    return self->priv->direction;
+  else
+    return default_direction;
+}
+
+void
+st_widget_set_direction (StWidget *self, StTextDirection dir)
+{
+  g_return_if_fail (ST_IS_WIDGET (self));
+  self->priv->direction = dir;
 }
 
 /**

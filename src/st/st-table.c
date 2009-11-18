@@ -290,7 +290,8 @@ st_table_allocate_fill (ClutterActor    *child,
                         gdouble          x_align,
                         gdouble          y_align,
                         gboolean         x_fill,
-                        gboolean         y_fill)
+                        gboolean         y_fill,
+                        gboolean         ltr)
 {
   gfloat natural_width, natural_height;
   gfloat min_width, min_height;
@@ -310,8 +311,16 @@ st_table_allocate_fill (ClutterActor    *child,
 
   if (x_fill)
     {
-      allocation.x1 = childbox->x1;
-      allocation.x2 = (int)(allocation.x1 + available_width);
+      if (ltr)
+        {
+          allocation.x1 = childbox->x1;
+          allocation.x2 = (int)(allocation.x1 + available_width);
+        }
+      else
+        {
+          allocation.x2 = childbox->x2;
+          allocation.x1 = (int)(allocation.x2 - available_width);
+        }
     }
 
   if (y_fill)
@@ -361,8 +370,16 @@ st_table_allocate_fill (ClutterActor    *child,
 
   if (!x_fill)
     {
-      allocation.x1 = childbox->x1 + (int)((available_width - child_width) * x_align);
-      allocation.x2 = allocation.x1 + (int) child_width;
+      if (ltr)
+        {
+          allocation.x1 = childbox->x1 + (int)((available_width - child_width) * x_align);
+          allocation.x2 = allocation.x1 + (int) child_width;
+        }
+      else
+        {
+          allocation.x2 = childbox->x2 - (int)((available_width - child_width) * x_align);
+          allocation.x1 = allocation.x2 - (int) child_width;
+        }
     }
 
   if (!y_fill)
@@ -384,6 +401,7 @@ st_table_homogeneous_allocate (ClutterActor          *self,
   gfloat col_width, row_height;
   gint row_spacing, col_spacing;
   StTablePrivate *priv = ST_TABLE (self)->priv;
+  gboolean ltr = st_widget_get_direction (ST_WIDGET (self)) == ST_TEXT_DIRECTION_LTR;
 
   col_spacing = priv->col_spacing;
   row_spacing = priv->row_spacing;
@@ -421,13 +439,21 @@ st_table_homogeneous_allocate (ClutterActor          *self,
       x_fill = meta->x_fill;
       y_fill = meta->y_fill;
 
-      childbox.x1 = content_box->x1 + (col_width + col_spacing) * col;
-      childbox.x2 = childbox.x1 + (col_width * col_span) + (col_spacing * (col_span - 1));
+      if (ltr)
+        {
+          childbox.x1 = content_box->x1 + (col_width + col_spacing) * col;
+          childbox.x2 = childbox.x1 + (col_width * col_span) + (col_spacing * (col_span - 1));
+        }
+      else
+        {
+          childbox.x2 = content_box->x2 - (col_width + col_spacing) * col;
+          childbox.x1 = childbox.x2 - (col_width * col_span) - (col_spacing * (col_span - 1));
+        }
 
       childbox.y1 = content_box->y1 + (row_height + row_spacing) * row;
       childbox.y2 = childbox.y1 + (row_height * row_span) + (row_spacing * (row_span - 1));
 
-      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill);
+      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill, ltr);
 
       clutter_actor_allocate (child, &childbox, flags);
     }
@@ -725,6 +751,7 @@ st_table_preferred_allocate (ClutterActor          *self,
   gint *col_widths, *row_heights;
   StTable *table;
   StTablePrivate *priv;
+  gboolean ltr;
 
   table = ST_TABLE (self);
   priv = ST_TABLE (self)->priv;
@@ -740,6 +767,8 @@ st_table_preferred_allocate (ClutterActor          *self,
     st_table_calculate_row_heights (table,
                                     (int) (content_box->y2 - content_box->y1),
                                     col_widths);
+
+  ltr = (st_widget_get_direction (ST_WIDGET (self)) == ST_TEXT_DIRECTION_LTR);
 
 
   for (list = priv->children; list; list = g_slist_next (list))
@@ -808,10 +837,20 @@ st_table_preferred_allocate (ClutterActor          *self,
         }
 
       /* calculate child x */
-      child_x = (int) content_box->x1
-                + col_spacing * col;
-      for (i = 0; i < col; i++)
-        child_x += col_widths[i];
+      if (ltr)
+        {
+          child_x = (int) content_box->x1
+                    + col_spacing * col;
+          for (i = 0; i < col; i++)
+            child_x += col_widths[i];
+        }
+      else
+        {
+          child_x = (int) content_box->x2
+                    - col_spacing * col;
+          for (i = 0; i < col; i++)
+            child_x -= col_widths[i];
+        }
 
       /* calculate child y */
       child_y = (int) content_box->y1
@@ -820,14 +859,22 @@ st_table_preferred_allocate (ClutterActor          *self,
         child_y += row_heights[i];
 
       /* set up childbox */
-      childbox.x1 = (float) child_x;
-      childbox.x2 = (float) MAX (0, child_x + col_width);
+      if (ltr)
+        {
+          childbox.x1 = (float) child_x;
+          childbox.x2 = (float) MAX (0, child_x + col_width);
+        }
+      else
+        {
+          childbox.x2 = (float) child_x;
+          childbox.x1 = (float) MAX (0, child_x - col_width);
+        }
 
       childbox.y1 = (float) child_y;
       childbox.y2 = (float) MAX (0, child_y + row_height);
 
 
-      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill);
+      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill, ltr);
 
       clutter_actor_allocate (child, &childbox, flags);
     }

@@ -1,237 +1,219 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# Khaled Hosny <khaledhosny@eglug.org>, 2009.
+# gnome-shell Finnish translation
+# Copyright (C) 2009 Timo Jyrinki
+# This file is distributed under the same license as the gnome-shell package.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2009.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: HEAD\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 20:55+0200\n"
-"PO-Revision-Date: 2009-11-08 20:55+0300\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"POT-Creation-Date: 2009-11-04 11:16+0200\n"
+"PO-Revision-Date: 2009-11-04 11:16+0200\n"
+"Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
+"Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.4.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "صدفة جنوم"
+msgstr ""
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "إدارة النوافذ وإطلاق التطبيقات"
+msgstr "Ikkunanhallinta ja sovelluksien käynnistäminen"
 
 #: ../js/ui/appDisplay.js:332
 msgid "Frequent"
-msgstr "متكرر"
+msgstr "Usein käytetyt"
 
 #: ../js/ui/appDisplay.js:867
 msgid "Drag here to add favorites"
-msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
+msgstr "Raahaa tähän lisätäksesi suosikkeihin"
 
 #: ../js/ui/appIcon.js:426
 msgid "New Window"
-msgstr "نافذة جديدة"
+msgstr "Uusi ikkuna"
 
 #: ../js/ui/appIcon.js:430
 msgid "Remove from Favorites"
-msgstr "أزِل من المفضّلة"
+msgstr "Poista suosikeista"
 
 #: ../js/ui/appIcon.js:431
 msgid "Add to Favorites"
-msgstr "أضِف إلى المفضّلة"
+msgstr "Lisää suosikkeihin"
 
-#: ../js/ui/dash.js:267
+#: ../js/ui/dash.js:283
 msgid "Find..."
-msgstr "ابحث..."
+msgstr "Etsi..."
 
-#: ../js/ui/dash.js:376
+#: ../js/ui/dash.js:400
 msgid "More"
-msgstr "المزيد"
+msgstr "Lisää"
 
-#: ../js/ui/dash.js:532
+#: ../js/ui/dash.js:543
 msgid "(see all)"
-msgstr "(انظر الكل)"
+msgstr "(näytä kaikki)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:711 ../js/ui/dash.js:773
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
 msgid "APPLICATIONS"
-msgstr "التطبيقات"
+msgstr "SOVELLUKSET"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:731
+#: ../js/ui/dash.js:745
 msgid "PLACES"
-msgstr "الأماكن"
+msgstr "SIJAINNIT"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:738 ../js/ui/dash.js:783
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
 msgid "RECENT DOCUMENTS"
-msgstr "المستندات الحديثة"
+msgstr "VIIMEISIMMÄT ASIAKIRJAT"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:947
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
 msgid "SEARCH RESULTS"
-msgstr "نتائج البحث"
+msgstr "HAKUTULOKSET"
 
-#: ../js/ui/dash.js:778
+#: ../js/ui/dash.js:792
 msgid "PREFERENCES"
-msgstr "التفضيلات"
+msgstr "ASETUKSET"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:274
 msgid "Activities"
-msgstr "الأنشطة"
+msgstr "Toiminnot"
 
 #. Translators: This is a time format.
 #: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
-msgstr "%A %Ol:%OM %p"
+msgstr "%a %I.%M"
 
 #: ../js/ui/places.js:178
 msgid "Connect to..."
-msgstr "اتّصل ب‍..."
+msgstr "Yhdistä..."
 
 #: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
-msgstr "من فضلك اكتب أمرا:"
+msgstr "Syötä komento:"
 
 #: ../js/ui/runDialog.js:173
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr "فشل تنفيذ '%s':‏"
+msgstr ""
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
 msgid "%H:%M"
-msgstr "%OH:%OM"
+msgstr "%I.%M"
 
 #: ../js/ui/widget.js:317
 msgid "Applications"
-msgstr "التطبيقات"
+msgstr "Sovellukset"
 
 #: ../js/ui/widget.js:339
 msgid "Recent Documents"
-msgstr "المستندات الحديثة"
+msgstr "Viimeisimmät asiakirjat"
 
 #: ../src/shell-global.c:821
 msgid "Less than a minute ago"
-msgstr "منذ أقل من دقيقة"
+msgstr "Alle minuutti sitten"
 
 #: ../src/shell-global.c:824
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "منذ أقل من دقيقة"
-msgstr[1] "منذ دقيقة"
-msgstr[2] "منذ دقيقتين"
-msgstr[3] "منذ %d دقائق"
-msgstr[4] "منذ %d دقيقة"
-msgstr[5] "منذ %d دقيقة"
+msgstr[0] "%d minuutti sitten"
+msgstr[1] "%d minuuttia sitten"
 
 #: ../src/shell-global.c:827
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "منذ أقل من ساعة"
-msgstr[1] "منذ ساعة"
-msgstr[2] "منذ ساعتين"
-msgstr[3] "منذ %d ساعات"
-msgstr[4] "منذ %d ساعة"
-msgstr[5] "منذ %d ساعة"
+msgstr[0] "%d tunti sitten"
+msgstr[1] "%d tuntia sitten"
 
 #: ../src/shell-global.c:830
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] "منذ أقل من يوم"
-msgstr[1] "منذ يوم"
-msgstr[2] "منذ يومين"
-msgstr[3] "منذ %d أيام"
-msgstr[4] "منذ %d يوما"
-msgstr[5] "منذ %d يوم"
+msgstr[0] "%d päivä sitten"
+msgstr[1] "%d päivää sitten"
 
 #: ../src/shell-global.c:833
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] "منذ أقل من أسبوع"
-msgstr[1] "منذ أسبوع"
-msgstr[2] "منذ أسبوعين"
-msgstr[3] "منذ %d أسابيع"
-msgstr[4] "منذ %d أسبوعا"
-msgstr[5] "منذ %d أسبوع"
+msgstr[0] "%d viikko sitten"
+msgstr[1] "%d viikkoa sitten"
 
 #: ../src/shell-status-menu.c:156
 msgid "Unknown"
-msgstr "مجهول"
+msgstr "Tuntematon"
 
 #: ../src/shell-status-menu.c:212
 #, c-format
 msgid "Can't lock screen: %s"
-msgstr "تعذّر إيصاد الشاشة: %s"
+msgstr "Näyttöä ei voi lukita: %s"
 
 #: ../src/shell-status-menu.c:227
 #, c-format
 msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "تعذّر ضبك حافظة الشاشة مؤقتا لتكون شاشة خالية: %s"
+msgstr ""
 
 #: ../src/shell-status-menu.c:351
 #, c-format
 msgid "Can't logout: %s"
-msgstr "تعذّر الخروج: %s"
+msgstr ""
 
 #: ../src/shell-status-menu.c:492
 msgid "Account Information..."
-msgstr "معلومات الحساب..."
+msgstr "Käyttäjätilin tiedot..."
 
 #: ../src/shell-status-menu.c:502
 msgid "Sidebar"
-msgstr "الشريط الجانبي"
+msgstr "Sivupalkki"
 
 #: ../src/shell-status-menu.c:510
 msgid "System Preferences..."
-msgstr "تفضيلات النظام..."
+msgstr "Järjestelmän asetukset"
 
 #: ../src/shell-status-menu.c:525
 msgid "Lock Screen"
-msgstr "أوصد الشاشة"
+msgstr "Lukitse näyttö"
 
 #: ../src/shell-status-menu.c:535
 msgid "Switch User"
-msgstr "بدّل المستخدم"
+msgstr "Vaihda käyttäjää"
 
 #. Only show switch user if there are other users
 #. Log Out
 #: ../src/shell-status-menu.c:546
 msgid "Log Out..."
-msgstr "اخرج..."
+msgstr "Kirjaudu ulos..."
 
 #. Shut down
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
-msgstr "أطفئ..."
+msgstr "Sammuta..."
 
 #: ../src/shell-uri-util.c:87
 msgid "Home Folder"
-msgstr "مجلد المنزل"
+msgstr "Kotikansio"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-uri-util.c:102
 msgid "File System"
-msgstr "نظام الملفات"
+msgstr "Tiedostojärjestelmä"
 
 #: ../src/shell-uri-util.c:248
 msgid "Search"
-msgstr "ابحث"
+msgstr "Haku"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
@@ -241,7 +223,4 @@ msgstr "ابحث"
 #: ../src/shell-uri-util.c:298
 #, c-format
 msgid "%1$s: %2$s"
-msgstr "‏%1$s:‏ %2$s"
-
-#~ msgid "Browse"
-#~ msgstr "استعرض"
+msgstr "%1$s: %2$s"

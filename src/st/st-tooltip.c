@@ -148,7 +148,6 @@ st_tooltip_get_preferred_width (ClutterActor *self,
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  gfloat min_label_w, natural_label_w;
   gfloat label_height, arrow_height;
   ClutterActor *arrow_image;
 
@@ -180,13 +179,8 @@ st_tooltip_get_preferred_width (ClutterActor *self,
     {
       clutter_actor_get_preferred_width (priv->label,
                                          label_height,
-                                         &min_label_w,
-                                         &natural_label_w);
-    }
-  else
-    {
-      min_label_w = 0;
-      natural_label_w = 0;
+                                         min_width_p,
+                                         natural_width_p);
     }
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);

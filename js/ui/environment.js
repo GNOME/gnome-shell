@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const St = imports.gi.St;
+const Gettext_gtk20 = imports.gettext.domain('gtk20');
 
 const Tweener = imports.ui.tweener;
 
@@ -33,4 +34,9 @@ _patchContainerClass(St.Table);
 function init() {
     Tweener.init();
     String.prototype.format = Format.format;
+
+    // Set the default direction for St widgets (this needs to be done before any use of St)
+    if (Gettext_gtk20.gettext("default:LTR") == "default:RTL") {
+        St.Widget.set_default_direction(St.TextDirection.RTL);
+    }
 }

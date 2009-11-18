@@ -545,7 +545,7 @@ st_bin_new (void)
 /**
  * st_bin_set_child:
  * @bin: a #StBin
- * @child: a #ClutterActor, or %NULL
+ * @child: (allow-none): a #ClutterActor, or %NULL
  *
  * Sets @child as the child of @bin.
  *

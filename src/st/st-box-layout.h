@@ -89,6 +89,12 @@ void     st_box_layout_set_pack_start (StBoxLayout *box,
                                        gboolean     pack_start);
 gboolean st_box_layout_get_pack_start (StBoxLayout *box);
 
+void     st_box_layout_remove_all     (StBoxLayout *box);
+
+void     st_box_layout_destroy_children (StBoxLayout *box);
+
+guint    st_box_layout_get_n_children  (StBoxLayout *box);
+
 G_END_DECLS
 
 #endif /* _ST_BOX_LAYOUT_H */

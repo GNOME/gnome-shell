@@ -87,8 +87,6 @@ libgnome_shell_la_SOURCES =			\
 	shell-global.c				\
 	shell-global.h				\
 	shell-global-private.h			\
-	shell-status-menu.c				\
-	shell-status-menu.h				\
 	shell-stack.c				\
 	shell-stack.h				\
 	shell-tray-manager.c			\
@@ -165,7 +163,7 @@ libgnome_shell_la_LIBADD =	\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib Big-1.0.typelib St-1.0.typelib
+typelib_DATA = Shell-0.1.typelib Big-1.0.typelib St-1.0.typelib Gdm-1.0.typelib
 
 Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir St-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
@@ -237,3 +235,22 @@ St-1.0.typelib: St-1.0.gir
 		$< -o $@
 
 CLEANFILES += St-1.0.typelib
+
+Gdm-1.0.gir: $(mutter) $(G_IR_SCANNER) libgdmuser-1.0.la Makefile
+	$(AM_V_GEN) $(G_IR_SCANNER)			\
+		--namespace=Gdm				\
+		--nsversion=1.0				\
+		--include=GObject-2.0			\
+		--include=GdkPixbuf-2.0			\
+		--libtool="$(LIBTOOL)"			\
+		--library=libgdmuser-1.0.la		\
+		$(addprefix $(srcdir)/,$(gdmuser_source_h))	\
+		$(addprefix $(srcdir)/,$(gdmuser_source_c))	\
+		$(gdmuser_cflags)				\
+		-o $@
+CLEANFILES += Gdm-1.0.gir
+
+Gdm-1.0.typelib: libbig-1.0.la Gdm-1.0.gir
+	$(AM_V_GEN) $(G_IR_COMPILER) Gdm-1.0.gir -o $@
+CLEANFILES += Gdm-1.0.typelib
+

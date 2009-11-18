@@ -75,7 +75,7 @@ GSList *            gdm_user_manager_list_users            (GdmUserManager *mana
 GdmUser *           gdm_user_manager_get_user              (GdmUserManager *manager,
                                                             const char     *user_name);
 GdmUser *           gdm_user_manager_get_user_by_uid       (GdmUserManager *manager,
-                                                            uid_t           uid);
+                                                            gulong          uid);
 
 gboolean            gdm_user_manager_activate_user_session (GdmUserManager *manager,
                                                             GdmUser        *user);

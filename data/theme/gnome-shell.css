@@ -19,7 +19,6 @@
 
 StScrollBar
 {
-  background-color: #354761;
   padding: 0px;
 }
 
@@ -61,6 +60,14 @@ StScrollBar StButton#vhandle:hover
   border-image: url("scroll-vhandle.png") 5;
 }
 
+StTooltip {
+    border: 1px solid rgba(79,111,173,0.9);
+    border-radius: 5px;
+    padding: 4px;
+    background-color: rgba(79,111,173,0.9);
+    color: #ffffff;
+}
+
 /* Panel */
 
 .panel-button {
@@ -72,6 +79,154 @@ StScrollBar StButton#vhandle:hover
 
 .panel-button:active, .panel-button:checked {
     background-color: #314a6c;
+}
+
+/* Dash */
+
+#dash {
+    color: #5f5f5f;
+    background-color: rgba(0,0,0,0.75);
+    padding: 0px 14px;
+}
+
+#dashSections {
+    spacing: 12px;
+}
+
+.dash-search-section-header {
+    padding: 6px 0px;
+    spacing: 4px;
+    font-size: 12px;
+    color: #bbbbbb;
+}
+
+.dash-search-section-title, dash-search-section-count {
+    font-weight: bold;
+}
+
+#searchEntry {
+    padding: 4px;
+    border-bottom: 1px solid #262626;
+}
+
+#searchEntry:active {
+    background-color: #c4c4c4;
+}
+
+.dash-section {
+    spacing: 8px;
+}
+
+.section-header {
+    border: 1px solid #262626;
+    -shell-gradient-top: #161616;
+    -shell-gradient-bottom: #000000;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.section-header-inner {
+    border: 1px solid #000000;
+    padding: 0px 4px;
+    spacing: 4px;
+}
+
+.section-text-content {
+    padding: 4px 0px;
+}
+
+.section-header-back {
+    padding: 0px 4px 0px 0px;
+    border-right: 1px solid #262626;
+}
+
+.section-header-back-image {
+    background-image: url("section-back.svg");
+    width: 12px;
+    height: 16px;
+}
+
+.section-count {
+}
+
+.dash-section-content {
+    font-size: 14px;
+    color: #ffffff;
+    spacing: 8px;
+}
+
+.more-link {
+}
+
+.more-link-expander {
+    background-image: url("section-more.svg");
+    width: 9px;
+    height: 9px;
+}
+
+.dash-pane {
+    background-color: rgba(0,0,0,0.95);
+    border: 1px solid #262626;
+    padding: 4px;
+    spacing: 4px;
+}
+
+.dash-pane-close {
+    background-image: url("close.svg");
+    width: 16px;
+    height: 16px;
+}
+
+/* GenericDisplay */
+
+.generic-display-container {
+    spacing: 4px;
+}
+
+.generic-display-item {
+    height: 50px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    spacing: 4px;
+}
+
+.generic-display-item:selected {
+    background-color: rgba(79,111,173,0.66);
+}
+
+.generic-display-item-text {
+    spacing: 4px;
+}
+
+.generic-display-item-description {
+    font-size: 12px;
+    color: #bababa;
+}
+
+.generic-display-details {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.generic-display-details-name {
+    font-weight: bold;
+}
+
+/* AppIcon */
+
+.app-icon-label {
+    font-size: 12px;
+}
+
+/* Places */
+
+.places-actions {
+    spacing: 4px;
+}
+
+#placesDevices {
+    padding-top: 4px;
 }
 
 /* LookingGlass */
@@ -202,4 +357,11 @@ StScrollBar StButton#vhandle:hover
 .switcher-list .separator {
     width: 1px;
     background: rgba(255,255,255,0.33);
+}
+
+/* Status Menu */
+#StatusMenu {
+    spacing: 4px;
+    font: 16px sans-serif;
+    color: white;
 }

@@ -516,7 +516,7 @@ _gdm_user_icon_changed (GdmUser *user)
  * Since: 1.0
  **/
 
-uid_t
+gulong
 gdm_user_get_uid (GdmUser *user)
 {
         g_return_val_if_fail (GDM_IS_USER (user), -1);

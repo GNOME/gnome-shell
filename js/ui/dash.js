@@ -8,22 +8,19 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
-const Places = imports.ui.places;
+const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Button = imports.ui.button;
 const Main = imports.ui.main;
 
 const DEFAULT_PADDING = 4;
 const DEFAULT_SPACING = 4;
-const DASH_SECTION_PADDING = 6;
-const DASH_SECTION_SPACING = 40;
-const DASH_CORNER_RADIUS = 5;
-const DASH_PADDING_SIDE = 14;
 
 const BACKGROUND_COLOR = new Clutter.Color();
 BACKGROUND_COLOR.from_pixel(0x000000c0);
@@ -43,42 +40,22 @@ SEARCH_TEXT_COLOR.from_pixel(0x333333ff);
 const SEARCH_CURSOR_COLOR = BRIGHT_TEXT_COLOR;
 const HIGHLIGHTED_SEARCH_CURSOR_COLOR = SEARCH_TEXT_COLOR;
 
-const HIGHLIGHTED_SEARCH_BACKGROUND_COLOR = new Clutter.Color();
-HIGHLIGHTED_SEARCH_BACKGROUND_COLOR.from_pixel(0xc4c4c4ff);
-
 const SEARCH_BORDER_BOTTOM_COLOR = new Clutter.Color();
 SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
-
-const SECTION_BORDER_COLOR = new Clutter.Color();
-SECTION_BORDER_COLOR.from_pixel(0x262626ff);
-const SECTION_BORDER = 1;
-const SECTION_INNER_BORDER_COLOR = new Clutter.Color();
-SECTION_INNER_BORDER_COLOR.from_pixel(0x000000ff);
-const SECTION_BACKGROUND_TOP_COLOR = new Clutter.Color();
-SECTION_BACKGROUND_TOP_COLOR.from_pixel(0x161616ff);
-const SECTION_BACKGROUND_BOTTOM_COLOR = new Clutter.Color();
-SECTION_BACKGROUND_BOTTOM_COLOR.from_pixel(0x000000ff);
-const SECTION_INNER_SPACING = 8;
 
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
 BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
 
-const PANE_BORDER_COLOR = new Clutter.Color();
-PANE_BORDER_COLOR.from_pixel(0x101d3cfa);
-const PANE_BORDER_WIDTH = 2;
-
-const PANE_BACKGROUND_COLOR = new Clutter.Color();
-PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
-
 const APPS = "apps";
 const PREFS = "prefs";
 const DOCS = "docs";
+const PLACES = "places";
 
 /*
  * Returns the index in an array of a given length that is obtained
  * if the provided index is incremented by an increment and the array
  * is wrapped in if necessary.
- * 
+ *
  * index: prior index, expects 0 <= index < length
  * increment: the change in index, expects abs(increment) <= length
  * length: the length of the array
@@ -87,14 +64,15 @@ function _getIndexWrapped(index, increment, length) {
    return (index + increment + length) % length;
 }
 
-function _createDisplay(displayType) {
+function _createDisplay(displayType, flags) {
     if (displayType == APPS)
-        return new AppDisplay.AppDisplay();
+        return new AppDisplay.AppDisplay(false, flags);
     else if (displayType == PREFS)
-        return new AppDisplay.AppDisplay(true);
+        return new AppDisplay.AppDisplay(true, flags);
     else if (displayType == DOCS)
-        return new DocDisplay.DocDisplay();
-
+        return new DocDisplay.DocDisplay(flags);
+    else if (displayType == PLACES)
+        return new PlaceDisplay.PlaceDisplay(flags);
     return null;
 }
 
@@ -106,36 +84,27 @@ Pane.prototype = {
     _init: function () {
         this._open = false;
 
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   background_color: PANE_BACKGROUND_COLOR,
-                                   border: PANE_BORDER_WIDTH,
-                                   border_color: PANE_BORDER_COLOR,
-                                   padding: DEFAULT_PADDING,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ style_class: "dash-pane",
+                                         vertical: true,
+                                         reactive: true });
         this.actor.connect('button-press-event', Lang.bind(this, function (a, e) {
             // Eat button press events so they don't go through and close the pane
             return true;
         }));
 
-        let chromeTop = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                      spacing: 6 });
+        let chromeTop = new St.BoxLayout();
 
-        let closeIconUri = "file://" + global.imagedir + "close.svg";
-        let closeIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                       closeIconUri,
-                                                                       16,
-                                                                       16);
-        closeIcon.reactive = true;
-        closeIcon.connect('button-press-event', Lang.bind(this, function (b, e) {
+        let closeIcon = new St.Button({ style_class: "dash-pane-close" });
+        closeIcon.connect('clicked', Lang.bind(this, function (b, e) {
             this.close();
-            return true;
         }));
-        chromeTop.append(closeIcon, Big.BoxPackFlags.END);
-        this.actor.append(chromeTop, Big.BoxPackFlags.NONE);
+        let dummy = new St.Bin();
+        chromeTop.add(dummy, { expand: true });
+        chromeTop.add(closeIcon, { x_align: St.Align.END });
+        this.actor.add(chromeTop);
 
-        this.content = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                     spacing: DEFAULT_PADDING });
-        this.actor.append(this.content, Big.BoxPackFlags.EXPAND);
+        this.content = new St.BoxLayout({ vertical: true });
+        this.actor.add(this.content, { expand: true });
 
         // Hidden by default
         this.actor.hide();
@@ -173,32 +142,20 @@ Pane.prototype = {
 }
 Signals.addSignalMethods(Pane.prototype);
 
-function ResultArea(displayType, enableNavigation) {
-    this._init(displayType, enableNavigation);
+function ResultArea(displayType, flags) {
+    this._init(displayType, flags);
 }
 
 ResultArea.prototype = {
-    _init : function(displayType, enableNavigation) {
+    _init : function(displayType, flags) {
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
         this.resultsContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                               spacing: DEFAULT_PADDING
                                             });
         this.actor.append(this.resultsContainer, Big.BoxPackFlags.EXPAND);
-        this.navContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.resultsContainer.append(this.navContainer, Big.BoxPackFlags.NONE);
 
-        this.display = _createDisplay(displayType);
-
-        this.navArea = this.display.getNavigationArea();
-        if (enableNavigation && this.navArea)
-            this.navContainer.append(this.navArea, Big.BoxPackFlags.EXPAND);
-
+        this.display = _createDisplay(displayType, flags);
         this.resultsContainer.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-
-        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.NONE);
-
         this.display.load();
     }
 }
@@ -223,7 +180,7 @@ function createPaneForDetails(dash, display) {
         if (index >= 0) {
             detailPane.destroyContent();
             let details = display.createDetailsForIndex(index);
-            detailPane.content.append(details, Big.BoxPackFlags.EXPAND);
+            detailPane.content.add(details, { expand: true });
             detailPane.open();
         } else {
             detailPane.close();
@@ -246,12 +203,12 @@ ResultPane.prototype = {
 
     // Create a display of displayType and pack it into this pane's
     // content area.  Return the display.
-    packResults: function(displayType, enableNavigation) {
-        let resultArea = new ResultArea(displayType, enableNavigation);
+    packResults: function(displayType) {
+        let resultArea = new ResultArea(displayType);
 
         createPaneForDetails(this._dash, resultArea.display);
 
-        this.content.append(resultArea.actor, Big.BoxPackFlags.EXPAND);
+        this.content.add(resultArea.actor, { expand: true });
         this.connect('open-state-changed', Lang.bind(this, function(pane, isOpen) {
             resultArea.display.resetState();
         }));
@@ -265,14 +222,11 @@ function SearchEntry() {
 
 SearchEntry.prototype = {
     _init : function() {
-        this.actor = new Big.Box({ padding: DEFAULT_PADDING,
-                                   border_bottom: SECTION_BORDER,
-                                   border_color: SEARCH_BORDER_BOTTOM_COLOR,
-                                   corner_radius: DASH_CORNER_RADIUS,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ name: "searchEntry",
+                                        reactive: true });
         let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                 y_align: Big.BoxAlignment.CENTER });
-        this.actor.append(box, Big.BoxPackFlags.EXPAND);
+        this.actor.add(box, { expand: true });
         this.actor.connect('button-press-event', Lang.bind(this, function () {
             this._resetTextState(true);
             return false;
@@ -332,7 +286,7 @@ SearchEntry.prototype = {
             else
                 this.entry.text = '';
 
-            // Return true to stop the signal emission, so that this.actor doesn't get 
+            // Return true to stop the signal emission, so that this.actor doesn't get
             // the button-press-event and re-highlight itself.
             return true;
         }));
@@ -355,18 +309,18 @@ SearchEntry.prototype = {
     _resetTextState: function (searchEntryClicked) {
         let text = this.getText();
         this._iconBox.remove_all();
-        // We highlight the search box if the user starts typing in it 
+        // We highlight the search box if the user starts typing in it
         // or just clicks in it to indicate that the search is active.
         if (text != '' || searchEntryClicked) {
             if (!searchEntryClicked)
                 this._defaultText.hide();
             this._iconBox.append(this._closeIcon, Big.BoxPackFlags.NONE);
-            this.actor.background_color = HIGHLIGHTED_SEARCH_BACKGROUND_COLOR;
+            this.actor.set_style_pseudo_class('active');
             this.entry.cursor_color = HIGHLIGHTED_SEARCH_CURSOR_COLOR;
         } else {
             this._defaultText.show();
             this._iconBox.append(this._magnifierIcon, Big.BoxPackFlags.NONE);
-            this.actor.background_color = BACKGROUND_COLOR;
+            this.actor.set_style_pseudo_class(null);
             this.entry.cursor_color = SEARCH_CURSOR_COLOR;
         }
     },
@@ -385,20 +339,12 @@ function MoreLink() {
 
 MoreLink.prototype = {
     _init : function () {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   padding_right: DEFAULT_PADDING,
-                                   padding_left: DEFAULT_PADDING,
-                                   reactive: true,
-                                   x_align: Big.BoxAlignment.CENTER,
-                                   y_align: Big.BoxAlignment.CENTER,
-                                   border_left: SECTION_BORDER,
-                                   border_color: SECTION_BORDER_COLOR });
+        this.actor = new St.BoxLayout({ style_class: "more-link",
+                                        reactive: true });
         this.pane = null;
 
-        let text = new Clutter.Text({ font_name: "Sans 12px",
-                                      color: BRIGHT_TEXT_COLOR,
-                                      text: _("More") });
-        this.actor.append(text, Big.BoxPackFlags.NONE);
+        let expander = new St.Bin({ style_class: "more-link-expander" });
+        this.actor.add(expander, { expand: true, y_fill: false });
 
         this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
             if (this.pane == null) {
@@ -425,21 +371,9 @@ function BackLink() {
 
 BackLink.prototype = {
     _init : function () {
-        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                           padding_right: DEFAULT_PADDING,
-                                           padding_left: DEFAULT_PADDING,
-                                           reactive: true,
-                                           x_align: Big.BoxAlignment.CENTER,
-                                           y_align: Big.BoxAlignment.CENTER,
-                                           border_right: SECTION_BORDER,
-                                           border_color: SECTION_BORDER_COLOR });
-
-        let backIconUri = "file://" + global.imagedir + "back.svg";
-        let backIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                      backIconUri,
-                                                                      12,
-                                                                      16);
-        this.actor.append(backIcon, Big.BoxPackFlags.NONE);
+        this.actor = new St.Button({ style_class: "section-header-back",
+                                      reactive: true });
+        this.actor.set_child(new St.Bin({ style_class: "section-header-back-image" }));
     }
 }
 
@@ -449,50 +383,70 @@ function SectionHeader(title, suppressBrowse) {
 
 SectionHeader.prototype = {
     _init : function (title, suppressBrowse) {
-        this.actor = new Big.Box({ border: SECTION_BORDER,
-                                   border_color: SECTION_BORDER_COLOR });
-        this._innerBox = new Big.Box({ border: SECTION_BORDER,
-                                       border_color: SECTION_INNER_BORDER_COLOR,
-                                       padding_left: DEFAULT_PADDING,
-                                       padding_right: DEFAULT_PADDING,
-                                       orientation: Big.BoxOrientation.HORIZONTAL,
-                                       spacing: DEFAULT_SPACING });
-        this.actor.append(this._innerBox, Big.BoxPackFlags.EXPAND);
-        let backgroundGradient = Shell.create_vertical_gradient(SECTION_BACKGROUND_TOP_COLOR,
-                                                                SECTION_BACKGROUND_BOTTOM_COLOR);
-        this._innerBox.add_actor(backgroundGradient);
-        this._innerBox.connect('notify::allocation', Lang.bind(this, function (actor) {
-            let [width, height] = actor.get_size();
-            backgroundGradient.set_size(width, height);
+        this.actor = new St.Bin({ style_class: "section-header",
+                                  x_align: St.Align.START,
+                                  x_fill: true,
+                                  y_fill: true });
+        this._innerBox = new St.BoxLayout({ style_class: "section-header-inner" });
+        this.actor.set_child(this._innerBox);
+
+        this._backgroundGradient = null;
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this.actor.connect('notify::allocation', Lang.bind(this, function (actor) {
+            if (!this._backgroundGradient)
+                return;
+            this._onStyleChanged();
         }));
 
         this.backLink = new BackLink();
-        this._innerBox.append(this.backLink.actor, Big.BoxPackFlags.NONE);
+        this._innerBox.add(this.backLink.actor);
         this.backLink.actor.hide();
-
-        this.backLink.actor.connect('activate', Lang.bind(this, function (actor) {
-            this.emit('back-link-activated');   
+        this.backLink.actor.connect('clicked', Lang.bind(this, function (actor) {
+            this.emit('back-link-activated');
         }));
 
-        let textBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                    padding_top: DEFAULT_PADDING,
-                                    padding_bottom: DEFAULT_PADDING });
-        this.text = new Clutter.Text({ color: TEXT_COLOR,
-                                       font_name: "Sans Bold 12px",
-                                       text: title });
-        textBox.append(this.text, Big.BoxPackFlags.NONE);
+        let textBox = new St.BoxLayout({ style_class: "section-text-content" });
+        this.text = new St.Label({ style_class: "section-title",
+                                   text: title });
+        textBox.add(this.text, { x_align: St.Align.START });
 
-        this.countText = new Clutter.Text({ color: TEXT_COLOR,
-                                            font_name: 'Sans Bold 14px' });
-        textBox.append(this.countText, Big.BoxPackFlags.END);
+        this.countText = new St.Label({ style_class: "section-count" });
+        textBox.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
         this.countText.hide();
 
-        this._innerBox.append(textBox, Big.BoxPackFlags.EXPAND);
+        this._innerBox.add(textBox, { expand: true });
 
         if (!suppressBrowse) {
             this.moreLink = new MoreLink();
-            this._innerBox.append(this.moreLink.actor, Big.BoxPackFlags.END);
+            this._innerBox.add(this.moreLink.actor, { x_align: St.Align.END });
         }
+    },
+
+    _onStyleChanged: function () {
+        if (this._backgroundGradient) {
+            this._backgroundGradient.destroy();
+        }
+        // Manually implement the gradient
+        let themeNode = this.actor.get_theme_node();
+        let gradientTopColor = new Clutter.Color();
+        if (!themeNode.get_color("-shell-gradient-top", false, gradientTopColor))
+            return;
+        let gradientBottomColor = new Clutter.Color();
+        if (!themeNode.get_color("-shell-gradient-bottom", false, gradientBottomColor))
+            return;
+        this._backgroundGradient = Shell.create_vertical_gradient(gradientTopColor,
+                                                                   gradientBottomColor);
+        let box = this.actor.allocation;
+        let contentBox = new Clutter.ActorBox();
+        themeNode.get_content_box(box, contentBox);
+        let width = contentBox.x2 - contentBox.x1;
+        let height = contentBox.y2 - contentBox.y1;
+        this._backgroundGradient.set_size(width, height);
+        // This will set a fixed position, which puts us outside of the normal box layout
+        this._backgroundGradient.set_position(0, 0);
+
+        this._innerBox.add_actor(this._backgroundGradient);
+        this._backgroundGradient.lower_bottom();
     },
 
     setTitle : function(title) {
@@ -531,41 +485,19 @@ function SearchSectionHeader(title, onClick) {
 
 SearchSectionHeader.prototype = {
     _init : function(title, onClick) {
-        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                padding_top: DASH_SECTION_PADDING,
-                                padding_bottom: DASH_SECTION_PADDING,
-                                spacing: DEFAULT_SPACING });
-        let titleText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                           font_name: 'Sans Bold 12px',
-                                           text: title });
-        this.tooltip = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                          font_name: 'Sans 12px',
-                                          text: _("(see all)") });
-        this.countText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                           font_name: 'Sans Bold 14px' });
+        this.actor = new St.Button({ style_class: "dash-search-section-header",
+                                      x_fill: true,
+                                      y_fill: true });
+        let box = new St.BoxLayout();
+        this.actor.set_child(box);
+        let titleText = new St.Label({ style_class: "dash-search-section-title",
+                                        text: title });
+        this.countText = new St.Label({ style_class: "dash-search-section-count" });
 
-        box.append(titleText, Big.BoxPackFlags.NONE);
-        box.append(this.tooltip, Big.BoxPackFlags.NONE);
-        box.append(this.countText, Big.BoxPackFlags.END);
+        box.add(titleText);
+        box.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
 
-        this.tooltip.hide();
-
-        let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
-                                       TEXT_COLOR);
-        button.actor.height = box.height;
-        button.actor.padding_left = DEFAULT_PADDING;
-        button.actor.padding_right = DEFAULT_PADDING;
-
-        button.actor.connect('activate', onClick);
-        button.actor.connect('notify::hover', Lang.bind(this, this._updateTooltip));
-        this.actor = button.actor;
-    },
-
-    _updateTooltip : function(actor) {
-        if (actor.hover)
-            this.tooltip.show();
-        else
-            this.tooltip.hide();
+        this.actor.connect('clicked', onClick);
     }
 }
 
@@ -575,11 +507,13 @@ function Section(titleString, suppressBrowse) {
 
 Section.prototype = {
     _init: function(titleString, suppressBrowse) {
-        this.actor = new Big.Box({ spacing: SECTION_INNER_SPACING });
+        this.actor = new St.BoxLayout({ style_class: 'dash-section',
+                                         vertical: true });
         this.header = new SectionHeader(titleString, suppressBrowse);
-        this.actor.append(this.header.actor, Big.BoxPackFlags.NONE);
-        this.content = new Big.Box({spacing: SECTION_INNER_SPACING });
-        this.actor.append(this.content, Big.BoxPackFlags.EXPAND);
+        this.actor.add(this.header.actor);
+        this.content = new St.BoxLayout({ style_class: 'dash-section-content',
+                                           vertical: true });
+        this.actor.add(this.content);
     }
 }
 
@@ -598,21 +532,18 @@ Dash.prototype = {
         // of the Group actor ends up including the width of its hidden children, so we were getting a reactive object as
         // wide as the details pane that was blocking the clicks to the workspaces underneath it even when the details pane
         // was actually hidden.
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   background_color: BACKGROUND_COLOR,
-                                   corner_radius: DASH_CORNER_RADIUS,
-                                   padding_left: DASH_PADDING_SIDE,
-                                   padding_right: DASH_PADDING_SIDE,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ name: "dash",
+                                        vertical: true,
+                                        reactive: true });
 
         // Size for this one explicitly set from overlay.js
         this.searchArea = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
 
-        this.sectionArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                         spacing: DASH_SECTION_SPACING });
+        this.sectionArea = new St.BoxLayout({ name: "dashSections",
+                                               vertical: true });
 
-        this.actor.append(this.searchArea, Big.BoxPackFlags.NONE);
-        this.actor.append(this.sectionArea, Big.BoxPackFlags.NONE);
+        this.actor.add(this.searchArea);
+        this.actor.add(this.sectionArea);
 
         // The currently active popup display
         this._activePane = null;
@@ -724,41 +655,41 @@ Dash.prototype = {
 
         this._appsSection = new Section(_("APPLICATIONS"));
         let appWell = new AppDisplay.AppWell();
-        this._appsSection.content.append(appWell.actor, Big.BoxPackFlags.EXPAND);
+        this._appsSection.content.add(appWell.actor, { expand: true });
 
         this._moreAppsPane = null;
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreAppsPane == null) {
                 this._moreAppsPane = new ResultPane(this);
-                this._moreAppsPane.packResults(APPS, true);
+                this._moreAppsPane.packResults(APPS);
                 this._addPane(this._moreAppsPane);
                 link.setPane(this._moreAppsPane);
            }
         }));
 
-        this.sectionArea.append(this._appsSection.actor, Big.BoxPackFlags.NONE);
+        this.sectionArea.add(this._appsSection.actor);
 
         /***** Places *****/
 
         /* Translators: This is in the sense of locations for documents,
            network locations, etc. */
         this._placesSection = new Section(_("PLACES"), true);
-        let placesDisplay = new Places.Places();
-        this._placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
-        this.sectionArea.append(this._placesSection.actor, Big.BoxPackFlags.NONE);
+        let placesDisplay = new PlaceDisplay.DashPlaceDisplay();
+        this._placesSection.content.add(placesDisplay.actor, { expand: true });
+        this.sectionArea.add(this._placesSection.actor);
 
         /***** Documents *****/
 
         this._docsSection = new Section(_("RECENT DOCUMENTS"));
 
         this._docDisplay = new DocDisplay.DashDocDisplay();
-        this._docsSection.content.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._docsSection.content.add(this._docDisplay.actor, { expand: true });
 
         this._moreDocsPane = null;
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
-                this._moreDocsPane.packResults(DOCS, true);
+                this._moreDocsPane.packResults(DOCS);
                 this._addPane(this._moreDocsPane);
                 link.setPane(this._moreDocsPane);
            }
@@ -770,7 +701,7 @@ Dash.prototype = {
         }));
         this._docDisplay.emit('changed');
 
-        this.sectionArea.append(this._docsSection.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.add(this._docsSection.actor, { expand: true });
 
         /***** Search Results *****/
 
@@ -797,6 +728,11 @@ Dash.prototype = {
               title: _("RECENT DOCUMENTS"),
               header: null,
               resultArea: null
+            },
+            { type: PLACES,
+              title: _("PLACES"),
+              header: null,
+              resultArea: null
             }
         ];
 
@@ -807,14 +743,13 @@ Dash.prototype = {
                                                                function () {
                                                                    this._showSingleSearchSection(section.type);
                                                                }));
-            this._searchResultsSection.content.append(section.header.actor, Big.BoxPackFlags.NONE);
-            section.resultArea = new ResultArea(section.type, false);
-            section.resultArea.controlBox.hide();
-            this._searchResultsSection.content.append(section.resultArea.actor, Big.BoxPackFlags.EXPAND);
+            this._searchResultsSection.content.add(section.header.actor);
+            section.resultArea = new ResultArea(section.type, GenericDisplay.GenericDisplayFlags.DISABLE_VSCROLLING);
+            this._searchResultsSection.content.add(section.resultArea.actor, { expand: true });
             createPaneForDetails(this, section.resultArea.display);
         }
 
-        this.sectionArea.append(this._searchResultsSection.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.add(this._searchResultsSection.actor, { expand: true });
         this._searchResultsSection.actor.hide();
     },
 
@@ -858,6 +793,11 @@ Dash.prototype = {
                 selectionSet = true;
             }
         }
+
+        // Here work around a bug that I never quite tracked down
+        // the root cause of; it appeared that the search results
+        // section was getting a 0 height allocation.
+        this._searchResultsSection.content.queue_relayout();
 
         return false;
     },
@@ -926,7 +866,6 @@ Dash.prototype = {
             if (section.type == type) {
                 // This will be the only section shown.
                 section.resultArea.display.selectFirstItem();
-                section.resultArea.controlBox.show();
                 let itemCount = section.resultArea.display.getMatchedItemsCount();
                 let itemCountText = itemCount + "";
                 section.header.actor.hide();
@@ -950,8 +889,6 @@ Dash.prototype = {
                 let section = this._searchSections[i];
                 if (section.type == this._searchResultsSingleShownSection) {
                     // This will no longer be the only section shown.
-                    section.resultArea.display.displayPage(0);
-                    section.resultArea.controlBox.hide();
                     let itemCount = section.resultArea.display.getMatchedItemsCount();
                     if (itemCount != 0) {
                         section.header.actor.show();

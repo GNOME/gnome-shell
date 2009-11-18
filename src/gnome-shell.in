@@ -53,9 +53,7 @@ def start_xephyr():
     time.sleep(1)
 
     # Start some windows in our session.
-    subprocess.Popen(["xterm", "-geometry", "+30+30"])
-    subprocess.Popen(["xlogo", "-geometry", "-0-0"])
-    subprocess.Popen(["xeyes", "-geometry", "-0+30"])
+    subprocess.Popen(["gnome-terminal"])
 
     return xephyr;
 
@@ -212,12 +210,28 @@ parser.add_option("", "--geometry", metavar="GEOMETRY",
                   default="1024x768");
 parser.add_option("-w", "--wide", action="store_true",
                   help="Use widescreen (1280x800) with Xephyr")
+parser.add_option("", "--eval-file", metavar="EVAL_FILE",
+                  help="Evaluate the contents of the given JavaScript file")
 
 options, args = parser.parse_args()
 
 if args:
     parser.print_usage()
     sys.exit(1)
+
+if options.eval_file:
+    import dbus
+
+    f = open(options.eval_file)
+    contents = f.read()
+    f.close()
+
+    session = dbus.SessionBus()
+    shell = session.get_object('org.gnome.Shell', '/org/gnome/Shell')
+    shell = dbus.Interface(shell, 'org.gnome.Shell')
+    result = shell.Eval(contents)
+    print result
+    sys.exit(0)
 
 if options.debug_command:
     options.debug = True

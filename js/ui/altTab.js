@@ -724,7 +724,19 @@ ThumbnailList.prototype = {
     _init : function(windows) {
         SwitcherList.prototype._init.call(this);
 
+        let activeWorkspace = global.screen.get_active_workspace();
+
+        // We fake the value of "separatorAdded" when the app has no window
+        // on the current workspace, to avoid displaying a useless separator in
+        // that case.
+        let separatorAdded = windows.length == 0 || windows[0].get_workspace() != activeWorkspace;
+
         for (let i = 0; i < windows.length; i++) {
+            if (!separatorAdded && windows[i].get_workspace() != activeWorkspace) {
+              this.addSeparator();
+              separatorAdded = true;
+            }
+
             let mutterWindow = windows[i].get_compositor_private();
             let windowTexture = mutterWindow.get_texture ();
             let [width, height] = windowTexture.get_size();
@@ -739,11 +751,14 @@ ThumbnailList.prototype = {
                                              height: height * scale });
             box.add_actor(clone);
 
-            let name = new St.Label({ text: windows[i].get_title() });
-            // St.Label doesn't support text-align so use a Bin
-            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-            bin.add_actor(name);
-            box.add_actor(bin);
+            let title = windows[i].get_title();
+            if (title) {
+                let name = new St.Label({ text: title });
+                // St.Label doesn't support text-align so use a Bin
+                let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+                bin.add_actor(name);
+                box.add_actor(bin);
+            }
 
             this.addItem(box);
         }

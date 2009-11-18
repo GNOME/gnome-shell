@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Mainloop = imports.mainloop;
 
 const DocInfo = imports.misc.docInfo;
@@ -111,19 +112,19 @@ DocDisplayItem.prototype = {
 /* This class represents a display containing a collection of document items.
  * The documents are sorted by how recently they were last visited.
  */
-function DocDisplay() {
-    this._init();
+function DocDisplay(flags) {
+    this._init(flags);
 }
 
 DocDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function() {
-        GenericDisplay.GenericDisplay.prototype._init.call(this);
+    _init : function(flags) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
         // We keep a single timeout callback for updating last visited times
         // for all the items in the display. This avoids creating individual
         // callbacks for each item in the display. So proper time updates
-        // for individual items and item details depend on the item being 
+        // for individual items and item details depend on the item being
         // associated with one of the displays.
         this._updateTimeoutTargetTime = -1;
         this._updateTimeoutId = 0;
@@ -278,10 +279,8 @@ DashDocDisplayItem.prototype = {
         let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);
-        let name = new Clutter.Text({ font_name: "Sans 14px",
-                                      color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                      ellipsize: Pango.EllipsizeMode.END,
-                                      text: docInfo.name });
+        let name = new St.Label({ style_class: "dash-recent-docs-item",
+                                   text: docInfo.name });
         this.actor.append(name, Big.BoxPackFlags.EXPAND);
 
         let draggable = DND.makeDraggable(this.actor);

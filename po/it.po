@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-10 12:20+0200\n"
-"PO-Revision-Date: 2009-10-10 12:39+0200\n"
+"POT-Creation-Date: 2009-11-03 22:26+0100\n"
+"PO-Revision-Date: 2009-11-03 22:28+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -24,19 +24,23 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestione finestre e avvio applicazioni"
 
-#: ../js/ui/appDisplay.js:335
+#: ../js/ui/appDisplay.js:332
 msgid "Frequent"
 msgstr "Frequente"
 
-#: ../js/ui/appIcon.js:462
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "Trascinare qui per aggiungere ai preferiti"
+
+#: ../js/ui/appIcon.js:426
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appIcon.js:475
+#: ../js/ui/appIcon.js:430
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appIcon.js:476
+#: ../js/ui/appIcon.js:431
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -53,40 +57,40 @@ msgid "(see all)"
 msgstr "(vedi tutto)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
 msgid "APPLICATIONS"
 msgstr "Applicazioni"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
+#: ../js/ui/dash.js:745
 msgid "PLACES"
 msgstr "Risorse"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
 msgid "RECENT DOCUMENTS"
 msgstr "Documenti recenti"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
 msgid "SEARCH RESULTS"
 msgstr "Risultati ricerca"
 
-#: ../js/ui/dash.js:830
+#: ../js/ui/dash.js:792
 msgid "PREFERENCES"
 msgstr "Preferenze"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:272
+#: ../js/ui/panel.js:274
 msgid "Activities"
 msgstr "Attività"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:464
+#: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
 msgstr "%a %k.%M"
 
@@ -104,44 +108,44 @@ msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
 #. Translators: This is a time format.
-#: ../js/ui/widget.js:162
+#: ../js/ui/widget.js:163
 msgid "%H:%M"
 msgstr "%k.%M"
 
-#: ../js/ui/widget.js:316
+#: ../js/ui/widget.js:317
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../js/ui/widget.js:341
+#: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Documenti recenti"
 
-#: ../src/shell-global.c:812
+#: ../src/shell-global.c:821
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:827
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:830
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:833
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -225,18 +229,3 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Browse"
-#~ msgstr "Esplora"
-
-# (ndt) è da valutare se è troppo lunga, è in una casella di ricerca
-#~ msgid "Find apps or documents"
-#~ msgstr "Trova programmi e documenti"
-
-# (ndt) no idea...
-#~ msgid "Manager"
-#~ msgstr "Manager"
-
-# (ndt) no idea...
-#~ msgid "The user manager object this user is controlled by."
-#~ msgstr "L'oggetto user manager che controlla questo utente."

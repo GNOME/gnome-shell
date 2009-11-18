@@ -20,10 +20,11 @@ dist_jsui_DATA =		\
 	messageTray.js          \
 	overview.js		\
 	panel.js		\
-	places.js		\
+	placeDisplay.js		\
 	runDialog.js		\
 	shellDBus.js		\
 	sidebar.js		\
+	statusMenu.js		\
 	tweener.js		\
 	widget.js		\
 	widgetBox.js		\

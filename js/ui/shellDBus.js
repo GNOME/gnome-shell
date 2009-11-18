@@ -48,6 +48,9 @@ GnomeShell.prototype = {
         let success;
         try {
             returnValue = JSON.stringify(eval(code));
+            // A hack; DBus doesn't have null/undefined
+            if (returnValue == undefined)
+                returnValue = "";
             success = true;
         } catch (e) {
             returnValue = JSON.stringify(e);

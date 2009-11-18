@@ -79,6 +79,10 @@ GdkModifierType shell_global_get_modifier_keys (ShellGlobal *global);
 
 ClutterModifierType shell_get_event_state (ClutterEvent *event);
 
+void shell_popup_menu (GtkMenu *menu, int button, guint32 time,
+                       int menu_x, int menu_y);
+
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
