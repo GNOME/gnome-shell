@@ -50,11 +50,13 @@ AC_PREREQ([2.59])
 AC_INIT([clutter],
         [clutter_version],
         [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
-AC_CONFIG_MACRO_DIR([build/autotools])
-AC_CONFIG_SRCDIR([clutter/clutter.h])
-AM_CONFIG_HEADER([config.h])
 
-AM_INIT_AUTOMAKE([1.9])
+AC_CONFIG_SRCDIR([clutter/clutter.h])
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_MACRO_DIR([build/autotools])
+
+AM_INIT_AUTOMAKE([1.9.6 foreign])
 
 CLUTTER_MAJOR_VERSION=clutter_major_version
 CLUTTER_MINOR_VERSION=clutter_minor_version

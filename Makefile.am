@@ -1,5 +1,4 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
-include $(top_srcdir)/build/autotools/Makefile.am.changelog
 
 NULL =
 
@@ -61,3 +60,5 @@ MAINTAINERCLEANFILES = 	\
 	Makefile.in 	\
 	missing 	\
 	$(NULL)
+
+include $(top_srcdir)/build/autotools/Makefile.am.changelog

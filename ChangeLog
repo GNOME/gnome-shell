@@ -1,5 +1,0 @@
-2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
-
-	* *: Clutter moved from Subversion to Git. If you are reading
-	this then you should use `git log` to read the changes from
-	the commit messages.
