@@ -29,7 +29,7 @@
 
 #define __COGL_H_INSIDE__
 
-#include <cogl/cogl-defines-@COGL_DRIVER@.h>
+#include <cogl/cogl-defines.h>
 
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>

@@ -822,9 +822,8 @@ AC_CONFIG_FILES([
         clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/cogl/Makefile
-        clutter/cogl/cogl/cogl.h
-        clutter/cogl/cogl/cogl-defines-gl.h:clutter/cogl/cogl/driver/gl/cogl-defines.h.in
-        clutter/cogl/cogl/cogl-defines-gles.h:clutter/cogl/cogl/driver/gles/cogl-defines.h.in
+        clutter/cogl/cogl/driver/gl/cogl-defines.h
+        clutter/cogl/cogl/driver/gles/cogl-defines.h
         clutter/cogl/cogl/cogl.pc
         clutter/cogl/cogl/driver/Makefile
         clutter/cogl/cogl/driver/gl/Makefile

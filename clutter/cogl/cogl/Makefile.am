@@ -4,8 +4,8 @@ NULL =
 
 SUBDIRS = driver
 
-BUILT_SOURCES = cogl.h
-EXTRA_DIST = cogl.h.in cogl.pc.in
+BUILT_SOURCES =
+EXTRA_DIST =
 CLEANFILES =
 DISTCLEANFILES =
 
@@ -23,6 +23,7 @@ cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc: cogl.pc
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
+EXTRA_DIST += cogl.pc.in
 CLEANFILES += $(pc_files)
 
 INCLUDES = \
@@ -32,6 +33,12 @@ INCLUDES = \
 	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
 	-I$(top_builddir)/clutter/cogl          \
 	$(NULL)
+
+cogl-defines.h: $(srcdir)/driver/gl/cogl-defines.h $(srcdir)/driver/gles/cogl-defines.h
+	$(QUIET_GEN)cp -f $(srcdir)/driver/$(COGL_DRIVER)/cogl-defines.h $(@F)
+
+BUILT_SOURCES += cogl-defines.h
+DISTCLEANFILES += cogl-defines.h
 
 # public headers
 cogl_public_h = \
@@ -47,7 +54,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-types.h 			\
 	$(srcdir)/cogl-vertex-buffer.h 		\
-	$(top_builddir)/clutter/cogl/cogl/cogl.h \
+	$(srcdir)/cogl.h			\
 	$(NULL)
 
 # windowing system; all sources have to be distributed, but we'll
@@ -82,6 +89,7 @@ libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) \
 	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
 
 libclutter_cogl_la_SOURCES = 				\
+	$(BUILT_SOURCES)				\
 	$(srcdir)/winsys/cogl-winsys.h			\
 	$(srcdir)/winsys/cogl-@COGL_WINSYS@.c		\
 	$(srcdir)/cogl-handle.h 			\
@@ -127,18 +135,16 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-draw-buffer.c 			\
 	$(srcdir)/cogl-matrix-mesa.h 			\
 	$(srcdir)/cogl-matrix-mesa.c 			\
-	$(BUILT_SOURCES)				\
 	$(NULL)
 
 EXTRA_DIST += $(cogl_winsys_sources)
-
 EXTRA_DIST += stb_image.c
 
 # COGL installed headers
 cogl_headers = \
 	$(cogl_public_h) \
 	$(srcdir)/cogl-deprecated.h \
-	cogl-defines-$(COGL_DRIVER).h \
+	cogl-defines.h \
 	cogl-enum-types.h \
 	$(NULL)
 
