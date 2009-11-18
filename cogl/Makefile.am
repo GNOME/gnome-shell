@@ -106,6 +106,7 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-vertex-buffer-private.h 		\
 	$(srcdir)/cogl-vertex-buffer.c			\
 	$(srcdir)/cogl-matrix.c				\
+	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
 	$(srcdir)/cogl-matrix-stack.h			\
 	$(srcdir)/cogl-material.c			\
