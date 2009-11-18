@@ -113,6 +113,15 @@ typedef enum _CoglMaterialFlags
   COGL_MATERIAL_FLAG_DEFAULT_BLEND          = 1L<<5
 } CoglMaterialFlags;
 
+/* ARBfp1.0 program (Fog + ARB_texture_env_combine) */
+typedef struct _CoglMaterialProgram
+{
+  GString *source;
+  GLuint gl_program;
+
+  gboolean *sampled;
+} CoglMaterialProgram;
+
 struct _CoglMaterial
 {
   CoglHandleObject _parent;
@@ -144,6 +153,8 @@ struct _CoglMaterial
 #endif
   GLint blend_src_factor_rgb;
   GLint blend_dst_factor_rgb;
+
+  CoglMaterialProgram program;
 
   GList	       *layers;
   unsigned int  n_layers;

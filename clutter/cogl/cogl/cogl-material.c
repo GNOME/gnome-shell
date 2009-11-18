@@ -39,6 +39,7 @@
 #include "cogl-journal-private.h"
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <string.h>
 
 /*
@@ -56,6 +57,11 @@
 #define glBlendEquation ctx->drv.pf_glBlendEquation
 #define glBlendColor ctx->drv.pf_glBlendColor
 #define glBlendEquationSeparate ctx->drv.pf_glBlendEquationSeparate
+
+#define glProgramString ctx->drv.pf_glProgramString
+#define glBindProgram ctx->drv.pf_glBindProgram
+#define glDeleteProgram ctx->drv.pf_glDeletePrograms
+#define glGenPrograms ctx->drv.pf_glGenPrograms
 #endif
 
 /* This isn't defined in the GLES headers */
@@ -122,6 +128,9 @@ _cogl_material_init_default_material (void)
   material->blend_src_factor_rgb = GL_ONE;
   material->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND;
+
+  material->program.source = NULL;
+  material->program.gl_program = -1;
 
   material->layers = NULL;
   material->n_layers = 0;
@@ -1337,7 +1346,6 @@ _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
     _cogl_texture_ensure_mipmaps (layer->texture);
 }
 
-
 static void
 _cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
                                          int layer_num,
@@ -1403,6 +1411,328 @@ _cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
                                           wrap_mode_r);
 }
 
+static gboolean
+cogl_material_program_is_used (void)
+{
+  static gint use_arbfp = -1;
+
+  if (G_UNLIKELY (use_arbfp == -1))
+    {
+      const gchar *env_var = g_getenv ("COGL_PIPELINE");
+      use_arbfp = FALSE;
+
+      if (g_strcmp0 (env_var, "arbfp") == 0)
+        {
+          if (_cogl_features_available_private (COGL_FEATURE_PRIVATE_ARB_FP))
+            {
+              g_message ("Using an ARBfp pipeline");
+              use_arbfp = TRUE;
+            }
+          else
+            {
+              g_warning ("ARB_fragment_program is not available for your "
+                         "platform");
+            }
+        }
+    }
+
+  return use_arbfp;
+}
+
+static gboolean
+cogl_material_program_show_source (void)
+{
+  static gint show_source = -1;
+
+  if (G_UNLIKELY (show_source == -1))
+    {
+      const gchar *env_var = g_getenv ("COGL_SHOW_FP_SOURCE");
+
+      if (env_var != NULL && env_var[0] != '\0')
+        show_source = TRUE;
+      else
+        show_source = FALSE;
+    }
+
+  return show_source;
+}
+
+static const char *
+combine_func_to_arbfp_instruction (GLint op)
+{
+  switch (op)
+    {
+    case GL_ADD:
+      return "ADD_SAT";
+    case GL_MODULATE:
+      return "MUL";
+    case GL_REPLACE:
+      return "MOV";
+    case GL_SUBTRACT:
+      return "SUB_SAT";
+    case GL_ADD_SIGNED:
+    case GL_DOT3_RGB:
+    case GL_DOT3_RGBA:
+    case GL_INTERPOLATE:
+    default:
+      /* get away with it now */
+      g_message ("*** oops got %d", op);
+      return "MUL";
+    }
+}
+
+static const char *
+gl_target_to_arbfp_string (GLenum gl_target)
+{
+  if (gl_target == GL_TEXTURE_1D)
+    return "1D";
+  else if (gl_target == GL_TEXTURE_2D)
+    return "2D";
+  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    return "RECT";
+  else
+    return "2D";
+}
+
+static gboolean
+cogl_material_program_is_unit_sampled (CoglMaterialProgram *program,
+                                       unsigned int         sampler_nb)
+{
+  return program->sampled[sampler_nb];
+}
+
+static char *
+cogl_material_layer_get_arbfp_arg (CoglMaterialLayer          *layer,
+                                   CoglTextureUnit            *unit,
+                                   CoglBlendStringChannelMask  mask,
+                                   int                         arg,
+                                   gboolean                   *need_sampler,
+                                   unsigned int               *sampler_nb)
+{
+  char buffer[32];
+  unsigned int texture_unit;
+  GLint *src;
+
+  if (mask == COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
+    src = layer->texture_combine_alpha_src;
+  else
+    src = layer->texture_combine_rgb_src;
+
+  if (src[arg] == GL_PRIMARY_COLOR)
+    {
+      g_sprintf (buffer, "fragment.color.primary");
+      *need_sampler = FALSE;
+    }
+  else if (src[arg] == GL_PREVIOUS)
+    {
+      int unit_nb = unit->index - 1;
+
+      if (unit_nb >= 0)
+        {
+          *need_sampler = TRUE;
+          *sampler_nb = unit->index - 1;
+          g_sprintf (buffer, "texture[%d]", *sampler_nb);
+        }
+      else
+        {
+          g_sprintf (buffer, "fragment.color.primary");
+          *need_sampler = FALSE;
+        }
+    }
+  else if (src[arg] == GL_TEXTURE)
+    {
+      *need_sampler = TRUE;
+      *sampler_nb = unit->index;
+      g_sprintf (buffer, "texture[%d]", *sampler_nb);
+    }
+  else
+    {
+      texture_unit = src[arg] - GL_TEXTURE0;
+      if (texture_unit < _cogl_get_max_texture_image_units ())
+        {
+          *need_sampler = TRUE;
+          *sampler_nb = texture_unit;
+          g_sprintf (buffer, "texture[%d]", *sampler_nb);
+        }
+      else
+        {
+          /* Note that this should not happend */
+          g_warning ("Cannot figure out ARBfp1.0 argument defaulting to "
+                     "primary color");
+          g_sprintf (buffer, "fragment.color.primary");
+          *need_sampler = FALSE;
+        }
+    }
+
+  return g_strdup (buffer);
+}
+
+static void
+cogl_material_program_gen (CoglMaterialProgram        *program,
+                           CoglMaterialLayer          *layer,
+                           CoglTextureUnit            *unit,
+                           CoglBlendStringChannelMask  mask,
+                           GLenum                      gl_target)
+{
+  gboolean need_sampler;
+  unsigned int sampler_nb;
+  GLint func;
+  unsigned int nb_args, i;
+  char *arg[3];
+  const gchar *swizzle[2][3] =
+    {
+      /* RGB  ALPHA RGBA*/
+      { ".xyz", ".a", "" },
+      {   ""  , ".a", "" }
+    };
+
+  if (mask == COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
+    {
+      func = layer->texture_combine_alpha_func;
+    }
+  else
+    func = layer->texture_combine_rgb_func;
+
+  nb_args = get_n_args_for_combine_func (func);
+
+  for (i = 0; i < nb_args; i++)
+    {
+      arg[i] = cogl_material_layer_get_arbfp_arg (layer,
+                                                  unit,
+                                                  mask,
+                                                  i,
+                                                  &need_sampler,
+                                                  &sampler_nb);
+      if (need_sampler)
+        {
+          if (!cogl_material_program_is_unit_sampled (program, sampler_nb))
+            {
+              g_string_append_printf (program->source,
+                                      "TEMP texel%d;\n",
+                                      sampler_nb);
+              g_string_append_printf (program->source,
+                                      "TEX texel%d,fragment.texcoord[%d],"
+                                                  "%s,%s;\n",
+                                      sampler_nb,
+                                      unit->index,
+                                      arg[i],
+                                      gl_target_to_arbfp_string (gl_target));
+              program->sampled[sampler_nb] = TRUE;
+            }
+          arg[i] = g_strdup_printf ("texel%d", sampler_nb);
+        }
+    }
+
+  if (nb_args == 1)
+    {
+      g_string_append_printf (program->source,
+                              "%s output%s,%s%s;\n",
+                              combine_func_to_arbfp_instruction (func),
+                              swizzle[0][mask],
+                              arg[0], swizzle[1][mask]);
+    }
+  else if (nb_args == 2)
+    {
+      g_string_append_printf (program->source,
+                              "%s output%s,%s%s,%s%s;\n",
+                              combine_func_to_arbfp_instruction (func),
+                              swizzle[0][mask],
+                              arg[0], swizzle[1][mask],
+                              arg[1], swizzle[1][mask]);
+    }
+
+  for (i = 0; i < nb_args; i++)
+        g_free (arg[i]);
+
+}
+
+static void
+cogl_material_program_update (CoglMaterialProgram *program,
+                              CoglMaterialLayer   *layer,
+                              CoglTextureUnit     *unit,
+                              CoglLayerInfo       *gl_layer_info,
+                              GLenum               gl_target)
+{
+  CoglBlendStringChannelMask mask;
+
+  if (!(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY))
+    return;
+
+#ifndef DISABLE_MATERIAL_CACHE
+  if (!(gl_layer_info &&
+        gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&
+       (layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE)))
+#endif
+    {
+      if (program->source == NULL)
+        {
+          program->source = g_string_new ("!!ARBfp1.0\n");
+          g_string_append (program->source, "TEMP output;\n");
+          program->sampled = g_new0 (gboolean,
+                                     _cogl_get_max_texture_image_units ());
+        }
+
+      if (layer->texture_combine_rgb_func == layer->texture_combine_alpha_func)
+        {
+          mask = COGL_BLEND_STRING_CHANNEL_MASK_RGBA;
+
+          cogl_material_program_gen (program,
+                                           layer,
+                                           unit,
+                                           mask,
+                                           gl_target);
+        }
+      else
+        {
+          mask = COGL_BLEND_STRING_CHANNEL_MASK_RGB;
+          cogl_material_program_gen (program,
+                                           layer,
+                                           unit,
+                                           mask,
+                                           gl_target);
+          mask = COGL_BLEND_STRING_CHANNEL_MASK_ALPHA;
+          cogl_material_program_gen (program,
+                                           layer,
+                                           unit,
+                                           mask,
+                                           gl_target);
+        }
+    }
+}
+
+static void
+cogl_material_program_flush (CoglMaterialProgram *program)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (program->source)
+    {
+      g_string_append (program->source, "MOV result.color,output;\n");
+      g_string_append (program->source, "END\n");
+
+      if (cogl_material_program_show_source ())
+        g_message ("material program:\n%s", program->source->str);
+
+      GE (glGenPrograms (1, &program->gl_program));
+
+      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, program->gl_program));
+      GE (glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                           GL_PROGRAM_FORMAT_ASCII_ARB,
+                           program->source->len,
+                           program->source->str));
+      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
+
+      g_string_free (program->source, TRUE);
+      program->source = NULL;
+      g_free (program->sampled);
+      program->sampled = NULL;
+    }
+  else if (program->gl_program != -1)
+    {
+      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
+    }
+}
+
 /*
  * _cogl_material_flush_layers_gl_state:
  * @fallback_mask: is a bitmask of the material layers that need to be
@@ -1463,6 +1793,9 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
   int    i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (cogl_material_program_is_used ())
+    glDisable (GL_FRAGMENT_PROGRAM_ARB);
 
   for (tmp = material->layers, i = 0;
        tmp != NULL && i < _cogl_get_max_texture_image_units ();
@@ -1605,7 +1938,20 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
             }
         }
 
-      _cogl_material_layer_flush_gl_sampler_state (layer, unit, gl_layer_info);
+      if (cogl_material_program_is_used ())
+        {
+          cogl_material_program_update (&material->program,
+                                        layer,
+                                        unit,
+                                        gl_layer_info,
+                                        gl_target);
+        }
+      else
+        {
+          _cogl_material_layer_flush_gl_sampler_state (layer,
+                                                       unit,
+                                                       gl_layer_info);
+        }
 
       new_gl_layer_info.handle = layer_handle;
       new_gl_layer_info.flags = layer->flags;
@@ -1635,6 +1981,10 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
           gl_layer_info->disabled = TRUE;
         }
     }
+
+  if (cogl_material_program_is_used ())
+    cogl_material_program_flush (&material->program);
+
 }
 
 #ifndef HAVE_COGL_GLES
