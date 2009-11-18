@@ -30,6 +30,7 @@ libclutter_cogl_driver_la_SOURCES = \
 	cogl-program.c \
 	cogl-context-driver.h \
 	cogl-context-driver.c \
+	cogl-feature-functions.h \
 	$(NULL)
 
 EXTRA_DIST = cogl-defines.h.in
