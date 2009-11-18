@@ -93,6 +93,10 @@ can be overridden:
   ClutterBackend::get_display_size
   -- Use this function to retrieve the size of the display.
 
+  ClutterBackend::create_context
+  -- This function is used to create the drawing context to be used
+     by Clutter.
+
   ClutterBackend::ensure_context
   -- This function is used to ensure that the backend drawing context
      is made current for passed ClutterStage, using the backend-specific
@@ -116,27 +120,37 @@ Implementing the stage
 
 ClutterStage acts as a wrapper object relaying all the drawing operations
 to the actual implementation. The implementation of the stage can be any
-ClutterActor subclass, as long as it does not subclass ClutterStage and
-it implements the ClutterStageWindow interface.
+GObject subclass, as long as it implements the ClutterStageWindow interface.
 
 The ClutterStageWindow interface contains a set of virtual functions that
 should be overridden by backends that support a windowing system, like
 ::set_title(), ::set_fullscreen(), ::set_cursor_visible(), etc.
 
-The stage implementation actor must implement at least the ::realize and
-::unrealize ClutterActor virtual functions. Inside the ::realize function
-the stage implementation should:
+The stage implementation actor must implement:
+
+  • ClutterStageWindow::get_wrapper()
+  • ClutterStageWindow::realize() and ::unrealize()
+  • ClutterStageWindow::show() and ::hide()
+  • ClutterStageWindow::resize()
+  • ClutterStageWindow::get_geometry()
+
+The ::get_wrapper() implementation should return the pointer to the
+ClutterStage actor using the ClutterStageWindow implementation.
+
+In the ::realize virtual function the stage implementation should:
 
   - create a new native window handle
   - if the backend doesn't have a drawing context (either GL or GLES),
     create one and pass it to the backend
 
-In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
-the stage implementation.
+The return value should be TRUE if the stage implementation was successfully
+realized, and FALSE otherwise.
 
-Inside the ::unrealize function the stage implementation should:
+Inside the ::unrealize function the stage implementation should destroy
+the native window handle created in ::realize().
 
-  - destroy the native window handle
+The ::resize() virtual function implementation should cause an update
+of the COGL viewport.
 
 NOTES
 =====
@@ -144,10 +158,3 @@ NOTES
 If the platform is using X11 you should probably subclass ClutterBackendX11
 and ClutterStageX11, which will provide you with a ready to use code
 implementation for event handling and window management.
-
-Usual points of failure for backends are:
-
-- calling public API, like clutter_actor_paint(), or checking properties
-  on the stage implementation instead of the ClutterStage wrapper.
-
-$LastChangedDate$
