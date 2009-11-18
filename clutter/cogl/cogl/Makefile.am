@@ -34,8 +34,8 @@ INCLUDES = \
 	-I$(top_builddir)/clutter/cogl          \
 	$(NULL)
 
-cogl-defines.h: $(srcdir)/driver/gl/cogl-defines.h $(srcdir)/driver/gles/cogl-defines.h
-	$(QUIET_GEN)cp -f $(srcdir)/driver/$(COGL_DRIVER)/cogl-defines.h $(@F)
+cogl-defines.h: $(top_builddir)/clutter/cogl/cogl/driver/gl/cogl-defines.h $(top_builddir)/clutter/cogl/cogl/driver/gles/cogl-defines.h
+	$(QUIET_GEN)cp -f $(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/cogl-defines.h $(@F)
 
 BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
