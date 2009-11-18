@@ -1109,8 +1109,6 @@ load_state (const char *previous_save_file)
         {
           /* oh, just give up */
 
-          meta_warning (_("Failed to read saved session file %s: %s\n"),
-                    canonical_session_file, error->message);
           g_error_free (error);
           g_free (session_file);
           g_free (canonical_session_file);
