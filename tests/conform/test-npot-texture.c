@@ -165,6 +165,14 @@ make_texture (void)
 
   g_free (tex_data);
 
+  if (g_test_verbose ())
+    {
+      if (cogl_texture_is_sliced (tex))
+        g_print ("Texture is sliced\n");
+      else
+        g_print ("Texture is not sliced\n");
+    }
+
   /* The texture should be sliced unless NPOTs are supported */
   g_assert (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
             ? !cogl_texture_is_sliced (tex)
@@ -181,6 +189,14 @@ test_npot_texture (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *group;
   guint idle_source;
+
+  if (g_test_verbose ())
+    {
+      if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT))
+        g_print ("NPOT textures are supported\n");
+      else
+        g_print ("NPOT textures are not supported\n");
+    }
 
   state.frame = 0;
 
