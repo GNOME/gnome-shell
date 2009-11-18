@@ -230,11 +230,13 @@ void            _cogl_setup_viewport          (guint        width,
  * Replace the current viewport with the given values.
  *
  * Since: 0.8.2
+ *
+ * Deprecated: 1.2: Use cogl_set_viewport() instead
  */
 void            cogl_viewport                 (guint               width,
 					       guint               height) G_GNUC_DEPRECATED;
 
-#endif
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_set_viewport:
@@ -590,16 +592,14 @@ void            cogl_set_source_texture       (CoglHandle texture_handle);
  * The rectangle is intersected with the current clip region. To undo
  * the effect of this function, call cogl_clip_pop().
  *
- * Deprecated: It was a mistake to take float arguments and to abreviate
- *             "rectangle", so please use cogl_clip_push_window_rectangle
- *             instead.
+ * Deprecated: 1.2: Use cogl_clip_push_window_rectangle() instead
  */
 void            cogl_clip_push_window_rect    (float x_offset,
                                                float y_offset,
                                                float width,
                                                float height) G_GNUC_DEPRECATED;
 
-#endif
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_clip_push_window_rectangle:
@@ -642,18 +642,18 @@ void            cogl_clip_push_window_rectangle (int x_offset,
  * The rectangle is intersected with the current clip region. To undo
  * the effect of this function, call cogl_clip_pop().
  *
- * Deprecated: The x, y, width, height arguments are inconsistent with other
- *             APIs that specify rectangles in model space, and when used
- *             with a coordinate space that puts the origin at the center
- *             and y+ extending up, it's awkward to use. Please use
- *             cogl_clip_push_rectangle instead.
+ * Deprecated: 1.2: The x, y, width, height arguments are inconsistent
+ *   with other API that specify rectangles in model space, and when used
+ *   with a coordinate space that puts the origin at the center and y+
+ *   extending up, it's awkward to use. Please use cogl_clip_push_rectangle()
+ *   instead
  */
 void            cogl_clip_push                (float        x_offset,
                                                float        y_offset,
                                                float        width,
                                                float        height) G_GNUC_DEPRECATED;
 
-#endif
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_clip_push_rectangle:
@@ -720,7 +720,7 @@ void            cogl_clip_pop               (void);
  * maybe be neccessary to call if you are using raw GL calls with
  * clipping.
  *
- * Deprecated: It was a mistake that this was ever made public
+ * Deprecated: 1.2: Calling this function has no effect
  *
  * Since: 1.0
  */
@@ -735,11 +735,11 @@ void            cogl_clip_ensure              (void) G_GNUC_DEPRECATED;
  * must be matched by a call to cogl_clip_pop() before calling
  * cogl_clip_stack_restore().
  *
- * Deprecated: This was originally added to allow us to save the clip
- *             stack when switching to an offscreen draw buffer, but
- *             it's not necessary anymore given that draw buffers now
- *             own separate clip stacks which will be automatically
- *             switched between when a new buffer is set.
+ * Deprecated: 1.2: This was originally added to allow us to save the
+ *   clip stack when switching to an offscreen draw buffer, but it's
+ *   not necessary anymore given that draw buffers now own separate
+ *   clip stacks which will be automatically switched between when a
+ *   new buffer is set. Calling this function has no effect
  *
  * Since: 0.8.2
  */
@@ -751,17 +751,17 @@ void            cogl_clip_stack_save          (void) G_GNUC_DEPRECATED;
  * Restore the state of the clipping stack that was previously saved
  * by cogl_clip_stack_save().
  *
- * Deprecated: This was originally added to allow us to restore the clip
- *             stack when switching back from an offscreen draw buffer, but
- *             it's not necessary anymore given that draw buffers now own
- *             separate clip stacks which will be automatically switched
- *             between when a new buffer is set.
+ * Deprecated: 1.2: This was originally added to allow us to restore
+ *   the clip stack when switching back from an offscreen draw buffer,
+ *   but it's not necessary anymore given that draw buffers now own
+ *   separate clip stacks which will be automatically switched between
+ *   when a new buffer is set. Calling this function has no effect
  *
  * Since: 0.8.2
  */
 void            cogl_clip_stack_restore       (void) G_GNUC_DEPRECATED;
 
-#endif
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_set_draw_buffer:
