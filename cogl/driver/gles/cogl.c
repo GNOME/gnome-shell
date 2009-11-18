@@ -72,6 +72,7 @@ _cogl_check_driver_valid (GError **error)
 #define COGL_FEATURE_FUNCTION(ret, name, args)                          \
   { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, drv.pf_ ## name) },
 #define COGL_FEATURE_END()                      \
+  { NULL, 0 },                                  \
   };
 #include "cogl-feature-functions.h"
 
