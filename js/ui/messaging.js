@@ -46,15 +46,13 @@ const ConnectionIface = {
     ]
 };
 
-function Connection(path, name) {
-    this._init(path, name);
+function Connection(path) {
+    this._init(path);
 };
 
 Connection.prototype = {
-    _init: function(path, name) {
-        if (!name)
-            name = nameify(path);
-        DBus.session.proxifyObject(this, name, path);
+    _init: function(path) {
+        DBus.session.proxifyObject(this, nameify(path), path);
     }
 };
 
@@ -70,15 +68,13 @@ const ConnectionAvatarsIface = {
     ]
 };
 
-function ConnectionAvatars(path, name) {
-    this._init(path, name);
+function ConnectionAvatars(path) {
+    this._init(path);
 };
 
 ConnectionAvatars.prototype = {
-    _init: function(path, name) {
-        if (!name)
-            name = nameify(path);
-        DBus.session.proxifyObject(this, name, path);
+    _init: function(path) {
+        DBus.session.proxifyObject(this, nameify(path), path);
     }
 };
 
@@ -217,7 +213,7 @@ Messaging.prototype = {
             let account = new Account(ACCOUNTMANAGER, accounts[i]);
             account.GetRemote('Connection', Lang.bind(this,
                 function (conn_path, excp) {
-                    if (!conn_path)
+                    if (!conn_path || conn_path == '/')
                         return;
 
                     let conn = new Connection(conn_path);
@@ -261,12 +257,7 @@ Messaging.prototype = {
     ObserveChannels: function(account, conn_path, channels,
                               dispatch_operation, requests_satisfied,
                               observer_info) {
-        let conn = this._conns[conn_path];
-        if (!conn) {
-            conn = new Connection(conn_path);
-            conn.connect('StatusChanged', Lang.bind(this, this._connectionStatusChanged));
-        }
-
+        let conn = new Connection(conn_path);
         let conn_name = nameify(conn_path);
         for (let i = 0; i < channels.length; i++) {
             let channelPath = channels[i][0];
@@ -279,12 +270,6 @@ Messaging.prototype = {
         return [true];
     },
 
-    _connectionStatusChanged: function(connection, status) {
-        if (status == Connection_Status.Disconnected) {
-            delete this._conns[connection.getPath()];
-        }
-    },
-
     _addChannel: function(conn, channelPath, targetHandle, targetId) {
         this._channels[channelPath] = new Source(conn, channelPath, targetHandle, targetId);
     }
@@ -293,8 +278,8 @@ Messaging.prototype = {
 DBus.conformExport(Messaging.prototype, ClientIface);
 DBus.conformExport(Messaging.prototype, ClientObserverIface);
 
-function Source(conn, channelPath, channel_props) {
-    this._init(conn, channelPath, channel_props);
+function Source(conn, channelPath, channel_props, targetId) {
+    this._init(conn, channelPath, channel_props, targetId);
 }
 
 Source.prototype = {
