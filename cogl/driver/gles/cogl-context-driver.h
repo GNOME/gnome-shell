@@ -27,10 +27,14 @@
 #include "cogl.h"
 #include "cogl-gles2-wrapper.h"
 
+#ifndef APIENTRY
+#define APIENTRY
+#endif
+
 #define COGL_FEATURE_BEGIN(a, b, c, d, e, f)
 
 #define COGL_FEATURE_FUNCTION(ret, name, args) \
-  ret (* pf_ ## name) args;
+  ret (APIENTRY * pf_ ## name) args;
 
 #define COGL_FEATURE_END()
 
