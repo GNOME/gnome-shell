@@ -79,7 +79,7 @@ get_size (Display *d, Drawable draw,
     *yp = y;
   if (widthp)
     *widthp = width;
-  if (*heightp)
+  if (heightp)
     *heightp = height;
 }
 
