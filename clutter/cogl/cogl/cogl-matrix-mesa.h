@@ -42,7 +42,7 @@
  */
 
 
-/**
+/*
  * \file math/m_matrix.h
  * Defines basic structures for matrix-handling.
  */
@@ -54,7 +54,7 @@
 
 #include <glib.h>
 
-/**
+/*
  * \name Symbolic names to some of the entries in the matrix
  *
  * These are handy for the viewport mapping, which is expressed as a matrix.
@@ -69,7 +69,7 @@
 /*@}*/
 
 
-/**
+/*
  * Different kinds of 4x4 transformation matrices.
  * We use these to select specific optimized vertex transformation routines.
  */
@@ -85,7 +85,7 @@ enum CoglMatrixType {
 
 
 #if 0
-/**
+/*
  * Matrix type to represent 4x4 transformation matrices.
  */
 typedef struct {
@@ -162,7 +162,7 @@ gboolean
 _math_matrix_is_dirty (const CoglMatrix *matrix);
 
 
-/**
+/*
  * \name Related functions that don't actually operate on CoglMatrix structs
  */
 /*@{*/
@@ -205,7 +205,7 @@ do {								\
 } while (0)
 
 
-/**
+/*
  * Transform a direction by a matrix.
  */
 #define TRANSFORM_DIRECTION( TO, DIR, MAT )			\
