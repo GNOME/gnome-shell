@@ -772,7 +772,7 @@ cogl_material_set_layer (CoglHandle material_handle,
 
   material = _cogl_material_pointer_from_handle (material_handle);
 
-  layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
   if (texture_handle == layer->texture)
     return;
