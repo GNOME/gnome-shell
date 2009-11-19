@@ -444,29 +444,6 @@ sigterm_handler (int signum)
   exit (meta_exit_code);
 }
 
-static guint sigchld_signal_id = 0;
-
-static void
-sigchld_handler (int signum, siginfo_t *info, void *context)
-{
-  int stat;
-
-  if (info->si_code == CLD_EXITED)
-    {
-      g_signal_emit (sigchld_nexus, sigchld_signal_id, 0,
-                     info->si_status,
-                     GINT_TO_POINTER (info->si_pid));
-    }
-
-  g_signal_handlers_disconnect_matched (sigchld_nexus,
-                                        G_SIGNAL_MATCH_DATA,
-                                        sigchld_signal_id,
-                                        0, NULL, NULL,
-                                        GINT_TO_POINTER (info->si_pid));
-
-  waitpid (info->si_pid, &stat, WNOHANG);
-}
-    
 /**
  * This is where the story begins. It parses commandline options and
  * environment variables, sets up the screen, hands control off to
@@ -515,24 +492,6 @@ main (int argc, char **argv)
   act.sa_handler = &sigterm_handler;
   if (sigaction (SIGTERM, &act, NULL) < 0)
     g_printerr ("Failed to register SIGTERM handler: %s\n",
-		g_strerror (errno));
-
-  sigchld_nexus = g_object_new (META_TYPE_NEXUS, NULL);
-
-  sigchld_signal_id =
-    g_signal_new ("sigchld", META_TYPE_NEXUS,
-                  G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL,
-                  g_cclosure_marshal_VOID__UINT_POINTER,
-                  G_TYPE_NONE,
-                  2,
-                  G_TYPE_UINT, G_TYPE_POINTER);
-  
-  act.sa_flags = SA_NOCLDSTOP | SA_SIGINFO;
-  act.sa_handler = SIG_DFL;
-  act.sa_sigaction = &sigchld_handler;
-  if (sigaction (SIGCHLD, &act, NULL) < 0)
-    g_printerr ("Failed to register SIGCHLD handler: %s\n",
 		g_strerror (errno));
 
   if (g_getenv ("MUTTER_VERBOSE"))

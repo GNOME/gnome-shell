@@ -55,27 +55,16 @@ delete_ping_reply_func (MetaDisplay *display,
   /* we do nothing */
 }
 
-static gboolean
-delete_window_callback (gpointer w_p)
-{
-  meta_window_kill ((MetaWindow*) w_p);
-
-  return FALSE; /* don't do it again */
-}
-
 static void
-sigchld_handler (MetaNexus *nexus, guint arg1, gpointer arg2, gpointer user_data)
+dialog_exited (GPid pid, int status, gpointer user_data)
 {
   MetaWindow *ours = (MetaWindow*) user_data;
 
-  if (GPOINTER_TO_INT (arg2) == ours->dialog_pid)
-    {
-      if (arg1 == 1 /* pressed "force quit" */)
-        g_idle_add_full (G_PRIORITY_DEFAULT,
-                         delete_window_callback, user_data, NULL);
+  ours->dialog_pid = -1;
 
-      ours->dialog_pid = -1; /* forget it anyway */
-    }
+  /* exit status of 1 means the user pressed "Force Quit" */
+  if (WIFEXITED (status) && WEXITSTATUS (status) == 1)
+    meta_window_kill (ours);
 }
 
 static void
@@ -119,11 +108,7 @@ delete_ping_timeout_func (MetaDisplay *display,
   g_free (window_content);
 
   window->dialog_pid = dialog_pid;
-
-  g_signal_connect (sigchld_nexus, "sigchld",
-                    G_CALLBACK (sigchld_handler),
-                    window);
-
+  g_child_watch_add (dialog_pid, dialog_exited, window);
 }
 
 void

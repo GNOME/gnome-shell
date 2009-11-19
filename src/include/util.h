@@ -131,36 +131,6 @@ GPid meta_show_dialog (const char *type,
 
 #endif /* !WITH_VERBOSE_MODE */
 
-#include <glib-object.h>
-
-#define META_TYPE_NEXUS            (meta_nexus_get_type ())
-#define META_NEXUS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_NEXUS, MetaNexus))
-#define META_NEXUS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_NEXUS, MetaNexusClass))
-#define META_IS_NEXUS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_NEXUS))
-#define META_IS_NEXUS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_NEXUS))
-#define META_NEXUS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_NEXUS, MetaNexusClass))
-
-typedef struct _MetaNexus
-{
-  GObject parent_instance;
-} MetaNexus;
-
-typedef struct _MetaNexusClass
-{
-  GObjectClass parent_class;
-} MetaNexusClass;
-
-GType meta_nexus_get_type (void) G_GNUC_CONST;
-MetaNexus *meta_nexus_new ();
-
-/**
- * An object which exists purely to attach signals to; this is to receive
- * signals when a child process exits.  The signal is "sigchld" with no detail.
- *
- * \bug Eventually we should have a specialised type for objects like these.
- */
-extern MetaNexus *sigchld_nexus;
-
 /**
  * MetaLaterType:
  * @META_LATER_RESIZE: call in a resize processing phase that is done

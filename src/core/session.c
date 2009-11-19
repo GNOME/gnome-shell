@@ -29,6 +29,7 @@
 #include <X11/Xatom.h>
 
 #include <time.h>
+#include <sys/wait.h>
 
 #ifndef HAVE_SM
 void
@@ -1749,11 +1750,11 @@ finish_interact (gboolean shutdown)
 }
 
 static void
-sigchld_handler (MetaNexus *nexus, guint arg1, gpointer arg2, gpointer user_data)
+dialog_closed (GPid pid, int status, gpointer user_data)
 {
   gboolean shutdown = GPOINTER_TO_INT (user_data);
 
-  if (arg1 == 0) /* pressed "OK" */
+  if (WIFEXITED (status) && WEXITSTATUS (status) == 0) /* pressed "OK" */
     {
       finish_interact (shutdown);
     }
@@ -1767,6 +1768,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   GSList *lame_details = NULL;
   GSList *tmp;
   GSList *columns = NULL;
+  GPid pid;
   
   windows = meta_display_list_windows (meta_get_display (), META_LIST_DEFAULT);
   tmp = windows;
@@ -1814,23 +1816,20 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
     }
   g_slist_free (lame);
 
-  meta_show_dialog("--list",
-                   _("These windows do not support &quot;save current setup&quot; "
-                     "and will have to be restarted manually next time "
-                     "you log in."),
-                   "240",
-                   meta_screen_get_screen_number (meta_get_display()->active_screen),
-                   NULL, NULL,
-                   None,
-                   columns,
-                   lame_details);
+  pid = meta_show_dialog("--list",
+                         _("These windows do not support &quot;save current setup&quot; "
+                           "and will have to be restarted manually next time "
+                           "you log in."),
+                         "240",
+                         meta_screen_get_screen_number (meta_get_display()->active_screen),
+                         NULL, NULL,
+                         None,
+                         columns,
+                         lame_details);
 
   g_slist_free (lame_details);
 
-  g_signal_connect (sigchld_nexus, "sigchld",
-                    G_CALLBACK (sigchld_handler),
-                    GINT_TO_POINTER (shutdown));
-
+  g_child_watch_add (pid, dialog_closed, GINT_TO_POINTER (shutdown));
 }
 
 #endif /* HAVE_SM */
