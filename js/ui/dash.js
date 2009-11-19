@@ -390,14 +390,6 @@ SectionHeader.prototype = {
         this._innerBox = new St.BoxLayout({ style_class: "section-header-inner" });
         this.actor.set_child(this._innerBox);
 
-        this._backgroundGradient = null;
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-        this.actor.connect('notify::allocation', Lang.bind(this, function (actor) {
-            if (!this._backgroundGradient)
-                return;
-            this._onStyleChanged();
-        }));
-
         this.backLink = new BackLink();
         this._innerBox.add(this.backLink.actor);
         this.backLink.actor.hide();
@@ -420,33 +412,6 @@ SectionHeader.prototype = {
             this.moreLink = new MoreLink();
             this._innerBox.add(this.moreLink.actor, { x_align: St.Align.END });
         }
-    },
-
-    _onStyleChanged: function () {
-        if (this._backgroundGradient) {
-            this._backgroundGradient.destroy();
-        }
-        // Manually implement the gradient
-        let themeNode = this.actor.get_theme_node();
-        let gradientTopColor = new Clutter.Color();
-        if (!themeNode.get_color("-shell-gradient-top", false, gradientTopColor))
-            return;
-        let gradientBottomColor = new Clutter.Color();
-        if (!themeNode.get_color("-shell-gradient-bottom", false, gradientBottomColor))
-            return;
-        this._backgroundGradient = Shell.create_vertical_gradient(gradientTopColor,
-                                                                   gradientBottomColor);
-        let box = this.actor.allocation;
-        let contentBox = new Clutter.ActorBox();
-        themeNode.get_content_box(box, contentBox);
-        let width = contentBox.x2 - contentBox.x1;
-        let height = contentBox.y2 - contentBox.y1;
-        this._backgroundGradient.set_size(width, height);
-        // This will set a fixed position, which puts us outside of the normal box layout
-        this._backgroundGradient.set_position(0, 0);
-
-        this._innerBox.add_actor(this._backgroundGradient);
-        this._backgroundGradient.lower_bottom();
     },
 
     setTitle : function(title) {

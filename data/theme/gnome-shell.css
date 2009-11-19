@@ -141,8 +141,9 @@ StTooltip {
 
 .section-header {
     border: 1px solid #262626;
-    -shell-gradient-top: #161616;
-    -shell-gradient-bottom: #000000;
+    background-gradient-direction: vertical;
+    background-gradient-start: #161616;
+    background-gradient-end: #000000;
     font-weight: bold;
     font-size: 12px;
 }
