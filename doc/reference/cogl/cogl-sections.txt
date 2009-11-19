@@ -45,6 +45,7 @@ cogl_set_modelview_matrix
 cogl_get_projection_matrix
 cogl_set_projection_matrix
 cogl_viewport
+cogl_set_viewport
 cogl_get_viewport
 
 <SUBSECTION>
@@ -78,9 +79,11 @@ cogl_end_gl
 
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
+COGL_TYPE_BLEND_STRING_ERROR
 COGL_TYPE_BUFFER_BIT
 COGL_TYPE_BUFFER_TARGET
 COGL_TYPE_DEBUG_FLAGS
+COGL_TYPE_DRIVER_ERROR
 COGL_TYPE_FEATURE_FLAGS
 COGL_TYPE_FIXED
 COGL_TYPE_FOG_MODE
@@ -90,15 +93,19 @@ COGL_TYPE_MATERIAL_ALPHA_FUNC
 COGL_TYPE_MATERIAL_FILTER
 COGL_TYPE_MATERIAL_LAYER_TYPE
 COGL_TYPE_PIXEL_FORMAT
+COGL_TYPE_READ_PIXELS_FLAGS
 COGL_TYPE_SHADER_TYPE
 COGL_TYPE_TEXTURE_FLAGS
 COGL_TYPE_VERTICES_MODE
 
 <SUBSECTION Private>
+COGL_DRIVER_ERROR
+CoglDriverError
 cogl_attribute_type_get_type
 cogl_buffer_bit_get_type
 cogl_buffer_target_get_type
 cogl_debug_flags_get_type
+cogl_driver_error_get_type
 cogl_feature_flags_get_type
 cogl_fixed_get_type
 cogl_fog_mode_get_type
@@ -108,23 +115,22 @@ cogl_material_alpha_func_get_type
 cogl_material_filter_get_type
 cogl_material_layer_type_get_type
 cogl_pixel_format_get_type
+cogl_read_pixels_flags_get_type
 cogl_shader_type_get_type
 cogl_texture_flags_get_type
 cogl_vertices_mode_get_type
-COGL_NOTE
-CoglDebugFlags
-cogl_debug_flags
+cogl_flush_gl_state
 </SECTION>
 
 <SECTION>
 <FILE>cogl-clipping</FILE>
 <TITLE>Clipping</TITLE>
-CoglClipStackState
 cogl_clip_push_rectangle
 cogl_clip_push_window_rectangle
 cogl_clip_push_from_path
 cogl_clip_push_from_path_preserve
 cogl_clip_pop
+
 <SUBSECTION>
 cogl_clip_push
 cogl_clip_push_window_rect
@@ -166,7 +172,6 @@ cogl_path_fill
 cogl_path_fill_preserve
 cogl_path_stroke
 cogl_path_stroke_preserve
-cogl_color
 </SECTION>
 
 <SECTION>
@@ -174,11 +179,13 @@ cogl_color
 <TITLE>Bitmaps</TITLE>
 cogl_bitmap_new_from_file
 cogl_bitmap_get_size_from_file
+cogl_is_bitmap
 </SECTION>
 
 <SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>Textures</TITLE>
+COGL_TEXTURE_MAX_WASTE
 CoglTextureVertex
 CoglTextureFlags
 cogl_texture_new_with_size
@@ -358,6 +365,10 @@ cogl_color_get_red_float
 cogl_color_get_green_float
 cogl_color_get_blue_float
 cogl_color_get_alpha_float
+
+<SUBSECTION>
+cogl_color_premultiply
+cogl_color_equal
 </SECTION>
 
 <SECTION>
@@ -372,6 +383,7 @@ cogl_vertex_buffer_delete
 cogl_vertex_buffer_submit
 cogl_vertex_buffer_disable
 cogl_vertex_buffer_enable
+CoglVerticesMode
 cogl_vertex_buffer_draw
 cogl_is_vertex_buffer
 
@@ -380,6 +392,9 @@ CoglIndicesType
 cogl_vertex_buffer_indices_new
 cogl_vertex_buffer_draw_elements
 cogl_vertex_buffer_indices_get_for_quads
+
+<SUBSECTION Private>
+cogl_vertex_buffer_indices_get_type
 </SECTION>
 
 <SECTION>
@@ -397,6 +412,7 @@ cogl_matrix_translate
 cogl_matrix_scale
 cogl_matrix_init_from_array
 cogl_matrix_get_array
+cogl_matrix_get_inverse
 </SECTION>
 
 <SECTION>
@@ -440,6 +456,9 @@ cogl_material_layer_get_type
 cogl_material_layer_get_texture
 cogl_material_layer_get_min_filter
 cogl_material_layer_get_mag_filter
+<SUBSECTION Private>
+cogl_blend_string_error_get_type
+cogl_blend_string_error_quark
 </SECTION>
 
 <SECTION>
