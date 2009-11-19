@@ -3846,7 +3846,7 @@ clutter_text_set_line_alignment (ClutterText    *self,
  *
  * Return value: a #PangoAlignment
  *
- * Since 1.0
+ * Since: 1.0
  */
 PangoAlignment
 clutter_text_get_line_alignment (ClutterText *self)

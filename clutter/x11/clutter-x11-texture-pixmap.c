@@ -957,7 +957,7 @@ clutter_x11_texture_pixmap_new (void)
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X Pixmap
  *
- * Since 0.8
+ * Since: 0.8
  **/
 ClutterActor *
 clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
@@ -977,7 +977,7 @@ clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X window.
  *
- * Since 0.8
+ * Since: 0.8
  **/
 ClutterActor *
 clutter_x11_texture_pixmap_new_with_window (Window window)

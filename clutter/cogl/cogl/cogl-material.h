@@ -106,7 +106,7 @@ CoglHandle cogl_material_new (void);
  *
  * Returns: the @handle.
  *
- * Since 1.0
+ * Since: 1.0
  */
 CoglHandle cogl_material_ref (CoglHandle handle);
 
@@ -116,7 +116,7 @@ CoglHandle cogl_material_ref (CoglHandle handle);
  *
  * Decrement the reference count for a cogl material.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_unref (CoglHandle handle);
 
@@ -145,7 +145,7 @@ gboolean cogl_is_material (CoglHandle handle);
  *
  * The default value is (1.0, 1.0, 1.0, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_color (CoglHandle material,
                               const CoglColor *color);
@@ -162,7 +162,7 @@ void cogl_material_set_color (CoglHandle material,
  *
  * The default value is (0xff, 0xff, 0xff, 0xff)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_color4ub (CoglHandle material,
 			         guint8     red,
@@ -182,7 +182,7 @@ void cogl_material_set_color4ub (CoglHandle material,
  *
  * The default value is (1.0, 1.0, 1.0, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_color4f (CoglHandle material,
                                 float      red,
@@ -197,7 +197,7 @@ void cogl_material_set_color4f (CoglHandle material,
  *
  * This retrieves the current material color.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_get_color (CoglHandle  material,
                               CoglColor  *color);
@@ -215,7 +215,7 @@ void cogl_material_get_color (CoglHandle  material,
  *
  * The default value is (0.2, 0.2, 0.2, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_ambient (CoglHandle       material,
 				const CoglColor *ambient);
@@ -227,7 +227,7 @@ void cogl_material_set_ambient (CoglHandle       material,
  *
  * This retrieves the materials current ambient color.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_get_ambient (CoglHandle  material,
                                 CoglColor  *ambient);
@@ -244,7 +244,7 @@ void cogl_material_get_ambient (CoglHandle  material,
  *
  * The default value is (0.8, 0.8, 0.8, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_diffuse (CoglHandle       material,
 				const CoglColor *diffuse);
@@ -256,7 +256,7 @@ void cogl_material_set_diffuse (CoglHandle       material,
  *
  * This retrieves the materials current diffuse color.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_get_diffuse (CoglHandle  material,
                                 CoglColor  *diffuse);
@@ -272,7 +272,7 @@ void cogl_material_get_diffuse (CoglHandle  material,
  * The default ambient color is (0.2, 0.2, 0.2, 1.0)
  * The default diffuse color is (0.8, 0.8, 0.8, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_ambient_and_diffuse (CoglHandle       material,
 					    const CoglColor *color);
@@ -289,7 +289,7 @@ void cogl_material_set_ambient_and_diffuse (CoglHandle       material,
  *
  * The default value is (0.0, 0.0, 0.0, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_specular (CoglHandle       material,
 				 const CoglColor *specular);
@@ -301,7 +301,7 @@ void cogl_material_set_specular (CoglHandle       material,
  *
  * This retrieves the materials current specular color.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_get_specular (CoglHandle  material,
                                  CoglColor  *specular);
@@ -317,7 +317,7 @@ void cogl_material_get_specular (CoglHandle  material,
  *
  * The default value is 0.0
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_shininess (CoglHandle material,
 				  float      shininess);
@@ -329,7 +329,7 @@ void cogl_material_set_shininess (CoglHandle material,
  *
  * Return value: The materials current shininess value
  *
- * Since 1.0
+ * Since: 1.0
  */
 float cogl_material_get_shininess (CoglHandle material);
 
@@ -344,7 +344,7 @@ float cogl_material_get_shininess (CoglHandle material);
  *
  * The default value is (0.0, 0.0, 0.0, 1.0)
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_emission (CoglHandle       material,
 				 const CoglColor *emission);
@@ -356,7 +356,7 @@ void cogl_material_set_emission (CoglHandle       material,
  *
  * This retrieves the materials current emission color.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_get_emission (CoglHandle material,
                                  CoglColor *emission);
@@ -416,7 +416,7 @@ typedef enum _CoglMaterialAlphaFunc
  *
  * The default is COGL_MATERIAL_ALPHA_FUNC_ALWAYS
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_alpha_test_function (CoglHandle            material,
 					    CoglMaterialAlphaFunc alpha_func,
@@ -531,7 +531,7 @@ void cogl_material_set_blend_constant (CoglHandle material,
  * <note>In the future, we may define other types of material layers, such
  * as purely GLSL based layers.</note>
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_layer (CoglHandle material,
 			      int        layer_index,
@@ -651,7 +651,7 @@ cogl_material_set_layer_combine (CoglHandle   material,
  * When you are using the 'CONSTANT' color source in a layer combine
  * description then you can use this function to define its value.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_material_set_layer_combine_constant (CoglHandle  material,
                                                int         layer_index,

@@ -84,7 +84,7 @@ struct _ClutterBehaviourPath
  *
  * The #ClutterBehaviourPathClass struct contains only private data
  *
- * Since 0.2
+ * Since: 0.2
  */
 struct _ClutterBehaviourPathClass
 {

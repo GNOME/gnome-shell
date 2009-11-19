@@ -347,7 +347,7 @@ void            cogl_texture_unref            (CoglHandle          handle);
  * to be used for the first texture layer of the material. To draw the entire
  * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_rectangle_with_texture_coords (float  x1,
                                          float  y1,
@@ -383,7 +383,7 @@ void cogl_rectangle_with_texture_coords (float  x1,
  * layers in the current source material then default texture coordinates
  * (0.0, 0.0, 1.0, 1.0) are generated.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_rectangle_with_multitexture_coords (float        x1,
                                               float        y1,
@@ -454,7 +454,7 @@ void cogl_rectangles (const float *verts,
  * if either the texture is not sliced or the backend is not OpenGL ES and the
  * minifying and magnifying functions are both set to CGL_NEAREST.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void cogl_polygon (CoglTextureVertex  *vertices,
                    guint               n_vertices,
