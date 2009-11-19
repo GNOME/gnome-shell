@@ -68,7 +68,7 @@ CoglHandle      cogl_texture_new_with_size    (guint            width,
  * @filename: the file to load
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- *    texture. If COGL_PIXEL_FORMAT_ANY is given then a premultiplied
+ *    texture. If %COGL_PIXEL_FORMAT_ANY is given then a premultiplied
  *    format similar to the format of the source data will be used. The
  *    default blending equations of Cogl expect premultiplied color data;
  *    the main use of passing a non-premultiplied format here is if you
@@ -173,7 +173,7 @@ CoglHandle      cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
  *
  * Gets whether the given handle references an existing texture object.
  *
- * Returns: %TRUE if the handle references a texture,
+ * Return value: %TRUE if the handle references a texture, and
  *   %FALSE otherwise
  */
 gboolean        cogl_is_texture               (CoglHandle          handle);
@@ -182,9 +182,9 @@ gboolean        cogl_is_texture               (CoglHandle          handle);
  * cogl_texture_get_width:
  * @handle: a #CoglHandle for a texture.
  *
- * Query the width of a cogl texture.
+ * Queries the width of a cogl texture.
  *
- * Returns: the width of the GPU side texture in pixels:
+ * Return value: the width of the GPU side texture in pixels
  */
 guint           cogl_texture_get_width        (CoglHandle          handle);
 
@@ -192,9 +192,9 @@ guint           cogl_texture_get_width        (CoglHandle          handle);
  * cogl_texture_get_height:
  * @handle: a #CoglHandle for a texture.
  *
- * Query the height of a cogl texture.
+ * Queries the height of a cogl texture.
  *
- * Returns: the height of the GPU side texture in pixels:
+ * Return value: the height of the GPU side texture in pixels
  */
 guint           cogl_texture_get_height       (CoglHandle          handle);
 
@@ -202,9 +202,9 @@ guint           cogl_texture_get_height       (CoglHandle          handle);
  * cogl_texture_get_format:
  * @handle: a #CoglHandle for a texture.
  *
- * Query the #CoglPixelFormat of a cogl texture.
+ * Queries the #CoglPixelFormat of a cogl texture.
  *
- * Returns: the #CoglPixelFormat of the GPU side texture.
+ * Return value: the #CoglPixelFormat of the GPU side texture
  */
 CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
 
@@ -213,9 +213,9 @@ CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
  * cogl_texture_get_rowstride:
  * @handle: a #CoglHandle for a texture.
  *
- * Query the rowstride of a cogl texture.
+ * Queries the rowstride of a cogl texture.
  *
- * Returns: the offset in bytes between each consequetive row of pixels.
+ * Return value: the offset in bytes between each consequetive row of pixels
  */
 guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 
@@ -223,10 +223,10 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
  * cogl_texture_get_max_waste:
  * @handle: a #CoglHandle for a texture.
  *
- * Query the maximum wasted (unused) pixels in one dimension of a GPU side
+ * Queries the maximum wasted (unused) pixels in one dimension of a GPU side
  * texture.
  *
- * Returns: the maximum waste.
+ * Return value: the maximum waste
  */
 gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 
@@ -234,11 +234,11 @@ gint            cogl_texture_get_max_waste    (CoglHandle          handle);
  * cogl_texture_is_sliced:
  * @handle: a #CoglHandle for a texture.
  *
- * Query if a texture is sliced (stored as multiple GPU side tecture
+ * Queries if a texture is sliced (stored as multiple GPU side tecture
  * objects).
  *
- * Returns: %TRUE if the texture is sliced, %FALSE if the texture
- * is stored as a single GPU texture.
+ * Return value: %TRUE if the texture is sliced, %FALSE if the texture
+ *   is stored as a single GPU texture
  */
 gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
 
@@ -250,12 +250,13 @@ gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
  * @out_gl_target: (out) (allow-none): pointer to return location for the
  *   GL target type, or %NULL.
  *
- * Query the GL handles for a GPU side texture through it's #CoglHandle,
- * if the texture is spliced the data for the first sub texture will be
+ * Queries the GL handles for a GPU side texture through its #CoglHandle.
+ *
+ * If the texture is spliced the data for the first sub texture will be
  * queried.
  *
- * Returns: %TRUE if the handle was successfully retrieved %FALSE
- * if the handle was invalid.
+ * Return value: %TRUE if the handle was successfully retrieved, %FALSE
+ *   if the handle was invalid
  */
 gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
                                                GLuint            *out_gl_handle,
@@ -270,10 +271,10 @@ gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
  * @data: memory location to write contents of buffer, or %NULL if we're
  * only querying the data size through the return value.
  *
- * Copy the pixel data from a cogl texture to system memory.
+ * Copies the pixel data from a cogl texture to system memory.
  *
- * Returns: the size of the texture data in bytes (or 0 if the texture
- * is not valid.)
+ * Return value: the size of the texture data in bytes, or 0 if the texture
+ *   is not valid
  */
 gint            cogl_texture_get_data         (CoglHandle          handle,
                                                CoglPixelFormat     format,
@@ -299,7 +300,8 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
  * Sets the pixels in a rectangular subregion of @handle from an in-memory
  * buffer containing pixel data.
  *
- * Returns: %TRUE if the subregion upload was successful, otherwise %FALSE.
+ * Return value: %TRUE if the subregion upload was successful, and
+ *   %FALSE otherwise
  */
 gboolean        cogl_texture_set_region       (CoglHandle          handle,
                                                gint                src_x,
@@ -314,13 +316,17 @@ gboolean        cogl_texture_set_region       (CoglHandle          handle,
                                                guint               rowstride,
                                                const guchar       *data);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_texture_ref:
  * @handle: a @CoglHandle.
  *
  * Increment the reference count for a cogl texture.
  *
- * Returns: the @handle.
+ * Deprecated: 1.2: Use cogl_handle_ref() instead
+ *
+ * Return value: the @handle.
  */
 CoglHandle      cogl_texture_ref              (CoglHandle          handle);
 
@@ -328,9 +334,13 @@ CoglHandle      cogl_texture_ref              (CoglHandle          handle);
  * cogl_texture_unref:
  * @handle: a @CoglHandle.
  *
- * Deccrement the reference count for a cogl texture.
+ * Decrement the reference count for a cogl texture.
+ *
+ * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void            cogl_texture_unref            (CoglHandle          handle);
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_rectangle_with_texture_coords:
@@ -364,14 +374,14 @@ void cogl_rectangle_with_texture_coords (float  x1,
  * @y1: y coordinate upper left on screen.
  * @x2: x coordinate lower right on screen.
  * @y2: y coordinate lower right on screen.
- * @tex_coords: (in) (array) (transfer none): An array containing groups of 4
- *   float values: [tx1, ty1, tx2, ty2] that are interpreted as two texture
+ * @tex_coords: (in) (array) (transfer none): An array containing groups of
+ *   4 float values: [tx1, ty1, tx2, ty2] that are interpreted as two texture
  *   coordinates; one for the upper left texel, and one for the lower right
  *   texel. Each value should be between 0.0 and 1.0, where the coordinate
  *   (0.0, 0.0) represents the top left of the texture, and (1.0, 1.0) the
  *   bottom right.
  * @tex_coords_len: The length of the tex_coords array. (e.g. for one layer
- *                  and one group of texture coordinates, this would be 4)
+ *   and one group of texture coordinates, this would be 4)
  *
  * This function draws a rectangle using the current source material to
  * texture or fill with. As a material may contain multiple texture layers

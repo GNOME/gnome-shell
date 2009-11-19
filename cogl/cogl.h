@@ -104,7 +104,7 @@ gboolean        cogl_features_available       (CoglFeatureFlags    features);
  * appropriate function for the current backend.
  *
  * Return value: a pointer to the requested function or %NULL if the
- * function is not available.
+ *   function is not available.
  */
 CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
 
@@ -115,17 +115,17 @@ CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
  *
  * Check whether @name occurs in list of extensions in @ext.
  *
- * Returns: %TRUE if the extension occurs in the list, %FALSE otherwize.
+ * Return value: %TRUE if the extension occurs in the list, %FALSE otherwize.
  */
 gboolean        cogl_check_extension          (const gchar        *name,
                                                const gchar        *ext);
 
 /**
  * cogl_get_bitmasks:
- * @red: Return location for the number of red bits or %NULL
- * @green: Return location for the number of green bits or %NULL
- * @blue: Return location for the number of blue bits or %NULL
- * @alpha: Return location for the number of alpha bits or %NULL
+ * @red: (out): Return location for the number of red bits or %NULL
+ * @green: (out): Return location for the number of green bits or %NULL
+ * @blue: (out): Return location for the number of blue bits or %NULL
+ * @alpha: (out): Return location for the number of alpha bits or %NULL
  *
  * Gets the number of bitplanes used for each of the color components
  * in the color buffer. Pass %NULL for any of the arguments if the
@@ -240,12 +240,12 @@ void            cogl_viewport                 (guint               width,
 
 /**
  * cogl_set_viewport:
- * @x: viewport X offset
- * @x: viewport Y offset
+ * @x: X offset of the viewport
+ * @y: Y offset of the viewport
  * @width: Width of the viewport
  * @height: Height of the viewport
  *
- * Replace the current viewport with the given values.
+ * Replaces the current viewport with the given values.
  *
  * Since: 1.2
  */
@@ -257,7 +257,7 @@ void            cogl_set_viewport             (int x,
 /**
  * cogl_push_matrix:
  *
- * Store the current model-view matrix on the matrix stack. The matrix
+ * Stores the current model-view matrix on the matrix stack. The matrix
  * can later be restored with cogl_pop_matrix().
  */
 void            cogl_push_matrix              (void);
@@ -265,7 +265,7 @@ void            cogl_push_matrix              (void);
 /**
  * cogl_pop_matrix:
  *
- * Restore the current model-view matrix from the matrix stack.
+ * Restores the current model-view matrix from the matrix stack.
  */
 void            cogl_pop_matrix               (void);
 
@@ -315,7 +315,7 @@ void            cogl_rotate                   (float                angle,
 
 /**
  * cogl_get_modelview_matrix:
- * @matrix: pointer to a CoglMatrix to recieve the matrix
+ * @matrix: (out): return location for the model-view matrix
  *
  * Stores the current model-view matrix in @matrix.
  */
@@ -323,15 +323,15 @@ void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
 
 /**
  * cogl_set_modelview_matrix:
- * @matrix: pointer to a CoglMatrix to set as the new model-view matrix
+ * @matrix: the new model-view matrix
  *
- * Loads matrix as the new model-view matrix.
+ * Loads @matrix as the new model-view matrix.
  */
 void            cogl_set_modelview_matrix     (CoglMatrix *matrix);
 
 /**
  * cogl_get_projection_matrix:
- * @matrix: pointer to a CoglMatrix to recieve the matrix
+ * @matrix: (out): return location for the projection matrix
  *
  * Stores the current projection matrix in @matrix.
  */
@@ -339,7 +339,7 @@ void            cogl_get_projection_matrix    (CoglMatrix *matrix);
 
 /**
  * cogl_set_projection_matrix:
- * @matrix: pointer to a CoglMatrix to set as the new projection matrix
+ * @matrix: the new projection matrix
  *
  * Loads matrix as the new projection matrix.
  */
@@ -347,8 +347,8 @@ void            cogl_set_projection_matrix    (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:
- * @v: pointer to a 4 element array of #float<!-- -->s to
- * receive the viewport dimensions.
+ * @v: (out) (array fixed-size=4): pointer to a 4 element array
+ *   of #float<!-- -->s to receive the viewport dimensions.
  *
  * Stores the current viewport in @v. @v[0] and @v[1] get the x and y
  * position of the viewport and @v[2] and @v[3] get the width and
@@ -373,7 +373,7 @@ void            cogl_set_depth_test_enabled   (gboolean setting);
  *
  * Queries if depth testing has been enabled via cogl_set_depth_test_enable()
  *
- * Returns: %TRUE if depth testing is enabled, and %FALSE otherwise
+ * Return value: %TRUE if depth testing is enabled, and %FALSE otherwise
  */
 gboolean        cogl_get_depth_test_enabled   (void);
 
@@ -395,19 +395,19 @@ void            cogl_set_backface_culling_enabled (gboolean setting);
  * Queries if backface culling has been enabled via
  * cogl_set_backface_culling_enabled()
  *
- * Returns: %TRUE if backface culling is enabled, and %FALSE otherwise
+ * Return value: %TRUE if backface culling is enabled, and %FALSE otherwise
  */
 gboolean        cogl_get_backface_culling_enabled (void);
 
 /**
  * cogl_set_fog:
  * @fog_color: The color of the fog
- * @mode: A CoglFogMode that determines the equation used to calculate the
- *        fogging blend factor.
- * @density: Used by the EXPONENTIAL and EXPONENTIAL_SQUARED CoglFogMode
- *           equations.
- * @z_near: Position along z-axis where no fogging should be applied
- * @z_far: Position along z-axes where full fogging should be applied
+ * @mode: A #CoglFogMode that determines the equation used to calculate the
+ *   fogging blend factor.
+ * @density: Used by %COGL_FOG_MODE_EXPONENTIAL and by
+ *   %COGL_FOG_MODE_EXPONENTIAL_SQUARED equations.
+ * @z_near: Position along Z axis where no fogging should be applied
+ * @z_far: Position along Z axis where full fogging should be applied
  *
  * Enables fogging. Fogging causes vertices that are further away from the eye
  * to be rendered with a different color. The color is determined according to
@@ -468,14 +468,14 @@ void            cogl_clear                    (const CoglColor *color,
 
 /**
  * cogl_set_source:
- * @material: A CoglMaterial object
+ * @material: A #CoglHandle for a material
  *
  * This function sets the source material that will be used to fill subsequent
  * geometry emitted via the cogl API.
  *
- * Note: in the future we may add the ability to set a front facing material,
+ * <note>In the future we may add the ability to set a front facing material,
  * and a back facing material, in which case this function will set both to the
- * same.
+ * same.</note>
  *
  * Since: 1.0
  */
@@ -867,17 +867,20 @@ void            cogl_flush (void);
  * Note: this doesn't help you modify the behaviour of Cogl drawing functions
  * through the modification of GL state; that will never be reliably supported,
  * but if you are trying to do something like:
- * <programlisting>
+ *
+ * |[
  * {
  *    - setup some OpenGL state.
  *    - draw using OpenGL (e.g. glDrawArrays() )
  *    - reset modified OpenGL state.
  *    - continue using Cogl to draw
  * }
- * </programlisting>
+ * ]|
+ *
  * You should surround blocks of drawing using raw GL with cogl_begin_gl()
  * and cogl_end_gl():
- * <programlisting>
+ *
+ * |[
  * {
  *    cogl_begin_gl ();
  *    - setup some OpenGL state.
@@ -886,16 +889,18 @@ void            cogl_flush (void);
  *    cogl_end_gl ();
  *    - continue using Cogl to draw
  * }
- * </programlisting>
+ * ]|
  *
  * Don't ever try and do:
- * <programlisting>
+ *
+ * |[
  * {
  *    - setup some OpenGL state.
  *    - use Cogl to draw
  *    - reset modified OpenGL state.
  * }
- * </programlisting>
+ * ]|
+ *
  * When the internals of Cogl evolves, this is very liable to break.
  *
  * This function will flush all batched primitives, and subsequently flush
@@ -907,16 +912,16 @@ void            cogl_flush (void);
  * state such as backface culling, depth and fogging enabledness will be sent
  * to OpenGL.
  *
- * Note: no special material state is flushed, so if you want Cogl to setup a
+ * <note>No special material state is flushed, so if you want Cogl to setup a
  * simplified material state it is your responsibility to set a simple source
- * material before calling cogl_begin_gl. E.g. by calling
- * cogl_set_source_color4ub().
+ * material before calling cogl_begin_gl(). E.g. by calling
+ * cogl_set_source_color4ub().</note>
  *
- * Note: It is your responsibility to restore any OpenGL state that you modify
+ * <note>It is your responsibility to restore any OpenGL state that you modify
  * to how it was after calling cogl_begin_gl() if you don't do this then the
- * result of further Cogl calls is undefined.
+ * result of further Cogl calls is undefined.</note>
  *
- * Note: You can not nest begin/end blocks.
+ * <note>You can not nest begin/end blocks.</note>
  *
  * Again we would like to stress, we do not advise the use of this API and if
  * possible we would prefer to improve Cogl than have developers require raw
@@ -951,6 +956,7 @@ void            _cogl_destroy_context          (void);
  * wasn't complete, and so we assume no one is using this yet. Util we
  * have some one with a good usecase, we can't pretend to support breaking
  * out into raw OpenGL. */
+
 #if 0
 /*
  * cogl_flush_gl_state:
@@ -968,7 +974,7 @@ void            _cogl_destroy_context          (void);
 void            cogl_flush_gl_state         (int      flags);
 #endif
 
-/* private */
+/*< private >*/
 #define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
 
 typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/

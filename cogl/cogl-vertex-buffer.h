@@ -39,8 +39,7 @@ G_BEGIN_DECLS
 /**
  * SECTION:cogl-vertex-buffer
  * @short_description: An API for submitting extensible arrays of vertex
- *		       attributes to be mapped into the GPU for fast
- *		       drawing.
+ *   attributes to be mapped into the GPU for fast drawing.
  *
  * For example to describe a textured triangle, you could create a new cogl
  * vertex buffer with 3 vertices, and then you might add 2 attributes for each
@@ -111,8 +110,7 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
  *
  * Since: 1.0
  */
-typedef enum _CoglAttributeType
-{
+typedef enum {
   COGL_ATTRIBUTE_TYPE_BYTE = GL_BYTE,
   COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
   COGL_ATTRIBUTE_TYPE_SHORT = GL_SHORT,
@@ -124,51 +122,53 @@ typedef enum _CoglAttributeType
  * cogl_vertex_buffer_add:
  * @handle: A vertex buffer handle
  * @attribute_name: The name of your attribute. It should be a valid GLSL
- *		    variable name and standard attribute types must use one
- *		    of following built-in names: (Note: they correspond to the
- *		    built-in names of GLSL)
- *		    <itemizedlist>
- *		    <listitem>"gl_Color"</listitem>
- *		    <listitem>"gl_Normal"</listitem>
- *		    <listitem>"gl_MultiTexCoord0, gl_MultiTexCoord1, ..."</listitem>
- *		    <listitem>"gl_Vertex"</listitem>
- *		    </itemizedlist>
- *		    To support adding multiple variations of the same attribute
- *		    the name can have a detail component, E.g.
- *		    "gl_Color::active" or "gl_Color::inactive"
- * @n_components: The number of components per attribute and must be 1,2,3 or 4
+ *   variable name and standard attribute types must use one of following
+ *   built-in names: (Note: they correspond to the built-in names of GLSL)
+ *   <itemizedlist>
+ *     <listitem>"gl_Color"</listitem>
+ *     <listitem>"gl_Normal"</listitem>
+ *     <listitem>"gl_MultiTexCoord0, gl_MultiTexCoord1, ..."</listitem>
+ *     <listitem>"gl_Vertex"</listitem>
+ *   </itemizedlist>
+ *   To support adding multiple variations of the same attribute the name
+ *   can have a detail component, E.g. "gl_Color::active" or
+ *   "gl_Color::inactive"
+ * @n_components: The number of components per attribute and must be 1, 2,
+ *   3 or 4
  * @type: a #CoglAttributeType specifying the data type of each component.
- * @normalized: If GL_TRUE, this specifies that values stored in an integer
- *		format should be mapped into the range [-1.0, 1.0] or [0.0, 1.0]
- *		for unsigned values. If GL_FALSE they are converted to floats
- *		directly.
+ * @normalized: If %TRUE, this specifies that values stored in an integer
+ *   format should be mapped into the range [-1.0, 1.0] or [0.0, 1.0]
+ *   for unsigned values. If %FALSE they are converted to floats
+ *   directly.
  * @stride: This specifies the number of bytes from the start of one attribute
- *	    value to the start of the next value (for the same attribute). So
- *	    for example with a position interleved with color like this:
- *	    XYRGBAXYRGBAXYRGBA, then if each letter represents a byte, the
- *	    stride for both attributes is 6. The special value 0 means the
- *	    values are stored sequentially in memory.
- * @pointer: This addresses the first attribute in the vertex array. (This
- *	     must remain valid until you either call
- *	     cogl_vertex_buffer_submit() or issue a draw call.)
+ *   value to the start of the next value (for the same attribute). So, for
+ *   example, with a position interleved with color like this:
+ *   XYRGBAXYRGBAXYRGBA, then if each letter represents a byte, the
+ *   stride for both attributes is 6. The special value 0 means the
+ *   values are stored sequentially in memory.
+ * @pointer: This addresses the first attribute in the vertex array. This
+ *   must remain valid until you either call cogl_vertex_buffer_submit() or
+ *   issue a draw call.
  *
- * This function lets you add an attribute to a buffer. You either use one
- * of the built-in names such as "gl_Vertex", or "gl_MultiTexCoord0" to add
- * standard attributes, like positions, colors and normals or you can add
- * custom attributes for use in shaders.
+ * Adds an attribute to a buffer.
+ *
+ * You either can use one of the built-in names such as "gl_Vertex", or
+ * "gl_MultiTexCoord0" to add standard attributes, like positions, colors
+ * and normals, or you can add custom attributes for use in shaders.
  *
  * The number of vertices declared when calling cogl_vertex_buffer_new()
- * determines how many attribute values will be read from the supplied pointer.
+ * determines how many attribute values will be read from the supplied
+ * @pointer.
  *
  * The data for your attribute isn't copied anywhere until you call
- * cogl_vertex_buffer_submit(), (or issue a draw call which automatically
- * submits pending attribute changes) so the supplied pointer must remain
+ * cogl_vertex_buffer_submit(), or issue a draw call which automatically
+ * submits pending attribute changes. so the supplied pointer must remain
  * valid until then. If you are updating an existing attribute (done by
- * re-adding it) then you still need to re-call cogl_vertex_buffer_submit() to
- * commit the changes to the GPU. (Be carefull to minimize the number of calls
- * to cogl_vertex_buffer_submit though.)
+ * re-adding it) then you still need to re-call cogl_vertex_buffer_submit()
+ * to commit the changes to the GPU. Be carefull to minimize the number
+ * of calls to cogl_vertex_buffer_submit(), though.
  *
- * Note: If you are interleving attributes it is assumed that each interleaved
+ * <note>If you are interleving attributes it is assumed that each interleaved
  * attribute starts no farther than +- stride bytes from the other attributes
  * it is interleved with. I.e. this is ok:
  * <programlisting>
@@ -178,7 +178,7 @@ typedef enum _CoglAttributeType
  * <programlisting>
  * |- - - - -0-0-0-0-0-0 0 0 0 0|
  * </programlisting>
- * (Though you can have multiple groups of interleved attributes)
+ * (Though you can have multiple groups of interleved attributes)</note>
  */
 void
 cogl_vertex_buffer_add (CoglHandle         handle,
@@ -194,8 +194,8 @@ cogl_vertex_buffer_add (CoglHandle         handle,
  * @handle: A vertex buffer handle
  * @attribute_name: The name of a previously added attribute
  *
- * This function deletes an attribute from a buffer. You will need to
- * call cogl_vertex_buffer_submit() or issue a draw call to commit this
+ * Deletes an attribute from a buffer. You will need to call
+ * cogl_vertex_buffer_submit() or issue a draw call to commit this
  * change to the GPU.
  */
 void
@@ -206,8 +206,8 @@ cogl_vertex_buffer_delete (CoglHandle   handle,
  * cogl_vertex_buffer_submit:
  * @handle: A vertex buffer handle
  *
- * This function submits all the user added attributes to the GPU; once
- * submitted the attributes can be used for drawing.
+ * Submits all the user added attributes to the GPU; once submitted, the
+ * attributes can be used for drawing.
  *
  * You should aim to minimize calls to this function since it implies
  * validating your data; it potentially incurs a transport cost (especially if
@@ -222,13 +222,14 @@ cogl_vertex_buffer_submit (CoglHandle handle);
  * @handle: A vertex buffer handle
  * @attribute_name: The name of the attribute you want to disable
  *
- * This function disables a previosuly added attribute.
+ * Disables a previosuly added attribute.
  *
  * Since it can be costly to add and remove new attributes to buffers; to make
  * individual buffers more reuseable it is possible to enable and disable
  * attributes before using a buffer for drawing.
  *
- * You don't need to call cogl_vertex_buffer_submit() after using this function.
+ * You don't need to call cogl_vertex_buffer_submit() after using this
+ * function.
  */
 void
 cogl_vertex_buffer_disable (CoglHandle  handle,
@@ -239,7 +240,7 @@ cogl_vertex_buffer_disable (CoglHandle  handle,
  * @handle: A vertex buffer handle
  * @attribute_name: The name of the attribute you want to enable
  *
- * This function enables a previosuly disabled attribute.
+ * Enables a previosuly disabled attribute.
  *
  * Since it can be costly to add and remove new attributes to buffers; to make
  * individual buffers more reuseable it is possible to enable and disable
@@ -266,8 +267,7 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
  *
  * Since: 1.0
  */
-typedef enum _CoglVerticesMode
-{
+typedef enum {
   COGL_VERTICES_MODE_POINTS = GL_POINTS,
   COGL_VERTICES_MODE_LINE_STRIP = GL_LINE_STRIP,
   COGL_VERTICES_MODE_LINE_LOOP = GL_LINE_LOOP,
@@ -281,11 +281,11 @@ typedef enum _CoglVerticesMode
  * cogl_vertex_buffer_draw:
  * @handle: A vertex buffer handle
  * @mode: A #CoglVerticesMode specifying how the vertices should be
- *        interpreted.
+ *   interpreted.
  * @first: Specifies the index of the first vertex you want to draw with
  * @count: Specifies the number of vertices you want to draw.
  *
- * This function lets you draw geometry using all or a subset of the
+ * Allows you to draw geometry using all or a subset of the
  * vertices in a vertex buffer.
  *
  * Any un-submitted attribute changes are automatically submitted before
@@ -306,8 +306,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
  * range, since it reduces the size of your index array and can help
  * reduce the demand on memory bandwidth.
  */
-typedef enum _CoglIndicesType
-{
+typedef enum {
   COGL_INDICES_TYPE_UNSIGNED_BYTE,
   COGL_INDICES_TYPE_UNSIGNED_SHORT,
 } CoglIndicesType;
@@ -315,8 +314,9 @@ typedef enum _CoglIndicesType
 /**
  * cogl_vertex_buffer_indices_new:
  * @indices_type: a #CoglIndicesType specifying the data type used for
- *                the indices.
- * @indices_array: Specifies the address of your array of indices
+ *    the indices.
+ * @indices_array: (array length=indices_len): Specifies the address of
+ *   your array of indices
  * @indices_len: The number of indices in indices_array
  *
  * Depending on how much geometry you are submitting it can be worthwhile
@@ -324,8 +324,8 @@ typedef enum _CoglIndicesType
  * array allows you to reference vertices multiple times, for example
  * during triangle strips.
  *
- * Returns: A CoglHandle for the indices which you can pass to
- *          cogl_vertex_buffer_draw_elements().
+ * Return value: A CoglHandle for the indices which you can pass to
+ *   cogl_vertex_buffer_draw_elements().
  */
 CoglHandle
 cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
@@ -347,13 +347,13 @@ cogl_vertex_buffer_indices_get_type (CoglHandle indices);
  * cogl_vertex_buffer_draw_elements:
  * @handle: A vertex buffer handle
  * @mode: A #CoglVerticesMode specifying how the vertices should be
- *        interpreted.
+ *    interpreted.
  * @indices: A CoglHandle for a set of indices allocated via
- *           cogl_vertex_buffer_indices_new ()
+ *    cogl_vertex_buffer_indices_new ()
  * @min_index: Specifies the minimum vertex index contained in indices
  * @max_index: Specifies the maximum vertex index contained in indices
  * @indices_offset: An offset into named indices. The offset marks the first
- *                  index to use for drawing.
+ *    index to use for drawing.
  * @count: Specifies the number of vertices you want to draw.
  *
  * This function lets you use an array of indices to specify the vertices
@@ -372,13 +372,17 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
                                   int              indices_offset,
                                   int              count);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_vertex_buffer_ref:
  * @handle: a @CoglHandle.
  *
  * Increment the reference count for a vertex buffer
  *
- * Returns: the @handle.
+ * Return value: the @handle.
+ *
+ * Deprecated: 1.2: Use cogl_handle_ref() instead
  */
 CoglHandle
 cogl_vertex_buffer_ref (CoglHandle handle);
@@ -388,9 +392,13 @@ cogl_vertex_buffer_ref (CoglHandle handle);
  * @handle: a @CoglHandle.
  *
  * Decrement the reference count for a vertex buffer
+ *
+ * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void
 cogl_vertex_buffer_unref (CoglHandle handle);
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_vertex_buffer_indices_get_for_quads:
