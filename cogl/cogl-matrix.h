@@ -33,8 +33,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-matrix
- * @short_description: Fuctions for initializing and manipulating 4x4
- *                     matrices.
+ * @short_description: Fuctions for initializing and manipulating 4x4 matrices
  *
  * Matrices are used in Cogl to describe affine model-view transforms, texture
  * transforms, and projective transforms. This exposes a utility API that can
@@ -112,12 +111,13 @@ struct _CoglMatrix
  * @matrix: A 4x4 transformation matrix
  *
  * Resets matrix to the identity matrix:
- * <programlisting>
- * .xx=1; .xy=0; .xz=0; .xw=0;
- * .yx=0; .yy=1; .yz=0; .yw=0;
- * .zx=0; .zy=0; .zz=1; .zw=0;
- * .wx=0; .wy=0; .wz=0; .ww=1;
- * </programlisting>
+ *
+ * |[
+ *   .xx=1; .xy=0; .xz=0; .xw=0;
+ *   .yx=0; .yy=1; .yz=0; .yw=0;
+ *   .zx=0; .zy=0; .zz=1; .zw=0;
+ *   .wx=0; .wy=0; .wz=0; .ww=1;
+ * ]|
  */
 void cogl_matrix_init_identity (CoglMatrix *matrix);
 
@@ -127,8 +127,8 @@ void cogl_matrix_init_identity (CoglMatrix *matrix);
  * @a: A 4x4 transformation matrix
  * @b: A 4x4 transformation matrix
  *
- * This function multiples the two supplied matricies together and stores
- * the result in @result
+ * Multiplies the two supplied matrices together and stores
+ * the resulting matrix inside @result
  */
 void cogl_matrix_multiply (CoglMatrix *result,
 			   const CoglMatrix *a,
@@ -142,8 +142,8 @@ void cogl_matrix_multiply (CoglMatrix *result,
  * @y: Y component of your rotation vector
  * @z: Z component of your rotation vector
  *
- * This function multiples your matrix with a rotation matrix that applies
- * a rotation of #angle degrees around the specified 3D vector.
+ * Multiplies @matrix with a rotation matrix that applies a rotation
+ * of @angle degrees around the specified 3D vector.
  */
 void cogl_matrix_rotate (CoglMatrix *matrix,
 			 float angle,
@@ -157,8 +157,8 @@ void cogl_matrix_rotate (CoglMatrix *matrix,
  * @y: The Y translation you want to apply
  * @z: The Z translation you want to apply
  *
- * This function multiples your matrix with a transform matrix that translates
- * along the X, Y and Z axis.
+ * Multiplies @matrix with a transform matrix that translates along
+ * the X, Y and Z axis.
  */
 void cogl_matrix_translate (CoglMatrix *matrix,
 			    float x,
@@ -172,8 +172,8 @@ void cogl_matrix_translate (CoglMatrix *matrix,
  * @sy: The Y scale factor
  * @sz: The Z scale factor
  *
- * This function multiples your matrix with a transform matrix that scales
- * along the X, Y and Z axis.
+ * Multiplies @matrix with a transform matrix that scales along the X,
+ * Y and Z axis.
  */
 void cogl_matrix_scale (CoglMatrix *matrix,
 			float sx,
@@ -190,7 +190,7 @@ void cogl_matrix_scale (CoglMatrix *matrix,
  * @z_near: positive distance to near depth clipping plane
  * @z_far: positive distance to far depth clipping plane
  *
- * Multiplies the matrix by the given frustum perspective matrix.
+ * Multiplies @matrix by the given frustum perspective matrix.
  */
 void cogl_matrix_frustum (CoglMatrix *matrix,
                           float       left,
@@ -205,23 +205,23 @@ void cogl_matrix_frustum (CoglMatrix *matrix,
  * @matrix: A 4x4 transformation matrix
  * @fov_y: A field of view angle for the Y axis
  * @aspect: The ratio of width to height determining the field of view angle
- *          for the x axis.
- * @z_near: The distance to the near clip plane.
- *          Never pass 0 and always pass a positive number.
+ *   for the x axis.
+ * @z_near: The distance to the near clip plane. Never pass 0 and always pass
+ *   a positive number.
  * @z_far: The distance to the far clip plane. (Should always be positive)
  *
- * Multiplies the matrix by the described perspective matrix
+ * Multiplies @matrix by the described perspective matrix
  *
- * Note: you should be careful not to have to great a @z_far / @z_near ratio
+ * <note>You should be careful not to have to great a @z_far / @z_near ratio
  * since that will reduce the effectiveness of depth testing since there wont
- * be enough precision to identify the depth of objects near to each other.
+ * be enough precision to identify the depth of objects near to each
+ * other.</note>
  */
-void
-cogl_matrix_perspective (CoglMatrix *matrix,
-                         float       fov_y,
-                         float       aspect,
-                         float       z_near,
-                         float       z_far);
+void cogl_matrix_perspective (CoglMatrix *matrix,
+                              float       fov_y,
+                              float       aspect,
+                              float       z_near,
+                              float       z_far);
 
 /**
  * cogl_matrix_ortho:
@@ -231,36 +231,35 @@ cogl_matrix_perspective (CoglMatrix *matrix,
  * @bottom: The coordinate for the bottom clipping plane
  * @top: The coordinate for the top clipping plane
  * @z_near: The coordinate for the near clipping plane (may be negative if
- *          the plane is behind the viewer)
+ *   the plane is behind the viewer)
  * @z_far: The coordinate for the far clipping plane (may be negative if
- *         the plane is behind the viewer)
+ *   the plane is behind the viewer)
  *
- * Multiples the matrix by a parallel projection matrix.
+ * Multiplies @matrix by a parallel projection matrix.
  */
-void
-cogl_matrix_ortho (CoglMatrix *matrix,
-                   float       left,
-                   float       right,
-                   float       bottom,
-                   float       top,
-                   float       z_near,
-                   float       z_far);
+void cogl_matrix_ortho (CoglMatrix *matrix,
+                        float       left,
+                        float       right,
+                        float       bottom,
+                        float       top,
+                        float       z_near,
+                        float       z_far);
 
 /**
  * cogl_matrix_init_from_array:
  * @matrix: A 4x4 transformation matrix
  * @array: A linear array of 16 floats (column-major order)
  *
- * This initialises @matrix with the contents of @array
+ * Initializes @matrix with the contents of @array
  */
-void cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
+void cogl_matrix_init_from_array (CoglMatrix *matrix,
+                                  const float *array);
 
 /**
  * cogl_matrix_get_array:
  * @matrix: A 4x4 transformation matrix
  *
- * This casts a CoglMatrix to a float array which can be directly passed to
- * OpenGL.
+ * Casts @matrix to a float array which can be directly passed to OpenGL.
  *
  * Return value: a pointer to the float array
  */
@@ -269,41 +268,42 @@ G_CONST_RETURN float *cogl_matrix_get_array (const CoglMatrix *matrix);
 /**
  * cogl_matrix_get_inverse:
  * @matrix: A 4x4 transformation matrix
- * @inverse: The destination for a 4x4 inverse transformation matrix
+ * @inverse: (out): The destination for a 4x4 inverse transformation matrix
  *
- * This gets the inverse transform of a given matrix and uses it to initialize
- * a new CoglMatrix.
+ * Gets the inverse transform of a given matrix and uses it to initialize
+ * a new #CoglMatrix.
  *
- * Note: that although the first parameter is annotated as const to indicate
+ * <note>Although the first parameter is annotated as const to indicate
  * that the transform it represents isn't modified this function may
- * technically save a copy of the inverse transform within the given CoglMatrix
- * so that subsequent requests for the inverse transform may avoid costly
- * inversion calculations.
+ * technically save a copy of the inverse transform within the given
+ * #CoglMatrix so that subsequent requests for the inverse transform may
+ * avoid costly inversion calculations.</note>
  *
- * Returns TRUE if the inverse was successfully calculated or FALSE for
- * degenerate transformations that can't be inverted (in this case the matrix
- * will simply be initialized with the identity matrix)
+ * Return value: %TRUE if the inverse was successfully calculated or %FALSE
+ *   for degenerate transformations that can't be inverted (in this case the
+ *   @inverse matrix will simply be initialized with the identity matrix)
+ *
+ * Since: 1.2
  */
-gboolean
-cogl_matrix_get_inverse (const CoglMatrix *matrix, CoglMatrix *inverse);
+gboolean cogl_matrix_get_inverse (const CoglMatrix *matrix,
+                                  CoglMatrix *inverse);
 
 /**
  * cogl_matrix_transform_point:
  * @matrix: A 4x4 transformation matrix
- * @x: The X component of your points position [in:out]
- * @y: The Y component of your points position [in:out]
- * @z: The Z component of your points position [in:out]
- * @w: The W component of your points position [in:out]
+ * @x: (in-out): The X component of your points position
+ * @y: (in-out): The Y component of your points position
+ * @z: (in-out): The Z component of your points position
+ * @w: (in-out): The W component of your points position
  *
- * This transforms a point whos position is given and returned
- * as four float components.
+ * Transforms a point whos position is given and returned as four float
+ * components.
  */
-void
-cogl_matrix_transform_point (const CoglMatrix *matrix,
-                             float *x,
-                             float *y,
-                             float *z,
-                             float *w);
+void cogl_matrix_transform_point (const CoglMatrix *matrix,
+                                  float *x,
+                                  float *y,
+                                  float *z,
+                                  float *w);
 
 G_END_DECLS
 
