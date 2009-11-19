@@ -34,11 +34,12 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-bitmap
- * @short_description: Fuctions for loading images but not directly
- *                     into textures
+ * @short_description: Fuctions for loading images
  *
  * Cogl allows loading image data into memory as CoglBitmaps without
  * loading them immediately into GPU textures.
+ *
+ * #CoglBitmap is available since Cogl 1.0
  */
 
 
@@ -50,30 +51,30 @@ G_BEGIN_DECLS
  * Loads an image file from disk. This function can be safely called from
  * within a thread.
  *
- * Returns: a #CoglHandle to the new loaded image data, or
+ * Return value: a #CoglHandle to the new loaded image data, or
  *   %COGL_INVALID_HANDLE if loading the image failed.
  *
  * Since: 1.0
  */
-CoglHandle      cogl_bitmap_new_from_file     (const gchar    *filename,
-                                               GError        **error);
+CoglHandle      cogl_bitmap_new_from_file      (const gchar  *filename,
+                                                GError      **error);
 
 /**
  * cogl_bitmap_get_size_from_file:
  * @filename: the file to check
- * @width: return location for the bitmap width
- * @height: return location for the bitmap height
+ * @width: (out): return location for the bitmap width, or %NULL
+ * @height: (out): return location for the bitmap height, or %NULL
  *
  * Parses an image file enough to extract the width and height
  * of the bitmap.
  *
- * Returns: %TRUE if the image was successfully parsed
+ * Return value: %TRUE if the image was successfully parsed
  *
  * Since: 1.0
  */
-gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
-                                                gint          *width,
-                                                gint          *height);
+gboolean        cogl_bitmap_get_size_from_file (const gchar  *filename,
+                                                gint         *width,
+                                                gint         *height);
 
 /**
  * cogl_is_bitmap:
@@ -86,7 +87,7 @@ gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
  *
  * Since: 1.0
  */
-gboolean        cogl_is_bitmap                 (CoglHandle     handle);
+gboolean        cogl_is_bitmap                 (CoglHandle    handle);
 
 G_END_DECLS
 
