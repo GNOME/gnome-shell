@@ -46,32 +46,23 @@ G_BEGIN_DECLS
 /**
  * CoglMaterialFilter:
  * @COGL_MATERIAL_FILTER_NEAREST: Measuring in manhatten distance from the,
- *                               current pixel center, use the nearest texture
- *                               texel.
+ *   current pixel center, use the nearest texture texel
  * @COGL_MATERIAL_FILTER_LINEAR: Use the weighted average of the 4 texels
- *                              nearest the current pixel center.
+ *   nearest the current pixel center
  * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
- *                                              texel size most closely matches
- *                                              the current pixel, and use the
- *                                              COGL_MATERIAL_FILTER_NEAREST
- *                                              criterion.
+ *   texel size most closely matches the current pixel, and use the
+ *   %COGL_MATERIAL_FILTER_NEAREST criterion
  * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
- *                                             texel size most closely matches
- *                                             the current pixel, and use the
- *                                             COGL_MATERIAL_FILTER_LINEAR
- *                                             criterion.
+ *   texel size most closely matches the current pixel, and use the
+ *   %COGL_MATERIAL_FILTER_LINEAR criterion
  * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
- *                                             whose texel size most closely
- *                                             matches the current pixel, use
- *                                             the COGL_MATERIAL_FILTER_NEAREST
- *                                             criterion on each one and take
- *                                             their weighted average.
+ *   whose texel size most closely matches the current pixel, use
+ *   the %COGL_MATERIAL_FILTER_NEAREST criterion on each one and take
+ *   their weighted average
  * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
- *                                            whose texel size most closely
- *                                            matches the current pixel, use
- *                                            the COGL_MATERIAL_FILTER_LINEAR
- *                                            criterion on each one and take
- *                                            their weighted average.
+ *   whose texel size most closely matches the current pixel, use
+ *   the %COGL_MATERIAL_FILTER_LINEAR criterion on each one and take
+ *   their weighted average
  *
  * Texture filtering is used whenever the current pixel maps either to more
  * than one texture element (texel) or less than one. These filter enums
@@ -79,8 +70,7 @@ G_BEGIN_DECLS
  * possibly referring to multiple neighbouring texels and taking a weighted
  * average or simply using the nearest texel.
  */
-typedef enum _CoglMaterialFilter
-{
+typedef enum {
   COGL_MATERIAL_FILTER_NEAREST = GL_NEAREST,
   COGL_MATERIAL_FILTER_LINEAR = GL_LINEAR,
   COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
@@ -94,9 +84,11 @@ typedef enum _CoglMaterialFilter
  *
  * Allocates and initializes a blank white material
  *
- * Returns: a handle to the new material
+ * Return value: a handle to the new material
  */
 CoglHandle cogl_material_new (void);
+
+#ifndef COGL_DISABLE_DEPRECATED
 
 /**
  * cogl_material_ref:
@@ -104,9 +96,11 @@ CoglHandle cogl_material_new (void);
  *
  * Increment the reference count for a cogl material.
  *
- * Returns: the @handle.
+ * Return value: the @handle.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.2: Use cogl_handle_ref() instead
  */
 CoglHandle cogl_material_ref (CoglHandle handle);
 
@@ -117,8 +111,12 @@ CoglHandle cogl_material_ref (CoglHandle handle);
  * Decrement the reference count for a cogl material.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void cogl_material_unref (CoglHandle handle);
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_is_material:
@@ -126,7 +124,7 @@ void cogl_material_unref (CoglHandle handle);
  *
  * Gets whether the given handle references an existing material object.
  *
- * Returns: %TRUE if the handle references a #CoglMaterial,
+ * Return value: %TRUE if the handle references a #CoglMaterial,
  *   %FALSE otherwise
  */
 gboolean cogl_is_material (CoglHandle handle);
@@ -136,7 +134,7 @@ gboolean cogl_is_material (CoglHandle handle);
  * @material: A CoglMaterial object
  * @color: The components of the color
  *
- * This is the basic color of the material, used when no lighting is enabled.
+ * Sets the basic color of the material, used when no lighting is enabled.
  *
  * Note that if you don't add any layers to the material then the color
  * will be blended unmodified with the destination; the default blend
@@ -147,7 +145,7 @@ gboolean cogl_is_material (CoglHandle handle);
  *
  * Since: 1.0
  */
-void cogl_material_set_color (CoglHandle material,
+void cogl_material_set_color (CoglHandle       material,
                               const CoglColor *color);
 
 /**
@@ -158,7 +156,7 @@ void cogl_material_set_color (CoglHandle material,
  * @blue: The blue component
  * @alpha: The alpha component
  *
- * This is the basic color of the material, used when no lighting is enabled.
+ * Sets the basic color of the material, used when no lighting is enabled.
  *
  * The default value is (0xff, 0xff, 0xff, 0xff)
  *
@@ -178,7 +176,7 @@ void cogl_material_set_color4ub (CoglHandle material,
  * @blue: The blue component
  * @alpha: The alpha component
  *
- * This is the basic color of the material, used when no lighting is enabled.
+ * Sets the basic color of the material, used when no lighting is enabled.
  *
  * The default value is (1.0, 1.0, 1.0, 1.0)
  *
@@ -193,9 +191,9 @@ void cogl_material_set_color4f (CoglHandle material,
 /**
  * cogl_material_get_color:
  * @material: A CoglMaterial object
- * @color: The location to store the color
+ * @color: (out): The location to store the color
  *
- * This retrieves the current material color.
+ * Retrieves the current material color.
  *
  * Since: 1.0
  */
@@ -207,11 +205,12 @@ void cogl_material_get_color (CoglHandle  material,
  * @material: A CoglMaterial object
  * @ambient: The components of the desired ambient color
  *
- * Exposing the standard OpenGL lighting model; this function sets
- * the material's ambient color. The ambient color affects the overall
- * color of the object. Since the diffuse color will be intense when
- * the light hits the surface directly, the ambient will most aparent
- * where the light hits at a slant.
+ * Sets the material's ambient color, in the standard OpenGL lighting
+ * model. The ambient color affects the overall color of the object.
+ *
+ * Since the diffuse color will be intense when the light hits the surface
+ * directly, the ambient will be most apparent where the light hits at a
+ * slant.
  *
  * The default value is (0.2, 0.2, 0.2, 1.0)
  *
@@ -225,7 +224,7 @@ void cogl_material_set_ambient (CoglHandle       material,
  * @material: A CoglMaterial object
  * @ambient: The location to store the ambient color
  *
- * This retrieves the materials current ambient color.
+ * Retrieves the current ambient color for @material
  *
  * Since: 1.0
  */
@@ -237,10 +236,9 @@ void cogl_material_get_ambient (CoglHandle  material,
  * @material: A CoglMaterial object
  * @diffuse: The components of the desired diffuse color
  *
- * Exposing the standard OpenGL lighting model; this function sets
- * the material's diffuse color. The diffuse color is most intense
- * where the light hits the surface directly; perpendicular to the
- * surface.
+ * Sets the material's diffuse color, in the standard OpenGL lighting
+ * model. The diffuse color is most intense where the light hits the
+ * surface directly - perpendicular to the surface.
  *
  * The default value is (0.8, 0.8, 0.8, 1.0)
  *
@@ -254,7 +252,7 @@ void cogl_material_set_diffuse (CoglHandle       material,
  * @material: A CoglMaterial object
  * @diffuse: The location to store the diffuse color
  *
- * This retrieves the materials current diffuse color.
+ * Retrieves the current diffuse color for @material
  *
  * Since: 1.0
  */
@@ -266,10 +264,11 @@ void cogl_material_get_diffuse (CoglHandle  material,
  * @material: A CoglMaterial object
  * @color: The components of the desired ambient and diffuse colors
  *
- * This is a convenience for setting the diffuse and ambient color
- * of the material at the same time.
+ * Conveniently sets the diffuse and ambient color of @material at the same
+ * time. See cogl_material_set_ambient() and cogl_material_set_diffuse().
  *
  * The default ambient color is (0.2, 0.2, 0.2, 1.0)
+ *
  * The default diffuse color is (0.8, 0.8, 0.8, 1.0)
  *
  * Since: 1.0
@@ -282,10 +281,9 @@ void cogl_material_set_ambient_and_diffuse (CoglHandle       material,
  * @material: A CoglMaterial object
  * @specular: The components of the desired specular color
  *
- * Exposing the standard OpenGL lighting model; this function sets
- * the material's specular color. The intensity of the specular color
- * depends on the viewport position, and is brightest along the lines
- * of reflection.
+ * Sets the material's specular color, in the standard OpenGL lighting
+ * model. The intensity of the specular color depends on the viewport
+ * position, and is brightest along the lines of reflection.
  *
  * The default value is (0.0, 0.0, 0.0, 1.0)
  *
@@ -299,7 +297,7 @@ void cogl_material_set_specular (CoglHandle       material,
  * @material: A CoglMaterial object
  * @specular: The location to store the specular color
  *
- * This retrieves the materials current specular color.
+ * Retrieves the materials current specular color.
  *
  * Since: 1.0
  */
@@ -311,9 +309,9 @@ void cogl_material_get_specular (CoglHandle  material,
  * @material: A CoglMaterial object
  * @shininess: The desired shininess; range: [0.0, 1.0]
  *
- * This function sets the materials shininess which determines how
- * specular highlights are calculated. A higher shininess will produce
- * smaller brigher highlights.
+ * Sets the materials shininess, in the standard OpenGL lighting model,
+ * which determines how specular highlights are calculated. A higher
+ * @shininess will produce smaller brigher highlights.
  *
  * The default value is 0.0
  *
@@ -325,7 +323,7 @@ void cogl_material_set_shininess (CoglHandle material,
  * cogl_material_get_shininess:
  * @material: A CoglMaterial object
  *
- * This retrieves the materials current emission color.
+ * Retrieves the materials current emission color.
  *
  * Return value: The materials current shininess value
  *
@@ -338,9 +336,9 @@ float cogl_material_get_shininess (CoglHandle material);
  * @material: A CoglMaterial object
  * @emission: The components of the desired emissive color
  *
- * Exposing the standard OpenGL lighting model; this function sets
- * the material's emissive color. It will look like the surface is
- * a light source emitting this color.
+ * Sets the material's emissive color, in the standard OpenGL lighting
+ * model. It will look like the surface is a light source emitting this
+ * color.
  *
  * The default value is (0.0, 0.0, 0.0, 1.0)
  *
@@ -354,7 +352,7 @@ void cogl_material_set_emission (CoglHandle       material,
  * @material: A CoglMaterial object
  * @emission: The location to store the emission color
  *
- * This retrieves the materials current emission color.
+ * Retrieves the materials current emission color.
  *
  * Since: 1.0
  */
@@ -365,23 +363,17 @@ void cogl_material_get_emission (CoglHandle material,
  * CoglMaterialAlphaFunc:
  * @COGL_MATERIAL_ALPHA_FUNC_NEVER: Never let the fragment through.
  * @COGL_MATERIAL_ALPHA_FUNC_LESS: Let the fragment through if the incoming
- *                                 alpha value is less than the reference alpha
- *                                 value.
+ *   alpha value is less than the reference alpha value
  * @COGL_MATERIAL_ALPHA_FUNC_EQUAL: Let the fragment through if the incoming
- *                                  alpha value equals the reference alpha
- *                                  value.
+ *   alpha value equals the reference alpha value
  * @COGL_MATERIAL_ALPHA_FUNC_LEQUAL: Let the fragment through if the incoming
- *                                   alpha value is less than or equal to the
- *                                   reference alpha value.
+ *   alpha value is less than or equal to the reference alpha value
  * @COGL_MATERIAL_ALPHA_FUNC_GREATER: Let the fragment through if the incoming
- *                                    alpha value is greater than the reference
- *                                    alpha value.
+ *   alpha value is greater than the reference alpha value
  * @COGL_MATERIAL_ALPHA_FUNC_NOTEQUAL: Let the fragment through if the incoming
- *                                     alpha value does not equal the reference
- *                                     alpha value.
+ *   alpha value does not equal the reference alpha value
  * @COGL_MATERIAL_ALPHA_FUNC_GEQUAL: Let the fragment through if the incoming
- *                                   alpha value is greater than or equal to the
- *                                   reference alpha value.
+ *   alpha value is greater than or equal to the reference alpha value.
  * @COGL_MATERIAL_ALPHA_FUNC_ALWAYS: Always let the fragment through.
  *
  * Alpha testing happens before blending primitives with the framebuffer and
@@ -389,8 +381,7 @@ void cogl_material_get_emission (CoglHandle material,
  * incoming alpha value and a reference alpha value. The #CoglMaterialAlphaFunc
  * determines how the comparison is done.
  */
-typedef enum _CoglMaterialAlphaFunc
-{
+typedef enum {
   COGL_MATERIAL_ALPHA_FUNC_NEVER    = GL_NEVER,
   COGL_MATERIAL_ALPHA_FUNC_LESS	    = GL_LESS,
   COGL_MATERIAL_ALPHA_FUNC_EQUAL    = GL_EQUAL,
@@ -406,7 +397,7 @@ typedef enum _CoglMaterialAlphaFunc
  * @material: A CoglMaterial object
  * @alpha_func: A @CoglMaterialAlphaFunc constant
  * @alpha_reference: A reference point that the chosen alpha function uses
- *                   to compare incoming fragments to.
+ *   to compare incoming fragments to.
  *
  * Before a primitive is blended with the framebuffer, it goes through an
  * alpha test stage which lets you discard fragments based on the current
@@ -414,7 +405,7 @@ typedef enum _CoglMaterialAlphaFunc
  * the alpha channel, and thus determine which fragments are discarded
  * and which continue on to the blending stage.
  *
- * The default is COGL_MATERIAL_ALPHA_FUNC_ALWAYS
+ * The default is %COGL_MATERIAL_ALPHA_FUNC_ALWAYS
  *
  * Since: 1.0
  */
@@ -426,16 +417,16 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * cogl_material_set_blend:
  * @material: A CoglMaterial object
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
- *                describing the desired blend function.
- * @error: A GError that may report lack of driver support if you give
- *         separate blend string statements for the alpha channel and RGB
- *         channels since some drivers or backends such as GLES 1.1 dont
- *         support this. May be %NULL, in which case a warning will be
- *         printed out if an error is encountered.
+ *   describing the desired blend function.
+ * @error: return location for a #GError that may report lack of driver
+ *   support if you give separate blend string statements for the alpha
+ *   channel and RGB channels since some drivers, or backends such as
+ *   GLES 1.1, don't support this feature. May be %NULL, in which case a
+ *   warning will be printed out using GLib's logging facilities if an
+ *   error is encountered.
  *
- * If not already familiar; please refer
- * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
- * strings are and there syntax.
+ * If not already familiar; please refer <link linkend="cogl-Blend-Strings">here</link>
+ * for an overview of what blend strings are, and their syntax.
  *
  * Blending occurs after the alpha test function, and combines fragments with
  * the framebuffer.
@@ -443,19 +434,20 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * Currently the only blend function Cogl exposes is ADD(). So any valid
  * blend statements will be of the form:
  *
- * <programlisting>
- * &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
- * </programlisting>
+ * |[
+ *   &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
+ * ]|
  *
- * <warning>The brackets around blend factors are currently not optional!</warning>
+ * <warning>The brackets around blend factors are currently not
+ * optional!</warning>
  *
  * This is the list of source-names usable as blend factors:
  * <itemizedlist>
- * <listitem>SRC_COLOR: The color of the in comming fragment</listitem>
- * <listitem>DST_COLOR: The color of the framebuffer</listitem>
- * <listitem>
- * CONSTANT: The constant set via cogl_material_set_blend_constant()</listitem>
+ *   <listitem><para>SRC_COLOR: The color of the in comming fragment</para></listitem>
+ *   <listitem><para>DST_COLOR: The color of the framebuffer</para></listitem>
+ *   <listitem><para>CONSTANT: The constant set via cogl_material_set_blend_constant()</para></listitem>
  * </itemizedlist>
+ *
  * The source names can be used according to the
  * <link linkend="cogl-Blend-String-syntax">color-source and factor syntax</link>,
  * so for example "(1-SRC_COLOR[A])" would be a valid factor, as would
@@ -463,37 +455,45 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  *
  * These can also be used as factors:
  * <itemizedlist>
- * <listitem>0: (0, 0, 0, 0)</listitem>
- * <listitem>1: (1, 1, 1, 1)</listitem>
- * <listitem>SRC_ALPHA_SATURATE_FACTOR: (f,f,f,1)
- * where f=MIN(SRC_COLOR[A],1-DST_COLOR[A])</listitem>
+ *   <listitem>0: (0, 0, 0, 0)</listitem>
+ *   <listitem>1: (1, 1, 1, 1)</listitem>
+ *   <listitem>SRC_ALPHA_SATURATE_FACTOR: (f,f,f,1) where f = MIN(SRC_COLOR[A],1-DST_COLOR[A])</listitem>
  * </itemizedlist>
- * <para>
- * Remember; all color components are normalized to the range [0, 1] before
- * computing the result of blending.
- * </para>
- * <section>
- * <title>Examples</title>
- * Blend a non-premultiplied source over a destination with
- * premultiplied alpha:
- * <programlisting>
+ *
+ * <note>Remember; all color components are normalized to the range [0, 1]
+ * before computing the result of blending.</note>
+ *
+ * <example id="cogl-Blend-Strings-blend-unpremul">
+ *   <title>Blend Strings/1</title>
+ *   <para>Blend a non-premultiplied source over a destination with
+ *   premultiplied alpha:</para>
+ *   <programlisting>
  * "RGB = ADD(SRC_COLOR*(SRC_COLOR[A]), DST_COLOR*(1-SRC_COLOR[A]))"
  * "A   = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
- * </programlisting>
- * Blend a premultiplied source over a destination with premultiplied alpha:
- * <programlisting>
+ *   </programlisting>
+ * </example>
+ *
+ * <example id="cogl-Blend-Strings-blend-premul">
+ *   <title>Blend Strings/2</title>
+ *   <para>Blend a premultiplied source over a destination with
+ *   premultiplied alpha</para>
+ *   <programlisting>
  * "RGBA = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
- * </programlisting>
- * </section>
+ *   </programlisting>
+ * </example>
  *
  * The default blend string is:
- *  "RGBA = ADD (SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * |[
+ *    RGBA = ADD (SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))
+ * ]|
+ *
  * That gives normal alpha-blending when the calculated color for the material
  * is in premultiplied form.
  *
- * Returns: TRUE if the blend string was successfully parsed, and the described
- *          blending is supported by the underlying driver/hardware. If there
- *          was an error, it returns FALSE.
+ * Return value: %TRUE if the blend string was successfully parsed, and the
+ *   described blending is supported by the underlying driver/hardware. If
+ *   there was an error, %FALSE is returned and @error is set accordingly (if
+ *   present).
  *
  * Since: 1.0
  */
@@ -538,7 +538,7 @@ void cogl_material_set_layer (CoglHandle material,
 			      CoglHandle texture);
 
 /**
- * cogl_material_add_texture:
+ * cogl_material_remove_layer:
  * @material: A CoglMaterial object
  * @layer_index: Specifies the layer you want to remove
  *
@@ -553,10 +553,10 @@ void cogl_material_remove_layer (CoglHandle material,
  * @material: A CoglMaterial object
  * @layer_index: Specifies the layer you want define a combine function for
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
- *                describing the desired texture combine function.
- * @error: A #GError that may report parse errors or lack of GPU/driver support.
- *         May be %NULL, in which case a warning will be printed out if an
- *         error is encountered.
+ *    describing the desired texture combine function.
+ * @error: A #GError that may report parse errors or lack of GPU/driver
+ *   support. May be %NULL, in which case a warning will be printed out if an
+ *   error is encountered.
  *
  * If not already familiar; you can refer
  * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
@@ -564,74 +564,79 @@ void cogl_material_remove_layer (CoglHandle material,
  *
  * These are all the functions available for texture combining:
  * <itemizedlist>
- * <listitem>REPLACE(arg0) = arg0</listitem>
- * <listitem>MODULATE(arg0, arg1) = arg0 x arg1</listitem>
- * <listitem>ADD(arg0, arg1) = arg0 + arg1</listitem>
- * <listitem>ADD_SIGNED(arg0, arg1) = arg0 + arg1 - 0.5</listitem>
- * <listitem>INTERPOLATE(arg0, arg1, arg2) =
- * arg0 x arg2 + arg1 x (1 - arg2)</listitem>
- * <listitem>SUBTRACT(arg0, arg1) = arg0 - arg1</listitem>
- * <listitem>
- * DOT3_RGB(arg0, arg1) =
- * <programlisting>
- * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
- *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
- *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
- * </programlisting>
- * </listitem>
- * <listitem>DOT3_RGBA(arg0, arg1) =
- * <programlisting>
- * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
- *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
- *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
- * </programlisting>
- * </listitem>
+ *   <listitem>REPLACE(arg0) = arg0</listitem>
+ *   <listitem>MODULATE(arg0, arg1) = arg0 x arg1</listitem>
+ *   <listitem>ADD(arg0, arg1) = arg0 + arg1</listitem>
+ *   <listitem>ADD_SIGNED(arg0, arg1) = arg0 + arg1 - 0.5</listitem>
+ *   <listitem>INTERPOLATE(arg0, arg1, arg2) = arg0 x arg2 + arg1 x (1 - arg2)</listitem>
+ *   <listitem>SUBTRACT(arg0, arg1) = arg0 - arg1</listitem>
+ *   <listitem>
+ *     <programlisting>
+ *  DOT3_RGB(arg0, arg1) = 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *                              (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *                              (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+ *     </programlisting>
+ *   </listitem>
+ *   <listitem>
+ *     <programlisting>
+ *  DOT3_RGBA(arg0, arg1) = 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *                               (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *                               (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+ *     </programlisting>
+ *   </listitem>
  * </itemizedlist>
  *
  * Refer to the
  * <link linkend="cogl-Blend-String-syntax">color-source syntax</link> for
  * describing the arguments. The valid source names for texture combining
  * are:
- * <itemizedlist>
- * <listitem>
- * TEXTURE: Use the color from the current texture layer
- * </listitem>
- * <listitem>
- * TEXTURE_0, TEXTURE_1, etc: Use the color from the specified texture layer
- * </listitem>
- * <listitem>
- * CONSTANT: Use the color from the constant given with
- * cogl_material_set_layer_constant()
- * </listitem>
- * <listitem>
- * PRIMARY: Use the color of the material as set with cogl_material_set_color()
- * </listitem>
- * <listitem>
- * PREVIOUS: Either use the texture color from the previous layer, or if this
- * is layer 0, use the color of the material as set with
- * cogl_material_set_color()
- * </listitem>
- * </itemizedlist>
- * <refsect2>
- * <title>Example</title>
- * This is effectively what the default blending is:
- * |[
+ * <variablelist>
+ *   <varlistentry>
+ *     <term>TEXTURE</term>
+ *     <listitem>Use the color from the current texture layer</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>TEXTURE_0, TEXTURE_1, etc</term>
+ *     <listitem>Use the color from the specified texture layer</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>CONSTANT</term>
+ *     <listitem>Use the color from the constant given with
+ *     cogl_material_set_layer_constant()</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>PRIMARY</term>
+ *     <listitem>Use the color of the material as set with
+ *     cogl_material_set_color()</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>PREVIOUS</term>
+ *     <listitem>Either use the texture color from the previous layer, or
+ *     if this is layer 0, use the color of the material as set with
+ *     cogl_material_set_color()</listitem>
+ *   </varlistentry>
+ * </variablelist>
+ *
+ * <refsect2 id="cogl-Layer-Combine-Examples">
+ *   <title>Layer Combine Examples</title>
+ *   <para>This is effectively what the default blending is:</para>
+ *   <informalexample><programlisting>
  *   RGBA = MODULATE (PREVIOUS, TEXTURE)
- * ]|
- * This could be used to cross-fade between two images, using the alpha
- * component of a constant as the interpolator. The constant color
- * is given by calling cogl_material_set_layer_constant.
- * |[
+ *   </programlisting></informalexample>
+ *   <para>This could be used to cross-fade between two images, using
+ *   the alpha component of a constant as the interpolator. The constant
+ *   color is given by calling cogl_material_set_layer_constant.</para>
+ *   <informalexample><programlisting>
  *   RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
- * ]|
+ *   </programlisting></informalexample>
  * </refsect2>
  *
  * <note>You can't give a multiplication factor for arguments as you can
  * with blending.</note>
  *
- * Returns: %TRUE if the blend string was successfully parsed, and the
+ * Return value: %TRUE if the blend string was successfully parsed, and the
  *   described texture combining is supported by the underlying driver and
- *   or hardware. If there was an error, it returns FALSE.
+ *   or hardware. On failure, %FALSE is returned and @error is set
  *
  * Since: 1.0
  */
@@ -677,7 +682,7 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
  * This function lets you access a materials internal list of layers
  * for iteration.
  *
- * Returns: (element-type Handle) (transfer none): A list of
+ * Return value: (element-type Handle) (transfer none): A list of
  *   #CoglHandle<!-- -->'s that can be passed to the  cogl_material_layer_*
  *   functions. The list is owned by COGL and it  should not be modified or
  *   freed
@@ -690,7 +695,7 @@ G_CONST_RETURN GList *cogl_material_get_layers (CoglHandle material);
  *
  * Retrieves the number of layers defined for the given @material
  *
- * Returns: the number of layers
+ * Return value: the number of layers
  *
  * Since: 1.0
  */
@@ -699,20 +704,21 @@ int cogl_material_get_n_layers (CoglHandle material);
 /**
  * CoglMaterialLayerType:
  * @COGL_MATERIAL_LAYER_TYPE_TEXTURE: The layer represents a
- * <link linkend="cogl-Textures">Cogl texture</link>
+ *   <link linkend="cogl-Textures">texture</link>
  *
  * Available types of layers for a #CoglMaterial. This enumeration
  * might be expanded in later versions.
  *
  * Since: 1.0
  */
-typedef enum { /*< prefix=COGL_MATERIAL_LAYER_TYPE >*/
+typedef enum {
   COGL_MATERIAL_LAYER_TYPE_TEXTURE
 } CoglMaterialLayerType;
 
+
 /**
  * cogl_material_layer_get_type:
- * @layer_handle: A #CoglHandle for a material layer
+ * @layer: A #CoglHandle for a material layer
  *
  * Retrieves the type of the layer
  *
@@ -721,48 +727,49 @@ typedef enum { /*< prefix=COGL_MATERIAL_LAYER_TYPE >*/
  * based layers in the future, you should write code that checks the type
  * first.
  *
- * Returns: the type of the layer
+ * Return value: the type of the layer
  */
-CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
+CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_texture:
- * @layer_handle: A #CoglHandle for a material layer
+ * @layer: A #CoglHandle for a material layer
  *
- * This lets you extract a CoglTexture handle for a specific layer.
+ * Extracts a texture handle for a specific layer.
  *
- * <note>In the future, we may support purely GLSL based layers which will
- * likely return %COGL_INVALID_HANDLE if you try to get the texture.
- * Considering this, you can call cogl_material_layer_get_type first,
- * to check it is of type %COGL_MATERIAL_LAYER_TYPE_TEXTURE.</note>
+ * <note>In the future Cogl may support purely GLSL based layers; for those
+ * layers this function which will likely return %COGL_INVALID_HANDLE if you
+ * try to get the texture handle from them. Considering this scenario, you
+ * should call cogl_material_layer_get_type() first in order check it is of
+ * type %COGL_MATERIAL_LAYER_TYPE_TEXTURE before calling this function.</note>
  *
- * Returns: a #CoglHandle for the texture inside @layer_handle
+ * Return value: a #CoglHandle for the texture inside the layer
  */
-CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
+CoglHandle cogl_material_layer_get_texture (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_min_filter:
- * @layer_handle: a #CoglHandle for a material layer
+ * @layer: a #CoglHandle for a material layer
  *
- * Query the currently set downscaling filter for a cogl material layer.
+ * Queries the currently set downscaling filter for a material layer
  *
- * Returns: the current downscaling filter for a cogl material layer.
+ * Return value: the current downscaling filter
  */
-CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer_handle);
+CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_mag_filter:
- * @layer_handle: a #CoglHandle for a material layer
+ * @layer: a #CoglHandle for a material layer
  *
- * Query the currently set downscaling filter for a cogl material layer.
+ * Queries the currently set downscaling filter for a material later
  *
- * Returns: the current downscaling filter for a cogl material layer.
+ * Return value: the current downscaling filter
  */
-CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer_handle);
+CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer);
 
 /**
  * cogl_material_set_layer_filters:
- * @handle: a #CoglHandle to a material.
+ * @material: a #CoglHandle to a material.
  * @layer_index: the layer number to change.
  * @min_filter: the filter used when scaling a texture down.
  * @mag_filter: the filter used when magnifying a texture.
@@ -770,7 +777,7 @@ CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer_handle);
  * Changes the decimation and interpolation filters used when a texture is
  * drawn at other scales than 100%.
  */
-void cogl_material_set_layer_filters (CoglHandle         handle,
+void cogl_material_set_layer_filters (CoglHandle         material,
                                       gint               layer_index,
                                       CoglMaterialFilter min_filter,
                                       CoglMaterialFilter mag_filter);
@@ -778,4 +785,3 @@ void cogl_material_set_layer_filters (CoglHandle         handle,
 G_END_DECLS
 
 #endif /* __COGL_MATERIAL_H__ */
-
