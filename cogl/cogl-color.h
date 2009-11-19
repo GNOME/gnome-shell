@@ -254,7 +254,8 @@ void cogl_color_premultiply (CoglColor *color);
  *
  * Since: 1.0
  */
-gboolean  cogl_color_equal (gconstpointer v1, gconstpointer v2);
+gboolean cogl_color_equal (gconstpointer v1,
+                           gconstpointer v2);
 
 G_END_DECLS
 
