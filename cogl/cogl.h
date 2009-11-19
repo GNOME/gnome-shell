@@ -477,7 +477,7 @@ void            cogl_clear                    (const CoglColor *color,
  * and a back facing material, in which case this function will set both to the
  * same.
  *
- * Since 1.0
+ * Since: 1.0
  */
 void            cogl_set_source               (CoglHandle material);
 
@@ -561,7 +561,7 @@ void            cogl_set_source_color4f       (float red,
  * cogl_set_source (material);
  * </programlisting>
  *
- * Since 1.0
+ * Since: 1.0
  */
 void            cogl_set_source_texture       (CoglHandle texture_handle);
 
