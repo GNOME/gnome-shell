@@ -410,14 +410,15 @@ event_translate (ClutterBackend *backend,
                  ClutterEvent   *event,
                  XEvent         *xevent)
 {
-  ClutterBackendX11  *backend_x11;
-  ClutterStageX11    *stage_x11;
-  ClutterStage       *stage;
+  ClutterBackendX11 *backend_x11;
+  ClutterStageX11 *stage_x11;
+  ClutterStage *stage;
   ClutterStageWindow *impl;
-  gboolean            res, not_yet_handled = FALSE;
-  Window              xwindow, stage_xwindow;
+  gboolean res, not_yet_handled = FALSE;
+  Window xwindow, stage_xwindow;
+  ClutterDeviceManager *manager;
 
-  backend_x11    = CLUTTER_BACKEND_X11 (backend);
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   xwindow = xevent->xany.window;
 
@@ -458,9 +459,11 @@ event_translate (ClutterBackend *backend,
   if (stage == NULL)
       return FALSE;
 
-  impl           = _clutter_stage_get_window (stage);
-  stage_x11      = CLUTTER_STAGE_X11 (impl);
-  stage_xwindow  = xwindow; /* clutter_x11_get_stage_window (stage); */
+  manager = clutter_device_manager_get_default ();
+
+  impl = _clutter_stage_get_window (stage);
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+  stage_xwindow = xwindow; /* clutter_x11_get_stage_window (stage); */
 
   event->any.stage = stage;
 
@@ -621,6 +624,8 @@ event_translate (ClutterBackend *backend,
 
     case KeyPress:
       event->key.type = event->type = CLUTTER_KEY_PRESS;
+      /* default key device if no XInput support is defined */
+      event->key.device = clutter_device_manager_get_device (manager, 1);
       translate_key_event (backend, event, xevent);
 
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
@@ -654,6 +659,8 @@ event_translate (ClutterBackend *backend,
         }
 
       event->key.type = event->type = CLUTTER_KEY_RELEASE;
+      /* default key device if no XInput support is defined */
+      event->key.device = clutter_device_manager_get_device (manager, 1);
       translate_key_event (backend, event, xevent);
       break;
 
@@ -696,6 +703,8 @@ event_translate (ClutterBackend *backend,
                   event->scroll.x = xevent->xbutton.x;
                   event->scroll.y = xevent->xbutton.y;
                   event->scroll.modifier_state = xevent->xbutton.state;
+                  event->scroll.device =
+                    clutter_device_manager_get_device (manager, 0);
                   break;
 
                 default:
@@ -705,6 +714,8 @@ event_translate (ClutterBackend *backend,
                   event->button.y = xevent->xbutton.y;
                   event->button.modifier_state = xevent->xbutton.state;
                   event->button.button = xevent->xbutton.button;
+                  event->button.device =
+                    clutter_device_manager_get_device (manager, 0);
                   break;
                 }
 
@@ -728,6 +739,8 @@ event_translate (ClutterBackend *backend,
               event->button.y = xevent->xbutton.y;
               event->button.modifier_state = xevent->xbutton.state;
               event->button.button = xevent->xbutton.button;
+              event->button.device =
+                clutter_device_manager_get_device (manager, 0);
               break;
               
             case MotionNotify:
@@ -736,6 +749,8 @@ event_translate (ClutterBackend *backend,
               event->motion.x = xevent->xmotion.x;
               event->motion.y = xevent->xmotion.y;
               event->motion.modifier_state = xevent->xmotion.state;
+              event->motion.device =
+                clutter_device_manager_get_device (manager, 0);
               break;
 
             case EnterNotify:
@@ -746,6 +761,8 @@ event_translate (ClutterBackend *backend,
               event->motion.x = xevent->xcrossing.x;
               event->motion.y = xevent->xcrossing.y;
               event->motion.modifier_state = xevent->xcrossing.state;
+              event->motion.device =
+                clutter_device_manager_get_device (manager, 0);
               break;
 
             case LeaveNotify:
@@ -753,6 +770,8 @@ event_translate (ClutterBackend *backend,
               event->crossing.time = xevent->xcrossing.time;
               event->crossing.x = xevent->xcrossing.x;
               event->crossing.y = xevent->xcrossing.y;
+              event->motion.device =
+                clutter_device_manager_get_device (manager, 0);
               break;
 
             default:
