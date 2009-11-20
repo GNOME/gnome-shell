@@ -43,6 +43,7 @@ test_devices_main (int argc, char **argv)
   ClutterActor *stage;
   TestDevicesApp *app;
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  ClutterDeviceManager *manager;
   const GSList *stage_devices, *l;
 
   /* force enabling X11 support */
@@ -63,10 +64,11 @@ test_devices_main (int argc, char **argv)
 
   clutter_actor_show_all (stage);
 
-  stage_devices = clutter_x11_get_input_devices ();
+  manager = clutter_device_manager_get_default ();
+  stage_devices = clutter_device_manager_peek_devices (manager);
 
   if (stage_devices == NULL)
-    g_error ("No extended input devices found.");
+    g_error ("No input devices found.");
 
   for (l = stage_devices; l != NULL; l = l->next)
     {
@@ -75,7 +77,7 @@ test_devices_main (int argc, char **argv)
       ClutterActor *hand = NULL;
 
       device_type = clutter_input_device_get_device_type (device);
-      if (device_type  == CLUTTER_POINTER_DEVICE)
+      if (device_type == CLUTTER_POINTER_DEVICE)
         {
           g_print ("got a pointer device with id %d...\n",
                    clutter_input_device_get_device_id (device));
