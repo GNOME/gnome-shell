@@ -297,6 +297,7 @@ meta_bell_notify (MetaDisplay *display,
       ca_proplist_create (&p);
       ca_proplist_sets (p, CA_PROP_EVENT_ID, "bell-window-system");
       ca_proplist_sets (p, CA_PROP_EVENT_DESCRIPTION, _("Bell event"));
+      ca_proplist_sets (p, CA_PROP_CANBERRA_CACHE_CONTROL, "permanent");
 
       window = meta_display_lookup_x_window (display, xkb_bell_event->window);
       if (!window && (display->focus_window) && (display->focus_window->frame))
