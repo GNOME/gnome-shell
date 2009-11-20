@@ -153,9 +153,6 @@ struct _ClutterMainContext
   PangoContext     *pango_context;      /* Global Pango context */
   CoglPangoFontMap *font_map;           /* Global font map */
 
-  GSList              *input_devices;   /* For extra input devices, i.e
-                                           MultiTouch */
-
   ClutterEvent *current_event;
   guint32 last_event_time;
 

@@ -125,12 +125,6 @@ clutter_backend_x11_get_features (ClutterBackend *backend);
 XVisualInfo *
 clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11);
 
-void
-_clutter_x11_register_xinput (void);
-
-void
-_clutter_x11_unregister_xinput (void);
-
 ClutterInputDevice *
 _clutter_x11_get_device_for_xid (XID id);
 

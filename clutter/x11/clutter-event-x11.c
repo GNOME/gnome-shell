@@ -696,8 +696,8 @@ event_translate (ClutterBackend *backend,
                   event->scroll.x = xevent->xbutton.x;
                   event->scroll.y = xevent->xbutton.y;
                   event->scroll.modifier_state = xevent->xbutton.state;
-                  
                   break;
+
                 default:
                   event->button.type = event->type = CLUTTER_BUTTON_PRESS;
                   event->button.time = xevent->xbutton.time;
@@ -705,10 +705,9 @@ event_translate (ClutterBackend *backend,
                   event->button.y = xevent->xbutton.y;
                   event->button.modifier_state = xevent->xbutton.state;
                   event->button.button = xevent->xbutton.button;
-                  
                   break;
                 }
-              
+
               set_user_time (backend_x11, &xwindow, event->button.time);
               break;
               

@@ -46,15 +46,17 @@
 #include <X11/extensions/XInput.h>
 #endif
 
+#include "cogl/cogl.h"
+
+#include "../clutter-debug.h"
+#include "../clutter-device-manager.h"
 #include "../clutter-event.h"
 #include "../clutter-main.h"
-#include "../clutter-debug.h"
 #include "../clutter-private.h"
-
-#include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 
+/* a specific X11 input device */
 struct _ClutterX11XInputDevice
 {
   ClutterInputDevice device;
@@ -65,11 +67,6 @@ struct _ClutterX11XInputDevice
   int                num_events;
 #endif
 };
-
-#ifdef HAVE_XINPUT
-void  _clutter_x11_register_xinput ();
-#endif
-
 
 /* atoms; remember to add the code that assigns the atom value to
  * the member of the ClutterBackendX11 structure if you add an
@@ -108,6 +105,222 @@ static gboolean clutter_synchronise = FALSE;
 /* X error trap */
 static int TrappedErrorCode = 0;
 static int (* old_error_handler) (Display *, XErrorEvent *);
+
+static void
+clutter_x11_register_input_devices (ClutterBackendX11 *backend)
+{
+  ClutterDeviceManager *manager;
+  gboolean have_an_xpointer = FALSE;
+#ifdef HAVE_XINPUT
+  XDeviceInfo *x_devices = NULL;
+  int res, opcode, event, error;
+  int i, n_devices;
+  GSList *devices = NULL;
+#endif /* HAVE_XINPUT */
+
+  manager = clutter_device_manager_get_default ();
+
+  if (!clutter_enable_xinput)
+    {
+      CLUTTER_NOTE (BACKEND, "XInput support not enabled");
+      goto default_device;
+    }
+
+#ifdef HAVE_XINPUT
+  res = XQueryExtension (backend->xdpy, "XInputExtension",
+                         &opcode,
+                         &event,
+                         &error);
+  if (!res)
+    {
+      CLUTTER_NOTE (BACKEND, "No XInput extension available");
+      goto default_device;
+    }
+
+  x_devices = XListInputDevices (backend->xdpy, &n_devices);
+  if (n_devices == 0)
+    {
+      CLUTTER_NOTE (BACKEND, "No XInput devices found");
+      goto default_device;
+    }
+
+  for (i = 0; i < n_devices; i++)
+    {
+      XDeviceInfo *info = x_devices + i;
+
+      CLUTTER_NOTE (BACKEND,
+                    "Considering device %li with type %d, %d of %d",
+                    info->id,
+                    info->use,
+                    i, n_devices);
+
+      /* we only want 'raw' devices, not virtual ones */
+      if (info->use == IsXExtensionPointer ||
+       /* info->use == IsXExtensionKeyboard || XInput1 is broken */
+          info->use == IsXExtensionDevice)
+        {
+          ClutterInputDevice *device;
+          XDevice *x_device;
+          int n_events = 0;
+          int j;
+
+          clutter_x11_trap_x_errors ();
+          x_device = XOpenDevice (backend->xdpy, info->id);
+          if (clutter_x11_untrap_x_errors () || x_device == NULL)
+            {
+              CLUTTER_NOTE (BACKEND, "Unable to open device %li", info->id);
+              continue;
+            }
+
+          device = g_slice_new0 (ClutterX11XInputDevice);
+          device->device.id = info->id;
+          device->device.click_count = 0;
+          device->device.previous_time = CLUTTER_CURRENT_TIME;
+          device->device.previous_x = -1;
+          device->device.previous_y = -1;
+          device->device.previous_button_number = -1;
+
+          switch (info->use)
+            {
+            case IsXExtensionPointer:
+              device->device.device_type = CLUTTER_POINTER_DEVICE;
+              have_an_xpointer = TRUE;
+              break;
+
+#if 0
+            /* XInput1 is broken for keyboards */
+            case IsXExtensionKeyboard:
+              device->device.device_type = CLUTTER_KEYBOARD_DEVICE;
+              break;
+#endif
+
+            case IsXExtensionDevice:
+              device->device.device_type = CLUTTER_EXTENSION_DEVICE;
+              break;
+            }
+
+          device->xdevice = x_device;
+
+          CLUTTER_NOTE (BACKEND, "Registering XINPUT device with XID: %li",
+                        x_device->device_id);
+
+          /* We must go through all the classes supported by this device and
+           * register the appropriate events we want. Each class only appears
+           * once. We need to store the types with the stage since they are
+           * created dynamically by the server. They are not device specific.
+           */
+          for (j = 0; j < xdevice->num_classes; j++)
+            {
+              XInputClassInfo *xclass_info = xdevice->classes + j;
+
+              switch (xclass_info->input_class)
+                {
+#if 0
+                /* XInput 1.x is broken for keyboards: */
+                case KeyClass:
+                  DeviceKeyPress (xdevice,
+                                  x11b->event_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT],
+                                  device->xevent_list [num_events]);
+                  n_events++;
+
+                  DeviceKeyRelease (xdevice,
+                                    x11b->event_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT],
+                                    device->xevent_list [num_events]);
+                  n_events++;
+                  break;
+#endif
+
+                case ButtonClass:
+                  DeviceButtonPress (xdevice,
+                                     x11b->event_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT],
+                                     device->xevent_list [num_events]);
+                  n_events++;
+
+                  DeviceButtonRelease (xdevice,
+                                       x11b->event_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT],
+                                       device->xevent_list [num_events]);
+                  n_events++;
+                  break;
+
+                case ValuatorClass:
+                  DeviceMotionNotify (xdevice,
+                                      x11b->event_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT],
+                                      device->xevent_list [num_events]);
+                  n_events++;
+                  break;
+                }
+            }
+
+          if (info->use == IsXExtensionPointer && num_events > 0)
+            have_an_xpointer = TRUE;
+
+          device->num_events = n_events;
+
+          /* add it to a temporary list; we don't add the device
+           * straight to the device manager because the XInput
+           * initialization might still fail
+           */
+          devices = g_slist_prepend (devices, device);
+        }
+    }
+
+  XFree (x_devices);
+
+  devices = g_slist_reverse (devices);
+
+  if (have_an_xpointer)
+    {
+      GSList *l;
+
+      for (l = devices; l != NULL; l = l->next)
+        _clutter_device_manager_add_device (manager, l->data);
+    }
+  else
+    {
+      GSList *l;
+
+      g_warning ("No usable XInput pointer devices found");
+
+      for (l = devices; l != NULL; l = l->next)
+        g_slice_free (ClutterX11XInputDevice, l->data);
+    }
+
+  g_slist_free (devices);
+
+  backend->have_xinput = TRUE;
+#endif /* HAVE_XINPUT */
+
+default_device:
+  /* fallback code in case:
+   *
+   *  - we do not have XInput support compiled in
+   *  - we do not have XInput support enabled
+   *  - we do not have the XInput extension
+   *  - we do not have a XInput pointer device
+   *
+   * we register two default devices, one for the pointer
+   * and one for the keyboard
+   */
+  if (!have_an_xpointer)
+    {
+      ClutterInputDevice *d;
+
+      d = g_slice_new0 (ClutterInputDevice);
+      d->id = 0;
+      d->device_type = CLUTTER_POINTER_DEVICE;
+      d->click_count = 0;
+      d->previous_time = CLUTTER_CURRENT_TIME;
+      d->previous_x = -1;
+      d->previous_y = -1;
+      d->previous_button_number = -1;
+      _clutter_device_manager_add_device (manager, d);
+
+      d = g_slice_new0 (ClutterInputDevice);
+      d->id = 1;
+      d->device_type = CLUTTER_KEYBOARD_DEVICE;
+      _clutter_device_manager_add_device (manager, d);
+    }
+}
 
 gboolean
 clutter_backend_x11_pre_parse (ClutterBackend  *backend,
@@ -199,9 +412,8 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       clutter_backend_set_resolution (backend, dpi);
 
-#ifdef HAVE_XINPUT
-      _clutter_x11_register_xinput ();
-#endif
+      /* register input devices */
+      clutter_x11_register_input_devices (backend_x11);
 
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
@@ -645,233 +857,26 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 }
 
 void
-_clutter_x11_register_xinput ()
-{
-#ifdef HAVE_XINPUT
-  XDeviceInfo *xdevices = NULL;
-  XDeviceInfo *info = NULL;
-
-  XDevice *xdevice = NULL;
-
-  XInputClassInfo *xclass_info = NULL;
-
-  gint opcode, event, error;
-  gint res;
-  gint num_devices = 0;
-  gint num_events = 0;
-  gint i = 0, j = 0;
-  gboolean have_an_xpointer = FALSE;
-
-  ClutterBackendX11      *x11b;
-  ClutterX11XInputDevice *device = NULL;
-
-  ClutterMainContext  *context;
-
-  GSList *input_devices = NULL;
-
-  if (!backend_singleton)
-    {
-      g_critical ("X11 backend has not been initialised");
-      return;
-    }
-
-  if (!clutter_enable_xinput)
-    {
-      CLUTTER_NOTE (BACKEND, "Not enabling XInput");
-      return;
-    }
-
-  context = _clutter_context_get_default ();
-
-  backend_singleton->have_xinput = FALSE;
-
-  /* is the XInput extension available? */
-  res = XQueryExtension (backend_singleton->xdpy, "XInputExtension",
-                         &opcode, &event,
-                         &error);
-  if (!res)
-    {
-      CLUTTER_NOTE (BACKEND, "X Input extension not available");
-      return;
-    }
-
-  x11b = backend_singleton;
-
-  xdevices = XListInputDevices (x11b->xdpy, &num_devices);
-
-  CLUTTER_NOTE (BACKEND, "%d XINPUT devices found", num_devices);
-
-  if (num_devices == 0)
-    return;
-
-  for (i = 0; i < num_devices; i++)
-    {
-      info = xdevices + i;
-      num_events = 0;
-
-      CLUTTER_NOTE (BACKEND, "Considering %li with type %d",
-                    info->id,
-                    info->use);
-
-      /* Only want 'raw' devices themselves not virtual ones */
-      if (info->use == IsXExtensionPointer ||
-        /*info->use == IsXExtensionKeyboard || XInput 1.x is broken */
-          info->use == IsXExtensionDevice)
-        {
-          clutter_x11_trap_x_errors ();
-          xdevice = XOpenDevice (backend_singleton->xdpy, info->id);
-          if (clutter_x11_untrap_x_errors () || xdevice == NULL)
-            continue;
-
-          /* Create the appropriate Clutter device */
-          device = g_slice_new0 (ClutterX11XInputDevice);
-
-          device->device.id = info->id;
-
-          switch (info->use)
-            {
-            case IsXExtensionPointer:
-              device->device.device_type = CLUTTER_POINTER_DEVICE;
-              have_an_xpointer = TRUE;
-              break;
-
-#if 0
-            /* XInput 1.x is broken for keyboards: */
-            case IsXExtensionKeyboard:
-              device->device.type = CLUTTER_KEYBOARD_DEVICE;
-              break;
-#endif
-
-            case IsXExtensionDevice:
-              device->device.device_type = CLUTTER_EXTENSION_DEVICE;
-              break;
-            }
-
-          /* FIXME: some kind of general device_init() call should do below */
-          device->device.click_count = 0;
-          device->device.previous_time = 0;
-          device->device.previous_x = -1;
-          device->device.previous_y = -1;
-          device->device.previous_button_number = -1;
-
-          device->num_events = 0;
-          device->xdevice = xdevice;
-
-          CLUTTER_NOTE (BACKEND, "Registering XINPUT device with XID: %li",
-                        xdevice->device_id);
-
-          /* We must go through all the classes supported by this device and
-           * register the appropriate events we want. Each class only appears
-           * once. We need to store the types with the stage since they are
-           * created dynamically by the server. They are not device specific.
-           */
-          for (j = 0; j < xdevice->num_classes; j++)
-            {
-              xclass_info = xdevice->classes + j;
-
-              switch (xclass_info->input_class)
-                {
-#if 0
-                /* XInput 1.x is broken for keyboards: */
-                case KeyClass:
-                  DeviceKeyPress (xdevice,
-                                  x11b->event_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT],
-                                  device->xevent_list [num_events]);
-                  num_events++;
-
-                  DeviceKeyRelease (xdevice,
-                                    x11b->event_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT],
-                                    device->xevent_list [num_events]);
-                  num_events++;
-                  break;
-#endif
-
-                case ButtonClass:
-                  DeviceButtonPress (xdevice,
-                                     x11b->event_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT],
-                                     device->xevent_list [num_events]);
-                  num_events++;
-
-                  DeviceButtonRelease (xdevice,
-                                       x11b->event_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT],
-                                       device->xevent_list [num_events]);
-                  num_events++;
-                  break;
-
-                case ValuatorClass:
-                  DeviceMotionNotify (xdevice,
-                                      x11b->event_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT],
-                                      device->xevent_list [num_events]);
-                  num_events++;
-                  break;
-                }
-            }
-
-          if (info->use == IsXExtensionPointer && num_events > 0)
-            have_an_xpointer = TRUE;
-
-          device->num_events  = num_events;
-
-          input_devices = g_slist_prepend (input_devices, device);
-        }
-    }
-
-  XFree (xdevices);
-
-  if (!have_an_xpointer)
-    {
-      GSList *l;
-
-      /* Something is likely wrong with Xinput setup so we basically
-       * abort here and fall back to lofi regular xinput.
-      */
-      g_warning ("No usuable XInput pointing devices found");
-
-      for (l = input_devices; l != NULL; l = l->next)
-        g_slice_free (ClutterX11XInputDevice, l->data);
-
-      g_slist_free (input_devices);
-      context->input_devices = NULL;
-
-      return;
-    }
-
-  /* store the list of input devices */
-  context->input_devices = g_slist_reverse (input_devices);
-
-  /* why yes, we are awesome */
-  backend_singleton->have_xinput = TRUE;
-#endif /* HAVE_XINPUT */
-}
-
-void
-_clutter_x11_unregister_xinput ()
-{
-
-}
-
-void
 _clutter_x11_select_events (Window xwin)
 {
 #ifdef HAVE_XINPUT
-  GSList *list_it;
-  ClutterX11XInputDevice *device = NULL;
+  ClutterDeviceManager *manager;
+  const GSList *l;
 
-  ClutterMainContext  *context;
-
-  context = _clutter_context_get_default ();
-
-  if (!backend_singleton)
+  if (G_UNLIKELY (backend_singleton == NULL))
     {
       g_critical ("X11 backend has not been initialised");
+
       return;
     }
 
-  for (list_it = context->input_devices;
-       list_it != NULL;
-       list_it = list_it->next)
+  manager = clutter_device_manager_get_default ();
+
+  for (l = clutter_device_manager_peek_devices (manager);
+       l != NULL;
+       l = l->next)
   {
-    device = (ClutterX11XInputDevice *)list_it->data;
+    ClutterX11XInputDevice *device = l->data;
 
     XSelectExtensionEvent (backend_singleton->xdpy,
                            xwin,
@@ -884,49 +889,34 @@ _clutter_x11_select_events (Window xwin)
 ClutterInputDevice *
 _clutter_x11_get_device_for_xid (XID id)
 {
-#ifdef HAVE_XINPUT
-  ClutterMainContext *context;
-  GSList *l;
+  ClutterDeviceManager *manager;
 
-  context = _clutter_context_get_default ();
+  manager = clutter_device_manager_get_default ();
 
-  if (!backend_singleton)
-    {
-      g_critical ("X11 backend has not been initialised");
-      return NULL;
-    }
-
-  for (l = context->input_devices; l != NULL; l = l->next)
-    {
-      ClutterX11XInputDevice *device = l->data;
-
-      if (device->xdevice->device_id == id)
-        return (ClutterInputDevice *) device;
-    }
-#endif /* HAVE_XINPUT */
-
-  return NULL;
+  return clutter_device_manager_get_device (manager, (gint) id);
 }
 
-/* FIXME: This nasty little func needs moving elsewhere.. */
+/**
+ * clutter_x11_get_input_devices:
+ *
+ * Retrieves a pointer to the list of input devices
+ *
+ * Deprecated: 1.2: Use clutter_device_manager_peek_devices() instead
+ *
+ * Since: 0.8
+ *
+ * Return value: a pointer to the internal list of input devices; the
+ *   returned list is owned by Clutter and should not be modified or
+ *   freed
+ */
 G_CONST_RETURN GSList *
 clutter_x11_get_input_devices (void)
 {
-#ifdef HAVE_XINPUT
-  ClutterMainContext  *context;
+  ClutterDeviceManager *manager;
 
-  if (!backend_singleton)
-    {
-      g_critical ("X11 backend has not been initialised");
-      return NULL;
-    }
+  manager = clutter_device_manager_get_default ();
 
-  context = _clutter_context_get_default ();
-
-  return context->input_devices;
-#else /* !HAVE_XINPUT */
-  return NULL;
-#endif /* HAVE_XINPUT */
+  return clutter_device_manager_peek_devices (manager);
 }
 
 /**
@@ -943,7 +933,7 @@ gboolean
 clutter_x11_has_xinput (void)
 {
 #ifdef HAVE_XINPUT
-  if (!backend_singleton)
+  if (backend_singleton == NULL)
     {
       g_critical ("X11 backend has not been initialised");
       return FALSE;
