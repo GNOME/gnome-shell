@@ -130,6 +130,9 @@ struct _MetaWindow
   /* Whether we're fullscreen */
   guint fullscreen : 1;
 
+  /* Whether the urgent flag of WM_HINTS is set */
+  guint wm_hints_urgent : 1;
+
   /* Area to cover when in fullscreen mode.  If _NET_WM_FULLSCREEN_MONITORS has
    * been overridden (via a client message), the window will cover the union of
    * these monitors.  If not, this is the single monitor which the window's

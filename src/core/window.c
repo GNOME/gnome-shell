@@ -139,7 +139,8 @@ enum {
   PROP_FULLSCREEN,
   PROP_WINDOW_TYPE,
   PROP_USER_TIME,
-  PROP_DEMANDS_ATTENTION
+  PROP_DEMANDS_ATTENTION,
+  PROP_URGENT
 };
 
 enum
@@ -211,6 +212,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_DEMANDS_ATTENTION:
       g_value_set_boolean (value, win->wm_state_demands_attention);
+      break;
+    case PROP_URGENT:
+      g_value_set_boolean (value, win->wm_hints_urgent);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -305,6 +309,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_boolean ("demands-attention",
                                                          "Demands Attention",
                                                          "Whether the window has _NET_WM_STATE_DEMANDS_ATTENTION set",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_URGENT,
+                                   g_param_spec_boolean ("urgent",
+                                                         "Urgent",
+                                                         "Whether the urgent flag of WM_HINTS is set",
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -700,6 +712,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_icon_cache_init (&window->icon_cache);
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
+  window->wm_hints_urgent = FALSE;
 
   window->frame = NULL;
   window->has_focus = FALSE;

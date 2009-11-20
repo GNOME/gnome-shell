@@ -1350,8 +1350,10 @@ reload_wm_hints (MetaWindow    *window,
                  gboolean       initial)
 {
   Window old_group_leader;
-  
+  gboolean old_urgent;
+
   old_group_leader = window->xgroup_leader;
+  old_urgent = window->wm_hints_urgent;
   
   /* Fill in defaults */
   window->input = TRUE;
@@ -1359,7 +1361,8 @@ reload_wm_hints (MetaWindow    *window,
   window->xgroup_leader = None;
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
-  
+  window->wm_hints_urgent = FALSE;
+
   if (value->type != META_PROP_VALUE_INVALID)
     {
       const XWMHints *hints = value->v.wm_hints;
@@ -1378,7 +1381,10 @@ reload_wm_hints (MetaWindow    *window,
 
       if (hints->flags & IconMaskHint)
         window->wm_hints_mask = hints->icon_mask;
-      
+
+      if (hints->flags & XUrgencyHint)
+        window->wm_hints_urgent = TRUE;
+
       meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx pixmap: 0x%lx mask: 0x%lx\n",
                     window->input, window->initially_iconic,
                     window->xgroup_leader,
@@ -1393,6 +1399,12 @@ reload_wm_hints (MetaWindow    *window,
       
       meta_window_group_leader_changed (window);
     }
+
+  /*
+   * Do not emit urgency notification on the inital property load
+   */
+  if (!initial && (window->wm_hints_urgent != old_urgent))
+    g_object_notify (G_OBJECT (window), "urgent");
 
   meta_icon_cache_property_changed (&window->icon_cache,
                                     window->display,
