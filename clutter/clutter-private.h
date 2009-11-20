@@ -97,6 +97,8 @@ struct _ClutterInputDevice
   gint previous_y;
   guint32 previous_time;
   gint previous_button_number;
+
+  guint is_default : 1;
 };
 
 struct _ClutterStageManager

@@ -252,7 +252,12 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
             }
 
           if (info->use == IsXExtensionPointer && num_events > 0)
-            have_an_xpointer = TRUE;
+            {
+              /* mark it as a default */
+              device->device.is_default = TRUE;
+
+              have_an_xpointer = TRUE;
+            }
 
           device->num_events = n_events;
 
@@ -313,11 +318,13 @@ default_device:
       d->previous_x = -1;
       d->previous_y = -1;
       d->previous_button_number = -1;
+      d->is_default = TRUE;
       _clutter_device_manager_add_device (manager, d);
 
       d = g_slice_new0 (ClutterInputDevice);
       d->id = 1;
       d->device_type = CLUTTER_KEYBOARD_DEVICE;
+      d->is_default = TRUE;
       _clutter_device_manager_add_device (manager, d);
     }
 }
