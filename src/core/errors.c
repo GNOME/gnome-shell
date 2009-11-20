@@ -186,10 +186,10 @@ x_error_handler (Display     *xdisplay,
 
   display = meta_display_for_x_display (xdisplay);
 
-  /* Display can be NULL here because the compositing manager
-   * has its own Display, but Xlib only has one global error handler
+  /* Display can be NULL here Xlib only has one global error handler; and
+   * there might be other displays open in the process.
    */
-  if (display->error_traps > 0)
+  if (display && display->error_traps > 0)
     {
       /* we're in an error trap, chain to the trap handler
        * saved from GDK
@@ -228,21 +228,18 @@ x_io_error_handler (Display *xdisplay)
 
   display = meta_display_for_x_display (xdisplay);
 
-  if (display == NULL)
-    meta_bug ("IO error received for unknown display?\n");
-  
   if (errno == EPIPE)
     {
       meta_warning (_("Lost connection to the display '%s';\n"
                       "most likely the X server was shut down or you killed/destroyed\n"
                       "the window manager.\n"),
-                    display->name);
+                    display ? display->name : DisplayString (xdisplay));
     }
   else
     {
       meta_warning (_("Fatal IO error %d (%s) on display '%s'.\n"),
                     errno, g_strerror (errno),
-                    display->name);
+                    display ? display->name : DisplayString (xdisplay));
     }
 
   /* Xlib would force an exit anyhow */
