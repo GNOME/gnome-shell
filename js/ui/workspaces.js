@@ -3,6 +3,7 @@
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -319,6 +320,7 @@ WindowOverlay.prototype = {
     _init : function(windowClone, parentActor) {
         let metaWindow = windowClone.metaWindow;
 
+        this._windowClone = windowClone;
         this._parentActor = parentActor;
 
         let title = new St.Label({ style_class: "window-caption",
@@ -341,8 +343,7 @@ WindowOverlay.prototype = {
         windowClone.actor.connect('leave-event',
                                   Lang.bind(this, this._onLeave));
 
-        button.connect('enter-event', Lang.bind(this, this._onEnter));
-        button.connect('leave-event', Lang.bind(this, this._onLeave));
+        this._idleToggleCloseId = 0;
         button.connect('button-release-event',
                        Lang.bind(this, function(actor, event) {
                                  metaWindow.delete(event.get_time());
@@ -380,6 +381,10 @@ WindowOverlay.prototype = {
     },
 
     destroy: function() {
+        if (this._idleToggleCloseId > 0) {
+            Mainloop.source_remove(this._idleToggleCloseId);
+            this._idleToggleCloseId = 0;
+        }
         this.title.destroy();
         this.closeButton.destroy();
     },
@@ -416,9 +421,30 @@ WindowOverlay.prototype = {
     _onEnter: function() {
         this.closeButton.raise_top();
         this.closeButton.show();
+        this.emit('show-close-button');
     },
 
     _onLeave: function() {
+        if (this._idleToggleCloseId == 0)
+            this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
+    },
+
+    _idleToggleCloseButton: function() {
+        this._idleToggleCloseId = 0;
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                  x, y);
+        if (actor != this._windowClone.actor && actor != this.closeButton) {
+            this.closeButton.hide();
+        }
+        return false;
+    },
+
+    hideCloseButton: function() {
+        if (this._idleToggleCloseId > 0) {
+            Mainloop.source_remove(this._idleToggleCloseId);
+            this._idleToggleCloseId = 0;
+        }
         this.closeButton.hide();
     },
 
@@ -1253,10 +1279,21 @@ Workspace.prototype = {
 
         this.actor.add_actor(clone.actor);
 
+        overlay.connect('show-close-button', Lang.bind(this, this._onShowOverlayClose));
+
         this._windows.push(clone);
         this._windowOverlays.push(overlay);
 
         return clone;
+    },
+
+    _onShowOverlayClose: function (windowOverlay) {
+        for (let i = 1; i < this._windowOverlays.length; i++) {
+            let overlay = this._windowOverlays[i];
+            if (overlay == windowOverlay)
+                continue;
+            overlay.hideCloseButton();
+        }
     },
 
     _computeWindowSlot : function(windowIndex, numberOfWindows) {
