@@ -37,8 +37,6 @@
 #include <X11/Xlib.h>   /* must explicitly be included for Solaris; #326746 */
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
-MetaNexus *sigchld_nexus;
-
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
 void
@@ -557,7 +555,7 @@ meta_show_dialog (const char *type,
   int i=0;
   GPid child_pid;
   const char **argvl = g_malloc(sizeof (char*) *
-                                (15 +
+                                (17 +
                                  g_slist_length (columns)*2 +
                                  g_slist_length (entries)));
 
@@ -565,6 +563,8 @@ meta_show_dialog (const char *type,
   argvl[i++] = type;
   argvl[i++] = "--screen";
   argvl[i++] = screen_number_text;
+  argvl[i++] = "--class";
+  argvl[i++] = "metacity-dialog";
   argvl[i++] = "--title";
   /* Translators: This is the title used on dialog boxes */
   argvl[i++] = _("Metacity");
@@ -637,31 +637,5 @@ meta_show_dialog (const char *type,
 
   return child_pid;
 }
-
-GType
-meta_nexus_get_type (void)
-{
-  static GType nexus_type = 0;
-
-  if (!nexus_type)
-    {
-      static const GTypeInfo nexus_info =
-      {
-        sizeof (MetaNexusClass),
-	NULL, NULL, NULL, NULL, NULL,
-	sizeof (MetaNexus),
-	0,
-	NULL, NULL
-      };
-
-      nexus_type = g_type_register_static (G_TYPE_OBJECT,
-					   "MetaNexus",
-					   &nexus_info,
-					   0);
-    }
-
-  return nexus_type;
-}
-
 /* eof util.c */
 
