@@ -55,6 +55,7 @@
 #include "clutter-main.h"
 #include "clutter-private.h"    /* includes pango/cogl-pango.h */
 #include "clutter-units.h"
+#include "clutter-marshal.h"
 
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
@@ -211,6 +212,8 @@ enum
   TEXT_CHANGED,
   CURSOR_EVENT,
   ACTIVATE,
+  INSERT_TEXT,
+  DELETE_TEXT,
 
   LAST_SIGNAL
 };
@@ -872,6 +875,12 @@ clutter_text_set_markup_internal (ClutterText *self,
 
   if (text)
     {
+      gint tmp_pos = 0;
+
+      g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
+      g_signal_emit (self, text_signals[INSERT_TEXT], 0, text,
+                     strlen (text), &tmp_pos);
+
       clutter_text_set_text_internal (self, text);
       g_free (text);
     }
@@ -2567,6 +2576,56 @@ clutter_text_class_init (ClutterTextClass *klass)
                   G_TYPE_NONE, 0);
 
   /**
+   * ClutterText::insert-text:
+   * @self: the #ClutterText that emitted the signal
+   * @new_text: the new text to insert
+   * @new_text_length: the length of the new text, in bytes, or -1 if
+   *     new_text is nul-terminated
+   * @position: the position, in characters, at which to insert the
+   *     new text. this is an in-out parameter.  After the signal
+   *     emission is finished, it should point after the newly
+   *     inserted text.
+   *
+   * This signal is emitted when text is inserted into the actor by
+   * the user. It is emitted before @self text changes.
+   *
+   * Since: 1.2
+   */
+  text_signals[INSERT_TEXT] =
+    g_signal_new ("insert-text",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  clutter_marshal_VOID__STRING_INT_POINTER,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_STRING,
+                  G_TYPE_INT,
+                  G_TYPE_POINTER);
+
+  /**
+   * ClutterText::delete-text:
+   * @self: the #ClutterText that emitted the signal
+   * @start_pos: the starting position
+   * @end_pos: the end position
+   *
+   * This signal is emitted when text is deleted from the actor by
+   * the user. It is emitted before @self text changes.
+   *
+   * Since: 1.2
+   */
+  text_signals[DELETE_TEXT] =
+    g_signal_new ("delete-text",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  clutter_marshal_VOID__INT_INT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
+
+  /**
    * ClutterText::cursor-event:
    * @self: the #ClutterText that emitted the signal
    * @geometry: the coordinates of the cursor
@@ -3480,6 +3539,14 @@ clutter_text_set_text (ClutterText *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
+  if (text)
+    {
+      gint tmp_pos = 0;
+      g_signal_emit (self, text_signals[INSERT_TEXT], 0, text,
+                     strlen (text), &tmp_pos);
+    }
+
   clutter_text_set_use_markup_internal (self, FALSE);
   clutter_text_set_text_internal (self, text ? text : "");
 }
@@ -4238,7 +4305,9 @@ clutter_text_insert_unichar (ClutterText *self,
 
   new = g_string_insert_unichar (new, pos, wc);
 
-  clutter_text_set_text (self, new->str);
+  g_signal_emit (self, text_signals[INSERT_TEXT], 0, &wc, 1, &pos);
+
+  clutter_text_set_text_internal (self, new->str);
 
   if (priv->position >= 0)
     {
@@ -4283,7 +4352,10 @@ clutter_text_insert_text (ClutterText *self,
   new = g_string_new (priv->text);
   new = g_string_insert (new, pos_bytes, text);
 
-  clutter_text_set_text (self, new->str);
+  g_signal_emit (self, text_signals[INSERT_TEXT], 0,
+                 text, g_utf8_strlen (text, -1), &position);
+
+  clutter_text_set_text_internal (self, new->str);
 
   if (position >= 0 && priv->position >= position)
     {
@@ -4338,7 +4410,9 @@ clutter_text_delete_text (ClutterText *self,
   new = g_string_new (priv->text);
   new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
 
-  clutter_text_set_text (self, new->str);
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, start_pos, end_pos);
+
+  clutter_text_set_text_internal (self, new->str);
 
   g_string_free (new, TRUE);
 }
@@ -4362,6 +4436,7 @@ clutter_text_delete_chars (ClutterText *self,
   gint len;
   gint pos;
   gint num_pos;
+  gint start_pos;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
@@ -4385,7 +4460,11 @@ clutter_text_delete_chars (ClutterText *self,
       new = g_string_erase (new, pos, num_pos - pos);
     }
 
-  clutter_text_set_text (self, new->str);
+  start_pos = clutter_text_get_cursor_position (self);
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0,
+                 start_pos, start_pos + n_chars);
+
+  clutter_text_set_text_internal (self, new->str);
 
   if (priv->position > 0)
     clutter_text_set_cursor_position (self, priv->position - n_chars);
