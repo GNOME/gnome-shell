@@ -41,6 +41,7 @@
 #include "pango/cogl-pango.h"
 
 #include "clutter-backend.h"
+#include "clutter-device-manager.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
@@ -51,6 +52,8 @@
 #include "clutter-timeline.h"
 
 G_BEGIN_DECLS
+
+typedef struct _ClutterMainContext              ClutterMainContext;
 
 typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG    = 0,
@@ -82,21 +85,33 @@ typedef enum {
 
 struct _ClutterInputDevice
 {
-  gint          id;
+  gint id;
 
   ClutterInputDeviceType device_type;
 
   ClutterActor *pointer_grab_actor;
   ClutterActor *motion_last_actor;
 
-  gint          click_count;
-  gint          previous_x; 
-  gint          previous_y; 
-  guint32       previous_time;
-  gint          previous_button_number;
+  gint click_count;
+  gint previous_x;
+  gint previous_y;
+  guint32 previous_time;
+  gint previous_button_number;
 };
 
-typedef struct _ClutterMainContext ClutterMainContext;
+struct _ClutterStageManager
+{
+  GObject parent_instance;
+
+  GSList *stages;
+};
+
+struct _ClutterDeviceManager
+{
+  GObject parent_instance;
+
+  GSList *devices;
+};
 
 struct _ClutterMainContext
 {
@@ -170,21 +185,19 @@ PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 
 #define I_(str)  (g_intern_static_string ((str)))
 
+/* device manager */
+void _clutter_device_manager_add_device    (ClutterDeviceManager *device_manager,
+                                            ClutterInputDevice   *device);
+void _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
+                                            ClutterInputDevice   *device);
+
 /* stage manager */
-struct _ClutterStageManager
-{
-  GObject parent_instance;
-
-  GSList *stages;
-};
-
 void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,
                                           ClutterStage        *stage);
 void _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
                                           ClutterStage        *stage);
 
 /* stage */
-
 void                _clutter_stage_set_window           (ClutterStage       *stage,
                                                          ClutterStageWindow *stage_window);
 ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *stage);

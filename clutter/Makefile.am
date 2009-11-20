@@ -82,8 +82,9 @@ source_h =					\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color.h		\
-        $(srcdir)/clutter-container.h		\
-        $(srcdir)/clutter-deprecated.h		\
+	$(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-deprecated.h		\
+	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -154,6 +155,7 @@ source_c = \
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
 	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-device-manager.c	\
 	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\

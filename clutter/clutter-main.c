@@ -3025,7 +3025,17 @@ clutter_get_font_flags (void)
  * clutter_get_input_device_for_id:
  * @id: a device id
  *
- * Retrieves the #ClutterInputDevice from its id.
+ * Retrieves the #ClutterInputDevice from its id. This is a convenience
+ * wrapper for clutter_device_manager_get_device() and it is functionally
+ * equivalent to:
+ *
+ * |[
+ *   ClutterDeviceManager *manager;
+ *   ClutterInputDevice *device;
+ *
+ *   manager = clutter_device_manager_get_default ();
+ *   device = clutter_device_manager_get_device (manager, id);
+ * ]|
  *
  * Return value: (transfer none): a #ClutterInputDevice, or %NULL
  *
@@ -3034,23 +3044,11 @@ clutter_get_font_flags (void)
 ClutterInputDevice *
 clutter_get_input_device_for_id (gint id)
 {
-  GSList *item;
-  ClutterInputDevice *device = NULL;
-  ClutterMainContext  *context;
+  ClutterDeviceManager *manager;
 
-  context = _clutter_context_get_default ();
+  manager = clutter_device_manager_get_default ();
 
-  for (item = context->input_devices;
-       item != NULL;
-       item = item->next)
-  {
-    device = item->data;
-
-    if (device->id == id)
-      return device;
-  }
-
-  return NULL;
+  return clutter_device_manager_get_device (manager, id);
 }
 
 /**

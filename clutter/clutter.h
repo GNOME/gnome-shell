@@ -51,6 +51,7 @@
 #include "clutter-clone.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
+#include "clutter-device-manager.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"
