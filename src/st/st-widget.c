@@ -37,6 +37,7 @@
 
 #include "st-marshal.h"
 #include "st-private.h"
+#include "st-shadow-texture.h"
 #include "st-texture-cache.h"
 #include "st-texture-frame.h"
 #include "st-theme-context.h"
@@ -57,10 +58,14 @@ struct _StWidgetPrivate
 
   ClutterActor *border_image;
   ClutterActor *background_image;
+  ClutterActor *background_image_shadow;
   ClutterColor  bg_color;
 
   StGradientType bg_gradient_type;
   ClutterColor  bg_gradient_end;
+
+  gdouble       shadow_xoffset;
+  gdouble       shadow_yoffset;
 
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
@@ -227,6 +232,12 @@ st_widget_dispose (GObject *gobject)
       priv->border_image = NULL;
     }
 
+  if (priv->background_image_shadow)
+    {
+      clutter_actor_unparent (priv->background_image_shadow);
+      priv->background_image_shadow = NULL;
+    }
+
   if (priv->tooltip)
     {
       ClutterContainer *parent;
@@ -355,6 +366,28 @@ st_widget_allocate (ClutterActor          *actor,
           frame_box.x2 = frame_box.x1 + w;
           frame_box.y2 = frame_box.y1 + h;
         }
+
+        if (priv->background_image_shadow)
+          {
+            StShadowTexture *shadow;
+            ClutterActorBox  shadow_box;
+
+            shadow_box.x1 = frame_box.x1 + priv->shadow_xoffset;
+            shadow_box.y1 = frame_box.y1 + priv->shadow_yoffset;
+            shadow_box.x2 = frame_box.x2 + priv->shadow_xoffset;
+            shadow_box.y2 = frame_box.y2 + priv->shadow_yoffset;
+
+            /* The shadow texture is larger than the original image due
+               to blurring, so we let it adjust its size.
+               When the original image has been scaled, this will change
+               the effective blur radius - we ignore this for now. */
+            shadow = ST_SHADOW_TEXTURE (priv->background_image_shadow);
+            st_shadow_texture_adjust_allocation (shadow, &shadow_box);
+
+            clutter_actor_allocate (priv->background_image_shadow,
+                                    &shadow_box, flags);
+          }
+
 
       clutter_actor_allocate (CLUTTER_ACTOR (priv->background_image),
                               &frame_box,
@@ -497,7 +530,11 @@ st_widget_paint (ClutterActor *self)
   klass->draw_background (ST_WIDGET (self));
 
   if (priv->background_image != NULL)
-    clutter_actor_paint (priv->background_image);
+    {
+      if (priv->background_image_shadow)
+        clutter_actor_paint (priv->background_image_shadow);
+      clutter_actor_paint (priv->background_image);
+    }
 }
 
 static void
@@ -527,6 +564,9 @@ st_widget_map (ClutterActor *actor)
 
   st_widget_ensure_style ((StWidget*) actor);
 
+  if (priv->background_image_shadow)
+    clutter_actor_map (priv->background_image_shadow);
+
   if (priv->border_image)
     clutter_actor_map (priv->border_image);
 
@@ -543,6 +583,9 @@ st_widget_unmap (ClutterActor *actor)
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
+
+  if (priv->background_image_shadow)
+    clutter_actor_unmap (priv->background_image_shadow);
 
   if (priv->border_image)
     clutter_actor_unmap (priv->border_image);
@@ -659,6 +702,7 @@ st_widget_real_style_changed (StWidget *self)
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
   StThemeNode *theme_node;
   StBorderImage *border_image;
+  StShadow *shadow;
   StTextureCache *texture_cache;
   ClutterTexture *texture;
   const char *bg_file = NULL;
@@ -704,6 +748,12 @@ st_widget_real_style_changed (StWidget *self)
       priv->bg_gradient_end = gradient_end;
       priv->draw_bg_color = TRUE;
       has_changed = TRUE;
+    }
+
+  if (priv->background_image_shadow)
+    {
+      clutter_actor_unparent (priv->background_image_shadow);
+      priv->background_image_shadow = NULL;
     }
 
   if (priv->border_image)
@@ -877,7 +927,39 @@ st_widget_real_style_changed (StWidget *self)
       relayout_needed = TRUE;
     }
 
-  /* If there are any properties above that need to cause a relayout thay
+  /* CSS based drop shadows
+   *
+   * Drop shadows in ST are modelled after the CSS3 box-shadow property;
+   * see http://www.css3.info/preview/box-shadow/ for a detailed description.
+   *
+   * While the syntax of the property is mostly identical - we do not support
+   * multiple shadows and allow for a more liberal placement of the color
+   * parameter - its interpretation defers significantly in that the shadow's
+   * shape is not determined by the bounding box, but by the CSS background
+   * image (we could exend this in the future to take other CSS properties
+   * like boder and background color into account).
+   */
+  shadow = st_theme_node_get_shadow (theme_node);
+  if (shadow != NULL)
+    {
+      priv->shadow_xoffset = shadow->xoffset;
+      priv->shadow_yoffset = shadow->yoffset;
+
+      if (priv->background_image)
+        {
+          priv->background_image_shadow =
+              st_shadow_texture_new (priv->background_image,
+                                     &shadow->color,
+                                     shadow->blur);
+
+          clutter_actor_set_parent (priv->background_image_shadow,
+                                    CLUTTER_ACTOR (self));
+          has_changed = TRUE;
+          relayout_needed = TRUE;
+        }
+    }
+
+  /* If there are any properties above that need to cause a relayout they
    * should set this flag.
    */
   if (has_changed)

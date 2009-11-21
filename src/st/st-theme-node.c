@@ -39,6 +39,7 @@ struct _StThemeNode {
 
   char *background_image;
   StBorderImage *border_image;
+  StShadow *shadow;
 
   GType element_type;
   char *element_id;
@@ -57,6 +58,7 @@ struct _StThemeNode {
   guint background_computed : 1;
   guint foreground_computed : 1;
   guint border_image_computed : 1;
+  guint shadow_computed : 1;
   guint link_type : 2;
 };
 
@@ -116,6 +118,12 @@ st_theme_node_finalize (GObject *object)
     {
       g_object_unref (node->border_image);
       node->border_image = NULL;
+    }
+
+  if (node->shadow)
+    {
+      st_shadow_free (node->shadow);
+      node->shadow = NULL;
     }
 
   if (node->background_image)
@@ -2113,6 +2121,87 @@ st_theme_node_get_border_image (StThemeNode *node)
       ;
     }
 
+  return NULL;
+}
+
+/**
+ * st_theme_node_get_shadow:
+ * @node: a #StThemeNode
+ *
+ * Gets the value for the -st-shadow style property
+ *
+ * Return value: (transfer none): the node's shadow, or %NULL
+ *   if node has no shadow
+ */
+StShadow *
+st_theme_node_get_shadow (StThemeNode *node)
+{
+  int i;
+
+  if (node->shadow_computed)
+    return node->shadow;
+
+  node->shadow = NULL;
+  node->shadow_computed = TRUE;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, "-st-shadow") == 0)
+        {
+          /* Set value for width/color/blur in any order */
+          CRTerm *term;
+          ClutterColor color = { 0x0, 0x0, 0x0, 0xff };
+          gdouble xoffset = 0.;
+          gdouble yoffset = 0.;
+          gdouble blur = 0.;
+          int n_offsets = 0;
+
+          for (term = decl->value; term; term = term->next)
+            {
+              GetFromTermResult result;
+
+              if (term->type == TERM_NUMBER)
+                {
+                  gdouble value;
+                  gdouble multiplier;
+
+                  multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
+                  result = get_length_from_term (node, term, FALSE, &value);
+                  if (result != VALUE_NOT_FOUND)
+                    {
+                      switch (n_offsets++)
+                        {
+                        case 0:
+                          xoffset = multiplier * value;
+                          break;
+                        case 1:
+                          yoffset = multiplier * value;
+                          break;
+                        case 2:
+                          if (multiplier < 0)
+                              g_warning ("Negative blur values are "
+                                         "not allowed");
+                          blur = value;
+                        }
+                      continue;
+                    }
+                }
+
+              result = get_color_from_term (node, term, &color);
+              if (result != VALUE_NOT_FOUND)
+                {
+                  continue;
+                }
+            }
+          node->shadow = st_shadow_new (&color, xoffset, yoffset, blur);
+
+          return node->shadow;
+        }
+    }
   return NULL;
 }
 
