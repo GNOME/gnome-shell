@@ -336,6 +336,7 @@ WindowOverlay.prototype = {
                        Lang.bind(this, this._onStyleChanged));
         button._overlap = 0;
 
+        windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         windowClone.actor.connect('notify::allocation',
                                   Lang.bind(this, this._positionItems));
         windowClone.actor.connect('enter-event',
@@ -345,10 +346,9 @@ WindowOverlay.prototype = {
 
         this._idleToggleCloseId = 0;
         button.connect('button-release-event',
-                       Lang.bind(this, function(actor, event) {
-                                 metaWindow.delete(event.get_time());
-                       }));
+                       Lang.bind(this, this._closeWindow));
 
+        this._windowAddedId = 0;
         windowClone.connect('zoom-start', Lang.bind(this, this.hide));
         windowClone.connect('zoom-end', Lang.bind(this, this.show));
 
@@ -380,15 +380,6 @@ WindowOverlay.prototype = {
                           transition: "easeOutQuad" });
     },
 
-    destroy: function() {
-        if (this._idleToggleCloseId > 0) {
-            Mainloop.source_remove(this._idleToggleCloseId);
-            this._idleToggleCloseId = 0;
-        }
-        this.title.destroy();
-        this.closeButton.destroy();
-    },
-
     chromeWidth: function () {
         return this.closeButton.width - this.closeButton._overlap;
     },
@@ -416,6 +407,47 @@ WindowOverlay.prototype = {
 	let titleX = x + (w - title.width) / 2;
         let titleY = y + h + title._spacing;
         title.set_position(Math.floor(titleX), Math.floor(titleY));
+    },
+
+    _closeWindow: function(actor, event) {
+        let metaWindow = this._windowClone.metaWindow;
+        this._workspace = metaWindow.get_workspace();
+
+        this._windowAddedId = this._workspace.connect('window-added',
+                                                      Lang.bind(this,
+                                                                this._onWindowAdded));
+
+        metaWindow.delete(event.get_time());
+    },
+
+    _onWindowAdded: function(workspace, win) {
+        let metaWindow = this._windowClone.metaWindow;
+
+        if (win.get_transient_for() == metaWindow) {
+            workspace.disconnect(this._windowAddedId);
+            this._windowAddedId = 0;
+
+            // use an idle handler to avoid mapping problems -
+            // see comment in Workspace._windowAdded
+            Mainloop.idle_add(Lang.bind(this,
+                                        function() {
+                                            this._windowClone.emit('selected');
+                                            return false;
+                                        }));
+        }
+    },
+
+    _onDestroy: function() {
+        if (this._windowAddedId > 0) {
+            this._workspace.disconnect(this._windowAddedId);
+            this._windowAddedId = 0;
+        }
+        if (this._idleToggleCloseId > 0) {
+            Mainloop.source_remove(this._idleToggleCloseId);
+            this._idleToggleCloseId = 0;
+        }
+        this.title.destroy();
+        this.closeButton.destroy();
     },
 
     _onEnter: function() {
@@ -1047,7 +1079,6 @@ Workspace.prototype = {
             return;
 
         let clone = this._windows[index];
-        let overlay = this._windowOverlays[index];
 
         this._windows.splice(index, 1);
         this._windowOverlays.splice(index, 1);
@@ -1068,7 +1099,6 @@ Workspace.prototype = {
             };
         }
         clone.destroy();
-        overlay.destroy();
 
         this.positionWindows(false);
         this.updateRemovable();
