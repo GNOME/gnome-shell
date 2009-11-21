@@ -206,7 +206,7 @@ RunDialog.prototype = {
         this._commandError = false;
 
         this._group.hide();
-        this._entry.text = '';
+        this._entry.set_text('');
 
         Main.popModal(this._group);
     }
