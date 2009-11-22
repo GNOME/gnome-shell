@@ -337,8 +337,6 @@ WindowOverlay.prototype = {
         button._overlap = 0;
 
         windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        windowClone.actor.connect('notify::allocation',
-                                  Lang.bind(this, this._positionItems));
         windowClone.actor.connect('enter-event',
                                   Lang.bind(this, this._onEnter));
         windowClone.actor.connect('leave-event',
@@ -395,23 +393,30 @@ WindowOverlay.prototype = {
                this.title.height + this.title._spacing;
     },
 
-    _positionItems: function(win) {
+    /**
+     * @cloneX: x position of windowClone
+     * @cloneY: y position of windowClone
+     * @cloneWidth: width of windowClone
+     * @cloneHeight height of windowClone
+     */
+    // These parameters are not the values retrieved with
+    // get_transformed_position() and get_transformed_size(),
+    // as windowClone might be moving.
+    // See Workspace._fadeInWindowOverlay
+    updatePositions: function(cloneX, cloneY, cloneWidth, cloneHeight) {
         let button = this.closeButton;
         let title = this.title;
 
-        let [x, y] = win.get_transformed_position();
-        let [w, h] = win.get_transformed_size();
-
-        let buttonX = x + w - button._overlap;
-        let buttonY = y - button.height + button._overlap;
+        let buttonX = cloneX + cloneWidth - button._overlap;
+        let buttonY = cloneY - button.height + button._overlap;
         button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
         if (!title.fullWidth)
             title.fullWidth = title.width;
-        title.width = Math.min(title.fullWidth, w);
+        title.width = Math.min(title.fullWidth, cloneWidth);
 
-	let titleX = x + (w - title.width) / 2;
-        let titleY = y + h + title._spacing;
+        let titleX = cloneX + (cloneWidth - title.width) / 2;
+        let titleY = cloneY + cloneHeight + title._spacing;
         title.set_position(Math.floor(titleX), Math.floor(titleY));
     },
 
@@ -1034,7 +1039,7 @@ Workspace.prototype = {
                                time: Overview.ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: Lang.bind(this, function() {
-                                  overlay.fadeIn();
+                                  this._fadeInWindowOverlay(clone, overlay);
                                })
                              });
         }
@@ -1058,13 +1063,31 @@ Workspace.prototype = {
         }
     },
 
+    _fadeInWindowOverlay: function(clone, overlay) {
+        // This is a little messy and complicated because when we
+        // start the fade-in we may not have done the final positioning
+        // of the workspaces. (Tweener doesn't necessarily finish
+        // all animations before calling onComplete callbacks.)
+        // So we need to manually compute where the window will
+        // be after the workspace animation finishes.
+        let [cloneX, cloneY] = clone.actor.get_position();
+        let [cloneWidth, cloneHeight] = clone.actor.get_size();
+        cloneX = this.gridX + this.scale * cloneX;
+        cloneY = this.gridY + this.scale * cloneY;
+        cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
+        cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
+
+        overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
+        overlay.fadeIn();
+    },
+
     _fadeInAllOverlays: function() {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
             if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
                 continue;
-            overlay.fadeIn();
+            this._fadeInWindowOverlay(clone, overlay);
         }
     },
 
