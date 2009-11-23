@@ -570,14 +570,6 @@ cogl_disable_fog (void)
   glDisable (GL_FOG);
 }
 
-#if 0
-void
-cogl_flush_gl_state (int flags)
-{
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
-}
-#endif
-
 void
 cogl_flush (void)
 {
