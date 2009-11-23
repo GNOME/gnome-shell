@@ -119,7 +119,6 @@ cogl_read_pixels_flags_get_type
 cogl_shader_type_get_type
 cogl_texture_flags_get_type
 cogl_vertices_mode_get_type
-cogl_flush_gl_state
 </SECTION>
 
 <SECTION>

@@ -952,28 +952,6 @@ void            cogl_end_gl (void);
 
 void            _cogl_destroy_context          (void);
 
-/* XXX: Removed before we release Clutter 1.0 since the implementation
- * wasn't complete, and so we assume no one is using this yet. Util we
- * have some one with a good usecase, we can't pretend to support breaking
- * out into raw OpenGL. */
-
-#if 0
-/*
- * cogl_flush_gl_state:
- * @flags: flags controlling what is flushed; currently unused, pass in 0
- *
- * As an optimization, COGL functions may not immediately modify GL's
- * state, instead batching up changes and applying them "just in
- * time."  Unapplied state could include glEnable() flags and the
- * current transformation matrix among other examples. If you want to
- * use GL directly, you need to flush any state COGL may have kept
- * around. cogl_flush_gl_state() syncs all of COGL's state to GL.
- *
- * Since: 1.0
- */
-void            cogl_flush_gl_state         (int      flags);
-#endif
-
 /*< private >*/
 #define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
 
