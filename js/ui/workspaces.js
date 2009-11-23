@@ -367,6 +367,12 @@ WindowOverlay.prototype = {
     },
 
     show: function() {
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                  x, y);
+        if (actor == this._windowClone.actor) {
+            this.closeButton.show();
+        }
         this.title.show();
     },
 
