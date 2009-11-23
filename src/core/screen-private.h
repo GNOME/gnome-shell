@@ -129,9 +129,6 @@ struct _MetaScreen
   
   int closing;
 
-  /* gc for XOR on root window */
-  GC root_xor_gc;
-
   /* Managed by compositor.c */
   gpointer compositor_data;
   
