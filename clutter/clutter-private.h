@@ -53,7 +53,7 @@
 
 G_BEGIN_DECLS
 
-typedef struct _ClutterMainContext              ClutterMainContext;
+typedef struct _ClutterMainContext      ClutterMainContext;
 
 typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG    = 0,
@@ -85,6 +85,8 @@ typedef enum {
 
 struct _ClutterInputDevice
 {
+  GObject parent_instance;
+
   gint id;
 
   ClutterInputDeviceType device_type;
@@ -93,10 +95,12 @@ struct _ClutterInputDevice
   ClutterActor *motion_last_actor;
 
   gint click_count;
-  gint previous_x;
-  gint previous_y;
+
+  gfloat previous_x;
+  gfloat previous_y;
   guint32 previous_time;
   gint previous_button_number;
+  ClutterModifierType previous_state;
 
   guint is_default : 1;
 };
@@ -189,6 +193,15 @@ void _clutter_device_manager_add_device    (ClutterDeviceManager *device_manager
                                             ClutterInputDevice   *device);
 void _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
                                             ClutterInputDevice   *device);
+
+/* input device */
+void _clutter_input_device_set_coords (ClutterInputDevice  *device,
+                                       gfloat               x,
+                                       gfloat               y);
+void _clutter_input_device_set_state  (ClutterInputDevice  *device,
+                                       ClutterModifierType  state);
+void _clutter_input_device_set_time   (ClutterInputDevice  *device,
+                                       guint32              time_);
 
 /* stage manager */
 void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,

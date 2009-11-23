@@ -2046,10 +2046,10 @@ event_click_count_generate (ClutterEvent *event)
   static gint    previous_button_number = -1;
 
   ClutterBackend *backend;
-  guint           double_click_time;
-  guint           double_click_distance;
+  guint double_click_time;
+  guint double_click_distance;
 
-  backend = _clutter_context_get_default ()->backend;
+  backend = clutter_get_default_backend ();
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
@@ -2074,11 +2074,11 @@ event_click_count_generate (ClutterEvent *event)
             (ABS (event->button.y - previous_y) <= double_click_distance)
             && event->button.button == previous_button_number)
           {
-            click_count ++;
+            click_count += 1;
           }
         else /* start a new click count*/
           {
-            click_count=1;
+            click_count = 1;
             previous_button_number = event->button.button;
           }
 
@@ -2086,13 +2086,14 @@ event_click_count_generate (ClutterEvent *event)
          * next event
          */
         previous_time = event->button.time;
-        previous_x    = event->button.x;
-        previous_y    = event->button.y;
+        previous_x = event->button.x;
+        previous_y = event->button.y;
 
         /* fallthrough */
       case CLUTTER_BUTTON_RELEASE:
-        event->button.click_count=click_count;
+        event->button.click_count = click_count;
         break;
+
       default:
         g_assert (NULL);
     }
@@ -2106,7 +2107,6 @@ event_click_count_generate (ClutterEvent *event)
       event->button.device->previous_button_number = previous_button_number;
     }
 }
-
 
 static inline void
 emit_event (ClutterEvent *event,
@@ -2209,7 +2209,7 @@ emit_pointer_event (ClutterEvent       *event,
 static inline void
 emit_keyboard_event (ClutterEvent *event)
 {
-  ClutterMainContext *context = ClutterCntx;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   if (G_UNLIKELY (context->keyboard_grab_actor != NULL))
     clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
@@ -2220,7 +2220,7 @@ emit_keyboard_event (ClutterEvent *event)
 static void
 unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
 {
-  ClutterMainContext *context = ClutterCntx;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   if (dev == NULL)
     context->motion_last_actor = NULL;
@@ -2232,8 +2232,8 @@ static void
 set_motion_last_actor (ClutterActor       *motion_current_actor,
                        ClutterInputDevice *device)
 {
-  ClutterMainContext *context              = ClutterCntx;
-  ClutterActor       *last_actor           = context->motion_last_actor;
+  ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterActor *last_actor = context->motion_last_actor;
 
   if (device != NULL)
     last_actor = device->motion_last_actor;
@@ -2262,10 +2262,10 @@ set_motion_last_actor (ClutterActor       *motion_current_actor,
 static inline void
 generate_enter_leave_events (ClutterEvent *event)
 {
-  ClutterMainContext *context              = ClutterCntx;
-  ClutterActor       *motion_current_actor = event->motion.source;
-  ClutterActor       *last_actor           = context->motion_last_actor;
-  ClutterInputDevice *device               = clutter_event_get_device (event);
+  ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterActor *motion_current_actor = event->motion.source;
+  ClutterActor *last_actor = context->motion_last_actor;
+  ClutterInputDevice *device = clutter_event_get_device (event);
 
   if (device != NULL)
     last_actor = device->motion_last_actor;

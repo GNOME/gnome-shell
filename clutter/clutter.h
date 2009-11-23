@@ -58,6 +58,7 @@
 #include "clutter-flow-layout.h"
 #include "clutter-frame-source.h"
 #include "clutter-group.h"
+#include "clutter-input-device.h"
 #include "clutter-interval.h"
 #include "clutter-keysyms.h" 
 #include "clutter-layout-manager.h"

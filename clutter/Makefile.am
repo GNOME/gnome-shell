@@ -92,6 +92,7 @@ source_h =					\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
+	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-layout-manager.h	\
@@ -164,6 +165,7 @@ source_c = \
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
+	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-layout-manager.c	\
 	$(srcdir)/clutter-layout-meta.c		\
