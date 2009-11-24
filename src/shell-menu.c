@@ -8,6 +8,8 @@
  * popup-menu like actors.
  */
 
+#include "config.h"
+
 #include "shell-menu.h"
 
 G_DEFINE_TYPE(ShellMenu, shell_menu, BIG_TYPE_BOX);

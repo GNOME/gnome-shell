@@ -23,6 +23,8 @@
  * 02111-1307, USA.
  */
 
+#include "config.h"
+
 #define MUTTER_BUILDING_PLUGIN 1
 #include <mutter-plugin.h>
 

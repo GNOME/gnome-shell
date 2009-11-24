@@ -94,6 +94,8 @@ function runTestFixedBox() {
 }
 */
 
+#include "config.h"
+
 #include "shell-generic-container.h"
 
 #include <clutter/clutter.h>
