@@ -195,6 +195,17 @@ G_DEFINE_TYPE_WITH_CODE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT,
                                                 clutter_scriptable_init));
 
 static void
+on_actor_dispose (gpointer  user_data,
+                  GObject  *actor_pointer)
+{
+  ClutterAnimation *self = user_data;
+
+  if (self->priv->object == actor_pointer)
+    g_object_unref (self);
+}
+
+
+static void
 clutter_animation_real_completed (ClutterAnimation *self)
 {
   ClutterAnimationPrivate *priv = self->priv;
@@ -235,6 +246,7 @@ clutter_animation_real_completed (ClutterAnimation *self)
   if (animation == self)
     {
       g_object_set_qdata (priv->object, quark_object_animation, NULL);
+      g_object_weak_unref (priv->object, on_actor_dispose, self);
       g_object_unref (animation);
     }
 }
@@ -1840,6 +1852,7 @@ animation_create_for_actor (ClutterActor *actor)
       animation = clutter_animation_new ();
       clutter_animation_set_object (animation, object);
       g_object_set_qdata (object, quark_object_animation, animation);
+      g_object_weak_ref (object, on_actor_dispose, animation);
 
       CLUTTER_NOTE (ANIMATION,
                     "Created new Animation [%p] for actor [%p]",
