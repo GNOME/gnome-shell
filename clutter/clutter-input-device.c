@@ -242,25 +242,91 @@ cursor_weak_unref (gpointer  user_data,
   device->cursor_actor = NULL;
 }
 
+/*
+ * _clutter_input_device_set_actor:
+ * @device: a #ClutterInputDevice
+ * @actor: a #ClutterActor
+ *
+ * Sets the actor under the pointer coordinates of @device
+ *
+ * This function is called by _clutter_input_device_update()
+ * and it will:
+ *
+ *   - queue a %CLUTTER_LEAVE event on the previous pointer actor
+ *     of @device, if any
+ *   - set to %FALSE the :has-pointer property of the previous
+ *     pointer actor of @device, if any
+ *   - queue a %CLUTTER_ENTER event on the new pointer actor
+ *   - set to %TRUE the :has-pointer property of the new pointer
+ *     actor
+ */
 void
 _clutter_input_device_set_actor (ClutterInputDevice *device,
                                  ClutterActor       *actor)
 {
+  ClutterActor *old_actor;
+  ClutterEvent cev;
+
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  if (device->cursor_actor != NULL)
+  if (actor == device->cursor_actor)
+    return;
+
+  old_actor = device->cursor_actor;
+  if (old_actor != NULL)
     {
+      cev.crossing.type = CLUTTER_LEAVE;
+      cev.crossing.time = device->previous_time;
+      cev.crossing.flags = 0;
+      cev.crossing.stage = device->stage;
+      cev.crossing.source = device->cursor_actor;
+      cev.crossing.x = device->previous_x;
+      cev.crossing.y = device->previous_y;
+      cev.crossing.device = device;
+      cev.crossing.related = actor;
+
+      /* we need to make sure that this event is processed before
+       * any other event we might have queued up until now, so we
+       * go on and synthesize the event emission
+       */
+      _clutter_process_event (&cev);
+
       _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
       g_object_weak_unref (G_OBJECT (device->cursor_actor),
                            cursor_weak_unref,
                            device);
+
+      device->cursor_actor = NULL;
+    }
+
+  if (actor != NULL)
+    {
+      cev.crossing.type = CLUTTER_ENTER;
+      cev.crossing.time = device->current_time;
+      cev.crossing.flags = 0;
+      cev.crossing.stage = device->stage;
+      cev.crossing.source = actor;
+      cev.crossing.x = device->current_x;
+      cev.crossing.y = device->current_y;
+      cev.crossing.device = device;
+      cev.crossing.related = old_actor;
+
+      /* as above: we need to make sure that this event is processed
+       * before any other event we might have queued up until now, so
+       * we go on and synthesize the event emission
+       */
+      _clutter_process_event (&cev);
     }
 
   device->cursor_actor = actor;
-  g_object_weak_ref (G_OBJECT (device->cursor_actor),
-                     cursor_weak_unref,
-                     device);
-  _clutter_actor_set_has_pointer (device->cursor_actor, TRUE);
+
+  if (device->cursor_actor != NULL)
+    {
+      g_object_weak_ref (G_OBJECT (device->cursor_actor),
+                         cursor_weak_unref,
+                         device);
+      _clutter_actor_set_has_pointer (device->cursor_actor, TRUE);
+    }
 }
 
 /**
@@ -345,7 +411,7 @@ _clutter_input_device_update (ClutterInputDevice *device)
    * in which case this is the safest course of action anyway
    */
   if (new_cursor_actor == NULL)
-    new_cursor_actor = CLUTTER_ACTOR (stage);
+    return NULL;
 
   CLUTTER_NOTE (EVENT,
                 "Actor under cursor (device %d, at %d, %d): %s",
@@ -354,6 +420,9 @@ _clutter_input_device_update (ClutterInputDevice *device)
                 clutter_actor_get_name (new_cursor_actor) != NULL
                   ? clutter_actor_get_name (new_cursor_actor)
                   : G_OBJECT_TYPE_NAME (new_cursor_actor));
+
+  if (new_cursor_actor == old_cursor_actor)
+    return old_cursor_actor;
 
   _clutter_input_device_set_actor (device, new_cursor_actor);
 

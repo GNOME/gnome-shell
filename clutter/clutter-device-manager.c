@@ -75,7 +75,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__POINTER,
+                  clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   G_TYPE_POINTER);
 
@@ -85,7 +85,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__POINTER,
+                  clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   G_TYPE_POINTER);
 }

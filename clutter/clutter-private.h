@@ -92,9 +92,7 @@ struct _ClutterInputDevice
   ClutterInputDeviceType device_type;
 
   ClutterActor *cursor_actor;
-
   ClutterActor *pointer_grab_actor;
-  ClutterActor *motion_last_actor;
 
   gint click_count;
 

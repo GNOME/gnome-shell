@@ -2182,27 +2182,26 @@ static inline void
 emit_pointer_event (ClutterEvent       *event,
                     ClutterInputDevice *device)
 {
-  /* Using the global variable directly, since it has to be initialized
-   * at this point
-   */
-  ClutterMainContext *context = ClutterCntx;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
-  if (G_UNLIKELY (context->pointer_grab_actor != NULL &&
-                  device == NULL))
-    {
-      /* global grab */
-      clutter_actor_event (context->pointer_grab_actor, event, FALSE);
-    }
-  else if (G_UNLIKELY (device != NULL &&
-                       device->pointer_grab_actor != NULL))
-    {
-      /* per device grab */
-      clutter_actor_event (device->pointer_grab_actor, event, FALSE);
-    }
-  else
+  if (context->pointer_grab_actor == NULL &&
+      (device == NULL || device->pointer_grab_actor == NULL))
     {
       /* no grab, time to capture and bubble */
       emit_event (event, FALSE);
+    }
+  else
+    {
+      if (context->pointer_grab_actor != NULL)
+        {
+          /* global grab */
+          clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+        }
+      else if (device != NULL && device->pointer_grab_actor != NULL)
+        {
+          /* per device grab */
+          clutter_actor_event (device->pointer_grab_actor, event, FALSE);
+        }
     }
 }
 
@@ -2211,107 +2210,10 @@ emit_keyboard_event (ClutterEvent *event)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  if (G_UNLIKELY (context->keyboard_grab_actor != NULL))
-    clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
-  else
+  if (context->keyboard_grab_actor == NULL)
     emit_event (event, TRUE);
-}
-
-static void
-unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  if (dev == NULL)
-    context->motion_last_actor = NULL;
   else
-    dev->motion_last_actor = NULL;
-}
-
-static void
-set_motion_last_actor (ClutterActor       *motion_current_actor,
-                       ClutterInputDevice *device)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-  ClutterActor *last_actor = context->motion_last_actor;
-
-  if (device != NULL)
-    last_actor = device->motion_last_actor;
-
-  if (last_actor && last_actor != motion_current_actor)
-    {
-      g_signal_handlers_disconnect_by_func
-                       (last_actor,
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (motion_current_actor && last_actor != motion_current_actor)
-    {
-      g_signal_connect (motion_current_actor, "destroy",
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (device != NULL)
-    device->motion_last_actor = motion_current_actor;
-  else
-    context->motion_last_actor = motion_current_actor;
-}
-
-static inline void
-generate_enter_leave_events (ClutterEvent *event)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-  ClutterActor *motion_current_actor = event->motion.source;
-  ClutterActor *last_actor = context->motion_last_actor;
-  ClutterInputDevice *device = clutter_event_get_device (event);
-
-  if (device != NULL)
-    last_actor = device->motion_last_actor;
-
-  if (last_actor != motion_current_actor)
-    {
-      if (motion_current_actor)
-        {
-          ClutterEvent cev;
-          gfloat x, y;
-
-          cev.crossing.device  = device;
-          clutter_event_get_coords (event, &x, &y);
-
-          if (context->motion_last_actor)
-            {
-              cev.crossing.type    = CLUTTER_LEAVE;
-              cev.crossing.time    = event->any.time;
-              cev.crossing.flags   = 0;
-              cev.crossing.x       = x;
-              cev.crossing.y       = y;
-              cev.crossing.source  = last_actor;
-              cev.crossing.stage   = event->any.stage;
-              cev.crossing.related = motion_current_actor;
-
-              emit_pointer_event (&cev, device);
-            }
-
-          cev.crossing.type    = CLUTTER_ENTER;
-          cev.crossing.time    = event->any.time;
-          cev.crossing.flags   = 0;
-          cev.crossing.x       = x;
-          cev.crossing.y       = y;
-          cev.crossing.source  = motion_current_actor;
-          cev.crossing.stage   = event->any.stage;
-
-          if (context->motion_last_actor)
-            cev.crossing.related = last_actor;
-          else
-            cev.crossing.related = NULL;
-
-          emit_pointer_event (&cev, device);
-        }
-    }
-
-  set_motion_last_actor (motion_current_actor, device);
+    clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
 }
 
 /**
@@ -2343,7 +2245,9 @@ _clutter_process_event_details (ClutterActor        *stage,
                                 ClutterMainContext  *context,
                                 ClutterEvent        *event)
 {
-  ClutterInputDevice  *device = NULL;
+  ClutterInputDevice *device = NULL;
+
+  device = clutter_event_get_device (event);
 
   switch (event->type)
     {
@@ -2352,23 +2256,8 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_LEAVE:
-        /* The source is set for generated events, not for events
-         * resulting from the cursor leaving the stage
-         */
-        if (event->any.source == NULL)
-          {
-            ClutterActor *last_actor = context->motion_last_actor;
-
-            if (event->crossing.device != NULL)
-              last_actor = event->crossing.device->motion_last_actor;
-
-            event->any.source = last_actor;
-
-            set_motion_last_actor (NULL, event->crossing.device);
-          }
-        /* flow through */
       case CLUTTER_ENTER:
-        emit_pointer_event (event, event->crossing.device);
+        emit_pointer_event (event, device);
         break;
 
       case CLUTTER_DESTROY_NOTIFY:
@@ -2400,8 +2289,6 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_MOTION:
-        device = event->motion.device;
-
         /* Only stage gets motion events if clutter_set_motion_events is TRUE,
          * and the event is not a synthetic event with source set.
          */
@@ -2434,8 +2321,7 @@ _clutter_process_event_details (ClutterActor        *stage,
             break;
           }
 
-        /* fallthrough */
-
+      /* fallthrough from motion */
       case CLUTTER_BUTTON_PRESS:
       case CLUTTER_BUTTON_RELEASE:
       case CLUTTER_SCROLL:
@@ -2444,24 +2330,6 @@ _clutter_process_event_details (ClutterActor        *stage,
           gfloat x, y;
 
           clutter_event_get_coords (event, &x, &y);
-
-          if (device == NULL)
-            {
-              switch (event->type)
-                {
-                  case CLUTTER_BUTTON_PRESS:
-                  case CLUTTER_BUTTON_RELEASE:
-                    device = event->button.device;
-                    break;
-                  case CLUTTER_SCROLL:
-                    device = event->scroll.device;
-                    break;
-                  case CLUTTER_MOTION:
-                    /* already handled in the MOTION case of the switch */
-                  default:
-                    break;
-                }
-            }
 
           /* Only do a pick to find the source if source is not already set
            * (as it could be in a synthetic event)
@@ -2480,7 +2348,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                                     x, y);
 
                       event->button.source = stage;
-                      emit_pointer_event (event, event->button.device);
+                      emit_pointer_event (event, device);
                     }
                   break;
                 }
@@ -2489,20 +2357,19 @@ _clutter_process_event_details (ClutterActor        *stage,
                * already have everything we need to update it and
                * get the actor underneath
                */
-              if (device == NULL)
+              if (device != NULL)
+                actor = _clutter_input_device_update (device);
+              else
                 {
                   CLUTTER_NOTE (EVENT, "No device found: picking");
 
-                  /* Map the event to a reactive actor */
                   actor = _clutter_do_pick (CLUTTER_STAGE (stage),
                                             x, y,
                                             CLUTTER_PICK_REACTIVE);
                 }
-              else
-                actor = _clutter_input_device_update (device);
 
               event->any.source = actor;
-              if (actor == NULL)
+              if (event->any.source == NULL)
                 break;
             }
           else
@@ -2520,9 +2387,6 @@ _clutter_process_event_details (ClutterActor        *stage,
                         "Reactive event received at %.2f, %.2f - actor: %p",
                         x, y,
                         actor);
-
-          /* Create, enter/leave events if needed */
-          generate_enter_leave_events (event);
 
           if (event->type != CLUTTER_MOTION)
             {
