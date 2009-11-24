@@ -270,6 +270,13 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
 {
   GSList *d;
 
+  /* the user disabled motion events delivery on actors; we
+   * don't perform any picking since the source of the events
+   * will always be set to be the stage
+   */
+  if (!clutter_get_motion_events_enabled ())
+    return;
+
   for (d = device_manager->devices; d != NULL; d = d->next)
     {
       ClutterInputDevice *device = d->data;
