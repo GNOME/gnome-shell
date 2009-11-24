@@ -32,6 +32,7 @@
 #endif
 
 #if !CLUTTER_CHECK_VERSION(1,1,3)
+static PFNGLACTIVETEXTUREPROC activeTexture;
 static PFNGLGENFRAMEBUFFERSPROC genFramebuffers;
 static PFNGLDELETEFRAMEBUFFERSPROC deleteFramebuffers;
 static PFNGLBINDFRAMEBUFFERPROC bindFramebuffer;
@@ -488,6 +489,7 @@ initialize_gl_functions (void)
     {
       initialized = TRUE;
 
+      activeTexture = (PFNGLACTIVETEXTUREPROC) cogl_get_proc_address ("glActiveTextureARB");
       genFramebuffers = (PFNGLGENFRAMEBUFFERSPROC) cogl_get_proc_address ("glGenFramebuffersEXT");
       deleteFramebuffers = (PFNGLDELETEFRAMEBUFFERSPROC) cogl_get_proc_address ("glDeleteFramebuffersEXT");
       bindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC) cogl_get_proc_address ("glBindFramebufferEXT");
@@ -550,9 +552,9 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
 
   cogl_texture_get_gl_texture (source_texture, &source_gl_tex, &source_gl_target);
 
-  glActiveTextureARB (GL_TEXTURE0_ARB);
+  (*activeTexture) (GL_TEXTURE0_ARB);
   if (source_gl_target == GL_TEXTURE_2D)
-    glDisable (GL_TEXTURE_RECTANGLE);
+    glDisable (GL_TEXTURE_RECTANGLE_ARB);
   else
     glDisable (GL_TEXTURE_2D);
   glEnable (source_gl_target);
@@ -568,12 +570,12 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
    * than three are used by Mutter and all GL implementations we care
    * about will support at least 3.
    */
-  glActiveTextureARB (GL_TEXTURE1_ARB);
+  (*activeTexture) (GL_TEXTURE1_ARB);
   glDisable (GL_TEXTURE_2D);
-  glDisable (GL_TEXTURE_RECTANGLE);
-  glActiveTextureARB (GL_TEXTURE2_ARB);
+  glDisable (GL_TEXTURE_RECTANGLE_ARB);
+  (*activeTexture) (GL_TEXTURE2_ARB);
   glDisable (GL_TEXTURE_2D);
-  glDisable (GL_TEXTURE_RECTANGLE);
+  glDisable (GL_TEXTURE_RECTANGLE_ARB);
 
   glViewport (0, 0, dest_texture_width, dest_texture_height);
 
