@@ -296,6 +296,9 @@ void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
 void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
                                                gboolean      enable);
 
+void _clutter_actor_set_has_pointer (ClutterActor *self,
+                                     gboolean      has_pointer);
+
 void _clutter_run_repaint_functions (void);
 
 gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
