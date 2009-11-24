@@ -1,3 +1,36 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2009 Intel Corp.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:clutter-input-device
+ * @short_description: An input device managed by Clutter
+ *
+ * #ClutterInputDevice represents an input device known to Clutter.
+ *
+ * The #ClutterInputDevice class holds the state of the device, but
+ * its contents are usually defined by the Clutter backend in use.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -74,6 +107,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
   gobject_class->set_property = clutter_input_device_set_property;
   gobject_class->get_property = clutter_input_device_get_property;
 
+  /**
+   * ClutterInputDevice:id:
+   *
+   * The unique identifier of the device
+   *
+   * Since: 1.2
+   */
   pspec = g_param_spec_int ("id",
                             "Id",
                             "Unique identifier of the device",
@@ -83,6 +123,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                             G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_ID, pspec);
 
+  /**
+   * ClutterInputDevice:device-type:
+   *
+   * The type of the device
+   *
+   * Since: 1.2
+   */
   pspec = g_param_spec_enum ("device-type",
                              "Device Type",
                              "The type of the device",
@@ -108,6 +155,14 @@ clutter_input_device_init (ClutterInputDevice *self)
   self->previous_state = 0;
 }
 
+/*
+ * _clutter_input_device_set_coords:
+ * @device: a #ClutterInputDevice
+ * @x: X coordinate of the device
+ * @y: Y coordinate of the device
+ *
+ * Stores the last known coordinates of the device
+ */
 void
 _clutter_input_device_set_coords (ClutterInputDevice *device,
                                   gint                x,
@@ -115,10 +170,20 @@ _clutter_input_device_set_coords (ClutterInputDevice *device,
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  device->previous_x = x;
-  device->previous_y = y;
+  if (device->previous_x != x)
+    device->previous_x = x;
+
+  if (device->previous_y != y)
+    device->previous_y = y;
 }
 
+/*
+ * _clutter_input_device_set_state:
+ * @device: a #ClutterInputDevice
+ * @state: a bitmask of modifiers
+ *
+ * Stores the last known modifiers state of the device
+ */
 void
 _clutter_input_device_set_state (ClutterInputDevice  *device,
                                  ClutterModifierType  state)
@@ -128,15 +193,30 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
   device->previous_state = state;
 }
 
+/*
+ * _clutter_input_device_set_time:
+ * @device: a #ClutterInputDevice
+ * @time_: the time
+ *
+ * Stores the last known event time of the device
+ */
 void
 _clutter_input_device_set_time (ClutterInputDevice *device,
                                 guint32             time_)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  device->previous_time = time_;
+  if (device->previous_time != time_)
+    device->previous_time = time_;
 }
 
+/*
+ * _clutter_input_device_set_stage:
+ * @device: a #ClutterInputDevice
+ * @stage: a #ClutterStage
+ *
+ * Stores the stage under the device
+ */
 void
 _clutter_input_device_set_stage (ClutterInputDevice *device,
                                  ClutterStage       *stage)
@@ -146,6 +226,13 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
   device->stage = stage;
 }
 
+/*
+ * cursor_weak_unref:
+ *
+ * #ClutterInputDevice keeps a weak reference on the actor
+ * under its pointer; this function unsets the reference on
+ * the actor to avoid keeping around stale pointers
+ */
 static void
 cursor_weak_unref (gpointer  user_data,
                    GObject  *object_pointer)
@@ -213,12 +300,23 @@ clutter_input_device_get_device_id (ClutterInputDevice *device)
   return device->id;
 }
 
+/**
+ * clutter_input_device_get_device_coords:
+ * @device: a #ClutterInputDevice of type %CLUTTER_POINTER_DEVICE
+ * @x: (out): return location for the X coordinate
+ * @y: (out): return location for the Y coordinate
+ *
+ * Retrieves the latest coordinates of the pointer of @device
+ *
+ * Since: 1.2
+ */
 void
 clutter_input_device_get_device_coords (ClutterInputDevice *device,
                                         gint               *x,
                                         gint               *y)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (device->device_type == CLUTTER_POINTER_DEVICE);
 
   if (x)
     *x = device->previous_x;
@@ -241,6 +339,11 @@ _clutter_input_device_update (ClutterInputDevice *device)
   old_cursor_actor = device->cursor_actor;
   new_cursor_actor = _clutter_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
 
+  /* if the pick could not find an actor then we do not update the
+   * input device, to avoid ghost enter/leave events; the pick should
+   * never fail, except for bugs in the glReadPixels() implementation
+   * in which case this is the safest course of action anyway
+   */
   if (new_cursor_actor == NULL)
     new_cursor_actor = CLUTTER_ACTOR (stage);
 
