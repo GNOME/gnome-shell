@@ -57,12 +57,13 @@ endif
 wrappers: stamp-test-interactive
 	@true
 stamp-test-interactive: test-interactive$(EXEEXT)
-	@for i in $(UNIT_TESTS); \
+	@wrapper=$(top_srcdir)/tests/interactive/wrapper.sh ; \
+	for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
 		echo "  GEN    $$test_bin" ; \
 		( echo "#!/bin/sh" ; \
-		  echo "$(top_srcdir)/tests/interactive/wrapper.sh $$test_bin" \
+		  echo "$$wrapper $$test_bin \$$@" \
 		) > $$test_bin$(EXEEXT) ; \
 		chmod +x $$test_bin$(EXEEXT) ; \
 	done \
