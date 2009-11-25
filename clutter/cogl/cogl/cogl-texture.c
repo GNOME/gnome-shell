@@ -149,14 +149,7 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        _cogl_texture_2d_sliced_set_wrap_mode_parameter (
-                                                  (CoglTexture2DSliced *)tex,
-                                                  wrap_mode);
-        break;
-    }
+  tex->vtable->set_wrap_mode_parameter (tex, wrap_mode);
 }
 
 gboolean
@@ -340,11 +333,7 @@ cogl_texture_get_max_waste (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_get_max_waste (handle);
-    }
+  return tex->vtable->get_max_waste (tex);
 
   g_return_val_if_reached (0);
 }
@@ -359,13 +348,7 @@ cogl_texture_is_sliced (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_is_sliced (handle);
-    }
-
-  g_return_val_if_reached (FALSE);
+  return tex->vtable->is_sliced (tex);
 }
 
 /* Some CoglTextures, notably sliced textures or atlas textures when repeating
@@ -388,21 +371,13 @@ _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        {
-          CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-          _cogl_texture_2d_sliced_foreach_sub_texture_in_region (tex_2ds,
-                                                                 virtual_tx_1,
-                                                                 virtual_ty_1,
-                                                                 virtual_tx_2,
-                                                                 virtual_ty_2,
-                                                                 callback,
-                                                                 user_data);
-          break;
-        }
-    }
+  tex->vtable->foreach_sub_texture_in_region (tex,
+                                              virtual_tx_1,
+                                              virtual_ty_1,
+                                              virtual_tx_2,
+                                              virtual_ty_2,
+                                              callback,
+                                              user_data);
 }
 
 /* If this returns FALSE, that implies _foreach_sub_texture_in_region
@@ -420,16 +395,7 @@ _cogl_texture_can_hardware_repeat (CoglHandle handle)
     return FALSE;
 #endif
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        {
-          CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-          return _cogl_texture_2d_sliced_can_hardware_repeat (tex_2ds);
-        }
-    }
-
-  g_return_val_if_reached (FALSE);
+  return tex->vtable->can_hardware_repeat (tex);
 }
 
 /* NB: You can't use this with textures comprised of multiple sub textures (use
@@ -442,12 +408,7 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_transform_coords_to_gl (
-                                          COGL_TEXTURE_2D_SLICED (tex), s, t);
-    }
+  return tex->vtable->transform_coords_to_gl (tex, s, t);
 }
 
 GLenum
@@ -470,15 +431,7 @@ cogl_texture_get_gl_texture (CoglHandle handle,
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_get_gl_texture (handle,
-                                                       out_gl_handle,
-                                                       out_gl_target);
-    }
-
-  g_return_val_if_reached (FALSE);
+  return tex->vtable->get_gl_texture (tex, out_gl_handle, out_gl_target);
 }
 
 void
@@ -493,12 +446,7 @@ _cogl_texture_set_filters (CoglHandle handle,
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        _cogl_texture_2d_sliced_set_filters (handle, min_filter, mag_filter);
-        break;
-    }
+  return tex->vtable->set_filters (tex, min_filter, mag_filter);
 }
 
 void
@@ -511,12 +459,7 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        _cogl_texture_2d_sliced_ensure_mipmaps (handle);
-        break;
-    }
+  return tex->vtable->ensure_mipmaps (tex);
 }
 
 gboolean
@@ -540,24 +483,14 @@ cogl_texture_set_region (CoglHandle       handle,
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_set_region (handle,
-					           src_x,
-					           src_y,
-                                                   dst_x,
-                                                   dst_y,
-                                                   dst_width,
-                                                   dst_height,
-                                                   width,
-                                                   height,
-                                                   format,
-                                                   rowstride,
-                                                   data);
-    }
-
-  g_return_val_if_reached (FALSE);
+  return tex->vtable->set_region (tex,
+                                  src_x, src_y,
+                                  dst_x, dst_y,
+                                  dst_width, dst_height,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  data);
 }
 
 /* Reads back the contents of a texture by rendering it to the framebuffer
@@ -806,15 +739,6 @@ cogl_texture_get_data (CoglHandle       handle,
 
   tex = COGL_TEXTURE (handle);
 
-  switch (tex->type)
-    {
-      case COGL_TEXTURE_TYPE_2D_SLICED:
-        return _cogl_texture_2d_sliced_get_data (handle,
-                                                 format,
-                                                 rowstride,
-                                                 data);
-    }
-
-  g_return_val_if_reached (0);
+  return tex->vtable->get_data (handle, format, rowstride, data);
 }
 
