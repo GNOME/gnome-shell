@@ -339,6 +339,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
 
   offscreen->fbo_handle         = fbo_gl_handle;
   offscreen->gl_stencil_handle  = gl_stencil_handle;
+  offscreen->texture            = cogl_handle_ref (texhandle);
 
   /* XXX: Can we get a away with removing this? It wasn't documented, and most
    * users of the API are hopefully setting up the modelview from scratch
@@ -362,6 +363,8 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
 
   if (offscreen->gl_stencil_handle)
     GE (glDeleteRenderbuffers (1, &offscreen->gl_stencil_handle));
+  if (offscreen->texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (offscreen->texture);
   GE (glDeleteFramebuffers (1, &offscreen->fbo_handle));
   g_free (offscreen);
 }
