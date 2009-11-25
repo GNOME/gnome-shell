@@ -63,11 +63,11 @@ test_texture_quality_main (int argc, char *argv[])
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
 
-  if (argc < 1)
+  if (argc < 2)
     g_print ("Hint: the redhand.png isn't a good test image for this test.\n"
              "This test can take any image file as an argument\n");
 
-  file = (argc > 0)
+  file = (argc > 1)
        ? g_strdup (argv[1])
        : g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
 
