@@ -67,6 +67,7 @@
 #include "clutter-stage-window.h"
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
+#include "clutter-container.h"
 
 #include "cogl/cogl.h"
 
@@ -282,12 +283,13 @@ static void
 clutter_stage_pick (ClutterActor       *self,
 		    const ClutterColor *color)
 {
-  /* Paint nothing, cogl_paint_init() effectively paints the stage
-   * silhouette for us - see _clutter_do_pick().
-   * Chain up to the groups paint howerer so our children get picked
-   * - clutter_group_pick
+  /* Note: we don't chain up to our parent as we don't want any geometry
+   * emitted for the stage itself. The stage's pick id is effectively handled
+   * by the call to cogl_clear done in clutter-main.c:_clutter_do_pick_async()
    */
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->pick (self, color);
+
+  clutter_container_foreach (CLUTTER_CONTAINER (self),
+                             CLUTTER_CALLBACK (clutter_actor_paint), NULL);
 }
 
 static void

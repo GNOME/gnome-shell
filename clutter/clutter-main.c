@@ -474,7 +474,7 @@ _clutter_do_pick (ClutterStage   *stage,
 {
   ClutterMainContext *context;
   guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
-  CoglColor           white;
+  CoglColor           stage_pick_id;
   guint32             id;
   GLboolean           dither_was_on;
 
@@ -491,9 +491,9 @@ _clutter_do_pick (ClutterStage   *stage,
   if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_push_window_rectangle (x, y, 1, 1);
 
-  cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_disable_fog ();
-  cogl_clear (&white,
+  cogl_color_set_from_4ub (&stage_pick_id, 0, 0, 0, 255);
+  cogl_clear (&stage_pick_id,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
 
