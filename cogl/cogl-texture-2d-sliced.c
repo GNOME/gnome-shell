@@ -50,6 +50,8 @@ static void _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds);
 
 COGL_HANDLE_DEFINE (Texture2DSliced, texture_2d_sliced);
 
+static const CoglTextureVtable cogl_texture_2d_sliced_vtable;
+
 /* To differentiate between texture coordinates of a specific, real, slice
  * texture and the texture coordinates of the composite, sliced texture, the
  * coordinates of the sliced texture are called "virtual" coordinates and the
@@ -58,9 +60,9 @@ COGL_HANDLE_DEFINE (Texture2DSliced, texture_2d_sliced);
  * virtual coordinates of the parent sliced texture. */
 /* Note: no guarantee is given about the order in which the slices will be
  * visited */
-void
+static void
 _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
-                                       CoglTexture2DSliced *tex_2ds,
+                                       CoglTexture *tex,
                                        float virtual_tx_1,
                                        float virtual_ty_1,
                                        float virtual_tx_2,
@@ -68,7 +70,7 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
                                        CoglTextureSliceCallback callback,
                                        void *user_data)
 {
-  CoglTexture *tex = COGL_TEXTURE (tex_2ds);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   float width = tex->bitmap.width;
   float height = tex->bitmap.height;
   CoglSpanIter iter_x;
@@ -649,11 +651,11 @@ _cogl_pot_slices_for_size (gint    size_to_fill,
   return 0;
 }
 
-void
-_cogl_texture_2d_sliced_set_wrap_mode_parameter (CoglTexture2DSliced *tex_2ds,
+static void
+_cogl_texture_2d_sliced_set_wrap_mode_parameter (CoglTexture *tex,
                                                  GLenum wrap_mode)
 {
-  CoglTexture *tex = COGL_TEXTURE (tex_2ds);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 
   /* Only set the wrap mode if it's different from the current
      value to avoid too many GL calls */
@@ -917,7 +919,7 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
   tex_2ds = g_new (CoglTexture2DSliced, 1);
 
   tex = COGL_TEXTURE (tex_2ds);
-  tex->type = COGL_TEXTURE_TYPE_2D_SLICED;
+  tex->vtable = &cogl_texture_2d_sliced_vtable;
 
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
@@ -988,7 +990,7 @@ _cogl_texture_2d_sliced_new_from_data (unsigned int     width,
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
 
   tex = COGL_TEXTURE (tex_2ds);
-  tex->type = COGL_TEXTURE_TYPE_2D_SLICED;
+  tex->vtable = &cogl_texture_2d_sliced_vtable;
 
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
@@ -1058,7 +1060,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
 
   tex = COGL_TEXTURE (tex_2ds);
-  tex->type = COGL_TEXTURE_TYPE_2D_SLICED;
+  tex->vtable = &cogl_texture_2d_sliced_vtable;
 
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
@@ -1240,7 +1242,7 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
 
   tex = COGL_TEXTURE (tex_2ds);
-  tex->type = COGL_TEXTURE_TYPE_2D_SLICED;
+  tex->vtable = &cogl_texture_2d_sliced_vtable;
 
   /* Setup bitmap info */
   tex->is_foreign = TRUE;
@@ -1299,22 +1301,18 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   return _cogl_texture_2d_sliced_handle_new (tex_2ds);
 }
 
-gint
-_cogl_texture_2d_sliced_get_max_waste (CoglHandle handle)
+static gint
+_cogl_texture_2d_sliced_get_max_waste (CoglTexture *tex)
 {
-  CoglTexture2DSliced *tex_2ds;
-
-  tex_2ds = _cogl_texture_2d_sliced_pointer_from_handle (handle);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 
   return tex_2ds->max_waste;
 }
 
-gboolean
-_cogl_texture_2d_sliced_is_sliced (CoglHandle handle)
+static gboolean
+_cogl_texture_2d_sliced_is_sliced (CoglTexture *tex)
 {
-  CoglTexture2DSliced *tex_2ds;
-
-  tex_2ds = _cogl_texture_2d_sliced_pointer_from_handle (handle);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 
   if (tex_2ds->slice_gl_handles == NULL)
     return FALSE;
@@ -1325,10 +1323,10 @@ _cogl_texture_2d_sliced_is_sliced (CoglHandle handle)
   return TRUE;
 }
 
-gboolean
-_cogl_texture_2d_sliced_can_hardware_repeat (CoglHandle handle)
+static gboolean
+_cogl_texture_2d_sliced_can_hardware_repeat (CoglTexture *tex)
 {
-  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (handle);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   CoglSpan *x_span;
   CoglSpan *y_span;
 
@@ -1338,16 +1336,16 @@ _cogl_texture_2d_sliced_can_hardware_repeat (CoglHandle handle)
   return (x_span->waste || y_span->waste) ? FALSE : TRUE;
 }
 
-void
-_cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture2DSliced *tex_2ds,
+static void
+_cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture *tex,
                                                 float *s,
                                                 float *t)
 {
-  CoglTexture *tex = COGL_TEXTURE (tex_2ds);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   CoglSpan *x_span;
   CoglSpan *y_span;
 
-  g_assert (!_cogl_texture_2d_sliced_is_sliced (tex_2ds));
+  g_assert (!_cogl_texture_2d_sliced_is_sliced (tex));
 
   /* Don't include the waste in the texture coordinates */
   x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
@@ -1366,19 +1364,12 @@ _cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture2DSliced *tex_2ds,
 #endif
 }
 
-gboolean
-_cogl_texture_2d_sliced_get_gl_texture (CoglHandle handle,
+static gboolean
+_cogl_texture_2d_sliced_get_gl_texture (CoglTexture *tex,
                                         GLuint *out_gl_handle,
                                         GLenum *out_gl_target)
 {
-  CoglTexture2DSliced *tex_2ds;
-  CoglTexture         *tex;
-
-  if (!cogl_is_texture (handle))
-    return FALSE;
-
-  tex_2ds = _cogl_texture_2d_sliced_pointer_from_handle (handle);
-  tex = COGL_TEXTURE (tex_2ds);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 
   if (tex_2ds->slice_gl_handles == NULL)
     return FALSE;
@@ -1395,21 +1386,14 @@ _cogl_texture_2d_sliced_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-void
-_cogl_texture_2d_sliced_set_filters (CoglHandle handle,
+static void
+_cogl_texture_2d_sliced_set_filters (CoglTexture *tex,
                                      GLenum min_filter,
                                      GLenum mag_filter)
 {
-  CoglTexture2DSliced *tex_2ds;
-  CoglTexture         *tex;
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   GLuint               gl_handle;
   int                  i;
-
-  if (!cogl_is_texture (handle))
-    return;
-
-  tex_2ds = _cogl_texture_2d_sliced_pointer_from_handle (handle);
-  tex = COGL_TEXTURE (tex_2ds);
 
   /* Make sure slices were created */
   if (tex_2ds->slice_gl_handles == NULL)
@@ -1435,20 +1419,13 @@ _cogl_texture_2d_sliced_set_filters (CoglHandle handle,
     }
 }
 
-void
-_cogl_texture_2d_sliced_ensure_mipmaps (CoglHandle handle)
+static void
+_cogl_texture_2d_sliced_ensure_mipmaps (CoglTexture *tex)
 {
-  CoglTexture2DSliced *tex_2ds;
-  CoglTexture         *tex;
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   int                  i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!cogl_is_texture (handle))
-    return;
-
-  tex_2ds = _cogl_texture_2d_sliced_pointer_from_handle (handle);
-  tex = COGL_TEXTURE (tex_2ds);
 
   /* Only update if the mipmaps are dirty */
   if (!tex->auto_mipmap || !tex->mipmaps_dirty)
@@ -1483,8 +1460,8 @@ _cogl_texture_2d_sliced_ensure_mipmaps (CoglHandle handle)
   tex->mipmaps_dirty = FALSE;
 }
 
-gboolean
-_cogl_texture_2d_sliced_set_region (CoglHandle      handle,
+static gboolean
+_cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
                                     int             src_x,
                                     int             src_y,
                                     int             dst_x,
@@ -1497,8 +1474,7 @@ _cogl_texture_2d_sliced_set_region (CoglHandle      handle,
                                     unsigned int    rowstride,
                                     const guint8   *data)
 {
-  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (handle);
-  CoglTexture         *tex = COGL_TEXTURE (handle);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   gint                 bpp;
   CoglBitmap           source_bmp;
   CoglBitmap           temp_bmp;
@@ -1562,7 +1538,7 @@ _cogl_texture_2d_sliced_set_region (CoglHandle      handle,
   return TRUE;
 }
 
-gboolean
+static gboolean
 _cogl_texture_2d_sliced_download_from_gl (
                                       CoglTexture2DSliced *tex_2ds,
                                       CoglBitmap          *target_bmp,
@@ -1663,14 +1639,13 @@ _cogl_texture_2d_sliced_download_from_gl (
   return TRUE;
 }
 
-int
-_cogl_texture_2d_sliced_get_data (CoglHandle       handle,
+static int
+_cogl_texture_2d_sliced_get_data (CoglTexture     *tex,
                                   CoglPixelFormat  format,
                                   unsigned int     rowstride,
                                   guint8          *data)
 {
-  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (handle);
-  CoglTexture         *tex = COGL_TEXTURE (handle);
+  CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   gint                 bpp;
   gint                 byte_size;
   CoglPixelFormat      closest_format;
@@ -1762,3 +1737,18 @@ _cogl_texture_2d_sliced_get_data (CoglHandle       handle,
   return byte_size;
 }
 
+static const CoglTextureVtable
+cogl_texture_2d_sliced_vtable =
+  {
+    _cogl_texture_2d_sliced_set_region,
+    _cogl_texture_2d_sliced_get_data,
+    _cogl_texture_2d_sliced_foreach_sub_texture_in_region,
+    _cogl_texture_2d_sliced_get_max_waste,
+    _cogl_texture_2d_sliced_is_sliced,
+    _cogl_texture_2d_sliced_can_hardware_repeat,
+    _cogl_texture_2d_sliced_transform_coords_to_gl,
+    _cogl_texture_2d_sliced_get_gl_texture,
+    _cogl_texture_2d_sliced_set_filters,
+    _cogl_texture_2d_sliced_ensure_mipmaps,
+    _cogl_texture_2d_sliced_set_wrap_mode_parameter
+  };

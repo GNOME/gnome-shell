@@ -31,29 +31,7 @@
 #define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
 
 typedef struct _CoglTexture       CoglTexture;
-
-typedef enum _CoglTextureType
-{
-  COGL_TEXTURE_TYPE_2D_SLICED
-} CoglTextureType;
-
-struct _CoglTexture
-{
-  CoglHandleObject   _parent;
-  CoglTextureType    type;
-  CoglBitmap         bitmap;
-  gboolean           bitmap_owner;
-  GLenum             gl_target;
-  GLenum             gl_intformat;
-  GLenum             gl_format;
-  GLenum             gl_type;
-  GLenum             min_filter;
-  GLenum             mag_filter;
-  gboolean           is_foreign;
-  GLint              wrap_mode;
-  gboolean           auto_mipmap;
-  gboolean           mipmaps_dirty;
-};
+typedef struct _CoglTextureVtable CoglTextureVtable;
 
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
@@ -61,6 +39,79 @@ typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           float *slice_coords,
                                           float *virtual_coords,
                                           void *user_data);
+
+struct _CoglTextureVtable
+{
+  /* Virtual functions that must be implemented for a texture
+     backend */
+
+  gboolean (* set_region) (CoglTexture    *tex,
+                           int             src_x,
+                           int             src_y,
+                           int             dst_x,
+                           int             dst_y,
+                           unsigned int    dst_width,
+                           unsigned int    dst_height,
+                           int             width,
+                           int             height,
+                           CoglPixelFormat format,
+                           unsigned int    rowstride,
+                           const guint8   *data);
+
+  int (* get_data) (CoglTexture     *tex,
+                    CoglPixelFormat  format,
+                    unsigned int     rowstride,
+                    guint8          *data);
+
+  void (* foreach_sub_texture_in_region) (CoglTexture *tex,
+                                          float virtual_tx_1,
+                                          float virtual_ty_1,
+                                          float virtual_tx_2,
+                                          float virtual_ty_2,
+                                          CoglTextureSliceCallback callback,
+                                          void *user_data);
+
+  gint (* get_max_waste) (CoglTexture *tex);
+
+  gboolean (* is_sliced) (CoglTexture *tex);
+
+  gboolean (* can_hardware_repeat) (CoglTexture *tex);
+
+  void (* transform_coords_to_gl) (CoglTexture *tex,
+                                   float *s,
+                                   float *t);
+
+  gboolean (* get_gl_texture) (CoglTexture *tex,
+                               GLuint *out_gl_handle,
+                               GLenum *out_gl_target);
+
+  void (* set_filters) (CoglTexture *tex,
+                        GLenum min_filter,
+                        GLenum mag_filter);
+
+  void (* ensure_mipmaps) (CoglTexture *tex);
+
+  void (* set_wrap_mode_parameter) (CoglTexture *tex,
+                                    GLenum wrap_mode);
+};
+
+struct _CoglTexture
+{
+  CoglHandleObject         _parent;
+  const CoglTextureVtable *vtable;
+  CoglBitmap               bitmap;
+  gboolean                 bitmap_owner;
+  GLenum                   gl_target;
+  GLenum                   gl_intformat;
+  GLenum                   gl_format;
+  GLenum                   gl_type;
+  GLenum                   min_filter;
+  GLenum                   mag_filter;
+  gboolean                 is_foreign;
+  GLint                    wrap_mode;
+  gboolean                 auto_mipmap;
+  gboolean                 mipmaps_dirty;
+};
 
 void
 _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
