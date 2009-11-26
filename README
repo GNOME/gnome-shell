@@ -236,6 +236,19 @@ Cogl API changes for Clutter 1.2
   way derived from another. This will allow Cogl to track material
   ancestries/similarities and reduce the cost of GPU state changes.
 
+* cogl_push_draw_buffer, cogl_set_draw_buffer and cogl_pop_draw_buffer are now
+  deprecated and new code should use the cogl_framebuffer_* API instead.
+  Code that previously did:
+    cogl_push_draw_buffer ();
+    cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, buffer);
+    /* draw */
+    cogl_pop_draw_buffer ();
+  can now be re-written as:
+    cogl_push_framebuffer (buffer);
+    /* draw */
+    cogl_pop_framebuffer ();
+
+
 Release Notes for Clutter 1.0
 -------------------------------
 

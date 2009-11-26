@@ -33,7 +33,7 @@
 #include "cogl-context.h"
 #include "cogl-internal.h"
 #include "cogl-matrix-stack.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 typedef struct {
   CoglMatrix matrix;
@@ -426,11 +426,11 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
     }
 
   /* Because Cogl defines texture coordinates to have a top left origin and
-   * because offscreen draw buffers may be used for rendering to textures we
+   * because offscreen framebuffers may be used for rendering to textures we
    * always render upside down to offscreen buffers.
    */
   if (mode == COGL_MATRIX_PROJECTION &&
-      cogl_is_offscreen (_cogl_get_draw_buffer ()))
+      cogl_is_offscreen (_cogl_get_framebuffer ()))
     {
       CoglMatrix flipped_projection;
       CoglMatrix *projection =

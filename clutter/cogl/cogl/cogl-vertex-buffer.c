@@ -138,7 +138,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-primitives.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -1666,10 +1666,10 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     }
   ctx->n_texcoord_arrays_enabled = max_texcoord_attrib_unit + 1;
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   options.flags =
     COGL_MATERIAL_FLUSH_FALLBACK_MASK |

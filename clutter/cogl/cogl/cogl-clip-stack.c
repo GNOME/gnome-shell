@@ -35,7 +35,7 @@
 #include "cogl-primitives.h"
 #include "cogl-context.h"
 #include "cogl-internal.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                        floatVec2 nodes_max,
@@ -132,11 +132,11 @@ set_clip_plane (GLint plane_num,
   GLdouble plane[4];
 #endif
   GLfloat angle;
-  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglHandle framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+    _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglMatrix inverse_projection;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -184,12 +184,12 @@ set_clip_planes (float x_1,
 		 float x_2,
 		 float y_2)
 {
-  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglHandle framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrix modelview_matrix;
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+    _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglMatrix projection_matrix;
 
   float vertex_tl[4] = { x_1, y_1, 0, 1.0 };
@@ -236,7 +236,7 @@ add_stencil_clip_rectangle (float x_1,
                             gboolean first)
 {
   CoglHandle current_source;
-  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglHandle framebuffer = _cogl_get_framebuffer ();
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -244,7 +244,7 @@ add_stencil_clip_rectangle (float x_1,
    * batched geometry before we start... */
   _cogl_journal_flush ();
 
-  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+  _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* temporarily swap in our special stenciling material */
   current_source = cogl_handle_ref (ctx->source_material);
@@ -267,9 +267,9 @@ add_stencil_clip_rectangle (float x_1,
   else
     {
       CoglMatrixStack *modelview_stack =
-        _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+        _cogl_framebuffer_get_modelview_stack (framebuffer);
       CoglMatrixStack *projection_stack =
-        _cogl_draw_buffer_get_projection_stack (draw_buffer);
+        _cogl_framebuffer_get_projection_stack (framebuffer);
 
       /* Add one to every pixel of the stencil buffer in the
 	 rectangle */
@@ -341,10 +341,10 @@ cogl_clip_push_window_rectangle (int x_offset,
 	                         int width,
 	                         int height)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
   CoglClipStack *stack;
-  int draw_buffer_height;
+  int framebuffer_height;
   CoglClipStackEntryWindowRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -353,12 +353,12 @@ cogl_clip_push_window_rectangle (int x_offset,
    * it before making modifications */
   _cogl_journal_flush ();
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   stack = clip_state->stacks->data;
 
-  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
+  framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
 
   entry = g_slice_new (CoglClipStackEntryWindowRect);
 
@@ -372,15 +372,15 @@ cogl_clip_push_window_rectangle (int x_offset,
   entry->type = COGL_CLIP_STACK_WINDOW_RECT;
   entry->x0 = x_offset;
   entry->x1 = x_offset + width;
-  if (cogl_is_offscreen (draw_buffer))
+  if (cogl_is_offscreen (framebuffer))
     {
       entry->y0 = y_offset;
       entry->y1 = y_offset + height;
     }
   else
     {
-      entry->y0 = draw_buffer_height - y_offset - height;
-      entry->y1 = draw_buffer_height - y_offset;
+      entry->y0 = framebuffer_height - y_offset - height;
+      entry->y1 = framebuffer_height - y_offset;
     }
 
   /* Store it in the stack */
@@ -400,7 +400,7 @@ cogl_clip_push_window_rect (float x_offset,
 }
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
- * to Cogl window/draw-buffer coordinates (ranging from 0 to buffer-size) with
+ * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with
  * (0,0) being top left. */
 #define VIEWPORT_TRANSFORM_X(x, vp_origin_x, vp_width) \
     (  ( ((x) + 1.0) * ((vp_width) / 2.0) ) + (vp_origin_x)  )
@@ -492,7 +492,7 @@ cogl_clip_push_rectangle (float x_1,
                           float x_2,
                           float y_2)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
   CoglClipStack *stack;
   CoglClipStackEntryRect *entry;
@@ -508,8 +508,8 @@ cogl_clip_push_rectangle (float x_1,
   if (try_pushing_rect_as_window_rect (x_1, y_1, x_2, y_2))
     return;
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   stack = clip_state->stacks->data;
 
@@ -546,7 +546,7 @@ cogl_clip_push (float x_offset,
 void
 cogl_clip_push_from_path_preserve (void)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
   CoglClipStack *stack;
   CoglClipStackEntryPath *entry;
@@ -557,8 +557,8 @@ cogl_clip_push_from_path_preserve (void)
    * it before making modifications */
   _cogl_journal_flush ();
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   stack = clip_state->stacks->data;
 
@@ -623,13 +623,13 @@ _cogl_clip_pop_real (CoglClipStackState *clip_state)
 void
 cogl_clip_pop (void)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_pop_real (clip_state);
 }
@@ -647,7 +647,7 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   gint scissor_x1 = G_MAXINT;
   gint scissor_y1 = G_MAXINT;
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
 
   if (!clip_state->stack_dirty)
     return;
@@ -776,7 +776,7 @@ cogl_clip_ensure (void)
 {
   CoglClipStackState *clip_state;
 
-  clip_state = _cogl_draw_buffer_get_clip_state (_cogl_get_draw_buffer ());
+  clip_state = _cogl_framebuffer_get_clip_state (_cogl_get_framebuffer ());
   _cogl_flush_clip_state (clip_state);
 }
 
@@ -799,13 +799,13 @@ _cogl_clip_stack_save_real (CoglClipStackState *clip_state)
 void
 cogl_clip_stack_save (void)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_stack_save_real (clip_state);
 }
@@ -838,13 +838,13 @@ _cogl_clip_stack_restore_real (CoglClipStackState *clip_state)
 void
 cogl_clip_stack_restore (void)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   CoglClipStackState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_stack_restore_real (clip_state);
 }

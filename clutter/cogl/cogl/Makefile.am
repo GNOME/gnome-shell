@@ -131,8 +131,8 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-spans.c				\
 	$(srcdir)/cogl-journal-private.h		\
 	$(srcdir)/cogl-journal.c			\
-	$(srcdir)/cogl-draw-buffer-private.h		\
-	$(srcdir)/cogl-draw-buffer.c 			\
+	$(srcdir)/cogl-framebuffer-private.h		\
+	$(srcdir)/cogl-framebuffer.c 			\
 	$(srcdir)/cogl-matrix-mesa.h 			\
 	$(srcdir)/cogl-matrix-mesa.c 			\
 	$(NULL)

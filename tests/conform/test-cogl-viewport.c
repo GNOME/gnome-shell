@@ -9,8 +9,8 @@
 #define BLUE 2
 #define ALPHA 3
 
-#define DRAW_BUFFER_WIDTH  640
-#define DRAW_BUFFER_HEIGHT 480
+#define FRAMEBUFFER_WIDTH  640
+#define FRAMEBUFFER_HEIGHT 480
 
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
@@ -81,7 +81,7 @@ on_paint (ClutterActor *actor, void *state)
   float width;
   float height;
 
-  /* for clearing the offscreen draw buffer to black... */
+  /* for clearing the offscreen framebuffer to black... */
   cogl_color_set_from_4ub (&black, 0x00, 0x00, 0x00, 0xff);
 
   cogl_get_viewport (saved_viewport);
@@ -94,10 +94,10 @@ on_paint (ClutterActor *actor, void *state)
   cogl_set_projection_matrix (&projection);
   cogl_set_modelview_matrix (&modelview);
 
-  /* - Create a 100x200 viewport (i.e. smaller than the onscreen draw buffer)
-   *   and position it a (20, 10) inside the draw buffer.
+  /* - Create a 100x200 viewport (i.e. smaller than the onscreen framebuffer)
+   *   and position it a (20, 10) inside the framebuffer.
    * - Fill the whole viewport with a purple rectangle
-   * - Verify that the draw buffer is black with a 100x200 purple rectangle at
+   * - Verify that the framebuffer is black with a 100x200 purple rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (20, /* x */
@@ -113,28 +113,28 @@ on_paint (ClutterActor *actor, void *state)
                                            0xff, 0x00, 0xff);
 
 
-  /* - Create a viewport twice the size of the onscreen draw buffer with
+  /* - Create a viewport twice the size of the onscreen framebuffer with
    *   a negative offset positioning it at (-20, -10) relative to the
    *   buffer itself.
    * - Draw a 100x200 green rectangle at (40, 20) within the viewport (which
-   *   is (20, 10) within the draw buffer)
-   * - Verify that the draw buffer is black with a 100x200 green rectangle at
+   *   is (20, 10) within the framebuffer)
+   * - Verify that the framebuffer is black with a 100x200 green rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (-20, /* x */
                      -10, /* y */
-                     DRAW_BUFFER_WIDTH * 2, /* width */
-                     DRAW_BUFFER_HEIGHT * 2); /* height */
+                     FRAMEBUFFER_WIDTH * 2, /* width */
+                     FRAMEBUFFER_HEIGHT * 2); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
   /* draw a 100x200 green rectangle offset into the viewport such that its
    * top left corner should be found at (20, 10) in the offscreen buffer */
   /* (offset 40 pixels right from the left of the viewport) */
-  x0 = -1.0f + (1.0f / DRAW_BUFFER_WIDTH) * 40.f;
+  x0 = -1.0f + (1.0f / FRAMEBUFFER_WIDTH) * 40.f;
   /* (offset 20 pixels down from the top of the viewport) */
-  y0 = 1.0f - (1.0f / DRAW_BUFFER_HEIGHT) * 20.0f;
-  width = (1.0f / DRAW_BUFFER_WIDTH) * 100;
-  height = (1.0f / DRAW_BUFFER_HEIGHT) * 200;
+  y0 = 1.0f - (1.0f / FRAMEBUFFER_HEIGHT) * 20.0f;
+  width = (1.0f / FRAMEBUFFER_WIDTH) * 100;
+  height = (1.0f / FRAMEBUFFER_HEIGHT) * 200;
   cogl_set_source_color4ub (0x00, 0xff, 0x00, 0xff);
   cogl_rectangle (x0, y0, x0 + width, y0 - height);
   assert_rectangle_color_and_black_border (20, 10, 100, 200,
@@ -145,7 +145,7 @@ on_paint (ClutterActor *actor, void *state)
    *   buffer.
    * - Push a 100x200 window space clip rectangle at (20, 10)
    * - Fill the whole viewport with a blue rectangle
-   * - Verify that the draw buffer is black with a 100x200 blue rectangle at
+   * - Verify that the framebuffer is black with a 100x200 blue rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (20, /* x */
@@ -166,9 +166,9 @@ on_paint (ClutterActor *actor, void *state)
   /* - Create a 200x400 viewport and position it a (20, 10) inside the draw
    *   buffer.
    * - Push a 100x200 model space clip rectangle at (20, 10) in the viewport
-   *   (i.e. (40, 20) inside the draw buffer)
+   *   (i.e. (40, 20) inside the framebuffer)
    * - Fill the whole viewport with a green rectangle
-   * - Verify that the draw buffer is black with a 100x200 green rectangle at
+   * - Verify that the framebuffer is black with a 100x200 green rectangle at
    *   (40, 20)
    */
   cogl_set_viewport (20, /* x */
@@ -203,31 +203,29 @@ on_paint (ClutterActor *actor, void *state)
 
 
   /* Set the viewport to something specific so we can verify that it gets
-   * restored after we are done testing with an offscreen draw buffer... */
+   * restored after we are done testing with an offscreen framebuffer... */
   cogl_set_viewport (20, 10, 100, 200);
 
   /*
    * Next test offscreen drawing...
    */
-  cogl_push_draw_buffer ();
-
-  data = g_malloc (DRAW_BUFFER_WIDTH * 4 * DRAW_BUFFER_HEIGHT);
-  tex = cogl_texture_new_from_data (DRAW_BUFFER_WIDTH, DRAW_BUFFER_HEIGHT,
+  data = g_malloc (FRAMEBUFFER_WIDTH * 4 * FRAMEBUFFER_HEIGHT);
+  tex = cogl_texture_new_from_data (FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
                                     COGL_TEXTURE_NO_SLICING,
                                     COGL_PIXEL_FORMAT_RGBA_8888, /* data fmt */
                                     COGL_PIXEL_FORMAT_ANY, /* internal fmt */
-                                    DRAW_BUFFER_WIDTH * 4, /* rowstride */
+                                    FRAMEBUFFER_WIDTH * 4, /* rowstride */
                                     data);
   g_free (data);
   offscreen = cogl_offscreen_new_to_texture (tex);
 
-  cogl_set_draw_buffer (0 /* unused */, offscreen);
+  cogl_push_framebuffer (offscreen);
 
 
-  /* - Create a 100x200 viewport (i.e. smaller than the offscreen draw buffer)
-   *   and position it a (20, 10) inside the draw buffer.
+  /* - Create a 100x200 viewport (i.e. smaller than the offscreen framebuffer)
+   *   and position it a (20, 10) inside the framebuffer.
    * - Fill the whole viewport with a blue rectangle
-   * - Verify that the draw buffer is black with a 100x200 blue rectangle at
+   * - Verify that the framebuffer is black with a 100x200 blue rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (20, /* x */
@@ -243,28 +241,28 @@ on_paint (ClutterActor *actor, void *state)
                                            0x00, 0x00, 0xff);
 
 
-  /* - Create a viewport twice the size of the offscreen draw buffer with
+  /* - Create a viewport twice the size of the offscreen framebuffer with
    *   a negative offset positioning it at (-20, -10) relative to the
    *   buffer itself.
    * - Draw a 100x200 red rectangle at (40, 20) within the viewport (which
-   *   is (20, 10) within the draw buffer)
-   * - Verify that the draw buffer is black with a 100x200 red rectangle at
+   *   is (20, 10) within the framebuffer)
+   * - Verify that the framebuffer is black with a 100x200 red rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (-20, /* x */
                      -10, /* y */
-                     DRAW_BUFFER_WIDTH * 2, /* width */
-                     DRAW_BUFFER_HEIGHT * 2); /* height */
+                     FRAMEBUFFER_WIDTH * 2, /* width */
+                     FRAMEBUFFER_HEIGHT * 2); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
   /* draw a 100x200 red rectangle offset into the viewport such that its
    * top left corner should be found at (20, 10) in the offscreen buffer */
   /* (offset 40 pixels right from the left of the viewport) */
-  x0 = -1.0f + (1.0f / DRAW_BUFFER_WIDTH) * 40.f;
+  x0 = -1.0f + (1.0f / FRAMEBUFFER_WIDTH) * 40.f;
   /* (offset 20 pixels down from the top of the viewport) */
-  y0 = 1.0f - (1.0f / DRAW_BUFFER_HEIGHT) * 20.0f;
-  width = (1.0f / DRAW_BUFFER_WIDTH) * 100;
-  height = (1.0f / DRAW_BUFFER_HEIGHT) * 200;
+  y0 = 1.0f - (1.0f / FRAMEBUFFER_HEIGHT) * 20.0f;
+  width = (1.0f / FRAMEBUFFER_WIDTH) * 100;
+  height = (1.0f / FRAMEBUFFER_HEIGHT) * 200;
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_rectangle (x0, y0, x0 + width, y0 - height);
   assert_rectangle_color_and_black_border (20, 10, 100, 200,
@@ -275,7 +273,7 @@ on_paint (ClutterActor *actor, void *state)
    *   buffer.
    * - Push a 100x200 window space clip rectangle at (20, 10)
    * - Fill the whole viewport with a blue rectangle
-   * - Verify that the draw buffer is black with a 100x200 blue rectangle at
+   * - Verify that the framebuffer is black with a 100x200 blue rectangle at
    *   (20, 10)
    */
   cogl_set_viewport (20, /* x */
@@ -296,9 +294,9 @@ on_paint (ClutterActor *actor, void *state)
   /* - Create a 200x400 viewport and position it a (20, 10) inside the draw
    *   buffer.
    * - Push a 100x200 model space clip rectangle at (20, 10) in the viewport
-   *   (i.e. (40, 20) inside the draw buffer)
+   *   (i.e. (40, 20) inside the framebuffer)
    * - Fill the whole viewport with a green rectangle
-   * - Verify that the draw buffer is black with a 100x200 green rectangle at
+   * - Verify that the framebuffer is black with a 100x200 green rectangle at
    *   (40, 20)
    */
   cogl_set_viewport (20, /* x */
@@ -333,14 +331,14 @@ on_paint (ClutterActor *actor, void *state)
 
 
   /* Set the viewport to something obscure to verify that it gets
-   * replace when we switch back to the onscreen draw buffer... */
+   * replace when we switch back to the onscreen framebuffer... */
   cogl_set_viewport (0, 0, 10, 10);
 
-  cogl_pop_draw_buffer ();
+  cogl_pop_framebuffer ();
   cogl_handle_unref (offscreen);
 
   /*
-   * Verify that the previous onscreen draw buffer's viewport was restored
+   * Verify that the previous onscreen framebuffer's viewport was restored
    * by drawing a white rectangle across the whole viewport. This should
    * draw a 100x200 rectangle at (20,10) relative to the onscreen draw
    * buffer...
@@ -352,11 +350,11 @@ on_paint (ClutterActor *actor, void *state)
                                            0xff, 0xff, 0xff);
 
 
-  /* Uncomment to display the last contents of the offscreen draw buffer */
+  /* Uncomment to display the last contents of the offscreen framebuffer */
 #if 1
   cogl_matrix_init_identity (&projection);
   cogl_matrix_init_identity (&modelview);
-  cogl_set_viewport (0, 0, DRAW_BUFFER_WIDTH, DRAW_BUFFER_HEIGHT);
+  cogl_set_viewport (0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
   cogl_set_projection_matrix (&projection);
   cogl_set_modelview_matrix (&modelview);
   cogl_set_source_texture (tex);
@@ -395,7 +393,7 @@ test_cogl_viewport (TestConformSimpleFixture *fixture,
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_set_size (stage, DRAW_BUFFER_WIDTH, DRAW_BUFFER_HEIGHT);
+  clutter_actor_set_size (stage, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that

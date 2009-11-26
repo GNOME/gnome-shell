@@ -215,15 +215,14 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_clear (&clr, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_STENCIL);
 
   /*
-   * Now repeat the test but rendered to an offscreen draw buffer...
+   * Now repeat the test but rendered to an offscreen framebuffer...
    */
 
   cogl_get_viewport (stage_viewport);
   cogl_get_projection_matrix (&stage_projection);
   cogl_get_modelview_matrix (&stage_modelview);
 
-  cogl_push_draw_buffer ();
-  cogl_set_draw_buffer (0 /* unused */, state->offscreen);
+  cogl_push_framebuffer (state->offscreen);
 
   cogl_clear (&clr, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_STENCIL);
 
@@ -236,7 +235,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   do_test_backface_culling (state);
 
-  cogl_pop_draw_buffer ();
+  cogl_pop_framebuffer ();
 
   /* Incase we want feedback of what was drawn offscreen we draw it
    * to the stage... */

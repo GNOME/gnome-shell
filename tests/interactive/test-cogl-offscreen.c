@@ -95,7 +95,7 @@ test_coglbox_paint(ClutterActor *self)
                                       0, 0,
                                       6, 6);
 
-  cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->offscreen_id);
+  cogl_push_framebuffer (priv->offscreen_id);
 
   cogl_set_source_color4ub (0xff, 0, 0, 0xff);
   cogl_rectangle (20, 20, 20 + 100, 20 + 100);
@@ -103,7 +103,7 @@ test_coglbox_paint(ClutterActor *self)
   cogl_set_source_color4ub (0, 0xff, 0, 0xff);
   cogl_rectangle (80, 80, 80 + 100, 80 + 100);
 
-  cogl_set_draw_buffer (COGL_WINDOW_BUFFER, 0);
+  cogl_pop_framebuffer ();
 
   material = cogl_material_new ();
   cogl_material_set_color4ub (material, 0x88, 0x88, 0x88, 0x88);

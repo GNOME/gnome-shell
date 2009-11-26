@@ -484,7 +484,7 @@ set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
 #undef ROUND
 
   /* translate the viewport so that the source actor lands on the
-   * sub-region backed by the offscreen draw buffer... */
+   * sub-region backed by the offscreen framebuffer... */
   cogl_set_viewport (x_offset, y_offset, viewport_width, viewport_height);
 }
 
@@ -511,8 +511,7 @@ update_fbo (ClutterActor *self)
     clutter_shader_set_is_enabled (shader, FALSE);
 
   /* Redirect drawing to the fbo */
-  cogl_push_draw_buffer ();
-  cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->fbo_handle);
+  cogl_push_framebuffer (priv->fbo_handle);
 
   if ((stage = clutter_actor_get_stage (self)))
     {
@@ -520,8 +519,8 @@ update_fbo (ClutterActor *self)
       ClutterActor *source_parent;
 
       /* We copy the projection and modelview matrices from the stage to
-       * the offscreen draw buffer and create a viewport larger than the
-       * offscreen draw buffer - the same size as the stage.
+       * the offscreen framebuffer and create a viewport larger than the
+       * offscreen framebuffer - the same size as the stage.
        *
        * The fbo source actor gets rendered into this stage size viewport at the
        * same position it normally would after applying all it's usual parent
@@ -542,7 +541,7 @@ update_fbo (ClutterActor *self)
                             perspective.z_near,
                             perspective.z_far);
 
-      /* Negatively offset the viewport so that the offscreen draw buffer is
+      /* Negatively offset the viewport so that the offscreen framebuffer is
        * position underneath the fbo_source actor... */
       set_viewport_with_buffer_under_fbo_source (priv->fbo_source,
                                                  stage_width,
@@ -565,8 +564,8 @@ update_fbo (ClutterActor *self)
   /* Render the actor to the fbo */
   clutter_actor_paint (priv->fbo_source);
 
-  /* Restore drawing to the previous draw buffer */
-  cogl_pop_draw_buffer ();
+  /* Restore drawing to the previous framebuffer */
+  cogl_pop_framebuffer ();
 
   /* If there is a shader on top of the shader stack, turn it back on. */
   if (shader)

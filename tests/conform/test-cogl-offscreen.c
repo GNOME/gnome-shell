@@ -8,8 +8,8 @@
 #define GREEN 1
 #define BLUE 2
 
-#define DRAW_BUFFER_WIDTH  640
-#define DRAW_BUFFER_HEIGHT 480
+#define FRAMEBUFFER_WIDTH  640
+#define FRAMEBUFFER_HEIGHT 480
 
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
@@ -38,18 +38,18 @@ on_paint (ClutterActor *actor, void *state)
   cogl_set_projection_matrix (&projection);
   cogl_set_modelview_matrix (&modelview);
 
-  data = g_malloc (DRAW_BUFFER_WIDTH * 4 * DRAW_BUFFER_HEIGHT);
-  tex = cogl_texture_new_from_data (DRAW_BUFFER_WIDTH, DRAW_BUFFER_HEIGHT,
+  data = g_malloc (FRAMEBUFFER_WIDTH * 4 * FRAMEBUFFER_HEIGHT);
+  tex = cogl_texture_new_from_data (FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
                                     COGL_TEXTURE_NO_SLICING,
                                     COGL_PIXEL_FORMAT_RGBA_8888, /* data fmt */
                                     COGL_PIXEL_FORMAT_ANY, /* internal fmt */
-                                    DRAW_BUFFER_WIDTH * 4, /* rowstride */
+                                    FRAMEBUFFER_WIDTH * 4, /* rowstride */
                                     data);
   g_free (data);
   offscreen = cogl_offscreen_new_to_texture (tex);
 
-  /* Set a scale and translate transform on the window draw buffer before
-   * switching to the offscreen draw buffer so we can verify it gets restored
+  /* Set a scale and translate transform on the window framebuffer before
+   * switching to the offscreen framebuffer so we can verify it gets restored
    * when we switch back
    *
    * The test is going to draw a grid of 4 colors to a texture which we
@@ -60,15 +60,14 @@ on_paint (ClutterActor *actor, void *state)
   cogl_translate (0.5, 0.5, 0);
   cogl_scale (-0.5, 0.5, 1);
 
-  cogl_push_draw_buffer ();
-  cogl_set_draw_buffer (0 /* unused */, offscreen);
+  cogl_push_framebuffer (offscreen);
 
-  /* Cogl should release the last reference when we call cogl_pop_draw_buffer()
+  /* Cogl should release the last reference when we call cogl_pop_framebuffer()
    */
   cogl_handle_unref (offscreen);
 
   /* Setup something other than the identity matrix for the modelview so we can
-   * verify it gets restored when we call cogl_pop_draw_buffer () */
+   * verify it gets restored when we call cogl_pop_framebuffer () */
   cogl_scale (2, 2, 1);
 
   /* red, top left */
@@ -84,7 +83,7 @@ on_paint (ClutterActor *actor, void *state)
   cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
   cogl_rectangle (0, 0, 0.5, -0.5);
 
-  cogl_pop_draw_buffer ();
+  cogl_pop_framebuffer ();
 
   cogl_set_source_texture (tex);
   cogl_rectangle (-1, 1, 1, -1);
@@ -95,28 +94,28 @@ on_paint (ClutterActor *actor, void *state)
    * top right corner of the window. */
 
   /* red, top right */
-  cogl_read_pixels (DRAW_BUFFER_WIDTH - 1, 0, 1, 1,
+  cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, 0, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
   g_assert (pixel[RED] == 0xff && pixel[GREEN] == 0x00 && pixel[BLUE] == 0x00);
 
   /* green, top left */
-  cogl_read_pixels ((DRAW_BUFFER_WIDTH/2), 0, 1, 1,
+  cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), 0, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
   g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0xff && pixel[BLUE] == 0x00);
 
   /* blue, bottom right */
-  cogl_read_pixels (DRAW_BUFFER_WIDTH - 1, (DRAW_BUFFER_HEIGHT/2) - 1, 1, 1,
+  cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
   g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0x00 && pixel[BLUE] == 0xff);
 
   /* white, bottom left */
-  cogl_read_pixels ((DRAW_BUFFER_WIDTH/2), (DRAW_BUFFER_HEIGHT/2) - 1, 1, 1,
+  cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
@@ -145,7 +144,7 @@ test_cogl_offscreen (TestConformSimpleFixture *fixture,
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_set_size (stage, DRAW_BUFFER_WIDTH, DRAW_BUFFER_HEIGHT);
+  clutter_actor_set_size (stage, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that

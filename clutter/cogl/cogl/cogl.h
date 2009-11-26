@@ -736,8 +736,8 @@ void            cogl_clip_ensure              (void) G_GNUC_DEPRECATED;
  * cogl_clip_stack_restore().
  *
  * Deprecated: 1.2: This was originally added to allow us to save the
- *   clip stack when switching to an offscreen draw buffer, but it's
- *   not necessary anymore given that draw buffers now own separate
+ *   clip stack when switching to an offscreen framebuffer, but it's
+ *   not necessary anymore given that framebuffers now own separate
  *   clip stacks which will be automatically switched between when a
  *   new buffer is set. Calling this function has no effect
  *
@@ -752,8 +752,8 @@ void            cogl_clip_stack_save          (void) G_GNUC_DEPRECATED;
  * by cogl_clip_stack_save().
  *
  * Deprecated: 1.2: This was originally added to allow us to restore
- *   the clip stack when switching back from an offscreen draw buffer,
- *   but it's not necessary anymore given that draw buffers now own
+ *   the clip stack when switching back from an offscreen framebuffer,
+ *   but it's not necessary anymore given that framebuffers now own
  *   separate clip stacks which will be automatically switched between
  *   when a new buffer is set. Calling this function has no effect
  *
@@ -764,33 +764,84 @@ void            cogl_clip_stack_restore       (void) G_GNUC_DEPRECATED;
 #endif /* COGL_DISABLE_DEPRECATED */
 
 /**
+ * cogl_set_framebuffer:
+ * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
+ *    offscreen.
+ *
+ * This redirects all subsequent drawing to the specified framebuffer. This
+ * can either be an offscreen buffer created with
+ * cogl_offscreen_new_to_texture () or you can revert to your original
+ * onscreen window buffer.
+ *
+ * Since: 1.2
+ */
+void            cogl_set_framebuffer          (CoglHandle buffer);
+
+/**
+ * cogl_push_framebuffer:
+ * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
+ *    offscreen.
+ *
+ * Redirects all subsequent drawing to the specified framebuffer. This
+ * can either be an offscreen buffer created with
+ * cogl_offscreen_new_to_texture () or you can revert to your original
+ * onscreen window buffer.
+ *
+ * The previous framebuffer can be restored by calling cogl_pop_framebuffer()
+ *
+ * Since: 1.2
+ */
+void            cogl_push_framebuffer         (CoglHandle buffer);
+
+/**
+ * cogl_pop_framebuffer:
+ *
+ * Restores the framebuffer that was previously at the top of the stack.
+ * All subsequent drawing will be redirected to this framebuffer.
+ *
+ * Since: 1.2
+ */
+void            cogl_pop_framebuffer          (void);
+
+#ifndef COGL_DISABLE_DEPRECATED
+
+/**
  * cogl_set_draw_buffer:
- * @target: A #CoglBufferTarget that specifies what kind of draw buffer you
+ * @target: A #CoglBufferTarget that specifies what kind of framebuffer you
  *          are setting as the render target.
- * @offscreen: If you are setting a draw buffer of type COGL_OFFSCREEN_BUFFER
+ * @offscreen: If you are setting a framebuffer of type COGL_OFFSCREEN_BUFFER
  *             then this is a CoglHandle for the offscreen buffer.
  *
- * This redirects all subsequent drawing to the specified draw buffer. This
+ * Redirects all subsequent drawing to the specified framebuffer. This
  * can either be an offscreen buffer created with
  * cogl_offscreen_new_to_texture () or you can revert to your original
  * on screen window buffer.
+ *
+ * Deprecated: 1.2: The target argument was redundant since we could look at
+ *    the type of CoglHandle given instead.
  */
 void            cogl_set_draw_buffer          (CoglBufferTarget    target,
-                                               CoglHandle          offscreen);
+                                               CoglHandle          offscreen) G_GNUC_DEPRECATED;
 
 /**
  * cogl_push_draw_buffer:
  *
  * Save cogl_set_draw_buffer() state.
+ *
+ * Deprecated: 1.2: The draw buffer API was replaced with a framebuffer API
  */
-void            cogl_push_draw_buffer         (void);
+void            cogl_push_draw_buffer         (void) G_GNUC_DEPRECATED;
 
 /**
  * cogl_pop_draw_buffer:
  *
  * Restore cogl_set_draw_buffer() state.
+ *
+ * Deprecated: 1.2: The draw buffer API was replaced with a framebuffer API
  */
-void            cogl_pop_draw_buffer          (void);
+void            cogl_pop_draw_buffer          (void) G_GNUC_DEPRECATED;
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * CoglReadPixelsFlags:
@@ -816,7 +867,7 @@ typedef enum { /*< prefix=COGL_READ_PIXELS >*/
  *          (only COGL_PIXEL_FORMAT_RGBA_8888 supported currently)
  * @pixels: The location to write the pixel data.
  *
- * This reads a rectangle of pixels from the current draw buffer where
+ * This reads a rectangle of pixels from the current framebuffer where
  * position (0, 0) is the top left. The pixel at (x, y) is the first
  * read, and the data is returned with a rowstride of (width * 4)
  */

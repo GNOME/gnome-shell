@@ -32,7 +32,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 #include <string.h>
 
@@ -98,12 +98,13 @@ cogl_create_context (void)
                                           sizeof (CoglLayerInfo));
   _context->n_texcoord_arrays_enabled = 0;
 
-  _context->draw_buffer_stack = _cogl_create_draw_buffer_stack ();
+  _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
   window_buffer = _cogl_onscreen_new ();
-  /* XXX: When setting up the window buffer, cogl_set_draw_buffer
-   * assumes that the handle can be found in ctx->window_buffer */
+  cogl_set_framebuffer (window_buffer);
+  /* XXX: the deprecated _cogl_set_draw_buffer API expects to
+   * find the window buffer here... */
   _context->window_buffer = window_buffer;
-  cogl_set_draw_buffer (COGL_WINDOW_BUFFER, 0/* ignored */);
+
   _context->dirty_bound_framebuffer = TRUE;
   _context->dirty_gl_viewport = TRUE;
 
@@ -158,7 +159,7 @@ _cogl_destroy_context ()
 
   _cogl_destroy_texture_units ();
 
-  _cogl_free_draw_buffer_stack (_context->draw_buffer_stack);
+  _cogl_free_framebuffer_stack (_context->framebuffer_stack);
 
   if (_context->path_nodes)
     g_array_free (_context->path_nodes, TRUE);

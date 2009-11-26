@@ -38,7 +38,7 @@
 #include "cogl-context.h"
 #include "cogl-material-private.h"
 #include "cogl-winsys.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
@@ -120,10 +120,10 @@ cogl_clear (const CoglColor *color, gulong buffers)
 
   _cogl_journal_flush ();
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
@@ -304,7 +304,7 @@ _cogl_flush_face_winding (void)
    * all offscreen rendering is done upside down resulting in reversed winding
    * for all triangles.
    */
-  if (cogl_is_offscreen (_cogl_get_draw_buffer ()))
+  if (cogl_is_offscreen (_cogl_get_framebuffer ()))
     winding = COGL_FRONT_WINDING_CLOCKWISE;
   else
     winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
@@ -343,13 +343,13 @@ cogl_set_viewport (int x,
                    int width,
                    int height)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = _cogl_get_draw_buffer ();
+  framebuffer = _cogl_get_framebuffer ();
 
-  _cogl_draw_buffer_set_viewport (draw_buffer,
+  _cogl_framebuffer_set_viewport (framebuffer,
                                   x,
                                   y,
                                   width,
@@ -430,7 +430,7 @@ _cogl_setup_viewport (guint width,
   z_camera = 0.5 * projection_matrix.xx;
 
   modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_load_identity (modelview_stack);
   _cogl_matrix_stack_translate (modelview_stack, -0.5f, -0.5f, -z_camera);
   _cogl_matrix_stack_scale (modelview_stack,
@@ -463,19 +463,19 @@ cogl_features_available (CoglFeatureFlags features)
 
 /* XXX: This function should either be replaced with one returning
  * integers, or removed/deprecated and make the
- * _cogl_draw_buffer_get_viewport* functions public.
+ * _cogl_framebuffer_get_viewport* functions public.
  */
 void
 cogl_get_viewport (float v[4])
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
   int viewport[4];
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  _cogl_draw_buffer_get_viewport4fv (draw_buffer, viewport);
+  framebuffer = _cogl_get_framebuffer ();
+  _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
 
   for (i = 0; i < 4; i++)
     v[i] = viewport[i];
@@ -585,8 +585,8 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
-  CoglHandle draw_buffer;
-  int        draw_buffer_height;
+  CoglHandle framebuffer;
+  int        framebuffer_height;
   int        rowstride = width * 4;
   guint8    *temprow;
 
@@ -595,13 +595,17 @@ cogl_read_pixels (int x,
   g_return_if_fail (format == COGL_PIXEL_FORMAT_RGBA_8888);
   g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
 
+  /* make sure any batched primitives get emitted to the GL driver before
+   * issuing our read pixels... */
+  cogl_flush ();
+
   temprow = g_alloca (rowstride * sizeof (guint8));
 
-  draw_buffer = _cogl_get_draw_buffer ();
+  framebuffer = _cogl_get_framebuffer ();
 
-  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+  _cogl_framebuffer_flush_state (framebuffer, 0);
 
-  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
+  framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
    * so 0 is the bottom row
@@ -609,12 +613,8 @@ cogl_read_pixels (int x,
    * NB: all offscreen rendering is done upside down so no conversion
    * is necissary in this case.
    */
-  if (!cogl_is_offscreen (draw_buffer))
-    y = draw_buffer_height - y - height;
-
-  /* make sure any batched primitives get emitted to the GL driver before
-   * issuing our read pixels... */
-  cogl_flush ();
+  if (!cogl_is_offscreen (framebuffer))
+    y = framebuffer_height - y - height;
 
   /* Setup the pixel store parameters that may have been changed by
      Cogl */
@@ -629,7 +629,7 @@ cogl_read_pixels (int x,
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
-  if (cogl_is_offscreen (draw_buffer))
+  if (cogl_is_offscreen (framebuffer))
     return;
 
   /* TODO: consider using the GL_MESA_pack_invert extension in the future
@@ -676,10 +676,10 @@ cogl_begin_gl (void)
   /* Flush framebuffer state, including clip state, modelview and
    * projection matrix state
    *
-   * NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   /* Setup the state for the current material */
 
@@ -791,7 +791,7 @@ void
 cogl_push_matrix (void)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_push (modelview_stack);
 }
 
@@ -799,7 +799,7 @@ void
 cogl_pop_matrix (void)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_pop (modelview_stack);
 }
 
@@ -807,7 +807,7 @@ void
 cogl_scale (float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_scale (modelview_stack, x, y, z);
 }
 
@@ -815,7 +815,7 @@ void
 cogl_translate (float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_translate (modelview_stack, x, y, z);
 }
 
@@ -823,7 +823,7 @@ void
 cogl_rotate (float angle, float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_rotate (modelview_stack, angle, x, y, z);
 }
 
@@ -852,7 +852,7 @@ cogl_frustum (float        left,
 	      float        z_far)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -877,7 +877,7 @@ cogl_ortho (float left,
 {
   CoglMatrix ortho;
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -890,7 +890,7 @@ void
 cogl_get_modelview_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_get (modelview_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -899,7 +899,7 @@ void
 cogl_set_modelview_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_set (modelview_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -908,7 +908,7 @@ void
 cogl_get_projection_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_get (projection_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -917,7 +917,7 @@ void
 cogl_set_projection_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
   _cogl_matrix_stack_set (projection_stack, matrix);
 
   /* FIXME: Update the inverse projection matrix!! Presumably use
@@ -928,10 +928,10 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
 CoglClipStackState *
 _cogl_get_clip_state (void)
 {
-  CoglHandle draw_buffer;
+  CoglHandle framebuffer;
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  return _cogl_draw_buffer_get_clip_state (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  return _cogl_framebuffer_get_clip_state (framebuffer);
 }
 
 GQuark
