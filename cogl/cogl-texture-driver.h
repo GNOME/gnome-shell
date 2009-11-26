@@ -57,7 +57,8 @@ _cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
  * XXX: sorry for the ridiculous number of arguments :-(
  */
 void
-_cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
+_cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
+                                             GLuint       gl_handle,
                                              int          src_x,
                                              int          src_y,
                                              int          dst_x,
@@ -66,8 +67,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
                                              int          height,
                                              CoglBitmap  *source_bmp,
 				             GLuint       source_gl_format,
-				             GLuint       source_gl_type,
-                                             GLuint       gl_handle);
+				             GLuint       source_gl_type);
 
 /*
  * This sets up the glPixelStore state for an download to a destination with
