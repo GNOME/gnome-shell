@@ -105,7 +105,7 @@ function runTestFixedBox() {
 G_DEFINE_TYPE(ShellGenericContainer, shell_generic_container, CLUTTER_TYPE_GROUP);
 
 struct _ShellGenericContainerPrivate {
-  gpointer dummy;
+  GHashTable *skip_paint;
 };
 
 /* Signals */
@@ -183,14 +183,118 @@ shell_generic_container_get_preferred_height (ClutterActor *actor,
 }
 
 static void
+shell_generic_container_paint (ClutterActor  *actor)
+{
+  ShellGenericContainer *self = (ShellGenericContainer*) actor;
+  GList *iter, *children;
+
+  children = clutter_container_get_children ((ClutterContainer*) actor);
+
+  for (iter = children; iter; iter = iter->next)
+    {
+      ClutterActor *child = iter->data;
+
+      if (g_hash_table_lookup (self->priv->skip_paint, child))
+        continue;
+
+      clutter_actor_paint (child);
+    }
+
+  g_list_free (children);
+}
+
+static void
+shell_generic_container_pick (ClutterActor        *actor,
+                              const ClutterColor  *color)
+{
+  ShellGenericContainer *self = (ShellGenericContainer*) actor;
+  GList *iter, *children;
+
+  (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->pick (actor, color);
+
+  children = clutter_container_get_children ((ClutterContainer*) actor);
+
+  for (iter = children; iter; iter = iter->next)
+    {
+      ClutterActor *child = iter->data;
+
+      if (g_hash_table_lookup (self->priv->skip_paint, child))
+        continue;
+
+      clutter_actor_paint (child);
+    }
+
+  g_list_free (children);
+}
+
+static void
+on_skip_paint_weakref (gpointer  user_data,
+                       GObject  *location)
+{
+  ShellGenericContainer *self = SHELL_GENERIC_CONTAINER (user_data);
+
+  g_hash_table_remove (self->priv->skip_paint, location);
+}
+
+/**
+ * shell_generic_container_set_skip_paint:
+ * @container: A #ShellGenericContainer
+ * @child: Child #ClutterActor
+ * @skip %TRUE if we should skip painting
+ *
+ * Set whether or not we should skip painting @actor.  Workaround for
+ * lack of gjs ability to override _paint vfunc.
+ */
+void
+shell_generic_container_set_skip_paint (ShellGenericContainer  *self,
+                                        ClutterActor           *child,
+                                        gboolean                skip)
+{
+  gboolean currently_skipping;
+
+  currently_skipping = g_hash_table_lookup (self->priv->skip_paint, child) != NULL;
+  if (!!skip == currently_skipping)
+    return;
+
+  if (!skip)
+    {
+      g_object_weak_unref ((GObject*) child, on_skip_paint_weakref, self);
+      g_hash_table_remove (self->priv->skip_paint, child);
+    }
+  else
+    {
+      g_object_weak_ref ((GObject*) child, on_skip_paint_weakref, self);
+      g_hash_table_insert (self->priv->skip_paint, child, child);
+    }
+}
+
+static void
+shell_generic_container_dispose (GObject  *object)
+{
+  ShellGenericContainer *self = (ShellGenericContainer*) object;
+
+  if (self->priv->skip_paint != NULL)
+    {
+      g_hash_table_destroy (self->priv->skip_paint);
+      self->priv->skip_paint = NULL;
+    }
+
+  G_OBJECT_CLASS (shell_generic_container_parent_class)->dispose (object);
+}
+
+static void
 shell_generic_container_class_init (ShellGenericContainerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
+  gobject_class->dispose = shell_generic_container_dispose;
+
   actor_class->get_preferred_width = shell_generic_container_get_preferred_width;
   actor_class->get_preferred_height = shell_generic_container_get_preferred_height;
   actor_class->allocate = shell_generic_container_allocate;
+  actor_class->paint = shell_generic_container_paint;
+  actor_class->pick = shell_generic_container_pick;
 
   shell_generic_container_signals[GET_PREFERRED_WIDTH] =
     g_signal_new ("get-preferred-width",
@@ -227,6 +331,7 @@ shell_generic_container_init (ShellGenericContainer *area)
 {
   area->priv = G_TYPE_INSTANCE_GET_PRIVATE (area, SHELL_TYPE_GENERIC_CONTAINER,
                                             ShellGenericContainerPrivate);
+  area->priv->skip_paint = g_hash_table_new_full (NULL, NULL, (GDestroyNotify)g_object_unref, NULL);
 }
 
 GType shell_generic_container_allocation_get_type (void)
