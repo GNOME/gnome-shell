@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 /**
  * SECTION:cogl-offscreen
  * @short_description: Fuctions for creating and manipulating offscreen
- *                     frame buffer objects
+ *                     framebuffers.
  *
- * Cogl allows creating and operating on offscreen render targets.
+ * Cogl allows creating and operating on offscreen framebuffers.
  */
 
 /* Offscreen api */
@@ -61,20 +61,10 @@ G_BEGIN_DECLS
 CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         handle);
 
 /**
- * cogl_offscreen_ref:
- * @handle: A CoglHandle for an offscreen buffer
- *
- * Increments the reference count on the offscreen buffer.
- *
- * Returns: For convenience it returns the given CoglHandle
- */
-CoglHandle      cogl_offscreen_ref            (CoglHandle          handle);
-
-/**
  * cogl_is_offscreen:
  * @handle: A CoglHandle for an offscreen buffer
  *
- * Gets whether the given handle references an existing offscreen buffer
+ * Determines whether the given #CoglHandle references an offscreen buffer
  * object.
  *
  * Returns: %TRUE if the handle references an offscreen buffer,
@@ -82,14 +72,32 @@ CoglHandle      cogl_offscreen_ref            (CoglHandle          handle);
  */
 gboolean        cogl_is_offscreen             (CoglHandle          handle);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
+/**
+ * cogl_offscreen_ref:
+ * @handle: A CoglHandle for an offscreen buffer
+ *
+ * Increments the reference count on the offscreen buffer.
+ *
+ * Returns: For convenience it returns the given CoglHandle
+ *
+ * Deprecated: 1.2: cogl_handle_ref should be used in new code.
+ */
+CoglHandle      cogl_offscreen_ref            (CoglHandle          handle) G_GNUC_DEPRECATED;
+
 /**
  * cogl_offscreen_unref:
  * @handle: A CoglHandle for an offscreen buffer
  *
  * Decreases the reference count for the offscreen buffer and frees it when
  * the count reaches 0.
+ *
+ * Deprecated: 1.2: cogl_handle_unref should be used in new code.
  */
-void            cogl_offscreen_unref          (CoglHandle          handle);
+void            cogl_offscreen_unref          (CoglHandle          handle) G_GNUC_DEPRECATED;
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
