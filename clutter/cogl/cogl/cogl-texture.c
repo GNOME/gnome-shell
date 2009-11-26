@@ -96,24 +96,24 @@ cogl_texture_unref (CoglHandle handle)
 }
 
 void
-_cogl_texture_bitmap_free (CoglTexture *tex)
+_cogl_texture_upload_data_free (CoglTextureUploadData *data)
 {
-  if (tex->bitmap.data != NULL && tex->bitmap_owner)
-    g_free (tex->bitmap.data);
+  if (data->bitmap.data != NULL && data->bitmap_owner)
+    g_free (data->bitmap.data);
 
-  tex->bitmap.data = NULL;
-  tex->bitmap_owner = FALSE;
+  data->bitmap.data = NULL;
+  data->bitmap_owner = FALSE;
 }
 
 void
-_cogl_texture_bitmap_swap (CoglTexture     *tex,
-			   CoglBitmap      *new_bitmap)
+_cogl_texture_upload_data_swap_bitmap (CoglTextureUploadData *data,
+                                       CoglBitmap            *new_bitmap)
 {
-  if (tex->bitmap.data != NULL && tex->bitmap_owner)
-    g_free (tex->bitmap.data);
+  if (data->bitmap.data != NULL && data->bitmap_owner)
+    g_free (data->bitmap.data);
 
-  tex->bitmap = *new_bitmap;
-  tex->bitmap_owner = TRUE;
+  data->bitmap = *new_bitmap;
+  data->bitmap_owner = TRUE;
 }
 
 void
@@ -153,8 +153,8 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
 }
 
 gboolean
-_cogl_texture_bitmap_prepare (CoglTexture     *tex,
-			      CoglPixelFormat  internal_format)
+_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
+                                   CoglPixelFormat        internal_format)
 {
   CoglBitmap        new_bitmap;
   CoglPixelFormat   new_data_format;
@@ -165,23 +165,23 @@ _cogl_texture_bitmap_prepare (CoglTexture     *tex,
    * add control over this. */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
     {
-      if ((tex->bitmap.format & COGL_A_BIT) &&
-          tex->bitmap.format != COGL_PIXEL_FORMAT_A_8)
-        internal_format = tex->bitmap.format | COGL_PREMULT_BIT;
+      if ((data->bitmap.format & COGL_A_BIT) &&
+          data->bitmap.format != COGL_PIXEL_FORMAT_A_8)
+        internal_format = data->bitmap.format | COGL_PREMULT_BIT;
       else
-        internal_format = tex->bitmap.format;
+        internal_format = data->bitmap.format;
     }
 
   /* Find closest format accepted by GL */
   new_data_format = _cogl_pixel_format_to_gl (internal_format,
-					      &tex->gl_intformat,
-					      &tex->gl_format,
-					      &tex->gl_type);
+					      &data->gl_intformat,
+					      &data->gl_format,
+					      &data->gl_type);
 
   /* Convert to internal format */
-  if (new_data_format != tex->bitmap.format)
+  if (new_data_format != data->bitmap.format)
     {
-      success = _cogl_bitmap_convert_and_premult (&tex->bitmap,
+      success = _cogl_bitmap_convert_and_premult (&data->bitmap,
 						  &new_bitmap,
 						  new_data_format);
 
@@ -189,16 +189,10 @@ _cogl_texture_bitmap_prepare (CoglTexture     *tex,
 	return FALSE;
 
       /* Update texture with new data */
-      _cogl_texture_bitmap_swap (tex, &new_bitmap);
+      _cogl_texture_upload_data_swap_bitmap (data, &new_bitmap);
     }
 
   return TRUE;
-}
-
-void
-_cogl_texture_free (CoglTexture *tex)
-{
-  _cogl_texture_bitmap_free (tex);
 }
 
 CoglHandle
@@ -281,7 +275,7 @@ cogl_texture_get_width (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.width;
+  return tex->width;
 }
 
 guint
@@ -294,7 +288,7 @@ cogl_texture_get_height (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.height;
+  return tex->height;
 }
 
 CoglPixelFormat
@@ -307,7 +301,7 @@ cogl_texture_get_format (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.format;
+  return tex->format;
 }
 
 guint
@@ -318,9 +312,14 @@ cogl_texture_get_rowstride (CoglHandle handle)
   if (!cogl_is_texture (handle))
     return 0;
 
+  /* FIXME: This function should go away. It previously just returned
+     the rowstride that was used to upload the data as far as I can
+     tell. This is not helpful */
+
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.rowstride;
+  /* Just guess at a suitable rowstride */
+  return _cogl_get_format_bpp (tex->format) * tex->width;
 }
 
 gint
@@ -416,7 +415,7 @@ _cogl_texture_get_internal_gl_format (CoglHandle handle)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  return tex->gl_intformat;
+  return tex->gl_format;
 }
 
 gboolean
@@ -507,7 +506,7 @@ cogl_texture_set_region (CoglHandle       handle,
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
 static void
-do_texture_draw_and_read (CoglTexture *tex,
+do_texture_draw_and_read (CoglHandle   handle,
                           CoglBitmap  *target_bmp,
                           GLint       *viewport)
 {
@@ -518,16 +517,18 @@ do_texture_draw_and_read (CoglTexture *tex,
   float       tx2, ty2;
   int         bw,  bh;
   CoglBitmap  rect_bmp;
-  CoglHandle  handle;
+  guint       tex_width, tex_height;
 
-  handle = (CoglHandle) tex;
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
+
+  tex_width = cogl_texture_get_width (handle);
+  tex_height = cogl_texture_get_height (handle);
 
   ry1 = 0; ry2 = 0;
   ty1 = 0; ty2 = 0;
 
   /* Walk Y axis until whole bitmap height consumed */
-  for (bh = tex->bitmap.height; bh > 0; bh -= viewport[3])
+  for (bh = tex_height; bh > 0; bh -= viewport[3])
     {
       /* Rectangle Y coords */
       ry1 = ry2;
@@ -535,13 +536,13 @@ do_texture_draw_and_read (CoglTexture *tex,
 
       /* Normalized texture Y coords */
       ty1 = ty2;
-      ty2 = (ry2 / (float)tex->bitmap.height);
+      ty2 = (ry2 / (float) tex_height);
 
       rx1 = 0; rx2 = 0;
       tx1 = 0; tx2 = 0;
 
       /* Walk X axis until whole bitmap width consumed */
-      for (bw = tex->bitmap.width; bw > 0; bw-=viewport[2])
+      for (bw = tex_width; bw > 0; bw-=viewport[2])
         {
           /* Rectangle X coords */
           rx1 = rx2;
@@ -549,7 +550,7 @@ do_texture_draw_and_read (CoglTexture *tex,
 
           /* Normalized texture X coords */
           tx1 = tx2;
-          tx2 = (rx2 / (float)tex->bitmap.width);
+          tx2 = (rx2 / (float) tex_width);
 
           /* Draw a portion of texture */
           cogl_rectangle_with_texture_coords (0, 0,
@@ -595,7 +596,7 @@ do_texture_draw_and_read (CoglTexture *tex,
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
 gboolean
-_cogl_texture_draw_and_read (CoglTexture *tex,
+_cogl_texture_draw_and_read (CoglHandle   handle,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type)
@@ -650,14 +651,14 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   prev_source = cogl_handle_ref (ctx->source_material);
   cogl_set_source (ctx->texture_download_material);
 
-  cogl_material_set_layer (ctx->texture_download_material, 0, tex);
+  cogl_material_set_layer (ctx->texture_download_material, 0, handle);
 
   cogl_material_set_layer_combine (ctx->texture_download_material,
                                    0, /* layer */
                                    "RGBA = REPLACE (TEXTURE)",
                                    NULL);
 
-  do_texture_draw_and_read (tex, target_bmp, viewport);
+  do_texture_draw_and_read (handle, target_bmp, viewport);
 
   /* Check whether texture has alpha and framebuffer not */
   /* FIXME: For some reason even if ALPHA_BITS is 8, the framebuffer
@@ -672,7 +673,7 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   printf ("G bits: %d\n", g_bits);
   printf ("B bits: %d\n", b_bits);
   printf ("A bits: %d\n", a_bits); */
-  if ((tex->bitmap.format & COGL_A_BIT)/* && a_bits == 0*/)
+  if ((cogl_texture_get_format (handle) & COGL_A_BIT)/* && a_bits == 0*/)
     {
       guchar *srcdata;
       guchar *dstdata;
@@ -694,7 +695,7 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
                                        "RGBA = REPLACE (TEXTURE[A])",
                                        NULL);
 
-      do_texture_draw_and_read (tex, &alpha_bmp, viewport);
+      do_texture_draw_and_read (handle, &alpha_bmp, viewport);
 
       /* Copy temp R to target A */
       srcdata = alpha_bmp.data;

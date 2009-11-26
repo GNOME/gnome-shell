@@ -30,8 +30,9 @@
 
 #define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
 
-typedef struct _CoglTexture       CoglTexture;
-typedef struct _CoglTextureVtable CoglTextureVtable;
+typedef struct _CoglTexture           CoglTexture;
+typedef struct _CoglTextureVtable     CoglTextureVtable;
+typedef struct _CoglTextureUploadData CoglTextureUploadData;
 
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
@@ -95,16 +96,29 @@ struct _CoglTextureVtable
                                     GLenum wrap_mode);
 };
 
+/* This represents the state needed to upload texture data. There are
+   utility functions in cogl-texture which use this state */
+struct _CoglTextureUploadData
+{
+  CoglBitmap bitmap;
+  gboolean   bitmap_owner;
+  GLenum     gl_intformat;
+  GLenum     gl_format;
+  GLenum     gl_type;
+};
+
 struct _CoglTexture
 {
   CoglHandleObject         _parent;
   const CoglTextureVtable *vtable;
-  CoglBitmap               bitmap;
-  gboolean                 bitmap_owner;
-  GLenum                   gl_target;
-  GLenum                   gl_intformat;
+  /* The internal format of the GL texture represented as a
+     CoglPixelFormat */
+  CoglPixelFormat          format;
+  /* The internal format of the GL texture represented as a GL enum */
   GLenum                   gl_format;
-  GLenum                   gl_type;
+  GLenum                   gl_target;
+  gint                     width;
+  gint                     height;
   GLenum                   min_filter;
   GLenum                   mag_filter;
   gboolean                 is_foreign;
@@ -144,23 +158,19 @@ _cogl_texture_set_filters (CoglHandle handle,
 void
 _cogl_texture_ensure_mipmaps (CoglHandle handle);
 
-
-/* Functions currently only used by CoglTexture implementations or
- * drivers... */
-
-void
-_cogl_texture_free (CoglTexture *tex);
+/* Utility functions to help uploading a bitmap. These are intended to
+ * be used by CoglTexture implementations or drivers... */
 
 void
-_cogl_texture_bitmap_free (CoglTexture *tex);
+_cogl_texture_upload_data_free (CoglTextureUploadData *data);
 
 void
-_cogl_texture_bitmap_swap (CoglTexture  *tex,
-			   CoglBitmap   *new_bitmap);
+_cogl_texture_upload_data_swap_bitmap (CoglTextureUploadData *data,
+                                       CoglBitmap            *new_bitmap);
 
 gboolean
-_cogl_texture_bitmap_prepare (CoglTexture     *tex,
-			      CoglPixelFormat  internal_format);
+_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
+                                   CoglPixelFormat        internal_format);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
@@ -168,8 +178,11 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
 
+/* Utility function to use as a fallback for getting the data of any
+   texture via the framebuffer */
+
 gboolean
-_cogl_texture_draw_and_read (CoglTexture *tex,
+_cogl_texture_draw_and_read (CoglHandle   handle,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);

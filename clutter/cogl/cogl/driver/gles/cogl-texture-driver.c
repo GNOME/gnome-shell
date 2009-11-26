@@ -71,7 +71,8 @@ _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
 }
 
 void
-_cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
+_cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
+                                             GLuint       gl_handle,
                                              int          src_x,
                                              int          src_y,
                                              int          dst_x,
@@ -80,8 +81,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
                                              int          height,
                                              CoglBitmap  *source_bmp,
 				             GLuint       source_gl_format,
-				             GLuint       source_gl_type,
-                                             GLuint       gl_handle)
+				             GLuint       source_gl_type)
 {
   int bpp = _cogl_get_format_bpp (source_bmp->format);
   CoglBitmap slice_bmp;
@@ -94,7 +94,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
    * rowstride = bpp * width and the texture image is not sliced */
 
   /* Setup temp bitmap for slice subregion */
-  slice_bmp.format = tex->bitmap.format;
+  slice_bmp.format = source_bmp->format;
   slice_bmp.width  = width;
   slice_bmp.height = height;
   slice_bmp.rowstride = bpp * slice_bmp.width;
@@ -113,11 +113,11 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
                                slice_bmp.width,
                                slice_bmp.height);
 
-  /* Upload new image data */
-  GE( _cogl_texture_driver_bind (tex->gl_target,
-                                 gl_handle, tex->gl_intformat) );
+  /* We don't need to use _cogl_texture_driver_bind here because we're
+     not using the bound texture to render yet */
+  GE( glBindTexture (gl_target, gl_handle) );
 
-  GE( glTexSubImage2D (tex->gl_target, 0,
+  GE( glTexSubImage2D (gl_target, 0,
                        dst_x, dst_y,
                        width, height,
                        source_gl_format,
