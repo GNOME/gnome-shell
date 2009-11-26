@@ -94,6 +94,11 @@ struct _CoglTextureVtable
 
   void (* set_wrap_mode_parameter) (CoglTexture *tex,
                                     GLenum wrap_mode);
+
+  CoglPixelFormat (* get_format) (CoglTexture *tex);
+  GLenum (* get_gl_format) (CoglTexture *tex);
+  gint (* get_width) (CoglTexture *tex);
+  gint (* get_height) (CoglTexture *tex);
 };
 
 /* This represents the state needed to upload texture data. There are
@@ -111,20 +116,6 @@ struct _CoglTexture
 {
   CoglHandleObject         _parent;
   const CoglTextureVtable *vtable;
-  /* The internal format of the GL texture represented as a
-     CoglPixelFormat */
-  CoglPixelFormat          format;
-  /* The internal format of the GL texture represented as a GL enum */
-  GLenum                   gl_format;
-  GLenum                   gl_target;
-  gint                     width;
-  gint                     height;
-  GLenum                   min_filter;
-  GLenum                   mag_filter;
-  gboolean                 is_foreign;
-  GLint                    wrap_mode;
-  gboolean                 auto_mipmap;
-  gboolean                 mipmaps_dirty;
 };
 
 void
@@ -144,7 +135,7 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
                                       float *s,
                                       float *t);
 GLenum
-_cogl_texture_get_internal_gl_format (CoglHandle handle);
+_cogl_texture_get_gl_format (CoglHandle handle);
 
 void
 _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,

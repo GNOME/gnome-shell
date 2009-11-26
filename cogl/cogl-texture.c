@@ -275,7 +275,7 @@ cogl_texture_get_width (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->width;
+  return tex->vtable->get_width (tex);
 }
 
 guint
@@ -288,7 +288,7 @@ cogl_texture_get_height (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->height;
+  return tex->vtable->get_height (tex);
 }
 
 CoglPixelFormat
@@ -301,7 +301,7 @@ cogl_texture_get_format (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->format;
+  return tex->vtable->get_format (tex);
 }
 
 guint
@@ -319,7 +319,8 @@ cogl_texture_get_rowstride (CoglHandle handle)
   tex = COGL_TEXTURE (handle);
 
   /* Just guess at a suitable rowstride */
-  return _cogl_get_format_bpp (tex->format) * tex->width;
+  return (_cogl_get_format_bpp (cogl_texture_get_format (tex))
+          * cogl_texture_get_width (tex));
 }
 
 gint
@@ -388,12 +389,6 @@ _cogl_texture_can_hardware_repeat (CoglHandle handle)
 {
   CoglTexture *tex = (CoglTexture *)handle;
 
-#if HAVE_COGL_GL
-  /* TODO: COGL_TEXTURE_TYPE_2D_RECTANGLE */
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    return FALSE;
-#endif
-
   return tex->vtable->can_hardware_repeat (tex);
 }
 
@@ -411,11 +406,11 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
 }
 
 GLenum
-_cogl_texture_get_internal_gl_format (CoglHandle handle)
+_cogl_texture_get_gl_format (CoglHandle handle)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  return tex->gl_format;
+  return tex->vtable->get_gl_format (tex);
 }
 
 gboolean
