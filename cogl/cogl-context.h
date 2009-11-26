@@ -86,8 +86,8 @@ typedef struct
   GArray           *current_layers;
   guint             n_texcoord_arrays_enabled;
 
-  /* Draw Buffers */
-  GSList           *draw_buffer_stack;
+  /* Framebuffers */
+  GSList           *framebuffer_stack;
   CoglHandle        window_buffer;
   gboolean          dirty_bound_framebuffer;
   gboolean          dirty_gl_viewport;

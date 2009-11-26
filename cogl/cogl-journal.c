@@ -32,7 +32,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-vertex-buffer-private.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -533,7 +533,7 @@ _cogl_journal_flush (void)
   GLuint                journal_vbo;
   gboolean              vbo_fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  CoglHandle            draw_buffer;
+  CoglHandle            framebuffer;
   CoglMatrixStack      *modelview_stack;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -551,8 +551,8 @@ _cogl_journal_flush (void)
   else
     state.vbo_offset = (char *)ctx->logged_vertices->data;
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  modelview_stack = _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  framebuffer = _cogl_get_framebuffer ();
+  modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
   state.modelview_stack = modelview_stack;
 
   _cogl_matrix_stack_push (modelview_stack);
@@ -618,8 +618,8 @@ _cogl_journal_init (void)
    * that themselves depend on the journal, such as clip state. */
 
   /* NB: the journal deals with flushing the modelview stack manually */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (),
-                                 COGL_DRAW_BUFFER_FLUSH_SKIP_MODELVIEW);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (),
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW);
 }
 
 void

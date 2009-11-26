@@ -31,7 +31,7 @@
 #include "cogl-handle.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 #include "cogl-clip-stack.h"
 
 #ifdef HAVE_COGL_GLES2
@@ -72,7 +72,7 @@
 #define GL_STENCIL_INDEX8       0x8D48
 #endif
 
-static void _cogl_draw_buffer_free (CoglDrawBuffer *draw_buffer);
+static void _cogl_framebuffer_free (CoglFramebuffer *framebuffer);
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
@@ -81,12 +81,12 @@ COGL_HANDLE_DEFINE (Offscreen, offscreen);
 
 /* XXX:
  * The CoglHandle macros don't support any form of inheritance, so for
- * now we implement the CoglHandle support for the CoglDrawBuffer
+ * now we implement the CoglHandle support for the CoglFramebuffer
  * abstract class manually.
  */
 
 gboolean
-cogl_is_draw_buffer (CoglHandle handle)
+cogl_is_framebuffer (CoglHandle handle)
 {
   CoglHandleObject *obj = (CoglHandleObject *)handle;
 
@@ -98,138 +98,138 @@ cogl_is_draw_buffer (CoglHandle handle)
 }
 
 static void
-_cogl_draw_buffer_init (CoglDrawBuffer *draw_buffer,
-                        CoglDrawBufferType type,
+_cogl_framebuffer_init (CoglFramebuffer *framebuffer,
+                        CoglFramebufferType type,
                         int width,
                         int height)
 {
-  draw_buffer->type             = type;
-  draw_buffer->width            = width;
-  draw_buffer->height           = height;
-  draw_buffer->viewport_x       = 0;
-  draw_buffer->viewport_y       = 0;
-  draw_buffer->viewport_width   = width;
-  draw_buffer->viewport_height  = height;
+  framebuffer->type             = type;
+  framebuffer->width            = width;
+  framebuffer->height           = height;
+  framebuffer->viewport_x       = 0;
+  framebuffer->viewport_y       = 0;
+  framebuffer->viewport_width   = width;
+  framebuffer->viewport_height  = height;
 
-  draw_buffer->modelview_stack  = _cogl_matrix_stack_new ();
-  draw_buffer->projection_stack = _cogl_matrix_stack_new ();
+  framebuffer->modelview_stack  = _cogl_matrix_stack_new ();
+  framebuffer->projection_stack = _cogl_matrix_stack_new ();
 
   /* Initialise the clip stack */
-  _cogl_clip_stack_state_init (&draw_buffer->clip_state);
+  _cogl_clip_stack_state_init (&framebuffer->clip_state);
 }
 
 void
-_cogl_draw_buffer_free (CoglDrawBuffer *draw_buffer)
+_cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
-  _cogl_clip_stack_state_destroy (&draw_buffer->clip_state);
+  _cogl_clip_stack_state_destroy (&framebuffer->clip_state);
 
-  _cogl_matrix_stack_destroy (draw_buffer->modelview_stack);
-  draw_buffer->modelview_stack = NULL;
+  _cogl_matrix_stack_destroy (framebuffer->modelview_stack);
+  framebuffer->modelview_stack = NULL;
 
-  _cogl_matrix_stack_destroy (draw_buffer->projection_stack);
-  draw_buffer->projection_stack = NULL;
+  _cogl_matrix_stack_destroy (framebuffer->projection_stack);
+  framebuffer->projection_stack = NULL;
 }
 
 int
-_cogl_draw_buffer_get_width (CoglHandle handle)
+_cogl_framebuffer_get_width (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->width;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->width;
 }
 
 int
-_cogl_draw_buffer_get_height (CoglHandle handle)
+_cogl_framebuffer_get_height (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->height;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->height;
 }
 
 CoglClipStackState *
-_cogl_draw_buffer_get_clip_state (CoglHandle handle)
+_cogl_framebuffer_get_clip_state (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
 
-  return &draw_buffer->clip_state;
+  return &framebuffer->clip_state;
 }
 
 void
-_cogl_draw_buffer_set_viewport (CoglHandle handle,
+_cogl_framebuffer_set_viewport (CoglHandle handle,
                                 int x,
                                 int y,
                                 int width,
                                 int height)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (draw_buffer->viewport_x == x &&
-      draw_buffer->viewport_y == y &&
-      draw_buffer->viewport_width == width &&
-      draw_buffer->viewport_height == height)
+  if (framebuffer->viewport_x == x &&
+      framebuffer->viewport_y == y &&
+      framebuffer->viewport_width == width &&
+      framebuffer->viewport_height == height)
     return;
 
   _cogl_journal_flush ();
 
-  draw_buffer->viewport_x = x;
-  draw_buffer->viewport_y = y;
-  draw_buffer->viewport_width = width;
-  draw_buffer->viewport_height = height;
+  framebuffer->viewport_x = x;
+  framebuffer->viewport_y = y;
+  framebuffer->viewport_width = width;
+  framebuffer->viewport_height = height;
 
-  if (_cogl_get_draw_buffer () == draw_buffer)
+  if (_cogl_get_framebuffer () == framebuffer)
     ctx->dirty_gl_viewport = TRUE;
 }
 
 int
-_cogl_draw_buffer_get_viewport_x (CoglHandle handle)
+_cogl_framebuffer_get_viewport_x (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->viewport_x;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->viewport_x;
 }
 
 int
-_cogl_draw_buffer_get_viewport_y (CoglHandle handle)
+_cogl_framebuffer_get_viewport_y (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->viewport_y;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->viewport_y;
 }
 
 int
-_cogl_draw_buffer_get_viewport_width (CoglHandle handle)
+_cogl_framebuffer_get_viewport_width (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->viewport_width;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->viewport_width;
 }
 
 int
-_cogl_draw_buffer_get_viewport_height (CoglHandle handle)
+_cogl_framebuffer_get_viewport_height (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->viewport_height;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->viewport_height;
 }
 
 void
-_cogl_draw_buffer_get_viewport4fv (CoglHandle handle, int *viewport)
+_cogl_framebuffer_get_viewport4fv (CoglHandle handle, int *viewport)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  viewport[0] = draw_buffer->viewport_x;
-  viewport[1] = draw_buffer->viewport_y;
-  viewport[2] = draw_buffer->viewport_width;
-  viewport[3] = draw_buffer->viewport_height;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  viewport[0] = framebuffer->viewport_x;
+  viewport[1] = framebuffer->viewport_y;
+  viewport[2] = framebuffer->viewport_width;
+  viewport[3] = framebuffer->viewport_height;
 }
 
 CoglMatrixStack *
-_cogl_draw_buffer_get_modelview_stack (CoglHandle handle)
+_cogl_framebuffer_get_modelview_stack (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->modelview_stack;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->modelview_stack;
 }
 
 CoglMatrixStack *
-_cogl_draw_buffer_get_projection_stack (CoglHandle handle)
+_cogl_framebuffer_get_projection_stack (CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
-  return draw_buffer->projection_stack;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
+  return framebuffer->projection_stack;
 }
 
 CoglHandle
@@ -278,7 +278,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
 
   /* We are about to generate and bind a new fbo, so when next flushing the
-   * journal, we will need to rebind the current draw buffer... */
+   * journal, we will need to rebind the current framebuffer... */
   ctx->dirty_bound_framebuffer = 1;
 
   /* Generate framebuffer */
@@ -329,8 +329,8 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
 
   offscreen                     = g_new0 (CoglOffscreen, 1);
 
-  _cogl_draw_buffer_init (COGL_DRAW_BUFFER (offscreen),
-                          COGL_DRAW_BUFFER_TYPE_OFFSCREEN,
+  _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
+                          COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
                           width,
                           height);
 
@@ -341,9 +341,9 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
    * users of the API are hopefully setting up the modelview from scratch
    * anyway */
 #if 0
-  cogl_matrix_translate (&draw_buffer->modelview, -1.0f, -1.0f, 0.0f);
-  cogl_matrix_scale (&draw_buffer->modelview,
-                     2.0f / draw_buffer->width, 2.0f / draw_buffer->height, 1.0f);
+  cogl_matrix_translate (&framebuffer->modelview, -1.0f, -1.0f, 0.0f);
+  cogl_matrix_scale (&framebuffer->modelview,
+                     2.0f / framebuffer->width, 2.0f / framebuffer->height, 1.0f);
 #endif
 
   return _cogl_offscreen_handle_new (offscreen);
@@ -355,7 +355,7 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Chain up to parent */
-  _cogl_draw_buffer_free (COGL_DRAW_BUFFER (offscreen));
+  _cogl_framebuffer_free (COGL_FRAMEBUFFER (offscreen));
 
   if (offscreen->gl_stencil_handle)
     GE (glDeleteRenderbuffers (1, &offscreen->gl_stencil_handle));
@@ -369,12 +369,12 @@ _cogl_onscreen_new (void)
   CoglOnscreen *onscreen;
 
   /* XXX: Until we have full winsys support in Cogl then we can't fully
-   * implement CoglOnscreen draw buffers, since we can't, e.g. keep track of
+   * implement CoglOnscreen framebuffers, since we can't, e.g. keep track of
    * the window size. */
 
   onscreen = g_new0 (CoglOnscreen, 1);
-  _cogl_draw_buffer_init (COGL_DRAW_BUFFER (onscreen),
-                          COGL_DRAW_BUFFER_TYPE_ONSCREEN,
+  _cogl_framebuffer_init (COGL_FRAMEBUFFER (onscreen),
+                          COGL_FRAMEBUFFER_TYPE_ONSCREEN,
                           0xdeadbeef, /* width */
                           0xdeadbeef); /* height */
 
@@ -387,7 +387,7 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Chain up to parent */
-  _cogl_draw_buffer_free (COGL_DRAW_BUFFER (onscreen));
+  _cogl_framebuffer_free (COGL_FRAMEBUFFER (onscreen));
 
   g_free (onscreen);
 }
@@ -395,17 +395,17 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 void
 _cogl_onscreen_clutter_backend_set_size (int width, int height)
 {
-  CoglDrawBuffer *draw_buffer;
+  CoglFramebuffer *framebuffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = COGL_DRAW_BUFFER (ctx->window_buffer);
+  framebuffer = COGL_FRAMEBUFFER (ctx->window_buffer);
 
-  if (draw_buffer->width == width && draw_buffer->height == height)
+  if (framebuffer->width == width && framebuffer->height == height)
     return;
 
-  draw_buffer->width = width;
-  draw_buffer->height = height;
+  framebuffer->width = width;
+  framebuffer->height = height;
 
   /* We'll need to recalculate the GL viewport state derived
    * from the Cogl viewport */
@@ -413,153 +413,168 @@ _cogl_onscreen_clutter_backend_set_size (int width, int height)
 }
 
 GSList *
-_cogl_create_draw_buffer_stack (void)
+_cogl_create_framebuffer_stack (void)
 {
   GSList *stack = NULL;
-  CoglDrawBufferStackEntry *entry;
 
-  entry = g_slice_new0 (CoglDrawBufferStackEntry);
-  entry->target = COGL_WINDOW_BUFFER;
-  entry->draw_buffer = COGL_INVALID_HANDLE;
-
-  return g_slist_prepend (stack, entry);
+  return g_slist_prepend (stack, COGL_INVALID_HANDLE);
 }
 
 void
-_cogl_free_draw_buffer_stack (GSList *stack)
+_cogl_free_framebuffer_stack (GSList *stack)
 {
   GSList *l;
 
   for (l = stack; l != NULL; l = l->next)
     {
-      CoglDrawBufferStackEntry *entry = l->data;
-      CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (entry->draw_buffer);
-      if (draw_buffer->type == COGL_DRAW_BUFFER_TYPE_OFFSCREEN)
-        _cogl_offscreen_free (COGL_OFFSCREEN (draw_buffer));
+      CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (l->data);
+      if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+        _cogl_offscreen_free (COGL_OFFSCREEN (framebuffer));
       else
-        _cogl_onscreen_free (COGL_ONSCREEN (draw_buffer));
+        _cogl_onscreen_free (COGL_ONSCREEN (framebuffer));
     }
   g_slist_free (stack);
 }
 
-/* XXX: The target argument is redundant; when we break API, we should
- * remove it! */
+/* Set the current framebuffer without checking if it's already the
+ * current framebuffer. This is used by cogl_pop_framebuffer while
+ * the top of the stack is currently not up to date. */
+static void
+_cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
+{
+  CoglHandle *entry;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_flush ();
+
+  entry = &ctx->framebuffer_stack->data;
+
+  ctx->dirty_bound_framebuffer = 1;
+  ctx->dirty_gl_viewport = 1;
+
+  if (framebuffer != COGL_INVALID_HANDLE)
+    cogl_handle_ref (framebuffer);
+  if (*entry != COGL_INVALID_HANDLE)
+    cogl_handle_unref (*entry);
+
+  *entry = framebuffer;
+
+  /* We've effectively just switched the current modelview and
+   * projection matrix stacks and clip state so we need to dirty
+   * them to ensure they get flushed for the next batch of geometry
+   * we flush */
+  _cogl_matrix_stack_dirty (framebuffer->modelview_stack);
+  _cogl_matrix_stack_dirty (framebuffer->projection_stack);
+  _cogl_clip_stack_state_dirty (&framebuffer->clip_state);
+}
+
+void
+cogl_set_framebuffer (CoglHandle handle)
+{
+  g_return_if_fail (cogl_is_framebuffer (handle));
+
+  if (_cogl_get_framebuffer () != handle)
+    _cogl_set_framebuffer_real (COGL_FRAMEBUFFER (handle));
+}
+
+/* XXX: deprecated API */
 void
 cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle handle)
 {
-  CoglDrawBuffer *draw_buffer = NULL;
-  CoglDrawBufferStackEntry *entry;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  _cogl_journal_flush ();
-
-  g_assert (ctx->draw_buffer_stack != NULL);
-  entry = ctx->draw_buffer_stack->data;
 
   if (target == COGL_WINDOW_BUFFER)
     handle = ctx->window_buffer;
-  else if (!cogl_is_draw_buffer (handle))
-    return;
 
-  draw_buffer = COGL_DRAW_BUFFER (handle);
-
-  if (entry->draw_buffer != draw_buffer)
-    {
-      entry->target = target;
-
-      ctx->dirty_bound_framebuffer = 1;
-      ctx->dirty_gl_viewport = 1;
-
-      if (draw_buffer != COGL_INVALID_HANDLE)
-        cogl_handle_ref (draw_buffer);
-      if (entry->draw_buffer != COGL_INVALID_HANDLE)
-        cogl_handle_unref (entry->draw_buffer);
-      entry->draw_buffer = draw_buffer;
-
-      /* We've effectively just switched the current modelview and
-       * projection matrix stacks and clip state so we need to dirty
-       * them to ensure they get flushed for the next batch of geometry
-       * we flush */
-      _cogl_matrix_stack_dirty (draw_buffer->modelview_stack);
-      _cogl_matrix_stack_dirty (draw_buffer->projection_stack);
-      _cogl_clip_stack_state_dirty (&draw_buffer->clip_state);
-    }
+  cogl_set_framebuffer (handle);
 }
 
 CoglHandle
-_cogl_get_draw_buffer (void)
+_cogl_get_framebuffer (void)
 {
-  CoglDrawBufferStackEntry *entry;
-
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_assert (ctx->draw_buffer_stack);
-  entry = ctx->draw_buffer_stack->data;
+  g_assert (ctx->framebuffer_stack);
 
-  return entry->draw_buffer;
+  return (CoglHandle)ctx->framebuffer_stack->data;
 }
 
+void
+cogl_push_framebuffer (CoglHandle buffer)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (cogl_is_framebuffer (buffer));
+  g_assert (ctx->framebuffer_stack);
+
+  cogl_flush ();
+
+  ctx->framebuffer_stack =
+    g_slist_prepend (ctx->framebuffer_stack, COGL_INVALID_HANDLE);
+
+  cogl_set_framebuffer (buffer);
+}
+
+/* XXX: deprecated API */
 void
 cogl_push_draw_buffer (void)
 {
-  CoglDrawBufferStackEntry *old;
-  CoglDrawBufferStackEntry *entry;
+  cogl_push_framebuffer (_cogl_get_framebuffer ());
+}
+
+void
+cogl_pop_framebuffer (void)
+{
+  CoglHandle to_pop;
+  CoglHandle to_restore;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  entry = g_slice_new0 (CoglDrawBufferStackEntry);
+  g_assert (ctx->framebuffer_stack != NULL);
+  g_assert (ctx->framebuffer_stack->next != NULL);
 
-  g_assert (ctx->draw_buffer_stack);
+  to_pop = ctx->framebuffer_stack->data;
+  to_restore = ctx->framebuffer_stack->next->data;
 
-  old = ctx->draw_buffer_stack->data;
-  *entry = *old;
+  cogl_flush ();
 
-  cogl_handle_ref (entry->draw_buffer);
+  cogl_handle_unref (to_pop);
+  ctx->framebuffer_stack =
+    g_slist_remove_link (ctx->framebuffer_stack,
+                         ctx->framebuffer_stack);
 
-  ctx->draw_buffer_stack =
-    g_slist_prepend (ctx->draw_buffer_stack, entry);
+  /* If the framebuffer has changed as a result of popping the top
+   * then re-assert the current buffer so as to dirty state as
+   * necessary. */
+  if (to_pop != to_restore)
+    _cogl_set_framebuffer_real (to_restore);
 }
 
+/* XXX: deprecated API */
 void
 cogl_pop_draw_buffer (void)
 {
-  CoglDrawBufferStackEntry *to_pop;
-  CoglDrawBufferStackEntry *to_restore;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_assert (ctx->draw_buffer_stack != NULL);
-
-  to_pop = ctx->draw_buffer_stack->data;
-  to_restore = ctx->draw_buffer_stack->next->data;
-
-  cogl_set_draw_buffer (to_restore->target, to_restore->draw_buffer);
-
-  cogl_handle_unref (to_pop->draw_buffer);
-  ctx->draw_buffer_stack =
-    g_slist_remove_link (ctx->draw_buffer_stack,
-                         ctx->draw_buffer_stack);
-  g_slice_free (CoglDrawBufferStackEntry, to_pop);
+  cogl_pop_framebuffer ();
 }
 
 void
-_cogl_draw_buffer_flush_state (CoglHandle handle,
-                               CoglDrawBufferFlushFlags flags)
+_cogl_framebuffer_flush_state (CoglHandle handle,
+                               CoglFramebufferFlushFlags flags)
 {
-  CoglDrawBuffer *draw_buffer;
+  CoglFramebuffer *framebuffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  draw_buffer = COGL_DRAW_BUFFER (handle);
+  framebuffer = COGL_FRAMEBUFFER (handle);
 
   if (cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
       ctx->dirty_bound_framebuffer)
     {
-      if (draw_buffer->type == COGL_DRAW_BUFFER_TYPE_OFFSCREEN)
+      if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
         {
           GE (glBindFramebuffer (GL_FRAMEBUFFER,
-                                 COGL_OFFSCREEN (draw_buffer)->fbo_handle));
+                                 COGL_OFFSCREEN (framebuffer)->fbo_handle));
         }
       else
         GE (glBindFramebuffer (GL_FRAMEBUFFER, 0));
@@ -573,31 +588,31 @@ _cogl_draw_buffer_flush_state (CoglHandle handle,
       /* Convert the Cogl viewport y offset to an OpenGL viewport y offset
        * NB: OpenGL defines its window and viewport origins to be bottom
        * left, while Cogl defines them to be top left.
-       * NB: We render upside down to offscreen draw buffers so we don't
+       * NB: We render upside down to offscreen framebuffers so we don't
        * need to convert the y offset in this case. */
-      if (cogl_is_offscreen (draw_buffer))
-        gl_viewport_y = draw_buffer->viewport_y;
+      if (cogl_is_offscreen (framebuffer))
+        gl_viewport_y = framebuffer->viewport_y;
       else
-        gl_viewport_y = draw_buffer->height -
-          (draw_buffer->viewport_y + draw_buffer->viewport_height);
+        gl_viewport_y = framebuffer->height -
+          (framebuffer->viewport_y + framebuffer->viewport_height);
 
-      GE (glViewport (draw_buffer->viewport_x,
+      GE (glViewport (framebuffer->viewport_x,
                       gl_viewport_y,
-                      draw_buffer->viewport_width,
-                      draw_buffer->viewport_height));
+                      framebuffer->viewport_width,
+                      framebuffer->viewport_height));
       ctx->dirty_gl_viewport = FALSE;
     }
 
   /* XXX: Flushing clip state may trash the modelview and projection
    * matrices so we must do it before flushing the matrices...
    */
-  _cogl_flush_clip_state (&draw_buffer->clip_state);
+  _cogl_flush_clip_state (&framebuffer->clip_state);
 
-  if (!(flags & COGL_DRAW_BUFFER_FLUSH_SKIP_MODELVIEW))
-    _cogl_matrix_stack_flush_to_gl (draw_buffer->modelview_stack,
+  if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW))
+    _cogl_matrix_stack_flush_to_gl (framebuffer->modelview_stack,
                                     COGL_MATRIX_MODELVIEW);
 
-  _cogl_matrix_stack_flush_to_gl (draw_buffer->projection_stack,
+  _cogl_matrix_stack_flush_to_gl (framebuffer->projection_stack,
                                   COGL_MATRIX_PROJECTION);
 }
 

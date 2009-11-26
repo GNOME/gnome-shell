@@ -32,7 +32,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-vertex-buffer-private.h"
-#include "cogl-draw-buffer-private.h"
+#include "cogl-framebuffer-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -862,10 +862,10 @@ cogl_polygon (CoglTextureVertex *vertices,
 
   _cogl_journal_flush ();
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   material = ctx->source_material;
   layers = cogl_material_get_layers (ctx->source_material);
@@ -1062,10 +1062,10 @@ _cogl_path_stroke_nodes (void)
 
   _cogl_journal_flush ();
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
@@ -1121,11 +1121,11 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle       prev_source;
   int              i;
-  CoglHandle       draw_buffer = _cogl_get_draw_buffer ();
+  CoglHandle       framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
-    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
-    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+    _cogl_framebuffer_get_projection_stack (framebuffer);
 
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -1134,10 +1134,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
    * so we need to flush any batched geometry first */
   _cogl_journal_flush ();
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+  _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* Just setup a simple material that doesn't use texturing... */
   prev_source = cogl_handle_ref (ctx->source_material);
@@ -1311,10 +1311,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
    */
   _cogl_journal_flush ();
 
-  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
@@ -1477,13 +1477,13 @@ _cogl_path_fill_nodes (void)
   if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
       cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
-      CoglHandle draw_buffer;
+      CoglHandle framebuffer;
       CoglClipStackState *clip_state;
 
       _cogl_journal_flush ();
 
-      draw_buffer = _cogl_get_draw_buffer ();
-      clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+      framebuffer = _cogl_get_framebuffer ();
+      clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
       _cogl_add_path_to_stencil_buffer (ctx->path_nodes_min,
                                         ctx->path_nodes_max,
