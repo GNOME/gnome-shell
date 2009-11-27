@@ -1294,7 +1294,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
    * data structure that has smaller overhead for inserting the
    * curve/scanline intersections.
    */
-  GSList *scanlines[bounds_h];
+  GSList **scanlines = g_alloca (bounds_h * sizeof (GSList *));
 
   int i;
   int prev_x;
