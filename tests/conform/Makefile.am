@@ -39,6 +39,7 @@ test_conformance_SOURCES = 		\
 	test-group.c			\
 	test-actor-size.c		\
 	test-texture-fbo.c		\
+	test-cogl-sub-texture.c         \
 	test-script-parser.c		\
         $(NULL)
 
