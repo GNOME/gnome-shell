@@ -163,6 +163,15 @@ _cogl_texture_upload_data_swap_bitmap (CoglTextureUploadData *data,
                                        CoglBitmap            *new_bitmap);
 
 gboolean
+_cogl_texture_upload_data_prepare_format
+                                    (CoglTextureUploadData *data,
+                                     CoglPixelFormat       *internal_format);
+
+gboolean
+_cogl_texture_upload_data_convert (CoglTextureUploadData *data,
+                                   CoglPixelFormat internal_format);
+
+gboolean
 _cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
                                    CoglPixelFormat        internal_format);
 
