@@ -12,33 +12,33 @@ test_conformance_SOURCES = 		\
 	test-timeline-interpolate.c 	\
 	test-timeline-rewind.c 		\
 	test-timeline.c 		\
-	test-vertex-buffer-contiguous.c \
-	test-vertex-buffer-interleved.c \
-	test-vertex-buffer-mutability.c \
+	test-cogl-vertex-buffer-contiguous.c \
+	test-cogl-vertex-buffer-interleved.c \
+	test-cogl-vertex-buffer-mutability.c \
+	test-cogl-fixed.c 		\
+	test-cogl-backface-culling.c 	\
+	test-cogl-npot-texture.c        \
+	test-cogl-blend-strings.c	\
+	test-cogl-premult.c		\
+	test-cogl-materials.c		\
+	test-cogl-viewport.c		\
+	test-cogl-offscreen.c		\
+	test-cogl-readpixels.c		\
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\
-	test-clutter-fixed.c 		\
 	test-actor-invariants.c 	\
 	test-paint-opacity.c 		\
-	test-backface-culling.c 	\
 	test-binding-pool.c		\
         test-clutter-text.c             \
         test-text-cache.c               \
 	test-anchors.c                  \
-	test-npot-texture.c             \
 	test-model.c			\
-	test-blend-strings.c		\
 	test-color.c			\
 	test-clutter-units.c		\
-	test-premult.c			\
-	test-materials.c		\
 	test-group.c			\
 	test-actor-size.c		\
 	test-texture-fbo.c		\
-	test-cogl-viewport.c		\
-	test-cogl-offscreen.c		\
-	test-cogl-readpixels.c		\
 	test-script-parser.c		\
         $(NULL)
 

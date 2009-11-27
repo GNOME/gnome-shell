@@ -286,8 +286,8 @@ make_texture (void)
 }
 
 void
-test_backface_culling (TestConformSimpleFixture *fixture,
-                       gconstpointer data)
+test_cogl_backface_culling (TestConformSimpleFixture *fixture,
+                            gconstpointer data)
 {
   TestState state;
   CoglHandle tex;

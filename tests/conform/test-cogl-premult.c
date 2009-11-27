@@ -348,8 +348,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_premult (TestConformSimpleFixture *fixture,
-              gconstpointer data)
+test_cogl_premult (TestConformSimpleFixture *fixture,
+                   gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;

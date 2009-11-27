@@ -182,8 +182,8 @@ make_texture (void)
 }
 
 void
-test_npot_texture (TestConformSimpleFixture *fixture,
-                   gconstpointer data)
+test_cogl_npot_texture (TestConformSimpleFixture *fixture,
+                        gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;

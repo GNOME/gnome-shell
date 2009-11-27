@@ -158,8 +158,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_materials (TestConformSimpleFixture *fixture,
-                gconstpointer data)
+test_cogl_materials (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;

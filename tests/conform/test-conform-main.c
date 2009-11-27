@@ -131,8 +131,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
 
-  TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
-
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
   TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
   TEST_CONFORM_SIMPLE ("/invariants", test_realized);
@@ -142,17 +140,10 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
   TEST_CONFORM_SIMPLE ("/invariants", test_clone_no_map);
 
-  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_contiguous);
-  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_interleved);
-  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_mutability);
-
   TEST_CONFORM_SIMPLE ("/opacity", test_label_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
-  TEST_CONFORM_SIMPLE ("/texture", test_backface_culling);
-  TEST_CONFORM_SIMPLE ("/texture", test_npot_texture);
-  TEST_CONFORM_SIMPLE ("/texture", test_premult);
   TEST_CONFORM_SIMPLE ("/texture", test_texture_fbo);
 
   TEST_CONFORM_SIMPLE ("/path", test_path);
@@ -164,9 +155,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
-
-  TEST_CONFORM_SIMPLE ("/material", test_materials);
-  TEST_CONFORM_SIMPLE ("/material", test_blend_strings);
 
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
@@ -181,15 +169,29 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/sizing", test_fixed_size);
   TEST_CONFORM_SIMPLE ("/sizing", test_preferred_size);
 
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_offscreen);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
-
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
   TEST_CONFORM_SIMPLE ("/script", test_script_child);
   TEST_CONFORM_SIMPLE ("/script", test_script_implicit_alpha);
   TEST_CONFORM_SIMPLE ("/script", test_script_object_property);
   TEST_CONFORM_SIMPLE ("/script", test_script_animation);
+
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_blend_strings);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
+
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
+
+  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
+  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
+  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
+
+  /* left to the end because they aren't currently very orthogonal and tend to
+   * break subsequent tests! */
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_offscreen);
 
   return g_test_run ();
 }

@@ -93,8 +93,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
-		               gconstpointer data)
+test_cogl_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
+		                    gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;

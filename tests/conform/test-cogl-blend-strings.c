@@ -379,8 +379,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_blend_strings (TestConformSimpleFixture *fixture,
-                    gconstpointer data)
+test_cogl_blend_strings (TestConformSimpleFixture *fixture,
+                         gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;

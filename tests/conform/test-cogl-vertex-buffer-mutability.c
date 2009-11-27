@@ -137,8 +137,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_vertex_buffer_mutability (TestConformSimpleFixture *fixture,
-		               gconstpointer data)
+test_cogl_vertex_buffer_mutability (TestConformSimpleFixture *fixture,
+		                    gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;
