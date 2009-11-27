@@ -38,6 +38,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
+#include "cogl-texture-2d-private.h"
 #include "cogl-sub-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
@@ -63,7 +64,8 @@ cogl_is_texture (CoglHandle handle)
   if (handle == COGL_INVALID_HANDLE)
     return FALSE;
 
-  return (obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
+  return (obj->klass->type == _cogl_handle_texture_2d_get_type () ||
+          obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
           obj->klass->type == _cogl_handle_sub_texture_get_type ());
 }
 
@@ -154,37 +156,44 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
 }
 
 gboolean
-_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
-                                   CoglPixelFormat        internal_format)
+_cogl_texture_upload_data_prepare_format
+                                    (CoglTextureUploadData *data,
+                                     CoglPixelFormat       *internal_format)
 {
-  CoglBitmap        new_bitmap;
-  CoglPixelFormat   new_data_format;
-  gboolean          success;
-
   /* Was there any internal conversion requested?
    * By default Cogl will use a premultiplied internal format. Later we will
    * add control over this. */
-  if (internal_format == COGL_PIXEL_FORMAT_ANY)
+  if (*internal_format == COGL_PIXEL_FORMAT_ANY)
     {
       if ((data->bitmap.format & COGL_A_BIT) &&
           data->bitmap.format != COGL_PIXEL_FORMAT_A_8)
-        internal_format = data->bitmap.format | COGL_PREMULT_BIT;
+        *internal_format = data->bitmap.format | COGL_PREMULT_BIT;
       else
-        internal_format = data->bitmap.format;
+        *internal_format = data->bitmap.format;
     }
 
   /* Find closest format accepted by GL */
-  new_data_format = _cogl_pixel_format_to_gl (internal_format,
-					      &data->gl_intformat,
-					      &data->gl_format,
-					      &data->gl_type);
+  *internal_format = _cogl_pixel_format_to_gl (*internal_format,
+                                               &data->gl_intformat,
+                                               &data->gl_format,
+                                               &data->gl_type);
+
+  return TRUE;
+}
+
+gboolean
+_cogl_texture_upload_data_convert (CoglTextureUploadData *data,
+                                   CoglPixelFormat internal_format)
+{
+  CoglBitmap        new_bitmap;
+  gboolean          success;
 
   /* Convert to internal format */
-  if (new_data_format != data->bitmap.format)
+  if (internal_format != data->bitmap.format)
     {
       success = _cogl_bitmap_convert_and_premult (&data->bitmap,
 						  &new_bitmap,
-						  new_data_format);
+						  internal_format);
 
       if (!success)
 	return FALSE;
@@ -304,10 +313,19 @@ cogl_texture_new_with_size (guint            width,
                             CoglTextureFlags flags,
 			    CoglPixelFormat  internal_format)
 {
-  return _cogl_texture_2d_sliced_new_with_size (width,
-                                                height,
-                                                flags,
-                                                internal_format);
+  CoglHandle tex;
+
+  /* First try creating a fast-path non-sliced texture */
+  tex = _cogl_texture_2d_new_with_size (width, height, flags, internal_format);
+
+  /* If it fails resort to sliced textures */
+  if (tex == COGL_INVALID_HANDLE)
+    tex = _cogl_texture_2d_sliced_new_with_size (width,
+                                                 height,
+                                                 flags,
+                                                 internal_format);
+
+  return tex;
 }
 
 CoglHandle
@@ -346,9 +364,20 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
                               CoglTextureFlags flags,
                               CoglPixelFormat  internal_format)
 {
-  return _cogl_texture_2d_sliced_new_from_bitmap (bmp_handle,
-                                                  flags,
-                                                  internal_format);
+  CoglHandle tex;
+
+  /* First try creating a fast-path non-sliced texture */
+  tex = _cogl_texture_2d_new_from_bitmap (bmp_handle,
+                                          flags,
+                                          internal_format);
+
+  /* If it fails resort to sliced textures */
+  if (tex == COGL_INVALID_HANDLE)
+    tex = _cogl_texture_2d_sliced_new_from_bitmap (bmp_handle,
+                                                   flags,
+                                                   internal_format);
+
+  return tex;
 }
 
 CoglHandle
