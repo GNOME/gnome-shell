@@ -122,9 +122,11 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-blend-string.c			\
 	$(srcdir)/cogl-blend-string.h			\
 	$(srcdir)/cogl-debug.c				\
+	$(srcdir)/cogl-sub-texture-private.h            \
 	$(srcdir)/cogl-texture-private.h		\
 	$(srcdir)/cogl-texture-2d-sliced-private.h 	\
 	$(srcdir)/cogl-texture-driver.h			\
+	$(srcdir)/cogl-sub-texture.c                    \
 	$(srcdir)/cogl-texture.c			\
 	$(srcdir)/cogl-texture-2d-sliced.c		\
 	$(srcdir)/cogl-spans.h				\
