@@ -85,12 +85,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
                                        CoglPixelFormat  internal_format);
 
 CoglHandle
-_cogl_texture_2d_sliced_new_from_file (const gchar       *filename,
-                                       CoglTextureFlags   flags,
-                                       CoglPixelFormat    internal_format,
-                                       GError           **error);
-
-CoglHandle
 _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLenum           gl_target,
                                           GLuint           width,
@@ -98,16 +92,6 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLuint           x_pot_waste,
                                           GLuint           y_pot_waste,
                                           CoglPixelFormat  format);
-
-CoglHandle
-_cogl_texture_2d_sliced_new_from_data (unsigned int     width,
-                                       unsigned int     height,
-                                       CoglTextureFlags flags,
-                                       CoglPixelFormat  format,
-                                       CoglPixelFormat  internal_format,
-                                       unsigned int     rowstride,
-                                       const guint8    *data);
-
 
 CoglHandle
 _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
