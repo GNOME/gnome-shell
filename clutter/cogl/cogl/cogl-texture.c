@@ -38,6 +38,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
+#include "cogl-sub-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
@@ -62,8 +63,8 @@ cogl_is_texture (CoglHandle handle)
   if (handle == COGL_INVALID_HANDLE)
     return FALSE;
 
-  return obj->klass->type == _cogl_handle_texture_2d_sliced_get_type ();
-    //|| obj->klass->type == _cogl_handle_texture_3d_get_type ();
+  return (obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
+          obj->klass->type == _cogl_handle_sub_texture_get_type ());
 }
 
 CoglHandle
@@ -365,6 +366,16 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                    x_pot_waste,
                                                    y_pot_waste,
                                                    format);
+}
+
+CoglHandle
+cogl_texture_new_from_sub_texture (CoglHandle full_texture,
+                                   gfloat     tx1,
+                                   gfloat     ty1,
+                                   gfloat     tx2,
+                                   gfloat     ty2)
+{
+  return _cogl_sub_texture_new (full_texture, tx1, ty1, tx2, ty2);
 }
 
 guint
