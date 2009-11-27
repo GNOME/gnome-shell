@@ -54,8 +54,53 @@ PlaceInfo.prototype = {
                 mtype = Search.MatchType.SUBSTRING;
         }
         return mtype;
+    },
+
+    isRemovable: function() {
+        return false;
     }
 }
+
+function PlaceDeviceInfo(mount) {
+    this._init(mount);
+}
+
+PlaceDeviceInfo.prototype = {
+    __proto__: PlaceInfo.prototype,
+
+    _init: function(mount) {
+        this._mount = mount;
+        this.name = mount.get_name();
+        this._lowerName = this.name.toLowerCase();
+        this.id = "mount:" + mount.get_root().get_uri();
+    },
+
+    iconFactory: function(size) {
+        let icon = this._mount.get_icon();
+        return Shell.TextureCache.get_default().load_gicon(icon, size);
+    },
+
+    launch: function() {
+        Gio.app_info_launch_default_for_uri(this._mount.get_root().get_uri(),
+                                            global.create_app_launch_context());
+    },
+
+    isRemovable: function() {
+        return this._mount.can_unmount();
+    },
+
+    remove: function() {
+        if (!this.isRemovable())
+            return;
+
+        this._mount.unmount(0, null, Lang.bind(this, this._removeFinish), null);
+    },
+
+    _removeFinish: function(o, res, data) {
+        this._mount.unmount_finish(res);
+    }
+}
+
 
 function PlacesManager() {
     this._init();
@@ -288,18 +333,7 @@ PlacesManager.prototype = {
     },
 
     _addMount: function(mount) {
-        let mountLabel = mount.get_name();
-        let mountIcon = mount.get_icon();
-        let root = mount.get_root();
-        let mountUri = root.get_uri();
-        let devItem = new PlaceInfo('mount:' + mountUri,
-                                     mountLabel,
-               function(size) {
-                        return Shell.TextureCache.get_default().load_gicon(mountIcon, size);
-               },
-               function() {
-                        Gio.app_info_launch_default_for_uri(mountUri, global.create_app_launch_context());
-               });
+        let devItem = new PlaceDeviceInfo(mount);
         this._mounts.push(devItem);
     },
 
@@ -358,21 +392,35 @@ DashPlaceDisplayItem.prototype = {
         this._info = info;
         this._icon = info.iconFactory(PLACES_ICON_SIZE);
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   reactive: true,
                                    spacing: 4 });
-        this.actor.connect('button-release-event', Lang.bind(this, function (b, e) {
-            this._info.launch();
-            Main.overview.hide();
-        }));
-        let text = new St.Label({ style_class: 'places-item',
-                                  text: info.name });
-        let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-        iconBox.append(this._icon, Big.BoxPackFlags.NONE);
+        let text = new St.Button({ style_class: 'places-item',
+                                   label: info.name,
+                                   x_align: St.Align.START });
+        text.connect('clicked', Lang.bind(this, this._onClicked));
+        let iconBox = new St.Bin({ child: this._icon, reactive: true });
+        iconBox.connect('button-release-event',
+                        Lang.bind(this, this._onClicked));
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);
         this.actor.append(text, Big.BoxPackFlags.EXPAND);
 
+        if (info.isRemovable()) {
+            let removeIcon = Shell.TextureCache.get_default().load_icon_name ('media-eject', PLACES_ICON_SIZE);
+            let removeIconBox = new St.Button({ child: removeIcon,
+                                                reactive: true });
+            this.actor.append(removeIconBox, Big.BoxPackFlags.NONE);
+            removeIconBox.connect('clicked',
+                                  Lang.bind(this, function() {
+                                                  this._info.remove();
+                                            }));
+        }
+
         this.actor._delegate = this;
         let draggable = DND.makeDraggable(this.actor);
+    },
+
+    _onClicked: function(b) {
+        this._info.launch();
+        Main.overview.hide();
     },
 
     getDragActorSource: function() {
