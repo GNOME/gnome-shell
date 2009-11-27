@@ -442,7 +442,7 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
           win_xpos = stage_win32->fullscreen_rect.left;
           win_ypos = stage_win32->fullscreen_rect.top;
           win_width = stage_win32->fullscreen_rect.right - win_xpos;
-          win_height = stage_win32->fullscreen_rect.left - win_ypos;
+          win_height = stage_win32->fullscreen_rect.bottom - win_ypos;
         }
       else
         {
