@@ -993,67 +993,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
 }
 
 CoglHandle
-_cogl_texture_2d_sliced_new_from_data (unsigned int     width,
-                                       unsigned int     height,
-                                       CoglTextureFlags flags,
-                                       CoglPixelFormat  format,
-                                       CoglPixelFormat  internal_format,
-                                       unsigned int     rowstride,
-                                       const guint8    *data)
-{
-  CoglTexture2DSliced  *tex_2ds;
-  CoglTexture          *tex;
-  CoglTextureUploadData upload_data;
-
-  if (format == COGL_PIXEL_FORMAT_ANY)
-    return COGL_INVALID_HANDLE;
-
-  if (data == NULL)
-    return COGL_INVALID_HANDLE;
-
-  /* Rowstride from width if not given */
-  if (rowstride == 0)
-    rowstride = width * _cogl_get_format_bpp (format);
-
-  /* Create new texture and fill with given data */
-  tex_2ds = g_new0 (CoglTexture2DSliced, 1);
-
-  tex = COGL_TEXTURE (tex_2ds);
-  tex->vtable = &cogl_texture_2d_sliced_vtable;
-
-  upload_data.bitmap.width = width;
-  upload_data.bitmap.height = height;
-  upload_data.bitmap.data = (guchar*)data;
-  upload_data.bitmap.format = format;
-  upload_data.bitmap.rowstride = rowstride;
-  upload_data.bitmap_owner = FALSE;
-
-  if (flags & COGL_TEXTURE_NO_SLICING)
-    tex_2ds->max_waste = -1;
-  else
-    tex_2ds->max_waste = COGL_TEXTURE_MAX_WASTE;
-
-  /* FIXME: If upload fails we should set some kind of
-   * error flag but still return texture handle (this
-   * is to keep the behavior equal to _new_from_file;
-   * see below) */
-
-  if (!_cogl_texture_2d_sliced_upload_from_data (tex_2ds, &upload_data,
-                                                 internal_format))
-    {
-      _cogl_texture_2d_sliced_free (tex_2ds);
-      _cogl_texture_upload_data_free (&upload_data);
-      return COGL_INVALID_HANDLE;
-    }
-
-  _cogl_texture_upload_data_free (&upload_data);
-
-  tex_2ds->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
-
-  return _cogl_texture_2d_sliced_handle_new (tex_2ds);
-}
-
-CoglHandle
 _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format)
@@ -1099,29 +1038,6 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
   _cogl_texture_upload_data_free (&upload_data);
 
   return _cogl_texture_2d_sliced_handle_new (tex_2ds);
-}
-
-CoglHandle
-_cogl_texture_2d_sliced_new_from_file (
-                                const char       *filename,
-                                CoglTextureFlags  flags,
-                                CoglPixelFormat   internal_format,
-                                GError          **error)
-{
-  CoglHandle bmp;
-  CoglHandle handle;
-
-  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
-
-  bmp = cogl_bitmap_new_from_file (filename, error);
-  if (bmp == COGL_INVALID_HANDLE)
-    return COGL_INVALID_HANDLE;
-
-  handle =
-    _cogl_texture_2d_sliced_new_from_bitmap (bmp, flags, internal_format);
-  cogl_handle_unref (bmp);
-
-  return handle;
 }
 
 CoglHandle

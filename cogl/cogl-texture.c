@@ -319,13 +319,26 @@ cogl_texture_new_from_data (guint             width,
 			    guint             rowstride,
 			    const guchar     *data)
 {
-  return _cogl_texture_2d_sliced_new_from_data (width,
-					        height,
-					        flags,
-					        format,
-					        internal_format,
-					        rowstride,
-					        data);
+  CoglBitmap bitmap;
+
+  if (format == COGL_PIXEL_FORMAT_ANY)
+    return COGL_INVALID_HANDLE;
+
+  if (data == NULL)
+    return COGL_INVALID_HANDLE;
+
+  /* Rowstride from width if not given */
+  if (rowstride == 0)
+    rowstride = width * _cogl_get_format_bpp (format);
+
+  /* Wrap the data into a bitmap */
+  bitmap.width = width;
+  bitmap.height = height;
+  bitmap.data = (guchar *) data;
+  bitmap.format = format;
+  bitmap.rowstride = rowstride;
+
+  return cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
 }
 
 CoglHandle
@@ -344,10 +357,19 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  return _cogl_texture_2d_sliced_new_from_file (filename,
-                                                flags,
-                                                internal_format,
-                                                error);
+  CoglHandle bmp;
+  CoglHandle handle;
+
+  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+
+  bmp = cogl_bitmap_new_from_file (filename, error);
+  if (bmp == COGL_INVALID_HANDLE)
+    return COGL_INVALID_HANDLE;
+
+  handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
+  cogl_handle_unref (bmp);
+
+  return handle;
 }
 
 CoglHandle
