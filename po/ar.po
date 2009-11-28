@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 10:59+0200\n"
-"PO-Revision-Date: 2009-10-29 11:03+0300\n"
+"PO-Revision-Date: 2009-11-28 05:57+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.4.0\n"
+"X-Generator: Virtaal 0.5.0-rc1\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -31,7 +31,7 @@ msgstr "إدارة النوافذ"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "حدث الجرس"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -277,11 +277,9 @@ msgstr "الشاشة %d على العرض '%s' غير صحيحة\n"
 
 #: ../src/core/screen.c:373
 #, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل، حاول استعمال خيار التبديل "
+msgid "Screen %d on display \"%s\" already has a window manager; try using the "
+"--replace option to replace the current window manager.\n"
+msgstr "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل، حاول استعمال خيار التبديل "
 "--replace لتحُلّ محلّ مدير النوافذ الحالي.\n"
 
 #: ../src/core/screen.c:400
@@ -539,142 +537,127 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
-msgstr "تحول إلى مساحة العمل 1"
+msgstr "انتقل إلى مساحة العمل 1"
 
 #: ../src/include/all-keybindings.h:90
 msgid "Switch to workspace 2"
-msgstr "تحول إلى مساحة العمل 2"
+msgstr "انتقل إلى مساحة العمل 2"
 
 #: ../src/include/all-keybindings.h:92
 msgid "Switch to workspace 3"
-msgstr "تحول إلى مساحة العمل 3"
+msgstr "انتقل إلى مساحة العمل 3"
 
 #: ../src/include/all-keybindings.h:94
 msgid "Switch to workspace 4"
-msgstr "تحول إلى مساحة العمل 4"
+msgstr "انتقل إلى مساحة العمل 4"
 
 #: ../src/include/all-keybindings.h:96
 msgid "Switch to workspace 5"
-msgstr "تحول إلى مساحة العمل 5"
+msgstr "انتقل إلى مساحة العمل 5"
 
 #: ../src/include/all-keybindings.h:98
 msgid "Switch to workspace 6"
-msgstr "تحول إلى مساحة العمل 6"
+msgstr "انتقل إلى مساحة العمل 6"
 
 #: ../src/include/all-keybindings.h:100
 msgid "Switch to workspace 7"
-msgstr "تحول إلى مساحة العمل 7"
+msgstr "انتقل إلى مساحة العمل 7"
 
 #: ../src/include/all-keybindings.h:102
 msgid "Switch to workspace 8"
-msgstr "تحول إلى مساحة العمل 8"
+msgstr "انتقل إلى مساحة العمل 8"
 
 #: ../src/include/all-keybindings.h:104
 msgid "Switch to workspace 9"
-msgstr "تحول إلى مساحة العمل 9"
+msgstr "انتقل إلى مساحة العمل 9"
 
 #: ../src/include/all-keybindings.h:106
 msgid "Switch to workspace 10"
-msgstr "تحول إلى مساحة العمل 10"
+msgstr "انتقل إلى مساحة العمل 10"
 
 #: ../src/include/all-keybindings.h:108
 msgid "Switch to workspace 11"
-msgstr "تحول إلى مساحة العمل 11"
+msgstr "انتقل إلى مساحة العمل 11"
 
 #: ../src/include/all-keybindings.h:110
 msgid "Switch to workspace 12"
-msgstr "تحول إلى مساحة العمل 12"
+msgstr "انتقل إلى مساحة العمل 12"
 
 #: ../src/include/all-keybindings.h:122
-#, fuzzy
 msgid "Switch to workspace on the left of the current workspace"
-msgstr "تحول إلى مساحة العمل على اليسار"
+msgstr "انتقل إلى مساحة العمل على يسار الحالية"
 
 #: ../src/include/all-keybindings.h:126
-#, fuzzy
 msgid "Switch to workspace on the right of the current workspace"
-msgstr "تحول إلى مساحة العمل على اليمين"
+msgstr "انتقل إلى مساحة العمل على يمين الحالية"
 
 #: ../src/include/all-keybindings.h:130
-#, fuzzy
 msgid "Switch to workspace above the current workspace"
-msgstr "تحول إلى مساحة العمل فوق هذه"
+msgstr "انتقل إلى مساحة العمل فوق الحالية"
 
 #: ../src/include/all-keybindings.h:134
-#, fuzzy
 msgid "Switch to workspace below the current workspace"
-msgstr "تحول إلى مساحة العمل تحت هذه"
+msgstr "انتقل إلى مساحة العمل تحت الحالية"
 
 #: ../src/include/all-keybindings.h:150
-#, fuzzy
 msgid "Move between windows of an application, using a popup window"
-msgstr "انقل بين نوافذ التطبيق بنافذةٍ قافزة"
+msgstr "تنقل بين نوافذ تطبيق بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:153
-#, fuzzy
 msgid "Move backward between windows of an application, using a popup window"
-msgstr "انقل إلى الوراء بين نوافذ التطبيق بنافذةٍ قافزة"
+msgstr "تنقل إلى الوراء بين نوافذ تطبيق بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:157
-#, fuzzy
 msgid "Move between windows, using a popup window"
-msgstr "انقل بين النوافذ بابراز"
+msgstr "تنقل بين النوافذ بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:160
-#, fuzzy
 msgid "Move backward between windows, using a popup window"
-msgstr "انقل التركيز إلى الوراء بين النوافذ باستخدام عرض منبثق"
+msgstr "تنقل إلى الوراء بين النوافذ بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:163
-#, fuzzy
 msgid "Move between panels and the desktop, using a popup window"
-msgstr "انقل بين الشرائط و سطح المكتب بابراز"
+msgstr "تنقل بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:166
-#, fuzzy
 msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "انقل إلى الوراء بين الشرائط و سطح المكتب بانبثاق"
+msgstr "تنقل إلى الوراء بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:171
 msgid "Move between windows of an application immediately"
-msgstr "انقل بين نوافذ التطبيق حالًا"
+msgstr "تنقل بين نوافذ التطبيق حالًا"
 
 #: ../src/include/all-keybindings.h:174
-#, fuzzy
 msgid "Move backward between windows of an application immediately"
-msgstr "انقل إلى الوراء بين نوافذ التطبيق حالًا"
+msgstr "تنقل إلى الوراء بين نوافذ تطبيق حالًا"
 
 #: ../src/include/all-keybindings.h:177
 msgid "Move between windows immediately"
-msgstr "انقل بين النوافذ حالًا"
+msgstr "تنقل بين النوافذ حالًا"
 
 #: ../src/include/all-keybindings.h:180
-#, fuzzy
 msgid "Move backward between windows immediately"
-msgstr "انقل إلى الوراء بين النوافذ حالًا"
+msgstr "تنقل إلى الوراء بين النوافذ حالًا"
 
 #: ../src/include/all-keybindings.h:183
 msgid "Move between panels and the desktop immediately"
-msgstr "انقل بين الشرائط و سطح المكتب حالًا"
+msgstr "تنقل بين الأشرطة و سطح المكتب حالًا"
 
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
-msgstr "انقل إلى الوراء بين الشرائط و سطح المكتب حالًا"
+msgstr "تنقل إلى الوراء بين الأشرطة و سطح المكتب حالًا"
 
 #: ../src/include/all-keybindings.h:191
-#, fuzzy
 msgid "Hide all normal windows and set focus to the desktop"
-msgstr "اخفي كل النوافذ و ركّز على المكتب"
+msgstr "أخفِ كل النوافذ و ركّز على سطح المكتب"
 
 #: ../src/include/all-keybindings.h:194
-#, fuzzy
 msgid "Show the panel's main menu"
-msgstr "اعرض قائمة الشريط"
+msgstr "اعرض قائمة الشريط الرئيسية"
 
 #: ../src/include/all-keybindings.h:197
-#, fuzzy
 msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "اظهر حوار الشّريط لتشغيل التّطبيقات"
+msgstr "أظهر حوار الشّريط لتشغيل التّطبيقات"
 
 #: ../src/include/all-keybindings.h:238
 msgid "Take a screenshot"
@@ -689,7 +672,6 @@ msgid "Run a terminal"
 msgstr "شغّل طرفية"
 
 #: ../src/include/all-keybindings.h:257
-#, fuzzy
 msgid "Activate the window menu"
 msgstr "فعّل قائمة النافذة"
 
@@ -702,9 +684,8 @@ msgid "Toggle maximization state"
 msgstr "بدّل حالة التكبير"
 
 #: ../src/include/all-keybindings.h:264
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "اخفض النافذة تحت النوافذ الأخرى"
+msgstr "بدّل حالة ظهور النافذة فوق النوافذ الأخرى"
 
 #: ../src/include/all-keybindings.h:266
 msgid "Maximize window"
@@ -735,9 +716,8 @@ msgid "Resize window"
 msgstr "حجّم النّافذة"
 
 #: ../src/include/all-keybindings.h:281
-#, fuzzy
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "بدّل النافذة على جميع مساحات العمل"
+msgstr "بدّل حالة ظهور النافذة على جميع مساحات العمل"
 
 #: ../src/include/all-keybindings.h:285
 msgid "Move window to workspace 1"
@@ -804,9 +784,8 @@ msgid "Move window one workspace down"
 msgstr "انقل النافذة مساحة عمل واحدة إلى الأسفل"
 
 #: ../src/include/all-keybindings.h:342
-#, fuzzy
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "ارفع النافذة المظلمة، أو أخفضها في ما عدا ذلك"
+msgstr "ارفع النافذة إذا كانت أخرى تغطيها، أو أخفضها في ما عدا ذلك"
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
@@ -825,49 +804,40 @@ msgid "Maximize window horizontally"
 msgstr "كبّر النافذة أفقيا"
 
 #: ../src/include/all-keybindings.h:358
-#, fuzzy
 msgid "Move window to north-west (top left) corner"
-msgstr "انقل النافذة للزاوية شمال-غربي الشاشة"
+msgstr "انقل النافذة للزاوية شمال-غربي الشاشة (أعلى اليسار)"
 
 #: ../src/include/all-keybindings.h:361
-#, fuzzy
 msgid "Move window to north-east (top right) corner"
-msgstr "انقل النافذة للزاوية شمال-شرقي الشاشة"
+msgstr "انقل النافذة للزاوية شمال-شرقي الشاشة (أعلى اليمين)"
 
 #: ../src/include/all-keybindings.h:364
-#, fuzzy
 msgid "Move window to south-west (bottom left) corner"
-msgstr "انقل النافذة للزاوية جنوب-غرب الشاشة"
+msgstr "انقل النافذة للزاوية جنوب-غرب الشاشة (أدنى اليسار)"
 
 #: ../src/include/all-keybindings.h:367
-#, fuzzy
 msgid "Move window to south-east (bottom right) corner"
-msgstr "انقل النافذة للزاوية جنوب-شرق الشاشة"
+msgstr "انقل النافذة للزاوية جنوب-شرق الشاشة (أدنى اليمين)"
 
 #: ../src/include/all-keybindings.h:371
-#, fuzzy
 msgid "Move window to north (top) side of screen"
-msgstr "انقل النافذة للجانب الشمالي من الشاشة"
+msgstr "انقل النافذة للجانب الشمالي من الشاشة (فوق)"
 
 #: ../src/include/all-keybindings.h:374
-#, fuzzy
 msgid "Move window to south (bottom) side of screen"
-msgstr "انقل النافذة للجانب الجنوبي من الشاشة"
+msgstr "انقل النافذة للجانب الجنوبي من الشاشة (تحت)"
 
 #: ../src/include/all-keybindings.h:377
-#, fuzzy
 msgid "Move window to east (right) side of screen"
-msgstr "انقل النافذة للجانب الشرقي من الشاشة"
+msgstr "انقل النافذة للجانب الشرقي من الشاشة (يمين)"
 
 #: ../src/include/all-keybindings.h:380
-#, fuzzy
 msgid "Move window to west (left) side of screen"
-msgstr "انقل النافذة للجانب ألغربي من الشاشة"
+msgstr "انقل النافذة للجانب ألغربي من الشاشة (يسار)"
 
 #: ../src/include/all-keybindings.h:383
-#, fuzzy
 msgid "Move window to center of screen"
-msgstr "انقل النافذة للجانب الشرقي من الشاشة"
+msgstr "انقل النافذة إلى وسط الشاشة"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -911,10 +881,11 @@ msgid ""
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
 msgstr ""
-"تنظيم الأزرار على شريط العنوان. يجب أن تكون القيمة سلسلة،مثل\"menu:minimize,"
-"maximize,close\" ،الفاصل يفصل الجانب الأيسر للنافذة عن الجانب الأيمن، كما "
-"تفصل أسماء الأزرار بفواصل. نسخ الأزرار ممنوع. يقع تجاهل الأزرار غير المعروفة "
-"حتى يمكن إضافتها لإصدارات متستي القادمة دون كسر الإصدارات القديمة."
+"تنظيم الأزرار على شريط العنوان. يجب أن تكون القيمة "
+"سلسلة،مثل\"menu:minimize,maximize,close\" ،الفاصل يفصل الجانب الأيسر للنافذة "
+"عن الجانب الأيمن، كما تفصل أسماء الأزرار بفواصل. نسخ الأزرار ممنوع. يقع "
+"تجاهل الأزرار غير المعروفة حتى يمكن إضافتها لإصدارات متستي القادمة دون كسر "
+"الإصدارات القديمة."
 
 #: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
@@ -1064,19 +1035,19 @@ msgid ""
 "(e.g. clicking in the client area, moving or resizing the window) normally "
 "raise the window as a side-effect. Setting this option to false, which is "
 "strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
+"ignore raise requests generated by applications. See "
+"http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option "
+"is false, windows can still be raised by an alt-left-click anywhere on the "
+"window, a normal click on the window decorations, or by special messages "
+"from pagers, such as activation requests from tasklist applets. This option "
+"is currently disabled in click-to-focus mode. Note that the list of ways to "
+"raise windows when raise_on_click is false does not include programmatic "
+"requests from applications to raise windows; such requests will be ignored "
+"regardless of the reason for the request. If you are an application "
+"developer and have a user complaining that your application does not work "
+"with this setting disabled, tell them it is _their_ fault for breaking their "
+"window manager and that they need to change this option back to true or "
+"live with the \"bug\" they requested."
 msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:31
@@ -1907,8 +1878,8 @@ msgstr "العنصر <%s> غير مسموح به تحت <%s>"
 #: ../src/ui/theme-parser.c:1402
 #, fuzzy
 msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for "
+"buttons"
 msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: ../src/ui/theme-parser.c:1366
