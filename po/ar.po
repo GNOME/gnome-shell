@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-29 11:18+0200\n"
-"PO-Revision-Date: 2009-10-29 11:17+0300\n"
+"POT-Creation-Date: 2009-11-28 06:25+0200\n"
+"PO-Revision-Date: 2009-11-28 06:24+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,14 +20,14 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.4.0\n"
+"X-Generator: Virtaal 0.5.0-rc1\n"
 
 #: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "طلب معلومات نافذة مجهول: %d"
 
-#: ../src/core/delete.c:105
+#: ../src/core/delete.c:94
 #, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
@@ -39,25 +39,25 @@ msgstr ""
 "\n"
 "<i>ربما ترغب في الانتظار قليلا ليُكمِل أو إجبار التطبيق على الإنهاء كُلّية.</i>"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:105
 msgid "_Wait"
 msgstr "ا_نتظر"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:105
 msgid "_Force Quit"
 msgstr "أ_جبر الإنهاء"
 
-#: ../src/core/delete.c:217
+#: ../src/core/delete.c:202
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "فشل تلقي اسم المضيف: %s\n"
 
-#: ../src/core/display.c:340
+#: ../src/core/display.c:360
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "الامتداد %s مفقود، لكنه مطلوب للتركيب"
 
-#: ../src/core/display.c:425
+#: ../src/core/display.c:445
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح عرض نظام نوافذ إكس '%s'\n"
@@ -171,18 +171,18 @@ msgstr ""
 msgid "Internal argument for GObject introspection"
 msgstr ""
 
-#: ../src/core/main.c:668
+#: ../src/core/main.c:627
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "فشلت قراءة دليل السِمات : %s\n"
 
-#: ../src/core/main.c:684
+#: ../src/core/main.c:643
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "تعذّر إيجاد سِمة! تأكد من وجود %s و احتواءه على السِمات المعتادة.\n"
 
-#: ../src/core/main.c:745
+#: ../src/core/main.c:704
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "فشلت إعادة التشغيل: %s\n"
@@ -258,17 +258,17 @@ msgstr ""
 #: ../src/core/prefs.c:2610
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
+msgstr "خطأ عند تحديد اسم مساحة العمل %d لـ \"%s\": %s\n"
 
 #: ../src/core/prefs.c:2808
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting compositor status: %s\n"
-msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
+msgstr "خطأ عند ضبط حالة مدير التركيب: %s\n"
 
 #: ../src/core/prefs.c:2836
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting clutter plugin list: %s\n"
-msgstr "خطأ عند تعيين عدد مساحات العمل لـ %d: %s\n"
+msgstr "خطأ عند تحديد قائمة ملحقات كلتر: %s\n"
 
 #: ../src/core/prefs.c:2879
 #, c-format
@@ -276,9 +276,9 @@ msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
 
 #: ../src/core/prefs.c:2907
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting no tab popup status: %s\n"
-msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
+msgstr "خطأ عند ضبط حالة لا لسان منبثق: %s\n"
 
 #: ../src/core/screen.c:570
 #, c-format
@@ -305,65 +305,65 @@ msgstr "لا يمكن الحصول على اختيار مدير النوافذ �
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل\n"
 
-#: ../src/core/screen.c:880
+#: ../src/core/screen.c:850
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "لا يمكن ترك الشاشة %d على العرض \"%s\"\n"
 
-#: ../src/core/session.c:851 ../src/core/session.c:858
+#: ../src/core/session.c:852 ../src/core/session.c:859
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "لا يمكن إنشاء الدليل '%s': %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:869
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "لا يمكن فتح ملف الجلسة '%s' لكتابة: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1010
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "خطأ عند كتابة ملف الجلسة '%s': %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1015
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "خطأ عند غلق ملف الجلسة '%s': %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1107
+#: ../src/core/session.c:1108
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "خطأ عند قراءة ملف الجلسة المحفوظ '%s': %s\n"
 
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1147
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "خطأ عند تحليل ملف الجلسة المحفوظ: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1196
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "صفة <mutter_session> مرئية لكن لدينا هوية الجلسة بالفعل"
 
-#: ../src/core/session.c:1208 ../src/core/session.c:1283
-#: ../src/core/session.c:1315 ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1209 ../src/core/session.c:1284
+#: ../src/core/session.c:1316 ../src/core/session.c:1388
+#: ../src/core/session.c:1448
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "صفة مجهولة %s على عنصر <%s>"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1226
 #, c-format
 msgid "nested <window> tag"
 msgstr "وسْم <window> معشّش"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1468
 #, c-format
 msgid "Unknown element %s"
 msgstr "عنصر مجهول %s"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1820
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -371,39 +371,39 @@ msgstr ""
 "هذه النوافذ لا تدعم &quot;احفظ الضبط الحالي&quot; يجب إعادة تشغيلها يدويا "
 "عند الولوج المرة القادمة."
 
-#: ../src/core/util.c:106
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "فشل فتح سِجِلّ التنقيح: %s\n"
 
-#: ../src/core/util.c:116
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "فشل fdopen() ملف الرسائل %s: %s\n"
 
-#: ../src/core/util.c:122
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "فُتِح ملف السِّجِل %s\n"
 
-#: ../src/core/util.c:141 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "جُمِّع مَتَر دون دعم للنمط المطنب\n"
 
-#: ../src/core/util.c:241
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "مدير النوافذ: "
 
-#: ../src/core/util.c:393
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "علّة في مدير النوافذ: "
 
-#: ../src/core/util.c:426
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "تحذير مدير النوافذ: "
 
-#: ../src/core/util.c:454
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "خطأ مدير النوافذ: "
 
@@ -415,7 +415,7 @@ msgid "Mutter"
 msgstr "مَتَر"
 
 #. first time through
-#: ../src/core/window.c:6112
+#: ../src/core/window.c:6161
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -431,7 +431,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6775
+#: ../src/core/window.c:6824
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -450,7 +450,7 @@ msgstr "ضبط التطبيق رمز NET_WM_PID غير مفهوم %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (على %s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1440
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
@@ -484,115 +484,115 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
-msgstr "تحول إلى مساحة العمل 1"
+msgstr "انتقل إلى مساحة العمل 1"
 
 #: ../src/include/all-keybindings.h:90
 msgid "Switch to workspace 2"
-msgstr "تحول إلى مساحة العمل 2"
+msgstr "انتقل إلى مساحة العمل 2"
 
 #: ../src/include/all-keybindings.h:92
 msgid "Switch to workspace 3"
-msgstr "تحول إلى مساحة العمل 3"
+msgstr "انتقل إلى مساحة العمل 3"
 
 #: ../src/include/all-keybindings.h:94
 msgid "Switch to workspace 4"
-msgstr "تحول إلى مساحة العمل 4"
+msgstr "انتقل إلى مساحة العمل 4"
 
 #: ../src/include/all-keybindings.h:96
 msgid "Switch to workspace 5"
-msgstr "تحول إلى مساحة العمل 5"
+msgstr "انتقل إلى مساحة العمل 5"
 
 #: ../src/include/all-keybindings.h:98
 msgid "Switch to workspace 6"
-msgstr "تحول إلى مساحة العمل 6"
+msgstr "انتقل إلى مساحة العمل 6"
 
 #: ../src/include/all-keybindings.h:100
 msgid "Switch to workspace 7"
-msgstr "تحول إلى مساحة العمل 7"
+msgstr "انتقل إلى مساحة العمل 7"
 
 #: ../src/include/all-keybindings.h:102
 msgid "Switch to workspace 8"
-msgstr "تحول إلى مساحة العمل 8"
+msgstr "انتقل إلى مساحة العمل 8"
 
 #: ../src/include/all-keybindings.h:104
 msgid "Switch to workspace 9"
-msgstr "تحول إلى مساحة العمل 9"
+msgstr "انتقل إلى مساحة العمل 9"
 
 #: ../src/include/all-keybindings.h:106
 msgid "Switch to workspace 10"
-msgstr "تحول إلى مساحة العمل 10"
+msgstr "انتقل إلى مساحة العمل 10"
 
 #: ../src/include/all-keybindings.h:108
 msgid "Switch to workspace 11"
-msgstr "تحول إلى مساحة العمل 11"
+msgstr "انتقل إلى مساحة العمل 11"
 
 #: ../src/include/all-keybindings.h:110
 msgid "Switch to workspace 12"
-msgstr "تحول إلى مساحة العمل 12"
+msgstr "انتقل إلى مساحة العمل 12"
 
 #: ../src/include/all-keybindings.h:122
 msgid "Switch to workspace on the left of the current workspace"
-msgstr "تحول إلى مساحة العمل على يسار الحالية"
+msgstr "انتقل إلى مساحة العمل على يسار الحالية"
 
 #: ../src/include/all-keybindings.h:126
 msgid "Switch to workspace on the right of the current workspace"
-msgstr "تحول إلى مساحة العمل على يمين الحالية"
+msgstr "انتقل إلى مساحة العمل على يمين الحالية"
 
 #: ../src/include/all-keybindings.h:130
 msgid "Switch to workspace above the current workspace"
-msgstr "تحول إلى مساحة العمل فوق الحالية"
+msgstr "انتقل إلى مساحة العمل فوق الحالية"
 
 #: ../src/include/all-keybindings.h:134
 msgid "Switch to workspace below the current workspace"
-msgstr "تحول إلى مساحة العمل تحت الحالية"
+msgstr "انتقل إلى مساحة العمل تحت الحالية"
 
 #: ../src/include/all-keybindings.h:150
 msgid "Move between windows of an application, using a popup window"
-msgstr "انقل بين نوافذ تطبيق بنافذةٍ قافزة"
+msgstr "تنقل بين نوافذ تطبيق بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:153
 msgid "Move backward between windows of an application, using a popup window"
-msgstr "انقل إلى الوراء بين نوافذ تطبيق بنافذةٍ قافزة"
+msgstr "تنقل إلى الوراء بين نوافذ تطبيق بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:157
 msgid "Move between windows, using a popup window"
-msgstr "انقل بين النوافذ بنافذةٍ قافزة"
+msgstr "تنقل بين النوافذ بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:160
 msgid "Move backward between windows, using a popup window"
-msgstr "انقل إلى الوراء بين النوافذ بنافذةٍ قافزة"
+msgstr "تنقل إلى الوراء بين النوافذ بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:163
 msgid "Move between panels and the desktop, using a popup window"
-msgstr "انقل بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
+msgstr "تنقل بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:166
 msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "انقل إلى الوراء بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
+msgstr "تنقل إلى الوراء بين الأشرطة و سطح المكتب بنافذةٍ قافزة"
 
 #: ../src/include/all-keybindings.h:171
 msgid "Move between windows of an application immediately"
-msgstr "انقل بين نوافذ تطبيق حالًا"
+msgstr "تنقل بين نوافذ تطبيق حالًا"
 
 #: ../src/include/all-keybindings.h:174
 msgid "Move backward between windows of an application immediately"
-msgstr "انقل إلى الوراء بين نوافذ تطبيق حالًا"
+msgstr "تنقل إلى الوراء بين نوافذ تطبيق حالًا"
 
 #: ../src/include/all-keybindings.h:177
 msgid "Move between windows immediately"
-msgstr "انقل بين النوافذ حالًا"
+msgstr "تنقل بين النوافذ حالًا"
 
 #: ../src/include/all-keybindings.h:180
 msgid "Move backward between windows immediately"
-msgstr "انقل إلى الوراء بين النوافذ حالًا"
+msgstr "تنقل إلى الوراء بين النوافذ حالًا"
 
 #: ../src/include/all-keybindings.h:183
 msgid "Move between panels and the desktop immediately"
-msgstr "انقل بين الأشرطة و سطح المكتب حالًا"
+msgstr "تنقل بين الأشرطة و سطح المكتب حالًا"
 
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
-msgstr "انقل إلى الوراء بين الأشرطة و سطح المكتب حالًا"
+msgstr "تنقل إلى الوراء بين الأشرطة و سطح المكتب حالًا"
 
 #: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
@@ -635,9 +635,8 @@ msgid "Toggle maximization state"
 msgstr "بدّل حالة التكبير"
 
 #: ../src/include/all-keybindings.h:278
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "اخفض النافذة تحت النوافذ الأخرى"
+msgstr "بدّل حالة ظهور النافذة فوق النوافذ الأخرى"
 
 #: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
@@ -668,9 +667,8 @@ msgid "Resize window"
 msgstr "حجّم النّافذة"
 
 #: ../src/include/all-keybindings.h:295
-#, fuzzy
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "بدّل النافذة على جميع مساحات العمل"
+msgstr "بدّل حالة ظهور النافذة على جميع مساحات العمل"
 
 #: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
@@ -737,9 +735,8 @@ msgid "Move window one workspace down"
 msgstr "انقل النافذة مساحة عمل واحدة إلى الأسفل"
 
 #: ../src/include/all-keybindings.h:356
-#, fuzzy
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "ارفع النافذة المظلمة، أو اخفظها في ما عدا ذلك"
+msgstr "ارفع النافذة إذا كانت أخرى تغطيها، أو أخفضها في ما عدا ذلك"
 
 #: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
@@ -758,53 +755,44 @@ msgid "Maximize window horizontally"
 msgstr "كبّر النافذة أفقيا"
 
 #: ../src/include/all-keybindings.h:372
-#, fuzzy
 msgid "Move window to north-west (top left) corner"
-msgstr "انقل النافذة للزاوية شمال-غربي الشاشة"
+msgstr "انقل النافذة للزاوية شمال-غربي الشاشة (أعلى اليسار)"
 
 #: ../src/include/all-keybindings.h:375
-#, fuzzy
 msgid "Move window to north-east (top right) corner"
-msgstr "انقل النافذة للزاوية شمال-شرقي الشاشة"
+msgstr "انقل النافذة للزاوية شمال-شرقي الشاشة (أعلى اليمين)"
 
 #: ../src/include/all-keybindings.h:378
-#, fuzzy
 msgid "Move window to south-west (bottom left) corner"
-msgstr "انقل النافذة للزاوية جنوب-غرب الشاشة"
+msgstr "انقل النافذة للزاوية جنوب-غرب الشاشة (أدنى اليسار)"
 
 #: ../src/include/all-keybindings.h:381
-#, fuzzy
 msgid "Move window to south-east (bottom right) corner"
-msgstr "انقل النافذة للزاوية جنوب-شرق الشاشة"
+msgstr "انقل النافذة للزاوية جنوب-شرق الشاشة (أدنى اليمين)"
 
 #: ../src/include/all-keybindings.h:385
-#, fuzzy
 msgid "Move window to north (top) side of screen"
-msgstr "انقل النافذة للجانب الشمالي من الشاشة"
+msgstr "انقل النافذة للجانب الشمالي من الشاشة (فوق)"
 
 #: ../src/include/all-keybindings.h:388
-#, fuzzy
 msgid "Move window to south (bottom) side of screen"
-msgstr "انقل النافذة للجانب الجنوبي من الشاشة"
+msgstr "انقل النافذة للجانب الجنوبي من الشاشة (تحت)"
 
 #: ../src/include/all-keybindings.h:391
-#, fuzzy
 msgid "Move window to east (right) side of screen"
-msgstr "انقل النافذة للجانب الشرقي من الشاشة"
+msgstr "انقل النافذة للجانب الشرقي من الشاشة (يمين)"
 
 #: ../src/include/all-keybindings.h:394
-#, fuzzy
 msgid "Move window to west (left) side of screen"
-msgstr "انقل النافذة للجانب ألغربي من الشاشة"
+msgstr "انقل النافذة للجانب الغربي من الشاشة (يسار)"
 
 #: ../src/include/all-keybindings.h:397
-#, fuzzy
 msgid "Move window to center of screen"
-msgstr "انقل النافذة للجانب الشرقي من الشاشة"
+msgstr "انقل النافذة إلى وسط الشاشة"
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Clutter Plugins"
-msgstr ""
+msgstr "ملحقات كلتر"
 
 #: ../src/mutter.schemas.in.h:2
 msgid ""
@@ -817,9 +805,8 @@ msgid "Live Hidden Windows"
 msgstr ""
 
 #: ../src/mutter.schemas.in.h:4
-#, fuzzy
 msgid "Modifier to use for extended window management operations"
-msgstr "المغير الذي سيُستعمل لعمليات نقر النوافذ المغيرة"
+msgstr "المغير الذي سيُستعمل لتمديد عمليات إدارة النوافذ "
 
 #: ../src/mutter.schemas.in.h:5
 msgid "Plugins to load for the Clutter-based compositing manager."
@@ -895,7 +882,7 @@ msgstr "_كبّر"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:74
 msgid "Unma_ximize"
-msgstr "ألغي التكبي_ر"
+msgstr "ألغ التكبي_ر"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:76
@@ -951,12 +938,12 @@ msgstr "انقل لمساحة العمل على الي_مين"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr "انقل لمساحة العمل إلى ال_أعلى"
+msgstr "انقل لمساحة العمل _فوق"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
 msgid "Move to Workspace _Down"
-msgstr "انقل لمساحة العمل إلى الأ_سفل"
+msgstr "انقل لمساحة العمل _تحت"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -1079,7 +1066,7 @@ msgstr "Mod5"
 #: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
-msgstr "%d x %d"
+msgstr "%d × %d"
 
 #: ../src/ui/theme.c:254
 msgid "top"
@@ -1100,12 +1087,12 @@ msgstr "يمين"
 #: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "هندسة الاطار لا تخصص البعد \"%s\""
+msgstr "هندسة الإطار لا تخصص البعد \"%s\""
 
 #: ../src/ui/theme.c:306
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "هندسة الاطار لا تخصص البعد \"%s\" للحد \"%s\""
+msgstr "هندسة الإطار لا تخصص البعد \"%s\" للحد \"%s\""
 
 #: ../src/ui/theme.c:343
 #, c-format
@@ -1115,7 +1102,7 @@ msgstr "النسبة الجانبية للزر %g غير معقولة"
 #: ../src/ui/theme.c:355
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
-msgstr "هندسة الاطار لا تخصص حجم الأزرار"
+msgstr "هندسة الإطار لا تخصص حجم الأزرار"
 
 #: ../src/ui/theme.c:1020
 #, c-format
@@ -1128,7 +1115,7 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"يجب أن تكون حالة تخصيصات ألوان GTK  في قوسان قائمان، مثال gtk:fg[NORMAL] "
+"يجب أن تكون حالة تخصيصات ألوان جتك  في قوسان قائمان، مثال gtk:fg[NORMAL] "
 "NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
 #: ../src/ui/theme.c:1160
@@ -1137,7 +1124,7 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"يحب أن يكون لتخصيص حالة ألوان GTK قوس غلق قائم بعد الحالة/ مثال gtk:fg"
+"يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال gtk:fg"
 "[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
 #: ../src/ui/theme.c:1171
@@ -1658,7 +1645,7 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <%s>"
 
 #: ../src/ui/theme-parser.c:3594
 msgid "No draw_ops provided for frame piece"
-msgstr "لا draw_ops مزودة لقطعة الاطار"
+msgstr "لا draw_ops مزودة لقطعة الإطار"
 
 #: ../src/ui/theme-parser.c:3609
 msgid "No draw_ops provided for button"
