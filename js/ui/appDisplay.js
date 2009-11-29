@@ -18,6 +18,7 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Search = imports.ui.search;
 const Workspaces = imports.ui.workspaces;
 
 const APPICON_SIZE = 48;
@@ -134,17 +135,10 @@ AppDisplay.prototype = {
                 this._addApp(app);
             }
         } else {
-            // Loop over the toplevel menu items, load the set of desktop file ids
-            // associated with each one.
-            let allMenus = this._appSystem.get_menus();
-            for (let i = 0; i < allMenus.length; i++) {
-                let menu = allMenus[i];
-                let menuApps = this._appSystem.get_applications_for_menu(menu.id);
-
-                for (let j = 0; j < menuApps.length; j++) {
-                    let app = menuApps[j];
-                    this._addApp(app);
-                }
+            let apps = this._appSystem.get_flattened_apps();
+            for (let i = 0; i < apps.length; i++) {
+                let app = apps[i];
+                this._addApp(app);
             }
         }
 
@@ -220,6 +214,82 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
+function BaseAppSearchProvider() {
+    this._init();
+}
+
+BaseAppSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
+
+    _init: function(name) {
+        Search.SearchProvider.prototype._init.call(this, name);
+        this._appSys = Shell.AppSystem.get_default();
+    },
+
+    getResultMeta: function(resultId) {
+        let app = this._appSys.get_app(resultId);
+        if (!app)
+            return null;
+        return { 'id': resultId,
+                 'name': app.get_name(),
+                 'icon': app.create_icon_texture(Search.RESULT_ICON_SIZE)};
+    },
+
+    activateResult: function(id) {
+        let app = this._appSys.get_app(id);
+        app.launch();
+    }
+};
+
+function AppSearchProvider() {
+    this._init();
+}
+
+AppSearchProvider.prototype = {
+    __proto__: BaseAppSearchProvider.prototype,
+
+    _init: function() {
+         BaseAppSearchProvider.prototype._init.call(this, _("APPLICATIONS"));
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._appSys.initial_search(false, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._appSys.subsearch(false, previousResults, terms);
+    },
+
+    expandSearch: function(terms) {
+        log("TODO expand search");
+    }
+}
+
+function PrefsSearchProvider() {
+    this._init();
+}
+
+PrefsSearchProvider.prototype = {
+    __proto__: BaseAppSearchProvider.prototype,
+
+    _init: function() {
+        BaseAppSearchProvider.prototype._init.call(this, _("PREFERENCES"));
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._appSys.initial_search(true, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._appSys.subsearch(true, previousResults, terms);
+    },
+
+    expandSearch: function(terms) {
+        let controlCenter = this._appSys.load_from_desktop_file('gnomecc.desktop');
+        controlCenter.launch();
+        Main.overview.hide();
+    }
+}
 
 function AppIcon(app) {
     this._init(app);

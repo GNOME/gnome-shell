@@ -48,9 +48,7 @@ struct _ShellAppSystemPrivate {
   GHashTable *app_id_to_info;
   GHashTable *app_id_to_app;
 
-  GHashTable *cached_menu_contents;  /* <char *id, GSList<ShellAppInfo*>> */
-  GSList *cached_app_menus; /* ShellAppMenuEntry */
-
+  GSList *cached_flattened_apps; /* ShellAppInfo */
   GSList *cached_settings; /* ShellAppInfo */
 
   gint app_monitor_id;
@@ -58,7 +56,6 @@ struct _ShellAppSystemPrivate {
   guint app_change_timeout_id;
 };
 
-static void free_appinfo_gslist (gpointer list);
 static void shell_app_system_finalize (GObject *object);
 static gboolean on_tree_changed (gpointer user_data);
 static void on_tree_changed_cb (GMenuTree *tree, gpointer user_data);
@@ -83,6 +80,10 @@ struct _ShellAppInfo {
    */
   guint refcount;
 
+  char *casefolded_name;
+  char *name_collation_key;
+  char *casefolded_description;
+
   GMenuTreeItem *entry;
 
   GKeyFile *keyfile;
@@ -104,6 +105,11 @@ shell_app_info_unref (ShellAppInfo *info)
 {
   if (--info->refcount > 0)
     return;
+
+  g_free (info->casefolded_name);
+  g_free (info->name_collation_key);
+  g_free (info->casefolded_description);
+
   switch (info->type)
   {
   case SHELL_APP_INFO_TYPE_ENTRY:
@@ -129,7 +135,7 @@ shell_app_info_new_from_tree_item (GMenuTreeItem *item)
   if (!item)
     return NULL;
 
-  info = g_slice_alloc (sizeof (ShellAppInfo));
+  info = g_slice_alloc0 (sizeof (ShellAppInfo));
   info->type = SHELL_APP_INFO_TYPE_ENTRY;
   info->refcount = 1;
   info->entry = gmenu_tree_item_ref (item);
@@ -141,7 +147,7 @@ shell_app_info_new_from_window (MetaWindow *window)
 {
   ShellAppInfo *info;
 
-  info = g_slice_alloc (sizeof (ShellAppInfo));
+  info = g_slice_alloc0 (sizeof (ShellAppInfo));
   info->type = SHELL_APP_INFO_TYPE_WINDOW;
   info->refcount = 1;
   info->window = g_object_ref (window);
@@ -159,35 +165,12 @@ shell_app_info_new_from_keyfile_take_ownership (GKeyFile   *keyfile,
 {
   ShellAppInfo *info;
 
-  info = g_slice_alloc (sizeof (ShellAppInfo));
+  info = g_slice_alloc0 (sizeof (ShellAppInfo));
   info->type = SHELL_APP_INFO_TYPE_DESKTOP_FILE;
   info->refcount = 1;
   info->keyfile = keyfile;
   info->keyfile_path = g_strdup (path);
   return info;
-}
-
-static gpointer
-shell_app_menu_entry_copy (gpointer entryp)
-{
-  ShellAppMenuEntry *entry;
-  ShellAppMenuEntry *copy;
-  entry = entryp;
-  copy = g_new0 (ShellAppMenuEntry, 1);
-  copy->name = g_strdup (entry->name);
-  copy->id = g_strdup (entry->id);
-  copy->icon = g_strdup (entry->icon);
-  return copy;
-}
-
-static void
-shell_app_menu_entry_free (gpointer entryp)
-{
-  ShellAppMenuEntry *entry = entryp;
-  g_free (entry->name);
-  g_free (entry->id);
-  g_free (entry->icon);
-  g_free (entry);
 }
 
 static void shell_app_system_class_init(ShellAppSystemClass *klass)
@@ -225,9 +208,6 @@ shell_app_system_init (ShellAppSystem *self)
   /* Key is owned by info */
   priv->app_id_to_app = g_hash_table_new (g_str_hash, g_str_equal);
 
-  priv->cached_menu_contents = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                      g_free, free_appinfo_gslist);
-
   /* For now, we want to pick up Evince, Nautilus, etc.  We'll
    * handle NODISPLAY semantics at a higher level or investigate them
    * case by case.
@@ -257,15 +237,12 @@ shell_app_system_finalize (GObject *object)
   gmenu_tree_unref (priv->apps_tree);
   gmenu_tree_unref (priv->settings_tree);
 
-  g_hash_table_destroy (priv->cached_menu_contents);
-
   g_hash_table_destroy (priv->app_id_to_info);
   g_hash_table_destroy (priv->app_id_to_app);
 
-  g_slist_foreach (priv->cached_app_menus, (GFunc)shell_app_menu_entry_free, NULL);
-  g_slist_free (priv->cached_app_menus);
-  priv->cached_app_menus = NULL;
-
+  g_slist_foreach (priv->cached_flattened_apps, (GFunc)shell_app_info_unref, NULL);
+  g_slist_free (priv->cached_flattened_apps);
+  priv->cached_flattened_apps = NULL;
   g_slist_foreach (priv->cached_settings, (GFunc)shell_app_info_unref, NULL);
   g_slist_free (priv->cached_settings);
   priv->cached_settings = NULL;
@@ -273,60 +250,10 @@ shell_app_system_finalize (GObject *object)
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize(object);
 }
 
-static void
-free_appinfo_gslist (gpointer listp)
-{
-  GSList *list = listp;
-  g_slist_foreach (list, (GFunc) shell_app_info_unref, NULL);
-  g_slist_free (list);
-}
-
-static void
-reread_directories (ShellAppSystem *self, GSList **cache, GMenuTree *tree)
-{
-  GMenuTreeDirectory *trunk;
-  GSList *entries;
-  GSList *iter;
-
-  trunk = gmenu_tree_get_root_directory (tree);
-  entries = gmenu_tree_directory_get_contents (trunk);
-
-  g_slist_foreach (*cache, (GFunc)shell_app_menu_entry_free, NULL);
-  g_slist_free (*cache);
-  *cache = NULL;
-
-  for (iter = entries; iter; iter = iter->next)
-    {
-      GMenuTreeItem *item = iter->data;
-
-      switch (gmenu_tree_item_get_type (item))
-        {
-          case GMENU_TREE_ITEM_DIRECTORY:
-            {
-              GMenuTreeDirectory *dir = iter->data;
-              ShellAppMenuEntry *shell_entry = g_new0 (ShellAppMenuEntry, 1);
-              shell_entry->name = g_strdup (gmenu_tree_directory_get_name (dir));
-              shell_entry->id = g_strdup (gmenu_tree_directory_get_menu_id (dir));
-              shell_entry->icon = g_strdup (gmenu_tree_directory_get_icon (dir));
-
-              *cache = g_slist_prepend (*cache, shell_entry);
-            }
-            break;
-          default:
-            break;
-        }
-
-      gmenu_tree_item_unref (item);
-    }
-  *cache = g_slist_reverse (*cache);
-
-  g_slist_free (entries);
-  gmenu_tree_item_unref (trunk);
-}
-
 static GSList *
 gather_entries_recurse (ShellAppSystem     *monitor,
                         GSList             *apps,
+                        GHashTable         *unique,
                         GMenuTreeDirectory *root)
 {
   GSList *contents;
@@ -342,13 +269,17 @@ gather_entries_recurse (ShellAppSystem     *monitor,
           case GMENU_TREE_ITEM_ENTRY:
             {
               ShellAppInfo *app = shell_app_info_new_from_tree_item (item);
-              apps = g_slist_prepend (apps, app);
+              if (!g_hash_table_lookup (unique, shell_app_info_get_id (app)))
+                {
+                  apps = g_slist_prepend (apps, app);
+                  g_hash_table_insert (unique, (char*)shell_app_info_get_id (app), app);
+                }
             }
             break;
           case GMENU_TREE_ITEM_DIRECTORY:
             {
               GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              apps = gather_entries_recurse (monitor, apps, dir);
+              apps = gather_entries_recurse (monitor, apps, unique, dir);
             }
             break;
           default:
@@ -365,6 +296,7 @@ gather_entries_recurse (ShellAppSystem     *monitor,
 static void
 reread_entries (ShellAppSystem     *self,
                 GSList            **cache,
+                GHashTable         *unique,
                 GMenuTree          *tree)
 {
   GMenuTreeDirectory *trunk;
@@ -375,46 +307,40 @@ reread_entries (ShellAppSystem     *self,
   g_slist_free (*cache);
   *cache = NULL;
 
-  *cache = gather_entries_recurse (self, *cache, trunk);
+  *cache = gather_entries_recurse (self, *cache, unique, trunk);
 
   gmenu_tree_item_unref (trunk);
 }
 
 static void
-cache_by_id (ShellAppSystem *self, GSList *apps, gboolean ref)
+cache_by_id (ShellAppSystem *self, GSList *apps)
 {
   GSList *iter;
 
   for (iter = apps; iter; iter = iter->next)
     {
       ShellAppInfo *info = iter->data;
-      if (ref)
-        shell_app_info_ref (info);
+      shell_app_info_ref (info);
       /* the name is owned by the info itself */
-      g_hash_table_insert (self->priv->app_id_to_info, (char*)shell_app_info_get_id (info),
-                           info);
+      g_hash_table_replace (self->priv->app_id_to_info, (char*)shell_app_info_get_id (info),
+                            info);
     }
 }
 
 static void
 reread_menus (ShellAppSystem *self)
 {
-  GSList *apps;
-  GMenuTreeDirectory *trunk;
+  GHashTable *unique = g_hash_table_new (g_str_hash, g_str_equal);
 
-  reread_directories (self, &(self->priv->cached_app_menus), self->priv->apps_tree);
+  reread_entries (self, &(self->priv->cached_flattened_apps), unique, self->priv->apps_tree);
+  g_hash_table_remove_all (unique);
+  reread_entries (self, &(self->priv->cached_settings), unique, self->priv->settings_tree);
+  g_hash_table_destroy (unique);
 
-  reread_entries (self, &(self->priv->cached_settings), self->priv->settings_tree);
-
-  /* Now loop over applications.menu and settings.menu, inserting each by desktop file
-   * ID into a hash */
   g_hash_table_remove_all (self->priv->app_id_to_info);
-  trunk = gmenu_tree_get_root_directory (self->priv->apps_tree);
-  apps = gather_entries_recurse (self, NULL, trunk);
-  gmenu_tree_item_unref (trunk);
-  cache_by_id (self, apps, FALSE);
-  g_slist_free (apps);
-  cache_by_id (self, self->priv->cached_settings, TRUE);
+
+  cache_by_id (self, self->priv->cached_flattened_apps);
+  cache_by_id (self, self->priv->cached_settings);
 }
 
 static gboolean
@@ -423,7 +349,6 @@ on_tree_changed (gpointer user_data)
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
 
   reread_menus (self);
-  g_hash_table_remove_all (self->priv->cached_menu_contents);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
 
@@ -469,21 +394,8 @@ shell_app_info_get_type (void)
   return gtype;
 }
 
-GType
-shell_app_menu_entry_get_type (void)
-{
-  static GType gtype = G_TYPE_INVALID;
-  if (gtype == G_TYPE_INVALID)
-    {
-      gtype = g_boxed_type_register_static ("ShellAppMenuEntry",
-          shell_app_menu_entry_copy,
-          shell_app_menu_entry_free);
-    }
-  return gtype;
-}
-
 /**
- * shell_app_system_get_applications_for_menu:
+ * shell_app_system_get_flattened_apps:
  *
  * Traverses a toplevel menu, and returns all items under it.  Nested items
  * are flattened.  This value is computed on initial call and cached thereafter
@@ -492,41 +404,9 @@ shell_app_menu_entry_get_type (void)
  * Return value: (transfer none) (element-type ShellAppInfo): List of applications
  */
 GSList *
-shell_app_system_get_applications_for_menu (ShellAppSystem *self,
-                                            const char *menu)
+shell_app_system_get_flattened_apps (ShellAppSystem *self)
 {
-  GSList *apps;
-
-  apps = g_hash_table_lookup (self->priv->cached_menu_contents, menu);
-  if (!apps)
-    {
-      char *path;
-      GMenuTreeDirectory *menu_entry;
-      path = g_strdup_printf ("/%s", menu);
-      menu_entry = gmenu_tree_get_directory_from_path (self->priv->apps_tree, path);
-      g_free (path);
-      g_assert (menu_entry != NULL);
-
-      apps = gather_entries_recurse (self, NULL, menu_entry);
-      g_hash_table_insert (self->priv->cached_menu_contents, g_strdup (menu), apps);
-
-      gmenu_tree_item_unref (menu_entry);
-    }
-
-  return apps;
-}
-
-/**
- * shell_app_system_get_menus:
- *
- * Returns a list of toplevel #ShellAppMenuEntry items
- *
- * Return value: (transfer none) (element-type AppMenuEntry): List of toplevel menus
- */
-GSList *
-shell_app_system_get_menus (ShellAppSystem *monitor)
-{
-  return monitor->priv->cached_app_menus;
+  return self->priv->cached_flattened_apps;
 }
 
 /**
@@ -709,6 +589,249 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
     }
 
   return NULL;
+}
+
+typedef enum {
+  MATCH_NONE,
+  MATCH_MULTIPLE, /* Matches multiple terms */
+  MATCH_PREFIX, /* Strict prefix */
+  MATCH_SUBSTRING /* Not prefix, substring */
+} ShellAppInfoSearchMatch;
+
+static char *
+normalize_and_casefold (const char *str)
+{
+  char *normalized, *result;
+
+  if (str == NULL)
+    return NULL;
+
+  normalized = g_utf8_normalize (str, -1, G_NORMALIZE_ALL);
+  result = g_utf8_casefold (normalized, -1);
+  g_free (normalized);
+  return result;
+}
+
+static void
+shell_app_info_init_search_data (ShellAppInfo *info)
+{
+  const char *name;
+  const char *comment;
+
+  g_assert (info->type == SHELL_APP_INFO_TYPE_ENTRY);
+
+  name = gmenu_tree_entry_get_name ((GMenuTreeEntry*)info->entry);
+  info->casefolded_name = normalize_and_casefold (name);
+  info->name_collation_key = g_utf8_collate_key (name, -1);
+
+  comment = gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info->entry);
+  info->casefolded_description = normalize_and_casefold (comment);
+}
+
+static ShellAppInfoSearchMatch
+shell_app_info_match_terms (ShellAppInfo  *info,
+                            GSList        *terms)
+{
+  GSList *iter;
+  ShellAppInfoSearchMatch match;
+
+  if (G_UNLIKELY(!info->casefolded_name))
+    shell_app_info_init_search_data (info);
+
+  match = MATCH_NONE;
+  for (iter = terms; iter; iter = iter->next)
+    {
+      const char *term = iter->data;
+      const char *p;
+
+      p = strstr (info->casefolded_name, term);
+      if (p == info->casefolded_name)
+        {
+          if (match != MATCH_NONE)
+            return MATCH_MULTIPLE;
+          else
+            match = MATCH_PREFIX;
+         }
+      else if (p != NULL)
+        match = MATCH_SUBSTRING;
+
+      if (!info->casefolded_description)
+        continue;
+      p = strstr (info->casefolded_description, term);
+      if (p != NULL)
+        match = MATCH_SUBSTRING;
+    }
+  return match;
+}
+
+static gint
+shell_app_info_compare (gconstpointer a,
+                        gconstpointer b,
+                        gpointer      data)
+{
+  ShellAppSystem *system = data;
+  const char *id_a = a;
+  const char *id_b = b;
+  ShellAppInfo *info_a = g_hash_table_lookup (system->priv->app_id_to_info, id_a);
+  ShellAppInfo *info_b = g_hash_table_lookup (system->priv->app_id_to_info, id_b);
+
+  return strcmp (info_a->name_collation_key, info_b->name_collation_key);
+}
+
+static GSList *
+sort_and_concat_results (ShellAppSystem *system,
+                         GSList         *multiple_matches,
+                         GSList         *prefix_matches,
+                         GSList         *substring_matches)
+{
+  multiple_matches = g_slist_sort_with_data (multiple_matches, shell_app_info_compare, system);
+  prefix_matches = g_slist_sort_with_data (prefix_matches, shell_app_info_compare, system);
+  substring_matches = g_slist_sort_with_data (substring_matches, shell_app_info_compare, system);
+  return g_slist_concat (multiple_matches, g_slist_concat (prefix_matches, substring_matches));
+}
+
+/**
+ * normalize_terms:
+ * @terms: (element-type utf8): Input search terms
+ *
+ * Returns: (element-type utf8) (transfer full): Unicode-normalized and lowercased terms
+ */
+static GSList *
+normalize_terms (GSList *terms)
+{
+  GSList *normalized_terms = NULL;
+  GSList *iter;
+  for (iter = terms; iter; iter = iter->next)
+    {
+      const char *term = iter->data;
+      normalized_terms = g_slist_prepend (normalized_terms, normalize_and_casefold (term));
+    }
+  return normalized_terms;
+}
+
+static inline void
+shell_app_system_do_match (ShellAppSystem   *system,
+                           ShellAppInfo     *info,
+                           GSList           *terms,
+                           GSList          **multiple_results,
+                           GSList          **prefix_results,
+                           GSList          **substring_results)
+{
+  const char *id = shell_app_info_get_id (info);
+  ShellAppInfoSearchMatch match;
+
+  if (shell_app_info_get_is_nodisplay (info))
+    return;
+
+  match = shell_app_info_match_terms (info, terms);
+  switch (match)
+    {
+      case MATCH_NONE:
+        break;
+      case MATCH_MULTIPLE:
+        *multiple_results = g_slist_prepend (*multiple_results, (char *) id);
+        break;
+      case MATCH_PREFIX:
+        *prefix_results = g_slist_prepend (*prefix_results, (char *) id);
+        break;
+      case MATCH_SUBSTRING:
+        *substring_results = g_slist_prepend (*substring_results, (char *) id);
+        break;
+    }
+}
+
+static GSList *
+shell_app_system_initial_search_internal (ShellAppSystem  *self,
+                                          GSList          *terms,
+                                          GSList          *source)
+{
+  GSList *multiple_results = NULL;
+  GSList *prefix_results = NULL;
+  GSList *substring_results = NULL;
+  GSList *iter;
+  GSList *normalized_terms = normalize_terms (terms);
+
+  for (iter = source; iter; iter = iter->next)
+    {
+      ShellAppInfo *info = iter->data;
+
+      shell_app_system_do_match (self, info, normalized_terms, &multiple_results, &prefix_results, &substring_results);
+    }
+  g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
+  g_slist_free (normalized_terms);
+
+  return sort_and_concat_results (self, multiple_results, prefix_results, substring_results);
+}
+
+/**
+ * shell_app_system_initial_search:
+ * @self: A #ShellAppSystem
+ * @prefs: %TRUE iff we should search preferences instead of apps
+ * @terms: (element-type utf8): List of terms, logical OR
+ *
+ * Search through applications for the given search terms.  Note that returned
+ * strings are only valid until a return to the main loop.
+ *
+ * Returns: (transfer container) (element-type utf8): List of application identifiers
+ */
+GSList *
+shell_app_system_initial_search (ShellAppSystem  *self,
+                                 gboolean         prefs,
+                                 GSList          *terms)
+{
+  return shell_app_system_initial_search_internal (self, terms,
+            prefs ? self->priv->cached_settings : self->priv->cached_flattened_apps);
+}
+
+/**
+ * shell_app_system_subsearch:
+ * @self: A #ShellAppSystem
+ * @prefs: %TRUE iff we should search preferences instead of apps
+ * @previous_results: (element-type utf8): List of previous results
+ * @terms: (element-type utf8): List of terms, logical OR
+ *
+ * Search through a previous result set; for more information, see
+ * js/ui/search.js.  Note the value of @prefs must be
+ * the same as passed to shell_app_system_initial_search().  Note that returned
+ * strings are only valid until a return to the main loop.
+ *
+ * Returns: (transfer container) (element-type utf8): List of application identifiers
+ */
+GSList *
+shell_app_system_subsearch (ShellAppSystem   *system,
+                            gboolean          prefs,
+                            GSList           *previous_results,
+                            GSList           *terms)
+{
+  GSList *iter;
+  GSList *multiple_results = NULL;
+  GSList *prefix_results = NULL;
+  GSList *substring_results = NULL;
+  GSList *normalized_terms = normalize_terms (terms);
+
+  /* Note prefs is deliberately ignored; both apps and prefs are in app_id_to_app,
+   * but we have the parameter for consistency and in case in the future
+   * they're not in the same data structure.
+   */
+
+  for (iter = previous_results; iter; iter = iter->next)
+    {
+      const char *id = iter->data;
+      ShellAppInfo *info;
+
+      info = g_hash_table_lookup (system->priv->app_id_to_info, id);
+      if (!info)
+        continue;
+
+      shell_app_system_do_match (system, info, normalized_terms, &multiple_results, &prefix_results, &substring_results);
+    }
+  g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
+  g_slist_free (normalized_terms);
+
+  /* Note that a shorter term might have matched as a prefix, but
+     when extended only as a substring, so we have to redo the
+     sort rather than reusing the existing ordering */
+  return sort_and_concat_results (system, multiple_results, prefix_results, substring_results);
 }
 
 const char *

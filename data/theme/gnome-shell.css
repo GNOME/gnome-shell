@@ -152,17 +152,6 @@ StTooltip {
     spacing: 12px;
 }
 
-.dash-search-section-header {
-    padding: 6px 0px;
-    spacing: 4px;
-    font-size: 12px;
-    color: #bbbbbb;
-}
-
-.dash-search-section-title, dash-search-section-count {
-    font-weight: bold;
-}
-
 #searchEntry {
     padding: 4px;
     border-bottom: 1px solid #262626;
@@ -235,6 +224,29 @@ StTooltip {
     background-image: url("close.svg");
     width: 16px;
     height: 16px;
+}
+
+.dash-search-section-header {
+    padding: 6px 0px;
+    spacing: 4px;
+}
+
+.dash-search-section-results {
+    color: #ffffff;
+    padding-left: 4px;
+}
+
+.dash-search-section-list-results {
+    spacing: 4px;
+}
+
+.dash-search-result-content {
+    padding: 2px;
+}
+
+.dash-search-result-content:selected {
+    padding: 1px;
+    border: 1px solid #262626;
 }
 
 /* GenericDisplay */

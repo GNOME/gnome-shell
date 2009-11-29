@@ -184,6 +184,7 @@ Overview.prototype = {
         this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
         this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
+        this._dash.searchResults.actor.height = this._workspacesHeight;
 
         // place the 'Add Workspace' button in the bottom row of the grid
         addRemoveButtonSize = Math.floor(displayGridRowHeight * 3/5);

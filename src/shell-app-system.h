@@ -37,18 +37,6 @@ struct _ShellAppSystemClass
 GType shell_app_system_get_type (void) G_GNUC_CONST;
 ShellAppSystem* shell_app_system_get_default(void);
 
-GSList *shell_app_system_get_applications_for_menu (ShellAppSystem *system, const char *menu);
-
-typedef struct _ShellAppMenuEntry ShellAppMenuEntry;
-
-struct _ShellAppMenuEntry {
-  char *name;
-  char *id;
-  char *icon;
-};
-
-GType shell_app_menu_entry_get_type (void);
-
 typedef struct _ShellAppInfo ShellAppInfo;
 
 #define SHELL_TYPE_APP_INFO (shell_app_info_get_type ())
@@ -85,8 +73,17 @@ ShellApp *shell_app_system_lookup_heuristic_basename (ShellAppSystem *system, co
 
 ShellAppInfo *shell_app_system_create_from_window (ShellAppSystem *system, MetaWindow *window);
 
-GSList *shell_app_system_get_menus (ShellAppSystem *system);
+GSList *shell_app_system_get_flattened_apps (ShellAppSystem *system);
 
 GSList *shell_app_system_get_all_settings (ShellAppSystem *system);
+
+GSList *shell_app_system_initial_search (ShellAppSystem *system,
+                                         gboolean        prefs,
+                                         GSList         *terms);
+
+GSList *shell_app_system_subsearch (ShellAppSystem   *system,
+                                    gboolean          prefs,
+                                    GSList           *previous_results,
+                                    GSList           *terms);
 
 #endif /* __SHELL_APP_SYSTEM_H__ */

@@ -15,7 +15,7 @@ const _ = Gettext.gettext;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
-const GenericDisplay = imports.ui.genericDisplay;
+const Search = imports.ui.search;
 
 const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
 const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
@@ -30,16 +30,30 @@ const PLACES_ICON_SIZE = 16;
  * @iconFactory: A JavaScript callback which will create an icon texture given a size parameter
  * @launch: A JavaScript callback to launch the entry
  */
-function PlaceInfo(name, iconFactory, launch) {
-    this._init(name, iconFactory, launch);
+function PlaceInfo(id, name, iconFactory, launch) {
+    this._init(id, name, iconFactory, launch);
 }
 
 PlaceInfo.prototype = {
-    _init: function(name, iconFactory, launch) {
+    _init: function(id, name, iconFactory, launch) {
+        this.id = id;
         this.name = name;
+        this._lowerName = name.toLowerCase();
         this.iconFactory = iconFactory;
         this.launch = launch;
-        this.id = null;
+    },
+
+    matchTerms: function(terms) {
+        let mtype = Search.MatchType.NONE;
+        for (let i = 0; i < terms.length; i++) {
+            let term = terms[i];
+            let idx = this._lowerName.indexOf(term);
+            if (idx == 0)
+                return Search.MatchType.PREFIX;
+            else if (idx > 0)
+                mtype = Search.MatchType.SUBSTRING;
+        }
+        return mtype;
     }
 }
 
@@ -52,6 +66,7 @@ PlacesManager.prototype = {
         let gconf = Shell.GConf.get_default();
         gconf.watch_directory(NAUTILUS_PREFS_DIR);
 
+        this._defaultPlaces = [];
         this._mounts = [];
         this._bookmarks = [];
         this._isDesktopHome = false;
@@ -60,7 +75,7 @@ PlacesManager.prototype = {
         let homeUri = homeFile.get_uri();
         let homeLabel = Shell.util_get_label_for_uri (homeUri);
         let homeIcon = Shell.util_get_icon_for_uri (homeUri);
-        this._home = new PlaceInfo(homeLabel,
+        this._home = new PlaceInfo('special:home', homeLabel,
             function(size) {
                 return Shell.TextureCache.get_default().load_gicon(homeIcon, size);
             },
@@ -73,7 +88,7 @@ PlacesManager.prototype = {
         let desktopUri = desktopFile.get_uri();
         let desktopLabel = Shell.util_get_label_for_uri (desktopUri);
         let desktopIcon = Shell.util_get_icon_for_uri (desktopUri);
-        this._desktopMenu = new PlaceInfo(desktopLabel,
+        this._desktopMenu = new PlaceInfo('special:desktop', desktopLabel,
             function(size) {
                 return Shell.TextureCache.get_default().load_gicon(desktopIcon, size);
             },
@@ -81,7 +96,7 @@ PlacesManager.prototype = {
                 Gio.app_info_launch_default_for_uri(desktopUri, global.create_app_launch_context());
             });
 
-        this._connect = new PlaceInfo(_("Connect to..."),
+        this._connect = new PlaceInfo('special:connect', _("Connect to..."),
             function (size) {
                 return Shell.TextureCache.get_default().load_icon_name("applications-internet", size);
             },
@@ -101,7 +116,7 @@ PlacesManager.prototype = {
         }
 
         if (networkApp != null) {
-            this._network = new PlaceInfo(networkApp.get_name(),
+            this._network = new PlaceInfo('special:network', networkApp.get_name(),
                 function(size) {
                     return networkApp.create_icon_texture(size);
                 },
@@ -109,6 +124,16 @@ PlacesManager.prototype = {
                     networkApp.launch();
                 });
         }
+
+        this._defaultPlaces.push(this._home);
+
+        if (!this._isDesktopHome)
+            this._defaultPlaces.push(this._desktopMenu);
+
+        if (this._network)
+            this._defaultPlaces.push(this._network);
+
+        this._defaultPlaces.push(this._connect);
 
         /*
         * Show devices, code more or less ported from nautilus-places-sidebar.c
@@ -238,7 +263,7 @@ PlacesManager.prototype = {
                 continue;
             let icon = Shell.util_get_icon_for_uri(bookmark);
 
-            let item = new PlaceInfo(label,
+            let item = new PlaceInfo('bookmark:' + bookmark, label,
                 function(size) {
                     return Shell.TextureCache.get_default().load_gicon(icon, size);
                 },
@@ -267,7 +292,8 @@ PlacesManager.prototype = {
         let mountIcon = mount.get_icon();
         let root = mount.get_root();
         let mountUri = root.get_uri();
-        let devItem = new PlaceInfo(mountLabel,
+        let devItem = new PlaceInfo('mount:' + mountUri,
+                                     mountLabel,
                function(size) {
                         return Shell.TextureCache.get_default().load_gicon(mountIcon, size);
                },
@@ -282,16 +308,7 @@ PlacesManager.prototype = {
     },
 
     getDefaultPlaces: function () {
-        let places = [this._home];
-
-        if (!this._isDesktopHome)
-            places.push(this._desktopMenu);
-
-        if (this._network)
-            places.push(this._network);
-
-        places.push(this._connect);
-        return places;
+        return this._defaultPlaces;
     },
 
     getBookmarks: function () {
@@ -300,6 +317,28 @@ PlacesManager.prototype = {
 
     getMounts: function () {
         return this._mounts;
+    },
+
+    _lookupById: function(sourceArray, id) {
+        for (let i = 0; i < sourceArray.length; i++) {
+            let place = sourceArray[i];
+            if (place.id == id)
+                return place;
+        }
+        return null;
+    },
+
+    lookupPlaceById: function(id) {
+        let colonIdx = id.indexOf(':');
+        let type = id.substring(0, colonIdx);
+        let sourceArray = null;
+        if (type == 'special')
+            sourceArray = this._defaultPlaces;
+        else if (type == 'mount')
+            sourceArray = this._mounts;
+        else if (type == 'bookmark')
+            sourceArray = this._bookmarks;
+        return this._lookupById(sourceArray, id);
     }
 };
 
@@ -421,120 +460,67 @@ DashPlaceDisplay.prototype = {
 
 Signals.addSignalMethods(DashPlaceDisplay.prototype);
 
-
-function PlaceDisplayItem(placeInfo) {
-    this._init(placeInfo);
+function PlaceSearchProvider() {
+    this._init();
 }
 
-PlaceDisplayItem.prototype = {
-    __proto__: GenericDisplay.GenericDisplayItem.prototype,
+PlaceSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
 
-    _init : function(placeInfo) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this);
-        this._info = placeInfo;
-
-        this._setItemInfo(placeInfo.name, '');
+    _init: function() {
+        Search.SearchProvider.prototype._init.call(this, _("PLACES"));
     },
 
-    //// Public method overrides ////
-
-    // Opens an application represented by this display item.
-    launch : function() {
-        this._info.launch();
+    getResultMeta: function(resultId) {
+        let placeInfo = Main.placesManager.lookupPlaceById(resultId);
+        if (!placeInfo)
+            return null;
+        return { 'id': resultId,
+                 'name': placeInfo.name,
+                 'icon': placeInfo.iconFactory(Search.RESULT_ICON_SIZE) };
     },
 
-    shellWorkspaceLaunch: function() {
-        this._info.launch();
+    activateResult: function(id) {
+        let placeInfo = Main.placesManager.lookupPlaceById(id);
+        placeInfo.launch();
     },
 
-    //// Protected method overrides ////
-
-    // Returns an icon for the item.
-    _createIcon: function() {
-        return this._info.iconFactory(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
+    _compareResultMeta: function (idA, idB) {
+        let infoA = Main.placesManager.lookupPlaceById(idA);
+        let infoB = Main.placesManager.lookupPlaceById(idB);
+        return infoA.name.localeCompare(infoB.name);
     },
 
-    // Returns a preview icon for the item.
-    _createPreviewIcon: function() {
-        return this._info.iconFactory(GenericDisplay.PREVIEW_ICON_SIZE);
+    _searchPlaces: function(places, terms) {
+        let multipleResults = [];
+        let prefixResults = [];
+        let substringResults = [];
+
+        terms = terms.map(String.toLowerCase);
+
+        for (let i = 0; i < places.length; i++) {
+            let place = places[i];
+            let mtype = place.matchTerms(terms);
+            if (mtype == Search.MatchType.MULTIPLE)
+                multipleResults.push(place.id);
+            else if (mtype == Search.MatchType.PREFIX)
+                prefixResults.push(place.id);
+            else if (mtype == Search.MatchType.SUBSTRING)
+                substringResults.push(place.id);
+        }
+        multipleResults.sort(this._compareResultMeta);
+        prefixResults.sort(this._compareResultMeta);
+        substringResults.sort(this._compareResultMeta);
+        return multipleResults.concat(prefixResults.concat(substringResults));
+    },
+
+    getInitialResultSet: function(terms) {
+        let places = Main.placesManager.getAllPlaces();
+        return this._searchPlaces(places, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        let places = previousResults.map(function (id) { return Main.placesManager.lookupPlaceById(id); });
+        return this._searchPlaces(places, terms);
     }
-
-};
-
-function PlaceDisplay(flags) {
-    this._init(flags);
 }
-
-PlaceDisplay.prototype = {
-    __proto__:  GenericDisplay.GenericDisplay.prototype,
-
-    _init: function(flags) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
-        this._stale = true;
-        Main.placesManager.connect('places-updated', Lang.bind(this, function (e) {
-            this._stale = true;
-        }));
-    },
-
-    //// Protected method overrides ////
-    _refreshCache: function () {
-        if (!this._stale)
-            return true;
-        this._allItems = {};
-        let array = Main.placesManager.getAllPlaces();
-        for (let i = 0; i < array.length; i ++) {
-            // We are using an array id as placeInfo id because placeInfo doesn't have any
-            // other information piece that can be used as a unique id. There are different
-            // types of placeInfo, such as devices and directories that would result in differently
-            // structured ids. Also the home directory can show up in both the default places and in
-            // bookmarks which means its URI can't be used as a unique id. (This does mean it can
-            // appear twice in search results, though that doesn't happen at the moment because we
-            // name it "Home Folder" in default places and it's named with the user's system name
-            // if it appears as a bookmark.)
-            let placeInfo = array[i];
-            placeInfo.id = i;
-            this._allItems[i] = placeInfo;
-        }
-        this._stale = false;
-        return false;
-    },
-
-    // Sets the list of the displayed items.
-    _setDefaultList: function() {
-        this._matchedItems = {};
-        this._matchedItemKeys = [];
-        for (id in this._allItems) {
-            this._matchedItems[id] = 1;
-            this._matchedItemKeys.push(id);
-        }
-        this._matchedItemKeys.sort(Lang.bind(this, this._compareItems));
-    },
-
-    // Checks if the item info can be a match for the search string by checking
-    // the name of the place. Item info is expected to be PlaceInfo.
-    // Returns a boolean flag indicating if itemInfo is a match.
-    _isInfoMatching: function(itemInfo, search) {
-        if (search == null || search == '')
-            return true;
-
-        let name = itemInfo.name.toLowerCase();
-        if (name.indexOf(search) >= 0)
-            return true;
-
-        return false;
-    },
-
-    // Compares items associated with the item ids based on the alphabetical order
-    // of the item names.
-    // Returns an integer value indicating the result of the comparison.
-    _compareItems: function(itemIdA, itemIdB) {
-        let placeA = this._allItems[itemIdA];
-        let placeB = this._allItems[itemIdB];
-        return placeA.name.localeCompare(placeB.name);
-    },
-
-    // Creates a PlaceDisplayItem based on itemInfo, which is expected to be a PlaceInfo object.
-    _createDisplayItem: function(itemInfo) {
-        return new PlaceDisplayItem(itemInfo);
-    }
-};

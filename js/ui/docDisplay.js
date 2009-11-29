@@ -10,11 +10,14 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const DocInfo = imports.misc.docInfo;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Search = imports.ui.search;
 
 const MAX_DASH_DOCS = 50;
 const DASH_DOCS_ICON_SIZE = 16;
@@ -179,13 +182,8 @@ DocDisplay.prototype = {
         this._matchedItemKeys = [];
         let docIdsToRemove = [];
         for (docId in this._allItems) {
-            // this._allItems[docId].exists() checks if the resource still exists
-            if (this._allItems[docId].exists()) {
-                this._matchedItems[docId] = 1;
-                this._matchedItemKeys.push(docId);
-            } else {
-                docIdsToRemove.push(docId);
-            }
+            this._matchedItems[docId] = 1;
+            this._matchedItemKeys.push(docId);
         }
 
         for (docId in docIdsToRemove) {
@@ -479,3 +477,41 @@ DashDocDisplay.prototype = {
 
 Signals.addSignalMethods(DashDocDisplay.prototype);
 
+function DocSearchProvider() {
+    this._init();
+}
+
+DocSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
+
+    _init: function(name) {
+        Search.SearchProvider.prototype._init.call(this, _("DOCUMENTS"));
+        this._docManager = DocInfo.getDocManager();
+    },
+
+    getResultMeta: function(resultId) {
+        let docInfo = this._docManager.lookupByUri(resultId);
+        if (!docInfo)
+            return null;
+        return { 'id': resultId,
+                 'name': docInfo.name,
+                 'icon': docInfo.createIcon(Search.RESULT_ICON_SIZE)};
+    },
+
+    activateResult: function(id) {
+        let docInfo = this._docManager.lookupByUri(id);
+        docInfo.launch();
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._docManager.initialSearch(terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._docManager.subsearch(previousResults, terms);
+    },
+
+    expandSearch: function(terms) {
+        log("TODO expand docs search");
+    }
+};

@@ -17,6 +17,10 @@ const DocDisplay = imports.ui.docDisplay;
 const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Search = imports.ui.search;
+
+// 25 search results (per result type) should be enough for everyone
+const MAX_RENDERED_SEARCH_RESULTS = 25;
 
 const DEFAULT_PADDING = 4;
 const DEFAULT_SPACING = 4;
@@ -332,6 +336,254 @@ SearchEntry.prototype = {
 };
 Signals.addSignalMethods(SearchEntry.prototype);
 
+function SearchResult(provider, metaInfo, terms) {
+    this._init(provider, metaInfo, terms);
+}
+
+SearchResult.prototype = {
+    _init: function(provider, metaInfo, terms) {
+        this.provider = provider;
+        this.metaInfo = metaInfo;
+        this.actor = new St.Clickable({ style_class: 'dash-search-result',
+                                        reactive: true,
+                                        x_align: St.Align.START,
+                                        x_fill: true,
+                                        y_fill: true });
+        this.actor._delegate = this;
+
+        let content = provider.createResultActor(metaInfo, terms);
+        if (content == null) {
+            content = new St.BoxLayout({ style_class: 'dash-search-result-content' });
+            let title = new St.Label({ text: this.metaInfo['name'] });
+            let icon = this.metaInfo['icon'];
+            content.add(icon, { y_fill: false });
+            content.add(title, { expand: true, y_fill: false });
+        }
+        this._content = content;
+        this.actor.set_child(content);
+
+        this.actor.connect('clicked', Lang.bind(this, this._onResultClicked));
+    },
+
+    setSelected: function(selected) {
+        this._content.set_style_pseudo_class(selected ? 'selected' : null);
+    },
+
+    activate: function() {
+        this.provider.activateResult(this.metaInfo.id);
+        Main.overview.toggle();
+    },
+
+    _onResultClicked: function(actor, event) {
+        this.activate();
+    }
+}
+
+function OverflowSearchResults(provider) {
+    this._init(provider);
+}
+
+OverflowSearchResults.prototype = {
+    __proto__: Search.SearchResultDisplay.prototype,
+
+    _init: function(provider) {
+        Search.SearchResultDisplay.prototype._init.call(this, provider);
+        this.actor = new St.OverflowBox({ style_class: 'dash-search-section-list-results' });
+    },
+
+    renderResults: function(results, terms) {
+        for (let i = 0; i < results.length && i < MAX_RENDERED_SEARCH_RESULTS; i++) {
+            let result = results[i];
+            let meta = this.provider.getResultMeta(result);
+            let display = new SearchResult(this.provider, meta, terms);
+            this.actor.add_actor(display.actor);
+        }
+    },
+
+    getVisibleCount: function() {
+        return this.actor.get_n_visible();
+    },
+
+    selectIndex: function(index) {
+        let nVisible = this.actor.get_n_visible();
+        let children = this.actor.get_children();
+        if (this.selectionIndex >= 0) {
+            let prevActor = children[this.selectionIndex];
+            prevActor._delegate.setSelected(false);
+        }
+        this.selectionIndex = -1;
+        if (index >= nVisible)
+            return false;
+        else if (index < 0)
+            return false;
+        let targetActor = children[index];
+        targetActor._delegate.setSelected(true);
+        this.selectionIndex = index;
+        return true;
+    }
+}
+
+function SearchResults(searchSystem) {
+    this._init(searchSystem);
+}
+
+SearchResults.prototype = {
+    _init: function(searchSystem) {
+        this._searchSystem = searchSystem;
+
+        this.actor = new St.BoxLayout({ name: 'dashSearchResults',
+                                        vertical: true });
+        this._searchingNotice = new St.Label({ style_class: 'dash-search-starting',
+                                               text: _("Searching...") });
+        this.actor.add(this._searchingNotice);
+        this._selectedProvider = -1;
+        this._providers = this._searchSystem.getProviders();
+        this._providerMeta = [];
+        for (let i = 0; i < this._providers.length; i++) {
+            let provider = this._providers[i];
+            let providerBox = new St.BoxLayout({ style_class: 'dash-search-section',
+                                                  vertical: true });
+            let titleButton = new St.Button({ style_class: 'dash-search-section-header',
+                                              reactive: true,
+                                              x_fill: true,
+                                              y_fill: true });
+            titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
+            providerBox.add(titleButton);
+            let titleBox = new St.BoxLayout();
+            titleButton.set_child(titleBox);
+            let title = new St.Label({ text: provider.title });
+            let count = new St.Label();
+            titleBox.add(title, { expand: true });
+            titleBox.add(count);
+
+            let resultDisplayBin = new St.Bin({ style_class: 'dash-search-section-results',
+                                                x_fill: true,
+                                                y_fill: true });
+            providerBox.add(resultDisplayBin, { expand: true });
+            let resultDisplay = provider.createResultContainerActor();
+            if (resultDisplay == null) {
+                resultDisplay = new OverflowSearchResults(provider);
+            }
+            resultDisplayBin.set_child(resultDisplay.actor);
+
+            this._providerMeta.push({ actor: providerBox,
+                                      resultDisplay: resultDisplay,
+                                      count: count });
+            this.actor.add(providerBox);
+        }
+    },
+
+    _clearDisplay: function() {
+        this._selectedProvider = -1;
+        this._visibleResultsCount = 0;
+        for (let i = 0; i < this._providerMeta.length; i++) {
+            let meta = this._providerMeta[i];
+            meta.resultDisplay.clear();
+            meta.actor.hide();
+        }
+    },
+
+    reset: function() {
+        this._searchSystem.reset();
+        this._searchingNotice.hide();
+        this._clearDisplay();
+    },
+
+    startingSearch: function() {
+        this.reset();
+        this._searchingNotice.show();
+    },
+
+    _metaForProvider: function(provider) {
+        return this._providerMeta[this._providers.indexOf(provider)];
+    },
+
+    updateSearch: function (searchString) {
+        let results = this._searchSystem.updateSearch(searchString);
+
+        this._searchingNotice.hide();
+        this._clearDisplay();
+
+        let terms = this._searchSystem.getTerms();
+
+        for (let i = 0; i < results.length; i++) {
+            let [provider, providerResults] = results[i];
+            let meta = this._metaForProvider(provider);
+            meta.actor.show();
+            meta.resultDisplay.renderResults(providerResults, terms);
+            meta.count.set_text(""+providerResults.length);
+        }
+
+        this.selectDown();
+
+        return true;
+    },
+
+    _onHeaderClicked: function(provider) {
+        provider.expandSearch(this._searchSystem.getTerms());
+    },
+
+    _modifyActorSelection: function(resultDisplay, up) {
+        let success;
+        let index = resultDisplay.getSelectionIndex();
+        if (up && index == -1)
+            index = resultDisplay.getVisibleCount() - 1;
+        else if (up)
+            index = index - 1;
+        else
+            index = index + 1;
+        return resultDisplay.selectIndex(index);
+    },
+
+    selectUp: function() {
+        for (let i = this._selectedProvider; i >= 0; i--) {
+            let meta = this._providerMeta[i];
+            if (!meta.actor.visible)
+                continue;
+            let success = this._modifyActorSelection(meta.resultDisplay, true);
+            if (success) {
+                this._selectedProvider = i;
+                return;
+            }
+        }
+        if (this._providerMeta.length > 0) {
+            this._selectedProvider = this._providerMeta.length - 1;
+            this.selectUp();
+        }
+    },
+
+    selectDown: function() {
+        let current = this._selectedProvider;
+        if (current == -1)
+            current = 0;
+        for (let i = current; i < this._providerMeta.length; i++) {
+            let meta = this._providerMeta[i];
+            if (!meta.actor.visible)
+                continue;
+            let success = this._modifyActorSelection(meta.resultDisplay, false);
+            if (success) {
+                this._selectedProvider = i;
+                return;
+            }
+        }
+        if (this._providerMeta.length > 0) {
+            this._selectedProvider = 0;
+            this.selectDown();
+        }
+    },
+
+    activateSelected: function() {
+        let current = this._selectedProvider;
+        if (current < 0)
+            return;
+        let meta = this._providerMeta[current];
+        let resultDisplay = meta.resultDisplay;
+        let children = resultDisplay.actor.get_children();
+        let targetActor = children[resultDisplay.getSelectionIndex()];
+        targetActor._delegate.activate();
+    }
+}
+
 function MoreLink() {
     this._init();
 }
@@ -500,9 +752,9 @@ Dash.prototype = {
                                         vertical: true,
                                         reactive: true });
 
-        // Size for this one explicitly set from overlay.js
-        this.searchArea = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-
+        // The searchArea just holds the entry
+        this.searchArea = new St.BoxLayout({ name: "dashSearchArea",
+                                             vertical: true });
         this.sectionArea = new St.BoxLayout({ name: "dashSections",
                                                vertical: true });
 
@@ -517,16 +769,35 @@ Dash.prototype = {
         this._searchActive = false;
         this._searchPending = false;
         this._searchEntry = new SearchEntry();
-        this.searchArea.append(this._searchEntry.actor, Big.BoxPackFlags.EXPAND);
+        this.searchArea.add(this._searchEntry.actor, { y_fill: false, expand: true });
+
+        this._searchSystem = new Search.SearchSystem();
+        this._searchSystem.registerProvider(new AppDisplay.AppSearchProvider());
+        this._searchSystem.registerProvider(new AppDisplay.PrefsSearchProvider());
+        this._searchSystem.registerProvider(new PlaceDisplay.PlaceSearchProvider());
+        this._searchSystem.registerProvider(new DocDisplay.DocSearchProvider());
+
+        this.searchResults = new SearchResults(this._searchSystem);
+        this.actor.add(this.searchResults.actor);
+        this.searchResults.actor.hide();
 
         this._searchTimeoutId = 0;
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
             let text = this._searchEntry.getText();
-            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "")
+            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
             let searchPreviouslyActive = this._searchActive;
             this._searchActive = text != '';
             this._searchPending = this._searchActive && !searchPreviouslyActive;
-            this._updateDashActors();
+            if (this._searchPending) {
+                this.searchResults.startingSearch();
+            }
+            if (this._searchActive) {
+                this.searchResults.actor.show();
+                this.sectionArea.hide();
+            } else {
+                this.searchResults.actor.hide();
+                this.sectionArea.show();
+            }
             if (!this._searchActive) {
                 if (this._searchTimeoutId > 0) {
                     Mainloop.source_remove(this._searchTimeoutId);
@@ -543,24 +814,15 @@ Dash.prototype = {
                 Mainloop.source_remove(this._searchTimeoutId);
                 this._doSearch();
             }
-            // Only one of the displays will have an item selected, so it's ok to
-            // call activateSelected() on all of them.
-            for (var i = 0; i < this._searchSections.length; i++) {
-                let section = this._searchSections[i];
-                section.resultArea.display.activateSelected();
-            }
+            this.searchResults.activateSelected();
             return true;
         }));
         this._searchEntry.entry.connect('key-press-event', Lang.bind(this, function (se, e) {
-            let text = this._searchEntry.getText();
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Escape) {
                 // Escape will keep clearing things back to the desktop.
-                // If we are showing a particular section of search, go back to all sections.
-                if (this._searchResultsSingleShownSection != null)
-                    this._showAllSearchSections();
                 // If we have an active search, we remove it.
-                else if (this._searchActive)
+                if (this._searchActive)
                     this._searchEntry.reset();
                 // Next, if we're in one of the "more" modes or showing the details pane, close them
                 else if (this._activePane != null)
@@ -572,44 +834,14 @@ Dash.prototype = {
             } else if (symbol == Clutter.Up) {
                 if (!this._searchActive)
                     return true;
-                // selectUp and selectDown wrap around in their respective displays
-                // too, but there doesn't seem to be any flickering if we first select
-                // something in one display, but then unset the selection, and move
-                // it to the other display, so it's ok to do that.
-                for (var i = 0; i < this._searchSections.length; i++) {
-                    let section = this._searchSections[i];
-                    if (section.resultArea.display.hasSelected() && !section.resultArea.display.selectUp()) {
-                        if (this._searchResultsSingleShownSection != section.type) {
-                            // We need to move the selection to the next section above this section that has items,
-                            // wrapping around at the bottom, if necessary.
-                            let newSectionIndex = this._findAnotherSectionWithItems(i, -1);
-                            if (newSectionIndex >= 0) {
-                                this._searchSections[newSectionIndex].resultArea.display.selectLastItem();
-                                section.resultArea.display.unsetSelected();
-                            }
-                        }
-                        break;
-                    }
-                }
+                this.searchResults.selectUp();
+
                 return true;
             } else if (symbol == Clutter.Down) {
                 if (!this._searchActive)
                     return true;
-                for (var i = 0; i < this._searchSections.length; i++) {
-                    let section = this._searchSections[i];
-                    if (section.resultArea.display.hasSelected() && !section.resultArea.display.selectDown()) {
-                        if (this._searchResultsSingleShownSection != section.type) {
-                            // We need to move the selection to the next section below this section that has items,
-                            // wrapping around at the top, if necessary.
-                            let newSectionIndex = this._findAnotherSectionWithItems(i, 1);
-                            if (newSectionIndex >= 0) {
-                                this._searchSections[newSectionIndex].resultArea.display.selectFirstItem();
-                                section.resultArea.display.unsetSelected();
-                            }
-                        }
-                        break;
-                    }
-                }
+
+                this.searchResults.selectDown();
                 return true;
             }
             return false;
@@ -666,102 +898,12 @@ Dash.prototype = {
         this._docDisplay.emit('changed');
 
         this.sectionArea.add(this._docsSection.actor, { expand: true });
-
-        /***** Search Results *****/
-
-        this._searchResultsSection = new Section(_("SEARCH RESULTS"), true);
-
-        this._searchResultsSingleShownSection = null;
-
-        this._searchResultsSection.header.connect('back-link-activated', Lang.bind(this, function () {
-            this._showAllSearchSections();
-        }));
-
-        this._searchSections = [
-            { type: APPS,
-              title: _("APPLICATIONS"),
-              header: null,
-              resultArea: null
-            },
-            { type: PREFS,
-              title: _("PREFERENCES"),
-              header: null,
-              resultArea: null
-            },
-            { type: DOCS,
-              title: _("RECENT DOCUMENTS"),
-              header: null,
-              resultArea: null
-            },
-            { type: PLACES,
-              title: _("PLACES"),
-              header: null,
-              resultArea: null
-            }
-        ];
-
-        for (var i = 0; i < this._searchSections.length; i++) {
-            let section = this._searchSections[i];
-            section.header = new SearchSectionHeader(section.title,
-                                                     Lang.bind(this,
-                                                               function () {
-                                                                   this._showSingleSearchSection(section.type);
-                                                               }));
-            this._searchResultsSection.content.add(section.header.actor);
-            section.resultArea = new ResultArea(section.type, GenericDisplay.GenericDisplayFlags.DISABLE_VSCROLLING);
-            this._searchResultsSection.content.add(section.resultArea.actor, { expand: true });
-            createPaneForDetails(this, section.resultArea.display);
-        }
-
-        this.sectionArea.add(this._searchResultsSection.actor, { expand: true });
-        this._searchResultsSection.actor.hide();
     },
 
     _doSearch: function () {
         this._searchTimeoutId = 0;
         let text = this._searchEntry.getText();
-        text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-
-        let selectionSet = false;
-
-        for (var i = 0; i < this._searchSections.length; i++) {
-            let section = this._searchSections[i];
-            section.resultArea.display.setSearch(text);
-            let itemCount = section.resultArea.display.getMatchedItemsCount();
-            let itemCountText = itemCount + "";
-            section.header.countText.text = itemCountText;
-
-            if (this._searchResultsSingleShownSection == section.type) {
-                this._searchResultsSection.header.setCountText(itemCountText);
-                if (itemCount == 0) {
-                    section.resultArea.actor.hide();
-                } else {
-                    section.resultArea.actor.show();
-                }
-            } else if (this._searchResultsSingleShownSection == null) {
-                // Don't show the section if it has no results
-                if (itemCount == 0) {
-                    section.header.actor.hide();
-                    section.resultArea.actor.hide();
-                } else {
-                    section.header.actor.show();
-                    section.resultArea.actor.show();
-                }
-            }
-
-            // Refresh the selection when a new search is applied.
-            section.resultArea.display.unsetSelected();
-            if (!selectionSet && section.resultArea.display.hasItems() &&
-                (this._searchResultsSingleShownSection == null || this._searchResultsSingleShownSection == section.type)) {
-                section.resultArea.display.selectFirstItem();
-                selectionSet = true;
-            }
-        }
-
-        // Here work around a bug that I never quite tracked down
-        // the root cause of; it appeared that the search results
-        // section was getting a 0 height allocation.
-        this._searchResultsSection.content.queue_relayout();
+        this.searchResults.updateSearch(text);
 
         return false;
     },
@@ -794,101 +936,6 @@ Dash.prototype = {
             }
         }));
         Main.overview.addPane(pane);
-    },
-
-    _updateDashActors: function() {
-        if (this._searchPending) {
-            this._searchResultsSection.actor.show();
-            // We initially hide all sections when we start a search. When the search timeout
-            // first runs, the sections that have matching results are shown. As the search
-            // is refined, only the sections that have matching results will be shown.
-            for (let i = 0; i < this._searchSections.length; i++) {
-                let section = this._searchSections[i];
-                section.header.actor.hide();
-                section.resultArea.actor.hide();
-            }
-            this._appsSection.actor.hide();
-            this._placesSection.actor.hide();
-            this._docsSection.actor.hide();
-        } else if (!this._searchActive) {
-            this._showAllSearchSections();
-            this._searchResultsSection.actor.hide();
-            this._appsSection.actor.show();
-            this._placesSection.actor.show();
-            this._docsSection.actor.show();
-        }
-    },
-
-    _showSingleSearchSection: function(type) {
-        // We currently don't allow going from showing one section to showing another section.
-        if (this._searchResultsSingleShownSection != null) {
-            throw new Error("We were already showing a single search section: '" + this._searchResultsSingleShownSection
-                            + "' when _showSingleSearchSection() was called for '" + type + "'");
-        }
-        for (var i = 0; i < this._searchSections.length; i++) {
-            let section = this._searchSections[i];
-            if (section.type == type) {
-                // This will be the only section shown.
-                section.resultArea.display.selectFirstItem();
-                let itemCount = section.resultArea.display.getMatchedItemsCount();
-                let itemCountText = itemCount + "";
-                section.header.actor.hide();
-                this._searchResultsSection.header.setTitle(section.title);
-                this._searchResultsSection.header.setBackLinkVisible(true);
-                this._searchResultsSection.header.setCountText(itemCountText);
-            } else {
-                // We need to hide this section.
-                section.header.actor.hide();
-                section.resultArea.actor.hide();
-                section.resultArea.display.unsetSelected();
-            }
-        }
-        this._searchResultsSingleShownSection = type;
-    },
-
-    _showAllSearchSections: function() {
-        if (this._searchResultsSingleShownSection != null) {
-            let selectionSet = false;
-            for (var i = 0; i < this._searchSections.length; i++) {
-                let section = this._searchSections[i];
-                if (section.type == this._searchResultsSingleShownSection) {
-                    // This will no longer be the only section shown.
-                    let itemCount = section.resultArea.display.getMatchedItemsCount();
-                    if (itemCount != 0) {
-                        section.header.actor.show();
-                        section.resultArea.display.selectFirstItem();
-                        selectionSet = true;
-                    }
-                    this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
-                    this._searchResultsSection.header.setBackLinkVisible(false);
-                    this._searchResultsSection.header.setCountText("");
-                } else {
-                    // We need to restore this section.
-                    let itemCount = section.resultArea.display.getMatchedItemsCount();
-                    if (itemCount != 0) {
-                        section.header.actor.show();
-                        section.resultArea.actor.show();
-                        // This ensures that some other section will have the selection if the
-                        // single section that was being displayed did not have any items.
-                        if (!selectionSet) {
-                            section.resultArea.display.selectFirstItem();
-                            selectionSet = true;
-                        }
-                    }
-                }
-            }
-            this._searchResultsSingleShownSection = null;
-        }
-    },
-
-    _findAnotherSectionWithItems: function(index, increment) {
-        let pos = _getIndexWrapped(index, increment, this._searchSections.length);
-        while (pos != index) {
-            if (this._searchSections[pos].resultArea.display.hasItems())
-                return pos;
-            pos = _getIndexWrapped(pos, increment, this._searchSections.length);
-        }
-        return -1;
     }
 };
 Signals.addSignalMethods(Dash.prototype);
