@@ -175,7 +175,11 @@ _cogl_material_needs_blending_enabled (CoglMaterial *material,
 #endif
 
   if ((override_color && override_color[3] != 0xff) ||
-      material->unlit[3] != 0xff)
+      material->unlit[3] != 0xff ||
+      material->ambient[3] != 1.0f ||
+      material->diffuse[3] != 1.0f ||
+      material->specular[3] != 1.0f ||
+      material->emission[3] != 1.0f)
     return TRUE;
 
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
@@ -349,6 +353,8 @@ cogl_material_set_ambient (CoglHandle handle,
   ambient[3] = cogl_color_get_alpha_float (ambient_color);
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
+
+  handle_automatic_blend_enable (material);
 }
 
 void
@@ -389,6 +395,8 @@ cogl_material_set_diffuse (CoglHandle handle,
   diffuse[3] = cogl_color_get_alpha_float (diffuse_color);
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
+
+  handle_automatic_blend_enable (material);
 }
 
 void
@@ -437,6 +445,8 @@ cogl_material_set_specular (CoglHandle handle,
   specular[3] = cogl_color_get_alpha_float (specular_color);
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
+
+  handle_automatic_blend_enable (material);
 }
 
 float
@@ -511,6 +521,8 @@ cogl_material_set_emission (CoglHandle handle,
   emission[3] = cogl_color_get_alpha_float (emission_color);
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
+
+  handle_automatic_blend_enable (material);
 }
 
 void
