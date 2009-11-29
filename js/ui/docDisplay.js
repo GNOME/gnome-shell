@@ -152,7 +152,8 @@ DocDisplay.prototype = {
     _refreshCache : function() {
         if (!this._docsStale)
             return true;
-        this._allItems = this._docManager.getItems();
+        this._allItems = {};
+        Lang.copyProperties(this._docManager.getInfosByUri(), this._allItems);
         this._docsStale = false;
         return false;
     },
@@ -275,16 +276,21 @@ DashDocDisplayItem.prototype = {
             Main.overview.hide();
         }));
 
+        this.actor._delegate = this;
+
         this._icon = docInfo.createIcon(DASH_DOCS_ICON_SIZE);
         let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);
-        let name = new St.Label({ style_class: "dash-recent-docs-item",
+        let name = new St.Label({ style_class: 'dash-recent-docs-item',
                                    text: docInfo.name });
         this.actor.append(name, Big.BoxPackFlags.EXPAND);
 
         let draggable = DND.makeDraggable(this.actor);
-        this.actor._delegate = this;
+    },
+
+    getUri: function() {
+        return this._info.uri;
     },
 
     getDragActorSource: function() {
@@ -316,12 +322,14 @@ DashDocDisplay.prototype = {
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
+
+        this._actorsByUri = {};
 
         this._docManager = DocInfo.getDocManager();
-        this._docManager.connect('changed', Lang.bind(this, function(mgr) {
-            this._redisplay();
-        }));
-        this._redisplay();
+        this._docManager.connect('changed', Lang.bind(this, this._onDocsChanged));
+        this._pendingDocsChange = true;
+        this._checkDocExistence = false;
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -355,15 +363,17 @@ DashDocDisplay.prototype = {
 
         let firstColumnChildren = Math.ceil(children.length / 2);
 
+        let natural = 0;
         for (let i = 0; i < firstColumnChildren; i++) {
             let child = children[i];
-            let [minSize, naturalSize] = child.get_preferred_height(forWidth);
-            alloc.natural_size += naturalSize;
+            let [minSize, naturalSize] = child.get_preferred_height(-1);
+            natural += naturalSize;
 
             if (i > 0 && i < children.length - 1) {
-                alloc.natural_size += DEFAULT_SPACING;
+                natural += DEFAULT_SPACING;
             }
         }
+        alloc.natural_size = natural;
     },
 
     _allocate: function(actor, box, flags) {
@@ -418,28 +428,49 @@ DashDocDisplay.prototype = {
             i++;
         }
 
-        // Everything else didn't fit, just hide it.
-        for (; i < children.length; i++) {
-            children[i].hide();
+        if (this._checkDocExistence) {
+            // Now we know how many docs we are displaying, queue a check to see if any of them
+            // have been deleted. If they are deleted, then we'll get a 'changed' signal; since
+            // we'll now be displaying items we weren't previously, we'll check again to see
+            // if they were deleted, and so forth and so on.
+            // TODO: We should change this to ask for as many as we can fit in the given space:
+            // https://bugzilla.gnome.org/show_bug.cgi?id=603522#c23
+            this._docManager.queueExistenceCheck(i);
+            this._checkDocExistence = false;
         }
+
+        let skipPaint = [];
+        for (; i < children.length; i++)
+            this.actor.set_skip_paint(children[i], true);
+    },
+
+    _onDocsChanged: function() {
+        this._checkDocExistence = true;
+        Main.queueDeferredWork(this._workId);
     },
 
     _redisplay: function() {
+        // Should be kept alive by the _actorsByUri
         this.actor.remove_all();
-
-        let docs = this._docManager.getItems();
-        let docUrls = [];
-        for (let url in docs) {
-            docUrls.push(url);
+        let docs = this._docManager.getTimestampOrderedInfos();
+        for (let i = 0; i < docs.length; i++) {
+            let doc = docs[i];
+            let display = this._actorsByUri[doc.uri];
+            if (display) {
+                this.actor.add_actor(display.actor);
+            } else {
+                let display = new DashDocDisplayItem(doc);
+                this.actor.add_actor(display.actor);
+                this._actorsByUri[doc.uri] = display;
+            }
         }
-        docUrls.sort(function (urlA, urlB) { return docs[urlB].timestamp - docs[urlA].timestamp; });
-        let textureCache = Shell.TextureCache.get_default();
-
-        for (let i = 0; i < docUrls.length; i++) {
-            let url = docUrls[i];
-            let docInfo = docs[url];
-            let display = new DashDocDisplayItem(docInfo);
-            this.actor.add_actor(display.actor);
+        // Any unparented actors must have been deleted
+        for (let uri in this._actorsByUri) {
+            let display = this._actorsByUri[uri];
+            if (display.actor.get_parent() == null) {
+                display.actor.destroy();
+                delete this._actorsByUri[uri];
+            }
         }
         this.emit('changed');
     }
