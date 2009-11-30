@@ -492,7 +492,7 @@ _clutter_do_pick (ClutterStage   *stage,
     cogl_clip_push_window_rectangle (x, y, 1, 1);
 
   cogl_disable_fog ();
-  cogl_color_set_from_4ub (&stage_pick_id, 0, 0, 0, 255);
+  cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   cogl_clear (&stage_pick_id,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
