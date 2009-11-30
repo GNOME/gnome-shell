@@ -57,6 +57,9 @@ typedef int (*WaitVideoSyncProc) (int           divisor,
                                   int           remainder,
                                   unsigned int *count);
 typedef int (*SwapIntervalProc)  (int           interval);
+typedef void (*CopySubBufferProc)(Display *dpy,
+                                  GLXDrawable drawable,
+                                  int x, int y, int width, int height);
 
 struct _ClutterBackendGLX
 {
@@ -78,6 +81,8 @@ struct _ClutterBackendGLX
   SwapIntervalProc       swap_interval;
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
+
+  CopySubBufferProc      copy_sub_buffer;
 
   /* props */
   Atom atom_WM_STATE;

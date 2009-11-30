@@ -173,7 +173,9 @@ static const GDebugKey clutter_pick_debug_keys[] = {
 };
 
 static const GDebugKey clutter_paint_debug_keys[] = {
-  { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS }
+  { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS },
+  { "disable-clipped-redraws", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS },
+  { "redraws", CLUTTER_DEBUG_REDRAWS }
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE

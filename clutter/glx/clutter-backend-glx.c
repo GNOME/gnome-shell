@@ -28,13 +28,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <fcntl.h>
 
 #include <glib/gi18n-lib.h>
-
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <errno.h>
 
 #include <GL/glx.h>
 #include <GL/glxext.h>
@@ -61,48 +57,6 @@ G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11)
 static ClutterBackendGLX *backend_singleton = NULL;
 
 static gchar    *clutter_vblank_name = NULL;
-
-#ifdef __linux__
-#define DRM_VBLANK_RELATIVE 0x1;
-
-struct drm_wait_vblank_request {
-    int           type;
-    unsigned int  sequence;
-    unsigned long signal;
-};
-
-struct drm_wait_vblank_reply {
-    int          type;
-    unsigned int sequence;
-    long         tval_sec;
-    long         tval_usec;
-};
-
-typedef union drm_wait_vblank {
-    struct drm_wait_vblank_request request;
-    struct drm_wait_vblank_reply reply;
-} drm_wait_vblank_t;
-
-#define DRM_IOCTL_BASE                  'd'
-#define DRM_IOWR(nr,type)               _IOWR(DRM_IOCTL_BASE,nr,type)
-#define DRM_IOCTL_WAIT_VBLANK           DRM_IOWR(0x3a, drm_wait_vblank_t)
-
-static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
-{
-    int ret, rc;
-
-    do
-      {
-        ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-        vbl->request.type &= ~DRM_VBLANK_RELATIVE;
-        rc = errno;
-      }
-    while (ret && rc == EINTR);
-
-    return rc;
-}
-
-#endif
 
 G_CONST_RETURN gchar*
 clutter_backend_glx_get_vblank_method (void)
@@ -294,7 +248,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   if (check_vblank_env ("none"))
     {
       CLUTTER_NOTE (BACKEND, "vblank sync: disabled at user request");
-      goto done;
+      goto vblank_setup_done;
     }
 
   if (g_getenv ("__GL_SYNC_TO_VBLANK") != NULL)
@@ -303,7 +257,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
       flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 
       CLUTTER_NOTE (BACKEND, "Using __GL_SYNC_TO_VBLANK hint");
-      goto done;
+      goto vblank_setup_done;
     }
 
   /* We try two GL vblank syncing mechanisms.
@@ -346,7 +300,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
             }
 #endif /* GLX_INTEL_swap_event */
 
-          goto done;
+          goto vblank_setup_done;
         }
 
       CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
@@ -372,7 +326,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
           backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
           flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 
-          goto done;
+          goto vblank_setup_done;
         }
 
       CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
@@ -394,7 +348,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
           backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
           flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 
-          goto done;
+          goto vblank_setup_done;
         }
 
       CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
@@ -403,7 +357,14 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
 
-done:
+vblank_setup_done:
+
+  if (_cogl_check_extension ("GLX_MESA_copy_sub_buffer", glx_extensions))
+    {
+      backend_glx->copy_sub_buffer =
+        (CopySubBufferProc) cogl_get_proc_address ("glXCopySubBufferMESA");
+    }
+
   CLUTTER_NOTE (BACKEND, "backend features checked");
 
   return flags;
@@ -739,87 +700,16 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
     }
 }
 
-static void
-glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
-{
-  /* If we are going to wait for VBLANK manually, we not only need
-   * to flush out pending drawing to the GPU before we sleep, we
-   * need to wait for it to finish. Otherwise, we may end up with
-   * the situation:
-   *
-   *        - We finish drawing      - GPU drawing continues
-   *        - We go to sleep         - GPU drawing continues
-   * VBLANK - We call glXSwapBuffers - GPU drawing continues
-   *                                 - GPU drawing continues
-   *                                 - Swap buffers happens
-   *
-   * Producing a tear. Calling glFinish() first will cause us to properly
-   * wait for the next VBLANK before we swap. This obviously does not
-   * happen when we use GLX_SWAP and let the driver do the right thing
-   */
-
-  switch (backend_glx->vblank_type)
-    {
-    case CLUTTER_VBLANK_GLX_SWAP:
-      CLUTTER_NOTE (BACKEND, "Waiting for vblank (swap)");
-      break;
-
-    case CLUTTER_VBLANK_GLX:
-      {
-        unsigned int retraceCount;
-
-        glFinish ();
-
-        CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
-        backend_glx->get_video_sync (&retraceCount);
-        backend_glx->wait_video_sync (2,
-                                      (retraceCount + 1) % 2,
-                                      &retraceCount);
-      }
-      break;
-
-    case CLUTTER_VBLANK_DRI:
-#ifdef __linux__
-      {
-        drm_wait_vblank_t blank;
-
-        glFinish ();
-
-        CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
-        blank.request.type     = DRM_VBLANK_RELATIVE;
-        blank.request.sequence = 1;
-        blank.request.signal   = 0;
-        drm_wait_vblank (backend_glx->dri_fd, &blank);
-      }
-#endif
-      break;
-
-    case CLUTTER_VBLANK_NONE:
-    default:
-      break;
-    }
-}
-
+/*
+ * FIXME: we should remove backend_class->redraw() and just
+ * have stage_window_iface->redraw()
+ */
 static void
 clutter_backend_glx_redraw (ClutterBackend *backend,
                             ClutterStage   *stage)
 {
-  ClutterBackendX11 *backend_x11;
-  ClutterStageGLX *stage_glx;
-  ClutterStageX11 *stage_x11;
-  ClutterStageWindow *impl;
-  CLUTTER_STATIC_TIMER (painting_timer,
-                        "Redrawing", /* parent */
-                        "Painting actors",
-                        "The time spent painting actors",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (swapbuffers_timer,
-                        "Redrawing", /* parent */
-                        "glXSwapBuffers",
-                        "The time spent blocked by glXSwapBuffers",
-                        0 /* no application private data */);
+  ClutterStageWindow *impl = _clutter_stage_get_window (stage);
 
-  impl = _clutter_stage_get_window (stage);
   if (G_UNLIKELY (impl == NULL))
     {
       CLUTTER_NOTE (BACKEND, "Stage [%p] has no implementation", stage);
@@ -828,39 +718,8 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
   g_assert (CLUTTER_IS_STAGE_GLX (impl));
 
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  stage_x11 = CLUTTER_STAGE_X11 (impl);
-  stage_glx = CLUTTER_STAGE_GLX (impl);
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
-  /* this will cause the stage implementation to be painted */
-  clutter_actor_paint (CLUTTER_ACTOR (stage));
-  cogl_flush ();
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
-
-  if (stage_x11->xwin != None)
-    {
-      GLXDrawable drawable =
-        stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
-
-      /* wait for the next vblank */
-      glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
-
-      /* push on the screen */
-      CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
-                    backend_x11->xdpy,
-                    (unsigned long) drawable);
-
-      /* If we have GLX swap buffer events then glXSwapBuffers will return
-       * immediately and we need to track that there is a swap in
-       * progress... */
-      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
-        stage_glx->pending_swaps++;
-
-      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      glXSwapBuffers (backend_x11->xdpy, drawable);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
-    }
+  clutter_stage_glx_redraw (CLUTTER_STAGE_GLX (impl),
+                            stage);
 }
 
 static ClutterStageWindow *

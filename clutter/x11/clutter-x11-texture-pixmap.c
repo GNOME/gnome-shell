@@ -44,6 +44,7 @@
 #include "clutter-x11-texture-pixmap.h"
 #include "clutter-x11.h"
 #include "clutter-backend-x11.h"
+#include "clutter-private.h"
 
 #include "cogl/cogl.h"
 
@@ -74,6 +75,7 @@ enum
 enum
 {
   UPDATE_AREA,
+  QUEUE_DAMAGE_REDRAW,
   /* FIXME: Pixmap lost signal? */
   LAST_SIGNAL
 };
@@ -255,60 +257,68 @@ failed_image_create:
   return FALSE;
 }
 
+static void
+check_for_pixmap_damage (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv = texture->priv;
+  Display *dpy;
+  XserverRegion parts;
+  int i, r_count;
+  XRectangle *r_damage;
+  XRectangle r_bounds;
+
+  clutter_x11_trap_x_errors ();
+
+  /*
+   * Retrieve the damaged region and break it down into individual
+   * rectangles so we do not have to update the whole shebang.
+   */
+  dpy = clutter_x11_get_default_display();
+  parts = XFixesCreateRegion (dpy, 0, 0);
+  XDamageSubtract (dpy, priv->damage, None, parts);
+
+  r_damage = XFixesFetchRegionAndBounds (dpy,
+                                         parts,
+                                         &r_count,
+                                         &r_bounds);
+
+  clutter_x11_untrap_x_errors ();
+
+  if (r_damage)
+    {
+      for (i = 0; i < r_count; ++i)
+        clutter_x11_texture_pixmap_update_area (texture,
+                                                r_damage[i].x,
+                                                r_damage[i].y,
+                                                r_damage[i].width,
+                                                r_damage[i].height);
+      XFree (r_damage);
+    }
+
+  XFixesDestroyRegion (dpy, parts);
+}
+
 static ClutterX11FilterReturn
 on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 {
   ClutterX11TexturePixmap        *texture;
   ClutterX11TexturePixmapPrivate *priv;
-  Display                        *dpy;
 
   texture = CLUTTER_X11_TEXTURE_PIXMAP (data);
 
   g_return_val_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture), \
                         CLUTTER_X11_FILTER_CONTINUE);
 
-  dpy = clutter_x11_get_default_display();
   priv = texture->priv;
 
   if (xev->type == _damage_event_base + XDamageNotify)
     {
-      XserverRegion  parts;
-      gint           i, r_count;
-      XRectangle    *r_damage;
-      XRectangle     r_bounds;
       XDamageNotifyEvent *dev = (XDamageNotifyEvent*)xev;
 
       if (dev->drawable != priv->damage_drawable)
         return CLUTTER_X11_FILTER_CONTINUE;
 
-
-      clutter_x11_trap_x_errors ();
-      /*
-       * Retrieve the damaged region and break it down into individual
-       * rectangles so we do not have to update the whole shebang.
-       */
-      parts = XFixesCreateRegion (dpy, 0, 0);
-      XDamageSubtract (dpy, priv->damage, None, parts);
-
-      r_damage = XFixesFetchRegionAndBounds (dpy,
-                                             parts,
-                                             &r_count,
-                                             &r_bounds);
-
-      clutter_x11_untrap_x_errors ();
-
-      if (r_damage)
-        {
-          for (i = 0; i < r_count; ++i)
-            clutter_x11_texture_pixmap_update_area (texture,
-                                                    r_damage[i].x,
-                                                    r_damage[i].y,
-                                                    r_damage[i].width,
-                                                    r_damage[i].height);
-          XFree (r_damage);
-        }
-
-      XFixesDestroyRegion (dpy, parts);
+      check_for_pixmap_damage (texture);
     }
 
   return  CLUTTER_X11_FILTER_CONTINUE;
@@ -404,6 +414,54 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
     }
 }
 
+static void
+clutter_x11_texture_pixmap_real_queue_damage_redraw (
+                                              ClutterX11TexturePixmap *texture,
+                                              gint x,
+                                              gint y,
+                                              gint width,
+                                              gint height)
+{
+  ClutterActor    *self = CLUTTER_ACTOR (texture);
+  ClutterActorBox  allocation;
+  guint	           pixmap_width = 0;
+  guint            pixmap_height = 0;
+  float            scale_x;
+  float            scale_y;
+  ClutterActorBox  clip;
+
+  /* NB: clutter_actor_queue_clipped_redraw expects a box in the actor's
+   * coordinate space so we need to convert from pixmap coordinates to
+   * actor coordinates...
+   */
+
+  /* XXX: we don't care if we get an out of date allocation here because
+   * clutter_actor_queue_clipped_redraw knows to ignore the clip if the
+   * actor's allocation is invalid.
+   *
+   * This is noted because clutter_actor_get_allocation_box does some
+   * unnecessary work to support buggy code with a comment suggesting that
+   * it could be changed later which would be good for this use case!
+   */
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  g_object_get (self,
+                "pixmap-width",  &pixmap_width,
+                "pixmap-height", &pixmap_height,
+                NULL);
+
+  scale_x = (allocation.x2 - allocation.x1) / pixmap_width;
+  scale_y = (allocation.y2 - allocation.y1) / pixmap_height;
+
+  clip.x1 = x * scale_x;
+  clip.y1 = y * scale_y;
+  clip.x2 =  clip.x1 + width * scale_x;
+  clip.y2 = clip.y1 + height * scale_y;
+
+  _clutter_actor_queue_redraw_with_clip (self,
+                                         CLUTTER_REDRAW_CLIPPED_TO_BOX,
+                                         &clip);
+}
 
 static void
 clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
@@ -412,6 +470,11 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
       G_TYPE_INSTANCE_GET_PRIVATE (self,
                                    CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
                                    ClutterX11TexturePixmapPrivate);
+
+  g_signal_override_class_handler (
+            "queue-damage-redraw",
+            CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
+            G_CALLBACK (clutter_x11_texture_pixmap_real_queue_damage_redraw));
 
   if (!check_extensions (self))
     {
@@ -721,6 +784,40 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                     G_SIGNAL_RUN_FIRST,
                     G_STRUCT_OFFSET (ClutterX11TexturePixmapClass, \
                                      update_area),
+                    NULL, NULL,
+                    clutter_marshal_VOID__INT_INT_INT_INT,
+                    G_TYPE_NONE, 4,
+                    G_TYPE_INT,
+                    G_TYPE_INT,
+                    G_TYPE_INT,
+                    G_TYPE_INT);
+
+  /**
+   * ClutterX11TexturePixmap::queue-damage-redraw
+   * @texture: the object which received the signal
+   * @x: The top left x position of the damage region
+   * @y: The top left y position of the damage region
+   * @width: The width of the damage region
+   * @height: The height of the damage region
+   *
+   * ::queue-damage-redraw is emitted to notify that some sub-region of the
+   * underlying pixmap has changed and you need to queue a
+   * corresponding redraw for the actor.
+   *
+   * The default handler will queue a clipped redraw in response to
+   * the damage, using the assumption that the pixmap is being painted
+   * to a rectangle covering the transformed allocation of the actor.
+   * If you sub-class and change the paint method so this isn't true
+   * then you must also provide your own damage signal handler to
+   * queue a redraw that blocks this default behaviour.
+   *
+   * Since: 1.2
+   */
+  signals[QUEUE_DAMAGE_REDRAW] =
+      g_signal_new ("queue-damage-redraw",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_FIRST,
+                    0,
                     NULL, NULL,
                     clutter_marshal_VOID__INT_INT_INT_INT,
                     G_TYPE_NONE, 4,
@@ -1369,6 +1466,12 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
   g_signal_emit (texture, signals[UPDATE_AREA], 0, x, y, width, height);
+
+  /* The default handler for the "queue-damage-redraw" signal is
+   * clutter_x11_texture_pixmap_real_queue_damage_redraw which will queue a
+   * clipped redraw. */
+  g_signal_emit (texture, signals[QUEUE_DAMAGE_REDRAW],
+                 0, x, y, width, height);
 }
 
 /**
@@ -1405,3 +1508,4 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
   priv->automatic_updates = setting;
 
 }
+

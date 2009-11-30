@@ -121,3 +121,32 @@ _clutter_stage_window_get_pending_swaps (ClutterStageWindow *window)
   return CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_pending_swaps (window);
 }
 
+void
+_clutter_stage_window_add_redraw_clip (ClutterStageWindow *window,
+                                       ClutterGeometry    *stage_clip)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->add_redraw_clip)
+    iface->add_redraw_clip (window, stage_clip);
+}
+
+gboolean
+_clutter_stage_window_has_redraw_clips (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->has_redraw_clips)
+    return iface->has_redraw_clips (window);
+  else
+    return FALSE;
+}
+
+gboolean
+_clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->ignoring_redraw_clips)
+    return iface->ignoring_redraw_clips (window);
+  else
+    return TRUE;
+}
+

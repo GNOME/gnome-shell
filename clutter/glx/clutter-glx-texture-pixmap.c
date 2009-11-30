@@ -64,6 +64,7 @@
 
 #include "../clutter-util.h"
 #include "../clutter-debug.h"
+#include "../clutter-private.h"
 
 #include "cogl/cogl.h"
 
@@ -83,6 +84,12 @@ typedef enum
   CLUTTER_GLX_RECTANGLE_ALLOW,
   CLUTTER_GLX_RECTANGLE_FORCE
 } RectangleState;
+
+enum
+{
+  PROP_0,
+  PROP_AUTO_REDRAW,
+};
 
 static BindTexImage      _gl_bind_tex_image = NULL;
 static ReleaseTexImage   _gl_release_tex_image = NULL;
@@ -767,8 +774,8 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                         gint                     height)
 {
   ClutterGLXTexturePixmap *texture_glx = CLUTTER_GLX_TEXTURE_PIXMAP (texture);
-  ClutterGLXTexturePixmapPrivate       *priv = texture_glx->priv;
-  Display                              *dpy;
+  ClutterGLXTexturePixmapPrivate  *priv = texture_glx->priv;
+  Display                         *dpy;
 
   CLUTTER_NOTE (TEXTURE, "Updating texture pixmap");
 
@@ -830,7 +837,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   else
     g_warning ("Failed to bind initial tex");
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+  priv->bind_tex_image_queued = TRUE;
 }
 
 static void
@@ -852,7 +859,6 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
   actor_class->unrealize = clutter_glx_texture_pixmap_unrealize;
 
   x11_texture_class->update_area = clutter_glx_texture_pixmap_update_area;
-
 }
 
 /**

@@ -135,6 +135,25 @@ typedef enum
 } ClutterAllocationFlags;
 
 /**
+ * ClutterRedrawFlags:
+ * @CLUTTER_REDRAW_CLIPPED_TO_BOX: Tells clutter the redraw is clipped
+ *   to a given clip box in actor coordinates.
+ * @CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION: Tells clutter the maximum
+ *   extents of what needs to be redrawn lies within the actors
+ *   current allocation.
+ *
+ * Flags passed to the clutter_actor_queue_redraw_with_clip ()
+ * function
+ *
+ * Since: 1.2
+ */
+typedef enum
+{
+  CLUTTER_REDRAW_CLIPPED_TO_BOX         = 0,
+  CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION  = 1 << 1
+} ClutterRedrawFlags;
+
+/**
  * ClutterActor:
  * @flags: #ClutterActorFlags
  *
@@ -303,6 +322,7 @@ void                  clutter_actor_map                       (ClutterActor     
 void                  clutter_actor_unmap                     (ClutterActor          *self);
 void                  clutter_actor_paint                     (ClutterActor          *self);
 void                  clutter_actor_queue_redraw              (ClutterActor          *self);
+
 void                  clutter_actor_queue_relayout            (ClutterActor          *self);
 void                  clutter_actor_destroy                   (ClutterActor          *self);
 

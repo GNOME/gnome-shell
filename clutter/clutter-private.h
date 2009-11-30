@@ -125,11 +125,11 @@ struct _ClutterStageManager
 
 struct _ClutterMainContext
 {
-  ClutterBackend  *backend;            /* holds a pointer to the windowing 
+  ClutterBackend  *backend;            /* holds a pointer to the windowing
                                           system backend */
   GQueue          *events_queue;       /* the main event queue */
 
-  guint            is_initialized : 1;  
+  guint            is_initialized : 1;
   guint            motion_events_per_actor : 1;/* set for enter/leave events */
   guint            defer_display_setup : 1;
   guint            options_parsed : 1;
@@ -140,8 +140,8 @@ struct _ClutterMainContext
 
   gint             num_reactives;      /* Num of reactive actors */
 
-  ClutterIDPool   *id_pool;            /* mapping between reused integer ids 
-                                        * and actors 
+  ClutterIDPool   *id_pool;            /* mapping between reused integer ids
+                                        * and actors
                                         */
   guint            frame_rate;         /* Default FPS */
 
@@ -149,8 +149,8 @@ struct _ClutterMainContext
                                         * (or NULL if there is no pointer grab
                                         */
   ClutterActor    *keyboard_grab_actor; /* The actor having the pointer grab
-                                         * (or NULL if there is no pointer 
-                                         *  grab) 
+                                         * (or NULL if there is no pointer
+                                         *  grab)
                                          */
   GSList          *shaders;            /* stack of overridden shaders */
 
@@ -229,13 +229,17 @@ void                _clutter_stage_maybe_relayout       (ClutterActor       *sta
 gboolean            _clutter_stage_needs_update         (ClutterStage       *stage);
 gboolean            _clutter_stage_do_update            (ClutterStage       *stage);
 
-void     _clutter_stage_queue_event           (ClutterStage *stage,
-					       ClutterEvent *event);
-gboolean _clutter_stage_has_queued_events     (ClutterStage *stage);
-void     _clutter_stage_process_queued_events (ClutterStage *stage);
-void     _clutter_stage_update_input_devices  (ClutterStage *stage);
 
-int      _clutter_stage_get_pending_swaps     (ClutterStage *stage);
+void     _clutter_stage_queue_event            (ClutterStage *stage,
+					        ClutterEvent *event);
+gboolean _clutter_stage_has_queued_events      (ClutterStage *stage);
+void     _clutter_stage_process_queued_events  (ClutterStage *stage);
+void     _clutter_stage_update_input_devices   (ClutterStage *stage);
+
+int      _clutter_stage_get_pending_swaps      (ClutterStage *stage);
+
+gboolean _clutter_stage_has_full_redraw_queued (ClutterStage *stage);
+
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
@@ -311,6 +315,17 @@ void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
 
 void _clutter_actor_set_has_pointer (ClutterActor *self,
                                      gboolean      has_pointer);
+
+void _clutter_actor_transform_and_project_box (ClutterActor          *self,
+					       const ClutterActorBox *box,
+					       ClutterVertex          verts[]);
+
+void _clutter_actor_queue_redraw_with_clip (ClutterActor          *self,
+                                            ClutterRedrawFlags     flags,
+                                            ClutterActorBox       *clip);
+const ClutterActorBox *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
+void _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
+                                           const ClutterActorBox *clip);
 
 void _clutter_run_repaint_functions (void);
 

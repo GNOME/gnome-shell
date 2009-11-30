@@ -670,6 +670,12 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 {
   ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStagePrivate *priv = stage->priv;
+  ClutterStageWindow *stage_window;
+  ClutterGeometry stage_clip;
+  const ClutterActorBox *clip;
+  ClutterActorBox bounds;
+  ClutterVertex v[4];
+  int i;
 
   CLUTTER_NOTE (PAINT, "Redraw request number %lu",
                 CLUTTER_CONTEXT ()->redraw_count + 1);
@@ -685,6 +691,64 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
     }
   else
     CLUTTER_CONTEXT ()->redraw_count += 1;
+
+  /* If the backend can't do anything with redraw clips (e.g. it already knows
+   * it needs to redraw everything anyway) then don't spend time transforming
+   * any clip regions into stage coordinates... */
+  stage_window = _clutter_stage_get_window (stage);
+  if (_clutter_stage_window_ignoring_redraw_clips (stage_window))
+    return;
+
+  /* Convert the clip rectangle (which is in leaf actor coordinates) into stage
+   * coordinates and then into an axis aligned stage coordinates bounding
+   * box...
+   */
+
+  clip = _clutter_actor_get_queue_redraw_clip (leaf);
+  if (!clip)
+    {
+      _clutter_stage_window_add_redraw_clip (stage_window, NULL);
+      return;
+    }
+
+  _clutter_actor_transform_and_project_box (leaf, clip, v);
+
+  bounds.x1 = v[0].x; bounds.y1 = v[0].y;
+  bounds.x2 = v[0].x; bounds.y2 = v[0].y;
+
+  for (i = 0; i < 4; i++)
+    {
+      if (v[i].x < bounds.x1)
+        bounds.x1 = v[i].x;
+      else if (v[i].x > bounds.x2)
+        bounds.x2 = v[i].x;
+
+      if (v[i].y < bounds.y1)
+        bounds.y1 = v[i].y;
+      else if (v[i].y > bounds.y2)
+        bounds.y2 = v[i].y;
+    }
+
+  /* when converting to integer coordinates make sure we round the edges of the
+   * clip rectangle outwards... */
+  stage_clip.x = bounds.x1;
+  stage_clip.y = bounds.y1;
+  stage_clip.width = ceilf (bounds.x2) - stage_clip.x;
+  stage_clip.height = ceilf (bounds.y2) - stage_clip.y;
+
+  _clutter_stage_window_add_redraw_clip (stage_window, &stage_clip);
+}
+
+gboolean
+_clutter_stage_has_full_redraw_queued (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+
+  if (stage->priv->redraw_pending &&
+      !_clutter_stage_window_has_redraw_clips (stage_window))
+    return TRUE;
+  else
+    return FALSE;
 }
 
 static gboolean

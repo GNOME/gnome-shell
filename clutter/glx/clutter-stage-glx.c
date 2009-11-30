@@ -26,6 +26,7 @@
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
+#include "clutter-profile.h"
 
 #include "../clutter-main.h"
 #include "../clutter-feature.h"
@@ -46,6 +47,38 @@
 
 #include <GL/glx.h>
 #include <GL/gl.h>
+
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#ifdef __linux__
+#define DRM_VBLANK_RELATIVE 0x1;
+
+struct drm_wait_vblank_request {
+    int           type;
+    unsigned int  sequence;
+    unsigned long signal;
+};
+
+struct drm_wait_vblank_reply {
+    int          type;
+    unsigned int sequence;
+    long         tval_sec;
+    long         tval_usec;
+};
+
+typedef union drm_wait_vblank {
+    struct drm_wait_vblank_request request;
+    struct drm_wait_vblank_reply reply;
+} drm_wait_vblank_t;
+
+#define DRM_IOCTL_BASE                  'd'
+#define DRM_IOWR(nr,type)               _IOWR(DRM_IOCTL_BASE,nr,type)
+#define DRM_IOCTL_WAIT_VBLANK           DRM_IOWR(0x3a, drm_wait_vblank_t)
+
+#endif /* __linux__ */
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
@@ -273,6 +306,154 @@ clutter_stage_glx_init (ClutterStageGLX *stage)
 {
 }
 
+static gboolean
+clutter_stage_glx_has_redraw_clips (ClutterStageWindow *stage_window)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+
+  /* NB: a degenerate clip means a full stage redraw is required */
+  if (stage_glx->initialized_redraw_clip &&
+      stage_glx->bounding_redraw_clip.width != 0)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+static gboolean
+clutter_stage_glx_ignoring_redraw_clips (ClutterStageWindow *stage_window)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+
+  /* NB: a degenerate clip means a full stage redraw is required */
+  if (stage_glx->initialized_redraw_clip &&
+      stage_glx->bounding_redraw_clip.width == 0)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+/* A redraw clip represents (in stage coordinates) the bounding box of
+ * something that needs to be redraw. Typically they are added to the
+ * StageWindow as a result of clutter_actor_queue_clipped_redraw() by
+ * actors such as ClutterGLXTexturePixmap. All redraw clips are
+ * discarded after the next paint.
+ *
+ * A NULL stage_clip means the whole stage needs to be redrawn.
+ *
+ * What we do with this information:
+ * - we keep track of the bounding box for all redraw clips
+ * - when we come to redraw; if the bounding box is smaller than the
+ *   stage we scissor the redraw to that box and use
+ *   GLX_MESA_copy_sub_buffer to present the redraw to the front
+ *   buffer. Some heuristics are used to decide when a clipped redraw
+ *   should be promoted into a full stage redraw.
+ *
+ * Currently we simply check that the bounding box height is < 300
+ * pixels.
+ *
+ * XXX: we don't have any empirical data telling us what a sensible
+ * thresholds is!
+ *
+ * TODO - we should use different heuristics depending on whether the
+ * framebuffer is on screen and not redirected by a compositor VS
+ * offscreen (either due to compositor redirection or because we are
+ * rendering to a CoglOffscreen framebuffer)
+ *
+ * When not redirected glXCopySubBuffer (on intel hardware at least)
+ * will block the GPU until the vertical trace is at the optimal point
+ * so the copy can be done without tearing. In this case we don't want
+ * to copy tall regions because they increase the average time spent
+ * blocking the GPU.
+ *
+ * When rendering offscreen (CoglOffscreen or redirected by
+ * compositor) then no extra synchronization is needed before the copy
+ * can start.
+ *
+ * In all cases we need to consider that glXCopySubBuffer implies a
+ * blit which may be avoided by promoting to a full stage redraw if:
+ * - the framebuffer is redirected offscreen or a CoglOffscreen.
+ * - the framebuffer is onscreen and fullscreen.
+ * By promoting to a full stage redraw we trade off the cost involved
+ * in rasterizing the extra pixels vs avoiding to use a blit to
+ * present the back buffer.
+ *
+ */
+static void
+clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
+                                   ClutterGeometry    *stage_clip)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+
+  /* If we are already forced to do a full stage redraw then bail early */
+  if (clutter_stage_glx_ignoring_redraw_clips (stage_window))
+    return;
+
+  /* A NULL stage clip means a full stage redraw has been queued and
+   * we keep track of this by setting a degenerate
+   * stage_glx->bounding_redraw_clip */
+  if (!stage_clip)
+    {
+      stage_glx->bounding_redraw_clip.width = 0;
+      return;
+    }
+
+  if (!stage_glx->initialized_redraw_clip)
+    {
+      stage_glx->bounding_redraw_clip.x = stage_clip->x;
+      stage_glx->bounding_redraw_clip.y = stage_clip->y;
+      stage_glx->bounding_redraw_clip.width = stage_clip->width;
+      stage_glx->bounding_redraw_clip.height = stage_clip->height;
+    }
+  else
+    {
+      int x2, y2;
+
+      stage_glx->bounding_redraw_clip.x =
+        MIN (stage_clip->x, stage_glx->bounding_redraw_clip.x);
+      stage_glx->bounding_redraw_clip.y =
+        MIN (stage_clip->y, stage_glx->bounding_redraw_clip.y);
+
+      x2 = MAX (stage_clip->x + stage_clip->width,
+                stage_glx->bounding_redraw_clip.x +
+                stage_glx->bounding_redraw_clip.width);
+      y2 = MAX (stage_clip->y + stage_clip->height,
+                stage_glx->bounding_redraw_clip.y +
+                stage_glx->bounding_redraw_clip.height);
+
+      stage_glx->bounding_redraw_clip.width =
+        x2 - stage_glx->bounding_redraw_clip.x;
+      stage_glx->bounding_redraw_clip.height =
+        y2 - stage_glx->bounding_redraw_clip.y;
+    }
+
+  /* FIXME: This threshold was plucked out of thin air! */
+  if (stage_glx->bounding_redraw_clip.height > 300)
+    {
+      /* Set a degenerate clip to force a full redraw */
+      stage_glx->bounding_redraw_clip.width = 0;
+    }
+
+#if 0
+  redraw_area = (stage_glx->bounding_redraw_clip.width *
+                 stage_glx->bounding_redraw_clip.height);
+  stage_area = stage_x11->xwin_width * stage_x11->xwin_height;
+
+  /* Redrawing and blitting >70% of the stage is assumed to be more
+   * expensive than redrawing the additional 30% to avoid the blit.
+   *
+   * FIXME: This threshold was plucked out of thin air!
+   */
+  if (redraw_area > (stage_area * 0.7f))
+    {
+      g_print ("DEBUG: clipped redraw too big, forcing full redraw\n");
+      /* Set a degenerate clip to force a full redraw */
+      stage_glx->bounding_redraw_clip.width = 0;
+    }
+#endif
+
+  stage_glx->initialized_redraw_clip = TRUE;
+}
+
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
@@ -282,6 +463,251 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->unrealize = clutter_stage_glx_unrealize;
   iface->get_pending_swaps = clutter_stage_glx_get_pending_swaps;
 
+  iface->add_redraw_clip = clutter_stage_glx_add_redraw_clip;
+  iface->has_redraw_clips = clutter_stage_glx_has_redraw_clips;
+  iface->ignoring_redraw_clips = clutter_stage_glx_ignoring_redraw_clips;
+
   /* the rest is inherited from ClutterStageX11 */
+}
+
+#ifdef __linux__
+static int
+drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
+{
+    int ret, rc;
+
+    do
+      {
+        ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
+        vbl->request.type &= ~DRM_VBLANK_RELATIVE;
+        rc = errno;
+      }
+    while (ret && rc == EINTR);
+
+    return rc;
+}
+#endif /* __linux__ */
+
+static void
+glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
+{
+  /* If we are going to wait for VBLANK manually, we not only need
+   * to flush out pending drawing to the GPU before we sleep, we
+   * need to wait for it to finish. Otherwise, we may end up with
+   * the situation:
+   *
+   *        - We finish drawing      - GPU drawing continues
+   *        - We go to sleep         - GPU drawing continues
+   * VBLANK - We call glXSwapBuffers - GPU drawing continues
+   *                                 - GPU drawing continues
+   *                                 - Swap buffers happens
+   *
+   * Producing a tear. Calling glFinish() first will cause us to properly
+   * wait for the next VBLANK before we swap. This obviously does not
+   * happen when we use GLX_SWAP and let the driver do the right thing
+   */
+
+  switch (backend_glx->vblank_type)
+    {
+    case CLUTTER_VBLANK_GLX_SWAP:
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank (swap)");
+      break;
+
+    case CLUTTER_VBLANK_GLX:
+      {
+        unsigned int retraceCount;
+
+        glFinish ();
+
+        CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
+        backend_glx->get_video_sync (&retraceCount);
+        backend_glx->wait_video_sync (2,
+                                      (retraceCount + 1) % 2,
+                                      &retraceCount);
+      }
+      break;
+
+    case CLUTTER_VBLANK_DRI:
+#ifdef __linux__
+      {
+        drm_wait_vblank_t blank;
+
+        glFinish ();
+
+        CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
+        blank.request.type     = DRM_VBLANK_RELATIVE;
+        blank.request.sequence = 1;
+        blank.request.signal   = 0;
+        drm_wait_vblank (backend_glx->dri_fd, &blank);
+      }
+#endif
+      break;
+
+    case CLUTTER_VBLANK_NONE:
+    default:
+      break;
+    }
+}
+
+void
+clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
+                          ClutterStage *stage)
+{
+  ClutterBackend    *backend;
+  ClutterBackendX11 *backend_x11;
+  ClutterBackendGLX *backend_glx;
+  ClutterStageX11   *stage_x11;
+  GLXDrawable        drawable;
+  CLUTTER_STATIC_TIMER (painting_timer,
+                        "Redrawing", /* parent */
+                        "Painting actors",
+                        "The time spent painting actors",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (swapbuffers_timer,
+                        "Redrawing", /* parent */
+                        "glXSwapBuffers",
+                        "The time spent blocked by glXSwapBuffers",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (copy_sub_buffer_timer,
+                        "Redrawing", /* parent */
+                        "glXCopySubBufferMESA",
+                        "The time spent blocked by glXCopySubBufferMESA",
+                        0 /* no application private data */);
+
+  backend     = clutter_get_default_backend ();
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  backend_glx = CLUTTER_BACKEND_GLX (backend);
+
+  stage_x11 = CLUTTER_STAGE_X11 (stage_glx);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
+
+  if (backend_glx->copy_sub_buffer &&
+      /* NB: a degenerate redraw clip width == full stage redraw */
+      (stage_glx->bounding_redraw_clip.width != 0) &&
+      G_LIKELY (!(clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+    {
+      cogl_clip_push_window_rectangle (stage_glx->bounding_redraw_clip.x,
+                                       stage_glx->bounding_redraw_clip.y,
+                                       stage_glx->bounding_redraw_clip.width,
+                                       stage_glx->bounding_redraw_clip.height);
+      clutter_actor_paint (CLUTTER_ACTOR (stage));
+      cogl_clip_pop ();
+    }
+  else
+    clutter_actor_paint (CLUTTER_ACTOR (stage));
+
+  cogl_flush ();
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
+
+  if (stage_x11->xwin == None)
+    return;
+
+  drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+
+  /* wait for the next vblank */
+  glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+
+  /* push on the screen */
+  if (backend_glx->copy_sub_buffer &&
+      /* NB: a degenerate redraw clip width == full stage redraw */
+      (stage_glx->bounding_redraw_clip.width != 0) &&
+      G_LIKELY (!(clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+    {
+      ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
+      ClutterGeometry copy_area;
+
+      CLUTTER_NOTE (BACKEND,
+                    "glXCopySubBufferMESA (display: %p, "
+                                          "window: 0x%lx, "
+                                          "x: %d, y: %d, "
+                                          "width: %d, height: %d)",
+                    backend_x11->xdpy,
+                    (unsigned long) drawable,
+                    stage_glx->bounding_redraw_clip.x,
+                    stage_glx->bounding_redraw_clip.y,
+                    stage_glx->bounding_redraw_clip.width,
+                    stage_glx->bounding_redraw_clip.height);
+
+      if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)
+        {
+          static CoglHandle outline = COGL_INVALID_HANDLE;
+          CoglHandle vbo;
+          float x_1 = clip->x;
+          float x_2 = clip->x + clip->width;
+          float y_1 = clip->y;
+          float y_2 = clip->y + clip->height;
+          float quad[8] = {
+            x_1, y_1,
+            x_2, y_1,
+            x_2, y_2,
+            x_1, y_2
+          };
+
+          if (outline == COGL_INVALID_HANDLE)
+            {
+              outline = cogl_material_new ();
+              cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
+            }
+
+          vbo = cogl_vertex_buffer_new (4);
+          cogl_vertex_buffer_add (vbo,
+                                  "gl_Vertex",
+                                  2, /* n_components */
+                                  COGL_ATTRIBUTE_TYPE_FLOAT,
+                                  FALSE, /* normalized */
+                                  0, /* stride */
+                                  quad);
+          cogl_vertex_buffer_submit (vbo);
+
+          cogl_set_source (outline);
+          cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
+                                   0 , 4);
+          cogl_flush ();
+        }
+
+      /* XXX: It seems there will be a race here in that the stage
+       * window may be resized before glXCopySubBufferMESA is handled
+       * and so we may copy the wrong region. I can't really see how
+       * we can handle this with the current state of X but at least
+       * in this case a full redraw should be queued by the resize
+       * anyway so it should only exhibit temporary artefacts.
+       */
+      copy_area.y = clutter_actor_get_height (CLUTTER_ACTOR (stage))
+        - clip->y - clip->height;
+      copy_area.x = clip->x;
+      copy_area.width = clip->width;
+      copy_area.height = clip->height;
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, copy_sub_buffer_timer);
+      backend_glx->copy_sub_buffer (backend_x11->xdpy,
+                                    drawable,
+                                    copy_area.x,
+                                    copy_area.y,
+                                    copy_area.width,
+                                    copy_area.height);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, copy_sub_buffer_timer);
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
+                    backend_x11->xdpy,
+                    (unsigned long) drawable);
+
+      /* If we have GLX swap buffer events then glXSwapBuffers will return
+       * immediately and we need to track that there is a swap in
+       * progress... */
+      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
+        stage_glx->pending_swaps++;
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
+      glXSwapBuffers (backend_x11->xdpy, drawable);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+    }
+
+  /* reset the redraw clipping for the next paint... */
+  stage_glx->initialized_redraw_clip = FALSE;
 }
 

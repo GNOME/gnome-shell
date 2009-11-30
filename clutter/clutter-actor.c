@@ -302,13 +302,13 @@ struct _ClutterActorPrivate
   guint needs_height_request        : 1;
   /* cached allocation is invalid (request has changed, probably) */
   guint needs_allocation            : 1;
-  guint queued_redraw               : 1;
   guint show_on_set_parent          : 1;
   guint has_clip                    : 1;
   guint clip_to_allocation          : 1;
   guint enable_model_view_transform : 1;
   guint enable_paint_unmapped       : 1;
   guint has_pointer                 : 1;
+  guint propagated_one_redraw       : 1;
 
   gfloat clip[4];
 
@@ -353,6 +353,12 @@ struct _ClutterActorPrivate
   ClutterTextDirection text_direction;
 
   gint internal_child;
+
+  /* XXX: This is a workaround for not being able to break the ABI
+   * of the QUEUE_REDRAW signal. It's an out-of-band argument.
+   * See clutter_actor_queue_clipped_redraw() for details.
+   */
+  const ClutterActorBox *oob_queue_redraw_clip;
 };
 
 enum
@@ -1640,9 +1646,14 @@ static void
 clutter_actor_queue_redraw_with_origin (ClutterActor *self,
                                         ClutterActor *origin)
 {
-  /* already queued since last paint() */
-  if (self->priv->queued_redraw)
+  /* no point in queuing a redraw on a destroyed actor */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
     return;
+
+  /* NB: We can't bail out early here if the actor is hidden in case
+   * the actor bas been cloned. In this case the clone will need to
+   * receive the signal so it can queue its own redraw.
+   */
 
   /* calls klass->queue_redraw in default handler */
   g_signal_emit (self, actor_signals[QUEUE_REDRAW], 0, origin);
@@ -1654,18 +1665,13 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
 {
   ClutterActor *parent;
 
-  /* already queued since last paint() */
-  if (self->priv->queued_redraw)
-    return;
-
-  /* no point in queuing a paint on a destroyed actor */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
-    return;
-
   CLUTTER_NOTE (PAINT, "Redraw queued on '%s'",
                 clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : G_OBJECT_TYPE_NAME (self));
-  self->priv->queued_redraw = TRUE;
+
+  /* no point in queuing a redraw on a destroyed actor */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    return;
 
   /* If the actor isn't visible, we still had to emit the signal
    * to allow for a ClutterClone, but the appearance of the parent
@@ -1673,6 +1679,22 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    */
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     return;
+
+  /* Although we could determine here that a full stage redraw
+   * has already been queued and immediately bail out, we actually
+   * guarantee that we will propagate a queue-redraw signal to our
+   * parent at least once so that it's possible to implement a
+   * container that tracks which of its children have queued a
+   * redraw.
+   */
+  if (self->priv->propagated_one_redraw)
+    {
+      ClutterActor *stage = clutter_actor_get_stage (self);
+      if (stage &&
+          _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
+        return;
+    }
+  self->priv->propagated_one_redraw = TRUE;
 
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
@@ -1730,29 +1752,8 @@ full_vertex_to_units (const full_vertex_t *f,
   u->z = f->z;
 }
 
-/* Transforms a vertex using the passed matrix; vertex is
- * an in-out parameter
- */
-static void
-mtx_transform (const CoglMatrix *matrix,
-               full_vertex_t    *vertex)
-{
-  cogl_matrix_transform_point (matrix,
-                               &vertex->x,
-                               &vertex->y,
-                               &vertex->z,
-                               &vertex->w);
-}
-
-/* Help macros to scale from OpenGL <-1,1> coordinates system to our
- * X-window based <0,window-size> coordinates
- */
-#define MTX_GL_SCALE_X(x,w,v1,v2)       ((((((x) / (w)) + 1.0) / 2) * (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2)       ((v1) - (((((y) / (w)) + 1.0) / 2) * (v1)) + (v2))
-#define MTX_GL_SCALE_Z(z,w,v1,v2)       (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
-
 /* transforms a 4-tuple of coordinates using @matrix and
- * places the result into a fixed @vertex
+ * places the result into a @vertex
  */
 static inline void
 full_vertex_transform (const CoglMatrix *matrix,
@@ -1762,17 +1763,20 @@ full_vertex_transform (const CoglMatrix *matrix,
                        gfloat            w,
                        full_vertex_t    *vertex)
 {
-  full_vertex_t tmp = { 0, };
+  cogl_matrix_transform_point (matrix, &x, &y, &z, &w);
 
-  tmp.x = x;
-  tmp.y = y;
-  tmp.z = z;
-  tmp.w = w;
-
-  mtx_transform (matrix, &tmp);
-
-  *vertex = tmp;
+  vertex->x = x;
+  vertex->y = y;
+  vertex->z = z;
+  vertex->w = w;
 }
+
+/* Help macros to scale from OpenGL <-1,1> coordinates system to our
+ * X-window based <0,window-size> coordinates
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2)       ((((((x) / (w)) + 1.0) / 2) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2)       ((v1) - (((((y) / (w)) + 1.0) / 2) * (v1)) + (v2))
+#define MTX_GL_SCALE_Z(z,w,v1,v2)       (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /* scales a fixed @vertex using @matrix and @viewport, and
  * transforms the result into a ClutterVertex, filling @vertex_p
@@ -1784,11 +1788,15 @@ full_vertex_scale (const CoglMatrix    *matrix,
                    ClutterVertex       *vertex_p)
 {
   gfloat v_x, v_y, v_width, v_height;
-  full_vertex_t tmp = { 0, };
+  full_vertex_t tmp;
 
   tmp = *vertex;
 
-  mtx_transform (matrix, &tmp);
+  cogl_matrix_transform_point (matrix,
+                               &tmp.x,
+                               &tmp.y,
+                               &tmp.z,
+                               &tmp.w);
 
   v_x      = viewport[0];
   v_y      = viewport[1];
@@ -1817,7 +1825,7 @@ clutter_actor_transform_point_relative (ClutterActor *actor,
 					gfloat       *z,
 					gfloat       *w)
 {
-  full_vertex_t vertex = { 0, };
+  full_vertex_t vertex;
   CoglMatrix matrix;
 
   vertex.x = (x != NULL) ? *x : 0;
@@ -1830,7 +1838,12 @@ clutter_actor_transform_point_relative (ClutterActor *actor,
   _clutter_actor_apply_modelview_transform_recursive (actor, ancestor);
 
   cogl_get_modelview_matrix (&matrix);
-  mtx_transform (&matrix, &vertex);
+  cogl_matrix_transform_point (&matrix,
+                               &vertex.x,
+                               &vertex.y,
+                               &vertex.z,
+                               &vertex.w);
+
 
   cogl_pop_matrix();
 
@@ -1858,7 +1871,7 @@ clutter_actor_transform_point (ClutterActor *actor,
 			       gfloat       *z,
 			       gfloat       *w)
 {
-  full_vertex_t vertex = { 0, };
+  full_vertex_t vertex;
   CoglMatrix matrix;
 
   vertex.x = (x != NULL) ? *x : 0;
@@ -1871,7 +1884,12 @@ clutter_actor_transform_point (ClutterActor *actor,
   _clutter_actor_apply_modelview_transform_recursive (actor, NULL);
 
   cogl_get_modelview_matrix (&matrix);
-  mtx_transform (&matrix, &vertex);
+  cogl_matrix_transform_point (&matrix,
+                               &vertex.x,
+                               &vertex.y,
+                               &vertex.z,
+                               &vertex.w);
+
 
   cogl_pop_matrix();
 
@@ -1986,7 +2004,12 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
   cogl_get_viewport (v);
 
   /* Now, transform it again with the projection matrix */
-  mtx_transform (&matrix_p, &tmp);
+  cogl_matrix_transform_point (&matrix_p,
+                               &tmp.x,
+                               &tmp.y,
+                               &tmp.z,
+                               &tmp.w);
+
 
   /* Finaly translate from OpenGL coords to window coords */
   vertex->x = MTX_GL_SCALE_X (tmp.x, tmp.w, v[2], v[0]);
@@ -2024,29 +2047,19 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   cogl_pop_matrix();
 }
 
-/* Recursively tranform supplied box with the tranform for the current
- * actor and all its ancestors (like clutter_actor_transform_point()
- * but for all the vertices in one go) and project it into screen
- * coordinates
+/* _clutter_actor_ensure_stage_current
+ *
+ * Ensures that the actors corresponding stage is made current so we
+ * have a valid viewport, projection matrix and modelview matrix stack.
  */
 static void
-clutter_actor_transform_and_project_box (ClutterActor          *self,
-					 const ClutterActorBox *box,
-					 ClutterVertex          verts[])
+_clutter_actor_ensure_stage_current (ClutterActor *self)
 {
   ClutterActor *stage;
-  CoglMatrix mtx;
-  CoglMatrix mtx_p;
-  gfloat v[4];
-  gfloat width, height;
-  full_vertex_t vertices[4];
-
-  width  = box->x2 - box->x1;
-  height = box->y2 - box->y1;
 
   /* We essentially have to dupe some code from clutter_redraw() here
    * to make sure GL Matrices etc are initialised if we're called and we
-   * havn't yet rendered anything.
+   * haven't yet rendered anything.
    *
    * Simply duping code for now in wait for Cogl cleanup that can hopefully
    * address this in a nicer way.
@@ -2061,22 +2074,81 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
 
   clutter_stage_ensure_current (CLUTTER_STAGE (stage));
   _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
+}
 
-  cogl_push_matrix();
+/* _clutter_actor_get_relative_modelview:
+ *
+ * Retrives the modelview transformation relative to some ancestor actor, or
+ * the stage if NULL is given for the ancestor.
+ *
+ * It assumes you currently have an empty matrix stack.
+ */
+/* FIXME: We should be caching the stage relative modelview along with the
+ * actor itself */
+/* TODO: Replace all other occurrences of this code pattern in clutter-actor.c:
+ *   cogl_push_matrix();
+ *   _clutter_actor_apply_modelview_transform_recursive (self, ancestor)
+ *   cogl_get_modelview_matrix()
+ *   cogl_pop_matrix();
+ * with a call to this function:
+ */
+void
+_clutter_actor_get_relative_modelview (ClutterActor *self,
+                                       ClutterActor *ancestor,
+                                       CoglMatrix *matrix)
+{
+  _clutter_actor_ensure_stage_current (self);
 
-  _clutter_actor_apply_modelview_transform_recursive (self, NULL);
+  /* FIXME: init_identity instead of assuming we have an empty stack! */
 
-  cogl_get_modelview_matrix (&mtx);
+  cogl_push_matrix ();
 
-  full_vertex_transform (&mtx, 0,     0,      0, 1.0, &vertices[0]);
-  full_vertex_transform (&mtx, width, 0,      0, 1.0, &vertices[1]);
-  full_vertex_transform (&mtx, 0,     height, 0, 1.0, &vertices[2]);
-  full_vertex_transform (&mtx, width, height, 0, 1.0, &vertices[3]);
+  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
 
-  cogl_pop_matrix();
+  cogl_get_modelview_matrix (matrix);
 
-  cogl_get_projection_matrix (&mtx_p);
-  cogl_get_viewport (v);
+  cogl_pop_matrix ();
+}
+
+/* _clutter_actor_get_projection_and_viewport
+ *
+ * Retrieves the projection matrix and viewport for the actors corresponding
+ * stage.
+ */
+void
+_clutter_actor_get_projection_and_viewport (ClutterActor *self,
+                                            CoglMatrix *matrix,
+                                            float *viewport)
+{
+  _clutter_actor_ensure_stage_current (self);
+
+  cogl_get_projection_matrix (matrix);
+  cogl_get_viewport (viewport);
+}
+
+/* Recursively transform supplied box with the transform for the current
+ * actor and all its ancestors (like clutter_actor_transform_point()
+ * but for all the vertices in one go) and project it into screen
+ * coordinates
+ */
+void
+_clutter_actor_transform_and_project_box (ClutterActor          *self,
+					  const ClutterActorBox *box,
+					  ClutterVertex          verts[])
+{
+  CoglMatrix mtx;
+  CoglMatrix mtx_p;
+  float v[4];
+  full_vertex_t vertices[4];
+
+  _clutter_actor_get_relative_modelview (self, NULL, &mtx);
+
+  full_vertex_transform (&mtx, box->x1, box->y1, 0, 1.0, &vertices[0]);
+  full_vertex_transform (&mtx, box->x2, box->y1, 0, 1.0, &vertices[1]);
+  full_vertex_transform (&mtx, box->x1, box->y2, 0, 1.0, &vertices[2]);
+  full_vertex_transform (&mtx, box->x2, box->y2, 0, 1.0, &vertices[3]);
+
+  _clutter_actor_get_projection_and_viewport (self, &mtx_p, v);
 
   full_vertex_scale (&mtx_p, &vertices[0], v, &verts[0]);
   full_vertex_scale (&mtx_p, &vertices[1], v, &verts[1]);
@@ -2201,6 +2273,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
                                            ClutterVertex  verts[])
 {
   ClutterActorPrivate   *priv;
+  ClutterActorBox        actor_space_allocation;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -2208,7 +2281,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
 
   /* if the actor needs to be allocated we force a relayout, so that
    * the actor allocation box will be valid for
-   * clutter_actor_transform_and_project_box()
+   * _clutter_actor_transform_and_project_box()
    */
   if (priv->needs_allocation)
     {
@@ -2223,9 +2296,17 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
       _clutter_stage_maybe_relayout (stage);
     }
 
-  clutter_actor_transform_and_project_box (self,
-					   &self->priv->allocation,
-					   verts);
+  /* NB: _clutter_actor_transform_and_project_box expects a box in the actor's
+   * own coordinate space... */
+  actor_space_allocation.x1 = 0;
+  actor_space_allocation.y1 = 0;
+  actor_space_allocation.x2 =
+    self->priv->allocation.x2 - self->priv->allocation.x1;
+  actor_space_allocation.y2 =
+    self->priv->allocation.y2 - self->priv->allocation.y1;
+  _clutter_actor_transform_and_project_box (self,
+					    &actor_space_allocation,
+					    verts);
 }
 
 static void
@@ -2393,7 +2474,7 @@ clutter_actor_paint (ClutterActor *self)
          clone's opacity instead */
       (priv->opacity_parent ? priv->opacity_parent->priv : priv)->opacity == 0)
     {
-      priv->queued_redraw = FALSE;
+      priv->propagated_one_redraw = FALSE;
       return;
     }
 
@@ -2450,7 +2531,7 @@ clutter_actor_paint (ClutterActor *self)
 
       clutter_actor_shader_pre_paint (self, FALSE);
 
-      self->priv->queued_redraw = FALSE;
+      self->priv->propagated_one_redraw = FALSE;
       g_signal_emit (self, actor_signals[PAINT], 0);
 
       clutter_actor_shader_post_paint (self);
@@ -4546,6 +4627,130 @@ clutter_actor_queue_redraw (ClutterActor *self)
   clutter_actor_queue_redraw_with_origin (self, self);
 }
 
+static void
+_clutter_actor_get_allocation_clip (ClutterActor *self,
+                                    ClutterActorBox *clip)
+{
+  ClutterActorBox allocation;
+
+  /* XXX: we don't care if we get an out of date allocation here
+   * because clutter_actor_queue_redraw_with_origin knows to ignore
+   * the clip if the actor's allocation is invalid.
+   *
+   * This is noted because clutter_actor_get_allocation_box does some
+   * unnecessary work to support buggy code with a comment suggesting
+   * that it could be changed later which would be good for this use
+   * case!
+   */
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  /* NB: clutter_actor_queue_clipped_redraw expects a box in the
+   * actor's own coordinate space but the allocation is in parent
+   * coordinates */
+  clip->x1 = 0;
+  clip->y1 = 0;
+  clip->x2 = allocation.x2 - allocation.x1;
+  clip->y2 = allocation.y2 - allocation.y1;
+}
+
+/*
+ * clutter_actor_queue_redraw_with_clip:
+ * @self: A #ClutterActor
+ * @flags: A mask of #ClutterRedrawFlags controlling the behaviour of
+ *         this queue redraw.
+ * @clip: A #ClutterActorBox describing the bounds of what needs to be
+ *        redrawn or NULL if you are just using a @flag to state your
+ *        desired clipping.
+ *
+ * Queues up a clipped redraw of an actor and any children. The redraw
+ * occurs once the main loop becomes idle (after the current batch of
+ * events has been processed, roughly).
+ *
+ * If the CLUTTER_REDRAW_CLIPPED_TO_BOX @flag is used, the clip box is
+ * specified in actor coordinates and tells Clutter that only content
+ * within this box has been changed so Clutter can optionally optimize
+ * the redraw.
+ *
+ * If you are queuing a clipped redraw it is assumed that the actor is
+ * flat, and once the clip rectangle is projected into stage
+ * coordinates it will cover the area of the stage that needs to be
+ * redrawn. This is not possible to determine for 3D actors since the
+ * projection of such actors may escape the clip rectangle.
+ *
+ * If the CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION @flag is used, @clip
+ * should be NULL and this tells Clutter to use the actors current
+ * allocation as a clip box. As above this flag can only be used for
+ * 2D actors.
+ *
+ * Applications rarely need to call this, as redraws are handled
+ * automatically by modification functions.
+ *
+ * This function will not do anything if @self is not visible, or if
+ * the actor is inside an invisible part of the scenegraph.
+ *
+ * Also be aware that painting is a NOP for actors with an opacity of
+ * 0
+ */
+void
+_clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
+                                       ClutterRedrawFlags  flags,
+                                       ClutterActorBox    *clip)
+{
+  ClutterActorBox allocation_clip;
+
+  /* If the actor doesn't have a valid allocation then we will queue a
+   * full stage redraw */
+  if (self->priv->needs_allocation)
+    {
+      clutter_actor_queue_redraw (self);
+      return;
+    }
+
+  /* SYNC_MATRICES is a flag for the stage, which means that we just
+   * got resized and we need to re-setup the viewport.
+   * IN_RESIZE is used on X11 where the resize is asynchronous, so we
+   * don't ask for a viewport change before we have the final size.
+   *
+   * If either of these flags are set then we won't be able to
+   * transform the given clip rectangle into valid stage coordinates,
+   * so we instead queue a full stage redraw.
+   *
+   * (Note: to some extent this is redundant because these flags
+   *  should imply a full stage redraw will be queued, but we at least
+   *  avoid needlessly traversing the actors ancestors to derive an
+   *  incorrect modelview matrix.)
+   */
+  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_SYNC_MATRICES) &&
+      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_STAGE_IN_RESIZE))
+    {
+      clutter_actor_queue_redraw (self);
+      return;
+    }
+
+  if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
+    {
+      _clutter_actor_get_allocation_clip (self, &allocation_clip);
+      clip = &allocation_clip;
+    }
+
+  /* XXX: Ideally the redraw signal would take a clip rectangle
+   * argument, but that would be an ABI break. Until we can break the
+   * ABI we pass the argument out-of-band via an actor->priv member...
+   */
+
+  _clutter_actor_set_queue_redraw_clip (self, clip);
+
+  clutter_actor_queue_redraw_with_origin (self, self);
+
+  /* Just in case anyone is manually firing redraw signals without
+   * using the public queue_redraw() API we are careful to ensure that
+   * our out-of-band clip member is cleared before returning...
+   *
+   * Note: A NULL clip denotes a full-stage, un-clipped redraw
+   */
+  _clutter_actor_set_queue_redraw_clip (self, NULL);
+}
+
 /**
  * clutter_actor_queue_relayout:
  * @self: A #ClutterActor
@@ -5692,18 +5897,23 @@ clutter_actor_get_transformed_size (ClutterActor *self,
       gfloat natural_width, natural_height;
       ClutterActorBox box;
 
-      /* make a fake allocation to transform */
-      clutter_actor_get_position (self, &box.x1, &box.y1);
+      /* Make a fake allocation to transform.
+       *
+       * NB: _clutter_actor_transform_and_project_box expects a box in
+       * the actor's coordinate space... */
+
+      box.x1 = 0;
+      box.y1 = 0;
 
       natural_width = natural_height = 0;
       clutter_actor_get_preferred_size (self, NULL, NULL,
                                         &natural_width,
                                         &natural_height);
 
-      box.x2 = box.x1 + natural_width;
-      box.y2 = box.y1 + natural_height;
+      box.x2 = natural_width;
+      box.y2 = natural_height;
 
-      clutter_actor_transform_and_project_box (self, &box, v);
+      _clutter_actor_transform_and_project_box (self, &box, v);
     }
   else
     clutter_actor_get_abs_allocation_vertices (self, v);
@@ -9840,3 +10050,21 @@ clutter_actor_has_pointer (ClutterActor *self)
 
   return self->priv->has_pointer;
 }
+
+/* XXX: This is a workaround for not being able to break the ABI of
+ * the QUEUE_REDRAW signal. It is an out-of-band argument.  See
+ * clutter_actor_queue_clipped_redraw() for details.
+ */
+const ClutterActorBox *
+_clutter_actor_get_queue_redraw_clip (ClutterActor *self)
+{
+  return self->priv->oob_queue_redraw_clip;
+}
+
+void
+_clutter_actor_set_queue_redraw_clip (ClutterActor *self,
+                                      const ClutterActorBox *clip)
+{
+  self->priv->oob_queue_redraw_clip = clip;
+}
+

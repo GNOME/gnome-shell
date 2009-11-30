@@ -52,6 +52,9 @@ struct _ClutterStageGLX
 
   GLXPixmap glxpixmap;
   GLXWindow glxwin;
+
+  gboolean initialized_redraw_clip;
+  ClutterGeometry bounding_redraw_clip;
 };
 
 struct _ClutterStageGLXClass
@@ -59,7 +62,10 @@ struct _ClutterStageGLXClass
   ClutterStageX11Class parent_class;
 };
 
-GType clutter_stage_glx_get_type (void) G_GNUC_CONST;
+GType clutter_stage_glx_get_type  (void) G_GNUC_CONST;
+
+void  clutter_stage_glx_redraw    (ClutterStageGLX *stage_glx,
+                                   ClutterStage *stage);
 
 G_END_DECLS
 
