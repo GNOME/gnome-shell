@@ -496,8 +496,8 @@ WindowOverlay.prototype = {
 
         let closeNode = this.closeButton.get_theme_node();
 
-        let [success, len] = closeNode.get_length('-shell-close-overlap',
-                                                  false);
+        [success, len] = closeNode.get_length('-shell-close-overlap',
+                                              false);
         if (success)
             this.closeButton._overlap = len;
 
