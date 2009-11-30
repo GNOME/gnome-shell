@@ -32,7 +32,7 @@
 #endif
 
 #if !CLUTTER_CHECK_VERSION(1,1,3)
-static PFNGLACTIVETEXTUREPROC activeTexture;
+static PFNGLACTIVETEXTUREARBPROC activeTexture;
 static PFNGLGENFRAMEBUFFERSPROC genFramebuffers;
 static PFNGLDELETEFRAMEBUFFERSPROC deleteFramebuffers;
 static PFNGLBINDFRAMEBUFFERPROC bindFramebuffer;
@@ -489,7 +489,7 @@ initialize_gl_functions (void)
     {
       initialized = TRUE;
 
-      activeTexture = (PFNGLACTIVETEXTUREPROC) cogl_get_proc_address ("glActiveTextureARB");
+      activeTexture = (PFNGLACTIVETEXTUREARBPROC) cogl_get_proc_address ("glActiveTextureARB");
       genFramebuffers = (PFNGLGENFRAMEBUFFERSPROC) cogl_get_proc_address ("glGenFramebuffersEXT");
       deleteFramebuffers = (PFNGLDELETEFRAMEBUFFERSPROC) cogl_get_proc_address ("glDeleteFramebuffersEXT");
       bindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC) cogl_get_proc_address ("glBindFramebufferEXT");
