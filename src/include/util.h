@@ -131,12 +131,6 @@ GPid meta_show_dialog (const char *type,
 
 #endif /* !WITH_VERBOSE_MODE */
 
-/**
- * An object which exists purely to attach signals to; this is to receive
- * signals when a child process exits.  The signal is "sigchld" with no detail.
- */
-extern MetaNexus *sigchld_nexus;
-
 #endif /* META_UTIL_H */
 
 
