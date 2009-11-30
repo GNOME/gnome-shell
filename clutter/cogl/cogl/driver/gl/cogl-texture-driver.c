@@ -134,6 +134,32 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                        source_bmp->data) );
 }
 
+void
+_cogl_texture_driver_upload_to_gl (GLenum       gl_target,
+                                   GLuint       gl_handle,
+                                   CoglBitmap  *source_bmp,
+                                   GLint        internal_gl_format,
+                                   GLuint       source_gl_format,
+                                   GLuint       source_gl_type)
+{
+  int bpp = _cogl_get_format_bpp (source_bmp->format);
+
+  /* Setup gl alignment to match rowstride and top-left corner */
+  prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, bpp);
+
+  /* We don't need to use _cogl_texture_driver_bind here because we're
+     not using the bound texture to render yet */
+  GE( glBindTexture (gl_target, gl_handle) );
+
+  GE( glTexImage2D (gl_target, 0,
+                    internal_gl_format,
+                    source_bmp->width, source_bmp->height,
+                    0,
+                    source_gl_format,
+                    source_gl_type,
+                    source_bmp->data) );
+}
+
 gboolean
 _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
                                        GLenum  dest_gl_format,
