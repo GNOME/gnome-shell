@@ -128,6 +128,53 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   g_free (slice_bmp.data);
 }
 
+void
+_cogl_texture_driver_upload_to_gl (GLenum       gl_target,
+                                   GLuint       gl_handle,
+                                   CoglBitmap  *source_bmp,
+                                   GLint        internal_gl_format,
+                                   GLuint       source_gl_format,
+                                   GLuint       source_gl_type)
+{
+  int bpp = _cogl_get_format_bpp (source_bmp->format);
+  CoglBitmap bmp = *source_bmp;
+  gboolean bmp_owner = FALSE;
+
+  /* If the rowstride can't be specified with just GL_ALIGNMENT alone
+     then we need to copy the bitmap because there is no GL_ROW_LENGTH */
+  if (source_bmp->rowstride / bpp != source_bmp->width)
+    {
+      bmp.rowstride = bpp * bmp.width;
+      bmp.data = g_malloc (bmp.rowstride * bmp.height);
+      bmp_owner = TRUE;
+
+      _cogl_bitmap_copy_subregion (source_bmp,
+                                   &bmp,
+                                   0, 0, 0, 0,
+                                   bmp.width,
+                                   bmp.height);
+    }
+
+  /* Setup gl alignment to match rowstride and top-left corner */
+  _cogl_texture_driver_prep_gl_for_pixels_upload (bmp.rowstride,
+                                                  bpp);
+
+  /* We don't need to use _cogl_texture_driver_bind here because we're
+     not using the bound texture to render yet */
+  GE( glBindTexture (gl_target, gl_handle) );
+
+  GE( glTexImage2D (gl_target, 0,
+                    internal_gl_format,
+                    bmp.width, bmp.height,
+                    0,
+                    source_gl_format,
+                    source_gl_type,
+                    bmp.data) );
+
+  if (bmp_owner)
+    g_free (bmp.data);
+}
+
 /* NB: GLES doesn't support glGetTexImage2D, so cogl-texture will instead
  * fallback to a generic render + readpixels approach to downloading
  * texture data. (See _cogl_texture_draw_and_read() ) */
