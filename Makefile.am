@@ -2,11 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = build clutter tests po
-
-if BUILD_GTK_DOC
-SUBDIRS += doc
-endif
+SUBDIRS = doc build clutter tests po
 
 DIST_SUBDIRS = build clutter tests doc po
 
