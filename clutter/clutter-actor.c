@@ -6618,6 +6618,7 @@ clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
   ClutterActorPrivate *priv;
+  ClutterTextDirection text_dir;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
@@ -6656,13 +6657,15 @@ clutter_actor_set_parent (ClutterActor *self,
    */
   clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
+  /* propagate the parent's text direction to the child */
+  text_dir = clutter_actor_get_text_direction (parent);
+  clutter_actor_set_text_direction (self, text_dir);
+
   if (priv->show_on_set_parent)
     clutter_actor_show (self);
 
   if (CLUTTER_ACTOR_IS_MAPPED (self))
-    {
-      clutter_actor_queue_redraw (self);
-    }
+    clutter_actor_queue_redraw (self);
 
   /* maintain the invariant that if an actor needs layout,
    * its parents do as well
@@ -9461,8 +9464,9 @@ clutter_actor_get_text_direction (ClutterActor *self)
 
   priv = self->priv;
 
+  /* if no direction has been set yet use the default */
   if (priv->text_direction == CLUTTER_TEXT_DIRECTION_DEFAULT)
-    return clutter_get_default_text_direction ();
+    priv->text_direction = clutter_get_default_text_direction ();
 
   return priv->text_direction;
 }
