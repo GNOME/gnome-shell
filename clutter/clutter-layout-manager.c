@@ -78,6 +78,34 @@
  *   policies then it should emit the #ClutterLayoutManager::layout-changed
  *   signal on itself by using the clutter_layout_manager_layout_changed()
  *   function.</para>
+ *   <para>If the layout manager has layout properties, that is properties that
+ *   should exist only as the result of the presence of a specific (layout
+ *   manager, container actor, child actor) combination, then it should
+ *   override the <structname>ClutterLayoutManager</structname>::get_child_meta_type()
+ *   virtual function to return the #GType of the #ClutterLayoutMeta sub-class
+ *   used to store the layout properties; optionally, the #ClutterLayoutManager
+ *   sub-class might also override the
+ *   <structname>ClutterLayoutManager</structname>::create_child_meta() virtual
+ *   function to control how the #ClutterLayoutMeta instance is created,
+ *   otherwise the default implementation will be equivalent to:</para>
+ *   <informalexample><programlisting>
+ *   ClutterLayoutManagerClass *klass;
+ *   GType meta_type;
+ *
+ *   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+ *   meta_type = klass->get_child_meta_type (manager);
+ *
+ *   return g_object_new (meta_type,
+ *                        "manager", manager,
+ *                        "container", container,
+ *                        "actor", actor,
+ *                        NULL);
+ *   </programlisting></informalexample>
+ *   <para>Where <variablename>manager</variablename> is the
+ *   #ClutterLayoutManager, <variablename>container</variablename> is the
+ *   #ClutterContainer using the #ClutterLayoutManager and
+ *   <variablename>actor</variablename> is the #ClutterActor child of the
+ *   #ClutterContainer.</para>
  * </refsect2>
  *
  * #ClutterLayoutManager is available since Clutter 1.2
@@ -163,6 +191,24 @@ layout_manager_real_create_child_meta (ClutterLayoutManager *manager,
                                        ClutterContainer     *container,
                                        ClutterActor         *actor)
 {
+  ClutterLayoutManagerClass *klass;
+  GType meta_type;
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+  meta_type = klass->get_child_meta_type (manager);
+
+  /* provide a default implementation to reduce common code */
+  if (meta_type != G_TYPE_INVALID)
+    {
+      g_assert (g_type_is_a (meta_type, CLUTTER_TYPE_LAYOUT_META));
+
+      return g_object_new (meta_type,
+                           "manager", manager,
+                           "container", container,
+                           "actor", actor,
+                           NULL);
+    }
+
   return NULL;
 }
 
@@ -384,29 +430,10 @@ create_child_meta (ClutterLayoutManager *manager,
   ClutterLayoutManagerClass *klass;
 
   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+  if (klass->get_child_meta_type (manager) != G_TYPE_INVALID)
+    return klass->create_child_meta (manager, container, actor);
 
-  return klass->create_child_meta (manager, container, actor);
-}
-
-static gboolean
-has_child_meta (ClutterLayoutManager *manager,
-                ClutterContainer     *container,
-                ClutterActor         *actor)
-{
-  ClutterLayoutMeta *layout_meta = NULL;
-
-  layout_meta = g_object_get_qdata (G_OBJECT (actor), quark_layout_meta);
-  if (layout_meta != NULL)
-    {
-      ClutterChildMeta *child_meta = CLUTTER_CHILD_META (layout_meta);
-
-      if (layout_meta->manager == manager &&
-          child_meta->container == container &&
-          child_meta->actor == actor)
-        return TRUE;
-    }
-
-  return FALSE;
+  return NULL;
 }
 
 static inline ClutterLayoutMeta *
@@ -430,15 +457,15 @@ get_child_meta (ClutterLayoutManager *manager,
        * layout manager then we simply ask the layout manager
        * to replace it with the right one
        */
-      layout = create_child_meta (manager, container, actor);
-      if (layout != NULL)
-        {
-          g_assert (CLUTTER_IS_LAYOUT_META (layout));
-          g_object_set_qdata_full (G_OBJECT (actor), quark_layout_meta,
-                                   layout,
-                                   (GDestroyNotify) g_object_unref);
-        }
+    }
 
+  layout = create_child_meta (manager, container, actor);
+  if (layout != NULL)
+    {
+      g_assert (CLUTTER_IS_LAYOUT_META (layout));
+      g_object_set_qdata_full (G_OBJECT (actor), quark_layout_meta,
+                               layout,
+                               (GDestroyNotify) g_object_unref);
       return layout;
     }
 
@@ -452,9 +479,11 @@ get_child_meta (ClutterLayoutManager *manager,
  * @actor: a #ClutterActor child of @container
  *
  * Retrieves the #ClutterLayoutMeta that the layout @manager associated
- * to the @actor child of @container
+ * to the @actor child of @container, eventually by creating one if the
+ * #ClutterLayoutManager supports layout properties
  *
- * Return value: a #ClutterLayoutMeta or %NULL
+ * Return value: a #ClutterLayoutMeta, or %NULL if the #ClutterLayoutManager
+ *   does not have layout properties
  *
  * Since: 1.0
  */
@@ -468,118 +497,6 @@ clutter_layout_manager_get_child_meta (ClutterLayoutManager *manager,
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
   return get_child_meta (manager, container, actor);
-}
-
-/**
- * clutter_layout_manager_add_child_meta:
- * @manager: a #ClutterLayoutManager
- * @container: a #ClutterContainer using @manager
- * @actor: a #ClutterActor child of @container
- *
- * Creates and binds a #ClutterLayoutMeta for @manager to
- * a child of @container
- *
- * This function should only be used when implementing containers
- * using #ClutterLayoutManager and not by application code
- *
- * Typically, containers should bind a #ClutterLayoutMeta created
- * by a #ClutterLayoutManager when adding a new child, e.g.:
- *
- * |[
- *   static void
- *   my_container_add (ClutterContainer *container,
- *                     ClutterActor     *actor)
- *   {
- *     MyContainer *self = MY_CONTAINER (container);
- *
- *     self->children = g_slist_append (self->children, actor);
- *     clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
- *
- *     clutter_layout_manager_add_child_meta (self->layout,
- *                                            container,
- *                                            actor);
- *
- *     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
- *
- *     g_signal_emit_by_name (container, "actor-added");
- *   }
- * ]|
- *
- * The #ClutterLayoutMeta should be removed when removing an
- * actor; see clutter_layout_manager_remove_child_meta()
- *
- * Since: 1.2
- */
-void
-clutter_layout_manager_add_child_meta (ClutterLayoutManager *manager,
-                                       ClutterContainer     *container,
-                                       ClutterActor         *actor)
-{
-  ClutterLayoutMeta *meta;
-
-  meta = create_child_meta (manager, container, actor);
-  if (meta == NULL)
-    return;
-
-  g_object_set_qdata_full (G_OBJECT (actor), quark_layout_meta,
-                           meta,
-                           (GDestroyNotify) g_object_unref);
-}
-
-/**
- * clutter_layout_manager_remove_child_meta:
- * @manager: a #ClutterLayoutManager
- * @container: a #ClutterContainer using @manager
- * @actor: a #ClutterActor child of @container
- *
- * Unbinds and unrefs a #ClutterLayoutMeta for @manager from
- * a child of @container
- *
- * This function should only be used when implementing containers
- * using #ClutterLayoutManager and not by application code
- *
- * Typically, containers should remove a #ClutterLayoutMeta created
- * by a #ClutterLayoutManager when removing a child, e.g.:
- *
- * |[
- *   static void
- *   my_container_remove (ClutterContainer *container,
- *                        ClutterActor     *actor)
- *   {
- *     MyContainer *self = MY_CONTAINER (container);
- *
- *     g_object_ref (actor);
- *
- *     self->children = g_slist_remove (self->children, actor);
- *     clutter_actor_unparent (actor);
- *
- *     clutter_layout_manager_remove_child_meta (self->layout,
- *                                               container,
- *                                               actor);
- *
- *     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
- *
- *     g_signal_emit_by_name (container, "actor-removed");
- *
- *     g_object_unref (actor);
- *   }
- * ]|
- *
- * See also clutter_layout_manager_add_child_meta()
- *
- * Since: 1.2
- */
-void
-clutter_layout_manager_remove_child_meta (ClutterLayoutManager *manager,
-                                          ClutterContainer     *container,
-                                          ClutterActor         *actor)
-{
-  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  if (has_child_meta (manager, container, actor))
-    g_object_set_qdata (G_OBJECT (actor), quark_layout_meta, NULL);
 }
 
 static inline gboolean
@@ -665,7 +582,7 @@ clutter_layout_manager_child_set (ClutterLayoutManager *manager,
   if (meta == NULL)
     {
       g_warning ("Layout managers of type '%s' do not support "
-                 "child metadata",
+                 "layout metadata",
                  g_type_name (G_OBJECT_TYPE (manager)));
       return;
     }
@@ -685,7 +602,7 @@ clutter_layout_manager_child_set (ClutterLayoutManager *manager,
       pspec = g_object_class_find_property (klass, pname);
       if (pspec == NULL)
         {
-          g_warning ("%s: Layout managers of type '%s' have no child "
+          g_warning ("%s: Layout managers of type '%s' have no layout "
                      "property named '%s'",
                      G_STRLOC, G_OBJECT_TYPE_NAME (manager), pname);
           break;
@@ -749,7 +666,7 @@ clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
   if (meta == NULL)
     {
       g_warning ("Layout managers of type '%s' do not support "
-                 "child metadata",
+                 "layout metadata",
                  g_type_name (G_OBJECT_TYPE (manager)));
       return;
     }
@@ -759,7 +676,7 @@ clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
   pspec = g_object_class_find_property (klass, property_name);
   if (pspec == NULL)
     {
-      g_warning ("%s: Layout managers of type '%s' have no child "
+      g_warning ("%s: Layout managers of type '%s' have no layout "
                  "property named '%s'",
                  G_STRLOC, G_OBJECT_TYPE_NAME (manager), property_name);
       return;
@@ -803,7 +720,7 @@ clutter_layout_manager_child_get (ClutterLayoutManager *manager,
   if (meta == NULL)
     {
       g_warning ("Layout managers of type '%s' do not support "
-                 "child metadata",
+                 "layout metadata",
                  g_type_name (G_OBJECT_TYPE (manager)));
       return;
     }
@@ -823,7 +740,7 @@ clutter_layout_manager_child_get (ClutterLayoutManager *manager,
       pspec = g_object_class_find_property (klass, pname);
       if (pspec == NULL)
         {
-          g_warning ("%s: Layout managers of type '%s' have no child "
+          g_warning ("%s: Layout managers of type '%s' have no layout "
                      "property named '%s'",
                      G_STRLOC, G_OBJECT_TYPE_NAME (manager), pname);
           break;
@@ -895,7 +812,7 @@ clutter_layout_manager_child_get_property (ClutterLayoutManager *manager,
   if (meta == NULL)
     {
       g_warning ("Layout managers of type %s do not support "
-                 "child metadata",
+                 "layout metadata",
                  g_type_name (G_OBJECT_TYPE (manager)));
       return;
     }
@@ -905,7 +822,7 @@ clutter_layout_manager_child_get_property (ClutterLayoutManager *manager,
   pspec = g_object_class_find_property (klass, property_name);
   if (pspec == NULL)
     {
-      g_warning ("%s: Layout managers of type '%s' have no child "
+      g_warning ("%s: Layout managers of type '%s' have no layout "
                  "property named '%s'",
                  G_STRLOC, G_OBJECT_TYPE_NAME (manager), property_name);
       return;

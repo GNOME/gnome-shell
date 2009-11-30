@@ -80,7 +80,7 @@ struct _ClutterLayoutManager
  * @get_child_meta_type: virtual function; override to return the #GType
  *   of the #ClutterLayoutMeta sub-class used by the #ClutterLayoutManager
  * @create_child_meta: virtual function; override to create a
- *   #ClutterChildMeta instance associated to a #ClutterContainer and a
+ *   #ClutterLayoutMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
@@ -160,12 +160,6 @@ GParamSpec **      clutter_layout_manager_list_child_properties (ClutterLayoutMa
                                                                  guint                  *n_pspecs);
 
 ClutterLayoutMeta *clutter_layout_manager_get_child_meta        (ClutterLayoutManager   *manager,
-                                                                 ClutterContainer       *container,
-                                                                 ClutterActor           *actor);
-void               clutter_layout_manager_add_child_meta        (ClutterLayoutManager   *manager,
-                                                                 ClutterContainer       *container,
-                                                                 ClutterActor           *actor);
-void               clutter_layout_manager_remove_child_meta     (ClutterLayoutManager   *manager,
                                                                  ClutterContainer       *container,
                                                                  ClutterActor           *actor);
 

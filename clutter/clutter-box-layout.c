@@ -478,18 +478,6 @@ allocate_fill (ClutterActor    *child,
   *childbox = allocation;
 }
 
-static ClutterLayoutMeta *
-clutter_box_layout_create_child_meta (ClutterLayoutManager *layout,
-                                      ClutterContainer     *container,
-                                      ClutterActor         *actor)
-{
-  return g_object_new (CLUTTER_TYPE_BOX_CHILD,
-                       "manager", layout,
-                       "container", container,
-                       "actor", actor,
-                       NULL);
-}
-
 static GType
 clutter_box_layout_get_child_meta_type (ClutterLayoutManager *manager)
 {
@@ -895,7 +883,6 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
     clutter_box_layout_get_preferred_height;
   layout_class->allocate = clutter_box_layout_allocate;
   layout_class->set_container = clutter_box_layout_set_container;
-  layout_class->create_child_meta = clutter_box_layout_create_child_meta;
   layout_class->get_child_meta_type =
     clutter_box_layout_get_child_meta_type;
 
