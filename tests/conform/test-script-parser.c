@@ -258,6 +258,34 @@ test_script_object_property (TestConformSimpleFixture *fixture,
 }
 
 void
+test_script_named_object (TestConformSimpleFixture *fixture,
+                          gconstpointer dummy)
+{
+  ClutterScript *script = clutter_script_new ();
+  ClutterLayoutManager *manager;
+  GObject *actor = NULL;
+  GError *error = NULL;
+  gchar *test_file;
+
+  test_file = clutter_test_get_data_file ("test-script-named-object.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
+  g_assert (error == NULL);
+
+  actor = clutter_script_get_object (script, "test");
+  g_assert (CLUTTER_IS_BOX (actor));
+
+  manager = clutter_box_get_layout_manager (CLUTTER_BOX (actor));
+  g_assert (CLUTTER_IS_BOX_LAYOUT (manager));
+  g_assert (clutter_box_layout_get_vertical (CLUTTER_BOX_LAYOUT (manager)));
+
+  g_object_unref (script);
+  clutter_actor_destroy (CLUTTER_ACTOR (actor));
+  g_free (test_file);
+}
+
+void
 test_script_animation (TestConformSimpleFixture *fixture,
                        gconstpointer dummy)
 {

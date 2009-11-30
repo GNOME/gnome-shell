@@ -1,0 +1,22 @@
+[
+  {
+    "id" : "layout",
+    "type" : "ClutterBoxLayout",
+    "vertical" : true,
+    "spacing" : 12,
+    "pack-start" : false
+  },
+  {
+    "id" : "test",
+    "type" : "ClutterBox",
+    "layout-manager" : "layout", 
+    "children" : [
+      {
+        "id" : "child-1",
+        "type" : "ClutterRectangle",
+        "width" : "3 em",
+        "height" : "3 em"
+      }
+    ]
+  }
+]
