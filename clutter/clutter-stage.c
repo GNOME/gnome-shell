@@ -96,6 +96,7 @@ struct _ClutterStagePrivate
   guint is_user_resizable      : 1;
   guint use_fog                : 1;
   guint throttle_motion_events : 1;
+  guint use_alpha              : 1;
 };
 
 enum
@@ -110,7 +111,8 @@ enum
   PROP_TITLE,
   PROP_USER_RESIZE,
   PROP_USE_FOG,
-  PROP_FOG
+  PROP_FOG,
+  PROP_USE_ALPHA
 };
 
 enum
@@ -250,7 +252,9 @@ clutter_stage_paint (ClutterActor *self)
                            priv->color.red,
                            priv->color.green,
                            priv->color.blue,
-                           priv->color.alpha);
+                           priv->use_alpha
+                             ? priv->color.alpha
+                             : 255);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
@@ -289,7 +293,8 @@ clutter_stage_pick (ClutterActor       *self,
    */
 
   clutter_container_foreach (CLUTTER_CONTAINER (self),
-                             CLUTTER_CALLBACK (clutter_actor_paint), NULL);
+                             CLUTTER_CALLBACK (clutter_actor_paint),
+                             NULL);
 }
 
 static void
@@ -660,6 +665,11 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_fog (stage, g_value_get_boxed (value));
       break;
 
+    case PROP_USE_ALPHA:
+      stage->priv->use_alpha = g_value_get_boolean (value);
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -710,6 +720,10 @@ clutter_stage_get_property (GObject    *gobject,
 
     case PROP_FOG:
       g_value_set_boxed (value, &priv->fog);
+      break;
+
+    case PROP_USE_ALPHA:
+      g_value_set_boolean (value, priv->use_alpha);
       break;
 
     default:
@@ -938,6 +952,24 @@ clutter_stage_class_init (ClutterStageClass *klass)
                               CLUTTER_TYPE_FOG,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_FOG, pspec);
+
+  /**
+   * ClutterStage:use-alpha:
+   *
+   * Whether the #ClutterStage should honour the alpha component of the
+   * #ClutterStage:color property when painting. If Clutter is run under
+   * a compositing manager this will result in the stage being blended
+   * with the underlying window(s)
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("use-alpha",
+                                "Use Alpha",
+                                "Whether to honour the alpha component of "
+                                "the stage color",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_ALPHA, pspec);
 
   /**
    * ClutterStage::fullscreen
