@@ -233,6 +233,9 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
                                               16);
     }
 
+  if (children)
+    line_count = 1;
+
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
@@ -378,6 +381,9 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
                                               sizeof (gfloat),
                                               16);
     }
+
+  if (children)
+    line_count = 1;
 
   for (l = children; l != NULL; l = l->next)
     {
