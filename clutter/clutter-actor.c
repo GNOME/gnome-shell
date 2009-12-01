@@ -9412,7 +9412,7 @@ clutter_actor_set_text_direction (ClutterActor         *self,
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT);
+  g_return_if_fail (text_dir != CLUTTER_TEXT_DIRECTION_DEFAULT);
 
   priv = self->priv;
 
