@@ -590,13 +590,13 @@ AS_CASE([$with_json],
         [system],
         [
           AC_MSG_CHECKING([for installed JSON-GLib])
-          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.7],
+          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.8],
                            [have_json=yes],
                            [have_json=no])
           AS_IF([test "x$have_json" = "xyes"],
                 [
                   JSON_PREFIX=json-glib
-                  JSON_GLIB_PC="json-glib-1.0 >= 0.7"
+                  JSON_GLIB_PC="json-glib-1.0 >= 0.8"
 
                   AC_DEFINE([HAVE_JSON_GLIB],
                             [1],
@@ -611,13 +611,13 @@ AS_CASE([$with_json],
         [check],
         [
           AC_MSG_CHECKING([for installed JSON-GLib])
-          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.7],
+          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.8],
                            [have_json=yes],
                            [have_json=no])
           AS_IF([test "x$have_json" = "xyes"],
                 [
                   JSON_PREFIX=json-glib
-                  JSON_GLIB_PC="json-glib-1.0 >= 0.7"
+                  JSON_GLIB_PC="json-glib-1.0 >= 0.8"
 
                   AC_DEFINE([HAVE_JSON_GLIB],
                             [1],
