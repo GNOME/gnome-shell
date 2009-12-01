@@ -1016,6 +1016,7 @@ ClutterFontFlags
 clutter_set_font_flags
 clutter_get_font_flags
 clutter_get_font_map
+ClutterTextDirection
 clutter_set_default_text_direction
 clutter_get_default_text_direction
 
@@ -1139,6 +1140,9 @@ CLUTTER_COGL
 CLUTTER_NO_FPU
 
 <SUBSECTION>
+clutter_major_version
+clutter_minor_version
+clutter_micro_version
 clutter_check_version
 </SECTION>
 
@@ -1758,6 +1762,10 @@ clutter_layout_manager_child_set
 clutter_layout_manager_child_set_property
 clutter_layout_manager_child_get
 clutter_layout_manager_child_get_property
+
+<SUBSECTION>
+clutter_layout_manager_find_child_property
+clutter_layout_manager_list_child_properties
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_LAYOUT_MANAGER
