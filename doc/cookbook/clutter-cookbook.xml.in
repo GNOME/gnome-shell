@@ -121,12 +121,6 @@
       <para>Binaries for Microsoft Windows are also available.</para>
     </section>
 
-    <section>
-      <title>License</title>
-
-      <para>FIXME</para>
-    </section>
-
   </chapter> <!-- introduction }}} -->
 
   <chapter id="actors"> <!-- actors {{{ -->
@@ -148,8 +142,11 @@
 
       <para>Every node on the Clutter scene graph is an
       <emphasis>actor</emphasis>. Every actor has a single relationship
-      with the others: it is either the parent of another actor or a
-      child of another actor.</para>
+      with the others: it can be the parent of another actor, or a child of
+      another actor.</para>
+
+      <note><para>The Stage is an actor that can have children but cannot have
+      any parent.</para></note>
 
       <para>Actors have different attributes: a position, a size, a
       scale factor, a rotation angle on each axis (relative to a specific
@@ -194,14 +191,13 @@ g_signal_connect (actor, "notify::depth",
           </programlisting>
         </informalexample>
 
-        <para>If you want to know if any of the coordinates or
-        dimensions of an actor have been changed, except for depth,
-        you can use the <emphasis>allocation</emphasis> detailt for
-        the notify signal:</para>
+        <para>If you want to know if any of the coordinates or dimensions of
+        an actor have been changed, except for depth, you can use the
+        <emphasis>allocation-changed</emphasis> signal:</para>
 
         <informalexample>
           <programlisting>
-g_signal_connect (actor, "notify::allocation",
+g_signal_connect (actor, "allocation-changed",
                   G_CALLBACK (on_allocation_changed),
                   NULL);
           </programlisting>
@@ -217,6 +213,20 @@ on_notify (GObject    *gobject,
            gpointer    user_data);
           </programlisting>
         </informalexample>
+
+        <para>While the signature for the handler of the "allocation-changed"
+        signal is:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_allocation_changed (ClutterActor           *actor,
+                       const ClutterActorBox  *allocation,
+                       ClutterAllocationFlags  flags,
+                       gpointer                user_data);
+          </programlisting>
+        </informalexample>
+
       </section>
 
       <section>
@@ -239,7 +249,8 @@ on_x_changed (GObject    *gobject,
 {
   gint x_value = 0;
 
-  g_object_get (gobject, pspec-&gt;name, &amp;x_value, NULL);
+  /* Round the X coordinate to the nearest pixel */
+  x_value = floorf (clutter_actor_get_x (CLUTTER_ACTOR (gobject))) + 0.5;
 
   g_print ("The new X coordinate is '%d' pixels\n", x_value);
 }
@@ -253,17 +264,18 @@ on_x_changed (GObject    *gobject,
         <informalexample>
           <programlisting>
 void
-on_allocation_changed (GObject    *gobject,
-                       GParamSpec *pspec,
-                       gpointer    user_data)
+on_allocation_changed (ClutterActor           *actor,
+                       const ClutterActorBox  *allocation,
+                       ClutterAllocationFlags  flags,
+                       gpointer                user_data)
 {
   ClutterActor *actor = CLUTTER_ACTOR (gobject);
 
-  g_print ("The bounding box is now: (%d, %d) (%d x %d)\n",
-           clutter_actor_get_x (actor),
-           clutter_actor_get_y (actor),
-           clutter_actor_get_width (actor),
-           clutter_actor_get_height (actor));
+  g_print ("The bounding box is now: (%.2f, %.2f) (%.2f x %.2f)\n",
+           clutter_actor_box_get_x (allocation),
+           clutter_actor_box_get_y (allocation),
+           clutter_actor_box_get_width (allocation),
+           clutter_actor_box_get_height (allocation));
 }
           </programlisting>
         </informalexample>
@@ -271,13 +283,13 @@ on_allocation_changed (GObject    *gobject,
         <para>All actors will update these properties when their size
         or position change.</para>
 
-        <para>The Stage, on the other hand, will not notify on position
-        changes, so it is not possible to use the :x and :y properties to
-        know that the platform-specific window embedding the stage has been
-        moved &mdash; if the platform supports a windowing system. In order
-        to achieve that you will have to use backend-specific API to extract
-        the surface used by the Stage and then platform-specific API to
-        retrieve its coordinates.</para>
+        <para>Note that the Stage, on the other hand, will not notify on
+        position changes, so it is not possible to use the :x and :y
+        properties to know that the platform-specific window embedding the
+        stage has been moved &mdash; if the platform supports a windowing
+        system. In order to achieve that you will have to use backend-specific
+        API to extract the surface used by the Stage and then platform-specific
+        API to retrieve its coordinates.</para>
 
       </section>
 
@@ -335,14 +347,47 @@ on_paint (ClutterActor *actor,
       <section>
         <title>Discussion</title>
 
-        <para>...</para>
+        <para>The paint cycle in Clutter works its way recursively from the
+        Stage through every child.</para>
+
+        <para>Whenever an Actor is going to be painted it will be positioned in
+        a new frame of reference according to the list of transformations
+        (scaling, rotation and additional traslations). After that, the "paint"
+        signal will be emitted.</para>
+
+        <para>The "paint" signal is defined as <emphasis>run-last</emphasis>,
+        that is the signal handlers connected to it using
+        <function>g_signal_connetc()</function> will be called first; then the
+        default handler defined by the Actor's sub-class will be called;
+        finally, all the signal handlers connected to the signal using
+        <function>g_signal_connect_after()</function> will be called.</para>
+
+        <para>This allows pre- and post-default paint handlers, and it also
+        allows completely overriding the way an Actor draws itself by default;
+        for instance:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_paint (ClutterActor *actor)
+{
+  do_my_paint (actor);
+
+  g_signal_stop_emission_by_name (actor, "paint");
+}
+          </programlisting>
+        </informalexample>
+
+        <para>The code above will prevent the default paint implementation of
+        the actor from running.</para>
       </section>
 
     </section> <!-- }}} -->
 
   </chapter> <!-- actors }}} -->
 
-  <chapter id="textures"> <!-- textures {{{ -->
+<!--
+  <chapter id="textures">
     <title>Textures</title>
 
     <epigraph>
@@ -356,7 +401,7 @@ on_paint (ClutterActor *actor,
       <para>introduction</para>
     </section>
 
-    <section id="textures-aspect-ratio"> <!-- recipe 1 {{{ -->
+    <section id="textures-aspect-ratio">
       <title>Maintaining the aspect ratio when loading a texture</title>
 
       <section>
@@ -377,11 +422,13 @@ on_paint (ClutterActor *actor,
         <para></para>
       </section>
 
-    </section> <!-- recipe 1 }}} -->
+    </section>
 
-  </chapter> <!-- textures }}} -->
+  </chapter>
+-->
 
-  <chapter id="animations"> <!-- animations {{{ -->
+<!--
+  <chapter id="animations">
     <title>Animations</title>
 
     <epigraph>
@@ -395,7 +442,7 @@ on_paint (ClutterActor *actor,
       <para>introduction</para>
     </section>
 
-    <section> <!-- recipe 1 {{{ -->
+    <section>
       <title>Inverting Animations</title>
 
       <section>
@@ -417,9 +464,10 @@ on_paint (ClutterActor *actor,
         <para>...</para>
       </section>
 
-    </section> <!-- recipe 1 }}} -->
+    </section>
 
-  </chapter> <!-- animations }}} -->
+  </chapter>
+-->
 
   <appendix id="contributing"> <!-- contributing {{{ -->
     <title>Contributing to this document</title>
