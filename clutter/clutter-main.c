@@ -583,7 +583,6 @@ update_pango_context (ClutterBackend *backend,
   const cairo_font_options_t *font_options;
   const gchar *font_name;
   PangoDirection pango_dir;
-  PangoLanguage *lang;
   gdouble resolution;
 
   /* update the text direction */
