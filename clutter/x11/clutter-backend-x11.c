@@ -97,6 +97,7 @@ static ClutterBackendX11 *backend_singleton = NULL;
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_xevent_retrieval = FALSE;
 static gboolean clutter_enable_xinput = FALSE;
+static gboolean clutter_enable_argb = TRUE;
 static Display  *_foreign_dpy = NULL;
 
 /* options */
@@ -121,6 +122,13 @@ clutter_backend_x11_pre_parse (ClutterBackend  *backend,
   if (env_string)
     {
       clutter_display_name = g_strdup (env_string);
+      env_string = NULL;
+    }
+
+  env_string = g_getenv ("CLUTTER_DISABLE_ARGB_VISUAL");
+  if (env_string)
+    {
+      clutter_enable_argb = FALSE;
       env_string = NULL;
     }
 
@@ -980,6 +988,12 @@ clutter_x11_has_composite_extension (void)
   return have_composite;
 }
 
+gboolean
+clutter_x11_has_argb_visuals (void)
+{
+  return clutter_enable_argb;
+}
+
 XVisualInfo *
 clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 {
@@ -993,4 +1007,3 @@ clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 
   return NULL;
 }
-

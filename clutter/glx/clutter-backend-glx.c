@@ -56,7 +56,7 @@ G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11)
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
 
-static gchar *clutter_vblank_name = NULL;
+static gchar    *clutter_vblank_name = NULL;
 
 #ifdef __linux__
 #define DRM_VBLANK_RELATIVE 0x1;
@@ -354,6 +354,20 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   return flags;
 }
 
+enum
+{
+  DRAWABLE_TYPE         = 0,
+  RENDER_TYPE           = 2,
+  DOUBLE_BUFFER         = 4,
+  RED_SIZE              = 6,
+  GREEN_SIZE            = 8,
+  BLUE_SIZE             = 10,
+  ALPHA_SIZE            = 12,
+  DEPTH_SIZE            = 14,
+  STENCIL_SIZE          = 16,
+  TRANSPARENT_TYPE      = 18
+};
+
 /* It seems the GLX spec never defined an invalid GLXFBConfig that
  * we could overload as an indication of error, so we have to return
  * an explicit boolean status. */
@@ -362,28 +376,41 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
                                    GLXFBConfig       *config)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
-  int attributes[] = {
-    GLX_DRAWABLE_TYPE,  GLX_WINDOW_BIT,
-    GLX_RENDER_TYPE,    GLX_RGBA_BIT,
-    GLX_DOUBLEBUFFER,   GL_TRUE,
-    GLX_RED_SIZE,       1,
-    GLX_GREEN_SIZE,     1,
-    GLX_BLUE_SIZE,      1,
-    GLX_ALPHA_SIZE,     1,
-    GLX_DEPTH_SIZE,     1,
-    GLX_STENCIL_SIZE,   1,
+  GLXFBConfig *configs = NULL;
+  gboolean retval = FALSE;
+  gboolean use_argb = clutter_x11_has_argb_visuals ();
+  int n_configs, i;
+  static int attributes[] = {
+    GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
+    GLX_RENDER_TYPE,      GLX_RGBA_BIT,
+    GLX_DOUBLEBUFFER,     GL_TRUE,
+    GLX_RED_SIZE,         1,
+    GLX_GREEN_SIZE,       1,
+    GLX_BLUE_SIZE,        1,
+    GLX_ALPHA_SIZE,       1,
+    GLX_DEPTH_SIZE,       1,
+    GLX_STENCIL_SIZE,     1,
+    GLX_TRANSPARENT_TYPE, GLX_NONE,
     None
   };
-  GLXFBConfig *configs = NULL;
-  int n_configs;
 
   if (backend_x11->xdpy == None || backend_x11->xscreen == None)
     return FALSE;
 
-  if (backend_glx->found_fbconfig)
+  if (backend_glx->found_fbconfig > 0)
     {
-      *config = backend_glx->fbconfig;
+      if (use_argb && backend_glx->found_fbconfig == 2)
+        *config = backend_glx->fbconfig_rgba;
+      else
+        *config = backend_glx->fbconfig_rgb;
+
       return TRUE;
+    }
+
+  if (use_argb)
+    {
+      attributes[ALPHA_SIZE] = 8;
+      attributes[TRANSPARENT_TYPE] = GLX_TRANSPARENT_RGB;
     }
 
   CLUTTER_NOTE (BACKEND,
@@ -396,16 +423,64 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
                                backend_x11->xscreen_num,
                                attributes,
                                &n_configs);
-  if (configs)
+  if (!configs)
+    return FALSE;
+
+  if (!use_argb)
     {
       *config = configs[0];
-      backend_glx->found_fbconfig = TRUE;
-      backend_glx->fbconfig = configs[0];
-      XFree (configs);
-      return TRUE;
+
+      backend_glx->found_fbconfig = 1;
+      backend_glx->fbconfig_rgb = configs[0];
+
+      retval = TRUE;
+
+      goto out;
     }
-  else
-    return FALSE;
+
+  for (i = 0; i < n_configs; i++)
+    {
+      XVisualInfo *vinfo;
+
+      vinfo = glXGetVisualFromFBConfig (backend_x11->xdpy, configs[i]);
+      if (vinfo == None)
+        continue;
+
+      if (vinfo->depth == 32 &&
+          (vinfo->red_mask   == 0xff0000 &&
+           vinfo->green_mask == 0x00ff00 &&
+           vinfo->blue_mask  == 0x0000ff))
+        {
+          CLUTTER_NOTE (BACKEND, "Found GLX visual ARGB [index:%d]", i);
+
+          *config = configs[i];
+
+          backend_glx->found_fbconfig = 2;
+          backend_glx->fbconfig_rgba = configs[i];
+
+          retval = TRUE;
+
+          goto out;
+        }
+    }
+
+  /* XXX - we might add a warning here */
+  if (use_argb && !backend_glx->found_fbconfig != 2)
+    {
+      CLUTTER_NOTE (BACKEND, "ARGB visual requested, but none found");
+
+      *config = configs[0];
+
+      backend_glx->found_fbconfig = 1;
+      backend_glx->fbconfig_rgb = configs[0];
+
+      retval = TRUE;
+    }
+
+out:
+  XFree (configs);
+
+  return retval;
 }
 
 static XVisualInfo *
@@ -436,12 +511,14 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
         {
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to find suitable fbconfig for GL context");
+                       "Unable to find a suitable GLXFBConfig for "
+                       "the GLX context");
           return FALSE;
         }
 
-      CLUTTER_NOTE (GL, "Creating GL Context (display: %p)",
+      CLUTTER_NOTE (GL, "Creating GLX Context (display: %p)",
                     backend_x11->xdpy);
+
       backend_glx->gl_context =
         glXCreateNewContext (backend_x11->xdpy,
                              config,
@@ -460,7 +537,8 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
       is_direct = glXIsDirect (backend_x11->xdpy,
                                backend_glx->gl_context);
 
-      CLUTTER_NOTE (GL, "Setting %s context",
+      CLUTTER_NOTE (GL,
+                    "Setting %s context",
                     is_direct ? "direct" : "indirect");
       _cogl_set_indirect_context (!is_direct);
     }

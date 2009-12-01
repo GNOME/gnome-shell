@@ -105,18 +105,11 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
     {
       XSetWindowAttributes xattr;
       unsigned long mask;
-      GLXFBConfig config;
       XVisualInfo *xvisinfo;
 
       CLUTTER_NOTE (MISC, "Creating stage X window");
 
-      if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
-        {
-          g_critical ("Unable to find suitable FBConfig to realize stage.");
-          return FALSE;
-        }
-
-      xvisinfo = glXGetVisualFromFBConfig (backend_x11->xdpy, config);
+      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
       if (xvisinfo == NULL)
         {
           g_critical ("Unable to find suitable GL visual.");
@@ -145,9 +138,9 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
       XFree (xvisinfo);
     }
 
-  if (clutter_x11_has_event_retrieval())
+  if (clutter_x11_has_event_retrieval ())
     {
-      if (clutter_x11_has_xinput())
+      if (clutter_x11_has_xinput ())
         {
           XSelectInput (backend_x11->xdpy, stage_x11->xwin,
                         StructureNotifyMask |

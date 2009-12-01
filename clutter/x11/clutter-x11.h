@@ -124,6 +124,8 @@ gboolean clutter_x11_has_xinput (void);
 
 gboolean clutter_x11_has_composite_extension (void);
 
+gboolean clutter_x11_has_argb_visuals (void);
+
 Time clutter_x11_get_current_event_time (void);
 
 G_END_DECLS
