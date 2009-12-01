@@ -863,32 +863,51 @@ dnl === Summary ===============================================================
 echo ""
 echo "Clutter - $VERSION (${CLUTTER_RELEASE_STATUS})"
 
+# Global flags
 echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
 echo "        Flavour: ${CLUTTER_WINSYS}/${COGL_DRIVER}"
 echo "        Target library: ${CLUTTER_WINSYS_LIB}"
 
+# Compiler/Debug related flags
 echo ""
 echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        COGL debug level: ${enable_cogl_debug}"
 echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
 
+# Documentation
 echo ""
 echo " • Documentation:"
 echo "        Build API Reference: ${enable_gtk_doc}"
-echo "        Build Additional Documentation: ${enable_docs}"
+echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${enable_pdfs})"
 
+# Miscellaneous
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build test suite: ${enable_glibtest}"
 
+if test "x$have_json" = "xyes"; then
+echo "        JSON-GLib: system"
+else
+echo "        JSON-GLib: internal"
+fi
+
+# COGL flags
 echo ""
 echo " • COGL Backend:"
 echo "        Driver: ${COGL_DRIVER}"
 echo "        GL header: ${CLUTTER_GL_HEADER}"
+
+if test "x$COGL_DRIVER" = "xgles"; then
+  if test "x$use_gles2_wrapper" = "xyes"; then
+echo "        GLES version: 2.0"
+  else
+echo "        GLES version: 1.1"
+  fi
+fi
 
 if test "x$experimental_image" = "xno"; then
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
@@ -896,10 +915,7 @@ else
 echo "        Image backend: ${COGL_IMAGE_BACKEND} (WARNING: Experimental)"
 fi
 
-if test "x$COGL_DRIVER" = "xgles"; then
-echo "        Use GLES 2.0 Wrapper: ${use_gles2_wrapper}"
-fi
-
+# Clutter backend related flags
 echo ""
 echo " • Clutter Backend:"
 
@@ -917,6 +933,7 @@ fi
 
 echo ""
 
+# General warning about experimental features
 if test "x$experimental_backend" = "xyes" ||
    test "x$experimental_image" = "xyes"; then
 echo ""
