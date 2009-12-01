@@ -525,6 +525,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
                                        gfloat,
                                        line_index);
 
+              if (line_index >= 0)
+                item_y += priv->row_spacing;
+
               line_item_count = 0;
               line_index += 1;
 
@@ -560,6 +563,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               item_x += g_array_index (priv->line_natural,
                                        gfloat,
                                        line_index);
+
+              if (line_index >= 0)
+                item_x += priv->col_spacing;
 
               line_item_count = 0;
               line_index += 1;
