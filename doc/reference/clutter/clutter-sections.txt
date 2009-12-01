@@ -396,6 +396,8 @@ clutter_actor_get_pango_context
 clutter_actor_create_pango_context
 clutter_actor_create_pango_layout
 clutter_actor_is_in_clone_paint
+clutter_actor_set_text_direction
+clutter_actor_get_text_direction
 
 <SUBSECTION>
 ClutterActorBox
@@ -1014,6 +1016,8 @@ ClutterFontFlags
 clutter_set_font_flags
 clutter_get_font_flags
 clutter_get_font_map
+clutter_set_default_text_direction
+clutter_get_default_text_direction
 
 <SUBSECTION>
 clutter_threads_set_lock_functions

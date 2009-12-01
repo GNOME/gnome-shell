@@ -332,6 +332,8 @@ struct _ClutterActorPrivate
   PangoContext   *pango_context;
 
   ClutterActor   *opacity_parent;
+
+  ClutterTextDirection text_direction;
 };
 
 enum
@@ -409,7 +411,9 @@ enum
   PROP_ANCHOR_Y,
   PROP_ANCHOR_GRAVITY,
 
-  PROP_SHOW_ON_SET_PARENT
+  PROP_SHOW_ON_SET_PARENT,
+
+  PROP_TEXT_DIRECTION
 };
 
 enum
@@ -2714,6 +2718,10 @@ clutter_actor_set_property (GObject      *object,
       priv->show_on_set_parent = g_value_get_boolean (value);
       break;
 
+    case PROP_TEXT_DIRECTION:
+      clutter_actor_set_text_direction (actor, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -2965,6 +2973,10 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_SHOW_ON_SET_PARENT:
       g_value_set_boolean (value, priv->show_on_set_parent);
+      break;
+
+    case PROP_TEXT_DIRECTION:
+      g_value_set_enum (value, priv->text_direction);
       break;
 
     default:
@@ -3776,6 +3788,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class,
                                    PROP_CLIP_TO_ALLOCATION,
+                                   pspec);
+
+  pspec = g_param_spec_enum ("text-direction",
+                             "Text Direction",
+                             "Direction of the text",
+                             CLUTTER_TYPE_TEXT_DIRECTION,
+                             CLUTTER_TEXT_DIRECTION_LTR,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_TEXT_DIRECTION,
                                    pspec);
 
   /**
@@ -6596,6 +6618,7 @@ clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
   ClutterActorPrivate *priv;
+  ClutterTextDirection text_dir;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
@@ -6634,13 +6657,15 @@ clutter_actor_set_parent (ClutterActor *self,
    */
   clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
+  /* propagate the parent's text direction to the child */
+  text_dir = clutter_actor_get_text_direction (parent);
+  clutter_actor_set_text_direction (self, text_dir);
+
   if (priv->show_on_set_parent)
     clutter_actor_show (self);
 
   if (CLUTTER_ACTOR_IS_MAPPED (self))
-    {
-      clutter_actor_queue_redraw (self);
-    }
+    clutter_actor_queue_redraw (self);
 
   /* maintain the invariant that if an actor needs layout,
    * its parents do as well
@@ -9351,4 +9376,97 @@ clutter_actor_is_in_clone_paint (ClutterActor *self)
 
   return self->priv->opacity_parent != NULL &&
          !self->priv->enable_model_view_transform;
+}
+
+static void
+set_direction_recursive (ClutterActor *actor,
+                         gpointer      user_data)
+{
+  ClutterTextDirection text_dir = GPOINTER_TO_INT (user_data);
+
+  clutter_actor_set_text_direction (actor, text_dir);
+}
+
+/**
+ * clutter_actor_set_text_direction:
+ * @self: a #ClutterActor
+ * @text_dir: the text direction for @self
+ *
+ * Sets the #ClutterTextDirection for an actor
+ *
+ * The passed text direction must not be %CLUTTER_TEXT_DIRECTION_DEFAULT
+ *
+ * If @self implements #ClutterContainer then this function will recurse
+ * inside all the children of @self (including the internal ones).
+ *
+ * Composite actors not implementing #ClutterContainer, or actors requiring
+ * special handling when the text direction changes, should connect to
+ * the #GObject::notify signal for the #ClutterActor:text-direction property
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_set_text_direction (ClutterActor         *self,
+                                  ClutterTextDirection  text_dir)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT);
+
+  priv = self->priv;
+
+  if (priv->text_direction != text_dir)
+    {
+      priv->text_direction = text_dir;
+
+      /* we need to emit the notify::text-direction first, so that
+       * the sub-classes can catch that and do specific handling of
+       * the text direction; see clutter_text_direction_changed_cb()
+       * inside clutter-text.c
+       */
+      g_object_notify (G_OBJECT (self), "text-direction");
+
+      /* if this is a container we need to recurse */
+      if (CLUTTER_IS_CONTAINER (self))
+        {
+          ClutterContainer *container = CLUTTER_CONTAINER (self);
+
+          clutter_container_foreach_with_internals (container,
+                                                    set_direction_recursive,
+                                                    GINT_TO_POINTER (text_dir));
+        }
+
+      clutter_actor_queue_relayout (self);
+    }
+}
+
+/**
+ * clutter_actor_get_text_direction:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set using clutter_actor_set_text_direction()
+ *
+ * If no text direction has been previously set, the default text
+ * direction will be returned
+ *
+ * Return value: the #ClutterTextDirection for the actor
+ *
+ * Since: 1.2
+ */
+ClutterTextDirection
+clutter_actor_get_text_direction (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self),
+                        CLUTTER_TEXT_DIRECTION_LTR);
+
+  priv = self->priv;
+
+  /* if no direction has been set yet use the default */
+  if (priv->text_direction == CLUTTER_TEXT_DIRECTION_DEFAULT)
+    priv->text_direction = clutter_get_default_text_direction ();
+
+  return priv->text_direction;
 }

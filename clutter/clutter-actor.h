@@ -528,6 +528,10 @@ void clutter_actor_get_transformation_matrix          (ClutterActor        *self
 
 gboolean clutter_actor_is_in_clone_paint              (ClutterActor        *self);
 
+void                 clutter_actor_set_text_direction (ClutterActor         *self,
+                                                       ClutterTextDirection  text_dir);
+ClutterTextDirection clutter_actor_get_text_direction (ClutterActor         *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */
