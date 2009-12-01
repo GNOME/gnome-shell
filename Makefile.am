@@ -31,9 +31,6 @@ pkgconfigdir   = $(libdir)/pkgconfig
 EXTRA_DIST = 				\
 	ChangeLog.pre-git-import	\
 	clutter.pc.in 			\
-	HACKING 			\
-	HACKING.backends 		\
-	CODING_STYLE			\
 	$(NULL)
 
 CLEANFILES = $(pcfiles)

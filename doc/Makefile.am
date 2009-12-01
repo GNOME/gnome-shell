@@ -9,3 +9,8 @@ SUBDIRS += common cookbook manual
 endif
 
 DIST_SUBDIRS = reference common cookbook manual
+
+EXTRA_DIST = \
+	CODING_STYLE \
+	HACKING \
+	HACKING.backends
