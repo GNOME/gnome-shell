@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-18 13:02+0200\n"
-"PO-Revision-Date: 2009-09-18 13:02+0100\n"
+"POT-Creation-Date: 2009-12-01 23:52+0100\n"
+"PO-Revision-Date: 2009-12-01 23:53+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -24,154 +24,139 @@ msgstr "GNOME-skal"
 msgid "Window management and application launching"
 msgstr "Fönsterhantering och programstarter"
 
-#. left side
-#: ../js/ui/panel.js:269
-msgid "Activities"
-msgstr "Aktiviteter"
+#: ../js/ui/appDisplay.js:580
+#: ../js/ui/appIcon.js:425
+msgid "New Window"
+msgstr "Nytt fönster"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:452
-msgid "%a %l:%M %p"
-msgstr "%a %H.%M"
+#: ../js/ui/appDisplay.js:584
+#: ../js/ui/appIcon.js:429
+msgid "Remove from Favorites"
+msgstr "Ta bort från favoriter"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:585
+#: ../js/ui/appIcon.js:430
+msgid "Add to Favorites"
+msgstr "Lägg till som favorit"
+
+#: ../js/ui/appDisplay.js:1029
+msgid "Drag here to add favorites"
+msgstr "Dra hit för att lägga till favorit"
+
+#: ../js/ui/dash.js:236
 msgid "Find..."
 msgstr "Sök..."
 
-#: ../js/ui/dash.js:400
-msgid "Browse"
-msgstr "Bläddra"
-
-#: ../js/ui/dash.js:536
-msgid "(see all)"
-msgstr "(se alla)"
-
 #. **** Applications ****
-#: ../js/ui/dash.js:753
-#: ../js/ui/dash.js:809
+#: ../js/ui/dash.js:620
+#: ../js/ui/dash.js:682
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:773
+#: ../js/ui/dash.js:640
+#: ../js/ui/dash.js:697
 msgid "PLACES"
 msgstr "PLATSER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:780
-#: ../js/ui/dash.js:819
+#: ../js/ui/dash.js:647
+#: ../js/ui/dash.js:692
 msgid "RECENT DOCUMENTS"
 msgstr "SENASTE DOKUMENT"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:799
-#: ../js/ui/dash.js:931
+#: ../js/ui/dash.js:672
+#: ../js/ui/dash.js:862
 msgid "SEARCH RESULTS"
 msgstr "SÖKRESULTAT"
 
-#: ../js/ui/dash.js:814
+#: ../js/ui/dash.js:687
 msgid "PREFERENCES"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/runDialog.js:101
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:227
+msgid "Activities"
+msgstr "Aktiviteter"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:440
+msgid "%a %l:%M %p"
+msgstr "%a %H.%M"
+
+#: ../js/ui/placeDisplay.js:84
+msgid "Connect to..."
+msgstr "Anslut till..."
+
+#: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
 
-#: ../src/shell-global.c:799
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Körning av \"%s\" misslyckades:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H.%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Program"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Senaste dokument"
+
+#: ../src/shell-global.c:826
 msgid "Less than a minute ago"
 msgstr "Mindre än en minut sedan"
 
-#: ../src/shell-global.c:802
+#: ../src/shell-global.c:829
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut sedan"
 msgstr[1] "%d minuter sedan"
 
-#: ../src/shell-global.c:805
+#: ../src/shell-global.c:832
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d timme sedan"
 msgstr[1] "%d timmar sedan"
 
-#: ../src/shell-global.c:808
+#: ../src/shell-global.c:835
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag sedan"
 msgstr[1] "%d dagar sedan"
 
-#: ../src/shell-global.c:811
+#: ../src/shell-global.c:838
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d vecka sedan"
 msgstr[1] "%d veckor sedan"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Okänt"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Kan inte låsa skärmen: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Kan inte temporärt ställa in skärmsläckaren till blank skärm: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Kan inte logga ut: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Kontoinformation..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Sidopanel"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Systeminställningar..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Lås skärmen"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Växla användare"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Logga ut..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Stäng av..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Hemmapp"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Filsystem"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Sök"
 
@@ -180,11 +165,37 @@ msgstr "Sök"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "(see all)"
+#~ msgstr "(se alla)"
+#~ msgid "Unknown"
+#~ msgstr "Okänt"
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Kan inte låsa skärmen: %s"
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr "Kan inte temporärt ställa in skärmsläckaren till blank skärm: %s"
+#~ msgid "Can't logout: %s"
+#~ msgstr "Kan inte logga ut: %s"
+#~ msgid "Account Information..."
+#~ msgstr "Kontoinformation..."
+#~ msgid "Sidebar"
+#~ msgstr "Sidopanel"
+#~ msgid "System Preferences..."
+#~ msgstr "Systeminställningar..."
+#~ msgid "Lock Screen"
+#~ msgstr "Lås skärmen"
+#~ msgid "Switch User"
+#~ msgstr "Växla användare"
+#~ msgid "Log Out..."
+#~ msgstr "Logga ut..."
+#~ msgid "Shut Down..."
+#~ msgstr "Stäng av..."
+#~ msgid "Browse"
+#~ msgstr "Bläddra"
 #~ msgid "Find apps or documents"
 #~ msgstr "Hitta program eller dokument"
 #~ msgid "DOCUMENTS"
