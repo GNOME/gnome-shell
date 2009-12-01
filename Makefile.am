@@ -2,9 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = doc build clutter tests po
-
-DIST_SUBDIRS = build clutter tests doc po
+SUBDIRS = build clutter tests doc po
 
 ACLOCAL_AMFLAGS = -I build/autotools
 
