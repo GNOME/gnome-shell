@@ -7,12 +7,6 @@
 
 G_BEGIN_DECLS
 
-ClutterCairoTexture *shell_create_vertical_gradient (ClutterColor *top,
-                                                     ClutterColor *bottom);
-
-ClutterCairoTexture *shell_create_horizontal_gradient (ClutterColor *left,
-                                                       ClutterColor *right);
-
 typedef enum {
   SHELL_POINTER_UP,
   SHELL_POINTER_DOWN,

@@ -1,7 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include "config.h"
+
 #include "shell-uri-util.h"
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
 

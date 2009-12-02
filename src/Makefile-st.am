@@ -72,7 +72,9 @@ st_source_h =					\
     st/st-box-layout.h				\
     st/st-box-layout-child.h			\
     st/st-button.h				\
+    st/st-clickable.h           \
     st/st-clipboard.h				\
+    st/st-drawing-area.h        \
     st/st-entry.h				\
     st/st-im-text.h				\
     st/st-label.h				\
@@ -108,7 +110,9 @@ st_source_c =					\
     st/st-box-layout.c				\
     st/st-box-layout-child.c			\
     st/st-button.c				\
+    st/st-clickable.c           \
     st/st-clipboard.c				\
+    st/st-drawing-area.c        \
     st/st-entry.c				\
     st/st-im-text.c				\
     st/st-label.c				\

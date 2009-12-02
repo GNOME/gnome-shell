@@ -12,6 +12,8 @@
  * size, even if that would overflow the size allocated to the stack.
  */
 
+#include "config.h"
+
 #include "shell-stack.h"
 
 G_DEFINE_TYPE (ShellStack,

@@ -3,12 +3,14 @@
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
@@ -20,10 +22,6 @@ const Tweener = imports.ui.tweener;
 
 const FOCUS_ANIMATION_TIME = 0.15;
 
-const WINDOWCLONE_BG_COLOR = new Clutter.Color();
-WINDOWCLONE_BG_COLOR.from_pixel(0x000000f0);
-const WINDOWCLONE_TITLE_COLOR = new Clutter.Color();
-WINDOWCLONE_TITLE_COLOR.from_pixel(0xffffffff);
 const FRAME_COLOR = new Clutter.Color();
 FRAME_COLOR.from_pixel(0xffffffff);
 
@@ -113,8 +111,6 @@ WindowClone.prototype = {
 
         this._stackAbove = null;
 
-        this._title = null;
-
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
 
@@ -135,18 +131,6 @@ WindowClone.prototype = {
         this._zooming = false;
     },
 
-    setVisibleWithChrome: function(visible) {
-        if (visible) {
-            this.actor.show();
-            if (this._title)
-                this._title.show();
-        } else {
-            this.actor.hide();
-            if (this._title)
-                this._title.hide();
-        }
-    },
-
     setStackAbove: function (actor) {
         this._stackAbove = actor;
         if (this._inDrag || this._zooming)
@@ -157,8 +141,6 @@ WindowClone.prototype = {
 
     destroy: function () {
         this.actor.destroy();
-        if (this._title)
-            this._title.destroy();
     },
 
     _onEnter: function (actor, event) {
@@ -168,8 +150,6 @@ WindowClone.prototype = {
             return;
 
         this._havePointer = true;
-
-        this._updateTitle();
     },
 
     _onLeave: function (actor, event) {
@@ -179,7 +159,6 @@ WindowClone.prototype = {
             return;
 
         this._havePointer = false;
-        this._updateTitle();
 
         if (this._zoomStep)
             this._zoomEnd();
@@ -218,6 +197,7 @@ WindowClone.prototype = {
 
     _zoomStart : function () {
         this._zooming = true;
+        this.emit('zoom-start');
 
         this._zoomLightbox = new Lightbox.Lightbox(global.stage);
 
@@ -246,14 +226,13 @@ WindowClone.prototype = {
 
     _zoomEnd : function () {
         this._zooming = false;
+        this.emit('zoom-end');
 
         this.actor.reparent(this._origParent);
         this.actor.raise(this._stackAbove);
 
         [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
         [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
-
-        this._adjustTitle();
 
         this._zoomLightbox.destroy();
         Main.overview.disconnect(this._hideEventId);
@@ -273,7 +252,6 @@ WindowClone.prototype = {
 
     _onDragBegin : function (draggable, time) {
         this._inDrag = true;
-        this._updateTitle();
         this.emit('drag-begin');
     },
 
@@ -295,86 +273,6 @@ WindowClone.prototype = {
             this.actor.raise(this._stackAbove);
 
         this.emit('drag-end');
-    },
-
-    // Called by Tweener
-    onAnimationStart : function () {
-        this._updateTitle();
-    },
-
-    // Called by Tweener
-    onAnimationComplete : function () {
-        this._updateTitle();
-    },
-
-    _createTitle : function () {
-        let window = this.realWindow;
-        
-        let box = new Big.Box({ background_color : WINDOWCLONE_BG_COLOR,
-                                y_align: Big.BoxAlignment.CENTER,
-                                corner_radius: 5,
-                                padding: 4,
-                                spacing: 4,
-                                orientation: Big.BoxOrientation.HORIZONTAL });
-
-        let title = new Clutter.Text({ color: WINDOWCLONE_TITLE_COLOR,
-                                       font_name: "Sans 12",
-                                       text: this.metaWindow.title,
-                                       ellipsize: Pango.EllipsizeMode.END
-                                     });
-        box.append(title, Big.BoxPackFlags.EXPAND);
-        // Get and cache the expected width (just the icon), with spacing, plus title
-        box.fullWidth = box.width;
-        box.hide(); // Hidden by default, show on mouseover
-        this._title = box;        
-
-        // Make the title a sibling of the window
-        this.actor.get_parent().add_actor(box);
-    },
-
-    _adjustTitle : function () {
-        let title = this._title;
-        if (!title)
-            return;    
-
-        let [cloneScreenWidth, cloneScreenHeight] = this.actor.get_transformed_size();
-        let [titleScreenWidth, titleScreenHeight] = title.get_transformed_size();
-
-        // Titles are supposed to be "full-size", so adjust its
-        // scale to counteract the scaling of its ancestor actors.
-        title.set_scale(title.width / titleScreenWidth * title.scale_x,
-                        title.height / titleScreenHeight * title.scale_y);
-
-        title.width = Math.min(title.fullWidth, cloneScreenWidth);
-        let xoff = ((cloneScreenWidth - title.width) / 2) * title.scale_x;
-        title.set_position(this.actor.x + xoff, this.actor.y);
-    },
-
-    _showTitle : function () {
-        if (!this._title)
-            this._createTitle();
-
-        this._adjustTitle();
-        this._title.show();
-        this._title.raise(this.actor);
-    },
-
-    _hideTitle : function () {
-        if (!this._title)
-            return;
-
-        this._title.hide();
-    },
-
-    _updateTitle : function () {
-        let shouldShow = (this._havePointer &&
-                          !this._inDrag &&
-                          !Tweener.isTweening(this.actor));
-
-        if (shouldShow)
-            this._showTitle();
-        else
-            this._hideTitle();
     }
 };
 
@@ -407,6 +305,207 @@ DesktopClone.prototype = {
 };
 
 Signals.addSignalMethods(DesktopClone.prototype);
+
+
+/**
+ * @windowClone: Corresponding window clone
+ * @parentActor: The actor which will be the parent of all overlay items
+ *               such as app icon and window caption
+ */
+function WindowOverlay(windowClone, parentActor) {
+    this._init(windowClone, parentActor);
+}
+
+WindowOverlay.prototype = {
+    _init : function(windowClone, parentActor) {
+        let metaWindow = windowClone.metaWindow;
+
+        this._windowClone = windowClone;
+        this._parentActor = parentActor;
+
+        let title = new St.Label({ style_class: "window-caption",
+                                   text : metaWindow.title });
+        title.connect('style-changed',
+                      Lang.bind(this, this._onStyleChanged));
+        title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        title._spacing = 0;
+
+        let button = new St.Bin({ style_class: "window-close",
+                                  reactive: true });
+        button.connect('style-changed',
+                       Lang.bind(this, this._onStyleChanged));
+        button._overlap = 0;
+
+        windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        windowClone.actor.connect('notify::allocation',
+                                  Lang.bind(this, this._positionItems));
+        windowClone.actor.connect('enter-event',
+                                  Lang.bind(this, this._onEnter));
+        windowClone.actor.connect('leave-event',
+                                  Lang.bind(this, this._onLeave));
+
+        this._idleToggleCloseId = 0;
+        button.connect('button-release-event',
+                       Lang.bind(this, this._closeWindow));
+
+        this._windowAddedId = 0;
+        windowClone.connect('zoom-start', Lang.bind(this, this.hide));
+        windowClone.connect('zoom-end', Lang.bind(this, this.show));
+
+        button.hide();
+
+        this.title = title;
+        this.closeButton = button;
+
+        parentActor.add_actor(this.title);
+        parentActor.add_actor(this.closeButton);
+    },
+
+    hide: function() {
+        this.closeButton.hide();
+        this.title.hide();
+    },
+
+    show: function() {
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                  x, y);
+        if (actor == this._windowClone.actor) {
+            this.closeButton.show();
+        }
+        this.title.show();
+    },
+
+    fadeIn: function() {
+        this.title.opacity = 0;
+        this.title.show();
+        this.title.raise_top();
+        Tweener.addTween(this.title,
+                        { opacity: 255,
+                          time: Overview.ANIMATION_TIME,
+                          transition: "easeOutQuad" });
+    },
+
+    chromeWidth: function () {
+        return this.closeButton.width - this.closeButton._overlap;
+    },
+
+    chromeHeight: function () {
+        return this.closeButton.height - this.closeButton._overlap +
+               this.title.height + this.title._spacing;
+    },
+
+    _positionItems: function(win) {
+        let button = this.closeButton;
+        let title = this.title;
+
+        let [x, y] = win.get_transformed_position();
+        let [w, h] = win.get_transformed_size();
+
+        let buttonX = x + w - button._overlap;
+        let buttonY = y - button.height + button._overlap;
+        button.set_position(Math.floor(buttonX), Math.floor(buttonY));
+
+        if (!title.fullWidth)
+            title.fullWidth = title.width;
+        title.width = Math.min(title.fullWidth, w);
+
+	let titleX = x + (w - title.width) / 2;
+        let titleY = y + h + title._spacing;
+        title.set_position(Math.floor(titleX), Math.floor(titleY));
+    },
+
+    _closeWindow: function(actor, event) {
+        let metaWindow = this._windowClone.metaWindow;
+        this._workspace = metaWindow.get_workspace();
+
+        this._windowAddedId = this._workspace.connect('window-added',
+                                                      Lang.bind(this,
+                                                                this._onWindowAdded));
+
+        metaWindow.delete(event.get_time());
+    },
+
+    _onWindowAdded: function(workspace, win) {
+        let metaWindow = this._windowClone.metaWindow;
+
+        if (win.get_transient_for() == metaWindow) {
+            workspace.disconnect(this._windowAddedId);
+            this._windowAddedId = 0;
+
+            // use an idle handler to avoid mapping problems -
+            // see comment in Workspace._windowAdded
+            Mainloop.idle_add(Lang.bind(this,
+                                        function() {
+                                            this._windowClone.emit('selected');
+                                            return false;
+                                        }));
+        }
+    },
+
+    _onDestroy: function() {
+        if (this._windowAddedId > 0) {
+            this._workspace.disconnect(this._windowAddedId);
+            this._windowAddedId = 0;
+        }
+        if (this._idleToggleCloseId > 0) {
+            Mainloop.source_remove(this._idleToggleCloseId);
+            this._idleToggleCloseId = 0;
+        }
+        this.title.destroy();
+        this.closeButton.destroy();
+    },
+
+    _onEnter: function() {
+        this.closeButton.raise_top();
+        this.closeButton.show();
+        this.emit('show-close-button');
+    },
+
+    _onLeave: function() {
+        if (this._idleToggleCloseId == 0)
+            this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
+    },
+
+    _idleToggleCloseButton: function() {
+        this._idleToggleCloseId = 0;
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                  x, y);
+        if (actor != this._windowClone.actor && actor != this.closeButton) {
+            this.closeButton.hide();
+        }
+        return false;
+    },
+
+    hideCloseButton: function() {
+        if (this._idleToggleCloseId > 0) {
+            Mainloop.source_remove(this._idleToggleCloseId);
+            this._idleToggleCloseId = 0;
+        }
+        this.closeButton.hide();
+    },
+
+    _onStyleChanged: function() {
+        let titleNode = this.title.get_theme_node();
+
+        let [success, len] = titleNode.get_length('-shell-caption-spacing',
+                                                  false);
+        if (success)
+            this.title._spacing = len;
+
+        let closeNode = this.closeButton.get_theme_node();
+
+        let [success, len] = closeNode.get_length('-shell-close-overlap',
+                                                  false);
+        if (success)
+            this.closeButton._overlap = len;
+
+        this._parentActor.queue_relayout();
+    }
+};
+
+Signals.addSignalMethods(WindowOverlay.prototype);
 
 
 /**
@@ -460,7 +559,7 @@ Workspace.prototype = {
         // Create clones for remaining windows that should be
         // visible in the Overview
         this._windows = [this._desktop];
-        this._windowIcons = [ null ];
+        this._windowOverlays = [ null ];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i])) {
                 this._addWindowClone(windows[i]);
@@ -676,13 +775,13 @@ Workspace.prototype = {
     _resetCloneVisibility: function () {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            let icon = this._windowIcons[i];
+            let overlay = this._windowOverlays[i];
 
             if (!this._isCloneVisible(clone)) {
-                clone.setVisibleWithChrome(false);
-                icon.hide();
+                clone.actor.hide();
+                overlay.hide();
             } else {
-                clone.setVisibleWithChrome(true);
+                clone.actor.show();
             }
         }
     },
@@ -888,14 +987,17 @@ Workspace.prototype = {
         let rect = new Meta.Rectangle();
         metaWindow.get_outer_rect(rect);
 
-        let desiredWidth = global.screen_width * fraction;
-        let desiredHeight = global.screen_height * fraction;
-        let scale = Math.min(desiredWidth / rect.width,
-                             desiredHeight / rect.height,
+        let chromeHeight = this._windowOverlays[1].chromeHeight() / this.scale;
+        let chromeWidth = this._windowOverlays[1].chromeWidth() / this.scale;
+
+        let desiredWidth = (global.screen_width - chromeWidth) * fraction;
+        let desiredHeight = (global.screen_height - chromeHeight) * fraction;
+        let scale = Math.min(desiredWidth / (rect.width + chromeWidth),
+                             desiredHeight / (rect.height + chromeHeight),
                              1.0 / this.scale);
 
-        let x = xCenter - 0.5 * scale * rect.width;
-        let y = yCenter - 0.5 * scale * rect.height;
+        let x = xCenter - 0.5 * scale * (rect.width + chromeWidth);
+        let y = yCenter - 0.5 * scale * (rect.height + chromeHeight);
 
         return [x, y, scale];
     },
@@ -918,11 +1020,11 @@ Workspace.prototype = {
             let metaWindow = visibleWindows[i];
             let mainIndex = this._lookupIndex(metaWindow);
             let clone = metaWindow._delegate;
-            let icon = this._windowIcons[mainIndex];
+            let overlay = this._windowOverlays[mainIndex];
 
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
 
-            icon.hide();
+            overlay.hide();
             Tweener.addTween(clone.actor,
                              { x: x,
                                y: y,
@@ -932,7 +1034,7 @@ Workspace.prototype = {
                                time: Overview.ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: Lang.bind(this, function() {
-                                  this._fadeInWindowIcon(clone, icon);
+                                  overlay.fadeIn();
                                })
                              });
         }
@@ -956,49 +1058,20 @@ Workspace.prototype = {
         }
     },
 
-    _fadeInWindowIcon: function (clone, icon) {
-        icon.opacity = 0;
-        icon.show();
-        // This is a little messy and complicated because when we
-        // start the fade-in we may not have done the final positioning
-        // of the workspaces. (Tweener doesn't necessarily finish
-        // all animations before calling onComplete callbacks.)
-        // So we need to manually compute where the window will
-        // be after the workspace animation finishes.
-        let [parentX, parentY] = icon.get_parent().get_position();
-        let [cloneX, cloneY] = clone.actor.get_position();
-        let [cloneWidth, cloneHeight] = clone.actor.get_size();
-        cloneX = this.gridX + this.scale * cloneX;
-        cloneY = this.gridY + this.scale * cloneY;
-        cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
-        cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
-        // Note we only round the first part, because we're still going to be
-        // positioned relative to the parent.  By subtracting a possibly
-        // non-integral parent X/Y we cancel it out.
-        let x = Math.round(cloneX + cloneWidth - icon.width) - parentX;
-        let y = Math.round(cloneY + cloneHeight - icon.height) - parentY;
-        icon.set_position(x, y);
-        icon.raise(this.actor);
-        Tweener.addTween(icon,
-                         { opacity: 255,
-                           time: Overview.ANIMATION_TIME,
-                           transition: "easeOutQuad" });
-    },
-
-    _fadeInAllIcons: function () {
+    _fadeInAllOverlays: function() {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            let icon = this._windowIcons[i];
+            let overlay = this._windowOverlays[i];
             if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
                 continue;
-            this._fadeInWindowIcon(clone, icon);
+            overlay.fadeIn();
         }
     },
 
-    _hideAllIcons: function () {
-        for (let i = 1; i < this._windows.length; i++) {
-            let icon = this._windowIcons[i];
-            icon.hide();
+    _hideAllOverlays: function() {
+        for (let i = 1; i< this._windows.length; i++) {
+            let overlay = this._windowOverlays[i];
+            overlay.hide();
         }
     },
 
@@ -1012,10 +1085,9 @@ Workspace.prototype = {
             return;
 
         let clone = this._windows[index];
-        let icon = this._windowIcons[index];
 
         this._windows.splice(index, 1);
-        this._windowIcons.splice(index, 1);
+        this._windowOverlays.splice(index, 1);
 
         // If metaWin.get_compositor_private() returned non-NULL, that
         // means the window still exists (and is just being moved to
@@ -1033,7 +1105,6 @@ Workspace.prototype = {
             };
         }
         clone.destroy();
-        icon.destroy();
 
         this.positionWindows(false);
         this.updateRemovable();
@@ -1103,7 +1174,7 @@ Workspace.prototype = {
     zoomFromOverview : function() {
         this.leavingOverview = true;
 
-        this._hideAllIcons();
+        this._hideAllOverlays();
 
         Main.overview.connect('hidden', Lang.bind(this,
                                                  this._doneLeavingOverview));
@@ -1140,7 +1211,7 @@ Workspace.prototype = {
     // Animates grid shrinking/expanding when a row or column
     // of workspaces is added or removed
     resizeToGrid : function (oldScale) {
-        this._hideAllIcons();
+        this._hideAllOverlays();
         Tweener.addTween(this.actor,
                          { x: this.gridX,
                            y: this.gridY,
@@ -1148,7 +1219,7 @@ Workspace.prototype = {
                            scale_y: this.scale,
                            time: Overview.ANIMATION_TIME,
                            transition: "easeOutQuad",
-                           onComplete: Lang.bind(this, this._fadeInAllIcons)
+                           onComplete: Lang.bind(this, this._fadeInAllOverlays)
                          });
     },
 
@@ -1177,7 +1248,7 @@ Workspace.prototype = {
     slideOut : function(onComplete) {
         let destX = this.actor.x, destY = this.actor.y;
 
-        this._hideAllIcons();
+        this._hideAllOverlays();
 
         if (this.gridCol > this.gridRow)
             destX = global.screen_width;
@@ -1226,48 +1297,39 @@ Workspace.prototype = {
         return tracker.is_window_interesting(win.get_meta_window());
     },
 
-    _createWindowIcon: function(window) {
-        let tracker = Shell.WindowTracker.get_default()
-        let app = tracker.get_window_app(window.metaWindow);
-        let iconTexture = null;
-        // The design is application based, so prefer the application
-        // icon here if we have it.  FIXME - should move this fallback code
-        // into ShellAppMonitor.
-        if (app) {
-            iconTexture = app.create_icon_texture(48);
-        } else {
-            let icon = window.metaWindow.icon;
-            iconTexture = new Clutter.Texture({ width: 48,
-                                                height: 48,
-                                                keep_aspect_ratio: true });
-            Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
-        }
-        return iconTexture;
-    },
-
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone : function(win) {
-        let icon = this._createWindowIcon(win);
-        this.parentActor.add_actor(icon);
-
         let clone = new WindowClone(win);
+        let overlay = new WindowOverlay(clone, this.parentActor);
+
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
         clone.connect('drag-begin',
                       Lang.bind(this, function() {
-                          icon.hide();
+                          overlay.hide();
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function() {
-                          icon.show();
+                          overlay.show();
                       }));
 
         this.actor.add_actor(clone.actor);
 
+        overlay.connect('show-close-button', Lang.bind(this, this._onShowOverlayClose));
+
         this._windows.push(clone);
-        this._windowIcons.push(icon);
+        this._windowOverlays.push(overlay);
 
         return clone;
+    },
+
+    _onShowOverlayClose: function (windowOverlay) {
+        for (let i = 1; i < this._windowOverlays.length; i++) {
+            let overlay = this._windowOverlays[i];
+            if (overlay == windowOverlay)
+                continue;
+            overlay.hideCloseButton();
+        }
     },
 
     _computeWindowSlot : function(windowIndex, numberOfWindows) {
@@ -1345,7 +1407,10 @@ function Workspaces(width, height, x, y) {
 
 Workspaces.prototype = {
     _init : function(width, height, x, y) {
-        this.actor = new Clutter.Group();
+        this.actor = new St.Bin({ style_class: "workspaces" });
+        this._actor = new Clutter.Group();
+
+        this.actor.add_actor(this._actor);
 
         this._width = width;
         this._height = height;
@@ -1654,9 +1719,9 @@ Workspaces.prototype = {
     },
 
     _addWorkspaceActor : function(workspaceNum) {
-        let workspace  = new Workspace(workspaceNum, this.actor);
+        let workspace  = new Workspace(workspaceNum, this._actor);
         this._workspaces[workspaceNum] = workspace;
-        this.actor.add_actor(workspace.actor);
+        this._actor.add_actor(workspace.actor);
     },
 
     _onRestacked: function() {

@@ -331,7 +331,7 @@ WidgetBox.prototype = {
                                        onCompleteScope: this });
         this.state = this._widget.state = Widget.STATE_POPPING_OUT;
 
-        Main.chrome.addInputRegionActor(this._hbox);
+        Main.chrome.trackActor(this._hbox, { affectsStruts: false });
     },
 
     _popOutComplete: function() {
@@ -370,7 +370,7 @@ WidgetBox.prototype = {
         this._egroup.hide();
         this._ebox.x = 0;
 
-        Main.chrome.removeInputRegionActor(this._hbox);
+        Main.chrome.untrackActor(this._hbox);
     },
 
     destroy: function() {

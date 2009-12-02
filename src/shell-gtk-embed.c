@@ -1,5 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include "config.h"
+
 #include "shell-embedded-window-private.h"
 
 #include <clutter/glx/clutter-glx.h>

@@ -11,7 +11,6 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const AppIcon = imports.ui.appIcon;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -438,25 +437,20 @@ SwitcherList.prototype = {
     },
 
     addItem : function(item) {
-        // We want the St.Bin's padding to be clickable (since it will
-        // be part of the highlighted background color), so we put the
-        // bin inside the ButtonBox rather than vice versa.
-        let bin = new St.Bin({ style_class: 'item-box' });
-        let bbox = new Shell.ButtonBox({ reactive: true });
+        let bbox = new St.Clickable({ style_class: 'item-box',
+                                      reactive: true });
 
-        bin.add_actor(item);
-        bbox.append(bin, Big.BoxPackFlags.NONE);
+        bbox.set_child(item);
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('activate', Lang.bind(this, function () {
+        bbox.connect('clicked', Lang.bind(this, function () {
                                                this._itemActivated(n);
                                           }));
         bbox.connect('enter-event', Lang.bind(this, function () {
                                                   this._itemEntered(n);
                                               }));
 
-        bbox._bin = bin;
         this._items.push(bbox);
     },
 
@@ -468,15 +462,15 @@ SwitcherList.prototype = {
     
     highlight: function(index, justOutline) {
         if (this._highlighted != -1)
-            this._items[this._highlighted]._bin.style_class = 'item-box';
+            this._items[this._highlighted].style_class = 'item-box';
 
         this._highlighted = index;
 
         if (this._highlighted != -1) {
             if (justOutline)
-                this._items[this._highlighted]._bin.style_class = 'outlined-item-box';
+                this._items[this._highlighted].style_class = 'outlined-item-box';
             else
-                this._items[this._highlighted]._bin.style_class = 'selected-item-box';
+                this._items[this._highlighted].style_class = 'selected-item-box';
         }
     },
 
@@ -588,6 +582,22 @@ SwitcherList.prototype = {
 
 Signals.addSignalMethods(SwitcherList.prototype);
 
+function AppIcon(app) {
+    this._init(app);
+}
+
+AppIcon.prototype = {
+    _init: function(app) {
+        this.app = app;
+        this.actor = new St.BoxLayout({ style_class: "alt-tab-app",
+                                         vertical: true });
+        this._icon = this.app.create_icon_texture(POPUP_APPICON_SIZE);
+        this.actor.add(this._icon, { x_fill: false, y_fill: false });
+        this._label = new St.Label({ text: this.app.get_name() });
+        this.actor.add(this._label, { x_fill: false });
+    }
+}
+
 function AppSwitcher(apps) {
     this._init(apps);
 }
@@ -603,8 +613,7 @@ AppSwitcher.prototype = {
         let workspaceIcons = [];
         let otherIcons = [];
         for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon.AppIcon({ app: apps[i],
-                                                size: POPUP_APPICON_SIZE });
+            let appIcon = new AppIcon(apps[i]);
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = appIcon.app.get_windows();
@@ -681,12 +690,8 @@ AppSwitcher.prototype = {
         this.icons.push(appIcon);
         this.addItem(appIcon.actor);
 
-        // SwitcherList creates its own Shell.ButtonBox; we want to
-        // avoid intercepting the events it wants.
-        appIcon.actor.reactive = false;
-
         let n = this._arrows.length;
-        let arrow = new Shell.DrawingArea();
+        let arrow = new St.DrawingArea();
         arrow.connect('redraw', Lang.bind(this,
             function (area, texture) {
                 Shell.draw_box_pointer(texture, Shell.PointerDirection.DOWN,

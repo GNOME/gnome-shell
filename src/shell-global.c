@@ -1,5 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include "config.h"
+
 #include "shell-global-private.h"
 #include "shell-wm.h"
 
@@ -19,6 +21,9 @@
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 #include <gjs/gjs.h>
+#ifdef HAVE_SYS_RESOURCE_H
+#include <sys/resource.h>
+#endif
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 

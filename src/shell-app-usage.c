@@ -1,4 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+#include "config.h"
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -62,7 +65,7 @@
  */
 
 /* How often we save internally app data, in seconds */
-#define SAVE_APPS_TIMEOUT_SECONDS 5    /* leave this low for testing, we can bump later if need be */
+#define SAVE_APPS_TIMEOUT_SECONDS (5 * 60)
 
 /* With this value, an app goes from bottom to top of the
  * usage list in 50 hours of use */
@@ -711,7 +714,7 @@ idle_save_application_usage (gpointer data)
 
 out:
   if (!error)
-    g_output_stream_close (G_OUTPUT_STREAM(data_output), NULL, &error);
+    g_output_stream_close_async (G_OUTPUT_STREAM (data_output), 0, NULL, NULL, NULL);
   g_object_unref (data_output);
   if (error)
     {

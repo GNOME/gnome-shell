@@ -307,7 +307,7 @@ AppIconMenu.prototype = {
         this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
         this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
 
-        this._arrow = new Shell.DrawingArea();
+        this._arrow = new St.DrawingArea();
         this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
             Shell.draw_box_pointer(texture,
                                    this._type == MenuType.ON_RIGHT ? Shell.PointerDirection.LEFT : Shell.PointerDirection.UP,

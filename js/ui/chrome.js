@@ -7,6 +7,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 
 // This manages the shell "chrome"; the UI that's visible in the
 // normal mode (ie, outside the Overview), that surrounds the main
@@ -54,7 +55,7 @@ Chrome.prototype = {
 
     // addActor:
     // @actor: an actor to add to the chrome layer
-    // @shapeActor: optional "shape actor".
+    // @params: (optional) additional params
     //
     // Adds @actor to the chrome layer and extends the input region
     // and window manager struts to include it. (Window manager struts
@@ -64,59 +65,45 @@ Chrome.prototype = {
     // in its visibility will affect the input region, but NOT the
     // struts.
     //
-    // If @shapeActor is provided, it will be used instead of @actor
-    // for the input region/strut shape. (This lets you have things like
-    // drop shadows in @actor that don't affect the struts.) It must
-    // be a child of @actor. Alternatively, you can pass %null for
-    // @shapeActor to indicate that @actor should not affect the input
-    // region or struts at all.
-    addActor: function(actor, shapeActor) {
-        if (shapeActor === undefined)
-            shapeActor = actor;
-        else if (shapeActor && !this._verifyAncestry(shapeActor, actor))
-            throw new Error('shapeActor is not a descendent of actor');
+    // If %visibleInOverview is %true in @params, @actor will remain
+    // visible when the overview is brought up. Otherwise it will
+    // automatically be hidden. If %affectsStruts or %affectsInputRegion
+    // is %false, the actor will not have the indicated effect.
+    addActor: function(actor, params) {
+        params = Params.parse(params, { visibleInOverview: false,
+                                        affectsStruts: true,
+                                        affectsInputRegion: true });
 
-        this.nonOverviewActor.add_actor(actor);
-
-        if (shapeActor)
-            this._trackActor(shapeActor, true, true);
-    },
-
-    // setVisibleInOverview:
-    // @actor: an actor in the chrome layer
-    // @visible: Overview visibility
-    //
-    // By default, actors in the chrome layer are automatically hidden
-    // when the Overview is shown. This can be used to override that
-    // behavior
-    setVisibleInOverview: function(actor, visible) {
-        if (!this._verifyAncestry(actor, this.actor))
-            throw new Error('actor is not a descendent of the chrome layer');
-
-        if (visible)
-            actor.reparent(this.actor);
+        if (params.visibleInOverview)
+            this.actor.add_actor(actor);
         else
-            actor.reparent(this.nonOverviewActor);
+            this.nonOverviewActor.add_actor(actor);
+
+        this._trackActor(actor, params.affectsInputRegion, params.affectsStruts);
     },
 
-    // addInputRegionActor:
-    // @actor: an actor to add to the stage input region
+    // trackActor:
+    // @actor: a descendant of the chrome to begin tracking
+    // @params: parameters describing how to track @actor
     //
-    // Adds @actor to the stage input region, as with addActor(), but
-    // for actors that are already descendants of the chrome layer.
-    addInputRegionActor: function(actor) {
+    // Tells the chrome to track @actor, which must be a descendant
+    // of an actor added via addActor(). This can be used to extend the
+    // struts or input region to cover specific children.
+    trackActor: function(actor, params) {
         if (!this._verifyAncestry(actor, this.actor))
             throw new Error('actor is not a descendent of the chrome layer');
 
-        this._trackActor(actor, true, false);
+        params = Params.parse(params, { affectsStruts: true,
+                                        affectsInputRegion: true });
+        this._trackActor(actor, params.affectsInputRegion, params.affectsStruts);
     },
 
-    // removeInputRegionActor:
-    // @actor: an actor previously added to the stage input region
+    // untrackActor:
+    // @actor: an actor previously tracked via trackActor()
     //
-    // Undoes the effect of addInputRegionActor()
-    removeInputRegionActor: function(actor) {
-        this._untrackActor(actor, true, false);
+    // Undoes the effect of trackActor()
+    untrackActor: function(actor) {
+        this._untrackActor(actor);
     },
 
     // removeActor:
@@ -128,7 +115,7 @@ Chrome.prototype = {
             this.nonOverviewActor.remove_actor(actor);
         else
             this.actor.remove_actor(actor);
-        this._untrackActor(actor, true, true);
+        this._untrackActor(actor);
     },
 
     _findActor: function(actor) {
@@ -142,23 +129,13 @@ Chrome.prototype = {
 
     _trackActor: function(actor, inputRegion, strut) {
         let actorData;
-        let i = this._findActor(actor);
 
-        if (i != -1) {
-            actorData = this._trackedActors[i];
-            if (inputRegion)
-                actorData.inputRegion++;
-            if (strut)
-                actorData.strut++;
-            if (!inputRegion && !strut)
-                actorData.children++;
-            return;
-        }
+        if (this._findActor(actor) != -1)
+            throw new Error('trying to re-track existing chrome actor');
 
         actorData = { actor: actor,
-                      inputRegion: inputRegion ? 1 : 0,
-                      strut: strut ? 1 : 0,
-                      children: 0 };
+                      inputRegion: inputRegion,
+                      strut: strut };
 
         actorData.visibleId = actor.connect('notify::visible',
                                             Lang.bind(this, this._queueUpdateRegions));
@@ -166,54 +143,31 @@ Chrome.prototype = {
                                                Lang.bind(this, this._queueUpdateRegions));
         actorData.parentSetId = actor.connect('parent-set',
                                               Lang.bind(this, this._actorReparented));
+        // Note that destroying actor will unset its parent, so we don't
+        // need to connect to 'destroy' too.
 
         this._trackedActors.push(actorData);
-
-        actor = actor.get_parent();
-        if (actor != this.actor && actor != this.nonOverviewActor)
-            this._trackActor(actor, false, false);
-
-        if (inputRegion || strut)
-            this._queueUpdateRegions();
+        this._queueUpdateRegions();
     },
 
-    _untrackActor: function(actor, inputRegion, strut) {
+    _untrackActor: function(actor) {
         let i = this._findActor(actor);
 
         if (i == -1)
             return;
         let actorData = this._trackedActors[i];
 
-        if (inputRegion)
-            actorData.inputRegion--;
-        if (strut)
-            actorData.strut--;
-        if (!inputRegion && !strut)
-            actorData.children--;
+        this._trackedActors.splice(i, 1);
+        actor.disconnect(actorData.visibleId);
+        actor.disconnect(actorData.allocationId);
+        actor.disconnect(actorData.parentSetId);
 
-        if (actorData.inputRegion <= 0 && actorData.strut <= 0 && actorData.children <= 0) {
-            this._trackedActors.splice(i, 1);
-            actor.disconnect(actorData.visibleId);
-            actor.disconnect(actorData.allocationId);
-            actor.disconnect(actorData.parentSetId);
-
-            actor = actor.get_parent();
-            if (actor && actor != this.actor && actor != this.nonOverviewActor)
-                this._untrackActor(actor, false, false);
-        }
-
-        if (inputRegion || strut)
-            this._queueUpdateRegions();
+        this._queueUpdateRegions();
     },
 
     _actorReparented: function(actor, oldParent) {
-        if (this._verifyAncestry(actor, this.actor)) {
-            let newParent = actor.get_parent();
-            if (newParent != this.actor && newParent != this.nonOverviewActor)
-                this._trackActor(newParent, false, false);
-        }
-        if (oldParent != this.actor && oldParent != this.nonOverviewActor)
-            this._untrackActor(oldParent, false, false);
+        if (!this._verifyAncestry(actor, this.actor))
+            this._untrackActor(actor);
     },
 
     _overviewShowing: function() {

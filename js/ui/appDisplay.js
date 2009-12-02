@@ -9,28 +9,19 @@ const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Mainloop = imports.mainloop;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppFavorites = imports.ui.appFavorites;
-const AppIcon = imports.ui.appIcon;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Workspaces = imports.ui.workspaces;
 
-const ENTERED_MENU_COLOR = new Clutter.Color();
-ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
-
-const WELL_DEFAULT_COLUMNS = 4;
-const WELL_ITEM_MIN_HSPACING = 4;
-const WELL_ITEM_VSPACING = 4;
-
-const MENU_ARROW_SIZE = 12;
-const MENU_SPACING = 7;
-
-const MAX_ITEMS = 30;
+const APPICON_SIZE = 48;
+const WELL_MAX_COLUMNS = 8;
 
 /* This class represents a single display item containing information about an application.
  *
@@ -85,79 +76,6 @@ AppDisplayItem.prototype = {
         this.launch();
     }
 };
-
-const MENU_UNSELECTED = 0;
-const MENU_SELECTED = 1;
-const MENU_ENTERED = 2;
-
-function MenuItem(name, id) {
-    this._init(name, id);
-}
-
-/**
- * MenuItem:
- * Shows the list of menus in the sidebar.
- */
-MenuItem.prototype = {
-    _init: function(name, id) {
-        this.id = id;
-
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   spacing: 4,
-                                   corner_radius: 4,
-                                   padding_right: 4,
-                                   padding_left: 4,
-                                   reactive: true });
-        this.actor.connect('button-press-event', Lang.bind(this, function (a, e) {
-            this.setState(MENU_SELECTED);
-        }));
-
-        this._text = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                        font_name: "Sans 14px",
-                                        text: name });
-
-        // We use individual boxes for the label and the arrow to ensure that they
-        // are aligned vertically. Just setting y_align: Big.BoxAlignment.CENTER
-        // on this.actor does not seem to achieve that.  
-        let labelBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER,
-                                     padding: 4 });
-
-        labelBox.append(this._text, Big.BoxPackFlags.NONE);
-       
-        this.actor.append(labelBox, Big.BoxPackFlags.EXPAND);
-
-        let arrowBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-
-        this._arrow = new Shell.Arrow({ surface_width: MENU_ARROW_SIZE,
-                                        surface_height: MENU_ARROW_SIZE,
-                                        direction: Gtk.ArrowType.RIGHT,
-                                        opacity: 0 });
-        arrowBox.append(this._arrow, Big.BoxPackFlags.NONE);
-        this.actor.append(arrowBox, Big.BoxPackFlags.NONE);
-    },
-
-    getState: function() {
-        return this._state;
-    },
-
-    setState: function (state) {
-        if (state == this._state)
-            return;
-        this._state = state;
-        if (this._state == MENU_UNSELECTED) {
-            this.actor.background_color = null;
-            this._arrow.set_opacity(0);
-        } else if (this._state == MENU_ENTERED) {
-            this.actor.background_color = ENTERED_MENU_COLOR;
-            this._arrow.set_opacity(0xFF/2);
-        } else {
-            this.actor.background_color = GenericDisplay.ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR;
-            this._arrow.set_opacity(0xFF);
-        }
-        this.emit('state-changed')
-    }
-}
-Signals.addSignalMethods(MenuItem.prototype);
 
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their popularity by default, and based on
@@ -302,42 +220,203 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
-function BaseWellItem(app, isFavorite, hasMenu) {
-    this._init(app, isFavorite, hasMenu);
+
+function BaseWellItem(app, isFavorite) {
+    this._init(app, isFavorite);
 }
 
 BaseWellItem.prototype = {
-    __proto__: AppIcon.AppIcon.prototype,
+    _init : function(app, isFavorite) {
+        this.app = app;
 
-    _init: function(app, isFavorite) {
-        AppIcon.AppIcon.prototype._init.call(this, { app: app,
-                                                     menuType: AppIcon.MenuType.ON_RIGHT,
-                                                     glow: true });
+        this._glowExtendVertical = 0;
+        this._glowShrinkHorizontal = 0;
 
-        this.isFavorite = isFavorite;
+        this.actor = new St.Clickable({ style_class: 'app-well-app',
+                                         reactive: true });
+        this.actor._delegate = this;
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+
+        let box = new St.BoxLayout({ vertical: true });
+        this.actor.set_child(box);
+
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+
+        this._menu = null;
+
+        this.icon = this.app.create_icon_texture(APPICON_SIZE);
+
+        box.add(this.icon, { expand: true, x_fill: false, y_fill: false });
+
+        let nameBox = new Shell.GenericContainer();
+        nameBox.connect('get-preferred-width', Lang.bind(this, this._nameBoxGetPreferredWidth));
+        nameBox.connect('get-preferred-height', Lang.bind(this, this._nameBoxGetPreferredHeight));
+        nameBox.connect('allocate', Lang.bind(this, this._nameBoxAllocate));
+        this._nameBox = nameBox;
+
+        this._name = new St.Label({ text: this.app.get_name() });
+        this._name.clutter_text.line_alignment = Pango.Alignment.CENTER;
+        nameBox.add_actor(this._name);
+        this._glowBox = new St.BoxLayout({ style_class: 'app-well-app-glow' });
+        this._glowBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this._nameBox.add_actor(this._glowBox);
+        this._glowBox.lower(this._name);
+        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._rerenderGlow));
+        this._rerenderGlow();
+
+        box.add(nameBox);
 
         this._draggable = DND.makeDraggable(this.actor, true);
+        this._dragStartX = null;
+        this._dragStartY = null;
 
-        // Do these as anonymous functions to avoid conflict with handlers in subclasses
-        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
-            let [stageX, stageY] = event.get_coords();
-            this._dragStartX = stageX;
-            this._dragStartY = stageY;
-            return false;
-        }));
-        this.actor.connect('notify::hover', Lang.bind(this, function () {
-            let hover = this.actor.hover;
-            if (!hover) {
-                if (this.actor.pressed && this._dragStartX != null) {
-                    this.actor.fake_release();
-                    this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                              Main.currentTime());
-                } else {
-                    this._dragStartX = null;
-                    this._dragStartY = null;
-                }
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
+    },
+
+    _nameBoxGetPreferredWidth: function (nameBox, forHeight, alloc) {
+        let [min, natural] = this._name.get_preferred_width(forHeight);
+        alloc.min_size = min;
+        alloc.natural_size = natural;
+    },
+
+    _nameBoxGetPreferredHeight: function (nameBox, forWidth, alloc) {
+        let [min, natural] = this._name.get_preferred_height(forWidth);
+        alloc.min_size = min + this._glowExtendVertical * 2;
+        alloc.natural_size = natural + this._glowExtendVertical * 2;
+    },
+
+    _nameBoxAllocate: function (nameBox, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        let [minWidth, naturalWidth] = this._name.get_preferred_width(-1);
+        let [minHeight, naturalHeight] = this._name.get_preferred_height(-1);
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+        let targetWidth = availWidth;
+        let xPadding = 0;
+        if (naturalWidth < availWidth) {
+            xPadding = Math.floor((availWidth - naturalWidth) / 2);
+        }
+        childBox.x1 = xPadding;
+        childBox.x2 = availWidth - xPadding;
+        childBox.y1 = this._glowExtendVertical;
+        childBox.y2 = availHeight - this._glowExtendVertical;
+        this._name.allocate(childBox, flags);
+
+        // Now the glow
+        let glowPaddingHoriz = Math.max(0, xPadding - this._glowShrinkHorizontal);
+        glowPaddingHoriz = Math.max(this._glowShrinkHorizontal, glowPaddingHoriz);
+        childBox.x1 = glowPaddingHoriz;
+        childBox.x2 = availWidth - glowPaddingHoriz;
+        childBox.y1 = 0;
+        childBox.y2 = availHeight;
+        this._glowBox.allocate(childBox, flags);
+    },
+
+    _onDestroy: function() {
+        if (this._appWindowChangedId > 0)
+            this.app.disconnect(this._appWindowChangedId);
+    },
+
+    _onMapped: function() {
+        if (!this._queuedGlowRerender)
+            return;
+        this._queuedGlowRerender = false;
+        this._rerenderGlow();
+    },
+
+    _rerenderGlow: function() {
+        if (!this.actor.mapped) {
+            this._queuedGlowRerender = true;
+            return;
+        }
+        this._glowBox.destroy_children();
+        let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
+        let windows = this.app.get_windows();
+        for (let i = 0; i < windows.length && i < 3; i++) {
+            let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
+                                                                      glowPath, -1, -1);
+            glow.keep_aspect_ratio = false;
+            this._glowBox.add(glow);
+        }
+    },
+
+    _onButtonPress: function(actor, event) {
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+    },
+
+    _onHoverChange: function(actor) {
+        let hover = this.actor.hover;
+        if (!hover) {
+            if (this.actor.pressed && this._dragStartX != null) {
+                this.actor.fake_release();
+                this._draggable.startDrag(this._dragStartX, this._dragStartY,
+                                          Main.currentTime());
+            } else {
+                this._dragStartX = null;
+                this._dragStartY = null;
             }
-        }));
+        }
+    },
+
+    _onClicked: function(actor, event) {
+        let button = event.get_button();
+        if (button == 1) {
+            this._onActivate(event);
+        } else if (button == 3) {
+            // Don't bind to the right click here; we want left click outside the
+            // area to deactivate as well.
+            this.popupMenu(0);
+        }
+        return false;
+    },
+
+    _onStyleChanged: function() {
+        let themeNode = this._glowBox.get_theme_node();
+
+        let success, len;
+        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
+        if (success)
+            this._glowExtendVertical = len;
+        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
+        if (success)
+            this._glowShrinkHorizontal = len;
+        this.actor.queue_relayout();
+    },
+
+    popupMenu: function(activatingButton) {
+        if (!this._menu) {
+            this._menu = new AppIconMenu(this);
+            this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
+                this.highlightWindow(window);
+            }));
+            this._menu.connect('activate-window', Lang.bind(this, function (menu, window) {
+                this.activateWindow(window);
+            }));
+            this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
+                if (isPoppedUp) {
+                    this._onMenuPoppedUp();
+                } else {
+                    this._onMenuPoppedDown();
+                }
+            }));
+        }
+
+        this._menu.popup(activatingButton);
+
+        return false;
+    },
+
+    // Default implementations; AppDisplay.RunningWellItem overrides these
+    highlightWindow: function(window) {
+        this.emit('highlight-window', window);
+    },
+
+    activateWindow: function(window) {
+        this.emit('activate-window', window);
     },
 
     shellWorkspaceLaunch : function() {
@@ -353,7 +432,7 @@ BaseWellItem.prototype = {
     },
 
     getDragActor: function() {
-        return this.createDragActor();
+        return this.app.create_icon_texture(APPICON_SIZE);
     },
 
     // Returns the original icon that is being used as a source for the cloned texture
@@ -362,6 +441,305 @@ BaseWellItem.prototype = {
         return this.actor;
     }
 }
+Signals.addSignalMethods(BaseWellItem.prototype);
+
+function AppIconMenu(source) {
+    this._init(source);
+}
+
+AppIconMenu.prototype = {
+    _init: function(source) {
+        this._source = source;
+
+        this._arrowSize = 4; // CSS default
+        this._spacing = 0; // CSS default
+
+        this._dragStartX = 0;
+        this._dragStartY = 0;
+
+        this.actor = new Shell.GenericContainer({ reactive: true });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this._windowContainerBox = new St.Bin({ style_class: 'app-well-menu' });
+        this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
+                                                  width: Main.overview._dash.actor.width });
+        this._windowContainerBox.set_child(this._windowContainer);
+        this._windowContainer.connect('unselected', Lang.bind(this, this._onItemUnselected));
+        this._windowContainer.connect('selected', Lang.bind(this, this._onItemSelected));
+        this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
+        this._windowContainer.connect('activate', Lang.bind(this, this._onItemActivate));
+        this.actor.add_actor(this._windowContainerBox);
+
+        // Stay popped up on release over application icon
+        this._windowContainer.set_persistent_source(this._source.actor);
+
+        // Intercept events while the menu has the pointer grab to do window-related effects
+        this._windowContainer.connect('enter-event', Lang.bind(this, this._onMenuEnter));
+        this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
+        this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
+
+        this._borderColor = new Clutter.Color();
+        this._backgroundColor = new Clutter.Color();
+        this._windowContainerBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+
+        this._arrow = new St.DrawingArea();
+        this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
+            Shell.draw_box_pointer(texture,
+                                   Shell.PointerDirection.LEFT,
+                                   this._borderColor,
+                                   this._backgroundColor);
+        }));
+        this.actor.add_actor(this._arrow);
+
+        // Chain our visibility and lifecycle to that of the source
+        source.actor.connect('notify::mapped', Lang.bind(this, function () {
+            if (!source.actor.mapped)
+                this._windowContainer.popdown();
+        }));
+        source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
+
+        global.stage.add_actor(this.actor);
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [min, natural] = this._windowContainerBox.get_preferred_width(forHeight);
+        min += this._arrowSize;
+        natural += this._arrowSize;
+        alloc.min_size = min;
+        alloc.natural_size = natural;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [min, natural] = this._windowContainerBox.get_preferred_height(forWidth);
+        alloc.min_size = min;
+        alloc.natural_size = natural;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        let themeNode = this._windowContainerBox.get_theme_node();
+
+        let width = box.x2 - box.x1;
+        let height = box.y2 - box.y1;
+
+        childBox.x1 = 0;
+        childBox.x2 = this._arrowSize;
+        childBox.y1 = Math.floor((height / 2) - (this._arrowSize / 2));
+        childBox.y2 = childBox.y1 + this._arrowSize;
+        this._arrow.allocate(childBox, flags);
+
+        // Ensure the arrow is above the border area
+        let border = themeNode.get_border_width(St.Side.LEFT);
+        childBox.x1 = this._arrowSize - border;
+        childBox.x2 = width;
+        childBox.y1 = 0;
+        childBox.y2 = height;
+        this._windowContainerBox.allocate(childBox, flags);
+    },
+
+    _redisplay: function() {
+        this._windowContainer.remove_all();
+
+        let windows = this._source.app.get_windows();
+
+        this._windowContainer.show();
+
+        let iconsDiffer = false;
+        let texCache = Shell.TextureCache.get_default();
+        if (windows.length > 0) {
+            let firstIcon = windows[0].mini_icon;
+            for (let i = 1; i < windows.length; i++) {
+                if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
+                    iconsDiffer = true;
+                    break;
+                }
+            }
+        }
+
+        // Display the app windows menu items and the separator between windows
+        // of the current desktop and other windows.
+        let activeWorkspace = global.screen.get_active_workspace();
+        let separatorShown = windows.length > 0 && windows[0].get_workspace() != activeWorkspace;
+
+        for (let i = 0; i < windows.length; i++) {
+            if (!separatorShown && windows[i].get_workspace() != activeWorkspace) {
+                this._appendSeparator();
+                separatorShown = true;
+            }
+            let box = this._appendMenuItem(windows[i].title);
+            box._window = windows[i];
+        }
+
+        if (windows.length > 0)
+            this._appendSeparator();
+
+        let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+
+        this._newWindowMenuItem = windows.length > 0 ? this._appendMenuItem(_("New Window")) : null;
+
+        if (windows.length > 0)
+            this._appendSeparator();
+        this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
+                                                                    : _("Add to Favorites"));
+
+        this._highlightedItem = null;
+    },
+
+    _appendSeparator: function () {
+        let bin = new St.Bin({ style_class: "app-well-menu-separator" });
+        this._windowContainer.append_separator(bin, Big.BoxPackFlags.NONE);
+    },
+
+    _appendMenuItem: function(labelText) {
+        let box = new St.BoxLayout({ style_class: 'app-well-menu-item',
+                                      reactive: true });
+        let label = new St.Label({ text: labelText });
+        box.add(label);
+        this._windowContainer.append(box, Big.BoxPackFlags.NONE);
+        return box;
+    },
+
+    popup: function(activatingButton) {
+        let [stageX, stageY] = this._source.actor.get_transformed_position();
+        let [stageWidth, stageHeight] = this._source.actor.get_transformed_size();
+
+        this._redisplay();
+
+        this._windowContainer.popup(activatingButton, Main.currentTime());
+
+        this.emit('popup', true);
+
+        let x, y;
+        x = Math.floor(stageX + stageWidth);
+        y = Math.floor(stageY + (stageHeight / 2) - (this.actor.height / 2));
+
+        this.actor.set_position(x, y);
+        this.actor.show();
+    },
+
+    popdown: function() {
+        this._windowContainer.popdown();
+        this.emit('popup', false);
+        this.actor.hide();
+    },
+
+    selectWindow: function(metaWindow) {
+        this._selectMenuItemForWindow(metaWindow);
+    },
+
+    _findMetaWindowForActor: function (actor) {
+        if (actor._delegate instanceof Workspaces.WindowClone)
+            return actor._delegate.metaWindow;
+        else if (actor.get_meta_window)
+            return actor.get_meta_window();
+        return null;
+    },
+
+    // This function is called while the menu has a pointer grab; what we want
+    // to do is see if the mouse was released over a window representation
+    _onMenuButtonRelease: function (actor, event) {
+        let metaWindow = this._findMetaWindowForActor(event.get_source());
+        if (metaWindow) {
+            this.emit('activate-window', metaWindow);
+        }
+    },
+
+    _updateHighlight: function (item) {
+        if (this._highlightedItem) {
+            this._highlightedItem.set_style_pseudo_class(null);
+            this.emit('highlight-window', null);
+        }
+        this._highlightedItem = item;
+        if (this._highlightedItem) {
+            item.set_style_pseudo_class('hover');
+            let window = this._highlightedItem._window;
+            if (window)
+                this.emit('highlight-window', window);
+        }
+    },
+
+    _selectMenuItemForWindow: function (metaWindow) {
+        let children = this._windowContainer.get_children();
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            let menuMetaWindow = child._window;
+            if (menuMetaWindow == metaWindow)
+                this._updateHighlight(child);
+        }
+    },
+
+    // Called while menu has a pointer grab
+    _onMenuEnter: function (actor, event) {
+        let metaWindow = this._findMetaWindowForActor(event.get_source());
+        if (metaWindow) {
+            this._selectMenuItemForWindow(metaWindow);
+        }
+    },
+
+    // Called while menu has a pointer grab
+    _onMenuLeave: function (actor, event) {
+        let metaWindow = this._findMetaWindowForActor(event.get_source());
+        if (metaWindow) {
+            this._updateHighlight(null);
+        }
+    },
+
+    _onItemUnselected: function (actor, child) {
+        this._updateHighlight(null);
+    },
+
+    _onItemSelected: function (actor, child) {
+        this._updateHighlight(child);
+    },
+
+    _onItemActivate: function (actor, child) {
+        if (child._window) {
+            let metaWindow = child._window;
+            this.emit('activate-window', metaWindow);
+        } else if (child == this._newWindowMenuItem) {
+            this._source.app.launch();
+            this.emit('activate-window', null);
+        } else if (child == this._toggleFavoriteMenuItem) {
+            let favs = AppFavorites.getAppFavorites();
+            let isFavorite = favs.isFavorite(this._source.app.get_id());
+            if (isFavorite)
+                favs.removeFavorite(this._source.app.get_id());
+            else
+                favs.addFavorite(this._source.app.get_id());
+        }
+        this.popdown();
+    },
+
+    _onWindowSelectionCancelled: function () {
+        this.emit('highlight-window', null);
+        this.popdown();
+    },
+
+    _onStyleChanged: function() {
+        let themeNode = this._windowContainerBox.get_theme_node();
+        let [success, len] = themeNode.get_length('-shell-arrow-size', false);
+        if (success) {
+            this._arrowSize = len;
+            this.actor.queue_relayout();
+        }
+        [success, len] = themeNode.get_length('-shell-menu-spacing', false)
+        if (success) {
+            this._windowContainer.spacing = len;
+        }
+        let color = new Clutter.Color();
+        if (themeNode.get_background_color(color)) {
+            this._backgroundColor = color;
+            color = new Clutter.Color();
+        }
+        if (themeNode.get_border_color(St.Side.LEFT, color)) {
+            this._borderColor = color;
+        }
+        this._arrow.emit_redraw();
+    }
+};
+Signals.addSignalMethods(AppIconMenu.prototype);
 
 function RunningWellItem(app, isFavorite) {
     this._init(app, isFavorite);
@@ -372,14 +750,9 @@ RunningWellItem.prototype = {
 
     _init: function(app, isFavorite) {
         BaseWellItem.prototype._init.call(this, app, isFavorite);
-
-        this._dragStartX = 0;
-        this._dragStartY = 0;
-
-        this.actor.connect('activate', Lang.bind(this, this._onActivate));
     },
 
-    _onActivate: function (actor, event) {
+    _onActivate: function (event) {
         let modifiers = Shell.get_event_state(event);
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
@@ -406,11 +779,11 @@ RunningWellItem.prototype = {
             Main.overview.hide();
     },
 
-    menuPoppedUp: function() {
+    _onMenuPoppedUp: function() {
         Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
     },
 
-    menuPoppedDown: function() {
+    _onMenuPoppedDown: function() {
         if (this._didActivateWindow)
             return;
 
@@ -427,25 +800,18 @@ InactiveWellItem.prototype = {
 
     _init : function(app, isFavorite) {
         BaseWellItem.prototype._init.call(this, app, isFavorite);
-
-        this.actor.connect('notify::pressed', Lang.bind(this, this._onPressedChanged));
-        this.actor.connect('activate', Lang.bind(this, this._onActivate));
     },
 
-    _onPressedChanged: function() {
-        this.setHighlight(this.actor.pressed);
-    },
-
-    _onActivate: function() {
+    _onActivate: function(event) {
         this.app.launch();
         Main.overview.hide();
         return true;
     },
 
-    menuPoppedUp: function() {
+    _onMenuPoppedUp: function() {
     },
 
-    menuPoppedDown: function() {
+    _onMenuPoppedDown: function() {
     }
 };
 
@@ -455,156 +821,123 @@ function WellGrid() {
 
 WellGrid.prototype = {
     _init: function() {
-        this.actor = new Shell.GenericContainer();
+        this.actor = new St.Bin({ name: "dashAppWell" });
+        // Pulled from CSS, but hardcode some defaults here
+        this._spacing = 0;
+        this._item_size = 48;
+        this._grid = new Shell.GenericContainer();
+        this.actor.set_child(this._grid);
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
-        this._separator = new Big.Box({ height: 1 });
-        this.actor.add_actor(this._separator);
-        this._separatorIndex = 0;
-        this._cachedSeparatorY = 0;
-
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this._grid.connect('allocate', Lang.bind(this, this._allocate));
     },
 
     _getPreferredWidth: function (grid, forHeight, alloc) {
-        let [itemMin, itemNatural] = this._getItemPreferredWidth();
-        let children = this._getItemChildren();
-        let nColumns;
-        if (children.length < WELL_DEFAULT_COLUMNS)
-            nColumns = children.length;
-        else
-            nColumns = WELL_DEFAULT_COLUMNS;
-        alloc.min_size = itemMin;
-        alloc.natural_size = itemNatural * nColumns;
+        let children = this._grid.get_children();
+        let nColumns = children.length;
+        let totalSpacing = Math.max(0, nColumns - 1) * this._spacing;
+        // Kind of a lie, but not really an issue right now.  If
+        // we wanted to support some sort of hidden/overflow that would
+        // need higher level design
+        alloc.min_size = this._item_size;
+        alloc.natural_size = nColumns * this._item_size + totalSpacing;
     },
 
     _getPreferredHeight: function (grid, forWidth, alloc) {
-        let [rows, columns, itemWidth, itemHeight] = this._computeLayout(forWidth);
-        let totalVerticalSpacing = Math.max(rows - 1, 0) * WELL_ITEM_VSPACING;
-
-        let [separatorMin, separatorNatural] = this._separator.get_preferred_height(forWidth);
-        alloc.min_size = alloc.natural_size = rows * itemHeight + totalVerticalSpacing + separatorNatural;
+        let children = this._grid.get_children();
+        let [nColumns, usedWidth] = this._computeLayout(forWidth);
+        let nRows;
+        if (nColumns > 0)
+            nRows = Math.ceil(children.length / nColumns);
+        else
+            nRows = 0;
+        let totalSpacing = Math.max(0, nRows - 1) * this._spacing;
+        let height = nRows * this._item_size + totalSpacing;
+        alloc.min_size = height;
+        alloc.natural_size = height;
     },
 
     _allocate: function (grid, box, flags) {
-        let children = this._getItemChildren();
+        let children = this._grid.get_children();
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        let [rows, columns, itemWidth, itemHeight] = this._computeLayout(availWidth);
+        let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
-        let [separatorMin, separatorNatural] = this._separator.get_preferred_height(-1);
+        let overallPaddingX = Math.floor((availWidth - usedWidth) / 2);
 
-        let x = box.x1;
+        let x = box.x1 + overallPaddingX;
         let y = box.y1;
         let columnIndex = 0;
         for (let i = 0; i < children.length; i++) {
-            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(-1);
+            let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight]
+                = children[i].get_preferred_size();
 
             /* Center the item in its allocation horizontally */
-            let width = Math.min(itemWidth, childNaturalWidth);
-            let horizSpacing = (itemWidth - width) / 2;
+            let width = Math.min(this._item_size, childNaturalWidth);
+            let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
+            let height = Math.min(this._item_size, childNaturalHeight);
+            let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
 
             let childBox = new Clutter.ActorBox();
-            childBox.x1 = Math.floor(x + horizSpacing);
-            childBox.y1 = y;
+            childBox.x1 = Math.floor(x + childXSpacing);
+            childBox.y1 = Math.floor(y + childYSpacing);
             childBox.x2 = childBox.x1 + width;
-            childBox.y2 = childBox.y1 + itemHeight;
+            childBox.y2 = childBox.y1 + height;
             children[i].allocate(childBox, flags);
 
             columnIndex++;
-            if (columnIndex == columns) {
+            if (columnIndex == nColumns) {
                 columnIndex = 0;
             }
 
             if (columnIndex == 0) {
-                y += itemHeight + WELL_ITEM_VSPACING;
-                x = box.x1;
+                y += this._item_size + this._spacing;
+                x = box.x1 + overallPaddingX;
             } else {
-                x += itemWidth;
+                x += this._item_size + this._spacing;
             }
         }
-    },
-
-    removeAll: function () {
-        let itemChildren = this._getItemChildren();
-        for (let i = 0; i < itemChildren.length; i++) {
-            itemChildren[i].destroy();
-        }
-    },
-
-    _getItemChildren: function () {
-        let children = this.actor.get_children();
-        children.shift();
-        return children;
     },
 
     _computeLayout: function (forWidth) {
-        let [itemMinWidth, itemNaturalWidth] = this._getItemPreferredWidth();
-        let columnsNatural;
-        let i;
-        let children = this._getItemChildren();
-        if (children.length == 0)
-            return [0, WELL_DEFAULT_COLUMNS, 0, 0];
+        let children = this._grid.get_children();
         let nColumns = 0;
         let usedWidth = 0;
-        // Big.Box will allocate us at 0x0 if we are not visible; this is probably a
-        // Big.Box bug but it can't be fixed because if children are skipped in allocate()
-        // Clutter gets confused (see http://bugzilla.openedhand.com/show_bug.cgi?id=1831)
-        if (forWidth <= 0) {
-            nColumns = WELL_DEFAULT_COLUMNS;
-        } else {
-            while (nColumns < WELL_DEFAULT_COLUMNS &&
-                   nColumns < children.length &&
-                   usedWidth + itemMinWidth <= forWidth) {
-               // By including WELL_ITEM_MIN_HSPACING in usedWidth, we are ensuring
-               // that the number of columns we end up with will allow the spacing
-               // between the columns to be at least that value.
-               usedWidth += itemMinWidth + WELL_ITEM_MIN_HSPACING;
-               nColumns++;
-            }
+        while (nColumns < WELL_MAX_COLUMNS &&
+                nColumns < children.length &&
+                (usedWidth + this._item_size <= forWidth)) {
+            usedWidth += this._item_size + this._spacing;
+            nColumns += 1;
         }
 
-        if (nColumns == 0) {
-           log("WellGrid: couldn't fit a column in width " + forWidth);
-           /* FIXME - fall back to smaller icon size */
-        }
+        if (nColumns > 0)
+            usedWidth -= this._spacing;
 
-        let minWidth = itemMinWidth * nColumns;
-
-        let lastColumnIndex = nColumns - 1;
-        let rows = Math.ceil(children.length / nColumns);
-
-        let itemWidth;
-        if (forWidth <= 0) {
-            itemWidth = itemNaturalWidth;
-        } else {
-            itemWidth = Math.floor(forWidth / nColumns);
-        }
-
-        let itemNaturalHeight = 0;
-        for (let i = 0; i < children.length; i++) {
-            let [childMin, childNatural] = children[i].get_preferred_height(itemWidth);
-            if (childNatural > itemNaturalHeight)
-                itemNaturalHeight = childNatural;
-        }
-
-        return [rows, nColumns, itemWidth, itemNaturalHeight];
+        return [nColumns, usedWidth];
     },
 
-    _getItemPreferredWidth: function () {
-        let children = this._getItemChildren();
-        let minWidth = 0;
-        let naturalWidth = 0;
-        for (let i = 0; i < children.length; i++) {
-            let [childMin, childNatural] = children[i].get_preferred_width(-1);
-            if (childMin > minWidth)
-                minWidth = childMin;
-            if (childNatural > naturalWidth)
-                naturalWidth = childNatural;
-        }
-        return [minWidth, naturalWidth];
+    _onStyleChanged: function() {
+        let themeNode = this.actor.get_theme_node();
+        let [success, len] = themeNode.get_length('spacing', false);
+        if (success)
+            this._spacing = len;
+        [success, len] = themeNode.get_length('-shell-grid-item-size', false);
+        if (success)
+            this._item_size = len;
+        this._grid.queue_relayout();
+    },
+
+    removeAll: function () {
+        this._grid.get_children().forEach(Lang.bind(this, function (child) {
+            child.destroy();
+        }));
+    },
+
+    addItem: function(actor) {
+        this._grid.add_actor(actor);
     }
 }
 
@@ -671,6 +1004,7 @@ AppWell.prototype = {
         let running = this._tracker.get_running_apps(contextId);
         let runningIds = this._appIdListToHash(running);
 
+        let nFavorites = 0;
         for (let id in favorites) {
             let app = favorites[id];
             let display;
@@ -679,7 +1013,8 @@ AppWell.prototype = {
             } else {
                 display = new InactiveWellItem(app, true);
             }
-            this._grid.actor.add_actor(display.actor);
+            this._grid.addItem(display.actor);
+            nFavorites++;
         }
 
         for (let i = 0; i < running.length; i++) {
@@ -687,14 +1022,12 @@ AppWell.prototype = {
             if (app.get_id() in favorites)
                 continue;
             let display = new RunningWellItem(app, false);
-            this._grid.actor.add_actor(display.actor);
+            this._grid.addItem(display.actor);
         }
 
-        if (this._grid.actor.get_n_children() == 1) {
-            let text = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                          font_name: "Sans 14px",
-                                          text: _("Drag here to add favorites")});
-            this._grid.actor.add_actor(text);
+        if (running.length == 0 && nFavorites == 0) {
+            let text = new St.Label({ text: _("Drag here to add favorites")});
+            this._grid.actor.set_child(text);
         }
     },
 
