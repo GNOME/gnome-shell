@@ -265,8 +265,11 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   if (!cogl_texture_get_gl_texture (texhandle, &tex_gl_handle, &tex_gl_target))
     return COGL_INVALID_HANDLE;
 
-  if (tex_gl_target != GL_TEXTURE_2D &&
-      tex_gl_target != GL_TEXTURE_RECTANGLE_ARB)
+  if (tex_gl_target != GL_TEXTURE_2D
+#ifdef HAVE_COGL_GL
+      && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
+#endif
+      )
     return COGL_INVALID_HANDLE;
 
   /* Create a renderbuffer for stenciling */
