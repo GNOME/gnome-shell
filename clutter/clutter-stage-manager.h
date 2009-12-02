@@ -44,6 +44,14 @@ typedef struct _ClutterStageManager             ClutterStageManager;
 typedef struct _ClutterStageManagerClass        ClutterStageManagerClass;
 
 /**
+ * ClutterStageManager:
+ *
+ * The #ClutterStageManager structure is private.
+ *
+ * Since: 1.0
+ */
+
+/**
  * ClutterStageManagerClass;
  * @stage_added: class handler for the #ClutterStageManager::stage-added
  *   signal
