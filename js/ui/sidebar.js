@@ -69,6 +69,8 @@ Sidebar.prototype = {
                             Lang.bind(this, this._expandedChanged));
         this._gconf.connect('changed::sidebar/visible',
                             Lang.bind(this, this._visibleChanged));
+
+        this._adjustPosition();
     },
 
     addWidget: function(widget) {
@@ -82,6 +84,14 @@ Sidebar.prototype = {
 
         this.box.append(widgetBox.actor, Big.BoxPackFlags.NONE);
         this._widgets.push(widgetBox);
+        this._adjustPosition();
+    },
+
+    _adjustPosition: function() {
+        let primary=global.get_primary_monitor();
+
+        this.actor.y = Math.max(primary.y + Panel.PANEL_HEIGHT,primary.height/2 - this.actor.height/2);
+        this.actor.x = primary.x;
     },
 
     _visibleChanged: function() {
