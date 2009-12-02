@@ -68,12 +68,28 @@ struct _ClutterLayoutMeta
 
   /*< private >*/
   /* padding */
-  gpointer dummy;
+  gint32 dummy0;
+  gpointer dummy1;
 };
 
+/**
+ * ClutterLayoutMetaClass:
+ *
+ * The #ClutterLayoutMetaClass contains only private data and
+ * should never be accessed directly
+ *
+ * Since: 1.2
+ */
 struct _ClutterLayoutMetaClass
 {
+  /*< private >*/
   ClutterChildMetaClass parent_class;
+
+  /* padding, for expansion */
+  void (*_clutter_padding1) (void);
+  void (*_clutter_padding2) (void);
+  void (*_clutter_padding3) (void);
+  void (*_clutter_padding4) (void);
 };
 
 GType clutter_layout_meta_get_type (void) G_GNUC_CONST;
