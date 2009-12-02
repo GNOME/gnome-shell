@@ -38,14 +38,15 @@ AM_CPPFLAGS = \
 	-DG_DISABLE_DEPRECATED 			\
 	-DG_DISABLE_SINGLE_INCLUDES		\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
+	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 LDADD = \
 	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
-	-export-symbols-regex "^(clutter|cogl|json|pango).*" \
+	-export-symbols-regex "^(clutter|cogl|json).*" \
 	-rpath $(libdir) \
 	$(NULL)
 
