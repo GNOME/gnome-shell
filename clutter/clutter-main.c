@@ -28,6 +28,62 @@
  *
  * Functions to retrieve various global Clutter resources and other utility
  * functions for mainloops, events and threads
+ *
+ * <refsect2 id="clutter-Threading-Model">
+ *   <title>Threading Model</title>
+ *   <para>Clutter is <emphasis>thread-aware</emphasis>: all operations
+ *   performed by Clutter are assumed to be under the big Clutter lock,
+ *   which is created when the threading is initialized through
+ *   clutter_threads_init().</para>
+ *   <example id="example-Thread-Init">
+ *     <title>Thread Initialization</title>
+ *     <para>The code below shows how to correctly initialize Clutter
+ *     in a multi-threaded environment. These operations are mandatory for
+ *     applications that wish to use threads with Clutter.</para>
+ *     <programlisting>
+ * int
+ * main (int argc, char *argv[])
+ * {
+ *   /&ast; initialize GLib's threading support &ast;/
+ *   g_thread_init (NULL);
+ *
+ *   /&ast; initialize Clutter's threading support &ast;/
+ *   clutter_threads_init ();
+ *
+ *   /&ast; initialize Clutter &ast;/
+ *   clutter_init (&amp;argc, &amp;argv);
+ *
+ *   /&ast; program code &ast;/
+ *
+ *   /&ast; acquire the main lock &ast;/
+ *   clutter_threads_enter ();
+ *
+ *   /&ast; start the main loop &ast;/
+ *   clutter_main ();
+ *
+ *   /&ast; release the main lock &ast;/
+ *   clutter_threads_leave ();
+ *
+ *   /&ast; clean up &ast;/
+ *   return 0;
+ * }
+ *     </programlisting>
+ *   </example>
+ *   <para>This threading model has the caveat that it is only safe to call
+ *   Clutter's API when the lock has been acquired &mdash; which happens
+ *   between pairs of clutter_threads_enter() and clutter_threads_leave()
+ *   calls.</para>
+ *   <para>The only safe and portable way to use the Clutter API in a
+ *   multi-threaded environment is to never access the API from a thread that
+ *   did not call clutter_init() and clutter_main().</para>
+ *   <para>The common pattern for using threads with Clutter is to use worker
+ *   threads to perform blocking operations and then install idle or timeour
+ *   sources with the result when the thread finished.</para>
+ *   <para>Clutter provides thread-aware variants of g_idle_add() and
+ *   g_timeout_add() that acquire the Clutter lock before invoking the provided
+ *   callback: clutter_threads_add_idle() and
+ *   clutter_threads_add_timeout().</para>
+ * </refsect2>
  */
 
 #ifdef HAVE_CONFIG_H
