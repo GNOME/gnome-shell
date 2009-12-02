@@ -40,6 +40,7 @@ let wm = null;
 let messaging = null;
 let notificationDaemon = null;
 let notificationPopup = null;
+let messageTray = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -113,6 +114,7 @@ function start() {
     messaging = new Messaging.Messaging();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     notificationPopup = new MessageTray.Notification();
+    messageTray = new MessageTray.MessageTray();
 
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {

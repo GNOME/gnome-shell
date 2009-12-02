@@ -6,6 +6,7 @@
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libgnomeui/gnome-desktop-thumbnail.h>
 #include <string.h>
+#include <glib.h>
 
 typedef struct
 {
@@ -15,6 +16,7 @@ typedef struct
   GIcon *icon;
   gchar *uri;
   gchar *thumbnail_uri;
+  gchar *checksum;
 
   /* This one is common to all */
   guint size;
@@ -49,6 +51,8 @@ cache_key_hash (gconstpointer a)
     base_hash = g_str_hash (akey->uri);
   else if (akey->thumbnail_uri)
     base_hash = g_str_hash (akey->thumbnail_uri);
+  else if (akey->checksum)
+    base_hash = g_str_hash (akey->checksum);
   else
     g_assert_not_reached ();
   return base_hash + 31*akey->size;
@@ -74,6 +78,8 @@ cache_key_equal (gconstpointer a,
     return strcmp (akey->uri, bkey->uri) == 0;
   else if (akey->thumbnail_uri && bkey->thumbnail_uri)
     return strcmp (akey->thumbnail_uri, bkey->thumbnail_uri) == 0;
+  else if (akey->checksum && bkey->checksum)
+    return strcmp (akey->checksum, bkey->checksum) == 0;
 
   return FALSE;
 }
@@ -87,6 +93,7 @@ cache_key_dup (CacheKey *key)
     ret->icon = g_object_ref (key->icon);
   ret->uri = g_strdup (key->uri);
   ret->thumbnail_uri = g_strdup (key->thumbnail_uri);
+  ret->checksum = g_strdup (key->checksum);
   ret->size = key->size;
   return ret;
 }
@@ -99,6 +106,7 @@ cache_key_destroy (gpointer a)
     g_object_unref (akey->icon);
   g_free (akey->uri);
   g_free (akey->thumbnail_uri);
+  g_free (akey->checksum);
   g_free (akey);
 }
 
@@ -658,6 +666,7 @@ typedef struct {
   gboolean thumbnail;
   char *mimetype;
   GtkRecentInfo *recent_info;
+  char *checksum;
   GIcon *icon;
   GtkIconInfo *icon_info;
   guint width;
@@ -1145,8 +1154,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
  * @cache: The texture cache instance
  * @data: Raw image data
  * @len: length of @data
- * @available_width: available width for the image, can be -1 if not limited
- * @available_height: available height for the image, can be -1 if not limited
+ * @size: Size in pixels to use for the resulting texture
  * @error: Return location for error
  *
  * Synchronously creates an image from @data. The image is scaled down
@@ -1161,24 +1169,47 @@ ClutterActor *
 shell_texture_cache_load_from_data (ShellTextureCache *cache,
                                     const guchar      *data,
                                     gsize              len,
-                                    int                available_width,
-                                    int                available_height,
+                                    int                size,
                                     GError           **error)
 {
   ClutterTexture *texture;
   CoglHandle texdata;
   GdkPixbuf *pixbuf;
-
-  pixbuf = impl_load_pixbuf_data (data, len, available_width, available_height, error);
-  if (pixbuf == NULL)
-    return NULL;
+  CacheKey key;
+  gchar *checksum;
 
   texture = create_default_texture (cache);
-  texdata = pixbuf_to_cogl_handle (pixbuf);
-  set_texture_cogl_texture (texture, texdata);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  g_object_unref (pixbuf);
-  cogl_handle_unref (texdata);
+  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+
+  memset (&key, 0, sizeof(key));
+  key.size = size;
+  key.checksum = checksum;
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  if (texdata == NULL)
+    {
+      g_debug ("creating new pixbuf");
+      pixbuf = impl_load_pixbuf_data (data, len, size, size, error);
+      if (!pixbuf)
+        {
+          g_object_unref (texture);
+          return NULL;
+        }
+
+      texdata = pixbuf_to_cogl_handle (pixbuf);
+      g_object_unref (pixbuf);
+
+      set_texture_cogl_texture (texture, texdata);
+
+      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+    }
+  else
+    {
+      g_debug ("using texture from cache");
+      set_texture_cogl_texture (texture, texdata);
+    }
 
   return CLUTTER_ACTOR (texture);
 }

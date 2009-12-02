@@ -289,9 +289,12 @@ Source.prototype = {
         this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
 
         this._targetId = targetId;
-        log('channel for ' + this._targetId);
+        log('channel for ' + this._targetId + ' channelPath ' + channelPath);
 
         this._pendingMessages = null;
+
+        this._avatar = null;
+        this._avatarBytes = null;
 
         // FIXME: RequestAvatar is deprecated in favor of
         // RequestAvatars; but RequestAvatars provides no explicit
@@ -316,8 +319,8 @@ Source.prototype = {
 
     _gotAvatar: function(result, excp) {
         if (result) {
-            let bytes = result[0];
-            this._avatar = Shell.TextureCache.get_default().load_from_data(bytes, bytes.length, AVATAR_SIZE, AVATAR_SIZE);
+            this._avatarBytes = result[0];
+            this._avatar = Shell.TextureCache.get_default().load_from_data(this._avatarBytes, this._avatarBytes.length, AVATAR_SIZE);
             log('got avatar for ' + this._targetId);
         } else {
             // fallback avatar (FIXME)
@@ -338,14 +341,23 @@ Source.prototype = {
     },
 
     _channelClosed: function() {
-        log('closed');
+        log('Channel closed ' + this._targetId);
         this._channel.disconnect(this._closedId);
         this._channelText.disconnect(this._receivedId);
+        Main.messageTray.remove(this._targetId);
     },
 
     _receivedMessage: function(channel, id, timestamp, sender,
                                type, flags, text) {
         log('Received: id ' + id + ', time ' + timestamp + ', sender ' + sender + ', type ' + type + ', flags ' + flags + ': ' + text);
         Main.notificationPopup.show(this._avatar, text);
+        if (!Main.messageTray.contains(this._targetId)) {
+            let avatarForMessageTray = null;
+            if (this._avatarBytes)
+                avatarForMessageTray = Shell.TextureCache.get_default().load_from_data(this._avatarBytes, this._avatarBytes.length, AVATAR_SIZE);
+            else
+                avatarForMessageTray = Shell.TextureCache.get_default().load_icon_name("stock_person", AVATAR_SIZE);
+            Main.messageTray.add(this._targetId, avatarForMessageTray);
+        }
     }
 };
