@@ -101,11 +101,10 @@
  *                        "actor", actor,
  *                        NULL);
  *   </programlisting></informalexample>
- *   <para>Where <variablename>manager</variablename> is the
- *   #ClutterLayoutManager, <variablename>container</variablename> is the
- *   #ClutterContainer using the #ClutterLayoutManager and
- *   <variablename>actor</variablename> is the #ClutterActor child of the
- *   #ClutterContainer.</para>
+ *   <para>Where <varname>manager</varname> is the  #ClutterLayoutManager,
+ *   <varname>container</varname> is the #ClutterContainer using the
+ *   #ClutterLayoutManager and <varname>actor</varname> is the #ClutterActor
+ *   child of the #ClutterContainer.</para>
  * </refsect2>
  *
  * #ClutterLayoutManager is available since Clutter 1.2
