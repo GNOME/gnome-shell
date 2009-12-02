@@ -26,12 +26,7 @@ Notification.prototype = {
         this._text = new St.Label();
         this.actor.add(this._text, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
-        // Directly adding the actor to Main.chrome.actor is a hack to
-        // work around the fact that there is no way to add an actor that
-        // affects the input region but not the shape.
-        // See: https://bugzilla.gnome.org/show_bug.cgi?id=597044
-        Main.chrome.actor.add_actor(this.actor);
-        Main.chrome.addInputRegionActor(this.actor);
+        Main.chrome.addActor(this.actor, { affectsStruts: false });
 
         let primary = global.get_primary_monitor();
         this.actor.y = primary.height;
@@ -92,12 +87,7 @@ MessageTray.prototype = {
         this.actor = new St.Bin({ name: 'message-tray',
                                   reactive: true,
                                   x_align: St.Align.END });
-        // Directly adding the actor to Main.chrome.actor is a hack to
-        // work around the fact that there is no way to add an actor that
-        // affects the input region but not the shape.
-        // See: https://bugzilla.gnome.org/show_bug.cgi?id=597044
-        Main.chrome.actor.add_actor(this.actor);
-        Main.chrome.addInputRegionActor(this.actor);
+        Main.chrome.addActor(this.actor, { affectsStruts: false });
 
         let primary = global.get_primary_monitor();
         this.actor.x = 0;
