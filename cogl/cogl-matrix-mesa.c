@@ -1522,7 +1522,7 @@ _math_matrix_update_type_and_flags (CoglMatrix *matrix)
 /*@}*/
 
 
-/**
+/*
  * Test if the given matrix preserves vector lengths.
  */
 gboolean
