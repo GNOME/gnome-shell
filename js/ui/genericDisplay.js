@@ -14,7 +14,6 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
-const Link = imports.ui.link;
 const Main = imports.ui.main;
 
 const RedisplayFlags = { NONE: 0,

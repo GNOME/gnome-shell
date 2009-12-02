@@ -12,7 +12,6 @@ const Lang = imports.lang;
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
-const Link = imports.ui.link;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Dash = imports.ui.dash;
