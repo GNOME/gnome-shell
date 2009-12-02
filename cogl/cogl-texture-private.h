@@ -41,6 +41,9 @@ typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           float *virtual_coords,
                                           void *user_data);
 
+typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
+                                                  void *user_data);
+
 struct _CoglTextureVtable
 {
   /* Virtual functions that must be implemented for a texture
@@ -168,6 +171,17 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
+
+/* Utility function for implementing manual repeating. Even texture
+   backends that always support hardware repeating need this because
+   when foreach_sub_texture_in_region is invoked Cogl will set the
+   wrap mode to GL_CLAMP_TO_EDGE so hardware repeating can't be
+   done */
+void
+_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
+                                      float tx_1, float ty_1,
+                                      float tx_2, float ty_2,
+                                      void *user_data);
 
 /* Utility function to use as a fallback for getting the data of any
    texture via the framebuffer */
