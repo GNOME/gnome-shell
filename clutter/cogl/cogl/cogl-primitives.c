@@ -71,8 +71,8 @@ static void
 log_quad_sub_textures_cb (CoglHandle texture_handle,
                           GLuint gl_handle,
                           GLenum gl_target,
-                          float *subtexture_coords,
-                          float *virtual_coords,
+                          const float *subtexture_coords,
+                          const float *virtual_coords,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
@@ -638,11 +638,11 @@ cogl_rectangle (float x_1,
 
 void
 draw_polygon_sub_texture_cb (CoglHandle tex_handle,
-                       GLuint gl_handle,
-                       GLenum gl_target,
-                       float *subtexture_coords,
-                       float *virtual_coords,
-                       void *user_data)
+                             GLuint gl_handle,
+                             GLenum gl_target,
+                             const float *subtexture_coords,
+                             const float *virtual_coords,
+                             void *user_data)
 {
   TextureSlicedPolygonState *state = user_data;
   GLfloat *v;

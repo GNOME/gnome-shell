@@ -37,8 +37,8 @@ typedef struct _CoglTextureUploadData CoglTextureUploadData;
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
                                           GLenum gl_target,
-                                          float *slice_coords,
-                                          float *virtual_coords,
+                                          const float *slice_coords,
+                                          const float *virtual_coords,
                                           void *user_data);
 
 typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
