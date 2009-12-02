@@ -631,7 +631,7 @@ _cogl_journal_log_quad (float         x_1,
                         int           n_layers,
                         guint32       fallback_layers,
                         GLuint        layer0_override_texture,
-                        float        *tex_coords,
+                        const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
   size_t            stride;
