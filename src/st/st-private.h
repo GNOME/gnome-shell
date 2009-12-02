@@ -55,4 +55,7 @@ void _st_allocate_fill (ClutterActor    *child,
                         gboolean         x_fill,
                         gboolean         y_fill);
 
+void _st_set_text_from_style (ClutterText *text,
+                              StThemeNode *theme_node);
+
 #endif /* __ST_PRIVATE_H__ */
