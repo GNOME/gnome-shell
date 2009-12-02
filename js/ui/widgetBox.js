@@ -373,6 +373,20 @@ WidgetBox.prototype = {
         Main.chrome.untrackActor(this._hbox);
     },
 
+    hide: function() {
+        if (this.state == Widget.STATE_COLLAPSED)
+            Tweener.addTween(this._cbox, { x: -Widget.COLLAPSED_WIDTH,
+                                           time: ANIMATION_TIME / 2,
+                                           transition: "easeOutQuad" });
+    },
+
+    restore: function() {
+        if (this.state == Widget.STATE_COLLAPSED)
+            Tweener.addTween(this._cbox, { x: 0,
+                                           time: ANIMATION_TIME / 2,
+                                           transition: "easeOutQuad" });
+    },
+
     destroy: function() {
         if (this._widget.destroy)
             this._widget.destroy();

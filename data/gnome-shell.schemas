@@ -74,6 +74,20 @@
       </schema>
 
       <schema>
+        <key>/schemas/desktop/gnome/shell/sidebar/autohide</key>
+	<applyto>/desktop/gnome/shell/sidebar/autohide</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>true</default>
+	<locale name="C">
+	  <short>Whether the sidebar should automatically hide itself in compact mode</short>
+	  <long>
+	    Controls the autohide state of the sidebar.
+	  </long>
+	</locale>
+      </schema>
+
+      <schema>
         <key>/schemas/desktop/gnome/shell/sidebar/widgets</key>
 	<applyto>/desktop/gnome/shell/sidebar/widgets</applyto>
 	<owner>gnome-shell</owner>
