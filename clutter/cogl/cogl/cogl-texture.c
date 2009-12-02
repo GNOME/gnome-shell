@@ -195,6 +195,108 @@ _cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
   return TRUE;
 }
 
+gboolean
+_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
+                                   CoglPixelFormat       internal_format)
+{
+  return (_cogl_texture_upload_data_prepare_format (data, &internal_format) &&
+          _cogl_texture_upload_data_convert (data, internal_format));
+}
+
+/* This is like CoglSpanIter except it deals with floats and it
+   effectively assumes there is only one span from 0.0 to 1.0 */
+typedef struct _CoglTextureIter
+{
+  gfloat pos, end, next_pos;
+  gboolean flipped;
+  gfloat t_1, t_2;
+} CoglTextureIter;
+
+static void
+_cogl_texture_iter_update (CoglTextureIter *iter)
+{
+  gfloat t_2;
+
+  modff (iter->pos, &iter->next_pos);
+
+  /* modff rounds the int part towards zero so we need to add one if
+     we're meant to be heading away from zero */
+  if (iter->pos >= 0.0f)
+    iter->next_pos += 1.0f;
+
+  if (iter->next_pos > iter->end)
+    t_2 = iter->end;
+  else
+    t_2 = iter->next_pos;
+
+  if (iter->flipped)
+    {
+      iter->t_1 = t_2;
+      iter->t_2 = iter->pos;
+    }
+  else
+    {
+      iter->t_1 = iter->pos;
+      iter->t_2 = t_2;
+    }
+}
+
+static void
+_cogl_texture_iter_begin (CoglTextureIter *iter,
+                              gfloat t_1, gfloat t_2)
+{
+  if (t_1 <= t_2)
+    {
+      iter->pos = t_1;
+      iter->end = t_2;
+      iter->flipped = FALSE;
+    }
+  else
+    {
+      iter->pos = t_2;
+      iter->end = t_1;
+      iter->flipped = TRUE;
+    }
+
+  _cogl_texture_iter_update (iter);
+}
+
+static void
+_cogl_texture_iter_next (CoglTextureIter *iter)
+{
+  iter->pos = iter->next_pos;
+  _cogl_texture_iter_update (iter);
+}
+
+static gboolean
+_cogl_texture_iter_end (CoglTextureIter *iter)
+{
+  return iter->pos >= iter->end;
+}
+
+/* This invokes the callback with enough quads to cover the manually
+   repeated range specified by the virtual texture coordinates without
+   emitting coordinates outside the range [0,1] */
+void
+_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
+                                      float tx_1, float ty_1,
+                                      float tx_2, float ty_2,
+                                      void *user_data)
+{
+  CoglTextureIter x_iter, y_iter;
+
+  for (_cogl_texture_iter_begin (&y_iter, ty_1, ty_2);
+       !_cogl_texture_iter_end (&y_iter);
+       _cogl_texture_iter_next (&y_iter))
+    for (_cogl_texture_iter_begin (&x_iter, tx_1, tx_2);
+         !_cogl_texture_iter_end (&x_iter);
+         _cogl_texture_iter_next (&x_iter))
+      {
+        float coords[4] = { x_iter.t_1, y_iter.t_1, x_iter.t_2, y_iter.t_2 };
+        callback (coords, user_data);
+      }
+}
+
 CoglHandle
 cogl_texture_new_with_size (guint            width,
 			    guint            height,
