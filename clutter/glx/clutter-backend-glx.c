@@ -230,24 +230,67 @@ check_vblank_env (const char *name)
 static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
-  ClutterBackendGLX  *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  const gchar        *glx_extensions = NULL;
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  const gchar *glx_extensions = NULL;
   ClutterFeatureFlags flags;
+  Window dummy_xwin, root_xwin;
+  XSetWindowAttributes attrs;
+  XVisualInfo *xvisinfo;
+  Display *xdisplay;
 
   flags = clutter_backend_x11_get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
-  /* this will make sure that the GL context exists and
-   * it's bound to a drawable
-   */
+  /* this will make sure that the GL context exists */
   g_assert (backend_glx->gl_context != None);
-  g_assert (glXGetCurrentDrawable () != None);
 
-  CLUTTER_NOTE (BACKEND, "Checking features\n"
-                "GL_VENDOR: %s\n"
-                "GL_RENDERER: %s\n"
-                "GL_VERSION: %s\n"
-                "GL_EXTENSIONS: %s\n",
+  /* in order to query the GL and GLX implementation we
+   * need to bind the GLX context to a Drawable; we create
+   * a simple, off-screen override-redirect window that we
+   * then destroy at the end of this function
+   */
+  xdisplay = clutter_x11_get_default_display ();
+  root_xwin = clutter_x11_get_root_window ();
+
+  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  if (xvisinfo == None)
+    {
+      g_critical ("Unable to retrieve the X11 visual");
+      return flags;
+    }
+
+  clutter_x11_trap_x_errors ();
+
+  attrs.override_redirect = True;
+  attrs.colormap = XCreateColormap (xdisplay, root_xwin,
+                                    xvisinfo->visual,
+                                    AllocNone);
+  dummy_xwin = XCreateWindow (xdisplay, root_xwin,
+                              -100, -100, 1, 1,
+                              0,
+                              xvisinfo->depth,
+                              CopyFromParent,
+                              xvisinfo->visual,
+                              CWOverrideRedirect | CWColormap,
+                              &attrs);
+
+  glXMakeContextCurrent (xdisplay,
+                         dummy_xwin, dummy_xwin,
+                         backend_glx->gl_context);
+
+  if (clutter_x11_untrap_x_errors ())
+    {
+      g_critical ("Unable to retrieve the GLX features");
+      goto out;
+    }
+
+  CLUTTER_NOTE (BACKEND,
+                "Checking features\n"
+                "  GL_VENDOR: %s\n"
+                "  GL_RENDERER: %s\n"
+                "  GL_VERSION: %s\n"
+                "  GL_EXTENSIONS: %s\n",
                 glGetString (GL_VENDOR),
                 glGetString (GL_RENDERER),
                 glGetString (GL_VERSION),
@@ -260,7 +303,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   CLUTTER_NOTE (BACKEND, "GLX Extensions: %s", glx_extensions);
 
   /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
-  if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
+  if (getenv ("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
     {
       CLUTTER_NOTE (BACKEND, "vblank sync: disabled at user request");
     }
@@ -277,7 +320,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
        * How well glXGetVideoSyncSGI works with other driver (ATI etc) needs
        * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
        * no effect.
-      */
+       */
       if (!check_vblank_env ("dri") &&
           cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
         {
@@ -325,10 +368,11 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
           if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
             CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
         }
+
 #ifdef __linux__
       /*
        * DRI is really an extreme fallback -rumoured to work with Via chipsets
-      */
+       */
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         {
           CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
@@ -344,14 +388,19 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
             CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
         }
 #endif
+
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-        {
-          CLUTTER_NOTE (BACKEND,
-                        "no use-able vblank mechanism found");
-        }
+        CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
     }
 
-  CLUTTER_NOTE (MISC, "backend features checked");
+  CLUTTER_NOTE (BACKEND, "backend features checked");
+
+out:
+  /* unset the GLX context */
+  glXMakeContextCurrent (xdisplay, None, None, NULL);
+
+  /* destroy the dummy Window */
+  XDestroyWindow (xdisplay, dummy_xwin);
 
   return flags;
 }
@@ -542,14 +591,15 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
 
       g_assert (impl != NULL);
 
-      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
-                    g_type_name (G_OBJECT_TYPE (impl)),
-                    impl);
-
       stage_glx = CLUTTER_STAGE_GLX (impl);
       stage_x11 = CLUTTER_STAGE_X11 (impl);
       backend_glx = CLUTTER_BACKEND_GLX (backend);
       backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+      CLUTTER_NOTE (BACKEND,
+                    "Setting context for stage of type %s, window: 0x%x",
+                    G_OBJECT_TYPE_NAME (impl),
+                    (int) stage_x11->xwin);
 
       /* no GL context to set */
       if (backend_glx->gl_context == None)
@@ -562,7 +612,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
        */
       if (stage_x11->xwin == None)
         {
-          CLUTTER_NOTE (MULTISTAGE,
+          CLUTTER_NOTE (BACKEND,
                         "Received a stale stage, clearing all context");
 
           glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);

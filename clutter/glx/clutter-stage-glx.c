@@ -135,6 +135,11 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                                        InputOutput,
                                        xvisinfo->visual,
                                        mask, &xattr);
+
+      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x",
+                    stage_window,
+                    (unsigned int) stage_x11->xwin);
+
       XFree (xvisinfo);
     }
 

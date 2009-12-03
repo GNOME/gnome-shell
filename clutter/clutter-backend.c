@@ -425,6 +425,14 @@ _clutter_backend_get_features (ClutterBackend *backend)
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
+
+  /* we need to have a context here; so we create the
+   * GL context first and the ask for features. if the
+   * context already exists this should be a no-op
+   */
+  if (klass->create_context)
+    klass->create_context (backend, NULL);
+
   if (klass->get_features)
     return klass->get_features (backend);
   

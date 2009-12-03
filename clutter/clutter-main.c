@@ -1505,40 +1505,9 @@ clutter_init_real (GError **error)
   if (!_clutter_backend_post_parse (backend, error))
     return CLUTTER_INIT_ERROR_BACKEND;
 
-  /* Stage will give us a GL Context etc */
-  stage = clutter_stage_get_default ();
-  if (!stage)
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to create the default stage");
-      else
-        g_critical ("Unable to create the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
-
-  clutter_actor_realize (stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to realize the default stage");
-      else
-        g_critical ("Unable to realize the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  /* Now we can safely assume we have a valid GL context and can
-   * start issueing cogl commands
-  */
-  /* - will call to backend and cogl */
+  /* this will create the GL context and query it for features and
+   * state setup
+   */
   _clutter_feature_init ();
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -1586,6 +1555,36 @@ clutter_init_real (GError **error)
 
   /* Initiate event collection */
   _clutter_backend_init_events (ctx->backend);
+
+  /* Create the default stage and realize it */
+  stage = clutter_stage_get_default ();
+  if (!stage)
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to create the default stage");
+      else
+        g_critical ("Unable to create the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
+
+  clutter_actor_realize (stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to realize the default stage");
+      else
+        g_critical ("Unable to realize the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
 
   clutter_is_initialized = TRUE;
   ctx->is_initialized = TRUE;

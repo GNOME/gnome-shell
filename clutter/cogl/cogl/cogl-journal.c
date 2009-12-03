@@ -164,6 +164,9 @@ batch_and_call (CoglJournalEntry *entries,
   int batch_len = 1;
   CoglJournalEntry *batch_start = entries;
 
+  if (n_entries < 1)
+    return;
+
   for (i = 1; i < n_entries; i++)
     {
       CoglJournalEntry *entry0 = &entries[i - 1];
