@@ -1568,8 +1568,6 @@ clutter_init_real (GError **error)
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
-
   clutter_actor_realize (stage);
   if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {

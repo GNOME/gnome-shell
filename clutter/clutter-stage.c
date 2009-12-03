@@ -1190,6 +1190,7 @@ clutter_stage_init (ClutterStage *self)
   priv->fog.z_far  = 2.0;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+  clutter_stage_set_title (self, g_get_prgname ());
   clutter_stage_set_key_focus (self, NULL);
 }
 
