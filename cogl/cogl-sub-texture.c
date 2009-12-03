@@ -370,10 +370,10 @@ static void
 _cogl_sub_texture_get_y_pixel_pos (CoglSubTexture *sub_tex,
                                    gint *py1, gint *py2)
 {
-  gint full_width = cogl_texture_get_width (sub_tex->full_texture);
+  gint full_height = cogl_texture_get_height (sub_tex->full_texture);
 
-  *py1 = full_width * sub_tex->ty1;
-  *py2 = full_width * sub_tex->ty2;
+  *py1 = full_height * sub_tex->ty1;
+  *py2 = full_height * sub_tex->ty2;
 
   if (*py1 > *py2)
     {
