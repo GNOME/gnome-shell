@@ -318,7 +318,7 @@ ErrorLog.prototype = {
         this.text = new St.Label();
         this.actor.add(this.text);
         this.text.clutter_text.line_wrap = true;
-        this.text.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
     },
 
     _formatTime: function(d){
@@ -331,8 +331,8 @@ ErrorLog.prototype = {
             + pad(d.getUTCSeconds())+'Z'
     },
 
-    _onMappedNotify: function() {
-        if (!(this.actor.mapped && Main._errorLogStack.length > 0))
+    _renderText: function() {
+        if (!this.actor.mapped)
             return;
         let text = this.text.text;
         let stack = Main._getAndClearErrorStack();

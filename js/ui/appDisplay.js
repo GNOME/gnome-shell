@@ -236,7 +236,7 @@ BaseWellItem.prototype = {
                                          reactive: true });
         this.actor._delegate = this;
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._rerenderGlow));
 
         let box = new St.BoxLayout({ vertical: true });
         this.actor.set_child(box);
@@ -262,8 +262,7 @@ BaseWellItem.prototype = {
         this._glowBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this._nameBox.add_actor(this._glowBox);
         this._glowBox.lower(this._name);
-        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._rerenderGlow));
-        this._rerenderGlow();
+        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._queueRerenderGlow));
 
         box.add(nameBox);
 
@@ -319,18 +318,11 @@ BaseWellItem.prototype = {
             this.app.disconnect(this._appWindowChangedId);
     },
 
-    _onMapped: function() {
-        if (!this._queuedGlowRerender)
-            return;
-        this._queuedGlowRerender = false;
-        this._rerenderGlow();
+    _queueRerenderGlow: function() {
+        Main.queueDeferredWork(this._workId);
     },
 
     _rerenderGlow: function() {
-        if (!this.actor.mapped) {
-            this._queuedGlowRerender = true;
-            return;
-        }
         this._glowBox.destroy_children();
         let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
         let windows = this.app.get_windows();
@@ -956,8 +948,7 @@ AppWell.prototype = {
                                    x_align: Big.BoxAlignment.CENTER });
         this.actor._delegate = this;
 
-        this._pendingRedisplay = false;
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
 
         this._grid = new WellGrid();
         this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
@@ -965,12 +956,9 @@ AppWell.prototype = {
         this._tracker = Shell.WindowTracker.get_default();
         this._appSystem = Shell.AppSystem.get_default();
 
-        this._appSystem.connect('installed-changed', Lang.bind(this, this._redisplay));
-
-        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._redisplay));
-        this._tracker.connect('app-running-changed', Lang.bind(this, this._redisplay));
-
-        this._redisplay();
+        this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
+        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
+        this._tracker.connect('app-running-changed', Lang.bind(this, this._queueRedisplay));
     },
 
     _appIdListToHash: function(apps) {
@@ -980,20 +968,11 @@ AppWell.prototype = {
         return ids;
     },
 
-    _onMappedNotify: function() {
-        let mapped = this.actor.mapped;
-        if (mapped && this._pendingRedisplay)
-            this._redisplay();
+    _queueRedisplay: function () {
+        Main.queueDeferredWork(this._workId);
     },
 
     _redisplay: function () {
-        let mapped = this.actor.mapped;
-        if (!mapped) {
-            this._pendingRedisplay = true;
-            return;
-        }
-        this._pendingRedisplay = false;
-
         this._grid.removeAll();
 
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();

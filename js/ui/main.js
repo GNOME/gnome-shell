@@ -425,3 +425,120 @@ function activateWindow(window, time) {
         window.activate(time);
     }
 }
+
+// TODO - replace this timeout with some system to guess when the user might
+// be e.g. just reading the screen and not likely to interact.
+const DEFERRED_TIMEOUT_SECONDS = 20;
+var _deferredWorkData = {};
+// Work scheduled for some point in the future
+var _deferredWorkQueue = [];
+// Work we need to process before the next redraw
+var _beforeRedrawQueue = [];
+// Counter to assign work ids
+var _deferredWorkSequence = 0;
+var _deferredTimeoutId = 0;
+
+function _runDeferredWork(workId) {
+    if (!_deferredWorkData[workId])
+        return;
+    let index = _deferredWorkQueue.indexOf(workId);
+    if (index < 0)
+        return;
+
+    _deferredWorkQueue.splice(index, 1);
+    _deferredWorkData[workId].callback();
+    if (_deferredWorkQueue.length == 0 && _deferredTimeoutId > 0) {
+        Mainloop.source_remove(_deferredTimeoutId);
+        _deferredTimeoutId = 0;
+    }
+}
+
+function _runAllDeferredWork() {
+    while (_deferredWorkQueue.length > 0)
+        _runDeferredWork(_deferredWorkQueue[0]);
+}
+
+function _runBeforeRedrawQueue() {
+    for (let i = 0; i < _beforeRedrawQueue.length; i++) {
+        let workId = _beforeRedrawQueue[i];
+        _runDeferredWork(workId);
+    }
+    _beforeRedrawQueue = [];
+}
+
+function _queueBeforeRedraw(workId) {
+    _beforeRedrawQueue.push(workId);
+    if (_beforeRedrawQueue.length == 1) {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function () {
+            _runBeforeRedrawQueue();
+            return false;
+        }, null);
+    }
+}
+
+/**
+ * initializeDeferredWork:
+ * @actor: A #ClutterActor
+ * @callback: Function to invoke to perform work
+ *
+ * This function sets up a callback to be invoked when either the
+ * given actor is mapped, or after some period of time when the machine
+ * is idle.  This is useful if your actor isn't always visible on the
+ * screen (for example, all actors in the overview), and you don't want
+ * to consume resources updating if the actor isn't actually going to be
+ * displaying to the user.
+ *
+ * Note that queueDeferredWork is called by default immediately on
+ * initialization as well, under the assumption that new actors
+ * will need it.
+ *
+ * Returns: A string work identifer
+ */
+function initializeDeferredWork(actor, callback, props) {
+    // Turn into a string so we can use as an object property
+    let workId = "" + (++_deferredWorkSequence);
+    _deferredWorkData[workId] = { 'actor': actor,
+                                  'callback': callback };
+    actor.connect('notify::mapped', function () {
+        if (!(actor.mapped && _deferredWorkQueue.indexOf(workId) >= 0))
+            return;
+        _queueBeforeRedraw(workId);
+    });
+    actor.connect('destroy', function() {
+        let index = _deferredWorkQueue.indexOf(workId);
+        if (index >= 0)
+            _deferredWorkQueue.splice(index, 1);
+        delete _deferredWorkData[workId];
+    });
+    queueDeferredWork(workId);
+    return workId;
+}
+
+/**
+ * queueDeferredWork:
+ * @workId: work identifier
+ *
+ * Ensure that the work identified by @workId will be
+ * run on map or timeout.  You should call this function
+ * for example when data being displayed by the actor has
+ * changed.
+ */
+function queueDeferredWork(workId) {
+    let data = _deferredWorkData[workId];
+    if (!data) {
+        global.logError("invalid work id ", workId);
+        return;
+    }
+    if (_deferredWorkQueue.indexOf(workId) < 0)
+        _deferredWorkQueue.push(workId);
+    if (data.actor.mapped) {
+        _queueBeforeRedraw(workId);
+        return;
+    } else if (_deferredTimeoutId == 0) {
+        _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, function () {
+            _runAllDeferredWork();
+            _deferredTimeoutId = 0;
+            return false;
+        });
+    }
+}
