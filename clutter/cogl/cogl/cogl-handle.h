@@ -49,23 +49,23 @@ typedef struct _CoglHandleObject
 #ifdef COGL_HANDLE_DEBUG
 
 #define _COGL_HANDLE_DEBUG_NEW(type_name, obj)			        \
-  COGL_NOTE (HANDLE, "COGL " G_STRINGIFY (type_name) " NEW   %p %i\n",  \
+  COGL_NOTE (HANDLE, "COGL " G_STRINGIFY (type_name) " NEW   %p %i",    \
 	     (obj), (obj)->ref_count)
 
 #define _COGL_HANDLE_DEBUG_REF(type_name, handle)       G_STMT_START {  \
   CoglHandleObject *__obj = (CoglHandleObject *)handle;                 \
-  COGL_NOTE (HANDLE, "COGL %s REF %p %i\n",	                        \
+  COGL_NOTE (HANDLE, "COGL %s REF %p %i",	                        \
              g_quark_to_string ((__obj)->klass->type),                  \
              (__obj), (__obj)->ref_count);              } G_STMT_END
 
 #define _COGL_HANDLE_DEBUG_UNREF(type_name, handle)     G_STMT_START {  \
   CoglHandleObject *__obj = (CoglHandleObject *)handle;                 \
-  COGL_NOTE (HANDLE, "COGL %s UNREF %p %i\n",	                        \
+  COGL_NOTE (HANDLE, "COGL %s UNREF %p %i",	                        \
              g_quark_to_string ((__obj)->klass->type),                  \
              (__obj), (__obj)->ref_count - 1);          } G_STMT_END
 
 #define COGL_HANDLE_DEBUG_FREE(obj)                                     \
-  COGL_NOTE (HANDLE, "COGL %s FREE %p\n",                               \
+  COGL_NOTE (HANDLE, "COGL %s FREE %p",                                 \
              g_quark_to_string ((obj)->klass->type), (obj))
 
 #else /* !COGL_HANDLE_DEBUG */
