@@ -66,6 +66,7 @@ struct _ClutterBackendGLX
   gboolean               found_fbconfig;
   GLXFBConfig            fbconfig;
   GLXContext             gl_context;
+  Window                 dummy_xwin;
 
   /* Vblank stuff */
   GetVideoSyncProc       get_video_sync;

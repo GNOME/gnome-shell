@@ -1503,10 +1503,14 @@ clutter_init_real (GError **error)
 
   if (!ctx->options_parsed)
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_INTERNAL,
-		   "When using clutter_get_option_group_without_init() "
-		   "you must parse options before calling clutter_init()");
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "When using clutter_get_option_group_without_init() "
+		     "you must parse options before calling clutter_init()");
+      else
+        g_critical ("When using clutter_get_option_group_without_init() "
+		    "you must parse options before calling clutter_init()");
 
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
@@ -1517,8 +1521,8 @@ clutter_init_real (GError **error)
   if (!_clutter_backend_post_parse (backend, error))
     return CLUTTER_INIT_ERROR_BACKEND;
 
-  /* this will create the GL context and query it for features and
-   * state setup
+  /* this will take care of initializing Cogl's state and
+   * query the GL machinery for features
    */
   _clutter_feature_init ();
 

@@ -187,8 +187,15 @@ clutter_backend_glx_dispose (GObject *gobject)
 
   if (backend_glx->gl_context)
     {
+      glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
       glXDestroyContext (backend_x11->xdpy, backend_glx->gl_context);
       backend_glx->gl_context = None;
+    }
+
+  if (backend_glx->dummy_xwin)
+    {
+      XDestroyWindow (backend_x11->xdpy, backend_glx->dummy_xwin);
+      backend_glx->dummy_xwin = None;
     }
 
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
@@ -231,59 +238,15 @@ static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   const gchar *glx_extensions = NULL;
   ClutterFeatureFlags flags;
-  Window dummy_xwin, root_xwin;
-  XSetWindowAttributes attrs;
-  XVisualInfo *xvisinfo;
-  Display *xdisplay;
 
   flags = clutter_backend_x11_get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   /* this will make sure that the GL context exists */
   g_assert (backend_glx->gl_context != None);
-
-  /* in order to query the GL and GLX implementation we
-   * need to bind the GLX context to a Drawable; we create
-   * a simple, off-screen override-redirect window that we
-   * then destroy at the end of this function
-   */
-  xdisplay = clutter_x11_get_default_display ();
-  root_xwin = clutter_x11_get_root_window ();
-
-  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
-  if (xvisinfo == None)
-    {
-      g_critical ("Unable to retrieve the X11 visual");
-      return flags;
-    }
-
-  clutter_x11_trap_x_errors ();
-
-  attrs.override_redirect = True;
-  attrs.colormap = XCreateColormap (xdisplay, root_xwin,
-                                    xvisinfo->visual,
-                                    AllocNone);
-  dummy_xwin = XCreateWindow (xdisplay, root_xwin,
-                              -100, -100, 1, 1,
-                              0,
-                              xvisinfo->depth,
-                              CopyFromParent,
-                              xvisinfo->visual,
-                              CWOverrideRedirect | CWColormap,
-                              &attrs);
-
-  glXMakeContextCurrent (xdisplay,
-                         dummy_xwin, dummy_xwin,
-                         backend_glx->gl_context);
-
-  if (clutter_x11_untrap_x_errors ())
-    {
-      g_critical ("Unable to retrieve the GLX features");
-      goto out;
-    }
+  g_assert (glXGetCurrentDrawable () != None);
 
   CLUTTER_NOTE (BACKEND,
                 "Checking features\n"
@@ -394,13 +357,6 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
     }
 
   CLUTTER_NOTE (BACKEND, "backend features checked");
-
-out:
-  /* unset the GLX context */
-  glXMakeContextCurrent (xdisplay, None, None, NULL);
-
-  /* destroy the dummy Window */
-  XDestroyWindow (xdisplay, dummy_xwin);
 
   return flags;
 }
@@ -516,47 +472,82 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                     GError         **error)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  GLXFBConfig config;
+  gboolean is_direct;
+  Window root_xwin;
+  XSetWindowAttributes attrs;
+  XVisualInfo *xvisinfo;
+  Display *xdisplay;
 
+  if (backend_glx->gl_context != None)
+    return TRUE;
+
+  xdisplay = clutter_x11_get_default_display ();
+  root_xwin = clutter_x11_get_root_window ();
+
+  if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Unable to find suitable fbconfig for GL context");
+      return FALSE;
+    }
+
+  CLUTTER_NOTE (GL, "Creating GL Context (display: %p)", xdisplay);
+
+  backend_glx->gl_context = glXCreateNewContext (xdisplay,
+                                                 config,
+                                                 GLX_RGBA_TYPE,
+                                                 NULL,
+                                                 True);
   if (backend_glx->gl_context == None)
     {
-      GLXFBConfig config;
-      gboolean is_direct;
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Unable to create suitable GL context");
+      return FALSE;
+    }
 
-      if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
-        {
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to find a suitable GLXFBConfig for "
-                       "the GLX context");
-          return FALSE;
-        }
+  is_direct = glXIsDirect (xdisplay, backend_glx->gl_context);
 
-      CLUTTER_NOTE (GL, "Creating GLX Context (display: %p)",
-                    backend_x11->xdpy);
+  CLUTTER_NOTE (GL, "Setting %s context",
+                is_direct ? "direct"
+                          : "indirect");
+  _cogl_set_indirect_context (!is_direct);
 
-      backend_glx->gl_context =
-        glXCreateNewContext (backend_x11->xdpy,
-                             config,
-                             GLX_RGBA_TYPE,
-                             NULL,
-                             True);
+  /* in order to query the GL and GLX implementation we
+   * need to bind the GLX context to a Drawable; we create
+   * a simple, off-screen override-redirect window that we
+   * then destroy at the end of this function
+   */
+  xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
+  if (xvisinfo == None)
+    {
+      g_critical ("Unable to retrieve the X11 visual");
+      return FALSE;
+    }
 
-      if (backend_glx->gl_context == None)
-        {
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to create suitable GL context");
-          return FALSE;
-        }
+  clutter_x11_trap_x_errors ();
 
-      is_direct = glXIsDirect (backend_x11->xdpy,
-                               backend_glx->gl_context);
+  attrs.override_redirect = True;
+  backend_glx->dummy_xwin = XCreateWindow (xdisplay, root_xwin,
+                                           -100, -100, 1, 1,
+                                           0,
+                                           xvisinfo->depth,
+                                           CopyFromParent,
+                                           xvisinfo->visual,
+                                           CWOverrideRedirect,
+                                           &attrs);
 
-      CLUTTER_NOTE (GL,
-                    "Setting %s context",
-                    is_direct ? "direct" : "indirect");
-      _cogl_set_indirect_context (!is_direct);
+  glXMakeContextCurrent (xdisplay,
+                         backend_glx->dummy_xwin,
+                         backend_glx->dummy_xwin,
+                         backend_glx->gl_context);
+
+  if (clutter_x11_untrap_x_errors ())
+    {
+      g_critical ("Unable to retrieve the GLX features");
+      return FALSE;
     }
 
   return TRUE;
@@ -615,7 +606,15 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
           CLUTTER_NOTE (BACKEND,
                         "Received a stale stage, clearing all context");
 
-          glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
+          if (backend_glx->dummy_xwin != None)
+            {
+              glXMakeContextCurrent (backend_x11->xdpy,
+                                     backend_glx->dummy_xwin,
+                                     backend_glx->dummy_xwin,
+                                     backend_glx->gl_context);
+            }
+          else
+            glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
         }
       else
         {
