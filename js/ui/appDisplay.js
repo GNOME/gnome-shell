@@ -54,7 +54,7 @@ AppDisplayItem.prototype = {
         let windows = app.get_windows();
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
-            Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
+            Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
         } else {
             this._appInfo.launch();
         }
@@ -346,7 +346,7 @@ BaseWellItem.prototype = {
             if (this.actor.pressed && this._dragStartX != null) {
                 this.actor.fake_release();
                 this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                          Main.currentTime());
+                                          global.get_current_time());
             } else {
                 this._dragStartX = null;
                 this._dragStartY = null;
@@ -599,7 +599,7 @@ AppIconMenu.prototype = {
 
         this._redisplay();
 
-        this._windowContainer.popup(activatingButton, Main.currentTime());
+        this._windowContainer.popup(activatingButton, global.get_current_time());
 
         this.emit('popup', true);
 
@@ -756,7 +756,7 @@ RunningWellItem.prototype = {
 
     activateMostRecentWindow: function () {
         let mostRecentWindow = this.app.get_windows()[0];
-        Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
+        Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
     },
 
     highlightWindow: function(metaWindow) {
@@ -766,7 +766,7 @@ RunningWellItem.prototype = {
     activateWindow: function(metaWindow) {
         if (metaWindow) {
             this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, Main.currentTime());
+            Main.overview.activateWindow(metaWindow, global.get_current_time());
         } else
             Main.overview.hide();
     },

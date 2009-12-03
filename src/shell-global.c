@@ -1064,3 +1064,63 @@ shell_popup_menu (GtkMenu *menu, int button, guint32 time,
   gtk_menu_popup (menu, NULL, NULL, shell_popup_menu_position_func, NULL,
                   button, time);
 }
+
+/**
+ * shell_global_get_current_time:
+ * @global: A #ShellGlobal
+ *
+ * Returns: the current X server time from the current Clutter, Gdk, or X
+ * event. If called from outside an event handler, this may return
+ * %Clutter.CURRENT_TIME (aka 0), or it may return a slightly
+ * out-of-date timestamp.
+ */
+guint32
+shell_global_get_current_time (ShellGlobal *global)
+{
+  guint32 time;
+  MetaDisplay *display;
+
+  /* meta_display_get_current_time() will return the correct time
+     when handling an X or Gdk event, but will return CurrentTime
+     from some Clutter event callbacks.
+
+     clutter_get_current_event_time() will return the correct time
+     from a Clutter event callback, but may return an out-of-date
+     timestamp if called at other times.
+
+     So we try meta_display_get_current_time() first, since we
+     can recognize a "wrong" answer from that, and then fall back
+     to clutter_get_current_event_time().
+   */
+
+  display = meta_screen_get_display (shell_global_get_screen (global));
+  time = meta_display_get_current_time (display);
+  if (time != CLUTTER_CURRENT_TIME)
+      return time;
+
+  return clutter_get_current_event_time ();
+}
+
+/**
+ * shell_global_get_app_launch_context:
+ * @global: A #ShellGlobal
+ *
+ * Create a #GAppLaunchContext set up with the correct timestamp, and
+ * targeted to activate on the current workspace.
+ *
+ * Return value: A new #GAppLaunchContext
+ */
+GAppLaunchContext *
+shell_global_create_app_launch_context (ShellGlobal *global)
+{
+  GdkAppLaunchContext *context;
+
+  context = gdk_app_launch_context_new ();
+  gdk_app_launch_context_set_timestamp (context, shell_global_get_current_time (global));
+
+  // Make sure that the app is opened on the current workspace even if
+  // the user switches before it starts
+  gdk_app_launch_context_set_desktop (context, meta_screen_get_active_workspace_index (shell_global_get_screen (global)));
+
+  return (GAppLaunchContext *)context;
+}

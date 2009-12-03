@@ -457,7 +457,7 @@ Overview.prototype = {
     },
 
     _addNewWorkspace: function() {
-        global.screen.append_new_workspace(false, Main.currentTime());
+        global.screen.append_new_workspace(false, global.get_current_time());
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {

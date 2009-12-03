@@ -65,7 +65,7 @@ PlacesManager.prototype = {
                 return Shell.TextureCache.get_default().load_gicon(homeIcon, size);
             },
             function() {
-                Gio.app_info_launch_default_for_uri(homeUri, Main.createAppLaunchContext());
+                Gio.app_info_launch_default_for_uri(homeUri, global.create_app_launch_context());
             });
 
         let desktopPath = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP);
@@ -78,7 +78,7 @@ PlacesManager.prototype = {
                 return Shell.TextureCache.get_default().load_gicon(desktopIcon, size);
             },
             function() {
-                Gio.app_info_launch_default_for_uri(desktopUri, Main.createAppLaunchContext());
+                Gio.app_info_launch_default_for_uri(desktopUri, global.create_app_launch_context());
             });
 
         this._connect = new PlaceInfo(_("Connect to..."),
@@ -243,7 +243,7 @@ PlacesManager.prototype = {
                     return Shell.TextureCache.get_default().load_gicon(icon, size);
                 },
                 function() {
-                    Gio.app_info_launch_default_for_uri(bookmark, Main.createAppLaunchContext());
+                    Gio.app_info_launch_default_for_uri(bookmark, global.create_app_launch_context());
                 });
             this._bookmarks.push(item);
         }
@@ -272,7 +272,7 @@ PlacesManager.prototype = {
                         return Shell.TextureCache.get_default().load_gicon(mountIcon, size);
                },
                function() {
-                        Gio.app_info_launch_default_for_uri(mountUri, Main.createAppLaunchContext());
+                        Gio.app_info_launch_default_for_uri(mountUri, global.create_app_launch_context());
                });
         this._mounts.push(devItem);
     },

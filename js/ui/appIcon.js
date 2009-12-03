@@ -472,7 +472,7 @@ AppIconMenu.prototype = {
 
         this._redisplay();
 
-        this._windowContainer.popup(activatingButton, Main.currentTime());
+        this._windowContainer.popup(activatingButton, global.get_current_time());
 
         this.emit('popup', true);
 
