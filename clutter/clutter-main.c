@@ -738,7 +738,7 @@ _clutter_context_get_pango_context (ClutterMainContext *self)
     {
       PangoContext *context;
 
-      context = cogl_pango_font_map_create_context (self->font_map);
+      context = _clutter_context_create_pango_context (self);
       self->pango_context = context;
 
       g_signal_connect (self->backend, "resolution-changed",
@@ -748,8 +748,8 @@ _clutter_context_get_pango_context (ClutterMainContext *self)
                         G_CALLBACK (update_pango_context),
                         self->pango_context);
     }
-
-  update_pango_context (self->backend, self->pango_context);
+  else
+    update_pango_context (self->backend, self->pango_context);
 
   return self->pango_context;
 }
@@ -758,6 +758,19 @@ PangoContext *
 _clutter_context_create_pango_context (ClutterMainContext *self)
 {
   PangoContext *context;
+
+  if (self->font_map == NULL)
+    {
+      gdouble resolution;
+
+      self->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
+
+      resolution = clutter_backend_get_resolution (self->backend);
+      cogl_pango_font_map_set_resolution (self->font_map, resolution);
+
+      if (G_LIKELY (!clutter_disable_mipmap_text))
+        cogl_pango_font_map_set_use_mipmapping (self->font_map, TRUE);
+    }
 
   context = cogl_pango_font_map_create_context (self->font_map);
   update_pango_context (self->backend, context);
@@ -1480,7 +1493,6 @@ clutter_init_real (GError **error)
 {
   ClutterMainContext *ctx;
   ClutterActor *stage;
-  gdouble resolution;
   ClutterBackend *backend;
 
   /* Note, creates backend if not already existing, though parse args will
@@ -1522,20 +1534,6 @@ clutter_init_real (GError **error)
     _clutter_profile_suspend ();
 #endif
 
-  /*
-   * Resolution requires display to be open, so can only be queried after
-   * the post_parse hooks run.
-   *
-   * NB: cogl_pango requires a Cogl context.
-   */
-  ctx->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
-
-  resolution = clutter_backend_get_resolution (ctx->backend);
-  cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
-
-  if (!clutter_disable_mipmap_text)
-    cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
-
   clutter_text_direction = clutter_get_text_direction ();
 
   /* Figure out framebuffer masks used for pick */
@@ -1573,7 +1571,6 @@ clutter_init_real (GError **error)
   clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
 
   clutter_actor_realize (stage);
-
   if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       if (error)
