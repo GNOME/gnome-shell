@@ -1492,7 +1492,6 @@ static ClutterInitError
 clutter_init_real (GError **error)
 {
   ClutterMainContext *ctx;
-  ClutterActor *stage;
   ClutterBackend *backend;
 
   /* Note, creates backend if not already existing, though parse args will
@@ -1557,33 +1556,6 @@ clutter_init_real (GError **error)
 
   /* Initiate event collection */
   _clutter_backend_init_events (ctx->backend);
-
-  /* Create the default stage and realize it */
-  stage = clutter_stage_get_default ();
-  if (!stage)
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to create the default stage");
-      else
-        g_critical ("Unable to create the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  clutter_actor_realize (stage);
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to realize the default stage");
-      else
-        g_critical ("Unable to realize the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
 
   clutter_is_initialized = TRUE;
   ctx->is_initialized = TRUE;

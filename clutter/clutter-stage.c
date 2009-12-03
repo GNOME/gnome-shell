@@ -1215,11 +1215,16 @@ clutter_stage_get_default (void)
 
   stage = clutter_stage_manager_get_default_stage (stage_manager);
   if (G_UNLIKELY (stage == NULL))
-    /* This will take care of automatically adding the stage to the
-     * stage manager and setting it as the default. Its floating
-     * reference will be claimed by the stage manager.
-     */
-    stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+    {
+      /* This will take care of automatically adding the stage to the
+       * stage manager and setting it as the default. Its floating
+       * reference will be claimed by the stage manager.
+       */
+      stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+
+      /* the default stage is realized by default */
+      clutter_actor_realize (CLUTTER_ACTOR (stage));
+    }
 
   return CLUTTER_ACTOR (stage);
 }
