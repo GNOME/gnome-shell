@@ -39,6 +39,8 @@
 #include "cogl-texture-driver.h"
 #include "cogl-atlas.h"
 
+#include <stdlib.h>
+
 static void _cogl_atlas_texture_free (CoglAtlasTexture *sub_tex);
 
 COGL_HANDLE_DEFINE (AtlasTexture, atlas_texture);
@@ -319,32 +321,283 @@ _cogl_atlas_texture_get_height (CoglTexture *tex)
   return cogl_texture_get_height (atlas_tex->sub_texture);
 }
 
+static CoglHandle
+_cogl_atlas_texture_create_sub_texture (CoglHandle                full_texture,
+                                        const CoglAtlasRectangle *rectangle)
+{
+  /* Create a subtexture for the given rectangle not including the
+     1-pixel border */
+  gfloat tex_width = cogl_texture_get_width (full_texture);
+  gfloat tex_height = cogl_texture_get_height (full_texture);
+  gfloat tx1 = (rectangle->x + 1) / tex_width;
+  gfloat ty1 = (rectangle->y + 1) / tex_height;
+  gfloat tx2 = (rectangle->x + rectangle->width - 1) / tex_width;
+  gfloat ty2 = (rectangle->y + rectangle->height - 1) / tex_height;
+
+  return cogl_texture_new_from_sub_texture (full_texture, tx1, ty1, tx2, ty2);
+}
+
+typedef struct _CoglAtlasTextureRepositionData
+{
+  /* The current texture which already has a position */
+  CoglAtlasTexture *texture;
+  /* The new position of the texture */
+  CoglAtlasRectangle new_position;
+} CoglAtlasTextureRepositionData;
+
+static void
+_cogl_atlas_texture_migrate (guint                           n_textures,
+                             CoglAtlasTextureRepositionData *textures,
+                             CoglHandle                      old_texture,
+                             CoglHandle                      new_texture,
+                             CoglAtlasTexture               *skip_texture)
+{
+  guint i;
+  guint8 *data;
+  CoglPixelFormat format;
+  gint bpp;
+  guint old_height, old_width;
+
+  format = cogl_texture_get_format (old_texture);
+  bpp = _cogl_get_format_bpp (format);
+  old_width = cogl_texture_get_width (old_texture);
+  old_height = cogl_texture_get_height (old_texture);
+
+  /* Get the existing data for the texture. FIXME: we should use a PBO
+     or maybe copy the texture data via an FBO */
+  data = g_malloc (bpp *
+                   cogl_texture_get_width (old_texture) *
+                   cogl_texture_get_height (old_texture));
+  cogl_texture_get_data (old_texture, format,
+                         old_width * bpp,
+                         data);
+
+  for (i = 0; i < n_textures; i++)
+    {
+      /* Skip the texture that is being added because it doesn't contain
+         any data yet */
+      if (textures[i].texture != skip_texture)
+        {
+          cogl_texture_set_region (new_texture,
+                                   textures[i].texture->rectangle.x,
+                                   textures[i].texture->rectangle.y,
+                                   textures[i].new_position.x,
+                                   textures[i].new_position.y,
+                                   textures[i].new_position.width,
+                                   textures[i].new_position.height,
+                                   old_width, old_height,
+                                   format,
+                                   old_width * bpp,
+                                   data);
+          /* Update the sub texture */
+          cogl_handle_unref (textures[i].texture->sub_texture);
+          textures[i].texture->sub_texture =
+            _cogl_atlas_texture_create_sub_texture (new_texture,
+                                                    &textures[i].new_position);
+        }
+
+      /* Update the texture position */
+      textures[i].texture->rectangle = textures[i].new_position;
+    }
+
+  g_free (data);
+}
+
+typedef struct _CoglAtlasTextureGetRectanglesData
+{
+  CoglAtlasTextureRepositionData *textures;
+  /* Number of textures found so far */
+  guint n_textures;
+} CoglAtlasTextureGetRectanglesData;
+
+static void
+_cogl_atlas_texture_get_rectangles_cb (const CoglAtlasRectangle *rectangle,
+                                       gpointer                  rectangle_data,
+                                       gpointer                  user_data)
+{
+  CoglAtlasTextureGetRectanglesData *data = user_data;
+
+  data->textures[data->n_textures++].texture = rectangle_data;
+}
+
+static void
+_cogl_atlas_texture_get_next_size (guint *atlas_width,
+                                   guint *atlas_height)
+{
+  /* Double the size of the texture by increasing whichever dimension
+     is smaller */
+  if (*atlas_width < *atlas_height)
+    *atlas_width <<= 1;
+  else
+    *atlas_height <<= 1;
+}
+
+static CoglAtlas *
+_cogl_atlas_texture_create_atlas (guint                           atlas_width,
+                                  guint                           atlas_height,
+                                  guint                           n_textures,
+                                  CoglAtlasTextureRepositionData *textures)
+{
+  GLint max_texture_size = 1024;
+
+  GE( glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size) );
+
+  /* Sanity check that we're not going to get stuck in an infinite
+     loop if the maximum texture size has the high bit set */
+  if ((max_texture_size & (1 << (sizeof (GLint) * 8 - 2))))
+    max_texture_size >>= 1;
+
+  /* Keep trying increasingly larger atlases until we can fit all of
+     the textures */
+  while (atlas_width < max_texture_size && atlas_height < max_texture_size)
+    {
+      CoglAtlas *new_atlas = cogl_atlas_new (atlas_width, atlas_height, NULL);
+      guint i;
+
+      /* Add all of the textures and keep track of the new position */
+      for (i = 0; i < n_textures; i++)
+        if (!cogl_atlas_add_rectangle (new_atlas,
+                                       textures[i].texture->rectangle.width,
+                                       textures[i].texture->rectangle.height,
+                                       textures[i].texture,
+                                       &textures[i].new_position))
+          break;
+
+      /* If the atlas can contain all of the textures then we have a
+         winner */
+      if (i >= n_textures)
+        return new_atlas;
+
+      cogl_atlas_free (new_atlas);
+      _cogl_atlas_texture_get_next_size (&atlas_width, &atlas_height);
+    }
+
+  /* If we get here then there's no atlas that can accommodate all of
+     the rectangles */
+
+  return NULL;
+}
+
+static int
+_cogl_atlas_texture_compare_size_cb (const void *a,
+                                     const void *b)
+{
+  const CoglAtlasTextureRepositionData *ta = a;
+  const CoglAtlasTextureRepositionData *tb = b;
+  guint a_size, b_size;
+
+  a_size = ta->texture->rectangle.width * ta->texture->rectangle.height;
+  b_size = tb->texture->rectangle.width * tb->texture->rectangle.height;
+
+  return a_size < b_size ? 1 : a_size > b_size ? -1 : 0;
+}
+
 static gboolean
 _cogl_atlas_texture_reserve_space (CoglPixelFormat      format,
                                    CoglAtlas          **atlas_ptr,
                                    CoglHandle          *atlas_tex_ptr,
-                                   gpointer             rectangle_data,
+                                   CoglAtlasTexture    *new_sub_tex,
                                    guint                width,
-                                   guint                height,
-                                   CoglAtlasRectangle  *rectangle)
+                                   guint                height)
 {
+  CoglAtlasTextureGetRectanglesData data;
+  CoglAtlas *new_atlas;
+  CoglHandle new_tex;
+  guint atlas_width, atlas_height;
+  gboolean ret;
+
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  /* Create the atlas if we haven't already */
+  /* Check if we can fit the rectangle into the existing atlas */
+  if (*atlas_ptr && cogl_atlas_add_rectangle (*atlas_ptr, width, height,
+                                              new_sub_tex,
+                                              &new_sub_tex->rectangle))
+    return TRUE;
+
+  /* We need to reorganise the atlas so we'll get an array of all the
+     textures currently in the atlas. */
+  data.n_textures = 0;
   if (*atlas_ptr == NULL)
-    *atlas_ptr = cogl_atlas_new (256, 256, NULL);
+    data.textures = g_malloc (sizeof (CoglAtlasTextureRepositionData));
+  else
+    {
+      data.textures = g_malloc (sizeof (CoglAtlasTextureRepositionData) *
+                                (cogl_atlas_get_n_rectangles (*atlas_ptr) + 1));
+      cogl_atlas_foreach (*atlas_ptr, _cogl_atlas_texture_get_rectangles_cb,
+                          &data);
+    }
 
-  /* Create the texture if we haven't already */
-  if (*atlas_tex_ptr == NULL)
-    *atlas_tex_ptr = _cogl_texture_2d_new_with_size (256, 256,
-                                                     COGL_TEXTURE_NONE,
-                                                     format);
+  /* Add the new rectangle as a dummy texture so that it can be
+     positioned with the rest */
+  data.textures[data.n_textures++].texture = new_sub_tex;
 
-  /* Try to grab the space in the atlas */
-  /* FIXME: This should try to reorganise the atlas to make space and
-     grow it if necessary. */
-  return cogl_atlas_add_rectangle (*atlas_ptr, width, height,
-                                   rectangle_data, rectangle);
+  /* The atlasing algorithm works a lot better if the rectangles are
+     added in decreasing order of size so we'll first sort the
+     array */
+  qsort (data.textures, data.n_textures,
+         sizeof (CoglAtlasTextureRepositionData),
+         _cogl_atlas_texture_compare_size_cb);
+
+  /* Try to create a new atlas that can contain all of the textures */
+  if (*atlas_ptr)
+    {
+      atlas_width = cogl_atlas_get_width (*atlas_ptr);
+      atlas_height = cogl_atlas_get_height (*atlas_ptr);
+
+      /* If there is enough space in the existing for the new
+         rectangle in the existing atlas we'll start with the same
+         size, otherwise we'll immediately double it */
+      if (cogl_atlas_get_remaining_space (*atlas_ptr) < width * height)
+        _cogl_atlas_texture_get_next_size (&atlas_width, &atlas_height);
+    }
+  else
+    {
+      /* Start with an initial size of 256x256 */
+      atlas_width = 256;
+      atlas_height = 256;
+    }
+
+  new_atlas = _cogl_atlas_texture_create_atlas (atlas_width, atlas_height,
+                                                data.n_textures, data.textures);
+
+  /* If we can't create an atlas with the texture then give up */
+  if (new_atlas == NULL)
+    ret = FALSE;
+  else
+    {
+      /* We need to migrate the existing textures into a new texture */
+      new_tex =
+        _cogl_texture_2d_new_with_size (cogl_atlas_get_width (new_atlas),
+                                        cogl_atlas_get_height (new_atlas),
+                                        COGL_TEXTURE_NONE,
+                                        format);
+
+      if (*atlas_ptr)
+        {
+          /* Move all the textures to the right position in the new
+             texture. This will also update the texture's rectangle */
+          _cogl_atlas_texture_migrate (data.n_textures,
+                                       data.textures,
+                                       *atlas_tex_ptr,
+                                       new_tex,
+                                       new_sub_tex);
+          cogl_atlas_free (*atlas_ptr);
+          cogl_handle_unref (*atlas_tex_ptr);
+        }
+      else
+        /* We know there's only one texture so we can just directly
+           update the rectangle from its new position */
+        data.textures[0].texture->rectangle = data.textures[0].new_position;
+
+      *atlas_ptr = new_atlas;
+      *atlas_tex_ptr = new_tex;
+
+      ret = TRUE;
+    }
+
+  g_free (data.textures);
+
+  return ret;
 }
 
 CoglHandle
@@ -357,8 +610,6 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   CoglTextureUploadData   upload_data;
   CoglAtlas             **atlas_ptr;
   CoglHandle             *atlas_tex_ptr;
-  CoglAtlasRectangle      rectangle;
-  gfloat                  tx1, ty1, tx2, ty2;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -412,16 +663,18 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   /* We need to allocate the texture now because we need the pointer
      to set as the data for the rectangle in the atlas */
   atlas_tex = g_new (CoglAtlasTexture, 1);
+  /* We need to fill in the texture size now because it is used in the
+     reserve_space function below. We add two pixels for the border */
+  atlas_tex->rectangle.width = upload_data.bitmap.width + 2;
+  atlas_tex->rectangle.height = upload_data.bitmap.height + 2;
 
   /* Try to make some space in the atlas for the texture */
   if (!_cogl_atlas_texture_reserve_space (internal_format,
                                           atlas_ptr,
                                           atlas_tex_ptr,
                                           atlas_tex,
-                                          /* Add two pixels for the border */
-                                          upload_data.bitmap.width + 2,
-                                          upload_data.bitmap.height + 2,
-                                          &rectangle))
+                                          atlas_tex->rectangle.width,
+                                          atlas_tex->rectangle.height))
     {
       g_free (atlas_tex);
       _cogl_texture_upload_data_free (&upload_data);
@@ -430,26 +683,18 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
 
   if (!_cogl_texture_upload_data_convert (&upload_data, internal_format))
     {
-      cogl_atlas_remove_rectangle (*atlas_ptr, &rectangle);
+      cogl_atlas_remove_rectangle (*atlas_ptr, &atlas_tex->rectangle);
       g_free (atlas_tex);
       _cogl_texture_upload_data_free (&upload_data);
       return COGL_INVALID_HANDLE;
     }
 
-  tx1 = (rectangle.x + 1) / (gfloat) cogl_atlas_get_width (*atlas_ptr);
-  ty1 = (rectangle.y + 1) / (gfloat) cogl_atlas_get_height (*atlas_ptr);
-  tx2 = ((rectangle.x + rectangle.width - 1) /
-         (gfloat) cogl_atlas_get_width (*atlas_ptr));
-  ty2 = ((rectangle.y + rectangle.height - 1) /
-         (gfloat) cogl_atlas_get_height (*atlas_ptr));
-
   atlas_tex->_parent.vtable = &cogl_atlas_texture_vtable;
   atlas_tex->format = internal_format;
-  atlas_tex->rectangle = rectangle;
   atlas_tex->in_atlas = TRUE;
-  atlas_tex->sub_texture = cogl_texture_new_from_sub_texture (*atlas_tex_ptr,
-                                                              tx1, ty1,
-                                                              tx2, ty2);
+  atlas_tex->sub_texture =
+    _cogl_atlas_texture_create_sub_texture (*atlas_tex_ptr,
+                                            &atlas_tex->rectangle);
 
   /* Defer to set_region so that we can share the code for copying the
      edge pixels to the border */
