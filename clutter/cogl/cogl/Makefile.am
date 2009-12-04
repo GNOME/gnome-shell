@@ -131,6 +131,10 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-texture.c			\
 	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
+	$(srcdir)/cogl-atlas.h                          \
+	$(srcdir)/cogl-atlas.c                          \
+	$(srcdir)/cogl-atlas-texture-private.h          \
+	$(srcdir)/cogl-atlas-texture.c                  \
 	$(srcdir)/cogl-spans.h				\
 	$(srcdir)/cogl-spans.c				\
 	$(srcdir)/cogl-journal-private.h		\

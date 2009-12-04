@@ -147,6 +147,11 @@ cogl_create_context (void)
   cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
+  _context->atlas_alpha = NULL;
+  _context->atlas_no_alpha = NULL;
+  _context->atlas_alpha_texture = COGL_INVALID_HANDLE;
+  _context->atlas_no_alpha_texture = COGL_INVALID_HANDLE;
+
   return TRUE;
 }
 
@@ -187,6 +192,15 @@ _cogl_destroy_context ()
 
   if (_context->default_material)
     cogl_handle_unref (_context->default_material);
+
+  if (_context->atlas_alpha)
+    cogl_atlas_free (_context->atlas_alpha);
+  if (_context->atlas_no_alpha)
+    cogl_atlas_free (_context->atlas_no_alpha);
+  if (_context->atlas_alpha_texture)
+    cogl_handle_unref (_context->atlas_alpha_texture);
+  if (_context->atlas_no_alpha_texture)
+    cogl_handle_unref (_context->atlas_no_alpha_texture);
 
   g_free (_context);
 }

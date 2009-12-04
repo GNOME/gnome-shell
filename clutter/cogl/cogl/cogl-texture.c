@@ -40,6 +40,7 @@
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-sub-texture-private.h"
+#include "cogl-atlas-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
@@ -65,6 +66,7 @@ cogl_is_texture (CoglHandle handle)
     return FALSE;
 
   return (obj->klass->type == _cogl_handle_texture_2d_get_type () ||
+          obj->klass->type == _cogl_handle_atlas_texture_get_type () ||
           obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
           obj->klass->type == _cogl_handle_sub_texture_get_type ());
 }
@@ -366,18 +368,22 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
 {
   CoglHandle tex;
 
-  /* First try creating a fast-path non-sliced texture */
-  tex = _cogl_texture_2d_new_from_bitmap (bmp_handle,
-                                          flags,
-                                          internal_format);
+  /* First try putting the texture in the atlas */
+  if ((tex = _cogl_atlas_texture_new_from_bitmap (bmp_handle,
+                                                  flags,
+                                                  internal_format)))
+    return tex;
 
-  /* If it fails resort to sliced textures */
-  if (tex == COGL_INVALID_HANDLE)
-    tex = _cogl_texture_2d_sliced_new_from_bitmap (bmp_handle,
-                                                   flags,
-                                                   internal_format);
+  /* If that doesn't work try a fast path 2D texture */
+  if ((tex = _cogl_texture_2d_new_from_bitmap (bmp_handle,
+                                               flags,
+                                               internal_format)))
+    return tex;
 
-  return tex;
+  /* Otherwise create a sliced texture */
+  return _cogl_texture_2d_sliced_new_from_bitmap (bmp_handle,
+                                                  flags,
+                                                  internal_format);
 }
 
 CoglHandle
