@@ -57,6 +57,22 @@ void                  clutter_box_packv              (ClutterBox           *box,
                                                       const gchar * const   properties[],
                                                       const GValue         *values);
 
+void                  clutter_box_pack_after         (ClutterBox           *box,
+                                                      ClutterActor         *actor,
+                                                      ClutterActor         *sibling,
+                                                      const gchar          *first_property,
+                                                      ...) G_GNUC_NULL_TERMINATED;
+void                  clutter_box_pack_before        (ClutterBox           *box,
+                                                      ClutterActor         *actor,
+                                                      ClutterActor         *sibling,
+                                                      const gchar          *first_property,
+                                                      ...) G_GNUC_NULL_TERMINATED;
+void                  clutter_box_pack_at            (ClutterBox           *box,
+                                                      ClutterActor         *actor,
+                                                      gint                  position,
+                                                      const gchar          *first_property,
+                                                      ...) G_GNUC_NULL_TERMINATED;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BOX_H__ */

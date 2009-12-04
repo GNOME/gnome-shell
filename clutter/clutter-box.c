@@ -661,47 +661,20 @@ clutter_box_packv (ClutterBox          *box,
     }
 }
 
-/**
- * clutter_box_pack:
- * @box: a #ClutterBox
- * @actor: a #ClutterActor
- * @first_property: the name of the first property to set, or %NULL
- * @Varargs: a list of property name and value pairs, terminated by %NULL
- *
- * Adds @actor to @box and sets layout properties at the same time,
- * if the #ClutterLayoutManager used by @box has them
- *
- * This function is a wrapper around clutter_container_add_actor()
- * and clutter_layout_manager_child_set()
- *
- * Language bindings should use the vector-based clutter_box_addv()
- * variant instead
- *
- * Since: 1.2
- */
-void
-clutter_box_pack (ClutterBox   *box,
-                  ClutterActor *actor,
-                  const gchar  *first_property,
-                  ...)
+static inline void
+clutter_box_set_property_valist (ClutterBox   *box,
+                                 ClutterActor *actor,
+                                 const gchar  *first_property,
+                                 va_list       var_args)
 {
-  ClutterBoxPrivate *priv;
-  ClutterContainer *container;
+  ClutterContainer *container = CLUTTER_CONTAINER (box);
+  ClutterBoxPrivate *priv = box->priv;
   ClutterLayoutMeta *meta;
   GObjectClass *klass;
   const gchar *pname;
-  va_list var_args;
 
-  g_return_if_fail (CLUTTER_IS_BOX (box));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  container = CLUTTER_CONTAINER (box);
-  clutter_container_add_actor (container, actor);
-
-  if (first_property == NULL || *first_property == '\0')
+  if (priv->manager == NULL)
     return;
-
-  priv = box->priv;
 
   meta = clutter_layout_manager_get_child_meta (priv->manager,
                                                 container,
@@ -711,8 +684,6 @@ clutter_box_pack (ClutterBox   *box,
     return;
 
   klass = G_OBJECT_GET_CLASS (meta);
-
-  va_start (var_args, first_property);
 
   pname = first_property;
   while (pname)
@@ -761,7 +732,183 @@ clutter_box_pack (ClutterBox   *box,
 
       pname = va_arg (var_args, gchar*);
     }
+}
 
+/**
+ * clutter_box_pack:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @first_property: the name of the first property to set, or %NULL
+ * @Varargs: a list of property name and value pairs, terminated by %NULL
+ *
+ * Adds @actor to @box and sets layout properties at the same time,
+ * if the #ClutterLayoutManager used by @box has them
+ *
+ * This function is a wrapper around clutter_container_add_actor()
+ * and clutter_layout_manager_child_set()
+ *
+ * Language bindings should use the vector-based clutter_box_addv()
+ * variant instead
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_pack (ClutterBox   *box,
+                  ClutterActor *actor,
+                  const gchar  *first_property,
+                  ...)
+{
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), actor);
+
+  if (first_property == NULL || *first_property == '\0')
+    return;
+
+  va_start (var_args, first_property);
+  clutter_box_set_property_valist (box, actor, first_property, var_args);
+  va_end (var_args);
+}
+
+/**
+ * clutter_box_pack_after:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @sibling: (allow none): a #ClutterActor or %NULL
+ * @first_property: the name of the first property to set, or %NULL
+ * @Varargs: a list of property name and value pairs, terminated by %NULL
+ *
+ * Adds @actor to @box, placing it after @sibling, and sets layout
+ * properties at the same time, if the #ClutterLayoutManager used by
+ * @box supports them
+ *
+ * If @sibling is %NULL then @actor is placed at the end of the
+ * list of children, to be allocated and painted after every other child
+ *
+ * This function is a wrapper around clutter_container_add_actor(),
+ * clutter_container_raise_child() and clutter_layout_manager_child_set()
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_pack_after (ClutterBox   *box,
+                        ClutterActor *actor,
+                        ClutterActor *sibling,
+                        const gchar  *first_property,
+                        ...)
+{
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), actor);
+  clutter_container_raise_child (CLUTTER_CONTAINER (box), actor, sibling);
+
+  if (first_property == NULL || *first_property == '\0')
+    return;
+
+  va_start (var_args, first_property);
+  clutter_box_set_property_valist (box, actor, first_property, var_args);
+  va_end (var_args);
+}
+
+/**
+ * clutter_box_pack_before:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @sibling: (allow none): a #ClutterActor or %NULL
+ * @first_property: the name of the first property to set, or %NULL
+ * @Varargs: a list of property name and value pairs, terminated by %NULL
+ *
+ * Adds @actor to @box, placing it before @sibling, and sets layout
+ * properties at the same time, if the #ClutterLayoutManager used by
+ * @box supports them
+ *
+ * If @sibling is %NULL then @actor is placed at the beginning of the
+ * list of children, to be allocated and painted below every other child
+ *
+ * This function is a wrapper around clutter_container_add_actor(),
+ * clutter_container_lower_child() and clutter_layout_manager_child_set()
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_pack_before (ClutterBox   *box,
+                         ClutterActor *actor,
+                         ClutterActor *sibling,
+                         const gchar  *first_property,
+                         ...)
+{
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), actor);
+  clutter_container_lower_child (CLUTTER_CONTAINER (box), actor, sibling);
+
+  if (first_property == NULL || *first_property == '\0')
+    return;
+
+  va_start (var_args, first_property);
+  clutter_box_set_property_valist (box, actor, first_property, var_args);
+  va_end (var_args);
+}
+
+/**
+ * clutter_box_pack_at:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @position: the position to insert the @actor at
+ * @first_property: the name of the first property to set, or %NULL
+ * @Varargs: a list of property name and value pairs, terminated by %NULL
+ *
+ * Adds @actor to @box, placing it at @position, and sets layout
+ * properties at the same time, if the #ClutterLayoutManager used by
+ * @box supports them
+ *
+ * If @position is a negative number, or is larger than the number of
+ * children of @box, the new child is added at the end of the list of
+ * children
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_pack_at (ClutterBox   *box,
+                     ClutterActor *actor,
+                     gint          position,
+                     const gchar  *first_property,
+                     ...)
+{
+  ClutterBoxPrivate *priv;
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  priv = box->priv;
+
+  /* this is really clutter_box_add() with a different insert() */
+  priv->children = g_list_insert (priv->children,
+                                  actor,
+                                  position);
+
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR (box));
+  clutter_actor_queue_relayout (actor);
+
+  g_signal_emit_by_name (box, "actor-added", actor);
+
+  if (first_property == NULL || *first_property == '\0')
+    return;
+
+  va_start (var_args, first_property);
+  clutter_box_set_property_valist (box, actor, first_property, var_args);
   va_end (var_args);
 }
 

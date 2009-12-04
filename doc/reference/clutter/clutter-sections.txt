@@ -1836,6 +1836,9 @@ clutter_box_get_color
 <SUBSECTION>
 clutter_box_pack
 clutter_box_packv
+clutter_box_pack_after
+clutter_box_pack_before
+clutter_box_pack_at
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX
