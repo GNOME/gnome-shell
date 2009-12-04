@@ -48,7 +48,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
   { "matrices", COGL_DEBUG_MATRICES },
   { "force-scanline-paths", COGL_DEBUG_FORCE_SCANLINE_PATHS },
-  { "atlas", COGL_DEBUG_ATLAS }
+  { "atlas", COGL_DEBUG_ATLAS },
+  { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);

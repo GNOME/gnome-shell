@@ -31,6 +31,7 @@
 #include <glib.h>
 
 #include "cogl-atlas.h"
+#include "cogl-debug.h"
 
 /* Implements a data structure which keeps track of unused
    sub-rectangles within a larger rectangle using a binary tree
@@ -38,6 +39,16 @@
 
    http://www.blackpawn.com/texts/lightmaps/default.html
 */
+
+#ifdef COGL_ENABLE_DEBUG
+
+/* The cairo header is only used for debugging to generate an image of
+   the atlas */
+#include <cairo.h>
+
+static void cogl_atlas_dump_image (CoglAtlas *atlas);
+
+#endif /* COGL_ENABLE_DEBUG */
 
 typedef struct _CoglAtlasNode       CoglAtlasNode;
 typedef struct _CoglAtlasStackEntry CoglAtlasStackEntry;
@@ -320,6 +331,11 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
       atlas->space_remaining -= width * height;
       atlas->n_rectangles++;
 
+#ifdef COGL_ENABLE_DEBUG
+      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
+        cogl_atlas_dump_image (atlas);
+#endif
+
       return TRUE;
     }
   else
@@ -388,6 +404,11 @@ cogl_atlas_remove_rectangle (CoglAtlas *atlas,
       g_assert (atlas->n_rectangles > 0);
       atlas->n_rectangles--;
     }
+
+#ifdef COGL_ENABLE_DEBUG
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
+    cogl_atlas_dump_image (atlas);
+#endif
 }
 
 guint
@@ -518,3 +539,58 @@ cogl_atlas_free (CoglAtlas *atlas)
   cogl_atlas_internal_foreach (atlas, cogl_atlas_free_cb, atlas);
   g_free (atlas);
 }
+
+#ifdef COGL_ENABLE_DEBUG
+
+static void
+cogl_atlas_dump_image_cb (CoglAtlasNode *node, gpointer data)
+{
+  cairo_t *cr = data;
+
+  if (node->type == COGL_ATLAS_FILLED_LEAF ||
+      node->type == COGL_ATLAS_EMPTY_LEAF)
+    {
+      /* Fill the rectangle using a different colour depending on
+         whether the rectangle is used */
+      if (node->type == COGL_ATLAS_FILLED_LEAF)
+        cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+      else
+        cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+
+      cairo_rectangle (cr,
+                       node->rectangle.x,
+                       node->rectangle.y,
+                       node->rectangle.width,
+                       node->rectangle.height);
+
+      cairo_fill_preserve (cr);
+
+      /* Draw a white outline around the rectangle */
+      cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+      cairo_stroke (cr);
+    }
+}
+
+static void
+cogl_atlas_dump_image (CoglAtlas *atlas)
+{
+  /* This dumps a png to help visualize the atlas. Each leaf rectangle
+     is drawn with a white outline. Unused leaves are filled in black
+     and used leaves are blue */
+
+  cairo_surface_t *surface =
+    cairo_image_surface_create (CAIRO_FORMAT_RGB24,
+                                cogl_atlas_get_width (atlas),
+                                cogl_atlas_get_height (atlas));
+  cairo_t *cr = cairo_create (surface);
+
+  cogl_atlas_internal_foreach (atlas, cogl_atlas_dump_image_cb, cr);
+
+  cairo_destroy (cr);
+
+  cairo_surface_write_to_png (surface, "cogl-atlas-dump.png");
+
+  cairo_surface_destroy (surface);
+}
+
+#endif /* COGL_ENABLE_DEBUG */
