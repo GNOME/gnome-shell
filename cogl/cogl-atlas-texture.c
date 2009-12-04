@@ -86,10 +86,24 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
 
   /* Remove the texture from the atlas */
   if (atlas_tex->in_atlas)
-    cogl_atlas_remove_rectangle ((atlas_tex->format & COGL_A_BIT) ?
-                                 ctx->atlas_alpha :
-                                 ctx->atlas_no_alpha,
-                                 &atlas_tex->rectangle);
+    {
+      CoglAtlas *atlas = ((atlas_tex->format & COGL_A_BIT) ?
+                          ctx->atlas_alpha :
+                          ctx->atlas_no_alpha);
+
+      cogl_atlas_remove_rectangle (atlas, &atlas_tex->rectangle);
+
+      COGL_NOTE (ATLAS, "Removed rectangle sized %ix%i",
+                 atlas_tex->rectangle.width,
+                 atlas_tex->rectangle.height);
+      COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+                 cogl_atlas_get_width (atlas),
+                 cogl_atlas_get_height (atlas),
+                 cogl_atlas_get_n_rectangles (atlas),
+                 cogl_atlas_get_remaining_space (atlas) * 100 /
+                 (cogl_atlas_get_width (atlas) *
+                  cogl_atlas_get_height (atlas)));
+    }
 
   cogl_handle_unref (atlas_tex->sub_texture);
 }
@@ -512,7 +526,16 @@ _cogl_atlas_texture_reserve_space (CoglPixelFormat      format,
   if (*atlas_ptr && cogl_atlas_add_rectangle (*atlas_ptr, width, height,
                                               new_sub_tex,
                                               &new_sub_tex->rectangle))
-    return TRUE;
+    {
+      COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+                 cogl_atlas_get_width (*atlas_ptr),
+                 cogl_atlas_get_height (*atlas_ptr),
+                 cogl_atlas_get_n_rectangles (*atlas_ptr),
+                 cogl_atlas_get_remaining_space (*atlas_ptr) * 100 /
+                 (cogl_atlas_get_width (*atlas_ptr) *
+                  cogl_atlas_get_height (*atlas_ptr)));
+      return TRUE;
+    }
 
   /* We need to reorganise the atlas so we'll get an array of all the
      textures currently in the atlas. */
@@ -562,7 +585,10 @@ _cogl_atlas_texture_reserve_space (CoglPixelFormat      format,
 
   /* If we can't create an atlas with the texture then give up */
   if (new_atlas == NULL)
-    ret = FALSE;
+    {
+      COGL_NOTE (ATLAS, "Could not fit texture in the atlas");
+      ret = FALSE;
+    }
   else
     {
       /* We need to migrate the existing textures into a new texture */
@@ -571,6 +597,17 @@ _cogl_atlas_texture_reserve_space (CoglPixelFormat      format,
                                         cogl_atlas_get_height (new_atlas),
                                         COGL_TEXTURE_NONE,
                                         format);
+
+      COGL_NOTE (ATLAS,
+                 "Atlas %s with size %ix%i",
+                 *atlas_ptr == NULL ||
+                 cogl_atlas_get_width (*atlas_ptr) !=
+                 cogl_atlas_get_width (new_atlas) ||
+                 cogl_atlas_get_height (*atlas_ptr) !=
+                 cogl_atlas_get_height (new_atlas) ?
+                 "resized" : "reorganized",
+                 cogl_atlas_get_width (new_atlas),
+                 cogl_atlas_get_height (new_atlas));
 
       if (*atlas_ptr)
         {
@@ -591,6 +628,14 @@ _cogl_atlas_texture_reserve_space (CoglPixelFormat      format,
 
       *atlas_ptr = new_atlas;
       *atlas_tex_ptr = new_tex;
+
+      COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+                 cogl_atlas_get_width (*atlas_ptr),
+                 cogl_atlas_get_height (*atlas_ptr),
+                 cogl_atlas_get_n_rectangles (*atlas_ptr),
+                 cogl_atlas_get_remaining_space (*atlas_ptr) * 100 /
+                 (cogl_atlas_get_width (*atlas_ptr) *
+                  cogl_atlas_get_height (*atlas_ptr)));
 
       ret = TRUE;
     }
@@ -641,10 +686,15 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
       return COGL_INVALID_HANDLE;
     }
 
+  COGL_NOTE (ATLAS, "Adding texture of size %ix%i", bmp->width, bmp->height);
+
   /* If the texture is in a strange format then we can't use it */
   if (internal_format != COGL_PIXEL_FORMAT_RGB_888 &&
       (internal_format & ~COGL_PREMULT_BIT) != COGL_PIXEL_FORMAT_RGBA_8888)
     {
+      COGL_NOTE (ATLAS, "Texture can not be added because the "
+                 "format is unsupported");
+
       _cogl_texture_upload_data_free (&upload_data);
       return COGL_INVALID_HANDLE;
     }
