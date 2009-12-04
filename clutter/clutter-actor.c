@@ -4632,6 +4632,7 @@ _clutter_actor_get_cached_size_request (gfloat         for_size,
       if (sr->age > 0 &&
           sr->for_size == for_size)
         {
+          CLUTTER_NOTE (LAYOUT, "Size cache hit for size: %.2f", for_size);
           *result = sr;
           return TRUE;
         }
@@ -4640,6 +4641,8 @@ _clutter_actor_get_cached_size_request (gfloat         for_size,
           *result = sr;
         }
     }
+
+  CLUTTER_NOTE (LAYOUT, "Size cache miss for size: %.2f", for_size);
 
   return FALSE;
 }
