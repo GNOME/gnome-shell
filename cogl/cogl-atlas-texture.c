@@ -237,16 +237,17 @@ _cogl_atlas_texture_set_wrap_mode_parameter (CoglTexture *tex,
 }
 
 static void
-_cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
+_cogl_atlas_texture_remove_from_atlas (CoglAtlasTexture *atlas_tex)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* Remove the texture from the atlas */
   if (atlas_tex->in_atlas)
     {
-      CoglAtlas *atlas = ((atlas_tex->format & COGL_A_BIT) ?
-                          ctx->atlas_alpha :
-                          ctx->atlas_no_alpha);
+      CoglAtlas *atlas;
+
+      _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+      atlas = ((atlas_tex->format & COGL_A_BIT) ?
+               ctx->atlas_alpha :
+               ctx->atlas_no_alpha);
 
       cogl_atlas_remove_rectangle (atlas, &atlas_tex->rectangle);
 
@@ -260,7 +261,15 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
                  cogl_atlas_get_remaining_space (atlas) * 100 /
                  (cogl_atlas_get_width (atlas) *
                   cogl_atlas_get_height (atlas)));
+
+      atlas_tex->in_atlas = FALSE;
     }
+}
+
+static void
+_cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
+{
+  _cogl_atlas_texture_remove_from_atlas (atlas_tex);
 
   cogl_handle_unref (atlas_tex->sub_texture);
 }
@@ -332,8 +341,47 @@ _cogl_atlas_texture_ensure_mipmaps (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
-  /* FIXME: If mipmaps are required then we need to migrate the
-     texture out of the atlas because it will show artifacts */
+  /* Mipmaps do not work well with the current atlas so instead we'll
+     just migrate the texture out and use a regular texture */
+  if (atlas_tex->in_atlas)
+    {
+      CoglHandle atlas_texture;
+      CoglAtlasTextureBlitData blit_data;
+
+      _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+      COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
+
+      cogl_handle_unref (atlas_tex->sub_texture);
+
+      if ((atlas_tex->format & COGL_A_BIT))
+        atlas_texture = ctx->atlas_alpha_texture;
+      else
+        atlas_texture = ctx->atlas_no_alpha_texture;
+
+      /* Create a new texture at the right size, not including the
+         border */
+      atlas_tex->sub_texture =
+        cogl_texture_new_with_size (atlas_tex->rectangle.width - 2,
+                                    atlas_tex->rectangle.height - 2,
+                                    COGL_TEXTURE_NO_ATLAS,
+                                    atlas_tex->format);
+
+      /* Blit the data out of the atlas to the new texture. If FBOs
+         aren't available this will end up having to copy the entire
+         atlas texture */
+      _cogl_atlas_texture_blit_begin (&blit_data, atlas_tex->sub_texture,
+                                      atlas_texture);
+      _cogl_atlas_texture_blit (&blit_data,
+                                atlas_tex->rectangle.x + 1,
+                                atlas_tex->rectangle.y + 1,
+                                0, 0,
+                                atlas_tex->rectangle.width - 2,
+                                atlas_tex->rectangle.height - 2);
+      _cogl_atlas_texture_blit_end (&blit_data);
+
+      _cogl_atlas_texture_remove_from_atlas (atlas_tex);
+    }
 
   /* Forward on to the sub texture */
   _cogl_texture_ensure_mipmaps (atlas_tex->sub_texture);
