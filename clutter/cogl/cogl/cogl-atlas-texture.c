@@ -41,11 +41,168 @@
 
 #include <stdlib.h>
 
+#ifdef HAVE_COGL_GLES2
+
+#include "../gles/cogl-gles2-wrapper.h"
+
+#else /* HAVE_COGL_GLES2 */
+
+#define glGenFramebuffers                 ctx->drv.pf_glGenFramebuffers
+#define glBindFramebuffer                 ctx->drv.pf_glBindFramebuffer
+#define glFramebufferTexture2D            ctx->drv.pf_glFramebufferTexture2D
+#define glCheckFramebufferStatus          ctx->drv.pf_glCheckFramebufferStatus
+#define glDeleteFramebuffers              ctx->drv.pf_glDeleteFramebuffers
+
+#endif /* HAVE_COGL_GLES2 */
+
+#ifndef GL_FRAMEBUFFER
+#define GL_FRAMEBUFFER		0x8D40
+#endif
+#ifndef GL_FRAMEBUFFER_BINDING
+#define GL_FRAMEBUFFER_BINDING  0x8CA6
+#endif
+#ifndef GL_COLOR_ATTACHMENT0
+#define GL_COLOR_ATTACHMENT0	0x8CE0
+#endif
+#ifndef GL_FRAMEBUFFER_COMPLETE
+#define GL_FRAMEBUFFER_COMPLETE 0x8CD5
+#endif
+
 static void _cogl_atlas_texture_free (CoglAtlasTexture *sub_tex);
 
 COGL_HANDLE_DEFINE (AtlasTexture, atlas_texture);
 
 static const CoglTextureVtable cogl_atlas_texture_vtable;
+
+/* If we want to do mulitple blits from a texture (such as when
+   reorganizing the atlas) then it's quicker to download all of the
+   data once and upload multiple times from that. This struct is used
+   to keep the image data for a series of blits */
+
+typedef struct _CoglAtlasTextureBlitData
+{
+  CoglHandle src_tex, dst_tex;
+
+  /* If we're using an FBO to blit, then FBO will be non-zero and
+     old_fbo will be the previous framebuffer binding */
+  GLuint fbo, old_fbo;
+
+  /* If we're not using an FBO then we g_malloc a buffer and copy the
+     complete texture data in */
+  unsigned char *image_data;
+  CoglPixelFormat format;
+  gint bpp;
+  guint src_height, src_width;
+
+  GLenum dst_gl_target;
+} CoglAtlasTextureBlitData;
+
+static void
+_cogl_atlas_texture_blit_begin (CoglAtlasTextureBlitData *data,
+                                CoglHandle dst_tex,
+                                CoglHandle src_tex)
+{
+  GLenum src_gl_target;
+  GLuint src_gl_texture;
+  GLuint dst_gl_texture;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  data->dst_tex = dst_tex;
+  data->src_tex = src_tex;
+  data->fbo = 0;
+
+  /* If we can use an FBO then we don't need to download the data and
+     we can tell GL to blit directly between the textures */
+  if (cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+      !cogl_texture_is_sliced (dst_tex) &&
+      cogl_texture_get_gl_texture (src_tex, &src_gl_texture, &src_gl_target) &&
+      cogl_texture_get_gl_texture (dst_tex, &dst_gl_texture,
+                                   &data->dst_gl_target))
+    {
+      /* Ideally we would use the cogl-offscreen API here, but I'd
+         rather avoid creating a stencil renderbuffer which you can't
+         currently do */
+      /* Preserve the previous framebuffer binding so we don't trample
+         on cogl-offscreen */
+      data->old_fbo = 0;
+      GE( glGetIntegerv (GL_FRAMEBUFFER_BINDING, (GLint *) &data->old_fbo) );
+
+      _cogl_texture_set_filters (src_tex, GL_NEAREST, GL_NEAREST);
+
+      /* Create an FBO to read from the src texture */
+      GE( glGenFramebuffers (1, &data->fbo) );
+      GE( glBindFramebuffer (GL_FRAMEBUFFER, data->fbo) );
+      GE( glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                                  src_gl_target, src_gl_texture, 0) );
+      if (glCheckFramebufferStatus (GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+          /* The FBO failed for whatever reason so we'll fallback to
+             reading the texture data */
+          GE( glBindFramebuffer (GL_FRAMEBUFFER, data->old_fbo) );
+          GE( glDeleteFramebuffers (1, &data->fbo) );
+          data->fbo = 0;
+        }
+
+      GE( glBindTexture (data->dst_gl_target, dst_gl_texture) );
+    }
+
+  if (data->fbo)
+    COGL_NOTE (ATLAS, "Blit set up using an FBO");
+  else
+    {
+      /* We need to retrieve the entire texture data (there is no
+         glGetTexSubImage2D) */
+
+      data->format = cogl_texture_get_format (src_tex);
+      data->bpp = _cogl_get_format_bpp (data->format);
+      data->src_width = cogl_texture_get_width (src_tex);
+      data->src_height = cogl_texture_get_height (src_tex);
+
+      data->image_data = g_malloc (data->bpp * data->src_width *
+                                   data->src_height);
+      cogl_texture_get_data (src_tex, data->format,
+                             data->src_width * data->bpp, data->image_data);
+    }
+}
+
+static void
+_cogl_atlas_texture_blit (CoglAtlasTextureBlitData *data,
+                          guint src_x,
+                          guint src_y,
+                          guint dst_x,
+                          guint dst_y,
+                          guint width,
+                          guint height)
+{
+  /* If we have an FBO then we can do a fast blit */
+  if (data->fbo)
+    GE( glCopyTexSubImage2D (data->dst_gl_target, 0, dst_x, dst_y, src_x, src_y,
+                             width, height) );
+  else
+    cogl_texture_set_region (data->dst_tex,
+                             src_x, src_y,
+                             dst_x, dst_y,
+                             width, height,
+                             data->src_width, data->src_height,
+                             data->format,
+                             data->src_width * data->bpp,
+                             data->image_data);
+}
+
+static void
+_cogl_atlas_texture_blit_end (CoglAtlasTextureBlitData *data)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (data->fbo)
+    {
+      GE( glBindFramebuffer (GL_FRAMEBUFFER, data->old_fbo) );
+      GE( glDeleteFramebuffers (1, &data->fbo) );
+    }
+  else
+    g_free (data->image_data);
+}
 
 static void
 _cogl_atlas_texture_foreach_sub_texture_in_region (
@@ -367,24 +524,9 @@ _cogl_atlas_texture_migrate (guint                           n_textures,
                              CoglAtlasTexture               *skip_texture)
 {
   guint i;
-  guint8 *data;
-  CoglPixelFormat format;
-  gint bpp;
-  guint old_height, old_width;
+  CoglAtlasTextureBlitData blit_data;
 
-  format = cogl_texture_get_format (old_texture);
-  bpp = _cogl_get_format_bpp (format);
-  old_width = cogl_texture_get_width (old_texture);
-  old_height = cogl_texture_get_height (old_texture);
-
-  /* Get the existing data for the texture. FIXME: we should use a PBO
-     or maybe copy the texture data via an FBO */
-  data = g_malloc (bpp *
-                   cogl_texture_get_width (old_texture) *
-                   cogl_texture_get_height (old_texture));
-  cogl_texture_get_data (old_texture, format,
-                         old_width * bpp,
-                         data);
+  _cogl_atlas_texture_blit_begin (&blit_data, new_texture, old_texture);
 
   for (i = 0; i < n_textures; i++)
     {
@@ -392,17 +534,13 @@ _cogl_atlas_texture_migrate (guint                           n_textures,
          any data yet */
       if (textures[i].texture != skip_texture)
         {
-          cogl_texture_set_region (new_texture,
-                                   textures[i].texture->rectangle.x,
-                                   textures[i].texture->rectangle.y,
-                                   textures[i].new_position.x,
-                                   textures[i].new_position.y,
-                                   textures[i].new_position.width,
-                                   textures[i].new_position.height,
-                                   old_width, old_height,
-                                   format,
-                                   old_width * bpp,
-                                   data);
+          _cogl_atlas_texture_blit (&blit_data,
+                                    textures[i].texture->rectangle.x,
+                                    textures[i].texture->rectangle.y,
+                                    textures[i].new_position.x,
+                                    textures[i].new_position.y,
+                                    textures[i].new_position.width,
+                                    textures[i].new_position.height);
           /* Update the sub texture */
           cogl_handle_unref (textures[i].texture->sub_texture);
           textures[i].texture->sub_texture =
@@ -414,7 +552,7 @@ _cogl_atlas_texture_migrate (guint                           n_textures,
       textures[i].texture->rectangle = textures[i].new_position;
     }
 
-  g_free (data);
+  _cogl_atlas_texture_blit_end (&blit_data);
 }
 
 typedef struct _CoglAtlasTextureGetRectanglesData
