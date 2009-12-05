@@ -1400,7 +1400,17 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       tex_handle = layer->texture;
       if (tex_handle != COGL_INVALID_HANDLE)
-        cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+        {
+          if (is_mipmap_filter (layer->min_filter)
+              || is_mipmap_filter (layer->mag_filter))
+            _cogl_texture_ensure_mipmaps (tex_handle);
+
+          _cogl_texture_set_filters (tex_handle,
+                                     layer->min_filter,
+                                     layer->mag_filter);
+
+          cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+        }
       else
         {
           new_gl_layer_info.fallback = TRUE;
@@ -1430,13 +1440,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
       unit = _cogl_get_texture_unit (i);
-
-      _cogl_texture_set_filters (layer->texture,
-                                 layer->min_filter,
-                                 layer->mag_filter);
-      if (is_mipmap_filter (layer->min_filter)
-          || is_mipmap_filter (layer->mag_filter))
-        _cogl_texture_ensure_mipmaps (layer->texture);
 
       /* FIXME: We could be more clever here and only bind the texture
          if it is different from gl_layer_info->gl_texture to avoid
