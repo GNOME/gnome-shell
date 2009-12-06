@@ -350,7 +350,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
           if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
             CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
         }
-#endif
+#endif /* __linux__ */
 
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
@@ -489,11 +489,11 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to find suitable fbconfig for GL context");
+                   "Unable to find suitable fbconfig for the GLX context");
       return FALSE;
     }
 
-  CLUTTER_NOTE (GL, "Creating GL Context (display: %p)", xdisplay);
+  CLUTTER_NOTE (BACKEND, "Creating GLX Context (display: %p)", xdisplay);
 
   backend_glx->gl_context = glXCreateNewContext (xdisplay,
                                                  config,
@@ -515,15 +515,17 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                           : "indirect");
   _cogl_set_indirect_context (!is_direct);
 
-  /* in order to query the GL and GLX implementation we
-   * need to bind the GLX context to a Drawable; we create
-   * a simple, off-screen override-redirect window that we
-   * then destroy at the end of this function
+  /* COGL assumes that there is always a GL context selected; in order
+   * to make sure that a GLX context exists and is made current, we use
+   * a dummy, offscreen override-redirect window to which we can always
+   * fall back if no stage is available
    */
   xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
   if (xvisinfo == None)
     {
-      g_critical ("Unable to retrieve the X11 visual");
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Unable to retrieve the X11 visual");
       return FALSE;
     }
 
@@ -539,6 +541,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                            CWOverrideRedirect,
                                            &attrs);
 
+  CLUTTER_NOTE (BACKEND, "Selecting dummy 0x%x for the GLX context",
+                (unsigned int) backend_glx->dummy_xwin);
+
   glXMakeContextCurrent (xdisplay,
                          backend_glx->dummy_xwin,
                          backend_glx->dummy_xwin,
@@ -546,7 +551,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
 
   if (clutter_x11_untrap_x_errors ())
     {
-      g_critical ("Unable to retrieve the GLX features");
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Unable to select the newly created GLX context");
       return FALSE;
     }
 
@@ -590,7 +597,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       CLUTTER_NOTE (BACKEND,
                     "Setting context for stage of type %s, window: 0x%x",
                     G_OBJECT_TYPE_NAME (impl),
-                    (int) stage_x11->xwin);
+                    (unsigned int) stage_x11->xwin);
 
       /* no GL context to set */
       if (backend_glx->gl_context == None)
@@ -621,7 +628,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
           CLUTTER_NOTE (BACKEND,
                         "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
                         backend_x11->xdpy,
-                        (int) stage_x11->xwin,
+                        (unsigned int) stage_x11->xwin,
                         stage_x11->is_foreign_xwin ? "foreign" : "native",
                         backend_glx->gl_context);
 
@@ -634,7 +641,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       if (clutter_x11_untrap_x_errors ())
         g_critical ("Unable to make the stage window 0x%x the current "
                     "GLX drawable",
-                    (int) stage_x11->xwin);
+                    (unsigned int) stage_x11->xwin);
     }
 }
 
