@@ -193,22 +193,28 @@ input_cb (ClutterActor *actor,
     case CLUTTER_ENTER:
       g_print ("[%s] ENTER (from:%s)",
                clutter_actor_get_name (source_actor),
-               clutter_actor_get_name (clutter_event_get_related (event)));
+               clutter_event_get_related (event) != NULL
+                 ? clutter_actor_get_name (clutter_event_get_related (event))
+                 : "<out of stage>");
       break;
     case CLUTTER_LEAVE:
       g_print ("[%s] LEAVE (to:%s)",
                clutter_actor_get_name (source_actor),
-               clutter_actor_get_name (clutter_event_get_related (event)));
+               clutter_event_get_related (event) != NULL
+                 ? clutter_actor_get_name (clutter_event_get_related (event))
+                 : "<out of stage>");
       break;
     case CLUTTER_BUTTON_PRESS:
-      g_print ("[%s] BUTTON PRESS (click count:%i)", 
+      g_print ("[%s] BUTTON PRESS (button:%i, click count:%i)",
 	       clutter_actor_get_name (source_actor),
+               clutter_event_get_button (event),
                clutter_event_get_click_count (event));
       break;
     case CLUTTER_BUTTON_RELEASE:
-      g_print ("[%s] BUTTON RELEASE (click count:%i)", 
+      g_print ("[%s] BUTTON RELEASE (button:%i, click count:%i)",
 	       clutter_actor_get_name (source_actor),
-               clutter_event_get_button (event));
+               clutter_event_get_button (event),
+               clutter_event_get_click_count (event));
 
       if (source_actor == CLUTTER_ACTOR (stage))
         clutter_stage_set_key_focus (stage, NULL);
