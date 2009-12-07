@@ -3090,24 +3090,20 @@ clutter_check_version (guint major,
            clutter_micro_version >= micro));
 }
 
-void
-clutter_set_default_text_direction (ClutterTextDirection text_dir)
-{
-  ClutterStageManager *manager;
-  const GSList *stages, *l;
-
-  if (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT)
-    text_dir = clutter_get_text_direction ();
-
-  if (text_dir != clutter_text_direction)
-    clutter_text_direction = text_dir;
-
-  manager = clutter_stage_manager_get_default ();
-  stages = clutter_stage_manager_peek_stages (manager);
-  for (l = stages; l != NULL; l = l->next)
-    clutter_actor_queue_relayout (l->data);
-}
-
+/**
+ * clutter_get_default_text_direction:
+ *
+ * Retrieves the default direction for the text. The text direction is
+ * determined by the locale and/or by the %CLUTTER_TEXT_DIRECTION environment
+ * variable
+ *
+ * The default text direction can be overridden on a per-actor basis by using
+ * clutter_actor_set_text_direction()
+ *
+ * Return value: the default text direction
+ *
+ * Since: 1.2
+ */
 ClutterTextDirection
 clutter_get_default_text_direction (void)
 {

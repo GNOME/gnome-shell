@@ -1017,7 +1017,6 @@ clutter_set_font_flags
 clutter_get_font_flags
 clutter_get_font_map
 ClutterTextDirection
-clutter_set_default_text_direction
 clutter_get_default_text_direction
 
 <SUBSECTION>

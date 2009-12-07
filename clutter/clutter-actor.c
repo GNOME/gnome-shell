@@ -9448,7 +9448,8 @@ clutter_actor_set_text_direction (ClutterActor         *self,
  * Retrieves the value set using clutter_actor_set_text_direction()
  *
  * If no text direction has been previously set, the default text
- * direction will be returned
+ * direction, as returned by clutter_get_default_text_direction(), will
+ * be returned instead
  *
  * Return value: the #ClutterTextDirection for the actor
  *
