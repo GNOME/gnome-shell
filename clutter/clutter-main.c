@@ -2045,6 +2045,7 @@ event_click_count_generate (ClutterEvent *event)
   static guint32 previous_time          = 0;
   static gint    previous_button_number = -1;
 
+  ClutterInputDevice *device = NULL;
   ClutterBackend *backend;
   guint double_click_time;
   guint double_click_distance;
@@ -2053,41 +2054,60 @@ event_click_count_generate (ClutterEvent *event)
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
-  if (event->button.device != NULL)
+  device = clutter_event_get_device (event);
+  if (device != NULL)
     {
-      click_count = event->button.device->click_count;
-      previous_x = event->button.device->previous_x;
-      previous_y = event->button.device->previous_y;
-      previous_time = event->button.device->previous_time;
-      previous_button_number = event->button.device->previous_button_number;
+      click_count = device->click_count;
+      previous_x = device->previous_x;
+      previous_y = device->previous_y;
+      previous_time = device->previous_time;
+      previous_button_number = device->previous_button_number;
+
+      CLUTTER_NOTE (EVENT,
+                    "Restoring previous click count:%d (device:%d, time:%u)",
+                    click_count,
+                    clutter_input_device_get_device_id (device),
+                    previous_time);
+    }
+  else
+    {
+      CLUTTER_NOTE (EVENT,
+                    "Restoring previous click count:%d (time:%u)",
+                    click_count,
+                    previous_time);
     }
 
-  switch (event->type)
+  switch (clutter_event_type (event))
     {
       case CLUTTER_BUTTON_PRESS:
       case CLUTTER_SCROLL:
         /* check if we are in time and within distance to increment an
          * existing click count
          */
-        if (event->button.time < previous_time + double_click_time &&
+        if (event->button.button == previous_button_number &&
+            event->button.time < (previous_time + double_click_time) &&
             (ABS (event->button.x - previous_x) <= double_click_distance) &&
-            (ABS (event->button.y - previous_y) <= double_click_distance)
-            && event->button.button == previous_button_number)
+            (ABS (event->button.y - previous_y) <= double_click_distance))
           {
+            CLUTTER_NOTE (EVENT, "Increase click count (button: %d, time: %u)",
+                          event->button.button,
+                          event->button.time);
+
             click_count += 1;
           }
         else /* start a new click count*/
           {
+            CLUTTER_NOTE (EVENT, "Reset click count (button: %d, time: %u)",
+                          event->button.button,
+                          event->button.time);
+
             click_count = 1;
             previous_button_number = event->button.button;
           }
 
-        /* store time and position for this click for comparison with
-         * next event
-         */
-        previous_time = event->button.time;
         previous_x = event->button.x;
         previous_y = event->button.y;
+        previous_time = event->button.time;
 
         /* fallthrough */
       case CLUTTER_BUTTON_RELEASE:
@@ -2098,13 +2118,18 @@ event_click_count_generate (ClutterEvent *event)
         g_assert (NULL);
     }
 
-  if (event->button.device != NULL)
+  if (event->type == CLUTTER_BUTTON_PRESS && device != NULL)
     {
-      event->button.device->click_count = click_count;
-      event->button.device->previous_x = previous_x;
-      event->button.device->previous_y = previous_y;
-      event->button.device->previous_time = previous_time;
-      event->button.device->previous_button_number = previous_button_number;
+      CLUTTER_NOTE (EVENT, "Storing click count: %d (device:%d, time:%u)",
+                    click_count,
+                    clutter_input_device_get_device_id (device),
+                    previous_time);
+
+      device->click_count = click_count;
+      device->previous_x = previous_x;
+      device->previous_y = previous_y;
+      device->previous_time = previous_time;
+      device->previous_button_number = previous_button_number;
     }
 }
 
