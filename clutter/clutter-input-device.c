@@ -148,11 +148,11 @@ clutter_input_device_init (ClutterInputDevice *self)
 
   self->click_count = 0;
 
-  self->previous_time = CLUTTER_CURRENT_TIME;
-  self->previous_x = -1;
-  self->previous_y = -1;
-  self->previous_button_number = -1;
-  self->previous_state = 0;
+  self->current_time = self->previous_time = CLUTTER_CURRENT_TIME;
+  self->current_x = self->previous_x = -1;
+  self->current_y = self->previous_y = -1;
+  self->current_button_number = self->previous_button_number = -1;
+  self->current_state = self->previous_state = 0;
 }
 
 /*
@@ -170,11 +170,11 @@ _clutter_input_device_set_coords (ClutterInputDevice *device,
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  if (device->previous_x != x)
-    device->previous_x = x;
+  if (device->current_x != x)
+    device->current_x = x;
 
-  if (device->previous_y != y)
-    device->previous_y = y;
+  if (device->current_y != y)
+    device->current_y = y;
 }
 
 /*
@@ -190,7 +190,7 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  device->previous_state = state;
+  device->current_state = state;
 }
 
 /*
@@ -206,8 +206,8 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  if (device->previous_time != time_)
-    device->previous_time = time_;
+  if (device->current_time != time_)
+    device->current_time = time_;
 }
 
 /*
@@ -276,12 +276,12 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
   if (old_actor != NULL)
     {
       cev.crossing.type = CLUTTER_LEAVE;
-      cev.crossing.time = device->previous_time;
+      cev.crossing.time = device->current_time;
       cev.crossing.flags = 0;
       cev.crossing.stage = device->stage;
       cev.crossing.source = device->cursor_actor;
-      cev.crossing.x = device->previous_x;
-      cev.crossing.y = device->previous_y;
+      cev.crossing.x = device->current_x;
+      cev.crossing.y = device->current_y;
       cev.crossing.device = device;
       cev.crossing.related = actor;
 
@@ -385,10 +385,10 @@ clutter_input_device_get_device_coords (ClutterInputDevice *device,
   g_return_if_fail (device->device_type == CLUTTER_POINTER_DEVICE);
 
   if (x)
-    *x = device->previous_x;
+    *x = device->current_x;
 
   if (y)
-    *y = device->previous_y;
+    *y = device->current_y;
 }
 
 ClutterActor *

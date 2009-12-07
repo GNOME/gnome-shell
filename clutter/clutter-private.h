@@ -97,6 +97,13 @@ struct _ClutterInputDevice
   gint click_count;
 
   ClutterStage *stage;
+
+  gint current_x;
+  gint current_y;
+  guint32 current_time;
+  gint current_button_number;
+  ClutterModifierType current_state;
+
   gint previous_x;
   gint previous_y;
   guint32 previous_time;
