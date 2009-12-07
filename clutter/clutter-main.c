@@ -3093,13 +3093,19 @@ clutter_check_version (guint major,
 void
 clutter_set_default_text_direction (ClutterTextDirection text_dir)
 {
+  ClutterStageManager *manager;
+  const GSList *stages, *l;
+
   if (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT)
     text_dir = clutter_get_text_direction ();
 
   if (text_dir != clutter_text_direction)
     clutter_text_direction = text_dir;
 
-  /* FIXME - queue a relayout on all stages */
+  manager = clutter_stage_manager_get_default ();
+  stages = clutter_stage_manager_peek_stages (manager);
+  for (l = stages; l != NULL; l = l->next)
+    clutter_actor_queue_relayout (l->data);
 }
 
 ClutterTextDirection
