@@ -245,16 +245,24 @@ clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglColor stage_color;
+  guint8 real_alpha;
 
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
+  /* composite the opacity to the stage color */
+  real_alpha = clutter_actor_get_opacity (self)
+             * priv->color.alpha
+             / 255;
+
+  /* we use the real alpha to clear the stage if :use-alpha is
+   * set; the effect depends entirely on how the Clutter backend
+   */
   cogl_color_set_from_4ub (&stage_color,
                            priv->color.red,
                            priv->color.green,
                            priv->color.blue,
-                           priv->use_alpha
-                             ? priv->color.alpha
-                             : 255);
+                           priv->use_alpha ? real_alpha
+                                           : 255);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
@@ -274,11 +282,6 @@ clutter_stage_paint (ClutterActor *self)
   else
     cogl_disable_fog ();
 
-#if 0
-  CLUTTER_NOTE (PAINT, "Proxying the paint to the stage implementation");
-  _clutter_stage_window_paint (priv->impl);
-#endif
-
   /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
@@ -291,7 +294,6 @@ clutter_stage_pick (ClutterActor       *self,
    * emitted for the stage itself. The stage's pick id is effectively handled
    * by the call to cogl_clear done in clutter-main.c:_clutter_do_pick_async()
    */
-
   clutter_container_foreach (CLUTTER_CONTAINER (self),
                              CLUTTER_CALLBACK (clutter_actor_paint),
                              NULL);
