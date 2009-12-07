@@ -231,7 +231,7 @@ _clutter_device_manager_add_device (ClutterDeviceManager *device_manager,
 }
 
 /*
- * _clutter_device_manager_remobe_device:
+ * _clutter_device_manager_remove_device:
  * @device_manager: a #ClutterDeviceManager
  * @device: a #ClutterInputDevice
  *

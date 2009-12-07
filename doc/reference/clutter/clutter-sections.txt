@@ -404,6 +404,7 @@ clutter_actor_create_pango_layout
 clutter_actor_is_in_clone_paint
 clutter_actor_set_text_direction
 clutter_actor_get_text_direction
+clutter_actor_has_pointer
 
 <SUBSECTION>
 ClutterActorBox
@@ -977,13 +978,9 @@ clutter_event_get_related
 clutter_event_get_scroll_direction
 
 <SUBSECTION>
-ClutterInputDeviceType
 clutter_event_get_device
 clutter_event_get_device_id
 clutter_event_get_device_type
-clutter_get_input_device_for_id
-clutter_input_device_get_device_id
-clutter_input_device_get_device_type
 
 <SUBSECTION>
 clutter_get_current_event_time
@@ -994,6 +991,50 @@ CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
 ClutterAnyEvent
 clutter_event_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-input-device</FILE>
+<TITLE>ClutterInputDevice</TITLE>
+ClutterInputDeviceType
+ClutterInputDevice
+ClutterInputDeviceClass
+clutter_get_input_device_for_id
+clutter_input_device_get_device_id
+clutter_input_device_get_device_type
+clutter_input_device_get_device_coords
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_INPUT_DEVICE
+CLUTTER_INPUT_DEVICE
+CLUTTER_INPUT_DEVICE_CLASS
+CLUTTER_IS_INPUT_DEVICE
+CLUTTER_IS_INPUT_DEVICE_CLASS
+CLUTTER_INPUT_DEVICE_GET_CLASS
+
+<SUBSECTION Private>
+clutter_input_device_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-device-manager</FILE>
+<TITLE>ClutterDeviceManager</TITLE>
+ClutterDeviceManager
+clutter_device_manager_get_default
+clutter_device_manager_list_devices
+clutter_device_manager_peek_devices
+clutter_device_manager_get_device
+
+<SUBSECTION>
+clutter_get_input_device_for_id
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_DEVICE_MANAGER
+CLUTTER_DEVICE_MANAGER
+CLUTTER_IS_DEVICE_MANAGER
+
+<SUBSECTION Private>
+clutter_device_manager_get_type
 </SECTION>
 
 <SECTION>

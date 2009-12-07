@@ -2897,9 +2897,9 @@ clutter_get_font_flags (void)
 
 /**
  * clutter_get_input_device_for_id:
- * @id: a device id
+ * @id: the unique id for a device
  *
- * Retrieves the #ClutterInputDevice from its id. This is a convenience
+ * Retrieves the #ClutterInputDevice from its @id. This is a convenience
  * wrapper for clutter_device_manager_get_device() and it is functionally
  * equivalent to:
  *

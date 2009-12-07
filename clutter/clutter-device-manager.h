@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  */
 typedef struct _ClutterDeviceManager            ClutterDeviceManager;
 
-GType clutter_stage_manager_get_type (void) G_GNUC_CONST;
+GType clutter_device_manager_get_type (void) G_GNUC_CONST;
 
 ClutterDeviceManager *clutter_device_manager_get_default  (void);
 GSList *              clutter_device_manager_list_devices (ClutterDeviceManager *device_manager);
