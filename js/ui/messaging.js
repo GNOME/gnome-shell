@@ -6,8 +6,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
-
-const AVATAR_SIZE = 24;
+const MessageTray = imports.ui.messageTray;
 
 const TELEPATHY = "org.freedesktop.Telepathy.";
 const CONN = TELEPATHY + "Connection";
@@ -386,7 +385,11 @@ function Source(conn, channelPath, channel_props, targetId) {
 }
 
 Source.prototype = {
+    __proto__:  MessageTray.Source.prototype,
+
     _init: function(conn, channelPath, targetHandle, targetId) {
+        MessageTray.Source.prototype._init.call(this, targetId);
+
         let connName = nameify(conn.getPath());
         this._channel = new Channel(connName, channelPath);
         this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
@@ -403,8 +406,8 @@ Source.prototype = {
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
     },
 
-    _createIcon: function() {
-        return this._avatars.createAvatar(this._targetHandle, AVATAR_SIZE);
+    createIcon: function(size) {
+        return this._avatars.createAvatar(this._targetHandle, size);
     },
 
     _gotPendingMessages: function(msgs, excp) {
@@ -419,17 +422,14 @@ Source.prototype = {
         log('Channel closed ' + this._targetId);
         this._channel.disconnect(this._closedId);
         this._channelText.disconnect(this._receivedId);
-        Main.messageTray.remove(this._targetId);
+        this.destroy();
     },
 
     _receivedMessage: function(channel, id, timestamp, sender,
                                type, flags, text) {
         log('Received: id ' + id + ', time ' + timestamp + ', sender ' + sender + ', type ' + type + ', flags ' + flags + ': ' + text);
-        let popupAvatar = this._createIcon();
-        Main.notificationPopup.show(popupAvatar, text);
-        if (!Main.messageTray.contains(this._targetId)) {
-            let trayAvatar = this._createIcon();
-            Main.messageTray.add(this._targetId, trayAvatar);
-        }
+        if (!Main.messageTray.contains(this))
+            Main.messageTray.add(this);
+        this.notify(text);
     }
 };

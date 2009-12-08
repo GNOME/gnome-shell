@@ -1,8 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
+const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
 
 const Main = imports.ui.main;
@@ -68,15 +70,45 @@ Notification.prototype = {
     },
 
     hideComplete: function() {
-        // We don't explicitly destroy the icon, since the caller may
-        // still want it.
-        this._iconBox.child = null;
+        if (this._iconBox.child)
+            this._iconBox.child.destroy();
 
         // Don't hide the notification if we are showing a new one.
         if (this._hideTimeoutId == 0)
             this.actor.hide();
     }
 };
+
+function Source(id, createIcon) {
+    this._init(id, createIcon);
+}
+
+Source.prototype = {
+    _init: function(id, createIcon) {
+        this.id = id;
+        if (createIcon)
+            this.createIcon = createIcon;
+    },
+
+    // This can be overridden by a subclass, or by the createIcon
+    // parameter to _init()
+    createIcon: function(size) {
+        throw new Error('no implementation of createIcon in ' + this);
+    },
+
+    notify: function(text) {
+        Main.notificationPopup.show(this.createIcon(), text);
+    },
+
+    clicked: function() {
+        this.emit('clicked');
+    },
+
+    destroy: function() {
+        this.emit('destroy');
+    }
+};
+Signals.addSignalMethods(Source.prototype);
 
 function MessageTray() {
     this._init();
@@ -105,30 +137,48 @@ MessageTray.prototype = {
         this._tray = new St.BoxLayout({ name: 'message-tray-inner' });
         this.actor.child = this._tray;
         this._tray.expand = true;
+        this._sources = {};
         this._icons = {};
     },
 
-    contains: function(id) {
-        return this._icons.hasOwnProperty(id);
+    contains: function(source) {
+        return this._sources.hasOwnProperty(source.id);
     },
 
-    add: function(id, icon) {
-        if (this.contains(id))
+    add: function(source) {
+        if (this.contains(source)) {
+            log('Trying to re-add source ' + source.id);
             return;
+        }
 
-        let iconBox = new St.Bin();
-        iconBox.child = icon;
+        let iconBox = new St.Bin({ reactive: true });
+        iconBox.child = source.createIcon();
         this._tray.insert_actor(iconBox, 0);
-        this._icons[id] = iconBox;
+        this._icons[source.id] = iconBox;
+        this._sources[source.id] = source;
+
+        iconBox.connect('button-release-event', Lang.bind(this,
+            function () {
+                source.clicked();
+            }));
+
+        source.connect('destroy', Lang.bind(this,
+            function () {
+                this.remove(source);
+            }));
     },
 
-    remove: function(id) {
-        if (!this.contains(id))
+    remove: function(source) {
+        if (!this.contains(source))
             return;
 
-        this._tray.remove_actor(this._icons[id]);
-        this._icons[id].destroy();
-        delete this._icons[id];
+        this._tray.remove_actor(this._icons[source.id]);
+        delete this._icons[source.id];
+        delete this._sources[source.id];
+    },
+
+    getSource: function(id) {
+        return this._sources[id];
     },
 
     _onMessageTrayEntered: function() {
