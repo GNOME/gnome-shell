@@ -16,6 +16,7 @@ const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 
+const MAX_DASH_DOCS = 50;
 const DASH_DOCS_ICON_SIZE = 16;
 
 const DEFAULT_SPACING = 4;
@@ -453,7 +454,7 @@ DashDocDisplay.prototype = {
         // Should be kept alive by the _actorsByUri
         this.actor.remove_all();
         let docs = this._docManager.getTimestampOrderedInfos();
-        for (let i = 0; i < docs.length; i++) {
+        for (let i = 0; i < docs.length && i < MAX_DASH_DOCS; i++) {
             let doc = docs[i];
             let display = this._actorsByUri[doc.uri];
             if (display) {
