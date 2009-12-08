@@ -85,6 +85,15 @@ ClutterActor *shell_texture_cache_load_from_data (ShellTextureCache *cache,
                                                   gsize              len,
                                                   int                size,
                                                   GError           **error);
+ClutterActor *shell_texture_cache_load_from_raw  (ShellTextureCache *cache,
+                                                  const guchar      *data,
+                                                  gsize              len,
+                                                  gboolean           has_alpha,
+                                                  int                width,
+                                                  int                height,
+                                                  int                rowstride,
+                                                  int                size,
+                                                  GError           **error);
 
 gboolean shell_texture_cache_pixbuf_equal (ShellTextureCache *cache, GdkPixbuf *a, GdkPixbuf *b);
 

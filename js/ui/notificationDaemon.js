@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const DBus = imports.dbus;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Mainloop = imports.mainloop;
@@ -81,16 +82,7 @@ NotificationDaemon.prototype = {
         if (source == null) {
             id = nextNotificationId++;
 
-            source = new MessageTray.Source(this._sourceId(id), Lang.bind(this,
-                function (size) {
-                    if (icon != '')
-                        return Shell.TextureCache.get_default().load_icon_name(icon, size);
-                    else {
-                        // FIXME: load icon data from hints
-                        // FIXME: better fallback icon
-                        return Shell.TextureCache.get_default().load_icon_name('gtk-dialog-info', size);
-                    }
-                }));
+            source = new Source(this._sourceId(id), icon, hints);
             Main.messageTray.add(source);
 
             source.connect('clicked', Lang.bind(this,
@@ -143,3 +135,39 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
+function Source(sourceId, icon, hints) {
+    this._init(sourceId, icon, hints);
+}
+
+Source.prototype = {
+    __proto__:  MessageTray.Source.prototype,
+
+    _init: function(sourceId, icon, hints) {
+        MessageTray.Source.prototype._init.call(this, sourceId);
+
+        this._icon = icon;
+        this._iconData = hints.icon_data;
+    },
+
+    createIcon: function(size) {
+        let textureCache = Shell.TextureCache.get_default();
+
+        if (this._icon) {
+            if (this._icon.substr(0, 7) == 'file://')
+                return textureCache.load_uri_async(this._icon, size, size);
+            else if (this._icon[0] == '/') {
+                let uri = GLib.filename_to_uri(this._icon, null);
+                return textureCache.load_uri_async(uri, size, size);
+            } else
+                return textureCache.load_icon_name(this._icon, size);
+        } else if (this._iconData) {
+            let [width, height, rowStride, hasAlpha,
+                 bitsPerSample, nChannels, data] = this._iconData;
+            return textureCache.load_from_raw(data, data.length, hasAlpha,
+                                              width, height, rowStride, size);
+        } else {
+            // FIXME: fallback icon?
+            return textureCache.load_icon_name('gtk-dialog-info', size);
+        }
+    }
+};

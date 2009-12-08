@@ -1154,7 +1154,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
 /**
  * shell_texture_cache_load_from_data:
  * @cache: The texture cache instance
- * @data: Raw image data
+ * @data: Image data in PNG, GIF, etc format
  * @len: length of @data
  * @size: Size in pixels to use for the resulting texture
  * @error: Return location for error
@@ -1192,7 +1192,6 @@ shell_texture_cache_load_from_data (ShellTextureCache *cache,
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
   if (texdata == NULL)
     {
-      g_debug ("creating new pixbuf");
       pixbuf = impl_load_pixbuf_data (data, len, size, size, error);
       if (!pixbuf)
         {
@@ -1207,12 +1206,70 @@ shell_texture_cache_load_from_data (ShellTextureCache *cache,
 
       g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
     }
-  else
+
+  g_free (key.checksum);
+
+  set_texture_cogl_texture (texture, texdata);
+  return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * shell_texture_cache_load_from_raw:
+ * @cache: a #ShellTextureCache
+ * @data: raw pixel data
+ * @len: the length of @data
+ * @has_alpha: whether @data includes an alpha channel
+ * @width: width in pixels of @data
+ * @height: width in pixels of @data
+ * @rowstride: rowstride of @data
+ * @size: size of icon to return
+ *
+ * Creates (or retrieves from cache) an icon based on raw pixel data.
+ *
+ * Return value: (transfer none): a new #ClutterActor displaying a
+ * pixbuf created from @data and the other parameters.
+ **/
+ClutterActor *
+shell_texture_cache_load_from_raw (ShellTextureCache *cache,
+                                   const guchar      *data,
+                                   gsize              len,
+                                   gboolean           has_alpha,
+                                   int                width,
+                                   int                height,
+                                   int                rowstride,
+                                   int                size,
+                                   GError           **error)
+{
+  ClutterTexture *texture;
+  CoglHandle texdata;
+  CacheKey key;
+  gchar *checksum;
+
+  texture = create_default_texture (cache);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
+
+  /* In theory, two images of different size could have the same
+   * pixel data. We ignore that theory.
+   */
+  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+
+  memset (&key, 0, sizeof(key));
+  key.size = size;
+  key.checksum = checksum;
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  if (texdata == NULL)
     {
-      g_debug ("using texture from cache");
-      set_texture_cogl_texture (texture, texdata);
+      texdata = cogl_texture_new_from_data (width, height, COGL_TEXTURE_NONE,
+                                            has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            rowstride, data);
+      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
     }
 
+  g_free (key.checksum);
+
+  set_texture_cogl_texture (texture, texdata);
   return CLUTTER_ACTOR (texture);
 }
 
