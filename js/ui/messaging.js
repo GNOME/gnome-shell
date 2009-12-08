@@ -3,6 +3,7 @@
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 
@@ -61,9 +62,21 @@ DBus.proxifyPrototype(Connection.prototype, ConnectionIface);
 const ConnectionAvatarsIface = {
     name: CONN + '.Interface.Avatars',
     methods: [
-        { name: 'RequestAvatar',
-          inSignature: 'u',
-          outSignature: 'ays'
+        { name: 'GetKnownAvatarTokens',
+          inSignature: 'au',
+          outSignature: 'a{us}'
+        },
+        { name: 'RequestAvatars',
+          inSignature: 'au',
+          outSignature: ''
+        }
+    ],
+    signals: [
+        { name: 'AvatarRetrieved',
+          inSignature: 'usays'
+        },
+        { name: 'AvatarUpdated',
+          inSignature: 'us'
         }
     ]
 };
@@ -75,6 +88,96 @@ function ConnectionAvatars(path) {
 ConnectionAvatars.prototype = {
     _init: function(path) {
         DBus.session.proxifyObject(this, nameify(path), path);
+
+        this.connect('AvatarUpdated', Lang.bind(this, this._avatarUpdated));
+        this.connect('AvatarRetrieved', Lang.bind(this, this._avatarRetrieved));
+
+        // _avatarData[handle] describes the icon for @handle: either
+        // the string 'default', meaning to use the default avatar, or
+        // an array of bytes containing, eg, PNG data.
+        this._avatarData = {};
+
+        // _icons[handle] is an array of the icon actors currently
+        // being displayed for @handle. These will be updated
+        // automatically if @handle's avatar changes.
+        this._icons = {};
+    },
+
+    _avatarUpdated: function(iface, handle, token) {
+        if (!this._avatarData[handle]) {
+            // This would only happen if we get an AvatarUpdated
+            // signal for an avatar while there's already a
+            // RequestAvatars() call pending, so we don't need to do
+            // anything.
+            return;
+        }
+
+        if (token == '') {
+            // Invoke the next async callback in the chain, telling
+            // it to use the default image.
+            this._avatarRetrieved(this, handle, token, 'default', null);
+        } else {
+            // In this case, @token is some sort of UUID. Telepathy
+            // expects us to cache avatar images to disk and use the
+            // tokens to figure out when we already have the right
+            // images cached. But we don't do that, we just
+            // ignore @token and request the image unconditionally.
+            this.RequestAvatarsRemote([handle]);
+        }
+    },
+
+    _createIcon: function(iconData, size) {
+        let textureCache = Shell.TextureCache.get_default();
+        if (iconData == 'default')
+            return textureCache.load_icon_name('stock_person', size);
+        else
+            return textureCache.load_from_data(iconData, iconData.length, size);
+    },
+
+    _avatarRetrieved: function(iface, handle, token, avatarData, mimeType) {
+        this._avatarData[handle] = avatarData;
+        if (!this._icons[handle])
+            return;
+
+        for (let i = 0; i < this._icons[handle].length; i++) {
+            let iconBox = this._icons[handle][i];
+            let size = iconBox.child.height;
+            iconBox.child = this._createIcon(avatarData, size);
+        }
+    },
+
+    createAvatar: function(handle, size) {
+        let iconBox = new St.Bin({ style_class: 'avatar-box' });
+
+        if (!this._icons[handle])
+            this._icons[handle] = [];
+        this._icons[handle].push(iconBox);
+
+        iconBox.connect('destroy', Lang.bind(this,
+            function() {
+                let i = this._icons[handle].indexOf(iconBox);
+                if (i != -1)
+                    this._icons[handle].splice(i, 1);
+            }));
+
+        let avatarData = this._avatarData[handle];
+        if (avatarData) {
+            iconBox.child = this._createIcon(avatarData, size);
+            return iconBox;
+        }
+
+        // Fill in the default icon and then asynchronously load
+        // the real avatar.
+        iconBox.child = this._createIcon('default', size);
+        this.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
+            function (tokens, excp) {
+                if (tokens && tokens[handle])
+                    this.RequestAvatarsRemote([handle]);
+                else
+                    this._avatarData[handle] = 'default';
+            }));
+
+        return iconBox;
     }
 };
 
@@ -288,56 +391,28 @@ Source.prototype = {
         this._channel = new Channel(connName, channelPath);
         this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
 
+        this._targetHandle = targetHandle;
         this._targetId = targetId;
         log('channel for ' + this._targetId + ' channelPath ' + channelPath);
 
-        this._pendingMessages = null;
-
-        this._avatar = null;
-        this._avatarBytes = null;
-
-        // FIXME: RequestAvatar is deprecated in favor of
-        // RequestAvatars; but RequestAvatars provides no explicit
-        // indication of "no avatar available", so there's no way we
-        // can reliably wait for it to finish before displaying a
-        // message. So we use RequestAvatar() instead.
-        let connAv = new ConnectionAvatars(conn.getPath());
-        connAv.RequestAvatarRemote(targetHandle, Lang.bind(this, this._gotAvatar));
+        this._avatars = new ConnectionAvatars(conn.getPath());
 
         this._channelText = new ChannelText(connName, channelPath);
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._receivedMessage));
 
-        this._channelText.ListPendingMessagesRemote(false,
-            Lang.bind(this, function(msgs, excp) {
-                if (msgs) {
-                    log('got pending messages for ' + this._targetId);
-                    this._pendingMessages = msgs;
-                    this._processPendingMessages();
-                }
-            }));
+        this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
     },
 
-    _gotAvatar: function(result, excp) {
-        if (result) {
-            this._avatarBytes = result[0];
-            this._avatar = Shell.TextureCache.get_default().load_from_data(this._avatarBytes, this._avatarBytes.length, AVATAR_SIZE);
-            log('got avatar for ' + this._targetId);
-        } else {
-            // fallback avatar (FIXME)
-            this._avatar = Shell.TextureCache.get_default().load_icon_name("stock_person", AVATAR_SIZE);
-            log('using default avatar for ' + this._targetId);
-        }
-
-        this._processPendingMessages();
+    _createIcon: function() {
+        return this._avatars.createAvatar(this._targetHandle, AVATAR_SIZE);
     },
 
-    _processPendingMessages: function() {
-        if (!this._avatar || !this._pendingMessages)
+    _gotPendingMessages: function(msgs, excp) {
+        if (!msgs)
             return;
 
-        for (let i = 0; i < this._pendingMessages.length; i++)
-            this._receivedMessage.apply(this, [this._channel].concat(this._pendingMessages[i]));
-        this._pendingMessages = null;
+        for (let i = 0; i < msgs.length; i++)
+            this._receivedMessage.apply(this, [this._channel].concat(msgs[i]));
     },
 
     _channelClosed: function() {
@@ -350,14 +425,11 @@ Source.prototype = {
     _receivedMessage: function(channel, id, timestamp, sender,
                                type, flags, text) {
         log('Received: id ' + id + ', time ' + timestamp + ', sender ' + sender + ', type ' + type + ', flags ' + flags + ': ' + text);
-        Main.notificationPopup.show(this._avatar, text);
+        let popupAvatar = this._createIcon();
+        Main.notificationPopup.show(popupAvatar, text);
         if (!Main.messageTray.contains(this._targetId)) {
-            let avatarForMessageTray = null;
-            if (this._avatarBytes)
-                avatarForMessageTray = Shell.TextureCache.get_default().load_from_data(this._avatarBytes, this._avatarBytes.length, AVATAR_SIZE);
-            else
-                avatarForMessageTray = Shell.TextureCache.get_default().load_icon_name("stock_person", AVATAR_SIZE);
-            Main.messageTray.add(this._targetId, avatarForMessageTray);
+            let trayAvatar = this._createIcon();
+            Main.messageTray.add(this._targetId, trayAvatar);
         }
     }
 };
