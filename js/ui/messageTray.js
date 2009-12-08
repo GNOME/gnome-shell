@@ -24,7 +24,7 @@ Notification.prototype = {
         this.actor.add(this._iconBox);
 
         this._text = new St.Label();
-        this.actor.add(this._text, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
+        this.actor.add(this._text, { expand: true, x_fill: false, y_fill: false, y_align: St.Align.MIDDLE });
 
         Main.chrome.addActor(this.actor, { affectsStruts: false });
 
