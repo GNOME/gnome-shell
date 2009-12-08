@@ -424,14 +424,13 @@ event_translate (ClutterBackend *backend,
 
   if (backend_x11->event_filters)
     {
-      GSList                *node;
-      ClutterX11EventFilter *filter;
+      GSList *node;
 
       node = backend_x11->event_filters;
 
       while (node)
         {
-          filter = node->data;
+          ClutterX11EventFilter *filter = node->data;
 
           switch (filter->func (xevent, event, filter->data))
             {
@@ -449,15 +448,13 @@ event_translate (ClutterBackend *backend,
         }
     }
 
-  /*
-   * Do further processing only on events for the stage window
-   * (the x11 filters might be getting events for other windows, so do not
-   * mess them about.
+  /* Do further processing only on events for the stage window (the x11
+   * filters might be getting events for other windows, so do not mess
+   * them about.
    */
   stage = clutter_x11_get_stage_from_window (xwindow);
-
   if (stage == NULL)
-      return FALSE;
+    return FALSE;
 
   manager = clutter_device_manager_get_default ();
 
@@ -807,7 +804,8 @@ event_translate (ClutterBackend *backend,
             {
               XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
 
-              CLUTTER_NOTE (EVENT, "XINPUT Button press event for %li at %d, %d",
+              CLUTTER_NOTE (EVENT,
+                            "XINPUT Button press event for %li at %d, %d",
                             xbev->deviceid,
                             xbev->x,
                             xbev->y);
@@ -833,7 +831,8 @@ event_translate (ClutterBackend *backend,
                   event->scroll.x = xbev->x;
                   event->scroll.y = xbev->y;
                   event->scroll.modifier_state = xbev->state;
-                  event->scroll.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
+                  event->scroll.device =
+                    _clutter_x11_get_device_for_xid (xbev->deviceid);
                   break;
 
                 default:
@@ -843,7 +842,8 @@ event_translate (ClutterBackend *backend,
                   event->button.y = xbev->y;
                   event->button.modifier_state = xbev->state;
                   event->button.button = xbev->button;
-                  event->button.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
+                  event->button.device =
+                    _clutter_x11_get_device_for_xid (xbev->deviceid);
                   break;
                 }
 
