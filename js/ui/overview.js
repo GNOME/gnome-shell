@@ -248,7 +248,7 @@ Overview.prototype = {
     // This allows the user to place the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem
-            || source instanceof AppDisplay.BaseWellItem) {
+            || source instanceof AppDisplay.AppIcon) {
             if (this._activeDisplayPane != null)
                 this._activeDisplayPane.close();
             return true;

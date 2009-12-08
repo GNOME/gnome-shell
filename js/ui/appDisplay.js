@@ -221,29 +221,26 @@ AppDisplay.prototype = {
 Signals.addSignalMethods(AppDisplay.prototype);
 
 
-function BaseWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
+function AppIcon(app) {
+    this._init(app);
 }
 
-BaseWellItem.prototype = {
-    _init : function(app, isFavorite) {
+AppIcon.prototype = {
+    _init : function(app) {
         this.app = app;
 
         this._glowExtendVertical = 0;
         this._glowShrinkHorizontal = 0;
 
-        this.actor = new St.Clickable({ style_class: 'app-well-app',
-                                         reactive: true });
+        this.actor = new St.Bin({ style_class: 'app-icon',
+                                  x_fill: true,
+                                  y_fill: true });
         this.actor._delegate = this;
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._rerenderGlow));
 
         let box = new St.BoxLayout({ vertical: true });
         this.actor.set_child(box);
-
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-
-        this._menu = null;
 
         this.icon = this.app.create_icon_texture(APPICON_SIZE);
 
@@ -265,13 +262,6 @@ BaseWellItem.prototype = {
         this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._queueRerenderGlow));
 
         box.add(nameBox);
-
-        this._draggable = DND.makeDraggable(this.actor, true);
-        this._dragStartX = null;
-        this._dragStartY = null;
-
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
     },
 
     _nameBoxGetPreferredWidth: function (nameBox, forHeight, alloc) {
@@ -322,6 +312,19 @@ BaseWellItem.prototype = {
         Main.queueDeferredWork(this._workId);
     },
 
+    _onStyleChanged: function() {
+        let themeNode = this._glowBox.get_theme_node();
+
+        let success, len;
+        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
+        if (success)
+            this._glowExtendVertical = len;
+        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
+        if (success)
+            this._glowShrinkHorizontal = len;
+        this.actor.queue_relayout();
+    },
+
     _rerenderGlow: function() {
         this._glowBox.destroy_children();
         let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
@@ -332,6 +335,34 @@ BaseWellItem.prototype = {
             glow.keep_aspect_ratio = false;
             this._glowBox.add(glow);
         }
+    }
+}
+
+function AppWellIcon(app) {
+    this._init(app);
+}
+
+AppWellIcon.prototype = {
+    _init : function(app) {
+        this.app = app;
+        this.actor = new St.Clickable({ style_class: 'app-well-app',
+                                         reactive: true,
+                                         x_fill: true,
+                                         y_fill: true });
+        this.actor._delegate = this;
+
+        this._icon = new AppIcon(app);
+        this.actor.set_child(this._icon.actor);
+
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this._menu = null;
+
+        this._draggable = DND.makeDraggable(this.actor, true);
+        this._dragStartX = null;
+        this._dragStartY = null;
+
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
     },
 
     _onButtonPress: function(actor, event) {
@@ -366,19 +397,6 @@ BaseWellItem.prototype = {
         return false;
     },
 
-    _onStyleChanged: function() {
-        let themeNode = this._glowBox.get_theme_node();
-
-        let success, len;
-        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
-        if (success)
-            this._glowExtendVertical = len;
-        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
-        if (success)
-            this._glowShrinkHorizontal = len;
-        this.actor.queue_relayout();
-    },
-
     popupMenu: function(activatingButton) {
         if (!this._menu) {
             this._menu = new AppIconMenu(this);
@@ -402,13 +420,60 @@ BaseWellItem.prototype = {
         return false;
     },
 
-    // Default implementations; AppDisplay.RunningWellItem overrides these
-    highlightWindow: function(window) {
-        this.emit('highlight-window', window);
+    activateMostRecentWindow: function () {
+        let mostRecentWindow = this.app.get_windows()[0];
+        Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
     },
 
-    activateWindow: function(window) {
-        this.emit('activate-window', window);
+    highlightWindow: function(metaWindow) {
+        if (!this._getRunning())
+            return;
+        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
+    },
+
+    activateWindow: function(metaWindow) {
+        if (metaWindow) {
+            this._didActivateWindow = true;
+            Main.overview.activateWindow(metaWindow, Main.currentTime());
+        } else
+            Main.overview.hide();
+    },
+
+    _onMenuPoppedUp: function() {
+        if (this._getRunning()) {
+            Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
+            this._setWindowSelection = true;
+        }
+    },
+
+    _onMenuPoppedDown: function() {
+        if (this._didActivateWindow)
+            return;
+        if (!this._setWindowSelection)
+            return;
+
+        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
+        this._setWindowSelection = false;
+    },
+
+    _getRunning: function() {
+        return this.app.get_windows().length > 0;
+    },
+
+    _onActivate: function (event) {
+        let running = this._getRunning();
+
+        if (!running) {
+            this.app.launch();
+        } else {
+            let modifiers = Shell.get_event_state(event);
+
+            if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
+                this.app.launch();
+            } else {
+                this.activateMostRecentWindow();
+            }
+        }
     },
 
     shellWorkspaceLaunch : function() {
@@ -433,7 +498,7 @@ BaseWellItem.prototype = {
         return this.actor;
     }
 }
-Signals.addSignalMethods(BaseWellItem.prototype);
+Signals.addSignalMethods(AppWellIcon.prototype);
 
 function AppIconMenu(source) {
     this._init(source);
@@ -733,80 +798,6 @@ AppIconMenu.prototype = {
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
 
-function RunningWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
-}
-
-RunningWellItem.prototype = {
-    __proto__: BaseWellItem.prototype,
-
-    _init: function(app, isFavorite) {
-        BaseWellItem.prototype._init.call(this, app, isFavorite);
-    },
-
-    _onActivate: function (event) {
-        let modifiers = Shell.get_event_state(event);
-
-        if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-            this.app.launch();
-        } else {
-            this.activateMostRecentWindow();
-        }
-    },
-
-    activateMostRecentWindow: function () {
-        let mostRecentWindow = this.app.get_windows()[0];
-        Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
-    },
-
-    highlightWindow: function(metaWindow) {
-        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
-    },
-
-    activateWindow: function(metaWindow) {
-        if (metaWindow) {
-            this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, global.get_current_time());
-        } else
-            Main.overview.hide();
-    },
-
-    _onMenuPoppedUp: function() {
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
-    },
-
-    _onMenuPoppedDown: function() {
-        if (this._didActivateWindow)
-            return;
-
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
-    }
-};
-
-function InactiveWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
-}
-
-InactiveWellItem.prototype = {
-    __proto__: BaseWellItem.prototype,
-
-    _init : function(app, isFavorite) {
-        BaseWellItem.prototype._init.call(this, app, isFavorite);
-    },
-
-    _onActivate: function(event) {
-        this.app.launch();
-        Main.overview.hide();
-        return true;
-    },
-
-    _onMenuPoppedUp: function() {
-    },
-
-    _onMenuPoppedDown: function() {
-    }
-};
-
 function WellGrid() {
     this._init();
 }
@@ -986,12 +977,7 @@ AppWell.prototype = {
         let nFavorites = 0;
         for (let id in favorites) {
             let app = favorites[id];
-            let display;
-            if (app.get_windows().length > 0) {
-                display = new RunningWellItem(app, true);
-            } else {
-                display = new InactiveWellItem(app, true);
-            }
+            let display = new AppWellIcon(app);
             this._grid.addItem(display.actor);
             nFavorites++;
         }
@@ -1000,7 +986,7 @@ AppWell.prototype = {
             let app = running[i];
             if (app.get_id() in favorites)
                 continue;
-            let display = new RunningWellItem(app, false);
+            let display = new AppWellIcon(app);
             this._grid.addItem(display.actor);
         }
 
