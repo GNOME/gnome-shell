@@ -2080,7 +2080,6 @@ event_click_count_generate (ClutterEvent *event)
   switch (clutter_event_type (event))
     {
       case CLUTTER_BUTTON_PRESS:
-      case CLUTTER_SCROLL:
         /* check if we are in time and within distance to increment an
          * existing click count
          */
