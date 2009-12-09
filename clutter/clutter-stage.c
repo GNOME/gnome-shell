@@ -487,7 +487,6 @@ _clutter_stage_queue_event (ClutterStage *stage,
       _clutter_input_device_set_coords (device, event_x, event_y);
       _clutter_input_device_set_state (device, event_state);
       _clutter_input_device_set_time (device, event_time);
-      _clutter_input_device_set_stage (device, stage);
     }
 }
 
