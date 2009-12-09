@@ -214,10 +214,8 @@ test_paint_wrapper_main (int argc, char *argv[])
 
   if (use_alpha != 255)
     {
-      g_object_set (G_OBJECT (stage),
-                    "use-alpha", TRUE,
-                    "opacity", use_alpha,
-                    NULL);
+      clutter_stage_set_use_alpha (CLUTTER_STAGE (stage), TRUE);
+      clutter_actor_set_opacity (stage, use_alpha);
     }
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Paint Test");
