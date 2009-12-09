@@ -39,25 +39,13 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
 #define CLUTTER_TYPE_STAGE              (clutter_stage_get_type())
 
-#define CLUTTER_STAGE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_STAGE, ClutterStage))
+#define CLUTTER_STAGE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE, ClutterStage))
+#define CLUTTER_STAGE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE, ClutterStageClass))
+#define CLUTTER_IS_STAGE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE))
+#define CLUTTER_IS_STAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STAGE))
+#define CLUTTER_STAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STAGE, ClutterStageClass))
 
-#define CLUTTER_STAGE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_STAGE, ClutterStageClass))
-
-#define CLUTTER_IS_STAGE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_STAGE))
-
-#define CLUTTER_IS_STAGE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_STAGE))
-
-#define CLUTTER_STAGE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_STAGE, ClutterStageClass))
+#ifndef CLUTTER_DISABLE_DEPRECATED
 
 /**
  * CLUTTER_STAGE_WIDTH:
@@ -65,9 +53,10 @@ G_BEGIN_DECLS
  * Macro that evaluates to the width of the default stage
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.2: Use clutter_actor_get_width() instead
  */
-#define CLUTTER_STAGE_WIDTH() \
- (clutter_actor_get_width (clutter_stage_get_default ()))
+#define CLUTTER_STAGE_WIDTH()           (clutter_actor_get_width (clutter_stage_get_default ()))
 
 /**
  * CLUTTER_STAGE_HEIGHT:
@@ -75,9 +64,12 @@ G_BEGIN_DECLS
  * Macro that evaluates to the height of the default stage
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.2: use clutter_actor_get_height() instead
  */
-#define CLUTTER_STAGE_HEIGHT() \
- (clutter_actor_get_height (clutter_stage_get_default ()))
+#define CLUTTER_STAGE_HEIGHT()          (clutter_actor_get_height (clutter_stage_get_default ()))
+
+#endif /* !CLUTTER_DISABLE_DEPRECATED */
 
 /**
  * ClutterPickMode:
