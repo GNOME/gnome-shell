@@ -627,6 +627,32 @@ event_translate (ClutterBackend *backend,
       break;
               
     case KeyRelease:
+      /* old-style X11 terminals require that even modern X11 send
+       * KeyPress/KeyRelease pairs when auto-repeating. for this
+       * reason modern(-ish) API like XKB has a way to detect
+       * auto-repeat and do a single KeyRelease at the end of a
+       * KeyPress sequence.
+       *
+       * this check emulates XKB's detectable auto-repeat; we peek
+       * the next event and check if it's a KeyPress for the same key
+       * and timestamp - and then ignore it if it matches the
+       * KeyRelease
+       */
+      if (XPending (xevent->xkey.display))
+        {
+          XEvent next_event;
+
+          XPeekEvent (xevent->xkey.display, &next_event);
+
+          if (next_event.type == KeyPress &&
+              next_event.xkey.keycode == xevent->xkey.keycode &&
+              next_event.xkey.time == xevent->xkey.time)
+            {
+              res = FALSE;
+              break;
+            }
+        }
+
       event->key.type = event->type = CLUTTER_KEY_RELEASE;
       translate_key_event (backend, event, xevent);
       break;
