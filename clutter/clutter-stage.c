@@ -669,8 +669,7 @@ clutter_stage_set_property (GObject      *object,
       break;
 
     case PROP_USE_ALPHA:
-      stage->priv->use_alpha = g_value_get_boolean (value);
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      clutter_stage_set_use_alpha (stage, g_value_get_boolean (value));
       break;
 
     default:
@@ -2163,4 +2162,54 @@ clutter_stage_get_throttle_motion_events (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
   return stage->priv->throttle_motion_events;
+}
+
+/**
+ * clutter_stage_set_use_alpha:
+ * @stage: a #ClutterStage
+ * @use_alpha: whether the stage should honour the opacity or the
+ *   alpha channel of the stage color
+ *
+ * Sets whether the @stage should honour the #ClutterActor:opacity and
+ * the alpha channel of the #ClutterStage:color
+ *
+ * Since: 1.2
+ */
+void
+clutter_stage_set_use_alpha (ClutterStage *stage,
+                             gboolean      use_alpha)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->use_alpha != use_alpha)
+    {
+      priv->use_alpha = use_alpha;
+
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+
+      g_object_notify (G_OBJECT (stage), "use-alpha");
+    }
+}
+
+/**
+ * clutter_stage_get_use_alpha:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set using clutter_stage_set_use_alpha()
+ *
+ * Return value: %TRUE if the stage should honour the opacity and the
+ *   alpha channel of the stage color
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_stage_get_use_alpha (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return stage->priv->use_alpha;
 }
