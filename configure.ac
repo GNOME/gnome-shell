@@ -123,7 +123,7 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx/win32/fruity@:>@],
+            [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/osx/win32/fruity@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_WINSYS=$with_flavour])
 
@@ -234,42 +234,6 @@ dnl === Clutter windowing system backend ======================================
 
 AS_CASE([$CLUTTER_WINSYS],
 
-        [sdl],
-        [
-          experimental_backend="yes"
-          clutter_gl_header="GL/gl.h"
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_SDL"
-          AC_DEFINE([HAVE_CLUTTER_SDL], [1], [Have the SDL backend])
-
-          COGL_DRIVER="gl"
-          AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
-
-          AC_PATH_PROG(SDL_CONFIG, [sdl-config])
-          AS_IF([test "x$SDL_CONFIG" = "x"],
-                [AC_MSG_ERROR([No sdl-config binary found in path])],
-                [
-                  SDL_CFLAGS=`$SDL_CONFIG --cflags`
-                  SDL_LIBS=`$SDL_CONFIG --libs`
-
-                  AS_CASE([$host],
-
-                          [*mingw32*],
-                          [
-                            # Use -lopengl32 under Windows instead of -lGL
-                            SDL_LIBS="$SDL_LIBS -lopengl32"
-                            CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
-                          ],
-
-                          [
-                            AC_CHECK_LIB(GL, [glEnable], [HAVE_LIBGL=yes], [HAVE_LIBGL=no])
-                            AS_IF([test "x$HAVE_LIBGL" = "xno"], [AC_MSG_ERROR([libGL not found])])
-                            SDL_LIBS="$SDL_LIBS -lGL"
-                          ]
-                  )
-                ]
-          )
-        ],
-
         [glx],
         [
           clutter_gl_header="GL/gl.h"
@@ -371,7 +335,7 @@ AS_CASE([$CLUTTER_WINSYS],
           fi
         ],
 
-        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, sdl, osx, win32, eglx, eglnative or fruity])]
+        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
 )
 
 AM_CONDITIONAL(WINSYS_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
@@ -915,7 +879,6 @@ AC_CONFIG_FILES([
         clutter/osx/Makefile
         clutter/win32/Makefile
         clutter/win32/clutter-win32.pc
-        clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/cogl/Makefile
         clutter/cogl/cogl/driver/gl/cogl-defines.h

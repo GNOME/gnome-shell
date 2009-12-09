@@ -12,7 +12,7 @@ clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
 clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
-DIST_SUBDIRS = glx eglx eglnative cogl sdl json osx x11 win32 fruity
+DIST_SUBDIRS = glx eglx eglnative cogl json osx x11 win32 fruity
 
 # common definitions
 CLEANFILES =

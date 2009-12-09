@@ -135,7 +135,7 @@ Clutter has additional command line options for the configure script:
  --enable-conform=[yes/no]
         Build the Clutter conformance test suite.
 
- --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
+ --with-flavour=[glx/eglx/eglnative/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
 
 	glx:
@@ -149,10 +149,6 @@ Clutter has additional command line options for the configure script:
 		raw framebuffer. Expects the EGL implementation to provide
                 a createNativeWindow() call. Also it optionally supports
 		tslib for touchscreen events.
-
-	sdl:
-                Basic SDL backend, using Open GL. Should provide portability
-	        to Windows and possibly other OS's. (DEPRECATED)
 
         osx:
                 OS X backend. (EXPERIMENTAL)
@@ -168,7 +164,7 @@ Clutter has additional command line options for the configure script:
 
         gdk-pixbuf:
                 Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
-                eglnative, sdl, win32 flavours and recommended)
+                eglnative, win32 flavours and recommended)
 
         quartz:
                 Depend on CoreGraphics (default for the osx flavour)
