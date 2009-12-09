@@ -263,6 +263,7 @@ clutter_stage_paint (ClutterActor *self)
                            priv->color.blue,
                            priv->use_alpha ? real_alpha
                                            : 255);
+  cogl_color_premultiply (&stage_color);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
