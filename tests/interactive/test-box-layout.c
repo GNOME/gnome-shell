@@ -32,6 +32,8 @@
         "Press q\t\342\236\236\tQuit"
 
 static ClutterActor *hover_actor = NULL;
+static ClutterActor *box = NULL;
+static ClutterActor *label = NULL;
 static guint         last_index  = 0;
 
 static void
@@ -88,7 +90,7 @@ leave_event (ClutterActor *actor,
 static gboolean
 button_release_event (ClutterActor     *actor,
                       ClutterEvent     *event,
-                      ClutterBoxLayout *box)
+                      ClutterBoxLayout *layout)
 {
   gboolean xfill, yfill;
   ClutterBoxAlignment xalign, yalign;
@@ -98,14 +100,14 @@ button_release_event (ClutterActor     *actor,
 
   if (button == 1)
     {
-      clutter_box_layout_get_fill (box, actor, &xfill, &yfill);
-      clutter_box_layout_set_fill (box, actor,
+      clutter_box_layout_get_fill (layout, actor, &xfill, &yfill);
+      clutter_box_layout_set_fill (layout, actor,
                                    xfill ? FALSE : TRUE,
                                    yfill ? FALSE : TRUE);
     }
   else
     {
-      clutter_box_layout_get_alignment (box, actor, &xalign, &yalign);
+      clutter_box_layout_get_alignment (layout, actor, &xalign, &yalign);
 
       if (xalign < 2)
         xalign += 1;
@@ -117,14 +119,14 @@ button_release_event (ClutterActor     *actor,
       else
         yalign = 0;
 
-      clutter_box_layout_set_alignment (box, actor, xalign, yalign);
+      clutter_box_layout_set_alignment (layout, actor, xalign, yalign);
     }
 
   return TRUE;
 }
 
 static void
-add_actor (ClutterBoxLayout *box,
+add_actor (ClutterBoxLayout *layout,
            guint             index_)
 {
   ClutterActor *rect;
@@ -138,7 +140,7 @@ add_actor (ClutterBoxLayout *box,
 
   rect = clutter_rectangle_new_with_color (&color);
   clutter_actor_set_size (rect, 32, 64);
-  clutter_box_layout_pack (box, rect, expand,
+  clutter_box_layout_pack (layout, rect, expand,
                            FALSE, /* x-fill */
                            FALSE, /* y-fill */
                            CLUTTER_BOX_ALIGNMENT_CENTER,
@@ -152,7 +154,7 @@ add_actor (ClutterBoxLayout *box,
   g_signal_connect (rect, "leave-event", G_CALLBACK (leave_event), NULL);
   g_signal_connect (rect, "button-release-event",
                     G_CALLBACK (button_release_event),
-                    box);
+                    layout);
 
   expand = !expand;
 }
@@ -207,18 +209,21 @@ static void
 stage_size_changed_cb (ClutterActor *stage,
                        const ClutterActorBox *allocation,
                        ClutterAllocationFlags flags,
-                       ClutterActor *box)
+                       gpointer dummy G_GNUC_UNUSED)
 {
   gfloat width, height;
 
   clutter_actor_box_get_size (allocation, &width, &height);
   clutter_actor_set_size (box, width - 100, height - 100);
+
+  clutter_actor_set_y (label,
+                       height - clutter_actor_get_height (label) - 8);
 }
 
 G_MODULE_EXPORT int
 test_box_layout_main (int argc, char *argv[])
 {
-  ClutterActor *stage, *box, *label;
+  ClutterActor *stage;
   ClutterLayoutManager *layout;
   gint i;
 
@@ -242,7 +247,7 @@ test_box_layout_main (int argc, char *argv[])
                     layout);
   g_signal_connect (stage, "allocation-changed",
                     G_CALLBACK (stage_size_changed_cb),
-                    box);
+                    NULL);
 
   label = clutter_text_new_with_text ("Sans 12px", INSTRUCTIONS);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
