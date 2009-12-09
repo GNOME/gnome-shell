@@ -2372,6 +2372,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                                     x, y);
 
                       event->button.source = stage;
+                      event->button.click_count = 1;
                       emit_pointer_event (event, device);
                     }
                   break;
