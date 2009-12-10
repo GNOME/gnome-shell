@@ -766,6 +766,29 @@ clutter_get_current_event_time (void)
 }
 
 /**
+ * clutter_get_current_event:
+ *
+ * If an event is currently being processed, return that event.
+ * This function is intended to be used to access event state
+ * that might not be exposed by higher-level widgets.  For
+ * example, to get the key modifier state from a Button 'clicked'
+ * event.
+ *
+ * Return value: (transfer none): The current ClutterEvent, or %NULL if none
+ *
+ * Since: 1.2
+ */
+G_CONST_RETURN ClutterEvent *
+clutter_get_current_event (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  g_return_val_if_fail (context != NULL, NULL);
+
+  return context->current_event;
+}
+
+/**
  * clutter_input_device_get_device_type:
  * @device: a #ClutterInputDevice
  *
