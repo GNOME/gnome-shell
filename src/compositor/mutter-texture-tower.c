@@ -168,7 +168,7 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
 #if CLUTTER_CHECK_VERSION(1,1,3)
           if (tower->fbos[i] != COGL_INVALID_HANDLE)
             {
-              cogl_offscreen_unref (tower->fbos[i]);
+              cogl_handle_unref (tower->fbos[i]);
               tower->fbos[i] = COGL_INVALID_HANDLE;
             }
 #else
@@ -459,8 +459,7 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
   if (tower->fbos[level] == COGL_INVALID_HANDLE)
     return FALSE;
 
-  cogl_push_draw_buffer ();
-  cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, tower->fbos[level]);
+  cogl_push_framebuffer (tower->fbos[level]);
 
   cogl_ortho (0, dest_texture_width, dest_texture_height, 0, -1., 1.);
 
@@ -475,7 +474,7 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
                                       (2. * invalid->x2) / source_texture_width,
                                       (2. * invalid->y2) / source_texture_height);
 
-  cogl_pop_draw_buffer ();
+  cogl_pop_framebuffer ();
 
   return TRUE;
 }
