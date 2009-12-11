@@ -354,19 +354,6 @@ clutter_get_motion_events_enabled (void)
 
 guint _clutter_pix_to_id (guchar pixel[4]);
 
-static inline void init_bits (void)
-{
-  ClutterMainContext *ctx;
-
-  static gboolean done = FALSE;
-  if (G_LIKELY (done))
-    return;
-
-  ctx = _clutter_context_get_default ();
-
-  done = TRUE;
-}
-
 void
 _clutter_id_to_color (guint id, ClutterColor *col)
 {
@@ -377,9 +364,11 @@ _clutter_id_to_color (guint id, ClutterColor *col)
 
   /* compute the numbers we'll store in the components */
   red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
-                & (0xff >> (8-ctx->fb_r_mask_used));
-  green = (id >> ctx->fb_b_mask_used) & (0xff >> (8-ctx->fb_g_mask_used));
-  blue  = (id)  & (0xff >> (8-ctx->fb_b_mask_used));
+        & (0xff >> (8-ctx->fb_r_mask_used));
+  green = (id >> ctx->fb_b_mask_used)
+        & (0xff >> (8-ctx->fb_g_mask_used));
+  blue  = (id)
+        & (0xff >> (8-ctx->fb_b_mask_used));
 
   /* shift left bits a bit and add one, this circumvents
    * at least some potential rounding errors in GL/GLES
@@ -409,9 +398,9 @@ _clutter_id_to_color (guint id, ClutterColor *col)
    */
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
-      col->red = (col->red << 4) | (col->red >> 4);
+      col->red   = (col->red << 4)   | (col->red >> 4);
       col->green = (col->green << 4) | (col->green >> 4);
-      col->blue = (col->blue << 4) | (col->blue >> 4);
+      col->blue  = (col->blue << 4)  | (col->blue >> 4);
     }
 }
 
@@ -456,8 +445,9 @@ _clutter_pixel_to_id (guchar pixel[4])
   blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);
 
   /* combine the correct per component values into the final id */
-  id =  blue + (green <<  ctx->fb_b_mask_used)
-          + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
+  id = blue
+     + (green <<  ctx->fb_b_mask_used)
+     + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
 
   return id;
 }
@@ -498,28 +488,34 @@ read_pixels_to_file (char *filename_stem,
                                      NULL); /* callback data */
   if (pixbuf)
     {
-      char *filename =
-        g_strdup_printf ("%s-%05d.png", filename_stem, read_count);
+      char *filename = g_strdup_printf ("%s-%05d.png",
+                                        filename_stem,
+                                        read_count);
       GError *error = NULL;
+
       if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
         {
           g_warning ("Failed to save pick buffer to file %s: %s",
                      filename, error->message);
           g_error_free (error);
         }
+
       g_free (filename);
       g_object_unref (pixbuf);
       read_count++;
     }
-#else
-  static gboolean seen = FALSE;
-  if (!seen)
-    {
-      g_warning ("dumping buffers to an image isn't supported on platforms "
-                 "without gdk pixbuf support\n");
-      seen = TRUE;
-    }
-#endif
+#else /* !USE_GDKPIXBUF */
+  {
+    static gboolean seen = FALSE;
+
+    if (!seen)
+      {
+        g_warning ("dumping buffers to an image isn't supported on platforms "
+                   "without gdk pixbuf support\n");
+        seen = TRUE;
+      }
+  }
+#endif /* USE_GDKPIXBUF */
 }
 
 ClutterActor *
@@ -780,14 +776,14 @@ clutter_main (void)
 static void
 clutter_threads_impl_lock (void)
 {
-  if (clutter_threads_mutex)
+  if (G_LIKELY (clutter_threads_mutex != NULL))
     g_mutex_lock (clutter_threads_mutex);
 }
 
 static void
 clutter_threads_impl_unlock (void)
 {
-  if (clutter_threads_mutex)
+  if (G_LIKELY (clutter_threads_mutex != NULL))
     g_mutex_unlock (clutter_threads_mutex);
 }
 
@@ -802,6 +798,8 @@ clutter_threads_impl_unlock (void)
  *
  * This function must be called before clutter_init().
  *
+ * It is safe to call this function multiple times.
+ *
  * Since: 0.4
  */
 void
@@ -809,6 +807,9 @@ clutter_threads_init (void)
 {
   if (!g_thread_supported ())
     g_error ("g_thread_init() must be called before clutter_threads_init()");
+
+  if (clutter_threads_mutex != NULL)
+    return;
 
   clutter_threads_mutex = g_mutex_new ();
 
@@ -1253,6 +1254,7 @@ _clutter_context_get_default (void)
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
 
+      /* create the default backend */
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
@@ -1414,7 +1416,7 @@ clutter_init_real (GError **error)
   resolution = clutter_backend_get_resolution (ctx->backend);
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
 
-  if (G_LIKELY (!clutter_disable_mipmap_text))
+  if (!clutter_disable_mipmap_text)
     cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
