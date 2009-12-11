@@ -414,6 +414,8 @@ clutter_actor_box_get_size
 clutter_actor_box_get_area
 clutter_actor_box_contains
 clutter_actor_box_from_vertices
+clutter_actor_box_clamp_to_pixel
+clutter_actor_box_interpolate
 
 <SUBSECTION>
 ClutterVertex
