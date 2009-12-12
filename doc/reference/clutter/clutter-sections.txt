@@ -1768,6 +1768,11 @@ clutter_layout_manager_child_get_property
 clutter_layout_manager_find_child_property
 clutter_layout_manager_list_child_properties
 
+<SUBSECTION>
+clutter_layout_manager_begin_animation
+clutter_layout_manager_end_animation
+clutter_layout_manager_get_animation_progress
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_LAYOUT_MANAGER
 CLUTTER_LAYOUT_MANAGER

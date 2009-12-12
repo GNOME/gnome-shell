@@ -82,6 +82,12 @@ struct _ClutterLayoutManager
  * @create_child_meta: virtual function; override to create a
  *   #ClutterLayoutMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
+ * @begin_animation: virtual function; override to control the animation
+ *   of a #ClutterLayoutManager with the given duration and easing mode
+ * @end_animation: virtual function; override to end an animation started
+ *   by clutter_layout_manager_begin_animation()
+ * @get_animation_progress: virtual function; override to control the
+ *   progress of the animation of a #ClutterLayoutManager
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
  *
@@ -96,30 +102,38 @@ struct _ClutterLayoutManagerClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
-  void               (* get_preferred_width)  (ClutterLayoutManager   *manager,
-                                               ClutterContainer       *container,
-                                               gfloat                  for_height,
-                                               gfloat                 *minimum_width_p,
-                                               gfloat                 *natural_width_p);
-  void               (* get_preferred_height) (ClutterLayoutManager   *manager,
-                                               ClutterContainer       *container,
-                                               gfloat                  for_width,
-                                               gfloat                 *minimum_height_p,
-                                               gfloat                 *natural_height_p);
-  void               (* allocate)             (ClutterLayoutManager   *manager,
-                                               ClutterContainer       *container,
-                                               const ClutterActorBox  *allocation,
-                                               ClutterAllocationFlags  flags);
+  /* vfuncs, not signals */
+  void               (* get_preferred_width)    (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container,
+                                                 gfloat                  for_height,
+                                                 gfloat                 *minimum_width_p,
+                                                 gfloat                 *natural_width_p);
+  void               (* get_preferred_height)   (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container,
+                                                 gfloat                  for_width,
+                                                 gfloat                 *minimum_height_p,
+                                                 gfloat                 *natural_height_p);
+  void               (* allocate)               (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container,
+                                                 const ClutterActorBox  *allocation,
+                                                 ClutterAllocationFlags  flags);
 
-  void               (* set_container)        (ClutterLayoutManager   *manager,
-                                               ClutterContainer       *container);
+  void               (* set_container)          (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container);
 
-  GType              (* get_child_meta_type)  (ClutterLayoutManager   *manager);
-  ClutterLayoutMeta *(* create_child_meta)    (ClutterLayoutManager   *manager,
-                                               ClutterContainer       *container,
-                                               ClutterActor           *actor);
+  GType              (* get_child_meta_type)    (ClutterLayoutManager   *manager);
+  ClutterLayoutMeta *(* create_child_meta)      (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container,
+                                                 ClutterActor           *actor);
 
-  void               (* layout_changed)       (ClutterLayoutManager   *manager);
+  void               (* begin_animation)        (ClutterLayoutManager   *manager,
+                                                 guint                   duration,
+                                                 gulong                  mode);
+  gdouble            (* get_animation_progress) (ClutterLayoutManager   *manager);
+  void               (* end_animation)          (ClutterLayoutManager   *manager);
+
+  /* signals */
+  void               (* layout_changed)         (ClutterLayoutManager   *manager);
 
   /*< private >*/
   /* padding for future expansion */
@@ -183,6 +197,12 @@ void               clutter_layout_manager_child_get_property    (ClutterLayoutMa
                                                                  ClutterActor           *actor,
                                                                  const gchar            *property_name,
                                                                  GValue                 *value);
+
+void               clutter_layout_manager_begin_animation       (ClutterLayoutManager   *manager,
+                                                                 guint                   duration,
+                                                                 gulong                  mode);
+void               clutter_layout_manager_end_animation         (ClutterLayoutManager   *manager);
+gdouble            clutter_layout_manager_get_animation_progress (ClutterLayoutManager   *manager);
 
 G_END_DECLS
 

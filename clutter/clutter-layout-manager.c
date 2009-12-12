@@ -107,6 +107,11 @@
  *   child of the #ClutterContainer.</para>
  * </refsect2>
  *
+ * <refsect2 id="ClutterLayoutManager-animation">
+ *   <title>Animating a ClutterLayoutManager</title>
+ *   <para>...</para>
+ * </refsect2>
+ *
  * #ClutterLayoutManager is available since Clutter 1.2
  */
 
@@ -117,11 +122,13 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#include "clutter-alpha.h"
 #include "clutter-debug.h"
 #include "clutter-layout-manager.h"
 #include "clutter-layout-meta.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-timeline.h"
 
 #define LAYOUT_MANAGER_WARN_NOT_IMPLEMENTED(m,method)   G_STMT_START {  \
         GObject *_obj = G_OBJECT (m);                                   \
@@ -141,7 +148,9 @@ G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
                         clutter_layout_manager,
                         G_TYPE_INITIALLY_UNOWNED);
 
-static GQuark quark_layout_meta = 0;
+static GQuark quark_layout_meta  = 0;
+static GQuark quark_layout_alpha = 0;
+
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
 static void
@@ -218,16 +227,91 @@ layout_manager_real_get_child_meta_type (ClutterLayoutManager *manager)
 }
 
 static void
+layout_manager_real_begin_animation (ClutterLayoutManager *manager,
+                                     guint                 duration,
+                                     gulong                mode)
+{
+  ClutterTimeline *timeline;
+  ClutterAlpha *alpha;
+
+  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
+  if (alpha != NULL)
+    return;
+
+  timeline = clutter_timeline_new (duration);
+  alpha = clutter_alpha_new_full (timeline, mode);
+  g_object_unref (timeline);
+
+  g_signal_connect_swapped (timeline, "completed",
+                            G_CALLBACK (clutter_layout_manager_end_animation),
+                            manager);
+  g_signal_connect_swapped (timeline, "new-frame",
+                            G_CALLBACK (clutter_layout_manager_layout_changed),
+                            manager);
+
+  g_object_set_qdata_full (G_OBJECT (manager),
+                           quark_layout_alpha, alpha,
+                           (GDestroyNotify) g_object_unref);
+
+  clutter_timeline_start (timeline);
+}
+
+static gdouble
+layout_manager_real_get_animation_progress (ClutterLayoutManager *manager)
+{
+  ClutterAlpha *alpha;
+
+  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
+  if (alpha == NULL)
+    return 1.0;
+
+  return clutter_alpha_get_alpha (alpha);
+}
+
+static void
+layout_manager_real_end_animation (ClutterLayoutManager *manager)
+{
+  ClutterTimeline *timeline;
+  ClutterAlpha *alpha;
+
+  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
+  if (alpha == NULL)
+    return;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  g_assert (timeline != NULL);
+
+  if (clutter_timeline_is_playing (timeline))
+    clutter_timeline_stop (timeline);
+
+  g_signal_handlers_disconnect_by_func (timeline,
+                                        G_CALLBACK (clutter_layout_manager_end_animation),
+                                        manager);
+  g_signal_handlers_disconnect_by_func (timeline,
+                                        G_CALLBACK (clutter_layout_manager_layout_changed),
+                                        manager);
+
+  g_object_set_qdata (G_OBJECT (manager), quark_layout_alpha, NULL);
+
+  clutter_layout_manager_layout_changed (manager);
+}
+
+static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
   quark_layout_meta =
     g_quark_from_static_string ("clutter-layout-manager-child-meta");
+  quark_layout_alpha =
+    g_quark_from_static_string ("clutter-layout-manager-alpha");
 
   klass->get_preferred_width = layout_manager_real_get_preferred_width;
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
   klass->allocate = layout_manager_real_allocate;
   klass->create_child_meta = layout_manager_real_create_child_meta;
   klass->get_child_meta_type = layout_manager_real_get_child_meta_type;
+  klass->begin_animation = layout_manager_real_begin_animation;
+  klass->get_animation_progress = layout_manager_real_get_animation_progress;
+  klass->end_animation = layout_manager_real_end_animation;
 
   /**
    * ClutterLayoutManager::layout-changed:
@@ -904,4 +988,77 @@ clutter_layout_manager_list_child_properties (ClutterLayoutManager *manager,
   g_type_class_unref (meta_klass);
 
   return pspecs;
+}
+
+/**
+ * clutter_layout_manager_begin_animation:
+ * @manager: a #ClutterLayoutManager
+ * @duration: the duration of the animation, in milliseconds
+ * @mode: the easing mode of the animation
+ *
+ * Begins an animation of @duration milliseconds, using the provided
+ * easing @mode
+ *
+ * The easing mode can be specified either as a #ClutterAnimationMode
+ * or as a logical id returned by clutter_alpha_register_func()
+ *
+ * The result of this function depends on the @manager implementation
+ *
+ * Since: 1.2
+ */
+void
+clutter_layout_manager_begin_animation (ClutterLayoutManager *manager,
+                                        guint                 duration,
+                                        gulong                mode)
+{
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (duration > 0 && duration < 1000);
+
+  CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager)->begin_animation (manager,
+                                                               duration,
+                                                               mode);
+}
+
+/**
+ * clutter_layout_manager_end_animation:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Ends an animation started by clutter_layout_manager_begin_animation()
+ *
+ * The result of this call depends on the @manager implementation
+ *
+ * Since: 1.2
+ */
+void
+clutter_layout_manager_end_animation (ClutterLayoutManager *manager)
+{
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager)->end_animation (manager);
+}
+
+/**
+ * clutter_layout_manager_get_animation_progress:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Retrieves the progress of the animation, if one has been started by
+ * clutter_layout_manager_begin_animation()
+ *
+ * The returned value has the same semantics of the #ClutterAlpha:alpha
+ * value
+ *
+ * Return value: the progress of the animation
+ *
+ * Since: 1.2
+ */
+gdouble
+clutter_layout_manager_get_animation_progress (ClutterLayoutManager *manager)
+{
+  ClutterLayoutManagerClass *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), 1.0);
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+
+  return klass->get_animation_progress (manager);
 }
