@@ -94,8 +94,11 @@ struct _ClutterBoxLayoutPrivate
 
   guint spacing;
 
+  GHashTable *allocations;
+
   guint is_vertical   : 1;
   guint is_pack_start : 1;
+  guint is_animating  : 1;
 };
 
 struct _ClutterBoxChild
@@ -169,6 +172,7 @@ box_child_set_align (ClutterBoxChild     *self,
       ClutterLayoutManager *layout;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
+      clutter_layout_manager_begin_animation (layout, 500, CLUTTER_EASE_OUT_CUBIC);
       clutter_layout_manager_layout_changed (layout);
 
       if (x_changed)
@@ -205,6 +209,7 @@ box_child_set_fill (ClutterBoxChild *self,
       ClutterLayoutManager *layout;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
+      clutter_layout_manager_begin_animation (layout, 500, CLUTTER_EASE_OUT_CUBIC);
       clutter_layout_manager_layout_changed (layout);
 
       if (x_changed)
@@ -226,6 +231,7 @@ box_child_set_expand (ClutterBoxChild *self,
       self->expand = expand;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
+      clutter_layout_manager_begin_animation (layout, 500, CLUTTER_EASE_OUT_CUBIC);
       clutter_layout_manager_layout_changed (layout);
 
       g_object_notify (G_OBJECT (self), "expand");
@@ -698,14 +704,6 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.x1 = 0;
       child_box.x2 = floorf (avail_width + 0.5);
-
-      allocate_fill (child, &child_box, box_child);
-      clutter_actor_allocate (child, &child_box, flags);
-
-      if (box_child->expand)
-        *position += (child_nat + priv->spacing + extra_space);
-      else
-        *position += (child_nat + priv->spacing);
     }
   else
     {
@@ -721,15 +719,64 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.y1 = 0;
       child_box.y2 = floorf (avail_height + 0.5);
-
-      allocate_fill (child, &child_box, box_child);
-      clutter_actor_allocate (child, &child_box, flags);
-
-      if (box_child->expand)
-        *position += (child_nat + priv->spacing + extra_space);
-      else
-        *position += (child_nat + priv->spacing);
     }
+
+  allocate_fill (child, &child_box, box_child);
+
+  if (priv->is_animating)
+    {
+      ClutterLayoutManager *manager = CLUTTER_LAYOUT_MANAGER (self);
+      ClutterActorBox *start = NULL;
+      ClutterActorBox end = { 0, };
+      gdouble p;
+
+      p = clutter_layout_manager_get_animation_progress (manager);
+
+      start = g_hash_table_lookup (priv->allocations, child);
+      if (start == NULL)
+        {
+          /* if there is no allocation available then the child has just
+           * been added to the container; we put it in the final state
+           * and store its allocation for later
+           */
+          start = clutter_actor_box_copy (&child_box);
+          g_hash_table_insert (priv->allocations, child, start);
+
+          goto do_allocate;
+        }
+
+      end = child_box;
+
+      /* interpolate between the initial and final values */
+      clutter_actor_box_interpolate (start, &end, p, &child_box);
+
+      CLUTTER_NOTE (ANIMATION,
+                    "Animate { %.1f, %.1f, %.1f, %.1f }\t"
+                     "%.3f * { %.1f, %.1f, %.1f, %.1f }\t"
+                         "-> { %.1f, %.1f, %.1f, %.1f }",
+                    start->x1, start->y1,
+                    start->x2, start->y2,
+                    p,
+                    child_box.x1, child_box.y1,
+                    child_box.x2, child_box.y2,
+                    end.x1, end.y1,
+                    end.x2, end.y2);
+    }
+  else
+    {
+      ClutterActorBox *start = clutter_actor_box_copy (&child_box);
+
+      /* store the allocation for later animations */
+      g_hash_table_replace (priv->allocations, child, start);
+    }
+
+do_allocate:
+  clutter_actor_allocate (child, &child_box, flags);
+
+  if (box_child->expand)
+    *position += (child_nat + priv->spacing + extra_space);
+  else
+    *position += (child_nat + priv->spacing);
 }
 
 static void
@@ -888,6 +935,37 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 }
 
 static void
+clutter_box_layout_begin_animation (ClutterLayoutManager *manager,
+                                    guint                 duration,
+                                    gulong                easing)
+{
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (manager)->priv;
+  ClutterLayoutManagerClass *parent_class;
+
+  if (priv->is_animating)
+    return;
+
+  priv->is_animating = TRUE;
+
+  /* we want the default implementation */
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
+  parent_class->begin_animation (manager, duration, easing);
+}
+
+static void
+clutter_box_layout_end_animation (ClutterLayoutManager *manager)
+{
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (manager)->priv;
+  ClutterLayoutManagerClass *parent_class;
+
+  priv->is_animating = FALSE;
+
+  /* we want the default implementation */
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
+  parent_class->end_animation (manager);
+}
+
+static void
 clutter_box_layout_set_property (GObject      *gobject,
                                  guint         prop_id,
                                  const GValue *value,
@@ -944,6 +1022,16 @@ clutter_box_layout_get_property (GObject    *gobject,
 }
 
 static void
+clutter_box_layout_finalize (GObject *gobject)
+{
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (gobject)->priv;
+
+  g_hash_table_destroy (priv->allocations);
+
+  G_OBJECT_CLASS (clutter_box_layout_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -954,6 +1042,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
 
   gobject_class->set_property = clutter_box_layout_set_property;
   gobject_class->get_property = clutter_box_layout_get_property;
+  gobject_class->finalize = clutter_box_layout_finalize;
 
   layout_class->get_preferred_width =
     clutter_box_layout_get_preferred_width;
@@ -963,6 +1052,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
   layout_class->set_container = clutter_box_layout_set_container;
   layout_class->get_child_meta_type =
     clutter_box_layout_get_child_meta_type;
+  layout_class->begin_animation = clutter_box_layout_begin_animation;
+  layout_class->end_animation = clutter_box_layout_end_animation;
 
   g_type_class_add_private (klass, sizeof (ClutterBoxLayoutPrivate));
 
@@ -1022,6 +1113,11 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
   priv->is_vertical = FALSE;
   priv->is_pack_start = FALSE;
   priv->spacing = 0;
+
+  priv->allocations =
+    g_hash_table_new_full (NULL, NULL,
+                           NULL,
+                           (GDestroyNotify) clutter_actor_box_free);
 }
 
 /**
@@ -1065,7 +1161,7 @@ clutter_box_layout_set_spacing (ClutterBoxLayout *layout,
       priv->spacing = spacing;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+      clutter_layout_manager_begin_animation (manager, 500, CLUTTER_EASE_OUT_CUBIC);
 
       g_object_notify (G_OBJECT (layout), "spacing");
     }
@@ -1116,7 +1212,7 @@ clutter_box_layout_set_vertical (ClutterBoxLayout *layout,
       priv->is_vertical = vertical ? TRUE : FALSE;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+      clutter_layout_manager_begin_animation (manager, 500, CLUTTER_EASE_OUT_CUBIC);
 
       g_object_notify (G_OBJECT (layout), "vertical");
     }
@@ -1170,7 +1266,7 @@ clutter_box_layout_set_pack_start (ClutterBoxLayout *layout,
       priv->is_pack_start = pack_start ? TRUE : FALSE;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+      clutter_layout_manager_begin_animation (manager, 500, CLUTTER_EASE_OUT_CUBIC);
 
       g_object_notify (G_OBJECT (layout), "pack-start");
     }
