@@ -1937,6 +1937,14 @@ clutter_box_layout_get_expand
 clutter_box_layout_set_fill
 clutter_box_layout_get_fill
 
+<SUBSECTION>
+clutter_box_layout_set_use_animations
+clutter_box_layout_get_use_animations
+clutter_box_layout_set_easing_duration
+clutter_box_layout_get_easing_duration
+clutter_box_layout_set_easing_mode
+clutter_box_layout_get_easing_mode
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX_LAYOUT
 CLUTTER_BOX_LAYOUT

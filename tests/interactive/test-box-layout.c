@@ -29,6 +29,7 @@
         "Press v\t\342\236\236\tSwitch horizontal/vertical\n"           \
         "Press p\t\342\236\236\tSwitch pack start/end\n"                \
         "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
+        "Press a\t\342\236\236\tSwitch animations on/off\n"             \
         "Press q\t\342\236\236\tQuit"
 
 static ClutterActor *hover_actor = NULL;
@@ -167,6 +168,11 @@ key_release_cb (ClutterActor     *actor,
 
   switch (clutter_event_get_key_symbol (event))
     {
+    case CLUTTER_a:
+      toggle = clutter_box_layout_get_use_animations (layout);
+      clutter_box_layout_set_use_animations (layout, !toggle);
+      break;
+
     case CLUTTER_v:
       toggle = clutter_box_layout_get_vertical (layout);
       clutter_box_layout_set_vertical (layout, !toggle);
