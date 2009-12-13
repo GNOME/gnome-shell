@@ -226,7 +226,7 @@ layout_manager_real_get_child_meta_type (ClutterLayoutManager *manager)
   return G_TYPE_INVALID;
 }
 
-static void
+static ClutterAlpha *
 layout_manager_real_begin_animation (ClutterLayoutManager *manager,
                                      guint                 duration,
                                      gulong                mode)
@@ -236,7 +236,14 @@ layout_manager_real_begin_animation (ClutterLayoutManager *manager,
 
   alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
   if (alpha != NULL)
-    return;
+    {
+      timeline = clutter_alpha_get_timeline (alpha);
+      clutter_timeline_set_duration (timeline, duration);
+
+      clutter_alpha_set_mode (alpha, mode);
+
+      return alpha;
+    };
 
   timeline = clutter_timeline_new (duration);
   alpha = clutter_alpha_new_full (timeline, mode);
@@ -254,6 +261,8 @@ layout_manager_real_begin_animation (ClutterLayoutManager *manager,
                            (GDestroyNotify) g_object_unref);
 
   clutter_timeline_start (timeline);
+
+  return alpha;
 }
 
 static gdouble
@@ -1004,19 +1013,24 @@ clutter_layout_manager_list_child_properties (ClutterLayoutManager *manager,
  *
  * The result of this function depends on the @manager implementation
  *
+ * Return value: (transfer none): The #ClutterAlpha created by the
+ *   layout manager; the returned instance is owned by the layout
+ *   manager and should not be unreferenced
+ *
  * Since: 1.2
  */
-void
+ClutterAlpha *
 clutter_layout_manager_begin_animation (ClutterLayoutManager *manager,
                                         guint                 duration,
                                         gulong                mode)
 {
-  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
-  g_return_if_fail (duration > 0 && duration < 1000);
+  ClutterLayoutManagerClass *klass;
 
-  CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager)->begin_animation (manager,
-                                                               duration,
-                                                               mode);
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), NULL);
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+
+  return klass->begin_animation (manager, duration, mode);
 }
 
 /**

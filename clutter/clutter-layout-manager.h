@@ -30,6 +30,7 @@
 #define __CLUTTER_LAYOUT_MANAGER_H__
 
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-alpha.h>
 #include <clutter/clutter-container.h>
 #include <clutter/clutter-types.h>
 
@@ -126,7 +127,7 @@ struct _ClutterLayoutManagerClass
                                                  ClutterContainer       *container,
                                                  ClutterActor           *actor);
 
-  void               (* begin_animation)        (ClutterLayoutManager   *manager,
+  ClutterAlpha *     (* begin_animation)        (ClutterLayoutManager   *manager,
                                                  guint                   duration,
                                                  gulong                  mode);
   gdouble            (* get_animation_progress) (ClutterLayoutManager   *manager);
@@ -198,7 +199,7 @@ void               clutter_layout_manager_child_get_property    (ClutterLayoutMa
                                                                  const gchar            *property_name,
                                                                  GValue                 *value);
 
-void               clutter_layout_manager_begin_animation       (ClutterLayoutManager   *manager,
+ClutterAlpha *     clutter_layout_manager_begin_animation       (ClutterLayoutManager   *manager,
                                                                  guint                   duration,
                                                                  gulong                  mode);
 void               clutter_layout_manager_end_animation         (ClutterLayoutManager   *manager);

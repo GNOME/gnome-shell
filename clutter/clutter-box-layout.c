@@ -967,7 +967,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   g_list_free (children);
 }
 
-static void
+static ClutterAlpha *
 clutter_box_layout_begin_animation (ClutterLayoutManager *manager,
                                     guint                 duration,
                                     gulong                easing)
@@ -982,7 +982,8 @@ clutter_box_layout_begin_animation (ClutterLayoutManager *manager,
 
   /* we want the default implementation */
   parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
-  parent_class->begin_animation (manager, duration, easing);
+
+  return parent_class->begin_animation (manager, duration, easing);
 }
 
 static void
