@@ -146,6 +146,7 @@ StTooltip {
     background-image: url("close-window.svg");
     height: 24px;
     width: 24px;
+    -st-shadow: -2px 2px 6px rgba(0,0,0,0.5);
     -shell-close-overlap: 16px;
 }
 
