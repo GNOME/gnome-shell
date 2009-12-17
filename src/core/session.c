@@ -84,6 +84,7 @@ static char*       load_state         (const char *previous_save_file);
 static void        regenerate_save_file (void);
 static const char* full_save_file       (void);
 static void        warn_about_lame_clients_and_finish_interact (gboolean shutdown);
+static void        disconnect         (void);
 
 /* This is called when data is available on an ICE connection.  */
 static gboolean
@@ -106,9 +107,12 @@ process_ice_messages (GIOChannel *channel,
       IcePointer context = IceGetConnectionContext (connection);
 #endif
       
-      /* We were disconnected */
-      IceSetShutdownNegotiation (connection, False);
-      IceCloseConnection (connection);
+      /* We were disconnected; close our connection to the
+       * session manager, this will result in the ICE connection
+       * being cleaned up, since it is owned by libSM.
+       */
+      disconnect ();
+      meta_quit (META_EXIT_SUCCESS);
 
       return FALSE;
     }
