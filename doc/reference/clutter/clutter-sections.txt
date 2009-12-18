@@ -352,6 +352,8 @@ clutter_actor_lower
 clutter_actor_raise_top
 clutter_actor_lower_bottom
 clutter_actor_get_stage
+clutter_actor_push_internal
+clutter_actor_pop_internal
 
 <SUBSECTION>
 clutter_actor_set_depth
