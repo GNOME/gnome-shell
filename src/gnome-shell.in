@@ -260,7 +260,11 @@ use an extension title clicktofocus@janedoe.example.com.'''
              'description': description,
              'uuid': uuid }
     f = open(os.path.join(extension_path, 'metadata.json'), 'w')
-    json.dump(meta, f)
+    try:
+        json.dump(meta, f)
+    except AttributeError:
+        # For Python versions older than 2.6, try using the json-py module
+        f.write(json.write(meta) + '\n')
     f.close()
 
     extensionjs_path = os.path.join(extension_path, 'extension.js')
