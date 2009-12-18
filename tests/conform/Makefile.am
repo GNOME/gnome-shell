@@ -40,6 +40,7 @@ test_conformance_SOURCES = 		\
 	test-actor-size.c		\
 	test-texture-fbo.c		\
 	test-script-parser.c		\
+	test-actor-destroy.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
