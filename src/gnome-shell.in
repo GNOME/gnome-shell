@@ -303,7 +303,7 @@ function main() {
 ''')
     f.close()
 
-    subprocess.Popen(['gedit', extensionjs_path])
+    subprocess.Popen(['gnome-open', extensionjs_path])
     sys.exit(0)
 
 if options.eval_file:
