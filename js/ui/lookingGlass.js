@@ -556,10 +556,7 @@ LookingGlass.prototype = {
         }));
         this._entry.clutter_text.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Escape) {
-                this.close();
-                return true;
-            } else if (symbol == Clutter.Up) {
+            if (symbol == Clutter.Up) {
                 if (this._historyNavIndex >= this._history.length - 1)
                     return true;
                 this._historyNavIndex++;
@@ -704,12 +701,25 @@ LookingGlass.prototype = {
         this._resizeTo(actor);
     },
 
+    // Handle key events which are relevant for all tabs of the LookingGlass
+    _globalKeyPressEvent : function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.Escape) {
+            this.close();
+            return true;
+        }
+        return false;
+    },
+
     open : function() {
         if (this._open)
             return;
 
         if (!Main.pushModal(this.actor))
             return;
+
+        this._keyPressEventId = global.stage.connect('key-press-event',
+            Lang.bind(this, this._globalKeyPressEvent));
 
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
@@ -728,6 +738,9 @@ LookingGlass.prototype = {
     close : function() {
         if (!this._open)
             return;
+
+        if (this._keyPressEventId)
+            global.stage.disconnect(this._keyPressEventId);
 
         this._historyNavIndex = -1;
         this._open = false;
