@@ -493,6 +493,11 @@ StTooltip {
     spacing: 4px;
 }
 
+.switcher-list .thumbnail {
+    width:  256px;
+    height: 256px;
+}
+
 .switcher-list .outlined-item-box {
     padding: 6px;
     border: 2px solid rgba(85,85,85,1.0);

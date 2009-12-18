@@ -459,7 +459,7 @@ SwitcherList.prototype = {
         this._separator = box;
         this._list.add_actor(box);
     },
-    
+
     highlight: function(index, justOutline) {
         if (this._highlighted != -1)
             this._items[this._highlighted].style_class = 'item-box';
@@ -477,7 +477,7 @@ SwitcherList.prototype = {
     _itemActivated: function(n) {
         this.emit('item-activated', n);
     },
-    
+
     _itemEntered: function(n) {
         this.emit('item-entered', n);
     },
@@ -592,7 +592,7 @@ AppIcon.prototype = {
         this.actor = new St.BoxLayout({ style_class: "alt-tab-app",
                                          vertical: true });
         this._icon = this.app.create_icon_texture(POPUP_APPICON_SIZE);
-        this.actor.add(this._icon, { x_fill: false, y_fill: false });
+        this.actor.add(this._icon, { x_fill: false, y_fill: false } );
         this._label = new St.Label({ text: this.app.get_name() });
         this.actor.add(this._label, { x_fill: false });
     }
@@ -750,11 +750,14 @@ ThumbnailList.prototype = {
             let box = new St.BoxLayout({ style_class: "thumbnail-box",
                                          vertical: true });
 
+            let bin = new St.Bin({ style_class: "thumbnail" });
             let clone = new Clutter.Clone ({ source: windowTexture,
                                              reactive: true,
                                              width: width * scale,
                                              height: height * scale });
-            box.add_actor(clone);
+
+            bin.add_actor(clone);
+            box.add_actor(bin);
 
             let title = windows[i].get_title();
             if (title) {
