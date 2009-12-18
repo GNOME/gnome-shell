@@ -514,7 +514,7 @@ SearchResults.prototype = {
             meta.count.set_text(""+providerResults.length);
         }
 
-        this.selectDown();
+        this.selectDown(false);
 
         return true;
     },
@@ -535,7 +535,7 @@ SearchResults.prototype = {
         return resultDisplay.selectIndex(index);
     },
 
-    selectUp: function() {
+    selectUp: function(recursing) {
         for (let i = this._selectedProvider; i >= 0; i--) {
             let meta = this._providerMeta[i];
             if (!meta.actor.visible)
@@ -546,13 +546,13 @@ SearchResults.prototype = {
                 return;
             }
         }
-        if (this._providerMeta.length > 0) {
+        if (this._providerMeta.length > 0 && !recursing) {
             this._selectedProvider = this._providerMeta.length - 1;
-            this.selectUp();
+            this.selectUp(true);
         }
     },
 
-    selectDown: function() {
+    selectDown: function(recursing) {
         let current = this._selectedProvider;
         if (current == -1)
             current = 0;
@@ -566,9 +566,9 @@ SearchResults.prototype = {
                 return;
             }
         }
-        if (this._providerMeta.length > 0) {
+        if (this._providerMeta.length > 0 && !recursing) {
             this._selectedProvider = 0;
-            this.selectDown();
+            this.selectDown(true);
         }
     },
 
@@ -834,14 +834,14 @@ Dash.prototype = {
             } else if (symbol == Clutter.Up) {
                 if (!this._searchActive)
                     return true;
-                this.searchResults.selectUp();
+                this.searchResults.selectUp(false);
 
                 return true;
             } else if (symbol == Clutter.Down) {
                 if (!this._searchActive)
                     return true;
 
-                this.searchResults.selectDown();
+                this.searchResults.selectDown(false);
                 return true;
             }
             return false;
