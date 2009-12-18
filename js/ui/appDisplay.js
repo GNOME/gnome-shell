@@ -492,7 +492,7 @@ AppWellIcon.prototype = {
 
     activateMostRecentWindow: function () {
         let mostRecentWindow = this.app.get_windows()[0];
-        Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
+        Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
     },
 
     highlightWindow: function(metaWindow) {
@@ -504,7 +504,7 @@ AppWellIcon.prototype = {
     activateWindow: function(metaWindow) {
         if (metaWindow) {
             this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, Main.currentTime());
+            Main.overview.activateWindow(metaWindow, global.get_current_time());
         } else
             Main.overview.hide();
     },
