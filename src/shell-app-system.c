@@ -622,7 +622,6 @@ shell_app_info_init_search_data (ShellAppInfo *info)
 
   name = gmenu_tree_entry_get_name ((GMenuTreeEntry*)info->entry);
   info->casefolded_name = normalize_and_casefold (name);
-  info->name_collation_key = g_utf8_collate_key (name, -1);
 
   comment = gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info->entry);
   info->casefolded_description = normalize_and_casefold (comment);
@@ -674,6 +673,11 @@ shell_app_info_compare (gconstpointer a,
   const char *id_b = b;
   ShellAppInfo *info_a = g_hash_table_lookup (system->priv->app_id_to_info, id_a);
   ShellAppInfo *info_b = g_hash_table_lookup (system->priv->app_id_to_info, id_b);
+
+  if (!info_a->name_collation_key)
+    info_a->name_collation_key = g_utf8_collate_key (gmenu_tree_entry_get_name ((GMenuTreeEntry*)info_a->entry), -1);
+  if (!info_b->name_collation_key)
+    info_b->name_collation_key = g_utf8_collate_key (gmenu_tree_entry_get_name ((GMenuTreeEntry*)info_b->entry), -1);
 
   return strcmp (info_a->name_collation_key, info_b->name_collation_key);
 }
