@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD.ro\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-09-02 23:57+0000\n"
+"POT-Creation-Date: 2009-11-20 16:39+0000\n"
 "PO-Revision-Date: 2009-09-14 00:10+0300\n"
 "Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Gnome Romanian Team <gnomero-list@lists.sourceforge.net>\n"
@@ -36,7 +36,7 @@ msgstr "Eveniment bip"
 msgid "Unknown window information request: %d"
 msgstr "Cerere necunoscută de informație pentru fereastră: %d"
 
-#: ../src/core/delete.c:104
+#: ../src/core/delete.c:96
 #, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
@@ -49,15 +49,15 @@ msgstr ""
 "<i>Puteți aștepta încă puțin pentru a continua sau puteți forța închiderea "
 "completă a aplicației.</i>"
 
-#: ../src/core/delete.c:115
+#: ../src/core/delete.c:107
 msgid "_Wait"
 msgstr "_Așteaptă"
 
-#: ../src/core/delete.c:115
+#: ../src/core/delete.c:107
 msgid "_Force Quit"
 msgstr "_Forțează închiderea"
 
-#: ../src/core/delete.c:216
+#: ../src/core/delete.c:204
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nu s-a putut obține numele calculatorului gazdă: %s\n"
@@ -120,7 +120,7 @@ msgstr "Nici o comandă %d nu a fost definită.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Nici o comandă pentru terminal nu a fost definită.\n"
 
-#: ../src/core/main.c:130
+#: ../src/core/main.c:131
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -135,55 +135,55 @@ msgstr ""
 "Nu există NICIO garanție; nici aceea de COMERCIALIZARE sau ADECVARE PENTRU "
 "UN SCOP ANUME.\n"
 
-#: ../src/core/main.c:268
+#: ../src/core/main.c:269
 msgid "Disable connection to session manager"
 msgstr "Dezactivează conexiunea la administratorul de sesiune"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:275
 msgid "Replace the running window manager with Metacity"
 msgstr "Înlocuiește administratorul de ferestre curent cu Metacity"
 
-#: ../src/core/main.c:280
+#: ../src/core/main.c:281
 msgid "Specify session management ID"
 msgstr "Specifică ID-ul administrării de sesiune"
 
-#: ../src/core/main.c:285
+#: ../src/core/main.c:286
 msgid "X Display to use"
 msgstr "Afișajul X ce va fi folosit"
 
-#: ../src/core/main.c:291
+#: ../src/core/main.c:292
 msgid "Initialize session from savefile"
 msgstr "Inițializează sesiunea din fișierul salvat"
 
-#: ../src/core/main.c:297
+#: ../src/core/main.c:298
 msgid "Print version"
 msgstr "Afișează versiunea"
 
-#: ../src/core/main.c:303
+#: ../src/core/main.c:304
 msgid "Make X calls synchronous"
 msgstr "Realizează apelurile X sincron"
 
-#: ../src/core/main.c:309
+#: ../src/core/main.c:310
 msgid "Turn compositing on"
 msgstr "Pornește efectele compozite"
 
-#: ../src/core/main.c:315
+#: ../src/core/main.c:316
 msgid "Turn compositing off"
 msgstr "Oprește efectele compozite"
 
-#: ../src/core/main.c:321
+#: ../src/core/main.c:322
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
 "Nu desena pe tot ecranul ferestrele care sunt maximizate, dar care nu au "
 "decorații"
 
-#: ../src/core/main.c:543
+#: ../src/core/main.c:526
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nu s-a putut citi dosarul de teme: %s\n"
 
-#: ../src/core/main.c:559
+#: ../src/core/main.c:542
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -191,7 +191,7 @@ msgstr ""
 "Nu s-a putut găsi o temă ! Asigurați-vă că %s există și conține temele "
 "uzuale.\n"
 
-#: ../src/core/main.c:618
+#: ../src/core/main.c:601
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Eșuare la repornire: %s\n"
@@ -295,8 +295,8 @@ msgstr ""
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Nu s-a putut obține selecția administratorului de ferestre pe ecranul %"
-"d afișajul „%s”\n"
+"Nu s-a putut obține selecția administratorului de ferestre pe ecranul %d "
+"afișajul „%s”\n"
 
 #: ../src/core/screen.c:458
 #, c-format
@@ -350,60 +350,60 @@ msgstr ""
 "Această combinație poate fi inversată apăsând tasta „Shift”; din această "
 "cauză, tasta „Shift” nu poate fi folosită în combinație."
 
-#: ../src/core/session.c:845 ../src/core/session.c:852
+#: ../src/core/session.c:846 ../src/core/session.c:853
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nu s-a putut crea dosarul „%s”: %s\n"
 
-#: ../src/core/session.c:862
+#: ../src/core/session.c:863
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nu s-a putut deschide fișierul de sesiune „%s” pentru scriere: %s\n"
 
-#: ../src/core/session.c:1003
+#: ../src/core/session.c:1004
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Eroare la scrierea fișierului de sesiune „%s”: %s\n"
 
-#: ../src/core/session.c:1008
+#: ../src/core/session.c:1009
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Eroare la închiderea fișierului de sesiune „%s”: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1101
+#: ../src/core/session.c:1102
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Nu s-a putut citi fișierul sesiunii salvate %s: %s\n"
 
-#: ../src/core/session.c:1140
+#: ../src/core/session.c:1141
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nu s-a putut analiza fișierul sesiunii salvate: %s\n"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1190
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "atributul <metacity_session> a fost văzut dar avem deja ID-ul sesiunii"
 
-#: ../src/core/session.c:1202 ../src/core/session.c:1277
-#: ../src/core/session.c:1309 ../src/core/session.c:1381
-#: ../src/core/session.c:1441
+#: ../src/core/session.c:1203 ../src/core/session.c:1278
+#: ../src/core/session.c:1310 ../src/core/session.c:1382
+#: ../src/core/session.c:1442
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atribut necunoscut %s al elementului <%s>"
 
-#: ../src/core/session.c:1219
+#: ../src/core/session.c:1220
 #, c-format
 msgid "nested <window> tag"
 msgstr "etichetă imbricată <window>"
 
-#: ../src/core/session.c:1461
+#: ../src/core/session.c:1462
 #, c-format
 msgid "Unknown element %s"
 msgstr "Element necunoscut %s"
 
-#: ../src/core/session.c:1812
+#: ../src/core/session.c:1814
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -411,40 +411,40 @@ msgstr ""
 "Aceste ferestre nu suportă &quot;save current setup&quot; și va trebui să "
 "fie restaurate manual în sesiunea următoare."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nu s-a putut deschide înregistrarea de depanare: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr ""
 "Nu s-a putut deschide folosind fdopen() fișierul de înregistrare %s: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "S-a deschis fișierul de înregistrare %s\n"
 
-#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity a fost compilat fără suport pentru modul detaliat\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "Administrator de ferestre: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "Problemă în administratorul de ferestre: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "Avertisment al administratorului de ferestre: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Eroare a administratorului de ferestre: "
 
@@ -456,7 +456,7 @@ msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5627
+#: ../src/core/window.c:5630
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -472,7 +472,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6192
+#: ../src/core/window.c:6195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -1088,21 +1088,20 @@ msgstr ""
 "„true”. Multe acțiuni (de exemplu clic în zona client, deplasarea sau "
 "redimensionarea ferestrei) au în mod normal efectul secundar de a ridica "
 "fereastra. Definirea (nerecomandată) a acestei opțiuni ca „false” va decupla "
-"ridicarea ferestrei de alte acțiuni ale utilizatorilor și va ignora "
-"cererile de ridicare generate de aplicații. Vedeți http://bugzilla.gnome.org/"
-"show_bug.cgi?id=445447#c6. Chiar și când această opțiune este „false”, "
-"ferestrele tot pot fi ridicate de alt-clic-stânga oriunde pe fereastră, un "
-"clic normal pe decorațiile ferestrei sau de mesaje speciale de la "
-"paginatori, cum ar fi cereri de activare de la lista de ferestre. Această "
-"opțiune este deocamdată dezactivată în modul „click-to-focus” (clic-pentru-"
-"focus). Rețineți că lista de moduri de a ridica ferestrele când "
-"„raise_on_click” este „false” nu include cererile programatice de a ridica "
-"ferestrele primite de la aplicații, aceste cereri vor fi ignorate indiferent "
-"de motivul cererii. Dacă sunteți programator și un utilizator vi se plânge "
-"că aplicația dumneavoastră nu funcționează cu această opțiune dezactivată, "
-"spuneți-i că este vina _sa_ că și-a stricat administratorul de ferestre și "
-"că trebuie să restaureze această opțiune la „true” sau să se mulțumească cu "
-"„hiba” pe care a cerut-o."
+"ridicarea ferestrei de alte acțiuni ale utilizatorilor și va ignora cererile "
+"de ridicare generate de aplicații. Vedeți http://bugzilla.gnome.org/show_bug."
+"cgi?id=445447#c6. Chiar și când această opțiune este „false”, ferestrele tot "
+"pot fi ridicate de alt-clic-stânga oriunde pe fereastră, un clic normal pe "
+"decorațiile ferestrei sau de mesaje speciale de la paginatori, cum ar fi "
+"cereri de activare de la lista de ferestre. Această opțiune este deocamdată "
+"dezactivată în modul „click-to-focus” (clic-pentru-focus). Rețineți că lista "
+"de moduri de a ridica ferestrele când „raise_on_click” este „false” nu "
+"include cererile programatice de a ridica ferestrele primite de la "
+"aplicații, aceste cereri vor fi ignorate indiferent de motivul cererii. Dacă "
+"sunteți programator și un utilizator vi se plânge că aplicația dumneavoastră "
+"nu funcționează cu această opțiune dezactivată, spuneți-i că este vina _sa_ "
+"că și-a stricat administratorul de ferestre și că trebuie să restaureze "
+"această opțiune la „true” sau să se mulțumească cu „hiba” pe care a cerut-o."
 
 #: ../src/metacity.schemas.in.in.h:31
 msgid ""
@@ -1237,7 +1236,7 @@ msgid ""
 msgstr ""
 "Această opțiune determină efectul unui dublu-clic pe bara de titlu. "
 "Deocamdată valorile acceptate sunt „toggle_shade”, care rulează/derulează "
-"fereastra, „toggle_maximize” care maximizează/restaurează fereastra, "
+"fereastra, „toggle_maximize” care maximizează/demaximizează fereastra, "
 "„toggle_maximize_horizontally” și „toggle_maximize_vertically” care "
 "maximizează/restaurează fereastra orizontal și respectiv vertical, "
 "„minimize” care va minimiza fereastra, „shade” care rulează sus fereastra, "
@@ -1257,7 +1256,7 @@ msgid ""
 msgstr ""
 "Această opțiune determină efectul unui clic-centru pe bara de titlu. "
 "Deocamdată valorile acceptate sunt „toggle_shade”, care rulează/derulează "
-"fereastra, „toggle_maximize” care maximizează/restaurează fereastra, "
+"fereastra, „toggle_maximize” care maximizează/demaximizează fereastra, "
 "„toggle_maximize_horizontally” și „toggle_maximize_vertically” care "
 "maximizează/restaurează fereastra orizontal și respectiv vertical, "
 "„minimize” care va minimiza fereastra, „shade” care rulează sus fereastra, "
@@ -1277,7 +1276,7 @@ msgid ""
 msgstr ""
 "Această opțiune determină efectul unui clic-dreapta pe bara de titlu. "
 "Deocamdată valorile acceptate sunt „toggle_shade”, care rulează/derulează "
-"fereastra, „toggle_maximize” care maximizează/restaurează fereastra, "
+"fereastra, „toggle_maximize” care maximizează/demaximizează fereastra, "
 "„toggle_maximize_horizontally” și „toggle_maximize_vertically” care "
 "maximizează/restaurează fereastra orizontal și, respectiv, vertical, "
 "„minimize” care va minimiza fereastra, „shade” care rulează sus fereastra, "
@@ -1394,7 +1393,7 @@ msgstr "Ma_ximizează"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:74
 msgid "Unma_ximize"
-msgstr "_Restaurează"
+msgstr "Dema_ximizează"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:76
@@ -1466,7 +1465,7 @@ msgstr "_Închide"
 #: ../src/ui/menu.c:203
 #, c-format
 msgid "Workspace %d%n"
-msgstr "Spaţiul de lucru %d%n"
+msgstr "Spațiul de lucru %d%n"
 
 #: ../src/ui/menu.c:213
 #, c-format
@@ -1476,7 +1475,7 @@ msgstr "Spațiul de lucru de 1_0"
 #: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Spaţiul de lucru %s%d"
+msgstr "Spațiul de lucru %s%d"
 
 #: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
@@ -2417,4 +2416,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "Expresiile pentru coordonate %d parsate în %g secunde (o medie de %g "
 "secunde)\n"
-
