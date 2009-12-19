@@ -42,7 +42,14 @@ CommandCompleter.prototype = {
         for (let i = 0; i < this._paths.length; i++) {
             this._childs[i] = [];
             let file = Gio.file_new_for_path(this._paths[i]);
-            let info = file.query_info(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FileQueryInfoFlags.NONE, null);
+            let info;
+            try {
+                info = file.query_info(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FileQueryInfoFlags.NONE, null);
+            } catch (e) {
+                // FIXME catchall
+                this._paths[i] = null;
+                continue;
+            }
 
             if (info.get_attribute_uint32(Gio.FILE_ATTRIBUTE_STANDARD_TYPE) != Gio.FileType.DIRECTORY)
                 continue;
@@ -53,6 +60,9 @@ CommandCompleter.prototype = {
                 this._monitors[i].connect("changed", Lang.bind(this, this._onChanged));
             }
         }
+        this._paths = this._paths.filter(function(a) {
+            return a != null;
+        });
         this._update(0);
     },
 
