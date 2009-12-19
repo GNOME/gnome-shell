@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-10-27 20:37+0000\n"
-"PO-Revision-Date: 2009-10-27 23:32+0100\n"
+"POT-Creation-Date: 2009-12-18 15:06+0000\n"
+"PO-Revision-Date: 2009-12-19 14:41+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,76 +25,64 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
-#: ../js/ui/appDisplay.js:332
-msgid "Frequent"
-msgstr "Frecuentes"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:852
+msgid "APPLICATIONS"
+msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:867
-msgid "Drag here to add favorites"
-msgstr "Arrastrar aquí para añadir a los favoritos"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "PREFERENCIAS"
 
-#: ../js/ui/appIcon.js:426
+#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appIcon.js:431
+#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:1064
+msgid "Drag here to add favorites"
+msgstr "Arrastrar aquí para añadir a los favoritos"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Buscar…"
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Más"
-
-#: ../js/ui/dash.js:543
-msgid "(see all)"
-msgstr "(ver todo)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
-msgid "APPLICATIONS"
-msgstr "APLICACIONES"
+#: ../js/ui/dash.js:437
+#| msgid "Search"
+msgid "Searching..."
+msgstr "Buscando…"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:745
+#: ../js/ui/dash.js:872 ../js/ui/placeDisplay.js:471
 msgid "PLACES"
 msgstr "LUGARES"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
+#: ../js/ui/dash.js:879
 msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTOS RECIENTES"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
-msgid "SEARCH RESULTS"
-msgstr "RESULTADOS DE LA BÚSQUEDA"
-
-#: ../js/ui/dash.js:792
-msgid "PREFERENCES"
-msgstr "PREFERENCIAS"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:227
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#: ../js/ui/panel.js:440
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/places.js:178
+#: ../js/ui/placeDisplay.js:99
 msgid "Connect to..."
 msgstr "Conectar a…"
 
@@ -120,101 +108,49 @@ msgstr "Aplicaciones"
 msgid "Recent Documents"
 msgstr "Documentos recientes"
 
-#: ../src/shell-global.c:812
+#: ../src/shell-global.c:826
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:829
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:832
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:835
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:838
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Hace %d semana"
 msgstr[1] "Hace %d semanas"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Desconocido"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "No se puede bloquear la pantalla: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"No se puede establecer temporalmente el salvapantallas a oscurecer pantalla: "
-"%s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "No se puede salir de la sesión: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Información de la cuenta…"
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Barra lateral"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Preferencias del sistema…"
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Bloquear la pantalla"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Cambiar de usuario"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Salir…"
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Apagar…"
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Carpeta personal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Sistema de archivos"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Buscar"
 
@@ -223,10 +159,57 @@ msgstr "Buscar"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Frequent"
+#~ msgstr "Frecuentes"
+
+#~ msgid "More"
+#~ msgstr "Más"
+
+#~ msgid "(see all)"
+#~ msgstr "(ver todo)"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "RESULTADOS DE LA BÚSQUEDA"
+
+#~ msgid "Unknown"
+#~ msgstr "Desconocido"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "No se puede bloquear la pantalla: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr ""
+#~ "No se puede establecer temporalmente el salvapantallas a oscurecer "
+#~ "pantalla: %s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "No se puede salir de la sesión: %s"
+
+#~ msgid "Account Information..."
+#~ msgstr "Información de la cuenta…"
+
+#~ msgid "Sidebar"
+#~ msgstr "Barra lateral"
+
+#~ msgid "System Preferences..."
+#~ msgstr "Preferencias del sistema…"
+
+#~ msgid "Lock Screen"
+#~ msgstr "Bloquear la pantalla"
+
+#~ msgid "Switch User"
+#~ msgstr "Cambiar de usuario"
+
+#~ msgid "Log Out..."
+#~ msgstr "Salir…"
+
+#~ msgid "Shut Down..."
+#~ msgstr "Apagar…"
 
 #~ msgid "Browse"
 #~ msgstr "Examine"
