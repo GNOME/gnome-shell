@@ -3039,8 +3039,14 @@ clutter_actor_dispose (GObject *object)
     {
       ClutterActor *parent = priv->parent_actor;
 
-      if (CLUTTER_IS_CONTAINER (parent))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+      /* go through the Container implementation unless this
+       * is an internal child and has been marked as such
+       */
+      if (CLUTTER_IS_CONTAINER (parent) &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
+        {
+          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+        }
       else
         priv->parent_actor = NULL;
     }
@@ -6736,6 +6742,7 @@ clutter_actor_set_parent (ClutterActor *self,
 {
   ClutterActorPrivate *priv;
   ClutterTextDirection text_dir;
+  ClutterMainContext *ctx;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
@@ -6764,6 +6771,14 @@ clutter_actor_set_parent (ClutterActor *self,
 
   g_object_ref_sink (self);
   priv->parent_actor = parent;
+
+  ctx = _clutter_context_get_default ();
+
+  /* if push_internal() has been called then we automatically set
+   * the flag on the actor
+   */
+  if (ctx->internal_child)
+    CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_INTERNAL_CHILD);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
@@ -6942,17 +6957,22 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_ref (self);
 
-      if (CLUTTER_IS_CONTAINER (priv->parent_actor))
+      /* go through the Container implementation if this is a regular
+       * child and not an internal one
+       */
+      if (CLUTTER_IS_CONTAINER (priv->parent_actor) &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
         {
           ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
-          /* Note, will call unparent() */
+
+          /* this will have to call unparent() */
           clutter_container_remove_actor (parent, self);
         }
       else
         clutter_actor_unparent (self);
 
-      if (CLUTTER_IS_CONTAINER (new_parent))
           /* Note, will call parent() */
+      if (CLUTTER_IS_CONTAINER (new_parent))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
         clutter_actor_set_parent (self, new_parent);
@@ -9587,4 +9607,84 @@ clutter_actor_get_text_direction (ClutterActor *self)
     priv->text_direction = clutter_get_default_text_direction ();
 
   return priv->text_direction;
+}
+
+/**
+ * clutter_actor_push_internal:
+ *
+ * Should be used by actors implementing the #ClutterContainer and with
+ * internal children added through clutter_actor_set_parent(), for instance:
+ *
+ * |[
+ *   static void
+ *   my_actor_init (MyActor *self)
+ *   {
+ *     self->priv = SELF_ACTOR_GET_PRIVATE (self);
+ *
+ *     clutter_actor_push_internal ();
+ *
+ *     /&ast; calling clutter_actor_set_parent() now will result in
+ *      &ast; the internal flag being set on a child of MyActor
+ *      &ast;/
+ *
+ *     /&ast; internal child: a background texture &ast;/
+ *     self->priv->background_tex = clutter_texture_new ();
+ *     clutter_actor_set_parent (self->priv->background_tex,
+ *                               CLUTTER_ACTOR (self));
+ *
+ *     /&ast; internal child: a label &ast;/
+ *     self->priv->label = clutter_text_new ();
+ *     clutter_actor_set_parent (self->priv->label,
+ *                               CLUTTER_ACTOR (self));
+ *
+ *     clutter_actor_pop_internal ();
+ *
+ *     /&ast; calling clutter_actor_set_parent() now will not result in
+ *      &ast; the internal flag being set on a child of MyActor
+ *      &ast;/
+ *   }
+ * ]|
+ *
+ * This function will be used by Clutter to toggle an "internal child"
+ * flag whenever clutter_actor_set_parent() is called; internal children
+ * are handled differently by Clutter, specifically when destroying their
+ * parent.
+ *
+ * Call clutter_actor_pop_internal() when you finished adding internal
+ * children.
+ *
+ * Nested calls to clutter_actor_push_internal() are allowed, but each
+ * one must by followed by a clutter_actor_pop_internal() call.
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_push_internal (void)
+{
+  ClutterMainContext *ctx = _clutter_context_get_default ();
+
+  ctx->internal_child += 1;
+}
+
+/**
+ * clutter_actor_pop_internal:
+ *
+ * Disables the effects of clutter_actor_pop_internal()
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_pop_internal (void)
+{
+  ClutterMainContext *ctx = _clutter_context_get_default ();
+
+  if (ctx->internal_child == 0)
+    {
+      g_warning ("Mismatched %s: you need to call "
+                 "clutter_actor_push_composite() at least once before "
+                 "calling this function", G_STRFUNC);
+      return;
+    }
+
+  ctx->internal_child -= 1;
 }
