@@ -106,7 +106,7 @@ _cogl_material_init_default_material (void)
 #ifndef HAVE_COGL_GLES
   material->blend_equation_rgb = GL_FUNC_ADD;
   material->blend_equation_alpha = GL_FUNC_ADD;
-  material->blend_src_factor_alpha = GL_SRC_ALPHA;
+  material->blend_src_factor_alpha = GL_ONE;
   material->blend_dst_factor_alpha = GL_ONE_MINUS_SRC_ALPHA;
   material->blend_constant[0] = 0;
   material->blend_constant[1] = 0;
