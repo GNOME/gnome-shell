@@ -239,6 +239,10 @@ void     clutter_stage_set_throttle_motion_events (ClutterStage *stage,
                                                    gboolean      throttle);
 gboolean clutter_stage_get_throttle_motion_events (ClutterStage *stage);
 
+void                  clutter_stage_set_use_alpha      (ClutterStage *stage,
+                                                        gboolean      use_alpha);
+gboolean              clutter_stage_get_use_alpha      (ClutterStage *stage);
+
 /* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
