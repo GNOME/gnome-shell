@@ -1,5 +1,5 @@
-Clutter 1.2 README
-==================
+Clutter - README
+===============================================================================
 
 Clutter is an open source software library for creating fast, visually
 rich and animated graphical user interfaces.
@@ -22,7 +22,6 @@ If you are building the Introspection data you will also need:
 
   • GObject-Introspection >= 0.6.4
 
-
 The official website is:
    http://www.clutter-project.org
 
@@ -42,85 +41,115 @@ Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
 
 INSTALLATION
-============
+===============================================================================
 
 See the INSTALL file. Info on specific Clutter options;
 
  --enable-debug=[no/minimum/yes]
-	Controls Clutter debugging level (default=yes):
-	  yes: All glib asserts, checks and runtime clutter verbose messages.
-          minimum: Just glib cast checks and runtime clutter verbose messagaes.
-          no: No glib asserts or checks and no runtime clutter verbose messages
-	      (Only really of use in extreme performance cases)
+	Controls Clutter debugging level:
+
+	yes:
+                All GLib asserts, checks and support for runtime Clutter
+                debugging notes through CLUTTER_DEBUG. This is the default
+                value for snapshots.
+
+        minimum:
+                Just GType cast checks and support for runtime Clutter
+                debugging notes through CLUTTER_DEBUG. This is the default
+                for stable releases.
+
+        no:
+                No GLib asserts or checks and no support for runtime Clutter
+                debugging notes. Only use in extreme performance and/or size
+                optimization cases.
 
  --enable-cogl-debug=[no/minimum/yes]
         Controls COGL debugging level (default=minimum):
-          yes: All runtime verbose messages and error checking for each GL
-               primitive
-          minimum: All runtime verbose messages
-          no: No error checking and no messages
+
+        yes:
+                Support for COGL debugging notes through COGL_DEBUG and
+                error checking for each GL primitive.
+
+        minimum:
+                Support for COGL debugging notes through COGL_DEBUG. This is
+                the default for snapshots.
+
+        no:
+                Disable support for COGL runtime debugging notes. This is
+                the default for stable releases.
 
  --enable-maintainer-flags=[no/yes]
-        Use strict compiler flags (default=no)
+        Use strict compiler flags. This defaults to 'yes' for snapshots and
+        to 'no' for stable releases.
 
  --enable-gtk-doc
 	use gtk-doc to build API documentation (default=no). Requires gtk-doc
-	present on system
+	present on the target system.
 
- --enable-manual=[no/yes]
-        Build application developers manual. Requires jw and xmlto binaries.
-	Presently incomplete.
+ --enable-docs=[no/yes]
+        Build additional documentation. Requires xsltproc for  DocBook
+        conversion, and optionally jw for PDF generation.
 
-  --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
+ --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
 
-	  glx:  Fully featured GLX backend. Using Open GL.
+	glx:
+                Fully featured GLX backend. Using Open GL.
 
-	  eglx: EGL/Open GL ES backend for EGL on X windows implementations
+	eglx:
+                EGL/Open GL ES backend for EGL on X windows implementations
 
-	  eglnative:
+	eglnative:
                 EGL/Open GL ES backend on 'native windowing system' - i.e
 		raw framebuffer. Expects the EGL implementation to provide
                 a createNativeWindow() call. Also it optionally supports
 		tslib for touchscreen events.
 
-	  sdl:  Basic SDL backend, using Open GL. Should provide portability
+	sdl:
+                Basic SDL backend, using Open GL. Should provide portability
 	        to Windows and possibly other OS's. (DEPRECATED)
 
-          osx:  OS X backend. (EXPERIMENTAL)
+        osx:
+                OS X backend. (EXPERIMENTAL)
 
-          win32:
+        win32:
                 Microsoft Windows(tm) WGL backend
 
-          fruity:
+        fruity:
                 Apple iPod Touch(tm)/iPhone(tm) backend (EXPERIMENTAL)
 
-  --with-imagebackend=[gdk-pixbuf/quartz/internal]
+ --with-imagebackend=[gdk-pixbuf/quartz/internal]
         Select the image loading backend used by COGL
 
-          gdk-pixbuf: Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
-                      eglnative, sdl, win32 flavours and recommended)
+        gdk-pixbuf:
+                Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
+                eglnative, sdl, win32 flavours and recommended)
 
-          quartz:     Depend on CoreGraphics (default for the osx flavour)
+        quartz:
+                Depend on CoreGraphics (default for the osx flavour)
 
-          internal:   Internal JPEG and PNG loader. Should only be used
-                      for testing on new platforms
+        internal:
+                Internal JPEG and PNG loader. Should only be used
+                for testing on new platforms
 
-  --with-gles=[1.1/2.0]
+ --with-gles=[1.1/2.0]
         Select the GLES version (for EGL backends) (default=1.1)
 
-  --with-json=[internal/check/system]
+ --with-json=[internal/check/system]
         Select the JSON-GLib copy to use (default=check)
 
-          internal: Use the internal copy of JSON-GLib for ClutterScript
+        internal:
+                Use the internal copy of JSON-GLib for ClutterScript
 
-          check: Check for the existence of a system copy of JSON-GLib
-                 and if it is available, make Clutter depend on it
+        check:
+                Check for the existence of a system copy of JSON-GLib
+                and if it is available, make Clutter depend on it
 
-          system: Only use the system copy of JSON-GLib
+        system:
+                Only use the system copy of JSON-GLib
 
 VERSIONING
-==========
+===============================================================================
 
 Clutter uses the common "Linux kernel" versioning system, where
 even-numbered minor versions are stable and odd-numbered minor
@@ -137,7 +166,7 @@ numbers are only used for released archives; odd micro numbers are
 only used on the SVN repository.
 
 HACKING
-=======
+===============================================================================
 
 If you want to hack on and improve Clutter, check the contained TODO
 file for pending tasks, the HACKING file for general implementation guidelines,
@@ -147,7 +176,7 @@ used throughout Clutter. Remember: the coding style is mandatory; patches
 not conforming to it will be rejected.
 
 BUGS
-====
+===============================================================================
 
 Bugs should be reported to the OpenedHand Bugzilla at:
 
@@ -171,8 +200,8 @@ behaviour.
 If the bug exposes a crash, the exact text printed out and a stack trace
 obtained using gdb are greatly appreciated.
 
-PATCHES
-=======
+CONTRIBUTING
+===============================================================================
 
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
@@ -199,13 +228,13 @@ If you do not intend to waive your copyright you should contact the Clutter
 development team to arrange a suitable solution.
 
 RELEASE NOTES
-=============
+===============================================================================
 
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 1.2
--------------------------------
+-------------------------------------------------------------------------------
 
 * ClutterStageManager is now publicly available and documented API.
 
@@ -213,7 +242,7 @@ Release Notes for Clutter 1.2
   back to the internal copy only if JSON-GLib is not installed.
 
 Cogl API changes for Clutter 1.2
---------------------------------
+-------------------------------------------------------------------------------
 
 * cogl_viewport is now deprecated in favour of cogl_set_viewport which
   accepts a viewport offset.
@@ -250,7 +279,7 @@ Cogl API changes for Clutter 1.2
 
 
 Release Notes for Clutter 1.0
--------------------------------
+-------------------------------------------------------------------------------
 
 * The clutter_actor_set_shader_param() function now takes a
   GValue, which can be set using the clutter_value_set_shader()
@@ -365,8 +394,8 @@ Release Notes for Clutter 1.0
   takes the duration of the timeline in milliseconds, and thus it replaces
   the clutter_timeline_new_for_duration() variant.
 
-  Cogl API changes for Clutter 1.0
-  --------------------------------
+Cogl API changes for Clutter 1.0
+-------------------------------------------------------------------------------
 
 * All drawing functions now use a source material to determine how geometry is
   filled. The source material is set via cogl_set_source. Or the convenience
@@ -473,7 +502,7 @@ Release Notes for Clutter 1.0
   a corresponding cogl_get_depth_test_enabled function has been added.
 
 Release Notes for Clutter 0.8
--------------------------------
+-------------------------------------------------------------------------------
 
 * The COGL GL wrapper API has been completely overhauled and now
   contains many new features including new greatly improved texture
@@ -639,7 +668,7 @@ Release Notes for Clutter 0.8
 * ClutterContainer can have per child custom properties via ClutterChildMeta.
 
 Release Notes for Clutter 0.6
--------------------------------
+-------------------------------------------------------------------------------
 
 * Now that every actor has events, the class signal handlers have been
   removed from ClutterStageClass and moved into ClutterActorClass.
@@ -728,7 +757,7 @@ Release Notes for Clutter 0.6
   respectively.
 
 Release Notes for Clutter 0.4.0
--------------------------------
+-------------------------------------------------------------------------------
 
 * clutter_actor_show_all does not recurse for groups at least (this is to
   match the original group_show_all behaviour). This is like 0.3 but was
@@ -747,7 +776,7 @@ Release Notes for Clutter 0.4.0
   overhauled.
 
 Release Notes for Clutter 0.3.1
--------------------------------
+-------------------------------------------------------------------------------
 
 * clutter_actor_apply_transform_to_point() parameters changed to use
   ClutterVertices.
@@ -758,7 +787,7 @@ Release Notes for Clutter 0.3.1
 * Exisiting X11 based egl backend public API calls now prefixed eglx.
 
 Release Notes for Clutter 0.3
------------------------------
+-------------------------------------------------------------------------------
 
 * ClutterTexture changes:
   + clutter_texture_set_pixbuf() now takes a GError paremeter.
