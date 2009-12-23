@@ -96,7 +96,6 @@ struct _ClutterBoxLayoutPrivate
 
   gulong easing_mode;
   guint easing_duration;
-  GHashTable *allocations;
 
   guint is_vertical    : 1;
   guint is_pack_start  : 1;
@@ -115,6 +114,11 @@ struct _ClutterBoxChild
   guint y_fill : 1;
 
   guint expand : 1;
+
+  /* the last stable allocation before an animation; it is
+   * used as the initial ActorBox when interpolating
+   */
+  ClutterActorBox *last_allocation;
 };
 
 enum
@@ -352,6 +356,16 @@ clutter_box_child_get_property (GObject    *gobject,
 }
 
 static void
+clutter_box_child_finalize (GObject *gobject)
+{
+  ClutterBoxChild *self = CLUTTER_BOX_CHILD (gobject);
+
+  clutter_actor_box_free (self->last_allocation);
+
+  G_OBJECT_CLASS (clutter_box_child_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_box_child_class_init (ClutterBoxChildClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -359,6 +373,7 @@ clutter_box_child_class_init (ClutterBoxChildClass *klass)
 
   gobject_class->set_property = clutter_box_child_set_property;
   gobject_class->get_property = clutter_box_child_get_property;
+  gobject_class->finalize = clutter_box_child_finalize;
 
   pspec = g_param_spec_boolean ("expand",
                                 "Expand",
@@ -413,6 +428,8 @@ clutter_box_child_init (ClutterBoxChild *self)
   self->x_fill = self->y_fill = FALSE;
 
   self->expand = FALSE;
+
+  self->last_allocation = NULL;
 }
 
 static inline void
@@ -765,15 +782,14 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       p = clutter_layout_manager_get_animation_progress (manager);
 
-      start = g_hash_table_lookup (priv->allocations, child);
+      start = box_child->last_allocation;
       if (start == NULL)
         {
           /* if there is no allocation available then the child has just
            * been added to the container; we put it in the final state
            * and store its allocation for later
            */
-          start = clutter_actor_box_copy (&child_box);
-          g_hash_table_insert (priv->allocations, child, start);
+          box_child->last_allocation = clutter_actor_box_copy (&child_box);
 
           goto do_allocate;
         }
@@ -797,10 +813,8 @@ allocate_box_child (ClutterBoxLayout       *self,
     }
   else
     {
-      ClutterActorBox *start = clutter_actor_box_copy (&child_box);
-
       /* store the allocation for later animations */
-      g_hash_table_replace (priv->allocations, child, start);
+      box_child->last_allocation = clutter_actor_box_copy (&child_box);
     }
 
 do_allocate:
@@ -975,9 +989,6 @@ clutter_box_layout_begin_animation (ClutterLayoutManager *manager,
   ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (manager)->priv;
   ClutterLayoutManagerClass *parent_class;
 
-  if (priv->is_animating)
-    return;
-
   priv->is_animating = TRUE;
 
   /* we want the default implementation */
@@ -1080,16 +1091,6 @@ clutter_box_layout_get_property (GObject    *gobject,
 }
 
 static void
-clutter_box_layout_finalize (GObject *gobject)
-{
-  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (gobject)->priv;
-
-  g_hash_table_destroy (priv->allocations);
-
-  G_OBJECT_CLASS (clutter_box_layout_parent_class)->finalize (gobject);
-}
-
-static void
 clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -1100,7 +1101,6 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
 
   gobject_class->set_property = clutter_box_layout_set_property;
   gobject_class->get_property = clutter_box_layout_get_property;
-  gobject_class->finalize = clutter_box_layout_finalize;
 
   layout_class->get_preferred_width =
     clutter_box_layout_get_preferred_width;
@@ -1231,11 +1231,6 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
   priv->use_animations = FALSE;
   priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
   priv->easing_duration = 500;
-
-  priv->allocations =
-    g_hash_table_new_full (NULL, NULL,
-                           NULL,
-                           (GDestroyNotify) clutter_actor_box_free);
 }
 
 /**
