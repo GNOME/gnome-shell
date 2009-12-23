@@ -416,6 +416,8 @@ clutter_actor_box_get_size
 clutter_actor_box_get_area
 clutter_actor_box_contains
 clutter_actor_box_from_vertices
+clutter_actor_box_clamp_to_pixel
+clutter_actor_box_interpolate
 
 <SUBSECTION>
 ClutterVertex
@@ -1771,6 +1773,11 @@ clutter_layout_manager_child_get_property
 clutter_layout_manager_find_child_property
 clutter_layout_manager_list_child_properties
 
+<SUBSECTION>
+clutter_layout_manager_begin_animation
+clutter_layout_manager_end_animation
+clutter_layout_manager_get_animation_progress
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_LAYOUT_MANAGER
 CLUTTER_LAYOUT_MANAGER
@@ -1934,6 +1941,14 @@ clutter_box_layout_set_expand
 clutter_box_layout_get_expand
 clutter_box_layout_set_fill
 clutter_box_layout_get_fill
+
+<SUBSECTION>
+clutter_box_layout_set_use_animations
+clutter_box_layout_get_use_animations
+clutter_box_layout_set_easing_duration
+clutter_box_layout_get_easing_duration
+clutter_box_layout_set_easing_mode
+clutter_box_layout_get_easing_mode
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX_LAYOUT

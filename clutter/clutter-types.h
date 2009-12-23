@@ -153,6 +153,11 @@ gboolean         clutter_actor_box_contains      (const ClutterActorBox *box,
                                                   gfloat                 y);
 void             clutter_actor_box_from_vertices (ClutterActorBox       *box,
                                                   const ClutterVertex    verts[]);
+void             clutter_actor_box_interpolate   (const ClutterActorBox *initial,
+                                                  const ClutterActorBox *final,
+                                                  gdouble                progress,
+                                                  ClutterActorBox       *result);
+void             clutter_actor_box_clamp_to_pixel (ClutterActorBox       *box);
 
 /**
  * ClutterGeometry:

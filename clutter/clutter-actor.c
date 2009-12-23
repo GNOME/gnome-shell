@@ -8454,6 +8454,53 @@ clutter_actor_box_from_vertices (ClutterActorBox     *box,
   box->y2 = y_2;
 }
 
+/**
+ * clutter_actor_box_interpolate:
+ * @initial: the initial #ClutterActorBox
+ * @final: the final #ClutterActorBox
+ * @progress: the interpolation progress
+ * @result: (out): return location for the interpolation
+ *
+ * Interpolates between @initial and @final #ClutterActorBox<!-- -->es
+ * using @progress
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_box_interpolate (const ClutterActorBox *initial,
+                               const ClutterActorBox *final,
+                               gdouble                progress,
+                               ClutterActorBox       *result)
+{
+  g_return_if_fail (initial != NULL);
+  g_return_if_fail (final != NULL);
+  g_return_if_fail (result != NULL);
+
+  result->x1 = initial->x1 + (final->x1 - initial->x1) * progress;
+  result->y1 = initial->y1 + (final->y1 - initial->y1) * progress;
+  result->x2 = initial->x2 + (final->x2 - initial->x2) * progress;
+  result->y2 = initial->y2 + (final->y2 - initial->y2) * progress;
+}
+
+/**
+ * clutter_actor_box_clamp_to_pixel:
+ * @box: (inout): the #ClutterActorBox to clamp
+ *
+ * Clamps the components of @box to the nearest integer
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
+{
+  g_return_if_fail (box != NULL);
+
+  box->x1 = floorf (box->x1 + 0.5);
+  box->y1 = floorf (box->y1 + 0.5);
+  box->x2 = floorf (box->x2 + 0.5);
+  box->y2 = floorf (box->y2 + 0.5);
+}
+
 /******************************************************************************/
 
 struct _ShaderData
