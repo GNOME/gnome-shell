@@ -237,16 +237,20 @@ layout_manager_real_begin_animation (ClutterLayoutManager *manager,
   alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
   if (alpha != NULL)
     {
+      clutter_alpha_set_mode (alpha, mode);
+
       timeline = clutter_alpha_get_timeline (alpha);
       clutter_timeline_set_duration (timeline, duration);
-
-      clutter_alpha_set_mode (alpha, mode);
+      clutter_timeline_rewind (timeline);
 
       return alpha;
     };
 
   timeline = clutter_timeline_new (duration);
+
   alpha = clutter_alpha_new_full (timeline, mode);
+
+  /* let the alpha take ownership of the timeline */
   g_object_unref (timeline);
 
   g_signal_connect_swapped (timeline, "completed",
