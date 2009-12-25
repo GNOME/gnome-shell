@@ -233,7 +233,12 @@ StatusMenu.prototype = {
             let [panelX, panelY] = panel.get_transformed_position();
             let [panelWidth, panelHeight] = panel.get_transformed_size();
 
-            let menuX = Math.round(panelX + panelWidth - menuWidth);
+            let menuX;
+            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+                menuX = panelX;
+            } else {
+                menuX = Math.round(panelX + panelWidth - menuWidth);
+            }
             let menuY = Math.round(panelY + panelHeight);
 
             Shell.popup_menu(this._menu, event.get_button(), event.get_time(),
