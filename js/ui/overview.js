@@ -308,6 +308,7 @@ Overview.prototype = {
 
     relayout: function () {
         let primary = global.get_primary_monitor();
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
         this._recalculateGridSizes();
 
@@ -329,10 +330,19 @@ Overview.prototype = {
         this._workspacesHeight = Math.floor(displayGridRowHeight * workspaceRowsUsed
                                    - WORKSPACE_GRID_PADDING * (primary.height / primary.width) * 2);
 
-        this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+        if (rtl) {
+            this._workspacesX = WORKSPACE_GRID_PADDING;
+        } else {
+            this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+        }
         this._workspacesY = Math.floor(displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width));
 
-        this._dash.actor.set_position(0, contentY);
+        if (rtl) {
+            this._dash.actor.set_position(primary.width - displayGridColumnWidth, contentY);
+        } else {
+            this._dash.actor.set_position(0, contentY);
+        }
+
         this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
         this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
@@ -356,6 +366,11 @@ Overview.prototype = {
                                          this._workspacesY);
         // Dynamic width
         this._paneContainer.height = this._workspacesHeight;
+        if (rtl) {
+            this._paneContainer.connect('notify::width', Lang.bind(this, function (paneContainer) {
+                paneContainer.x = this._dash.actor.x - (DEFAULT_PADDING + paneContainer.width);
+            }));
+        }
 
         this._transparentBackground.set_position(this._paneContainer.x, this._paneContainer.y);
         this._transparentBackground.set_size(primary.width - this._paneContainer.x,
