@@ -485,7 +485,7 @@ DocSearchProvider.prototype = {
     __proto__: Search.SearchProvider.prototype,
 
     _init: function(name) {
-        Search.SearchProvider.prototype._init.call(this, _("DOCUMENTS"));
+        Search.SearchProvider.prototype._init.call(this, _("RECENT ITEMS"));
         this._docManager = DocInfo.getDocManager();
     },
 

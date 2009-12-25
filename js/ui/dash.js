@@ -882,14 +882,14 @@ Dash.prototype = {
 
         /* Translators: This is in the sense of locations for documents,
            network locations, etc. */
-        this._placesSection = new Section(_("PLACES"), true);
+        this._placesSection = new Section(_("PLACES & DEVICES"), true);
         let placesDisplay = new PlaceDisplay.DashPlaceDisplay();
         this._placesSection.content.add(placesDisplay.actor, { expand: true });
         this.sectionArea.add(this._placesSection.actor);
 
         /***** Documents *****/
 
-        this._docsSection = new Section(_("RECENT DOCUMENTS"));
+        this._docsSection = new Section(_("RECENT ITEMS"));
 
         this._docDisplay = new DocDisplay.DashDocDisplay();
         this._docsSection.content.add(this._docDisplay.actor, { expand: true });
