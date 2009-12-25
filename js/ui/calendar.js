@@ -31,7 +31,7 @@ Calendar.prototype = {
 
         if (isNaN(this._weekStart) || this._weekStart < 0 || this._weekStart > 6) {
             log("Translation of 'calendar:week_start:0' in GTK+ is not correct");
-            this.weekStart = 0;
+            this._weekStart = 0;
         }
 
         // Find the ordering for month/year in the calendar heading
@@ -63,14 +63,19 @@ Calendar.prototype = {
         this.actor.add(this._topBox,
                        { row: 0, col: 0, col_span: 7 });
 
-        let back = new St.Button({ label: "&lt;", style_class: 'calendar-change-month'  });
+        let [backlabel, forwardlabel] = ["&lt;", "&gt;"];
+        if (St.Widget.get_default_direction () == St.TextDirection.RTL) {
+            [backlabel, forwardlabel] = [forwardlabel, backlabel];
+        }
+
+        let back = new St.Button({ label: backlabel, style_class: 'calendar-change-month'  });
         this._topBox.add(back);
         back.connect("clicked", Lang.bind(this, this._prevMonth));
 
         this._dateLabel = new St.Label();
         this._topBox.add(this._dateLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
-        let forward = new St.Button({ label: "&gt;", style_class: 'calendar-change-month' });
+        let forward = new St.Button({ label: forwardlabel, style_class: 'calendar-change-month' });
         this._topBox.add(forward);
         forward.connect("clicked", Lang.bind(this, this._nextMonth));
 
