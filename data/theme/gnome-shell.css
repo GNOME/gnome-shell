@@ -123,7 +123,7 @@ StTooltip {
     background-color: #314a6c;
 }
 
-#panelStatus {
+#statusMenu {
     spacing: 4px;
 }
 
@@ -154,6 +154,7 @@ StTooltip {
 
 #dash {
     color: #5f5f5f;
+    font-size: 12px;
     background-color: rgba(0,0,0,0.75);
     padding: 0px 14px;
 }
@@ -176,17 +177,9 @@ StTooltip {
 }
 
 .section-header {
-    border: 1px solid #262626;
-    background-gradient-direction: vertical;
-    background-gradient-start: #161616;
-    background-gradient-end: #000000;
-    font-weight: bold;
-    font-size: 12px;
 }
 
 .section-header-inner {
-    border: 1px solid #000000;
-    padding: 0px 4px;
     spacing: 4px;
 }
 
@@ -209,7 +202,6 @@ StTooltip {
 }
 
 .dash-section-content {
-    font-size: 14px;
     color: #ffffff;
     spacing: 8px;
 }
@@ -251,12 +243,14 @@ StTooltip {
 }
 
 .dash-search-result-content {
-    padding: 2px;
+    padding: 3px;
 }
 
 .dash-search-result-content:selected {
-    padding: 1px;
-    border: 1px solid #262626;
+    padding: 2px;
+    border: 1px solid #5c5c5c;
+    border-radius: 2px;
+    background-color: #1e1e1e;
 }
 
 /* GenericDisplay */
@@ -308,7 +302,7 @@ StTooltip {
     padding: 2px;
     width: 74px;
     height: 74px;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .app-well-app:hover {

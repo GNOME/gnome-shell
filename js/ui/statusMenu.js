@@ -30,7 +30,7 @@ StatusMenu.prototype = {
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSessionPresence();
 
-        this.actor = new St.BoxLayout({ name: 'StatusMenu' });
+        this.actor = new St.BoxLayout({ name: 'statusMenu' });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
