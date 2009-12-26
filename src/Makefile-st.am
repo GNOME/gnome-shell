@@ -88,17 +88,23 @@ st_source_h =					\
     st/st-subtexture.h				\
     st/st-table.h				\
     st/st-table-child.h				\
-    st/st-table-private.h			\
     st/st-texture-cache.h			\
     st/st-texture-frame.h			\
     st/st-theme.h				\
     st/st-theme-context.h			\
     st/st-theme-node.h				\
-    st/st-theme-private.h			\
     st/st-tooltip.h				\
     st/st-types.h				\
     st/st-widget.h				\
     $(NULL)
+    
+st/st.h: Makefile
+	$(AM_V_GEN) (echo "#define ST_H_INSIDE 1";	\
+	for name in $(st_source_h); do			\
+	  echo "#include <"$$name">";			\
+	done; echo "#undef ST_H_INSIDE") > st/st.h.tmp && mv st/st.h.tmp st/st.h
+
+BUILT_SOURCES += st/st.h
 
 st_source_private_h =				\
     st/st-private.h				\
@@ -143,8 +149,10 @@ noinst_LTLIBRARIES += libst-1.0.la
 libst_1_0_la_LIBADD = $(ST_LIBS)
 libst_1_0_la_SOURCES =				\
     $(st_source_c)				\
+    $(st_source_private_h)			\
     $(st_source_private_c)			\
     $(st_source_h)				\
+    st/st.h					\
     $(st_built_sources)				\
     $(NULL)
 libst_1_0_la_CPPFLAGS = $(st_cflags)
