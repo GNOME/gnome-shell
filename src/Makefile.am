@@ -85,6 +85,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-global.c				\
 	shell-global.h				\
 	shell-global-private.h			\
+	shell-slicer.c              \
+	shell-slicer.h              \
 	shell-stack.c				\
 	shell-stack.h				\
 	shell-tray-manager.c			\
