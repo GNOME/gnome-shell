@@ -13,6 +13,7 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const AppDisplay = imports.ui.appDisplay;
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 const StatusMenu = imports.ui.statusMenu;
@@ -46,6 +47,99 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'gnome-power-manager': 'battery'
 };
 
+function TextShadower() {
+    this._init();
+}
+
+TextShadower.prototype = {
+    _init: function() {
+        this.actor = new Shell.GenericContainer();
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this._label = new St.Label();
+        this.actor.add_actor(this._label);
+        for (let i = 0; i < 4; i++) {
+            let actor = new St.Label({ style_class: 'label-shadow' });
+            this.actor.add_actor(actor);
+        }
+        this._label.raise_top();
+    },
+
+    setText: function(text) {
+        let children = this.actor.get_children();
+        for (let i = 0; i < children.length; i++)
+            children[i].set_text(text);
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [minWidth, natWidth] = this._label.get_preferred_width(forHeight);
+        alloc.min_size = minWidth;
+        alloc.natural_size = natWidth;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [minHeight, natHeight] = this._label.get_preferred_height(forWidth);
+        alloc.min_size = minHeight;
+        alloc.natural_size = natHeight;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let children = this.actor.get_children();
+
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        let [minChildWidth, minChildHeight, natChildWidth, natChildHeight] =
+            this._label.get_preferred_size();
+
+        let childWidth = Math.min(natChildWidth, availWidth);
+        let childHeight = Math.min(natChildHeight, availHeight);
+
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            let childBox = new Clutter.ActorBox();
+            // The order of the labels here is arbitrary, except
+            // we know the "real" label is at the end because Clutter.Group
+            // sorts by Z order
+            switch (i) {
+                case 0: // top
+                    childBox.x1 = 1;
+                    childBox.y1 = 0;
+                    break;
+                case 1: // right
+                    childBox.x1 = 2;
+                    childBox.y1 = 1;
+                    break;
+                case 2: // bottom
+                    childBox.x1 = 1;
+                    childBox.y1 = 2;
+                    break;
+                case 3: // left
+                    childBox.x1 = 0;
+                    childBox.y1 = 1;
+                    break;
+                case 4: // center
+                    childBox.x1 = 1;
+                    childBox.y1 = 1;
+                    break;
+            }
+            childBox.x2 = childBox.x1 + childWidth;
+            childBox.y2 = childBox.y1 + childHeight;
+            child.allocate(childBox, flags);
+        }
+    }
+}
+
+/**
+ * AppPanelMenu:
+ *
+ * This class manages the "application menu" component.  It tracks the
+ * currently focused application.  However, when an app is launched,
+ * this menu also handles startup notification for it.  So when we
+ * have an active startup notification, we switch modes to display that.
+ */
 function AppPanelMenu() {
     this._init();
 }
@@ -59,10 +153,11 @@ AppPanelMenu.prototype = {
         this._startupSequences = {};
 
         this.actor = new St.BoxLayout({ name: 'appMenu' });
-        this._iconBox = new St.Bin({ name: 'appMenuIcon' });
+        this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this.actor.add(this._iconBox);
-        this._label = new St.Label();
-        this.actor.add(this._label, { expand: true, y_fill: false });
+        this._label = new TextShadower();
+        this.actor.add(this._label.actor, { expand: true, y_fill: true });
+        this.actor.connect('notify::allocation', Lang.bind(this, this._repositionLabel));
 
         this._startupBox = new St.BoxLayout();
         this.actor.add(this._startupBox);
@@ -84,6 +179,16 @@ AppPanelMenu.prototype = {
         tracker.connect('app-running-changed', Lang.bind(this, this._sync));
 
         this._sync();
+    },
+
+    _repositionLabel: function() {
+        this._label.actor.x = Math.floor(AppDisplay.APPICON_SIZE / 2);
+        let actorAlloc = this.actor.allocation;
+        let actorHeight = actorAlloc.y2 - actorAlloc.y1;
+        let labelAlloc = this._label.actor.allocation;
+        let labelHeight = labelAlloc.y2 - labelAlloc.y1;
+        this._label.actor.y = Math.floor((actorHeight - labelHeight) / 2);
+        this._label.actor.fixed_position_set = true;
     },
 
     _sync: function() {
@@ -112,20 +217,24 @@ AppPanelMenu.prototype = {
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
-        this._label.set_text('');
+        this._label.setText('');
+        let icon;
         if (this._focusedApp != null) {
-            let icon = this._focusedApp.create_icon_texture(PANEL_ICON_SIZE);
-            this._iconBox.set_child(icon);
-            this._iconBox.show();
-            let appName = this._focusedApp.get_name();
-            // Use _set_text to work around http://bugzilla.openedhand.com/show_bug.cgi?id=1851
-            this._label.set_text(appName);
+            icon = this._focusedApp.create_icon_texture(AppDisplay.APPICON_SIZE);
+            this._label.setText(this._focusedApp.get_name());
         } else if (this._activeSequence != null) {
-            let icon = this._activeSequence.create_icon(PANEL_ICON_SIZE);
-            this._iconBox.set_child(icon);
-            this._iconBox.show();
-            this._label.set_text(this._activeSequence.get_name());
+            icon = this._activeSequence.create_icon(AppDisplay.APPICON_SIZE);
+            this._label.setText(this._activeSequence.get_name());
+        } else {
+            icon = null;
         }
+        
+        if (icon != null) {
+            let faded = Shell.fade_app_icon(icon); /* TODO consider caching */
+            this._iconBox.set_child(faded);
+            this._iconBox.show();
+        }
+        this._repositionLabel();
 
         this.emit('changed');
     }

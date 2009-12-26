@@ -26,6 +26,10 @@
     color: #0000e0;
 }
 
+.label-shadow {
+    color: rgba(0,0,0,0.5);
+}
+
 StScrollBar
 {
   padding: 0px;

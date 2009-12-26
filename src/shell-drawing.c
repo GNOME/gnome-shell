@@ -52,6 +52,71 @@ shell_draw_clock (ClutterCairoTexture *texture,
   cairo_destroy (cr);
 }
 
+/**
+ * shell_fade_app_icon:
+ * @source: Source #ClutterTexture
+ *
+ * Create a new texture by modifying the alpha channel of the
+ * source texture, adding a horizontal gradient fade.
+ *
+ * Returns: (transfer none): A new #ClutterTexture
+ */
+ClutterTexture *
+shell_fade_app_icon (ClutterTexture *source)
+{
+  CoglHandle  texture;
+  guchar     *pixels;
+  gint        width, height, rowstride;
+  gint        fade_start;
+  gint        fade_range;
+  guint       i, j;
+  ClutterTexture *result;
+
+  texture = clutter_texture_get_cogl_texture (source);
+  if (texture == COGL_INVALID_HANDLE)
+    return NULL;
+
+  width  = cogl_texture_get_width  (texture);
+  height = cogl_texture_get_height (texture);
+  rowstride = (width * 4 + 3) & ~3;
+
+  pixels = g_malloc0 (rowstride * height);
+
+  cogl_texture_get_data (texture, COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                         rowstride, pixels);
+  cogl_texture_unref (texture);
+  
+  fade_start = width / 2;
+  fade_range = width - fade_start;
+  for (i = fade_start; i < width; i++)
+    {
+      for (j = 0; j < height; j++)
+        {
+          guchar *pixel = &pixels[j * rowstride + i * 4];
+          float fade = 1.0 - ((float) i - fade_start) / fade_range;
+          pixel[0] = 0.5 + pixel[0] * fade;
+          pixel[1] = 0.5 + pixel[1] * fade;
+          pixel[2] = 0.5 + pixel[2] * fade;
+          pixel[3] = 0.5 + pixel[3] * fade;
+        }   
+    }
+
+  texture = cogl_texture_new_from_data (width,
+                                        height,
+                                        COGL_TEXTURE_NONE,
+                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                        COGL_PIXEL_FORMAT_ANY,
+                                        rowstride,
+                                        pixels);
+  g_free (pixels);
+    
+  result = (ClutterTexture*)clutter_texture_new ();
+  clutter_texture_set_cogl_texture (result, texture);
+  cogl_texture_unref (texture);
+  
+  return result;
+}
+
 void
 shell_draw_box_pointer (ClutterCairoTexture   *texture,
                         ShellPointerDirection  direction,
