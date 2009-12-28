@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 22:26+0100\n"
-"PO-Revision-Date: 2009-11-03 22:28+0100\n"
+"POT-Creation-Date: 2009-12-28 21:58+0100\n"
+"PO-Revision-Date: 2009-12-28 21:59+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -24,85 +24,72 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestione finestre e avvio applicazioni"
 
-#: ../js/ui/appDisplay.js:332
-msgid "Frequent"
-msgstr "Frequente"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:858
+msgid "APPLICATIONS"
+msgstr "Applicazioni"
 
-#: ../js/ui/appDisplay.js:867
-msgid "Drag here to add favorites"
-msgstr "Trascinare qui per aggiungere ai preferiti"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "Preferenze"
 
-#: ../js/ui/appIcon.js:426
+#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appIcon.js:431
+#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:1064
+msgid "Drag here to add favorites"
+msgstr "Trascinare qui per aggiungere ai preferiti"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Trova..."
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Altro"
-
-#: ../js/ui/dash.js:543
-msgid "(see all)"
-msgstr "(vedi tutto)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
-msgid "APPLICATIONS"
-msgstr "Applicazioni"
+#: ../js/ui/dash.js:437
+msgid "Searching..."
+msgstr "Ricerca..."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:745
+#: ../js/ui/dash.js:878 ../js/ui/placeDisplay.js:519
 msgid "PLACES"
 msgstr "Risorse"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
+#: ../js/ui/dash.js:885
 msgid "RECENT DOCUMENTS"
 msgstr "Documenti recenti"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
-msgid "SEARCH RESULTS"
-msgstr "Risultati ricerca"
-
-#: ../js/ui/dash.js:792
-msgid "PREFERENCES"
-msgstr "Preferenze"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:227
 msgid "Activities"
 msgstr "Attività"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#: ../js/ui/panel.js:440
 msgid "%a %l:%M %p"
 msgstr "%a %k.%M"
 
-#: ../js/ui/places.js:178
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Connetti a..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
@@ -120,102 +107,49 @@ msgstr "Applicazioni"
 msgid "Recent Documents"
 msgstr "Documenti recenti"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d settimana fa"
 msgstr[1] "%d settimane fa"
 
-# (ndt) valutare se vada al femminile
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Sconosciuto"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Impossibile bloccare lo schermo: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Impossibile impostare temporaneamente il salva schermo a schermo nero: %s "
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Impossibile terminare la sessione: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Informazioni account..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Barra laterale"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Preferenze di sistema..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Blocca schermo"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Cambia utente"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Termina sessione..."
-
-# (ndt) da valutare... pare che ora anche Windows usi 'Arresta...'...
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Spegni..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Cartella home"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "File system"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Cerca"
 
@@ -225,7 +159,55 @@ msgstr "Cerca"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Frequent"
+#~ msgstr "Frequente"
+
+#~ msgid "More"
+#~ msgstr "Altro"
+
+#~ msgid "(see all)"
+#~ msgstr "(vedi tutto)"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "Risultati ricerca"
+
+# (ndt) valutare se vada al femminile
+#~ msgid "Unknown"
+#~ msgstr "Sconosciuto"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Impossibile bloccare lo schermo: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr ""
+#~ "Impossibile impostare temporaneamente il salva schermo a schermo nero: %s "
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "Impossibile terminare la sessione: %s"
+
+#~ msgid "Account Information..."
+#~ msgstr "Informazioni account..."
+
+#~ msgid "Sidebar"
+#~ msgstr "Barra laterale"
+
+#~ msgid "System Preferences..."
+#~ msgstr "Preferenze di sistema..."
+
+#~ msgid "Lock Screen"
+#~ msgstr "Blocca schermo"
+
+#~ msgid "Switch User"
+#~ msgstr "Cambia utente"
+
+#~ msgid "Log Out..."
+#~ msgstr "Termina sessione..."
+
+# (ndt) da valutare... pare che ora anche Windows usi 'Arresta...'...
+#~ msgid "Shut Down..."
+#~ msgstr "Spegni..."
