@@ -76,6 +76,9 @@ gboolean clutter_media_get_playing      (ClutterMedia *media);
 void     clutter_media_set_progress     (ClutterMedia *media,
                                          gdouble       progress);
 gdouble  clutter_media_get_progress     (ClutterMedia *media);
+void     clutter_media_set_subtitle_uri (ClutterMedia *media,
+                                         const gchar  *uri);
+gchar *  clutter_media_get_subtitle_uri (ClutterMedia *media);
 void     clutter_media_set_audio_volume (ClutterMedia *media,
                                          gdouble       volume);
 gdouble  clutter_media_get_audio_volume (ClutterMedia *media);
