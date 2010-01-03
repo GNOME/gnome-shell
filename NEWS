@@ -1,3 +1,59 @@
+Clutter 1.1.4 (03/01/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.2
+
+    o Update the ClutterScript parser to be more resilient, and support
+      constructor and ChildMeta properties. The parser also respects the
+      order of the properties in the UI definitions when applying them,
+      and will apply the properties of an Actor after building the scene
+      graph.
+
+    o Simplified the implementation of LayoutManager sub-classes, and added
+      support for animating a layout manager.
+
+    o Allow short-circuiting some layout operations by setting a specific
+      flag on ClutterActor.
+
+    o Improve caching of the preferred size of a ClutterActor.
+
+    o Allow declaring "internal children" for a ClutterContainer
+      implementation: the memory management of these actors will be deferred
+      entirely to the Container.
+
+    o Let the ClutterStage honour the :opacity property and the alpha component
+      of the stage color. This requires support in the Clutter backend used.
+
+    o Improve Windows and OSX backends.
+
+    o Simplify the feature detection code for OpenGL; this also reduced the
+      required OpenGL version to 1.2.
+
+    o Improve the matrix stack handling code. The matrices can be debugged by
+      using the COGL_DEBUG environment variable, assuming that Clutter was
+      compiled with the right configure-time switch.
+
+    o Improve COGL API for draw buffers, and for offscreen buffer support.
+
+    o Add support for text direction to ClutterActor.
+
+    o Documentation, introspection and build fixes.
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Damien Lespiau
+  Joshua Lock
+  Bastian Winkler
+  Rob Bradford
+  Samuel Degrande
+  Christian Persch
+  Colin Walters
+  Johan Bilien
+  Raymond Liu
+  Tim Horton
+
 Clutter 1.1.2 (23/10/2009)
 ===============================================================================
 
