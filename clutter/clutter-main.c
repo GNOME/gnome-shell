@@ -1725,8 +1725,10 @@ clutter_init_with_args (int            *argc,
 
   if (!ctx->defer_display_setup)
     {
+#if 0
       if (argc && *argc > 0 && *argv)
 	g_set_prgname ((*argv)[0]);
+#endif
 
       context = g_option_context_new (parameter_string);
 
@@ -1831,8 +1833,10 @@ clutter_init (int    *argc,
 
   if (!ctx->defer_display_setup)
     {
+#if 0
       if (argc && *argc > 0 && *argv)
 	g_set_prgname ((*argv)[0]);
+#endif
 
       /* parse_args will trigger backend creation and things like
        * DISPLAY connection etc.
