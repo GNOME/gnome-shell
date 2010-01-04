@@ -41,14 +41,7 @@ AM_CPPFLAGS = \
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
-
-LDADD = \
-	$(CLUTTER_LT_LDFLAGS) \
-	-export-dynamic \
-	-export-symbols-regex "^(clutter|cogl|json).*" \
-	-rpath $(libdir) \
-	$(NULL)
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
 # please, keep this sorted alphabetically
 source_h =					\
@@ -220,7 +213,13 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c_priv) \
 	$(source_h_priv)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+	$(CLUTTER_LT_LDFLAGS) \
+	$(GCOV_LDFLAGS) \
+	-export-dynamic \
+	-export-symbols-regex "^(clutter|cogl|json).*" \
+	-rpath $(libdir) \
+	$(NULL)
 
 lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)
 
@@ -322,3 +321,6 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
+
+gcov_sources = $(source_c)
+include $(top_srcdir)/build/autotools/Makefile.am.gcov

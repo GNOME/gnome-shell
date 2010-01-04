@@ -720,6 +720,31 @@ AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
 AC_SUBST(CLUTTER_PROFILE_CFLAGS)
 AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
 
+dnl === Coverage report =======================================================
+
+AC_PATH_PROG([GCOV], [gcov], [enable_gcov=no])
+
+AC_MSG_CHECKING([whether to build with gcov testing])
+
+AC_ARG_ENABLE([gcov],
+              [AS_HELP_STRING([--enable-gcov],
+                              [Whether to enable coverage testing (requires gcc 
+and gcov)])],
+              [],
+              [enable_gcov=no])
+
+AS_IF([test "x$enable_gcov" = "xyes" && test "x$GCC" = "xyes"],
+      [
+        GCOV_CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage"
+        GCOV_LDFLAGS="-lgcov"
+      ]
+)
+
+AM_CONDITIONAL([GCOV_ENABLED], [test "x$enable_gcov" = "xyes"])
+AC_SUBST([GCOV_CFLAGS])
+AC_SUBST([GCOV_LDFLAGS])
+AC_MSG_RESULT([$enable_gcov])
+
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only on development releases
@@ -908,6 +933,7 @@ echo "        Clutter debug level: ${enable_debug}"
 echo "        COGL debug level: ${enable_cogl_debug}"
 echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
+echo "        Enable coverage tests: ${enable_gcov}"
 
 # Documentation
 echo ""

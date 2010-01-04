@@ -11,11 +11,13 @@ clutter.pc
 *.o
 *.lo
 *.la
+*.gcov
 ChangeLog*
 clutter/clutter-enum-types.[ch]
 clutter/clutter-marshal.[ch]
 clutter/clutter-version.h
 clutter/stamp-*
+/clutter/gcov-report.txt
 /clutter/clutter-json.h
 /clutter/cogl/cogl/cogl-defines.h
 /clutter/cogl/cogl/*.pc
