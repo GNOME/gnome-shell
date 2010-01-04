@@ -466,9 +466,9 @@ void cogl_rectangles (const float *verts,
  *
  * Since: 1.0
  */
-void cogl_polygon (CoglTextureVertex  *vertices,
-                   guint               n_vertices,
-                   gboolean            use_color);
+void cogl_polygon (const CoglTextureVertex  *vertices,
+                   guint                     n_vertices,
+                   gboolean                  use_color);
 
 G_END_DECLS
 
