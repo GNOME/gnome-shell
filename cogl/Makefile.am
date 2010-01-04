@@ -78,12 +78,11 @@ noinst_LTLIBRARIES = libclutter-cogl.la
 libclutter_cogl_la_CPPFLAGS = 		\
 	$(COGL_DEBUG_CFLAGS) 		\
 	$(CLUTTER_DEBUG_CFLAGS) 	\
-	$(MAINTAINER_CFLAGS)		\
 	-DG_DISABLE_SINGLE_INCLUDES 	\
 	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" \
 	-DCLUTTER_COMPILATION
 
-libclutter_cogl_la_CFLAGS = $(CLUTTER_CFLAGS)
+libclutter_cogl_la_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) \
 	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
