@@ -1953,7 +1953,10 @@ st_theme_node_get_font (StThemeNode *node)
     }
 
   if (family)
-    pango_font_description_set_family (node->font_desc, family);
+    {
+      pango_font_description_set_family (node->font_desc, family);
+      g_free (family);
+    }
 
   if (size_set)
     pango_font_description_set_absolute_size (node->font_desc, size);
