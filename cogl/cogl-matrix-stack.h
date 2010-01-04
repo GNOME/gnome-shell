@@ -28,9 +28,14 @@
 #define __COGL_MATRIX_STACK_H
 
 #include "cogl-matrix.h"
-#include "cogl.h" /* needed for GLenum */
 
 typedef struct _CoglMatrixStack CoglMatrixStack;
+
+typedef enum {
+  COGL_MATRIX_MODELVIEW,
+  COGL_MATRIX_PROJECTION,
+  COGL_MATRIX_TEXTURE
+} CoglMatrixMode;
 
 CoglMatrixStack* _cogl_matrix_stack_new           (void);
 void             _cogl_matrix_stack_destroy       (CoglMatrixStack  *stack);
@@ -79,7 +84,7 @@ void             _cogl_matrix_stack_get           (CoglMatrixStack  *stack,
 void             _cogl_matrix_stack_set           (CoglMatrixStack  *stack,
                                                    const CoglMatrix *matrix);
 void             _cogl_matrix_stack_flush_to_gl   (CoglMatrixStack  *stack,
-                                                   GLenum            gl_mode);
+                                                   CoglMatrixMode    mode);
 void             _cogl_matrix_stack_dirty         (CoglMatrixStack  *stack);
 
 #endif /* __COGL_MATRIX_STACK_H */
