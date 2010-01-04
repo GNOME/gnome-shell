@@ -2594,7 +2594,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   text_signals[INSERT_TEXT] =
     g_signal_new ("insert-text",
                   G_TYPE_FROM_CLASS (gobject_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0,
                   NULL, NULL,
                   clutter_marshal_VOID__STRING_INT_POINTER,
@@ -2617,7 +2617,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   text_signals[DELETE_TEXT] =
     g_signal_new ("delete-text",
                   G_TYPE_FROM_CLASS (gobject_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0,
                   NULL, NULL,
                   clutter_marshal_VOID__INT_INT,
