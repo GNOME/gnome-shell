@@ -43,7 +43,7 @@
 #include <clutter/clutter.h>
 
 #include "st-label.h"
-
+#include "st-private.h"
 #include "st-widget.h"
 
 enum
@@ -110,21 +110,9 @@ st_label_get_property (GObject    *gobject,
 static void
 st_label_style_changed (StWidget *self)
 {
-  StLabelPrivate *priv;
-  StThemeNode *theme_node;
-  ClutterColor color;
-  const PangoFontDescription *font;
-  gchar *font_string;
+  StLabelPrivate *priv = ST_LABEL(self)->priv;
 
-  priv = ST_LABEL (self)->priv;
-  theme_node = st_widget_get_theme_node (self);
-  st_theme_node_get_foreground_color (theme_node, &color);
-  clutter_text_set_color (CLUTTER_TEXT (priv->label), &color);
-
-  font = st_theme_node_get_font (theme_node);
-  font_string = pango_font_description_to_string (font);
-  clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
-  g_free (font_string);
+  _st_set_text_from_style ((ClutterText *)priv->label, st_widget_get_theme_node (self));
 
   ST_WIDGET_CLASS (st_label_parent_class)->style_changed (self);
 }

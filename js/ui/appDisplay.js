@@ -18,6 +18,7 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Search = imports.ui.search;
 const Workspaces = imports.ui.workspaces;
 
 const APPICON_SIZE = 48;
@@ -54,7 +55,7 @@ AppDisplayItem.prototype = {
         let windows = app.get_windows();
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
-            Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
+            Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
         } else {
             this._appInfo.launch();
         }
@@ -134,17 +135,10 @@ AppDisplay.prototype = {
                 this._addApp(app);
             }
         } else {
-            // Loop over the toplevel menu items, load the set of desktop file ids
-            // associated with each one.
-            let allMenus = this._appSystem.get_menus();
-            for (let i = 0; i < allMenus.length; i++) {
-                let menu = allMenus[i];
-                let menuApps = this._appSystem.get_applications_for_menu(menu.id);
-
-                for (let j = 0; j < menuApps.length; j++) {
-                    let app = menuApps[j];
-                    this._addApp(app);
-                }
+            let apps = this._appSystem.get_flattened_apps();
+            for (let i = 0; i < apps.length; i++) {
+                let app = apps[i];
+                this._addApp(app);
             }
         }
 
@@ -220,30 +214,103 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
-
-function BaseWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
+function BaseAppSearchProvider() {
+    this._init();
 }
 
-BaseWellItem.prototype = {
-    _init : function(app, isFavorite) {
+BaseAppSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
+
+    _init: function(name) {
+        Search.SearchProvider.prototype._init.call(this, name);
+        this._appSys = Shell.AppSystem.get_default();
+    },
+
+    getResultMeta: function(resultId) {
+        let app = this._appSys.get_app(resultId);
+        if (!app)
+            return null;
+        return { 'id': resultId,
+                 'name': app.get_name(),
+                 'icon': app.create_icon_texture(Search.RESULT_ICON_SIZE)};
+    },
+
+    activateResult: function(id) {
+        let app = this._appSys.get_app(id);
+        app.launch();
+    }
+};
+
+function AppSearchProvider() {
+    this._init();
+}
+
+AppSearchProvider.prototype = {
+    __proto__: BaseAppSearchProvider.prototype,
+
+    _init: function() {
+         BaseAppSearchProvider.prototype._init.call(this, _("APPLICATIONS"));
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._appSys.initial_search(false, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._appSys.subsearch(false, previousResults, terms);
+    },
+
+    expandSearch: function(terms) {
+        log("TODO expand search");
+    }
+}
+
+function PrefsSearchProvider() {
+    this._init();
+}
+
+PrefsSearchProvider.prototype = {
+    __proto__: BaseAppSearchProvider.prototype,
+
+    _init: function() {
+        BaseAppSearchProvider.prototype._init.call(this, _("PREFERENCES"));
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._appSys.initial_search(true, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._appSys.subsearch(true, previousResults, terms);
+    },
+
+    expandSearch: function(terms) {
+        let controlCenter = this._appSys.load_from_desktop_file('gnomecc.desktop');
+        controlCenter.launch();
+        Main.overview.hide();
+    }
+}
+
+function AppIcon(app) {
+    this._init(app);
+}
+
+AppIcon.prototype = {
+    _init : function(app) {
         this.app = app;
 
         this._glowExtendVertical = 0;
         this._glowShrinkHorizontal = 0;
 
-        this.actor = new St.Clickable({ style_class: 'app-well-app',
-                                         reactive: true });
+        this.actor = new St.Bin({ style_class: 'app-icon',
+                                  x_fill: true,
+                                  y_fill: true });
         this.actor._delegate = this;
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._rerenderGlow));
 
         let box = new St.BoxLayout({ vertical: true });
         this.actor.set_child(box);
-
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-
-        this._menu = null;
 
         this.icon = this.app.create_icon_texture(APPICON_SIZE);
 
@@ -262,17 +329,9 @@ BaseWellItem.prototype = {
         this._glowBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this._nameBox.add_actor(this._glowBox);
         this._glowBox.lower(this._name);
-        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._rerenderGlow));
-        this._rerenderGlow();
+        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._queueRerenderGlow));
 
         box.add(nameBox);
-
-        this._draggable = DND.makeDraggable(this.actor, true);
-        this._dragStartX = null;
-        this._dragStartY = null;
-
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
     },
 
     _nameBoxGetPreferredWidth: function (nameBox, forHeight, alloc) {
@@ -319,18 +378,24 @@ BaseWellItem.prototype = {
             this.app.disconnect(this._appWindowChangedId);
     },
 
-    _onMapped: function() {
-        if (!this._queuedGlowRerender)
-            return;
-        this._queuedGlowRerender = false;
-        this._rerenderGlow();
+    _queueRerenderGlow: function() {
+        Main.queueDeferredWork(this._workId);
+    },
+
+    _onStyleChanged: function() {
+        let themeNode = this._glowBox.get_theme_node();
+
+        let success, len;
+        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
+        if (success)
+            this._glowExtendVertical = len;
+        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
+        if (success)
+            this._glowShrinkHorizontal = len;
+        this.actor.queue_relayout();
     },
 
     _rerenderGlow: function() {
-        if (!this.actor.mapped) {
-            this._queuedGlowRerender = true;
-            return;
-        }
         this._glowBox.destroy_children();
         let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
         let windows = this.app.get_windows();
@@ -340,6 +405,34 @@ BaseWellItem.prototype = {
             glow.keep_aspect_ratio = false;
             this._glowBox.add(glow);
         }
+    }
+}
+
+function AppWellIcon(app) {
+    this._init(app);
+}
+
+AppWellIcon.prototype = {
+    _init : function(app) {
+        this.app = app;
+        this.actor = new St.Clickable({ style_class: 'app-well-app',
+                                         reactive: true,
+                                         x_fill: true,
+                                         y_fill: true });
+        this.actor._delegate = this;
+
+        this._icon = new AppIcon(app);
+        this.actor.set_child(this._icon.actor);
+
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this._menu = null;
+
+        this._draggable = DND.makeDraggable(this.actor, true);
+        this._dragStartX = null;
+        this._dragStartY = null;
+
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
     },
 
     _onButtonPress: function(actor, event) {
@@ -354,7 +447,7 @@ BaseWellItem.prototype = {
             if (this.actor.pressed && this._dragStartX != null) {
                 this.actor.fake_release();
                 this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                          Main.currentTime());
+                                          global.get_current_time());
             } else {
                 this._dragStartX = null;
                 this._dragStartY = null;
@@ -372,19 +465,6 @@ BaseWellItem.prototype = {
             this.popupMenu(0);
         }
         return false;
-    },
-
-    _onStyleChanged: function() {
-        let themeNode = this._glowBox.get_theme_node();
-
-        let success, len;
-        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
-        if (success)
-            this._glowExtendVertical = len;
-        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
-        if (success)
-            this._glowShrinkHorizontal = len;
-        this.actor.queue_relayout();
     },
 
     popupMenu: function(activatingButton) {
@@ -410,13 +490,60 @@ BaseWellItem.prototype = {
         return false;
     },
 
-    // Default implementations; AppDisplay.RunningWellItem overrides these
-    highlightWindow: function(window) {
-        this.emit('highlight-window', window);
+    activateMostRecentWindow: function () {
+        let mostRecentWindow = this.app.get_windows()[0];
+        Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
     },
 
-    activateWindow: function(window) {
-        this.emit('activate-window', window);
+    highlightWindow: function(metaWindow) {
+        if (!this._getRunning())
+            return;
+        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
+    },
+
+    activateWindow: function(metaWindow) {
+        if (metaWindow) {
+            this._didActivateWindow = true;
+            Main.overview.activateWindow(metaWindow, global.get_current_time());
+        } else
+            Main.overview.hide();
+    },
+
+    _onMenuPoppedUp: function() {
+        if (this._getRunning()) {
+            Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
+            this._setWindowSelection = true;
+        }
+    },
+
+    _onMenuPoppedDown: function() {
+        if (this._didActivateWindow)
+            return;
+        if (!this._setWindowSelection)
+            return;
+
+        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
+        this._setWindowSelection = false;
+    },
+
+    _getRunning: function() {
+        return this.app.get_windows().length > 0;
+    },
+
+    _onActivate: function (event) {
+        let running = this._getRunning();
+
+        if (!running) {
+            this.app.launch();
+        } else {
+            let modifiers = Shell.get_event_state(event);
+
+            if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
+                this.app.launch();
+            } else {
+                this.activateMostRecentWindow();
+            }
+        }
     },
 
     shellWorkspaceLaunch : function() {
@@ -441,7 +568,7 @@ BaseWellItem.prototype = {
         return this.actor;
     }
 }
-Signals.addSignalMethods(BaseWellItem.prototype);
+Signals.addSignalMethods(AppWellIcon.prototype);
 
 function AppIconMenu(source) {
     this._init(source);
@@ -607,7 +734,7 @@ AppIconMenu.prototype = {
 
         this._redisplay();
 
-        this._windowContainer.popup(activatingButton, Main.currentTime());
+        this._windowContainer.popup(activatingButton, global.get_current_time());
 
         this.emit('popup', true);
 
@@ -740,80 +867,6 @@ AppIconMenu.prototype = {
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
-
-function RunningWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
-}
-
-RunningWellItem.prototype = {
-    __proto__: BaseWellItem.prototype,
-
-    _init: function(app, isFavorite) {
-        BaseWellItem.prototype._init.call(this, app, isFavorite);
-    },
-
-    _onActivate: function (event) {
-        let modifiers = Shell.get_event_state(event);
-
-        if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-            this.app.launch();
-        } else {
-            this.activateMostRecentWindow();
-        }
-    },
-
-    activateMostRecentWindow: function () {
-        let mostRecentWindow = this.app.get_windows()[0];
-        Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
-    },
-
-    highlightWindow: function(metaWindow) {
-        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
-    },
-
-    activateWindow: function(metaWindow) {
-        if (metaWindow) {
-            this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, Main.currentTime());
-        } else
-            Main.overview.hide();
-    },
-
-    _onMenuPoppedUp: function() {
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
-    },
-
-    _onMenuPoppedDown: function() {
-        if (this._didActivateWindow)
-            return;
-
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
-    }
-};
-
-function InactiveWellItem(app, isFavorite) {
-    this._init(app, isFavorite);
-}
-
-InactiveWellItem.prototype = {
-    __proto__: BaseWellItem.prototype,
-
-    _init : function(app, isFavorite) {
-        BaseWellItem.prototype._init.call(this, app, isFavorite);
-    },
-
-    _onActivate: function(event) {
-        this.app.launch();
-        Main.overview.hide();
-        return true;
-    },
-
-    _onMenuPoppedUp: function() {
-    },
-
-    _onMenuPoppedDown: function() {
-    }
-};
 
 function WellGrid() {
     this._init();
@@ -956,8 +1009,7 @@ AppWell.prototype = {
                                    x_align: Big.BoxAlignment.CENTER });
         this.actor._delegate = this;
 
-        this._pendingRedisplay = false;
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
 
         this._grid = new WellGrid();
         this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
@@ -965,12 +1017,9 @@ AppWell.prototype = {
         this._tracker = Shell.WindowTracker.get_default();
         this._appSystem = Shell.AppSystem.get_default();
 
-        this._appSystem.connect('installed-changed', Lang.bind(this, this._redisplay));
-
-        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._redisplay));
-        this._tracker.connect('app-running-changed', Lang.bind(this, this._redisplay));
-
-        this._redisplay();
+        this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
+        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
+        this._tracker.connect('app-running-changed', Lang.bind(this, this._queueRedisplay));
     },
 
     _appIdListToHash: function(apps) {
@@ -980,20 +1029,11 @@ AppWell.prototype = {
         return ids;
     },
 
-    _onMappedNotify: function() {
-        let mapped = this.actor.mapped;
-        if (mapped && this._pendingRedisplay)
-            this._redisplay();
+    _queueRedisplay: function () {
+        Main.queueDeferredWork(this._workId);
     },
 
     _redisplay: function () {
-        let mapped = this.actor.mapped;
-        if (!mapped) {
-            this._pendingRedisplay = true;
-            return;
-        }
-        this._pendingRedisplay = false;
-
         this._grid.removeAll();
 
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
@@ -1007,12 +1047,7 @@ AppWell.prototype = {
         let nFavorites = 0;
         for (let id in favorites) {
             let app = favorites[id];
-            let display;
-            if (app.get_windows().length > 0) {
-                display = new RunningWellItem(app, true);
-            } else {
-                display = new InactiveWellItem(app, true);
-            }
+            let display = new AppWellIcon(app);
             this._grid.addItem(display.actor);
             nFavorites++;
         }
@@ -1021,7 +1056,7 @@ AppWell.prototype = {
             let app = running[i];
             if (app.get_id() in favorites)
                 continue;
-            let display = new RunningWellItem(app, false);
+            let display = new AppWellIcon(app);
             this._grid.addItem(display.actor);
         }
 

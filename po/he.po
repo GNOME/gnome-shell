@@ -1,100 +1,99 @@
-# French translations for gnome-shell package.
-# Copyright (C) 2009 THE gnome-shell'S COPYRIGHT HOLDER
+# Hebrew translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Mathieu Bridon <bochecha@fedoraproject.org>, 2009.
+# liel <lielft@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master fr\n"
+"Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2009-11-13 17:44+0000\n"
-"PO-Revision-Date: 2009-12-05 16:43+0100\n"
-"Last-Translator: Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>\n"
-"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"PO-Revision-Date: 2009-11-28 17:33+0200\n"
+"Last-Translator: Liel Fridman <lielft@gmail.com>\n"
+"Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "GNOME Shell"
+msgstr "מעטפת GNOME"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "Gestion des fenêtres et lancement des applications"
+msgstr "ניהול חלונות והרצת יישומים"
 
 #: ../js/ui/appDisplay.js:696
 msgid "Drag here to add favorites"
-msgstr "Glisser ici pour ajouter aux favoris"
+msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
 
 #: ../js/ui/appIcon.js:425
 msgid "New Window"
-msgstr "Nouvelle fenêtre"
+msgstr "חלון חדש"
 
 #: ../js/ui/appIcon.js:429
 msgid "Remove from Favorites"
-msgstr "Enlever des favoris"
+msgstr "הסר מהמועדפים"
 
 #: ../js/ui/appIcon.js:430
 msgid "Add to Favorites"
-msgstr "Ajouter aux favoris"
+msgstr "הוסף למועדפים"
 
 #: ../js/ui/dash.js:237
 msgid "Find..."
-msgstr "Rechercher..."
+msgstr "חפש..."
 
 #. **** Applications ****
 #: ../js/ui/dash.js:656 ../js/ui/dash.js:718
 msgid "APPLICATIONS"
-msgstr "APPLICATIONS"
+msgstr "יישומים"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
 #: ../js/ui/dash.js:676 ../js/ui/dash.js:733
 msgid "PLACES"
-msgstr "RACCOURCIS"
+msgstr "מקומות"
 
 #. **** Documents ****
 #: ../js/ui/dash.js:683 ../js/ui/dash.js:728
 msgid "RECENT DOCUMENTS"
-msgstr "DOCUMENTS RÉCENTS"
+msgstr "מסמכים אחרונים"
 
 #. **** Search Results ****
 #: ../js/ui/dash.js:708 ../js/ui/dash.js:898
 msgid "SEARCH RESULTS"
-msgstr "RÉSULTATS DE LA RECHERCHE"
+msgstr "תוצאות חיפוש"
 
 #: ../js/ui/dash.js:723
 msgid "PREFERENCES"
-msgstr "PRÉFÉRENCES"
+msgstr "העדפות"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:274
 msgid "Activities"
-msgstr "Activités"
+msgstr "פעילויות"
 
 #. Translators: This is a time format.
 #: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+msgstr "%a %l:%M %p"
 
 #: ../js/ui/placeDisplay.js:84
 msgid "Connect to..."
-msgstr "Connexion à..."
+msgstr "התחבר אל..."
 
 #: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
-msgstr "Veuillez saisir une commande :"
+msgstr "נא להזין פקודה:"
 
 #: ../js/ui/runDialog.js:173
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr "Exécution de « %s » impossible :"
+msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -103,108 +102,107 @@ msgstr "%H:%M"
 
 #: ../js/ui/widget.js:317
 msgid "Applications"
-msgstr "Applications"
+msgstr "יישומים"
 
 #: ../js/ui/widget.js:339
 msgid "Recent Documents"
-msgstr "Documents récents"
+msgstr "מסמכים אחרונים"
 
 #: ../src/shell-global.c:821
 msgid "Less than a minute ago"
-msgstr "Il y a moins d'une minute"
+msgstr "לפני פחות מדקה"
 
 #: ../src/shell-global.c:824
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "Il y a %d minute"
-msgstr[1] "Il y a %d minutes"
+msgstr[0] "לפני דקה"
+msgstr[1] "לפני %d דקות"
 
 #: ../src/shell-global.c:827
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "Il y a %d heure"
-msgstr[1] "Il y a %d heures"
+msgstr[0] "לפני שעה"
+msgstr[1] "לפני %d שעות"
 
 #: ../src/shell-global.c:830
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] "Il y a %d jour"
-msgstr[1] "Il y a %d jours"
+msgstr[0] "לפני יום"
+msgstr[1] "לפני %d ימים"
 
 #: ../src/shell-global.c:833
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] "Il y a %d semaine"
-msgstr[1] "Il y a %d semaines"
+msgstr[0] "לפני שבוע"
+msgstr[1] "לפני %d שבועות"
 
 #: ../src/shell-status-menu.c:156
 msgid "Unknown"
-msgstr "Inconnu"
+msgstr "לא ידוע"
 
 #: ../src/shell-status-menu.c:212
 #, c-format
 msgid "Can't lock screen: %s"
-msgstr "Impossible de verrouiller l'écran : %s"
+msgstr "לא ניתן לנעול את המסך: %s"
 
 #: ../src/shell-status-menu.c:227
 #, c-format
 msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Impossible de régler temporairement l'écran de veille sur un écran vide : %s"
+msgstr "לא ניתן זמנית לקבוע שומר מסך כמסך שחור: %s"
 
 #: ../src/shell-status-menu.c:351
 #, c-format
 msgid "Can't logout: %s"
-msgstr "Impossible de fermer la session : %s"
+msgstr "לא ניתן להתנתק: %s"
 
 #: ../src/shell-status-menu.c:492
 msgid "Account Information..."
-msgstr "Informations personnelles..."
+msgstr "מידע על המשתמש..."
 
 #: ../src/shell-status-menu.c:502
 msgid "Sidebar"
-msgstr "Barre latérale"
+msgstr "סרגל צד"
 
 #: ../src/shell-status-menu.c:510
 msgid "System Preferences..."
-msgstr "Préférences du système..."
+msgstr "העדפות מערכת..."
 
 #: ../src/shell-status-menu.c:525
 msgid "Lock Screen"
-msgstr "Verrouiller l'écran"
+msgstr "נעילת המסך"
 
 #: ../src/shell-status-menu.c:535
 msgid "Switch User"
-msgstr "Changer d'utilisateur"
+msgstr "החלף משתמש"
 
 #. Only show switch user if there are other users
 #. Log Out
 #: ../src/shell-status-menu.c:546
 msgid "Log Out..."
-msgstr "Fermer la session..."
+msgstr "ניתוק..."
 
 #. Shut down
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
-msgstr "Éteindre..."
+msgstr "כיבוי..."
 
 #: ../src/shell-uri-util.c:87
 msgid "Home Folder"
-msgstr "Dossier personnel"
+msgstr "תיקיית הבית"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-uri-util.c:102
 msgid "File System"
-msgstr "Système de fichiers"
+msgstr "מערכת הקבצים"
 
 #: ../src/shell-uri-util.c:248
 msgid "Search"
-msgstr "Recherche"
+msgstr "חפש"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
@@ -214,7 +212,4 @@ msgstr "Recherche"
 #: ../src/shell-uri-util.c:298
 #, c-format
 msgid "%1$s: %2$s"
-msgstr "%1$s : %2$s"
-
-#~ msgid "Browse"
-#~ msgstr "Parcourir"
+msgstr "%1$s: %2$s"

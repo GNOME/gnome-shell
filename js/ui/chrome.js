@@ -191,6 +191,7 @@ Chrome.prototype = {
 
     _windowsRestacked: function() {
         let windows = global.get_windows();
+        let primary = global.get_primary_monitor();
 
         // The chrome layer should be visible unless there is a window
         // with layer FULLSCREEN, or a window with layer
@@ -208,17 +209,15 @@ Chrome.prototype = {
         for (let i = windows.length - 1; i > -1; i--) {
             let layer = windows[i].get_meta_window().get_layer();
 
-            if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
-                if (windows[i].x <= 0 &&
-                    windows[i].x + windows[i].width >= global.screen_width &&
-                    windows[i].y <= 0 &&
-                    windows[i].y + windows[i].height >= global.screen_height) {
+            if (layer == Meta.StackLayer.OVERRIDE_REDIRECT ||
+                layer == Meta.StackLayer.FULLSCREEN) {
+                if (windows[i].x <= primary.x &&
+                    windows[i].x + windows[i].width >= primary.x + primary.width &&
+                    windows[i].y <= primary.y &&
+                    windows[i].y + windows[i].height >= primary.y + primary.height) {
                     this._obscuredByFullscreen = true;
                     break;
                 }
-            } else if (layer == Meta.StackLayer.FULLSCREEN) {
-                this._obscuredByFullscreen = true;
-                break;
             } else
                 break;
         }

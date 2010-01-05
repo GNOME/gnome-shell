@@ -98,10 +98,6 @@ static void
 st_button_update_label_style (StButton *button)
 {
   ClutterActor *label;
-  StThemeNode *theme_node;
-  ClutterColor color;
-  const PangoFontDescription *font;
-  gchar *font_string = NULL;
 
   label = st_bin_get_child ((StBin*) button);
 
@@ -109,15 +105,7 @@ st_button_update_label_style (StButton *button)
   if (!CLUTTER_IS_TEXT (label))
     return;
 
-  theme_node = st_widget_get_theme_node (ST_WIDGET (button));
-
-  st_theme_node_get_foreground_color (theme_node, &color);
-  clutter_text_set_color (CLUTTER_TEXT (label), &color);
-
-  font = st_theme_node_get_font (theme_node);
-  font_string = pango_font_description_to_string (font);
-  clutter_text_set_font_name (CLUTTER_TEXT (label), font_string);
-  g_free (font_string);
+  _st_set_text_from_style ((ClutterText*) label, st_widget_get_theme_node (ST_WIDGET (button)));
 }
 
 static void

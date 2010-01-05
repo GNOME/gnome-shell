@@ -9,7 +9,11 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
+const ExtensionSystem = imports.ui.extensionSystem;
+const Link = imports.ui.link;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
@@ -39,24 +43,21 @@ Notebook.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
 
-        this.tabControls = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                         spacing: 4, padding: 2 });
+        this.tabControls = new St.BoxLayout({ style_class: "labels" });
 
         this._selectedIndex = -1;
         this._tabs = [];
     },
 
     appendPage: function(name, child) {
-        let labelOuterBox = new Big.Box({ padding: 2 });
-        let labelBox = new St.BoxLayout({ reactive: true });
-        labelOuterBox.append(labelBox, Big.BoxPackFlags.NONE);
-        let label = new St.Label({ text: name });
-        labelBox.connect('button-press-event', Lang.bind(this, function () {
+        let labelBox = new St.BoxLayout({ style_class: "notebook-tab" });
+        let label = new St.Button({ label: name });
+        label.connect('clicked', Lang.bind(this, function () {
             this.selectChild(child);
             return true;
         }));
         labelBox.add(label, { expand: true });
-        this.tabControls.append(labelOuterBox, Big.BoxPackFlags.NONE);
+        this.tabControls.add(labelBox);
 
         let scrollview = new St.ScrollView({ x_fill: true, y_fill: true });
         scrollview.get_hscroll_bar().hide();
@@ -64,6 +65,7 @@ Notebook.prototype = {
 
         let tabData = { child: child,
                         labelBox: labelBox,
+                        label: label,
                         scrollView: scrollview,
                         _scrollToBottom: false };
         this._tabs.push(tabData);
@@ -82,8 +84,7 @@ Notebook.prototype = {
         if (this._selectedIndex < 0)
             return;
         let tabData = this._tabs[this._selectedIndex];
-        tabData.labelBox.padding = 2;
-        tabData.labelBox.border = 0;
+        tabData.labelBox.set_style_pseudo_class(null);
         tabData.scrollView.hide();
         this._selectedIndex = -1;
     },
@@ -97,8 +98,7 @@ Notebook.prototype = {
             return;
         }
         let tabData = this._tabs[index];
-        tabData.labelBox.padding = 1;
-        tabData.labelBox.border = 1;
+        tabData.labelBox.set_style_pseudo_class('selected');
         tabData.scrollView.show();
         this._selectedIndex = index;
         this.emit('selection', tabData.child);
@@ -308,6 +308,135 @@ Inspector.prototype = {
 
 Signals.addSignalMethods(Inspector.prototype);
 
+function ErrorLog() {
+    this._init();
+}
+
+ErrorLog.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout();
+        this.text = new St.Label();
+        this.actor.add(this.text);
+        this.text.clutter_text.line_wrap = true;
+        this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
+    },
+
+    _formatTime: function(d){
+        function pad(n) { return n < 10 ? '0' + n : n };
+        return d.getUTCFullYear()+'-'
+            + pad(d.getUTCMonth()+1)+'-'
+            + pad(d.getUTCDate())+'T'
+            + pad(d.getUTCHours())+':'
+            + pad(d.getUTCMinutes())+':'
+            + pad(d.getUTCSeconds())+'Z'
+    },
+
+    _renderText: function() {
+        if (!this.actor.mapped)
+            return;
+        let text = this.text.text;
+        let stack = Main._getAndClearErrorStack();
+        for (let i = 0; i < stack.length; i++) {
+            let logItem = stack[i];
+            text += logItem.category + " t=" + this._formatTime(new Date(logItem.timestamp)) + " " + logItem.message + "\n";
+        }
+        this.text.text = text;
+    }
+}
+
+function Extensions() {
+    this._init();
+}
+
+Extensions.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        name: 'lookingGlassExtensions' });
+        this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
+                                             text: _("No extensions installed") });
+        this._extensionsList = new St.BoxLayout({ vertical: true,
+                                                  style_class: 'lg-extensions-list' });
+        this.actor.add(this._extensionsList);
+        this._loadExtensionList();
+    },
+
+    _loadExtensionList: function() {
+        let extensions = ExtensionSystem.extensionMeta;
+        let totalExtensions = 0;
+        for (let uuid in extensions) {
+            let extensionDisplay = this._createExtensionDisplay(extensions[uuid]);
+            this._extensionsList.add(extensionDisplay);
+            totalExtensions++;
+        }
+        if (totalExtensions == 0) {
+            this._extensionsList.add(this._noExtensions);
+        }
+    },
+
+    _onViewSource: function (actor) {
+        let meta = actor._extensionMeta;
+        let file = Gio.file_new_for_path(meta.path);
+        let uri = file.get_uri();
+        Gio.app_info_launch_default_for_uri(uri, global.create_app_launch_context());
+        Main.lookingGlass.close();
+    },
+
+    _onWebPage: function (actor) {
+        let meta = actor._extensionMeta;
+        Gio.app_info_launch_default_for_uri(meta.url, global.create_app_launch_context());
+        Main.lookingGlass.close();
+    },
+
+    _stateToString: function(extensionState) {
+        switch (extensionState) {
+            case ExtensionSystem.ExtensionState.ENABLED:
+                return _("Enabled");
+            case ExtensionSystem.ExtensionState.DISABLED:
+                return _("Disabled");
+            case ExtensionSystem.ExtensionState.ERROR:
+                return _("Error");
+            case ExtensionSystem.ExtensionState.OUT_OF_DATE:
+                return _("Out of date");
+        }
+        return "Unknown"; // Not translated, shouldn't appear
+    },
+
+    _createExtensionDisplay: function(meta) {
+        let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
+        let name = new St.Label({ style_class: 'lg-extension-name',
+                                   text: meta.name });
+        box.add(name, { expand: true });
+        let description = new St.Label({ style_class: 'lg-extension-description',
+                                         text: meta.description });
+        box.add(description, { expand: true });
+
+        let metaBox = new St.BoxLayout();
+        box.add(metaBox);
+        let stateString = this._stateToString(meta.state);
+        let state = new St.Label({ style_class: 'lg-extension-state',
+                                   text: this._stateToString(meta.state) });
+
+        let actionsContainer = new St.Bin({ x_align: St.Align.END });
+        metaBox.add(actionsContainer);
+        let actionsBox = new St.BoxLayout({ style_class: 'lg-extension-actions' });
+        actionsContainer.set_child(actionsBox);
+
+        let viewsource = new Link.Link({ label: _("View Source") });
+        viewsource.actor._extensionMeta = meta;
+        viewsource.actor.connect('clicked', Lang.bind(this, this._onViewSource));
+        actionsBox.add(viewsource.actor);
+
+        if (meta.url) {
+            let webpage = new Link.Link({ label: _("Web Page") });
+            webpage.actor._extensionMeta = meta;
+            webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
+            actionsBox.add(webpage.actor);
+        }
+
+        return box;
+    }
+};
+
 function LookingGlass() {
     this._init();
 }
@@ -406,6 +535,12 @@ LookingGlass.prototype = {
             notebook.selectIndex(0);
         }));
 
+        this._errorLog = new ErrorLog();
+        notebook.appendPage('Errors', this._errorLog.actor);
+
+        this._extensions = new Extensions();
+        notebook.appendPage('Extensions', this._extensions.actor);
+
         this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
             let text = o.get_text();
             // Ensure we don't get newlines in the command; the history file is
@@ -421,10 +556,7 @@ LookingGlass.prototype = {
         }));
         this._entry.clutter_text.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Escape) {
-                this.close();
-                return true;
-            } else if (symbol == Clutter.Up) {
+            if (symbol == Clutter.Up) {
                 if (this._historyNavIndex >= this._history.length - 1)
                     return true;
                 this._historyNavIndex++;
@@ -569,12 +701,25 @@ LookingGlass.prototype = {
         this._resizeTo(actor);
     },
 
+    // Handle key events which are relevant for all tabs of the LookingGlass
+    _globalKeyPressEvent : function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.Escape) {
+            this.close();
+            return true;
+        }
+        return false;
+    },
+
     open : function() {
         if (this._open)
             return;
 
         if (!Main.pushModal(this.actor))
             return;
+
+        this._keyPressEventId = global.stage.connect('key-press-event',
+            Lang.bind(this, this._globalKeyPressEvent));
 
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
@@ -593,6 +738,9 @@ LookingGlass.prototype = {
     close : function() {
         if (!this._open)
             return;
+
+        if (this._keyPressEventId)
+            global.stage.disconnect(this._keyPressEventId);
 
         this._historyNavIndex = -1;
         this._open = false;

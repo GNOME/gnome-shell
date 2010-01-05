@@ -14,6 +14,7 @@ const St = imports.gi.St;
 
 const Chrome = imports.ui.chrome;
 const Environment = imports.ui.environment;
+const ExtensionSystem = imports.ui.extensionSystem;
 const MessageTray = imports.ui.messageTray;
 const Messaging = imports.ui.messaging;
 const Overview = imports.ui.overview;
@@ -45,12 +46,20 @@ let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
+let _errorLogStack = [];
+let _startDate;
 
 function start() {
     // Add a binding for "global" in the global JS namespace; (gjs
     // keeps the web browser convention of having that namespace be
     // called "window".)
     window.global = Shell.Global.get();
+
+    // Now monkey patch utility functions into the global proxy;
+    // This is easier and faster than indirecting down into global
+    // if we want to call back up into JS.
+    global.logError = _logError;
+    global.log = _logDebug;
 
     Gio.DesktopAppInfo.set_desktop_env("GNOME");
 
@@ -116,6 +125,8 @@ function start() {
     notificationPopup = new MessageTray.Notification();
     messageTray = new MessageTray.MessageTray();
 
+    _startDate = new Date();
+
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
@@ -130,6 +141,9 @@ function start() {
 
     _relayout();
 
+    ExtensionSystem.init();
+    ExtensionSystem.loadExtensions();
+
     panel.startupAnimation();
 
     let display = global.screen.get_display();
@@ -138,7 +152,50 @@ function start() {
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
+    _log('info', 'loaded at ' + _startDate);
+
     Mainloop.idle_add(_removeUnusedWorkspaces);
+}
+
+/**
+ * _log:
+ * @category: string message type ('info', 'error')
+ * @msg: A message string
+ * ...: Any further arguments are converted into JSON notation,
+ *      and appended to the log message, separated by spaces.
+ *
+ * Log a message into the LookingGlass error
+ * stream.  This is primarily intended for use by the
+ * extension system as well as debugging.
+ */
+function _log(category, msg) {
+    let text = msg;
+    if (arguments.length > 2) {
+        text += ': ';
+        for (let i = 2; i < arguments.length; i++) {
+            text += JSON.stringify(arguments[i]);
+            if (i < arguments.length - 1)
+                text += " ";
+        }
+    }
+    _errorLogStack.push({timestamp: new Date().getTime(),
+                         category: category,
+                         message: text });
+}
+
+function _logError(msg) {
+    return _log('error', msg);
+}
+
+function _logDebug(msg) {
+    return _log('debug', msg);
+}
+
+// Used by the error display in lookingGlass.js
+function _getAndClearErrorStack() {
+    let errors = _errorLogStack;
+    _errorLogStack = [];
+    return errors;
 }
 
 function _relayout() {
@@ -251,7 +308,7 @@ function _findModal(actor) {
  */
 function pushModal(actor) {
     if (modalCount == 0) {
-        if (!global.begin_modal(currentTime())) {
+        if (!global.begin_modal(global.get_current_time())) {
             log("pushModal: invocation of begin_modal failed");
             return false;
         }
@@ -304,7 +361,7 @@ function popModal(actor) {
     if (modalCount > 0)
         return;
 
-    global.end_modal(currentTime());
+    global.end_modal(global.get_current_time());
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }
 
@@ -323,45 +380,6 @@ function getRunDialog() {
     return runDialog;
 }
 
-function createAppLaunchContext() {
-    let context = new Gdk.AppLaunchContext();
-    context.set_timestamp(currentTime());
-
-    // Make sure that the app is opened on the current workspace even if
-    // the user switches before it starts
-    context.set_desktop(global.screen.get_active_workspace_index());
-
-    return context;
-}
-
-/**
- * currentTime:
- *
- * Gets the current X server time from the current Clutter, Gdk, or X
- * event. If called from outside an event handler, this may return
- * %Clutter.CURRENT_TIME (aka 0), or it may return a slightly
- * out-of-date timestamp.
- */
-function currentTime() {
-    // meta_display_get_current_time() will return the correct time
-    // when handling an X or Gdk event, but will return CurrentTime
-    // from some Clutter event callbacks.
-    //
-    // clutter_get_current_event_time() will return the correct time
-    // from a Clutter event callback, but may return an out-of-date
-    // timestamp if called at other times.
-    //
-    // So we try meta_display_get_current_time() first, since we
-    // can recognize a "wrong" answer from that, and then fall back
-    // to clutter_get_current_event_time().
-
-    let time = global.screen.get_display().get_current_time();
-    if (time != Clutter.CURRENT_TIME)
-        return time;
-
-    return Clutter.get_current_event_time();
-}
-
 /**
  * activateWindow:
  * @window: the Meta.Window to activate
@@ -374,12 +392,129 @@ function activateWindow(window, time) {
     let windowWorkspaceNum = window.get_workspace().index();
 
     if (!time)
-        time = currentTime();
+        time = global.get_current_time();
 
     if (windowWorkspaceNum != activeWorkspaceNum) {
         let workspace = global.screen.get_workspace_by_index(windowWorkspaceNum);
         workspace.activate_with_focus(window, time);
     } else {
         window.activate(time);
+    }
+}
+
+// TODO - replace this timeout with some system to guess when the user might
+// be e.g. just reading the screen and not likely to interact.
+const DEFERRED_TIMEOUT_SECONDS = 20;
+var _deferredWorkData = {};
+// Work scheduled for some point in the future
+var _deferredWorkQueue = [];
+// Work we need to process before the next redraw
+var _beforeRedrawQueue = [];
+// Counter to assign work ids
+var _deferredWorkSequence = 0;
+var _deferredTimeoutId = 0;
+
+function _runDeferredWork(workId) {
+    if (!_deferredWorkData[workId])
+        return;
+    let index = _deferredWorkQueue.indexOf(workId);
+    if (index < 0)
+        return;
+
+    _deferredWorkQueue.splice(index, 1);
+    _deferredWorkData[workId].callback();
+    if (_deferredWorkQueue.length == 0 && _deferredTimeoutId > 0) {
+        Mainloop.source_remove(_deferredTimeoutId);
+        _deferredTimeoutId = 0;
+    }
+}
+
+function _runAllDeferredWork() {
+    while (_deferredWorkQueue.length > 0)
+        _runDeferredWork(_deferredWorkQueue[0]);
+}
+
+function _runBeforeRedrawQueue() {
+    for (let i = 0; i < _beforeRedrawQueue.length; i++) {
+        let workId = _beforeRedrawQueue[i];
+        _runDeferredWork(workId);
+    }
+    _beforeRedrawQueue = [];
+}
+
+function _queueBeforeRedraw(workId) {
+    _beforeRedrawQueue.push(workId);
+    if (_beforeRedrawQueue.length == 1) {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function () {
+            _runBeforeRedrawQueue();
+            return false;
+        }, null);
+    }
+}
+
+/**
+ * initializeDeferredWork:
+ * @actor: A #ClutterActor
+ * @callback: Function to invoke to perform work
+ *
+ * This function sets up a callback to be invoked when either the
+ * given actor is mapped, or after some period of time when the machine
+ * is idle.  This is useful if your actor isn't always visible on the
+ * screen (for example, all actors in the overview), and you don't want
+ * to consume resources updating if the actor isn't actually going to be
+ * displaying to the user.
+ *
+ * Note that queueDeferredWork is called by default immediately on
+ * initialization as well, under the assumption that new actors
+ * will need it.
+ *
+ * Returns: A string work identifer
+ */
+function initializeDeferredWork(actor, callback, props) {
+    // Turn into a string so we can use as an object property
+    let workId = "" + (++_deferredWorkSequence);
+    _deferredWorkData[workId] = { 'actor': actor,
+                                  'callback': callback };
+    actor.connect('notify::mapped', function () {
+        if (!(actor.mapped && _deferredWorkQueue.indexOf(workId) >= 0))
+            return;
+        _queueBeforeRedraw(workId);
+    });
+    actor.connect('destroy', function() {
+        let index = _deferredWorkQueue.indexOf(workId);
+        if (index >= 0)
+            _deferredWorkQueue.splice(index, 1);
+        delete _deferredWorkData[workId];
+    });
+    queueDeferredWork(workId);
+    return workId;
+}
+
+/**
+ * queueDeferredWork:
+ * @workId: work identifier
+ *
+ * Ensure that the work identified by @workId will be
+ * run on map or timeout.  You should call this function
+ * for example when data being displayed by the actor has
+ * changed.
+ */
+function queueDeferredWork(workId) {
+    let data = _deferredWorkData[workId];
+    if (!data) {
+        global.logError("invalid work id ", workId);
+        return;
+    }
+    if (_deferredWorkQueue.indexOf(workId) < 0)
+        _deferredWorkQueue.push(workId);
+    if (data.actor.mapped) {
+        _queueBeforeRedraw(workId);
+        return;
+    } else if (_deferredTimeoutId == 0) {
+        _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, function () {
+            _runAllDeferredWork();
+            _deferredTimeoutId = 0;
+            return false;
+        });
     }
 }

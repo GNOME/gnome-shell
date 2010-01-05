@@ -354,8 +354,7 @@ RecentDocsWidget.prototype = {
         for (i = 0; i < docs.length; i++) {
             let docInfo = new DocInfo.DocInfo (docs[i]);
 
-            if (docInfo.exists())
-                items.push(docInfo);
+            items.push(docInfo);
         }
 
         items.sort(function (a,b) { return b.timestamp - a.timestamp; });

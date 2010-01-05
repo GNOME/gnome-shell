@@ -1,13 +1,15 @@
-# Slovenian translation for gnome-shell.
+# Slovenian translation of gnome-shell package.
+# Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
-# Matej Urbančič <mateju@svn.gnome.org>, 2009.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2009-11-12 21:33+0000\n"
-"PO-Revision-Date: 2009-11-14 10:19+0100\n"
+"POT-Creation-Date: 2010-01-05 01:21+0000\n"
+"PO-Revision-Date: 2010-01-05 09:09+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -27,76 +29,76 @@ msgstr "Gnome lupina"
 msgid "Window management and application launching"
 msgstr "Upravljanje oken in zaganjanje programov"
 
-#: ../js/ui/appDisplay.js:696
-msgid "Drag here to add favorites"
-msgstr "S potegom na to mesto se izbor doda med priljubljene"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252
+#: ../js/ui/dash.js:858
+msgid "APPLICATIONS"
+msgstr "Programi"
 
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "Možnosti"
+
+#: ../js/ui/appDisplay.js:707
 #: ../js/ui/appIcon.js:425
 msgid "New Window"
 msgstr "Novo okno"
 
+#: ../js/ui/appDisplay.js:711
 #: ../js/ui/appIcon.js:429
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
+#: ../js/ui/appDisplay.js:712
 #: ../js/ui/appIcon.js:430
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/dash.js:237
-msgid "Find..."
-msgstr "Poišči ..."
+#: ../js/ui/appDisplay.js:1064
+msgid "Drag here to add favorites"
+msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
-#. **** Applications ****
-#: ../js/ui/dash.js:656
-#: ../js/ui/dash.js:718
-msgid "APPLICATIONS"
-msgstr "Programi"
+#: ../js/ui/dash.js:240
+msgid "Find..."
+msgstr "Najdi ..."
+
+#: ../js/ui/dash.js:437
+msgid "Searching..."
+msgstr "Iskanje ..."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:676
-#: ../js/ui/dash.js:733
+#: ../js/ui/dash.js:878
+#: ../js/ui/placeDisplay.js:519
 msgid "PLACES"
 msgstr "Mesta"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:683
-#: ../js/ui/dash.js:728
+#: ../js/ui/dash.js:885
 msgid "RECENT DOCUMENTS"
 msgstr "Nedavni dokumenti"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:708
-#: ../js/ui/dash.js:898
-msgid "SEARCH RESULTS"
-msgstr "Rezultati iskanja"
-
-#: ../js/ui/dash.js:723
-msgid "PREFERENCES"
-msgstr "Lastnosti"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:227
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#: ../js/ui/panel.js:440
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:84
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
@@ -114,11 +116,11 @@ msgstr "Programi"
 msgid "Recent Documents"
 msgstr "Nedavni dokumenti"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -127,7 +129,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -136,7 +138,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -145,7 +147,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -154,80 +156,55 @@ msgstr[1] "Pred %d tednom"
 msgstr[2] "Pred %d tednoma"
 msgstr[3] "Pred %d tedni"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Neznano"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Ni mogoče zakleniti zaslona: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Ni se mogoče odjaviti: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Podrobnosti računa ..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Stranska vrstica"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Sistemske lastnosti ..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Zakleni zaslon"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Preklop uporabnika"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Odjava ..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Izklopi ..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Domača mapa"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Datotečni sistem"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
-msgstr "Iskanje"
+msgstr "Poišči"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "Rezultati iskanja"
+#~ msgid "Unknown"
+#~ msgstr "Neznano"
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Ni mogoče zakleniti zaslona: %s"
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr ""
+#~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
+#~ msgid "Can't logout: %s"
+#~ msgstr "Ni se mogoče odjaviti: %s"
+#~ msgid "Account Information..."
+#~ msgstr "Podrobnosti računa ..."
+#~ msgid "Sidebar"
+#~ msgstr "Stranska vrstica"
+#~ msgid "System Preferences..."
+#~ msgstr "Sistemske možnosti ..."
+#~ msgid "Lock Screen"
+#~ msgstr "Zakleni zaslon"
+#~ msgid "Switch User"
+#~ msgstr "Preklop uporabnika"
+#~ msgid "Log Out..."
+#~ msgstr "Odjava ..."
+#~ msgid "Shut Down..."
+#~ msgstr "Izklopi ..."
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
 #~ msgid "More"

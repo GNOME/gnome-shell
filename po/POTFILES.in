@@ -9,5 +9,4 @@ js/ui/runDialog.js
 js/ui/widget.js
 src/gdmuser/gdm-user.c
 src/shell-global.c
-src/shell-status-menu.c
 src/shell-uri-util.c

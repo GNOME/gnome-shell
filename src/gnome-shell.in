@@ -212,12 +212,99 @@ parser.add_option("-w", "--wide", action="store_true",
                   help="Use widescreen (1280x800) with Xephyr")
 parser.add_option("", "--eval-file", metavar="EVAL_FILE",
                   help="Evaluate the contents of the given JavaScript file")
+parser.add_option("", "--create-extension", action="store_true",
+                  help="Create a new GNOME Shell extension")
 
 options, args = parser.parse_args()
 
 if args:
     parser.print_usage()
     sys.exit(1)
+
+if options.create_extension:
+    import json
+
+    print
+    print '''Name should be a very short (ideally descriptive) string.
+Examples are: "Click To Focus",  "Adblock", "Shell Window Shrinker".
+'''
+    name = raw_input('Name: ').strip()
+    print
+    print '''Description is a single-sentence explanation of what your extension does.
+Examples are: "Make windows visible on click", "Block advertisement popups"
+              "Animate windows shrinking on minimize"
+'''
+    description = raw_input('Description: ').strip()
+    underifier = re.compile('[^A-Za-z]')
+    sample_uuid = underifier.sub('_', name)
+    # TODO use evolution data server
+    hostname = subprocess.Popen(['hostname'], stdout=subprocess.PIPE).communicate()[0].strip()
+    sample_uuid = sample_uuid + '@' + hostname
+
+    print
+    print '''Uuid is a globally-unique identifier for your extension.
+This should be in the format of an email address (foo.bar@extensions.example.com), but
+need not be an actual email address, though it's a good idea to base the uuid on your
+email address.  For example, if your email address is janedoe@example.com, you might
+use an extension title clicktofocus@janedoe.example.com.'''
+    uuid = raw_input('Uuid [%s]: ' % (sample_uuid, )).strip()
+    if uuid == '':
+        uuid = sample_uuid
+
+    extension_path = os.path.join(os.path.expanduser('~/.config'), 'gnome-shell', 'extensions', uuid)
+    if os.path.exists(extension_path):
+        print "Extension path %r already exists" % (extension_path, )
+        sys.exit(0)
+    os.makedirs(extension_path)
+    meta = { 'name': name,
+             'description': description,
+             'uuid': uuid }
+    f = open(os.path.join(extension_path, 'metadata.json'), 'w')
+    try:
+        json.dump(meta, f)
+    except AttributeError:
+        # For Python versions older than 2.6, try using the json-py module
+        f.write(json.write(meta) + '\n')
+    f.close()
+
+    extensionjs_path = os.path.join(extension_path, 'extension.js')
+    f = open(extensionjs_path, 'w')
+    f.write('''// Sample extension code, makes clicking on the panel show a message
+const St = imports.gi.St;
+const Mainloop = imports.mainloop;
+
+const Main = imports.ui.main;
+
+function _showHello() {
+    let text = new St.Label({ style_class: 'helloworld-label', text: "Hello, world!" });
+    let monitor = global.get_primary_monitor();
+    global.stage.add_actor(text);
+    text.set_position(Math.floor (monitor.width / 2 - text.width / 2), Math.floor(monitor.height / 2 - text.height / 2));
+    Mainloop.timeout_add(3000, function () { text.destroy(); });
+}
+
+// Put your extension initialization code here
+function main() {
+    Main.panel.actor.reactive = true;
+    Main.panel.actor.connect('button-release-event', _showHello);
+}
+''')
+    f.close()
+
+    f = open(os.path.join(extension_path, 'stylesheet.css'), 'w')
+    f.write('''/* Example stylesheet */
+.helloworld-label {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: rgba(10,10,10,0.7);
+    border-radius: 5px;
+}
+''')
+    f.close()
+
+    subprocess.Popen(['gnome-open', extensionjs_path])
+    sys.exit(0)
 
 if options.eval_file:
     import dbus

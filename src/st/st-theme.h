@@ -33,6 +33,10 @@ StTheme *st_theme_new (const char *application_stylesheet,
                        const char *theme_stylesheet,
                        const char *default_stylesheet);
 
+gboolean st_theme_load_stylesheet (StTheme *theme, const char *path, GError **error);
+
+void st_theme_unload_stylesheet (StTheme *theme, const char *path);
+
 G_END_DECLS
 
 #endif /* __ST_THEME_H__ */

@@ -155,7 +155,7 @@ if test x$system = xMandrivaLinux ; then
 fi
 
 SOURCE=$HOME/Source
-BASEURL=http://git.gnome.org/cgit/gnome-shell/plain/tools/build
+BASEURL=http://git.gnome.org/browse/gnome-shell/plain/tools/build
 
 if [ -d $SOURCE ] ; then : ; else
     mkdir $SOURCE

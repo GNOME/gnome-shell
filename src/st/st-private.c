@@ -110,3 +110,52 @@ _st_allocate_fill (ClutterActor    *child,
   *childbox = allocation;
 
 }
+
+/**
+ * _st_set_text_from_style:
+ * @text: Target #ClutterText
+ * @theme_node: Source #StThemeNode
+ *
+ * Set various GObject properties of the @text object using
+ * CSS information from @theme_node.
+ */
+void
+_st_set_text_from_style (ClutterText *text,
+                         StThemeNode *theme_node)
+{
+
+  ClutterColor color;
+  StTextDecoration decoration;
+  PangoAttrList *attribs;
+  const PangoFontDescription *font;
+  gchar *font_string;
+
+  st_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (text, &color);
+
+  font = st_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (text, font_string);
+  g_free (font_string);
+
+  attribs = pango_attr_list_new ();
+
+  decoration = st_theme_node_get_text_decoration (theme_node);
+  if (decoration & ST_TEXT_DECORATION_UNDERLINE)
+    {
+      PangoAttribute *underline = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+      pango_attr_list_insert (attribs, underline);
+    }
+  if (decoration & ST_TEXT_DECORATION_LINE_THROUGH)
+    {
+      PangoAttribute *strikethrough = pango_attr_strikethrough_new (TRUE);
+      pango_attr_list_insert (attribs, strikethrough);
+    }
+  /* Pango doesn't have an equivalent attribute for _OVERLINE, and we deliberately
+   * skip BLINK (for now...)
+   */
+
+  clutter_text_set_attributes (text, attribs);
+
+  pango_attr_list_unref (attribs);
+}

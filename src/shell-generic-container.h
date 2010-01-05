@@ -42,4 +42,8 @@ struct _ShellGenericContainerClass
 
 GType shell_generic_container_get_type (void) G_GNUC_CONST;
 
+void shell_generic_container_set_skip_paint (ShellGenericContainer  *container,
+                                             ClutterActor           *actor,
+                                             gboolean                skip);
+
 #endif /* __SHELL_GENERIC_CONTAINER_H__ */

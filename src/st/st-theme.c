@@ -44,6 +44,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gio/gio.h>
+
 #include "st-theme-node.h"
 #include "st-theme-private.h"
 
@@ -68,6 +70,7 @@ struct _StTheme
   char *application_stylesheet;
   char *default_stylesheet;
   char *theme_stylesheet;
+  GSList *custom_stylesheets;
 
   GHashTable *stylesheets_by_filename;
   GHashTable *filenames_by_stylesheet;
@@ -193,24 +196,19 @@ convert_rgba_RGBA (char *buf)
 }
 
 static CRStyleSheet *
-parse_stylesheet (const char *filename)
+parse_stylesheet (const char  *filename,
+                  GError     **error)
 {
   enum CRStatus status;
   char *contents;
   gsize length;
-  GError *error = NULL;
   CRStyleSheet *stylesheet = NULL;
 
   if (filename == NULL)
     return NULL;
 
-  if (!g_file_get_contents (filename, &contents ,&length, &error))
-    {
-      g_warning("Couldn't read stylesheet: %s", error->message);
-      g_error_free (error);
-
-      return NULL;
-    }
+  if (!g_file_get_contents (filename, &contents, &length, error))
+    return NULL;
 
   convert_rgba_RGBA (contents);
 
@@ -218,11 +216,14 @@ parse_stylesheet (const char *filename)
                                           length,
                                           CR_UTF_8,
                                           &stylesheet);
+  g_free (contents);
 
   if (status != CR_OK)
-    g_warning ("Error parsing stylesheet '%s'", filename);
-
-  g_free (contents);
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Error parsing stylesheet '%s'; errcode:%d", filename, status);
+      return NULL;
+    }
 
   return stylesheet;
 }
@@ -243,7 +244,8 @@ _st_theme_parse_declaration_list (const char *str)
 }
 #else /* LIBCROCO_VERSION_NUMBER >= 602 */
 static CRStyleSheet *
-parse_stylesheet (const char *filename)
+parse_stylesheet (const char  *filename,
+                  GError     **error)
 {
   enum CRStatus status;
   CRStyleSheet *stylesheet;
@@ -257,7 +259,8 @@ parse_stylesheet (const char *filename)
 
   if (status != CR_OK)
     {
-      g_warning ("Error parsing stylesheet '%s'", filename);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Error parsing stylesheet '%s'; errcode:%d", filename, status);
       return NULL;
     }
 
@@ -271,6 +274,22 @@ _st_theme_parse_declaration_list (const char *str)
                                              CR_UTF_8);
 }
 #endif /* LIBCROCO_VERSION_NUMBER < 602 */
+
+/* Just g_warning for now until we have something nicer to do */
+static CRStyleSheet *
+parse_stylesheet_nofail (const char *filename)
+{
+  GError *error = NULL;
+  CRStyleSheet *result;
+
+  result = parse_stylesheet (filename, &error);
+  if (error)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+    }
+  return result;
+}
 
 static void
 insert_stylesheet (StTheme      *theme,
@@ -289,6 +308,42 @@ insert_stylesheet (StTheme      *theme,
   g_hash_table_insert (theme->filenames_by_stylesheet, stylesheet, filename_copy);
 }
 
+gboolean
+st_theme_load_stylesheet (StTheme    *theme,
+                          const char *path,
+                          GError    **error)
+{
+  CRStyleSheet *stylesheet;
+
+  stylesheet = parse_stylesheet (path, error);
+  if (!stylesheet)
+    return FALSE;
+
+  insert_stylesheet (theme, path, stylesheet);
+  theme->custom_stylesheets = g_slist_prepend (theme->custom_stylesheets, stylesheet);
+
+  return TRUE;
+}
+
+void
+st_theme_unload_stylesheet (StTheme    *theme,
+                            const char *path)
+{
+  CRStyleSheet *stylesheet;
+
+  stylesheet = g_hash_table_lookup (theme->stylesheets_by_filename, path);
+  if (!stylesheet)
+    return;
+
+  if (!g_slist_find (theme->custom_stylesheets, stylesheet))
+    return;
+
+  theme->custom_stylesheets = g_slist_remove (theme->custom_stylesheets, stylesheet);
+  g_hash_table_remove (theme->stylesheets_by_filename, path);
+  g_hash_table_remove (theme->filenames_by_stylesheet, stylesheet);
+  cr_stylesheet_unref (stylesheet);
+}
+
 static GObject *
 st_theme_constructor (GType                  type,
                       guint                  n_construct_properties,
@@ -305,9 +360,9 @@ st_theme_constructor (GType                  type,
                                                                       construct_properties);
   theme = ST_THEME (object);
 
-  application_stylesheet = parse_stylesheet (theme->application_stylesheet);
-  theme_stylesheet = parse_stylesheet (theme->theme_stylesheet);
-  default_stylesheet = parse_stylesheet (theme->default_stylesheet);
+  application_stylesheet = parse_stylesheet_nofail (theme->application_stylesheet);
+  theme_stylesheet = parse_stylesheet_nofail (theme->theme_stylesheet);
+  default_stylesheet = parse_stylesheet_nofail (theme->default_stylesheet);
 
   theme->cascade = cr_cascade_new (application_stylesheet,
                                    theme_stylesheet,
@@ -327,6 +382,10 @@ static void
 st_theme_finalize (GObject * object)
 {
   StTheme *theme = ST_THEME (object);
+
+  g_slist_foreach (theme->custom_stylesheets, (GFunc) cr_stylesheet_unref, NULL);
+  g_slist_free (theme->custom_stylesheets);
+  theme->custom_stylesheets = NULL;
 
   g_hash_table_destroy (theme->stylesheets_by_filename);
   g_hash_table_destroy (theme->filenames_by_stylesheet);
@@ -559,6 +618,7 @@ id_add_sel_matches_style (CRAdditionalSel *a_add_sel,
 }
 
 /**
+ *additional_selector_matches_style:
  *Evaluates if a given additional selector matches an style node.
  *@param a_add_sel the additional selector to consider.
  *@param a_node the style node to consider.
@@ -862,7 +922,7 @@ add_matched_properties (StTheme      *a_this,
                                                     import_rule->url->stryng->str);
 
                 if (filename)
-                  import_rule->sheet = parse_stylesheet (filename);
+                  import_rule->sheet = parse_stylesheet (filename, NULL);
 
                 if (import_rule->sheet)
                   {
@@ -980,6 +1040,7 @@ _st_theme_get_matched_properties (StTheme        *theme,
   enum CRStyleOrigin origin = 0;
   CRStyleSheet *sheet = NULL;
   GPtrArray *props = g_ptr_array_new ();
+  GSList *iter;
 
   g_return_val_if_fail (ST_IS_THEME (theme), NULL);
   g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
@@ -992,6 +1053,9 @@ _st_theme_get_matched_properties (StTheme        *theme,
 
       add_matched_properties (theme, sheet, node, props);
     }
+
+  for (iter = theme->custom_stylesheets; iter; iter = iter->next)
+    add_matched_properties (theme, iter->data, node, props);
 
   /* We count on a stable sort here so that later declarations come
    * after earlier declarations */

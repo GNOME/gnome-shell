@@ -2,19 +2,22 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Fran Diéguez <fran.dieguez@mabishu.com>, 2009.
-#
+# Anton Meixome <certima@certima.net>, 2009.
+# Antón Méixome <meixome@certima.net>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 23:06+0200\n"
-"PO-Revision-Date: 2009-09-10 22:32+0100\n"
-"Last-Translator: Fran Diéguez <fran.dieguez@glug.es>\n"
-"Language-Team: Galician <gnome@mancomun.org>\n"
+"POT-Creation-Date: 2009-12-28 17:07+0100\n"
+"PO-Revision-Date: 2009-12-28 08:11+0100\n"
+"Last-Translator: Antón Méixome <meixome@certima.net>\n"
+"Language-Team: Galician Proxecto Trasno <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: gl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.4.0\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -22,154 +25,133 @@ msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "Xestor de xanelas e lanzado de aplicativos"
+msgstr "Xestor de xanelas e lanzamento de aplicativos"
 
-#. left side
-#: ../js/ui/panel.js:269
-msgid "Activities"
-msgstr "Actividades"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:858
+msgid "APPLICATIONS"
+msgstr "APLICATIVOS"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:452
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "PREFERENCIAS"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
+msgid "New Window"
+msgstr "Xanela nova"
+
+#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
+msgid "Remove from Favorites"
+msgstr "Eliminar de Favoritos"
+
+#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
+msgid "Add to Favorites"
+msgstr "Engadir a Favoritos"
+
+#: ../js/ui/appDisplay.js:1064
+msgid "Drag here to add favorites"
+msgstr "Arrastra aquí para engadir favoritos"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Buscar..."
 
-#: ../js/ui/dash.js:400
-msgid "Browse"
-msgstr "Explorar"
-
-#: ../js/ui/dash.js:536
-msgid "(see all)"
-msgstr "(ver todos)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:753 ../js/ui/dash.js:809
-msgid "APPLICATIONS"
-msgstr "APLICATIVOS"
+#: ../js/ui/dash.js:437
+msgid "Searching..."
+msgstr "Buscando..."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:773
+#: ../js/ui/dash.js:878 ../js/ui/placeDisplay.js:519
 msgid "PLACES"
 msgstr "LUGARES"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:780 ../js/ui/dash.js:819
+#: ../js/ui/dash.js:885
 msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTOS RECENTES"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:799 ../js/ui/dash.js:931
-msgid "SEARCH RESULTS"
-msgstr "RESULTADOS DA BÚSQUEDA"
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:227
+msgid "Activities"
+msgstr "Actividades"
 
-#: ../js/ui/dash.js:814
-msgid "PREFERENCES"
-msgstr ""
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:440
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "Conectar con..."
+
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../src/shell-global.c:799
-msgid "Less than a minute ago"
-msgstr "Menos de un minuto"
+#: ../js/ui/runDialog.js:351
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Fallou a execución de %s"
 
-#: ../src/shell-global.c:802
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Aplicativos"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Documentos recentes"
+
+#: ../src/shell-global.c:890
+msgid "Less than a minute ago"
+msgstr "Hai menos dun minuto"
+
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "fai %d minuto"
-msgstr[1] "fai %d minutos"
+msgstr[0] "hai %d minuto"
+msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:805
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "fai %d hora"
-msgstr[1] "fai %d horas"
+msgstr[0] "hai %d hora"
+msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:808
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] "fai %d día"
-msgstr[1] "fai %d días"
+msgstr[0] "hai %d día"
+msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:811
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] "fai %d semana"
-msgstr[1] "fai %d semanas"
+msgstr[0] "hai %d semana"
+msgstr[1] "hai %d semanas"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Descoñecido"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Non foi posíbel bloquear a pantalla: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Non foi posíbel establecer o salvapantallas a unha pantalla en branco: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Non foi posíbel pechar a sesión: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Información da conta..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Barra lateral"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Preferenzas do sistema..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Bloquear pantalla"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Cambiar de usuario"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Pechar sesión..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Apagar..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Cartafol persoal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Sistema de ficheiros"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Buscar"
 
@@ -178,10 +160,54 @@ msgstr "Buscar"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "RESULTADOS DA BUSCA"
+
+#~ msgid "Unknown"
+#~ msgstr "Descoñecido"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Non foi posíbel bloquear a pantalla: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr ""
+#~ "Non foi posíbel estabelecer temporalmente o salvapantallas a unha "
+#~ "pantalla en branco: %s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "Non foi posíbel pechar a sesión: %s"
+
+#~ msgid "Account Information..."
+#~ msgstr "Información da conta..."
+
+#~ msgid "Sidebar"
+#~ msgstr "Barra lateral"
+
+#~ msgid "System Preferences..."
+#~ msgstr "Preferencias do sistema..."
+
+#~ msgid "Lock Screen"
+#~ msgstr "Bloquear pantalla"
+
+#~ msgid "Switch User"
+#~ msgstr "Cambiar de usuario"
+
+#~ msgid "Log Out..."
+#~ msgstr "Saír da sesión..."
+
+#~ msgid "Shut Down..."
+#~ msgstr "Apagar..."
+
+#~ msgid "Browse"
+#~ msgstr "Explorar"
+
+#~ msgid "(see all)"
+#~ msgstr "(ver todos)"
 
 #~ msgid "Find apps or documents"
 #~ msgstr "Atopar aplicativos ou documentos"

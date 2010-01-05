@@ -17,6 +17,15 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+.shell-link {
+    color: #0000ff;
+    text-decoration: underline;
+}
+
+.shell-link:hover {
+    color: #0000e0;
+}
+
 StScrollBar
 {
   padding: 0px;
@@ -152,17 +161,6 @@ StTooltip {
     spacing: 12px;
 }
 
-.dash-search-section-header {
-    padding: 6px 0px;
-    spacing: 4px;
-    font-size: 12px;
-    color: #bbbbbb;
-}
-
-.dash-search-section-title, dash-search-section-count {
-    font-weight: bold;
-}
-
 #searchEntry {
     padding: 4px;
     border-bottom: 1px solid #262626;
@@ -235,6 +233,29 @@ StTooltip {
     background-image: url("close.svg");
     width: 16px;
     height: 16px;
+}
+
+.dash-search-section-header {
+    padding: 6px 0px;
+    spacing: 4px;
+}
+
+.dash-search-section-results {
+    color: #ffffff;
+    padding-left: 4px;
+}
+
+.dash-search-section-list-results {
+    spacing: 4px;
+}
+
+.dash-search-result-content {
+    padding: 2px;
+}
+
+.dash-search-result-content:selected {
+    padding: 1px;
+    border: 1px solid #262626;
 }
 
 /* GenericDisplay */
@@ -352,6 +373,19 @@ StTooltip {
   border-radius: 4px;
 }
 
+#LookingGlassDialog .labels {
+  spacing: 4px;
+}
+
+#LookingGlassDialog .notebook-tab {
+  padding: 2px;
+}
+
+#LookingGlassDialog .notebook-tab:selected {
+  border: 1px solid #88ff66;
+  padding: 1px;
+}
+
 #LookingGlassDialog StLabel
 {
   color: #88ff66;
@@ -366,6 +400,29 @@ StTooltip {
 {
   padding: 4px;
   spacing: 4px;
+}
+
+#lookingGlassExtensions {
+    padding: 4px;
+}
+
+.lg-extension-list {
+    padding: 4px;
+    spacing: 6px;
+}
+
+.lg-extension {
+    border: 1px solid #6f6f6f;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.lg-extension-name {
+    font-weight: bold;
+}
+
+.lg-extension-actions {
+    spacing: 6px;
 }
 
 /* Calendar popup */
@@ -456,6 +513,11 @@ StTooltip {
 .switcher-list .thumbnail-box {
     padding: 2px;
     spacing: 4px;
+}
+
+.switcher-list .thumbnail {
+    width:  256px;
+    height: 256px;
 }
 
 .switcher-list .outlined-item-box {

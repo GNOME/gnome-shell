@@ -88,6 +88,21 @@
 	</locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/disabled_extensions</key>
+        <applyto>/desktop/gnome/shell/disabled_extensions</applyto>
+        <owner>gnome-shell</owner>
+        <type>list</type>
+        <list_type>string</list_type>
+        <default>[]</default>
+        <locale name="C">
+          <short>Uuids of extensions to disable</short>
+          <long>
+            GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded.
+         </long>
+        </locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>

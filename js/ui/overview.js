@@ -12,7 +12,6 @@ const Lang = imports.lang;
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
-const Link = imports.ui.link;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Dash = imports.ui.dash;
@@ -184,6 +183,7 @@ Overview.prototype = {
         this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
         this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
+        this._dash.searchResults.actor.height = this._workspacesHeight;
 
         // place the 'Add Workspace' button in the bottom row of the grid
         addRemoveButtonSize = Math.floor(displayGridRowHeight * 3/5);
@@ -248,7 +248,7 @@ Overview.prototype = {
     // This allows the user to place the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem
-            || source instanceof AppDisplay.BaseWellItem) {
+            || source instanceof AppDisplay.AppIcon) {
             if (this._activeDisplayPane != null)
                 this._activeDisplayPane.close();
             return true;
@@ -457,7 +457,7 @@ Overview.prototype = {
     },
 
     _addNewWorkspace: function() {
-        global.screen.append_new_workspace(false, Main.currentTime());
+        global.screen.append_new_workspace(false, global.get_current_time());
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {

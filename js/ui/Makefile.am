@@ -10,6 +10,7 @@ dist_jsui_DATA =		\
 	dnd.js			\
 	docDisplay.js		\
 	environment.js		\
+	extensionSystem.js  \
 	genericDisplay.js	\
 	lightbox.js		\
 	link.js			\
@@ -20,6 +21,7 @@ dist_jsui_DATA =		\
 	panel.js		\
 	placeDisplay.js		\
 	runDialog.js		\
+	search.js           \
 	shellDBus.js		\
 	sidebar.js		\
 	statusMenu.js		\
