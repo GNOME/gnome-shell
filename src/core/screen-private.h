@@ -113,6 +113,7 @@ struct _MetaScreen
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   Window wm_cm_selection_window;
+  guint32 wm_cm_timestamp;
 #endif
 
   guint work_area_idle;

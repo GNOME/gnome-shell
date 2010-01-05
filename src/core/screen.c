@@ -2791,11 +2791,14 @@ meta_screen_set_cm_selection (MetaScreen *screen)
   char selection[32];
   Atom a;
 
+  screen->wm_cm_timestamp = meta_display_get_current_time_roundtrip (
+                                                               screen->display);
+
   g_snprintf (selection, sizeof(selection), "_NET_WM_CM_S%d", screen->number);
   meta_verbose ("Setting selection: %s\n", selection);
   a = XInternAtom (screen->display->xdisplay, selection, FALSE);
   XSetSelectionOwner (screen->display->xdisplay, a, 
-                      screen->wm_cm_selection_window, CurrentTime);
+                      screen->wm_cm_selection_window, screen->wm_cm_timestamp);
 }
 
 void
@@ -2806,6 +2809,7 @@ meta_screen_unset_cm_selection (MetaScreen *screen)
 
   g_snprintf (selection, sizeof(selection), "_NET_WM_CM_S%d", screen->number);
   a = XInternAtom (screen->display->xdisplay, selection, FALSE);
-  XSetSelectionOwner (screen->display->xdisplay, a, None, CurrentTime);
+  XSetSelectionOwner (screen->display->xdisplay, a,
+                      None, screen->wm_cm_timestamp);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
