@@ -77,7 +77,7 @@ delete_ping_timeout_func (MetaDisplay *display,
 {
   MetaWindow *window = user_data;
   char *window_title;
-  gchar *window_content;
+  gchar *window_content, *tmp;
   GPid dialog_pid;
   
   meta_topic (META_DEBUG_PING,
@@ -92,11 +92,14 @@ delete_ping_timeout_func (MetaDisplay *display,
 
   window_title = g_locale_from_utf8 (window->title, -1, NULL, NULL, NULL);
 
-  window_content = g_strdup_printf(
-      _("<big><b><tt>%s</tt> is not responding.</b></big>\n\n"
-      "<i>You may choose to wait a short while for it to "
-      "continue or force the application to quit entirely.</i>"),
-      window_title);
+  /* Translators: %s is a window title */
+  tmp = g_strdup_printf (_("<tt>%s</tt> is not responding."),
+                         window_title);
+  window_content = g_strdup_printf (
+      "<big><b>%s</b></big>\n\n<i>%s</i>",
+      tmp,
+      _("You may choose to wait a short while for it to "
+        "continue or force the application to quit entirely."));
 
   g_free (window_title);
 
@@ -108,6 +111,7 @@ delete_ping_timeout_func (MetaDisplay *display,
                       NULL, NULL);
 
   g_free (window_content);
+  g_free (tmp);
 
   window->dialog_pid = dialog_pid;
   g_child_watch_add (dialog_pid, dialog_exited, window);
