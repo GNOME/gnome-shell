@@ -707,7 +707,7 @@ construct_timeline (ClutterScript *script,
       PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
 
       pinfo->name = g_strdelimit (g_strdup (name), G_STR_DELIMITERS, '-');
-      pinfo->node = node;
+      pinfo->node = json_node_copy (node);
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
     }
