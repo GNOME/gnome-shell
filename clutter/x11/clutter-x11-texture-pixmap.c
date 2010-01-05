@@ -213,37 +213,41 @@ try_alloc_shm (ClutterX11TexturePixmap *texture)
   priv->shminfo.shmid = shmget (IPC_PRIVATE,
 				dummy_image->bytes_per_line
 				* dummy_image->height,
-				IPC_CREAT|0777);
+				IPC_CREAT | 0777);
   if (priv->shminfo.shmid == -1)
     goto failed_shmget;
 
-  priv->shminfo.shmaddr =
-    shmat (priv->shminfo.shmid, 0, 0);
-  if (priv->shminfo.shmaddr == (void *)-1)
+  priv->shminfo.shmaddr = shmat (priv->shminfo.shmid, 0, 0);
+  if (priv->shminfo.shmaddr == (void *) -1)
     goto failed_shmat;
 
   priv->shminfo.readOnly = False;
 
-  if (XShmAttach(dpy, &priv->shminfo) == 0)
+  if (XShmAttach (dpy, &priv->shminfo) == 0)
     goto failed_xshmattach;
 
   if (clutter_x11_untrap_x_errors ())
     g_warning ("X Error: Failed to setup XShm");
 
+  XDestroyImage (dummy_image);
+
   priv->have_shm = TRUE;
+
   return TRUE;
 
 failed_xshmattach:
   g_warning ("XShmAttach failed");
-  shmdt(priv->shminfo.shmaddr);
+  shmdt (priv->shminfo.shmaddr);
+
 failed_shmat:
   g_warning ("shmat failed");
-  shmctl(priv->shminfo.shmid, IPC_RMID, 0);
+  shmctl (priv->shminfo.shmid, IPC_RMID, 0);
+
 failed_shmget:
   g_warning ("shmget failed");
-  XDestroyImage(dummy_image);
-failed_image_create:
+  XDestroyImage (dummy_image);
 
+failed_image_create:
   if (clutter_x11_untrap_x_errors ())
     g_warning ("X Error: Failed to setup XShm");
 
