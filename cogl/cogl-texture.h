@@ -29,6 +29,7 @@
 #define __COGL_TEXTURE_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-defines.h>
 
 G_BEGIN_DECLS
 
