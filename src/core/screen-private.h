@@ -116,6 +116,7 @@ struct _MetaScreen
 #endif
 
   Window wm_cm_selection_window;
+  guint32 wm_cm_timestamp;
 
   guint work_area_later;
 
