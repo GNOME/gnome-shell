@@ -1144,6 +1144,13 @@ clutter_text_finalize (GObject *gobject)
   if (priv->font_desc)
     pango_font_description_free (priv->font_desc);
 
+  if (priv->attrs)
+    pango_attr_list_unref (priv->attrs);
+  if (priv->effective_attrs)
+    pango_attr_list_unref (priv->effective_attrs);
+  if (priv->preedit_attrs)
+    pango_attr_list_unref (priv->preedit_attrs);
+
   g_free (priv->text);
   g_free (priv->font_name);
 
