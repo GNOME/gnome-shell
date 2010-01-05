@@ -14,6 +14,8 @@ const NOTIFICATION_TIMEOUT = 4;
 
 const MESSAGE_TRAY_TIMEOUT = 0.2;
 
+const ICON_SIZE = 24;
+
 function Notification() {
     this._init();
 }
@@ -97,7 +99,7 @@ Source.prototype = {
     },
 
     notify: function(text) {
-        Main.notificationPopup.show(this.createIcon(), text);
+        Main.notificationPopup.show(this.createIcon(ICON_SIZE), text);
     },
 
     clicked: function() {
@@ -152,7 +154,7 @@ MessageTray.prototype = {
         }
 
         let iconBox = new St.Bin({ reactive: true });
-        iconBox.child = source.createIcon();
+        iconBox.child = source.createIcon(ICON_SIZE);
         this._tray.insert_actor(iconBox, 0);
         this._icons[source.id] = iconBox;
         this._sources[source.id] = source;
