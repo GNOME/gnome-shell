@@ -517,22 +517,6 @@ ensure_queued_save (ShellAppUsage *self)
   self->save_id = g_timeout_add_seconds (SAVE_APPS_TIMEOUT_SECONDS, idle_save_application_usage, self);
 }
 
-/* Used to sort highest scores at the top */
-static gint
-usage_sort_apps (gconstpointer data1,
-                 gconstpointer data2)
-{
-  const UsageData *u1 = data1;
-  const UsageData *u2 = data2;
-
-  if (u1->score > u2->score)
-    return -1;
-  else if (u1->score == u2->score)
-    return 0;
-  else
-    return 1;
-}
-
 /* Clean up apps we see rarely.
  * The logic behind this is that if an app was seen less than SCORE_MIN times
  * and not seen for a week, it can probably be forgotten about.
@@ -800,7 +784,7 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
               guint count = strtoul (*value, NULL, 10);
               if (count > 0)
                  data->self->previously_running = g_slist_prepend (data->self->previously_running,
-                                                                      usage);
+                                                                   g_strdup (appid));
             }
           else if (strcmp (*attribute, "score") == 0)
             {
@@ -897,7 +881,6 @@ out:
   g_object_unref (input);
 
   idle_clean_usage (self);
-  self->previously_running = g_slist_sort (self->previously_running, usage_sort_apps);
 
   if (error)
     {
