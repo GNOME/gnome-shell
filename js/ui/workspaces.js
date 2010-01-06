@@ -220,7 +220,6 @@ WindowClone.prototype = {
         this._zoomTarget.setPosition(this.actor.x - (this.actor.width - width) / 2, this.actor.y - (this.actor.height - height) / 2);
         this._zoomStep = 0;
 
-        this._hideEventId = Main.overview.connect('hiding', Lang.bind(this, function () { this._zoomEnd(); }));
         this._zoomUpdate();
     },
 
@@ -235,7 +234,6 @@ WindowClone.prototype = {
         [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
 
         this._zoomLightbox.destroy();
-        Main.overview.disconnect(this._hideEventId);
 
         this._zoomLocalPosition  = undefined;
         this._zoomLocalScale     = undefined;
