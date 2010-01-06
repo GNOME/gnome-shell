@@ -283,18 +283,56 @@ function DesktopClone(window) {
 
 DesktopClone.prototype = {
     _init : function(window) {
+        this.actor = new Clutter.Group({ reactive: true });
+
+        let background = new Clutter.Clone({ source: Main.background.source });
+        this.actor.add_actor(background);
+
         if (window) {
-            this.actor = new Clutter.Clone({ source: window.get_texture(),
-                                             reactive: true });
+            this._desktop = new Clutter.Clone({ source: window.get_texture() });
+            this.actor.add_actor(this._desktop);
+            this._desktop.hide();
         } else {
-            this.actor = new Clutter.Clone({ source: Main.background.source,
-                                             reactive: true,
-                                             width: global.screen_width,
-                                             height: global.screen_height });
+            this._desktop = null;
         }
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
+    },
+
+    zoomFromOverview: function(fadeInIcons) {
+        if (this._desktop == null)
+            return;
+
+        if (fadeInIcons) {
+            this._desktop.opacity = 0;
+            this._desktop.show();
+            Tweener.addTween(this._desktop,
+                             { opacity: 255,
+                               time: Overview.ANIMATION_TIME,
+                               transition: "easeOutQuad" });
+        }
+    },
+
+    zoomToOverview: function(fadeOutIcons) {
+        if (this._desktop == null)
+            return;
+
+        if (fadeOutIcons) {
+            this._desktop.opacity = 255;
+            this._desktop.show();
+            Tweener.addTween(this._desktop,
+                             { opacity: 0,
+                               time: Overview.ANIMATION_TIME,
+                               transition: "easeOutQuad",
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this._desktop.hide();
+                                   })
+                             });
+        } else {
+            this._desktop.hide();
+        }
     },
 
     _onButtonRelease : function (actor, event) {
@@ -601,7 +639,6 @@ Workspace.prototype = {
     },
 
     _lookupIndex: function (metaWindow) {
-        let index, clone;
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].metaWindow == metaWindow) {
                 return i;
@@ -1152,6 +1189,18 @@ Workspace.prototype = {
         this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
+    // check for maximized windows on the workspace
+    _haveMaximizedWindows: function() {
+        for (let i = 1; i < this._windows.length; i++) {
+            let metaWindow = this._windows[i].metaWindow;
+            if (metaWindow.showing_on_its_workspace() &&
+                metaWindow.maximized_horizontally &&
+                metaWindow.maximized_vertically)
+                return true;
+        }
+        return false;
+    },
+
     // Animate the full-screen to Overview transition.
     zoomToOverview : function(animate) {
         this.actor.set_position(this.gridX, this.gridY);
@@ -1162,6 +1211,12 @@ Workspace.prototype = {
             this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
         else
             this.positionWindows(WindowPositionFlags.ZOOM);
+
+        let active = global.screen.get_active_workspace_index();
+        let fadeInIcons = (animate &&
+                           active == this.workspaceNum &&
+                           !this._haveMaximizedWindows());
+        this._desktop.zoomToOverview(fadeInIcons);
 
         this._visible = true;
     },
@@ -1202,6 +1257,11 @@ Workspace.prototype = {
                                  });
             }
         }
+
+        let active = global.screen.get_active_workspace_index();
+        let fadeOutIcons = (active == this.workspaceNum &&
+                            !this._haveMaximizedWindows());
+        this._desktop.zoomFromOverview(fadeOutIcons);
 
         this._visible = false;
     },
