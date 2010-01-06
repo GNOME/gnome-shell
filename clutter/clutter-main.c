@@ -137,6 +137,7 @@ static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
+guint clutter_profile_flags = 0;  /* global clutter profile flag */
 
 const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
 const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
@@ -162,6 +163,12 @@ static const GDebugKey clutter_debug_keys[] = {
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
   { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
+};
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+#ifdef CLUTTER_ENABLE_PROFILE
+static const GDebugKey clutter_profile_keys[] = {
+      {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -1423,6 +1430,32 @@ clutter_arg_no_debug_cb (const char *key,
 }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+#ifdef CLUTTER_ENABLE_PROFILE
+static gboolean
+clutter_arg_profile_cb (const char *key,
+                        const char *value,
+                        gpointer    user_data)
+{
+  clutter_profile_flags |=
+    g_parse_debug_string (value,
+                          clutter_profile_keys,
+                          G_N_ELEMENTS (clutter_profile_keys));
+  return TRUE;
+}
+
+static gboolean
+clutter_arg_no_profile_cb (const char *key,
+                           const char *value,
+                           gpointer    user_data)
+{
+  clutter_profile_flags &=
+    ~g_parse_debug_string (value,
+                           clutter_profile_keys,
+                           G_N_ELEMENTS (clutter_profile_keys));
+  return TRUE;
+}
+#endif /* CLUTTER_ENABLE_PROFILE */
+
 GQuark
 clutter_init_error_quark (void)
 {
@@ -1557,6 +1590,12 @@ static GOptionEntry clutter_args[] = {
   { "clutter-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_debug_cb,
     N_("Clutter debugging flags to unset"), "FLAGS" },
 #endif /* CLUTTER_ENABLE_DEBUG */
+#ifdef CLUTTER_ENABLE_PROFILE
+  { "clutter-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_profile_cb,
+    N_("Clutter profiling flags to set"), "FLAGS" },
+  { "clutter-no-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_profile_cb,
+    N_("Clutter profiling flags to unset"), "FLAGS" },
+#endif /* CLUTTER_ENABLE_PROFILE */
   { NULL, },
 };
 
@@ -1599,6 +1638,18 @@ pre_parse_hook (GOptionContext  *context,
       env_string = NULL;
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  env_string = g_getenv ("CLUTTER_PROFILE");
+  if (env_string != NULL)
+    {
+      clutter_profile_flags =
+        g_parse_debug_string (env_string,
+                              clutter_profile_keys,
+                              G_N_ELEMENTS (clutter_profile_keys));
+      env_string = NULL;
+    }
+#endif /* CLUTTER_ENABLE_PROFILE */
 
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)

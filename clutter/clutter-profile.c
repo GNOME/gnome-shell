@@ -155,7 +155,7 @@ print_timers (UProfContext *context)
 static void __attribute__ ((destructor))
 clutter_uprof_destructor (void)
 {
-  if (getenv ("CLUTTER_PROFILE_OUTPUT_REPORT"))
+  if (!(clutter_profile_flags & CLUTTER_PROFILE_DISABLE_REPORT))
     {
       UProfReport *report = uprof_report_new ("Clutter report");
       uprof_report_add_context (report, _clutter_uprof_context);

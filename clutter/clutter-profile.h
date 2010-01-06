@@ -26,7 +26,13 @@
 #ifndef _CLUTTER_PROFILE_H_
 #define _CLUTTER_PROFILE_H_
 
+#include <glib.h>
+
 G_BEGIN_DECLS
+
+typedef enum {
+  CLUTTER_PROFILE_DISABLE_REPORT  = 1 << 1
+} ClutterProfileFlag;
 
 #ifdef CLUTTER_ENABLE_PROFILE
 
@@ -51,6 +57,8 @@ extern UProfContext *_clutter_uprof_context;
 #define CLUTTER_TIMER_STOP(A,B) G_STMT_START{ (void)0; }G_STMT_END
 
 #endif /* CLUTTER_ENABLE_PROFILE */
+
+extern guint clutter_profile_flags;
 
 G_END_DECLS
 
