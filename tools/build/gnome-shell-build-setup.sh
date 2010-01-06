@@ -97,7 +97,7 @@ fi
 if test x$system = xFedora ; then
   reqd=""
   for pkg in \
-    binutils curl gcc make \
+    binutils curl gcc gcc-c++ make \
     automake bison flex git gnome-common gnome-doc-utils intltool \
     libtool pkgconfig \
     dbus-glib-devel GConf2-devel gnome-menus-devel gnome-python2-gconf gtk2-devel libffi-devel \
