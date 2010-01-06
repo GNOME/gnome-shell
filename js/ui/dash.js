@@ -433,9 +433,8 @@ SearchResults.prototype = {
 
         this.actor = new St.BoxLayout({ name: 'dashSearchResults',
                                         vertical: true });
-        this._searchingNotice = new St.Label({ style_class: 'dash-search-starting',
-                                               text: _("Searching...") });
-        this.actor.add(this._searchingNotice);
+        this._statusText = new St.Label({ style_class: 'dash-search-statustext' });
+        this.actor.add(this._statusText);
         this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
@@ -485,13 +484,14 @@ SearchResults.prototype = {
 
     reset: function() {
         this._searchSystem.reset();
-        this._searchingNotice.hide();
+        this._statusText.hide();
         this._clearDisplay();
     },
 
     startingSearch: function() {
         this.reset();
-        this._searchingNotice.show();
+        this._statusText.set_text(_("Searching..."));
+        this._statusText.show();
     },
 
     _metaForProvider: function(provider) {
@@ -501,8 +501,15 @@ SearchResults.prototype = {
     updateSearch: function (searchString) {
         let results = this._searchSystem.updateSearch(searchString);
 
-        this._searchingNotice.hide();
         this._clearDisplay();
+
+        if (results.length == 0) {
+            this._statusText.set_text(_("No matching results."));
+            this._statusText.show();
+            return true;
+        } else {
+            this._statusText.hide();
+        }
 
         let terms = this._searchSystem.getTerms();
 
