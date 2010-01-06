@@ -16,11 +16,22 @@ const MESSAGE_TRAY_TIMEOUT = 0.2;
 
 const ICON_SIZE = 24;
 
-function Notification() {
-    this._init();
+function Notification(icon, text) {
+    this._init(icon, text);
 }
 
 Notification.prototype = {
+    _init: function(icon, text) {
+        this.icon = icon;
+        this.text = text;
+    }
+}
+
+function NotificationBox() {
+    this._init();
+}
+
+NotificationBox.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ name: 'notification' });
 
@@ -29,55 +40,11 @@ Notification.prototype = {
 
         this._text = new St.Label();
         this.actor.add(this._text, { expand: true, x_fill: false, y_fill: false, y_align: St.Align.MIDDLE });
-
-        Main.chrome.addActor(this.actor, { affectsStruts: false });
-
-        let primary = global.get_primary_monitor();
-        this.actor.y = primary.height;
-
-        this._hideTimeoutId = 0;
     },
 
-    show: function(icon, text) {
-        let primary = global.get_primary_monitor();
-
-        if (this._hideTimeoutId > 0) 
-            Mainloop.source_remove(this._hideTimeoutId);
-        this._hideTimeoutId = Mainloop.timeout_add(NOTIFICATION_TIMEOUT * 1000, Lang.bind(this, this.hide));
-
-        this._iconBox.child = icon;
-        this._text.text = text;
-
-        this.actor.x = Math.round((primary.width - this.actor.width) / 2);
-        this.actor.show();
-        Tweener.addTween(this.actor,
-                         { y: primary.height - this.actor.height,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
-    },
-
-    hide: function() {
-        let primary = global.get_primary_monitor();
-        this._hideTimeoutId = 0;
-
-        Tweener.addTween(this.actor,
-                         { y: primary.height,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this.hideComplete,
-                           onCompleteScope: this
-                         });
-        return false;
-    },
-
-    hideComplete: function() {
-        if (this._iconBox.child)
-            this._iconBox.child.destroy();
-
-        // Don't hide the notification if we are showing a new one.
-        if (this._hideTimeoutId == 0)
-            this.actor.hide();
+    setContent: function(notification) {
+        this._iconBox.child = notification.icon;
+        this._text.text = notification.text;
     }
 };
 
@@ -99,7 +66,7 @@ Source.prototype = {
     },
 
     notify: function(text) {
-        Main.notificationPopup.show(this.createIcon(ICON_SIZE), text);
+        Main.messageTray.showNotification(new Notification(this.createIcon(ICON_SIZE), text));
     },
 
     clicked: function() {
@@ -118,16 +85,25 @@ function MessageTray() {
 
 MessageTray.prototype = {
     _init: function() {
-        this.actor = new St.Bin({ name: 'message-tray',
-                                  reactive: true,
-                                  x_align: St.Align.END });
-        Main.chrome.addActor(this.actor, { affectsStruts: false });
+        this.actor = new St.BoxLayout({ name: 'message-tray',
+                                        reactive: true });
 
         let primary = global.get_primary_monitor();
         this.actor.x = 0;
         this.actor.y = primary.height - 1;
 
         this.actor.width = primary.width;
+
+        this._summaryBin = new St.Bin({ x_align: St.Align.END });
+        this.actor.add(this._summaryBin, { expand: true });
+        this._summaryBin.hide();
+
+        this._notificationBox = new NotificationBox();
+        this._notificationQueue = [];
+        this.actor.add(this._notificationBox.actor);
+        this._notificationBox.actor.hide();
+
+        Main.chrome.addActor(this.actor, { affectsStruts: false });
 
         this.actor.connect('enter-event',
                            Lang.bind(this, this._onMessageTrayEntered));
@@ -136,9 +112,9 @@ MessageTray.prototype = {
         this._isShowing = false;
         this.actor.show();
 
-        this._tray = new St.BoxLayout({ name: 'message-tray-inner' });
-        this.actor.child = this._tray;
-        this._tray.expand = true;
+        this._summary = new St.BoxLayout({ name: 'summary-mode' });
+        this._summaryBin.child = this._summary;
+
         this._sources = {};
         this._icons = {};
     },
@@ -155,7 +131,7 @@ MessageTray.prototype = {
 
         let iconBox = new St.Bin({ reactive: true });
         iconBox.child = source.createIcon(ICON_SIZE);
-        this._tray.insert_actor(iconBox, 0);
+        this._summary.insert_actor(iconBox, 0);
         this._icons[source.id] = iconBox;
         this._sources[source.id] = source;
 
@@ -174,7 +150,7 @@ MessageTray.prototype = {
         if (!this.contains(source))
             return;
 
-        this._tray.remove_actor(this._icons[source.id]);
+        this._summary.remove_actor(this._icons[source.id]);
         delete this._icons[source.id];
         delete this._sources[source.id];
     },
@@ -184,12 +160,29 @@ MessageTray.prototype = {
     },
 
     _onMessageTrayEntered: function() {
+        // Don't hide the message tray after a timeout if the user has moved the mouse over it.
+        // We might have a timeout in place if the user moved the mouse away from the message tray for a very short period of time
+        // or if we are showing a notification.
         if (this._hideTimeoutId > 0)
             Mainloop.source_remove(this._hideTimeoutId);
 
         if (this._isShowing)
             return;
 
+        // If the message tray was not already showing, we'll show it in the summary mode.
+        this._summaryBin.show();
+        this._show();
+    },
+
+    _onMessageTrayLeft: function() {
+        if (!this._isShowing)
+            return;
+
+        // We wait just a little before hiding the message tray in case the user will quickly move the mouse back over it.
+        this._hideTimeoutId = Mainloop.timeout_add(MESSAGE_TRAY_TIMEOUT * 1000, Lang.bind(this, this._hide));
+    },
+
+    _show: function() {
         this._isShowing = true;
         let primary = global.get_primary_monitor();
         Tweener.addTween(this.actor,
@@ -199,15 +192,7 @@ MessageTray.prototype = {
                          });
     },
 
-    _onMessageTrayLeft: function() {
-        if (!this._isShowing)
-            return;
-
-        this._hideTimeoutId = Mainloop.timeout_add(MESSAGE_TRAY_TIMEOUT * 1000, Lang.bind(this, this._hide));
-    },
-
     _hide: function() {
-        this._isShowing = false;
         this._hideTimeoutId = 0;
 
         let primary = global.get_primary_monitor();
@@ -215,9 +200,36 @@ MessageTray.prototype = {
         Tweener.addTween(this.actor,
                          { y: primary.height - 1,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
+                           transition: "easeOutQuad",
+                           onComplete: this._hideComplete,
+                           onCompleteScope: this
                          });
         return false;
-    }
-};
+    },
 
+    _hideComplete: function() {
+        this._isShowing = false;
+        this._summaryBin.hide();
+        this._notificationBox.actor.hide();
+        if (this._notificationQueue.length > 0)
+            this.showNotification(this._notificationQueue.shift());
+    },
+
+    showNotification: function(notification) {
+        if (this._isShowing) {
+            this._notificationQueue.push(notification);
+            return;
+        }
+
+        this._notificationBox.setContent(notification);
+
+        this._notificationBox.actor.x = Math.round((this.actor.width - this._notificationBox.actor.width) / 2);
+        this._notificationBox.actor.show();
+
+        // Because we set up the timeout before we do the animation, we add ANIMATION_TIME to NOTIFICATION_TIMEOUT, so that
+        // NOTIFICATION_TIMEOUT represents the time the notifiation is fully shown.
+        this._hideTimeoutId = Mainloop.timeout_add((NOTIFICATION_TIMEOUT + ANIMATION_TIME) * 1000, Lang.bind(this, this._hide));
+
+        this._show();
+     }
+};

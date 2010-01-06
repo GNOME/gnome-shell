@@ -473,25 +473,24 @@ StTooltip {
 }
 
 /* Message Tray */
+#message-tray {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(0,0,0,0.01);
+    background-gradient-end: rgba(0,0,0,0.95);
+    height: 28px;
+}
+
 #notification {
     border-radius: 5px;
     background: rgba(0,0,0,0.9);
-    border: 1px solid rgba(128,128,128,0.45);
     color: white;
-    padding: 4px;
+    padding: 2px 10px;
     spacing: 10px;
 }
 
-#message-tray {
-    border-radius: 5px;
-    background: rgba(0,0,0,0.9);
-    border: 1px solid rgba(128,128,128,0.45);
-    padding: 4px;
-    height: 40px;
-}
-
-#message-tray-inner {
+#summary-mode {
     spacing: 10px;
+    padding: 2px 4px;
 }
 
 /* App Switcher */
