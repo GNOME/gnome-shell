@@ -190,12 +190,12 @@ if [ -e $HOME/.jhbuildrc ] ; then
 fi
 
 echo -n "Writing ~/.jhbuildrc ... "
-curl -s -o $HOME/.jhbuildrc $BASEURL/jhbuildrc-gnome-shell
+curl -L -s -o $HOME/.jhbuildrc $BASEURL/jhbuildrc-gnome-shell
 echo "done"
 
 if [ ! -f $HOME/.jhbuildrc-custom ]; then
     echo -n "Writing example ~/.jhbuildrc-custom ... "
-    curl -s -o $HOME/.jhbuildrc-custom $BASEURL/jhbuildrc-custom-example
+    curl -L -s -o $HOME/.jhbuildrc-custom $BASEURL/jhbuildrc-custom-example
     echo "done"
 fi
 
