@@ -8,6 +8,7 @@ const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const Params = imports.misc.params;
 
 let nextNotificationId = 1;
 
@@ -40,6 +41,12 @@ const NotificationClosedReason = {
     DISMISSED: 2,
     APP_CLOSED: 3,
     UNDEFINED: 4
+};
+
+const Urgency = {
+    LOW: 0,
+    NORMAL: 1,
+    CRITICAL: 2
 };
 
 function NotificationDaemon() {
@@ -92,7 +99,11 @@ NotificationDaemon.prototype = {
                 }));
         }
 
-        source.notify(summary);
+        summary = GLib.markup_escape_text(summary, -1);
+        if (body)
+            source.notify('<b>' + summary + '</b>: ' + body);
+        else
+            source.notify('<b>' + summary + '</b>');
         return id;
     },
 
@@ -109,7 +120,7 @@ NotificationDaemon.prototype = {
             'body',
             // 'body-hyperlinks',
             // 'body-images',
-            // 'body-markup',
+            'body-markup',
             // 'icon-multi',
             'icon-static'
             // 'sound',
@@ -145,8 +156,11 @@ Source.prototype = {
     _init: function(sourceId, icon, hints) {
         MessageTray.Source.prototype._init.call(this, sourceId);
 
+        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+
         this._icon = icon;
         this._iconData = hints.icon_data;
+        this._urgency = hints.urgency;
     },
 
     createIcon: function(size) {
@@ -166,8 +180,17 @@ Source.prototype = {
             return textureCache.load_from_raw(data, data.length, hasAlpha,
                                               width, height, rowStride, size);
         } else {
-            // FIXME: fallback icon?
-            return textureCache.load_icon_name('gtk-dialog-info', size);
+            let stockIcon;
+            switch (this._urgency) {
+                case Urgency.LOW:
+                case Urgency.NORMAL:
+                    stockIcon = 'gtk-dialog-info';
+                    break;
+                case Urgency.CRITICAL:
+                    stockIcon = 'gtk-dialog-error';
+                    break;
+            }
+            return textureCache.load_icon_name(stockIcon, size);
         }
     }
 };

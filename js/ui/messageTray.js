@@ -44,7 +44,11 @@ NotificationBox.prototype = {
 
     setContent: function(notification) {
         this._iconBox.child = notification.icon;
-        this._text.text = notification.text;
+
+        // Support <b>, <i>, and <u>, escape anything else
+        // so it displays as raw markup.
+        let markup = notification.text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
+        this._text.clutter_text.set_markup(markup);
     }
 };
 
