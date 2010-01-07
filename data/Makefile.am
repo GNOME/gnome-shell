@@ -15,7 +15,6 @@ gnome-shell.desktop: gnome-shell.desktop.in
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
 	add-workspace.svg			\
-	app-well-glow.png			\
 	close-black.svg				\
 	magnifier.svg				\
 	remove-workspace.svg

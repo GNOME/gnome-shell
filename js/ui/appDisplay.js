@@ -299,15 +299,10 @@ AppIcon.prototype = {
     _init : function(app) {
         this.app = app;
 
-        this._glowExtendVertical = 0;
-        this._glowShrinkHorizontal = 0;
-
         this.actor = new St.Bin({ style_class: 'app-icon',
                                   x_fill: true,
                                   y_fill: true });
         this.actor._delegate = this;
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._rerenderGlow));
 
         let box = new St.BoxLayout({ vertical: true });
         this.actor.set_child(box);
@@ -316,95 +311,9 @@ AppIcon.prototype = {
 
         box.add(this.icon, { expand: true, x_fill: false, y_fill: false });
 
-        let nameBox = new Shell.GenericContainer();
-        nameBox.connect('get-preferred-width', Lang.bind(this, this._nameBoxGetPreferredWidth));
-        nameBox.connect('get-preferred-height', Lang.bind(this, this._nameBoxGetPreferredHeight));
-        nameBox.connect('allocate', Lang.bind(this, this._nameBoxAllocate));
-        this._nameBox = nameBox;
-
         this._name = new St.Label({ text: this.app.get_name() });
         this._name.clutter_text.line_alignment = Pango.Alignment.CENTER;
-        nameBox.add_actor(this._name);
-        this._glowBox = new St.BoxLayout({ style_class: 'app-well-app-glow' });
-        this._glowBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-        this._nameBox.add_actor(this._glowBox);
-        this._glowBox.lower(this._name);
-        this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._queueRerenderGlow));
-
-        box.add(nameBox);
-    },
-
-    _nameBoxGetPreferredWidth: function (nameBox, forHeight, alloc) {
-        let [min, natural] = this._name.get_preferred_width(forHeight);
-        alloc.min_size = min;
-        alloc.natural_size = natural;
-    },
-
-    _nameBoxGetPreferredHeight: function (nameBox, forWidth, alloc) {
-        let [min, natural] = this._name.get_preferred_height(forWidth);
-        alloc.min_size = min + this._glowExtendVertical * 2;
-        alloc.natural_size = natural + this._glowExtendVertical * 2;
-    },
-
-    _nameBoxAllocate: function (nameBox, box, flags) {
-        let childBox = new Clutter.ActorBox();
-        let [minWidth, naturalWidth] = this._name.get_preferred_width(-1);
-        let [minHeight, naturalHeight] = this._name.get_preferred_height(-1);
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        let targetWidth = availWidth;
-        let xPadding = 0;
-        if (naturalWidth < availWidth) {
-            xPadding = Math.floor((availWidth - naturalWidth) / 2);
-        }
-        childBox.x1 = xPadding;
-        childBox.x2 = availWidth - xPadding;
-        childBox.y1 = this._glowExtendVertical;
-        childBox.y2 = availHeight - this._glowExtendVertical;
-        this._name.allocate(childBox, flags);
-
-        // Now the glow
-        let glowPaddingHoriz = Math.max(0, xPadding - this._glowShrinkHorizontal);
-        glowPaddingHoriz = Math.max(this._glowShrinkHorizontal, glowPaddingHoriz);
-        childBox.x1 = glowPaddingHoriz;
-        childBox.x2 = availWidth - glowPaddingHoriz;
-        childBox.y1 = 0;
-        childBox.y2 = availHeight;
-        this._glowBox.allocate(childBox, flags);
-    },
-
-    _onDestroy: function() {
-        if (this._appWindowChangedId > 0)
-            this.app.disconnect(this._appWindowChangedId);
-    },
-
-    _queueRerenderGlow: function() {
-        Main.queueDeferredWork(this._workId);
-    },
-
-    _onStyleChanged: function() {
-        let themeNode = this._glowBox.get_theme_node();
-
-        let success, len;
-        [success, len] = themeNode.get_length('-shell-glow-extend-vertical', false);
-        if (success)
-            this._glowExtendVertical = len;
-        [success, len] = themeNode.get_length('-shell-glow-shrink-horizontal', false);
-        if (success)
-            this._glowShrinkHorizontal = len;
-        this.actor.queue_relayout();
-    },
-
-    _rerenderGlow: function() {
-        this._glowBox.destroy_children();
-        let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
-        let windows = this.app.get_windows();
-        for (let i = 0; i < windows.length && i < 3; i++) {
-            let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                      glowPath, -1, -1);
-            glow.keep_aspect_ratio = false;
-            this._glowBox.add(glow);
-        }
+        box.add_actor(this._name);
     }
 }
 
@@ -415,6 +324,7 @@ function AppWellIcon(app) {
 AppWellIcon.prototype = {
     _init : function(app) {
         this.app = app;
+        this._running = false;
         this.actor = new St.Clickable({ style_class: 'app-well-app',
                                          reactive: true,
                                          x_fill: true,
@@ -433,6 +343,33 @@ AppWellIcon.prototype = {
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
+        this.actor.connect('show', Lang.bind(this, this._onShow));
+        this.actor.connect('hide', Lang.bind(this, this._onHideDestroy));
+        this.actor.connect('destroy', Lang.bind(this, this._onHideDestroy));
+
+        this._appWindowChangedId = 0;
+    },
+
+    _onShow: function() {
+        this._appWindowChangedId = this.app.connect('windows-changed',
+                                                    Lang.bind(this,
+                                                              this._updateStyleClass));
+        this._updateStyleClass();
+    },
+
+    _onHideDestroy: function() {
+        if (this._appWindowChangedId > 0)
+            this.app.disconnect(this._appWindowChangedId);
+    },
+
+    _updateStyleClass: function() {
+        let windows = this.app.get_windows();
+        let running = windows.length > 0;
+        if (running == this._running)
+            return;
+        this._running = running;
+        this.actor.style_class = this._running ? "app-well-app running"
+                                               : "app-well-app";
     },
 
     _onButtonPress: function(actor, event) {
