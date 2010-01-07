@@ -30,6 +30,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include <clutter/clutter.h>
 
@@ -60,6 +61,9 @@ struct _StWidgetPrivate
   ClutterActor *background_image;
   ClutterActor *background_image_shadow;
   ClutterColor  bg_color;
+
+  guint         border_width;
+  ClutterColor  border_color;
 
   StGradientType bg_gradient_type;
   ClutterColor  bg_gradient_end;
@@ -302,7 +306,7 @@ st_widget_allocate (ClutterActor          *actor,
 
 
 
-  if (priv->border_image)
+  if (priv->border_image && priv->bg_gradient_type == ST_GRADIENT_NONE)
     {
       ClutterActorBox frame_box = {
         0,
@@ -315,8 +319,27 @@ st_widget_allocate (ClutterActor          *actor,
                               &frame_box,
                               flags);
     }
+  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
+    {
+      float width, height;
+      ClutterActorBox frame_box;
 
-  if (priv->background_image && priv->bg_gradient_type == ST_GRADIENT_NONE)
+      width = box->x2 - box->x1;
+      height = box->y2 - box->y1;
+      frame_box.x1 = frame_box.y1 = 0;
+      frame_box.x2 = width;
+      frame_box.y2 = height;
+
+      if (width > 0 && height > 0)
+        clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
+                                                width, height);
+      st_widget_redraw_gradient ((StWidget*) actor);
+      clutter_actor_allocate (CLUTTER_ACTOR (priv->border_image),
+                              &frame_box,
+                              flags);
+    }
+
+  if (priv->background_image)
     {
       ClutterActorBox frame_box = {
         0, 0, box->x2 - box->x1, box->y2 - box->y1
@@ -391,27 +414,6 @@ st_widget_allocate (ClutterActor          *actor,
 
       clutter_actor_allocate (CLUTTER_ACTOR (priv->background_image),
                               &frame_box,
-                              flags);
-    }
-  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
-    {
-      float width, height;
-      ClutterActorBox frame_box, content_box;
-
-      width = box->x2 - box->x1;
-      height = box->y2 - box->y1;
-      frame_box.x1 = frame_box.y1 = 0;
-      frame_box.x2 = width;
-      frame_box.y2 = height;
-
-      st_theme_node_get_content_box (theme_node, &frame_box, &content_box);
-
-      if (width > 0 && height > 0)
-        clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (priv->background_image),
-                                                width, height);
-      st_widget_redraw_gradient ((StWidget*) actor);
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->background_image),
-                              &content_box,
                               flags);
     }
 }
@@ -598,81 +600,114 @@ st_widget_unmap (ClutterActor *actor)
 }
 
 static void
-draw_vertical_gradient (ClutterCairoTexture  *texture,
-                        ClutterColor         *start,
-                        ClutterColor         *end)
-{
-  guint width, height;
-  cairo_t *cr;
-  cairo_pattern_t *pattern;
-
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
-
-  pattern = cairo_pattern_create_linear (0, 0, 0, height);
-  cairo_pattern_add_color_stop_rgba (pattern, 0,
-                                     start->red / 255.,
-                                     start->green / 255.,
-                                     start->blue / 255.,
-                                     start->alpha / 255.);
-  cairo_pattern_add_color_stop_rgba (pattern, 1,
-                                     end->red / 255.,
-                                     end->green / 255.,
-                                     end->blue / 255.,
-                                     end->alpha / 255.);
-
-  cairo_rectangle (cr, 0, 0, width, height);
-  cairo_set_source (cr, pattern);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (pattern);
-  cairo_destroy (cr);
-}
-
-static void
-draw_horizontal_gradient (ClutterCairoTexture  *texture,
-                          ClutterColor         *start,
-                          ClutterColor         *end)
-{
-  guint width, height;
-  cairo_t *cr;
-  cairo_pattern_t *pattern;
-
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
-
-  pattern = cairo_pattern_create_linear (0, 0, width, 0);
-  cairo_pattern_add_color_stop_rgba (pattern, 0,
-                                     start->red / 255.,
-                                     start->green / 255.,
-                                     start->blue / 255.,
-                                     start->alpha / 255.);
-  cairo_pattern_add_color_stop_rgba (pattern, 1,
-                                     end->red / 255.,
-                                     end->green / 255.,
-                                     end->blue / 255.,
-                                     end->alpha / 255.);
-  cairo_rectangle (cr, 0, 0, width, height);
-  cairo_set_source (cr, pattern);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (pattern);
-  cairo_destroy (cr);
-}
-
-static void
 st_widget_redraw_gradient (StWidget  *widget)
 {
-  if (widget->priv->bg_gradient_type == ST_GRADIENT_VERTICAL)
-    draw_vertical_gradient ((ClutterCairoTexture*) widget->priv->background_image,
-                            &widget->priv->bg_color,
-                            &widget->priv->bg_gradient_end);
-  else if (widget->priv->bg_gradient_type == ST_GRADIENT_HORIZONTAL)
-    draw_horizontal_gradient ((ClutterCairoTexture*) widget->priv->background_image,
-                              &widget->priv->bg_color,
-                              &widget->priv->bg_gradient_end);
+  ClutterCairoTexture *texture;
+  ClutterColor *start, *end;
+  StWidgetPrivate *priv;
+  guint width, height;
+  guint radius[4], i;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+  gboolean round_border = FALSE;
+
+  if (widget->priv->bg_gradient_type == ST_GRADIENT_NONE)
+    return;
+
+  texture = CLUTTER_CAIRO_TEXTURE (widget->priv->border_image);
+  priv  = widget->priv;
+  start = &widget->priv->bg_color;
+  end   = &widget->priv->bg_gradient_end;
+
+  for (i = 0; i < 4; i++)
+    {
+      radius[i] = st_theme_node_get_border_radius (priv->theme_node, i);
+      if (radius[i] > 0)
+        round_border = TRUE;
+    }
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  clutter_cairo_texture_clear (texture);
+  cr = clutter_cairo_texture_create (texture);
+
+  if (priv->bg_gradient_type == ST_GRADIENT_VERTICAL)
+    pattern = cairo_pattern_create_linear (0, 0, 0, height);
+  else
+    pattern = cairo_pattern_create_linear (0, 0, width, 0);
+
+  cairo_pattern_add_color_stop_rgba (pattern, 0,
+                                     start->red / 255.,
+                                     start->green / 255.,
+                                     start->blue / 255.,
+                                     start->alpha / 255.);
+  cairo_pattern_add_color_stop_rgba (pattern, 1,
+                                     end->red / 255.,
+                                     end->green / 255.,
+                                     end->blue / 255.,
+                                     end->alpha / 255.);
+
+  if (round_border)
+    {
+      if (radius[ST_CORNER_TOPLEFT] > 0)
+        cairo_arc (cr,
+                   radius[ST_CORNER_TOPLEFT],
+                   radius[ST_CORNER_TOPLEFT],
+                   radius[ST_CORNER_TOPLEFT], M_PI, 3 * M_PI / 2);
+      else
+        cairo_move_to (cr, 0, 0);
+      cairo_line_to (cr, width - radius[ST_CORNER_TOPRIGHT], 0);
+      if (radius[ST_CORNER_TOPRIGHT] > 0)
+        cairo_arc (cr,
+                   width - radius[ST_CORNER_TOPRIGHT],
+                   radius[ST_CORNER_TOPRIGHT],
+                   radius[ST_CORNER_TOPRIGHT], 3 * M_PI / 2, 2 * M_PI);
+      cairo_line_to (cr, width, height - radius[ST_CORNER_BOTTOMRIGHT]);
+      if (radius[ST_CORNER_BOTTOMRIGHT])
+        cairo_arc (cr,
+                   width - radius[ST_CORNER_BOTTOMRIGHT],
+                   height - radius[ST_CORNER_BOTTOMRIGHT],
+                   radius[ST_CORNER_BOTTOMRIGHT], 0, M_PI / 2);
+      cairo_line_to (cr, radius[ST_CORNER_BOTTOMLEFT], height);
+      if (radius[ST_CORNER_BOTTOMLEFT])
+        cairo_arc (cr,
+                   radius[ST_CORNER_BOTTOMLEFT],
+                   height - radius[ST_CORNER_BOTTOMLEFT],
+                   radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
+      cairo_close_path (cr);
+    }
+  else
+    cairo_rectangle (cr, 0, 0, width, height);
+
+  if (priv->border_width > 0)
+    {
+      guint8 opacity;
+      gdouble effective_alpha;
+      cairo_path_t *path;
+
+      path = cairo_copy_path (cr);
+      opacity = clutter_actor_get_paint_opacity (CLUTTER_ACTOR (widget));
+      effective_alpha = priv->border_color.alpha * opacity / (255. * 255.);
+
+      cairo_set_source_rgba (cr,
+                             priv->border_color.red / 255.,
+                             priv->border_color.green / 255.,
+                             priv->border_color.blue / 255.,
+                             effective_alpha);
+      cairo_fill (cr);
+
+      cairo_translate (cr, priv->border_width, priv->border_width);
+      cairo_scale (cr,
+                   (gdouble)(width - 2 * priv->border_width) / width,
+                   (gdouble)(height - 2 * priv->border_width) / height);
+      cairo_append_path (cr, path);
+      cairo_path_destroy (path);
+    }
+
+  cairo_set_source (cr, pattern);
+  cairo_fill (cr);
+
+  cairo_pattern_destroy (pattern);
+  cairo_destroy (cr);
 }
 
 static void notify_children_of_style_change (ClutterContainer *container);
@@ -709,9 +744,7 @@ st_widget_real_style_changed (StWidget *self)
   gboolean relayout_needed = FALSE;
   gboolean has_changed = FALSE;
   ClutterColor color;
-  guint border_width = 0;
   guint border_radius = 0;
-  ClutterColor border_color = { 0, };
   StGradientType gradient;
   ClutterColor gradient_end;
   StSide side;
@@ -779,9 +812,9 @@ st_widget_real_style_changed (StWidget *self)
    *     Background image
    *     Border color or border image
    *     Content
-   * - The background color and image extend to and are clipped by the
-   *   edge of the border area, so will be rounded if the border is rounded.
-   *   (CSS3 background-clip property modifies this)
+   * - The background color, gradient and image extend to and are clipped by
+   *   the edge of the border area, so will be rounded if the border is
+   *   rounded. (CSS3 background-clip property modifies this)
    * - The border image replaces what would normally be drawn by the border
    * - The border image is not clipped by a rounded border-radius
    * - The border radius rounds the background even if the border is
@@ -793,21 +826,24 @@ st_widget_real_style_changed (StWidget *self)
    *  - The combination of border image and a non-zero border radius is
    *    not supported; the background color will be drawn with square
    *    corners.
+   *  - The combination of border image and a background gradient is not
+   *    supported; the background will be drawn as a solid color
    *  - The background image is drawn above the border color or image,
    *    not below it.
    *  - We don't clip the background image to the (rounded) border area.
    *
-   * The first two allow us always draw with no more than single border_image
-   * and a single background image above it.
+   * The first three allow us to always draw with no more than a single
+   * border_image and a single background image above it.
    */
 
   /* Check whether all border widths are the same.  Also, acquire the
    * first nonzero border width as well as the border color.
    */
   uniform_border_width = TRUE;
-  border_width = st_theme_node_get_border_width (theme_node, ST_SIDE_TOP);
-  if (border_width > 0.5)
-    border_width = (int)(0.5 + border_width);
+  priv->border_width = st_theme_node_get_border_width (theme_node,
+                                                       ST_SIDE_TOP);
+  if (priv->border_width > 0.5)
+    priv->border_width = (int)(0.5 + priv->border_width);
   for (side = 0; side < 4; side++)
     {
       double width = st_theme_node_get_border_width (theme_node, side);
@@ -815,10 +851,11 @@ st_widget_real_style_changed (StWidget *self)
         width = (int)(0.5 + width);
       if (width > 0)
         {
-          border_width = width;
-          st_theme_node_get_border_color (theme_node, side, &border_color);
+          priv->border_width = width;
+          st_theme_node_get_border_color (theme_node,
+                                          side, &priv->border_color);
         }
-      if ((int)width != border_width)
+      if ((int)width != priv->border_width)
         {
           uniform_border_width = FALSE;
           break;
@@ -870,14 +907,25 @@ st_widget_real_style_changed (StWidget *self)
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
+  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
+    {
+      priv->draw_border_internal = FALSE;
+      priv->draw_bg_color = FALSE;
+      texture = g_object_new (CLUTTER_TYPE_CAIRO_TEXTURE, NULL);
+      priv->border_image = CLUTTER_ACTOR (texture);
+      clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
+
+      has_changed = TRUE;
+      relayout_needed = TRUE;
+    }
   else if (border_radius > 0)
     {
       priv->draw_border_internal = FALSE;
       priv->draw_bg_color = FALSE;
       priv->border_image = g_object_new (BIG_TYPE_RECTANGLE,
 					 "color", &priv->bg_color,
-					 "border-width", border_width,
-					 "border-color", &border_color,
+					 "border-width", priv->border_width,
+					 "border-color", &priv->border_color,
 					 "corner-radius", border_radius,
 					 NULL);
 
@@ -886,7 +934,7 @@ st_widget_real_style_changed (StWidget *self)
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
-  else if (border_width > 0 && border_color.alpha != 0)
+  else if (priv->border_width > 0 && priv->border_color.alpha != 0)
     {
       priv->draw_bg_color = TRUE;
       priv->draw_border_internal = TRUE;
@@ -914,15 +962,6 @@ st_widget_real_style_changed (StWidget *self)
       else
         g_warning ("Could not load %s", bg_file);
 
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
-    {
-      texture = g_object_new (CLUTTER_TYPE_CAIRO_TEXTURE, NULL);
-      priv->background_image = CLUTTER_ACTOR (texture);
-      clutter_actor_set_parent (priv->background_image,
-                                CLUTTER_ACTOR (self));
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
