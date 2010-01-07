@@ -63,9 +63,8 @@ struct _ClutterBackendGLX
   ClutterBackendX11 parent_instance;
 
   /* Single context for all wins */
-  gint                   found_fbconfig;
-  GLXFBConfig            fbconfig_rgb;
-  GLXFBConfig            fbconfig_rgba;
+  gboolean               found_fbconfig;
+  GLXFBConfig            fbconfig;
   GLXContext             gl_context;
 
   /* Vblank stuff */
