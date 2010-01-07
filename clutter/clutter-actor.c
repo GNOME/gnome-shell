@@ -4547,7 +4547,6 @@ clutter_actor_queue_relayout (ClutterActor *self)
                  "not allowed",
                  priv->name ? priv->name
                             : G_OBJECT_TYPE_NAME (self));
-      return;
     }
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
