@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-01-05 01:21+0000\n"
-"PO-Revision-Date: 2010-01-05 09:09+0100\n"
+"POT-Creation-Date: 2010-01-06 21:18+0000\n"
+"PO-Revision-Date: 2010-01-07 07:43+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "Gnome lupina"
+msgstr "Gnome Lupina"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
@@ -31,7 +31,7 @@ msgstr "Upravljanje oken in zaganjanje programov"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:252
-#: ../js/ui/dash.js:858
+#: ../js/ui/dash.js:865
 msgid "APPLICATIONS"
 msgstr "Programi"
 
@@ -62,20 +62,24 @@ msgstr "S potegom na to mesto se izbor doda med priljubljene"
 msgid "Find..."
 msgstr "Najdi ..."
 
-#: ../js/ui/dash.js:437
+#: ../js/ui/dash.js:493
 msgid "Searching..."
 msgstr "Iskanje ..."
+
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "Ni zadetkov iskanja"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:878
+#: ../js/ui/dash.js:885
 #: ../js/ui/placeDisplay.js:519
 msgid "PLACES"
 msgstr "Mesta"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:885
+#: ../js/ui/dash.js:892
 msgid "RECENT DOCUMENTS"
 msgstr "Nedavni dokumenti"
 
