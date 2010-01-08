@@ -1,6 +1,5 @@
 data/gnome-shell.desktop.in.in
 js/ui/appDisplay.js
-js/ui/appIcon.js
 js/ui/dash.js
 js/ui/overview.js
 js/ui/panel.js
