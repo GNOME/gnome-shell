@@ -363,7 +363,7 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
   GLXFBConfig *configs = NULL;
-  gboolean use_argb = clutter_x11_has_argb_visuals ();
+  gboolean use_argb = clutter_x11_get_use_argb_visual ();
   int n_configs, i;
   static const int attributes[] = {
     GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,

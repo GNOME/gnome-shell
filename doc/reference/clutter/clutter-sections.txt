@@ -1081,6 +1081,9 @@ clutter_x11_trap_x_errors
 clutter_x11_untrap_x_errors
 clutter_x11_has_composite_extension
 clutter_x11_get_current_event_time
+clutter_x11_set_use_argb_visual
+clutter_x11_get_use_argb_visual
+clutter_x11_get_visual_info
 
 <SUBSECTION>
 ClutterX11FilterFunc

@@ -97,7 +97,7 @@ static ClutterBackendX11 *backend_singleton = NULL;
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_xevent_retrieval = FALSE;
 static gboolean clutter_enable_xinput = FALSE;
-static gboolean clutter_enable_argb = TRUE;
+static gboolean clutter_enable_argb = FALSE;
 static Display  *_foreign_dpy = NULL;
 
 /* options */
@@ -988,8 +988,52 @@ clutter_x11_has_composite_extension (void)
   return have_composite;
 }
 
+/**
+ * clutter_x11_set_use_argb_visual:
+ * @use_argb: %TRUE if ARGB visuals should be requested by default
+ *
+ * Sets whether the Clutter X11 backend should request ARGB visuals by default
+ * or not.
+ *
+ * By default, Clutter requests RGB visuals.
+ *
+ * <note>If no ARGB visuals are found, the X11 backend will fall back to
+ * requesting a RGB visual instead.</note>
+ *
+ * ARGB visuals are required for the #ClutterStage:use-alpha property to work.
+ *
+ * <note>This function can only be called once, and before clutter_init() is
+ * called.</note>
+ *
+ * Since: 1.2
+ */
+void
+clutter_x11_set_use_argb_visual (gboolean use_argb)
+{
+  if (backend_singleton != NULL)
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  CLUTTER_NOTE (BACKEND, "ARGB visuals are %s",
+                use_argb ? "enabled" : "disabled");
+
+  clutter_enable_argb = use_argb;
+}
+
+/**
+ * clutter_x11_get_use_argb_visual:
+ *
+ * Retrieves whether the Clutter X11 backend is using ARGB visuals by default
+ *
+ * Return value: %TRUE if ARGB visuals are queried by default
+ *
+ * Since: 1.2
+ */
 gboolean
-clutter_x11_has_argb_visuals (void)
+clutter_x11_get_use_argb_visual (void)
 {
   return clutter_enable_argb;
 }
@@ -1006,4 +1050,26 @@ clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
     return klass->get_visual_info (backend_x11);
 
   return NULL;
+}
+
+/**
+ * clutter_x11_get_visual_info:
+ *
+ * Retrieves the <structname>XVisualInfo</structname> used by the Clutter X11
+ * backend.
+ *
+ * Return value: a <structname>XVisualInfo</structname>, or
+ *   <varname>None</varname>. The returned value should be freed using XFree()
+ *   when done
+ *
+ * Since: 1.2
+ */
+XVisualInfo *
+clutter_x11_get_visual_info (void)
+{
+  ClutterBackendX11 *backend_x11;
+
+  backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
+
+  return clutter_backend_x11_get_visual_info (backend_x11);
 }

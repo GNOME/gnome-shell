@@ -770,8 +770,10 @@ clutter_x11_get_stage_from_window (Window win)
  * along the lines of clutter_backend_x11_get_foreign_visual () or perhaps
  * clutter_stage_x11_get_foreign_visual ()
  *
- * Return value: An XVisualInfo suitable for creating a foreign stage.
- *               You should free this using XFree.
+ * Return value: An XVisualInfo suitable for creating a foreign stage. Use
+ *   XFree() to free the returned value instead
+ *
+ * Deprecated: 1.2: Use clutter_x11_get_visual_info() instead
  *
  * Since: 0.4
  */
