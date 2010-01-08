@@ -624,9 +624,10 @@ event_translate (ClutterBackend *backend,
 
     case KeyPress:
       event->key.type = event->type = CLUTTER_KEY_PRESS;
+      translate_key_event (backend, event, xevent);
+
       /* default key device if no XInput support is defined */
       event->key.device = clutter_device_manager_get_device (manager, 1);
-      translate_key_event (backend, event, xevent);
 
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
@@ -659,9 +660,10 @@ event_translate (ClutterBackend *backend,
         }
 
       event->key.type = event->type = CLUTTER_KEY_RELEASE;
+      translate_key_event (backend, event, xevent);
+
       /* default key device if no XInput support is defined */
       event->key.device = clutter_device_manager_get_device (manager, 1);
-      translate_key_event (backend, event, xevent);
       break;
 
     default:
@@ -763,6 +765,10 @@ event_translate (ClutterBackend *backend,
               event->motion.modifier_state = xevent->xcrossing.state;
               event->motion.device =
                 clutter_device_manager_get_device (manager, 0);
+
+              /* we know that we are entering the stage here */
+              _clutter_input_device_set_stage (event->motion.device, stage);
+              CLUTTER_NOTE (EVENT, "Entering the stage");
               break;
 
             case LeaveNotify:
@@ -770,8 +776,12 @@ event_translate (ClutterBackend *backend,
               event->crossing.time = xevent->xcrossing.time;
               event->crossing.x = xevent->xcrossing.x;
               event->crossing.y = xevent->xcrossing.y;
-              event->motion.device =
+              event->crossing.device =
                 clutter_device_manager_get_device (manager, 0);
+
+              /* we know that we are leaving the stage here */
+              _clutter_input_device_set_stage (event->crossing.device, NULL);
+              CLUTTER_NOTE (EVENT, "Leaving the stage");
               break;
 
             default:
@@ -784,10 +794,16 @@ event_translate (ClutterBackend *backend,
         {  /* XInput fun.. Needs clean up. */
 #ifdef HAVE_XINPUT
           int *ev_types = backend_x11->event_types;
+          int button_press, button_release;
+          int motion_notify;
+
+          button_press   = ev_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
+          button_release = ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
+          motion_notify  = ev_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
 
           CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
 
-          if (xevent->type == ev_types [CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT])
+          if (xevent->type == button_press)
             {
               XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
 
@@ -833,8 +849,7 @@ event_translate (ClutterBackend *backend,
 
               set_user_time (backend_x11, &xwindow, xbev->time);
             } 
-          else if (xevent->type 
-                        == ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT])
+          else if (xevent->type == button_release)
             {
               XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
 
@@ -860,8 +875,7 @@ event_translate (ClutterBackend *backend,
               event->button.button = xbev->button;
               event->button.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
             } 
-          else if (xevent->type 
-                       == ev_types [CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT]) 
+          else if (xevent->type == motion_notify)
             {
               XDeviceMotionEvent *xmev = (XDeviceMotionEvent *)xevent;
 
@@ -883,8 +897,7 @@ event_translate (ClutterBackend *backend,
          * not generate events even when the window has focus
          */
 
-          else if (xevent->type 
-                        == ev_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT]) 
+          else if (xevent->type == ev_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT])
             {
               XEvent xevent_converted;
               XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;
@@ -896,8 +909,7 @@ event_translate (ClutterBackend *backend,
 
               set_user_time (backend_x11, &xwindow, xkev->time);
             } 
-          else if (xevent->type 
-                   == ev_types [CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT]) 
+          else if (xevent->type == ev_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT])
             {
               XEvent xevent_converted;
               XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;

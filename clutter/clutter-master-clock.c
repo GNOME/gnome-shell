@@ -288,14 +288,13 @@ clutter_clock_dispatch (GSource     *source,
    * event handling
    */
   stages = clutter_stage_manager_list_stages (stage_manager);
-  g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
+  g_slist_foreach (stages, (GFunc) g_object_ref, NULL);
 
   CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
 
   master_clock->updated_stages = FALSE;
 
-  /* Process queued events
-   */
+  /* Process queued events */
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_process_queued_events (l->data);
 
@@ -311,7 +310,7 @@ clutter_clock_dispatch (GSource     *source,
   for (l = stages; l != NULL; l = l->next)
     master_clock->updated_stages |= _clutter_stage_do_update (l->data);
 
-  g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
+  g_slist_foreach (stages, (GFunc) g_object_unref, NULL);
   g_slist_free (stages);
 
   master_clock->prev_tick = master_clock->cur_tick;

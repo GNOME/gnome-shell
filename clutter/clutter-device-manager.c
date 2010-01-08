@@ -144,3 +144,27 @@ _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
 
   device_manager->devices = g_slist_remove (device_manager->devices, device);
 }
+
+void
+_clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
+{
+  GSList *d;
+
+  /* perform a pick() on the stage at the coordinates of every
+   * input device, and store the actor currently under the pointer
+   */
+  for (d = device_manager->devices; d != NULL; d = d->next)
+    {
+      ClutterInputDevice *device = d->data;
+      ClutterInputDeviceType device_type;
+
+      device_type = clutter_input_device_get_device_type (device);
+      if (device_type != CLUTTER_POINTER_DEVICE)
+        continue;
+
+      if (device->stage == NULL)
+        continue;
+
+      _clutter_input_device_update (device);
+    }
+}

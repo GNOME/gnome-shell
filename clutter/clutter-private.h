@@ -91,13 +91,16 @@ struct _ClutterInputDevice
 
   ClutterInputDeviceType device_type;
 
+  ClutterActor *cursor_actor;
+
   ClutterActor *pointer_grab_actor;
   ClutterActor *motion_last_actor;
 
   gint click_count;
 
-  gfloat previous_x;
-  gfloat previous_y;
+  ClutterStage *stage;
+  gint previous_x;
+  gint previous_y;
   guint32 previous_time;
   gint previous_button_number;
   ClutterModifierType previous_state;
@@ -189,19 +192,25 @@ PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 #define I_(str)  (g_intern_static_string ((str)))
 
 /* device manager */
-void _clutter_device_manager_add_device    (ClutterDeviceManager *device_manager,
-                                            ClutterInputDevice   *device);
-void _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
-                                            ClutterInputDevice   *device);
+void _clutter_device_manager_add_device     (ClutterDeviceManager *device_manager,
+                                             ClutterInputDevice   *device);
+void _clutter_device_manager_remove_device  (ClutterDeviceManager *device_manager,
+                                             ClutterInputDevice   *device);
+void _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager);
 
 /* input device */
-void _clutter_input_device_set_coords (ClutterInputDevice  *device,
-                                       gfloat               x,
-                                       gfloat               y);
-void _clutter_input_device_set_state  (ClutterInputDevice  *device,
-                                       ClutterModifierType  state);
-void _clutter_input_device_set_time   (ClutterInputDevice  *device,
-                                       guint32              time_);
+void          _clutter_input_device_set_coords (ClutterInputDevice  *device,
+                                                gint                 x,
+                                                gint                 y);
+void          _clutter_input_device_set_state  (ClutterInputDevice  *device,
+                                                ClutterModifierType  state);
+void          _clutter_input_device_set_time   (ClutterInputDevice  *device,
+                                                guint32              time_);
+void          _clutter_input_device_set_stage  (ClutterInputDevice  *device,
+                                                ClutterStage        *stage);
+void          _clutter_input_device_set_actor  (ClutterInputDevice  *device,
+                                                ClutterActor        *actor);
+ClutterActor *_clutter_input_device_update     (ClutterInputDevice  *device);
 
 /* stage manager */
 void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,
@@ -223,6 +232,7 @@ void     _clutter_stage_queue_event           (ClutterStage *stage,
 					       ClutterEvent *event);
 gboolean _clutter_stage_has_queued_events     (ClutterStage *stage);
 void     _clutter_stage_process_queued_events (ClutterStage *stage);
+void     _clutter_stage_update_input_devices  (ClutterStage *stage);
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);

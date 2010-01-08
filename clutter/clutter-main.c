@@ -2118,7 +2118,7 @@ emit_event (ClutterEvent *event,
   ClutterActor *actor;
   gint i = 0;
 
-  if (!event->any.source)
+  if (event->any.source == NULL)
     {
       CLUTTER_NOTE (EVENT, "No source set, discarding event");
       return;
@@ -2445,6 +2445,24 @@ _clutter_process_event_details (ClutterActor        *stage,
 
           clutter_event_get_coords (event, &x, &y);
 
+          if (device == NULL)
+            {
+              switch (event->type)
+                {
+                  case CLUTTER_BUTTON_PRESS:
+                  case CLUTTER_BUTTON_RELEASE:
+                    device = event->button.device;
+                    break;
+                  case CLUTTER_SCROLL:
+                    device = event->scroll.device;
+                    break;
+                  case CLUTTER_MOTION:
+                    /* already handled in the MOTION case of the switch */
+                  default:
+                    break;
+                }
+            }
+
           /* Only do a pick to find the source if source is not already set
            * (as it could be in a synthetic event)
            */
@@ -2467,13 +2485,24 @@ _clutter_process_event_details (ClutterActor        *stage,
                   break;
                 }
 
-              /* Map the event to a reactive actor */
-              actor = _clutter_do_pick (CLUTTER_STAGE (stage),
-                                        x, y,
-                                        CLUTTER_PICK_REACTIVE);
+              /* if the backend provides a device then we should
+               * already have everything we need to update it and
+               * get the actor underneath
+               */
+              if (device == NULL)
+                {
+                  CLUTTER_NOTE (EVENT, "No device found: picking");
+
+                  /* Map the event to a reactive actor */
+                  actor = _clutter_do_pick (CLUTTER_STAGE (stage),
+                                            x, y,
+                                            CLUTTER_PICK_REACTIVE);
+                }
+              else
+                actor = _clutter_input_device_update (device);
 
               event->any.source = actor;
-              if (!actor)
+              if (actor == NULL)
                 break;
             }
           else
@@ -2481,7 +2510,6 @@ _clutter_process_event_details (ClutterActor        *stage,
               /* use the source already set in the synthetic event */
               actor = event->any.source;
             }
-
 
           /* FIXME: for an optimisation should check if there are
            * actually any reactive actors and avoid the pick all together
@@ -2500,24 +2528,6 @@ _clutter_process_event_details (ClutterActor        *stage,
             {
               /* Generate click count */
               event_click_count_generate (event);
-            }
-
-          if (device == NULL)
-            {
-              switch (event->type)
-                {
-                  case CLUTTER_BUTTON_PRESS:
-                  case CLUTTER_BUTTON_RELEASE:
-                    device = event->button.device;
-                    break;
-                  case CLUTTER_SCROLL:
-                    device = event->scroll.device;
-                    break;
-                  case CLUTTER_MOTION:
-                    /* already handled in the MOTION case of the switch */
-                  default:
-                    break;
-                }
             }
 
           emit_pointer_event (event, device);

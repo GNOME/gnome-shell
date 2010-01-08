@@ -110,13 +110,13 @@ clutter_input_device_init (ClutterInputDevice *self)
 
 void
 _clutter_input_device_set_coords (ClutterInputDevice *device,
-                                  gfloat              x,
-                                  gfloat              y)
+                                  gint                x,
+                                  gint                y)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
-  device->previous_x = floorf (x) + 0.5;
-  device->previous_y = floorf (y) + 0.5;
+  device->previous_x = x;
+  device->previous_y = y;
 }
 
 void
@@ -135,6 +135,45 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
   device->previous_time = time_;
+}
+
+void
+_clutter_input_device_set_stage (ClutterInputDevice *device,
+                                 ClutterStage       *stage)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  device->stage = stage;
+}
+
+static void
+cursor_weak_unref (gpointer  user_data,
+                   GObject  *object_pointer)
+{
+  ClutterInputDevice *device = user_data;
+
+  device->cursor_actor = NULL;
+}
+
+void
+_clutter_input_device_set_actor (ClutterInputDevice *device,
+                                 ClutterActor       *actor)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  if (device->cursor_actor != NULL)
+    {
+      _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
+      g_object_weak_unref (G_OBJECT (device->cursor_actor),
+                           cursor_weak_unref,
+                           device);
+    }
+
+  device->cursor_actor = actor;
+  g_object_weak_ref (G_OBJECT (device->cursor_actor),
+                     cursor_weak_unref,
+                     device);
+  _clutter_actor_set_has_pointer (device->cursor_actor, TRUE);
 }
 
 /**
@@ -172,4 +211,48 @@ clutter_input_device_get_device_id (ClutterInputDevice *device)
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), -1);
 
   return device->id;
+}
+
+void
+clutter_input_device_get_device_coords (ClutterInputDevice *device,
+                                        gint               *x,
+                                        gint               *y)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  if (x)
+    *x = device->previous_x;
+
+  if (y)
+    *y = device->previous_y;
+}
+
+ClutterActor *
+_clutter_input_device_update (ClutterInputDevice *device)
+{
+  ClutterStage *stage;
+  ClutterActor *new_cursor_actor;
+  ClutterActor *old_cursor_actor;
+  gint x, y;
+
+  clutter_input_device_get_device_coords (device, &x, &y);
+
+  stage = device->stage;
+  old_cursor_actor = device->cursor_actor;
+  new_cursor_actor = _clutter_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
+
+  if (new_cursor_actor == NULL)
+    new_cursor_actor = CLUTTER_ACTOR (stage);
+
+  CLUTTER_NOTE (EVENT,
+                "Actor under cursor (device %d, at %d, %d): %s",
+                clutter_input_device_get_device_id (device),
+                x, y,
+                clutter_actor_get_name (new_cursor_actor) != NULL
+                  ? clutter_actor_get_name (new_cursor_actor)
+                  : G_OBJECT_TYPE_NAME (new_cursor_actor));
+
+  _clutter_input_device_set_actor (device, new_cursor_actor);
+
+  return device->cursor_actor;
 }
