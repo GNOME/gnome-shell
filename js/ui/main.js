@@ -142,6 +142,7 @@ function start() {
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
     _log('info', 'loaded at ' + _startDate);
+    log('GNOME Shell started at ' + _startDate);
 
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }
