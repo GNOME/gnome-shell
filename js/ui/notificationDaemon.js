@@ -57,18 +57,40 @@ NotificationDaemon.prototype = {
     _init: function() {
         DBus.session.exportObject('/org/freedesktop/Notifications', this);
 
-        let acquiredName = false;
-        DBus.session.acquire_name('org.freedesktop.Notifications', DBus.SINGLE_INSTANCE,
-            function(name) {
-                log("Acquired name " + name);
-                acquiredName = true;
-            },
-            function(name) {
-                if (acquiredName)
-                    log("Lost name " + name);
-                else
-                    log("Could not get name " + name);
-            });
+        this._everAcquiredName = false;
+        DBus.session.acquire_name('org.freedesktop.Notifications',
+                                  // We pass MANY_INSTANCES so that if
+                                  // notification-daemon is running, we'll
+                                  // get queued behind it and then get the
+                                  // name after killing it below
+                                  DBus.MANY_INSTANCES,
+                                  Lang.bind(this, this._acquiredName),
+                                  Lang.bind(this, this._lostName));
+    },
+
+    _acquiredName: function() {
+        this._everAcquiredName = true;
+    },
+
+    _lostName: function() {
+        if (this._everAcquiredName)
+            log('Lost name org.freedesktop.Notifications!');
+        else if (GLib.getenv('GNOME_SHELL_NO_REPLACE'))
+            log('Failed to acquire org.freedesktop.Notifications');
+        else {
+            log('Failed to acquire org.freedesktop.Notifications; trying again');
+
+            // kill the notification-daemon. pkill is more portable
+            // than killall, but on Linux at least it won't match if
+            // you pass more than 15 characters of the process name...
+            // However, if you use the "-f" flag to match the entire
+            // command line, it will work, but we have to be careful
+            // in that case that we don't match "gedit
+            // notification-daemon.c" or whatever...
+            let p = new Shell.Process({ args: ['pkill', '-f',
+                                               '^([^ ]*/)?(notification-daemon|notify-osd)$']});
+            p.run();
+        }
     },
 
     _sourceId: function(id) {

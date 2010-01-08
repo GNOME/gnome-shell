@@ -357,8 +357,9 @@ try:
     shell = None
     if options.xephyr:
         xephyr = start_xephyr()
-        # This makes us not grab the org.gnome.Panel name
-        os.environ['GNOME_SHELL_NO_REPLACE_PANEL'] = '1'
+        # This makes us not grab the org.gnome.Panel or
+        # org.freedesktop.Notifications D-Bus names
+        os.environ['GNOME_SHELL_NO_REPLACE'] = '1'
         shell = start_shell()
     else:
         xephyr = None
