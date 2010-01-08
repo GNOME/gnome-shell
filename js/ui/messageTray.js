@@ -3,6 +3,8 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
@@ -38,8 +40,38 @@ NotificationBox.prototype = {
         this._iconBox = new St.Bin();
         this.actor.add(this._iconBox);
 
+        this._textBox = new Shell.GenericContainer();
+        this._textBox.connect('get-preferred-width', Lang.bind(this, this._textBoxGetPreferredWidth));
+        this._textBox.connect('get-preferred-height', Lang.bind(this, this._textBoxGetPreferredHeight));
+        this._textBox.connect('allocate', Lang.bind(this, this._textBoxAllocate));
+        this.actor.add(this._textBox, { expand: true, x_fill: false, y_fill: false, y_align: St.Align.MIDDLE });
+
         this._text = new St.Label();
-        this.actor.add(this._text, { expand: true, x_fill: false, y_fill: false, y_align: St.Align.MIDDLE });
+        this._text.clutter_text.line_wrap = true;
+        this._text.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._textBox.add_actor(this._text);
+    },
+
+    _textBoxGetPreferredWidth: function (actor, forHeight, alloc) {
+        let [min, nat] = this._text.get_preferred_width(forHeight);
+
+        alloc.min_size = alloc.nat_size = Math.min(nat, global.screen_width / 2);
+    },
+
+    _textBoxGetPreferredHeight: function (actor, forWidth, alloc) {
+        // St.BoxLayout passes -1 for @forWidth, which isn't what we want.
+        let prefWidth = {};
+        this._textBoxGetPreferredWidth(this._textBox, -1, prefWidth);
+        [alloc.min_size, alloc.nat_size] = this._text.get_preferred_height(prefWidth.nat_size);
+        log('for width ' + prefWidth.nat_size + ', height ' + alloc.nat_size);
+    },
+
+    _textBoxAllocate: function (actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = childBox.y1 = 0;
+        childBox.x2 = box.x2 - box.x1;
+        childBox.y2 = box.y2 - box.y1;
+        this._text.allocate(childBox, flags);
     },
 
     setContent: function(notification) {
