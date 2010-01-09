@@ -2,14 +2,14 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Jorge González <jorgegonz@svn.gnome.org>, 2009.
+# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-12-18 15:06+0000\n"
-"PO-Revision-Date: 2009-12-19 14:41+0100\n"
+"POT-Creation-Date: 2010-01-07 23:31+0000\n"
+"PO-Revision-Date: 2010-01-09 09:08+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
@@ -54,43 +54,47 @@ msgstr "Arrastrar aquí para añadir a los favoritos"
 msgid "Find..."
 msgstr "Buscar…"
 
-#: ../js/ui/dash.js:437
-#| msgid "Search"
+#: ../js/ui/dash.js:493
 msgid "Searching..."
 msgstr "Buscando…"
+
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:872 ../js/ui/placeDisplay.js:471
-msgid "PLACES"
-msgstr "LUGARES"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:879
-msgid "RECENT DOCUMENTS"
-msgstr "DOCUMENTOS RECIENTES"
+#: ../js/ui/dash.js:892
+#| msgid "RECENT DOCUMENTS"
+msgid "RECENT ITEMS"
+msgstr "ELEMENTOS RECIENTES"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:227
+#: ../js/ui/panel.js:336
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:440
+#: ../js/ui/panel.js:549
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/placeDisplay.js:99
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Conectar a…"
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
@@ -108,32 +112,32 @@ msgstr "Aplicaciones"
 msgid "Recent Documents"
 msgstr "Documentos recientes"
 
-#: ../src/shell-global.c:826
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:829
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:832
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:835
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:838
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -163,6 +167,9 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "PLACES"
+#~ msgstr "LUGARES"
 
 #~ msgid "Frequent"
 #~ msgstr "Frecuentes"
