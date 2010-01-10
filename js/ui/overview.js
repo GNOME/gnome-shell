@@ -14,6 +14,7 @@ const _ = Gettext.gettext;
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Dash = imports.ui.dash;
@@ -176,11 +177,19 @@ Overview.prototype = {
     _init : function() {
         this._group = new St.Group({ style_class: 'overview' });
         this._group._delegate = this;
+        this._group.connect('destroy', Lang.bind(this,
+            function() {
+                if (this._lightbox) {
+                    this._lightbox.destroy();
+                    this._lightbox = null;
+                }
+            }));
 
         this.infoBar = new InfoBar();
         this._group.add_actor(this.infoBar.actor);
 
         this._workspacesManager = null;
+        this._lightbox = null;
 
         this.visible = false;
         this.animationInProgress = false;
@@ -362,7 +371,10 @@ Overview.prototype = {
                         this._activeDisplayPane.close();
                     return true;
                 }));
-                this.workspaces.actor.opacity = 64;
+                if (!this._lightbox)
+                    this._lightbox = new Lightbox.Lightbox(this._group, false);
+                this._lightbox.actor.show();
+                this._lightbox.highlight(this._paneContainer);
             } else if (pane == this._activeDisplayPane) {
                 this._activeDisplayPane = null;
                 if (backgroundEventId != null) {
@@ -371,7 +383,7 @@ Overview.prototype = {
                 }
                 this._transparentBackground.lower_bottom();
                 this._paneContainer.hide();
-                this.workspaces.actor.opacity = 255;
+                this._lightbox.actor.hide(true);
             }
         }));
     },
