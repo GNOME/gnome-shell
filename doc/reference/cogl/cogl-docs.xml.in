@@ -71,6 +71,27 @@
 
   </chapter>
 
+  <chapter>
+    <title>COGL experimental API</title>
+
+    <section id="cogl-experimental">
+      <title>About the experimental API</title>
+
+      <para>COGL has some experimental API developers are welcomed to play
+      with. The main drawback when using those is that there is no API
+      stability guarantee, functions flagged as experimental could be changed
+      or removed in future versions of the library. To use this experimental
+      API you will need to define
+      <literal>COGL_ENABLE_EXPERIMENTAL_API</literal> before including
+      <filename class="headerfile">&lt;clutter/clutter.h&gt;</filename> or
+      <filename class="headerfile">&lt;cogl/cogl.h&gt;</filename>.</para>
+
+    </section>
+
+    <xi:include href="xml/cogl-buffer.xml"/>
+
+  </chapter>
+
   <index>
     <title>Index of all symbols</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>

@@ -31,6 +31,7 @@
 #include "cogl-matrix-stack.h"
 #include "cogl-material-private.h"
 #include "cogl-atlas.h"
+#include "cogl-buffer-private.h"
 
 typedef struct
 {
@@ -86,6 +87,10 @@ typedef struct
   CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
   guint             n_texcoord_arrays_enabled;
+
+  /* PBOs */
+  /* This can be used to check if a pbo is bound */
+  CoglBuffer       *current_pbo;
 
   /* Framebuffers */
   GSList           *framebuffer_stack;

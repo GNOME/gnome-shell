@@ -48,6 +48,10 @@
 
 #include <cogl/cogl-deprecated.h>
 
+#if defined (COGL_ENABLE_EXPERIMENTAL_API)
+#include <cogl/cogl-buffer.h>
+#endif
+
 G_BEGIN_DECLS
 
 /**

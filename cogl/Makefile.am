@@ -54,6 +54,7 @@ DISTCLEANFILES += cogl-defines.h
 # public headers
 cogl_public_h = \
 	$(srcdir)/cogl-bitmap.h 		\
+	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
 	$(srcdir)/cogl-debug.h 			\
 	$(srcdir)/cogl-fixed.h 			\
@@ -101,6 +102,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\
 	$(srcdir)/cogl-color.c				\
+	$(srcdir)/cogl-buffer-private.h 		\
+	$(srcdir)/cogl-buffer.c				\
 	$(srcdir)/cogl-vertex-buffer-private.h 		\
 	$(srcdir)/cogl-vertex-buffer.c			\
 	$(srcdir)/cogl-matrix.c				\

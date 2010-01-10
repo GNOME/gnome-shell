@@ -150,6 +150,8 @@ cogl_create_context (void)
   _context->atlas = NULL;
   _context->atlas_texture = COGL_INVALID_HANDLE;
 
+  _context->current_pbo = NULL;
+
   return TRUE;
 }
 
