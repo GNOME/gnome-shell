@@ -632,8 +632,16 @@ st_widget_redraw_gradient (StWidget  *widget)
 
   if (priv->bg_gradient_type == ST_GRADIENT_VERTICAL)
     pattern = cairo_pattern_create_linear (0, 0, 0, height);
-  else
+  else if (priv->bg_gradient_type == ST_GRADIENT_HORIZONTAL)
     pattern = cairo_pattern_create_linear (0, 0, width, 0);
+  else
+    {
+      gdouble cx, cy;
+
+      cx = width / 2.;
+      cy = height / 2.;
+      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, MIN (cx, cy));
+    }
 
   cairo_pattern_add_color_stop_rgba (pattern, 0,
                                      start->red / 255.,

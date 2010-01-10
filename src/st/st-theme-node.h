@@ -61,7 +61,8 @@ typedef enum {
 typedef enum {
   ST_GRADIENT_NONE,
   ST_GRADIENT_VERTICAL,
-  ST_GRADIENT_HORIZONTAL
+  ST_GRADIENT_HORIZONTAL,
+  ST_GRADIENT_RADIAL
 } StGradientType;
 
 GType st_theme_node_get_type (void) G_GNUC_CONST;
