@@ -62,6 +62,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-path.h 			\
+	$(srcdir)/cogl-pixel-buffer.h		\
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-types.h 			\
@@ -104,6 +105,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-color.c				\
 	$(srcdir)/cogl-buffer-private.h 		\
 	$(srcdir)/cogl-buffer.c				\
+	$(srcdir)/cogl-pixel-buffer-private.h		\
+	$(srcdir)/cogl-pixel-buffer.c			\
 	$(srcdir)/cogl-vertex-buffer-private.h 		\
 	$(srcdir)/cogl-vertex-buffer.c			\
 	$(srcdir)/cogl-matrix.c				\

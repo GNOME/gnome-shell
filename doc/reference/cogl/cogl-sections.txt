@@ -488,4 +488,10 @@ CoglBufferAccess
 cogl_buffer_map
 cogl_buffer_unmap
 cogl_buffer_set_data
+
+<SUBSECTION>
+cogl_pixel_buffer_new
+cogl_pixel_buffer_new_for_size
+cogl_is_pixel_buffer
+
 </SECTION>
