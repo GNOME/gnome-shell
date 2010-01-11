@@ -228,12 +228,13 @@ static void
 _cogl_texture_iter_update (CoglTextureIter *iter)
 {
   gfloat t_2;
+  float frac_part;
 
-  modff (iter->pos, &iter->next_pos);
+  frac_part = modff (iter->pos, &iter->next_pos);
 
   /* modff rounds the int part towards zero so we need to add one if
      we're meant to be heading away from zero */
-  if (iter->pos >= 0.0f)
+  if (iter->pos >= 0.0f || frac_part == 0.0f)
     iter->next_pos += 1.0f;
 
   if (iter->next_pos > iter->end)
