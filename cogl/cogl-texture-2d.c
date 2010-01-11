@@ -66,8 +66,8 @@ _cogl_texture_2d_wrap_coords (float t_1, float t_2,
   t_2 -= int_part;
   if (signbit (int_part))
     {
-      *out_t_1 = 1.0f - t_1;
-      *out_t_2 = 1.0f - t_2;
+      *out_t_1 = 1.0f + t_1;
+      *out_t_2 = 1.0f + t_2;
     }
   else
     {
