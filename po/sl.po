@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-01-06 21:18+0000\n"
-"PO-Revision-Date: 2010-01-07 07:43+0100\n"
+"POT-Creation-Date: 2010-01-09 08:17+0000\n"
+"PO-Revision-Date: 2010-01-11 08:31+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -40,17 +40,14 @@ msgid "PREFERENCES"
 msgstr "Možnosti"
 
 #: ../js/ui/appDisplay.js:707
-#: ../js/ui/appIcon.js:425
 msgid "New Window"
 msgstr "Novo okno"
 
 #: ../js/ui/appDisplay.js:711
-#: ../js/ui/appIcon.js:429
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
 #: ../js/ui/appDisplay.js:712
-#: ../js/ui/appIcon.js:430
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -75,22 +72,22 @@ msgstr "Ni zadetkov iskanja"
 #. network locations, etc.
 #: ../js/ui/dash.js:885
 #: ../js/ui/placeDisplay.js:519
-msgid "PLACES"
-msgstr "Mesta"
+msgid "PLACES & DEVICES"
+msgstr "Mesta in naprave"
 
 #. **** Documents ****
 #: ../js/ui/dash.js:892
-msgid "RECENT DOCUMENTS"
-msgstr "Nedavni dokumenti"
+msgid "RECENT ITEMS"
+msgstr "Nedavni predmeti"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:227
+#: ../js/ui/panel.js:336
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:440
+#: ../js/ui/panel.js:549
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -184,6 +181,8 @@ msgstr "Poišči"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "PLACES"
+#~ msgstr "Mesta"
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
 #~ msgid "Unknown"
