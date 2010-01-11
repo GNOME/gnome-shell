@@ -2835,6 +2835,7 @@ clutter_text_init (ClutterText *self)
   priv->max_length = 0;
 
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
+  memset (&priv->cursor_pos, 0, sizeof (ClutterGeometry));
 
   priv->font_changed_id =
     g_signal_connect_swapped (clutter_get_default_backend (),
