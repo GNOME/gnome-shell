@@ -62,9 +62,20 @@ typedef struct _CoglBoxedValue
 
 const gchar *cogl_gl_error_to_string (GLenum error_code);
 
-#define GE(x...)                        G_STMT_START {  \
+#define GE(x)                           G_STMT_START {  \
   GLenum __err;                                         \
   (x);                                                  \
+  while ((__err = glGetError ()) != GL_NO_ERROR)        \
+    {                                                   \
+      g_warning ("%s: GL error (%d): %s\n",             \
+                 G_STRLOC,                              \
+                 __err,                                 \
+                 cogl_gl_error_to_string (__err));      \
+    }                                   } G_STMT_END
+
+#define GE_RET(ret, x)                  G_STMT_START {  \
+  GLenum __err;                                         \
+  ret = (x);                                            \
   while ((__err = glGetError ()) != GL_NO_ERROR)        \
     {                                                   \
       g_warning ("%s: GL error (%d): %s\n",             \
@@ -76,6 +87,7 @@ const gchar *cogl_gl_error_to_string (GLenum error_code);
 #else /* !COGL_GL_DEBUG */
 
 #define GE(x) (x)
+#define GE_RET(ret, x)  (ret = (x))
 
 #endif /* COGL_GL_DEBUG */
 
