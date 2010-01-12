@@ -247,7 +247,7 @@ _cogl_framebuffer_get_projection_stack (CoglHandle handle)
   return framebuffer->projection_stack;
 }
 
-static TryFBOFlags
+static gboolean
 try_creating_fbo (CoglOffscreen *offscreen,
                   TryFBOFlags flags,
                   CoglHandle texture)
@@ -263,14 +263,14 @@ try_creating_fbo (CoglOffscreen *offscreen,
   _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!cogl_texture_get_gl_texture (texture, &tex_gl_handle, &tex_gl_target))
-    return 0;
+    return FALSE;
 
   if (tex_gl_target != GL_TEXTURE_2D
 #ifdef HAVE_COGL_GL
       && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
 #endif
       )
-    return 0;
+    return FALSE;
 
   /* We are about to generate and bind a new fbo, so when next flushing the
    * journal, we will need to rebind the current framebuffer... */
@@ -352,18 +352,18 @@ try_creating_fbo (CoglOffscreen *offscreen,
           GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
           GE (glDeleteRenderbuffers (1, &renderbuffer));
         }
-      return 0;
+      return FALSE;
     }
 
-  return flags;
+  return TRUE;
 }
 
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
 {
   CoglOffscreen      *offscreen;
-  TryFBOFlags         flags;
-  static TryFBOFlags  last_working_flags = 0;
+  static TryFBOFlags  flags;
+  static gboolean     have_working_flags = FALSE;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -393,33 +393,33 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   offscreen = g_new0 (CoglOffscreen, 1);
   offscreen->texture = cogl_handle_ref (texhandle);
 
-  if (!(last_working_flags &&
-        (flags = try_creating_fbo (offscreen, last_working_flags,
-                                   texhandle))) &&
-      !(flags = try_creating_fbo (offscreen, _TRY_DEPTH_STENCIL,
-                                  texhandle)) &&
-      !(flags = try_creating_fbo (offscreen, _TRY_DEPTH | _TRY_STENCIL,
-                                  texhandle)) &&
-      !(flags = try_creating_fbo (offscreen, _TRY_STENCIL, texhandle)) &&
-      !(flags = try_creating_fbo (offscreen, _TRY_DEPTH, texhandle)) &&
-      !(flags = try_creating_fbo (offscreen, 0, texhandle)))
+  if ((have_working_flags &&
+       try_creating_fbo (offscreen, flags, texhandle)) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
+                        texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_STENCIL, texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH, texhandle) ||
+      try_creating_fbo (offscreen, flags = 0, texhandle))
+    {
+      /* Record that the last set of flags succeeded so that we can
+         try that set first next time */
+      have_working_flags = TRUE;
+
+      _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
+                              COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
+                              cogl_texture_get_width (texhandle),
+                              cogl_texture_get_height (texhandle));
+
+      return _cogl_offscreen_handle_new (offscreen);
+    }
+  else
     {
       g_free (offscreen);
-      last_working_flags = 0;
       /* XXX: This API should probably have been defined to take a GError */
       g_warning ("%s: Failed to create an OpenGL framebuffer", G_STRLOC);
       return COGL_INVALID_HANDLE;
     }
-  /* Save the final set of flags that worked so we can hopefully construct
-   * subsequent buffers faster. */
-  last_working_flags = flags;
-
-  _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
-                          COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                          cogl_texture_get_width (texhandle),
-                          cogl_texture_get_height (texhandle));
-
-  return _cogl_offscreen_handle_new (offscreen);
 }
 
 static void
