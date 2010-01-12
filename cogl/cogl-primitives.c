@@ -915,7 +915,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
                 {
                   g_warning ("cogl_texture_polygon does not work for sliced textures "
                              "when the minification and magnification filters are not "
-                             "CGL_NEAREST");
+                             "COGL_MATERIAL_FILTER_NEAREST");
                   warning_seen = TRUE;
                 }
               return;

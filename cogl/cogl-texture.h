@@ -461,9 +461,10 @@ void cogl_rectangles (const float *verts,
  * All of the texture coordinates must be in the range [0,1] and repeating the
  * texture is not supported.
  *
- * Because of the way this function is implemented it will currently only work
- * if either the texture is not sliced or the backend is not OpenGL ES and the
- * minifying and magnifying functions are both set to CGL_NEAREST.
+ * Because of the way this function is implemented it will currently
+ * only work if either the texture is not sliced or the backend is not
+ * OpenGL ES and the minifying and magnifying functions are both set
+ * to COGL_MATERIAL_FILTER_NEAREST.
  *
  * Since: 1.0
  */

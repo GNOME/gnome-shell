@@ -118,7 +118,7 @@ initialize_texture_units (CoglGles2Wrapper *w)
   /* We will need to set the matrix mode to GL_TEXTURE to
    * initialise any new texture units, so we save the current
    * mode for restoring afterwards */
-  GE( cogl_wrap_glGetIntegerv (CGL_MATRIX_MODE, &prev_mode));
+  GE( cogl_wrap_glGetIntegerv (GL_MATRIX_MODE, &prev_mode));
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     {
@@ -1281,7 +1281,7 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
       *params = 0;
       break;
 
-    case CGL_MATRIX_MODE:
+    case GL_MATRIX_MODE:
       *params = w->matrix_mode;
       break;
 

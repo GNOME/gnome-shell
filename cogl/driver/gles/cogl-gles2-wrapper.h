@@ -224,12 +224,14 @@ struct _CoglGles2WrapperShader
 
 #ifndef GL_MODELVIEW
 
+#define GL_MATRIX_MODE         0x0BA0
+
 #define GL_MODELVIEW           0x1700
 #define GL_PROJECTION          0x1701
 
 #ifdef COGL_ENABLE_DEBUG
-#define GL_STACK_OVERFLOW     0x0503
-#define GL_STACK_UNDERFLOW  0x0504
+#define GL_STACK_OVERFLOW      0x0503
+#define GL_STACK_UNDERFLOW     0x0504
 #endif
 
 #define GL_VERTEX_ARRAY        0x8074
@@ -268,35 +270,36 @@ struct _CoglGles2WrapperShader
 #define GL_EXP                 0x8000
 #define GL_EXP2                0x8001
 
-#define GL_ADD                 CGL_ADD
-#define GL_ADD_SIGNED          CGL_ADD_SIGNED
-#define GL_INTERPOLATE         CGL_INTERPOLATE
-#define GL_SUBTRACT            CGL_SUBTRACT
-#define GL_DOT3_RGB            CGL_DOT3_RGB
-#define GL_DOT3_RGBA           CGL_DOT3_RGBA
-#define GL_CONSTANT            CGL_CONSTANT
-#define GL_PRIMARY_COLOR       CGL_PRIMARY_COLOR
-#define GL_PREVIOUS            CGL_PREVIOUS
-#define GL_COMBINE             CGL_COMBINE
-#define GL_COMBINE_RGB         CGL_COMBINE_RGB
-#define GL_COMBINE_ALPHA       CGL_COMBINE_ALPHA
-#define GL_SRC0_RGB            CGL_SRC0_RGB
-#define GL_OPERAND0_RGB        CGL_OPERAND0_RGB
-#define GL_SRC1_RGB            CGL_SRC1_RGB
-#define GL_OPERAND1_RGB        CGL_OPERAND1_RGB
-#define GL_SRC2_RGB            CGL_SRC2_RGB
-#define GL_OPERAND2_RGB        CGL_OPERAND2_RGB
-#define GL_SRC0_ALPHA          CGL_SRC0_ALPHA
-#define GL_OPERAND0_ALPHA      CGL_OPERAND0_ALPHA
-#define GL_SRC1_ALPHA          CGL_SRC1_ALPHA
-#define GL_OPERAND1_ALPHA      CGL_OPERAND1_ALPHA
-#define GL_SRC2_ALPHA          CGL_SRC2_ALPHA
-#define GL_OPERAND2_ALPHA      CGL_OPERAND2_ALPHA
-#define GL_AMBIENT             CGL_AMBIENT
-#define GL_DIFFUSE             CGL_DIFFUSE
-#define GL_SPECULAR            CGL_SPECULAR
-#define GL_EMISSION            CGL_EMISSION
-#define GL_SHININESS           CGL_SHININESS
+#define GL_MODULATE            0x2100
+#define GL_ADD                 0x0104
+#define GL_ADD_SIGNED          0x8574
+#define GL_INTERPOLATE         0x8575
+#define GL_SUBTRACT            0x84e7
+#define GL_DOT3_RGB            0x86ae
+#define GL_DOT3_RGBA           0x86af
+#define GL_CONSTANT            0x8576
+#define GL_PRIMARY_COLOR       0x8577
+#define GL_PREVIOUS            0x8578
+#define GL_COMBINE             0x8570
+#define GL_COMBINE_RGB         0x8571
+#define GL_COMBINE_ALPHA       0x8572
+#define GL_SRC0_RGB            0x8580
+#define GL_OPERAND0_RGB        0x8590
+#define GL_SRC1_RGB            0x8581
+#define GL_OPERAND1_RGB        0x8591
+#define GL_SRC2_RGB            0x8582
+#define GL_OPERAND2_RGB        0x8592
+#define GL_SRC0_ALPHA          0x8588
+#define GL_OPERAND0_ALPHA      0x8598
+#define GL_SRC1_ALPHA          0x8589
+#define GL_OPERAND1_ALPHA      0x8599
+#define GL_SRC2_ALPHA          0x858a
+#define GL_OPERAND2_ALPHA      0x859a
+#define GL_AMBIENT             0x1200
+#define GL_DIFFUSE             0x1201
+#define GL_SPECULAR            0x1202
+#define GL_EMISSION            0x1600
+#define GL_SHININESS           0x1601
 
 #endif /* GL_MODELVIEW */
 
