@@ -24,6 +24,7 @@ test_conformance_SOURCES = 		\
 	test-cogl-viewport.c		\
 	test-cogl-offscreen.c		\
 	test-cogl-readpixels.c		\
+	test-cogl-multitexture.c        \
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\

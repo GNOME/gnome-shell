@@ -740,13 +740,13 @@ _cogl_journal_log_quad (float         x_1,
                                    next_vert +  POS_STRIDE +
                                    COLOR_STRIDE + TEX_STRIDE * i);
 
-      t[0] = tex_coords[0]; t[1] = tex_coords[1];
+      t[0] = tex_coords[i * 4 + 0]; t[1] = tex_coords[i * 4 + 1];
       t += stride;
-      t[0] = tex_coords[0]; t[1] = tex_coords[3];
+      t[0] = tex_coords[i * 4 + 0]; t[1] = tex_coords[i * 4 + 3];
       t += stride;
-      t[0] = tex_coords[2]; t[1] = tex_coords[3];
+      t[0] = tex_coords[i * 4 + 2]; t[1] = tex_coords[i * 4 + 3];
       t += stride;
-      t[0] = tex_coords[2]; t[1] = tex_coords[1];
+      t[0] = tex_coords[i * 4 + 2]; t[1] = tex_coords[i * 4 + 1];
     }
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
