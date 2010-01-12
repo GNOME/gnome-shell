@@ -28,7 +28,7 @@
 #ifndef __CLUTTER_INPUT_DEVICE_H__
 #define __CLUTTER_INPUT_DEVICE_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -92,6 +92,7 @@ gint                   clutter_input_device_get_device_id     (ClutterInputDevic
 void                   clutter_input_device_get_device_coords (ClutterInputDevice *device,
                                                                gint               *x,
                                                                gint               *y);
+ClutterActor *         clutter_input_device_get_pointer_actor (ClutterInputDevice *device);
 
 G_END_DECLS
 

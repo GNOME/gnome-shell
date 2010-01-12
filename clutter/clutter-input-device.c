@@ -391,6 +391,20 @@ clutter_input_device_get_device_coords (ClutterInputDevice *device,
     *y = device->current_y;
 }
 
+/*
+ * _clutter_input_device_update:
+ * @device: a #ClutterInputDevice
+ *
+ * Updates the input @device by determining the #ClutterActor underneath the
+ * pointer's cursor
+ *
+ * This function calls _clutter_input_device_set_actor() if needed.
+ *
+ * This function only works for #ClutterInputDevice of type
+ * %CLUTTER_POINTER_DEVICE.
+ *
+ * Since: 1.2
+ */
 ClutterActor *
 _clutter_input_device_update (ClutterInputDevice *device)
 {
@@ -399,9 +413,12 @@ _clutter_input_device_update (ClutterInputDevice *device)
   ClutterActor *old_cursor_actor;
   gint x, y;
 
+  g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
+
   clutter_input_device_get_device_coords (device, &x, &y);
 
   stage = device->stage;
+
   old_cursor_actor = device->cursor_actor;
   new_cursor_actor = _clutter_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
 
@@ -421,10 +438,30 @@ _clutter_input_device_update (ClutterInputDevice *device)
                   ? clutter_actor_get_name (new_cursor_actor)
                   : G_OBJECT_TYPE_NAME (new_cursor_actor));
 
+  /* short-circuit here */
   if (new_cursor_actor == old_cursor_actor)
     return old_cursor_actor;
 
   _clutter_input_device_set_actor (device, new_cursor_actor);
+
+  return device->cursor_actor;
+}
+
+/**
+ * clutter_input_device_get_pointer_actor:
+ * @device: a #ClutterInputDevice of type %CLUTTER_POINTER_DEVICE
+ *
+ * Retrieves the #ClutterActor underneath the pointer of @device
+ *
+ * Return value: (transfer none): a pointer to the #ClutterActor or %NULL
+ *
+ * Since: 1.2
+ */
+ClutterActor *
+clutter_input_device_get_pointer_actor (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+  g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
 
   return device->cursor_actor;
 }

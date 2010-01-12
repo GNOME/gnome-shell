@@ -1003,6 +1003,7 @@ clutter_get_input_device_for_id
 clutter_input_device_get_device_id
 clutter_input_device_get_device_type
 clutter_input_device_get_device_coords
+clutter_input_device_get_pointer_actor
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_INPUT_DEVICE
