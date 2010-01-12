@@ -114,6 +114,7 @@ struct _ClutterStage
  * @unfullscreen: handler for the #ClutterStage::unfullscreen signal
  * @activate: handler for the #ClutterStage::activate signal
  * @deactivate: handler for the #ClutterStage::deactive signal
+ * @delete_event: handler for the #ClutterStage::delete-event signal
  *
  * The #ClutterStageClass structure contains only private data
  *
@@ -132,9 +133,12 @@ struct _ClutterStageClass
   void (* activate)     (ClutterStage *stage);
   void (* deactivate)   (ClutterStage *stage);
 
+  gboolean (* delete_event) (ClutterStage *stage,
+                             ClutterEvent *event);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[32];
+  gpointer _padding_dummy[31];
 };
 
 

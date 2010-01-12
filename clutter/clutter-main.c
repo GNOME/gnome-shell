@@ -2375,14 +2375,7 @@ _clutter_process_event_details (ClutterActor        *stage,
       case CLUTTER_DELETE:
         event->any.source = stage;
         /* the stage did not handle the event, so we just quit */
-        if (!clutter_stage_event (CLUTTER_STAGE (stage), event))
-          {
-            if (stage == clutter_stage_get_default())
-              clutter_main_quit ();
-            else
-              clutter_actor_destroy (stage);
-          }
-
+        clutter_stage_event (CLUTTER_STAGE (stage), event);
         break;
 
       case CLUTTER_KEY_PRESS:

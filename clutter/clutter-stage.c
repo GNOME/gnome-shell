@@ -122,6 +122,7 @@ enum
   UNFULLSCREEN,
   ACTIVATE,
   DEACTIVATE,
+  DELETE_EVENT,
 
   LAST_SIGNAL
 };
@@ -625,6 +626,18 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
     CLUTTER_CONTEXT ()->redraw_count += 1;
 }
 
+static gboolean
+clutter_stage_real_delete_event (ClutterStage *stage,
+                                 ClutterEvent *event)
+{
+  if (clutter_stage_is_default (stage))
+    clutter_main_quit ();
+  else
+    clutter_actor_destroy (CLUTTER_ACTOR (stage));
+
+  return TRUE;
+}
+
 static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
@@ -796,7 +809,6 @@ clutter_stage_finalize (GObject *object)
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
-
 
 static void
 clutter_stage_class_init (ClutterStageClass *klass)
@@ -1050,9 +1062,41 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
+  /**
+   * ClutterStage::delete-event:
+   * @stage: the stage that received the event
+   * @event: a #ClutterEvent of type %CLUTTER_DELETE
+   *
+   * The ::delete-event signal is emitted when the user closes a
+   * #ClutterStage window using the window controls.
+   *
+   * Clutter by default will call clutter_main_quit() if @stage is
+   * the default stage, and clutter_actor_destroy() for any other
+   * stage.
+   *
+   * It is possible to override the default behaviour by connecting
+   * a new handler and returning %TRUE there.
+   *
+   * <note>This signal is emitted only on Clutter backends that
+   * embed #ClutterStage in native windows. It is not emitted for
+   * backends that use a static frame buffer.</note>
+   *
+   * Since: 1.2
+   */
+  stage_signals[DELETE_EVENT] =
+    g_signal_new (I_("delete-event"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterStageClass, delete_event),
+                  _clutter_boolean_handled_accumulator, NULL,
+                  clutter_marshal_BOOLEAN__BOXED,
+                  G_TYPE_BOOLEAN, 1,
+                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
   klass->fullscreen = clutter_stage_real_fullscreen;
   klass->activate = clutter_stage_real_activate;
   klass->deactivate = clutter_stage_real_deactivate;
+  klass->delete_event = clutter_stage_real_delete_event;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
@@ -1530,6 +1574,9 @@ clutter_stage_event (ClutterStage *stage,
       gboolean retval = FALSE;
 
       g_signal_emit_by_name (stage, "event", event, &retval);
+
+      if (!retval)
+        g_signal_emit_by_name (stage, "delete-event", event, &retval);
 
       return retval;
     }
