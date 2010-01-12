@@ -83,6 +83,7 @@ struct _ShellAppInfo {
   char *casefolded_name;
   char *name_collation_key;
   char *casefolded_description;
+  char *casefolded_exec;
 
   GMenuTreeItem *entry;
 
@@ -612,11 +613,29 @@ normalize_and_casefold (const char *str)
   return result;
 }
 
+static char *
+trim_exec_line (const char *str)
+{
+  const char *start, *end, *pos;
+
+  end = strchr (str, ' ');
+  if (end == NULL)
+    end = str + strlen (str);
+
+  start = str;
+  while ((pos = strchr (start, '/')) && pos < end)
+    start = ++pos;
+
+  return g_strndup (start, end - start);
+}
+
 static void
 shell_app_info_init_search_data (ShellAppInfo *info)
 {
   const char *name;
+  const char *exec;
   const char *comment;
+  char *normalized_exec;
 
   g_assert (info->type == SHELL_APP_INFO_TYPE_ENTRY);
 
@@ -625,6 +644,11 @@ shell_app_info_init_search_data (ShellAppInfo *info)
 
   comment = gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info->entry);
   info->casefolded_description = normalize_and_casefold (comment);
+
+  exec = gmenu_tree_entry_get_exec ((GMenuTreeEntry*)info->entry);
+  normalized_exec = normalize_and_casefold (exec);
+  info->casefolded_exec = trim_exec_line (normalized_exec);
+  g_free (normalized_exec);
 }
 
 static ShellAppInfoSearchMatch
@@ -645,6 +669,17 @@ shell_app_info_match_terms (ShellAppInfo  *info,
 
       p = strstr (info->casefolded_name, term);
       if (p == info->casefolded_name)
+        {
+          if (match != MATCH_NONE)
+            return MATCH_MULTIPLE;
+          else
+            match = MATCH_PREFIX;
+         }
+      else if (p != NULL)
+        match = MATCH_SUBSTRING;
+
+      p = strstr (info->casefolded_exec, term);
+      if (p == info->casefolded_exec)
         {
           if (match != MATCH_NONE)
             return MATCH_MULTIPLE;
@@ -770,7 +805,7 @@ shell_app_system_initial_search_internal (ShellAppSystem  *self,
 /**
  * shell_app_system_initial_search:
  * @self: A #ShellAppSystem
- * @prefs: %TRUE iff we should search preferences instead of apps
+ * @prefs: %TRUE if we should search preferences instead of apps
  * @terms: (element-type utf8): List of terms, logical OR
  *
  * Search through applications for the given search terms.  Note that returned
@@ -790,7 +825,7 @@ shell_app_system_initial_search (ShellAppSystem  *self,
 /**
  * shell_app_system_subsearch:
  * @self: A #ShellAppSystem
- * @prefs: %TRUE iff we should search preferences instead of apps
+ * @prefs: %TRUE if we should search preferences instead of apps
  * @previous_results: (element-type utf8): List of previous results
  * @terms: (element-type utf8): List of terms, logical OR
  *
