@@ -1,14 +1,14 @@
 # Czech translation of gnome-shell.
-# Copyright (C) 2009 the author(s) of gnome-shell.
+# Copyright (C) 2009, 2010 the author(s) of gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
 # Andre Klapper <ak-47@gmx.net>, 2009.
-# Petr Kovar <pknbe@volny.cz>, 2009.
+# Petr Kovar <pknbe@volny.cz>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-05 18:03+0100\n"
-"PO-Revision-Date: 2009-11-05 18:03+0100\n"
+"POT-Creation-Date: 2010-01-12 21:58+0100\n"
+"PO-Revision-Date: 2010-01-12 21:57+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,84 +25,75 @@ msgstr "Prostředí GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
-#: ../js/ui/appDisplay.js:332
-msgid "Frequent"
-msgstr "Časté"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "APLIKACE"
 
-#: ../js/ui/appDisplay.js:867
-msgid "Drag here to add favorites"
-msgstr "Oblíbené přidáte přetažením sem"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "PŘEDVOLBY"
 
-#: ../js/ui/appIcon.js:426
+#: ../js/ui/appDisplay.js:644
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:648
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appIcon.js:431
+#: ../js/ui/appDisplay.js:649
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/dash.js:267
+#: ../js/ui/appDisplay.js:1001
+msgid "Drag here to add favorites"
+msgstr "Oblíbené přidáte přetažením sem"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Najít..."
 
-#: ../js/ui/dash.js:376
-msgid "More"
-msgstr "Více"
+#: ../js/ui/dash.js:493
+msgid "Searching..."
+msgstr "Hledá se..."
 
-#: ../js/ui/dash.js:532
-msgid "(see all)"
-msgstr "(zobrazit vše)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:711 ../js/ui/dash.js:773
-msgid "APPLICATIONS"
-msgstr "APLIKACE"
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "Neodpovídá ani jeden z výsledků."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:731
-msgid "PLACES"
-msgstr "MÍSTA"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr "MÍSTA A ZAŘÍZENÍ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:738 ../js/ui/dash.js:783
-msgid "RECENT DOCUMENTS"
-msgstr "NEDÁVNÉ DOKUMENTY"
-
-#. **** Search Results ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:947
-msgid "SEARCH RESULTS"
-msgstr "VÝSLEDKY HLEDÁNÍ"
-
-#: ../js/ui/dash.js:778
-msgid "PREFERENCES"
-msgstr "PŘEDVOLBY"
+#: ../js/ui/dash.js:892
+msgid "RECENT ITEMS"
+msgstr "NEDÁVNÉ POLOŽKY"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:336
 msgid "Activities"
 msgstr "Činnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#: ../js/ui/panel.js:549
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/places.js:178
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Připojit se k..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Zadejte prosím příkaz:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání \"%s\" selhalo:"
@@ -120,11 +111,11 @@ msgstr "Aplikace"
 msgid "Recent Documents"
 msgstr "Nedávné dokumenty"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Před méně než minutou"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -132,7 +123,7 @@ msgstr[0] "Před %d minutou"
 msgstr[1] "Před %d minutami"
 msgstr[2] "Před %d minutami"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -140,7 +131,7 @@ msgstr[0] "Před %d hodinou"
 msgstr[1] "Před %d hodinami"
 msgstr[2] "Před %d hodinami"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -148,7 +139,7 @@ msgstr[0] "Před %d dnem"
 msgstr[1] "Před %d dny"
 msgstr[2] "Před %d dny"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -156,67 +147,17 @@ msgstr[0] "Před %d týdnem"
 msgstr[1] "Před %d týdny"
 msgstr[2] "Před %d týdny"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Neznámé"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Nelze uzamknout obrazovku: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Šetřič obrazovky nelze dočasně nastavit na prázdnou obrazovku: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Nelze se odhlásit: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Informace o účtu..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Postranní lišta"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Předvolby systému..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Uzamknout obrazovku"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Přepnout uživatele"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Odhlásit..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Vypnout..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Domovská složka"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Systém souborů"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Hledat"
 
@@ -225,10 +166,58 @@ msgstr "Hledat"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Frequent"
+#~ msgstr "Časté"
+
+#~ msgid "More"
+#~ msgstr "Více"
+
+#~ msgid "(see all)"
+#~ msgstr "(zobrazit vše)"
+
+#~ msgid "PLACES"
+#~ msgstr "MÍSTA"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "VÝSLEDKY HLEDÁNÍ"
+
+#~ msgid "Unknown"
+#~ msgstr "Neznámé"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Nelze uzamknout obrazovku: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr "Šetřič obrazovky nelze dočasně nastavit na prázdnou obrazovku: %s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "Nelze se odhlásit: %s"
+
+#~ msgid "Account Information..."
+#~ msgstr "Informace o účtu..."
+
+#~ msgid "Sidebar"
+#~ msgstr "Postranní lišta"
+
+#~ msgid "System Preferences..."
+#~ msgstr "Předvolby systému..."
+
+#~ msgid "Lock Screen"
+#~ msgstr "Uzamknout obrazovku"
+
+#~ msgid "Switch User"
+#~ msgstr "Přepnout uživatele"
+
+#~ msgid "Log Out..."
+#~ msgstr "Odhlásit..."
+
+#~ msgid "Shut Down..."
+#~ msgstr "Vypnout..."
 
 #~ msgid "Browse"
 #~ msgstr "Procházet"
