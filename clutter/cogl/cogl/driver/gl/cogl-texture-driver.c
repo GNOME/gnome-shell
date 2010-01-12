@@ -346,7 +346,7 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
      (for example, no mipmapping and complicated shader support) */
 
   /* Allow 2-dimensional or rectangle textures only */
-  if (gl_target != GL_TEXTURE_2D && gl_target != CGL_TEXTURE_RECTANGLE_ARB)
+  if (gl_target != GL_TEXTURE_2D && gl_target != GL_TEXTURE_RECTANGLE_ARB)
     return FALSE;
 
   return TRUE;

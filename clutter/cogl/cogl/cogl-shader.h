@@ -59,7 +59,7 @@ typedef enum {
 
 /**
  * cogl_create_shader:
- * @shader_type: CGL_VERTEX_SHADER or CGL_FRAGMENT_SHADER.
+ * @shader_type: COGL_SHADER_TYPE_VERTEX or COGL_SHADER_TYPE_FRAGMENT.
  *
  * Create a new shader handle, use #cogl_shader_source to set the source code
  * to be used on it.
