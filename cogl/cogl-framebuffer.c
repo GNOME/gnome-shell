@@ -74,6 +74,12 @@
 #ifndef GL_DEPTH_STENCIL
 #define GL_DEPTH_STENCIL        0x84F9
 #endif
+#ifndef GL_DEPTH_ATTACHMENT
+#define GL_DEPTH_ATTACHMENT     0x8D00
+#endif
+#ifndef GL_DEPTH_COMPONENT16
+#define GL_DEPTH_COMPONENT16    0x81A5
+#endif
 
 typedef enum {
   _TRY_DEPTH_STENCIL = 1L<<0,
