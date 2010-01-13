@@ -8,6 +8,7 @@
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libgnomeui/gnome-desktop-thumbnail.h>
 #include <string.h>
+#include <glib.h>
 
 typedef struct
 {
@@ -17,6 +18,7 @@ typedef struct
   GIcon *icon;
   gchar *uri;
   gchar *thumbnail_uri;
+  gchar *checksum;
 
   /* This one is common to all */
   guint size;
@@ -51,6 +53,8 @@ cache_key_hash (gconstpointer a)
     base_hash = g_str_hash (akey->uri);
   else if (akey->thumbnail_uri)
     base_hash = g_str_hash (akey->thumbnail_uri);
+  else if (akey->checksum)
+    base_hash = g_str_hash (akey->checksum);
   else
     g_assert_not_reached ();
   return base_hash + 31*akey->size;
@@ -76,6 +80,8 @@ cache_key_equal (gconstpointer a,
     return strcmp (akey->uri, bkey->uri) == 0;
   else if (akey->thumbnail_uri && bkey->thumbnail_uri)
     return strcmp (akey->thumbnail_uri, bkey->thumbnail_uri) == 0;
+  else if (akey->checksum && bkey->checksum)
+    return strcmp (akey->checksum, bkey->checksum) == 0;
 
   return FALSE;
 }
@@ -89,6 +95,7 @@ cache_key_dup (CacheKey *key)
     ret->icon = g_object_ref (key->icon);
   ret->uri = g_strdup (key->uri);
   ret->thumbnail_uri = g_strdup (key->thumbnail_uri);
+  ret->checksum = g_strdup (key->checksum);
   ret->size = key->size;
   return ret;
 }
@@ -101,6 +108,7 @@ cache_key_destroy (gpointer a)
     g_object_unref (akey->icon);
   g_free (akey->uri);
   g_free (akey->thumbnail_uri);
+  g_free (akey->checksum);
   g_free (akey);
 }
 
@@ -318,7 +326,8 @@ on_image_size_prepared (GdkPixbufLoader *pixbuf_loader,
 }
 
 static GdkPixbuf *
-impl_load_pixbuf_file (const char     *uri,
+impl_load_pixbuf_data (const guchar   *data,
+                       gsize           size,
                        int             available_width,
                        int             available_height,
                        GError        **error)
@@ -326,21 +335,9 @@ impl_load_pixbuf_file (const char     *uri,
   GdkPixbufLoader *pixbuf_loader = NULL;
   GdkPixbuf *rotated_pixbuf = NULL;
   GdkPixbuf *pixbuf;
-  GFile *file = NULL;
-  char *contents = NULL;
-  gsize size;
   gboolean success;
   Dimensions available_dimensions;
   int width_before_rotation, width_after_rotation;
-
-  file = g_file_new_for_uri (uri);
-
-  success = g_file_load_contents (file, NULL, &contents, &size, NULL, error);
-
-  if (!success)
-    {
-      goto out;
-    }
 
   pixbuf_loader = gdk_pixbuf_loader_new ();
 
@@ -349,10 +346,7 @@ impl_load_pixbuf_file (const char     *uri,
   g_signal_connect (pixbuf_loader, "size-prepared",
                     G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
-  success = gdk_pixbuf_loader_write (pixbuf_loader,
-                                     (const guchar *) contents,
-                                     size,
-                                     error);
+  success = gdk_pixbuf_loader_write (pixbuf_loader, data, size, error);
   if (!success)
     goto out;
   success = gdk_pixbuf_loader_close (pixbuf_loader, error);
@@ -384,10 +378,7 @@ impl_load_pixbuf_file (const char     *uri,
       g_signal_connect (pixbuf_loader, "size-prepared",
                         G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
-      success = gdk_pixbuf_loader_write (pixbuf_loader,
-                                         (const guchar *) contents,
-                                         size,
-                                         error);
+      success = gdk_pixbuf_loader_write (pixbuf_loader, data, size, error);
       if (!success)
         goto out;
 
@@ -401,12 +392,34 @@ impl_load_pixbuf_file (const char     *uri,
     }
 
 out:
-  g_free (contents);
-  if (file)
-    g_object_unref (file);
   if (pixbuf_loader)
     g_object_unref (pixbuf_loader);
   return rotated_pixbuf;
+}
+
+static GdkPixbuf *
+impl_load_pixbuf_file (const char     *uri,
+                       int             available_width,
+                       int             available_height,
+                       GError        **error)
+{
+  GdkPixbuf *pixbuf = NULL;
+  GFile *file;
+  char *contents = NULL;
+  gsize size;
+
+  file = g_file_new_for_uri (uri);
+  if (g_file_load_contents (file, NULL, &contents, &size, NULL, error))
+    {
+      pixbuf = impl_load_pixbuf_data ((const guchar *) contents, size,
+                                      available_width, available_height,
+                                      error);
+    }
+
+  g_object_unref (file);
+  g_free (contents);
+
+  return pixbuf;
 }
 
 static GdkPixbuf *
@@ -655,6 +668,7 @@ typedef struct {
   gboolean thumbnail;
   char *mimetype;
   GtkRecentInfo *recent_info;
+  char *checksum;
   GIcon *icon;
   GtkIconInfo *icon_info;
   guint width;
@@ -1134,6 +1148,128 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
   else
     set_texture_cogl_texture (texture, texdata);
 
+  return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * shell_texture_cache_load_from_data:
+ * @cache: The texture cache instance
+ * @data: Image data in PNG, GIF, etc format
+ * @len: length of @data
+ * @size: Size in pixels to use for the resulting texture
+ * @error: Return location for error
+ *
+ * Synchronously creates an image from @data. The image is scaled down
+ * to fit the available width and height dimensions, but the image is
+ * never scaled up beyond its actual size. The pixbuf is rotated
+ * according to the associated orientation setting.
+ *
+ * Return value: (transfer none): A new #ClutterActor with the image data loaded if it was
+ *               generated succesfully, %NULL otherwise
+ */
+ClutterActor *
+shell_texture_cache_load_from_data (ShellTextureCache *cache,
+                                    const guchar      *data,
+                                    gsize              len,
+                                    int                size,
+                                    GError           **error)
+{
+  ClutterTexture *texture;
+  CoglHandle texdata;
+  GdkPixbuf *pixbuf;
+  CacheKey key;
+  gchar *checksum;
+
+  texture = create_default_texture (cache);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
+
+  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+
+  memset (&key, 0, sizeof(key));
+  key.size = size;
+  key.checksum = checksum;
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  if (texdata == NULL)
+    {
+      pixbuf = impl_load_pixbuf_data (data, len, size, size, error);
+      if (!pixbuf)
+        {
+          g_object_unref (texture);
+          return NULL;
+        }
+
+      texdata = pixbuf_to_cogl_handle (pixbuf);
+      g_object_unref (pixbuf);
+
+      set_texture_cogl_texture (texture, texdata);
+
+      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+    }
+
+  g_free (key.checksum);
+
+  set_texture_cogl_texture (texture, texdata);
+  return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * shell_texture_cache_load_from_raw:
+ * @cache: a #ShellTextureCache
+ * @data: raw pixel data
+ * @len: the length of @data
+ * @has_alpha: whether @data includes an alpha channel
+ * @width: width in pixels of @data
+ * @height: width in pixels of @data
+ * @rowstride: rowstride of @data
+ * @size: size of icon to return
+ *
+ * Creates (or retrieves from cache) an icon based on raw pixel data.
+ *
+ * Return value: (transfer none): a new #ClutterActor displaying a
+ * pixbuf created from @data and the other parameters.
+ **/
+ClutterActor *
+shell_texture_cache_load_from_raw (ShellTextureCache *cache,
+                                   const guchar      *data,
+                                   gsize              len,
+                                   gboolean           has_alpha,
+                                   int                width,
+                                   int                height,
+                                   int                rowstride,
+                                   int                size,
+                                   GError           **error)
+{
+  ClutterTexture *texture;
+  CoglHandle texdata;
+  CacheKey key;
+  gchar *checksum;
+
+  texture = create_default_texture (cache);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
+
+  /* In theory, two images of different size could have the same
+   * pixel data. We ignore that theory.
+   */
+  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+
+  memset (&key, 0, sizeof(key));
+  key.size = size;
+  key.checksum = checksum;
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  if (texdata == NULL)
+    {
+      texdata = cogl_texture_new_from_data (width, height, COGL_TEXTURE_NONE,
+                                            has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            rowstride, data);
+      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+    }
+
+  g_free (key.checksum);
+
+  set_texture_cogl_texture (texture, texdata);
   return CLUTTER_ACTOR (texture);
 }
 
