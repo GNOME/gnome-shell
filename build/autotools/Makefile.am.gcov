@@ -11,7 +11,7 @@ gcov-report.txt: gcov-clean
 			covered=$$((actual - uncovered)); \
 			total_covered=$$((total_covered + covered)); \
 			total_actual=$$((total_actual + actual)); \
-			echo -e "$$file:    \t$$covered / $$actual\t($$((($$covered * 100) / $$actual))%)"; \
+			perl $(top_builddir)/build/gen-gcov.pl $$file.gcov; \
 		fi \
 	done >> $@; \
 	cd $(abs_srcdir); \
