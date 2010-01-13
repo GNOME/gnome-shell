@@ -1418,3 +1418,36 @@ st_box_layout_get_n_children  (StBoxLayout *self)
 {
   return g_list_length (self->priv->children);
 }
+
+void
+st_box_layout_move_child (StBoxLayout  *self,
+                          ClutterActor *actor,
+                          int           pos)
+{
+  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
+
+  GList *item = NULL;
+
+  item = g_list_find (priv->children, actor);
+
+  if (item == NULL)
+    {
+      g_warning ("Actor of type '%s' is not a child of the StBoxLayout container",
+                 g_type_name (G_OBJECT_TYPE (actor)));
+      return;
+    }
+
+  priv->children = g_list_delete_link (priv->children, item);
+  priv->children = g_list_insert (priv->children, actor, pos);
+  clutter_actor_queue_relayout ((ClutterActor*) self);
+}
+
+void
+st_box_layout_insert_actor (StBoxLayout  *self,
+                            ClutterActor *actor,
+                            int           pos)
+{
+  clutter_container_add_actor((ClutterContainer*) self, actor);
+  st_box_layout_move_child(self, actor, pos);
+}
+
