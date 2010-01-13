@@ -1,13 +1,13 @@
 # Norwegian (bokmål) translation of metacity.
 # Copyright © 2002-2004 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@gnome.org>, 2002-2009.
+# Kjartan Maraas <kmaraas@gnome.org>, 2002-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.29.x\n"
 "Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2009-11-15 14:56+0100\n"
-"PO-Revision-Date: 2009-11-15 15:06+0100\n"
+"POT-Creation-Date: 2010-01-13 22:29+0100\n"
+"PO-Revision-Date: 2010-01-13 22:29+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -31,28 +31,27 @@ msgstr "Klokkehendelse"
 msgid "Unknown window information request: %d"
 msgstr "Ukjent forespørsel om vindusinformasjon: %d"
 
-#: ../src/core/delete.c:104
+#. Translators: %s is a window title
+#: ../src/core/delete.c:96
 #, c-format
-msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt> svarer ikke.</b></big>\n"
-"\n"
-"<i>Du kan velge å vente en kort stund for å se om det fortsetter eller "
-"tvinge programmet til å avslutte helt.</i>"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> svarer ikke."
 
-#: ../src/core/delete.c:115
+#: ../src/core/delete.c:101
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge programmet til å avslutte helt."
+
+#: ../src/core/delete.c:110
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:115
+#: ../src/core/delete.c:110
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
-#: ../src/core/delete.c:216
+#: ../src/core/delete.c:208
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
@@ -116,7 +115,7 @@ msgstr "Ingen kommando %d er definert\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
 
-#: ../src/core/main.c:132
+#: ../src/core/main.c:133
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -128,55 +127,57 @@ msgstr ""
 "metacity %s\n"
 "Opphavsrett © 2001-%s Havoc Pennington, Red Hat., Inc, og andre.\n"
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
-"Det gis INGEN garanti ikke engang for SALGBARHET eller EGNETHET FOR ET SPESIFIKT FORMÅL.\n"
+"Det gis INGEN garanti ikke engang for SALGBARHET eller EGNETHET FOR ET "
+"SPESIFIKT FORMÅL.\n"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:271
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:277
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstatt kjørende vindushåndterer med Metacity"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:283
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: ../src/core/main.c:287
+#: ../src/core/main.c:288
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: ../src/core/main.c:293
+#: ../src/core/main.c:294
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: ../src/core/main.c:299
+#: ../src/core/main.c:300
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/main.c:305
+#: ../src/core/main.c:306
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: ../src/core/main.c:311
+#: ../src/core/main.c:312
 msgid "Turn compositing on"
 msgstr "Slå på «compositing»"
 
-#: ../src/core/main.c:317
+#: ../src/core/main.c:318
 msgid "Turn compositing off"
 msgstr "Slå av «compositing»"
 
-#: ../src/core/main.c:323
+#: ../src/core/main.c:324
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
-msgstr "Ikke vis vinduer som er maksimert og ikke har dekorasjoner i fullskjermmodus"
+msgstr ""
+"Ikke vis vinduer som er maksimert og ikke har dekorasjoner i fullskjermmodus"
 
-#: ../src/core/main.c:545
+#: ../src/core/main.c:530
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:561
+#: ../src/core/main.c:546
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -184,7 +185,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:620
+#: ../src/core/main.c:605
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -310,7 +311,11 @@ msgid ""
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske "
+"liberal og tillater små og store bokstaver, i tillegg til forkortelser som "
+"«<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen "
+"«disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
@@ -324,102 +329,108 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen.\n"
+"Formatet ser slik ut: «<Control>a» eller «<Shift><Alt>F1». Tolkeren er ganske "
+"liberal og tillater små og store bokstaver, i tillegg til forkortelser som "
+"«<Ctl>» og «<Ctrl>». Hvis du setter alternativet til den spesielle strengen "
+"«disabled», vil det ikke være en tastebinding for denne handlingen.\n"
 "\n"
-"Denne tastaturbindingen kan reverseres ved å holde nede «shift»-tasten; derfor kan ikke «shift» være en av tastene som brukes."
+"Denne tastaturbindingen kan reverseres ved å holde nede «shift»-tasten; "
+"derfor kan ikke «shift» være en av tastene som brukes."
 
-#: ../src/core/session.c:845 ../src/core/session.c:852
+#: ../src/core/session.c:846 ../src/core/session.c:853
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: ../src/core/session.c:862
+#: ../src/core/session.c:863
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: ../src/core/session.c:1003
+#: ../src/core/session.c:1004
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1008
+#: ../src/core/session.c:1009
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1101
+#: ../src/core/session.c:1102
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: ../src/core/session.c:1140
+#: ../src/core/session.c:1141
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1190
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: ../src/core/session.c:1202 ../src/core/session.c:1277
-#: ../src/core/session.c:1309 ../src/core/session.c:1381
-#: ../src/core/session.c:1441
+#: ../src/core/session.c:1203 ../src/core/session.c:1278
+#: ../src/core/session.c:1310 ../src/core/session.c:1382
+#: ../src/core/session.c:1442
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukjent attributt %s på <%s>-element"
 
-#: ../src/core/session.c:1219
+#: ../src/core/session.c:1220
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: ../src/core/session.c:1461
+#: ../src/core/session.c:1462
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: ../src/core/session.c:1812
+#: ../src/core/session.c:1814
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
-msgstr "Disse vinduene støtter ikke &quot;lagre aktiv konfigurasjon&quot; og vil måtte startes på nytt manuelt neste gang du logger inn."
+msgstr ""
+"Disse vinduene støtter ikke &quot;lagre aktiv konfigurasjon&quot; og vil "
+"måtte startes på nytt manuelt neste gang du logger inn."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Feil under åpning av feilsøkingslogg: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Feil under fdopen() av loggfil %s: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity er kompilert uten støtte for «verbose» modus\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
@@ -1899,7 +1910,8 @@ msgstr "Element <%s> er ikke tillatt under <%s>"
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr "Kan ikke oppgi både «button_width»/«button_height» og «aspect_ratio» for knapper"
+msgstr ""
+"Kan ikke oppgi både «button_width»/«button_height» og «aspect_ratio» for knapper"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
