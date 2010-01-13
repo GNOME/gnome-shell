@@ -472,6 +472,27 @@ StTooltip {
     color: #cccccc;
 }
 
+/* Message Tray */
+#message-tray {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(0,0,0,0.01);
+    background-gradient-end: rgba(0,0,0,0.95);
+    height: 28px;
+}
+
+#notification {
+    border-radius: 5px;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 2px 10px;
+    spacing: 10px;
+}
+
+#summary-mode {
+    spacing: 10px;
+    padding: 2px 4px;
+}
+
 /* App Switcher */
 .switcher-list {
     background: rgba(0,0,0,0.8);

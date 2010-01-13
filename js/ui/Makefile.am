@@ -16,6 +16,8 @@ dist_jsui_DATA =		\
 	link.js			\
 	lookingGlass.js		\
 	main.js			\
+	messageTray.js          \
+	notificationDaemon.js   \
 	overview.js		\
 	panel.js		\
 	placeDisplay.js		\

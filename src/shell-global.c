@@ -751,7 +751,7 @@ shell_global_grab_dbus_service (ShellGlobal *global)
    * unless a special environment variable is passed.  The environment
    * variable is used by the gnome-shell (no --replace) launcher in
    * Xephyr */
-  if (!g_getenv ("GNOME_SHELL_NO_REPLACE_PANEL"))
+  if (!g_getenv ("GNOME_SHELL_NO_REPLACE"))
     {
       if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
                               "org.gnome.Panel", G_TYPE_UINT,

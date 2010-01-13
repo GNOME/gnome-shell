@@ -15,11 +15,13 @@ const St = imports.gi.St;
 const Chrome = imports.ui.chrome;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
+const MessageTray = imports.ui.messageTray;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
+const NotificationDaemon = imports.ui.notificationDaemon;
 const ShellDBus = imports.ui.shellDBus;
 const Sidebar = imports.ui.sidebar;
 const WindowManager = imports.ui.windowManager;
@@ -35,6 +37,8 @@ let overview = null;
 let runDialog = null;
 let lookingGlass = null;
 let wm = null;
+let notificationDaemon = null;
+let messageTray = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -113,6 +117,8 @@ function start() {
     panel = new Panel.Panel();
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
+    notificationDaemon = new NotificationDaemon.NotificationDaemon();
+    messageTray = new MessageTray.MessageTray();
 
     _startDate = new Date();
 
