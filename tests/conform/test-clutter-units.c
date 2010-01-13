@@ -61,9 +61,20 @@ test_units_string (TestConformSimpleFixture *fixture,
   ClutterUnits units;
   gchar *string;
 
+  g_assert (clutter_units_from_string (&units, "") == FALSE);
+
   g_assert (clutter_units_from_string (&units, "10") == TRUE);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 10);
+
+  g_assert (clutter_units_from_string (&units, "10 px") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
+
+  g_assert (clutter_units_from_string (&units, "10 mm") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_MM);
+
+  g_assert (clutter_units_from_string (&units, "10 cm") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_CM);
 
   g_assert (clutter_units_from_string (&units, "10  ") == TRUE);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
