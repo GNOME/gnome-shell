@@ -38,6 +38,7 @@
 #include "clutter-master-clock.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
+#include "clutter-profile.h"
 
 #define CLUTTER_MASTER_CLOCK_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClockClass))
 #define CLUTTER_IS_MASTER_CLOCK_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_MASTER_CLOCK))
@@ -262,6 +263,19 @@ clutter_clock_dispatch (GSource     *source,
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   GSList *stages, *l;
 
+  CLUTTER_STATIC_TIMER (master_dispatch_timer,
+                        "Mainloop",
+                        "Master Clock",
+                        "Master clock dispatch",
+                        0);
+  CLUTTER_STATIC_TIMER (master_event_process,
+                        "Master Clock",
+                        "Event Processing",
+                        "The time spent processing events on all stages",
+                        0);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, master_dispatch_timer);
+
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
   clutter_threads_enter ();
@@ -276,6 +290,8 @@ clutter_clock_dispatch (GSource     *source,
   stages = clutter_stage_manager_list_stages (stage_manager);
   g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
 
+  CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
+
   master_clock->updated_stages = FALSE;
 
   /* Process queued events
@@ -283,7 +299,10 @@ clutter_clock_dispatch (GSource     *source,
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_process_queued_events (l->data);
 
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_event_process);
+
   _clutter_master_clock_advance (master_clock);
+
   _clutter_run_repaint_functions ();
 
   /* Update any stage that needs redraw/relayout after the clock
@@ -298,6 +317,8 @@ clutter_clock_dispatch (GSource     *source,
   master_clock->prev_tick = master_clock->cur_tick;
 
   clutter_threads_leave ();
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_dispatch_timer);
 
   return TRUE;
 }
@@ -427,6 +448,12 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
   GSList *l, *next;
 
+  CLUTTER_STATIC_TIMER (master_timeline_advance,
+                        "Master Clock",
+                        "Timelines Advancement",
+                        "The time spent advancing all timelines",
+                        0);
+
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
   /* we protect ourselves from timelines being removed during
@@ -434,12 +461,16 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
    */
   g_slist_foreach (master_clock->timelines, (GFunc) g_object_ref, NULL);
 
+  CLUTTER_TIMER_START (_clutter_uprof_context, master_timeline_advance);
+
   for (l = master_clock->timelines; l != NULL; l = next)
     {
       next = l->next;
 
       clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
     }
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_timeline_advance);
 
   g_slist_foreach (master_clock->timelines, (GFunc) g_object_unref, NULL);
 }
