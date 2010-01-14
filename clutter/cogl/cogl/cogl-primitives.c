@@ -401,6 +401,12 @@ _cogl_rectangles_with_multitexture_coords (
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
 	continue;
 
+      /* We need to ensure the mipmaps are ready before deciding
+         anything else about the texture because it could become
+         something completely different if it needs to be migrated out
+         of the atlas */
+      _cogl_material_layer_ensure_mipmaps (layer);
+
       tex_handle = cogl_material_layer_get_texture (layer);
 
       /* COGL_INVALID_HANDLE textures are handled by
