@@ -1326,6 +1326,19 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
   _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
 }
 
+void
+_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  if (layer->texture &&
+      (is_mipmap_filter (layer->min_filter) ||
+       is_mipmap_filter (layer->mag_filter)))
+    _cogl_texture_ensure_mipmaps (layer->texture);
+}
+
 /*
  * _cogl_material_flush_layers_gl_state:
  * @fallback_mask: is a bitmask of the material layers that need to be
@@ -1397,6 +1410,8 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #endif
       CoglTextureUnit   *unit;
 
+      _cogl_material_layer_ensure_mipmaps (layer_handle);
+
       new_gl_layer_info.layer0_overridden =
         layer0_override_texture ? TRUE : FALSE;
       new_gl_layer_info.fallback =
@@ -1407,10 +1422,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
       tex_handle = layer->texture;
       if (tex_handle != COGL_INVALID_HANDLE)
         {
-          if (is_mipmap_filter (layer->min_filter)
-              || is_mipmap_filter (layer->mag_filter))
-            _cogl_texture_ensure_mipmaps (tex_handle);
-
           _cogl_texture_set_filters (tex_handle,
                                      layer->min_filter,
                                      layer->mag_filter);
