@@ -1,3 +1,9 @@
+# DO NOT MODIFY THIS FILE
+#
+# Clutter uses the Git commit log to generate the ChangeLog files when
+# creating the tarball for releases and snapshots. This file is maintained
+# only for historical reasons.
+
 2008-12-10  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/cogl/gl/cogl.c:
