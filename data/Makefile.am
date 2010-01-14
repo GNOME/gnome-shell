@@ -22,6 +22,7 @@ dist_theme_DATA =				\
 	theme/add-workspace.svg			\
 	theme/close-window.svg			\
 	theme/close.svg                 \
+	theme/corner-ripple.png			\
 	theme/gnome-shell.css			\
 	theme/mosaic-view-active.svg          \
 	theme/mosaic-view.svg          \

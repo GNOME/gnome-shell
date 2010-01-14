@@ -569,11 +569,47 @@ Panel.prototype = {
         }
     },
 
+    _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
+        // We draw a ripple by using a source image and animating it scaling
+        // outwards and fading away. We want the ripples to move linearly
+        // or it looks unrealistic, but if the opacity of the ripple goes
+        // linearly to zero it fades away too quickly, so we use Tweener's
+        // 'onUpdate' to give a non-linear curve to the fade-away and make
+        // it more visible in the middle section.
+
+        let [x, y] = this._hotCorner.get_transformed_position();
+        let ripple = new St.BoxLayout({ style_class: 'ripple-box',
+                                        opacity: 255 * Math.sqrt(startOpacity),
+                                        scale_x: startScale,
+                                        scale_y: startScale,
+                                        x: x,
+                                        y: y });
+        ripple._opacity =  startOpacity;
+        Tweener.addTween(ripple, { _opacity: finalOpacity,
+                                   scale_x: finalScale,
+                                   scale_y: finalScale,
+                                   delay: delay,
+                                   time: time,
+                                   transition: 'linear',
+                                   onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
+                                   onComplete: function() { ripple.destroy(); } });
+        global.stage.add_actor(ripple);
+    },
+
     _onHotCornerEntered : function() {
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
             if (!Main.overview.animationInProgress) {
                 this._hotCornerActivationTime = Date.now() / 1000;
+
+                // Show three concentric ripples expanding outwards; the exact
+                // parameters were found by trial and error, so don't look
+                // for them to make perfect sense mathematically
+
+                //              delay  time  scale opacity => scale opacity
+                this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
+                this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
+                this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
                 Main.overview.toggle();
             }
         }
