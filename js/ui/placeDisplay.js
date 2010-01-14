@@ -114,7 +114,7 @@ PlacesManager.prototype = {
         this._defaultPlaces = [];
         this._mounts = [];
         this._bookmarks = [];
-        this._isDesktopHome = false;
+        this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
 
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
@@ -172,6 +172,7 @@ PlacesManager.prototype = {
 
         this._defaultPlaces.push(this._home);
 
+        this._desktopMenuIndex = this._defaultPlaces.length;
         if (!this._isDesktopHome)
             this._defaultPlaces.push(this._desktopMenu);
 
@@ -211,7 +212,6 @@ PlacesManager.prototype = {
         }));
 
         this._reloadBookmarks();
-        this._updateDesktopMenuVisibility();
 
         gconf.connect('changed::' + DESKTOP_IS_HOME_KEY, Lang.bind(this, this._updateDesktopMenuVisibility));
 
@@ -327,6 +327,12 @@ PlacesManager.prototype = {
         let gconf = Shell.GConf.get_default();
         this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
 
+        if (this._isDesktopHome)
+            this._removeById(this._defaultPlaces, "special:desktop");
+        else
+            this._defaultPlaces.splice(this._desktopMenuIndex, 0,
+                                       this._desktopMenu);
+
         /* See comment in _updateDevices for explanation why there are two signals. */
         this.emit('defaults-updated');
         this.emit('places-updated');
@@ -353,13 +359,13 @@ PlacesManager.prototype = {
         return this._mounts;
     },
 
-    _lookupById: function(sourceArray, id) {
+    _lookupIndexById: function(sourceArray, id) {
         for (let i = 0; i < sourceArray.length; i++) {
             let place = sourceArray[i];
             if (place.id == id)
-                return place;
+                return i;
         }
-        return null;
+        return -1;
     },
 
     lookupPlaceById: function(id) {
@@ -372,7 +378,11 @@ PlacesManager.prototype = {
             sourceArray = this._mounts;
         else if (type == 'bookmark')
             sourceArray = this._bookmarks;
-        return this._lookupById(sourceArray, id);
+        return sourceArray[this._lookupIndexById(sourceArray, id)];
+    },
+
+    _removeById: function(sourceArray, id) {
+        sourceArray.splice(this._lookupIndexById(sourceArray, id), 1);
     }
 };
 
