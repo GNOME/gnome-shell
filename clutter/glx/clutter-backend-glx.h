@@ -67,6 +67,7 @@ struct _ClutterBackendGLX
   GLXFBConfig            fbconfig;
   GLXContext             gl_context;
   Window                 dummy_xwin;
+  GLXWindow              dummy_glxwin;
 
   /* Vblank stuff */
   GetVideoSyncProc       get_video_sync;

@@ -192,6 +192,12 @@ clutter_backend_glx_dispose (GObject *gobject)
       backend_glx->gl_context = None;
     }
 
+  if (backend_glx->dummy_glxwin)
+    {
+      glXDestroyWindow (backend_x11->xdpy, backend_glx->dummy_glxwin);
+      backend_glx->dummy_glxwin = None;
+    }
+
   if (backend_glx->dummy_xwin)
     {
       XDestroyWindow (backend_x11->xdpy, backend_glx->dummy_xwin);
@@ -472,12 +478,16 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                     GError         **error)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   GLXFBConfig config;
   gboolean is_direct;
   Window root_xwin;
   XSetWindowAttributes attrs;
   XVisualInfo *xvisinfo;
   Display *xdisplay;
+  int major;
+  int minor;
+  GLXDrawable dummy_drawable;
 
   if (backend_glx->gl_context != None)
     return TRUE;
@@ -552,12 +562,29 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                            CWOverrideRedirect | CWColormap,
                                            &attrs);
 
+  /* Try and create a GLXWindow to use with extensions dependent on
+   * GLX versions >= 1.3 that don't accept regular X Windows as GLX
+   * drawables. */
+  if (glXQueryVersion (backend_x11->xdpy, &major, &minor) &&
+      major == 1 && minor >= 3)
+    {
+      backend_glx->dummy_glxwin = glXCreateWindow (backend_x11->xdpy,
+                                                   config,
+                                                   backend_glx->dummy_xwin,
+                                                   NULL);
+    }
+
+  if (backend_glx->dummy_glxwin)
+    dummy_drawable = backend_glx->dummy_glxwin;
+  else
+    dummy_drawable = backend_glx->dummy_xwin;
+
   CLUTTER_NOTE (BACKEND, "Selecting dummy 0x%x for the GLX context",
-                (unsigned int) backend_glx->dummy_xwin);
+                (unsigned int) dummy_drawable);
 
   glXMakeContextCurrent (xdisplay,
-                         backend_glx->dummy_xwin,
-                         backend_glx->dummy_xwin,
+                         dummy_drawable,
+                         dummy_drawable,
                          backend_glx->gl_context);
 
   XFree (xvisinfo);
@@ -599,6 +626,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       ClutterBackendX11 *backend_x11;
       ClutterStageGLX   *stage_glx;
       ClutterStageX11   *stage_x11;
+      GLXDrawable        drawable;
 
       g_assert (impl != NULL);
 
@@ -607,10 +635,12 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       backend_glx = CLUTTER_BACKEND_GLX (backend);
       backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
+      drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+
       CLUTTER_NOTE (BACKEND,
                     "Setting context for stage of type %s, window: 0x%x",
                     G_OBJECT_TYPE_NAME (impl),
-                    (unsigned int) stage_x11->xwin);
+                    (unsigned int) drawable);
 
       /* no GL context to set */
       if (backend_glx->gl_context == None)
@@ -621,40 +651,47 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       /* we might get here inside the final dispose cycle, so we
        * need to handle this gracefully
        */
-      if (stage_x11->xwin == None)
+      if (drawable == None)
         {
+          GLXDrawable dummy_drawable;
+
           CLUTTER_NOTE (BACKEND,
                         "Received a stale stage, clearing all context");
 
-          if (backend_glx->dummy_xwin != None)
+          if (backend_glx->dummy_glxwin)
+            dummy_drawable = backend_glx->dummy_glxwin;
+          else
+            dummy_drawable = backend_glx->dummy_xwin;
+
+          if (dummy_drawable == None)
+            glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
+          else
             {
               glXMakeContextCurrent (backend_x11->xdpy,
-                                     backend_glx->dummy_xwin,
-                                     backend_glx->dummy_xwin,
+                                     dummy_drawable,
+                                     dummy_drawable,
                                      backend_glx->gl_context);
             }
-          else
-            glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
         }
       else
         {
           CLUTTER_NOTE (BACKEND,
                         "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
                         backend_x11->xdpy,
-                        (unsigned int) stage_x11->xwin,
+                        (unsigned int) drawable,
                         stage_x11->is_foreign_xwin ? "foreign" : "native",
                         backend_glx->gl_context);
 
           glXMakeContextCurrent (backend_x11->xdpy,
-                                 stage_x11->xwin,
-                                 stage_x11->xwin,
+                                 drawable,
+                                 drawable,
                                  backend_glx->gl_context);
         }
 
       if (clutter_x11_untrap_x_errors ())
         g_critical ("Unable to make the stage window 0x%x the current "
                     "GLX drawable",
-                    (unsigned int) stage_x11->xwin);
+                    (unsigned int) drawable);
     }
 }
 
@@ -757,6 +794,9 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
   if (stage_x11->xwin != None)
     {
+      GLXDrawable drawable =
+        stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+
       /* wait for the next vblank */
       CLUTTER_NOTE (BACKEND, "Waiting for vblank");
       glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
@@ -764,10 +804,10 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
       /* push on the screen */
       CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
                     backend_x11->xdpy,
-                    (unsigned long) stage_x11->xwin);
+                    (unsigned long) drawable);
 
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      glXSwapBuffers (backend_x11->xdpy, stage_x11->xwin);
+      glXSwapBuffers (backend_x11->xdpy, drawable);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 }

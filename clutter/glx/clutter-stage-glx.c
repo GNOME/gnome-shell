@@ -63,11 +63,18 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
 
   /* Note unrealize should free up any backend stage related resources */
   CLUTTER_NOTE (BACKEND, "Unrealizing stage");
 
   clutter_x11_trap_x_errors ();
+
+  if (stage_glx->glxwin != None)
+    {
+      glXDestroyWindow (backend_x11->xdpy, stage_glx->glxwin);
+      stage_glx->glxwin = None;
+    }
 
   if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
     {
@@ -88,6 +95,7 @@ static gboolean
 clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   ClutterBackend    *backend;
   ClutterBackendGLX *backend_glx;
   ClutterBackendX11 *backend_x11;
@@ -141,6 +149,26 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                     (unsigned int) stage_x11->xwin);
 
       XFree (xvisinfo);
+    }
+
+  if (stage_glx->glxwin == None)
+    {
+      int major;
+      int minor;
+      GLXFBConfig config;
+
+      /* Try and create a GLXWindow to use with extensions dependent on
+       * GLX versions >= 1.3 that don't accept regular X Windows as GLX
+       * drawables. */
+      if (glXQueryVersion (backend_x11->xdpy, &major, &minor) &&
+          major == 1 && minor >= 3 &&
+          _clutter_backend_glx_get_fbconfig (backend_glx, &config))
+        {
+          stage_glx->glxwin = glXCreateWindow (backend_x11->xdpy,
+                                               config,
+                                               stage_x11->xwin,
+                                               NULL);
+        }
     }
 
   if (clutter_x11_has_event_retrieval ())

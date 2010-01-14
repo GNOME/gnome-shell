@@ -49,6 +49,7 @@ struct _ClutterStageGLX
   ClutterStageX11 parent_instance;
 
   GLXPixmap glxpixmap;
+  GLXWindow glxwin;
 };
 
 struct _ClutterStageGLXClass
