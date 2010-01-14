@@ -1496,7 +1496,14 @@ _cogl_path_fill_nodes (void)
                       bounds_x + bounds_w, bounds_y + bounds_h);
 
       /* The stencil buffer now contains garbage so the clip area needs to
-         be rebuilt */
+       * be rebuilt.
+       *
+       * NB: We only ever try and update the clip state during
+       * _cogl_journal_init (when we flush the framebuffer state) which is
+       * only called when the journal first gets something logged in it; so
+       * we call cogl_flush() to emtpy the journal.
+       */
+      cogl_flush ();
       _cogl_clip_stack_state_dirty (clip_state);
     }
   else
