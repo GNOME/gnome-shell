@@ -211,22 +211,6 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
 }
 
 /*
- * _clutter_input_device_set_stage:
- * @device: a #ClutterInputDevice
- * @stage: a #ClutterStage
- *
- * Stores the stage under the device
- */
-void
-_clutter_input_device_set_stage (ClutterInputDevice *device,
-                                 ClutterStage       *stage)
-{
-  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
-
-  device->stage = stage;
-}
-
-/*
  * cursor_weak_unref:
  *
  * #ClutterInputDevice keeps a weak reference on the actor
@@ -240,6 +224,35 @@ cursor_weak_unref (gpointer  user_data,
   ClutterInputDevice *device = user_data;
 
   device->cursor_actor = NULL;
+}
+
+/*
+ * _clutter_input_device_set_stage:
+ * @device: a #ClutterInputDevice
+ * @stage: a #ClutterStage or %NULL
+ *
+ * Stores the stage under the device
+ */
+void
+_clutter_input_device_set_stage (ClutterInputDevice *device,
+                                 ClutterStage       *stage)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  device->stage = stage;
+
+  /* if we left the stage then we also need to unset the
+   * cursor actor (and update its :has-pointer property)
+   */
+  if (device->stage == NULL && device->cursor_actor != NULL)
+    {
+      _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
+      g_object_weak_unref (G_OBJECT (device->cursor_actor),
+                           cursor_weak_unref,
+                           device);
+
+      device->cursor_actor = NULL;
+    }
 }
 
 /*
