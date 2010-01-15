@@ -141,14 +141,14 @@ _clutter_input_device_x11_construct (ClutterInputDevice *device,
   for (i = 0; i < x_device->num_classes; i++)
     {
       XInputClassInfo *xclass_info = x_device->classes + i;
-      int button_press, button_release, motion_notify;
+      int *button_press, *button_release, *motion_notify;
 
       button_press =
-        backend->event_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
+        &backend->event_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
       button_release =
-        backend->event_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
+        &backend->event_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
       motion_notify =
-        backend->event_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
+        &backend->event_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
 
       switch (xclass_info->input_class)
         {
@@ -169,19 +169,19 @@ _clutter_input_device_x11_construct (ClutterInputDevice *device,
 
         case ButtonClass:
           DeviceButtonPress (x_device,
-                             button_press,
+                             *button_press,
                              device_x11->xevent_list[n_events]);
           n_events++;
 
           DeviceButtonRelease (x_device,
-                               button_release,
+                               *button_release,
                                device_x11->xevent_list[n_events]);
           n_events++;
           break;
 
         case ValuatorClass:
           DeviceMotionNotify (x_device,
-                              motion_notify,
+                              *motion_notify,
                               device_x11->xevent_list[n_events]);
           n_events++;
           break;

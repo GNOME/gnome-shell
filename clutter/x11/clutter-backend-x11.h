@@ -76,6 +76,7 @@ struct _ClutterBackendX11
   Atom atom_NET_WM_NAME;
   Atom atom_UTF8_STRING;
 
+  int xi_event_base;
   int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
   gboolean have_xinput;
 

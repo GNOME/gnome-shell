@@ -99,12 +99,11 @@ static void
 clutter_x11_register_input_devices (ClutterBackendX11 *backend)
 {
   ClutterDeviceManager *manager;
-  gboolean have_an_xpointer = FALSE;
+  ClutterInputDevice *device;
 #ifdef HAVE_XINPUT
   XDeviceInfo *x_devices = NULL;
   int res, opcode, event, error;
   int i, n_devices;
-  GSList *devices = NULL;
 #endif /* HAVE_XINPUT */
 
   manager = clutter_device_manager_get_default ();
@@ -125,6 +124,8 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
       CLUTTER_NOTE (BACKEND, "No XInput extension available");
       goto default_device;
     }
+
+  backend->xi_event_base = event;
 
   x_devices = XListInputDevices (backend->xdpy, &n_devices);
   if (n_devices == 0)
@@ -149,14 +150,12 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
           info->use == IsXExtensionDevice)
         {
           ClutterInputDeviceType device_type;
-          ClutterInputDevice *device;
           gint n_events = 0;
 
           switch (info->use)
             {
             case IsXExtensionPointer:
               device_type = CLUTTER_POINTER_DEVICE;
-              have_an_xpointer = TRUE;
               break;
 
 #if 0
@@ -178,40 +177,14 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
                                  NULL);
           n_events = _clutter_input_device_x11_construct (device, backend);
 
-          if (info->use == IsXExtensionPointer && n_events > 0)
-            have_an_xpointer = TRUE;
+          _clutter_device_manager_add_device (manager, device);
 
-          /* add it to a temporary list; we don't add the device
-           * straight to the device manager because the XInput
-           * initialization might still fail
-           */
-          devices = g_slist_prepend (devices, device);
+          if (info->use == IsXExtensionPointer && n_events > 0)
+            backend->have_xinput = TRUE;
         }
     }
 
   XFree (x_devices);
-
-  devices = g_slist_reverse (devices);
-
-  if (have_an_xpointer)
-    {
-      GSList *l;
-
-      for (l = devices; l != NULL; l = l->next)
-        _clutter_device_manager_add_device (manager, l->data);
-
-      backend->have_xinput = TRUE;
-    }
-  else
-    {
-      g_warning ("No usable XInput pointer devices found");
-
-      g_slist_foreach (devices, (GFunc) g_object_unref, NULL);
-
-      backend->have_xinput = FALSE;
-    }
-
-  g_slist_free (devices);
 #endif /* HAVE_XINPUT */
 
 default_device:
@@ -220,35 +193,31 @@ default_device:
    *  - we do not have XInput support compiled in
    *  - we do not have XInput support enabled
    *  - we do not have the XInput extension
-   *  - we do not have a XInput pointer device
    *
    * we register two default devices, one for the pointer
-   * and one for the keyboard
+   * and one for the keyboard. this block must also be
+   * executed for the XInput support because XI does not
+   * cover core devices
    */
-  if (!have_an_xpointer)
-    {
-      ClutterInputDevice *d;
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
+                         "id", 0,
+                         "name", "Core Pointer",
+                         "device-type", CLUTTER_POINTER_DEVICE,
+                         "is-core", TRUE,
+                         NULL);
+  CLUTTER_NOTE (BACKEND, "Added core pointer device");
+  _clutter_device_manager_add_device (manager, device);
+  backend->core_pointer = device;
 
-      d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                        "id", 0,
-                        "name", "Core Pointer",
-                        "device-type", CLUTTER_POINTER_DEVICE,
-                        "is-core", TRUE,
-                        NULL);
-      CLUTTER_NOTE (BACKEND, "Added core pointer device %d", d->id);
-      _clutter_device_manager_add_device (manager, d);
-      backend->core_pointer = d;
-
-      d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                        "id", 1,
-                        "name", "Core Keyboard",
-                        "device-type", CLUTTER_KEYBOARD_DEVICE,
-                        "is-core", TRUE,
-                        NULL);
-      CLUTTER_NOTE (BACKEND, "Added core keyboard device %d", d->id);
-      _clutter_device_manager_add_device (manager, d);
-      backend->core_keyboard = d;
-    }
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
+                         "id", 1,
+                         "name", "Core Keyboard",
+                         "device-type", CLUTTER_KEYBOARD_DEVICE,
+                         "is-core", TRUE,
+                         NULL);
+  CLUTTER_NOTE (BACKEND, "Added core keyboard device");
+  _clutter_device_manager_add_device (manager, device);
+  backend->core_keyboard = device;
 }
 
 gboolean
