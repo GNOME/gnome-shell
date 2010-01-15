@@ -1,7 +1,8 @@
 /* Clutter.
  * An OpenGL based 'interactive canvas' library.
- * Authored By Matthew Allum  <mallum@openedhand.com>
- * Copyright (C) 2006-2007 OpenedHand
+ *
+ * Copyright (C) 2006, 2007, 2008  OpenedHand Ltd
+ * Copyright (C) 2009, 2010  Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,6 +18,10 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authored by:
+ *      Matthew Allum <mallum@openedhand.com>
+ *      Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -670,64 +675,38 @@ event_translate (ClutterBackend *backend,
   /* Input device event handling.. */
   if (not_yet_handled)
     {
-      if (!clutter_x11_has_xinput ())
+      device = backend_x11->core_pointer;
+
+      /* Regular X event */
+      switch (xevent->type)
         {
-          device = backend_x11->core_pointer;
-
-          /* Regular X event */
-          switch (xevent->type)
+        case ButtonPress:
+          switch (xevent->xbutton.button)
             {
-            case ButtonPress:
-              switch (xevent->xbutton.button)
-                {
-                case 4: /* up */
-                case 5: /* down */
-                case 6: /* left */
-                case 7: /* right */
-                  event->scroll.type = event->type = CLUTTER_SCROLL;
-                  
-                  if (xevent->xbutton.button == 4)
-                    event->scroll.direction = CLUTTER_SCROLL_UP;
-                  else if (xevent->xbutton.button == 5)
-                    event->scroll.direction = CLUTTER_SCROLL_DOWN;
-                  else if (xevent->xbutton.button == 6)
-                    event->scroll.direction = CLUTTER_SCROLL_LEFT;
-                  else
-                    event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-                  
-                  event->scroll.time = xevent->xbutton.time;
-                  event->scroll.x = xevent->xbutton.x;
-                  event->scroll.y = xevent->xbutton.y;
-                  event->scroll.modifier_state = xevent->xbutton.state;
-                  event->scroll.device = device;
-                  break;
+            case 4: /* up */
+            case 5: /* down */
+            case 6: /* left */
+            case 7: /* right */
+              event->scroll.type = event->type = CLUTTER_SCROLL;
 
-                default:
-                  event->button.type = event->type = CLUTTER_BUTTON_PRESS;
-                  event->button.time = xevent->xbutton.time;
-                  event->button.x = xevent->xbutton.x;
-                  event->button.y = xevent->xbutton.y;
-                  event->button.modifier_state = xevent->xbutton.state;
-                  event->button.button = xevent->xbutton.button;
-                  event->button.device = device;
-                  break;
-                }
+              if (xevent->xbutton.button == 4)
+                event->scroll.direction = CLUTTER_SCROLL_UP;
+              else if (xevent->xbutton.button == 5)
+                event->scroll.direction = CLUTTER_SCROLL_DOWN;
+              else if (xevent->xbutton.button == 6)
+                event->scroll.direction = CLUTTER_SCROLL_LEFT;
+              else
+                event->scroll.direction = CLUTTER_SCROLL_RIGHT;
 
-              set_user_time (backend_x11, &xwindow, event->button.time);
+              event->scroll.time = xevent->xbutton.time;
+              event->scroll.x = xevent->xbutton.x;
+              event->scroll.y = xevent->xbutton.y;
+              event->scroll.modifier_state = xevent->xbutton.state;
+              event->scroll.device = device;
               break;
-              
-            case ButtonRelease:
-              /* scroll events don't have a corresponding release */
-              if (xevent->xbutton.button == 4 ||
-                  xevent->xbutton.button == 5 ||
-                  xevent->xbutton.button == 6 ||
-                  xevent->xbutton.button == 7)
-                {
-                  res = FALSE;
-                  break;
-                }
-              
-              event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+
+            default:
+              event->button.type = event->type = CLUTTER_BUTTON_PRESS;
               event->button.time = xevent->xbutton.time;
               event->button.x = xevent->xbutton.x;
               event->button.y = xevent->xbutton.y;
@@ -735,255 +714,225 @@ event_translate (ClutterBackend *backend,
               event->button.button = xevent->xbutton.button;
               event->button.device = device;
               break;
-              
-            case MotionNotify:
-              event->motion.type = event->type = CLUTTER_MOTION;
-              event->motion.time = xevent->xmotion.time;
-              event->motion.x = xevent->xmotion.x;
-              event->motion.y = xevent->xmotion.y;
-              event->motion.modifier_state = xevent->xmotion.state;
-              event->motion.device = device;
-              break;
+            }
 
-            case EnterNotify:
-              /* Convert enter notifies to motion events because X
-                 doesn't emit the corresponding motion notify */
-              event->motion.type = event->type = CLUTTER_MOTION;
-              event->motion.time = xevent->xcrossing.time;
-              event->motion.x = xevent->xcrossing.x;
-              event->motion.y = xevent->xcrossing.y;
-              event->motion.modifier_state = xevent->xcrossing.state;
-              event->motion.source = CLUTTER_ACTOR (stage);
-              event->motion.device = device;
+          set_user_time (backend_x11, &xwindow, event->button.time);
 
-              /* we know that we are entering the stage here */
-              _clutter_input_device_set_stage (device, stage);
-              CLUTTER_NOTE (EVENT, "Entering the stage");
-              break;
+          res = TRUE;
+          break;
 
-            case LeaveNotify:
-              if (device->stage == NULL)
-                {
-                  CLUTTER_NOTE (EVENT,
-                                "Discarding LeaveNotify for ButtonRelease "
-                                "event off-stage");
-                  res = FALSE;
-                  break;
-                }
+        case ButtonRelease:
+          /* scroll events don't have a corresponding release */
+          if (xevent->xbutton.button == 4 ||
+              xevent->xbutton.button == 5 ||
+              xevent->xbutton.button == 6 ||
+              xevent->xbutton.button == 7)
+            {
+              res = FALSE;
+              goto out;
+            }
 
-              event->crossing.type = event->type = CLUTTER_LEAVE;
-              event->crossing.time = xevent->xcrossing.time;
-              event->crossing.x = xevent->xcrossing.x;
-              event->crossing.y = xevent->xcrossing.y;
-              event->crossing.source = CLUTTER_ACTOR (stage);
-              event->crossing.device = device;
+          event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+          event->button.time = xevent->xbutton.time;
+          event->button.x = xevent->xbutton.x;
+          event->button.y = xevent->xbutton.y;
+          event->button.modifier_state = xevent->xbutton.state;
+          event->button.button = xevent->xbutton.button;
+          event->button.device = device;
 
-              /* we know that we are leaving the stage here */
-              _clutter_input_device_set_stage (device, NULL);
-              CLUTTER_NOTE (EVENT, "Leaving the stage (time:%u)",
-                            event->crossing.time);
+          res = TRUE;
+          break;
+
+        case MotionNotify:
+          event->motion.type = event->type = CLUTTER_MOTION;
+          event->motion.time = xevent->xmotion.time;
+          event->motion.x = xevent->xmotion.x;
+          event->motion.y = xevent->xmotion.y;
+          event->motion.modifier_state = xevent->xmotion.state;
+          event->motion.device = device;
+
+          res = TRUE;
+          break;
+
+        case EnterNotify:
+          /* we know that we are entering the stage here */
+          _clutter_input_device_set_stage (device, stage);
+          CLUTTER_NOTE (EVENT, "Entering the stage");
+
+          /* Convert enter notifies to motion events because X
+             doesn't emit the corresponding motion notify */
+          event->motion.type = event->type = CLUTTER_MOTION;
+          event->motion.time = xevent->xcrossing.time;
+          event->motion.x = xevent->xcrossing.x;
+          event->motion.y = xevent->xcrossing.y;
+          event->motion.modifier_state = xevent->xcrossing.state;
+          event->motion.source = CLUTTER_ACTOR (stage);
+          event->motion.device = device;
+
+          res = TRUE;
+          break;
+
+        case LeaveNotify:
+          if (device->stage == NULL)
+            {
+              CLUTTER_NOTE (EVENT,
+                            "Discarding LeaveNotify for ButtonRelease "
+                            "event off-stage");
+              res = FALSE;
+              goto out;
+            }
+
+          /* we know that we are leaving the stage here */
+          _clutter_input_device_set_stage (device, NULL);
+          CLUTTER_NOTE (EVENT, "Leaving the stage (time:%u)",
+                        event->crossing.time);
+
+          event->crossing.type = event->type = CLUTTER_LEAVE;
+          event->crossing.time = xevent->xcrossing.time;
+          event->crossing.x = xevent->xcrossing.x;
+          event->crossing.y = xevent->xcrossing.y;
+          event->crossing.source = CLUTTER_ACTOR (stage);
+          event->crossing.device = device;
+          res = TRUE;
+          break;
+
+        default:
+          res = FALSE;
+          break;
+        }
+    }
+
+    /* XInput fun...*/
+  if (!res && clutter_x11_has_xinput ())
+    {
+#ifdef HAVE_XINPUT
+      int *ev_types = backend_x11->event_types;
+      int button_press, button_release;
+      int motion_notify;
+
+      button_press   = ev_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
+      button_release = ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
+      motion_notify  = ev_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
+
+      CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
+
+      if (xevent->type == button_press)
+        {
+          XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
+
+          device = _clutter_x11_get_device_for_xid (xbev->deviceid);
+          _clutter_input_device_set_stage (device, stage);
+
+          CLUTTER_NOTE (EVENT,
+                        "XI ButtonPress for %li ('%s') at %d, %d",
+                        xbev->deviceid,
+                        device->device_name,
+                        xbev->x,
+                        xbev->y);
+
+          switch (xbev->button)
+            {
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+              event->scroll.type = event->type = CLUTTER_SCROLL;
+
+              if (xbev->button == 4)
+                event->scroll.direction = CLUTTER_SCROLL_UP;
+              else if (xbev->button == 5)
+                event->scroll.direction = CLUTTER_SCROLL_DOWN;
+              else if (xbev->button == 6)
+                event->scroll.direction = CLUTTER_SCROLL_LEFT;
+              else
+                event->scroll.direction = CLUTTER_SCROLL_RIGHT;
+
+              event->scroll.time = xbev->time;
+              event->scroll.x = xbev->x;
+              event->scroll.y = xbev->y;
+              event->scroll.modifier_state = xbev->state;
+              event->scroll.device = device;
               break;
 
             default:
-              /* ignore every other event */
-              res = FALSE;
-              break;
-            }
-        }
-      else
-        {  /* XInput fun.. Needs clean up. */
-#ifdef HAVE_XINPUT
-          int *ev_types = backend_x11->event_types;
-          int button_press, button_release;
-          int motion_notify;
-
-          button_press   = ev_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
-          button_release = ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
-          motion_notify  = ev_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
-
-          CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
-
-          if (xevent->type == EnterNotify)
-            {
-              device = backend_x11->core_pointer;
-
-              /* Convert enter notifies to motion events because X
-                 doesn't emit the corresponding motion notify */
-              event->motion.type = event->type = CLUTTER_MOTION;
-              event->motion.time = xevent->xcrossing.time;
-              event->motion.x = xevent->xcrossing.x;
-              event->motion.y = xevent->xcrossing.y;
-              event->motion.modifier_state = xevent->xcrossing.state;
-              event->motion.source = CLUTTER_ACTOR (stage);
-              event->motion.device = device;
-
-              /* we know that we are entering the stage here */
-              _clutter_input_device_set_stage (device, stage);
-              CLUTTER_NOTE (EVENT, "Entering the stage");
-            }
-          else if (xevent->type == LeaveNotify)
-            {
-              device = backend_x11->core_pointer;
-
-              if (device->stage == NULL)
-                {
-                  CLUTTER_NOTE (EVENT,
-                                "Discarding LeaveNotify for ButtonRelease "
-                                "event off-stage");
-                  return FALSE;
-                }
-
-              event->crossing.type = event->type = CLUTTER_LEAVE;
-              event->crossing.time = xevent->xcrossing.time;
-              event->crossing.x = xevent->xcrossing.x;
-              event->crossing.y = xevent->xcrossing.y;
-              event->crossing.source = CLUTTER_ACTOR (stage);
-              event->crossing.device = device;
-
-              /* we know that we are leaving the stage here */
-              _clutter_input_device_set_stage (device, NULL);
-              CLUTTER_NOTE (EVENT, "Leaving the stage (time:%u)",
-                            event->crossing.time);
-            }
-          else if (xevent->type == button_press)
-            {
-              XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
-
-              device = _clutter_x11_get_device_for_xid (xbev->deviceid);
-              _clutter_input_device_set_stage (device, stage);
-
-              CLUTTER_NOTE (EVENT,
-                            "XI ButtonPress for %li ('%s') at %d, %d",
-                            xbev->deviceid,
-                            device->device_name,
-                            xbev->x,
-                            xbev->y);
-
-              switch (xbev->button)
-                {
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                  event->scroll.type = event->type = CLUTTER_SCROLL;
-                  
-                  if (xbev->button == 4)
-                    event->scroll.direction = CLUTTER_SCROLL_UP;
-                  else if (xbev->button == 5)
-                    event->scroll.direction = CLUTTER_SCROLL_DOWN;
-                  else if (xbev->button == 6)
-                    event->scroll.direction = CLUTTER_SCROLL_LEFT;
-                  else
-                    event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-                  
-                  event->scroll.time = xbev->time;
-                  event->scroll.x = xbev->x;
-                  event->scroll.y = xbev->y;
-                  event->scroll.modifier_state = xbev->state;
-                  event->scroll.device = device;
-                  break;
-
-                default:
-                  event->button.type = event->type = CLUTTER_BUTTON_PRESS;
-                  event->button.time = xbev->time;
-                  event->button.x = xbev->x;
-                  event->button.y = xbev->y;
-                  event->button.modifier_state = xbev->state;
-                  event->button.button = xbev->button;
-                  event->button.device = device;
-                  break;
-                }
-
-              set_user_time (backend_x11, &xwindow, xbev->time);
-            } 
-          else if (xevent->type == button_release)
-            {
-              XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
-
-              device = _clutter_x11_get_device_for_xid (xbev->deviceid);
-              _clutter_input_device_set_stage (device, stage);
-
-              CLUTTER_NOTE (EVENT, "XI ButtonRelease for %li ('%s') at %d, %d",
-                            xbev->deviceid,
-                            device->device_name,
-                            xbev->x,
-                            xbev->y);
-
-              /* scroll events don't have a corresponding release */
-              if (xbev->button == 4 ||
-                  xbev->button == 5 ||
-                  xbev->button == 6 ||
-                  xbev->button == 7)
-                {
-                  return FALSE;
-                }
-
-              event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+              event->button.type = event->type = CLUTTER_BUTTON_PRESS;
               event->button.time = xbev->time;
               event->button.x = xbev->x;
               event->button.y = xbev->y;
               event->button.modifier_state = xbev->state;
               event->button.button = xbev->button;
               event->button.device = device;
-            } 
-          else if (xevent->type == motion_notify)
-            {
-              XDeviceMotionEvent *xmev = (XDeviceMotionEvent *)xevent;
-
-              device = _clutter_x11_get_device_for_xid (xmev->deviceid);
-              _clutter_input_device_set_stage (device, stage);
-
-              CLUTTER_NOTE(EVENT, "XI Motion for %li ('%s') at %d, %d",
-                           xmev->deviceid,
-                           device->device_name,
-                           xmev->x,
-                           xmev->y);
-
-              event->motion.type = event->type = CLUTTER_MOTION;
-              event->motion.time = xmev->time;
-              event->motion.x = xmev->x;
-              event->motion.y = xmev->y;
-              event->motion.modifier_state = xmev->state;
-              event->motion.device = device;
-            } 
-#if 0
-        /* the Xinput handling of key presses/releases disabled for now since
-         * it makes keyrepeat, and key presses and releases outside the window
-         * not generate events even when the window has focus
-         */
-
-          else if (xevent->type == ev_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT])
-            {
-              XEvent xevent_converted;
-              XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;
-              
-              convert_xdevicekey_to_xkey (xkev, &xevent_converted);
-
-              event->key.type = event->type = CLUTTER_KEY_PRESS;
-              translate_key_event (backend, event, &xevent_converted);
-
-              set_user_time (backend_x11, &xwindow, xkev->time);
-            } 
-          else if (xevent->type == ev_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT])
-            {
-              XEvent xevent_converted;
-              XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;
-              
-              convert_xdevicekey_to_xkey (xkev, &xevent_converted);
-
-              event->key.type = event->type = CLUTTER_KEY_RELEASE;
-              translate_key_event (backend, event, &xevent_converted);
+              break;
             }
-#endif
-          else 
-#endif /* HAVE_XINPUT */
+
+          set_user_time (backend_x11, &xwindow, xbev->time);
+
+          res = TRUE;
+        }
+      else if (xevent->type == button_release)
+        {
+          XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
+
+          device = _clutter_x11_get_device_for_xid (xbev->deviceid);
+          _clutter_input_device_set_stage (device, stage);
+
+          CLUTTER_NOTE (EVENT, "XI ButtonRelease for %li ('%s') at %d, %d",
+                        xbev->deviceid,
+                        device->device_name,
+                        xbev->x,
+                        xbev->y);
+
+          /* scroll events don't have a corresponding release */
+          if (xbev->button == 4 ||
+              xbev->button == 5 ||
+              xbev->button == 6 ||
+              xbev->button == 7)
             {
-              CLUTTER_NOTE (EVENT, "Uknown Event");
               res = FALSE;
+              goto out;
             }
+
+          event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+          event->button.time = xbev->time;
+          event->button.x = xbev->x;
+          event->button.y = xbev->y;
+          event->button.modifier_state = xbev->state;
+          event->button.button = xbev->button;
+          event->button.device = device;
+
+          res = TRUE;
+        }
+      else if (xevent->type == motion_notify)
+        {
+          XDeviceMotionEvent *xmev = (XDeviceMotionEvent *)xevent;
+
+          device = _clutter_x11_get_device_for_xid (xmev->deviceid);
+          _clutter_input_device_set_stage (device, stage);
+
+          CLUTTER_NOTE (EVENT, "XI Motion for %li ('%s') at %d, %d",
+                        xmev->deviceid,
+                        device->device_name,
+                        xmev->x,
+                        xmev->y);
+
+          event->motion.type = event->type = CLUTTER_MOTION;
+          event->motion.time = xmev->time;
+          event->motion.x = xmev->x;
+          event->motion.y = xmev->y;
+          event->motion.modifier_state = xmev->state;
+          event->motion.device = device;
+
+          res = TRUE;
+        }
+      else
+#endif /* HAVE_XINPUT */
+        {
+          CLUTTER_NOTE (EVENT, "Uknown Event");
+          res = FALSE;
         }
     }
 
+out:
   return res;
 }
 
