@@ -22,11 +22,16 @@
  */
 
 /**
- * SECTION:clutter-device-manager:
+ * SECTION:clutter-device-manager
  * @short_description: Maintains the list of input devices
  *
  * #ClutterDeviceManager is a singleton object, owned by Clutter, which
  * maintains the list of #ClutterInputDevice<!-- -->s.
+ *
+ * Depending on the backend used by Clutter it is possible to use the
+ * #ClutterDeviceManager::device-added and
+ * #ClutterDeviceManager::device-removed to monitor addition and removal
+ * of devices.
  *
  * #ClutterDeviceManager is available since Clutter 1.2
  */
