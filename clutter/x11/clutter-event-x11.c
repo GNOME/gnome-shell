@@ -810,8 +810,9 @@ event_translate (ClutterBackend *backend,
               device = _clutter_x11_get_device_for_xid (xbev->deviceid);
 
               CLUTTER_NOTE (EVENT,
-                            "XINPUT Button press event for %li at %d, %d",
+                            "XI ButtonPress for %li ('%s') at %d, %d",
                             xbev->deviceid,
+                            device->device_name,
                             xbev->x,
                             xbev->y);
 
@@ -858,8 +859,9 @@ event_translate (ClutterBackend *backend,
 
               device = _clutter_x11_get_device_for_xid (xbev->deviceid);
 
-              CLUTTER_NOTE (EVENT, "XINPUT Button release event for %li at %d, %d",
+              CLUTTER_NOTE (EVENT, "XI ButtonRelease for %li ('%s') at %d, %d",
                             xbev->deviceid,
+                            device->device_name,
                             xbev->x,
                             xbev->y);
 
@@ -886,8 +888,9 @@ event_translate (ClutterBackend *backend,
 
               device = _clutter_x11_get_device_for_xid (xmev->deviceid);
 
-              CLUTTER_NOTE(EVENT, "XINPUT Motion event for %li at %d, %d",
+              CLUTTER_NOTE(EVENT, "XI Motion for %li ('%s') at %d, %d",
                            xmev->deviceid,
+                           device->device_name,
                            xmev->x,
                            xmev->y);
 

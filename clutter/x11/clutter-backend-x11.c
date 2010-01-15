@@ -174,6 +174,7 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
           device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                                  "id", info->id,
                                  "device-type", device_type,
+                                 "name", info->name,
                                  NULL);
           n_events = _clutter_input_device_x11_construct (device, backend);
 
@@ -226,7 +227,7 @@ default_device:
    *  - we do not have the XInput extension
    *  - we do not have a XInput pointer device
    *
-   * we register two default devices, one for the pointer
+   * we register two default core devices, one for the pointer
    * and one for the keyboard
    */
   if (!have_an_xpointer)
@@ -235,6 +236,7 @@ default_device:
 
       d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                         "id", 0,
+                        "name", "Core Pointer",
                         "device-type", CLUTTER_POINTER_DEVICE,
                         "is-core", TRUE,
                         NULL);
@@ -245,6 +247,7 @@ default_device:
 
       d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                         "id", 1,
+                        "name", "Core Keyboard",
                         "device-type", CLUTTER_KEYBOARD_DEVICE,
                         "is-core", TRUE,
                         NULL);
