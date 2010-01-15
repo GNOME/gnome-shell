@@ -21,17 +21,34 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __COGL_DEFINES_H__
-#define __COGL_DEFINES_H__
+#ifndef __COGL_PROFILE_H__
+#define __COGL_PROFILE_H__
 
-#include <glib.h>
-#include <@CLUTTER_GL_HEADER@>
 
-G_BEGIN_DECLS
+#ifdef COGL_ENABLE_PROFILE
 
-#define CLUTTER_COGL_HAS_GL 1
-#define COGL_HAS_GL 1
+#include <uprof.h>
 
-G_END_DECLS
+extern UProfContext *_cogl_uprof_context;
+
+#define COGL_STATIC_TIMER    UPROF_STATIC_TIMER
+#define COGL_STATIC_COUNTER  UPROF_STATIC_COUNTER
+#define COGL_COUNTER_INC     UPROF_COUNTER_INC
+#define COGL_COUNTER_DEC     UPROF_COUNTER_DEC
+#define COGL_TIMER_START     UPROF_TIMER_START
+#define COGL_TIMER_STOP      UPROF_TIMER_STOP
+
+#else
+
+#define COGL_STATIC_TIMER(A,B,C,D,E) extern void _cogl_dummy_decl (void)
+#define COGL_STATIC_COUNTER(A,B,C,D) extern void _cogl_dummy_decl (void)
+#define COGL_COUNTER_INC(A,B) G_STMT_START{ (void)0; }G_STMT_END
+#define COGL_COUNTER_DEC(A,B) G_STMT_START{ (void)0; }G_STMT_END
+#define COGL_TIMER_START(A,B) G_STMT_START{ (void)0; }G_STMT_END
+#define COGL_TIMER_STOP(A,B) G_STMT_START{ (void)0; }G_STMT_END
+
 
 #endif
+
+#endif /* __COGL_PROFILE_H__ */
+

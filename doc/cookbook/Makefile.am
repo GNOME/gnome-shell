@@ -4,7 +4,7 @@ TARGET_DIR = $(HTML_DIR)/clutter-cookbook
 HTML_FILES = $(srcdir)/html/*.html
 IMAGE_FILES = $(srcdir)/images/*.png
 
-EXTRA_DIST = $(IMAGE_FILES) clutter-cookbook.xml.in
+EXTRA_DIST = clutter-cookbook.xml.in
 
 CLEANFILES = \
 	pdf-build.stamp \

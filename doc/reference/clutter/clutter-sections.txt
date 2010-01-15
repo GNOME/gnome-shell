@@ -9,6 +9,10 @@ clutter_media_set_playing
 clutter_media_get_playing
 clutter_media_set_progress
 clutter_media_get_progress
+clutter_media_set_subtitle_uri
+clutter_media_get_subtitle_uri
+clutter_media_set_subtitle_font_name
+clutter_media_get_subtitle_font_name
 clutter_media_set_audio_volume
 clutter_media_get_audio_volume
 clutter_media_get_can_seek
@@ -352,6 +356,8 @@ clutter_actor_lower
 clutter_actor_raise_top
 clutter_actor_lower_bottom
 clutter_actor_get_stage
+clutter_actor_push_internal
+clutter_actor_pop_internal
 
 <SUBSECTION>
 clutter_actor_set_depth
@@ -414,6 +420,8 @@ clutter_actor_box_get_size
 clutter_actor_box_get_area
 clutter_actor_box_contains
 clutter_actor_box_from_vertices
+clutter_actor_box_clamp_to_pixel
+clutter_actor_box_interpolate
 
 <SUBSECTION>
 ClutterVertex
@@ -522,6 +530,8 @@ clutter_stage_get_key_focus
 clutter_stage_read_pixels
 clutter_stage_set_throttle_motion_events
 clutter_stage_get_throttle_motion_events
+clutter_stage_set_use_alpha
+clutter_stage_get_use_alpha
 
 <SUBSECTION>
 ClutterPerspective
@@ -977,6 +987,7 @@ clutter_input_device_get_device_type
 
 <SUBSECTION>
 clutter_get_current_event_time
+clutter_get_current_event
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
@@ -1017,7 +1028,6 @@ clutter_set_font_flags
 clutter_get_font_flags
 clutter_get_font_map
 ClutterTextDirection
-clutter_set_default_text_direction
 clutter_get_default_text_direction
 
 <SUBSECTION>
@@ -1073,6 +1083,9 @@ clutter_x11_trap_x_errors
 clutter_x11_untrap_x_errors
 clutter_x11_has_composite_extension
 clutter_x11_get_current_event_time
+clutter_x11_set_use_argb_visual
+clutter_x11_get_use_argb_visual
+clutter_x11_get_visual_info
 
 <SUBSECTION>
 ClutterX11FilterFunc
@@ -1767,6 +1780,11 @@ clutter_layout_manager_child_get_property
 clutter_layout_manager_find_child_property
 clutter_layout_manager_list_child_properties
 
+<SUBSECTION>
+clutter_layout_manager_begin_animation
+clutter_layout_manager_end_animation
+clutter_layout_manager_get_animation_progress
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_LAYOUT_MANAGER
 CLUTTER_LAYOUT_MANAGER
@@ -1836,6 +1854,9 @@ clutter_box_get_color
 <SUBSECTION>
 clutter_box_pack
 clutter_box_packv
+clutter_box_pack_after
+clutter_box_pack_before
+clutter_box_pack_at
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX
@@ -1927,6 +1948,14 @@ clutter_box_layout_set_expand
 clutter_box_layout_get_expand
 clutter_box_layout_set_fill
 clutter_box_layout_get_fill
+
+<SUBSECTION>
+clutter_box_layout_set_use_animations
+clutter_box_layout_get_use_animations
+clutter_box_layout_set_easing_duration
+clutter_box_layout_get_easing_duration
+clutter_box_layout_set_easing_mode
+clutter_box_layout_get_easing_mode
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX_LAYOUT

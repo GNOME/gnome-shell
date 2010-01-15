@@ -48,3 +48,6 @@ MAINTAINERCLEANFILES = 	\
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.changelog
+
+gcov:
+	@( cd clutter && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?

@@ -71,6 +71,21 @@
 #ifndef GL_STENCIL_INDEX8
 #define GL_STENCIL_INDEX8       0x8D48
 #endif
+#ifndef GL_DEPTH_STENCIL
+#define GL_DEPTH_STENCIL        0x84F9
+#endif
+#ifndef GL_DEPTH_ATTACHMENT
+#define GL_DEPTH_ATTACHMENT     0x8D00
+#endif
+#ifndef GL_DEPTH_COMPONENT16
+#define GL_DEPTH_COMPONENT16    0x81A5
+#endif
+
+typedef enum {
+  _TRY_DEPTH_STENCIL = 1L<<0,
+  _TRY_DEPTH         = 1L<<1,
+  _TRY_STENCIL       = 1L<<2
+} TryFBOFlags;
 
 static void _cogl_framebuffer_free (CoglFramebuffer *framebuffer);
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
@@ -232,17 +247,123 @@ _cogl_framebuffer_get_projection_stack (CoglHandle handle)
   return framebuffer->projection_stack;
 }
 
+static gboolean
+try_creating_fbo (CoglOffscreen *offscreen,
+                  TryFBOFlags flags,
+                  CoglHandle texture)
+{
+  GLuint gl_depth_stencil_handle;
+  GLuint gl_depth_handle;
+  GLuint gl_stencil_handle;
+  GLuint tex_gl_handle;
+  GLenum tex_gl_target;
+  GLuint fbo_gl_handle;
+  GLenum status;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!cogl_texture_get_gl_texture (texture, &tex_gl_handle, &tex_gl_target))
+    return FALSE;
+
+  if (tex_gl_target != GL_TEXTURE_2D
+#ifdef HAVE_COGL_GL
+      && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
+#endif
+      )
+    return FALSE;
+
+  /* We are about to generate and bind a new fbo, so when next flushing the
+   * journal, we will need to rebind the current framebuffer... */
+  ctx->dirty_bound_framebuffer = 1;
+
+  /* Generate framebuffer */
+  glGenFramebuffers (1, &fbo_gl_handle);
+  GE (glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle));
+  offscreen->fbo_handle = fbo_gl_handle;
+
+  GE (glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			      tex_gl_target, tex_gl_handle, 0));
+
+  if (flags & _TRY_DEPTH_STENCIL)
+    {
+      /* Create a renderbuffer for depth and stenciling */
+      GE (glGenRenderbuffers (1, &gl_depth_stencil_handle));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_stencil_handle));
+      GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+                                 cogl_texture_get_width (texture),
+                                 cogl_texture_get_height (texture)));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                     GL_STENCIL_ATTACHMENT,
+                                     GL_RENDERBUFFER, gl_depth_stencil_handle));
+      GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                     GL_DEPTH_ATTACHMENT,
+                                     GL_RENDERBUFFER, gl_depth_stencil_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_depth_stencil_handle));
+    }
+
+  if (flags & _TRY_DEPTH)
+    {
+      GE (glGenRenderbuffers (1, &gl_depth_handle));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_handle));
+      /* For now we just ask for GL_DEPTH_COMPONENT16 since this is all that's
+       * available under GLES */
+      GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
+                                 cogl_texture_get_width (texture),
+                                 cogl_texture_get_height (texture)));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                     GL_DEPTH_ATTACHMENT,
+                                     GL_RENDERBUFFER, gl_depth_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_depth_handle));
+    }
+
+  if (flags & _TRY_STENCIL)
+    {
+      GE (glGenRenderbuffers (1, &gl_stencil_handle));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle));
+      GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
+                                 cogl_texture_get_width (texture),
+                                 cogl_texture_get_height (texture)));
+      GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                     GL_STENCIL_ATTACHMENT,
+                                     GL_RENDERBUFFER, gl_stencil_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_stencil_handle));
+    }
+
+  /* Make sure it's complete */
+  status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+      GSList *l;
+
+      GE (glDeleteFramebuffers (1, &fbo_gl_handle));
+
+      for (l = offscreen->renderbuffers; l; l = l->next)
+        {
+          GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
+          GE (glDeleteRenderbuffers (1, &renderbuffer));
+        }
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
 {
-  CoglOffscreen    *offscreen;
-  int               width;
-  int               height;
-  GLuint            tex_gl_handle;
-  GLenum            tex_gl_target;
-  GLuint            fbo_gl_handle;
-  GLuint            gl_stencil_handle;
-  GLenum            status;
+  CoglOffscreen      *offscreen;
+  static TryFBOFlags  flags;
+  static gboolean     have_working_flags = FALSE;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -257,42 +378,6 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   if (cogl_texture_is_sliced (texhandle))
     return COGL_INVALID_HANDLE;
 
-  /* Pick the single texture slice width, height and GL id */
-
-  width = cogl_texture_get_width (texhandle);
-  height = cogl_texture_get_height (texhandle);
-
-  if (!cogl_texture_get_gl_texture (texhandle, &tex_gl_handle, &tex_gl_target))
-    return COGL_INVALID_HANDLE;
-
-  if (tex_gl_target != GL_TEXTURE_2D
-#ifdef HAVE_COGL_GL
-      && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
-#endif
-      )
-    return COGL_INVALID_HANDLE;
-
-  /* Create a renderbuffer for stenciling */
-  GE (glGenRenderbuffers (1, &gl_stencil_handle));
-  GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle));
-  GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
-			     cogl_texture_get_width (texhandle),
-			     cogl_texture_get_height (texhandle)));
-  GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
-
-  /* We are about to generate and bind a new fbo, so when next flushing the
-   * journal, we will need to rebind the current framebuffer... */
-  ctx->dirty_bound_framebuffer = 1;
-
-  /* Generate framebuffer */
-  glGenFramebuffers (1, &fbo_gl_handle);
-  GE (glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle));
-  GE (glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			      tex_gl_target, tex_gl_handle, 0));
-  GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-				 GL_STENCIL_ATTACHMENT,
-				 GL_RENDERBUFFER, gl_stencil_handle));
-
   /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
    * a texture as a renderbuffer with mipmap filtering enabled while the
    * mipmaps have not been uploaded should result in an incomplete framebuffer
@@ -305,64 +390,60 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
    */
   _cogl_texture_set_filters (texhandle, GL_NEAREST, GL_NEAREST);
 
-  /* Make sure it's complete */
-  status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
+  offscreen = g_new0 (CoglOffscreen, 1);
+  offscreen->texture = cogl_handle_ref (texhandle);
 
-  if (status != GL_FRAMEBUFFER_COMPLETE)
+  if ((have_working_flags &&
+       try_creating_fbo (offscreen, flags, texhandle)) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
+                        texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_STENCIL, texhandle) ||
+      try_creating_fbo (offscreen, flags = _TRY_DEPTH, texhandle) ||
+      try_creating_fbo (offscreen, flags = 0, texhandle))
     {
-      /* Stencil renderbuffers aren't always supported. Try again
-	 without the stencil buffer */
-      GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-				     GL_STENCIL_ATTACHMENT,
-				     GL_RENDERBUFFER,
-				     0));
-      GE (glDeleteRenderbuffers (1, &gl_stencil_handle));
-      gl_stencil_handle = 0;
+      /* Record that the last set of flags succeeded so that we can
+         try that set first next time */
+      have_working_flags = TRUE;
 
-      status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
+      _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
+                              COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
+                              cogl_texture_get_width (texhandle),
+                              cogl_texture_get_height (texhandle));
 
-      if (status != GL_FRAMEBUFFER_COMPLETE)
-	{
-	  /* Still failing, so give up */
-	  GE (glDeleteFramebuffers (1, &fbo_gl_handle));
-	  GE (glBindFramebuffer (GL_FRAMEBUFFER, 0));
-	  return COGL_INVALID_HANDLE;
-	}
+      return _cogl_offscreen_handle_new (offscreen);
     }
-
-  offscreen                     = g_new0 (CoglOffscreen, 1);
-
-  _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
-                          COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                          width,
-                          height);
-
-  offscreen->fbo_handle         = fbo_gl_handle;
-  offscreen->gl_stencil_handle  = gl_stencil_handle;
-
-  /* XXX: Can we get a away with removing this? It wasn't documented, and most
-   * users of the API are hopefully setting up the modelview from scratch
-   * anyway */
-#if 0
-  cogl_matrix_translate (&framebuffer->modelview, -1.0f, -1.0f, 0.0f);
-  cogl_matrix_scale (&framebuffer->modelview,
-                     2.0f / framebuffer->width, 2.0f / framebuffer->height, 1.0f);
-#endif
-
-  return _cogl_offscreen_handle_new (offscreen);
+  else
+    {
+      g_free (offscreen);
+      /* XXX: This API should probably have been defined to take a GError */
+      g_warning ("%s: Failed to create an OpenGL framebuffer", G_STRLOC);
+      return COGL_INVALID_HANDLE;
+    }
 }
 
 static void
 _cogl_offscreen_free (CoglOffscreen *offscreen)
 {
+  GSList *l;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Chain up to parent */
   _cogl_framebuffer_free (COGL_FRAMEBUFFER (offscreen));
 
-  if (offscreen->gl_stencil_handle)
-    GE (glDeleteRenderbuffers (1, &offscreen->gl_stencil_handle));
+  for (l = offscreen->renderbuffers; l; l = l->next)
+    {
+      GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
+      GE (glDeleteRenderbuffers (1, &renderbuffer));
+    }
+  g_slist_free (offscreen->renderbuffers);
+
   GE (glDeleteFramebuffers (1, &offscreen->fbo_handle));
+
+  if (offscreen->texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (offscreen->texture);
+
   g_free (offscreen);
 }
 

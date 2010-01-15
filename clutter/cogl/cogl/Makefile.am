@@ -34,6 +34,17 @@ INCLUDES = \
 	-I$(top_builddir)/clutter/cogl          \
 	$(NULL)
 
+AM_CPPFLAGS = \
+	-DG_DISABLE_SINGLE_INCLUDES 		\
+	-DG_DISABLE_DEPRECATED			\
+	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" 	\
+	-DCLUTTER_COMPILATION			\
+	$(COGL_DEBUG_CFLAGS) 			\
+	$(CLUTTER_DEBUG_CFLAGS) 		\
+	$(NULL)
+
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+
 cogl-defines.h: $(top_builddir)/clutter/cogl/cogl/driver/gl/cogl-defines.h $(top_builddir)/clutter/cogl/cogl/driver/gles/cogl-defines.h
 	$(QUIET_GEN)cp -f $(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/cogl-defines.h $(@F)
 
@@ -68,28 +79,7 @@ cogl_winsys_sources = \
 	$(srcdir)/winsys/cogl-win32.c		\
 	$(NULL)
 
-# glib-mkenums rules
-glib_enum_h = cogl-enum-types.h
-glib_enum_c = cogl-enum-types.c
-glib_enum_headers = $(cogl_public_h)
-include $(top_srcdir)/build/autotools/Makefile.am.enums
-
-noinst_LTLIBRARIES = libclutter-cogl.la
-libclutter_cogl_la_CPPFLAGS = 		\
-	$(COGL_DEBUG_CFLAGS) 		\
-	$(CLUTTER_DEBUG_CFLAGS) 	\
-	$(MAINTAINER_CFLAGS)		\
-	-DG_DISABLE_SINGLE_INCLUDES 	\
-	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" \
-	-DCLUTTER_COMPILATION
-
-libclutter_cogl_la_CFLAGS = $(CLUTTER_CFLAGS)
-
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) \
-	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
-
-libclutter_cogl_la_SOURCES = 				\
-	$(BUILT_SOURCES)				\
+cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys.h			\
 	$(srcdir)/winsys/cogl-@COGL_WINSYS@.c		\
 	$(srcdir)/cogl-handle.h 			\
@@ -143,7 +133,21 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-framebuffer.c 			\
 	$(srcdir)/cogl-matrix-mesa.h 			\
 	$(srcdir)/cogl-matrix-mesa.c 			\
+	$(srcdir)/cogl-profile.h 			\
+	$(srcdir)/cogl-profile.c 			\
 	$(NULL)
+
+# glib-mkenums rules
+glib_enum_h = cogl-enum-types.h
+glib_enum_c = cogl-enum-types.c
+glib_enum_headers = $(cogl_public_h)
+include $(top_srcdir)/build/autotools/Makefile.am.enums
+
+noinst_LTLIBRARIES = libclutter-cogl.la
+
+libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
+
+libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
 
 EXTRA_DIST += $(cogl_winsys_sources)
 EXTRA_DIST += stb_image.c
@@ -163,11 +167,8 @@ if HAVE_INTROSPECTION
 Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Cogl --nsversion=@CLUTTER_API_VERSION@ \
-		-I$(srcdir) \
-		-I$(srcdir)/.. \
-		-I$(srcdir)/winsys \
-		-I$(srcdir)/driver/@COGL_DRIVER@ \
-		-DCLUTTER_COMPILATION \
+		$(INCLUDES) \
+		$(AM_CPPFLAGS) \
 		--c-include='cogl/cogl.h' \
 		--include=GL-1.0 \
 		--include=GObject-2.0 \
@@ -184,4 +185,3 @@ gir_DATA = $(BUILT_GIRSOURCES)
 
 CLEANFILES += $(BUILT_GIRSOURCES)
 endif
-

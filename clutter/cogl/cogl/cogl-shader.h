@@ -29,6 +29,7 @@
 #define __COGL_SHADER_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-defines.h>
 
 G_BEGIN_DECLS
 
@@ -58,7 +59,7 @@ typedef enum {
 
 /**
  * cogl_create_shader:
- * @shader_type: CGL_VERTEX_SHADER or CGL_FRAGMENT_SHADER.
+ * @shader_type: COGL_SHADER_TYPE_VERTEX or COGL_SHADER_TYPE_FRAGMENT.
  *
  * Create a new shader handle, use #cogl_shader_source to set the source code
  * to be used on it.
@@ -265,22 +266,22 @@ void            cogl_program_uniform_1i       (int              uniform_no,
  * @uniform_no: the uniform to set.
  * @size: Size of float vector.
  * @count: Size of array of uniforms.
- * @value: the new value of the uniform.
+ * @value: (array length=count): the new value of the uniform.
  *
  * Changes the value of a float vector uniform, or uniform array in the
- * currently used (see #cogl_program_use) shader program.
+ * currently used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_float    (int               uniform_no,
-                                               int               size,
-                                               int               count,
-                                               const GLfloat    *value);
+void            cogl_program_uniform_float    (int            uniform_no,
+                                               int            size,
+                                               int            count,
+                                               const GLfloat *value);
 
 /**
  * cogl_program_uniform_int:
  * @uniform_no: the uniform to set.
  * @size: Size of int vector.
  * @count: Size of array of uniforms.
- * @value: the new value of the uniform.
+ * @value: (array length=count): the new value of the uniform.
  *
  * Changes the value of a int vector uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program.
@@ -296,7 +297,7 @@ void            cogl_program_uniform_int      (int           uniform_no,
  * @size: Size of matrix.
  * @count: Size of array of uniforms.
  * @transpose: Whether to transpose the matrix when setting the uniform.
- * @value: the new value of the uniform.
+ * @value: (array length=count): the new value of the uniform.
  *
  * Changes the value of a matrix uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program. The @size

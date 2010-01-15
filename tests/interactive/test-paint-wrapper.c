@@ -31,6 +31,7 @@ typedef struct SuperOH
 } SuperOH;
 
 static gint n_hands = NHANDS;
+static gint use_alpha = 255;
 
 static GOptionEntry super_oh_entries[] = {
   {
@@ -38,6 +39,12 @@ static GOptionEntry super_oh_entries[] = {
     0,
     G_OPTION_ARG_INT, &n_hands,
     "Number of hands", "HANDS"
+  },
+  {
+    "use-alpha", 'a',
+    0,
+    G_OPTION_ARG_INT, &use_alpha,
+    "Stage opacity", "VALUE"
   },
   { NULL }
 };
@@ -204,6 +211,12 @@ test_paint_wrapper_main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
+
+  if (use_alpha != 255)
+    {
+      clutter_stage_set_use_alpha (CLUTTER_STAGE (stage), TRUE);
+      clutter_actor_set_opacity (stage, use_alpha);
+    }
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Paint Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);

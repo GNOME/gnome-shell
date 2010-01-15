@@ -127,7 +127,6 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_actor_lower_bottom (rect);
   clutter_actor_set_name (rect, "background");
 
-
   {
     ClutterActor *tex;
     GError *error;

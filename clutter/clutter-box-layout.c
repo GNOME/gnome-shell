@@ -94,8 +94,13 @@ struct _ClutterBoxLayoutPrivate
 
   guint spacing;
 
-  guint is_vertical   : 1;
-  guint is_pack_start : 1;
+  gulong easing_mode;
+  guint easing_duration;
+
+  guint is_vertical    : 1;
+  guint is_pack_start  : 1;
+  guint is_animating   : 1;
+  guint use_animations : 1;
 };
 
 struct _ClutterBoxChild
@@ -109,6 +114,11 @@ struct _ClutterBoxChild
   guint y_fill : 1;
 
   guint expand : 1;
+
+  /* the last stable allocation before an animation; it is
+   * used as the initial ActorBox when interpolating
+   */
+  ClutterActorBox *last_allocation;
 };
 
 enum
@@ -128,7 +138,10 @@ enum
 
   PROP_SPACING,
   PROP_VERTICAL,
-  PROP_PACK_START
+  PROP_PACK_START,
+  PROP_USE_ANIMATIONS,
+  PROP_EASING_MODE,
+  PROP_EASING_DURATION
 };
 
 G_DEFINE_TYPE (ClutterBoxChild,
@@ -167,9 +180,19 @@ box_child_set_align (ClutterBoxChild     *self,
   if (x_changed || y_changed)
     {
       ClutterLayoutManager *layout;
+      ClutterBoxLayout *box;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
+      box = CLUTTER_BOX_LAYOUT (layout);
+
+      if (box->priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (layout,
+                                                  box->priv->easing_duration,
+                                                  box->priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (layout);
 
       if (x_changed)
         g_object_notify (G_OBJECT (self), "x-align");
@@ -203,9 +226,19 @@ box_child_set_fill (ClutterBoxChild *self,
   if (x_changed || y_changed)
     {
       ClutterLayoutManager *layout;
+      ClutterBoxLayout *box;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
+      box = CLUTTER_BOX_LAYOUT (layout);
+
+      if (box->priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (layout,
+                                                  box->priv->easing_duration,
+                                                  box->priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (layout);
 
       if (x_changed)
         g_object_notify (G_OBJECT (self), "x-fill");
@@ -222,11 +255,21 @@ box_child_set_expand (ClutterBoxChild *self,
   if (self->expand != expand)
     {
       ClutterLayoutManager *layout;
+      ClutterBoxLayout *box;
 
       self->expand = expand;
 
       layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
+      box = CLUTTER_BOX_LAYOUT (layout);
+
+      if (box->priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (layout,
+                                                  box->priv->easing_duration,
+                                                  box->priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (layout);
 
       g_object_notify (G_OBJECT (self), "expand");
     }
@@ -313,6 +356,16 @@ clutter_box_child_get_property (GObject    *gobject,
 }
 
 static void
+clutter_box_child_finalize (GObject *gobject)
+{
+  ClutterBoxChild *self = CLUTTER_BOX_CHILD (gobject);
+
+  clutter_actor_box_free (self->last_allocation);
+
+  G_OBJECT_CLASS (clutter_box_child_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_box_child_class_init (ClutterBoxChildClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -320,6 +373,7 @@ clutter_box_child_class_init (ClutterBoxChildClass *klass)
 
   gobject_class->set_property = clutter_box_child_set_property;
   gobject_class->get_property = clutter_box_child_get_property;
+  gobject_class->finalize = clutter_box_child_finalize;
 
   pspec = g_param_spec_boolean ("expand",
                                 "Expand",
@@ -374,6 +428,8 @@ clutter_box_child_init (ClutterBoxChild *self)
   self->x_fill = self->y_fill = FALSE;
 
   self->expand = FALSE;
+
+  self->last_allocation = NULL;
 }
 
 static inline void
@@ -698,14 +754,6 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.x1 = 0;
       child_box.x2 = floorf (avail_width + 0.5);
-
-      allocate_fill (child, &child_box, box_child);
-      clutter_actor_allocate (child, &child_box, flags);
-
-      if (box_child->expand)
-        *position += (child_nat + priv->spacing + extra_space);
-      else
-        *position += (child_nat + priv->spacing);
     }
   else
     {
@@ -721,15 +769,61 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.y1 = 0;
       child_box.y2 = floorf (avail_height + 0.5);
-
-      allocate_fill (child, &child_box, box_child);
-      clutter_actor_allocate (child, &child_box, flags);
-
-      if (box_child->expand)
-        *position += (child_nat + priv->spacing + extra_space);
-      else
-        *position += (child_nat + priv->spacing);
     }
+
+  allocate_fill (child, &child_box, box_child);
+
+  if (priv->use_animations && priv->is_animating)
+    {
+      ClutterLayoutManager *manager = CLUTTER_LAYOUT_MANAGER (self);
+      ClutterActorBox *start = NULL;
+      ClutterActorBox end = { 0, };
+      gdouble p;
+
+      p = clutter_layout_manager_get_animation_progress (manager);
+
+      start = box_child->last_allocation;
+      if (start == NULL)
+        {
+          /* if there is no allocation available then the child has just
+           * been added to the container; we put it in the final state
+           * and store its allocation for later
+           */
+          box_child->last_allocation = clutter_actor_box_copy (&child_box);
+
+          goto do_allocate;
+        }
+
+      end = child_box;
+
+      /* interpolate between the initial and final values */
+      clutter_actor_box_interpolate (start, &end, p, &child_box);
+
+      CLUTTER_NOTE (ANIMATION,
+                    "Animate { %.1f, %.1f, %.1f, %.1f }\t"
+                     "%.3f * { %.1f, %.1f, %.1f, %.1f }\t"
+                         "-> { %.1f, %.1f, %.1f, %.1f }",
+                    start->x1, start->y1,
+                    start->x2, start->y2,
+                    p,
+                    child_box.x1, child_box.y1,
+                    child_box.x2, child_box.y2,
+                    end.x1, end.y1,
+                    end.x2, end.y2);
+    }
+  else
+    {
+      /* store the allocation for later animations */
+      box_child->last_allocation = clutter_actor_box_copy (&child_box);
+    }
+
+do_allocate:
+  clutter_actor_allocate (child, &child_box, flags);
+
+  if (box_child->expand)
+    *position += (child_nat + priv->spacing + extra_space);
+  else
+    *position += (child_nat + priv->spacing);
 }
 
 static void
@@ -887,6 +981,35 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   g_list_free (children);
 }
 
+static ClutterAlpha *
+clutter_box_layout_begin_animation (ClutterLayoutManager *manager,
+                                    guint                 duration,
+                                    gulong                easing)
+{
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (manager)->priv;
+  ClutterLayoutManagerClass *parent_class;
+
+  priv->is_animating = TRUE;
+
+  /* we want the default implementation */
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
+
+  return parent_class->begin_animation (manager, duration, easing);
+}
+
+static void
+clutter_box_layout_end_animation (ClutterLayoutManager *manager)
+{
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (manager)->priv;
+  ClutterLayoutManagerClass *parent_class;
+
+  priv->is_animating = FALSE;
+
+  /* we want the default implementation */
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
+  parent_class->end_animation (manager);
+}
+
 static void
 clutter_box_layout_set_property (GObject      *gobject,
                                  guint         prop_id,
@@ -907,6 +1030,18 @@ clutter_box_layout_set_property (GObject      *gobject,
 
     case PROP_PACK_START:
       clutter_box_layout_set_pack_start (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_USE_ANIMATIONS:
+      clutter_box_layout_set_use_animations (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_EASING_MODE:
+      clutter_box_layout_set_easing_mode (self, g_value_get_ulong (value));
+      break;
+
+    case PROP_EASING_DURATION:
+      clutter_box_layout_set_easing_duration (self, g_value_get_uint (value));
       break;
 
     default:
@@ -937,6 +1072,18 @@ clutter_box_layout_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->is_pack_start);
       break;
 
+    case PROP_USE_ANIMATIONS:
+      g_value_set_boolean (value, priv->use_animations);
+      break;
+
+    case PROP_EASING_MODE:
+      g_value_set_ulong (value, priv->easing_mode);
+      break;
+
+    case PROP_EASING_DURATION:
+      g_value_set_uint (value, priv->easing_duration);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -963,6 +1110,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
   layout_class->set_container = clutter_box_layout_set_container;
   layout_class->get_child_meta_type =
     clutter_box_layout_get_child_meta_type;
+  layout_class->begin_animation = clutter_box_layout_begin_animation;
+  layout_class->end_animation = clutter_box_layout_end_animation;
 
   g_type_class_add_private (klass, sizeof (ClutterBoxLayoutPrivate));
 
@@ -1010,6 +1159,62 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SPACING, pspec);
+
+  /**
+   * ClutterBoxLayout:use-animations:
+   *
+   * Whether the #ClutterBoxLayout should animate changes in the
+   * layout properties
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("use-animations",
+                                "Use Animations",
+                                "Whether layout changes should be animated",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_ANIMATIONS, pspec);
+
+  /**
+   * ClutterBoxLayout:easing-mode:
+   *
+   * The easing mode for the animations, in case
+   * #ClutterBoxLayout:use-animations is set to %TRUE
+   *
+   * The easing mode has the same semantics of #ClutterAnimation:mode: it can
+   * either be a value from the #ClutterAnimationMode enumeration, like
+   * %CLUTTER_EASE_OUT_CUBIC, or a logical id as returned by
+   * clutter_alpha_register_func()
+   *
+   * The default value is %CLUTTER_EASE_OUT_CUBIC
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_ulong ("easing-mode",
+                              "Easing Mode",
+                              "The easing mode of the animations",
+                              0, G_MAXULONG,
+                              CLUTTER_EASE_OUT_CUBIC,
+                              CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_EASING_MODE, pspec);
+
+  /**
+   * ClutterBoxLayout:easing-duration:
+   *
+   * The duration of the animations, in case #ClutterBoxLayout:use-animations
+   * is set to %TRUE
+   *
+   * The duration is expressed in milliseconds
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_uint ("easing-duration",
+                             "Easing Duration",
+                             "The duration of the animations",
+                             0, G_MAXUINT,
+                             500,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_EASING_DURATION, pspec);
 }
 
 static void
@@ -1022,6 +1227,10 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
   priv->is_vertical = FALSE;
   priv->is_pack_start = FALSE;
   priv->spacing = 0;
+
+  priv->use_animations = FALSE;
+  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
+  priv->easing_duration = 500;
 }
 
 /**
@@ -1065,7 +1274,15 @@ clutter_box_layout_set_spacing (ClutterBoxLayout *layout,
       priv->spacing = spacing;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+
+      if (priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (manager,
+                                                  priv->easing_duration,
+                                                  priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (manager);
 
       g_object_notify (G_OBJECT (layout), "spacing");
     }
@@ -1116,7 +1333,15 @@ clutter_box_layout_set_vertical (ClutterBoxLayout *layout,
       priv->is_vertical = vertical ? TRUE : FALSE;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+
+      if (priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (manager,
+                                                  priv->easing_duration,
+                                                  priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (manager);
 
       g_object_notify (G_OBJECT (layout), "vertical");
     }
@@ -1170,7 +1395,15 @@ clutter_box_layout_set_pack_start (ClutterBoxLayout *layout,
       priv->is_pack_start = pack_start ? TRUE : FALSE;
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
+
+      if (priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (manager,
+                                                  priv->easing_duration,
+                                                  priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (manager);
 
       g_object_notify (G_OBJECT (layout), "pack-start");
     }
@@ -1573,4 +1806,155 @@ clutter_box_layout_get_expand (ClutterBoxLayout *layout,
   g_assert (CLUTTER_IS_BOX_CHILD (meta));
 
   return CLUTTER_BOX_CHILD (meta)->expand;
+}
+
+/**
+ * clutter_box_layout_set_use_animations:
+ * @layout: a #ClutterBoxLayout
+ * @animate: %TRUE if the @layout should use animations
+ *
+ * Sets whether @layout should animate changes in the layout properties
+ *
+ * The duration of the animations is controlled by
+ * clutter_box_layout_set_easing_duration(); the easing mode to be used
+ * by the animations is controlled by clutter_box_layout_set_easing_mode()
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_layout_set_use_animations (ClutterBoxLayout *layout,
+                                       gboolean          animate)
+{
+  ClutterBoxLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->use_animations != animate)
+    {
+      priv->use_animations = animate;
+
+      g_object_notify (G_OBJECT (layout), "use-animations");
+    }
+}
+
+/**
+ * clutter_box_layout_get_use_animations:
+ * @layout: a #ClutterBoxLayout
+ *
+ * Retrieves whether @layout should animate changes in the layout properties
+ *
+ * Since clutter_box_layout_set_use_animations()
+ *
+ * Return value: %TRUE if the animations should be used, %FALSE otherwise
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_box_layout_get_use_animations (ClutterBoxLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), FALSE);
+
+  return layout->priv->use_animations;
+}
+
+/**
+ * clutter_box_layout_set_easing_mode:
+ * @layout: a #ClutterBoxLayout
+ * @mode: an easing mode, either from #ClutterAnimationMode or a logical id
+ *   from clutter_alpha_register_func()
+ *
+ * Sets the easing mode to be used by @layout when animating changes in layout
+ * properties
+ *
+ * Use clutter_box_layout_set_use_animations() to enable and disable the
+ * animations
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_layout_set_easing_mode (ClutterBoxLayout *layout,
+                                    gulong            mode)
+{
+  ClutterBoxLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->easing_mode != mode)
+    {
+      priv->easing_mode = mode;
+
+      g_object_notify (G_OBJECT (layout), "easing-mode");
+    }
+}
+
+/**
+ * clutter_box_layout_get_easing_mode:
+ * @layout: a #ClutterBoxLayout
+ *
+ * Retrieves the easing mode set using clutter_box_layout_set_easing_mode()
+ *
+ * Return value: an easing mode
+ *
+ * Since: 1.2
+ */
+gulong
+clutter_box_layout_get_easing_mode (ClutterBoxLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout),
+                        CLUTTER_EASE_OUT_CUBIC);
+
+  return layout->priv->easing_mode;
+}
+
+/**
+ * clutter_box_layout_set_easing_duration:
+ * @layout: a #ClutterBoxLayout
+ * @msecs: the duration of the animations, in milliseconds
+ *
+ * Sets the duration of the animations used by @layout when animating changes
+ * in the layout properties
+ *
+ * Use clutter_box_layout_set_use_animations() to enable and disable the
+ * animations
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_layout_set_easing_duration (ClutterBoxLayout *layout,
+                                        guint             msecs)
+{
+  ClutterBoxLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->easing_duration != msecs)
+    {
+      priv->easing_duration = msecs;
+
+      g_object_notify (G_OBJECT (layout), "easing-duration");
+    }
+}
+
+/**
+ * clutter_box_layout_get_easing_duration:
+ * @layout: a #ClutterBoxLayout
+ *
+ * Retrieves the duration set using clutter_box_layout_set_easing_duration()
+ *
+ * Return value: the duration of the animations, in milliseconds
+ *
+ * Since: 1.2
+ */
+guint
+clutter_box_layout_get_easing_duration (ClutterBoxLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), 500);
+
+  return layout->priv->easing_duration;
 }

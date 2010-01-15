@@ -109,6 +109,7 @@
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour define */
 #include "clutter-frame-source.h"
+#include "clutter-profile.h"
 
 #include "cogl/cogl.h"
 #include "pango/cogl-pango.h"
@@ -136,6 +137,7 @@ static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
+guint clutter_profile_flags = 0;  /* global clutter profile flag */
 
 const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
 const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
@@ -164,6 +166,13 @@ static const GDebugKey clutter_debug_keys[] = {
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+#ifdef CLUTTER_ENABLE_PROFILE
+static const GDebugKey clutter_profile_keys[] = {
+      {"picking-only", CLUTTER_PROFILE_PICKING_ONLY },
+      {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
+};
+#endif /* CLUTTER_ENABLE_DEBUG */
+
 /**
  * clutter_get_show_fps:
  *
@@ -187,10 +196,16 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 {
   gfloat natural_width, natural_height;
   ClutterActorBox box = { 0, };
+  CLUTTER_STATIC_TIMER (relayout_timer,
+                        "Mainloop", /* no parent */
+                        "Layouting",
+                        "The time spent reallocating the stage",
+                        0 /* no application private data */);
 
   /* avoid reentrancy */
   if (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_RELAYOUT))
     {
+      CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
       CLUTTER_NOTE (ACTOR, "Recomputing layout");
 
       CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
@@ -212,6 +227,7 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
       clutter_actor_allocate (stage, &box, CLUTTER_ALLOCATION_NONE);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
     }
 }
 
@@ -354,19 +370,6 @@ clutter_get_motion_events_enabled (void)
 
 guint _clutter_pix_to_id (guchar pixel[4]);
 
-static inline void init_bits (void)
-{
-  ClutterMainContext *ctx;
-
-  static gboolean done = FALSE;
-  if (G_LIKELY (done))
-    return;
-
-  ctx = _clutter_context_get_default ();
-
-  done = TRUE;
-}
-
 void
 _clutter_id_to_color (guint id, ClutterColor *col)
 {
@@ -377,9 +380,11 @@ _clutter_id_to_color (guint id, ClutterColor *col)
 
   /* compute the numbers we'll store in the components */
   red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
-                & (0xff >> (8-ctx->fb_r_mask_used));
-  green = (id >> ctx->fb_b_mask_used) & (0xff >> (8-ctx->fb_g_mask_used));
-  blue  = (id)  & (0xff >> (8-ctx->fb_b_mask_used));
+        & (0xff >> (8-ctx->fb_r_mask_used));
+  green = (id >> ctx->fb_b_mask_used)
+        & (0xff >> (8-ctx->fb_g_mask_used));
+  blue  = (id)
+        & (0xff >> (8-ctx->fb_b_mask_used));
 
   /* shift left bits a bit and add one, this circumvents
    * at least some potential rounding errors in GL/GLES
@@ -409,9 +414,9 @@ _clutter_id_to_color (guint id, ClutterColor *col)
    */
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
-      col->red = (col->red << 4) | (col->red >> 4);
+      col->red   = (col->red << 4)   | (col->red >> 4);
       col->green = (col->green << 4) | (col->green >> 4);
-      col->blue = (col->blue << 4) | (col->blue >> 4);
+      col->blue  = (col->blue << 4)  | (col->blue >> 4);
     }
 }
 
@@ -456,8 +461,9 @@ _clutter_pixel_to_id (guchar pixel[4])
   blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);
 
   /* combine the correct per component values into the final id */
-  id =  blue + (green <<  ctx->fb_b_mask_used)
-          + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
+  id = blue
+     + (green <<  ctx->fb_b_mask_used)
+     + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
 
   return id;
 }
@@ -498,28 +504,34 @@ read_pixels_to_file (char *filename_stem,
                                      NULL); /* callback data */
   if (pixbuf)
     {
-      char *filename =
-        g_strdup_printf ("%s-%05d.png", filename_stem, read_count);
+      char *filename = g_strdup_printf ("%s-%05d.png",
+                                        filename_stem,
+                                        read_count);
       GError *error = NULL;
+
       if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
         {
           g_warning ("Failed to save pick buffer to file %s: %s",
                      filename, error->message);
           g_error_free (error);
         }
+
       g_free (filename);
       g_object_unref (pixbuf);
       read_count++;
     }
-#else
-  static gboolean seen = FALSE;
-  if (!seen)
-    {
-      g_warning ("dumping buffers to an image isn't supported on platforms "
-                 "without gdk pixbuf support\n");
-      seen = TRUE;
-    }
-#endif
+#else /* !USE_GDKPIXBUF */
+  {
+    static gboolean seen = FALSE;
+
+    if (!seen)
+      {
+        g_warning ("dumping buffers to an image isn't supported on platforms "
+                   "without gdk pixbuf support\n");
+        seen = TRUE;
+      }
+  }
+#endif /* USE_GDKPIXBUF */
 }
 
 ClutterActor *
@@ -533,9 +545,43 @@ _clutter_do_pick (ClutterStage   *stage,
   CoglColor           stage_pick_id;
   guint32             id;
   GLboolean           dither_was_on;
+  ClutterActor       *actor;
+  CLUTTER_STATIC_COUNTER (do_pick_counter,
+                          "_clutter_do_pick counter",
+                          "Increments for each full pick run",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_timer,
+                        "Mainloop", /* parent */
+                        "Picking",
+                        "The time spent picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_clear,
+                        "Picking", /* parent */
+                        "Stage clear (pick)",
+                        "The time spent clearing stage for picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_paint,
+                        "Picking", /* parent */
+                        "Painting actors (pick mode)",
+                        "The time spent painting actors in pick mode",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_read,
+                        "Picking", /* parent */
+                        "Read Pixels",
+                        "The time spent issuing a read pixels",
+                        0 /* no application private data */);
+
 
   if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
     return CLUTTER_ACTOR (stage);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_resume ();
+#endif /* CLUTTER_ENABLE_PROFILE */
+
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, do_pick_counter);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
   context = _clutter_context_get_default ();
 
@@ -549,9 +595,11 @@ _clutter_do_pick (ClutterStage   *stage,
 
   cogl_disable_fog ();
   cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
   cogl_clear (&stage_pick_id,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_was_on = glIsEnabled (GL_DITHER);
@@ -561,9 +609,11 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
   */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
   context->pick_mode = mode;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = CLUTTER_PICK_NONE;
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
   if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_pop ();
@@ -572,10 +622,12 @@ _clutter_do_pick (ClutterStage   *stage,
   cogl_flush ();
 
   /* Read the color of the screen co-ords pixel */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
   cogl_read_pixels (x, y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
@@ -589,11 +641,24 @@ _clutter_do_pick (ClutterStage   *stage,
     glEnable (GL_DITHER);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    return CLUTTER_ACTOR (stage);
+    {
+      actor = CLUTTER_ACTOR (stage);
+      goto result;
+    }
 
   id = _clutter_pixel_to_id (pixel);
+  actor = clutter_get_actor_by_gid (id);
 
-  return clutter_get_actor_by_gid (id);
+result:
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_suspend ();
+#endif
+
+  return actor;
 }
 
 static ClutterTextDirection
@@ -727,6 +792,28 @@ clutter_main_level (void)
   return clutter_main_loop_level;
 }
 
+#ifdef CLUTTER_ENABLE_PROFILE
+static gint (*prev_poll) (GPollFD *ufds, guint nfsd, gint timeout_) = NULL;
+
+static gint
+timed_poll (GPollFD *ufds,
+            guint nfsd,
+            gint timeout_)
+{
+  gint ret;
+  CLUTTER_STATIC_TIMER (poll_timer,
+                        "Mainloop", /* parent */
+                        "poll (idle)",
+                        "The time spent idle in poll()",
+                        0 /* no application private data */);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, poll_timer);
+  ret = prev_poll (ufds, nfsd, timeout_);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, poll_timer);
+  return ret;
+}
+#endif
+
 /**
  * clutter_main:
  *
@@ -736,6 +823,14 @@ void
 clutter_main (void)
 {
   GMainLoop *loop;
+  CLUTTER_STATIC_TIMER (mainloop_timer,
+                        NULL, /* no parent */
+                        "Mainloop",
+                        "The time spent in the clutter mainloop",
+                        0 /* no application private data */);
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_START (_clutter_uprof_context, mainloop_timer);
 
   /* Make sure there is a context */
   CLUTTER_CONTEXT ();
@@ -750,6 +845,14 @@ clutter_main (void)
   CLUTTER_MARK ();
 
   clutter_main_loop_level++;
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (!prev_poll)
+    {
+      prev_poll = g_main_context_get_poll_func (NULL);
+      g_main_context_set_poll_func (NULL, timed_poll);
+    }
+#endif
 
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
@@ -775,19 +878,22 @@ clutter_main (void)
   clutter_main_loop_level--;
 
   CLUTTER_MARK ();
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_STOP (_clutter_uprof_context, mainloop_timer);
 }
 
 static void
 clutter_threads_impl_lock (void)
 {
-  if (clutter_threads_mutex)
+  if (G_LIKELY (clutter_threads_mutex != NULL))
     g_mutex_lock (clutter_threads_mutex);
 }
 
 static void
 clutter_threads_impl_unlock (void)
 {
-  if (clutter_threads_mutex)
+  if (G_LIKELY (clutter_threads_mutex != NULL))
     g_mutex_unlock (clutter_threads_mutex);
 }
 
@@ -802,6 +908,8 @@ clutter_threads_impl_unlock (void)
  *
  * This function must be called before clutter_init().
  *
+ * It is safe to call this function multiple times.
+ *
  * Since: 0.4
  */
 void
@@ -809,6 +917,9 @@ clutter_threads_init (void)
 {
   if (!g_thread_supported ())
     g_error ("g_thread_init() must be called before clutter_threads_init()");
+
+  if (clutter_threads_mutex != NULL)
+    return;
 
   clutter_threads_mutex = g_mutex_new ();
 
@@ -1253,6 +1364,7 @@ _clutter_context_get_default (void)
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
 
+      /* create the default backend */
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
@@ -1331,6 +1443,32 @@ clutter_arg_no_debug_cb (const char *key,
 }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+#ifdef CLUTTER_ENABLE_PROFILE
+static gboolean
+clutter_arg_profile_cb (const char *key,
+                        const char *value,
+                        gpointer    user_data)
+{
+  clutter_profile_flags |=
+    g_parse_debug_string (value,
+                          clutter_profile_keys,
+                          G_N_ELEMENTS (clutter_profile_keys));
+  return TRUE;
+}
+
+static gboolean
+clutter_arg_no_profile_cb (const char *key,
+                           const char *value,
+                           gpointer    user_data)
+{
+  clutter_profile_flags &=
+    ~g_parse_debug_string (value,
+                           clutter_profile_keys,
+                           G_N_ELEMENTS (clutter_profile_keys));
+  return TRUE;
+}
+#endif /* CLUTTER_ENABLE_PROFILE */
+
 GQuark
 clutter_init_error_quark (void)
 {
@@ -1403,6 +1541,18 @@ clutter_init_real (GError **error)
   /* - will call to backend and cogl */
   _clutter_feature_init ();
 
+#ifdef CLUTTER_ENABLE_PROFILE
+    {
+      UProfContext *cogl_context;
+      cogl_context = uprof_find_context ("Cogl");
+      if (cogl_context)
+        uprof_context_link (_clutter_uprof_context, cogl_context);
+    }
+
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_suspend ();
+#endif
+
   /*
    * Resolution requires display to be open, so can only be queried after
    * the post_parse hooks run.
@@ -1414,7 +1564,7 @@ clutter_init_real (GError **error)
   resolution = clutter_backend_get_resolution (ctx->backend);
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
 
-  if (G_LIKELY (!clutter_disable_mipmap_text))
+  if (!clutter_disable_mipmap_text)
     cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
@@ -1465,6 +1615,12 @@ static GOptionEntry clutter_args[] = {
   { "clutter-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_debug_cb,
     N_("Clutter debugging flags to unset"), "FLAGS" },
 #endif /* CLUTTER_ENABLE_DEBUG */
+#ifdef CLUTTER_ENABLE_PROFILE
+  { "clutter-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_profile_cb,
+    N_("Clutter profiling flags to set"), "FLAGS" },
+  { "clutter-no-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_profile_cb,
+    N_("Clutter profiling flags to unset"), "FLAGS" },
+#endif /* CLUTTER_ENABLE_PROFILE */
   { NULL, },
 };
 
@@ -1507,6 +1663,18 @@ pre_parse_hook (GOptionContext  *context,
       env_string = NULL;
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  env_string = g_getenv ("CLUTTER_PROFILE");
+  if (env_string != NULL)
+    {
+      clutter_profile_flags =
+        g_parse_debug_string (env_string,
+                              clutter_profile_keys,
+                              G_N_ELEMENTS (clutter_profile_keys));
+      env_string = NULL;
+    }
+#endif /* CLUTTER_ENABLE_PROFILE */
 
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
@@ -1723,8 +1891,10 @@ clutter_init_with_args (int            *argc,
 
   if (!ctx->defer_display_setup)
     {
+#if 0
       if (argc && *argc > 0 && *argv)
 	g_set_prgname ((*argv)[0]);
+#endif
 
       context = g_option_context_new (parameter_string);
 
@@ -1829,8 +1999,10 @@ clutter_init (int    *argc,
 
   if (!ctx->defer_display_setup)
     {
+#if 0
       if (argc && *argc > 0 && *argv)
 	g_set_prgname ((*argv)[0]);
+#endif
 
       /* parse_args will trigger backend creation and things like
        * DISPLAY connection etc.
@@ -2166,35 +2338,12 @@ clutter_do_event (ClutterEvent *event)
   _clutter_stage_queue_event (event->any.stage, event);
 }
 
-/**
- * _clutter_process_event
- * @event: a #ClutterEvent.
- *
- * Does the actual work of processing an event that was queued earlier
- * out of clutter_do_event().
- */
-void
-_clutter_process_event (ClutterEvent *event)
+static void
+_clutter_process_event_details (ClutterActor        *stage,
+                                ClutterMainContext  *context,
+                                ClutterEvent        *event)
 {
-  /* FIXME: This should probably be clutter_cook_event() - it would
-   * take a raw event from the backend and 'cook' it so its more tasty.
-   *
-  */
-  ClutterMainContext  *context;
-  ClutterBackend      *backend;
-  ClutterActor        *stage;
   ClutterInputDevice  *device = NULL;
-
-  context = _clutter_context_get_default ();
-  backend = context->backend;
-  stage   = CLUTTER_ACTOR(event->any.stage);
-
-  if (!stage)
-    return;
-
-  CLUTTER_TIMESTAMP (EVENT, "Event received");
-
-  context->last_event_time = clutter_event_get_time (event);
 
   switch (event->type)
     {
@@ -2226,14 +2375,7 @@ _clutter_process_event (ClutterEvent *event)
       case CLUTTER_DELETE:
         event->any.source = stage;
         /* the stage did not handle the event, so we just quit */
-        if (!clutter_stage_event (CLUTTER_STAGE (stage), event))
-          {
-            if (stage == clutter_stage_get_default())
-              clutter_main_quit ();
-            else
-              clutter_actor_destroy (stage);
-          }
-
+        clutter_stage_event (CLUTTER_STAGE (stage), event);
         break;
 
       case CLUTTER_KEY_PRESS:
@@ -2392,6 +2534,37 @@ _clutter_process_event (ClutterEvent *event)
         break;
     }
 }
+
+/**
+ * _clutter_process_event
+ * @event: a #ClutterEvent.
+ *
+ * Does the actual work of processing an event that was queued earlier
+ * out of clutter_do_event().
+ */
+void
+_clutter_process_event (ClutterEvent *event)
+{
+  ClutterMainContext  *context;
+  ClutterBackend      *backend;
+  ClutterActor        *stage;
+
+  context = _clutter_context_get_default ();
+  backend = context->backend;
+  stage   = CLUTTER_ACTOR(event->any.stage);
+
+  if (!stage)
+    return;
+
+  CLUTTER_TIMESTAMP (EVENT, "Event received");
+
+  context->last_event_time = clutter_event_get_time (event);
+
+  context->current_event = event;
+  _clutter_process_event_details (stage, context, event);
+  context->current_event = NULL;
+}
+
 
 /**
  * clutter_get_actor_by_gid
@@ -3090,18 +3263,20 @@ clutter_check_version (guint major,
            clutter_micro_version >= micro));
 }
 
-void
-clutter_set_default_text_direction (ClutterTextDirection text_dir)
-{
-  if (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT)
-    text_dir = clutter_get_text_direction ();
-
-  if (text_dir != clutter_text_direction)
-    clutter_text_direction = text_dir;
-
-  /* FIXME - queue a relayout on all stages */
-}
-
+/**
+ * clutter_get_default_text_direction:
+ *
+ * Retrieves the default direction for the text. The text direction is
+ * determined by the locale and/or by the %CLUTTER_TEXT_DIRECTION environment
+ * variable
+ *
+ * The default text direction can be overridden on a per-actor basis by using
+ * clutter_actor_set_text_direction()
+ *
+ * Return value: the default text direction
+ *
+ * Since: 1.2
+ */
 ClutterTextDirection
 clutter_get_default_text_direction (void)
 {

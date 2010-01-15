@@ -62,26 +62,32 @@ struct _ClutterMediaIface
 		  const GError *error);
 };
 
-GType clutter_media_get_type (void) G_GNUC_CONST;
+GType    clutter_media_get_type               (void) G_GNUC_CONST;
 
-void     clutter_media_set_uri          (ClutterMedia *media,
-                                         const gchar  *uri);
-gchar *  clutter_media_get_uri          (ClutterMedia *media);
-void     clutter_media_set_filename     (ClutterMedia *media,
-                                         const gchar  *filename);
+void     clutter_media_set_uri                (ClutterMedia *media,
+                                               const gchar  *uri);
+gchar *  clutter_media_get_uri                (ClutterMedia *media);
+void     clutter_media_set_filename           (ClutterMedia *media,
+                                               const gchar  *filename);
 
-void     clutter_media_set_playing      (ClutterMedia *media,
-                                         gboolean      playing);
-gboolean clutter_media_get_playing      (ClutterMedia *media);
-void     clutter_media_set_progress     (ClutterMedia *media,
-                                         gdouble       progress);
-gdouble  clutter_media_get_progress     (ClutterMedia *media);
-void     clutter_media_set_audio_volume (ClutterMedia *media,
-                                         gdouble       volume);
-gdouble  clutter_media_get_audio_volume (ClutterMedia *media);
-gboolean clutter_media_get_can_seek     (ClutterMedia *media);
-gdouble  clutter_media_get_buffer_fill  (ClutterMedia *media);
-gdouble  clutter_media_get_duration     (ClutterMedia *media);
+void     clutter_media_set_playing            (ClutterMedia *media,
+                                               gboolean      playing);
+gboolean clutter_media_get_playing            (ClutterMedia *media);
+void     clutter_media_set_progress           (ClutterMedia *media,
+                                               gdouble       progress);
+gdouble  clutter_media_get_progress           (ClutterMedia *media);
+void     clutter_media_set_subtitle_uri       (ClutterMedia *media,
+                                               const gchar  *uri);
+gchar *  clutter_media_get_subtitle_uri       (ClutterMedia *media);
+void     clutter_media_set_subtitle_font_name (ClutterMedia *media,
+                                               const char   *font_name);
+gchar *  clutter_media_get_subtitle_font_name (ClutterMedia *media);
+void     clutter_media_set_audio_volume       (ClutterMedia *media,
+                                               gdouble       volume);
+gdouble  clutter_media_get_audio_volume       (ClutterMedia *media);
+gboolean clutter_media_get_can_seek           (ClutterMedia *media);
+gdouble  clutter_media_get_buffer_fill        (ClutterMedia *media);
+gdouble  clutter_media_get_duration           (ClutterMedia *media);
 
 G_END_DECLS
 

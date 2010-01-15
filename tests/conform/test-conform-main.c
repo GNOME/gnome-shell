@@ -152,6 +152,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
 
   TEST_CONFORM_SIMPLE ("/actor", test_anchors);
+  TEST_CONFORM_SIMPLE ("/actor", test_actor_destruction);
 
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
@@ -160,6 +161,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_hls_roundtrip);
+  TEST_CONFORM_SIMPLE ("/color", test_color_operators);
 
   TEST_CONFORM_SIMPLE ("/units", test_units_constructors);
   TEST_CONFORM_SIMPLE ("/units", test_units_string);
@@ -185,6 +187,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
 
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
 
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);

@@ -24,6 +24,8 @@ test_conformance_SOURCES = 		\
 	test-cogl-viewport.c		\
 	test-cogl-offscreen.c		\
 	test-cogl-readpixels.c		\
+	test-cogl-multitexture.c        \
+	test-cogl-texture-mipmaps.c     \
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\
@@ -41,6 +43,7 @@ test_conformance_SOURCES = 		\
 	test-texture-fbo.c		\
 	test-cogl-sub-texture.c         \
 	test-script-parser.c		\
+	test-actor-destroy.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:

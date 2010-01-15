@@ -56,7 +56,8 @@ typedef struct _CoglOffscreen
 {
   CoglFramebuffer  _parent;
   GLuint          fbo_handle;
-  GLuint          gl_stencil_handle;
+  GSList          *renderbuffers;
+  CoglHandle      texture;
 } CoglOffscreen;
 
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))

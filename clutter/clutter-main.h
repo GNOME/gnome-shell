@@ -164,7 +164,6 @@ void             clutter_ungrab_pointer_for_device   (gint id);
 
 PangoFontMap *   clutter_get_font_map                (void);
 
-void                 clutter_set_default_text_direction (ClutterTextDirection text_dir);
 ClutterTextDirection clutter_get_default_text_direction (void);
 
 G_END_DECLS

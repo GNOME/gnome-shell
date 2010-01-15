@@ -98,10 +98,14 @@ gint     clutter_x11_untrap_x_errors     (void);
 Display *clutter_x11_get_default_display (void);
 int      clutter_x11_get_default_screen  (void);
 Window   clutter_x11_get_root_window     (void);
+XVisualInfo *clutter_x11_get_visual_info (void);
 void     clutter_x11_set_display         (Display * xdpy);
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage) G_GNUC_DEPRECATED;
+#endif
+
 Window       clutter_x11_get_stage_window  (ClutterStage *stage);
-XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage);
 gboolean     clutter_x11_set_stage_foreign (ClutterStage *stage,
                                             Window        xwindow);
 
@@ -123,6 +127,9 @@ void     clutter_x11_enable_xinput (void);
 gboolean clutter_x11_has_xinput (void);
 
 gboolean clutter_x11_has_composite_extension (void);
+
+void     clutter_X11_set_use_argb_visual (gboolean use_argb);
+gboolean clutter_x11_get_use_argb_visual (void);
 
 Time clutter_x11_get_current_event_time (void);
 

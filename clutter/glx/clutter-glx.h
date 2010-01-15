@@ -43,9 +43,4 @@
 #include <clutter/clutter.h>
 #include <clutter/glx/clutter-glx-texture-pixmap.h>
 
-G_BEGIN_DECLS
-
-
-G_END_DECLS
-
 #endif /* __CLUTTER_GLX_H__ */

@@ -48,6 +48,12 @@
 #include "../gles/cogl-gles2-wrapper.h"
 #endif
 
+#ifdef HAVE_COGL_GLES
+#define COGL_MATERIAL_MAX_TEXTURE_UNITS GL_MAX_TEXTURE_UNITS
+#else
+#define COGL_MATERIAL_MAX_TEXTURE_UNITS GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
+#endif
+
 #ifdef HAVE_COGL_GL
 #define glActiveTexture ctx->drv.pf_glActiveTexture
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
@@ -106,7 +112,7 @@ _cogl_material_init_default_material (void)
 #ifndef HAVE_COGL_GLES
   material->blend_equation_rgb = GL_FUNC_ADD;
   material->blend_equation_alpha = GL_FUNC_ADD;
-  material->blend_src_factor_alpha = GL_SRC_ALPHA;
+  material->blend_src_factor_alpha = GL_ONE;
   material->blend_dst_factor_alpha = GL_ONE_MINUS_SRC_ALPHA;
   material->blend_constant[0] = 0;
   material->blend_constant[1] = 0;
@@ -822,7 +828,7 @@ cogl_material_set_layer (CoglHandle material_handle,
   _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   material->n_layers = g_list_length (material->layers);
-  if (material->n_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+  if (material->n_layers >= COGL_MATERIAL_MAX_TEXTURE_UNITS)
     {
       if (!(material->flags & COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING))
 	{
@@ -1534,7 +1540,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DIRTY;
 
-      if ((i+1) >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+      if ((i+1) >= COGL_MATERIAL_MAX_TEXTURE_UNITS)
 	break;
     }
 

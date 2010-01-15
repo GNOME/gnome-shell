@@ -110,6 +110,36 @@ clutter_media_base_init (gpointer g_iface)
       g_object_interface_install_property (g_iface, pspec);
 
       /**
+       * ClutterMedia:subtitle-uri:
+       *
+       * The location of a subtitle file, expressed as a valid URI.
+       *
+       * Since: 1.2
+       */
+      pspec = g_param_spec_string ("subtitle-uri",
+                                   "Subtitle URI",
+                                   "URI of a subtitle file",
+                                   NULL,
+                                   CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
+
+      /**
+       * ClutterMedia:subtitle-font-name:
+       *
+       * The font used to display subtitles. The font description has to
+       * follow the same grammar as the one recognized by
+       * pango_font_description_from_string().
+       *
+       * Since: 1.2
+       */
+      pspec = g_param_spec_string ("subtitle-font-name",
+                                   "Subtitle Font Name",
+                                   "The font used to display subtitles",
+                                   NULL,
+                                   CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
+
+      /**
        * ClutterMedia:audio-volume:
        *
        * The volume of the audio, as a normalized value between
@@ -344,6 +374,95 @@ clutter_media_get_progress (ClutterMedia *media)
   g_return_val_if_fail (CLUTTER_IS_MEDIA (media), 0);
 
   g_object_get (G_OBJECT (media), "progress", &retval, NULL);
+
+  return retval;
+}
+
+/**
+ * clutter_media_set_subtitle_uri:
+ * @media: a #ClutterMedia
+ * @uri: the URI of a subtitle file
+ *
+ * Sets the location of a subtitle file to display while playing @media.
+ *
+ * Since: 1.2
+ */
+void
+clutter_media_set_subtitle_uri (ClutterMedia *media,
+                                 const char   *uri)
+{
+  g_return_if_fail (CLUTTER_IS_MEDIA (media));
+
+  g_object_set (G_OBJECT (media), "subtitle-uri", uri, NULL);
+}
+
+/**
+ * clutter_media_get_subtitle_uri:
+ * @media: a #ClutterMedia
+ *
+ * Retrieves the URI of the subtitle file in use.
+ *
+ * Return value: the URI of the subtitle file. Use g_free()
+ *   to free the returned string
+ *
+ * Since: 1.2
+ */
+gchar *
+clutter_media_get_subtitle_uri (ClutterMedia *media)
+{
+  gchar *retval = NULL;
+
+  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), NULL);
+
+  g_object_get (G_OBJECT (media), "subtitle-uri", &retval, NULL);
+
+  return retval;
+}
+
+/**
+ * clutter_media_set_subtitle_font_name:
+ * @media: a #ClutterMedia
+ * @font_name: a font name, or %NULL to set the default font name
+ *
+ * Sets the font used by the subtitle renderer. The @font_name string must be
+ * either %NULL, which means that the default font name of the underlying
+ * implementation will be used; or must follow the grammar recognized by
+ * pango_font_description_from_string() like:
+ *
+ * |[
+ *   clutter_media_set_subtitle_font_name (media, "Sans 24pt");
+ * ]|
+ *
+ * Since: 1.2
+ */
+void
+clutter_media_set_subtitle_font_name (ClutterMedia *media,
+                                      const char   *font_name)
+{
+  g_return_if_fail (CLUTTER_IS_MEDIA (media));
+
+  g_object_set (G_OBJECT (media), "subtitle-font-name", font_name, NULL);
+}
+
+/**
+ * clutter_media_get_subtitle_font_name:
+ * @media: a #ClutterMedia
+ *
+ * Retrieves the font name currently used.
+ *
+ * Return value: a string containing the font name. Use g_free()
+ *   to free the returned string
+ *
+ * Since: 1.2
+ */
+gchar *
+clutter_media_get_subtitle_font_name (ClutterMedia *media)
+{
+  gchar *retval = NULL;
+
+  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), NULL);
+
+  g_object_get (G_OBJECT (media), "subtitle-font-name", &retval, NULL);
 
   return retval;
 }

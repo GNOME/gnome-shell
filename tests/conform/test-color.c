@@ -166,3 +166,60 @@ test_color_to_string (TestConformSimpleFixture *fixture,
 
   g_free (str);
 }
+
+void
+test_color_operators (TestConformSimpleFixture *fixture,
+                      gconstpointer data)
+{
+  ClutterColor op1, op2;
+  ClutterColor res;
+
+  clutter_color_from_pixel (&op1, 0xff0000ff);
+  g_assert_cmpint (op1.red, ==, 0xff);
+  g_assert_cmpint (op1.green, ==, 0);
+  g_assert_cmpint (op1.blue, ==, 0);
+  g_assert_cmpint (op1.alpha, ==, 0xff);
+
+  clutter_color_from_pixel (&op2, 0x00ff00ff);
+  g_assert_cmpint (op2.red, ==, 0);
+  g_assert_cmpint (op2.green, ==, 0xff);
+  g_assert_cmpint (op2.blue, ==, 0);
+  g_assert_cmpint (op2.alpha, ==, 0xff);
+
+  if (g_test_verbose ())
+    g_print ("Adding %x, %x; expected result: %x\n",
+             clutter_color_to_pixel (&op1),
+             clutter_color_to_pixel (&op2),
+             0xffff00ff);
+
+  clutter_color_add (&op1, &op2, &res);
+  g_assert_cmpint (clutter_color_to_pixel (&res), ==, 0xffff00ff);
+
+  if (g_test_verbose ())
+    g_print ("Checking alpha channel on color add\n");
+
+  op1.alpha = 0xdd;
+  op2.alpha = 0xcc;
+  clutter_color_add (&op1, &op2, &res);
+  g_assert_cmpint (clutter_color_to_pixel (&res), ==, 0xffff00dd);
+
+  clutter_color_from_pixel (&op1, 0xffffffff);
+  clutter_color_from_pixel (&op2, 0xff00ffff);
+
+  if (g_test_verbose ())
+    g_print ("Subtracting %x, %x; expected result: %x\n",
+             clutter_color_to_pixel (&op1),
+             clutter_color_to_pixel (&op2),
+             0x00ff00ff);
+
+  clutter_color_subtract (&op1, &op2, &res);
+  g_assert_cmpint (clutter_color_to_pixel (&res), ==, 0x00ff00ff);
+
+  if (g_test_verbose ())
+    g_print ("Checking alpha channel on color subtract\n");
+
+  op1.alpha = 0xdd;
+  op2.alpha = 0xcc;
+  clutter_color_subtract (&op1, &op2, &res);
+  g_assert_cmpint (clutter_color_to_pixel (&res), ==, 0x00ff00cc);
+}

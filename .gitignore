@@ -11,11 +11,13 @@ clutter.pc
 *.o
 *.lo
 *.la
+*.gcov
 ChangeLog*
 clutter/clutter-enum-types.[ch]
 clutter/clutter-marshal.[ch]
 clutter/clutter-version.h
 clutter/stamp-*
+/clutter/gcov-report.txt
 /clutter/clutter-json.h
 /clutter/cogl/cogl/cogl-defines.h
 /clutter/cogl/cogl/*.pc
@@ -236,10 +238,13 @@ TAGS
 /tests/conform/test-script-object-property
 /tests/conform/test-script-animation
 /tests/conform/test-script-named-object
+/tests/conform/test-actor-destruction
+/tests/conform/test-color-operators
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
 /tests/tools/disable-npots.sh
+/tests/conform/test-cogl-multitexture
 /clutter/x11/clutter-x11-enum-types.[ch]
 /clutter/x11/stamp-clutter-x11-enum-types.h
 /po/Makefile.in.in

@@ -74,8 +74,8 @@
  * clutter_actor_set_width(); or it can have a preferred width and
  * height, which then allows a layout manager to implicitly size and
  * position it by "allocating" an area for an actor. This allows for
- * actors to be manipulate in both a fixed or static parent container
- * (i.e. children of #ClutterGroup) and a more automatic or dynamic
+ * actors to be manipulated in both a fixed (or static) parent container
+ * (i.e. children of #ClutterGroup) and a more automatic (or dynamic)
  * layout based parent container.
  *
  * When accessing the position and size of an actor, the simple accessors
@@ -204,6 +204,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-units.h"
+#include "clutter-profile.h"
 #include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
@@ -234,6 +235,18 @@ struct _AnchorCoord
   } v;
 };
 
+/* 3 entries should be a good compromise, few layout managers
+ * will ask for 3 different preferred size in each allocation cycle */
+#define N_CACHED_SIZE_REQUESTS 3
+typedef struct _SizeRequest SizeRequest;
+struct _SizeRequest
+{
+  guint  age;
+  gfloat for_size;
+  gfloat min_size;
+  gfloat natural_size;
+};
+
 /* Internal enum used to control mapped state update.  This is a hint
  * which indicates when to do something other than just enforce
  * invariants.
@@ -262,14 +275,17 @@ struct _ClutterActorPrivate
   /* request mode */
   ClutterRequestMode request_mode;
 
-  /* our cached request width is for this height */
-  gfloat request_width_for_height;
-  gfloat request_min_width;
-  gfloat request_natural_width;
+  /* our cached size requests for different width / height */
+  SizeRequest width_requests[N_CACHED_SIZE_REQUESTS];
+  SizeRequest height_requests[N_CACHED_SIZE_REQUESTS];
 
-  /* our cached request height is for this width */
-  gfloat request_height_for_width;
+  /* An age of 0 means the entry is not set */
+  guint cached_height_age;
+  guint cached_width_age;
+
+  gfloat request_min_width;
   gfloat request_min_height;
+  gfloat request_natural_width;
   gfloat request_natural_height;
 
   ClutterActorBox allocation;
@@ -880,6 +896,7 @@ clutter_actor_real_map (ClutterActor *self)
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
   /* notify on parent mapped before potentially mapping
    * children, so apps see a top-down notification.
    */
@@ -993,20 +1010,29 @@ clutter_actor_real_show (ClutterActor *self)
       ClutterActorPrivate *priv = self->priv;
 
       CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+
       /* we notify on the "visible" flag in the clutter_actor_show()
        * wrapper so the entire show signal emission completes first
        * (?)
        */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
-      /* While an actor is hidden the parent may not have allocated/requested
-       * so we need to start from scratch and avoid the short-circuiting
-       * in clutter_actor_queue_relayout().
+      /* we queue a relayout unless the actor is inside a
+       * container that explicitly told us not to
        */
-      priv->needs_width_request  = FALSE;
-      priv->needs_height_request = FALSE;
-      priv->needs_allocation     = FALSE;
-      clutter_actor_queue_relayout (self);
+      if (priv->parent_actor &&
+          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+        {
+          /* While an actor is hidden the parent may not have
+           * allocated/requested so we need to start from scratch
+           * and avoid the short-circuiting in
+           * clutter_actor_queue_relayout().
+           */
+          priv->needs_width_request  = FALSE;
+          priv->needs_height_request = FALSE;
+          priv->needs_allocation     = FALSE;
+          clutter_actor_queue_relayout (self);
+        }
     }
 }
 
@@ -1081,6 +1107,8 @@ clutter_actor_real_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
+      ClutterActorPrivate *priv = self->priv;
+
       CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
 
       /* we notify on the "visible" flag in the clutter_actor_hide()
@@ -1089,7 +1117,12 @@ clutter_actor_real_hide (ClutterActor *self)
        */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
-      clutter_actor_queue_relayout (self);
+      /* we queue a relayout unless the actor is inside a
+       * container that explicitly told us not to
+       */
+      if (priv->parent_actor &&
+          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+        clutter_actor_queue_relayout (priv->parent_actor);
     }
 }
 
@@ -1662,6 +1695,12 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
   priv->needs_width_request  = TRUE;
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
+
+  /* reset the cached size requests */
+  memset (priv->width_requests, 0,
+          N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
+  memset (priv->height_requests, 0,
+          N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
 
   /* always repaint also (no-op if not mapped) */
   clutter_actor_queue_redraw (self);
@@ -2329,6 +2368,15 @@ clutter_actor_paint (ClutterActor *self)
   ClutterActorPrivate *priv;
   ClutterMainContext *context;
   gboolean clip_set = FALSE;
+  CLUTTER_STATIC_COUNTER (actor_paint_counter,
+                          "Actor real-paint counter",
+                          "Increments each time any actor is painted",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_COUNTER (actor_pick_counter,
+                          "Actor pick-paint counter",
+                          "Increments each time any actor is painted "
+                          "for picking",
+                          0 /* no application private data */);
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -2384,6 +2432,8 @@ clutter_actor_paint (ClutterActor *self)
     {
       ClutterColor col = { 0, };
 
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
+
       _clutter_id_to_color (clutter_actor_get_gid (self), &col);
 
       /* Actor will then paint silhouette of itself in supplied
@@ -2394,6 +2444,8 @@ clutter_actor_paint (ClutterActor *self)
     }
   else
     {
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
+
       clutter_actor_shader_pre_paint (self, FALSE);
 
       self->priv->queued_redraw = FALSE;
@@ -3001,8 +3053,14 @@ clutter_actor_dispose (GObject *object)
     {
       ClutterActor *parent = priv->parent_actor;
 
-      if (CLUTTER_IS_CONTAINER (parent))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+      /* go through the Container implementation unless this
+       * is an internal child and has been marked as such
+       */
+      if (CLUTTER_IS_CONTAINER (parent) &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
+        {
+          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+        }
       else
         priv->parent_actor = NULL;
     }
@@ -4392,6 +4450,9 @@ clutter_actor_init (ClutterActor *self)
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
 
+  priv->cached_width_age = 1;
+  priv->cached_height_age = 1;
+
   priv->opacity_parent = NULL;
   priv->enable_model_view_transform = TRUE;
 
@@ -4500,7 +4561,6 @@ clutter_actor_queue_relayout (ClutterActor *self)
                  "not allowed",
                  priv->name ? priv->name
                             : G_OBJECT_TYPE_NAME (self));
-      return;
     }
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
@@ -4586,6 +4646,43 @@ clutter_actor_get_preferred_size (ClutterActor *self,
     *natural_height_p = natural_height;
 }
 
+/* looks for a cached size request for this for_size. If not
+ * found, returns the oldest entry so it can be overwritten */
+static gboolean
+_clutter_actor_get_cached_size_request (gfloat         for_size,
+                                        SizeRequest   *cached_size_requests,
+                                        SizeRequest  **result)
+{
+  gboolean found_free_cache;
+  guint i;
+
+  found_free_cache = FALSE;
+  *result = &cached_size_requests[0];
+
+  for (i = 0; i < N_CACHED_SIZE_REQUESTS; i++)
+    {
+      SizeRequest *sr;
+
+      sr = &cached_size_requests[i];
+
+      if (sr->age > 0 &&
+          sr->for_size == for_size)
+        {
+          CLUTTER_NOTE (LAYOUT, "Size cache hit for size: %.2f", for_size);
+          *result = sr;
+          return TRUE;
+        }
+      else if (sr->age < (*result)->age)
+        {
+          *result = sr;
+        }
+    }
+
+  CLUTTER_NOTE (LAYOUT, "Size cache miss for size: %.2f", for_size);
+
+  return FALSE;
+}
+
 /**
  * clutter_actor_get_preferred_width:
  * @self: A #ClutterActor
@@ -4616,14 +4713,23 @@ clutter_actor_get_preferred_width (ClutterActor *self,
 {
   ClutterActorClass *klass;
   ClutterActorPrivate *priv;
+  gboolean found_in_cache;
+  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  if (priv->needs_width_request ||
-      priv->request_width_for_height != for_height)
+  found_in_cache = FALSE;
+  cached_size_request = &priv->width_requests[0];
+
+  if (!priv->needs_width_request)
+    found_in_cache = _clutter_actor_get_cached_size_request (for_height,
+                                                             priv->width_requests,
+                                                             &cached_size_request);
+
+  if (!found_in_cache)
     {
       gfloat min_width, natural_width;
 
@@ -4641,15 +4747,20 @@ clutter_actor_get_preferred_width (ClutterActor *self,
       if (natural_width < min_width)
 	natural_width = min_width;
 
-      if (!priv->min_width_set)
-        priv->request_min_width = min_width;
+      cached_size_request->min_size = min_width;
+      cached_size_request->natural_size = natural_width;
+      cached_size_request->for_size = for_height;
+      cached_size_request->age = priv->cached_width_age;
 
-      if (!priv->natural_width_set)
-        priv->request_natural_width = natural_width;
-
-      priv->request_width_for_height = for_height;
+      priv->cached_width_age ++;
       priv->needs_width_request = FALSE;
     }
+
+  if (!priv->min_width_set)
+    priv->request_min_width = cached_size_request->min_size;
+
+  if (!priv->natural_width_set)
+    priv->request_natural_width = cached_size_request->natural_size;
 
   if (min_width_p)
     *min_width_p = priv->request_min_width;
@@ -4687,20 +4798,29 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 {
   ClutterActorClass *klass;
   ClutterActorPrivate *priv;
+  gboolean found_in_cache;
+  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  if (priv->needs_height_request ||
-      priv->request_height_for_width != for_width)
+  found_in_cache = FALSE;
+  cached_size_request = &priv->height_requests[0];
+
+  if (!priv->needs_height_request)
+    found_in_cache = _clutter_actor_get_cached_size_request (for_width,
+                                                             priv->height_requests,
+                                                             &cached_size_request);
+
+  if (!found_in_cache)
     {
       gfloat min_height, natural_height;
 
       min_height = natural_height = 0;
 
-      CLUTTER_NOTE (LAYOUT, "Width request for %.2f px", for_width);
+      CLUTTER_NOTE (LAYOUT, "Height request for %.2f px", for_width);
 
       klass->get_preferred_height (self, for_width,
                                    &min_height,
@@ -4713,14 +4833,30 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 	natural_height = min_height;
 
       if (!priv->min_height_set)
-        priv->request_min_height = min_height;
+        {
+          priv->request_min_height = min_height;
+        }
 
       if (!priv->natural_height_set)
-        priv->request_natural_height = natural_height;
+        {
+          priv->request_natural_height = natural_height;
+        }
 
-      priv->request_height_for_width = for_width;
+      cached_size_request->min_size = min_height;
+      cached_size_request->natural_size = natural_height;
+      cached_size_request->for_size = for_width;
+      cached_size_request->age = priv->cached_height_age;
+
+      priv->cached_height_age ++;
+
       priv->needs_height_request = FALSE;
     }
+
+  if (!priv->min_height_set)
+    priv->request_min_height = cached_size_request->min_size;
+
+  if (!priv->natural_height_set)
+    priv->request_natural_height = cached_size_request->natural_size;
 
   if (min_height_p)
     *min_height_p = priv->request_min_height;
@@ -6619,6 +6755,7 @@ clutter_actor_set_parent (ClutterActor *self,
 {
   ClutterActorPrivate *priv;
   ClutterTextDirection text_dir;
+  ClutterMainContext *ctx;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
@@ -6647,6 +6784,14 @@ clutter_actor_set_parent (ClutterActor *self,
 
   g_object_ref_sink (self);
   priv->parent_actor = parent;
+
+  ctx = _clutter_context_get_default ();
+
+  /* if push_internal() has been called then we automatically set
+   * the flag on the actor
+   */
+  if (ctx->internal_child)
+    CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_INTERNAL_CHILD);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
@@ -6825,17 +6970,22 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_ref (self);
 
-      if (CLUTTER_IS_CONTAINER (priv->parent_actor))
+      /* go through the Container implementation if this is a regular
+       * child and not an internal one
+       */
+      if (CLUTTER_IS_CONTAINER (priv->parent_actor) &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
         {
           ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
-          /* Note, will call unparent() */
+
+          /* this will have to call unparent() */
           clutter_container_remove_actor (parent, self);
         }
       else
         clutter_actor_unparent (self);
 
-      if (CLUTTER_IS_CONTAINER (new_parent))
           /* Note, will call parent() */
+      if (CLUTTER_IS_CONTAINER (new_parent))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
         clutter_actor_set_parent (self, new_parent);
@@ -8317,6 +8467,53 @@ clutter_actor_box_from_vertices (ClutterActorBox     *box,
   box->y2 = y_2;
 }
 
+/**
+ * clutter_actor_box_interpolate:
+ * @initial: the initial #ClutterActorBox
+ * @final: the final #ClutterActorBox
+ * @progress: the interpolation progress
+ * @result: (out): return location for the interpolation
+ *
+ * Interpolates between @initial and @final #ClutterActorBox<!-- -->es
+ * using @progress
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_box_interpolate (const ClutterActorBox *initial,
+                               const ClutterActorBox *final,
+                               gdouble                progress,
+                               ClutterActorBox       *result)
+{
+  g_return_if_fail (initial != NULL);
+  g_return_if_fail (final != NULL);
+  g_return_if_fail (result != NULL);
+
+  result->x1 = initial->x1 + (final->x1 - initial->x1) * progress;
+  result->y1 = initial->y1 + (final->y1 - initial->y1) * progress;
+  result->x2 = initial->x2 + (final->x2 - initial->x2) * progress;
+  result->y2 = initial->y2 + (final->y2 - initial->y2) * progress;
+}
+
+/**
+ * clutter_actor_box_clamp_to_pixel:
+ * @box: (inout): the #ClutterActorBox to clamp
+ *
+ * Clamps the components of @box to the nearest integer
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
+{
+  g_return_if_fail (box != NULL);
+
+  box->x1 = floorf (box->x1 + 0.5);
+  box->y1 = floorf (box->y1 + 0.5);
+  box->x2 = floorf (box->x2 + 0.5);
+  box->y2 = floorf (box->y2 + 0.5);
+}
+
 /******************************************************************************/
 
 struct _ShaderData
@@ -9448,7 +9645,8 @@ clutter_actor_set_text_direction (ClutterActor         *self,
  * Retrieves the value set using clutter_actor_set_text_direction()
  *
  * If no text direction has been previously set, the default text
- * direction will be returned
+ * direction, as returned by clutter_get_default_text_direction(), will
+ * be returned instead
  *
  * Return value: the #ClutterTextDirection for the actor
  *
@@ -9469,4 +9667,84 @@ clutter_actor_get_text_direction (ClutterActor *self)
     priv->text_direction = clutter_get_default_text_direction ();
 
   return priv->text_direction;
+}
+
+/**
+ * clutter_actor_push_internal:
+ *
+ * Should be used by actors implementing the #ClutterContainer and with
+ * internal children added through clutter_actor_set_parent(), for instance:
+ *
+ * |[
+ *   static void
+ *   my_actor_init (MyActor *self)
+ *   {
+ *     self->priv = SELF_ACTOR_GET_PRIVATE (self);
+ *
+ *     clutter_actor_push_internal ();
+ *
+ *     /&ast; calling clutter_actor_set_parent() now will result in
+ *      &ast; the internal flag being set on a child of MyActor
+ *      &ast;/
+ *
+ *     /&ast; internal child: a background texture &ast;/
+ *     self->priv->background_tex = clutter_texture_new ();
+ *     clutter_actor_set_parent (self->priv->background_tex,
+ *                               CLUTTER_ACTOR (self));
+ *
+ *     /&ast; internal child: a label &ast;/
+ *     self->priv->label = clutter_text_new ();
+ *     clutter_actor_set_parent (self->priv->label,
+ *                               CLUTTER_ACTOR (self));
+ *
+ *     clutter_actor_pop_internal ();
+ *
+ *     /&ast; calling clutter_actor_set_parent() now will not result in
+ *      &ast; the internal flag being set on a child of MyActor
+ *      &ast;/
+ *   }
+ * ]|
+ *
+ * This function will be used by Clutter to toggle an "internal child"
+ * flag whenever clutter_actor_set_parent() is called; internal children
+ * are handled differently by Clutter, specifically when destroying their
+ * parent.
+ *
+ * Call clutter_actor_pop_internal() when you finished adding internal
+ * children.
+ *
+ * Nested calls to clutter_actor_push_internal() are allowed, but each
+ * one must by followed by a clutter_actor_pop_internal() call.
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_push_internal (void)
+{
+  ClutterMainContext *ctx = _clutter_context_get_default ();
+
+  ctx->internal_child += 1;
+}
+
+/**
+ * clutter_actor_pop_internal:
+ *
+ * Disables the effects of clutter_actor_pop_internal()
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_pop_internal (void)
+{
+  ClutterMainContext *ctx = _clutter_context_get_default ();
+
+  if (ctx->internal_child == 0)
+    {
+      g_warning ("Mismatched %s: you need to call "
+                 "clutter_actor_push_composite() at least once before "
+                 "calling this function", G_STRFUNC);
+      return;
+    }
+
+  ctx->internal_child -= 1;
 }

@@ -41,14 +41,7 @@ AM_CPPFLAGS = \
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
-
-LDADD = \
-	$(CLUTTER_LT_LDFLAGS) \
-	-export-dynamic \
-	-export-symbols-regex "^(clutter|cogl|json).*" \
-	-rpath $(libdir) \
-	$(NULL)
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
 # please, keep this sorted alphabetically
 source_h =					\
@@ -152,7 +145,6 @@ source_c = \
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
-	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-layout-manager.c	\
 	$(srcdir)/clutter-layout-meta.c		\
@@ -176,10 +168,15 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
-	$(srcdir)/clutter-timeout-interval.c    \
 	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
+	$(NULL)
+
+source_c_priv = \
+	$(srcdir)/clutter-id-pool.c 		\
+	$(srcdir)/clutter-profile.c		\
+	$(srcdir)/clutter-timeout-interval.c    \
 	$(NULL)
 
 source_h_priv = \
@@ -192,6 +189,7 @@ source_h_priv = \
 	$(srcdir)/clutter-id-pool.h 		\
 	$(srcdir)/clutter-script-private.h	\
 	$(srcdir)/clutter-timeout-interval.h    \
+	$(srcdir)/clutter-profile.h		\
 	$(NULL)
 
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
@@ -212,9 +210,16 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
 	$(source_h) \
+	$(source_c_priv) \
 	$(source_h_priv)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+	$(CLUTTER_LT_LDFLAGS) \
+	$(GCOV_LDFLAGS) \
+	-export-dynamic \
+	-export-symbols-regex "^(clutter|cogl|json).*" \
+	-rpath $(libdir) \
+	$(NULL)
 
 lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)
 
@@ -316,3 +321,6 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
+
+gcov_sources = $(source_c)
+include $(top_srcdir)/build/autotools/Makefile.am.gcov

@@ -93,21 +93,26 @@ typedef void (*ClutterCallback) (ClutterActor *actor,
 
 /**
  * ClutterActorFlags:
- * @CLUTTER_ACTOR_MAPPED: the actor will be painted (is visible, and inside a toplevel, and all parents visible)
+ * @CLUTTER_ACTOR_MAPPED: the actor will be painted (is visible, and inside
+ *   a toplevel, and all parents visible)
  * @CLUTTER_ACTOR_REALIZED: the resources associated to the actor have been
  *   allocated
  * @CLUTTER_ACTOR_REACTIVE: the actor 'reacts' to mouse events emmitting event
  *   signals
  * @CLUTTER_ACTOR_VISIBLE: the actor has been shown by the application program
+ * @CLUTTER_ACTOR_NO_LAYOUT: the actor provides an explicit layout management
+ *   policy for its children; this flag will prevent Clutter from automatic
+ *   queueing of relayout and will defer all layouting to the actor itself
  *
  * Flags used to signal the state of an actor.
  */
 typedef enum
 {
-  CLUTTER_ACTOR_MAPPED   = 1 << 1,
-  CLUTTER_ACTOR_REALIZED = 1 << 2,
-  CLUTTER_ACTOR_REACTIVE = 1 << 3,
-  CLUTTER_ACTOR_VISIBLE  = 1 << 4
+  CLUTTER_ACTOR_MAPPED    = 1 << 1,
+  CLUTTER_ACTOR_REALIZED  = 1 << 2,
+  CLUTTER_ACTOR_REACTIVE  = 1 << 3,
+  CLUTTER_ACTOR_VISIBLE   = 1 << 4,
+  CLUTTER_ACTOR_NO_LAYOUT = 1 << 5
 } ClutterActorFlags;
 
 /**
@@ -531,6 +536,9 @@ gboolean clutter_actor_is_in_clone_paint              (ClutterActor        *self
 void                 clutter_actor_set_text_direction (ClutterActor         *self,
                                                        ClutterTextDirection  text_dir);
 ClutterTextDirection clutter_actor_get_text_direction (ClutterActor         *self);
+
+void                 clutter_actor_push_internal      (void);
+void                 clutter_actor_pop_internal       (void);
 
 G_END_DECLS
 

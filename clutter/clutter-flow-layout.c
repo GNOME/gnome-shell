@@ -554,7 +554,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               clutter_actor_get_preferred_width (child, item_height,
                                                  &child_min,
                                                  &child_natural);
-              item_width = MIN (item_width, child_min);
+              item_width = MIN (item_width, child_natural);
 
               clutter_actor_get_preferred_height (child, item_width,
                                                   &child_min,
@@ -593,7 +593,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               clutter_actor_get_preferred_width (child, item_height,
                                                  &child_min,
                                                  &child_natural);
-              item_width = MIN (item_width, child_min);
+              item_width = MIN (item_width, child_natural);
 
               clutter_actor_get_preferred_height (child, item_width,
                                                   &child_min,

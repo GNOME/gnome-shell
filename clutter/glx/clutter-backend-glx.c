@@ -42,6 +42,7 @@
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
+#include "clutter-profile.h"
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
@@ -51,12 +52,13 @@
 
 #include "cogl/cogl.h"
 
+
 G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
 
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
 
-static gchar *clutter_vblank_name = NULL;
+static gchar    *clutter_vblank_name = NULL;
 
 #ifdef __linux__
 #define DRM_VBLANK_RELATIVE 0x1;
@@ -362,46 +364,86 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
                                    GLXFBConfig       *config)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
-  int attributes[] = {
-    GLX_DRAWABLE_TYPE,  GLX_WINDOW_BIT,
-    GLX_RENDER_TYPE,    GLX_RGBA_BIT,
-    GLX_DOUBLEBUFFER,   GL_TRUE,
-    GLX_RED_SIZE,       1,
-    GLX_GREEN_SIZE,     1,
-    GLX_BLUE_SIZE,      1,
-    GLX_ALPHA_SIZE,     1,
-    GLX_DEPTH_SIZE,     1,
-    GLX_STENCIL_SIZE,   1,
+  GLXFBConfig *configs = NULL;
+  gboolean use_argb = clutter_x11_get_use_argb_visual ();
+  int n_configs, i;
+  static const int attributes[] = {
+    GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
+    GLX_RENDER_TYPE,      GLX_RGBA_BIT,
+    GLX_DOUBLEBUFFER,     GL_TRUE,
+    GLX_RED_SIZE,         1,
+    GLX_GREEN_SIZE,       1,
+    GLX_BLUE_SIZE,        1,
+    GLX_ALPHA_SIZE,       1,
+    GLX_DEPTH_SIZE,       1,
+    GLX_STENCIL_SIZE,     1,
     None
   };
-  GLXFBConfig *configs = NULL;
-  int n_configs;
 
   if (backend_x11->xdpy == None || backend_x11->xscreen == None)
     return FALSE;
 
+  /* If we don't already have a cached config then try to get one */
+  if (!backend_glx->found_fbconfig)
+    {
+      CLUTTER_NOTE (BACKEND,
+                    "Retrieving GL fbconfig, dpy: %p, xscreen; %p (%d)",
+                    backend_x11->xdpy,
+                    backend_x11->xscreen,
+                    backend_x11->xscreen_num);
+
+      configs = glXChooseFBConfig (backend_x11->xdpy,
+                                   backend_x11->xscreen_num,
+                                   attributes,
+                                   &n_configs);
+      if (configs)
+        {
+          if (use_argb)
+            {
+              for (i = 0; i < n_configs; i++)
+                {
+                  XVisualInfo *vinfo;
+
+                  vinfo = glXGetVisualFromFBConfig (backend_x11->xdpy,
+                                                    configs[i]);
+                  if (vinfo == None)
+                    continue;
+
+                  if (vinfo->depth == 32 &&
+                      (vinfo->red_mask   == 0xff0000 &&
+                       vinfo->green_mask == 0x00ff00 &&
+                       vinfo->blue_mask  == 0x0000ff))
+                    {
+                      CLUTTER_NOTE (BACKEND,
+                                    "Found GLX visual ARGB [index:%d]", i);
+
+                      backend_glx->found_fbconfig = TRUE;
+                      backend_glx->fbconfig = configs[i];
+
+                      goto out;
+                    }
+                }
+
+              /* If we make it here then we didn't find an RGBA config so
+                 we'll fall back to using an RGB config */
+              CLUTTER_NOTE (BACKEND, "ARGB visual requested, but none found");
+            }
+
+          if (n_configs >= 1)
+            {
+              backend_glx->found_fbconfig = TRUE;
+              backend_glx->fbconfig = configs[0];
+            }
+
+        out:
+          XFree (configs);
+        }
+    }
+
   if (backend_glx->found_fbconfig)
     {
       *config = backend_glx->fbconfig;
-      return TRUE;
-    }
 
-  CLUTTER_NOTE (BACKEND,
-                "Retrieving GL fbconfig, dpy: %p, xscreen; %p (%d)",
-                backend_x11->xdpy,
-                backend_x11->xscreen,
-                backend_x11->xscreen_num);
-
-  configs = glXChooseFBConfig (backend_x11->xdpy,
-                               backend_x11->xscreen_num,
-                               attributes,
-                               &n_configs);
-  if (configs)
-    {
-      *config = configs[0];
-      backend_glx->found_fbconfig = TRUE;
-      backend_glx->fbconfig = configs[0];
-      XFree (configs);
       return TRUE;
     }
   else
@@ -436,12 +478,14 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
         {
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to find suitable fbconfig for GL context");
+                       "Unable to find a suitable GLXFBConfig for "
+                       "the GLX context");
           return FALSE;
         }
 
-      CLUTTER_NOTE (GL, "Creating GL Context (display: %p)",
+      CLUTTER_NOTE (GL, "Creating GLX Context (display: %p)",
                     backend_x11->xdpy);
+
       backend_glx->gl_context =
         glXCreateNewContext (backend_x11->xdpy,
                              config,
@@ -460,7 +504,8 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
       is_direct = glXIsDirect (backend_x11->xdpy,
                                backend_glx->gl_context);
 
-      CLUTTER_NOTE (GL, "Setting %s context",
+      CLUTTER_NOTE (GL,
+                    "Setting %s context",
                     is_direct ? "direct" : "indirect");
       _cogl_set_indirect_context (!is_direct);
     }
@@ -611,6 +656,16 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   ClutterStageGLX *stage_glx;
   ClutterStageX11 *stage_x11;
   ClutterStageWindow *impl;
+  CLUTTER_STATIC_TIMER (painting_timer,
+                        "Redrawing", /* parent */
+                        "Painting actors",
+                        "The time spent painting actors",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (swapbuffers_timer,
+                        "Redrawing", /* parent */
+                        "glXSwapBuffers",
+                        "The time spent blocked by glXSwapBuffers",
+                        0 /* no application private data */);
 
   impl = _clutter_stage_get_window (stage);
   if (G_UNLIKELY (impl == NULL))
@@ -625,9 +680,11 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   stage_x11 = CLUTTER_STAGE_X11 (impl);
   stage_glx = CLUTTER_STAGE_GLX (impl);
 
+  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   cogl_flush ();
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
 
   if (stage_x11->xwin != None)
     {
@@ -639,7 +696,10 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
       CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
                     backend_x11->xdpy,
                     (unsigned long) stage_x11->xwin);
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, stage_x11->xwin);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 }
 

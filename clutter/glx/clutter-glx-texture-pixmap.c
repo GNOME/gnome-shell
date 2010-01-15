@@ -250,7 +250,7 @@ clutter_glx_texture_pixmap_free_rectangle (ClutterGLXTexturePixmap *texture)
 
           cogl_texture_get_gl_texture (cogl_tex, &gl_handle, &gl_target);
 
-          if (gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+          if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
             glDeleteTextures (1, &gl_handle);
         }
 
@@ -351,12 +351,12 @@ create_cogl_texture (ClutterTexture *texture,
       using_rectangle = TRUE;
 
       glGenTextures (1, &tex);
-      glBindTexture (CGL_TEXTURE_RECTANGLE_ARB, tex);
-      glTexImage2D (CGL_TEXTURE_RECTANGLE_ARB, 0,
+      glBindTexture (GL_TEXTURE_RECTANGLE_ARB, tex);
+      glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
                     gl_format, width, height,
                     0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-      handle = cogl_texture_new_from_foreign (tex, CGL_TEXTURE_RECTANGLE_ARB,
+      handle = cogl_texture_new_from_foreign (tex, GL_TEXTURE_RECTANGLE_ARB,
                                               width, height,
                                               0, 0,
                                               cogl_format | COGL_BGR_BIT |

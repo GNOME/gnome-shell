@@ -1,0 +1,33 @@
+if GCOV_ENABLED
+gcov-report.txt: gcov-clean
+	$(QUIET_GEN)(rm -f $@; \
+	echo -e "Test coverage for Clutter:\n" >> $@; \
+	total_covered=0; total_actual=0; \
+	for file in $(filter %.c,$(gcov_sources)); do \
+		gcov -o .libs/$${file/.c/.gcda} $$file > /dev/null; \
+		if test -f $$file.gcov; then \
+			actual=`grep -v ' -:' $$file.gcov | wc -l`; \
+			uncovered=`grep '#####:' $$file.gcov | wc -l`; \
+			covered=$$((actual - uncovered)); \
+			total_covered=$$((total_covered + covered)); \
+			total_actual=$$((total_actual + actual)); \
+			perl $(top_builddir)/build/gen-gcov.pl $$file.gcov; \
+		fi \
+	done >> $@; \
+	cd $(abs_srcdir); \
+	echo -e "\nSource lines: $$total_actual\nCovered statements: $$total_covered\nTotal coverage: $$((($$total_covered * 100) / $$total_actual))%" >> $@)
+
+gcov: gcov-report.txt
+	@echo ""; cat gcov-report.txt
+gcov-clean:
+	@find . -name "*.gcda" -o -name "*.gcov" -delete
+else
+gcov-report.txt:
+	@true
+gcov-clean:
+	@true
+gcov:
+	@echo "Need to reconfigure with --enable-gcov"
+endif	# GCOV_ENABLED
+
+.PHONY: gcov gcov-clean gcov-report.txt

@@ -12,7 +12,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [1])
-m4_define([clutter_micro_version], [3])
+m4_define([clutter_micro_version], [5])
 
 m4_define([clutter_release_status],
           [m4_if(m4_eval(clutter_micro_version % 2), [1], [git],
@@ -42,7 +42,7 @@ m4_define([clutter_api_version], [1.0])
 #   clutter 1.2.10 -> 100 * 2 + 10 = 210, interface age = 4 -> 206
 #   ...
 #
-m4_define([clutter_interface_age], [1])
+m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
 AC_PREREQ([2.59])
@@ -638,19 +638,6 @@ AS_CASE([$with_json],
 AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
-dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
-
-PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
-
-AC_SUBST(CLUTTER_REQUIRES)
-
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS"
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
-
-AC_SUBST(CLUTTER_CFLAGS)
-AC_SUBST(CLUTTER_LIBS)
-
 dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
@@ -702,6 +689,62 @@ AS_CASE([$enable_cogl_debug],
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
 
+m4_define([profile_default], [no])
+AC_ARG_ENABLE(profile,
+              AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
+                             [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
+	      [],
+              [enable_profile=profile_default])
+
+AS_CASE([$enable_profile],
+
+	[yes], [
+            if test "x$GCC" = "xyes"; then
+              PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
+              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+              CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
+              if test "x$enable_debug" = "xyes"; then
+                  CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"
+              fi
+            else
+              AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
+            fi
+	],
+	[no], [
+	    CLUTTER_PROFILE_CFLAGS=""
+	    CLUTTER_PROFILE_LDFLAGS=""
+	],
+	[*],   [AC_MSG_ERROR([Invalid value for --enable-profile])]
+)
+AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
+AC_SUBST(CLUTTER_PROFILE_CFLAGS)
+AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
+
+dnl === Coverage report =======================================================
+
+AC_PATH_PROG([GCOV], [gcov], [enable_gcov=no])
+
+AC_MSG_CHECKING([whether to build with gcov testing])
+
+AC_ARG_ENABLE([gcov],
+              [AS_HELP_STRING([--enable-gcov],
+                              [Whether to enable coverage testing (requires gcc 
+and gcov)])],
+              [],
+              [enable_gcov=no])
+
+AS_IF([test "x$enable_gcov" = "xyes" && test "x$GCC" = "xyes"],
+      [
+        GCOV_CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage"
+        GCOV_LDFLAGS="-lgcov"
+      ]
+)
+
+AM_CONDITIONAL([GCOV_ENABLED], [test "x$enable_gcov" = "xyes"])
+AC_SUBST([GCOV_CFLAGS])
+AC_SUBST([GCOV_LDFLAGS])
+AC_MSG_RESULT([$enable_gcov])
+
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only on development releases
@@ -722,6 +765,19 @@ AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
 )
 
 AC_SUBST(MAINTAINER_CFLAGS)
+
+dnl === Dependencies, compiler flags and linker libraries =====================
+CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
+
+PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
+
+AC_SUBST(CLUTTER_REQUIRES)
+
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS"
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS"
+
+AC_SUBST(CLUTTER_CFLAGS)
+AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
@@ -876,6 +932,8 @@ echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        COGL debug level: ${enable_cogl_debug}"
 echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
+echo "        Profiling enabled: ${enable_profile}"
+echo "        Enable coverage tests: ${enable_gcov}"
 
 # Documentation
 echo ""

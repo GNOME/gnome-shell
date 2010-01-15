@@ -3,32 +3,12 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
-#define FONT "Mono Bold 22px"
+#define FONT "Mono Bold 24px"
 
-static gchar *runes =
+static const gchar *runes =
 "ᚠᛇᚻ᛫ᛒᛦᚦ᛫ᚠᚱᚩᚠᚢᚱ᛫ᚠᛁᚱᚪ᛫ᚷᛖᚻᚹᛦᛚᚳᚢᛗ\n"
 "ᛋᚳᛖᚪᛚ᛫ᚦᛖᚪᚻ᛫ᛗᚪᚾᚾᚪ᛫ᚷᛖᚻᚹᛦᛚᚳ᛫ᛗᛁᚳᛚᚢᚾ᛫ᚻᛦᛏ᛫ᛞᚫᛚᚪᚾ\n"
 "ᚷᛁᚠ᛫ᚻᛖ᛫ᚹᛁᛚᛖ᛫ᚠᚩᚱ᛫ᛞᚱᛁᚻᛏᚾᛖ᛫ᛞᚩᛗᛖᛋ᛫ᚻᛚᛇᛏᚪᚾ᛬\n";
-
-
-static void
-cursor_event (ClutterText        *text,
-              ClutterGeometry *geometry)
-{
-  gint y;
-
-  y = clutter_actor_get_y (CLUTTER_ACTOR (text));
-
-  if (y + geometry->y < 50)
-    {
-      clutter_actor_set_y (CLUTTER_ACTOR (text), y + 100);
-    }
-  else if (y + geometry->y > 720)
-    {
-      clutter_actor_set_y (CLUTTER_ACTOR (text), y - 100);
-    }
-
-}
 
 G_MODULE_EXPORT gint
 test_text_main (gint    argc,
@@ -77,8 +57,6 @@ test_text_main (gint    argc,
     }
   else
     clutter_text_set_text (CLUTTER_TEXT (text), runes);
-
-  g_signal_connect (text, "cursor-event", G_CALLBACK (cursor_event), NULL);
 
   clutter_actor_set_size (stage, 1024, 768);
   clutter_actor_show (stage);

@@ -507,6 +507,7 @@ ClutterScrollDirection clutter_event_get_scroll_direction   (ClutterEvent     *e
 guint32                clutter_keysym_to_unicode            (guint             keyval);
 
 guint32                clutter_get_current_event_time       (void);
+G_CONST_RETURN ClutterEvent *clutter_get_current_event      (void);
 
 ClutterInputDeviceType clutter_input_device_get_device_type (ClutterInputDevice *device);
 gint                   clutter_input_device_get_device_id   (ClutterInputDevice *device);

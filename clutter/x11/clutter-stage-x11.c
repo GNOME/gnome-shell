@@ -525,15 +525,20 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
 static void
 update_wm_hints (ClutterStageX11 *stage_x11)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackend *backend;
   ClutterBackendX11 *backend_x11;
   XWMHints wm_hints;
 
-  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
   if (stage_x11->wm_state & STAGE_X11_WITHDRAWN)
     return;
+
+  if (stage_x11->is_foreign_xwin)
+    return;
+
+  backend = clutter_get_default_backend ();
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   wm_hints.flags = StateHint;
   wm_hints.initial_state = NormalState;
@@ -573,7 +578,7 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
 
   if (stage_x11->xwin != None)
     {
-      if (do_raise)
+      if (do_raise && !stage_x11->is_foreign_xwin)
         {
           CLUTTER_NOTE (BACKEND, "Raising stage[%lu]",
                         (unsigned long) stage_x11->xwin);
@@ -599,7 +604,8 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
 
       clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
 
-      XMapWindow (backend_x11->xdpy, stage_x11->xwin);
+      if (!stage_x11->is_foreign_xwin)
+        XMapWindow (backend_x11->xdpy, stage_x11->xwin);
     }
 }
 
@@ -622,9 +628,8 @@ clutter_stage_x11_hide (ClutterStageWindow *stage_window)
 
       clutter_actor_unmap (CLUTTER_ACTOR (stage_x11->wrapper));
 
-      XWithdrawWindow (backend_x11->xdpy,
-                       stage_x11->xwin,
-                       0);
+      if (!stage_x11->is_foreign_xwin)
+        XWithdrawWindow (backend_x11->xdpy, stage_x11->xwin, 0);
     }
 }
 
@@ -765,8 +770,10 @@ clutter_x11_get_stage_from_window (Window win)
  * along the lines of clutter_backend_x11_get_foreign_visual () or perhaps
  * clutter_stage_x11_get_foreign_visual ()
  *
- * Return value: An XVisualInfo suitable for creating a foreign stage.
- *               You should free this using XFree.
+ * Return value: An XVisualInfo suitable for creating a foreign stage. Use
+ *   XFree() to free the returned value instead
+ *
+ * Deprecated: 1.2: Use clutter_x11_get_visual_info() instead
  *
  * Since: 0.4
  */

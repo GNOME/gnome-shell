@@ -58,13 +58,26 @@ typedef enum {
   CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
   CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
   CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
-  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3, /* Used by stage to indicate GL
-					  * viewport / perspective etc
-					  * needs (re)setting.
-                                          */
-  CLUTTER_ACTOR_IN_PAINT       = 1 << 4, /* Used to avoid recursion */
-  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5, /* Used to avoid recursion */
-  CLUTTER_STAGE_IN_RESIZE      = 1 << 6
+
+  /* Used by the stage to indicate GL viewport / perspective etc needs
+   * (re)setting.
+   */
+  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3,
+
+  /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_PAINT       = 1 << 4,
+
+  /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5,
+
+  /* Used by the stage if resizing is an asynchronous operation (like on
+   * X11) to delay queueing relayouts until we got a notification from the
+   * event handling
+   */
+  CLUTTER_STAGE_IN_RESIZE      = 1 << 6,
+
+  /* a flag for internal children of Containers */
+  CLUTTER_ACTOR_INTERNAL_CHILD = 1 << 7
 } ClutterPrivateFlags;
 
 struct _ClutterInputDevice
@@ -128,11 +141,14 @@ struct _ClutterMainContext
   GSList              *input_devices;   /* For extra input devices, i.e
                                            MultiTouch */
 
+  ClutterEvent *current_event;
   guint32 last_event_time;
 
   gulong redraw_count;
 
   GList *repaint_funcs;
+
+  gint internal_child;
 };
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())

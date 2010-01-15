@@ -68,6 +68,7 @@
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
+#include "clutter-profile.h"
 
 #include "cogl/cogl.h"
 
@@ -96,6 +97,7 @@ struct _ClutterStagePrivate
   guint is_user_resizable      : 1;
   guint use_fog                : 1;
   guint throttle_motion_events : 1;
+  guint use_alpha              : 1;
 };
 
 enum
@@ -110,7 +112,8 @@ enum
   PROP_TITLE,
   PROP_USER_RESIZE,
   PROP_USE_FOG,
-  PROP_FOG
+  PROP_FOG,
+  PROP_USE_ALPHA
 };
 
 enum
@@ -119,6 +122,7 @@ enum
   UNFULLSCREEN,
   ACTIVATE,
   DEACTIVATE,
+  DELETE_EVENT,
 
   LAST_SIGNAL
 };
@@ -243,17 +247,36 @@ clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglColor stage_color;
+  guint8 real_alpha;
+  CLUTTER_STATIC_TIMER (stage_clear_timer,
+                        "Painting actors", /* parent */
+                        "Stage clear",
+                        "The time spent clearing the stage",
+                        0 /* no application private data */);
 
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
+  /* composite the opacity to the stage color */
+  real_alpha = clutter_actor_get_opacity (self)
+             * priv->color.alpha
+             / 255;
+
+  /* we use the real alpha to clear the stage if :use-alpha is
+   * set; the effect depends entirely on how the Clutter backend
+   */
   cogl_color_set_from_4ub (&stage_color,
                            priv->color.red,
                            priv->color.green,
                            priv->color.blue,
-                           priv->color.alpha);
+                           priv->use_alpha ? real_alpha
+                                           : 255);
+  cogl_color_premultiply (&stage_color);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
 
   if (priv->use_fog)
     {
@@ -270,11 +293,6 @@ clutter_stage_paint (ClutterActor *self)
   else
     cogl_disable_fog ();
 
-#if 0
-  CLUTTER_NOTE (PAINT, "Proxying the paint to the stage implementation");
-  _clutter_stage_window_paint (priv->impl);
-#endif
-
   /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
@@ -287,9 +305,9 @@ clutter_stage_pick (ClutterActor       *self,
    * emitted for the stage itself. The stage's pick id is effectively handled
    * by the call to cogl_clear done in clutter-main.c:_clutter_do_pick_async()
    */
-
   clutter_container_foreach (CLUTTER_CONTAINER (self),
-                             CLUTTER_CALLBACK (clutter_actor_paint), NULL);
+                             CLUTTER_CALLBACK (clutter_actor_paint),
+                             NULL);
 }
 
 static void
@@ -608,6 +626,18 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
     CLUTTER_CONTEXT ()->redraw_count += 1;
 }
 
+static gboolean
+clutter_stage_real_delete_event (ClutterStage *stage,
+                                 ClutterEvent *event)
+{
+  if (clutter_stage_is_default (stage))
+    clutter_main_quit ();
+  else
+    clutter_actor_destroy (CLUTTER_ACTOR (stage));
+
+  return TRUE;
+}
+
 static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
@@ -660,6 +690,10 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_fog (stage, g_value_get_boxed (value));
       break;
 
+    case PROP_USE_ALPHA:
+      clutter_stage_set_use_alpha (stage, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -710,6 +744,10 @@ clutter_stage_get_property (GObject    *gobject,
 
     case PROP_FOG:
       g_value_set_boxed (value, &priv->fog);
+      break;
+
+    case PROP_USE_ALPHA:
+      g_value_set_boolean (value, priv->use_alpha);
       break;
 
     default:
@@ -771,7 +809,6 @@ clutter_stage_finalize (GObject *object)
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
-
 
 static void
 clutter_stage_class_init (ClutterStageClass *klass)
@@ -940,6 +977,24 @@ clutter_stage_class_init (ClutterStageClass *klass)
   g_object_class_install_property (gobject_class, PROP_FOG, pspec);
 
   /**
+   * ClutterStage:use-alpha:
+   *
+   * Whether the #ClutterStage should honour the alpha component of the
+   * #ClutterStage:color property when painting. If Clutter is run under
+   * a compositing manager this will result in the stage being blended
+   * with the underlying window(s)
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("use-alpha",
+                                "Use Alpha",
+                                "Whether to honour the alpha component of "
+                                "the stage color",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_ALPHA, pspec);
+
+  /**
    * ClutterStage::fullscreen
    * @stage: the stage which was fullscreened
    *
@@ -1007,9 +1062,41 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
+  /**
+   * ClutterStage::delete-event:
+   * @stage: the stage that received the event
+   * @event: a #ClutterEvent of type %CLUTTER_DELETE
+   *
+   * The ::delete-event signal is emitted when the user closes a
+   * #ClutterStage window using the window controls.
+   *
+   * Clutter by default will call clutter_main_quit() if @stage is
+   * the default stage, and clutter_actor_destroy() for any other
+   * stage.
+   *
+   * It is possible to override the default behaviour by connecting
+   * a new handler and returning %TRUE there.
+   *
+   * <note>This signal is emitted only on Clutter backends that
+   * embed #ClutterStage in native windows. It is not emitted for
+   * backends that use a static frame buffer.</note>
+   *
+   * Since: 1.2
+   */
+  stage_signals[DELETE_EVENT] =
+    g_signal_new (I_("delete-event"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterStageClass, delete_event),
+                  _clutter_boolean_handled_accumulator, NULL,
+                  clutter_marshal_BOOLEAN__BOXED,
+                  G_TYPE_BOOLEAN, 1,
+                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
   klass->fullscreen = clutter_stage_real_fullscreen;
   klass->activate = clutter_stage_real_activate;
   klass->deactivate = clutter_stage_real_deactivate;
+  klass->delete_event = clutter_stage_real_delete_event;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
@@ -1487,6 +1574,9 @@ clutter_stage_event (ClutterStage *stage,
       gboolean retval = FALSE;
 
       g_signal_emit_by_name (stage, "event", event, &retval);
+
+      if (!retval)
+        g_signal_emit_by_name (stage, "delete-event", event, &retval);
 
       return retval;
     }
@@ -2128,4 +2218,54 @@ clutter_stage_get_throttle_motion_events (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
   return stage->priv->throttle_motion_events;
+}
+
+/**
+ * clutter_stage_set_use_alpha:
+ * @stage: a #ClutterStage
+ * @use_alpha: whether the stage should honour the opacity or the
+ *   alpha channel of the stage color
+ *
+ * Sets whether the @stage should honour the #ClutterActor:opacity and
+ * the alpha channel of the #ClutterStage:color
+ *
+ * Since: 1.2
+ */
+void
+clutter_stage_set_use_alpha (ClutterStage *stage,
+                             gboolean      use_alpha)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->use_alpha != use_alpha)
+    {
+      priv->use_alpha = use_alpha;
+
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+
+      g_object_notify (G_OBJECT (stage), "use-alpha");
+    }
+}
+
+/**
+ * clutter_stage_get_use_alpha:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set using clutter_stage_set_use_alpha()
+ *
+ * Return value: %TRUE if the stage should honour the opacity and the
+ *   alpha channel of the stage color
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_stage_get_use_alpha (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return stage->priv->use_alpha;
 }
