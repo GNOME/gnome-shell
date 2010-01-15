@@ -874,7 +874,7 @@ clutter_param_fixed_get_type
 
 <SECTION>
 <FILE>clutter-feature</FILE>
-<TITLE>GL Features</TITLE>
+<TITLE>Features</TITLE>
 ClutterFeatureFlags
 clutter_feature_available
 clutter_feature_get_all

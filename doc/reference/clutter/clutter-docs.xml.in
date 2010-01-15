@@ -141,6 +141,7 @@
       <xi:include href="xml/clutter-stage-manager.xml"/>
       <xi:include href="xml/clutter-units.xml"/>
       <xi:include href="xml/clutter-util.xml"/>
+      <xi:include href="xml/clutter-feature.xml"/>
       <xi:include href="xml/clutter-version.xml"/>
     </chapter>
 
