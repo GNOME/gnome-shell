@@ -69,6 +69,16 @@ G_DEFINE_TYPE (ClutterDeviceManager, clutter_device_manager, G_TYPE_OBJECT);
 static void
 clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 {
+  /**
+   * ClutterDeviceManager::device-added:
+   * @manager: the #ClutterDeviceManager that emitted the signal
+   * @device: the newly added #ClutterInputDevice
+   *
+   * The ::device-added signal is emitted each time a device has been
+   * added to the #ClutterDeviceManager
+   *
+   * Since: 1.2
+   */
   manager_signals[DEVICE_ADDED] =
     g_signal_new (I_("device-added"),
                   G_TYPE_FROM_CLASS (klass),
@@ -77,8 +87,18 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   NULL, NULL,
                   clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  G_TYPE_POINTER);
+                  CLUTTER_TYPE_INPUT_DEVICE);
 
+  /**
+   * ClutterDeviceManager::device-removed:
+   * @manager: the #ClutterDeviceManager that emitted the signal
+   * @device: the removed #ClutterInputDevice
+   *
+   * The ::device-removed signal is emitted each time a device has been
+   * removed from the #ClutterDeviceManager
+   *
+   * Since: 1.2
+   */
   manager_signals[DEVICE_REMOVED] =
     g_signal_new (I_("device-removed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -87,7 +107,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   NULL, NULL,
                   clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  G_TYPE_POINTER);
+                  CLUTTER_TYPE_INPUT_DEVICE);
 }
 
 static void
