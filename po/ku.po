@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-04 21:35+0100\n"
-"PO-Revision-Date: 2007-03-04 21:37+0100\n"
+"POT-Creation-Date: 2010-01-16 00:11+0100\n"
+"PO-Revision-Date: 2010-01-16 00:08+0100\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
 "Language-Team: Kurdish <gnu-ku-wergerandin@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,60 +16,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10\n"
 "X-Rosetta-Export-Date: 2007-02-08 21:18+0000\n"
+"X-Poedit-Language: Kurdish\n"
 
-#: ../src/tools/metacity-message.c:150
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+msgid "Desktop"
+msgstr "Sermase"
+
+#: ../src/50-metacity-key.xml.in.h:1
+msgid "Window Management"
+msgstr "Rêvebirina Paceyan"
+
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "Bûyera zingilê"
+
+#: ../src/core/core.c:206
 #, c-format
-msgid "Usage: %s\n"
-msgstr "Bikaranîn: %s\n"
+msgid "Unknown window information request: %d"
+msgstr "Daxwaza nenas a agahiya paceyê: %d"
 
-#: ../src/tools/metacity-message.c:176
-#: ../src/util.c:133
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity, bêyî ku desteka moda kîtekît hebe hatiye berhevkirin.\n"
+#. Translators: %s is a window title
+#: ../src/core/delete.c:96
+#, fuzzy, c-format
+msgid "<tt>%s</tt> is not responding."
+msgstr "\"%s\" bersiv nade."
 
-#: ../src/delete.c:67
-#: ../src/delete.c:94
-#: ../src/metacity-dialog.c:50
-#: ../src/theme-parser.c:484
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "\"%s\" wekî hejmara tam ji hev nehate veçirandin"
+#: ../src/core/delete.c:101
+#, fuzzy
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"<big><b><tt>%s</tt> bersiv nade.</b></big>\n"
+"\n"
+"<i>dikarî demeke kurt li bendê bimînî ku bidome an jî dikarî sepanê bi "
+"kutekî bidî girtin.</i>"
 
-#: ../src/delete.c:74
-#: ../src/delete.c:101
-#: ../src/metacity-dialog.c:57
-#: ../src/theme-parser.c:493
-#: ../src/theme-parser.c:548
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "\"%1$s\" karakterên dawiya pêrista \"%2$s\" nehatin famririn."
+#: ../src/core/delete.c:110
+msgid "_Wait"
+msgstr ""
 
-#: ../src/delete.c:132
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Peyama \"%s\" ya ji karê qutiya ragihandinê hatiye nehate veçirandin\n"
+#: ../src/core/delete.c:110
+msgid "_Force Quit"
+msgstr "Bi _Zordariyê Derkeve"
 
-#: ../src/delete.c:267
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Di karê ku qutiya ragihandinê nîşan dide de çewtiya xwendinê: %s\n"
-
-#: ../src/delete.c:348
-#, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Dema diyaloga metacity dixwest der barê kuştina sepanekê de pirsekê bipirse çewtî çêbû: %s\n"
-
-#: ../src/delete.c:456
+#: ../src/core/delete.c:208
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Navê makîneyê nehate stendin: %s\n"
 
-#: ../src/display.c:346
+#: ../src/core/display.c:258
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr "Ji bo compozitingê pêveka wenda %s pêwist e"
+
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Dîmendera '%s' ya Pergala Paceya Xê venebû\n"
 
-#: ../src/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -77,2376 +83,364 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Girêdana bi dîmendera '%s' winda bû;\n"
-"ya pêşkêşkera Xê hate girtin ya te gerînendeyê paceyan kuşt yan jî te winda kir.\n"
+"ya pêşkêşkera Xê hate girtin ya te gerînendeyê paceyan kuşt yan jî te winda "
+"kir.\n"
 
-#: ../src/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "çewtiyeke mezin %d (%s) di xebitandinê de '%s'.\n"
 
-#: ../src/frames.c:1062
-msgid "Close Window"
-msgstr "Paceyê bigire"
-
-#: ../src/frames.c:1065
-msgid "Window Menu"
-msgstr "Menuya Paceyan"
-
-#: ../src/frames.c:1068
-msgid "Minimize Window"
-msgstr "Paceyê Kêmtirîn bike"
-
-#: ../src/frames.c:1071
-msgid "Maximize Window"
-msgstr "Paceyê Mezintirîn bike"
-
-#: ../src/frames.c:1074
-msgid "Unmaximize Window"
-msgstr "Paceyê Normal bike"
-
-#: ../src/frames.c:1077
-msgid "Roll Up Window"
-msgstr "Paceyê Darik Bike"
-
-#: ../src/frames.c:1080
-msgid "Unroll Window"
-msgstr "Darikî Pace Bike"
-
-#: ../src/frames.c:1083
-msgid "Keep Window On Top"
-msgstr ""
-
-#: ../src/frames.c:1086
-msgid "Remove Window From Top"
-msgstr ""
-
-#: ../src/frames.c:1089
-msgid "Always On Visible Workspace"
-msgstr "Her dem di Kargeha Xuya de"
-
-#: ../src/frames.c:1092
-#, fuzzy
-msgid "Put Window On Only One Workspace"
-msgstr "Paceyê bibe qada xebatê ya jor"
-
-#: ../src/keybindings.c:1081
+#: ../src/core/keybindings.c:680
 #, c-format
-msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
-msgstr "Bişkoka %s tevî bi guhêrkerên %x re ji aliyê sepaneke din wekî girêdana bişkokan tê bikaranîn\n"
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Bişkoka %s tevî bi guhêrkerên %x re ji aliyê sepaneke din wekî girêdana "
+"bişkokan tê bikaranîn\n"
 
-#: ../src/keybindings.c:2713
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Dema diyaloga metacity ya ji bo nîşandana çewtiyeke der barê fermanekê de dihate kirin çewtî çêbû: %s\n"
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
+msgstr ""
+"Di meşandina vê de çewtî <tt>%s</tt>:\n"
+"\n"
+"%s"
 
-#: ../src/keybindings.c:2818
+#: ../src/core/keybindings.c:2383
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "fermana %d nehatiye danasîn.\n"
 
-#: ../src/keybindings.c:3845
+#: ../src/core/keybindings.c:3337
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Tu fermanên termînalê nehatiye danasîn.\n"
 
-#: ../src/main.c:67
+#: ../src/core/main.c:131
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Mafê jibergiritnê (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
+"Ev nivîsbariyeke azad e; çavkaniya şertên jibergirtinê bibîne.\n"
+"Tu garantî nayê dayîn; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 
-#: ../src/main.c:171
+#: ../src/core/main.c:269
 msgid "Disable connection to session manager"
 msgstr "Girêdana ku bi rêveberiyê hatiye kirin betal bike"
 
-#: ../src/main.c:177
+#: ../src/core/main.c:275
 msgid "Replace the running window manager with Metacity"
 msgstr "Gerînendeyê paceyan yê dixebite bi Metacity biguherîne"
 
-#: ../src/main.c:183
+#: ../src/core/main.c:281
 msgid "Specify session management ID"
 msgstr "IDa rêveberiyê diyar bike"
 
-#: ../src/main.c:188
+#: ../src/core/main.c:286
 msgid "X Display to use"
 msgstr "Dîmendêra X ku were bikaranîn"
 
-#: ../src/main.c:194
+#: ../src/core/main.c:292
 msgid "Initialize session from savefile"
 msgstr "Nêvengê ji pelê tomarkirî bide destpêkirin"
 
-#: ../src/main.c:200
+#: ../src/core/main.c:298
 msgid "Print version"
 msgstr "Guhertoyê çap bike"
 
-#: ../src/main.c:352
+#: ../src/core/main.c:304
+msgid "Make X calls synchronous"
+msgstr "Bangên X'ê senkron bike"
+
+#: ../src/core/main.c:310
+msgid "Turn compositing on"
+msgstr ""
+
+#: ../src/core/main.c:316
+msgid "Turn compositing off"
+msgstr ""
+
+#: ../src/core/main.c:322
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Paceyên ku bêdekorasyon in û yên hatine mezintirînkirin neke dîmender tije"
+
+#: ../src/core/main.c:528
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Dema li pêristên dirban dihate lêgerîn çewtî çêbû: %s\n"
 
-#: ../src/main.c:368
+#: ../src/core/main.c:544
 #, fuzzy, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "Tu dirb nehate dîtin! Bawer bî bê ka pelrêça %s heye û dirbên ku tu dizanî dihundirîne yan na."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Tu dirb nehate dîtin! Bawer bî bê ka pelrêça %s heye û dirbên ku tu dizanî "
+"dihundirîne yan na."
 
-#: ../src/main.c:428
+#: ../src/core/main.c:603
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nûdestpêkirin biserneket: %s\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:68
-msgid "Mi_nimize"
-msgstr "_Biçûk bike"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:70
-msgid "Ma_ximize"
-msgstr "_Mezin bike"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:72
-msgid "Unma_ximize"
-msgstr "N_ormal bike"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:74
-msgid "Roll _Up"
-msgstr "_Darik bike"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:76
-msgid "_Unroll"
-msgstr "_Pace bike"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78
-msgid "_Move"
-msgstr "_Tevbigere"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:80
-msgid "_Resize"
-msgstr "_Mezinahiyê biguherîne"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
-msgid "Move Titlebar On_screen"
-msgstr "Darikê Sernav Li Ser _Dîmenderê Bikşîne"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:85
-msgid "_Close"
-msgstr "_Bigire"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:88
-msgid "Always on _Top"
-msgstr ""
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:90
-msgid "_Always on Visible Workspace"
-msgstr "Her dem di Kargeha _Xuya de"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
-msgid "_Only on This Workspace"
-msgstr "_Tenê di vê Kargehe de"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
-msgid "Move to Workspace _Left"
-msgstr "Bişîne Kargeha _Çep"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
-msgid "Move to Workspace R_ight"
-msgstr "Bişîne Kargeha _Rast"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
-msgid "Move to Workspace _Up"
-msgstr "Bişîne Kargeha Bij_or"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
-msgid "Move to Workspace _Down"
-msgstr "Move to Workspace bi_jêr"
-
-#: ../src/menu.c:191
-#: ../src/prefs.c:2197
-#: ../src/prefs.c:2732
-#, c-format
-msgid "Workspace %d"
-msgstr "Kargeha %d"
-
-#: ../src/menu.c:200
-msgid "Workspace 1_0"
-msgstr "Kargeha 1_0"
-
-#: ../src/menu.c:202
-#, c-format
-msgid "Workspace %s%d"
-msgstr "Kargeha %s%d"
-
-#: ../src/menu.c:407
-msgid "Move to Another _Workspace"
-msgstr "_Bişîne kargeheke din bike"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the shift key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
 #.
-#: ../src/metaaccellabel.c:105
-msgid "Shift"
-msgstr "Bikşîne"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the control key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
 #.
-#: ../src/metaaccellabel.c:111
-msgid "Ctrl"
-msgstr "Ctrl"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the alt key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
 #.
-#: ../src/metaaccellabel.c:117
-msgid "Alt"
-msgstr "Alt"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the meta key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:123
-msgid "Meta"
-msgstr "Meta"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the super key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:129
-msgid "Super"
-msgstr "Super"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the hyper key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:135
-msgid "Hyper"
-msgstr "Hîper"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod2 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:141
-msgid "Mod2"
-msgstr "Mod2"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod3 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:147
-msgid "Mod3"
-msgstr "Mod3"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod4 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:153
-msgid "Mod4"
-msgstr "Mod4"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod5 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:159
-msgid "Mod5"
-msgstr "Mod5"
-
-#: ../src/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" bersiv nade."
-
-#: ../src/metacity-dialog.c:97
-msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
-msgstr ""
-
-#: ../src/metacity-dialog.c:107
-msgid "_Wait"
-msgstr ""
-
-#: ../src/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "Bi _Zordariyê Derkeve"
-
-#: ../src/metacity-dialog.c:206
-msgid "Title"
-msgstr "Sernivîs"
-
-#: ../src/metacity-dialog.c:218
-msgid "Class"
-msgstr "Pol"
-
-#: ../src/metacity-dialog.c:244
-msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
-msgstr "Van pacena, taybetmendiya \"rewşa heyî tomar bikr\" destek nakin û di têketineke din de divê tu xwe bixwe ji nû ve bide destpêkirin."
-
-#: ../src/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Di meşandina \"%s\" de çewtiyek derket:\n"
-"%s"
-
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
-
-#: ../src/metacity.schemas.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Hê nehatiye sepandin) Gerîn, ne gorî sepanan gorî paceyan dixebite."
-
-#: ../src/metacity.schemas.in.h:2
-msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Çalakiya ku dema tu du caran li darikê sernavê bitikîne"
-
-#: ../src/metacity.schemas.in.h:4
-msgid "Activate window menu"
-msgstr "Menuya Paceyê Çalak bike"
-
-#: ../src/metacity.schemas.in.h:5
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Pergala bişkokên ku di darikê sernavan de ye"
-
-#: ../src/metacity.schemas.in.h:6
-msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:7
-msgid "Automatically raises the focused window"
-msgstr "Paceya hatiye lêhûrbûn jixweber bilind dike"
-
-#: ../src/metacity.schemas.in.h:8
-msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:9
-msgid "Close window"
-msgstr "Paceyê bigire"
-
-#: ../src/metacity.schemas.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Hin fermanên ku wekî bersiva girêdanên bişkokan were xebitandin"
-
-#: ../src/metacity.schemas.in.h:11
-msgid "Compositing Manager"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:12
-msgid "Control how new windows get focus"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:13
-msgid "Current theme"
-msgstr "Dirbê derbasdar"
-
-#: ../src/metacity.schemas.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Derengmayina wekî mîlîçirke ya ji bo vebijêrka bilindkirina bixweber"
-
-#: ../src/metacity.schemas.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:16
-msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr "Diyar dike ku bê ka sepan yan jî pergal wê dengê zengil derxe yan na, ji bo dengên zengil yên bêdeng dikare têkildarî \"zengilê dîtbarî\" jî were bikaranîn."
-
-#: ../src/metacity.schemas.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Taybetiyên çewt yên sepanên kevn yan jî sepanên çewt bigire"
-
-#: ../src/metacity.schemas.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Zengilê Dîtbarî Çalak Bike"
-
-#: ../src/metacity.schemas.in.h:19
-msgid "Hide all windows and focus desktop"
-msgstr "Hemû paceyan veşêre û li sermaseyê daqûl bibe"
-
-#: ../src/metacity.schemas.in.h:20
-msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:21
-msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:22
-msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:23
-msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:24
-msgid "If true, trade off usability for less resource usage"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:25
-msgid "Lower window below other windows"
-msgstr "Paceyan bişîne binê yên din"
-
-#: ../src/metacity.schemas.in.h:26
-msgid "Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Set this option to false to decouple raising from other user actions. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages, such as activation requests from pagers. This option is currently disabled in click-to-focus mode."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:27
-msgid "Maximize window"
-msgstr "Paceyê mezin bike"
-
-#: ../src/metacity.schemas.in.h:28
-msgid "Maximize window horizontally"
-msgstr "Paceyê ser pahnayê mezin bike"
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window vertically"
-msgstr "Paceyê ser dirêjahiyê mezin bike"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Minimize window"
-msgstr "Paceyê kêmtirîn bike"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Modifier to use for modified window click actions"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Derbasbûna ber bi paş ve ya di navbera panel û sermaseyê de zûzûka bike"
-
-#: ../src/metacity.schemas.in.h:33
-msgid "Move backwards between panels and the desktop with popup"
-msgstr "Derbasbûna ber bi paş ve ya di navbera panel û sermaseyê de bi paceya diyar bûye re bike"
-
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backwards between windows immediately"
-msgstr "Derbasbûna ber bi paş ve ya di navbera paceyan de ye zûzûka bike"
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between windows of an application immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows of an application with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move between panels and the desktop immediately"
-msgstr "Derbasbûna ya di navbera panel û sermaseyê de zûzûka bike"
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move between panels and the desktop with popup"
-msgstr "Derbasbûna di nava sermaseyê û panelan bi paceya ku hatiye diyarkirin bike"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between windows immediately"
-msgstr "Derbasbûna di nava paceyan de ji nişka ve bike"
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between windows of an application immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows of an application with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows with popup"
-msgstr "Derbasbûna di nav paceyan de bi paceya ku hatiye diyarkirin bike"
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move focus backwards between windows using popup display"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move window"
-msgstr "Paceyê Bikşîne"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move window one workspace down"
-msgstr "Paceyê bibe qada xebatê ya li jêr e"
-
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window one workspace to the left"
-msgstr "Paceyê bibe qada xebatê ya li çepê ye"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace to the right"
-msgstr "Paceyê bibe qada xebatê ya rastê"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace up"
-msgstr "Paceyê bibe qada xebatê ya jor"
-
-#: ../src/metacity.schemas.in.h:49
-#, fuzzy
-msgid "Move window to east side of screen"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:50
-#, fuzzy
-msgid "Move window to north side of screen"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:51
-#, fuzzy
-msgid "Move window to north-east corner"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:52
-#, fuzzy
-msgid "Move window to north-west corner"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:53
-#, fuzzy
-msgid "Move window to south side of screen"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:54
-#, fuzzy
-msgid "Move window to south-east corner"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:55
-#, fuzzy
-msgid "Move window to south-west corner"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:56
-#, fuzzy
-msgid "Move window to west side of screen"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to workspace 1"
-msgstr "Paceyê bişîne kargeha 1"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to workspace 10"
-msgstr "Paceyê bişîne kargeha 10"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 11"
-msgstr "Paceyê bişîne kargeha 11"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 12"
-msgstr "Paceyê bişîne kargeha 12"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 2"
-msgstr "Paceyê bişîne kargeha 2"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 3"
-msgstr "Paceyê bişîne kargeha 3"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 4"
-msgstr "Paceyê bişîne kargeha 4"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 5"
-msgstr "Paceyê bişîne kargeha 5"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 6"
-msgstr "Paceyê bibe qada xebatê ya 6an"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 7"
-msgstr "Paceyê bibe qada xebatê ya 7an"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 8"
-msgstr "Paceya bibe qada xebatê ya 8an"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 9"
-msgstr "Paceya bibe qada xebatê ya 9an"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Name of workspace"
-msgstr "Navê qada xebatê"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Number of workspaces"
-msgstr "Hejmarên qadên xebatê"
-
-#: ../src/metacity.schemas.in.h:71
-msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:72
-msgid "Raise obscured window, otherwise lower"
-msgstr "Heke pace tam xuya nabe bibe herî jor, yan na jî bibe herî jêr"
-
-#: ../src/metacity.schemas.in.h:73
-msgid "Raise window above other windows"
-msgstr "Paceyê bibe ser yên din"
-
-#: ../src/metacity.schemas.in.h:74
-msgid "Resize window"
-msgstr "Mezinahiya paceyê biguherîne"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Run a defined command"
-msgstr "Fermaneke ku hatiye diyarkirin bixebitîne"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Run a terminal"
-msgstr "Termînalekê bimeşîne"
-
-#: ../src/metacity.schemas.in.h:77
-msgid "Show the panel menu"
-msgstr "Menuya panelê nîşan bide"
-
-#: ../src/metacity.schemas.in.h:78
-msgid "Show the panel run application dialog"
-msgstr "Paceya panelê bixebitîne nîşan bide"
-
-#: ../src/metacity.schemas.in.h:79
-msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:80
-msgid "Switch to workspace 1"
-msgstr "Derbasa kargeha 1 bibe"
-
-#: ../src/metacity.schemas.in.h:81
-msgid "Switch to workspace 10"
-msgstr "Derbasa kargeha 10 bibe"
-
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 11"
-msgstr "Derbasa kargeha 11 bibe"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 12"
-msgstr "Derbasî qada xebatê ya 12yan bibe"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 2"
-msgstr "Derbasî qada xebatê ya 2yan bibe"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 3"
-msgstr "Derbasî qada xebatê ya 3yan bibe"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 4"
-msgstr "Derbasî qada xebatê ya 4an bibe"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 5"
-msgstr "Derbasî qada xebatê ya 5an bibe"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 6"
-msgstr "Derbasî qada xebatê ya 6an bibe"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 7"
-msgstr "Derbasa kargeha 7 bibe"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 8"
-msgstr "Derbasa kargeha 8 bibe"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 9"
-msgstr "Derbasa kargeha 9 bibe"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace above this one"
-msgstr "Derbasî qada xebatê ya li jor e bibe"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace below this one"
-msgstr "Biçe qada xebatê ya li jêr"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace on the left"
-msgstr "Biçe qada xebatê ya li çepê ye"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace on the right"
-msgstr "Biçe qada xebatê ya li rastê ye"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "System Bell is Audible"
-msgstr "Zengila Pergalê tê Bihîstin"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Take a screenshot"
-msgstr "Wêneya sermasê bikişîne"
-
-#: ../src/metacity.schemas.in.h:98
-msgid "Take a screenshot of a window"
-msgstr "Wêneya paceyekê bikişîne"
-
-#: ../src/metacity.schemas.in.h:99
-msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:100
-msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:101
-msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:102
-msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:103
-msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:104
-msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:105
-msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:106
-msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:107
-msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:108
-msgid "The keybinding that switches to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:109
-msgid "The keybinding that switches to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:110
-msgid "The keybinding that switches to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:111
-msgid "The keybinding that switches to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:112
-msgid "The keybinding that switches to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:113
-msgid "The keybinding that switches to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:114
-msgid "The keybinding that switches to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:115
-msgid "The keybinding that switches to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:116
-msgid "The keybinding that switches to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:117
-msgid "The keybinding that switches to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:118
-msgid "The keybinding that switches to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:119
-msgid "The keybinding that switches to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:120
-msgid "The keybinding used to activate the window menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:121
-msgid "The keybinding used to close a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:122
-msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:123
-msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:124
-msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:125
-msgid "The keybinding used to maximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:126
-msgid "The keybinding used to minimize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:127
-msgid "The keybinding used to move a window one workspace down. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:128
-msgid "The keybinding used to move a window one workspace to the left. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:129
-msgid "The keybinding used to move a window one workspace to the right. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:130
-msgid "The keybinding used to move a window one workspace up. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:131
-msgid "The keybinding used to move a window to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:132
-msgid "The keybinding used to move a window to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:133
-msgid "The keybinding used to move a window to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:134
-msgid "The keybinding used to move a window to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:135
-msgid "The keybinding used to move a window to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:136
-msgid "The keybinding used to move a window to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:137
-msgid "The keybinding used to move a window to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:138
-msgid "The keybinding used to move a window to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:139
-msgid "The keybinding used to move a window to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:140
-msgid "The keybinding used to move a window to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:141
-msgid "The keybinding used to move a window to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:142
-msgid "The keybinding used to move a window to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:143
-msgid "The keybinding used to move focus backwards between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:144
-msgid "The keybinding used to move focus backwards between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:145
-msgid "The keybinding used to move focus backwards between windows of an application without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:146
-msgid "The keybinding used to move focus backwards between windows of an application, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:147
-msgid "The keybinding used to move focus backwards between windows without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:148
-msgid "The keybinding used to move focus backwards between windows, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:149
-msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:150
-msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:151
-msgid "The keybinding used to move focus between windows of an application without a popup window. Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:152
-msgid "The keybinding used to move focus between windows of an application, using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:153
-msgid "The keybinding used to move focus between windows without a popup window. (Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:154
-msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:155
-msgid "The keybinding used to toggle always on top. A window that is always on top will always be visible over other overlapping windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:156
-msgid "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:157
-msgid "The keybinding used to toggle maximization. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:158
-msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:159
-msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:160
-msgid "The keybinding used to unmaximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:161
-msgid "The keybinding which display's the panel's \"Run Application\" dialog box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:162
-msgid "The keybinding which invokes a terminal. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:163
-msgid "The keybinding which invokes the panel's screenshot utility to take a screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:164
-msgid "The keybinding which invokes the panel's screenshot utility. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:165
-msgid "The keybinding which shows the panel's main menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:166
-msgid "The name of a workspace."
-msgstr "Navê kargehê."
-
-#: ../src/metacity.schemas.in.h:167
-msgid "The screenshot command"
-msgstr "Fermana kişandina wêneya sermasê"
-
-#: ../src/metacity.schemas.in.h:168
-msgid "The theme determines the appearance of window borders, titlebar, and so forth."
-msgstr "Dirb, xuyaneka hêmanên weke kêlekên paceyan, darikê sernavan diyar dike."
-
-#: ../src/metacity.schemas.in.h:169
-msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:170
-msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:171
-msgid "The window screenshot command"
-msgstr "Fermana kişandina wêneya paceyê"
-
-#: ../src/metacity.schemas.in.h:172
-msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another one, it raises the window above all others, and if the window is already fully visible, it lowers it below all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:173
-msgid "This keybinding lowers a window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:174
-msgid "This keybinding moves a window against the north (top) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:175
-msgid "This keybinding moves a window into the east (right) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:176
-msgid "This keybinding moves a window into the north-east (top right) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:177
-msgid "This keybinding moves a window into the north-west (top left) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:178
-msgid "This keybinding moves a window into the south (bottom) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:179
-msgid "This keybinding moves a window into the south-east (bottom right) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:180
-msgid "This keybinding moves a window into the south-west (bottom left) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:181
-msgid "This keybinding moves a window into the west (left) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:182
-msgid "This keybinding raises the window above other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:183
-msgid "This keybinding resizes a window to fill available horizontal space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:184
-msgid "This keybinding resizes a window to fill available vertical space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:185
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:186
-msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:187
-msgid "Toggle always on top state"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:188
-msgid "Toggle fullscreen mode"
-msgstr "Moda dîmender tijî veke an jî bigire"
-
-#: ../src/metacity.schemas.in.h:189
-msgid "Toggle maximization state"
-msgstr "Rewşa raxistina dîmenderê veke yan jî bigire"
-
-#: ../src/metacity.schemas.in.h:190
-msgid "Toggle shaded state"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle window on all workspaces"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Unmaximize window"
-msgstr "Paceyê normal bike"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Use standard system font in window titles"
-msgstr "Di sernavên paceyan de curenivîsa pergalê ya standard bikar bîne"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Visual Bell Type"
-msgstr "Cureyê Zengila Dîtbarî"
-
-#: ../src/metacity.schemas.in.h:196
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:197
-msgid "Window focus mode"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:198
-msgid "Window title font"
-msgstr "Curenivîsa sernavê paceyê"
-
-#: ../src/prefs.c:575
-#: ../src/prefs.c:591
-#: ../src/prefs.c:607
-#: ../src/prefs.c:623
-#: ../src/prefs.c:639
-#: ../src/prefs.c:655
-#: ../src/prefs.c:671
-#: ../src/prefs.c:691
-#: ../src/prefs.c:707
-#: ../src/prefs.c:723
-#: ../src/prefs.c:741
-#: ../src/prefs.c:757
-#: ../src/prefs.c:776
-#: ../src/prefs.c:792
-#: ../src/prefs.c:809
-#: ../src/prefs.c:825
-#: ../src/prefs.c:841
-#: ../src/prefs.c:858
-#: ../src/prefs.c:874
-#: ../src/prefs.c:890
-#: ../src/prefs.c:906
-#: ../src/prefs.c:922
-#: ../src/prefs.c:937
-#: ../src/prefs.c:952
-#: ../src/prefs.c:967
-#: ../src/prefs.c:983
-#: ../src/prefs.c:999
-#: ../src/prefs.c:1015
-#: ../src/prefs.c:1031
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
-
-#: ../src/prefs.c:1076
-#, c-format
-msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
-msgstr "\"%s\" ya di danegira veavakirinê de ye, wekî sererastkerê bişkokên mişk ne derbasdar e.\n"
-
-#: ../src/prefs.c:1100
-#: ../src/prefs.c:1121
-#: ../src/prefs.c:1663
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr ""
 
-#: ../src/prefs.c:1250
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
-msgid "%d stored in GConf key %s is not a reasonable cursor_size; must be in the range 1..128\n"
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 
-#: ../src/prefs.c:1330
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr ""
+
+#: ../src/core/prefs.c:1232
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 
-#: ../src/prefs.c:1557
+#: ../src/core/prefs.c:1365
 #, c-format
-msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
 msgstr ""
+"\"%s\" ya di danegira veavakirinê de ye, wekî sererastkerê bişkokên mişk ne "
+"derbasdar e.\n"
 
-#: ../src/prefs.c:1617
-msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
-msgstr ""
-
-#: ../src/prefs.c:1690
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-
-#: ../src/prefs.c:1833
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Dema hejmara qada xebatê dihate xwestin ku bibe %d çewtî derket: %s\n"
 
-#: ../src/prefs.c:2227
-#: ../src/prefs.c:2397
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
-msgstr "\"%s\" ya di danegira veavakirinê de ye, wekî \"%s\" ya girêdana bişkokê ne nirxeke derbasdar e.\n"
+msgid "Workspace %d"
+msgstr "Kargeha %d"
 
-#: ../src/prefs.c:2813
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"\"%s\" ya di danegira veavakirinê de ye, wekî \"%s\" ya girêdana bişkokê ne "
+"nirxeke derbasdar e.\n"
+
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Dema dihate xwestin bila navê qada xebatê ya %d bibe \"%s\" çewtî derket: %s\n"
+msgstr ""
+"Dema dihate xwestin bila navê qada xebatê ya %d bibe \"%s\" çewtî derket: %"
+"s\n"
 
-#: ../src/resizepopup.c:113
+#: ../src/core/prefs.c:2763
 #, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "Error setting compositor status: %s\n"
+msgstr "Di mîhengkirina rewşa compositor de çewtî: %s\n"
 
-#: ../src/screen.c:406
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekrana %d di dîmendêra '%s' nederbasdar e\n"
 
-#: ../src/screen.c:422
+#: ../src/core/screen.c:373
 #, c-format
-msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
 msgstr ""
 
-#: ../src/screen.c:446
+#: ../src/core/screen.c:400
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: ../src/screen.c:504
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: ../src/screen.c:709
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
 
-#: ../src/session.c:837
-#: ../src/session.c:844
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+msgid ""
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+
+#: ../src/core/schema-bindings.c:177
+msgid ""
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+
+#: ../src/core/session.c:850 ../src/core/session.c:857
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Afirandina peldanka '%s' bisernekeit: %s\n"
 
-#: ../src/session.c:854
+#: ../src/core/session.c:867
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Dosyeya danişînê ya '%s' ji bo nivisînê nehate vekirin: %s\n"
 
-#: ../src/session.c:1006
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Di nivîsandina dosyeya danişînê ya '%s' de çewtî: %s\n"
 
-#: ../src/session.c:1011
+#: ../src/core/session.c:1013
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Di girtina dosyeya danişînê ya '%s' de çewtî: %s\n"
 
-#: ../src/session.c:1086
+#. oh, just give up
+#: ../src/core/session.c:1106
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Dosyeya danişînê %s ya hatibû tomarkirin nehate xwendin: %s\n"
 
-#: ../src/session.c:1121
+#: ../src/core/session.c:1145
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr ""
 
-#: ../src/session.c:1170
+#: ../src/core/session.c:1194
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 
-#: ../src/session.c:1183
+#: ../src/core/session.c:1207 ../src/core/session.c:1282
+#: ../src/core/session.c:1314 ../src/core/session.c:1386
+#: ../src/core/session.c:1446
 #, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
+msgid "Unknown attribute %s on <%s> element"
 msgstr ""
 
-#: ../src/session.c:1200
+#: ../src/core/session.c:1224
+#, c-format
 msgid "nested <window> tag"
 msgstr ""
 
-#: ../src/session.c:1258
-#: ../src/session.c:1290
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr ""
-
-#: ../src/session.c:1362
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
-
-#: ../src/session.c:1422
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
-
-#: ../src/session.c:1442
+#: ../src/core/session.c:1466
 #, c-format
 msgid "Unknown element %s"
 msgstr "Hêmana nenas %s"
 
-#: ../src/session.c:1908
-#, c-format
-msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
+#: ../src/core/session.c:1818
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
 
-#: ../src/theme-parser.c:227
-#: ../src/theme-parser.c:245
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "Rêzik %d karakter %d: %s"
-
-#: ../src/theme-parser.c:399
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:417
-#: ../src/theme-parser.c:442
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
-
-#: ../src/theme-parser.c:503
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr ""
-
-#: ../src/theme-parser.c:511
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr ""
-
-#: ../src/theme-parser.c:539
-#: ../src/theme-parser.c:655
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
-
-#: ../src/theme-parser.c:570
-#: ../src/theme-parser.c:598
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
-
-#: ../src/theme-parser.c:625
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
-
-#: ../src/theme-parser.c:688
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-
-#: ../src/theme-parser.c:753
-#, c-format
-msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
-msgstr ""
-
-#: ../src/theme-parser.c:798
-#: ../src/theme-parser.c:806
-#: ../src/theme-parser.c:888
-#: ../src/theme-parser.c:985
-#: ../src/theme-parser.c:1027
-#: ../src/theme-parser.c:1138
-#: ../src/theme-parser.c:1188
-#: ../src/theme-parser.c:1196
-#: ../src/theme-parser.c:3074
-#: ../src/theme-parser.c:3163
-#: ../src/theme-parser.c:3170
-#: ../src/theme-parser.c:3177
-#, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:922
-#: ../src/theme-parser.c:993
-#: ../src/theme-parser.c:1035
-#: ../src/theme-parser.c:1146
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr ""
-
-#: ../src/theme-parser.c:934
-#: ../src/theme-parser.c:1047
-#: ../src/theme-parser.c:1158
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
-
-#: ../src/theme-parser.c:1060
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "Geometriya <%s> wekî \"%s\" hatiye danasîn"
-
-#: ../src/theme-parser.c:1073
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-
-#: ../src/theme-parser.c:1115
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
-
-#: ../src/theme-parser.c:1206
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:1217
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:1225
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
-
-#: ../src/theme-parser.c:1261
-msgid "Theme already has a fallback icon"
-msgstr ""
-
-#: ../src/theme-parser.c:1273
-msgid "Theme already has a fallback mini_icon"
-msgstr ""
-
-#: ../src/theme-parser.c:1286
-#: ../src/theme-parser.c:1350
-#: ../src/theme-parser.c:1639
-#: ../src/theme-parser.c:3262
-#: ../src/theme-parser.c:3316
-#: ../src/theme-parser.c:3488
-#: ../src/theme-parser.c:3704
-#: ../src/theme-parser.c:3742
-#: ../src/theme-parser.c:3780
-#: ../src/theme-parser.c:3818
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1376
-#: ../src/theme-parser.c:1463
-#: ../src/theme-parser.c:1533
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1383
-#: ../src/theme-parser.c:1470
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1414
-#: ../src/theme-parser.c:1428
-#: ../src/theme-parser.c:1487
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-
-#: ../src/theme-parser.c:1437
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "Dûrbûna \"%s\" nayê zanîn"
-
-#: ../src/theme-parser.c:1496
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "\"%s\" rêjeya dirêjahî-firehiyê nayê zanîn"
-
-#: ../src/theme-parser.c:1540
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1547
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1554
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1561
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1593
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr ""
-
-#: ../src/theme-parser.c:1746
-#: ../src/theme-parser.c:1856
-#: ../src/theme-parser.c:1963
-#: ../src/theme-parser.c:2190
-#: ../src/theme-parser.c:3007
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"color\" (reng) tuneye"
-
-#: ../src/theme-parser.c:1753
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"x1\" tuneye"
-
-#: ../src/theme-parser.c:1760
-#: ../src/theme-parser.c:2852
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"y1\" tuneye"
-
-#: ../src/theme-parser.c:1767
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"x2\" tuneye"
-
-#: ../src/theme-parser.c:1774
-#: ../src/theme-parser.c:2859
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"y2\" tuneye"
-
-#: ../src/theme-parser.c:1863
-#: ../src/theme-parser.c:1970
-#: ../src/theme-parser.c:2116
-#: ../src/theme-parser.c:2197
-#: ../src/theme-parser.c:2303
-#: ../src/theme-parser.c:2401
-#: ../src/theme-parser.c:2621
-#: ../src/theme-parser.c:2747
-#: ../src/theme-parser.c:2845
-#: ../src/theme-parser.c:2919
-#: ../src/theme-parser.c:3014
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"x\" tuneye"
-
-#: ../src/theme-parser.c:1870
-#: ../src/theme-parser.c:1977
-#: ../src/theme-parser.c:2123
-#: ../src/theme-parser.c:2204
-#: ../src/theme-parser.c:2310
-#: ../src/theme-parser.c:2408
-#: ../src/theme-parser.c:2628
-#: ../src/theme-parser.c:2754
-#: ../src/theme-parser.c:2926
-#: ../src/theme-parser.c:3021
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"y\" tuneye"
-
-#: ../src/theme-parser.c:1877
-#: ../src/theme-parser.c:1984
-#: ../src/theme-parser.c:2130
-#: ../src/theme-parser.c:2211
-#: ../src/theme-parser.c:2317
-#: ../src/theme-parser.c:2415
-#: ../src/theme-parser.c:2635
-#: ../src/theme-parser.c:2761
-#: ../src/theme-parser.c:2933
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:1884
-#: ../src/theme-parser.c:1991
-#: ../src/theme-parser.c:2137
-#: ../src/theme-parser.c:2218
-#: ../src/theme-parser.c:2324
-#: ../src/theme-parser.c:2422
-#: ../src/theme-parser.c:2642
-#: ../src/theme-parser.c:2768
-#: ../src/theme-parser.c:2940
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:2000
-#, fuzzy, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
-
-#: ../src/theme-parser.c:2007
-#, fuzzy, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"color\" (reng) tuneye"
-
-#: ../src/theme-parser.c:2016
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:2023
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:2225
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:2296
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:2344
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
-
-#: ../src/theme-parser.c:2429
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"filename\" (navê dosyeyê) tuneye"
-
-#: ../src/theme-parser.c:2454
-#: ../src/theme-parser.c:2965
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:2600
-#: ../src/theme-parser.c:2733
-#: ../src/theme-parser.c:2838
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
-
-#: ../src/theme-parser.c:2607
-#: ../src/theme-parser.c:2740
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"shadow\" (sî) tuneye"
-
-#: ../src/theme-parser.c:2614
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Di hêmana <%s> de çawaniya \"arrow\" (tîr) tuneye"
-
-#: ../src/theme-parser.c:2667
-#: ../src/theme-parser.c:2789
-#: ../src/theme-parser.c:2877
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:2677
-#: ../src/theme-parser.c:2799
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:2687
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3100
-#: ../src/theme-parser.c:3216
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
-
-#: ../src/theme-parser.c:3112
-#: ../src/theme-parser.c:3228
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
-
-#: ../src/theme-parser.c:3291
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3348
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3357
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
-
-#: ../src/theme-parser.c:3365
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr ""
-
-#: ../src/theme-parser.c:3382
-#: ../src/theme-parser.c:3473
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
-
-#: ../src/theme-parser.c:3410
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Di hêmana <%s> de çawaniya \"function\" (bikêrhatin) tuneye"
-
-#: ../src/theme-parser.c:3418
-#: ../src/theme-parser.c:3534
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
-
-#: ../src/theme-parser.c:3427
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "Ji bo bişkokê bikêrhatina nederbasdar \"%s\""
-
-#: ../src/theme-parser.c:3436
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-
-#: ../src/theme-parser.c:3448
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "Ji bo bişkokê rewşa nederbasdar \"%s\""
-
-#: ../src/theme-parser.c:3456
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-
-#: ../src/theme-parser.c:3526
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3542
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3551
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
-
-#: ../src/theme-parser.c:3560
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
-
-#: ../src/theme-parser.c:3570
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr ""
-
-#: ../src/theme-parser.c:3581
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3591
-#: ../src/theme-parser.c:3614
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
-
-#: ../src/theme-parser.c:3625
-#, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
-msgstr ""
-
-#: ../src/theme-parser.c:3639
-#, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr ""
-
-#: ../src/theme-parser.c:3653
-#: ../src/theme-parser.c:3675
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-
-#: ../src/theme-parser.c:3664
-#: ../src/theme-parser.c:3686
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr ""
-
-#: ../src/theme-parser.c:3725
-msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/theme-parser.c:3763
-msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/theme-parser.c:3801
-msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/theme-parser.c:3849
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:3869
-#, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-
-#: ../src/theme-parser.c:3874
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
-
-#: ../src/theme-parser.c:3886
-#, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-
-#: ../src/theme-parser.c:3908
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
-
-#: ../src/theme-parser.c:3918
-#: ../src/theme-parser.c:3948
-#: ../src/theme-parser.c:3953
-#: ../src/theme-parser.c:3958
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
-
-#: ../src/theme-parser.c:4180
-msgid "No draw_ops provided for frame piece"
-msgstr ""
-
-#: ../src/theme-parser.c:4195
-msgid "No draw_ops provided for button"
-msgstr ""
-
-#: ../src/theme-parser.c:4247
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr ""
-
-#: ../src/theme-parser.c:4302
-msgid "<name> specified twice for this theme"
-msgstr ""
-
-#: ../src/theme-parser.c:4313
-msgid "<author> specified twice for this theme"
-msgstr ""
-
-#: ../src/theme-parser.c:4324
-msgid "<copyright> specified twice for this theme"
-msgstr ""
-
-#: ../src/theme-parser.c:4335
-msgid "<date> specified twice for this theme"
-msgstr ""
-
-#: ../src/theme-parser.c:4346
-msgid "<description> specified twice for this theme"
-msgstr ""
-
-#: ../src/theme-parser.c:4573
-#, fuzzy, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "Pelê rojane ya fdopen() %s nehate vekirin: %s\n"
-
-#: ../src/theme-parser.c:4628
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
-
-#: ../src/theme-viewer.c:74
-msgid "/_Windows"
-msgstr "/_Pace"
-
-#: ../src/theme-viewer.c:75
-msgid "/Windows/tearoff"
-msgstr ""
-
-#: ../src/theme-viewer.c:76
-msgid "/Windows/_Dialog"
-msgstr ""
-
-#: ../src/theme-viewer.c:77
-msgid "/Windows/_Modal dialog"
-msgstr ""
-
-#: ../src/theme-viewer.c:78
-msgid "/Windows/_Utility"
-msgstr ""
-
-#: ../src/theme-viewer.c:79
-msgid "/Windows/_Splashscreen"
-msgstr ""
-
-#: ../src/theme-viewer.c:80
-msgid "/Windows/_Top dock"
-msgstr "/Pace/Li _jor bicih bike"
-
-#: ../src/theme-viewer.c:81
-msgid "/Windows/_Bottom dock"
-msgstr "/Pace/Li _jêr bicih bike"
-
-#: ../src/theme-viewer.c:82
-msgid "/Windows/_Left dock"
-msgstr "/Pace/Li _çepê bicih bike"
-
-#: ../src/theme-viewer.c:83
-msgid "/Windows/_Right dock"
-msgstr "/Pace/Li _rastê bicih bike"
-
-#: ../src/theme-viewer.c:84
-msgid "/Windows/_All docks"
-msgstr "/Pace/_Hemû bicihkirin"
-
-#: ../src/theme-viewer.c:85
-msgid "/Windows/Des_ktop"
-msgstr "/Pace/_Sermase"
-
-#: ../src/theme-viewer.c:134
-msgid "Open another one of these windows"
-msgstr "Ji van paceyan yeka din jî veke"
-
-#: ../src/theme-viewer.c:141
-msgid "This is a demo button with an 'open' icon"
-msgstr ""
-
-#: ../src/theme-viewer.c:148
-msgid "This is a demo button with a 'quit' icon"
-msgstr ""
-
-#: ../src/theme-viewer.c:241
-msgid "This is a sample message in a sample dialog"
-msgstr "Ev mînak ji paceya ragihandinê peyameke mînak e"
-
-#: ../src/theme-viewer.c:324
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr ""
-
-#: ../src/theme-viewer.c:358
-msgid "Border-only window"
-msgstr ""
-
-#: ../src/theme-viewer.c:360
-msgid "Bar"
-msgstr "Darik"
-
-#: ../src/theme-viewer.c:377
-msgid "Normal Application Window"
-msgstr ""
-
-#: ../src/theme-viewer.c:381
-msgid "Dialog Box"
-msgstr "Qutika Diyalogê"
-
-#: ../src/theme-viewer.c:385
-msgid "Modal Dialog Box"
-msgstr ""
-
-#: ../src/theme-viewer.c:389
-msgid "Utility Palette"
-msgstr ""
-
-#: ../src/theme-viewer.c:393
-msgid "Torn-off Menu"
-msgstr ""
-
-#: ../src/theme-viewer.c:397
-msgid "Border"
-msgstr "Kelek"
-
-#: ../src/theme-viewer.c:725
-#, c-format
-msgid "Button layout test %d"
-msgstr ""
-
-#: ../src/theme-viewer.c:754
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr ""
-
-#: ../src/theme-viewer.c:797
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
-
-#: ../src/theme-viewer.c:804
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Dema dirb dihate barkirin çewtî: %s\n"
-
-#: ../src/theme-viewer.c:810
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Dirbê \"%s\" di hundirê %g çirkeyan hate hate barkirin\n"
-
-#: ../src/theme-viewer.c:833
-msgid "Normal Title Font"
-msgstr ""
-
-#: ../src/theme-viewer.c:839
-msgid "Small Title Font"
-msgstr ""
-
-#: ../src/theme-viewer.c:845
-msgid "Large Title Font"
-msgstr ""
-
-#: ../src/theme-viewer.c:850
-msgid "Button Layouts"
-msgstr "Pergalên Bişkokan"
-
-#: ../src/theme-viewer.c:855
-msgid "Benchmark"
-msgstr "Danberhevkirin"
-
-#: ../src/theme-viewer.c:902
-msgid "Window Title Goes Here"
-msgstr "Sernavê Paceyê Bîne Vê Derê"
-
-#: ../src/theme-viewer.c:1006
-#, c-format
-msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
-msgstr ""
-
-#: ../src/theme-viewer.c:1219
-msgid "position expression test returned TRUE but set error"
-msgstr ""
-
-#: ../src/theme-viewer.c:1221
-msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-
-#: ../src/theme-viewer.c:1225
-msgid "Error was expected but none given"
-msgstr ""
-
-#: ../src/theme-viewer.c:1227
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr ""
-
-#: ../src/theme-viewer.c:1233
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr ""
-
-#: ../src/theme-viewer.c:1237
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "nirxa x %d, li nirxa ku em li bendê bûn %d"
-
-#: ../src/theme-viewer.c:1240
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "nirxa y %d, li nirxa ku em li bendê bûn %d"
-
-#: ../src/theme-viewer.c:1303
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-
-#: ../src/theme.c:206
-msgid "top"
-msgstr "jor"
-
-#: ../src/theme.c:208
-msgid "bottom"
-msgstr "jêr"
-
-#: ../src/theme.c:210
-msgid "left"
-msgstr "çep"
-
-#: ../src/theme.c:212
-msgid "right"
-msgstr "rast"
-
-#: ../src/theme.c:226
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "geometriya çarçoveyê mezinahiya \"%s\" nas nake"
-
-#: ../src/theme.c:245
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "geometriya çarçoveyê mezinahiya \"%s\" bo kêleka paceya \"%s\" nas nake"
-
-#: ../src/theme.c:282
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
-
-#: ../src/theme.c:294
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Geometriya çarçoveyê mezinahiya bişkokan nas nake"
-
-#: ../src/theme.c:928
-msgid "Gradients should have at least two colors"
-msgstr "Di derbasbûnên rengan de herî kêm divê du heb reng hebe"
-
-#: ../src/theme.c:1054
-#, c-format
-msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: ../src/theme.c:1068
-#, c-format
-msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: ../src/theme.c:1079
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
-
-#: ../src/theme.c:1092
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
-
-#: ../src/theme.c:1122
-#, c-format
-msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
-msgstr ""
-
-#: ../src/theme.c:1133
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
-
-#: ../src/theme.c:1143
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
-
-#: ../src/theme.c:1190
-#, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-
-#: ../src/theme.c:1201
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
-
-#: ../src/theme.c:1211
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
-
-#: ../src/theme.c:1240
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr ""
-
-#: ../src/theme.c:1499
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
-
-#: ../src/theme.c:1526
-#, c-format
-msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
-msgstr ""
-
-#: ../src/theme.c:1540
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-
-#: ../src/theme.c:1607
-#, c-format
-msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
-msgstr ""
-
-#: ../src/theme.c:1664
-msgid "Coordinate expression was empty or not understood"
-msgstr ""
-
-#: ../src/theme.c:1801
-#: ../src/theme.c:1811
-#: ../src/theme.c:1845
-msgid "Coordinate expression results in division by zero"
-msgstr ""
-
-#: ../src/theme.c:1853
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-
-#: ../src/theme.c:1909
-#, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-
-#: ../src/theme.c:1918
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-
-#: ../src/theme.c:1926
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-
-#: ../src/theme.c:1936
-#, c-format
-msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
-msgstr ""
-
-#: ../src/theme.c:2054
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
-
-#: ../src/theme.c:2083
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-
-#: ../src/theme.c:2145
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
-
-#: ../src/theme.c:2200
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-
-#: ../src/theme.c:2211
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-
-#: ../src/theme.c:2452
-#: ../src/theme.c:2474
-#: ../src/theme.c:2495
-#, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
-
-#: ../src/theme.c:3949
-#, c-format
-msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
-msgstr ""
-
-#: ../src/theme.c:4425
-#: ../src/theme.c:4450
-#, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-
-#: ../src/theme.c:4496
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
-
-#: ../src/theme.c:4606
-#: ../src/theme.c:4613
-#: ../src/theme.c:4620
-#: ../src/theme.c:4627
-#: ../src/theme.c:4634
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr ""
-
-#: ../src/theme.c:4642
-#, c-format
-msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-
-#: ../src/theme.c:5009
-#: ../src/theme.c:5071
-#: ../src/theme.c:5134
-#, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-
-#: ../src/theme.c:5017
-#: ../src/theme.c:5079
-#: ../src/theme.c:5142
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Nirxa sabît ya \"%s\" jixwe hatiye diyarkirin"
-
-#: ../src/util.c:98
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Rojnivîska neqandina çewtiyan nehate vekirin: %s\n"
 
-#: ../src/util.c:108
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Pelê rojane ya fdopen() %s nehate vekirin: %s\n"
 
-#: ../src/util.c:114
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Pelê rojane yê %s vebû\n"
 
-#: ../src/util.c:222
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#, c-format
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity, bêyî ku desteka moda kîtekît hebe hatiye berhevkirin.\n"
+
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "Rêveberê paceyan: "
 
-#: ../src/util.c:370
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "Di rêveberiya oaceyan de çewtî: "
 
-#: ../src/util.c:399
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "Hişyariya rêveberê paceyan: "
 
-#: ../src/util.c:423
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Çewtiya rêveberiya paceyan: "
 
-#: ../src/window-props.c:172
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
-
-#: ../src/window-props.c:240
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (di hundirê %s de)"
-
-#: ../src/window-props.c:1186
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #. first time through
-#: ../src/window.c:5401
+#: ../src/core/window.c:5630
 #, c-format
-msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
 msgstr ""
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -2456,12 +450,50 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5997
+#: ../src/core/window.c:6195
 #, c-format
-msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 
-#: ../src/xprops.c:155
+#: ../src/core/window-props.c:244
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr ""
+
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (di hundirê %s de)"
+
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (weke bikarhênerê super)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (weke %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (weke bikarhênereke din)"
+
+#: ../src/core/window-props.c:1429
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+
+#: ../src/core/xprops.c:155
 #, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
@@ -2471,34 +503,1881 @@ msgid ""
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 
-#: ../src/xprops.c:401
+#: ../src/core/xprops.c:401
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: ../src/xprops.c:484
+#: ../src/core/xprops.c:484
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Derbasa kargeha 1 bibe"
+
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Derbasî qada xebatê ya 2yan bibe"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Derbasî qada xebatê ya 3yan bibe"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Derbasî qada xebatê ya 4an bibe"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Derbasî qada xebatê ya 5an bibe"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Derbasî qada xebatê ya 6an bibe"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Derbasa kargeha 7 bibe"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Derbasa kargeha 8 bibe"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Derbasa kargeha 9 bibe"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Derbasa kargeha 10 bibe"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Derbasa kargeha 11 bibe"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Derbasî qada xebatê ya 12yan bibe"
+
+#: ../src/include/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Veguhere qada xebatê a li çepa qada xebatê a heyî"
+
+#: ../src/include/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Veguhere qada xebatê a li aliyê rasta qada xebatê a heyî"
+
+#: ../src/include/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Veguhere qada xebatê a li jora qada xebatê a heyî"
+
+#: ../src/include/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Veguhere qada xebatê a li jêra qada xebatê a heyî"
+
+#: ../src/include/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Di navbera paceyên sepanekê de veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Di navbera paceyên sepanekê de şûnde veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Di navbera paceyan de veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Di navbera paceyan de şûnde veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Di navbera panel û sermaseyê de veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "Di navbera panel û sermaseyê de şûnde veguheze, bi paceyeke popupê"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Zûzûka di navbera paceyên sepanekê de şûnde veguheze"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Derbasbûna di nava paceyan de ji nişka ve bike"
+
+#: ../src/include/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Di navbera paceyan de şûnde veguheze zûzûka"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Derbasbûna ya di navbera panel û sermaseyê de zûzûka bike"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr ""
+"Derbasbûna ber bi paş ve ya di navbera panel û sermaseyê de zûzûka bike"
+
+#: ../src/include/all-keybindings.h:191
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Hemû paceyên normal veşêre û here sermaseyê"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "Meûya sereke ya panelê nîşande"
+
+#: ../src/include/all-keybindings.h:197
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Qûtiya diyalogê ya \"Sepan Bimeşîne\" ya panelê nîşande"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Wêneya sermasê bikişîne"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Wêneya paceyekê bikişîne"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Termînalekê bimeşîne"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "Menûya paceyê çalak bike"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Moda dîmender tijî veke an jî bigire"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Rewşa raxistina dîmenderê veke yan jî bigire"
+
+#: ../src/include/all-keybindings.h:264
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr ""
+"Vezeliqîne ka wê paceyek wê herdem li seranserê paceyên din xuya bibe an na"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Paceyê mezin bike"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "Paceyê bike weke berê"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Paceyê kêmtirîn bike"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Paceyê bigire"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Paceyê Bikşîne"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Mezinahiya paceyê biguherîne"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr ""
+"Vezeliqîne ka paceyekê wê li hemû qadên xebatê be an wê tenê li yekê be"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Paceyê bişîne kargeha 1"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Paceyê bişîne kargeha 2"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Paceyê bişîne kargeha 3"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Paceyê bişîne kargeha 4"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Paceyê bişîne kargeha 5"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Paceyê bibe qada xebatê ya 6an"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Paceyê bibe qada xebatê ya 7an"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Paceya bibe qada xebatê ya 8an"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Paceya bibe qada xebatê ya 9an"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Paceyê bişîne kargeha 10"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Paceyê bişîne kargeha 11"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Paceyê bişîne kargeha 12"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Paceyê bibe qada xebatê ya li çepê ye"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Paceyê bibe qada xebatê ya rastê"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Paceyê bibe qada xebatê ya jor"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Paceyê bibe qada xebatê ya li jêr e"
+
+#: ../src/include/all-keybindings.h:342
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr ""
+"Paceyê bilind bike ger ji aliyê paceyeke din ve hatibe pêçandin, ger na "
+"nizimtir bike"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Paceyê bibe ser yên din"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Paceyan bişîne binê yên din"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Paceyê ser dirêjahiyê mezin bike"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Paceyê ser pahnayê mezin bike"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "Paceyê bibe goşeya bakur-rojava (jor çep)"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "Paceyê bibe goşeya bakur-rojhilat (jor rast)"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Paceyê bibe goşeya başûr-rojava (jêr çep)"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Paceyê bibe goşeya başûr-rojhilat (jêr rast)"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "Paceyê bibe goşeya bakur (jor) a ekranê"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "Paceyê bibe goşeya başûr (jêr) a ekranê"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "Paceyê bibe goşeya rojhilat (rast) a ekranê"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "Paceyê bibe goşeya rojava (çep) a ekranê"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "Paceyê bibe navenda ekranê"
+
+#: ../src/metacity.schemas.in.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr "(Hê nehatiye sepandin) Gerîn, ne gorî sepanan gorî paceyan dixebite."
+
+#: ../src/metacity.schemas.in.in.h:2
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:3
+msgid "Action on title bar double-click"
+msgstr "Çalakiya ku dema tu du caran li darikê sernavê bitikîne"
+
+#: ../src/metacity.schemas.in.in.h:4
+msgid "Action on title bar middle-click"
+msgstr "Çalakiya tikandina-navîn a li darika sernavê"
+
+#: ../src/metacity.schemas.in.in.h:5
+msgid "Action on title bar right-click"
+msgstr "Çalakiya rast-tikandina darika sernavê"
+
+#: ../src/metacity.schemas.in.in.h:6
+msgid "Arrangement of buttons on the titlebar"
+msgstr "Pergala bişkokên ku di darikê sernavan de ye"
+
+#: ../src/metacity.schemas.in.in.h:7
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:8
+msgid "Automatically raises the focused window"
+msgstr "Paceya hatiye lêhûrbûn jixweber bilind dike"
+
+#: ../src/metacity.schemas.in.in.h:9
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "Hin fermanên ku wekî bersiva girêdanên bişkokan were xebitandin"
+
+#: ../src/metacity.schemas.in.in.h:11
+msgid "Compositing Manager"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:12
+msgid "Control how new windows get focus"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:13
+msgid "Current theme"
+msgstr "Dirbê derbasdar"
+
+#: ../src/metacity.schemas.in.in.h:14
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "Derengmayina wekî mîlîçirke ya ji bo vebijêrka bilindkirina bixweber"
+
+#: ../src/metacity.schemas.in.in.h:15
+msgid "Determines whether Metacity is a compositing manager."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:16
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+"Diyar dike ku bê ka sepan yan jî pergal wê dengê zengil derxe yan na, ji bo "
+"dengên zengil yên bêdeng dikare têkildarî \"zengilê dîtbarî\" jî were "
+"bikaranîn."
+
+#: ../src/metacity.schemas.in.in.h:17
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr "Taybetiyên çewt yên sepanên kevn yan jî sepanên çewt bigire"
+
+#: ../src/metacity.schemas.in.in.h:18
+msgid "Enable Visual Bell"
+msgstr "Zengilê Dîtbarî Çalak Bike"
+
+#: ../src/metacity.schemas.in.in.h:19
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:20
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:21
+msgid ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:22
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:23
+msgid "If true, trade off usability for less resource usage"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:24
+msgid "Modifier to use for modified window click actions"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:25
+msgid "Name of workspace"
+msgstr "Navê qada xebatê"
+
+#: ../src/metacity.schemas.in.in.h:26
+msgid "Number of workspaces"
+msgstr "Hejmarên qadên xebatê"
+
+#: ../src/metacity.schemas.in.in.h:27
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:28
+msgid "Run a defined command"
+msgstr "Fermaneke ku hatiye diyarkirin bixebitîne"
+
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:31
+msgid ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:32
+msgid "System Bell is Audible"
+msgstr "Zengila Pergalê tê Bihîstin"
+
+#: ../src/metacity.schemas.in.in.h:33
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:34
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:35
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:36
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:37
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:38
+msgid "The name of a workspace."
+msgstr "Navê kargehê."
+
+#: ../src/metacity.schemas.in.in.h:39
+msgid "The screenshot command"
+msgstr "Fermana kişandina wêneya sermasê"
+
+#: ../src/metacity.schemas.in.in.h:40
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr ""
+"Dirb, xuyaneka hêmanên weke kêlekên paceyan, darikê sernavan diyar dike."
+
+#: ../src/metacity.schemas.in.in.h:41
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:42
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:43
+msgid "The window screenshot command"
+msgstr "Fermana kişandina wêneya paceyê"
+
+#: ../src/metacity.schemas.in.in.h:44
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:45
+msgid ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:46
+msgid ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:47
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:48
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:49
+msgid "Use standard system font in window titles"
+msgstr "Di sernavên paceyan de curenivîsa pergalê ya standard bikar bîne"
+
+#: ../src/metacity.schemas.in.in.h:50
+msgid "Visual Bell Type"
+msgstr "Cureyê Zengila Dîtbarî"
+
+#: ../src/metacity.schemas.in.in.h:51
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Ka bila bi bişkojka rastê mezinahî were guhertin"
+
+#: ../src/metacity.schemas.in.in.h:53
+msgid "Window focus mode"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:54
+msgid "Window title font"
+msgstr "Curenivîsa sernavê paceyê"
+
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Bikaranîn: %s\n"
+
+#: ../src/ui/frames.c:1118
+msgid "Close Window"
+msgstr "Paceyê bigire"
+
+#: ../src/ui/frames.c:1121
+msgid "Window Menu"
+msgstr "Menuya Paceyan"
+
+#: ../src/ui/frames.c:1124
+msgid "Minimize Window"
+msgstr "Paceyê Kêmtirîn bike"
+
+#: ../src/ui/frames.c:1127
+msgid "Maximize Window"
+msgstr "Paceyê Mezintirîn bike"
+
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
+msgstr "Paceyê bike weke berê"
+
+#: ../src/ui/frames.c:1133
+msgid "Roll Up Window"
+msgstr "Paceyê Darik Bike"
+
+#: ../src/ui/frames.c:1136
+msgid "Unroll Window"
+msgstr "Darikî Pace Bike"
+
+#: ../src/ui/frames.c:1139
+msgid "Keep Window On Top"
+msgstr ""
+
+#: ../src/ui/frames.c:1142
+msgid "Remove Window From Top"
+msgstr ""
+
+#: ../src/ui/frames.c:1145
+msgid "Always On Visible Workspace"
+msgstr "Her dem di Kargeha Xuya de"
+
+#: ../src/ui/frames.c:1148
+#, fuzzy
+msgid "Put Window On Only One Workspace"
+msgstr "Paceyê bibe qada xebatê ya jor"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:70
+msgid "Mi_nimize"
+msgstr "_Biçûk bike"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:72
+msgid "Ma_ximize"
+msgstr "_Mezin bike"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:74
+msgid "Unma_ximize"
+msgstr "N_ormal bike"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:76
+msgid "Roll _Up"
+msgstr "_Darik bike"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:78
+msgid "_Unroll"
+msgstr "_Pace bike"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:80
+msgid "_Move"
+msgstr "_Tevbigere"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:82
+msgid "_Resize"
+msgstr "_Mezinahiyê biguherîne"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:84
+msgid "Move Titlebar On_screen"
+msgstr "Darikê Sernav Li Ser _Dîmenderê Bikşîne"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+msgid "Always on _Top"
+msgstr ""
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:91
+msgid "_Always on Visible Workspace"
+msgstr "Her dem di Kargeha _Xuya de"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:93
+msgid "_Only on This Workspace"
+msgstr "_Tenê di vê Kargehe de"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:95
+msgid "Move to Workspace _Left"
+msgstr "Bişîne Kargeha _Çep"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:97
+msgid "Move to Workspace R_ight"
+msgstr "Bişîne Kargeha _Rast"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:99
+msgid "Move to Workspace _Up"
+msgstr "Bişîne Kargeha Bij_or"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:101
+msgid "Move to Workspace _Down"
+msgstr "Move to Workspace bi_jêr"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:105
+msgid "_Close"
+msgstr "_Bigire"
+
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "Qada xebatê %d%n"
+
+#: ../src/ui/menu.c:213
+#, c-format
+msgid "Workspace 1_0"
+msgstr "Kargeha 1_0"
+
+#: ../src/ui/menu.c:215
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Kargeha %s%d"
+
+#: ../src/ui/menu.c:395
+msgid "Move to Another _Workspace"
+msgstr "_Bişîne kargeheke din bike"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:104
+msgid "Shift"
+msgstr "Bikşîne"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:110
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:116
+msgid "Alt"
+msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:122
+msgid "Meta"
+msgstr "Meta"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:128
+msgid "Super"
+msgstr "Super"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:134
+msgid "Hyper"
+msgstr "Hîper"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:140
+msgid "Mod2"
+msgstr "Mod2"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:146
+msgid "Mod3"
+msgstr "Mod3"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:152
+msgid "Mod4"
+msgstr "Mod4"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:158
+msgid "Mod5"
+msgstr "Mod5"
+
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
+#: ../src/ui/resizepopup.c:113
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "jor"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "jêr"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "çep"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "rast"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "geometriya çarçoveyê mezinahiya \"%s\" nas nake"
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr ""
+"geometriya çarçoveyê mezinahiya \"%s\" bo kêleka paceya \"%s\" nas nake"
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr ""
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Geometriya çarçoveyê mezinahiya bişkokan nas nake"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "Di derbasbûnên rengan de herî kêm divê du heb reng hebe"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr ""
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr ""
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr ""
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr ""
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr ""
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr ""
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr ""
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr ""
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr ""
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:2290
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr ""
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Dirb vegotineke nenas dihewîne ku bû sedema çewtiyekê: %s\n"
+
+#: ../src/ui/theme.c:4203
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+
+#: ../src/ui/theme.c:4780
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr ""
+
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:4946
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "Nirxa sabît ya \"%s\" jixwe hatiye diyarkirin"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Di elementa <%s> de tu taybetiya \"%s\" tune"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Rêzik %d karakter %d: %s"
+
+#: ../src/ui/theme-parser.c:413
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\" wekî hejmara tam ji hev nehate veçirandin"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "\"%1$s\" karakterên dawiya pêrista \"%2$s\" nehatin famririn."
+
+#: ../src/ui/theme-parser.c:541
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:549
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr ""
+
+#: ../src/ui/theme-parser.c:663
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:726
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:791
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1058
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "Geometriya <%s> wekî \"%s\" hatiye danasîn"
+
+#: ../src/ui/theme-parser.c:1071
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1113
+msgid "You must specify a background for an alpha value to be meaningful"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1180
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1191
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1199
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1366
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "Dûrbûna \"%s\" nayê zanîn"
+
+#: ../src/ui/theme-parser.c:1411
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "\"%s\" rêjeya dirêjahî-firehiyê nayê zanîn"
+
+#: ../src/ui/theme-parser.c:1473
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1784
+#, fuzzy, c-format
+msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
+
+#: ../src/ui/theme-parser.c:1791
+#, fuzzy, c-format
+msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+msgstr "Di hêmana <%s> de çawaniya \"color\" (reng) tuneye"
+
+#: ../src/ui/theme-parser.c:2031
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2296
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2819
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2827
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2873
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "Ji bo bişkokê bikêrhatina nederbasdar \"%s\""
+
+#: ../src/ui/theme-parser.c:2882
+#, c-format
+msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2894
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "Ji bo bişkokê rewşa nederbasdar \"%s\""
+
+#: ../src/ui/theme-parser.c:2902
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2973
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2982
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2992
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3047
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3061
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3147
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3185
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3223
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3271
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3291
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3296
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3308
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3330
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3602
+msgid "No draw_ops provided for frame piece"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3617
+msgid "No draw_ops provided for button"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3669
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:4040
+#, fuzzy, c-format
+msgid "Failed to find a valid file for theme %s\n"
+msgstr "Pelê rojane ya fdopen() %s nehate vekirin: %s\n"
+
+#: ../src/ui/theme-parser.c:4096
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:75
+msgid "/_Windows"
+msgstr "/_Pace"
+
+#: ../src/ui/theme-viewer.c:76
+msgid "/Windows/tearoff"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:77
+msgid "/Windows/_Dialog"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:78
+msgid "/Windows/_Modal dialog"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:79
+msgid "/Windows/_Utility"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:80
+msgid "/Windows/_Splashscreen"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:81
+msgid "/Windows/_Top dock"
+msgstr "/Pace/Li _jor bicih bike"
+
+#: ../src/ui/theme-viewer.c:82
+msgid "/Windows/_Bottom dock"
+msgstr "/Pace/Li _jêr bicih bike"
+
+#: ../src/ui/theme-viewer.c:83
+msgid "/Windows/_Left dock"
+msgstr "/Pace/Li _çepê bicih bike"
+
+#: ../src/ui/theme-viewer.c:84
+msgid "/Windows/_Right dock"
+msgstr "/Pace/Li _rastê bicih bike"
+
+#: ../src/ui/theme-viewer.c:85
+msgid "/Windows/_All docks"
+msgstr "/Pace/_Hemû bicihkirin"
+
+#: ../src/ui/theme-viewer.c:86
+msgid "/Windows/Des_ktop"
+msgstr "/Pace/_Sermase"
+
+#: ../src/ui/theme-viewer.c:136
+msgid "Open another one of these windows"
+msgstr "Ji van paceyan yeka din jî veke"
+
+#: ../src/ui/theme-viewer.c:143
+msgid "This is a demo button with an 'open' icon"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:150
+msgid "This is a demo button with a 'quit' icon"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:243
+msgid "This is a sample message in a sample dialog"
+msgstr "Ev mînak ji paceya ragihandinê peyameke mînak e"
+
+#: ../src/ui/theme-viewer.c:326
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:360
+msgid "Border-only window"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:362
+msgid "Bar"
+msgstr "Darik"
+
+#: ../src/ui/theme-viewer.c:379
+msgid "Normal Application Window"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:383
+msgid "Dialog Box"
+msgstr "Qutika Diyalogê"
+
+#: ../src/ui/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:391
+msgid "Utility Palette"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:395
+msgid "Torn-off Menu"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:399
+msgid "Border"
+msgstr "Kelek"
+
+#: ../src/ui/theme-viewer.c:727
+#, c-format
+msgid "Button layout test %d"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:756
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:799
+#, c-format
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:806
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "Dema dirb dihate barkirin çewtî: %s\n"
+
+#: ../src/ui/theme-viewer.c:812
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "Dirbê \"%s\" di hundirê %g çirkeyan hate hate barkirin\n"
+
+#: ../src/ui/theme-viewer.c:853
+msgid "Normal Title Font"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:859
+msgid "Small Title Font"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:865
+msgid "Large Title Font"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:870
+msgid "Button Layouts"
+msgstr "Pergalên Bişkokan"
+
+#: ../src/ui/theme-viewer.c:875
+msgid "Benchmark"
+msgstr "Danberhevkirin"
+
+#: ../src/ui/theme-viewer.c:922
+msgid "Window Title Goes Here"
+msgstr "Sernavê Paceyê Bîne Vê Derê"
+
+#: ../src/ui/theme-viewer.c:1026
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1245
+msgid "position expression test returned TRUE but set error"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1247
+msgid "position expression test returned FALSE but didn't set error"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1251
+msgid "Error was expected but none given"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1253
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1259
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:1263
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "nirxa x %d, li nirxa ku em li bendê bûn %d"
+
+#: ../src/ui/theme-viewer.c:1266
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "nirxa y %d, li nirxa ku em li bendê bûn %d"
+
+#: ../src/ui/theme-viewer.c:1331
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr ""
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr ""
+#~ "Peyama \"%s\" ya ji karê qutiya ragihandinê hatiye nehate veçirandin\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "Di karê ku qutiya ragihandinê nîşan dide de çewtiya xwendinê: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr ""
+#~ "Dema diyaloga metacity dixwest der barê kuştina sepanekê de pirsekê "
+#~ "bipirse çewtî çêbû: %s\n"
+
+#~ msgid "Unmaximize Window"
+#~ msgstr "Paceyê Normal bike"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to print an error about a command: %s\n"
+#~ msgstr ""
+#~ "Dema diyaloga metacity ya ji bo nîşandana çewtiyeke der barê fermanekê de "
+#~ "dihate kirin çewtî çêbû: %s\n"
+
+#~ msgid "Title"
+#~ msgstr "Sernivîs"
+
+#~ msgid "Class"
+#~ msgstr "Pol"
+
+#~ msgid ""
+#~ "These windows do not support \"save current setup\" and will have to be "
+#~ "restarted manually next time you log in."
+#~ msgstr ""
+#~ "Van pacena, taybetmendiya \"rewşa heyî tomar bikr\" destek nakin û di "
+#~ "têketineke din de divê tu xwe bixwe ji nû ve bide destpêkirin."
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Di meşandina \"%s\" de çewtiyek derket:\n"
+#~ "%s"
+
+#~ msgid "Activate window menu"
+#~ msgstr "Menuya Paceyê Çalak bike"
+
+#~ msgid "Hide all windows and focus desktop"
+#~ msgstr "Hemû paceyan veşêre û li sermaseyê daqûl bibe"
+
+#~ msgid "Move backwards between panels and the desktop with popup"
+#~ msgstr ""
+#~ "Derbasbûna ber bi paş ve ya di navbera panel û sermaseyê de bi paceya "
+#~ "diyar bûye re bike"
+
+#~ msgid "Move backwards between windows immediately"
+#~ msgstr "Derbasbûna ber bi paş ve ya di navbera paceyan de ye zûzûka bike"
+
+#~ msgid "Move between panels and the desktop with popup"
+#~ msgstr ""
+#~ "Derbasbûna di nava sermaseyê û panelan bi paceya ku hatiye diyarkirin bike"
+
+#~ msgid "Move between windows with popup"
+#~ msgstr "Derbasbûna di nav paceyan de bi paceya ku hatiye diyarkirin bike"
+
+#, fuzzy
+#~ msgid "Move window to east side of screen"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to north side of screen"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to north-east corner"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to north-west corner"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to south side of screen"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to south-east corner"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to south-west corner"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#, fuzzy
+#~ msgid "Move window to west side of screen"
+#~ msgstr "Paceyê bişîne kargeha 1"
+
+#~ msgid "Raise obscured window, otherwise lower"
+#~ msgstr "Heke pace tam xuya nabe bibe herî jor, yan na jî bibe herî jêr"
+
+#~ msgid "Show the panel menu"
+#~ msgstr "Menuya panelê nîşan bide"
+
+#~ msgid "Show the panel run application dialog"
+#~ msgstr "Paceya panelê bixebitîne nîşan bide"
+
+#~ msgid "Switch to workspace above this one"
+#~ msgstr "Derbasî qada xebatê ya li jor e bibe"
+
+#~ msgid "Switch to workspace below this one"
+#~ msgstr "Biçe qada xebatê ya li jêr"
+
+#~ msgid "Switch to workspace on the left"
+#~ msgstr "Biçe qada xebatê ya li çepê ye"
+
+#~ msgid "Switch to workspace on the right"
+#~ msgstr "Biçe qada xebatê ya li rastê ye"
+
+#~ msgid "Unmaximize window"
+#~ msgstr "Paceyê normal bike"
+
+#~ msgid "No \"color\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"color\" (reng) tuneye"
+
+#~ msgid "No \"x1\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"x1\" tuneye"
+
+#~ msgid "No \"y1\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"y1\" tuneye"
+
+#~ msgid "No \"x2\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"x2\" tuneye"
+
+#~ msgid "No \"y2\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"y2\" tuneye"
+
+#~ msgid "No \"x\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"x\" tuneye"
+
+#~ msgid "No \"y\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"y\" tuneye"
+
+#~ msgid "No \"filename\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"filename\" (navê dosyeyê) tuneye"
+
+#~ msgid "No \"state\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
+
+#~ msgid "No \"shadow\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"shadow\" (sî) tuneye"
+
+#~ msgid "No \"arrow\" attribute on element <%s>"
+#~ msgstr "Di hêmana <%s> de çawaniya \"arrow\" (tîr) tuneye"
+
+#~ msgid "No \"function\" attribute on <%s> element"
+#~ msgstr "Di hêmana <%s> de çawaniya \"function\" (bikêrhatin) tuneye"
+
+#~ msgid "No \"state\" attribute on <%s> element"
+#~ msgstr "Di hêmana <%s> de çawaniya \"state\" (rewş) tuneye"
 
 #~ msgid "On _Top"
 #~ msgstr "Li _Ser"
+
 #~ msgid "Desk %d"
 #~ msgstr "Sermase %d"
+
 #~ msgid "Desk 1_0"
 #~ msgstr "Sermase 1_0"
+
 #~ msgid "Desk %s%d"
 #~ msgstr "Sermase %s%d"
+
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
 #~ "changes."
 #~ msgstr ""
 #~ "Heke tu vê sepanê bi dawî bînê dê guherînên ku te tomar nekiribû winda "
 #~ "bibe."
+
 #~ msgid ""
 #~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 #~ "specified for this theme"
 #~ msgstr ""
 #~ "Di vî dirbî de divê <menu_icon function=\"%s\" state=\"%s\" draw_ops="
 #~ "\"her çi be\"/> hatibe diyarkirin"
-
