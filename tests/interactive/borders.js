@@ -7,8 +7,8 @@ const UI = imports.testcommon.ui;
 
 UI.init();
 let stage = Clutter.Stage.get_default();
-stage.width = 600;
-stage.height = 700;
+stage.width = 640;
+stage.height = 480;
 
 let vbox = new St.BoxLayout({ vertical: true,
                               width: stage.width,
@@ -16,7 +16,9 @@ let vbox = new St.BoxLayout({ vertical: true,
                               style: 'padding: 10px;'
                                      + 'spacing: 20px;'
                                      + 'background: #ffee88;' });
-stage.add_actor(vbox);
+let scroll = new St.ScrollView();
+scroll.add_actor(vbox);
+stage.add_actor(scroll);
 
 vbox.add(new St.Label({ text: "Hello World",
                         style: 'border: 1px solid black; '
@@ -33,6 +35,13 @@ vbox.add(new St.Label({ text: "Hello Background",
                                + 'background: white; '
                                + 'padding: 5px;' }));
 
+vbox.add(new St.Label({ text: "Hello Translucent Black Border",
+                        style: 'border: 3px solid rgba(0, 0, 0, 0.4); '
+                               + 'background: white; ' }));
+                               
+vbox.add(new St.Label({ text: "Hello Translucent Background",
+                        style: 'background: rgba(255, 255, 255, 0.3);' }));
+
 vbox.add(new St.Label({ text: "Border, Padding, Content: 20px" }));
 
 let b1 = new St.BoxLayout({ vertical: true,
@@ -44,7 +53,7 @@ vbox.add(b1);
 b1.add(new St.BoxLayout({ width: 20, height: 20,
                           style: 'background: black' }));
 
-vbox.add(new St.Label({ text: "Translucent blue border, with rounding",
+vbox.add(new St.Label({ text: "Translucent big blue border, with rounding",
                         style: 'border: 20px solid rgba(0, 0, 255, 0.2); '
                                + 'border-radius: 10px; '
                                + 'background: white; '
