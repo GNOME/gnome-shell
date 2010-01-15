@@ -128,7 +128,7 @@ gboolean clutter_x11_has_xinput (void);
 
 gboolean clutter_x11_has_composite_extension (void);
 
-void     clutter_X11_set_use_argb_visual (gboolean use_argb);
+void     clutter_x11_set_use_argb_visual (gboolean use_argb);
 gboolean clutter_x11_get_use_argb_visual (void);
 
 Time clutter_x11_get_current_event_time (void);
