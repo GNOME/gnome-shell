@@ -57,7 +57,7 @@ Short explanation of the commit
 Longer explanation explaining exactly what's changed, whether any
 external or private interfaces changed, what bugs were fixed (with bug
 tracker reference if applicable) and so forth. Be concise but not too
-brief.
+brief. Don't be afraid of using UTF-8, or even ASCII art.
 === end example commit ===
 
    Always add a brief description of the commit to the _first_ line of
