@@ -890,16 +890,24 @@ shell_global_format_time_relative_pretty (ShellGlobal *global,
     *text = g_strdup (_("Less than a minute ago"));
     *next_update = MINUTE - delta;
    } else if (delta < HOUR) {
-     *text = g_strdup_printf (ngettext ("%d minute ago", "%d minutes ago", delta / MINUTE), delta / MINUTE);
+     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
+                                         "%d minute ago", "%d minutes ago",
+                                         delta / MINUTE), delta / MINUTE);
      *next_update = MINUTE - (delta % MINUTE);
    } else if (delta < DAY) {
-     *text = g_strdup_printf (ngettext ("%d hour ago", "%d hours ago", delta / HOUR), delta / HOUR);
+     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
+                                         "%d hour ago", "%d hours ago",
+                                         delta / HOUR), delta / HOUR);
      *next_update = HOUR - (delta % HOUR);
    } else if (delta < WEEK) {
-     *text = g_strdup_printf (ngettext ("%d day ago", "%d days ago", delta / DAY), delta / DAY);
+     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
+                                         "%d day ago", "%d days ago",
+                                         delta / DAY), delta / DAY);
      *next_update = DAY - (delta % DAY);
    } else {
-     *text = g_strdup_printf (ngettext ("%d week ago", "%d weeks ago", delta / WEEK), delta / WEEK);
+     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
+                                         "%d week ago", "%d weeks ago",
+                                         delta / WEEK), delta / WEEK);
      *next_update = WEEK - (delta % WEEK);
    }
 }
