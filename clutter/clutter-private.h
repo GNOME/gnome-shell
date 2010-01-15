@@ -118,8 +118,6 @@ struct _ClutterInputDevice
   guint32 previous_time;
   gint previous_button_number;
   ClutterModifierType previous_state;
-
-  guint is_default : 1;
 };
 
 struct _ClutterStageManager

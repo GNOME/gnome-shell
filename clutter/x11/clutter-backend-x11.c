@@ -179,12 +179,7 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
           n_events = _clutter_input_device_x11_construct (device, backend);
 
           if (info->use == IsXExtensionPointer && n_events > 0)
-            {
-              /* mark it as a default */
-              device->is_default = TRUE;
-
-              have_an_xpointer = TRUE;
-            }
+            have_an_xpointer = TRUE;
 
           /* add it to a temporary list; we don't add the device
            * straight to the device manager because the XInput
@@ -227,7 +222,7 @@ default_device:
    *  - we do not have the XInput extension
    *  - we do not have a XInput pointer device
    *
-   * we register two default core devices, one for the pointer
+   * we register two default devices, one for the pointer
    * and one for the keyboard
    */
   if (!have_an_xpointer)
@@ -240,7 +235,6 @@ default_device:
                         "device-type", CLUTTER_POINTER_DEVICE,
                         "is-core", TRUE,
                         NULL);
-      d->is_default = TRUE;
       CLUTTER_NOTE (BACKEND, "Added core pointer device %d", d->id);
       _clutter_device_manager_add_device (manager, d);
       backend->core_pointer = d;
@@ -251,7 +245,6 @@ default_device:
                         "device-type", CLUTTER_KEYBOARD_DEVICE,
                         "is-core", TRUE,
                         NULL);
-      d->is_default = TRUE;
       CLUTTER_NOTE (BACKEND, "Added core keyboard device %d", d->id);
       _clutter_device_manager_add_device (manager, d);
       backend->core_keyboard = d;
