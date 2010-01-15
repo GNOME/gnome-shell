@@ -63,34 +63,35 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c \
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
-	clutter.h \
-        clutter-bezier.h \
-	clutter-debug.h \
-	clutter-deprecated.h \
-	clutter-enum-types.h \
-	clutter-json.h \
-	clutter-keysyms.h \
-	clutter-keysyms-table.h \
-	clutter-marshal.h \
-	clutter-master-clock.h \
-	clutter-model-private.h \
-	clutter-private.h \
-	clutter-id-pool.h \
-	clutter-script-private.h \
-	clutter-stage-window.h \
-	clutter-timeout-interval.h \
-	stamp-clutter-enum-types.h \
-	stamp-clutter-marshal.h \
-	cogl \
-	eglnative \
-	eglx \
-	fruity \
-	glx \
-	osx \
-	x11 \
-	json \
-	pango \
-	sdl \
+	clutter.h 			\
+        clutter-bezier.h 		\
+	clutter-debug.h 		\
+	clutter-deprecated.h 		\
+	clutter-enum-types.h 		\
+	clutter-id-pool.h 		\
+	clutter-json.h 			\
+	clutter-keysyms.h 		\
+	clutter-keysyms-table.h 	\
+	clutter-marshal.h 		\
+	clutter-master-clock.h 		\
+	clutter-model-private.h 	\
+	clutter-private.h 		\
+	clutter-profile.h		\
+	clutter-script-private.h 	\
+	clutter-stage-window.h 		\
+	clutter-timeout-interval.h 	\
+	stamp-clutter-enum-types.h 	\
+	stamp-clutter-marshal.h 	\
+	cogl 				\
+	eglnative 			\
+	eglx 				\
+	fruity 				\
+	glx 				\
+	osx 				\
+	x11 				\
+	json 				\
+	pango 				\
+	sdl 				\
 	win32
 
 EXTRA_HFILES=\
