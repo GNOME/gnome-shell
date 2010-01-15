@@ -91,19 +91,28 @@ struct _ClutterInputDevice
 
   ClutterInputDeviceType device_type;
 
+  gchar *device_name;
+
+  /* the actor underneath the pointer */
   ClutterActor *cursor_actor;
+
+  /* the actor that has a grab in place for the device */
   ClutterActor *pointer_grab_actor;
 
+  /* the current click count */
   gint click_count;
 
+  /* the stage the device is on */
   ClutterStage *stage;
 
+  /* the current state */
   gint current_x;
   gint current_y;
   guint32 current_time;
   gint current_button_number;
   ClutterModifierType current_state;
 
+  /* the previous state, used for click count generation */
   gint previous_x;
   gint previous_y;
   guint32 previous_time;

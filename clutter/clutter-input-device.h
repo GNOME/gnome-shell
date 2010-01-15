@@ -42,9 +42,8 @@ G_BEGIN_DECLS
 /**
  * ClutterInputDevice:
  *
- * Generic representation of an input device. The
- * actual contents of this structure depend on the
- * backend used.
+ * Generic representation of an input device. The actual contents of this
+ * structure depend on the backend used.
  */
 typedef struct _ClutterInputDevice      ClutterInputDevice;
 typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
@@ -93,6 +92,7 @@ void                   clutter_input_device_get_device_coords (ClutterInputDevic
                                                                gint               *x,
                                                                gint               *y);
 ClutterActor *         clutter_input_device_get_pointer_actor (ClutterInputDevice *device);
+G_CONST_RETURN gchar * clutter_input_device_get_device_name   (ClutterInputDevice *device);
 
 G_END_DECLS
 

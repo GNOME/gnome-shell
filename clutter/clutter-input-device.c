@@ -45,7 +45,8 @@ enum
   PROP_0,
 
   PROP_ID,
-  PROP_DEVICE_TYPE
+  PROP_DEVICE_TYPE,
+  PROP_NAME
 };
 
 G_DEFINE_TYPE (ClutterInputDevice, clutter_input_device, G_TYPE_OBJECT);
@@ -66,6 +67,10 @@ clutter_input_device_set_property (GObject      *gobject,
 
     case PROP_DEVICE_TYPE:
       self->device_type = g_value_get_enum (value);
+      break;
+
+    case PROP_NAME:
+      self->device_name = g_strdup (g_value_get_string (value));
       break;
 
     default:
@@ -90,6 +95,10 @@ clutter_input_device_get_property (GObject    *gobject,
 
     case PROP_DEVICE_TYPE:
       g_value_set_enum (value, self->device_type);
+      break;
+
+    case PROP_NAME:
+      g_value_set_string (value, self->device_name);
       break;
 
     default:
@@ -122,6 +131,21 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                             CLUTTER_PARAM_READWRITE |
                             G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_ID, pspec);
+
+  /**
+   * ClutterInputDevice:name:
+   *
+   * The name of the device
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_string ("name",
+                               "Name",
+                               "The name of the device",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_NAME, pspec);
 
   /**
    * ClutterInputDevice:device-type:
@@ -477,4 +501,24 @@ clutter_input_device_get_pointer_actor (ClutterInputDevice *device)
   g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
 
   return device->cursor_actor;
+}
+
+/**
+ * clutter_input_device_get_device_name:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the name of the @device
+ *
+ * Return value: the name of the device, or %NULL. The returned string
+ *   is owned by the #ClutterInputDevice and should never be modified
+ *   or freed
+ *
+ * Since: 1.2
+ */
+G_CONST_RETURN gchar *
+clutter_input_device_get_device_name (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return device->device_name;
 }
