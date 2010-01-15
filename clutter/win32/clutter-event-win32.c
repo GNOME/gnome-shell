@@ -616,6 +616,20 @@ message_translate (ClutterBackend *backend,
       }
       break;
 
+    case WM_SETCURSOR:
+      /* If the cursor is in the window's client area and the stage's
+         cursor should be invisible then we'll set a blank cursor
+         instead */
+      if (LOWORD (msg->lParam) == HTCLIENT && !stage_win32->is_cursor_visible)
+        {
+          if (call_def_window_proc)
+            *call_def_window_proc = FALSE;
+          _clutter_stage_win32_update_cursor (stage_win32);
+        }
+
+      res = FALSE;
+      break;
+
     default:
       /* ignore every other message */
       res = FALSE;

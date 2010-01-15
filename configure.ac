@@ -364,10 +364,17 @@ AS_CASE([$CLUTTER_WINSYS],
           WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
           WIN32_LIBS="-lopengl32 -lgdi32 -lwinmm"
           CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
+
+          AC_CHECK_TOOL(WINDRES, windres, no)
+          if test "$WINDRES" = no; then
+             AC_MSG_ERROR([*** windres is required])
+          fi
         ],
 
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, sdl, osx, win32, eglx, eglnative or fruity])]
 )
+
+AM_CONDITIONAL(WINSYS_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 
 # at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])

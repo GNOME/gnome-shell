@@ -20,6 +20,23 @@ DISTCLEANFILES =
 EXTRA_DIST =
 BUILT_SOURCES =
 
+if WINSYS_WIN32
+
+# Ideally this resources stuff would go in win32/ but libtool doesn't
+# seem to pass on the -Wl argument when linking a convenience library
+# so we need to do it here as part of linking the dll. libtool also
+# won't let you link against the .o directly because it wants you to
+# link against libtool objects for dynamic libraries.
+.rc.o :
+	$(WINDRES) -I$(srcdir)/win32 $< $@
+
+win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
+
+win32_resources = win32/resources.o
+win32_resources_ldflag = -Wl,win32/resources.o
+
+endif # WINSYS_WIN32
+
 INCLUDES = \
 	-I$(top_srcdir) 				\
 	-I$(top_srcdir)/clutter/cogl			\
@@ -205,7 +222,8 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_dep) \
-	$(CLUTTER_WINSYS_BASE_LIB)
+	$(CLUTTER_WINSYS_BASE_LIB) \
+	$(win32_resources)
 
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
@@ -219,6 +237,7 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^(clutter|cogl|json).*" \
 	-rpath $(libdir) \
+	$(win32_resources_ldflag) \
 	$(NULL)
 
 lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)

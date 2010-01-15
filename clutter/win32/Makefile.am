@@ -33,4 +33,4 @@ libclutter_win32_la_SOURCES = \
 
 CLEANFILES = clutter-win32-$(CLUTTER_API_VERSION).pc
 
-EXTRA_DIST = clutter-win32.pc.in
+EXTRA_DIST = clutter-win32.pc.in resources.rc invisible-cursor.cur

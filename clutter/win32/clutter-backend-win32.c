@@ -47,6 +47,8 @@ static ClutterBackendWin32 *backend_singleton = NULL;
 
 static gchar *clutter_vblank_name = NULL;
 
+static HINSTANCE clutter_hinst = NULL;
+
 gboolean
 clutter_backend_win32_pre_parse (ClutterBackend  *backend,
 				 GError         **error)
@@ -65,6 +67,18 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
   _clutter_backend_win32_events_init (backend);
+}
+
+HCURSOR
+_clutter_backend_win32_get_invisible_cursor (ClutterBackend *backend)
+{
+  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+
+  if (backend_win32->invisible_cursor == NULL)
+    backend_win32->invisible_cursor =
+      LoadCursor (clutter_hinst, MAKEINTRESOURCE (42));
+
+  return backend_win32->invisible_cursor;
 }
 
 static const GOptionEntry entries[] =
@@ -353,6 +367,7 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
 
   backend_win32->gl_context         = NULL;
   backend_win32->no_event_retrieval = FALSE;
+  backend_win32->invisible_cursor   = NULL;
 
   /* FIXME: get from GetSystemMetric? */
   clutter_backend_set_double_click_time (backend, 250);
@@ -369,4 +384,14 @@ GType
 _clutter_backend_impl_get_type (void)
 {
   return clutter_backend_win32_get_type ();
+}
+
+BOOL WINAPI
+DllMain (HINSTANCE hinst, DWORD reason, LPVOID reserved)
+{
+  if (reason == DLL_PROCESS_ATTACH)
+    /* Store the module handle so that we can use it to load resources */
+    clutter_hinst = hinst;
+
+  return TRUE;
 }
