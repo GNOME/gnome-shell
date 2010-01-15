@@ -51,6 +51,9 @@ struct _ClutterBackendWin32
   HCURSOR        invisible_cursor;
 
   GSource       *event_source;
+
+  ClutterInputDevice *core_pointer;
+  ClutterInputDevice *core_keyboard;
 };
 
 struct _ClutterBackendWin32Class
