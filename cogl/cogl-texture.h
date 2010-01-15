@@ -29,6 +29,7 @@
 #define __COGL_TEXTURE_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-defines.h>
 
 G_BEGIN_DECLS
 
@@ -487,15 +488,16 @@ void cogl_rectangles (const float *verts,
  * All of the texture coordinates must be in the range [0,1] and repeating the
  * texture is not supported.
  *
- * Because of the way this function is implemented it will currently only work
- * if either the texture is not sliced or the backend is not OpenGL ES and the
- * minifying and magnifying functions are both set to CGL_NEAREST.
+ * Because of the way this function is implemented it will currently
+ * only work if either the texture is not sliced or the backend is not
+ * OpenGL ES and the minifying and magnifying functions are both set
+ * to COGL_MATERIAL_FILTER_NEAREST.
  *
  * Since: 1.0
  */
-void cogl_polygon (CoglTextureVertex  *vertices,
-                   guint               n_vertices,
-                   gboolean            use_color);
+void cogl_polygon (const CoglTextureVertex  *vertices,
+                   guint                     n_vertices,
+                   gboolean                  use_color);
 
 G_END_DECLS
 

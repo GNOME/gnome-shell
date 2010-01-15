@@ -61,7 +61,7 @@ typedef struct _TextureSlicedQuadState
 
 typedef struct _TextureSlicedPolygonState
 {
-  CoglTextureVertex *vertices;
+  const CoglTextureVertex *vertices;
   int n_vertices;
   int stride;
 } TextureSlicedPolygonState;
@@ -696,7 +696,7 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
 
 /* handles 2d-sliced textures with > 1 slice */
 static void
-_cogl_texture_polygon_multiple_primitives (CoglTextureVertex *vertices,
+_cogl_texture_polygon_multiple_primitives (const CoglTextureVertex *vertices,
                                            unsigned int n_vertices,
                                            unsigned int stride,
                                            gboolean use_color)
@@ -749,7 +749,7 @@ _cogl_texture_polygon_multiple_primitives (CoglTextureVertex *vertices,
 }
 
 static void
-_cogl_multitexture_polygon_single_primitive (CoglTextureVertex *vertices,
+_cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
                                              guint n_vertices,
                                              guint n_layers,
                                              guint stride,
@@ -828,14 +828,13 @@ _cogl_multitexture_polygon_single_primitive (CoglTextureVertex *vertices,
 }
 
 void
-cogl_polygon (CoglTextureVertex *vertices,
-              guint              n_vertices,
-	      gboolean           use_color)
+cogl_polygon (const CoglTextureVertex *vertices,
+              guint                    n_vertices,
+	      gboolean                 use_color)
 {
   CoglHandle           material;
-  const GList         *layers;
+  const GList         *layers, *tmp;
   int                  n_layers;
-  GList               *tmp;
   gboolean	       use_sliced_polygon_fallback = FALSE;
   guint32              fallback_layers = 0;
   int                  i;
@@ -858,10 +857,10 @@ cogl_polygon (CoglTextureVertex *vertices,
   layers = cogl_material_get_layers (ctx->source_material);
   n_layers = g_list_length ((GList *)layers);
 
-  for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
+  for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
-      CoglHandle   layer = (CoglHandle)tmp->data;
-      CoglHandle   tex_handle = cogl_material_layer_get_texture (layer);
+      CoglHandle layer = tmp->data;
+      CoglHandle tex_handle = cogl_material_layer_get_texture (layer);
 
       /* COGL_INVALID_HANDLE textures will be handled in
        * _cogl_material_flush_layers_gl_state */
@@ -891,6 +890,7 @@ cogl_polygon (CoglTextureVertex *vertices,
                   warning_seen = TRUE;
                 }
             }
+
           use_sliced_polygon_fallback = TRUE;
           n_layers = 1;
 
@@ -902,7 +902,7 @@ cogl_polygon (CoglTextureVertex *vertices,
                 {
                   g_warning ("cogl_texture_polygon does not work for sliced textures "
                              "when the minification and magnification filters are not "
-                             "CGL_NEAREST");
+                             "COGL_MATERIAL_FILTER_NEAREST");
                   warning_seen = TRUE;
                 }
               return;
@@ -977,9 +977,10 @@ cogl_polygon (CoglTextureVertex *vertices,
                              /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
                              v + 3 + 2 * i));
     }
-  prev_n_texcoord_arrays_enabled =
-    ctx->n_texcoord_arrays_enabled;
+
+  prev_n_texcoord_arrays_enabled = ctx->n_texcoord_arrays_enabled;
   ctx->n_texcoord_arrays_enabled = n_layers;
+
   for (; i < prev_n_texcoord_arrays_enabled; i++)
     {
       GE (glClientActiveTexture (GL_TEXTURE0 + i));

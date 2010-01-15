@@ -504,8 +504,6 @@ cogl_texture_get_max_waste (CoglHandle handle)
   tex = COGL_TEXTURE (handle);
 
   return tex->vtable->get_max_waste (tex);
-
-  g_return_val_if_reached (0);
 }
 
 gboolean
@@ -572,7 +570,7 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  return tex->vtable->transform_coords_to_gl (tex, s, t);
+  tex->vtable->transform_coords_to_gl (tex, s, t);
 }
 
 GLenum
@@ -610,7 +608,7 @@ _cogl_texture_set_filters (CoglHandle handle,
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->vtable->set_filters (tex, min_filter, mag_filter);
+  tex->vtable->set_filters (tex, min_filter, mag_filter);
 }
 
 void
@@ -623,7 +621,7 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->vtable->ensure_mipmaps (tex);
+  tex->vtable->ensure_mipmaps (tex);
 }
 
 gboolean
