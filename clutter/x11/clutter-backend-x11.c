@@ -236,18 +236,22 @@ default_device:
       d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                         "id", 0,
                         "device-type", CLUTTER_POINTER_DEVICE,
+                        "is-core", TRUE,
                         NULL);
       d->is_default = TRUE;
-      CLUTTER_NOTE (BACKEND, "Added default pointer device %d", d->id);
+      CLUTTER_NOTE (BACKEND, "Added core pointer device %d", d->id);
       _clutter_device_manager_add_device (manager, d);
+      backend->core_pointer = d;
 
       d = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                         "id", 1,
                         "device-type", CLUTTER_KEYBOARD_DEVICE,
+                        "is-core", TRUE,
                         NULL);
       d->is_default = TRUE;
-      CLUTTER_NOTE (BACKEND, "Added default keyboard device %d", d->id);
+      CLUTTER_NOTE (BACKEND, "Added core keyboard device %d", d->id);
       _clutter_device_manager_add_device (manager, d);
+      backend->core_keyboard = d;
     }
 }
 

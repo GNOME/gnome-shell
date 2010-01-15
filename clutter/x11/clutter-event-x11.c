@@ -183,7 +183,6 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   g_source_add_poll (source, &event_source->event_poll_fd);
   g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
-
 }
 
 void
@@ -622,10 +621,9 @@ event_translate (ClutterBackend *backend,
 
     case KeyPress:
       event->key.type = event->type = CLUTTER_KEY_PRESS;
-      translate_key_event (backend, event, xevent);
+      event->key.device = backend_x11->core_keyboard;
 
-      /* default key device if no XInput support is defined */
-      event->key.device = clutter_device_manager_get_device (manager, 1);
+      translate_key_event (backend, event, xevent);
 
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
@@ -658,10 +656,9 @@ event_translate (ClutterBackend *backend,
         }
 
       event->key.type = event->type = CLUTTER_KEY_RELEASE;
-      translate_key_event (backend, event, xevent);
+      event->key.device = backend_x11->core_keyboard;
 
-      /* default key device if no XInput support is defined */
-      event->key.device = clutter_device_manager_get_device (manager, 1);
+      translate_key_event (backend, event, xevent);
       break;
 
     default:
@@ -675,7 +672,7 @@ event_translate (ClutterBackend *backend,
     {
       if (!clutter_x11_has_xinput ())
         {
-          device = clutter_device_manager_get_device (manager, 0);
+          device = backend_x11->core_pointer;
 
           /* Regular X event */
           switch (xevent->type)

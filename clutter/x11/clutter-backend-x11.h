@@ -80,6 +80,9 @@ struct _ClutterBackendX11
   gboolean have_xinput;
 
   Time last_event_time;
+
+  ClutterInputDevice *core_pointer;
+  ClutterInputDevice *core_keyboard;
 };
 
 struct _ClutterBackendX11Class

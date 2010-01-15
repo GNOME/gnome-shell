@@ -22,6 +22,15 @@ struct _ClutterInputDeviceX11
   XEventClass        xevent_list[5];   /* MAX 5 event types */
   int                num_events;
 #endif
+
+  guint is_core : 1;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_IS_CORE
 };
 
 G_DEFINE_TYPE (ClutterInputDeviceX11,
@@ -29,13 +38,67 @@ G_DEFINE_TYPE (ClutterInputDeviceX11,
                CLUTTER_TYPE_INPUT_DEVICE);
 
 static void
+clutter_input_device_x11_set_property (GObject      *gobject,
+                                       guint         prop_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
+{
+  ClutterInputDeviceX11 *self = CLUTTER_INPUT_DEVICE_X11 (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_IS_CORE:
+      self->is_core = g_value_get_boolean (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_input_device_x11_get_property (GObject    *gobject,
+                                       guint       prop_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
+{
+  ClutterInputDeviceX11 *self = CLUTTER_INPUT_DEVICE_X11 (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_IS_CORE:
+      g_value_set_boolean (value, self->is_core);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  gobject_class->set_property = clutter_input_device_x11_set_property;
+  gobject_class->get_property = clutter_input_device_x11_get_property;
+
+  pspec = g_param_spec_boolean ("is-core",
+                                "Is Core",
+                                "Whether the device is a core one",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE |
+                                G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_IS_CORE, pspec);
 }
 
 static void
 clutter_input_device_x11_init (ClutterInputDeviceX11 *self)
 {
+  self->is_core = FALSE;
 }
 
 gint
