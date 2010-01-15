@@ -9,7 +9,31 @@ typedef struct {
 
 } TestDevicesApp;
 
- 
+static const gchar *
+device_type_name (ClutterInputDevice *device)
+{
+  ClutterInputDeviceType d_type;
+
+  d_type = clutter_input_device_get_device_type (device);
+  switch (d_type)
+    {
+    case CLUTTER_POINTER_DEVICE:
+      return "Pointer";
+
+    case CLUTTER_KEYBOARD_DEVICE:
+      return "Keyboard";
+
+    case CLUTTER_EXTENSION_DEVICE:
+      return "Extension";
+
+    default:
+      return "Unknown";
+    }
+
+  g_warn_if_reached ();
+
+  return NULL;
+}
 
 static gboolean
 stage_motion_event_cb (ClutterActor *actor, 
@@ -23,6 +47,11 @@ stage_motion_event_cb (ClutterActor *actor,
   device = clutter_event_get_device (event);
 
   hand = g_hash_table_lookup (app->devices, device);
+
+  g_print ("Device: '%s' (id:%d, type:%s)\n",
+           clutter_input_device_get_device_name (device),
+           clutter_input_device_get_device_id (device),
+           device_type_name (device));
 
   if (hand != NULL)
     {
