@@ -235,11 +235,11 @@ bell_flash_frame (MetaDisplay *display,
   
   g_assert (xkb_ev->xkb_type == XkbBellNotify);
   window = meta_display_lookup_x_window (display, xkb_bell_event->window);
-  if (!window && (display->focus_window) && (display->focus_window->frame))
+  if (!window && (display->focus_window))
     {
       window = display->focus_window;
     }
-  if (window)
+  if (window && window->frame)
     {
       bell_flash_window_frame (window);
     }
