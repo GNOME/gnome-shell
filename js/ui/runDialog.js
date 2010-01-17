@@ -216,7 +216,7 @@ RunDialog.prototype = {
                                           height: global.screen_height });
         global.stage.add_actor(this._group);
 
-        let lightbox = new Lightbox.Lightbox(this._group);
+        let lightbox = new Lightbox.Lightbox(this._group, true);
 
         this._boxH = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                    x_align: Big.BoxAlignment.CENTER,

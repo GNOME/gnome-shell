@@ -433,6 +433,8 @@ AppWellIcon.prototype = {
     },
 
     highlightWindow: function(metaWindow) {
+        if (this._didActivateWindow)
+            return;
         if (!this._getRunning())
             return;
         Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
@@ -450,6 +452,7 @@ AppWellIcon.prototype = {
         if (this._getRunning()) {
             Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
             this._setWindowSelection = true;
+            this._didActivateWindow = false;
         }
     },
 

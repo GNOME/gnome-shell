@@ -199,7 +199,7 @@ WindowClone.prototype = {
         this._zooming = true;
         this.emit('zoom-start');
 
-        this._zoomLightbox = new Lightbox.Lightbox(global.stage);
+        this._zoomLightbox = new Lightbox.Lightbox(global.stage, false);
 
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
         this._zoomGlobalOrig = new ScaledPoint();
@@ -672,7 +672,7 @@ Workspace.prototype = {
      */
     setLightboxMode: function (showLightbox) {
         if (showLightbox) {
-            this._lightbox = new Lightbox.Lightbox(this.actor);
+            this._lightbox = new Lightbox.Lightbox(this.actor, false);
         } else {
             this._lightbox.destroy();
             this._lightbox = null;

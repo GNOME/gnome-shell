@@ -12,6 +12,7 @@ SHADE_COLOR.from_pixel(0x00000044);
 /**
  * Lightbox:
  * @container: parent Clutter.Container
+ * @inhibitEvents: whether to inhibit events for @container
  * @width: (optional) shade actor width
  * @height: (optional) shade actor height
  *
@@ -29,19 +30,19 @@ SHADE_COLOR.from_pixel(0x00000044);
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height
  */
-function Lightbox(container, width, height) {
-    this._init(container, width, height);
+function Lightbox(container, inhibitEvents, width, height) {
+    this._init(container, inhibitEvents, width, height);
 }
 
 Lightbox.prototype = {
-    _init : function(container, width, height) {
+    _init : function(container, inhibitEvents, width, height) {
         this._container = container;
         this._children = container.get_children();
         this.actor = new Clutter.Rectangle({ color: SHADE_COLOR,
                                              x: 0,
                                              y: 0,
                                              border_width: 0,
-                                             reactive: true });
+                                             reactive: inhibitEvents });
 
         container.add_actor(this.actor);
         this.actor.raise_top();
