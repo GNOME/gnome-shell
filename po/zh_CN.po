@@ -2,19 +2,19 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Ray Wang <raywang@gnome.org>, 2009.
-#
+# jiero <lililjlj@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-08-29 19:32+0000\n"
-"PO-Revision-Date: 2009-08-30 00:08+0800\n"
-"Last-Translator: Ray Wang <raywang@gnome.org>\n"
-"Language-Team: Chinese (Simplified) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2010-01-15 17:17+0000\n"
+"PO-Revision-Date: 2010-01-17 15:30+0800\n"
+"Last-Translator: jiero <lililjlj@gmail.com>\n"
+"Language-Team: Simplified Chinese <i10n>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: utf-8\n"
+"Content-Transfer-Encoding: UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -25,143 +25,133 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "窗口管理和应用程序启动"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "活动"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "应用程序"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:454
-msgid "%a %l:%M %p"
-msgstr "%A %H:%M"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "首选项"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/appDisplay.js:644
+msgid "New Window"
+msgstr "新窗口"
+
+#: ../js/ui/appDisplay.js:648
+msgid "Remove from Favorites"
+msgstr "从收藏夹中移除"
+
+#: ../js/ui/appDisplay.js:649
+msgid "Add to Favorites"
+msgstr "添加到收藏夹"
+
+#: ../js/ui/appDisplay.js:1001
+msgid "Drag here to add favorites"
+msgstr "拖到这里加入收藏"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "查找..."
 
-#: ../js/ui/dash.js:374
-msgid "Browse"
-msgstr "浏览"
+#: ../js/ui/dash.js:493
+msgid "Searching..."
+msgstr "搜索..."
 
-#: ../js/ui/dash.js:451
-msgid "(see all)"
-msgstr "(查看所有)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:633 ../js/ui/dash.js:681
-msgid "APPLICATIONS"
-msgstr "应用程序"
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr ""
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:653
-msgid "PLACES"
-msgstr "位置"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr ""
 
 #. **** Documents ****
-#: ../js/ui/dash.js:660 ../js/ui/dash.js:692
-msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:892
+#, fuzzy
+#| msgid "RECENT DOCUMENTS"
+msgid "RECENT ITEMS"
 msgstr "最近的文档"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:679
-msgid "SEARCH RESULTS"
-msgstr "搜索结果"
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:336
+msgid "Activities"
+msgstr "活动"
 
-#: ../js/ui/runDialog.js:82
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:549
+msgid "%a %l:%M %p"
+msgstr "%A %H:%M"
+
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "连接到..."
+
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "请输入一个命令："
 
-#: ../src/shell-global.c:840
+#: ../js/ui/runDialog.js:361
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "运行“%s”失败"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "应用程序"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "最近文档"
+
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:894
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:904
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:909
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d 周前"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "未知"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "不能锁住屏幕：%s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "不能临时将屏幕保护设置成空白屏幕：%s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "不能退出：%s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "帐户信息..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "侧边栏"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "系统首选项..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "锁住屏幕"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "切换用户"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "退出..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "关机..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "主文件夹"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "文件系统"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "搜索"
 
@@ -170,7 +160,52 @@ msgstr "搜索"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "PLACES"
+#~ msgstr "位置"
+
+#~ msgid "Browse"
+#~ msgstr "浏览"
+
+#~ msgid "(see all)"
+#~ msgstr "(查看所有)"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "搜索结果"
+
+#~ msgid "Unknown"
+#~ msgstr "未知"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "不能锁住屏幕：%s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr "不能临时将屏幕保护设置成空白屏幕：%s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "不能退出：%s"
+
+#~ msgid "Account Information..."
+#~ msgstr "帐户信息..."
+
+#~ msgid "Sidebar"
+#~ msgstr "侧边栏"
+
+#~ msgid "System Preferences..."
+#~ msgstr "系统首选项..."
+
+#~ msgid "Lock Screen"
+#~ msgstr "锁住屏幕"
+
+#~ msgid "Switch User"
+#~ msgstr "切换用户"
+
+#~ msgid "Log Out..."
+#~ msgstr "退出..."
+
+#~ msgid "Shut Down..."
+#~ msgstr "关机..."
