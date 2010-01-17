@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Khaled Hosny <khaledhosny@eglug.org>, 2009.
+# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 20:55+0200\n"
-"PO-Revision-Date: 2009-11-08 20:55+0300\n"
+"POT-Creation-Date: 2010-01-17 11:29+0200\n"
+"PO-Revision-Date: 2010-01-17 11:29+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.4.1\n"
+"X-Generator: Virtaal 0.5.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -26,84 +26,75 @@ msgstr "صدفة جنوم"
 msgid "Window management and application launching"
 msgstr "إدارة النوافذ وإطلاق التطبيقات"
 
-#: ../js/ui/appDisplay.js:332
-msgid "Frequent"
-msgstr "متكرر"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:867
-msgid "Drag here to add favorites"
-msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "التفضيلات"
 
-#: ../js/ui/appIcon.js:426
+#: ../js/ui/appDisplay.js:644
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:648
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appIcon.js:431
+#: ../js/ui/appDisplay.js:649
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
-#: ../js/ui/dash.js:267
+#: ../js/ui/appDisplay.js:1001
+msgid "Drag here to add favorites"
+msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "ابحث..."
 
-#: ../js/ui/dash.js:376
-msgid "More"
-msgstr "المزيد"
+#: ../js/ui/dash.js:493
+msgid "Searching..."
+msgstr "يبحث..."
 
-#: ../js/ui/dash.js:532
-msgid "(see all)"
-msgstr "(انظر الكل)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:711 ../js/ui/dash.js:773
-msgid "APPLICATIONS"
-msgstr "التطبيقات"
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "لا نتائج مطابقة."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:731
-msgid "PLACES"
-msgstr "الأماكن"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr "الأماكن والأجهزة"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:738 ../js/ui/dash.js:783
-msgid "RECENT DOCUMENTS"
-msgstr "المستندات الحديثة"
-
-#. **** Search Results ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:947
-msgid "SEARCH RESULTS"
-msgstr "نتائج البحث"
-
-#: ../js/ui/dash.js:778
-msgid "PREFERENCES"
-msgstr "التفضيلات"
+#: ../js/ui/dash.js:892
+msgid "RECENT ITEMS"
+msgstr "العناصر الحديثة"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:336
 msgid "Activities"
 msgstr "الأنشطة"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#: ../js/ui/panel.js:549
 msgid "%a %l:%M %p"
 msgstr "%A %Ol:%OM %p"
 
-#: ../js/ui/places.js:178
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "اتّصل ب‍..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:361
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
@@ -121,11 +112,11 @@ msgstr "التطبيقات"
 msgid "Recent Documents"
 msgstr "المستندات الحديثة"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:894
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -136,7 +127,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -147,7 +138,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:904
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -158,7 +149,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:909
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -169,67 +160,17 @@ msgstr[3] "منذ %d أسابيع"
 msgstr[4] "منذ %d أسبوعا"
 msgstr[5] "منذ %d أسبوع"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "مجهول"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "تعذّر إيصاد الشاشة: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "تعذّر ضبك حافظة الشاشة مؤقتا لتكون شاشة خالية: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "تعذّر الخروج: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "معلومات الحساب..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "الشريط الجانبي"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "تفضيلات النظام..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "أوصد الشاشة"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "بدّل المستخدم"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "اخرج..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "أطفئ..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "مجلد المنزل"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "نظام الملفات"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "ابحث"
 
@@ -238,10 +179,58 @@ msgstr "ابحث"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Frequent"
+#~ msgstr "متكرر"
+
+#~ msgid "More"
+#~ msgstr "المزيد"
+
+#~ msgid "(see all)"
+#~ msgstr "(انظر الكل)"
+
+#~ msgid "PLACES"
+#~ msgstr "الأماكن"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "نتائج البحث"
+
+#~ msgid "Unknown"
+#~ msgstr "مجهول"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "تعذّر إيصاد الشاشة: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr "تعذّر ضبك حافظة الشاشة مؤقتا لتكون شاشة خالية: %s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "تعذّر الخروج: %s"
+
+#~ msgid "Account Information..."
+#~ msgstr "معلومات الحساب..."
+
+#~ msgid "Sidebar"
+#~ msgstr "الشريط الجانبي"
+
+#~ msgid "System Preferences..."
+#~ msgstr "تفضيلات النظام..."
+
+#~ msgid "Lock Screen"
+#~ msgstr "أوصد الشاشة"
+
+#~ msgid "Switch User"
+#~ msgstr "بدّل المستخدم"
+
+#~ msgid "Log Out..."
+#~ msgstr "اخرج..."
+
+#~ msgid "Shut Down..."
+#~ msgstr "أطفئ..."
 
 #~ msgid "Browse"
 #~ msgstr "استعرض"
