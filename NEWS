@@ -1,3 +1,52 @@
+Clutter 1.1.6 (18/01/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.4
+
+    o Some fixes for the Win32 backend (bug #1905).
+
+    o Profiling support via the UProf library. Configure with
+      --enable-profile to get a report after each Clutter application is
+      run.
+
+    o Improved conformance tests with coverage reports via gcov.
+
+    o ClutterTexture no longer tries to read back texture data into
+      g_malloc'd memory on unrealize (bug #1842).
+
+    o The CGL_* defines from cogl-defines.h have been removed. These
+      should not have been used by any applications, but if they were
+      being used then please replace them either with the Cogl enums or
+      with the appropriate GL_* enum if you are using GL directly.
+
+    o Added a delete-event signal to the stage.
+
+    o Fix for using cogl_rectangle with different texture coordinates
+      for multiple layers (bug #1937).
+
+    o Fix for using stencil and depth buffers in FBOs on Intel drivers
+      in Mesa (bug #1873).
+
+    o Support for subtitles in ClutterMedia.
+
+    o ClutterGLX will now use an RGB visual by default. For
+      applications (and toolkit integration libraries) that want to
+      enable the ClutterStage:use-alpha property there is a new
+      function: clutter_x11_set_use_argb_visual().
+
+    o Fix ClutterText to allow using Pango markup and attributes in
+      the same actor (bug #1940).
+
+Many thanks to:
+
+     Alejandro Piñeiro
+     Damien Lespiau
+     Emmanuele Bassi
+     Gord Allot
+     Halton Huo
+     Robert Bragg
+     Samuel Degrande
+
 Clutter 1.1.4 (03/01/2010)
 ===============================================================================
 
