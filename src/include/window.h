@@ -141,4 +141,5 @@ guint32     meta_window_get_user_time (MetaWindow *window);
 int         meta_window_get_pid (MetaWindow *window);
 const char *meta_window_get_client_machine (MetaWindow *window);
 gboolean    meta_window_is_modal (MetaWindow *window);
+const char *meta_window_get_mutter_hints (MetaWindow *window);
 #endif

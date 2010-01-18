@@ -96,6 +96,7 @@ struct _MetaWindow
   char *sm_client_id;
   char *wm_client_machine;
   char *startup_id;
+  char *mutter_hints;
 
   int net_wm_pid;
   
