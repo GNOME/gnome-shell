@@ -467,6 +467,9 @@ Overview.prototype = {
 };
 Signals.addSignalMethods(Overview.prototype);
 
+// Note that mutter has a compile-time limit of 36
+const MAX_WORKSPACES = 16;
+
 function AddWorkspaceButton(buttonSize, buttonX, buttonY, acceptDropCallback) {
     this._init(buttonSize, buttonX, buttonY, acceptDropCallback);
 }
@@ -487,6 +490,21 @@ AddWorkspaceButton.prototype = {
                                          height: buttonSize });
         plus.set_from_file(global.imagedir + 'add-workspace.svg');
         this.actor.add_actor(plus);
+
+        global.screen.connect('notify::n-workspaces', Lang.bind(this, this._nWorkspacesChanged));
+        this._nWorkspacesChanged();
+    },
+
+    _nWorkspacesChanged: function() {
+        let canAddAnother = global.screen.n_workspaces < MAX_WORKSPACES;
+
+        if (canAddAnother && !this.actor.reactive) {
+            this.actor.reactive = true;
+            this.actor.opacity = 255;
+        } else if (!canAddAnother && this.actor.reactive) {
+            this.actor.reactive = false;
+            this.actor.opacity = 85;
+        }
     },
 
     // Draggable target interface
