@@ -34,6 +34,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-atlas-texture-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-sub-texture-private.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-texture-driver.h"
@@ -313,6 +314,17 @@ _cogl_atlas_texture_transform_coords_to_gl (CoglTexture *tex,
 }
 
 static gboolean
+_cogl_atlas_texture_transform_quad_coords_to_gl (CoglTexture *tex,
+                                                 float *coords)
+{
+  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
+
+  /* Forward on to the sub texture */
+  return _cogl_texture_transform_quad_coords_to_gl (atlas_tex->sub_texture,
+                                                    coords);
+}
+
+static gboolean
 _cogl_atlas_texture_get_gl_texture (CoglTexture *tex,
                                     GLuint *out_gl_handle,
                                     GLenum *out_gl_target)
@@ -337,12 +349,9 @@ _cogl_atlas_texture_set_filters (CoglTexture *tex,
 }
 
 static void
-_cogl_atlas_texture_ensure_mipmaps (CoglTexture *tex)
+_cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
 {
-  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
-
-  /* Mipmaps do not work well with the current atlas so instead we'll
-     just migrate the texture out and use a regular texture */
+  /* Make sure this texture is not in the atlas */
   if (atlas_tex->in_atlas)
     {
       CoglHandle atlas_texture;
@@ -382,9 +391,32 @@ _cogl_atlas_texture_ensure_mipmaps (CoglTexture *tex)
 
       _cogl_atlas_texture_remove_from_atlas (atlas_tex);
     }
+}
+
+static void
+_cogl_atlas_texture_ensure_mipmaps (CoglTexture *tex)
+{
+  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
+
+  /* Mipmaps do not work well with the current atlas so instead we'll
+     just migrate the texture out and use a regular texture */
+  _cogl_atlas_texture_migrate_out_of_atlas (atlas_tex);
 
   /* Forward on to the sub texture */
   _cogl_texture_ensure_mipmaps (atlas_tex->sub_texture);
+}
+
+static void
+_cogl_atlas_texture_ensure_non_quad_rendering (CoglTexture *tex)
+{
+  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
+
+  /* Sub textures can't support non-quad rendering so we'll just
+     migrate the texture out */
+  _cogl_atlas_texture_migrate_out_of_atlas (atlas_tex);
+
+  /* Forward on to the sub texture */
+  _cogl_texture_ensure_non_quad_rendering (atlas_tex->sub_texture);
 }
 
 static gboolean
@@ -546,14 +578,11 @@ _cogl_atlas_texture_create_sub_texture (CoglHandle                full_texture,
 {
   /* Create a subtexture for the given rectangle not including the
      1-pixel border */
-  gfloat tex_width = cogl_texture_get_width (full_texture);
-  gfloat tex_height = cogl_texture_get_height (full_texture);
-  gfloat tx1 = (rectangle->x + 1) / tex_width;
-  gfloat ty1 = (rectangle->y + 1) / tex_height;
-  gfloat tx2 = (rectangle->x + rectangle->width - 1) / tex_width;
-  gfloat ty2 = (rectangle->y + rectangle->height - 1) / tex_height;
-
-  return cogl_texture_new_from_sub_texture (full_texture, tx1, ty1, tx2, ty2);
+  return _cogl_sub_texture_new (full_texture,
+                                rectangle->x + 1,
+                                rectangle->y + 1,
+                                rectangle->width - 2,
+                                rectangle->height - 2);
 }
 
 typedef struct _CoglAtlasTextureRepositionData
@@ -958,9 +987,11 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_is_sliced,
     _cogl_atlas_texture_can_hardware_repeat,
     _cogl_atlas_texture_transform_coords_to_gl,
+    _cogl_atlas_texture_transform_quad_coords_to_gl,
     _cogl_atlas_texture_get_gl_texture,
     _cogl_atlas_texture_set_filters,
     _cogl_atlas_texture_ensure_mipmaps,
+    _cogl_atlas_texture_ensure_non_quad_rendering,
     _cogl_atlas_texture_set_wrap_mode_parameter,
     _cogl_atlas_texture_get_format,
     _cogl_atlas_texture_get_gl_format,

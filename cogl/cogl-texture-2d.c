@@ -343,6 +343,15 @@ _cogl_texture_2d_transform_coords_to_gl (CoglTexture *tex,
 }
 
 static gboolean
+_cogl_texture_2d_transform_quad_coords_to_gl (CoglTexture *tex,
+                                              float *coords)
+{
+  /* The texture coordinates map directly so we don't need to do
+     anything */
+  return TRUE;
+}
+
+static gboolean
 _cogl_texture_2d_get_gl_texture (CoglTexture *tex,
                                  GLuint *out_gl_handle,
                                  GLenum *out_gl_target)
@@ -397,6 +406,12 @@ _cogl_texture_2d_ensure_mipmaps (CoglTexture *tex)
   _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
 
   tex_2d->mipmaps_dirty = FALSE;
+}
+
+static void
+_cogl_texture_2d_ensure_non_quad_rendering (CoglTexture *tex)
+{
+  /* Nothing needs to be done */
 }
 
 static gboolean
@@ -612,9 +627,11 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_is_sliced,
     _cogl_texture_2d_can_hardware_repeat,
     _cogl_texture_2d_transform_coords_to_gl,
+    _cogl_texture_2d_transform_quad_coords_to_gl,
     _cogl_texture_2d_get_gl_texture,
     _cogl_texture_2d_set_filters,
     _cogl_texture_2d_ensure_mipmaps,
+    _cogl_texture_2d_ensure_non_quad_rendering,
     _cogl_texture_2d_set_wrap_mode_parameter,
     _cogl_texture_2d_get_format,
     _cogl_texture_2d_get_gl_format,

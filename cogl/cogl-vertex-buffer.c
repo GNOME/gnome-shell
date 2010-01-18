@@ -1637,6 +1637,11 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
 
+      /* Give the texture a chance to know that we're rendering
+         non-quad shaped primitives. If the texture is in an atlas it
+         will be migrated */
+      _cogl_texture_ensure_non_quad_rendering (tex_handle);
+
       if (!_cogl_texture_can_hardware_repeat (tex_handle))
         {
           g_warning ("Disabling layer %d of the current source material, "
