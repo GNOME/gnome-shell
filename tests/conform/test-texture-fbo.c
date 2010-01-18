@@ -180,6 +180,7 @@ test_texture_fbo (TestConformSimpleFixture *fixture,
 {
   TestState state;
   guint idle_source;
+  gulong paint_handler;
   ClutterActor *actor;
   int ypos = 0;
 
@@ -236,11 +237,14 @@ test_texture_fbo (TestConformSimpleFixture *fixture,
    * will trigger redrawing. */
   idle_source = g_idle_add (queue_redraw, state.stage);
 
-  g_signal_connect_after (state.stage, "paint", G_CALLBACK (on_paint), &state);
+  paint_handler = g_signal_connect_after (state.stage, "paint",
+                                          G_CALLBACK (on_paint), &state);
 
   clutter_actor_show_all (state.stage);
 
   clutter_main ();
+
+  g_signal_handler_disconnect (state.stage, paint_handler);
 
   g_source_remove (idle_source);
 
