@@ -74,9 +74,10 @@ draw_frame (TestState *state)
 
   /* Create a sub texture of the bottom right quarter of the texture */
   sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   1.0f / SOURCE_DIVISIONS_X,
-                                                   1.0f / SOURCE_DIVISIONS_Y,
-                                                   1.0f, 1.0f);
+                                                   DIVISION_WIDTH,
+                                                   DIVISION_HEIGHT,
+                                                   DIVISION_WIDTH,
+                                                   DIVISION_HEIGHT);
 
   /* Paint it */
   cogl_set_source_texture (sub_texture);
@@ -84,21 +85,18 @@ draw_frame (TestState *state)
 
   cogl_handle_unref (sub_texture);
 
-  /* Repeat a sub texture of the top half of the full texture */
+  /* Repeat a sub texture of the top half of the full texture. This is
+     documented to be undefined so it doesn't technically have to work
+     but it will with the current implementation */
   sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   0.0f, 0.0f, 1.0f, 0.5f);
+                                                   0, 0,
+                                                   SOURCE_SIZE,
+                                                   DIVISION_HEIGHT);
   cogl_set_source_texture (sub_texture);
   cogl_rectangle_with_texture_coords (0.0f, SOURCE_SIZE,
                                       SOURCE_SIZE * 2.0f, SOURCE_SIZE * 1.5f,
                                       0.0f, 0.0f,
                                       2.0f, 1.0f);
-  cogl_handle_unref (sub_texture);
-
-  /* Create a texture that repeats the source texture twice */
-  sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   0.0f, 0.0f, 2.0f, 2.0f);
-  cogl_set_source_texture (sub_texture);
-  cogl_rectangle (0.0f, SOURCE_SIZE * 2, SOURCE_SIZE * 2, SOURCE_SIZE * 4);
   cogl_handle_unref (sub_texture);
 }
 
@@ -209,22 +207,12 @@ validate_result (TestState *state)
                                DIVISION_WIDTH, DIVISION_HEIGHT,
                                corner_colors + division_num));
 
-  /* Sub texture that repeats the texture (the opposite of a sub-texture?) */
-  for (y = 0; y < SOURCE_DIVISIONS_Y * 2; y++)
-    for (x = 0; x < SOURCE_DIVISIONS_X * 2; x++)
-      {
-        guint color_num = (y % SOURCE_DIVISIONS_Y * SOURCE_DIVISIONS_X +
-                           x % SOURCE_DIVISIONS_X);
-        g_assert (validate_part (state,
-                                 x * DIVISION_WIDTH,
-                                 y * DIVISION_WIDTH + SOURCE_SIZE * 2,
-                                 DIVISION_WIDTH, DIVISION_HEIGHT,
-                                 corner_colors + color_num));
-      }
-
   /* Try reading back the texture data */
   sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   0.25f, 0.25f, 0.75f, 0.75f);
+                                                   SOURCE_SIZE / 4,
+                                                   SOURCE_SIZE / 4,
+                                                   SOURCE_SIZE / 2,
+                                                   SOURCE_SIZE / 2);
   tex_width = cogl_texture_get_width (sub_texture);
   tex_height = cogl_texture_get_height (sub_texture);
   p = texture_data = g_malloc (tex_width * tex_height * 4);
@@ -248,39 +236,14 @@ validate_result (TestState *state)
   g_free (texture_data);
   cogl_handle_unref (sub_texture);
 
-  /* Try reading back the repeated texture data */
-  sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   0.0f, 0.0f, 2.0f, 2.0f);
-  tex_width = cogl_texture_get_width (sub_texture);
-  tex_height = cogl_texture_get_height (sub_texture);
-  p = texture_data = g_malloc (tex_width * tex_height * 4);
-  cogl_texture_get_data (sub_texture, COGL_PIXEL_FORMAT_RGBA_8888,
-                         tex_width * 4,
-                         texture_data);
-  for (y = 0; y < tex_height; y++)
-    for (x = 0; x < tex_width; x++)
-      {
-        int div_x = x / DIVISION_WIDTH % SOURCE_DIVISIONS_X;
-        int div_y = y / DIVISION_HEIGHT % SOURCE_DIVISIONS_Y;
-        const ClutterColor *color = (corner_colors + div_x +
-                                     div_y * SOURCE_DIVISIONS_X);
-        g_assert (p[0] == color->red);
-        g_assert (p[1] == color->green);
-        g_assert (p[2] == color->blue);
-        p += 4;
-      }
-  g_free (texture_data);
-  cogl_handle_unref (sub_texture);
-
   /* Create a 256x256 test texture */
   test_tex = create_test_texture ();
-  /* Create a sub texture the views the bottom right and top left of
-     the texture by wrapping around */
+  /* Create a sub texture the views the center half of the texture */
   sub_texture = cogl_texture_new_from_sub_texture (test_tex,
-                                                   0.5f, 0.5f, 1.5f, 1.5f);
-  /* Update the center of the sub texture */
+                                                   64, 64, 128, 128);
+  /* Update the center half of the sub texture */
   texture_data = create_update_data ();
-  cogl_texture_set_region (sub_texture, 0, 0, 64, 64, 128, 128, 256, 256,
+  cogl_texture_set_region (sub_texture, 0, 0, 32, 32, 64, 64, 256, 256,
                            COGL_PIXEL_FORMAT_RGBA_8888_PRE, 256 * 4,
                            texture_data);
   g_free (texture_data);
@@ -294,13 +257,13 @@ validate_result (TestState *state)
   for (y = 0; y < 256; y++)
     for (x = 0; x < 256; x++)
       {
-        /* If we're in the center of the subregion.. */
-        if ((x < 64 || x >= 192) && (y < 64 || y >= 192))
+        /* If we're in the center quarter */
+        if (x >= 96 && x < 160 && y >= 96 && y < 160)
           {
             g_assert ((*p++) == 0);
             g_assert ((*p++) == 0);
-            g_assert ((*p++) == ((x + 64) & 0xff));
-            g_assert ((*p++) == ((y + 64) & 0xff));
+            g_assert ((*p++) == x - 96);
+            g_assert ((*p++) == y - 96);
           }
         else
           {

@@ -84,6 +84,8 @@ struct _CoglTextureVtable
   void (* transform_coords_to_gl) (CoglTexture *tex,
                                    float *s,
                                    float *t);
+  gboolean (* transform_quad_coords_to_gl) (CoglTexture *tex,
+                                            float *coords);
 
   gboolean (* get_gl_texture) (CoglTexture *tex,
                                GLuint *out_gl_handle,
@@ -94,6 +96,7 @@ struct _CoglTextureVtable
                         GLenum mag_filter);
 
   void (* ensure_mipmaps) (CoglTexture *tex);
+  void (* ensure_non_quad_rendering) (CoglTexture *tex);
 
   void (* set_wrap_mode_parameter) (CoglTexture *tex,
                                     GLenum wrap_mode);
@@ -137,6 +140,10 @@ void
 _cogl_texture_transform_coords_to_gl (CoglHandle handle,
                                       float *s,
                                       float *t);
+gboolean
+_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+                                           float *coords);
+
 GLenum
 _cogl_texture_get_gl_format (CoglHandle handle);
 
@@ -151,6 +158,9 @@ _cogl_texture_set_filters (CoglHandle handle,
 
 void
 _cogl_texture_ensure_mipmaps (CoglHandle handle);
+
+void
+_cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
 
 /* Utility functions to help uploading a bitmap. These are intended to
  * be used by CoglTexture implementations or drivers... */

@@ -1267,6 +1267,19 @@ _cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture *tex,
 }
 
 static gboolean
+_cogl_texture_2d_sliced_transform_quad_coords_to_gl (CoglTexture *tex,
+                                                     float *coords)
+{
+  if (_cogl_texture_2d_sliced_is_sliced (tex))
+    return FALSE;
+
+  _cogl_texture_2d_sliced_transform_coords_to_gl (tex, coords + 0, coords + 1);
+  _cogl_texture_2d_sliced_transform_coords_to_gl (tex, coords + 2, coords + 3);
+
+  return TRUE;
+}
+
+static gboolean
 _cogl_texture_2d_sliced_get_gl_texture (CoglTexture *tex,
                                         GLuint *out_gl_handle,
                                         GLenum *out_gl_target)
@@ -1360,6 +1373,12 @@ _cogl_texture_2d_sliced_ensure_mipmaps (CoglTexture *tex)
     }
 
   tex_2ds->mipmaps_dirty = FALSE;
+}
+
+static void
+_cogl_texture_2d_sliced_ensure_non_quad_rendering (CoglTexture *tex)
+{
+  /* Nothing needs to be done */
 }
 
 static gboolean
@@ -1673,9 +1692,11 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_is_sliced,
     _cogl_texture_2d_sliced_can_hardware_repeat,
     _cogl_texture_2d_sliced_transform_coords_to_gl,
+    _cogl_texture_2d_sliced_transform_quad_coords_to_gl,
     _cogl_texture_2d_sliced_get_gl_texture,
     _cogl_texture_2d_sliced_set_filters,
     _cogl_texture_2d_sliced_ensure_mipmaps,
+    _cogl_texture_2d_sliced_ensure_non_quad_rendering,
     _cogl_texture_2d_sliced_set_wrap_mode_parameter,
     _cogl_texture_2d_sliced_get_format,
     _cogl_texture_2d_sliced_get_gl_format,

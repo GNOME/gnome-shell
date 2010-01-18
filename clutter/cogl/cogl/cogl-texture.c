@@ -428,12 +428,13 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 
 CoglHandle
 cogl_texture_new_from_sub_texture (CoglHandle full_texture,
-                                   gfloat     tx1,
-                                   gfloat     ty1,
-                                   gfloat     tx2,
-                                   gfloat     ty2)
+                                   gint       sub_x,
+                                   gint       sub_y,
+                                   gint       sub_width,
+                                   gint       sub_height)
 {
-  return _cogl_sub_texture_new (full_texture, tx1, ty1, tx2, ty2);
+  return _cogl_sub_texture_new (full_texture, sub_x, sub_y,
+                                sub_width, sub_height);
 }
 
 guint
@@ -574,6 +575,15 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
   tex->vtable->transform_coords_to_gl (tex, s, t);
 }
 
+gboolean
+_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+                                           float *coords)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+
+  return tex->vtable->transform_quad_coords_to_gl (tex, coords);
+}
+
 GLenum
 _cogl_texture_get_gl_format (CoglHandle handle)
 {
@@ -623,6 +633,19 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
   tex = COGL_TEXTURE (handle);
 
   tex->vtable->ensure_mipmaps (tex);
+}
+
+void
+_cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
+{
+  CoglTexture *tex;
+
+  if (!cogl_is_texture (handle))
+    return;
+
+  tex = COGL_TEXTURE (handle);
+
+  return tex->vtable->ensure_non_quad_rendering (tex);
 }
 
 gboolean

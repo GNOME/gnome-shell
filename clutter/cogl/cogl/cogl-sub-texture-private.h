@@ -37,12 +37,11 @@ struct _CoglSubTexture
 
   CoglHandle  full_texture;
 
-  /* The texture coordinates of the subregion of full_texture */
-  gfloat      tx1, ty1;
-  gfloat      tx2, ty2;
-
-  /* Are all of the texture coordinates a multiple of one? */
-  gboolean    tex_coords_are_a_multiple;
+  /* The region represented by this sub-texture */
+  gint        sub_x;
+  gint        sub_y;
+  gint        sub_width;
+  gint        sub_height;
 };
 
 GQuark
@@ -50,7 +49,7 @@ _cogl_handle_sub_texture_get_type (void);
 
 CoglHandle
 _cogl_sub_texture_new (CoglHandle full_texture,
-                       gfloat tx1, gfloat ty1,
-                       gfloat tx2, gfloat ty2);
+                       gint sub_x, gint sub_y,
+                       gint sub_width, gint sub_height);
 
 #endif /* __COGL_SUB_TEXTURE_H */

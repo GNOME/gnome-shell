@@ -278,14 +278,14 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
          the coordinates (such as in the sub texture backend). This
          should be safe to call because we know that the texture only
          has one slice. */
-      for (coord_num = 0; coord_num < 2; coord_num++)
-        {
-          float *s = out_tex_coords + coord_num * 2;
-          float *t = s + 1;
-          _cogl_texture_transform_coords_to_gl (tex_handle, s, t);
-          if (*s < 0.0f || *s > 1.0f || *t < 0.0f || *t > 1.0f)
-            need_repeat = TRUE;
-        }
+      if (!_cogl_texture_transform_quad_coords_to_gl (tex_handle,
+                                                      out_tex_coords))
+        /* If the backend can't support these coordinates then bail out */
+        return FALSE;
+      for (coord_num = 0; coord_num < 4; coord_num++)
+        if (out_tex_coords[coord_num] < 0.0f ||
+            out_tex_coords[coord_num] > 1.0f)
+          need_repeat = TRUE;
 
       /* If the texture has waste or we are using GL_TEXTURE_RECT we
        * can't handle texture repeating so we can't use the layer if
@@ -866,6 +866,11 @@ cogl_polygon (const CoglTextureVertex *vertices,
        * _cogl_material_flush_layers_gl_state */
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
+
+      /* Give the texture a chance to know that we're rendering
+         non-quad shaped primitives. If the texture is in an atlas it
+         will be migrated */
+      _cogl_texture_ensure_non_quad_rendering (tex_handle);
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {

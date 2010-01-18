@@ -145,7 +145,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
   TEST_CONFORM_SIMPLE ("/texture", test_texture_fbo);
-  TEST_CONFORM_SIMPLE ("/texture", test_cogl_sub_texture);
 
   TEST_CONFORM_SIMPLE ("/path", test_path);
 
@@ -189,6 +188,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_sub_texture);
 
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);

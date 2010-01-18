@@ -320,18 +320,18 @@ gboolean        cogl_texture_set_region       (CoglHandle          handle,
 /**
  * cogl_texture_new_from_sub_texture:
  * @full_texture: a #CoglHandle to an existing texture
- * @tx1: X coordinate of the top-left of the subregion
- * @ty1: Y coordinate of the top-left of the subregion
- * @tx2: X coordinate of the bottom-right of the subregion
- * @ty2: Y coordinate of the bottom-right of the subregion
+ * @sub_x: X coordinate of the top-left of the subregion
+ * @sub_y: Y coordinate of the top-left of the subregion
+ * @sub_width: Width in pixels of the subregion
+ * @sub_height: Height in pixels of the subregion
  *
  * Creates a new texture which represents a subregion of another
  * texture. The GL resources will be shared so that no new texture
  * data is actually allocated.
  *
- * You can also specify texture coordinates outside the range of [0,1]
- * to make a texture that represents a repeated version of another
- * texture.
+ * Sub textures have undefined behaviour texture coordinates outside
+ * of the range [0,1] are used. They also do not work with
+ * CoglVertexBuffers.
  *
  * Return value: a #CoglHandle to the new texture.
  *
@@ -339,10 +339,10 @@ gboolean        cogl_texture_set_region       (CoglHandle          handle,
  */
 CoglHandle      cogl_texture_new_from_sub_texture
                                               (CoglHandle full_texture,
-                                               gfloat     tx1,
-                                               gfloat     ty1,
-                                               gfloat     tx2,
-                                               gfloat     ty2);
+                                               gint       sub_x,
+                                               gint       sub_y,
+                                               gint       sub_width,
+                                               gint       sub_height);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
