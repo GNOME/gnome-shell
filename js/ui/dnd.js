@@ -250,7 +250,7 @@ _Draggable.prototype = {
                                                                   dropX, dropY);
         this._dragActor.show();
         while (target) {
-            if (target._delegate && target._delegate.acceptDrop) {
+            if (target.reactive && target._delegate && target._delegate.acceptDrop) {
                 let [targX, targY] = target.get_transformed_position();
                 if (target._delegate.acceptDrop(this.actor._delegate, this._dragActor,
                                                 (dropX - targX) / target.scale_x,
