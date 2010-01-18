@@ -868,6 +868,7 @@ AC_CONFIG_FILES([
         Makefile
         build/Makefile
         build/autotools/Makefile
+        build/mingw/Makefile
         clutter/Makefile
         clutter/clutter-version.h
         clutter/clutter-json.h
