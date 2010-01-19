@@ -135,6 +135,7 @@ function start() {
     });
 
     _relayout();
+    global.connect('screen-size-changed', _relayout);
 
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
@@ -199,6 +200,13 @@ function _relayout() {
     panel.actor.set_position(primary.x, primary.y);
     panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
+
+    // To avoid updating the position and size of the workspaces
+    // in the overview, we just hide the overview. The positions
+    // will be updated when it is next shown. We do the same for
+    // the calendar popdown.
+    overview.hide();
+    panel.hideCalendar();
 }
 
 // metacity-clutter currently uses the same prefs as plain metacity,

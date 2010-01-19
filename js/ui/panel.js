@@ -398,6 +398,7 @@ Panel.prototype = {
 
         this._clock = new St.Label();
         clockButton.set_child(this._clock);
+        this._clockButton = clockButton;
 
         this._calendarPopup = null;
 
@@ -483,6 +484,13 @@ Panel.prototype = {
 
         // Start the clock
         this._updateClock();
+    },
+
+    hideCalendar: function() {
+        if (this._calendarPopup != null) {
+            this._clockButton.checked = false;
+            this._calendarPopup.actor.hide();
+        }
     },
 
     startupAnimation: function() {

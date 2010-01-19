@@ -6,6 +6,7 @@
 #include "shell-wm.h"
 
 #include "display.h"
+#include "util.h"
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
@@ -17,7 +18,6 @@
 #include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <gio/gio.h>
-#include <glib/gi18n-lib.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 #include <gjs/gjs.h>
@@ -53,6 +53,8 @@ struct _ShellGlobal {
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
   ClutterActor *root_pixmap;
+
+  gint last_change_screen_width, last_change_screen_height;
 };
 
 enum {
@@ -75,6 +77,7 @@ enum
 {
   PANEL_RUN_DIALOG,
   PANEL_MAIN_MENU,
+  SCREEN_SIZE_CHANGED,
   LAST_SIGNAL
 };
 
@@ -189,6 +192,9 @@ shell_global_init (ShellGlobal *global)
   global->root_pixmap = NULL;
 
   global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
+
+  global->last_change_screen_width = 0;
+  global->last_change_screen_height = 0;
 }
 
 static void
@@ -216,6 +222,15 @@ shell_global_class_init (ShellGlobalClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__INT,
 		  G_TYPE_NONE, 1, G_TYPE_INT);
+
+  shell_global_signals[SCREEN_SIZE_CHANGED] =
+    g_signal_new ("screen-size-changed",
+		  G_TYPE_FROM_CLASS (klass),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ShellGlobalClass, screen_size_changed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
@@ -441,6 +456,77 @@ shell_global_get_windows (ShellGlobal *global)
   return mutter_plugin_get_windows (global->plugin);
 }
 
+static gboolean
+emit_screen_size_changed_cb (gpointer data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+
+  int width, height;
+
+  mutter_plugin_query_screen_size (global->plugin, &width, &height);
+
+  if (global->last_change_screen_width != width || global->last_change_screen_height != height)
+    {
+      g_signal_emit (G_OBJECT (global), shell_global_signals[SCREEN_SIZE_CHANGED], 0);
+      global->last_change_screen_width = width;
+      global->last_change_screen_height = height;
+    }
+
+  return FALSE;
+}
+
+static void
+global_stage_notify_width (GObject    *gobject,
+                           GParamSpec *pspec,
+                           gpointer    data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+  ClutterActor *stage = CLUTTER_ACTOR (gobject);
+
+  if (global->root_pixmap)
+    clutter_actor_set_width (CLUTTER_ACTOR (global->root_pixmap),
+                             clutter_actor_get_width (stage));
+  g_object_notify (G_OBJECT (global), "screen-width");
+
+  meta_later_add (META_LATER_BEFORE_REDRAW,
+                  emit_screen_size_changed_cb,
+                  global,
+                  NULL);
+}
+
+static void
+global_stage_notify_height (GObject    *gobject,
+                            GParamSpec *pspec,
+                            gpointer    data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+  ClutterActor *stage = CLUTTER_ACTOR (gobject);
+
+  if (global->root_pixmap)
+    clutter_actor_set_height (CLUTTER_ACTOR (global->root_pixmap),
+                              clutter_actor_get_height (stage));
+  g_object_notify (G_OBJECT (global), "screen-height");
+
+  meta_later_add (META_LATER_BEFORE_REDRAW,
+                  emit_screen_size_changed_cb,
+                  global,
+                  NULL);
+}
+
+static void
+global_plugin_notify_screen (GObject    *gobject,
+                             GParamSpec *pspec,
+                             gpointer    data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+  ClutterActor *stage = mutter_plugin_get_stage (MUTTER_PLUGIN (gobject));
+
+  g_signal_connect (stage, "notify::width",
+                    G_CALLBACK (global_stage_notify_width), global);
+  g_signal_connect (stage, "notify::height",
+                    G_CALLBACK (global_stage_notify_height), global);
+}
+
 void
 _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)
@@ -450,6 +536,14 @@ _shell_global_set_plugin (ShellGlobal  *global,
 
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
+
+  /* At this point screen is NULL, so we can't yet do signal connections
+   * to the width and height; we wait until the screen property is set
+   * to do that. Note that this is a one time thing - screen will never
+   * change once first set.
+   */
+  g_signal_connect (plugin, "notify::screen",
+                    G_CALLBACK (global_plugin_notify_screen), global);
 }
 
 void

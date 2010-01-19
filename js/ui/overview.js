@@ -158,6 +158,8 @@ Overview.prototype = {
     relayout: function () {
         let primary = global.get_primary_monitor();
 
+        this._recalculateGridSizes();
+
         this._group.set_position(primary.x, primary.y);
 
         let contentY = Panel.PANEL_HEIGHT;

@@ -30,6 +30,7 @@ struct _ShellGlobalClass
 			    int      timestamp);
   void (*panel_main_menu) (ShellGlobal *global,
 			   int      timestamp);
+  void (*screen_size_changed) (ShellGlobal *global);
 };
 
 GType            shell_global_get_type            (void) G_GNUC_CONST;
