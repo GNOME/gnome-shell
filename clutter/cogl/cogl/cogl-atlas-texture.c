@@ -1015,7 +1015,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   atlas_tex->rectangle.height = upload_data.bitmap.height + 2;
 
   /* Try to make some space in the atlas for the texture */
-  if (!_cogl_atlas_texture_reserve_space (internal_format,
+  if (!_cogl_atlas_texture_reserve_space (internal_format &
+                                          ~COGL_PREMULT_BIT,
                                           atlas_ptr,
                                           atlas_tex_ptr,
                                           atlas_tex,
