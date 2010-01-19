@@ -191,7 +191,7 @@ mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
       cogl_texture_get_gl_texture (priv->mask_texture,
                                    &mask_gl_tex, &mask_gl_target);
 
-      if (mask_gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+      if (mask_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         glDeleteTextures (1, &mask_gl_tex);
 
       cogl_texture_unref (priv->mask_texture);
@@ -254,23 +254,23 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
 
       cogl_texture_get_gl_texture (paint_tex, NULL, &paint_gl_target);
 
-      if (paint_gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+      if (paint_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         {
           GLuint tex;
 
           glGenTextures (1, &tex);
-          glBindTexture (CGL_TEXTURE_RECTANGLE_ARB, tex);
+          glBindTexture (GL_TEXTURE_RECTANGLE_ARB, tex);
           glPixelStorei (GL_UNPACK_ROW_LENGTH, tex_width);
           glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
           glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
           glPixelStorei (GL_UNPACK_SKIP_PIXELS, 0);
-          glTexImage2D (CGL_TEXTURE_RECTANGLE_ARB, 0,
+          glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
                         GL_ALPHA, tex_width, tex_height,
                         0, GL_ALPHA, GL_UNSIGNED_BYTE, mask_data);
 
           priv->mask_texture
             = cogl_texture_new_from_foreign (tex,
-                                             CGL_TEXTURE_RECTANGLE_ARB,
+                                             GL_TEXTURE_RECTANGLE_ARB,
                                              tex_width, tex_height,
                                              0, 0,
                                              COGL_PIXEL_FORMAT_A_8);
