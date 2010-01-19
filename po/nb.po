@@ -1,14 +1,14 @@
 # Norwegian bokmål translation of gnome-shell.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Kjartan Maraas <kmaraas@broadpark.no>, 2009.
+# Kjartan Maraas <kmaraas@broadpark.no>, 2009-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-03 10:47+0200\n"
-"PO-Revision-Date: 2009-10-03 10:48+0200\n"
+"POT-Creation-Date: 2010-01-19 17:42+0100\n"
+"PO-Revision-Date: 2010-01-19 17:43+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -24,151 +24,135 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "Aktiviteter"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "PROGRAMMER"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:461
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "BRUKERVALG"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:647
+msgid "New Window"
+msgstr "Nytt vindu"
+
+#: ../js/ui/appDisplay.js:651
+msgid "Remove from Favorites"
+msgstr "Fjern fra favoritter"
+
+#: ../js/ui/appDisplay.js:652
+msgid "Add to Favorites"
+msgstr "Legg til i favoritter"
+
+#: ../js/ui/appDisplay.js:1004
+msgid "Drag here to add favorites"
+msgstr "Dra hit for å legge til favoritter"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Finn..."
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Mer"
+#: ../js/ui/dash.js:493
+msgid "Searching..."
+msgstr "Søker..."
 
-#: ../js/ui/dash.js:543
-msgid "(see all)"
-msgstr "(se alle)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
-msgid "APPLICATIONS"
-msgstr "PROGRAMMER"
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "Ingen treff."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
-msgid "PLACES"
-msgstr "STEDER"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr "STEDER & ENHETER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
-msgid "RECENT DOCUMENTS"
-msgstr "SISTE DOKUMENTER"
+#: ../js/ui/dash.js:892
+msgid "RECENT ITEMS"
+msgstr "SISTE OPPFØRINGER"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
-msgid "SEARCH RESULTS"
-msgstr "SØKERESULTATER"
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:336
+msgid "Activities"
+msgstr "Aktiviteter"
 
-#: ../js/ui/dash.js:830
-msgid "PREFERENCES"
-msgstr "BRUKERVALG"
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:549
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M"
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "Koble til..."
+
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
-#: ../src/shell-global.c:812
+#: ../js/ui/runDialog.js:361
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Kjøring av «%s» feilet:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Programmer"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Siste dokumenter"
+
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:894
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:904
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:909
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d uke siden"
 msgstr[1] "%d uker siden"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Ukjent"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Kan ikke låse skjermen: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Kan ikke sette skjermsparer midlertidig til blank skjerm: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Kan ikke logge ut: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Kontoinformasjon..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Sidelinje"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Brukervalg for systemet..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Lås skjerm"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Bytt bruker"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Logg ut..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Slå av..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Hjemmemappe"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Filsystem"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Søk"
 
@@ -177,7 +161,7 @@ msgstr "Søk"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
