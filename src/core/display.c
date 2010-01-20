@@ -4141,7 +4141,7 @@ meta_set_syncing (gboolean setting)
  * How long, in milliseconds, we should wait after pinging a window
  * before deciding it's not going to get back to us.
  */
-#define PING_TIMEOUT_DELAY 2250
+#define PING_TIMEOUT_DELAY 5000
 
 /**
  * Does whatever it is we decided to do when a window didn't respond
