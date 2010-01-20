@@ -105,13 +105,15 @@ test_devices_main (int argc, char **argv)
       ClutterInputDeviceType device_type;
       ClutterActor *hand = NULL;
 
-      device_type = clutter_input_device_get_device_type (device);
-      if (device_type == CLUTTER_POINTER_DEVICE)
-        {
-          g_print ("got a pointer device '%s' with id %d...\n",
-                   clutter_input_device_get_device_name (device),
-                   clutter_input_device_get_device_id (device));
+      g_print ("got a %s device '%s' with id %d...\n",
+               device_type_name (device),
+               clutter_input_device_get_device_name (device),
+               clutter_input_device_get_device_id (device));
 
+      device_type = clutter_input_device_get_device_type (device);
+      if (device_type == CLUTTER_POINTER_DEVICE ||
+          device_type == CLUTTER_EXTENSION_DEVICE)
+        {
           hand = clutter_texture_new_from_file (TESTS_DATADIR
                                                 G_DIR_SEPARATOR_S
                                                 "redhand.png",

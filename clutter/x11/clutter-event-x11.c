@@ -267,9 +267,10 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
-#if 0 /* See XInput keyboard comment below HAVE_XINPUT */
+#ifdef HAVE_XINPUT
 static void
-convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
+convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev,
+                            XEvent          *xevent)
 {
   xevent->xany.type = xevent->xkey.type = xkev->type;
   xevent->xkey.serial = xkev->serial;
@@ -808,11 +809,14 @@ event_translate (ClutterBackend *backend,
 #ifdef HAVE_XINPUT
       int *ev_types = backend_x11->event_types;
       int button_press, button_release;
+      int key_press, key_release;
       int motion_notify;
 
       button_press   = ev_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
       button_release = ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
       motion_notify  = ev_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
+      key_press      = ev_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT];
+      key_release    = ev_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT];
 
       CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
 
@@ -923,6 +927,26 @@ event_translate (ClutterBackend *backend,
           event->motion.device = device;
 
           res = TRUE;
+        }
+      else if (xevent->type == key_press || xevent->type == key_release)
+        {
+          /* the XInput 1.x handling of key presses/releases is broken:
+           * it makes key repeat, key presses and releases outside the
+           * window not generate events even when the window has focus
+           */
+          XDeviceKeyEvent *xkev = (XDeviceKeyEvent *) xevent;
+          XEvent xevent_converted;
+
+          convert_xdevicekey_to_xkey (xkev, &xevent_converted);
+
+          event->key.type = event->type = (xevent->type == key_press)
+                                          ? CLUTTER_KEY_PRESS
+                                          : CLUTTER_KEY_RELEASE;
+
+          translate_key_event (backend, event, &xevent_converted);
+
+          if (xevent->type == key_press)
+            set_user_time (backend_x11, &xwindow, xkev->time);
         }
       else
 #endif /* HAVE_XINPUT */

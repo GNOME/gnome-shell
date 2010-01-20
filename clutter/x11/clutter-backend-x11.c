@@ -158,12 +158,10 @@ clutter_x11_register_input_devices (ClutterBackendX11 *backend)
               device_type = CLUTTER_POINTER_DEVICE;
               break;
 
-#if 0
             /* XInput1 is broken for keyboards */
             case IsXExtensionKeyboard:
               device_type = CLUTTER_KEYBOARD_DEVICE;
               break;
-#endif
 
             case IsXExtensionDevice:
               device_type = CLUTTER_EXTENSION_DEVICE;

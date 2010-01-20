@@ -142,6 +142,7 @@ _clutter_input_device_x11_construct (ClutterInputDevice *device,
     {
       XInputClassInfo *xclass_info = x_device->classes + i;
       int *button_press, *button_release, *motion_notify;
+      int *key_press, *key_release;
 
       button_press =
         &backend->event_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
@@ -150,22 +151,28 @@ _clutter_input_device_x11_construct (ClutterInputDevice *device,
       motion_notify =
         &backend->event_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
 
+      key_press =
+        &backend->event_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT];
+      key_release =
+        &backend->event_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT];
+
       switch (xclass_info->input_class)
         {
-#if 0
-        /* XInput 1.x is broken for keyboards: */
+        /* event though XInput 1.x is broken for keyboard-like devices
+         * it might still be useful to track them down; the core keyboard
+         * will handle the right events anyway
+         */
         case KeyClass:
-          DeviceKeyPress (xdevice,
-                          backend->event_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT],
+          DeviceKeyPress (x_device,
+                          *key_press,
                           device_x11->xevent_list[n_events]);
           n_events++;
 
-          DeviceKeyRelease (xdevice,
-                            backend->event_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT],
+          DeviceKeyRelease (x_device,
+                            *key_release,
                             device_x11->xevent_list[n_events]);
           n_events++;
           break;
-#endif
 
         case ButtonClass:
           DeviceButtonPress (x_device,
