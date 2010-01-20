@@ -46,6 +46,8 @@ struct _ClutterBackendWin32
   ClutterBackend parent_instance;
 
   HGLRC          gl_context;
+  HWND           dummy_hwnd;
+  HDC            dummy_dc;
   gboolean       no_event_retrieval;
 
   HCURSOR        invisible_cursor;

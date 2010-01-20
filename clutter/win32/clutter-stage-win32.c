@@ -384,66 +384,6 @@ clutter_stage_win32_get_window_class ()
 
   return klass;
 }
- 
-static gboolean
-clutter_stage_win32_pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
-					    const PIXELFORMATDESCRIPTOR *pfb)
-{
-  /* Always prefer a format with a stencil buffer */
-  if (pfa->cStencilBits == 0)
-    {
-      if (pfb->cStencilBits > 0)
-	return TRUE;
-    }
-  else if (pfb->cStencilBits == 0)
-    return FALSE;
-
-  /* Prefer a bigger color buffer */
-  if (pfb->cColorBits > pfa->cColorBits)
-    return TRUE;
-  else if (pfb->cColorBits < pfa->cColorBits)
-    return FALSE;
-
-  /* Prefer a bigger depth buffer */
-  return pfb->cDepthBits > pfa->cDepthBits;
-}
-
-static int
-clutter_stage_win32_choose_pixel_format (HDC dc, PIXELFORMATDESCRIPTOR *pfd)
-{
-  int i, num_formats, best_pf = 0;
-  PIXELFORMATDESCRIPTOR best_pfd;
-
-  num_formats = DescribePixelFormat (dc, 0, sizeof (best_pfd), NULL);
-
-  for (i = 1; i <= num_formats; i++)
-    {
-      memset (pfd, 0, sizeof (*pfd));
-
-      if (DescribePixelFormat (dc, i, sizeof (best_pfd), pfd)
-	  /* Check whether this format is useable by Clutter */
-	  && ((pfd->dwFlags & (PFD_SUPPORT_OPENGL
-			       | PFD_DRAW_TO_WINDOW
-			       | PFD_DOUBLEBUFFER
-			       | PFD_GENERIC_FORMAT))
-	      == (PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_DRAW_TO_WINDOW))
-	  && pfd->iPixelType == PFD_TYPE_RGBA
-	  && pfd->cColorBits >= 16 && pfd->cColorBits <= 32
-	  && pfd->cDepthBits >= 16 && pfd->cDepthBits <= 32
-	  /* Check whether this is a better format than one we've
-	     already found */
-	  && (best_pf == 0
-	      || clutter_stage_win32_pixel_format_is_better (&best_pfd, pfd)))
-        {
-          best_pf = i;
-          best_pfd = *pfd;
-        }
-    }
-
-  *pfd = best_pfd;
-
-  return best_pf;
-}
 
 static gboolean
 clutter_stage_win32_realize (ClutterStageWindow *stage_window)
@@ -452,6 +392,7 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
   ClutterBackendWin32 *backend_win32;
   PIXELFORMATDESCRIPTOR pfd;
   int pf;
+  GError *error = NULL;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
@@ -518,23 +459,22 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
 
   stage_win32->client_dc = GetDC (stage_win32->hwnd);
 
-  pf = clutter_stage_win32_choose_pixel_format (stage_win32->client_dc, &pfd);
-  
-  if (pf == 0 || !SetPixelFormat (stage_win32->client_dc, pf, &pfd))
+  /* Create a context. This will be a no-op if we already have one */
+  if (!_clutter_backend_create_context (CLUTTER_BACKEND (backend_win32),
+                                        &error))
     {
-      g_critical ("Unable to find suitable GL pixel format");
+      g_critical ("Unable to realize stage: %s", error->message);
+      g_error_free (error);
       goto fail;
     }
 
-  if (backend_win32->gl_context == NULL)
+  /* Use the same pixel format as the dummy DC */
+  pf = GetPixelFormat (backend_win32->dummy_dc);
+  DescribePixelFormat (backend_win32->dummy_dc, pf, sizeof (pfd), &pfd);
+  if (!SetPixelFormat (stage_win32->client_dc, pf, &pfd))
     {
-      backend_win32->gl_context = wglCreateContext (stage_win32->client_dc);
-      
-      if (backend_win32->gl_context == NULL)
-        {
-          g_critical ("Unable to create suitable GL context");
-          goto fail;
-        }
+      g_critical ("Unable to find suitable GL pixel format");
+      goto fail;
     }
 
   CLUTTER_NOTE (BACKEND, "Successfully realized stage");
