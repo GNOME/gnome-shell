@@ -624,6 +624,7 @@ reload_net_wm_state (MetaWindow    *window,
   window->shaded = FALSE;
   window->maximized_horizontally = FALSE;
   window->maximized_vertically = FALSE;
+  window->fullscreen = FALSE;
   window->wm_state_modal = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
@@ -652,7 +653,7 @@ reload_net_wm_state (MetaWindow    *window,
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_PAGER)
         window->wm_state_skip_pager = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_FULLSCREEN)
-        window->fullscreen = TRUE;
+        window->fullscreen_after_placement = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_ABOVE)
         window->wm_state_above = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_BELOW)

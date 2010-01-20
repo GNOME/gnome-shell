@@ -144,6 +144,9 @@ struct _MetaWindow
   /* Whether we're fullscreen */
   guint fullscreen : 1;
 
+  /* Whether we have to fullscreen after placement */
+  guint fullscreen_after_placement : 1;
+
   /* Area to cover when in fullscreen mode.  If _NET_WM_FULLSCREEN_MONITORS has
    * been overridden (via a client message), the window will cover the union of
    * these monitors.  If not, this is the single monitor which the window's
@@ -246,6 +249,9 @@ struct _MetaWindow
   
   /* Have we placed this window? */
   guint placed : 1;
+
+  /* Must we force_save_user_window_placement? */
+  guint force_save_user_rect : 1;
 
   /* Is this not a transient of the focus window which is being denied focus? */
   guint denied_focus_and_not_transient : 1;
