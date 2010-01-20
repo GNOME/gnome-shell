@@ -511,6 +511,6 @@ AddWorkspaceButton.prototype = {
 
     // Draggable target interface
     acceptDrop: function(source, actor, x, y, time) {
-        return this._acceptDropCallback(source, actor, x, y, time);
+        return this.reactive && this._acceptDropCallback(source, actor, x, y, time);
     }
 };
