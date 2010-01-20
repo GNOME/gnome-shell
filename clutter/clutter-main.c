@@ -162,7 +162,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
-  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
+  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS },
+  { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 

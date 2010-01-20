@@ -331,7 +331,8 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
           /* GLX_INTEL_swap_event allows us to avoid blocking the CPU while
            * we wait for glXSwapBuffers to complete, and instead we get an X
            * event notifying us of completion... */
-          if (cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
+          if (!(clutter_debug_flags & CLUTTER_DEBUG_DISABLE_SWAP_EVENTS) &&
+              cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
               flags & CLUTTER_FEATURE_SYNC_TO_VBLANK)
             flags |= CLUTTER_FEATURE_SWAP_EVENTS;
 #endif /* GLX_INTEL_swap_event */
