@@ -15,8 +15,8 @@
            Clicking a window while holding down this modifier key 
            will move the window (left click), resize the window 
            (middle click), or show the window menu (right click).
-           The left and right operations may be swapped
-           using the "mouse_button_resize" key.
+           The middle and right click operations may be swapped
+           using the "resize_with_right_button" key.
            Modifier is expressed as "&lt;Alt&gt;" or "&lt;Super&gt;"
            for example.
          </long>
