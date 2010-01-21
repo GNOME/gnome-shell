@@ -2581,7 +2581,7 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_OPACITY:
-      clutter_actor_set_opacity (actor, g_value_get_uchar (value));
+      clutter_actor_set_opacity (actor, g_value_get_uint (value));
       break;
 
     case PROP_NAME:
@@ -2864,7 +2864,7 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_OPACITY:
-      g_value_set_uchar (value, priv->opacity);
+      g_value_set_uint (value, priv->opacity);
       break;
 
     case PROP_NAME:
@@ -3462,15 +3462,15 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:opacity:
    *
-   * Opacity of the actor, between 0 (fully transparent) and
+   * Opacity of an actor, between 0 (fully transparent) and
    * 255 (fully opaque)
    */
-  pspec = g_param_spec_uchar ("opacity",
-                              "Opacity",
-                              "Opacity of actor",
-                              0, 255,
-                              255,
-                              CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_uint ("opacity",
+                             "Opacity",
+                             "Opacity of an actor",
+                             0, 255,
+                             255,
+                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_OPACITY, pspec);
 
   /**
