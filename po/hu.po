@@ -2,13 +2,13 @@
 # Copyright 2009. Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2009.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-28 13:41+0200\n"
-"PO-Revision-Date: 2009-09-28 13:42+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2010-01-07 23:31+0000\n"
+"PO-Revision-Date: 2010-01-22 00:55+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -25,153 +25,137 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
-#. left side
-#: ../js/ui/panel.js:269
-msgid "Activities"
-msgstr "Tevékenységek"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "ALKALMAZÁSOK"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:452
-msgid "%a %l:%M %p"
-msgstr "%a., %k.%M"
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
+msgid "New Window"
+msgstr "Új ablak"
+
+#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
+msgid "Remove from Favorites"
+msgstr "Eltávolítás a Kedvencek közül"
+
+#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
+msgid "Add to Favorites"
+msgstr "Hozzáadás a Kedvencekhez"
+
+#: ../js/ui/appDisplay.js:1064
+msgid "Drag here to add favorites"
+msgstr "Ide húzással kedvenceket vehet fel"
+
+#: ../js/ui/dash.js:240
 msgid "Find..."
 msgstr "Keresés…"
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Több"
+#: ../js/ui/dash.js:493
+#| msgid "Search"
+msgid "Searching..."
+msgstr "Keresés…"
 
-#: ../js/ui/dash.js:543
-msgid "(see all)"
-msgstr "(összes megjelenítése)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
-msgid "APPLICATIONS"
-msgstr "ALKALMAZÁSOK"
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "Nincs találat."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
-msgid "PLACES"
-msgstr "HELYEK"
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+msgid "PLACES & DEVICES"
+msgstr "HELYEK ÉS ESZKÖZÖK"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
-msgid "RECENT DOCUMENTS"
-msgstr "LEGUTÓBBI DOKUMENTUMOK"
+#: ../js/ui/dash.js:892
+#| msgid "RECENT DOCUMENTS"
+msgid "RECENT ITEMS"
+msgstr "LEGUTÓBBI ELEMEK"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:958
-msgid "SEARCH RESULTS"
-msgstr "TALÁLATOK"
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:336
+msgid "Activities"
+msgstr "Tevékenységek"
 
-#: ../js/ui/dash.js:830
-msgid "PREFERENCES"
-msgstr "BEÁLLÍTÁSOK"
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:549
+msgid "%a %l:%M %p"
+msgstr "%a., %k.%M"
 
-#: ../js/ui/runDialog.js:94
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "Kapcsolódás…"
+
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../src/shell-global.c:799
+#: ../js/ui/runDialog.js:351
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "„%s” végrehajtása meghiúsult:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%k.%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Alkalmazások"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Legutóbbi dokumentumok"
+
+#: ../src/shell-global.c:890
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:802
+#: ../src/shell-global.c:893
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:805
+#: ../src/shell-global.c:896
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:808
+#: ../src/shell-global.c:899
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:811
+#: ../src/shell-global.c:902
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d hete"
 msgstr[1] "%d hete"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Ismeretlen"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Nem lehet zárolni a képernyőt: %s "
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Átmenetileg nem lehet beállítani a képernyővédőt a képernyő elsötétítésére: %"
-"s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Nem lehet kijelentkezni: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Fiókinformációk…"
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Oldalsáv"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Rendszerbeállítások…"
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Képernyő zárolása"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Felhasználóváltás"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Kijelentkezés…"
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Leállítás…"
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Saját mappa"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Fájlrendszer"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Oldalsáv"
 
@@ -180,7 +164,7 @@ msgstr "Oldalsáv"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
