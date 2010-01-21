@@ -52,6 +52,7 @@
 #define KEY_COMPOSITOR "/apps/metacity/general/compositing_manager"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
+#define KEY_COMMAND_DIRECTORY "/apps/metacity/keybinding_commands"
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 
 #define KEY_TERMINAL_DIR "/desktop/gnome/applications/terminal"
@@ -61,6 +62,7 @@
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 #define KEY_LIST_BINDINGS_SUFFIX "_list"
 
+#define KEY_WORKSPACE_NAME_DIRECTORY "/apps/metacity/workspace_names"
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
 
@@ -1835,55 +1837,43 @@ static MetaSimpleKeyMapping key_string_bindings[] = {
 static void
 init_bindings (void)
 {
-#ifdef HAVE_GCONF  
-  int i = 0;
-  GError *err;
+#ifdef HAVE_GCONF
+  const char *prefix[] = {
+    KEY_WINDOW_BINDINGS_PREFIX,
+    KEY_SCREEN_BINDINGS_PREFIX,
+    NULL
+  };
+  int i;
+  GSList *list, *l, *list_val;
+  const char *str_val;
+  const char *key;
+  GConfEntry *entry;
+  GConfValue *value;
 
-  while (key_bindings[i].name)
+  for (i = 0; prefix[i]; i++)
     {
-      GSList *list_val, *tmp;
-      char *str_val;
-      char *key;
- 
-      key = g_strconcat (key_bindings[i].per_window?
-                         KEY_WINDOW_BINDINGS_PREFIX:
-                         KEY_SCREEN_BINDINGS_PREFIX,
-                         "/",
-                         key_bindings[i].name, NULL);
- 
-      err = NULL;
-      str_val = gconf_client_get_string (default_client, key, &err);
-      cleanup_error (&err);
-
-      update_binding (&key_bindings[i], str_val);
-
-      g_free (str_val);      
-      g_free (key);
-
-      key = g_strconcat (key_bindings[i].per_window?
-                         KEY_WINDOW_BINDINGS_PREFIX:
-                         KEY_SCREEN_BINDINGS_PREFIX,
-                         "/",
-                         key_bindings[i].name,
-                         KEY_LIST_BINDINGS_SUFFIX, NULL);
-
-      err = NULL;
-
-      list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, &err);
-      cleanup_error (&err);
- 
-      update_list_binding (&key_bindings[i], list_val, META_LIST_OF_STRINGS);
-
-      tmp = list_val;
-      while (tmp)
+      list = gconf_client_all_entries (default_client, prefix[i], NULL);
+      for (l = list; l; l = l->next)
         {
-          g_free (tmp->data);
-          tmp = tmp->next;
+          entry = l->data;
+          key = gconf_entry_get_key (entry);
+          value = gconf_entry_get_value (entry);
+          if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
+            {
+              list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, NULL);
+ 
+              update_key_list_binding (key, list_val);
+              g_slist_foreach (list_val, (GFunc)g_free, NULL);
+              g_slist_free (list_val);
+            }
+          else
+            {
+              str_val = gconf_value_get_string (value);
+              update_key_binding (key, str_val);
+            }
+          gconf_entry_free (entry);
         }
-      g_slist_free (list_val);
-      g_free (key);
-
-      ++i;
+      g_slist_free (list);
     }
 #else /* HAVE_GCONF */
   int i = 0;
@@ -1912,28 +1902,23 @@ static void
 init_commands (void)
 {
 #ifdef HAVE_GCONF
-  int i;
-  GError *err;
-  
-  i = 0;
-  while (i < MAX_COMMANDS)
+  GSList *list, *l;
+  const char *str_val;
+  const char *key;
+  GConfEntry *entry;
+  GConfValue *value;
+
+  list = gconf_client_all_entries (default_client, KEY_COMMAND_DIRECTORY, NULL);
+  for (l = list; l; l = l->next)
     {
-      char *str_val;
-      char *key;
-
-      key = meta_prefs_get_gconf_key_for_command (i);
-
-      err = NULL;
-      str_val = gconf_client_get_string (default_client, key, &err);
-      cleanup_error (&err);
-
+      entry = l->data;
+      key = gconf_entry_get_key (entry);
+      value = gconf_entry_get_value (entry);
+      str_val = gconf_value_get_string (value);
       update_command (key, str_val);
-
-      g_free (str_val);    
-      g_free (key);
-
-      ++i;
+      gconf_entry_free (entry);
     }
+  g_slist_free (list);
 #else
   int i;
   for (i = 0; i < MAX_COMMANDS; i++)
@@ -1945,30 +1930,23 @@ static void
 init_workspace_names (void)
 {
 #ifdef HAVE_GCONF
-  int i;
-  GError *err;
-  
-  i = 0;
-  while (i < MAX_REASONABLE_WORKSPACES)
+  GSList *list, *l;
+  const char *str_val;
+  const char *key;
+  GConfEntry *entry;
+  GConfValue *value;
+
+  list = gconf_client_all_entries (default_client, KEY_WORKSPACE_NAME_DIRECTORY, NULL);
+  for (l = list; l; l = l->next)
     {
-      char *str_val;
-      char *key;
-
-      key = gconf_key_for_workspace_name (i);
-
-      err = NULL;
-      str_val = gconf_client_get_string (default_client, key, &err);
-      cleanup_error (&err);
-
+      entry = l->data;
+      key = gconf_entry_get_key (entry);
+      value = gconf_entry_get_value (entry);
+      str_val = gconf_value_get_string (value);
       update_workspace_name (key, str_val);
-
-      g_assert (workspace_names[i] != NULL);
-      
-      g_free (str_val);    
-      g_free (key);
-
-      ++i;
+      gconf_entry_free (entry);
     }
+  g_slist_free (list);
 #else
   int i;
   for (i = 0; i < MAX_REASONABLE_WORKSPACES; i++)
