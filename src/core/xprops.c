@@ -264,6 +264,16 @@ cardinal_list_from_results (GetPropertyResults *results,
   *n_cardinals_p = results->n_items;
   results->prop = NULL;
   
+#if GLIB_SIZEOF_LONG == 8
+  /* Xlib sign-extends format=32 items, but we want them unsigned */
+  {
+    int i;
+
+    for (i = 0; i < *n_cardinals_p; i++)
+      (*cardinals_p)[i] = (*cardinals_p)[i] & 0xffffffff;
+  }
+#endif
+
   return TRUE;
 }
 
@@ -608,6 +618,10 @@ cardinal_with_atom_type_from_results (GetPropertyResults *results,
     return FALSE;  
 
   *cardinal_p = *(gulong*) results->prop;
+#if GLIB_SIZEOF_LONG == 8
+  /* Xlib sign-extends format=32 items, but we want them unsigned */
+  *cardinal_p &= 0xffffffff;
+#endif
   XFree (results->prop);
   results->prop = NULL;  
   
