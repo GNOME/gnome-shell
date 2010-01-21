@@ -49,7 +49,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "matrices", COGL_DEBUG_MATRICES },
   { "force-scanline-paths", COGL_DEBUG_FORCE_SCANLINE_PATHS },
   { "atlas", COGL_DEBUG_ATLAS },
-  { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE }
+  { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE },
+  { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
