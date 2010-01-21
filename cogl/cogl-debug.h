@@ -47,7 +47,8 @@ typedef enum {
   COGL_DEBUG_MATRICES         = 1 << 15,
   COGL_DEBUG_FORCE_SCANLINE_PATHS = 1 << 16,
   COGL_DEBUG_ATLAS            = 1 << 17,
-  COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 18
+  COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 18,
+  COGL_DEBUG_DISABLE_ATLAS    = 1 << 19
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG
