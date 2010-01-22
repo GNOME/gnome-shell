@@ -629,6 +629,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
   ClutterAnimationPrivate *priv;
   GObjectClass *klass;
   GParamSpec *pspec;
+  GType pspec_type;
 
   priv = animation->priv;
 
@@ -667,14 +668,17 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
       return NULL;
     }
 
-  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec), argtype))
+  pspec_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+  if (!g_value_type_compatible (argtype, pspec_type) ||
+      !g_value_type_transformable (argtype, pspec_type))
     {
       g_warning ("Cannot bind property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
                  g_type_name (argtype),
-                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+                 g_type_name (pspec_type));
       return NULL;
     }
 
@@ -846,6 +850,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   ClutterAnimationPrivate *priv;
   GObjectClass *klass;
   GParamSpec *pspec;
+  GType pspec_type, int_type;
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
   g_return_if_fail (property_name != NULL);
@@ -872,15 +877,18 @@ clutter_animation_update_interval (ClutterAnimation *animation,
       return;
     }
 
-  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                clutter_interval_get_value_type (interval)))
+  pspec_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+  int_type = clutter_interval_get_value_type (interval);
+
+  if (!g_value_type_compatible (int_type, pspec_type) ||
+      !g_value_type_transformable (int_type, pspec_type))
     {
       g_warning ("Cannot update property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
-                 g_type_name (clutter_interval_get_value_type (interval)),
-                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+                 g_type_name (int_type),
+                 g_type_name (pspec_type));
       return;
     }
 
@@ -906,6 +914,7 @@ clutter_animation_update (ClutterAnimation *animation,
 {
   ClutterAnimationPrivate *priv;
   ClutterInterval *interval;
+  GType int_type;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -923,14 +932,16 @@ clutter_animation_update (ClutterAnimation *animation,
       return NULL;
     }
 
-  if (!g_value_type_compatible (G_VALUE_TYPE (final),
-                                clutter_interval_get_value_type (interval)))
+  int_type = clutter_interval_get_value_type (interval);
+
+  if (!g_value_type_compatible (G_VALUE_TYPE (final), int_type) ||
+      !g_value_type_transformable (G_VALUE_TYPE (final), int_type))
     {
       g_warning ("Cannot update property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
-                 g_type_name (clutter_interval_get_value_type (interval)),
+                 g_type_name (int_type),
                  g_type_name (G_VALUE_TYPE (final)));
       return NULL;
     }
