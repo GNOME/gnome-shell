@@ -1,13 +1,13 @@
 # Norwegian (bokmål) translation of mutter.
 # Copyright © 2002-2004 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@gnome.org>, 2002-2009.
+# Kjartan Maraas <kmaraas@gnome.org>, 2002-2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.27.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-09 15:46+0200\n"
-"PO-Revision-Date: 2009-08-09 15:48+0200\n"
+"Project-Id-Version: metacity 2.29.x\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2010-01-22 14:55+0100\n"
+"PO-Revision-Date: 2010-01-22 14:58+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -19,41 +19,42 @@ msgstr ""
 msgid "Unknown window information request: %d"
 msgstr "Ukjent forespørsel om vindusinformasjon: %d"
 
-#: ../src/core/delete.c:105
-#, fuzzy, c-format
+#: ../src/core/delete.c:94
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
-"programmet til å avslutte helt."
+"<big><b><tt>%s</tt> svarer ikke.</b></big>\n"
+"\n"
+"<i>Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge programmet til å avslutte helt.</i>"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:105
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:105
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
-#: ../src/core/delete.c:217
+#: ../src/core/delete.c:202
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
-#: ../src/core/display.c:329
+#: ../src/core/display.c:360
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:414
+#: ../src/core/display.c:445
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:236
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -64,12 +65,12 @@ msgstr ""
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
 "vinduhåndtereren.\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:243
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
 
-#: ../src/core/keybindings.c:681
+#: ../src/core/keybindings.c:697
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -81,7 +82,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2345
+#: ../src/core/keybindings.c:2388
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -92,12 +93,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2435
+#: ../src/core/keybindings.c:2478
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
 
-#: ../src/core/keybindings.c:3427
+#: ../src/core/keybindings.c:3491
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
@@ -164,12 +165,12 @@ msgstr ""
 msgid "Internal argument for GObject introspection"
 msgstr ""
 
-#: ../src/core/main.c:665
+#: ../src/core/main.c:627
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:681
+#: ../src/core/main.c:643
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -177,7 +178,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:742
+#: ../src/core/main.c:704
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -267,21 +268,21 @@ msgid "Error setting clutter plugin list: %s\n"
 msgstr "Feil under setting av liste over clutter-tillegg: %s\n"
 
 #: ../src/core/prefs.c:2879
-#, c-format, fuzzy
+#, c-format
 msgid "Error setting live hidden windows status status: %s\n"
-msgstr "Feil under setting av status : %s\n"
+msgstr "Feil under setting av status for status for levende skjulte vinduer: %s\n"
 
 #: ../src/core/prefs.c:2907
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting no tab popup status: %s\n"
-msgstr "Feil under setting av status for compositor: %s\n"
+msgstr "Feil under setting av status for popup uten faner: %s\n"
 
-#: ../src/core/screen.c:552
+#: ../src/core/screen.c:570
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: ../src/core/screen.c:568
+#: ../src/core/screen.c:586
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -290,76 +291,76 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: ../src/core/screen.c:595
+#: ../src/core/screen.c:613
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: ../src/core/screen.c:650
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: ../src/core/screen.c:862
+#: ../src/core/screen.c:850
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
-#: ../src/core/session.c:851 ../src/core/session.c:858
+#: ../src/core/session.c:852 ../src/core/session.c:859
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:869
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1010
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1015
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1107
+#: ../src/core/session.c:1108
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1147
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1196
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "<mutter_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: ../src/core/session.c:1208 ../src/core/session.c:1283
-#: ../src/core/session.c:1315 ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1209 ../src/core/session.c:1284
+#: ../src/core/session.c:1316 ../src/core/session.c:1388
+#: ../src/core/session.c:1448
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukjent attributt %s på <%s>-element"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1226
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1468
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1820
 #, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
@@ -368,51 +369,51 @@ msgstr ""
 "Disse vinduene støtter ikke «lagre aktiv konfigurasjon» og vil måtte startes "
 "på nytt manuelt neste gang du logger inn."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Feil under åpning av feilsøkingslogg: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Feil under fdopen() av loggfil %s: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: ../src/core/util.c:138 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter er kompilert uten støtte for «verbose» modus\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6060
+#: ../src/core/window.c:6161
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -428,7 +429,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6723
+#: ../src/core/window.c:6824
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -448,7 +449,7 @@ msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1440
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
@@ -593,199 +594,199 @@ msgstr "Bla gjennom paneler og skrivebordet med en gang"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Bla bakover gjennom paneler og skrivebordet med en gang"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Skjul alle normale vinduer og sett fokus til skrivebordet"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Vis hovedmenyen for panelet"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Vis panelets «Kjør program»-dialog"
 
-#: ../src/include/all-keybindings.h:199
+#: ../src/include/all-keybindings.h:211
 msgid "Start or stop recording the session"
 msgstr "Start eller stopp opptak av sesjonen"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Ta et skjermdump"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Ta et skjermdump av et vindu"
 
-#: ../src/include/all-keybindings.h:244
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Kjør en terminal"
 
-#: ../src/include/all-keybindings.h:259
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Aktiver vindumenyen"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Slå av/på fullskjermmodus"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Endre tilstand for maksimering"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Bestem om vinduet alltid skal vises over andre vinduer"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Maksimer vindu"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Gjenopprett vindu"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Endre tilstand for skyggelegging"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Minimer vindu"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Lukk vindu"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Flytt vindu"
 
-#: ../src/include/all-keybindings.h:280
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Endre størrelse på vindu"
 
-#: ../src/include/all-keybindings.h:283
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Bestem om vinduet skal vises på alle skrivebord eller bare ett"
 
-#: ../src/include/all-keybindings.h:287
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Flytt vindu til arbeidsområde 1"
 
-#: ../src/include/all-keybindings.h:290
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Flytt vindu til arbeidsområde 2"
 
-#: ../src/include/all-keybindings.h:293
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Flytt vindu til arbeidsområde 3"
 
-#: ../src/include/all-keybindings.h:296
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Flytt vindu til arbeidsområde 4"
 
-#: ../src/include/all-keybindings.h:299
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Flytt vindu til arbeidsområde 5"
 
-#: ../src/include/all-keybindings.h:302
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Flytt vindu til arbeidsområde 6"
 
-#: ../src/include/all-keybindings.h:305
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Flytt vindu til arbeidsområde 7"
 
-#: ../src/include/all-keybindings.h:308
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Flytt vindu til arbeidsområde 8"
 
-#: ../src/include/all-keybindings.h:311
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Flytt vindu til arbeidsområde 9"
 
-#: ../src/include/all-keybindings.h:314
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Flytt vindu til arbeidsområde 10"
 
-#: ../src/include/all-keybindings.h:317
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Flytt vindu til arbeidsområde 11"
 
-#: ../src/include/all-keybindings.h:320
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Flytt vindu til arbeidsområde 12"
 
-#: ../src/include/all-keybindings.h:332
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Flytt vindu et arbeidsområde til venstre"
 
-#: ../src/include/all-keybindings.h:335
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Flytt vindu ett arbeidsområde til høyre"
 
-#: ../src/include/all-keybindings.h:338
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Flytt vindu ett arbeidsområde opp"
 
-#: ../src/include/all-keybindings.h:341
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Flytt vindu ett arbeidsområde ned"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr "Hev vinduet hvis det er dekket av et annet vindu. Hvis ikke senk det"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Hev vinduet over andre vinduer"
 
-#: ../src/include/all-keybindings.h:348
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Senk vinduet under andre vinduer"
 
-#: ../src/include/all-keybindings.h:352
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Maksimer vinduet vertikalt"
 
-#: ../src/include/all-keybindings.h:356
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Maksimer vinduet horisontalt"
 
-#: ../src/include/all-keybindings.h:360
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Flytt vindu til nord-vestlig hjørne (øverst til venstre)"
 
-#: ../src/include/all-keybindings.h:363
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Flytt vindu til nord-østlig hjørne (øverst til høyre)"
 
-#: ../src/include/all-keybindings.h:366
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Flytt vindu til syd-vestlig hjørne (nederst til venstre)"
 
-#: ../src/include/all-keybindings.h:369
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Flytt vindu til syd-østlig hjørne (nederst til høyre)"
 
-#: ../src/include/all-keybindings.h:373
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Flytt vindu til nordsiden av skjermen (øverst)"
 
-#: ../src/include/all-keybindings.h:376
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Flytt vindu til sydsiden av skjermen (nederst)"
 
-#: ../src/include/all-keybindings.h:379
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Flytt vindu til østsiden av skjermen (høyre)"
 
-#: ../src/include/all-keybindings.h:382
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Flytt vindu til vestsiden av skjermen (venstre)"
 
-#: ../src/include/all-keybindings.h:385
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Flytt vindu til midten av skjermen"
 
@@ -801,7 +802,7 @@ msgstr ""
 
 #: ../src/mutter.schemas.in.h:3
 msgid "Live Hidden Windows"
-msgstr ""
+msgstr "Levende skjulte vinduer"
 
 #: ../src/mutter.schemas.in.h:4
 #, fuzzy
@@ -1749,109 +1750,109 @@ msgstr "/Vinduer/_Alle dokker"
 msgid "/Windows/Des_ktop"
 msgstr "/Vinduer/S_krivebord"
 
-#: ../src/ui/theme-viewer.c:136
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Åpne et til av disse vinduene"
 
-#: ../src/ui/theme-viewer.c:143
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknapp med et «åpne»-ikon"
 
-#: ../src/ui/theme-viewer.c:150
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknapp med et «avslutt»-ikon"
 
-#: ../src/ui/theme-viewer.c:243
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
 
-#: ../src/ui/theme-viewer.c:326
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falsk menyoppføring %d\n"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Vindu uten innhold"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:379
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Normalt programvindu"
 
-#: ../src/ui/theme-viewer.c:383
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Dialogboks"
 
-#: ../src/ui/theme-viewer.c:387
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Modal dialogboks"
 
-#: ../src/ui/theme-viewer.c:391
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Verktøypalett"
 
-#: ../src/ui/theme-viewer.c:395
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Avrevet meny"
 
-#: ../src/ui/theme-viewer.c:399
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Kant"
 
-#: ../src/ui/theme-viewer.c:727
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test av knappeplassering %d"
 
-#: ../src/ui/theme-viewer.c:756
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for å tegne en vindusramme"
 
-#: ../src/ui/theme-viewer.c:799
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:806
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Feil under lasting av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:812
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Lastet tema «%s» på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:853
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Normal tittelskrift"
 
-#: ../src/ui/theme-viewer.c:859
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Liten tittelskrift"
 
-#: ../src/ui/theme-viewer.c:865
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Stor tittelskrift"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Knappeplasseringer"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Ytelsestest"
 
-#: ../src/ui/theme-viewer.c:922
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Vindutittel skal her"
 
-#: ../src/ui/theme-viewer.c:1026
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1862,39 +1863,39 @@ msgstr ""
 "%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1245
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
-#: ../src/ui/theme-viewer.c:1251
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "Feil var ventet men ingen ble gitt"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Feil %d var ventet men %d ble gitt"
 
-#: ../src/ui/theme-viewer.c:1259
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Feil ikke ventet men en ble returnert: %s"
 
-#: ../src/ui/theme-viewer.c:1263
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1331
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
