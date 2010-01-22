@@ -40,6 +40,7 @@
 #include "cogl-winsys.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
+#include "cogl-journal-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -154,6 +155,16 @@ cogl_clear (const CoglColor *color, gulong buffers)
     }
 
   glClear (gl_buffers);
+
+  /* This is a debugging variable used to visually display the quad
+     batches from the journal. It is reset here to increase the
+     chances of getting the same colours for each frame during an
+     animation */
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
+    {
+      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+      ctxt->journal_rectangles_color = 1;
+    }
 
   COGL_NOTE (DRAW, "Clear end");
 }

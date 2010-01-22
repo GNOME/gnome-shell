@@ -111,6 +111,12 @@ typedef struct
 
   CoglHandle        texture_download_material;
 
+  /* This debugging variable is used to pick a colour for visually
+     displaying the quad batches. It needs to be global so that it can
+     be reset by cogl_clear. It needs to be reset to increase the
+     chances of getting the same colour during an animation */
+  guint8            journal_rectangles_color;
+
   CoglContextDriver drv;
 } CoglContext;
 
