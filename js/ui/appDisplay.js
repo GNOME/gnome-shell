@@ -19,7 +19,7 @@ const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Search = imports.ui.search;
-const Workspaces = imports.ui.workspaces;
+const Workspace = imports.ui.workspace;
 
 const APPICON_SIZE = 48;
 const WELL_MAX_COLUMNS = 8;
@@ -697,7 +697,7 @@ AppIconMenu.prototype = {
     },
 
     _findMetaWindowForActor: function (actor) {
-        if (actor._delegate instanceof Workspaces.WindowClone)
+        if (actor._delegate instanceof Workspace.WindowClone)
             return actor._delegate.metaWindow;
         else if (actor.get_meta_window)
             return actor.get_meta_window();
@@ -1011,7 +1011,7 @@ AppWell.prototype = {
         let app = null;
         if (source instanceof AppDisplayItem) {
             app = this._appSystem.get_app(source.getId());
-        } else if (source instanceof Workspaces.WindowClone) {
+        } else if (source instanceof Workspace.WindowClone) {
             app = this._tracker.get_window_app(source.metaWindow);
         }
 

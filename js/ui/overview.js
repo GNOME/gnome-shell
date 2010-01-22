@@ -8,6 +8,7 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
+const St = imports.gi.St;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
@@ -16,7 +17,7 @@ const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Dash = imports.ui.dash;
 const Tweener = imports.ui.tweener;
-const Workspaces = imports.ui.workspaces;
+const WorkspacesView = imports.ui.workspacesView;
 
 const ROOT_OVERVIEW_COLOR = new Clutter.Color();
 ROOT_OVERVIEW_COLOR.from_pixel(0x000000ff);
@@ -76,7 +77,6 @@ const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
 let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
-let addRemoveButtonSize = null;
 
 function Overview() {
     this._init();
@@ -86,6 +86,9 @@ Overview.prototype = {
     _init : function() {
         this._group = new Clutter.Group();
         this._group._delegate = this;
+
+        this._workspacesViewSwitch = new WorkspacesView.WorkspacesViewSwitch();
+        this._workspacesViewSwitch.connect('view-changed', Lang.bind(this, this._onViewChanged));
 
         this.visible = false;
         this.animationInProgress = false;
@@ -139,6 +142,45 @@ Overview.prototype = {
         this._workspaces = null;
     },
 
+    _createControlsBar: function() {
+        this._workspacesBar = new St.BoxLayout({ 'pack-start': true,
+                                                 style_class: 'workspaces-bar' });
+        this._workspacesBar.move_by(this._workspacesBarX, this._workspacesBarY);
+
+        let controlsBar = this._workspacesViewSwitch.createControlsBar();
+        let bar = this._workspaces.createControllerBar();
+        this._workspacesBar.add(bar, { expand: true, 'x-fill': true, 'y-fill': true,
+                                       y_align: St.Align.MIDDLE, x_align: St.Align.START });
+        this._workspacesBar.add(controlsBar, {x_align: St.Align.END});
+        this._workspacesBar.width = this._workspacesBarWidth;
+
+        this._group.add_actor(this._workspacesBar);
+        this._workspacesBar.raise(this._workspaces.actor);
+    },
+
+    _onViewChanged: function() {
+        if (!this.visible)
+            return;
+        //Remove old worspacesView
+        this._group.remove_actor(this._workspacesBar);
+        this._workspaces.hide();
+        this._group.remove_actor(this._workspaces.actor);
+        this._workspaces.destroy();
+        this._workspacesBar.destroy();
+
+        this._workspaces = this._workspacesViewSwitch.createCurrentWorkspaceView(this._workspacesWidth, this._workspacesHeight,
+                                                                             this._workspacesX, this._workspacesY, false);
+
+        //Show new workspacesView
+        this._group.add_actor(this._workspaces.actor);
+        this._dash.actor.raise(this._workspaces.actor);
+
+        this._createControlsBar();
+
+        // Set new position and scale to workspaces.
+        this.emit('showing');
+    },
+
     _recalculateGridSizes: function () {
         let primary = global.get_primary_monitor();
         wideScreen = (primary.width/primary.height > WIDE_SCREEN_CUT_OFF_RATIO) &&
@@ -188,9 +230,9 @@ Overview.prototype = {
         this._dash.searchResults.actor.height = this._workspacesHeight;
 
         // place the 'Add Workspace' button in the bottom row of the grid
-        addRemoveButtonSize = Math.floor(displayGridRowHeight * 3/5);
-        this._addButtonX = this._workspacesX + this._workspacesWidth - addRemoveButtonSize;
-        this._addButtonY = primary.height - Math.floor(displayGridRowHeight * 4/5);
+        this._workspacesBarX = this._workspacesX;
+        this._workspacesBarWidth = primary.width - this._workspacesBarX - WORKSPACE_GRID_PADDING;
+        this._workspacesBarY = primary.height - displayGridRowHeight + 5;
 
         // The parent (this._group) is positioned at the top left of the primary monitor
         // while this._backOver occupies the entire screen.
@@ -298,8 +340,8 @@ Overview.prototype = {
         this._dash.show();
 
         /* TODO: make this stuff dynamic */
-        this._workspaces = new Workspaces.Workspaces(this._workspacesWidth, this._workspacesHeight,
-                                                     this._workspacesX, this._workspacesY);
+        this._workspaces = this._workspacesViewSwitch.createCurrentWorkspaceView(this._workspacesWidth, this._workspacesHeight,
+                                                                             this._workspacesX, this._workspacesY, true);
         this._group.add_actor(this._workspaces.actor);
 
         // The workspaces actor is as big as the screen, so we have to raise the dash above it
@@ -307,11 +349,7 @@ Overview.prototype = {
         // be as big as the screen.
         this._dash.actor.raise(this._workspaces.actor);
 
-        // Create (+) button
-        this._addButton = new AddWorkspaceButton(addRemoveButtonSize, this._addButtonX, this._addButtonY, Lang.bind(this, this._acceptNewWorkspaceDrop));
-        this._addButton.actor.connect('button-release-event', Lang.bind(this, this._addNewWorkspace));
-        this._group.add_actor(this._addButton.actor);
-        this._addButton.actor.raise(this._workspaces.actor);
+        this._createControlsBar();
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
@@ -363,9 +401,8 @@ Overview.prototype = {
             this._activeDisplayPane.close();
         this._workspaces.hide();
 
-        this._addButton.actor.destroy();
-        this._addButton.actor = null;
-        this._addButton = null;
+        this._workspacesBar.destroy();
+        this._workspacesBar = null;
 
         // Create a zoom in effect by transforming the Overview group so that
         // the active workspace fills up the whole screen. The opposite
@@ -448,7 +485,7 @@ Overview.prototype = {
         this._dash.hide();
         this._group.hide();
 
-        this.visible = false; 
+        this.visible = false;
         this.animationInProgress = false;
         this._hideInProgress = false;
 
@@ -456,61 +493,6 @@ Overview.prototype = {
 
         Main.popModal(this._dash.actor);
         this.emit('hidden');
-    },
-
-    _addNewWorkspace: function() {
-        global.screen.append_new_workspace(false, global.get_current_time());
-    },
-
-    _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        this._addNewWorkspace();
-        return this._workspaces.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
 Signals.addSignalMethods(Overview.prototype);
-
-// Note that mutter has a compile-time limit of 36
-const MAX_WORKSPACES = 16;
-
-function AddWorkspaceButton(buttonSize, buttonX, buttonY, acceptDropCallback) {
-    this._init(buttonSize, buttonX, buttonY, acceptDropCallback);
-}
-
-AddWorkspaceButton.prototype = {
-    _init: function(buttonSize, buttonX, buttonY, acceptDropCallback) {
-        this.actor = new Clutter.Group({ x: buttonX,
-                                         y: buttonY,
-                                         width: global.screen_width - buttonX,
-                                         height: global.screen_height - buttonY,
-                                         reactive: true });
-        this.actor._delegate = this;
-        this._acceptDropCallback = acceptDropCallback;
-
-        let plus = new Clutter.Texture({ x: 0,
-                                         y: 0,
-                                         width: buttonSize,
-                                         height: buttonSize });
-        plus.set_from_file(global.imagedir + 'add-workspace.svg');
-        this.actor.add_actor(plus);
-
-        global.screen.connect('notify::n-workspaces', Lang.bind(this, this._nWorkspacesChanged));
-        this._nWorkspacesChanged();
-    },
-
-    _nWorkspacesChanged: function() {
-        let canAddAnother = global.screen.n_workspaces < MAX_WORKSPACES;
-
-        if (canAddAnother && !this.actor.reactive) {
-            this.actor.reactive = true;
-            this.actor.opacity = 255;
-        } else if (!canAddAnother && this.actor.reactive) {
-            this.actor.reactive = false;
-            this.actor.opacity = 85;
-        }
-    },
-
-    // Draggable target interface
-    acceptDrop: function(source, actor, x, y, time) {
-        return this.reactive && this._acceptDropCallback(source, actor, x, y, time);
-    }
-};

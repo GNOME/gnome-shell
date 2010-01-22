@@ -30,4 +30,5 @@ dist_jsui_DATA =		\
 	widget.js		\
 	widgetBox.js		\
 	windowManager.js	\
-	workspaces.js
+	workspacesView.js	\
+	workspace.js

@@ -137,6 +137,24 @@ StTooltip {
     color: white;
 }
 
+.workspaces-bar {
+    height: 60px;
+}
+
+.workspace-indicator {
+    width: 24px;
+    height: 15px;
+    background: rgba(155,155,155,0.8);
+    border-spacing: 15px;
+}
+
+.workspace-indicator-active {
+    width: 24px;
+    height: 15px;
+    background: rgba(255,255,255,0.8);
+    border-spacing: 15px;
+}
+
 .window-caption {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);
@@ -152,6 +170,67 @@ StTooltip {
     width: 24px;
     -st-shadow: -2px 2px 6px rgba(0,0,0,0.5);
     -shell-close-overlap: 16px;
+}
+
+.single-view-add {
+    background-image: url("add-workspace.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.single-view-remove {
+    background-image: url("remove-workspace.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.switch-view-single {
+    background-image: url("single-view.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.switch-view-mosaic {
+    background-image: url("mosaic-view.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.switch-view-single:checked {
+    background-image: url("single-view-active.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.switch-view-mosaic:checked {
+    background-image: url("mosaic-view-active.svg");
+    width: 24px;
+    height: 15px;
+}
+
+.scroll-separator {
+    width: 9px;
+    height: 15px;
+}
+
+#SwitchScroll {
+    height: 15px;
+}
+
+#SwitchScroll StBin{
+    border: 1px solid rgba(128,128,128,0.40);
+    border-radius: 5px;
+}
+
+#SwitchScroll StButton#hhandle {
+  border-image: url("switch-scroll-hhandle.svg") 5;
+}
+
+#SwitchScroll StButton#backward-stepper,
+#SwitchScroll StButton#forward-stepper
+{
+    width: 0px;
+    border: 0px;
 }
 
 /* Dash */

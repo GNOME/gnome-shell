@@ -322,7 +322,7 @@ WindowOverlay.prototype = {
         this._parentActor = parentActor;
 
         let title = new St.Label({ style_class: "window-caption",
-                                   text : metaWindow.title });
+                                   text: metaWindow.title });
         title.connect('style-changed',
                       Lang.bind(this, this._onStyleChanged));
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -368,6 +368,8 @@ WindowOverlay.prototype = {
                                                   x, y);
         if (actor == this._windowClone.actor) {
             this.closeButton.show();
+            // Reposition the close button in case we've changed display modes
+            this._updatePositions();
         }
         this.title.show();
     },
@@ -375,7 +377,7 @@ WindowOverlay.prototype = {
     fadeIn: function() {
         this.title.opacity = 0;
         this.title.show();
-        this.title.raise_top();
+        this._parentActor.raise_top();
         Tweener.addTween(this.title,
                         { opacity: 255,
                           time: Overview.ANIMATION_TIME,
@@ -389,6 +391,12 @@ WindowOverlay.prototype = {
     chromeHeight: function () {
         return this.closeButton.height - this.closeButton._overlap +
                this.title.height + this.title._spacing;
+    },
+
+    _updatePositions: function() {
+        let [cloneX, cloneY] = this._windowClone.actor.get_transformed_position();
+        let [cloneWidth, cloneHeight] = this._windowClone.actor.get_transformed_size();
+        this.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
     },
 
     /**
@@ -460,7 +468,9 @@ WindowOverlay.prototype = {
     },
 
     _onEnter: function() {
-        this.closeButton.raise_top();
+        this._updatePositions();
+
+        this._parentActor.raise_top();
         this.closeButton.show();
         this.emit('show-close-button');
     },
@@ -510,6 +520,10 @@ WindowOverlay.prototype = {
 
 Signals.addSignalMethods(WindowOverlay.prototype);
 
+const WindowPositionFlags = {
+    ZOOM: 1 << 0,
+    ANIMATE: 1 << 1
+};
 
 /**
  * @workspaceNum: Workspace index
@@ -524,9 +538,14 @@ function Workspace(workspaceNum, parentActor) {
 Workspace.prototype = {
     _init : function(workspaceNum, parentActor) {
         this.workspaceNum = workspaceNum;
+        this._windowOverlaysGroup = new Clutter.Group();
+        // Without this the drop area will be overlapped.
+        this._windowOverlaysGroup.set_size(0, 0);
+
         this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
 
-        this.parentActor = parentActor;
+        parentActor.add_actor(this._windowOverlaysGroup);
+        this._parentActor = parentActor;
 
         this.actor = new Clutter.Group();
         this.actor._delegate = this;
@@ -578,57 +597,11 @@ Workspace.prototype = {
         this._windowRemovedId = this._metaWorkspace.connect('window-removed',
                                                             Lang.bind(this, this._windowRemoved));
 
-        this._removeButton = null;
         this._visible = false;
 
         this._frame = null;
 
         this.leavingOverview = false;
-    },
-
-    updateRemovable : function() {
-        let removable = (this._windows.length == 1 /* just desktop */ &&
-                         this.workspaceNum != 0 &&
-                         this.workspaceNum == global.screen.n_workspaces - 1);
-
-        if (removable) {
-            if (this._removeButton)
-                return;
-
-            this._removeButton = new Clutter.Texture({ width: Overview.addRemoveButtonSize,
-                                                       height: Overview.addRemoveButtonSize,
-                                                       reactive: true
-                                                     });
-            this._removeButton.set_from_file(global.imagedir + "remove-workspace.svg");
-            this._removeButton.connect('button-release-event', Lang.bind(this, this._removeSelf));
-
-            this.actor.add_actor(this._removeButton);
-            this._adjustRemoveButton();
-            this._adjustRemoveButtonId = this.actor.connect('notify::scale-x', Lang.bind(this, this._adjustRemoveButton));
-
-            if (this._visible) {
-                this._removeButton.set_opacity(0);
-                Tweener.addTween(this._removeButton,
-                                 { opacity: 255,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: "easeOutQuad"
-                                 });
-            }
-        } else {
-            if (!this._removeButton)
-                return;
-
-            if (this._visible) {
-                Tweener.addTween(this._removeButton,
-                                 { opacity: 0,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: "easeOutQuad",
-                                   onComplete: this._removeRemoveButton,
-                                   onCompleteScope: this
-                                 });
-            } else
-                this._removeRemoveButton();
-        }
     },
 
     _lookupIndex: function (metaWindow) {
@@ -661,7 +634,7 @@ Workspace.prototype = {
         this._showOnlyWindows = showOnlyWindows;
         this._resetCloneVisibility();
         if (reposition)
-            this.positionWindows(false);
+            this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     /**
@@ -695,20 +668,6 @@ Workspace.prototype = {
             actor = clone.actor;
         }
         this._lightbox.highlight(actor);
-    },
-
-    _adjustRemoveButton : function() {
-        this._removeButton.set_scale(1.0 / this.actor.scale_x,
-                                     1.0 / this.actor.scale_y);
-        this._removeButton.set_position(
-            (this.actor.width - this._removeButton.width / this.actor.scale_x) / 2,
-            (this.actor.height - this._removeButton.height / this.actor.scale_y) / 2);
-    },
-
-    _removeRemoveButton : function() {
-        this._removeButton.destroy();
-        this._removeButton = null;
-        this.actor.disconnect(this._adjustRemoveButtonId);
     },
 
     // Mark the workspace selected/not-selected
@@ -1007,12 +966,17 @@ Workspace.prototype = {
 
     /**
      * positionWindows:
-     * @workspaceZooming: If true, then the workspace is moving at the same time and we need to take that into account.
+     * @flags:
+     *  ZOOM - workspace is moving at the same time and we need to take that into account.
+     *  ANIMATE - Indicates that we need animate changing position.
      */
-    positionWindows : function(workspaceZooming) {
+    positionWindows : function(flags) {
         let totalVisible = 0;
 
         let visibleWindows = this._getVisibleWindows();
+
+        let workspaceZooming = flags & WindowPositionFlags.ZOOM;
+        let animate = flags & WindowPositionFlags.ANIMATE;
 
         // Start the animations
         let slots = this._computeAllWindowSlots(visibleWindows.length);
@@ -1028,18 +992,24 @@ Workspace.prototype = {
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
 
             overlay.hide();
-            Tweener.addTween(clone.actor,
-                             { x: x,
-                               y: y,
-                               scale_x: scale,
-                               scale_y: scale,
-                               workspace_relative: workspaceZooming ? this : null,
-                               time: Overview.ANIMATION_TIME,
-                               transition: "easeOutQuad",
-                               onComplete: Lang.bind(this, function() {
-                                  this._fadeInWindowOverlay(clone, overlay);
-                               })
-                             });
+            if (animate) {
+                Tweener.addTween(clone.actor,
+                                 { x: x,
+                                   y: y,
+                                   scale_x: scale,
+                                   scale_y: scale,
+                                   workspace_relative: workspaceZooming ? this : null,
+                                   time: Overview.ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onComplete: Lang.bind(this, function() {
+                                      this._fadeInWindowOverlay(clone, overlay);
+                                   })
+                                 });
+            } else {
+                clone.actor.set_position(x, y);
+                clone.actor.set_scale(scale, scale);
+                this._fadeInWindowOverlay(clone, overlay);
+            }
         }
     },
 
@@ -1127,8 +1097,7 @@ Workspace.prototype = {
         }
         clone.destroy();
 
-        this.positionWindows(false);
-        this.updateRemovable();
+        this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -1148,9 +1117,9 @@ Workspace.prototype = {
                                         }));
             return;
         }
-        
+
         if (!this._isOverviewWindow(win))
-            return;        
+            return;
 
         let clone = this._addWindowClone(win);
 
@@ -1164,29 +1133,19 @@ Workspace.prototype = {
             clone.actor.set_scale (scale, scale);
         }
 
-        this.positionWindows(false);
-        this.updateRemovable();
+        this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     // Animate the full-screen to Overview transition.
-    zoomToOverview : function() {
+    zoomToOverview : function(animate) {
         this.actor.set_position(this.gridX, this.gridY);
         this.actor.set_scale(this.scale, this.scale);
 
         // Position and scale the windows.
-        this.positionWindows(true);
-
-        // Fade in the remove button if available, so that it doesn't appear
-        // too abrubtly and doesn't start at a too big size.
-        if (this._removeButton) {
-            Tweener.removeTweens(this._removeButton);
-            this._removeButton.opacity = 0;
-            Tweener.addTween(this._removeButton,
-                             { opacity: 255,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
+        if (animate)
+            this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
+        else
+            this.positionWindows(WindowPositionFlags.ZOOM);
 
         this._visible = true;
     },
@@ -1199,17 +1158,6 @@ Workspace.prototype = {
 
         Main.overview.connect('hidden', Lang.bind(this,
                                                  this._doneLeavingOverview));
-
-        // Fade out the remove button if available, so that it doesn't
-        // disappear too abrubtly and doesn't become too big.
-        if (this._removeButton) {
-            Tweener.removeTweens(this._removeButton);
-            Tweener.addTween(this._removeButton,
-                             { opacity: 0,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
 
         // Position and scale the windows.
         for (let i = 1; i < this._windows.length; i++) {
@@ -1226,7 +1174,7 @@ Workspace.prototype = {
                              });
         }
 
-        this._visible = false;        
+        this._visible = false;
     },
 
     // Animates grid shrinking/expanding when a row or column
@@ -1264,7 +1212,7 @@ Workspace.prototype = {
 
         this._visible = true;
     },
-    
+
     // Animates the removal of a workspace
     slideOut : function(onComplete) {
         let destX = this.actor.x, destY = this.actor.y;
@@ -1291,11 +1239,12 @@ Workspace.prototype = {
         // making its exit.
         this._desktop.reactive = false;
     },
-    
+
     destroy : function() {
         Tweener.removeTweens(this.actor);
         this.actor.destroy();
         this.actor = null;
+        this._windowOverlaysGroup.destroy();
 
         this._metaWorkspace.disconnect(this._windowAddedId);
         this._metaWorkspace.disconnect(this._windowRemovedId);
@@ -1321,7 +1270,7 @@ Workspace.prototype = {
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone : function(win) {
         let clone = new WindowClone(win);
-        let overlay = new WindowOverlay(clone, this.parentActor);
+        let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
 
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
@@ -1421,399 +1370,3 @@ Workspace.prototype = {
 };
 
 Signals.addSignalMethods(Workspace.prototype);
-
-function Workspaces(width, height, x, y) {
-    this._init(width, height, x, y);
-}
-
-Workspaces.prototype = {
-    _init : function(width, height, x, y) {
-        this.actor = new St.Bin({ style_class: "workspaces" });
-        this._actor = new Clutter.Group();
-
-        this.actor.add_actor(this._actor);
-
-        this._width = width;
-        this._height = height;
-        this._x = x;
-        this._y = y;
-
-        this._windowSelectionAppId = null;
-
-        this._workspaces = [];
-
-        this._highlightWindow = null;
-
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let activeWorkspace;
-
-        // Create and position workspace objects
-        for (let w = 0; w < global.screen.n_workspaces; w++) {
-            this._addWorkspaceActor(w);
-            if (w == activeWorkspaceIndex) {
-                activeWorkspace = this._workspaces[w];
-                activeWorkspace.setSelected(true);
-            }
-        }
-        activeWorkspace.actor.raise_top();
-        this._positionWorkspaces();
-
-        let lastWorkspace = this._workspaces[this._workspaces.length - 1];
-        lastWorkspace.updateRemovable(true);
-
-        // Position/scale the desktop windows and their children after the
-        // workspaces have been created. This cannot be done first because
-        // window movement depends on the Workspaces object being accessible
-        // as an Overview member.
-        this._overviewShowingId =
-            Main.overview.connect('showing',
-                                 Lang.bind(this, function() {
-                this._onRestacked();
-                for (let w = 0; w < this._workspaces.length; w++)
-                    this._workspaces[w].zoomToOverview();
-        }));
-
-        // Track changes to the number of workspaces
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._activeWorkspaceChanged));
-        this._restackedNotifyId =
-            global.screen.connect('restacked',
-                                  Lang.bind(this, this._onRestacked));
-    },
-
-    _lookupWorkspaceForMetaWindow: function (metaWindow) {
-        for (let i = 0; i < this._workspaces.length; i++) {
-            if (this._workspaces[i].containsMetaWindow(metaWindow))
-                return this._workspaces[i];
-        }
-        return null;
-    },
-
-    _lookupCloneForMetaWindow: function (metaWindow) {
-        for (let i = 0; i < this._workspaces.length; i++) {
-            let clone = this._workspaces[i].lookupCloneForMetaWindow(metaWindow);
-            if (clone)
-                return clone;
-        }
-        return null;
-    },
-
-    setHighlightWindow: function (metaWindow) {
-        // Looping over all workspaces is easier than keeping track of the last
-        // highlighted window while trying to handle the window or workspace possibly
-        // going away.
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setHighlightWindow(null);
-        }
-        if (metaWindow != null) {
-            let workspace = this._lookupWorkspaceForMetaWindow(metaWindow);
-            workspace.setHighlightWindow(metaWindow);
-        }
-    },
-
-    _clearApplicationWindowSelection: function(reposition) {
-        if (this._windowSelectionAppId == null)
-            return;
-        this._windowSelectionAppId = null;
-
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setLightboxMode(false);
-            this._workspaces[i].setShowOnlyWindows(null, reposition);
-        }
-    },
-
-    /**
-     * setApplicationWindowSelection:
-     * @appid: Application identifier string
-     *
-     * Enter a mode which shows only the windows owned by the
-     * given application, and allow highlighting of a specific
-     * window with setHighlightWindow().
-     */
-    setApplicationWindowSelection: function (appId) {
-        if (appId == null) {
-            this._clearApplicationWindowSelection(true);
-            return;
-        }
-
-        if (appId == this._windowSelectionAppId)
-            return;
-
-        this._windowSelectionAppId = appId;
-
-        let appSys = Shell.AppSystem.get_default();
-
-        let showOnlyWindows = {};
-        let app = appSys.get_app(appId);
-        let windows = app.get_windows();
-        for (let i = 0; i < windows.length; i++) {
-            showOnlyWindows[windows[i]] = 1;
-        }
-
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setLightboxMode(true);
-            this._workspaces[i].setShowOnlyWindows(showOnlyWindows, true);
-        }
-    },
-
-    /**
-     * activateWindowFromOverview:
-     * @metaWindow: A #MetaWindow
-     * @time: Integer even timestamp
-     *
-     * This function exits the overview, switching to the given @metaWindow.
-     * If an application filter is in effect, it will be cleared.
-     */
-    activateWindowFromOverview: function (metaWindow, time) {
-        if (this._windowSelectionAppId != null) {
-            this._clearApplicationWindowSelection(false);
-        }
-
-        Main.activateWindow(metaWindow, time);
-        Main.overview.hide();
-    },
-
-    hide : function() {
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
-
-        this._positionWorkspaces();
-        activeWorkspace.actor.raise_top();
-
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverview();
-    },
-
-    destroy : function() {
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].destroy();
-        this._workspaces = [];
-
-        this.actor.destroy();
-        this.actor = null;
-
-        Main.overview.disconnect(this._overviewShowingId);
-        global.screen.disconnect(this._nWorkspacesNotifyId);
-        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        global.screen.disconnect(this._restackedNotifyId);
-    },
-
-    getScale : function() {
-        return this._workspaces[0].scale;
-    },
-
-    // Get the grid position of the active workspace.
-    getActiveWorkspacePosition : function() {
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
-
-        return [activeWorkspace.gridX, activeWorkspace.gridY];
-    },
-
-    // Assign grid positions to workspaces. We can't just do a simple
-    // row-major or column-major numbering, because we don't want the
-    // existing workspaces to get rearranged when we add a row or
-    // column. So we alternate between adding to rows and adding to
-    // columns. (So, eg, when going from a 2x2 grid of 4 workspaces to
-    // a 3x2 grid of 5 workspaces, the 4 existing workspaces stay
-    // where they are, and the 5th one is added to the end of the
-    // first row.)
-    //
-    // FIXME: need to make the metacity internal layout agree with this!
-    _positionWorkspaces : function() {
-        let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
-        let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
-
-        let wsWidth = (this._width - (gridWidth - 1) * GRID_SPACING) / gridWidth;
-        let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
-        let scale = wsWidth / global.screen_width;
-
-        let span = 1, n = 0, row = 0, col = 0, horiz = true;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            workspace.gridRow = row;
-            workspace.gridCol = col;
-
-            workspace.gridX = this._x + workspace.gridCol * (wsWidth + GRID_SPACING);
-            workspace.gridY = this._y + workspace.gridRow * (wsHeight + GRID_SPACING);
-            workspace.scale = scale;
-
-            if (horiz) {
-                col++;
-                if (col == span) {
-                    row = 0;
-                    horiz = false;
-                }
-            } else {
-                row++;
-                if (row == span) {
-                    col = 0;
-                    horiz = true;
-                    span++;
-                }
-            }
-        }
-    },
-
-    _workspacesChanged : function() {
-        let oldNumWorkspaces = this._workspaces.length;
-        let newNumWorkspaces = global.screen.n_workspaces;
-
-        if (oldNumWorkspaces == newNumWorkspaces)
-            return;
-
-        let oldScale = this._workspaces[0].scale;
-        let oldGridWidth = Math.ceil(Math.sqrt(oldNumWorkspaces));
-        let oldGridHeight = Math.ceil(oldNumWorkspaces / oldGridWidth);
-        let lostWorkspaces = [];
-
-        // The old last workspace is no longer removable.
-        this._workspaces[oldNumWorkspaces - 1].updateRemovable();
-
-        if (newNumWorkspaces > oldNumWorkspaces) {
-            // Create new workspace groups
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._addWorkspaceActor(w);
-            }
-
-        } else {
-            // Truncate the list of workspaces
-            // FIXME: assumes that the workspaces are being removed from
-            // the end of the list, not the start/middle
-            lostWorkspaces = this._workspaces.splice(newNumWorkspaces);
-        }
-
-        // The new last workspace may be removable
-        let newLastWorkspace = this._workspaces[this._workspaces.length - 1];
-        newLastWorkspace.updateRemovable();
-
-        // Figure out the new layout
-        this._positionWorkspaces();
-        let newScale = this._workspaces[0].scale;
-        let newGridWidth = Math.ceil(Math.sqrt(newNumWorkspaces));
-        let newGridHeight = Math.ceil(newNumWorkspaces / newGridWidth);
-
-        if (newGridWidth != oldGridWidth || newGridHeight != oldGridHeight) {
-            // We need to resize/move the existing workspaces/windows
-            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
-            for (let w = 0; w < existingWorkspaces; w++)
-                this._workspaces[w].resizeToGrid(oldScale);
-        }
-
-        if (newScale != oldScale) {
-            // The workspace scale affects window size/positioning because we clamp
-            // window size to a 1:1 ratio and never scale them up
-            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
-            for (let w = 0; w < existingWorkspaces; w++)
-                this._workspaces[w].positionWindows(false);
-        }
-
-        if (newNumWorkspaces > oldNumWorkspaces) {
-            // Slide new workspaces in from offscreen
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-                this._workspaces[w].slideIn(oldScale);
-        } else {
-            // Slide old workspaces out
-            for (let w = 0; w < lostWorkspaces.length; w++) {
-                let workspace = lostWorkspaces[w];
-                workspace.slideOut(function () { workspace.destroy(); });
-            }
-
-            // FIXME: deal with windows on the lost workspaces
-        }
-
-        // Reset the selection state; if we went from > 1 workspace to 1,
-        // this has the side effect of removing the frame border
-        let activeIndex = global.screen.get_active_workspace_index();
-        this._workspaces[activeIndex].setSelected(true);
-    },
-
-    _activeWorkspaceChanged : function(wm, from, to, direction) {
-        this._workspaces[from].setSelected(false);
-        this._workspaces[to].setSelected(true);
-    },
-
-    _addWorkspaceActor : function(workspaceNum) {
-        let workspace  = new Workspace(workspaceNum, this._actor);
-        this._workspaces[workspaceNum] = workspace;
-        this._actor.add_actor(workspace.actor);
-    },
-
-    _onRestacked: function() {
-        let stack = global.get_windows();
-        let stackIndices = {};
-
-        for (let i = 0; i < stack.length; i++) {
-            // Use the stable sequence for an integer to use as a hash key
-            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
-        }
-
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].syncStacking(stackIndices);
-    },
-
-    // Handles a drop onto the (+) button; assumes the new workspace
-    // has already been added
-    acceptNewWorkspaceDrop : function(source, dropActor, x, y, time) {
-        return this._workspaces[this._workspaces.length - 1].acceptDrop(source, dropActor, x, y, time);
-    }
-};
-
-// Create a SpecialPropertyModifier to let us move windows in a
-// straight line on the screen even though their containing workspace
-// is also moving.
-Tweener.registerSpecialPropertyModifier("workspace_relative", _workspaceRelativeModifier, _workspaceRelativeGet);
-
-function _workspaceRelativeModifier(workspace) {
-    let [startX, startY] = Main.overview.getPosition();
-    let overviewPosX, overviewPosY, overviewScale;
-
-    if (!workspace)
-        return [];
-
-    if (workspace.leavingOverview) {
-        let [zoomedInX, zoomedInY] = Main.overview.getZoomedInPosition();
-        overviewPosX = { begin: startX, end: zoomedInX };
-        overviewPosY = { begin: startY, end: zoomedInY };
-        overviewScale = { begin: Main.overview.getScale(),
-                          end: Main.overview.getZoomedInScale() };
-    } else {
-        overviewPosX = { begin: startX, end: 0 };
-        overviewPosY = { begin: startY, end: 0 };
-        overviewScale = { begin: Main.overview.getScale(), end: 1 };
-    }
-
-    return [ { name: "x",
-               parameters: { workspacePos: workspace.gridX,
-                             overviewPos: overviewPosX,
-                             overviewScale: overviewScale } },
-             { name: "y",
-               parameters: { workspacePos: workspace.gridY,
-                             overviewPos: overviewPosY,
-                             overviewScale: overviewScale } }
-           ];
-}
-
-function _workspaceRelativeGet(begin, end, time, params) {
-    let curOverviewPos = (1 - time) * params.overviewPos.begin +
-                         time * params.overviewPos.end;
-    let curOverviewScale = (1 - time) * params.overviewScale.begin +
-                           time * params.overviewScale.end;
-
-    // Calculate the screen position of the window.
-    let screen = (1 - time) *
-                 ((begin + params.workspacePos) * params.overviewScale.begin +
-                  params.overviewPos.begin) +
-                 time *
-                 ((end + params.workspacePos) * params.overviewScale.end +
-                 params.overviewPos.end);
-
-    // Return the workspace coordinates.
-    return (screen - curOverviewPos) / curOverviewScale - params.workspacePos;
-}

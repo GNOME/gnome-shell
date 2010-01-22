@@ -21,16 +21,24 @@ dist_images_DATA =				\
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
-	theme/gnome-shell.css			\
-	theme/close.svg                 \
+	theme/add-workspace.svg			\
 	theme/close-window.svg			\
-	theme/scroll-button-down.png		\
+	theme/close.svg                 \
+	theme/gnome-shell.css			\
+	theme/mosaic-view-active.svg          \
+	theme/mosaic-view.svg          \
+	theme/remove-workspace.svg          \
 	theme/scroll-button-down-hover.png	\
-	theme/scroll-button-up.png		\
+	theme/scroll-button-down.png		\
 	theme/scroll-button-up-hover.png	\
+	theme/scroll-button-up.png		\
 	theme/scroll-vhandle.png        \
 	theme/section-back.svg          \
-	theme/section-more.svg
+	theme/section-more.svg          \
+	theme/single-view-active.svg          \
+	theme/single-view.svg          \
+	theme/switch-scroll-hhandle.svg
+
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = gnome-shell.schemas
