@@ -75,6 +75,7 @@ struct _StButtonPrivate
 
   ClutterActor     *old_bg;
   gboolean          old_bg_parented; /* TRUE if we have adopted old_bg */
+  gboolean          old_bg_animating; /* TRUE if the opacity animation is running and we hold a self-ref */
 
   guint8            old_opacity;
 
@@ -122,6 +123,11 @@ st_button_dispose_old_bg (StButton *button)
         }
       g_object_unref (priv->old_bg);
       priv->old_bg = NULL;
+      if (priv->old_bg_animating)
+        {
+          g_object_unref (button);
+          priv->old_bg_animating = FALSE;
+        }
     }
 }
 
@@ -180,6 +186,13 @@ st_button_style_changed (StWidget *widget)
                                                  priv->transition_duration,
                                                  "opacity", 0,
                                                  NULL);
+              /* The reference counting here is looped; through the button, old_bg,
+               * and the animation.  However, that's not a problem because we will
+               * break the cycle when either the animation completes, or when
+               * we dispose.
+               */
+              priv->old_bg_animating = TRUE;
+              g_object_ref (button);
               g_signal_connect (animation, "completed",
                                 G_CALLBACK (st_animation_completed), button);
             }
