@@ -703,6 +703,17 @@ SingleView.prototype = {
                 this._workspaces[i]._metaWorkspace.activate(global.get_current_time());
         }));
 
+       actor.connect('scroll-event', Lang.bind(this, function(actor, event) {
+            let direction = event.get_scroll_direction();
+            let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+            let numWorkspaces = global.screen.n_workspaces;
+            if (direction == Clutter.ScrollDirection.UP && activeWorkspaceIndex < numWorkspaces - 1) {
+                this._workspaces[activeWorkspaceIndex+1]._metaWorkspace.activate(global.get_current_time());
+            } else if (direction == Clutter.ScrollDirection.DOWN && activeWorkspaceIndex > 0) {
+                this._workspaces[activeWorkspaceIndex-1]._metaWorkspace.activate(global.get_current_time());
+            }
+        }));
+
         this._indicatorsPanel.add_actor(actor);
 
         let [a, spacing] = actor.get_theme_node().get_length('border-spacing', false);
