@@ -1645,35 +1645,37 @@ clutter_animation_setup_property (ClutterAnimation *animation,
    */
   if (!g_type_is_a (G_VALUE_TYPE (value), G_VALUE_TYPE (&real_value)))
     {
-      if (!g_value_type_compatible (G_VALUE_TYPE (value),
-                                    G_VALUE_TYPE (&real_value)) &&
-          !g_value_type_compatible (G_VALUE_TYPE (&real_value),
-                                    G_VALUE_TYPE (value)))
+      /* are these two types compatible (can be directly copied)? */
+      if (g_value_type_compatible (G_VALUE_TYPE (value),
+                                   G_VALUE_TYPE (&real_value)))
         {
-          g_warning ("%s: Unable to convert from %s to %s for "
-                     "the property '%s' of object %s",
-                     G_STRLOC,
-                     g_type_name (G_VALUE_TYPE (value)),
-                     g_type_name (G_VALUE_TYPE (&real_value)),
-                     property_name,
-                     G_OBJECT_TYPE_NAME (priv->object));
-          g_value_unset (&real_value);
-          return;
+          g_value_copy (value, &real_value);
+          goto done;
         }
 
-      if (!g_value_transform (value, &real_value))
+      /* are these two type transformable? */
+      if (g_value_type_transformable (G_VALUE_TYPE (value),
+                                      G_VALUE_TYPE (&real_value)))
         {
-          g_warning ("%s: Unable to transform from %s to %s",
-                     G_STRLOC,
-                     g_type_name (G_VALUE_TYPE (value)),
-                     g_type_name (G_VALUE_TYPE (&real_value)));
-          g_value_unset (&real_value);
-          return;
+          if (g_value_transform (value, &real_value))
+            goto done;
         }
+
+      /* if not compatible and not transformable then we can't do much */
+      g_warning ("%s: Unable to convert from %s to %s for "
+                 "the property '%s' of object %s",
+                 G_STRLOC,
+                 g_type_name (G_VALUE_TYPE (value)),
+                 g_type_name (G_VALUE_TYPE (&real_value)),
+                 property_name,
+                 G_OBJECT_TYPE_NAME (priv->object));
+      g_value_unset (&real_value);
+      return;
     }
   else
     g_value_copy (value, &real_value);
 
+done:
   /* create an interval and bind it to the property, in case
    * it's not a fixed property, otherwise just set it
    */
