@@ -1244,6 +1244,8 @@ clutter_animation_set_mode (ClutterAnimation *animation,
   g_object_freeze_notify (G_OBJECT (animation));
 
   alpha = clutter_animation_get_alpha_internal (animation);
+  g_assert (CLUTTER_IS_ALPHA (alpha));
+
   clutter_alpha_set_mode (alpha, mode);
 
   g_object_notify (G_OBJECT (animation), "mode");
@@ -1297,6 +1299,8 @@ clutter_animation_set_duration (ClutterAnimation *animation,
   g_object_freeze_notify (G_OBJECT (animation));
 
   timeline = clutter_animation_get_timeline_internal (animation);
+  g_assert (CLUTTER_IS_TIMELINE (timeline));
+
   clutter_timeline_set_duration (timeline, msecs);
   clutter_timeline_rewind (timeline);
 
