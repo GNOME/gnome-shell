@@ -344,6 +344,66 @@ CoglHandle      cogl_texture_new_from_sub_texture
                                                gint       sub_width,
                                                gint       sub_height);
 
+#if defined (COGL_ENABLE_EXPERIMENTAL_API)
+
+/**
+ * cogl_texture_new_from_buffer:
+ * @buffer: the #CoglHandle of a pixel buffer
+ * @width: width of texture in pixels or 0
+ * @height: height of texture in pixels or 0
+ * @flags: optional flags for the texture, or %COGL_TEXTURE_NONE
+ * @format: the #CoglPixelFormat the buffer is stored in in RAM
+ * @internal_format: the #CoglPixelFormat that will be used for storing
+ *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
+ *    premultiplied format similar to the format of the source data will
+ *    be used. The default blending equations of Cogl expect premultiplied
+ *    color data; the main use of passing a non-premultiplied format here
+ *    is if you have non-premultiplied source data and are going to adjust
+ *    the blend mode (see cogl_material_set_blend()) or use the data for
+ *    something other than straight blending
+ * @rowstride: the memory offset in bytes between the starts of
+ *    scanlines in @data. If 0 is given the row stride will be deduced from
+ *    @width and @format or the stride given by cogl_pixel_buffer_new_for_size()
+ * @offset: offset in bytes in @buffer from where the texture data starts
+ *
+ * Creates a new texture using the buffer specified by @handle. If the buffer
+ * has been created using cogl_pixel_buffer_new_for_size() it's possible to omit
+ * the height and width values already specified at creation time.
+ *
+ * Return value: a #CoglHandle to the new texture or %COGL_INVALID_HANDLE on
+ *    failure
+ *
+ * Since: 1.2
+ * Stability: Unstable
+ */
+CoglHandle      cogl_texture_new_from_buffer  (CoglHandle       buffer,
+                                               guint            width,
+                                               guint            height,
+                                               CoglTextureFlags flags,
+                                               CoglPixelFormat  format,
+                                               CoglPixelFormat  internal_format,
+                                               guint            rowstride,
+                                               guint            offset);
+
+/* the function above is experimental, the actual symbol is suffixed by _EXP so
+ * we can ensure ABI compatibility and leave the cogl_buffer namespace free for
+ * future use. A bunch of defines translates the symbols documented above into
+ * the real symbols */
+
+CoglHandle      cogl_texture_new_from_buffer_EXP
+                                              (CoglHandle       buffer,
+                                               guint            width,
+                                               guint            height,
+                                               CoglTextureFlags flags,
+                                               CoglPixelFormat  format,
+                                               CoglPixelFormat  internal_format,
+                                               guint            rowstride,
+                                               guint            offset);
+
+#define cogl_texture_new_from_buffer cogl_texture_new_from_buffer_EXP
+
+#endif
+
 #ifndef COGL_DISABLE_DEPRECATED
 
 /**
