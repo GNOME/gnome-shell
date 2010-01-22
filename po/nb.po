@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.29.x\n"
 "Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2010-01-13 22:29+0100\n"
-"PO-Revision-Date: 2010-01-13 22:29+0100\n"
+"POT-Creation-Date: 2010-01-22 14:34+0100\n"
+"PO-Revision-Date: 2010-01-22 14:35+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,9 @@ msgstr "<tt>%s</tt> svarer ikke."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr "Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge programmet til å avslutte helt."
+msgstr ""
+"Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
+"programmet til å avslutte helt."
 
 #: ../src/core/delete.c:110
 msgid "_Wait"
@@ -115,7 +117,7 @@ msgstr "Ingen kommando %d er definert\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
 
-#: ../src/core/main.c:133
+#: ../src/core/main.c:131
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -130,54 +132,54 @@ msgstr ""
 "Det gis INGEN garanti ikke engang for SALGBARHET eller EGNETHET FOR ET "
 "SPESIFIKT FORMÅL.\n"
 
-#: ../src/core/main.c:271
+#: ../src/core/main.c:269
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: ../src/core/main.c:277
+#: ../src/core/main.c:275
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstatt kjørende vindushåndterer med Metacity"
 
-#: ../src/core/main.c:283
+#: ../src/core/main.c:281
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:286
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:292
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:298
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/main.c:306
+#: ../src/core/main.c:304
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: ../src/core/main.c:312
+#: ../src/core/main.c:310
 msgid "Turn compositing on"
 msgstr "Slå på «compositing»"
 
-#: ../src/core/main.c:318
+#: ../src/core/main.c:316
 msgid "Turn compositing off"
 msgstr "Slå av «compositing»"
 
-#: ../src/core/main.c:324
+#: ../src/core/main.c:322
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
 "Ikke vis vinduer som er maksimert og ikke har dekorasjoner i fullskjermmodus"
 
-#: ../src/core/main.c:530
+#: ../src/core/main.c:528
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:546
+#: ../src/core/main.c:544
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -185,7 +187,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:605
+#: ../src/core/main.c:603
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -201,24 +203,24 @@ msgstr "Feil under omstart: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
+#: ../src/core/prefs.c:508 ../src/core/prefs.c:663
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
-#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
+#: ../src/core/prefs.c:589 ../src/core/prefs.c:832
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor område %d til %d\n"
 
-#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
-#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
-#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
+#: ../src/core/prefs.c:633 ../src/core/prefs.c:710 ../src/core/prefs.c:758
+#: ../src/core/prefs.c:822 ../src/core/prefs.c:1115 ../src/core/prefs.c:1131
+#: ../src/core/prefs.c:1148 ../src/core/prefs.c:1164
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/core/prefs.c:1232
+#: ../src/core/prefs.c:1234
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -226,12 +228,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1303
+#: ../src/core/prefs.c:1305
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1365
+#: ../src/core/prefs.c:1367
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -240,17 +242,17 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1786
+#: ../src/core/prefs.c:1788
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
+#: ../src/core/prefs.c:1953 ../src/core/prefs.c:2456
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
+#: ../src/core/prefs.c:1983 ../src/core/prefs.c:2161
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -259,12 +261,12 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:2559
+#: ../src/core/prefs.c:2537
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
 
-#: ../src/core/prefs.c:2763
+#: ../src/core/prefs.c:2741
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Feil under setting av status for compositor: %s\n"
@@ -337,60 +339,60 @@ msgstr ""
 "Denne tastaturbindingen kan reverseres ved å holde nede «shift»-tasten; "
 "derfor kan ikke «shift» være en av tastene som brukes."
 
-#: ../src/core/session.c:846 ../src/core/session.c:853
+#: ../src/core/session.c:850 ../src/core/session.c:857
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: ../src/core/session.c:863
+#: ../src/core/session.c:867
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: ../src/core/session.c:1004
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1013
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1102
+#: ../src/core/session.c:1106
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: ../src/core/session.c:1141
+#: ../src/core/session.c:1145
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: ../src/core/session.c:1190
+#: ../src/core/session.c:1194
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: ../src/core/session.c:1203 ../src/core/session.c:1278
-#: ../src/core/session.c:1310 ../src/core/session.c:1382
-#: ../src/core/session.c:1442
+#: ../src/core/session.c:1207 ../src/core/session.c:1282
+#: ../src/core/session.c:1314 ../src/core/session.c:1386
+#: ../src/core/session.c:1446
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukjent attributt %s på <%s>-element"
 
-#: ../src/core/session.c:1220
+#: ../src/core/session.c:1224
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: ../src/core/session.c:1462
+#: ../src/core/session.c:1466
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: ../src/core/session.c:1814
+#: ../src/core/session.c:1818
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -442,7 +444,7 @@ msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5630
+#: ../src/core/window.c:5642
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -458,7 +460,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6195
+#: ../src/core/window.c:6207
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -499,7 +501,7 @@ msgstr "%s (som %s)"
 msgid "%s (as another user)"
 msgstr "%s (som en annen bruker)"
 
-#: ../src/core/window-props.c:1429
+#: ../src/core/window-props.c:1430
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
@@ -897,9 +899,9 @@ msgstr "Hever fokuser vindu automatisk"
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
+"(right click). The middle and right click operations may be swapped using "
+"the \"resize_with_right_button\" key. Modifier is expressed as \"&lt;Alt&gt;"
+"\" or \"&lt;Super&gt;\" for example."
 msgstr ""
 "Klikk på et vindu mens denne endringstasten holdes nede vil aktivere "
 "flytting av vindu (venstreklikk), endring av størrelse på vindu (klikk med "
@@ -1286,148 +1288,148 @@ msgstr "Skrift for vindutittel"
 msgid "Usage: %s\n"
 msgstr " Bruk: %s\n"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1130
 msgid "Restore Window"
 msgstr "Gjenopprett vindu"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Rull opp vindu"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Rull ned vindu"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Plasser vindu i forgrunnen"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Fjern vindu fra forgrunnen"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbeidsområde"
 
-#: ../src/ui/frames.c:1151
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Plasser vindu kun på ett arbeidsområde"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:70
 msgid "Mi_nimize"
 msgstr "Mi_nimer"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:72
 msgid "Ma_ximize"
 msgstr "Ma_ksimer"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:74
 msgid "Unma_ximize"
 msgstr "G_jenopprett"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:76
 msgid "Roll _Up"
 msgstr "Rull _opp"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:78
 msgid "_Unroll"
 msgstr "R_ull ned"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:80
 msgid "_Move"
 msgstr "_Flytt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:82
 msgid "_Resize"
 msgstr "End_re størrelse"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86
+#: ../src/ui/menu.c:84
 msgid "Move Titlebar On_screen"
 msgstr "Flytt tittellinje på _skjermen"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:89 ../src/ui/menu.c:91
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
 msgstr "All_tid øverst"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:91
 msgid "_Always on Visible Workspace"
 msgstr "_Alltid på synlig arbeidsområde"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:93
 msgid "_Only on This Workspace"
 msgstr "K_un på dette arbeidsområdet"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:95
 msgid "Move to Workspace _Left"
 msgstr "Flytt til arbeidsområdet ti_l venstre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:97
 msgid "Move to Workspace R_ight"
 msgstr "Flytt til a_rbeidsområdet til høyre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
 msgstr "Flytt til arbeidsområdet _over"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:103
+#: ../src/ui/menu.c:101
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:107
+#: ../src/ui/menu.c:105
 msgid "_Close"
 msgstr "_Lukk"
 
-#: ../src/ui/menu.c:205
+#: ../src/ui/menu.c:203
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Arbeidsområde %d%n"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:213
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Arbeidsområde 1_0"
 
-#: ../src/ui/menu.c:217
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "Flytt til et annet ar_beidsområde"
 
@@ -1436,7 +1438,7 @@ msgstr "Flytt til et annet ar_beidsområde"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:106
+#: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
 msgstr "Shift"
 
@@ -1445,7 +1447,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:112
+#: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1454,7 +1456,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:118
+#: ../src/ui/metaaccellabel.c:116
 msgid "Alt"
 msgstr "Alt"
 
@@ -1463,7 +1465,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:124
+#: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
 msgstr "Meta"
 
@@ -1472,7 +1474,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:130
+#: ../src/ui/metaaccellabel.c:128
 msgid "Super"
 msgstr "Super"
 
@@ -1481,7 +1483,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:136
+#: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1490,7 +1492,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:142
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1499,7 +1501,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:148
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1508,7 +1510,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:154
+#: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1517,7 +1519,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:160
+#: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -2147,157 +2149,145 @@ msgstr "Fant ikke en gyldig fil for tema %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
 
-#: ../src/ui/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
 msgstr "/_Vinduer"
 
-#: ../src/ui/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
 msgstr "/Vinduer/avriving"
 
-#: ../src/ui/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
 msgstr "/Vinduer/_Dialog"
 
-#: ../src/ui/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
 msgstr "/Vinduer/_Modal dialog"
 
-#: ../src/ui/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
 msgstr "/Vinduer/_Verktøy"
 
-#: ../src/ui/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
 msgstr "/Vinduer/Opp_startskjerm"
 
-#: ../src/ui/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
 msgstr "/Vinduer/_Toppdokk"
 
-#: ../src/ui/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
 msgstr "/Vinduer/_Bunndokk"
 
-#: ../src/ui/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
 msgstr "/Vinduer/_Venstre dokk"
 
-#: ../src/ui/theme-viewer.c:86
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
 msgstr "/Vinduer/Høy_re dokk"
 
-#: ../src/ui/theme-viewer.c:87
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
 msgstr "/Vinduer/_Alle dokker"
 
-#: ../src/ui/theme-viewer.c:88
+#: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
 msgstr "/Vinduer/S_krivebord"
 
-#: ../src/ui/theme-viewer.c:138
-msgid "Open another one of these windows"
-msgstr "Åpne et til av disse vinduene"
-
-#: ../src/ui/theme-viewer.c:145
-msgid "This is a demo button with an 'open' icon"
-msgstr "Dette er en demoknapp med et «åpne»-ikon"
-
-#: ../src/ui/theme-viewer.c:152
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Dette er en demoknapp med et «avslutt»-ikon"
-
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:244
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:327
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falsk menyoppføring %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:361
 msgid "Border-only window"
 msgstr "Vindu uten innhold"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:363
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:380
 msgid "Normal Application Window"
 msgstr "Normalt programvindu"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:384
 msgid "Dialog Box"
 msgstr "Dialogboks"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:388
 msgid "Modal Dialog Box"
 msgstr "Modal dialogboks"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:392
 msgid "Utility Palette"
 msgstr "Verktøypalett"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:396
 msgid "Torn-off Menu"
 msgstr "Avrevet meny"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:400
 msgid "Border"
 msgstr "Kant"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:728
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test av knappeplassering %d"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:757
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for å tegne en vindusramme"
 
-#: ../src/ui/theme-viewer.c:801
+#: ../src/ui/theme-viewer.c:800
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:808
+#: ../src/ui/theme-viewer.c:807
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Feil under lasting av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:814
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Lastet tema «%s» på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:854
 msgid "Normal Title Font"
 msgstr "Normal tittelskrift"
 
-#: ../src/ui/theme-viewer.c:861
+#: ../src/ui/theme-viewer.c:860
 msgid "Small Title Font"
 msgstr "Liten tittelskrift"
 
-#: ../src/ui/theme-viewer.c:867
+#: ../src/ui/theme-viewer.c:866
 msgid "Large Title Font"
 msgstr "Stor tittelskrift"
 
-#: ../src/ui/theme-viewer.c:872
+#: ../src/ui/theme-viewer.c:871
 msgid "Button Layouts"
 msgstr "Knappeplasseringer"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:876
 msgid "Benchmark"
 msgstr "Ytelsestest"
 
-#: ../src/ui/theme-viewer.c:924
+#: ../src/ui/theme-viewer.c:923
 msgid "Window Title Goes Here"
 msgstr "Vindutittel skal her"
 
-#: ../src/ui/theme-viewer.c:1028
+#: ../src/ui/theme-viewer.c:1027
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2308,39 +2298,48 @@ msgstr ""
 "%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1246
 msgid "position expression test returned TRUE but set error"
 msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
-#: ../src/ui/theme-viewer.c:1249
+#: ../src/ui/theme-viewer.c:1248
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1252
 msgid "Error was expected but none given"
 msgstr "Feil var ventet men ingen ble gitt"
 
-#: ../src/ui/theme-viewer.c:1255
+#: ../src/ui/theme-viewer.c:1254
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Feil %d var ventet men %d ble gitt"
 
-#: ../src/ui/theme-viewer.c:1261
+#: ../src/ui/theme-viewer.c:1260
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Feil ikke ventet men en ble returnert: %s"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1264
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1267
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1333
+#: ../src/ui/theme-viewer.c:1332
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
+
+#~ msgid "Open another one of these windows"
+#~ msgstr "Åpne et til av disse vinduene"
+
+#~ msgid "This is a demo button with an 'open' icon"
+#~ msgstr "Dette er en demoknapp med et «åpne»-ikon"
+
+#~ msgid "This is a demo button with a 'quit' icon"
+#~ msgstr "Dette er en demoknapp med et «avslutt»-ikon"
