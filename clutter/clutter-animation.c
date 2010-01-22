@@ -201,7 +201,10 @@ on_actor_dispose (gpointer  user_data,
   ClutterAnimation *self = user_data;
 
   if (self->priv->object == actor_pointer)
-    g_object_unref (self);
+    {
+      CLUTTER_NOTE (ANIMATION, "Object [%p] was unref'd", actor_pointer);
+      g_object_unref (self);
+    }
 }
 
 
@@ -219,6 +222,7 @@ clutter_animation_real_completed (ClutterAnimation *self)
   direction = clutter_timeline_get_direction (timeline);
 
   /* explicitly set the final state of the animation */
+  CLUTTER_NOTE (ANIMATION, "Set final state on object [%p]", priv->object);
   g_hash_table_iter_init (&iter, priv->properties);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
@@ -245,8 +249,14 @@ clutter_animation_real_completed (ClutterAnimation *self)
   animation = g_object_get_qdata (priv->object, quark_object_animation);
   if (animation == self)
     {
+      CLUTTER_NOTE (ANIMATION, "Unsetting animation for actor [%p]",
+                    priv->object);
+
       g_object_set_qdata (priv->object, quark_object_animation, NULL);
       g_object_weak_unref (priv->object, on_actor_dispose, self);
+
+      CLUTTER_NOTE (ANIMATION, "Releasing the reference Animation [%p]",
+                    animation);
       g_object_unref (animation);
     }
 }
@@ -256,7 +266,9 @@ clutter_animation_finalize (GObject *gobject)
 {
   ClutterAnimationPrivate *priv = CLUTTER_ANIMATION (gobject)->priv;
 
-  CLUTTER_NOTE (ANIMATION, "Destroying properties hash table");
+  CLUTTER_NOTE (ANIMATION,
+                "Destroying properties table for Animation [%p]",
+                gobject);
   g_hash_table_destroy (priv->properties);
 
   G_OBJECT_CLASS (clutter_animation_parent_class)->finalize (gobject);
