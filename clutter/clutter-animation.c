@@ -456,7 +456,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   gobject_class->finalize = clutter_animation_finalize;
 
   /**
-   * ClutterAnimation:objct:
+   * ClutterAnimation:object:
    *
    * The #GObject to which the animation applies.
    *
