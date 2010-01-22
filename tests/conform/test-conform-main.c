@@ -150,7 +150,9 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
 
+#if 0
   TEST_CONFORM_SIMPLE ("/actor", test_anchors);
+#endif
   TEST_CONFORM_SIMPLE ("/actor", test_actor_destruction);
 
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
@@ -193,6 +195,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_sub_texture);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_pixel_buffer);
 
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);

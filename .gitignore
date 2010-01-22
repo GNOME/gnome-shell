@@ -155,6 +155,7 @@ TAGS
 /tests/conform/test-cogl-materials
 /tests/conform/test-cogl-npot-texture
 /tests/conform/test-cogl-offscreen
+/tests/conform/test-cogl-pixel-buffer
 /tests/conform/test-cogl-premult
 /tests/conform/test-color-hls-roundtrip
 /tests/conform/test-conformance
