@@ -48,6 +48,8 @@ static gboolean recenter = FALSE;
 static ClutterActor *main_stage        = NULL;
 static ClutterActor *easing_mode_label = NULL;
 
+static ClutterAnimation *last_animation = NULL;
+
 static void
 on_animation_completed (ClutterAnimation *animation,
                         ClutterActor     *rectangle)
@@ -113,10 +115,12 @@ on_button_press (ClutterActor       *actor,
                                "y", event->y,
                                NULL);
 
-      if (recenter)
+      if (recenter && last_animation != animation)
         g_signal_connect_after (animation, "completed",
                                 G_CALLBACK (on_animation_completed),
                                 rectangle);
+
+      last_animation = animation;
     }
 
   return TRUE;
