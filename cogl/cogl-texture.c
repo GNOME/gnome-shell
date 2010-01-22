@@ -35,6 +35,7 @@
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
+#include "cogl-buffer-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
@@ -450,6 +451,60 @@ cogl_texture_new_from_sub_texture (CoglHandle full_texture,
 {
   return _cogl_sub_texture_new (full_texture, sub_x, sub_y,
                                 sub_width, sub_height);
+}
+
+CoglHandle
+cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
+                                  guint            width,
+                                  guint            height,
+                                  CoglTextureFlags flags,
+                                  CoglPixelFormat  format,
+                                  CoglPixelFormat  internal_format,
+                                  guint            rowstride,
+                                  const guint      offset)
+{
+  CoglHandle texture;
+  CoglBitmap bitmap;
+  CoglBuffer *cogl_buffer;
+  CoglPixelBuffer *pixel_buffer;
+
+  g_return_val_if_fail (cogl_is_buffer (buffer), COGL_INVALID_HANDLE);
+
+  if (format == COGL_PIXEL_FORMAT_ANY)
+    return COGL_INVALID_HANDLE;
+
+  cogl_buffer = COGL_BUFFER (buffer);
+  pixel_buffer = COGL_PIXEL_BUFFER (buffer);
+
+  /* Rowstride from width if not given */
+  if (rowstride == 0)
+    rowstride = width * _cogl_get_format_bpp (format);
+
+  /* use the CoglBuffer height and width as last resort */
+  if (width == 0)
+    width = pixel_buffer->width;
+  if (height == 0)
+    height = pixel_buffer->height;
+  if (width == 0 || height == 0)
+    {
+      /* no width or height specified, neither at creation time (because the
+       * buffer was created by cogl_pixel_buffer_new()) nor when calling this
+       * function */
+      return COGL_INVALID_HANDLE;
+    }
+
+  /* Wrap the data into a bitmap */
+  bitmap.width = width;
+  bitmap.height = height;
+  bitmap.data = GUINT_TO_POINTER (offset);
+  bitmap.format = format;
+  bitmap.rowstride = rowstride;
+
+  _cogl_buffer_bind (cogl_buffer, GL_PIXEL_UNPACK_BUFFER);
+  texture =  cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
+  _cogl_buffer_bind (NULL, GL_PIXEL_UNPACK_BUFFER);
+
+  return texture;
 }
 
 guint
