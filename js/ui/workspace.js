@@ -368,8 +368,6 @@ WindowOverlay.prototype = {
                                                   x, y);
         if (actor == this._windowClone.actor) {
             this.closeButton.show();
-            // Reposition the close button in case we've changed display modes
-            this._updatePositions();
         }
         this.title.show();
     },
@@ -391,12 +389,6 @@ WindowOverlay.prototype = {
     chromeHeight: function () {
         return this.closeButton.height - this.closeButton._overlap +
                this.title.height + this.title._spacing;
-    },
-
-    _updatePositions: function() {
-        let [cloneX, cloneY] = this._windowClone.actor.get_transformed_position();
-        let [cloneWidth, cloneHeight] = this._windowClone.actor.get_transformed_size();
-        this.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
     },
 
     /**
@@ -468,8 +460,6 @@ WindowOverlay.prototype = {
     },
 
     _onEnter: function() {
-        this._updatePositions();
-
         this._parentActor.raise_top();
         this.closeButton.show();
         this.emit('show-close-button');

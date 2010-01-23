@@ -505,11 +505,13 @@ SingleView.prototype = {
             workspace.gridX = this._x + (w - position) * workspace.actor.width;
             workspace.gridY = this._y;
             workspace.actor.set_position(workspace.gridX, workspace.gridY);
+            // show the overlay unconditionally first, so items get
+            // positioned correctly, then hide if necessary
+            workspace._windowOverlaysGroup.show();
             if (isInt) {
                 if (this.actor.get_stage() != null)
                    workspace.positionWindows(0);
                 if (w == position) {
-                    workspace._windowOverlaysGroup.show();
                     workspace.actor.show();
                 } else {
                     workspace._windowOverlaysGroup.hide();
