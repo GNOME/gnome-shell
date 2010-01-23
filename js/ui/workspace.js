@@ -993,6 +993,26 @@ Workspace.prototype = {
 
             overlay.hide();
             if (animate) {
+                if (!metaWindow.showing_on_its_workspace()) {
+                    /* Hidden windows should fade in and grow
+                     * therefore we need to resize them now so they
+                     * can be scaled up later */
+                     if (workspaceZooming) {
+                         clone.actor.opacity = 0;
+                         clone.actor.scale_x = 0;
+                         clone.actor.scale_y = 0;
+                         clone.actor.x = x;
+                         clone.actor.y = y;
+                     }
+
+                     // Make the window slightly transparent to indicate it's hidden
+                     Tweener.addTween(clone.actor,
+                                      { opacity: 255,
+                                        time: Overview.ANIMATION_TIME,
+                                        transition: "easeInQuad"
+                                      });
+                }
+
                 Tweener.addTween(clone.actor,
                                  { x: x,
                                    y: y,
@@ -1162,16 +1182,29 @@ Workspace.prototype = {
         // Position and scale the windows.
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            Tweener.addTween(clone.actor,
-                             { x: clone.origX,
-                               y: clone.origY,
-                               scale_x: 1.0,
-                               scale_y: 1.0,
-                               workspace_relative: this,
-                               time: Overview.ANIMATION_TIME,
-                               opacity: 255,
-                               transition: "easeOutQuad"
-                             });
+
+            if (clone.metaWindow.showing_on_its_workspace()) {
+                Tweener.addTween(clone.actor,
+                                 { x: clone.origX,
+                                   y: clone.origY,
+                                   scale_x: 1.0,
+                                   scale_y: 1.0,
+                                   workspace_relative: this,
+                                   time: Overview.ANIMATION_TIME,
+                                   opacity: 255,
+                                   transition: "easeOutQuad"
+                                 });
+            } else {
+                // The window is hidden, make it shrink and fade it out
+                Tweener.addTween(clone.actor,
+                                 { scale_x: 0,
+                                   scale_y: 0,
+                                   opacity: 0,
+                                   workspace_relative: this,
+                                   time: Overview.ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });
+            }
         }
 
         this._visible = false;
