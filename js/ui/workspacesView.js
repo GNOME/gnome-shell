@@ -183,7 +183,6 @@ GenericWorkspacesView.prototype = {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        this._positionWorkspaces();
         activeWorkspace.actor.raise_top();
 
         for (let w = 0; w < this._workspaces.length; w++)
