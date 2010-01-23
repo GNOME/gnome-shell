@@ -1370,3 +1370,56 @@ Workspace.prototype = {
 };
 
 Signals.addSignalMethods(Workspace.prototype);
+
+// Create a SpecialPropertyModifier to let us move windows in a
+// straight line on the screen even though their containing workspace
+// is also moving.
+Tweener.registerSpecialPropertyModifier('workspace_relative', _workspaceRelativeModifier, _workspaceRelativeGet);
+
+function _workspaceRelativeModifier(workspace) {
+    let [startX, startY] = Main.overview.getPosition();
+    let overviewPosX, overviewPosY, overviewScale;
+
+    if (!workspace)
+        return [];
+
+    if (workspace.leavingOverview) {
+        let [zoomedInX, zoomedInY] = Main.overview.getZoomedInPosition();
+        overviewPosX = { begin: startX, end: zoomedInX };
+        overviewPosY = { begin: startY, end: zoomedInY };
+        overviewScale = { begin: Main.overview.getScale(),
+                          end: Main.overview.getZoomedInScale() };
+    } else {
+        overviewPosX = { begin: startX, end: 0 };
+        overviewPosY = { begin: startY, end: 0 };
+        overviewScale = { begin: Main.overview.getScale(), end: 1 };
+    }
+
+    return [ { name: 'x',
+               parameters: { workspacePos: workspace.gridX,
+                             overviewPos: overviewPosX,
+                             overviewScale: overviewScale } },
+             { name: 'y',
+               parameters: { workspacePos: workspace.gridY,
+                             overviewPos: overviewPosY,
+                             overviewScale: overviewScale } }
+           ];
+}
+
+function _workspaceRelativeGet(begin, end, time, params) {
+    let curOverviewPos = (1 - time) * params.overviewPos.begin +
+                         time * params.overviewPos.end;
+    let curOverviewScale = (1 - time) * params.overviewScale.begin +
+                           time * params.overviewScale.end;
+
+    // Calculate the screen position of the window.
+    let screen = (1 - time) *
+                 ((begin + params.workspacePos) * params.overviewScale.begin +
+                  params.overviewPos.begin) +
+                 time *
+                 ((end + params.workspacePos) * params.overviewScale.end +
+                 params.overviewPos.end);
+
+    // Return the workspace coordinates.
+    return (screen - curOverviewPos) / curOverviewScale - params.workspacePos;
+}
