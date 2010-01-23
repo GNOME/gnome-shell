@@ -418,7 +418,7 @@ MosaicView.prototype = {
     createControllerBar: function() {
         let actor = new St.BoxLayout({ 'pack-start': true });
         let bin = new St.Bin();
-        let addButton = new St.Button({ style_class: "single-view-add" });
+        let addButton = new St.Button({ style_class: "workspace-controls add" });
         this._addButton = addButton;
         addButton.connect('clicked', Lang.bind(this, this._addNewWorkspace));
         addButton._delegate = addButton;
@@ -430,7 +430,7 @@ MosaicView.prototype = {
         bin.set_alignment(St.Align.END, St.Align.START);
 
         bin = new St.Bin();
-        let removeButton = new St.Button({ style_class: "single-view-remove" });
+        let removeButton = new St.Button({ style_class: "workspace-controls remove" });
         this._removeButton = removeButton;
         removeButton.connect('clicked', Lang.bind(this, function() {
             if (this._workspaces.length <= 1)
@@ -657,7 +657,7 @@ SingleView.prototype = {
         }));
         this._scroll.adjustment = adj;
 
-        let addButton = new St.Button({ style_class: "single-view-add" });
+        let addButton = new St.Button({ style_class: "workspace-controls add" });
         this._addButton = addButton;
         addButton.connect('clicked', Lang.bind(this, this._addNewWorkspace));
         addButton._delegate = addButton;
@@ -666,7 +666,7 @@ SingleView.prototype = {
         });
         actor.add(addButton, {x_align: St.Align.END, y_align: St.Align.START, 'y-fill': false});
 
-        let removeButton = new St.Button({ style_class: "single-view-remove" });
+        let removeButton = new St.Button({ style_class: "workspace-controls remove" });
         this._removeButton = removeButton;
         removeButton.connect('clicked', Lang.bind(this, function() {
             if (this._workspaces.length <= 1)
@@ -684,14 +684,7 @@ SingleView.prototype = {
                                   'x-fill': true,
                                   'y-fill': false,
                                   y_align: St.Align.START });
-        // backward-stepper/forward-stepper has const width (= height)
-        let separator = new St.Button({ style_class: 'scroll-separator' });
-        actor.add(separator, {});
-
         actor.add(panel, {expand: true, 'x-fill': true, 'y-fill': true});
-
-        separator = new St.Button({ style_class: 'scroll-separator' });
-        actor.add(separator, {});
 
         return actor;
     },
@@ -699,7 +692,7 @@ SingleView.prototype = {
     _addIndicatorClone: function(i, active) {
         let actor = new St.Button({ style_class: 'workspace-indicator' });
         if (active) {
-            actor.style_class = 'workspace-indicator-active';
+            actor.style_class = 'workspace-indicator active';
         }
         actor.connect('button-release-event', Lang.bind(this, function() {
             if (this._workspaces[i] != undefined)
@@ -870,14 +863,14 @@ WorkspacesViewSwitch.prototype = {
     createControlsBar: function() {
         let actor = new St.BoxLayout();
 
-        this._mosaicViewButton = new St.Button({ style_class: "switch-view-mosaic" });
+        this._mosaicViewButton = new St.Button({ style_class: "workspace-controls switch-mosaic" });
         this._mosaicViewButton.set_toggle_mode(true);
         this._mosaicViewButton.connect('clicked', Lang.bind(this, function() {
             this._setView(WorkspacesViewType.MOSAIC);
         }));
         actor.add(this._mosaicViewButton, {'y-fill' : false, 'y-align' : St.Align.START});
 
-        this._singleViewButton = new St.Button({ style_class: "switch-view-single" });
+        this._singleViewButton = new St.Button({ style_class: "workspace-controls switch-single" });
         this._singleViewButton.set_toggle_mode(true);
         this._singleViewButton.connect('clicked', Lang.bind(this, function() {
             this._setView(WorkspacesViewType.SINGLE);

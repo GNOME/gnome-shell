@@ -138,21 +138,22 @@ StTooltip {
 }
 
 .workspaces-bar {
-    height: 60px;
+    height: 48px;
+}
+
+.workspaces-bar StBoxLayout {
+    spacing: 5px;
 }
 
 .workspace-indicator {
     width: 24px;
-    height: 15px;
+    height: 16px;
     background: rgba(155,155,155,0.8);
-    border-spacing: 15px;
+    border-spacing: 16px;
 }
 
-.workspace-indicator-active {
-    width: 24px;
-    height: 15px;
+.workspace-indicator.active {
     background: rgba(255,255,255,0.8);
-    border-spacing: 15px;
 }
 
 .window-caption {
@@ -172,54 +173,42 @@ StTooltip {
     -shell-close-overlap: 16px;
 }
 
-.single-view-add {
+.workspace-controls {
+    width: 24px;
+    height: 16px;
+}
+
+.workspace-controls.add {
     background-image: url("add-workspace.svg");
-    width: 24px;
-    height: 15px;
 }
 
-.single-view-remove {
+.workspace-controls.remove {
     background-image: url("remove-workspace.svg");
-    width: 24px;
-    height: 15px;
 }
 
-.switch-view-single {
+.workspace-controls.switch-single {
     background-image: url("single-view.svg");
-    width: 24px;
-    height: 15px;
 }
 
-.switch-view-mosaic {
+.workspace-controls.switch-mosaic {
     background-image: url("mosaic-view.svg");
-    width: 24px;
-    height: 15px;
 }
 
-.switch-view-single:checked {
+.workspace-controls.switch-single:checked {
     background-image: url("single-view-active.svg");
-    width: 24px;
-    height: 15px;
 }
 
-.switch-view-mosaic:checked {
+.workspace-controls.switch-mosaic:checked {
     background-image: url("mosaic-view-active.svg");
-    width: 24px;
-    height: 15px;
-}
-
-.scroll-separator {
-    width: 9px;
-    height: 15px;
 }
 
 #SwitchScroll {
-    height: 15px;
+    height: 16px;
 }
 
 #SwitchScroll StBin{
     border: 1px solid rgba(128,128,128,0.40);
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 #SwitchScroll StButton#hhandle {

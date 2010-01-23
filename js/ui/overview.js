@@ -232,7 +232,7 @@ Overview.prototype = {
         // place the 'Add Workspace' button in the bottom row of the grid
         this._workspacesBarX = this._workspacesX;
         this._workspacesBarWidth = primary.width - this._workspacesBarX - WORKSPACE_GRID_PADDING;
-        this._workspacesBarY = primary.height - displayGridRowHeight + 5;
+        this._workspacesBarY = primary.height - displayGridRowHeight;
 
         // The parent (this._group) is positioned at the top left of the primary monitor
         // while this._backOver occupies the entire screen.
