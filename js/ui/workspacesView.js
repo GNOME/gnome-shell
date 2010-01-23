@@ -234,6 +234,18 @@ GenericWorkspacesView.prototype = {
         return [activeWorkspace.gridX, activeWorkspace.gridY];
     },
 
+    _setButtonSensitivity: function(button, sensitive) {
+        if (button == null)
+            return;
+        if (sensitive && !button.reactive) {
+            button.reactive = true;
+            button.opacity = 255;
+        } else if (!sensitive && button.reactive) {
+            button.reactive = false;
+            button.opacity = 85;
+        }
+    },
+
     createControllerBar: function() {
         throw new Error("Not implemented");
     },
@@ -433,19 +445,11 @@ MosaicView.prototype = {
     },
 
     _updateButtonsVisibility: function() {
-        //_removeButton may yet not exist.
-        if (this._removeButton == null)
-            return;
-        if (global.screen.n_workspaces == 1)
-            this._removeButton.hide();
-        else
-            this._removeButton.show();
-        if (this._addButton == null)
-            return;
-        if (global.screen.n_workspaces >= MAX_WORKSPACES)
-            this._addButton.hide();
-        else
-            this._addButton.show();
+        let canRemove = (global.screen.n_workspaces > 1);
+        let canAdd = (global.screen.n_workspaces < MAX_WORKSPACES);
+
+        this._setButtonSensitivity(this._removeButton, canRemove);
+        this._setButtonSensitivity(this._addButton, canAdd);
     },
 
     _addNewWorkspace: function() {
@@ -787,30 +791,24 @@ SingleView.prototype = {
     },
 
     _updatePanelVisibility: function() {
-        let n = global.screen.n_workspaces;
-        if (this._removeButton != null) {
-            // set opacity here, because if hide it, _scroll will fill this space.
-            if (global.screen.get_active_workspace_index() == 0)
-                this._removeButton.set_opacity(0);
-            else
-                this._removeButton.set_opacity(255);
-        }
-        if (this._addButton != null) {
-            // same here
-            this._addButton.set_opacity((global.screen.n_workspaces < MAX_WORKSPACES) * 255);
-        }
+        let canRemove = (global.screen.get_active_workspace_index() != 0);
+        let canAdd = (global.screen.n_workspaces < MAX_WORKSPACES);
+
+        this._setButtonSensitivity(this._removeButton, canRemove);
+        this._setButtonSensitivity(this._addButton, canAdd);
+
+        let showSwitches = (global.screen.n_workspaces > 1);
         if (this._scroll != null) {
-            if (n > 1)
+            if (showSwitches)
                 this._scroll.show();
             else
                 this._scroll.hide();
         }
         if (this._indicatorsPanel != null) {
-            if (n == 1) {
-                this._indicatorsPanel.hide();
-            } else {
+            if (showSwitches)
                 this._indicatorsPanel.show();
-            }
+            else
+                this._indicatorsPanel.hide();
         }
         this._fillPositionalIndicator();
     },
