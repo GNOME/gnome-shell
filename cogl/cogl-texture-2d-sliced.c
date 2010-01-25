@@ -829,8 +829,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
    *  re-binding between textures inside a set) */
   gl_handles = (GLuint*) tex_2ds->slice_gl_handles->data;
 
-  GE( glGenTextures (n_slices, gl_handles) );
-
+  _cogl_texture_driver_gen (GL_TEXTURE_2D, n_slices, gl_handles);
 
   /* Init each GL texture object */
   for (y = 0; y < n_y_slices; ++y)
@@ -917,9 +916,9 @@ _cogl_texture_2d_sliced_upload_from_data
   tex_2ds->slice_y_spans = NULL;
   tex_2ds->slice_gl_handles = NULL;
 
-  /* Unknown filter */
-  tex_2ds->min_filter = GL_FALSE;
-  tex_2ds->mag_filter = GL_FALSE;
+  /* We default to GL_LINEAR for both filters */
+  tex_2ds->min_filter = GL_LINEAR;
+  tex_2ds->mag_filter = GL_LINEAR;
 
   if (bmp->data)
     {

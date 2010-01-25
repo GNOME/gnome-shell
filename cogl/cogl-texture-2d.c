@@ -225,9 +225,9 @@ _cogl_texture_2d_create_base (unsigned int     width,
   tex_2d->mipmaps_dirty = TRUE;
   tex_2d->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
 
-  /* Unknown filter */
-  tex_2d->min_filter = GL_FALSE;
-  tex_2d->mag_filter = GL_FALSE;
+  /* We default to GL_LINEAR for both filters */
+  tex_2d->min_filter = GL_LINEAR;
+  tex_2d->mag_filter = GL_LINEAR;
 
   /* Wrap mode not yet set */
   tex_2d->wrap_mode = GL_FALSE;
@@ -263,6 +263,7 @@ _cogl_texture_2d_new_with_size (unsigned int     width,
   tex_2d = _cogl_texture_2d_create_base (width, height, flags, internal_format);
 
   GE( glGenTextures (1, &tex_2d->gl_texture) );
+  GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
   GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
   GE( glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                     width, height, 0, gl_format, gl_type, NULL) );
@@ -300,7 +301,7 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
                                          flags,
                                          internal_format);
 
-  GE( glGenTextures (1, &tex_2d->gl_texture) );
+  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_texture_driver_upload_to_gl (GL_TEXTURE_2D,
                                      tex_2d->gl_texture,
                                      &dst_bmp,
