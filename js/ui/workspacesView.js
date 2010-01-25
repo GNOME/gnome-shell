@@ -26,6 +26,7 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 const MAX_WORKSPACES = 16;
 
 const GRID_SPACING = 15;
+const SINGLE_VIEW_SPACING = 25;
 
 const WorkspacesViewType = {
     SINGLE: 0,
@@ -506,7 +507,9 @@ SingleView.prototype = {
 
             workspace.scale = scale;
             workspace.actor.set_scale(scale, scale);
-            workspace.gridX = this._x + (w - position) * workspace.actor.width;
+            let _width = workspace.actor.width * scale;
+            workspace.gridX = this._x
+                              + (w - position) * (_width + SINGLE_VIEW_SPACING);
             workspace.gridY = this._y;
             workspace.actor.set_position(workspace.gridX, workspace.gridY);
             // show the overlay unconditionally first, so items get
