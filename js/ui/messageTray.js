@@ -92,11 +92,9 @@ MessageTray.prototype = {
         this.actor = new St.BoxLayout({ name: 'message-tray',
                                         reactive: true });
 
-        let primary = global.get_primary_monitor();
-        this.actor.x = 0;
-        this.actor.y = primary.height - 1;
-
-        this.actor.width = primary.width;
+        global.connect('screen-size-changed',
+                       Lang.bind(this, this._setSizePosition));
+        this._setSizePosition();
 
         this._summaryBin = new St.Bin({ x_align: St.Align.END });
         this.actor.add(this._summaryBin, { expand: true });
@@ -121,6 +119,14 @@ MessageTray.prototype = {
 
         this._sources = {};
         this._icons = {};
+    },
+
+    _setSizePosition: function() {
+        let primary = global.get_primary_monitor();
+        this.actor.x = 0;
+        this.actor.y = primary.height - 1;
+
+        this.actor.width = primary.width;
     },
 
     contains: function(source) {
