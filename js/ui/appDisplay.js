@@ -475,11 +475,13 @@ AppWellIcon.prototype = {
 
         if (!running) {
             this.app.launch();
+            Main.overview.hide();
         } else {
             let modifiers = Shell.get_event_state(event);
 
             if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
                 this.app.launch();
+                Main.overview.hide();
             } else {
                 this.activateMostRecentWindow();
             }
