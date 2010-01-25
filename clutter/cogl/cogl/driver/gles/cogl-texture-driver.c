@@ -47,6 +47,33 @@
 
 #include "cogl-gles2-wrapper.h"
 
+void
+_cogl_texture_driver_gen (GLenum   gl_target,
+                          GLsizei  n,
+                          GLuint  *textures)
+{
+  guint i;
+
+  GE (glGenTextures (n, textures));
+
+  for (i = 0; i < n; i++)
+    {
+      GE (glBindTexture (gl_target, textures[i]));
+
+      switch (gl_target)
+        {
+      case GL_TEXTURE_2D:
+        /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
+        GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
+        break;
+
+      default:
+        g_assert_not_reached();
+        }
+
+    }
+}
+
 
 void
 _cogl_texture_driver_bind (GLenum gl_target,

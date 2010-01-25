@@ -25,6 +25,15 @@
 #define __COGL_TEXTURE_DRIVER_H
 
 /*
+ * A very small wrapper around glGenTextures() that ensures we default to
+ * non-mipmap filters when creating textures. This is to save some memory as
+ * the driver will not allocate room for the mipmap tree.
+ */
+void
+_cogl_texture_driver_gen (GLenum   gl_target,
+                          GLsizei  n,
+                          GLuint  *textures);
+/*
  * Basically just a wrapper around glBindTexture, but the GLES2 backend
  * for example also wants to know about the internal format so it can
  * identify when alpha only textures are bound.
