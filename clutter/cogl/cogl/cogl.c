@@ -788,6 +788,36 @@ _cogl_destroy_texture_units (void)
   g_list_free (ctx->texture_units);
 }
 
+/*
+ * This is more complicated than that, another pass needs to be done when
+ * cogl have a neat way of saying if we are using the fixed function pipeline
+ * or not (for the GL case):
+ * MAX_TEXTURE_UNITS: fixed function pipeline, a texture unit has both a
+ *                    sampler and a set of texture coordinates
+ * MAX_TEXTURE_IMAGE_UNITS: number of samplers one can use from a fragment
+ *                          program/shader (ARBfp1.0 asm/GLSL)
+ * MAX_VERTEX_TEXTURE_UNITS: number of samplers one can use from a vertex
+ *                           program/shader (can be 0)
+ * MAX_COMBINED_TEXTURE_IMAGE_UNITS: Maximum samplers one can use, counting both
+ *                                   the vertex and fragment shaders
+ *
+ * If both the vertex shader and the fragment processing stage access the same
+ * texture image unit, then that counts as using two texture image units
+ * against the latter limit: http://www.opengl.org/sdk/docs/man/xhtml/glGet.xml
+ *
+ * Note that, for now, we use GL_MAX_TEXTURE_UNITS as we are exposing the
+ * fixed function pipeline.
+ */
+guint
+_cogl_get_max_texture_image_units (void)
+{
+  GLint nb_texture_image_units;
+
+  GE( glGetIntegerv(GL_MAX_TEXTURE_UNITS, &nb_texture_image_units) );
+
+  return nb_texture_image_units;
+}
+
 void
 cogl_push_matrix (void)
 {
