@@ -1512,7 +1512,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   GLuint       generic_index = 0;
 #endif
   gulong       enable_flags = 0;
-  guint        max_texcoord_attrib_unit = 0;
+  guint        max_texcoord_attrib_unit = -1;
   const GList *layers;
   guint32      fallback_layers = 0;
   guint32      disable_layers = ~0;
