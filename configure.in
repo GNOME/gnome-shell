@@ -4,7 +4,7 @@ m4_define([metacity_major_version], [2])
 m4_define([metacity_minor_version], [28])
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-m4_define([metacity_micro_version], [1])
+m4_define([metacity_micro_version], [2])
 
 m4_define([metacity_version],
           [metacity_major_version.metacity_minor_version.metacity_micro_version])
