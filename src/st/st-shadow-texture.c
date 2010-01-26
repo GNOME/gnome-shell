@@ -86,7 +86,6 @@ st_shadow_texture_create_shadow (StShadowTexture *st,
 
   cogl_texture_get_data (texture, COGL_PIXEL_FORMAT_A_8,
                          rowstride_in, pixels_in);
-  cogl_texture_unref (texture);
 
   if ((guint) st->blur_radius == 0)
     {
