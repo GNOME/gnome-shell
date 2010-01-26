@@ -1,3 +1,28 @@
+2.28.1
+======
+
+Thanks to Owen Taylor, Luis Torres, Matthias Clasen, Thomas Andersen,
+Theppitak Karoonboonyanan, Vincent Untz, Peter Bloomfield, alexisdm59,
+Claude Paroz, Ray Strode, Dan Winship, Lennart Poettering, and
+Frederic Peters for improvements in this version.
+
+ - default cycle-group binding is alt-grave (Ray)
+ - XFCE terminal is a terminal (Owen)
+ - signal handling fixes (Dan, Ray, Frederic)
+ - fix bell timeout (Lennart)
+ - self-drawn tooltips are tooltips (Lennart)
+ - fix session handling close (Owen)
+ - replace deprecated symbols (Luis)
+ - split MetaSide from MetaDirection (Owen)
+
+Translations
+  Alexander Shopov (bg), Åsmund Skjæveland (nn), Carles Ferrando (ca@valencia),
+  Daniel Nylander (sv), Erdal Ronahi (ku),  Gil Forcada (ca),
+  Inaki Larranaga Murgoitio (eu), Jorge González (es), Khaled Hosny (ar),
+  Kjartan Maraas (nb), Leonid Kanter (ru), Lucian Adrian Grijincu (ro),
+  Maxim V. Dziumanenko (uk), Peteris Krisjanis (lv), Reşat SABIQ (crh),
+  Thomas Thurman (en@shaw)
+
 2.28.0
 ======
 
