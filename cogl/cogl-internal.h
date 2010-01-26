@@ -101,6 +101,8 @@ CoglTextureUnit *
 _cogl_get_texture_unit (int index_);
 void
 _cogl_destroy_texture_units (void);
+guint
+_cogl_get_max_texture_image_units (void);
 
 void
 _cogl_flush_face_winding (void);
