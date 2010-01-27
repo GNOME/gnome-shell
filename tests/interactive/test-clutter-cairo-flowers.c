@@ -137,8 +137,10 @@ make_flower_actor (void)
   return ctex;
 }
 
-gboolean
-tick (gpointer data)
+static void
+tick (ClutterTimeline *timeline,
+      gint             msecs,
+      gpointer         data)
 {
   Flower **flowers = (Flower**)data;
   gint i = 0;
@@ -171,10 +173,11 @@ void foo(void) { g_usleep(10000000); }
 int
 test_clutter_cairo_flowers_main (int argc, char **argv)
 {
-  int           i;
-  ClutterActor *stage;
-  ClutterColor  stage_color = { 0x0, 0x0, 0x0, 0xff };
-  Flower       *flowers[N_FLOWERS];
+  int              i;
+  ClutterActor    *stage;
+  ClutterColor     stage_color = { 0x0, 0x0, 0x0, 0xff };
+  ClutterTimeline *timeline;
+  Flower          *flowers[N_FLOWERS];
 
   srand (time (NULL));
 
@@ -201,9 +204,16 @@ test_clutter_cairo_flowers_main (int argc, char **argv)
 				  flowers[i]->x, flowers[i]->y);
     }
 
-  g_timeout_add (50, tick, flowers);
+  /* Create a timeline to manage animation */
+  timeline = clutter_timeline_new (6000);
+  clutter_timeline_set_loop (timeline, TRUE);
+
+  /* fire a callback for frame change */
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (tick), flowers);
 
   clutter_actor_show (stage);
+
+  clutter_timeline_start (timeline);
 
   g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit),
