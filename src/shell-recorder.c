@@ -504,6 +504,24 @@ recorder_record_frame (ShellRecorder *recorder)
 
   GST_BUFFER_TIMESTAMP(buffer) = get_wall_time() - recorder->start_time;
 
+  /* We could use cogl_read_pixels, but it only currently supports
+   * COGL_PIXEL_FORMAT_RGBA_8888, while we prefer the native framebuffer
+   * format. (COGL_PIXEL_FORMAT_ARGB_8888_PRE,
+   * COGL_PIXEL_FORMAT_BGRA_PRE, depending on endianess)
+   *
+   * http://bugzilla.openedhand.com/show_bug.cgi?id=1959
+   */
+
+  /* Flush any primitives that Cogl has batched up */
+  cogl_flush ();
+
+  /* Set the parameters for how data is stored; these are the initial
+   * values but Cogl will have modified them for its own purposes */
+  glPixelStorei (GL_PACK_ALIGNMENT, 4);
+  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
+  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
+
   glReadBuffer (GL_BACK_LEFT);
   glReadPixels (0, 0,
                 recorder->stage_width, recorder->stage_height,
@@ -1037,6 +1055,10 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
    * right-side up. We do this after the color space conversion in the theory
    * that we might have a smaller buffer to flip; on the other hand flipping
    * YUV 422 is more complicated than flipping RGB. Probably a toss-up.
+   *
+   * When available MESA_pack_invert extension could be used to avoid the
+   * flip entirely, since the data is actually stored in the frame buffer
+   * in the order that we expect.
    *
    * We use gst_parse_launch to avoid having to know the enum value for flip-vertical
    */
