@@ -472,7 +472,8 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
 				    clutter_timeout_find_by_id)))
     {
       clutter_timeout_unref (l->data);
-      pool->dispatched_timeouts
-	= g_list_delete_link (pool->dispatched_timeouts, l);
+
+      pool->dispatched_timeouts =
+        g_list_delete_link (pool->dispatched_timeouts, l);
     }
 }

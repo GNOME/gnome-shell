@@ -132,7 +132,8 @@ clutter_frame_source_add (guint          fps,
 }
 
 static gboolean
-clutter_frame_source_prepare (GSource *source, gint *delay)
+clutter_frame_source_prepare (GSource *source,
+                              gint    *delay)
 {
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
   GTimeVal current_time;
