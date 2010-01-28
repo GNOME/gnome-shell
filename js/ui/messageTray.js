@@ -3,8 +3,9 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
 
 const Main = imports.ui.main;
@@ -110,26 +111,20 @@ MessageTray.prototype = {
         this.actor = new St.BoxLayout({ name: 'message-tray',
                                         reactive: true });
 
-        global.connect('screen-size-changed',
-                       Lang.bind(this, this._setSizePosition));
-        this._setSizePosition();
-
-        this._summaryBin = new St.Bin({ x_align: St.Align.END });
-        this.actor.add(this._summaryBin, { expand: true });
-        this._summaryBin.hide();
-
+        this._notificationBin = new St.Bin();
+        this.actor.add(this._notificationBin);
+        this._notificationBin.hide();
         this._notificationBox = new NotificationBox();
+        this._notificationBin.child = this._notificationBox.actor;
         this._notificationQueue = [];
-        this.actor.add(this._notificationBox.actor);
-        this._notificationBox.actor.hide();
 
-        this._summaryBin.connect('notify::allocation', Lang.bind(this,
-            function() {
-                let primary = global.get_primary_monitor();
-                this._summaryBin.x = primary.x + primary.width - this._summaryBin.width;
-            }));
-
-        Main.chrome.addActor(this.actor, { affectsStruts: false });
+        this._summaryBin = new St.BoxLayout();
+        this.actor.add(this._summaryBin);
+        this._summaryBin.hide();
+        this._summary = new St.BoxLayout({ name: 'summary-mode' });
+        this._summaryBin.add(this._summary, { x_align: St.Align.END,
+                                              x_fill: false,
+                                              expand: true });
 
         this.actor.connect('enter-event',
                            Lang.bind(this, this._onMessageTrayEntered));
@@ -137,9 +132,11 @@ MessageTray.prototype = {
                            Lang.bind(this, this._onMessageTrayLeft));
         this._state = MessageTrayState.HIDDEN;
         this.actor.show();
+        Main.chrome.addActor(this.actor, { affectsStruts: false });
 
-        this._summary = new St.BoxLayout({ name: 'summary-mode' });
-        this._summaryBin.child = this._summary;
+        global.connect('screen-size-changed',
+                       Lang.bind(this, this._setSizePosition));
+        this._setSizePosition();
 
         this._sources = {};
         this._icons = {};
@@ -149,8 +146,13 @@ MessageTray.prototype = {
         let primary = global.get_primary_monitor();
         this.actor.x = primary.x;
         this.actor.y = primary.y + primary.height - 1;
-
         this.actor.width = primary.width;
+
+        let third = Math.floor(this.actor.width / 3);
+        this._notificationBin.x = third;
+        this._notificationBin.width = third;
+        this._summaryBin.x = this.actor.width - third;
+        this._summaryBin.width = third;
     },
 
     contains: function(source) {
@@ -331,30 +333,25 @@ MessageTray.prototype = {
     _showNotification: function() {
         this._notificationBox.setContent(this._notificationQueue.shift());
 
-        let notification = this._notificationBox.actor;
-        let primary = global.get_primary_monitor();
-        notification.opacity = 0;
-        notification.y = primary.y + this.actor.height;
-        notification.show();
-        let futureY = primary.y + this.actor.height - notification.height;
+        this._notificationBin.opacity = 0;
+        this._notificationBin.y = this.actor.height;
+        this._notificationBin.show();
 
-        Tweener.addTween(notification,
-                         { y: futureY,
+        Tweener.addTween(this._notificationBin,
+                         { y: 0,
                            opacity: 255,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
     },
 
     _hideNotification: function() {
-        let notification = this._notificationBox.actor;
-
-        Tweener.addTween(notification,
-                         { y: notification.y + notification.height,
+        Tweener.addTween(this._notificationBin,
+                         { y: this.actor.height,
                            opacity: 0,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: Lang.bind(this, function() {
-                               notification.hide();
+                               this._notificationBin.hide();
                            })});
     },
 
