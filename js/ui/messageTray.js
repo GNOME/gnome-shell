@@ -59,6 +59,7 @@ function Source(id, createIcon) {
 Source.prototype = {
     _init: function(id, createIcon) {
         this.id = id;
+        this.text = null;
         if (createIcon)
             this.createIcon = createIcon;
     },
@@ -70,7 +71,8 @@ Source.prototype = {
     },
 
     notify: function(text) {
-        Main.messageTray.showNotification(new Notification(this.createIcon(ICON_SIZE), text));
+        this.text = text;
+        this.emit('notify');
     },
 
     clicked: function() {
@@ -145,6 +147,8 @@ MessageTray.prototype = {
         this._icons[source.id] = iconBox;
         this._sources[source.id] = source;
 
+        source.connect('notify', Lang.bind(this, this._onNotify));
+
         iconBox.connect('button-release-event', Lang.bind(this,
             function () {
                 source.clicked();
@@ -167,6 +171,11 @@ MessageTray.prototype = {
 
     getSource: function(id) {
         return this._sources[id];
+    },
+
+    _onNotify: function(source) {
+        let notification = new Notification(source.createIcon(ICON_SIZE), source.text);
+        this.showNotification(notification);
     },
 
     _onMessageTrayEntered: function() {
