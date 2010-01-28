@@ -1,0 +1,167 @@
+# Bulgarian translation of gnome-shell po-file.
+# Copyright (C) 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Ivaylo Valkov <ivaylo@e-valkov.org>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-28 05:03+0200\n"
+"PO-Revision-Date: 2010-01-28 05:03+0200\n"
+"Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
+"Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Обвивка на GNOME"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Управление на прозорци и стартиране на програми"
+
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+msgid "APPLICATIONS"
+msgstr "ПРОГРАМИ"
+
+#: ../js/ui/appDisplay.js:276
+msgid "PREFERENCES"
+msgstr "ПРЕДПОЧИТАНИЯ"
+
+#: ../js/ui/appDisplay.js:649
+msgid "New Window"
+msgstr "Нов прозорец"
+
+#: ../js/ui/appDisplay.js:653
+msgid "Remove from Favorites"
+msgstr "Премахване от „Любими“"
+
+#: ../js/ui/appDisplay.js:654
+msgid "Add to Favorites"
+msgstr "Добавяне към „Любими“"
+
+#: ../js/ui/appDisplay.js:1006
+msgid "Drag here to add favorites"
+msgstr "Довлачете до тук обектите за да ги добавите към „Любими“"
+
+#: ../js/ui/dash.js:240
+msgid "Find..."
+msgstr "Търсене…"
+
+#: ../js/ui/dash.js:493
+msgid "Searching..."
+msgstr "Търсене…"
+
+#: ../js/ui/dash.js:507
+msgid "No matching results."
+msgstr "Няма съвпадения."
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:529
+msgid "PLACES & DEVICES"
+msgstr "МЕСТА И УСТРОЙСТВА"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:892
+msgid "RECENT ITEMS"
+msgstr "СКОРО ОТВАРЯНИ"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:336
+msgid "Activities"
+msgstr "Дейности"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:557
+msgid "%a %l:%M %p"
+msgstr "%a, %H:%M"
+
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "Свързване към…"
+
+#: ../js/ui/runDialog.js:245
+msgid "Please enter a command:"
+msgstr "Въведете команда:"
+
+#: ../js/ui/runDialog.js:361
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Неуспешно изпълнение на „%s“:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Програми"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Скоро отваряни документи"
+
+#: ../src/shell-global.c:984
+msgid "Less than a minute ago"
+msgstr "Преди по-малко от минута"
+
+#: ../src/shell-global.c:988
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "преди %d минута"
+msgstr[1] "преди %d минути"
+
+#: ../src/shell-global.c:993
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "преди %d час"
+msgstr[1] "преди %d часа"
+
+#: ../src/shell-global.c:998
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "преди %d ден"
+msgstr[1] "преди %d дни"
+
+#: ../src/shell-global.c:1003
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "преди %d седмица"
+msgstr[1] "преди %d седмици"
+
+#: ../src/shell-uri-util.c:89
+msgid "Home Folder"
+msgstr "Домашна папка"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:104
+msgid "File System"
+msgstr "Файлова система"
+
+#: ../src/shell-uri-util.c:250
+msgid "Search"
+msgstr "Търсене"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
