@@ -96,8 +96,19 @@ See the INSTALL file. Info on specific Clutter options;
 	present on the target system.
 
  --enable-docs=[no/yes]
-        Build additional documentation. Requires xsltproc for  DocBook
+        Build additional documentation. Requires xsltproc for DocBook
         conversion, and optionally jw for PDF generation.
+
+ --enable-gcov=[no/yes]
+        Build Clutter with coverage report support, provided by gcov. This
+        feature only works with the GNU Compiler Suite and gcov installed.
+
+ --enable-profile=[no/yes]
+        Build Clutter with profiling instrumentation. Requires the GNU
+        C Compiler and the UProf library.
+
+ --enable-conform=[yes/no]
+        Build the Clutter conformance test suite.
 
  --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
