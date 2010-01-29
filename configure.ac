@@ -157,7 +157,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
 
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
@@ -202,7 +202,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                   use_gles2_wrapper=yes
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
                   AC_CHECK_HEADERS([EGL/egl.h],
                                    [],
@@ -216,7 +216,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                   clutter_gl_header="GLES/gl.h"
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
@@ -712,28 +712,33 @@ m4_define([profile_default], [no])
 AC_ARG_ENABLE(profile,
               AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
                              [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
-	      [],
+              [],
               [enable_profile=profile_default])
 
 AS_CASE([$enable_profile],
 
-	[yes], [
-            if test "x$GCC" = "xyes"; then
-              PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
-              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
-              CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
-              if test "x$enable_debug" = "xyes"; then
-                  CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"
-              fi
-            else
-              AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
-            fi
-	],
-	[no], [
-	    CLUTTER_PROFILE_CFLAGS=""
-	    CLUTTER_PROFILE_LDFLAGS=""
-	],
-	[*],   [AC_MSG_ERROR([Invalid value for --enable-profile])]
+        [yes],
+        [
+          AS_IF([test "x$GCC" = "xyes"],
+                [
+                  PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
+                  CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+                  CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
+
+                  AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
+                ],
+                [
+                  AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
+                ])
+        ],
+
+        [no],
+        [
+          CLUTTER_PROFILE_CFLAGS=""
+          CLUTTER_PROFILE_LDFLAGS=""
+        ],
+
+        [*], [AC_MSG_ERROR([Invalid value for --enable-profile])]
 )
 AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
 AC_SUBST(CLUTTER_PROFILE_CFLAGS)
@@ -868,11 +873,11 @@ GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 dnl ===========================================================================
 
 m4_ifdef([AM_SILENT_RULES],
-	 [
+         [
            AM_SILENT_RULES([yes])
            use_shave=no
          ],
-	 [
+         [
            SHAVE_INIT([build/autotools], [enable])
            AC_CONFIG_FILES([
                 build/autotools/shave
