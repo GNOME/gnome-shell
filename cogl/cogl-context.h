@@ -112,12 +112,8 @@ typedef struct
 
   CoglHandle        texture_download_material;
 
-  /* Separate atlases for textures with and without alpha */
-  CoglAtlas        *atlas_alpha;
-  CoglAtlas        *atlas_no_alpha;
-  /* Textures for the two atlases */
-  CoglHandle        atlas_alpha_texture;
-  CoglHandle        atlas_no_alpha_texture;
+  CoglAtlas        *atlas;
+  CoglHandle        atlas_texture;
 
   CoglContextDriver drv;
 } CoglContext;
