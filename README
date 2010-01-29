@@ -1,8 +1,8 @@
 Clutter - README
 ===============================================================================
 
-Clutter is an open source software library for creating fast, visually
-rich and animated graphical user interfaces.
+Clutter is an open source software library for creating portable, fast,
+visually rich and animated graphical user interfaces.
 
 Clutter currently requires:
 
@@ -15,9 +15,10 @@ Clutter currently requires:
   • GDK-Pixbuf >= 2.0 (optional)
 
 When running the OpenGL flavor, Clutter requires at least version 1.3
-or 1.2 with the multitexturing extension. However to build, Clutter
-requires the latest GL headers which can be obtained from
-www.khronos.org.
+or 1.2 with the multitexturing extension. However to build Clutter
+you will need the latest GL headers which can be obtained from:
+
+  http://www.khronos.org
 
 If you are building the API reference you will also need:
 
@@ -29,30 +30,53 @@ If you are building the Introspection data you will also need:
 
 If you want built in support for profiling Clutter you will also need:
 
-  • UProf 0.2 available from git://git.moblin.org/uprof.git
+  • UProf >= 0.2
 
-The official website is:
-   http://www.clutter-project.org
+UProf is available from:
 
-The Clutter blog is at
-   http://www.clutter-project.org/blog
+  git://git.moblin.org/uprof.git
 
-To subscribe to the Clutter mailing list, send mail to:
+-------------------------------------------------------------------------------
+
+The official Clutter website is:
+
+   http://www.clutter-project.org/
+
+The API reference for the latest stable release and unstable developers
+snapshot are available at:
+
+   http://www.clutter-project.org/docs/clutter/stable/
+   http://www.clutter-project.org/docs/clutter/unstable/
+
+New releases of Clutter are available at:
+
+   http://www.clutter-project.org/sources/clutter/
+
+The Clutter blog is at:
+
+   http://www.clutter-project.org/blog/
+
+To subscribe to the Clutter mailing list, send an email to:
+
    clutter+subscribe@o-hand.com
 
 The official mailing list archive is:
+
    http://lists.o-hand.com/clutter/
 
 New bug page on Bugzilla:
+
    http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
 
-INSTALLATION
+BUILDING AND INSTALLATION
 ===============================================================================
 
-See the INSTALL file. Info on specific Clutter options;
+See the INSTALL file.
+
+Clutter has additional command line options for the configure script:
 
  --enable-debug=[no/minimum/yes]
 	Controls Clutter debugging level:
@@ -60,7 +84,7 @@ See the INSTALL file. Info on specific Clutter options;
 	yes:
                 All GLib asserts, checks and support for runtime Clutter
                 debugging notes through CLUTTER_DEBUG. This is the default
-                value for snapshots.
+                value for developers snapshots.
 
         minimum:
                 Just GType cast checks and support for runtime Clutter
@@ -70,26 +94,27 @@ See the INSTALL file. Info on specific Clutter options;
         no:
                 No GLib asserts or checks and no support for runtime Clutter
                 debugging notes. Only use in extreme performance and/or size
-                optimization cases.
+                optimization cases, though it is strongly discouraged.
 
  --enable-cogl-debug=[no/minimum/yes]
         Controls COGL debugging level (default=minimum):
 
         yes:
                 Support for COGL debugging notes through COGL_DEBUG and
-                error checking for each GL primitive.
+                error checking for each GL primitive. This is useful mostly
+                to debug COGL itself.
 
         minimum:
                 Support for COGL debugging notes through COGL_DEBUG. This is
-                the default for snapshots.
+                the default for developers snapshots.
 
         no:
                 Disable support for COGL runtime debugging notes. This is
                 the default for stable releases.
 
  --enable-maintainer-flags=[no/yes]
-        Use strict compiler flags. This defaults to 'yes' for snapshots and
-        to 'no' for stable releases.
+        Use strict compiler flags. This defaults to 'yes' for developers
+        snapshots and to 'no' for stable releases.
 
  --enable-gtk-doc
 	use gtk-doc to build API documentation (default=no). Requires gtk-doc
@@ -166,7 +191,7 @@ See the INSTALL file. Info on specific Clutter options;
                 and if it is available, make Clutter depend on it
 
         system:
-                Only use the system copy of JSON-GLib
+                Only use the system copy of JSON-GLib and warn if not found
 
 VERSIONING
 ===============================================================================
@@ -183,22 +208,23 @@ the newly added API might still change.
 
 The micro version indicates the origin of the release: even micro
 numbers are only used for released archives; odd micro numbers are
-only used on the SVN repository.
+only used on the Git repository.
 
 HACKING
 ===============================================================================
 
-If you want to hack on and improve Clutter, check the contained TODO
-file for pending tasks, the HACKING file for general implementation guidelines,
-HACKING.backends for backend-specific implementation issues. The CODING_STYLE
-file contains the rules for writing code conformant to the style guidelines
-used throughout Clutter. Remember: the coding style is mandatory; patches
-not conforming to it will be rejected.
+If you want to hack on and improve Clutter, check the contained TODO file for
+pending tasks, the HACKING file for general implementation guidelines, and the
+HACKING.backends for backend-specific implementation issues.
+
+The CODING_STYLE file contains the rules for writing code conformant to the
+style guidelines used throughout Clutter. Remember: the coding style is
+mandatory; patches not conforming to it will be rejected.
 
 BUGS
 ===============================================================================
 
-Bugs should be reported to the OpenedHand Bugzilla at:
+Bugs should be reported to the Clutter Bugzilla at:
 
   http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
@@ -208,7 +234,7 @@ In the report you should include:
 
   • what system you're running Clutter on;
   • which version of Clutter you are using;
-  • which version of GLib and OpenGL you are using;
+  • which version of GLib and OpenGL (or OpenGL ES) you are using;
   • which video card and which drivers you are using, including output of
     glxinfo and xdpyinfo (if applicable);
   • how to reproduce the bug.
@@ -251,7 +277,8 @@ RELEASE NOTES
 ===============================================================================
 
 Relevant information for developers with existing Clutter applications
-wanting to port to newer releases (See NEWS for general new feature info).
+wanting to port to newer releases (see NEWS for general information on new
+features).
 
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
@@ -358,7 +385,7 @@ Release Notes for Clutter 1.0
       correct HLS intervals:
 
          Hue: [ 0, 360 )
-         Luminance: [ 0,  1]
+         Luminance: [ 0, 1 ]
          Saturation: [ 0, 1 ]
 
 * The ClutterFixed symbols have been completely removed: fixed-point
@@ -868,5 +895,3 @@ Release Notes for Clutter 0.3
   ClutterGroup::remove signals have been deprecated:
   ClutterContainer::actor-added and ClutterContainer::actor-removed should
   be used instead.
-
-$LastChangedDate$
