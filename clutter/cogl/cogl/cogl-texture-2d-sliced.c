@@ -1433,9 +1433,9 @@ _cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
   if (closest_format != format)
     {
       /* Convert to required format */
-      success = _cogl_bitmap_convert_and_premult (&source_bmp,
-                                                  &temp_bmp,
-                                                  closest_format);
+      success = _cogl_bitmap_convert_format_and_premult (&source_bmp,
+                                                         &temp_bmp,
+                                                         closest_format);
 
       /* Swap bitmaps if succeeded */
       if (!success) return FALSE;
@@ -1635,9 +1635,9 @@ _cogl_texture_2d_sliced_get_data (CoglTexture     *tex,
   if (closest_format != format)
     {
       /* Convert to requested format */
-      success = _cogl_bitmap_convert_and_premult (&target_bmp,
-                                                  &new_bmp,
-                                                  format);
+      success = _cogl_bitmap_convert_format_and_premult (&target_bmp,
+                                                         &new_bmp,
+                                                         format);
 
       /* Free intermediate data and return if failed */
       g_free (target_bmp.data);

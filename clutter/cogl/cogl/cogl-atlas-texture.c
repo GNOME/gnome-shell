@@ -543,9 +543,9 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
       if (closest_format != format)
         {
           /* Convert to required format */
-          success = _cogl_bitmap_convert_and_premult (&source_bmp,
-                                                      &temp_bmp,
-                                                      closest_format);
+          success = _cogl_bitmap_convert_format_and_premult (&source_bmp,
+                                                             &temp_bmp,
+                                                             closest_format);
 
           /* Swap bitmaps if succeeded */
           if (!success) return FALSE;

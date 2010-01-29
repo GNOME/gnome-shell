@@ -193,9 +193,9 @@ _cogl_texture_upload_data_convert (CoglTextureUploadData *data,
   /* Convert to internal format */
   if (internal_format != data->bitmap.format)
     {
-      success = _cogl_bitmap_convert_and_premult (&data->bitmap,
-						  &new_bitmap,
-						  internal_format);
+      success = _cogl_bitmap_convert_format_and_premult (&data->bitmap,
+                                                         &new_bitmap,
+                                                         internal_format);
 
       if (!success)
 	return FALSE;
