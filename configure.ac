@@ -759,15 +759,20 @@ and gcov)])],
 
 AS_IF([test "x$enable_gcov" = "xyes" && test "x$GCC" = "xyes"],
       [
+        AS_IF([test "x$enable_conformance" = "xno"],
+              [AC_MSG_WARN([Conformance test suite is disabled, the coverage report will be incomplete])],
+              [AC_MSG_RESULT([yes])]
+        )
+
         GCOV_CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage"
         GCOV_LDFLAGS="-lgcov"
-      ]
+      ],
+      [AC_MSG_RESULT([no])]
 )
 
 AM_CONDITIONAL([GCOV_ENABLED], [test "x$enable_gcov" = "xyes"])
 AC_SUBST([GCOV_CFLAGS])
 AC_SUBST([GCOV_LDFLAGS])
-AC_MSG_RESULT([$enable_gcov])
 
 dnl === Enable strict compiler flags ==========================================
 
