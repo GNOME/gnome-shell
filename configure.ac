@@ -696,6 +696,18 @@ AS_CASE([$enable_cogl_debug],
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
 
+dnl === Conformance test suite ================================================
+
+AC_ARG_ENABLE([conformance],
+              [AC_HELP_STRING([--enable-conformance=@<:@no/yes@:>@],
+                              [Build conformance test suite @<:@default=yes@:>@])],
+              [],
+              [enable_conformance=yes])
+
+AM_CONDITIONAL([BUILD_TESTS], [test "x$enable_conformance" = "xyes"])
+
+dnl === Profiling =============================================================
+
 m4_define([profile_default], [no])
 AC_ARG_ENABLE(profile,
               AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
@@ -953,7 +965,7 @@ echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${en
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Build test suite: ${enable_glibtest}"
+echo "        Build conformance test suite: ${enable_conformance}"
 
 if test "x$have_json" = "xyes"; then
 echo "        JSON-GLib: system"
