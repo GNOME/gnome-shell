@@ -215,6 +215,10 @@ StTooltip {
   border-image: url("switch-scroll-hhandle.svg") 5;
 }
 
+#SwitchScroll StButton#hhandle:hover {
+  border-image: url("switch-scroll-hhandle-hover.svg") 5;
+}
+
 #SwitchScroll StButton#backward-stepper,
 #SwitchScroll StButton#forward-stepper
 {
