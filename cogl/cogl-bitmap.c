@@ -61,83 +61,57 @@ _cogl_get_format_bpp (CoglPixelFormat format)
 }
 
 gboolean
-_cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
-				  CoglBitmap       *dst_bmp,
-				  CoglPixelFormat   dst_format)
+_cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
+                                     CoglPixelFormat  dst_format)
 {
-  CoglBitmap  tmp_bmp = *bmp;
-  CoglBitmap  new_bmp = *bmp;
-  gboolean    new_bmp_owner = FALSE;
+  /* Do we need to unpremultiply? */
+  if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
+      (dst_format & COGL_PREMULT_BIT) == 0)
+    /* Try unpremultiplying using imaging library */
+    return (_cogl_bitmap_unpremult (bmp)
+            /* ... or try fallback */
+            || _cogl_bitmap_fallback_unpremult (bmp));
 
+  /* Do we need to premultiply? */
+  if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
+      (dst_format & COGL_PREMULT_BIT) > 0)
+    /* Try premultiplying using imaging library */
+    return (_cogl_bitmap_premult (bmp)
+            /* ... or try fallback */
+            || _cogl_bitmap_fallback_premult (bmp));
+
+  return TRUE;
+}
+
+gboolean
+_cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
+                                         CoglBitmap       *dst_bmp,
+                                         CoglPixelFormat   dst_format)
+{
   /* Is base format different (not considering premult status)? */
   if ((bmp->format & COGL_UNPREMULT_MASK) !=
       (dst_format & COGL_UNPREMULT_MASK))
     {
       /* Try converting using imaging library */
-      if (!_cogl_bitmap_convert (&new_bmp, &tmp_bmp, dst_format))
-	{
-	  /* ... or try fallback */
-	  if (!_cogl_bitmap_fallback_convert (&new_bmp, &tmp_bmp, dst_format))
-	    return FALSE;
-	}
-
-      /* Update bitmap with new data */
-      new_bmp = tmp_bmp;
-      new_bmp_owner = TRUE;
+      if (!_cogl_bitmap_convert (bmp, dst_bmp, dst_format))
+        {
+          /* ... or try fallback */
+          if (!_cogl_bitmap_fallback_convert (bmp, dst_bmp, dst_format))
+            return FALSE;
+        }
     }
-
-  /* Do we need to unpremultiply */
-  if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
-      (dst_format & COGL_PREMULT_BIT) == 0)
+  else
     {
-      /* Try unpremultiplying using imaging library */
-      if (!_cogl_bitmap_unpremult (&new_bmp, &tmp_bmp))
-	{
-	  /* ... or try fallback */
-	  if (!_cogl_bitmap_fallback_unpremult (&new_bmp, &tmp_bmp))
-	    {
-	      if (new_bmp_owner)
-		g_free (new_bmp.data);
-
-	      return FALSE;
-	    }
-	}
-
-      /* Update bitmap with new data */
-      if (new_bmp_owner)
-	g_free (new_bmp.data);
-
-      new_bmp = tmp_bmp;
-      new_bmp_owner = TRUE;
+      /* Copy the bitmap so that we can premultiply in-place */
+      *dst_bmp = *bmp;
+      dst_bmp->data = g_memdup (bmp->data, bmp->rowstride * bmp->height);
     }
 
-  /* Do we need to premultiply */
-  if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
-      (dst_format & COGL_PREMULT_BIT) > 0)
+  if (!_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
     {
-      /* Try premultiplying using imaging library */
-      if (!_cogl_bitmap_premult (&new_bmp, &tmp_bmp))
-	{
-	  /* ... or try fallback */
-	  if (!_cogl_bitmap_fallback_premult (&new_bmp, &tmp_bmp))
-	    {
-	      if (new_bmp_owner)
-		g_free (new_bmp.data);
-
-	      return FALSE;
-	    }
-	}
-
-      /* Update bitmap with new data */
-      if (new_bmp_owner)
-	g_free (new_bmp.data);
-
-      new_bmp = tmp_bmp;
-      new_bmp_owner = TRUE;
+      g_free (dst_bmp->data);
+      return FALSE;
     }
-
-  /* Output new bitmap info */
-  *dst_bmp = new_bmp;
 
   return TRUE;
 }
