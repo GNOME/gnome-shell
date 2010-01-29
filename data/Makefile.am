@@ -14,10 +14,8 @@ gnome-shell.desktop: gnome-shell.desktop.in
 
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
-	add-workspace.svg			\
 	close-black.svg				\
-	magnifier.svg				\
-	remove-workspace.svg
+	magnifier.svg
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
