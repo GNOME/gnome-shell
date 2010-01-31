@@ -2,11 +2,11 @@
 # Estonian translation of Metacity
 #
 # Copyright (C) 2004-2005 The Free Software Foundation
-# Copyright (C) 2006-2009 The GNOME Project.
+# Copyright (C) 2006-2010 The GNOME Project.
 # This file is distributed under the same license as the metacity package.
 #
 # Tõivo Leedjärv <toivo linux ee>, 2004.
-# Ivar Smolin <okul linux ee>, 2005, 2006, 2009.
+# Ivar Smolin <okul linux ee>, 2005, 2006, 2009, 2010.
 # Mattias Põldaru <mahfiaz gmail com>, 2008, 2009.
 #
 msgid ""
@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: metacity master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-08-24 17:51+0000\n"
-"PO-Revision-Date: 2009-08-30 09:38+0300\n"
+"POT-Creation-Date: 2010-01-21 21:34+0000\n"
+"PO-Revision-Date: 2010-01-31 09:57+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -36,16 +36,15 @@ msgstr "Piiksu sündmus"
 msgid "Unknown window information request: %d"
 msgstr "Tundmatu aknateabe päring: %d"
 
+#. Translators: %s is a window title
 #, c-format
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> ei vasta."
+
 msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt> ei vasta.</b></big>\n"
-"\n"
-"<i>Sa võid natukene selle järel oodata või sundida rakenduse lõpetama.</i>"
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Sa võid natukene selle järel oodata või sundida rakendust lõpetama."
 
 msgid "_Wait"
 msgstr "_Oota"
@@ -735,15 +734,15 @@ msgstr "Automaatselt tõstab fookuses oleva akna"
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
+"(right click). The middle and right click operations may be swapped using "
+"the \"resize_with_right_button\" key. Modifier is expressed as \"&lt;Alt&gt;"
+"\" or \"&lt;Super&gt;\" for example."
 msgstr ""
 "Modifikaatorklahvi all hoides aknale klõpsates saab akent nihutada "
 "(vasakklõps), muuta suurust (keskklahvi klõps) või kuvada akna menüüd "
-"(paremklõps). Vasak- ja paremklahvi tegevusi saab vahetada võtme "
-"\"mouse_button_resize\" abil. Modifikaatorit väljendatakse näiteks kui \"&lt;"
-"Alt&gt;\" või \"&lt;Super&gt;\"."
+"(paremklõps). Keskmise ja parema klahvi tegevusi saab vahetada võtme "
+"\"resize_with_right_button\" abil. Modifikaatorit väljendatakse näiteks kui "
+"\"&lt;Alt&gt;\" või \"&lt;Super&gt;\"."
 
 msgid "Commands to run in response to keybindings"
 msgstr "Käsud mida käivitada kiirklahvidele reageerides"
@@ -1833,15 +1832,6 @@ msgstr "/Aknad/_Kõik dokid"
 msgid "/Windows/Des_ktop"
 msgstr "/Aknad/_Töölaud"
 
-msgid "Open another one of these windows"
-msgstr "Ava neist akendest järgmine"
-
-msgid "This is a demo button with an 'open' icon"
-msgstr "See on näidisnupp koos 'ava' ikooniga"
-
-msgid "This is a demo button with a 'quit' icon"
-msgstr "See on näidisnupp koos 'lõpeta' ikooniga"
-
 msgid "This is a sample message in a sample dialog"
 msgstr "See on näidisteade näidisdialoogis"
 
@@ -1950,163 +1940,3 @@ msgstr "y väärtus oli %d, oodati väärtust %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
-
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "Tõrge dialoogiprotsessi sõnumi \"%s\" analüüsimisel\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "Viga dialoogi kuvamisprotsessilt lugemisel: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr ""
-#~ "Viga metacity-dialog käivitamisel rakenduse jõuga sulgemise küsimise "
-#~ "jaoks: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "Viga metacity-dialog käivitamisel, et hoiatada rakendustest, mis ei toeta "
-#~ "sessioonihaldust: %s\n"
-
-#~ msgid ""
-#~ "There was an error running \"%s\":\n"
-#~ "%s."
-#~ msgstr ""
-#~ "\"%s\" käivitamisel esines viga:\n"
-#~ "%s."
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "Selle teema jaoks on <author> määratud kaks korda"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "Selle teema jaoks on <copyright> määratud kaks korda"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "Selle teema jaoks on <date> määratud kaks korda"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "Selle teema jaoks on <description> määratud kaks korda"
-
-#~ msgid "Unmaximize window"
-#~ msgstr "Akna suuruse taastamine"
-
-#~ msgid "Unmaximize Window"
-#~ msgstr "Akna suuruse taastamine"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr ""
-#~ "Viga metacity-dialog käivitamisel veateate trükkimiseks käsule: %s\n"
-
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Tundmatu atribuut %s <metacity_session> elemendil"
-
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "Tundmatu atribuut %s <maximized> elemendil"
-
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "Tundmatu atribuut %s <geometry> elemendil"
-
-#~ msgid "Toggle always on top state"
-#~ msgstr "Alati kõige pealmine oleku lüliti"
-
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Elemendil <%s2> pole \"%s1\" atribuuti"
-
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "Teemal juba on varuikoon"
-
-#~ msgid "Theme already has a fallback mini_icon"
-#~ msgstr "Teemal juba on varu-miniikoon"
-
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"name\" atribuuti"
-
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"value\" atribuuti"
-
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"top\" atribuuti"
-
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"bottom\" atribuuti"
-
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"left\" atribuuti"
-
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"right\" atribuuti"
-
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"color\" atribuuti"
-
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"x1\" atribuuti"
-
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"y1\" atribuuti"
-
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"x2\" atribuuti"
-
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"y2\" atribuuti"
-
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"y\" atribuuti"
-
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"width\" atribuuti"
-
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"height\" atribuuti"
-
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"start_angle\" atribuuti"
-
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"extent_angle\" atribuuti"
-
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"alpha\" atribuuti"
-
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"type\" atribuuti"
-
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"filename\" atribuuti"
-
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"state\" atribuuti"
-
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"shadow\" atribuuti"
-
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Elemendil <%s> pole \"arrow\" atribuuti"
-
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Elemendil <%s> pole \"value\" atribuuti"
-
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Elemendil <%s> pole \"position\" atribuuti"
-
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Elemendil <%s> pole \"function\" atribuuti"
-
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Elemendil <%s> pole \"state\" atribuuti"
-
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Element <%s> ei vaja \"focus\" atribuuti"
-
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Element <%s> ei vaja \"style\" atribuuti"
-
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Element <%s> ei vaja \"resize\" atribuuti"
-
-#~ msgid "On _Top"
-#~ msgstr "Kõige _pealmine"
