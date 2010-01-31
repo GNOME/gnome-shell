@@ -16,8 +16,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-27 12:07+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=metacity&component=general\n"
+"POT-Creation-Date: 2009-11-28 04:05+0000\n"
 "PO-Revision-Date: 2009-03-27 12:04+0000\n"
 "Last-Translator: Fotis Tsamis <ftsamis@gmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -144,48 +145,53 @@ msgstr ""
 "ΔΕΝ παρέχεται καμία εγγύηση, ούτε ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ούτε ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ "
 "ΣΥΓΚΕΚΡΙΜΕΝΟΣΚΟΠΟ.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Απενεργοποίηση σύνδεσης στο διαχειριστή συνεδρίας"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Αντικατάσταση του διαχειριστή παραθύρων που εκτελείται με το Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Καθορισμός ID διαχείρισης συνεδρίας"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "X Display για χρήση"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Εκκίνηση συνεδρίας από savefile"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Εκτύπωση έκδοσης"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Να καταστούν σύγχρονες οι κλήσεις του X"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Ενεργοποίηση compositing"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Απενεργοποίηση compositing"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Αποτυχία σάρωσης καταλόγου θεμάτων: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -193,7 +199,7 @@ msgstr ""
 "Δεν είναι δυνατή η εύρεση θέματος! Βεβαιωθείτε ότι το %s υπάρχει και "
 "περιέχει τα συνήθη θέματα.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Αποτυχία επανεκκίνησης: %s\n"
@@ -209,25 +215,25 @@ msgstr "Αποτυχία επανεκκίνησης: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Το GConf key '%s'  έχει ορισθεί σε μια μη έγκυρη τιμή\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "Το %d που αποθηκεύτηκε στο κλειδί GConf %s είναι εκτός του εύρους %d έως %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ο τύπος που έχει οριστεί για το κλειδί GConf \"%s\" είναι μη έγκυρος\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -235,13 +241,13 @@ msgstr ""
 "Οι προσωρινές λύσεις για προβληματικές εφαρμογές έχουν απενεργοποιηθεί. "
 "Μερικές εφαρμογές μπορεί να μη συμπεριφέρονται σωστά.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -251,17 +257,17 @@ msgstr ""
 "για μετατροπέα κουμπιού ποντικιού\n"
 
 # gconf/gconfd.c:1561
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Σφάλμα κατά τον ορισμό αριθμού χώρων εργασίας σε  %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Χώρος εργασίας %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -271,23 +277,23 @@ msgstr ""
 "για συνδυασμό πλήκτρων\"%s\"\n"
 
 # gconf/gconfd.c:1561
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Σφάλμα κατά τον ορισμό ονόματος χώρου εργασίας %d σε \"%s\": %s\n"
 
 # gconf/gconfd.c:1561
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Σφάλμα κατά τον ορισμό της κατάστασης του compositor: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Η οθόνη %d στην προβολή '%s' δεν είναι έγκυρη\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -297,19 +303,19 @@ msgstr ""
 "να χρησιμοποιήσετε την επιλογή --replace για να αντικαταστήσετε τον τρέχων "
 "διαχειριστή παραθύρων.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Αδυναμία λήψης επιλογής διαχειριστή παραθύρων στην οθόνη %d προβολή \"%s\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Η οθόνη  %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Αδυναμία απελευθέρωσης οθόνης %d στην προβολή \"%s\"\n"
@@ -319,8 +325,16 @@ msgstr "Αδυναμία απελευθέρωσης οθόνης %d στην π�
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#, fuzzy
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -335,8 +349,19 @@ msgstr ""
 "ενέργεια."
 
 #: ../src/core/schema-bindings.c:177
+#, fuzzy
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action.\n"
+#| "\n"
+#| "This keybinding may be reversed by holding down the \"shift\" key; "
+#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -517,16 +542,16 @@ msgstr ""
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "%s (as %s)"
-msgstr "%s (σε %s)"
+msgstr "%s (ως %s)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
 #, c-format
 msgid "%s (as another user)"
-msgstr ""
+msgstr "%s (ως άλλος χρήστης)"
 
 #: ../src/core/window-props.c:1429
 #, c-format
@@ -771,7 +796,7 @@ msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας
 
 #: ../src/include/all-keybindings.h:291
 msgid "Move window to workspace 3"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 3"
 
 #: ../src/include/all-keybindings.h:294
 msgid "Move window to workspace 4"
@@ -795,7 +820,7 @@ msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας
 
 #: ../src/include/all-keybindings.h:309
 msgid "Move window to workspace 9"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 9"
 
 #: ../src/include/all-keybindings.h:312
 msgid "Move window to workspace 10"
@@ -2247,9 +2272,9 @@ msgstr "Δεν επιτρέπεται κείμενο μέσα στο στοιχ�
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<όνομα> έχει ορισθεί δύο φορές για αυτό το θέμα"
+msgstr "<%s> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
 # gconf/gconf-internals.c:2416
 #: ../src/ui/theme-parser.c:4040
