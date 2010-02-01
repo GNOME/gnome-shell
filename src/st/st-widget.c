@@ -321,19 +321,28 @@ st_widget_allocate (ClutterActor          *actor,
     }
   else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
     {
-      float width, height;
+      guint width,  old_width,
+            height, old_height;
       ClutterActorBox frame_box;
 
-      width = box->x2 - box->x1;
-      height = box->y2 - box->y1;
       frame_box.x1 = frame_box.y1 = 0;
-      frame_box.x2 = width;
-      frame_box.y2 = height;
+      frame_box.x2 = box->x2 - box->x1;
+      frame_box.y2 = box->y2 - box->y1;
 
-      if (width > 0 && height > 0)
-        clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
-                                                width, height);
-      st_widget_redraw_gradient ((StWidget*) actor);
+      width = (guint)(0.5 + frame_box.x2);
+      height = (guint)(0.5 + frame_box.y2);
+
+      clutter_cairo_texture_get_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
+                                              &old_width, &old_height);
+
+      if (width > 0 && height > 0 &&
+          (old_width != width || old_height != height))
+        {
+
+          clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
+                                                  width, height);
+          st_widget_redraw_gradient ((StWidget*) actor);
+        }
       clutter_actor_allocate (CLUTTER_ACTOR (priv->border_image),
                               &frame_box,
                               flags);
