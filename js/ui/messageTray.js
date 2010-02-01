@@ -103,6 +103,25 @@ Notification.prototype = {
         this.actor.add(this._bodyText, { row: 1,
                                          col: 1 });
 
+        this.actions = {};
+        this._buttonBox = null;
+    },
+
+    addAction: function(id, label) {
+        if (!this._buttonBox) {
+            this._buttonBox = new St.BoxLayout({ name: 'notification-actions' });
+            this.actor.add(this._buttonBox, { row: 2,
+                                              col: 1,
+                                              x_expand: false,
+                                              x_fill: false,
+                                              x_align: 1.0 });
+            this._canPopOut = true;
+        }
+
+        let button = new St.Button({ style_class: 'notification-button',
+                                     label: label });
+        this._buttonBox.add(button);
+        button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
@@ -167,6 +186,7 @@ Notification.prototype = {
         return true;
     }
 };
+Signals.addSignalMethods(Notification.prototype);
 
 function Source(id, createIcon) {
     this._init(id, createIcon);

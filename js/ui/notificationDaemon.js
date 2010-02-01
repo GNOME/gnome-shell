@@ -124,6 +124,12 @@ NotificationDaemon.prototype = {
         summary = GLib.markup_escape_text(summary, -1);
 
         let notification = new MessageTray.Notification(source, summary, body);
+        if (actions.length) {
+            for (let i = 0; i < actions.length - 1; i += 2)
+                notification.addAction(actions[i], actions[i + 1]);
+            notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
+        }
+
         source.notify(notification);
         return id;
     },
@@ -137,7 +143,7 @@ NotificationDaemon.prototype = {
 
     GetCapabilities: function() {
         return [
-            // 'actions',
+            'actions',
             'body',
             // 'body-hyperlinks',
             // 'body-images',
@@ -157,11 +163,23 @@ NotificationDaemon.prototype = {
         ];
     },
 
+    _actionInvoked: function(notification, action, source, id) {
+        this._emitActionInvoked(id, action);
+        source.destroy();
+    },
+
     _emitNotificationClosed: function(id, reason) {
         DBus.session.emit_signal('/org/freedesktop/Notifications',
                                  'org.freedesktop.Notifications',
                                  'NotificationClosed', 'uu',
                                  [id, reason]);
+    },
+
+    _emitActionInvoked: function(id, action) {
+        DBus.session.emit_signal('/org/freedesktop/Notifications',
+                                 'org.freedesktop.Notifications',
+                                 'ActionInvoked', 'us',
+                                 [id, action]);
     }
 };
 
