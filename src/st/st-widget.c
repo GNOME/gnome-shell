@@ -308,12 +308,11 @@ st_widget_allocate (ClutterActor          *actor,
 
   if (priv->border_image && priv->bg_gradient_type == ST_GRADIENT_NONE)
     {
-      ClutterActorBox frame_box = {
-        0,
-        0,
-        box->x2 - box->x1,
-        box->y2 - box->y1
-      };
+      ClutterActorBox frame_box;
+
+      frame_box.x1 = frame_box.y1 = 0;
+      frame_box.x2 = box->x2 - box->x1;
+      frame_box.y2 = box->y2 - box->y1;
 
       clutter_actor_allocate (CLUTTER_ACTOR (priv->border_image),
                               &frame_box,
@@ -350,10 +349,12 @@ st_widget_allocate (ClutterActor          *actor,
 
   if (priv->background_image)
     {
-      ClutterActorBox frame_box = {
-        0, 0, box->x2 - box->x1, box->y2 - box->y1
-      };
+      ClutterActorBox frame_box;
       gfloat w, h;
+
+      frame_box.x1 = frame_box.y1 = 0;
+      frame_box.x2 = box->x2 - box->x1;
+      frame_box.y2 = box->y2 - box->y1;
 
       clutter_actor_get_size (CLUTTER_ACTOR (priv->background_image), &w, &h);
 
