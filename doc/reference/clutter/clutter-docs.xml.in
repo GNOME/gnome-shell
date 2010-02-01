@@ -139,6 +139,8 @@
       <xi:include href="xml/clutter-main.xml"/>
       <xi:include href="xml/clutter-shader.xml"/>
       <xi:include href="xml/clutter-stage-manager.xml"/>
+      <xi:include href="xml/clutter-input-device.xml"/>
+      <xi:include href="xml/clutter-device-manager.xml"/>
       <xi:include href="xml/clutter-units.xml"/>
       <xi:include href="xml/clutter-util.xml"/>
       <xi:include href="xml/clutter-feature.xml"/>

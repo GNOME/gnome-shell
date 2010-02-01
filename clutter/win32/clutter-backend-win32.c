@@ -31,6 +31,7 @@
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
+#include "../clutter-input-device.h"
 #include "../clutter-debug.h"
 #include "../clutter-private.h"
 #include "../clutter-version.h"
@@ -64,7 +65,29 @@ clutter_backend_win32_pre_parse (ClutterBackend  *backend,
 static void
 clutter_backend_win32_init_events (ClutterBackend *backend)
 {
+  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+
   CLUTTER_NOTE (EVENT, "initialising the event loop");
+
+  manager = clutter_device_manager_get_default ();
+
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
+                         "id", 0,
+                         "name", "Core Pointer",
+                         "device-type", CLUTTER_POINTER_DEVICE,
+                         NULL);
+  _clutter_device_manager_add_device (manager, device);
+  backend_win32->core_pointer = device;
+
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
+                         "id", 1,
+                         "name", "Core Keyboard",
+                         "device-type", CLUTTER_KEYBOARD_DEVICE,
+                         NULL);
+  _clutter_device_manager_add_device (manager, device);
+  backend_win32->core_keyboard = device;
 
   _clutter_backend_win32_events_init (backend);
 }

@@ -2045,68 +2045,92 @@ event_click_count_generate (ClutterEvent *event)
   static guint32 previous_time          = 0;
   static gint    previous_button_number = -1;
 
+  ClutterInputDevice *device = NULL;
   ClutterBackend *backend;
-  guint           double_click_time;
-  guint           double_click_distance;
+  guint double_click_time;
+  guint double_click_distance;
 
-  backend = _clutter_context_get_default ()->backend;
+  backend = clutter_get_default_backend ();
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
-  if (event->button.device != NULL)
+  device = clutter_event_get_device (event);
+  if (device != NULL)
     {
-      click_count = event->button.device->click_count;
-      previous_x = event->button.device->previous_x;
-      previous_y = event->button.device->previous_y;
-      previous_time = event->button.device->previous_time;
-      previous_button_number = event->button.device->previous_button_number;
+      click_count = device->click_count;
+      previous_x = device->previous_x;
+      previous_y = device->previous_y;
+      previous_time = device->previous_time;
+      previous_button_number = device->previous_button_number;
+
+      CLUTTER_NOTE (EVENT,
+                    "Restoring previous click count:%d (device:%d, time:%u)",
+                    click_count,
+                    clutter_input_device_get_device_id (device),
+                    previous_time);
+    }
+  else
+    {
+      CLUTTER_NOTE (EVENT,
+                    "Restoring previous click count:%d (time:%u)",
+                    click_count,
+                    previous_time);
     }
 
-  switch (event->type)
+  switch (clutter_event_type (event))
     {
       case CLUTTER_BUTTON_PRESS:
-      case CLUTTER_SCROLL:
         /* check if we are in time and within distance to increment an
          * existing click count
          */
-        if (event->button.time < previous_time + double_click_time &&
+        if (event->button.button == previous_button_number &&
+            event->button.time < (previous_time + double_click_time) &&
             (ABS (event->button.x - previous_x) <= double_click_distance) &&
-            (ABS (event->button.y - previous_y) <= double_click_distance)
-            && event->button.button == previous_button_number)
+            (ABS (event->button.y - previous_y) <= double_click_distance))
           {
-            click_count ++;
+            CLUTTER_NOTE (EVENT, "Increase click count (button: %d, time: %u)",
+                          event->button.button,
+                          event->button.time);
+
+            click_count += 1;
           }
         else /* start a new click count*/
           {
-            click_count=1;
+            CLUTTER_NOTE (EVENT, "Reset click count (button: %d, time: %u)",
+                          event->button.button,
+                          event->button.time);
+
+            click_count = 1;
             previous_button_number = event->button.button;
           }
 
-        /* store time and position for this click for comparison with
-         * next event
-         */
+        previous_x = event->button.x;
+        previous_y = event->button.y;
         previous_time = event->button.time;
-        previous_x    = event->button.x;
-        previous_y    = event->button.y;
 
         /* fallthrough */
       case CLUTTER_BUTTON_RELEASE:
-        event->button.click_count=click_count;
+        event->button.click_count = click_count;
         break;
+
       default:
         g_assert (NULL);
     }
 
-  if (event->button.device != NULL)
+  if (event->type == CLUTTER_BUTTON_PRESS && device != NULL)
     {
-      event->button.device->click_count = click_count;
-      event->button.device->previous_x = previous_x;
-      event->button.device->previous_y = previous_y;
-      event->button.device->previous_time = previous_time;
-      event->button.device->previous_button_number = previous_button_number;
+      CLUTTER_NOTE (EVENT, "Storing click count: %d (device:%d, time:%u)",
+                    click_count,
+                    clutter_input_device_get_device_id (device),
+                    previous_time);
+
+      device->click_count = click_count;
+      device->previous_x = previous_x;
+      device->previous_y = previous_y;
+      device->previous_time = previous_time;
+      device->previous_button_number = previous_button_number;
     }
 }
-
 
 static inline void
 emit_event (ClutterEvent *event,
@@ -2118,7 +2142,7 @@ emit_event (ClutterEvent *event,
   ClutterActor *actor;
   gint i = 0;
 
-  if (!event->any.source)
+  if (event->any.source == NULL)
     {
       CLUTTER_NOTE (EVENT, "No source set, discarding event");
       return;
@@ -2182,136 +2206,38 @@ static inline void
 emit_pointer_event (ClutterEvent       *event,
                     ClutterInputDevice *device)
 {
-  /* Using the global variable directly, since it has to be initialized
-   * at this point
-   */
-  ClutterMainContext *context = ClutterCntx;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
-  if (G_UNLIKELY (context->pointer_grab_actor != NULL &&
-                  device == NULL))
-    {
-      /* global grab */
-      clutter_actor_event (context->pointer_grab_actor, event, FALSE);
-    }
-  else if (G_UNLIKELY (device != NULL &&
-                       device->pointer_grab_actor != NULL))
-    {
-      /* per device grab */
-      clutter_actor_event (device->pointer_grab_actor, event, FALSE);
-    }
-  else
+  if (context->pointer_grab_actor == NULL &&
+      (device == NULL || device->pointer_grab_actor == NULL))
     {
       /* no grab, time to capture and bubble */
       emit_event (event, FALSE);
+    }
+  else
+    {
+      if (context->pointer_grab_actor != NULL)
+        {
+          /* global grab */
+          clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+        }
+      else if (device != NULL && device->pointer_grab_actor != NULL)
+        {
+          /* per device grab */
+          clutter_actor_event (device->pointer_grab_actor, event, FALSE);
+        }
     }
 }
 
 static inline void
 emit_keyboard_event (ClutterEvent *event)
 {
-  ClutterMainContext *context = ClutterCntx;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
-  if (G_UNLIKELY (context->keyboard_grab_actor != NULL))
-    clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
-  else
+  if (context->keyboard_grab_actor == NULL)
     emit_event (event, TRUE);
-}
-
-static void
-unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
-{
-  ClutterMainContext *context = ClutterCntx;
-
-  if (dev == NULL)
-    context->motion_last_actor = NULL;
   else
-    dev->motion_last_actor = NULL;
-}
-
-static void
-set_motion_last_actor (ClutterActor       *motion_current_actor,
-                       ClutterInputDevice *device)
-{
-  ClutterMainContext *context              = ClutterCntx;
-  ClutterActor       *last_actor           = context->motion_last_actor;
-
-  if (device != NULL)
-    last_actor = device->motion_last_actor;
-
-  if (last_actor && last_actor != motion_current_actor)
-    {
-      g_signal_handlers_disconnect_by_func
-                       (last_actor,
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (motion_current_actor && last_actor != motion_current_actor)
-    {
-      g_signal_connect (motion_current_actor, "destroy",
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (device != NULL)
-    device->motion_last_actor = motion_current_actor;
-  else
-    context->motion_last_actor = motion_current_actor;
-}
-
-static inline void
-generate_enter_leave_events (ClutterEvent *event)
-{
-  ClutterMainContext *context              = ClutterCntx;
-  ClutterActor       *motion_current_actor = event->motion.source;
-  ClutterActor       *last_actor           = context->motion_last_actor;
-  ClutterInputDevice *device               = clutter_event_get_device (event);
-
-  if (device != NULL)
-    last_actor = device->motion_last_actor;
-
-  if (last_actor != motion_current_actor)
-    {
-      if (motion_current_actor)
-        {
-          ClutterEvent cev;
-          gfloat x, y;
-
-          cev.crossing.device  = device;
-          clutter_event_get_coords (event, &x, &y);
-
-          if (context->motion_last_actor)
-            {
-              cev.crossing.type    = CLUTTER_LEAVE;
-              cev.crossing.time    = event->any.time;
-              cev.crossing.flags   = 0;
-              cev.crossing.x       = x;
-              cev.crossing.y       = y;
-              cev.crossing.source  = last_actor;
-              cev.crossing.stage   = event->any.stage;
-              cev.crossing.related = motion_current_actor;
-
-              emit_pointer_event (&cev, device);
-            }
-
-          cev.crossing.type    = CLUTTER_ENTER;
-          cev.crossing.time    = event->any.time;
-          cev.crossing.flags   = 0;
-          cev.crossing.x       = x;
-          cev.crossing.y       = y;
-          cev.crossing.source  = motion_current_actor;
-          cev.crossing.stage   = event->any.stage;
-
-          if (context->motion_last_actor)
-            cev.crossing.related = last_actor;
-          else
-            cev.crossing.related = NULL;
-
-          emit_pointer_event (&cev, device);
-        }
-    }
-
-  set_motion_last_actor (motion_current_actor, device);
+    clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
 }
 
 /**
@@ -2343,7 +2269,9 @@ _clutter_process_event_details (ClutterActor        *stage,
                                 ClutterMainContext  *context,
                                 ClutterEvent        *event)
 {
-  ClutterInputDevice  *device = NULL;
+  ClutterInputDevice *device = NULL;
+
+  device = clutter_event_get_device (event);
 
   switch (event->type)
     {
@@ -2352,23 +2280,8 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_LEAVE:
-        /* The source is set for generated events, not for events
-         * resulting from the cursor leaving the stage
-         */
-        if (event->any.source == NULL)
-          {
-            ClutterActor *last_actor = context->motion_last_actor;
-
-            if (event->crossing.device != NULL)
-              last_actor = event->crossing.device->motion_last_actor;
-
-            event->any.source = last_actor;
-
-            set_motion_last_actor (NULL, event->crossing.device);
-          }
-        /* flow through */
       case CLUTTER_ENTER:
-        emit_pointer_event (event, event->crossing.device);
+        emit_pointer_event (event, device);
         break;
 
       case CLUTTER_DESTROY_NOTIFY:
@@ -2400,8 +2313,6 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_MOTION:
-        device = event->motion.device;
-
         /* Only stage gets motion events if clutter_set_motion_events is TRUE,
          * and the event is not a synthetic event with source set.
          */
@@ -2434,8 +2345,7 @@ _clutter_process_event_details (ClutterActor        *stage,
             break;
           }
 
-        /* fallthrough */
-
+      /* fallthrough from motion */
       case CLUTTER_BUTTON_PRESS:
       case CLUTTER_BUTTON_RELEASE:
       case CLUTTER_SCROLL:
@@ -2462,18 +2372,29 @@ _clutter_process_event_details (ClutterActor        *stage,
                                     x, y);
 
                       event->button.source = stage;
-                      emit_pointer_event (event, event->button.device);
+                      event->button.click_count = 1;
+                      emit_pointer_event (event, device);
                     }
                   break;
                 }
 
-              /* Map the event to a reactive actor */
-              actor = _clutter_do_pick (CLUTTER_STAGE (stage),
-                                        x, y,
-                                        CLUTTER_PICK_REACTIVE);
+              /* if the backend provides a device then we should
+               * already have everything we need to update it and
+               * get the actor underneath
+               */
+              if (device != NULL)
+                actor = _clutter_input_device_update (device);
+              else
+                {
+                  CLUTTER_NOTE (EVENT, "No device found: picking");
+
+                  actor = _clutter_do_pick (CLUTTER_STAGE (stage),
+                                            x, y,
+                                            CLUTTER_PICK_REACTIVE);
+                }
 
               event->any.source = actor;
-              if (!actor)
+              if (event->any.source == NULL)
                 break;
             }
           else
@@ -2481,7 +2402,6 @@ _clutter_process_event_details (ClutterActor        *stage,
               /* use the source already set in the synthetic event */
               actor = event->any.source;
             }
-
 
           /* FIXME: for an optimisation should check if there are
            * actually any reactive actors and avoid the pick all together
@@ -2493,31 +2413,10 @@ _clutter_process_event_details (ClutterActor        *stage,
                         x, y,
                         actor);
 
-          /* Create, enter/leave events if needed */
-          generate_enter_leave_events (event);
-
           if (event->type != CLUTTER_MOTION)
             {
               /* Generate click count */
               event_click_count_generate (event);
-            }
-
-          if (device == NULL)
-            {
-              switch (event->type)
-                {
-                  case CLUTTER_BUTTON_PRESS:
-                  case CLUTTER_BUTTON_RELEASE:
-                    device = event->button.device;
-                    break;
-                  case CLUTTER_SCROLL:
-                    device = event->scroll.device;
-                    break;
-                  case CLUTTER_MOTION:
-                    /* already handled in the MOTION case of the switch */
-                  default:
-                    break;
-                }
             }
 
           emit_pointer_event (event, device);
@@ -3023,9 +2922,19 @@ clutter_get_font_flags (void)
 
 /**
  * clutter_get_input_device_for_id:
- * @id: a device id
+ * @id: the unique id for a device
  *
- * Retrieves the #ClutterInputDevice from its id.
+ * Retrieves the #ClutterInputDevice from its @id. This is a convenience
+ * wrapper for clutter_device_manager_get_device() and it is functionally
+ * equivalent to:
+ *
+ * |[
+ *   ClutterDeviceManager *manager;
+ *   ClutterInputDevice *device;
+ *
+ *   manager = clutter_device_manager_get_default ();
+ *   device = clutter_device_manager_get_device (manager, id);
+ * ]|
  *
  * Return value: (transfer none): a #ClutterInputDevice, or %NULL
  *
@@ -3034,23 +2943,11 @@ clutter_get_font_flags (void)
 ClutterInputDevice *
 clutter_get_input_device_for_id (gint id)
 {
-  GSList *item;
-  ClutterInputDevice *device = NULL;
-  ClutterMainContext  *context;
+  ClutterDeviceManager *manager;
 
-  context = _clutter_context_get_default ();
+  manager = clutter_device_manager_get_default ();
 
-  for (item = context->input_devices;
-       item != NULL;
-       item = item->next)
-  {
-    device = item->data;
-
-    if (device->id == id)
-      return device;
-  }
-
-  return NULL;
+  return clutter_device_manager_get_device (manager, id);
 }
 
 /**

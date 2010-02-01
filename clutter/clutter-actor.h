@@ -532,6 +532,7 @@ void clutter_actor_get_transformation_matrix          (ClutterActor        *self
                                                        CoglMatrix          *matrix);
 
 gboolean clutter_actor_is_in_clone_paint              (ClutterActor        *self);
+gboolean clutter_actor_has_pointer                    (ClutterActor        *self);
 
 void                 clutter_actor_set_text_direction (ClutterActor         *self,
                                                        ClutterTextDirection  text_dir);

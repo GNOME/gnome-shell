@@ -69,6 +69,7 @@
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
 #include "clutter-profile.h"
+#include "clutter-input-device.h"
 
 #include "cogl/cogl.h"
 
@@ -455,6 +456,7 @@ _clutter_stage_queue_event (ClutterStage *stage,
 {
   ClutterStagePrivate *priv;
   gboolean first_event;
+  ClutterInputDevice *device;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -462,13 +464,30 @@ _clutter_stage_queue_event (ClutterStage *stage,
 
   first_event = priv->event_queue->length == 0;
 
-  g_queue_push_tail (priv->event_queue,
-		     clutter_event_copy (event));
+  g_queue_push_tail (priv->event_queue, clutter_event_copy (event));
 
   if (first_event)
     {
       ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
       _clutter_master_clock_start_running (master_clock);
+    }
+
+  /* if needed, update the state of the input device of the event.
+   * we do it here to avoid calling the same code from every backend
+   * event processing function
+   */
+  device = clutter_event_get_device (event);
+  if (device != NULL)
+    {
+      ClutterModifierType event_state = clutter_event_get_state (event);
+      guint32 event_time = clutter_event_get_time (event);
+      gfloat event_x, event_y;
+
+      clutter_event_get_coords (event, &event_x, &event_y);
+
+      _clutter_input_device_set_coords (device, event_x, event_y);
+      _clutter_input_device_set_state (device, event_state);
+      _clutter_input_device_set_time (device, event_time);
     }
 }
 
@@ -488,7 +507,7 @@ void
 _clutter_stage_process_queued_events (ClutterStage *stage)
 {
   ClutterStagePrivate *priv;
-  GList *events, *l;;
+  GList *events, *l;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -507,7 +526,7 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
   priv->event_queue->tail = NULL;
   priv->event_queue->length = 0;
 
-  for (l = events; l; l = l->next)
+  for (l = events; l != NULL; l = l->next)
     {
       ClutterEvent *event;
       ClutterEvent *next_event;

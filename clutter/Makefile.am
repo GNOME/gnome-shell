@@ -82,8 +82,9 @@ source_h =					\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color.h		\
-        $(srcdir)/clutter-container.h		\
-        $(srcdir)/clutter-deprecated.h		\
+	$(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-deprecated.h		\
+	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -91,6 +92,7 @@ source_h =					\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
+	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-layout-manager.h	\
@@ -154,6 +156,7 @@ source_c = \
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
 	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-device-manager.c	\
 	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
@@ -162,6 +165,7 @@ source_c = \
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
+	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-layout-manager.c	\
 	$(srcdir)/clutter-layout-meta.c		\
