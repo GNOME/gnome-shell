@@ -113,7 +113,8 @@ enum
   PROP_USER_RESIZE,
   PROP_USE_FOG,
   PROP_FOG,
-  PROP_USE_ALPHA
+  PROP_USE_ALPHA,
+  PROP_KEY_FOCUS
 };
 
 enum
@@ -694,6 +695,10 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_use_alpha (stage, g_value_get_boolean (value));
       break;
 
+    case PROP_KEY_FOCUS:
+      clutter_stage_set_key_focus (stage, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -748,6 +753,10 @@ clutter_stage_get_property (GObject    *gobject,
 
     case PROP_USE_ALPHA:
       g_value_set_boolean (value, priv->use_alpha);
+      break;
+
+    case PROP_KEY_FOCUS:
+      g_value_set_object (value, priv->key_focused_actor);
       break;
 
     default:
@@ -993,6 +1002,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_ALPHA, pspec);
+
+  /**
+   * ClutterStage:key-focus:
+   *
+   * The #ClutterActor that will receive key events from the underlying
+   * windowing system.
+   *
+   * If %NULL, the #ClutterStage will receive the events.
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_object ("key-focus",
+                               "Key Focus",
+                               "The currently key focused actor",
+                               CLUTTER_TYPE_ACTOR,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_KEY_FOCUS, pspec);
 
   /**
    * ClutterStage::fullscreen
@@ -1749,6 +1775,8 @@ clutter_stage_set_key_focus (ClutterStage *stage,
     }
   else
     g_signal_emit_by_name (stage, "key-focus-in");
+
+  g_object_notify (G_OBJECT (stage), "key-focus");
 }
 
 /**
