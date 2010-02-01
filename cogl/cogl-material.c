@@ -1713,12 +1713,35 @@ _cogl_material_flush_gl_state (CoglHandle handle,
 }
 
 static gboolean
+_cogl_material_texture_equal (CoglHandle texture0, CoglHandle texture1)
+{
+  GLenum gl_handle0, gl_handle1, gl_target0, gl_target1;
+
+  /* If the texture handles are the same then the textures are
+     definitely equal */
+  if (texture0 == texture1)
+    return TRUE;
+
+  /* If neither texture is sliced then they could still be the same if
+     the are referring to the same GL texture */
+  if (cogl_texture_is_sliced (texture0) ||
+      cogl_texture_is_sliced (texture1))
+    return FALSE;
+
+  cogl_texture_get_gl_texture (texture0, &gl_handle0, &gl_target0);
+  cogl_texture_get_gl_texture (texture1, &gl_handle1, &gl_target1);
+
+  return gl_handle0 == gl_handle1 && gl_target0 == gl_target1;
+}
+
+static gboolean
 _cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
                             CoglHandle         material0_layer_texture,
                             CoglMaterialLayer *material1_layer,
                             CoglHandle         material1_layer_texture)
 {
-  if (material0_layer_texture != material1_layer_texture)
+  if (!_cogl_material_texture_equal (material0_layer_texture,
+                                     material1_layer_texture))
     return FALSE;
 
   if ((material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
