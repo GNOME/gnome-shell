@@ -32,7 +32,6 @@
 
 typedef struct _CoglTexture           CoglTexture;
 typedef struct _CoglTextureVtable     CoglTextureVtable;
-typedef struct _CoglTextureUploadData CoglTextureUploadData;
 
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
@@ -107,17 +106,6 @@ struct _CoglTextureVtable
   gint (* get_height) (CoglTexture *tex);
 };
 
-/* This represents the state needed to upload texture data. There are
-   utility functions in cogl-texture which use this state */
-struct _CoglTextureUploadData
-{
-  CoglBitmap bitmap;
-  gboolean   bitmap_owner;
-  GLenum     gl_intformat;
-  GLenum     gl_format;
-  GLenum     gl_type;
-};
-
 struct _CoglTexture
 {
   CoglHandleObject         _parent;
@@ -162,28 +150,20 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle);
 void
 _cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
 
-/* Utility functions to help uploading a bitmap. These are intended to
- * be used by CoglTexture implementations or drivers... */
-
-void
-_cogl_texture_upload_data_free (CoglTextureUploadData *data);
-
-void
-_cogl_texture_upload_data_swap_bitmap (CoglTextureUploadData *data,
-                                       CoglBitmap            *new_bitmap);
+/* Utility function to help uploading a bitmap. If the bitmap needs
+   premult conversion then it will be copied and *copied_bitmap will
+   be set to TRUE. Otherwise dst_bmp will be set to a shallow copy of
+   src_bmp. The GLenums needed for uploading are returned */
 
 gboolean
-_cogl_texture_upload_data_prepare_format
-                                    (CoglTextureUploadData *data,
-                                     CoglPixelFormat       *internal_format);
-
-gboolean
-_cogl_texture_upload_data_convert (CoglTextureUploadData *data,
-                                   CoglPixelFormat internal_format);
-
-gboolean
-_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
-                                   CoglPixelFormat        internal_format);
+_cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
+                                  CoglPixelFormat  dst_format,
+                                  CoglPixelFormat *dst_format_out,
+                                  CoglBitmap      *dst_bmp,
+                                  gboolean        *copied_bitmap,
+                                  GLenum          *out_glintformat,
+                                  GLenum          *out_glformat,
+                                  GLenum          *out_gltype);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);

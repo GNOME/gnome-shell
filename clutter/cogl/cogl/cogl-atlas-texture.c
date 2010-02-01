@@ -508,11 +508,8 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
     {
       gint             bpp;
       CoglBitmap       source_bmp;
-      CoglBitmap       temp_bmp;
-      gboolean         source_bmp_owner = FALSE;
-      CoglPixelFormat  closest_format;
-      GLenum           closest_gl_format;
-      GLenum           closest_gl_type;
+      CoglBitmap       tmp_bmp;
+      gboolean         tmp_bmp_owner = FALSE;
       gboolean         success;
 
       /* Check for valid format */
@@ -533,25 +530,14 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
       bpp = _cogl_get_format_bpp (format);
       source_bmp.rowstride = (rowstride == 0) ? width * bpp : rowstride;
 
-      /* Find closest format to internal that's supported by GL */
-      closest_format = _cogl_pixel_format_to_gl (atlas_tex->format,
-                                                 NULL, /* don't need */
-                                                 &closest_gl_format,
-                                                 &closest_gl_type);
-
-      /* If no direct match, convert */
-      if (closest_format != format)
-        {
-          /* Convert to required format */
-          success = _cogl_bitmap_convert_format_and_premult (&source_bmp,
-                                                             &temp_bmp,
-                                                             closest_format);
-
-          /* Swap bitmaps if succeeded */
-          if (!success) return FALSE;
-          source_bmp = temp_bmp;
-          source_bmp_owner = TRUE;
-        }
+      /* Prepare the bitmap so that it will do the premultiplication
+         conversion */
+      _cogl_texture_prepare_for_upload (&source_bmp,
+                                        atlas_tex->format,
+                                        NULL,
+                                        &tmp_bmp,
+                                        &tmp_bmp_owner,
+                                        NULL, NULL, NULL);
 
       /* Upload the data ignoring the premult bit */
       success =
@@ -559,16 +545,16 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                                     src_x, src_y,
                                                     dst_x, dst_y,
                                                     dst_width, dst_height,
-                                                    source_bmp.width,
-                                                    source_bmp.height,
-                                                    source_bmp.format &
+                                                    tmp_bmp.width,
+                                                    tmp_bmp.height,
+                                                    tmp_bmp.format &
                                                     ~COGL_PREMULT_BIT,
-                                                    source_bmp.rowstride,
-                                                    source_bmp.data);
+                                                    tmp_bmp.rowstride,
+                                                    tmp_bmp.data);
 
       /* Free data if owner */
-      if (source_bmp_owner)
-        g_free (source_bmp.data);
+      if (tmp_bmp_owner)
+        g_free (tmp_bmp.data);
 
       return success;
     }
@@ -927,9 +913,13 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat  internal_format)
 {
-  CoglAtlasTexture       *atlas_tex;
-  CoglBitmap             *bmp = (CoglBitmap *) bmp_handle;
-  CoglTextureUploadData   upload_data;
+  CoglAtlasTexture *atlas_tex;
+  CoglBitmap       *bmp = (CoglBitmap *) bmp_handle;
+  CoglBitmap        dst_bmp;
+  gboolean          dst_bmp_owner;
+  GLenum            gl_intformat;
+  GLenum            gl_format;
+  GLenum            gl_type;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -956,17 +946,17 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_READ_PIXELS))
     return COGL_INVALID_HANDLE;
 
-  upload_data.bitmap = *bmp;
-  upload_data.bitmap_owner = FALSE;
-
-  if (!_cogl_texture_upload_data_prepare_format (&upload_data,
-                                                 &internal_format))
-    {
-      _cogl_texture_upload_data_free (&upload_data);
-      return COGL_INVALID_HANDLE;
-    }
-
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", bmp->width, bmp->height);
+
+  if (!_cogl_texture_prepare_for_upload (bmp,
+                                         internal_format,
+                                         &internal_format,
+                                         NULL,
+                                         NULL,
+                                         &gl_intformat,
+                                         &gl_format,
+                                         &gl_type))
+    return COGL_INVALID_HANDLE;
 
   /* If the texture is in a strange format then we can't use it */
   if (internal_format != COGL_PIXEL_FORMAT_RGB_888 &&
@@ -975,7 +965,6 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
       COGL_NOTE (ATLAS, "Texture can not be added because the "
                  "format is unsupported");
 
-      _cogl_texture_upload_data_free (&upload_data);
       return COGL_INVALID_HANDLE;
     }
 
@@ -984,8 +973,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   atlas_tex = g_new (CoglAtlasTexture, 1);
   /* We need to fill in the texture size now because it is used in the
      reserve_space function below. We add two pixels for the border */
-  atlas_tex->rectangle.width = upload_data.bitmap.width + 2;
-  atlas_tex->rectangle.height = upload_data.bitmap.height + 2;
+  atlas_tex->rectangle.width = bmp->width + 2;
+  atlas_tex->rectangle.height = bmp->height + 2;
 
   /* Try to make some space in the atlas for the texture */
   if (!_cogl_atlas_texture_reserve_space (atlas_tex,
@@ -993,15 +982,20 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
                                           atlas_tex->rectangle.height))
     {
       g_free (atlas_tex);
-      _cogl_texture_upload_data_free (&upload_data);
       return COGL_INVALID_HANDLE;
     }
 
-  if (!_cogl_texture_upload_data_convert (&upload_data, internal_format))
+  if (!_cogl_texture_prepare_for_upload (bmp,
+                                         internal_format,
+                                         &internal_format,
+                                         &dst_bmp,
+                                         &dst_bmp_owner,
+                                         &gl_intformat,
+                                         &gl_format,
+                                         &gl_type))
     {
       cogl_atlas_remove_rectangle (ctx->atlas, &atlas_tex->rectangle);
       g_free (atlas_tex);
-      _cogl_texture_upload_data_free (&upload_data);
       return COGL_INVALID_HANDLE;
     }
 
@@ -1019,14 +1013,17 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   _cogl_atlas_texture_set_region_with_border (atlas_tex,
                                               0, 0,
                                               0, 0,
-                                              upload_data.bitmap.width,
-                                              upload_data.bitmap.height,
-                                              upload_data.bitmap.width,
-                                              upload_data.bitmap.height,
-                                              upload_data.bitmap.format &
+                                              dst_bmp.width,
+                                              dst_bmp.height,
+                                              dst_bmp.width,
+                                              dst_bmp.height,
+                                              dst_bmp.format &
                                               ~COGL_PREMULT_BIT,
-                                              upload_data.bitmap.rowstride,
-                                              upload_data.bitmap.data);
+                                              dst_bmp.rowstride,
+                                              dst_bmp.data);
+
+  if (dst_bmp_owner)
+    g_free (dst_bmp.data);
 
   return _cogl_atlas_texture_handle_new (atlas_tex);
 }
