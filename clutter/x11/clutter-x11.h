@@ -121,14 +121,16 @@ gboolean clutter_x11_has_event_retrieval (void);
 
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
 G_CONST_RETURN GSList* clutter_x11_get_input_devices (void);
+#endif
 
 void     clutter_x11_enable_xinput (void);
 gboolean clutter_x11_has_xinput (void);
 
 gboolean clutter_x11_has_composite_extension (void);
 
-void     clutter_X11_set_use_argb_visual (gboolean use_argb);
+void     clutter_x11_set_use_argb_visual (gboolean use_argb);
 gboolean clutter_x11_get_use_argb_visual (void);
 
 Time clutter_x11_get_current_event_time (void);

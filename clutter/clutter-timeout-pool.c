@@ -359,12 +359,6 @@ clutter_timeout_pool_finalize (GSource *source)
  * always sorted, so that the extraction of the next timeout function is
  * a constant time operation.
  *
- * Inside Clutter, every #ClutterTimeline share the same timeout pool, unless
- * the CLUTTER_TIMELINE=no-pool environment variable is set.
- *
- * #ClutterTimeoutPool is part of the #ClutterTimeline implementation
- * and should not be used by application developers.
- *
  * Return value: the newly created #ClutterTimeoutPool. The created pool
  *   is owned by the GLib default context and will be automatically
  *   destroyed when the context is destroyed. It is possible to force
@@ -412,7 +406,7 @@ clutter_timeout_pool_new (gint priority)
  * won't be called again. If @notify is not %NULL, the @notify function
  * will be called. The first call to @func will be at the end of @interval.
  *
- * Since version 0.8 this will try to compensate for delays. For
+ * Since Clutter 0.8 this will try to compensate for delays. For
  * example, if @func takes half the interval time to execute then the
  * function will be called again half the interval time after it
  * finished. Before version 0.8 it would not fire until a full
@@ -478,7 +472,8 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
 				    clutter_timeout_find_by_id)))
     {
       clutter_timeout_unref (l->data);
-      pool->dispatched_timeouts
-	= g_list_delete_link (pool->dispatched_timeouts, l);
+
+      pool->dispatched_timeouts =
+        g_list_delete_link (pool->dispatched_timeouts, l);
     }
 }

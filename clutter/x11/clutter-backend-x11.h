@@ -76,10 +76,14 @@ struct _ClutterBackendX11
   Atom atom_NET_WM_NAME;
   Atom atom_UTF8_STRING;
 
+  int xi_event_base;
   int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
   gboolean have_xinput;
 
   Time last_event_time;
+
+  ClutterInputDevice *core_pointer;
+  ClutterInputDevice *core_keyboard;
 };
 
 struct _ClutterBackendX11Class
@@ -124,12 +128,6 @@ clutter_backend_x11_get_features (ClutterBackend *backend);
 
 XVisualInfo *
 clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11);
-
-void
-_clutter_x11_register_xinput (void);
-
-void
-_clutter_x11_unregister_xinput (void);
 
 ClutterInputDevice *
 _clutter_x11_get_device_for_xid (XID id);

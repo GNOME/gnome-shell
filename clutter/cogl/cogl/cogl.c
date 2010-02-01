@@ -40,6 +40,7 @@
 #include "cogl-winsys.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
+#include "cogl-journal-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -154,6 +155,16 @@ cogl_clear (const CoglColor *color, gulong buffers)
     }
 
   glClear (gl_buffers);
+
+  /* This is a debugging variable used to visually display the quad
+     batches from the journal. It is reset here to increase the
+     chances of getting the same colours for each frame during an
+     animation */
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
+    {
+      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+      ctxt->journal_rectangles_color = 1;
+    }
 
   COGL_NOTE (DRAW, "Clear end");
 }
@@ -729,10 +740,11 @@ cogl_end_gl (void)
 }
 
 static CoglTextureUnit *
-_cogl_texture_unit_new (void)
+_cogl_texture_unit_new (int index_)
 {
   CoglTextureUnit *unit = g_new0 (CoglTextureUnit, 1);
   unit->matrix_stack = _cogl_matrix_stack_new ();
+  unit->index = index_;
   return unit;
 }
 
@@ -766,7 +778,7 @@ _cogl_get_texture_unit (int index_)
   /* NB: if we now insert a new layer before l, that will maintain order.
    */
 
-  unit = _cogl_texture_unit_new ();
+  unit = _cogl_texture_unit_new (index_);
 
   /* Note: see comment after for() loop above */
   ctx->texture_units =
@@ -785,6 +797,36 @@ _cogl_destroy_texture_units (void)
   for (l = ctx->texture_units; l; l = l->next)
     _cogl_texture_unit_free (l->data);
   g_list_free (ctx->texture_units);
+}
+
+/*
+ * This is more complicated than that, another pass needs to be done when
+ * cogl have a neat way of saying if we are using the fixed function pipeline
+ * or not (for the GL case):
+ * MAX_TEXTURE_UNITS: fixed function pipeline, a texture unit has both a
+ *                    sampler and a set of texture coordinates
+ * MAX_TEXTURE_IMAGE_UNITS: number of samplers one can use from a fragment
+ *                          program/shader (ARBfp1.0 asm/GLSL)
+ * MAX_VERTEX_TEXTURE_UNITS: number of samplers one can use from a vertex
+ *                           program/shader (can be 0)
+ * MAX_COMBINED_TEXTURE_IMAGE_UNITS: Maximum samplers one can use, counting both
+ *                                   the vertex and fragment shaders
+ *
+ * If both the vertex shader and the fragment processing stage access the same
+ * texture image unit, then that counts as using two texture image units
+ * against the latter limit: http://www.opengl.org/sdk/docs/man/xhtml/glGet.xml
+ *
+ * Note that, for now, we use GL_MAX_TEXTURE_UNITS as we are exposing the
+ * fixed function pipeline.
+ */
+guint
+_cogl_get_max_texture_image_units (void)
+{
+  GLint nb_texture_image_units;
+
+  GE( glGetIntegerv(GL_MAX_TEXTURE_UNITS, &nb_texture_image_units) );
+
+  return nb_texture_image_units;
 }
 
 void

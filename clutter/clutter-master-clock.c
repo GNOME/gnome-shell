@@ -288,14 +288,13 @@ clutter_clock_dispatch (GSource     *source,
    * event handling
    */
   stages = clutter_stage_manager_list_stages (stage_manager);
-  g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
+  g_slist_foreach (stages, (GFunc) g_object_ref, NULL);
 
   CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
 
   master_clock->updated_stages = FALSE;
 
-  /* Process queued events
-   */
+  /* Process queued events */
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_process_queued_events (l->data);
 
@@ -311,7 +310,7 @@ clutter_clock_dispatch (GSource     *source,
   for (l = stages; l != NULL; l = l->next)
     master_clock->updated_stages |= _clutter_stage_do_update (l->data);
 
-  g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
+  g_slist_foreach (stages, (GFunc) g_object_unref, NULL);
   g_slist_free (stages);
 
   master_clock->prev_tick = master_clock->cur_tick;
@@ -446,7 +445,7 @@ _clutter_master_clock_start_running (ClutterMasterClock *master_clock)
 void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
-  GSList *l, *next;
+  GSList *timelines, *l;
 
   CLUTTER_STATIC_TIMER (master_timeline_advance,
                         "Master Clock",
@@ -456,23 +455,38 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
-  /* we protect ourselves from timelines being removed during
-   * the advancement by other timelines
-   */
-  g_slist_foreach (master_clock->timelines, (GFunc) g_object_ref, NULL);
-
   CLUTTER_TIMER_START (_clutter_uprof_context, master_timeline_advance);
 
-  for (l = master_clock->timelines; l != NULL; l = next)
-    {
-      next = l->next;
+  /* we protect ourselves from timelines being removed during
+   * the advancement by other timelines by copying the list of
+   * timelines, taking a reference on them, iterating over the
+   * copied list and then releasing the reference.
+   *
+   * we cannot simply take a reference on the timelines and still
+   * use the list held by the master clock because the do_tick()
+   * might result in the creation of a new timeline, which gets
+   * added at the end of the list with no reference increase and
+   * thus gets disposed at the end of the iteration.
+   *
+   * this implies that a newly added timeline will not be advanced
+   * by this clock iteration, which is perfectly fine since we're
+   * in its first cycle.
+   *
+   * we also cannot steal the master clock timelines list because
+   * a timeline might be removed as the direct result of do_tick()
+   * and remove_timeline() would not find the timeline, failing
+   * and leaving a dangling pointer behind.
+   */
+  timelines = g_slist_copy (master_clock->timelines);
+  g_slist_foreach (timelines, (GFunc) g_object_ref, NULL);
 
-      clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
-    }
+  for (l = timelines; l != NULL; l = l->next)
+    clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
+
+  g_slist_foreach (timelines, (GFunc) g_object_unref, NULL);
+  g_slist_free (timelines);
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, master_timeline_advance);
-
-  g_slist_foreach (master_clock->timelines, (GFunc) g_object_unref, NULL);
 }
 
 /**

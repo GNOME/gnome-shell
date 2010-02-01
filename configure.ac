@@ -12,7 +12,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [1])
-m4_define([clutter_micro_version], [5])
+m4_define([clutter_micro_version], [7])
 
 m4_define([clutter_release_status],
           [m4_if(m4_eval(clutter_micro_version % 2), [1], [git],
@@ -56,7 +56,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
-AM_INIT_AUTOMAKE([1.9.6 foreign])
+AM_INIT_AUTOMAKE([1.9.6 foreign -Wno-portability no-define])
 
 CLUTTER_MAJOR_VERSION=clutter_major_version
 CLUTTER_MINOR_VERSION=clutter_minor_version
@@ -157,7 +157,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
 
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
@@ -202,7 +202,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                   use_gles2_wrapper=yes
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
                   AC_CHECK_HEADERS([EGL/egl.h],
                                    [],
@@ -216,7 +216,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                   clutter_gl_header="GLES/gl.h"
                   COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
@@ -364,10 +364,17 @@ AS_CASE([$CLUTTER_WINSYS],
           WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
           WIN32_LIBS="-lopengl32 -lgdi32 -lwinmm"
           CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
+
+          AC_CHECK_TOOL(WINDRES, windres, no)
+          if test "$WINDRES" = no; then
+             AC_MSG_ERROR([*** windres is required])
+          fi
         ],
 
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, sdl, osx, win32, eglx, eglnative or fruity])]
 )
+
+AM_CONDITIONAL(WINSYS_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 
 # at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
@@ -689,32 +696,49 @@ AS_CASE([$enable_cogl_debug],
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
 
+dnl === Conformance test suite ================================================
+
+AC_ARG_ENABLE([conformance],
+              [AC_HELP_STRING([--enable-conformance=@<:@no/yes@:>@],
+                              [Build conformance test suite @<:@default=yes@:>@])],
+              [],
+              [enable_conformance=yes])
+
+AM_CONDITIONAL([BUILD_TESTS], [test "x$enable_conformance" = "xyes"])
+
+dnl === Profiling =============================================================
+
 m4_define([profile_default], [no])
 AC_ARG_ENABLE(profile,
               AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
                              [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
-	      [],
+              [],
               [enable_profile=profile_default])
 
 AS_CASE([$enable_profile],
 
-	[yes], [
-            if test "x$GCC" = "xyes"; then
-              PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
-              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
-              CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
-              if test "x$enable_debug" = "xyes"; then
-                  CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"
-              fi
-            else
-              AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
-            fi
-	],
-	[no], [
-	    CLUTTER_PROFILE_CFLAGS=""
-	    CLUTTER_PROFILE_LDFLAGS=""
-	],
-	[*],   [AC_MSG_ERROR([Invalid value for --enable-profile])]
+        [yes],
+        [
+          AS_IF([test "x$GCC" = "xyes"],
+                [
+                  PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
+                  CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+                  CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
+
+                  AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
+                ],
+                [
+                  AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
+                ])
+        ],
+
+        [no],
+        [
+          CLUTTER_PROFILE_CFLAGS=""
+          CLUTTER_PROFILE_LDFLAGS=""
+        ],
+
+        [*], [AC_MSG_ERROR([Invalid value for --enable-profile])]
 )
 AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
 AC_SUBST(CLUTTER_PROFILE_CFLAGS)
@@ -735,15 +759,20 @@ and gcov)])],
 
 AS_IF([test "x$enable_gcov" = "xyes" && test "x$GCC" = "xyes"],
       [
+        AS_IF([test "x$enable_conformance" = "xno"],
+              [AC_MSG_WARN([Conformance test suite is disabled, the coverage report will be incomplete])],
+              [AC_MSG_RESULT([yes])]
+        )
+
         GCOV_CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage"
         GCOV_LDFLAGS="-lgcov"
-      ]
+      ],
+      [AC_MSG_RESULT([no])]
 )
 
 AM_CONDITIONAL([GCOV_ENABLED], [test "x$enable_gcov" = "xyes"])
 AC_SUBST([GCOV_CFLAGS])
 AC_SUBST([GCOV_LDFLAGS])
-AC_MSG_RESULT([$enable_gcov])
 
 dnl === Enable strict compiler flags ==========================================
 
@@ -849,11 +878,11 @@ GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 dnl ===========================================================================
 
 m4_ifdef([AM_SILENT_RULES],
-	 [
+         [
            AM_SILENT_RULES([yes])
            use_shave=no
          ],
-	 [
+         [
            SHAVE_INIT([build/autotools], [enable])
            AC_CONFIG_FILES([
                 build/autotools/shave
@@ -868,6 +897,7 @@ AC_CONFIG_FILES([
         Makefile
         build/Makefile
         build/autotools/Makefile
+        build/mingw/Makefile
         clutter/Makefile
         clutter/clutter-version.h
         clutter/clutter-json.h
@@ -945,7 +975,7 @@ echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${en
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Build test suite: ${enable_glibtest}"
+echo "        Build conformance test suite: ${enable_conformance}"
 
 if test "x$have_json" = "xyes"; then
 echo "        JSON-GLib: system"

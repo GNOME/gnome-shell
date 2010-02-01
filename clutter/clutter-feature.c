@@ -25,9 +25,16 @@
 
 /**
  * SECTION:clutter-feature
- * @short_description: Query GL features at runtime
+ * @short_description: Run-time detection of Clutter features
  *
- * Functions to query available GL features ay runtime
+ * Parts of Clutter depend on the underlying platform, including the
+ * capabilities of the backend used and the OpenGL features exposed through the
+ * Clutter and COGL API.
+ *
+ * It is possible to ask whether Clutter has support for specific features at
+ * run-time.
+ *
+ * See also cogl_get_features() and #CoglFeatureFlags
  */
 
 #ifdef HAVE_CONFIG_H

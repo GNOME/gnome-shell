@@ -298,13 +298,12 @@ main (int argc, char *argv[])
   ClutterBehaviour *behave;
   ClutterAlpha     *alpha;
   ClutterActor     *stage, *actor;
-  GdkPixbuf        *pixbuf;
 
   clutter_init (&amp;argc, &amp;argv);
 
   stage = clutter_stage_get_default ();
 
-  actor = clutter_texture_new_from_file ("ohpowers.png, NULL);
+  actor = clutter_texture_new_from_file ("ohpowers.png", NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
 
   /* set up the animation to be 4 seconds long */
@@ -315,7 +314,7 @@ main (int argc, char *argv[])
    * alpha will take a reference on the timeline so we can safely
    * release the reference we hold
    */
-  alpha = clutter_alpha_new_full (timeline, CLUTTER_EASE_SINE_IN_OUT);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_EASE_IN_OUT_SINE);
   g_object_unref (timeline);
 
   /* the behaviour will own the alpha by sinking its floating
@@ -385,9 +384,9 @@ main (int argc, char *argv[])
       position and a new set of coordinates. The animation takes 200
       milliseconds to complete and uses a linear progression.</para>
       <programlisting>
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 200
-                         "x", 200,
-                         "y", 200,
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 200,
+                         "x", 200.0f,
+                         "y", 200.0f,
                          NULL);
       </programlisting>
     </example>

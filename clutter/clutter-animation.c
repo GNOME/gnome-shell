@@ -201,7 +201,10 @@ on_actor_dispose (gpointer  user_data,
   ClutterAnimation *self = user_data;
 
   if (self->priv->object == actor_pointer)
-    g_object_unref (self);
+    {
+      CLUTTER_NOTE (ANIMATION, "Object [%p] was unref'd", actor_pointer);
+      g_object_unref (self);
+    }
 }
 
 
@@ -219,6 +222,7 @@ clutter_animation_real_completed (ClutterAnimation *self)
   direction = clutter_timeline_get_direction (timeline);
 
   /* explicitly set the final state of the animation */
+  CLUTTER_NOTE (ANIMATION, "Set final state on object [%p]", priv->object);
   g_hash_table_iter_init (&iter, priv->properties);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
@@ -245,8 +249,14 @@ clutter_animation_real_completed (ClutterAnimation *self)
   animation = g_object_get_qdata (priv->object, quark_object_animation);
   if (animation == self)
     {
+      CLUTTER_NOTE (ANIMATION, "Unsetting animation for actor [%p]",
+                    priv->object);
+
       g_object_set_qdata (priv->object, quark_object_animation, NULL);
       g_object_weak_unref (priv->object, on_actor_dispose, self);
+
+      CLUTTER_NOTE (ANIMATION, "Releasing the reference Animation [%p]",
+                    animation);
       g_object_unref (animation);
     }
 }
@@ -256,7 +266,9 @@ clutter_animation_finalize (GObject *gobject)
 {
   ClutterAnimationPrivate *priv = CLUTTER_ANIMATION (gobject)->priv;
 
-  CLUTTER_NOTE (ANIMATION, "Destroying properties hash table");
+  CLUTTER_NOTE (ANIMATION,
+                "Destroying properties table for Animation [%p]",
+                gobject);
   g_hash_table_destroy (priv->properties);
 
   G_OBJECT_CLASS (clutter_animation_parent_class)->finalize (gobject);
@@ -444,7 +456,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   gobject_class->finalize = clutter_animation_finalize;
 
   /**
-   * ClutterAnimation:objct:
+   * ClutterAnimation:object:
    *
    * The #GObject to which the animation applies.
    *
@@ -629,6 +641,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
   ClutterAnimationPrivate *priv;
   GObjectClass *klass;
   GParamSpec *pspec;
+  GType pspec_type;
 
   priv = animation->priv;
 
@@ -667,14 +680,17 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
       return NULL;
     }
 
-  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec), argtype))
+  pspec_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+  if (!g_value_type_compatible (argtype, pspec_type) ||
+      !g_value_type_transformable (argtype, pspec_type))
     {
       g_warning ("Cannot bind property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
                  g_type_name (argtype),
-                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+                 g_type_name (pspec_type));
       return NULL;
     }
 
@@ -846,6 +862,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   ClutterAnimationPrivate *priv;
   GObjectClass *klass;
   GParamSpec *pspec;
+  GType pspec_type, int_type;
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
   g_return_if_fail (property_name != NULL);
@@ -872,15 +889,18 @@ clutter_animation_update_interval (ClutterAnimation *animation,
       return;
     }
 
-  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                clutter_interval_get_value_type (interval)))
+  pspec_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+  int_type = clutter_interval_get_value_type (interval);
+
+  if (!g_value_type_compatible (int_type, pspec_type) ||
+      !g_value_type_transformable (int_type, pspec_type))
     {
       g_warning ("Cannot update property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
-                 g_type_name (clutter_interval_get_value_type (interval)),
-                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+                 g_type_name (int_type),
+                 g_type_name (pspec_type));
       return;
     }
 
@@ -906,6 +926,7 @@ clutter_animation_update (ClutterAnimation *animation,
 {
   ClutterAnimationPrivate *priv;
   ClutterInterval *interval;
+  GType int_type;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -923,14 +944,16 @@ clutter_animation_update (ClutterAnimation *animation,
       return NULL;
     }
 
-  if (!g_value_type_compatible (G_VALUE_TYPE (final),
-                                clutter_interval_get_value_type (interval)))
+  int_type = clutter_interval_get_value_type (interval);
+
+  if (!g_value_type_compatible (G_VALUE_TYPE (final), int_type) ||
+      !g_value_type_transformable (G_VALUE_TYPE (final), int_type))
     {
       g_warning ("Cannot update property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
-                 g_type_name (clutter_interval_get_value_type (interval)),
+                 g_type_name (int_type),
                  g_type_name (G_VALUE_TYPE (final)));
       return NULL;
     }
@@ -1221,6 +1244,8 @@ clutter_animation_set_mode (ClutterAnimation *animation,
   g_object_freeze_notify (G_OBJECT (animation));
 
   alpha = clutter_animation_get_alpha_internal (animation);
+  g_assert (CLUTTER_IS_ALPHA (alpha));
+
   clutter_alpha_set_mode (alpha, mode);
 
   g_object_notify (G_OBJECT (animation), "mode");
@@ -1274,6 +1299,8 @@ clutter_animation_set_duration (ClutterAnimation *animation,
   g_object_freeze_notify (G_OBJECT (animation));
 
   timeline = clutter_animation_get_timeline_internal (animation);
+  g_assert (CLUTTER_IS_TIMELINE (timeline));
+
   clutter_timeline_set_duration (timeline, msecs);
   clutter_timeline_rewind (timeline);
 
@@ -1634,35 +1661,37 @@ clutter_animation_setup_property (ClutterAnimation *animation,
    */
   if (!g_type_is_a (G_VALUE_TYPE (value), G_VALUE_TYPE (&real_value)))
     {
-      if (!g_value_type_compatible (G_VALUE_TYPE (value),
-                                    G_VALUE_TYPE (&real_value)) &&
-          !g_value_type_compatible (G_VALUE_TYPE (&real_value),
-                                    G_VALUE_TYPE (value)))
+      /* are these two types compatible (can be directly copied)? */
+      if (g_value_type_compatible (G_VALUE_TYPE (value),
+                                   G_VALUE_TYPE (&real_value)))
         {
-          g_warning ("%s: Unable to convert from %s to %s for "
-                     "the property '%s' of object %s",
-                     G_STRLOC,
-                     g_type_name (G_VALUE_TYPE (value)),
-                     g_type_name (G_VALUE_TYPE (&real_value)),
-                     property_name,
-                     G_OBJECT_TYPE_NAME (priv->object));
-          g_value_unset (&real_value);
-          return;
+          g_value_copy (value, &real_value);
+          goto done;
         }
 
-      if (!g_value_transform (value, &real_value))
+      /* are these two type transformable? */
+      if (g_value_type_transformable (G_VALUE_TYPE (value),
+                                      G_VALUE_TYPE (&real_value)))
         {
-          g_warning ("%s: Unable to transform from %s to %s",
-                     G_STRLOC,
-                     g_type_name (G_VALUE_TYPE (value)),
-                     g_type_name (G_VALUE_TYPE (&real_value)));
-          g_value_unset (&real_value);
-          return;
+          if (g_value_transform (value, &real_value))
+            goto done;
         }
+
+      /* if not compatible and not transformable then we can't do much */
+      g_warning ("%s: Unable to convert from %s to %s for "
+                 "the property '%s' of object %s",
+                 G_STRLOC,
+                 g_type_name (G_VALUE_TYPE (value)),
+                 g_type_name (G_VALUE_TYPE (&real_value)),
+                 property_name,
+                 G_OBJECT_TYPE_NAME (priv->object));
+      g_value_unset (&real_value);
+      return;
     }
   else
     g_value_copy (value, &real_value);
 
+done:
   /* create an interval and bind it to the property, in case
    * it's not a fixed property, otherwise just set it
    */

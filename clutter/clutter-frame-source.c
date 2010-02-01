@@ -39,24 +39,25 @@ struct _ClutterFrameSource
   ClutterTimeoutInterval timeout;
 };
 
-static gboolean clutter_frame_source_prepare  (GSource *source, gint *timeout);
-static gboolean clutter_frame_source_check    (GSource *source);
-static gboolean clutter_frame_source_dispatch (GSource    *source,
-					       GSourceFunc callback,
-					       gpointer    user_data);
+static gboolean clutter_frame_source_prepare  (GSource     *source,
+                                               gint        *timeout);
+static gboolean clutter_frame_source_check    (GSource     *source);
+static gboolean clutter_frame_source_dispatch (GSource     *source,
+                                               GSourceFunc  callback,
+                                               gpointer     user_data);
 
 static GSourceFuncs clutter_frame_source_funcs =
-  {
-    clutter_frame_source_prepare,
-    clutter_frame_source_check,
-    clutter_frame_source_dispatch,
-    NULL
-  };
+{
+  clutter_frame_source_prepare,
+  clutter_frame_source_check,
+  clutter_frame_source_dispatch,
+  NULL
+};
 
 /**
  * clutter_frame_source_add_full:
  * @priority: the priority of the frame source. Typically this will be in the
- *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ *   range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function
@@ -131,7 +132,8 @@ clutter_frame_source_add (guint          fps,
 }
 
 static gboolean
-clutter_frame_source_prepare (GSource *source, gint *delay)
+clutter_frame_source_prepare (GSource *source,
+                              gint    *delay)
 {
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
   GTimeVal current_time;

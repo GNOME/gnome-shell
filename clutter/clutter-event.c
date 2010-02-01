@@ -787,39 +787,3 @@ clutter_get_current_event (void)
 
   return context->current_event;
 }
-
-/**
- * clutter_input_device_get_device_type:
- * @device: a #ClutterInputDevice
- *
- * Retrieves the type of @device
- *
- * Return value: the type of the device
- *
- * Since: 1.0
- */
-ClutterInputDeviceType
-clutter_input_device_get_device_type (ClutterInputDevice *device)
-{
-  g_return_val_if_fail (device != NULL, CLUTTER_POINTER_DEVICE);
-
-  return device->device_type;
-}
-
-/**
- * clutter_input_device_get_device_id:
- * @device: a #ClutterInputDevice
- *
- * Retrieves the unique identifier of @device
- *
- * Return value: the identifier of the device
- *
- * Since: 1.0
- */
-gint
-clutter_input_device_get_device_id (ClutterInputDevice *device)
-{
-  g_return_val_if_fail (device != NULL, -1);
-
-  return device->id;
-}

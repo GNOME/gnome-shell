@@ -201,9 +201,13 @@ get_modifier_state (WPARAM wparam)
   return ret;
 }
 
-static void
-make_button_event (const MSG *msg, ClutterEvent *event,
-		   int button, int click_count, gboolean release)
+static inline void
+make_button_event (const MSG *msg,
+                   ClutterEvent *event,
+		   int button,
+                   int click_count,
+                   gboolean release,
+                   ClutterInputDevice *device)
 {
   event->type = release ? CLUTTER_BUTTON_RELEASE : CLUTTER_BUTTON_PRESS;
   event->button.time = msg->time;
@@ -212,6 +216,7 @@ make_button_event (const MSG *msg, ClutterEvent *event,
   event->button.modifier_state = get_modifier_state (msg->wParam);
   event->button.button = button;
   event->button.click_count = click_count;
+  event->button.device = device;
 }
 
 /**
@@ -326,11 +331,11 @@ message_translate (ClutterBackend *backend,
 		   const MSG      *msg,
 		   gboolean       *call_def_window_proc)
 {
-  ClutterBackendWin32 *backend_win32;
-  ClutterStageWin32   *stage_win32;
-  ClutterStage        *stage;
-  ClutterStageWindow  *impl;
-  gboolean            res;
+  ClutterBackendWin32  *backend_win32;
+  ClutterStageWin32    *stage_win32;
+  ClutterStage         *stage;
+  ClutterStageWindow   *impl;
+  gboolean              res;
 
   backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
 
@@ -429,39 +434,39 @@ message_translate (ClutterBackend *backend,
       break;
 
     case WM_LBUTTONDOWN:
-      make_button_event (msg, event, 1, 1, FALSE);
+      make_button_event (msg, event, 1, 1, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_MBUTTONDOWN:
-      make_button_event (msg, event, 2, 1, FALSE);
+      make_button_event (msg, event, 2, 1, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_RBUTTONDOWN:
-      make_button_event (msg, event, 3, 1, FALSE);
+      make_button_event (msg, event, 3, 1, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_LBUTTONUP:
-      make_button_event (msg, event, 1, 1, TRUE);
+      make_button_event (msg, event, 1, 1, TRUE, backend_win32->core_pointer);
       break;
 
     case WM_MBUTTONUP:
-      make_button_event (msg, event, 2, 1, TRUE);
+      make_button_event (msg, event, 2, 1, TRUE, backend_win32->core_pointer);
       break;
 
     case WM_RBUTTONUP:
-      make_button_event (msg, event, 3, 1, TRUE);
+      make_button_event (msg, event, 3, 1, TRUE, backend_win32->core_pointer);
       break;
 
     case WM_LBUTTONDBLCLK:
-      make_button_event (msg, event, 1, 2, FALSE);
+      make_button_event (msg, event, 1, 2, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_MBUTTONDBLCLK:
-      make_button_event (msg, event, 2, 2, FALSE);
+      make_button_event (msg, event, 2, 2, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_RBUTTONDBLCLK:
-      make_button_event (msg, event, 3, 2, FALSE);
+      make_button_event (msg, event, 3, 2, FALSE, backend_win32->core_pointer);
       break;
 
     case WM_MOUSEWHEEL:
@@ -469,8 +474,8 @@ message_translate (ClutterBackend *backend,
 
       event->type = CLUTTER_SCROLL;
       event->scroll.time = msg->time;
-      event->scroll.modifier_state
-	= get_modifier_state (LOWORD (msg->wParam));
+      event->scroll.modifier_state = get_modifier_state (LOWORD (msg->wParam));
+      event->scroll.device = backend_win32->core_pointer;
 
       /* conversion to window coordinates is required */
       {
@@ -500,7 +505,9 @@ message_translate (ClutterBackend *backend,
       event->motion.x = GET_X_LPARAM (msg->lParam);
       event->motion.y = GET_Y_LPARAM (msg->lParam);
       event->motion.modifier_state = get_modifier_state (msg->wParam);
-      /* We need to start tracking when the mouse leaves the stage if
+      event->motion.device = backend_win32->core_pointer;
+
+      /* We need to start tracking when the mouse enters the stage if
          we're not already */
       if (!stage_win32->tracking_mouse)
         {
@@ -511,6 +518,9 @@ message_translate (ClutterBackend *backend,
           tmevent.hwndTrack = stage_win32->hwnd;
           TrackMouseEvent (&tmevent);
 
+          /* we entered the stage */
+          _clutter_input_device_set_stage (event->motion.device, stage);
+
           stage_win32->tracking_mouse = TRUE;
         }
       break;
@@ -520,6 +530,10 @@ message_translate (ClutterBackend *backend,
       event->crossing.time = msg->time;
       event->crossing.x = msg->pt.x;
       event->crossing.y = msg->pt.y;
+      event->crossing.device = backend_win32->core_pointer;
+
+      /* we left the stage */
+      _clutter_input_device_set_stage (event->crossing.device, NULL);
 
       /* When we get a leave message the mouse tracking is
          automatically cancelled so we'll need to start it again when
@@ -604,6 +618,7 @@ message_translate (ClutterBackend *backend,
 	event->key.time = msg->time;
 	event->key.modifier_state = get_key_modifier_state (key_states);
 	event->key.hardware_keycode = scan_code;
+        event->key.device = backend_win32->core_keyboard;
       }
       break;
 
@@ -614,6 +629,20 @@ message_translate (ClutterBackend *backend,
 	if (call_def_window_proc)
 	  *call_def_window_proc = FALSE;
       }
+      break;
+
+    case WM_SETCURSOR:
+      /* If the cursor is in the window's client area and the stage's
+         cursor should be invisible then we'll set a blank cursor
+         instead */
+      if (LOWORD (msg->lParam) == HTCLIENT && !stage_win32->is_cursor_visible)
+        {
+          if (call_def_window_proc)
+            *call_def_window_proc = FALSE;
+          _clutter_stage_win32_update_cursor (stage_win32);
+        }
+
+      res = FALSE;
       break;
 
     default:

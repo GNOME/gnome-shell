@@ -69,6 +69,7 @@
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
 #include "clutter-profile.h"
+#include "clutter-input-device.h"
 
 #include "cogl/cogl.h"
 
@@ -113,7 +114,8 @@ enum
   PROP_USER_RESIZE,
   PROP_USE_FOG,
   PROP_FOG,
-  PROP_USE_ALPHA
+  PROP_USE_ALPHA,
+  PROP_KEY_FOCUS
 };
 
 enum
@@ -454,6 +456,7 @@ _clutter_stage_queue_event (ClutterStage *stage,
 {
   ClutterStagePrivate *priv;
   gboolean first_event;
+  ClutterInputDevice *device;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -461,13 +464,30 @@ _clutter_stage_queue_event (ClutterStage *stage,
 
   first_event = priv->event_queue->length == 0;
 
-  g_queue_push_tail (priv->event_queue,
-		     clutter_event_copy (event));
+  g_queue_push_tail (priv->event_queue, clutter_event_copy (event));
 
   if (first_event)
     {
       ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
       _clutter_master_clock_start_running (master_clock);
+    }
+
+  /* if needed, update the state of the input device of the event.
+   * we do it here to avoid calling the same code from every backend
+   * event processing function
+   */
+  device = clutter_event_get_device (event);
+  if (device != NULL)
+    {
+      ClutterModifierType event_state = clutter_event_get_state (event);
+      guint32 event_time = clutter_event_get_time (event);
+      gfloat event_x, event_y;
+
+      clutter_event_get_coords (event, &event_x, &event_y);
+
+      _clutter_input_device_set_coords (device, event_x, event_y);
+      _clutter_input_device_set_state (device, event_state);
+      _clutter_input_device_set_time (device, event_time);
     }
 }
 
@@ -487,7 +507,7 @@ void
 _clutter_stage_process_queued_events (ClutterStage *stage)
 {
   ClutterStagePrivate *priv;
-  GList *events, *l;;
+  GList *events, *l;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -506,7 +526,7 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
   priv->event_queue->tail = NULL;
   priv->event_queue->length = 0;
 
-  for (l = events; l; l = l->next)
+  for (l = events; l != NULL; l = l->next)
     {
       ClutterEvent *event;
       ClutterEvent *next_event;
@@ -694,6 +714,10 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_use_alpha (stage, g_value_get_boolean (value));
       break;
 
+    case PROP_KEY_FOCUS:
+      clutter_stage_set_key_focus (stage, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -748,6 +772,10 @@ clutter_stage_get_property (GObject    *gobject,
 
     case PROP_USE_ALPHA:
       g_value_set_boolean (value, priv->use_alpha);
+      break;
+
+    case PROP_KEY_FOCUS:
+      g_value_set_object (value, priv->key_focused_actor);
       break;
 
     default:
@@ -993,6 +1021,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_ALPHA, pspec);
+
+  /**
+   * ClutterStage:key-focus:
+   *
+   * The #ClutterActor that will receive key events from the underlying
+   * windowing system.
+   *
+   * If %NULL, the #ClutterStage will receive the events.
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_object ("key-focus",
+                               "Key Focus",
+                               "The currently key focused actor",
+                               CLUTTER_TYPE_ACTOR,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_KEY_FOCUS, pspec);
 
   /**
    * ClutterStage::fullscreen
@@ -1749,6 +1794,8 @@ clutter_stage_set_key_focus (ClutterStage *stage,
     }
   else
     g_signal_emit_by_name (stage, "key-focus-in");
+
+  g_object_notify (G_OBJECT (stage), "key-focus");
 }
 
 /**

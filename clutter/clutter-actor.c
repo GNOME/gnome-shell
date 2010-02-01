@@ -308,6 +308,7 @@ struct _ClutterActorPrivate
   guint clip_to_allocation          : 1;
   guint enable_model_view_transform : 1;
   guint enable_paint_unmapped       : 1;
+  guint has_pointer                 : 1;
 
   gfloat clip[4];
 
@@ -429,7 +430,8 @@ enum
 
   PROP_SHOW_ON_SET_PARENT,
 
-  PROP_TEXT_DIRECTION
+  PROP_TEXT_DIRECTION,
+  PROP_HAS_POINTER
 };
 
 enum
@@ -2581,7 +2583,7 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_OPACITY:
-      clutter_actor_set_opacity (actor, g_value_get_uchar (value));
+      clutter_actor_set_opacity (actor, g_value_get_uint (value));
       break;
 
     case PROP_NAME:
@@ -2864,7 +2866,7 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_OPACITY:
-      g_value_set_uchar (value, priv->opacity);
+      g_value_set_uint (value, priv->opacity);
       break;
 
     case PROP_NAME:
@@ -3029,6 +3031,10 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_TEXT_DIRECTION:
       g_value_set_enum (value, priv->text_direction);
+      break;
+
+    case PROP_HAS_POINTER:
+      g_value_set_boolean (value, priv->has_pointer);
       break;
 
     default:
@@ -3462,15 +3468,15 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:opacity:
    *
-   * Opacity of the actor, between 0 (fully transparent) and
+   * Opacity of an actor, between 0 (fully transparent) and
    * 255 (fully opaque)
    */
-  pspec = g_param_spec_uchar ("opacity",
-                              "Opacity",
-                              "Opacity of actor",
-                              0, 255,
-                              255,
-                              CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_uint ("opacity",
+                             "Opacity",
+                             "Opacity of an actor",
+                             0, 255,
+                             255,
+                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_OPACITY, pspec);
 
   /**
@@ -3856,6 +3862,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class,
                                    PROP_TEXT_DIRECTION,
+                                   pspec);
+
+  /**
+   * ClutterActor:has-pointer:
+   *
+   * Whether the actor contains the pointer of a #ClutterInputDevice
+   * or not.
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("has-pointer",
+                                "Has Pointer",
+                                "Whether the actor contains the pointer "
+                                "of an input device",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (object_class,
+                                   PROP_HAS_POINTER,
                                    pspec);
 
   /**
@@ -9638,6 +9662,20 @@ clutter_actor_set_text_direction (ClutterActor         *self,
     }
 }
 
+void
+_clutter_actor_set_has_pointer (ClutterActor *self,
+                                gboolean      has_pointer)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->has_pointer != has_pointer)
+    {
+      priv->has_pointer = has_pointer;
+
+      g_object_notify (G_OBJECT (self), "has-pointer");
+    }
+}
+
 /**
  * clutter_actor_get_text_direction:
  * @self: a #ClutterActor
@@ -9747,4 +9785,24 @@ clutter_actor_pop_internal (void)
     }
 
   ctx->internal_child -= 1;
+}
+
+/**
+ * clutter_actor_has_pointer:
+ * @self: a #ClutterActor
+ *
+ * Checks whether an actor contains the the pointer of a
+ * #ClutterInputDevice
+ *
+ * Return value: %TRUE if the actor contains the pointer, and
+ *   %FALSE otherwise
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_actor_has_pointer (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return self->priv->has_pointer;
 }

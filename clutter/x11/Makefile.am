@@ -43,6 +43,8 @@ libclutter_x11_la_SOURCES = \
 	clutter-backend-x11.h \
 	clutter-backend-x11.c \
 	clutter-event-x11.c \
+	clutter-input-device-x11.h \
+	clutter-input-device-x11.c \
 	clutter-stage-x11.h \
 	clutter-stage-x11.c \
 	clutter-x11-enum-types.h \

@@ -80,6 +80,8 @@ LRESULT CALLBACK _clutter_stage_win32_window_proc (HWND hwnd,
 void _clutter_stage_win32_get_min_max_info (ClutterStageWin32 *stage_win32,
 					    MINMAXINFO *min_max_info);
 
+void _clutter_stage_win32_update_cursor (ClutterStageWin32 *stage_win32);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

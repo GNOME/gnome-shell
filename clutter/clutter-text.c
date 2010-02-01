@@ -260,6 +260,7 @@ clutter_text_clear_selection (ClutterText *self)
   if (priv->selection_bound != priv->position)
     {
       priv->selection_bound = priv->position;
+      g_object_notify (G_OBJECT (self), "selection-bound");
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
     }
 }
@@ -803,6 +804,7 @@ clutter_text_delete_selection (ClutterText *self)
   priv->position = start_index;
   priv->selection_bound = start_index;
 
+  /* Not required to be guarded by g_object_freeze/thaw_notify */
   if (priv->position != old_position)
     g_object_notify (G_OBJECT (self), "position");
 
@@ -810,6 +812,21 @@ clutter_text_delete_selection (ClutterText *self)
     g_object_notify (G_OBJECT (self), "selection-bound");
 
   return TRUE;
+}
+
+/*
+ * Utility function to update both cursor position and selection bound
+ * at once
+ */
+static inline void
+clutter_text_set_positions (ClutterText *self,
+                            gint         new_pos,
+                            gint         new_bound)
+{
+  g_object_freeze_notify (G_OBJECT (self));
+  clutter_text_set_cursor_position (self, new_pos);
+  clutter_text_set_selection_bound (self, new_bound);
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 static inline void
@@ -857,8 +874,7 @@ clutter_text_set_text_internal (ClutterText *self,
 
   if (priv->n_bytes == 0)
     {
-      clutter_text_set_cursor_position (self, -1);
-      clutter_text_set_selection_bound (self, -1);
+      clutter_text_set_positions (self, -1, -1);
     }
 
   clutter_text_dirty_cache (self);
@@ -1493,8 +1509,7 @@ clutter_text_button_press (ClutterActor       *actor,
    */
   if (priv->text == NULL || priv->text[0] == '\0')
     {
-      clutter_text_set_cursor_position (self, -1);
-      clutter_text_set_selection_bound (self, -1);
+      clutter_text_set_positions (self, -1, -1);
 
       return TRUE;
     }
@@ -1519,8 +1534,7 @@ clutter_text_button_press (ClutterActor       *actor,
        */
       if (event->click_count == 1)
         {
-          clutter_text_set_cursor_position (self, offset);
-          clutter_text_set_selection_bound (self, offset);
+          clutter_text_set_positions (self, offset, offset);
         }
       else if (event->click_count == 2)
         {
@@ -1565,8 +1579,7 @@ clutter_text_motion (ClutterActor       *actor,
     clutter_text_set_cursor_position (self, offset);
   else
     {
-      clutter_text_set_cursor_position (self, offset);
-      clutter_text_set_selection_bound (self, offset);
+      clutter_text_set_positions (self, offset, offset);
     }
 
   return TRUE;
@@ -1896,6 +1909,8 @@ clutter_text_real_move_left (ClutterText         *self,
 
   len = priv->n_chars;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (pos != 0 && len != 0)
     {
       if (modifiers & CLUTTER_CONTROL_MASK)
@@ -1919,6 +1934,8 @@ clutter_text_real_move_left (ClutterText         *self,
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
 
+  g_object_thaw_notify (G_OBJECT (self));
+
   return TRUE;
 }
 
@@ -1934,6 +1951,8 @@ clutter_text_real_move_right (ClutterText         *self,
   gint len;
 
   len = priv->n_chars;
+
+  g_object_freeze_notify (G_OBJECT (self));
 
   if (pos != -1 && len !=0)
     {
@@ -1954,6 +1973,8 @@ clutter_text_real_move_right (ClutterText         *self,
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
 
+  g_object_thaw_notify (G_OBJECT (self));
+
   return TRUE;
 }
 
@@ -1969,6 +1990,8 @@ clutter_text_real_move_up (ClutterText         *self,
   gint line_no;
   gint index_, trailing;
   gint x;
+
+  g_object_freeze_notify (G_OBJECT (self));
 
   layout = clutter_text_get_layout (self);
 
@@ -2007,6 +2030,8 @@ clutter_text_real_move_up (ClutterText         *self,
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
 
+  g_object_thaw_notify (G_OBJECT (self));
+
   return TRUE;
 }
 
@@ -2022,6 +2047,8 @@ clutter_text_real_move_down (ClutterText         *self,
   gint line_no;
   gint index_, trailing;
   gint x;
+
+  g_object_freeze_notify (G_OBJECT (self));
 
   layout = clutter_text_get_layout (self);
 
@@ -2056,6 +2083,8 @@ clutter_text_real_move_down (ClutterText         *self,
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
 
+  g_object_thaw_notify (G_OBJECT (self));
+
   return TRUE;
 }
 
@@ -2068,11 +2097,15 @@ clutter_text_real_line_start (ClutterText         *self,
   ClutterTextPrivate *priv = self->priv;
   gint position;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   position = clutter_text_move_line_start (self, priv->position);
   clutter_text_set_cursor_position (self, position);
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
+
+  g_object_thaw_notify (G_OBJECT (self));
 
   return TRUE;
 }
@@ -2086,11 +2119,15 @@ clutter_text_real_line_end (ClutterText         *self,
   ClutterTextPrivate *priv = self->priv;
   gint position;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   position = clutter_text_move_line_end (self, priv->position);
   clutter_text_set_cursor_position (self, position);
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
+
+  g_object_thaw_notify (G_OBJECT (self));
 
   return TRUE;
 }
@@ -2101,8 +2138,7 @@ clutter_text_real_select_all (ClutterText         *self,
                               guint                keyval,
                               ClutterModifierType  modifiers)
 {
-  clutter_text_set_cursor_position (self, 0);
-  clutter_text_set_selection_bound (self, self->priv->n_chars);
+  clutter_text_set_positions (self, 0, self->priv->n_chars);
 
   return TRUE;
 }
@@ -2151,15 +2187,13 @@ clutter_text_real_del_prev (ClutterText         *self,
         {
           clutter_text_delete_text (self, len - 1, len);
 
-          clutter_text_set_cursor_position (self, -1);
-          clutter_text_set_selection_bound (self, -1);
+          clutter_text_set_positions (self, -1, -1);
         }
       else
         {
           clutter_text_delete_text (self, pos - 1, pos);
 
-          clutter_text_set_cursor_position (self, pos - 1);
-          clutter_text_set_selection_bound (self, pos - 1);
+          clutter_text_set_positions (self, pos - 1, pos - 1);
         }
     }
 
@@ -3260,12 +3294,7 @@ clutter_text_set_selection (ClutterText *self,
   start_pos = MIN (priv->n_chars, start_pos);
   end_pos = MIN (priv->n_chars, end_pos);
 
-  g_object_freeze_notify (G_OBJECT (self));
-
-  clutter_text_set_cursor_position (self, start_pos);
-  clutter_text_set_selection_bound (self, end_pos);
-
-  g_object_thaw_notify (G_OBJECT (self));
+  clutter_text_set_positions (self, start_pos, end_pos);
 }
 
 /**
@@ -4349,8 +4378,7 @@ clutter_text_insert_unichar (ClutterText *self,
 
   if (priv->position >= 0)
     {
-      clutter_text_set_cursor_position (self, priv->position + 1);
-      clutter_text_set_selection_bound (self, priv->position);
+      clutter_text_set_positions (self, priv->position + 1, priv->position);
     }
 
   g_string_free (new, TRUE);
@@ -4397,8 +4425,9 @@ clutter_text_insert_text (ClutterText *self,
 
   if (position >= 0 && priv->position >= position)
     {
-      clutter_text_set_cursor_position (self, priv->position + g_utf8_strlen (text, -1));
-      clutter_text_set_selection_bound (self, priv->position);
+      clutter_text_set_positions (self,
+                                  priv->position + g_utf8_strlen (text, -1),
+                                  priv->position);
     }
 
   g_string_free (new, TRUE);

@@ -48,7 +48,12 @@ struct _ClutterBackendWin32
   HGLRC          gl_context;
   gboolean       no_event_retrieval;
 
+  HCURSOR        invisible_cursor;
+
   GSource       *event_source;
+
+  ClutterInputDevice *core_pointer;
+  ClutterInputDevice *core_keyboard;
 };
 
 struct _ClutterBackendWin32Class
@@ -67,6 +72,8 @@ clutter_backend_win32_add_options (ClutterBackend *backend,
 
 ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend);
+
+HCURSOR _clutter_backend_win32_get_invisible_cursor (ClutterBackend *backend);
 
 G_END_DECLS
 

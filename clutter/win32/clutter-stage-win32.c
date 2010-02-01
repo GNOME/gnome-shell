@@ -216,17 +216,51 @@ clutter_stage_win32_set_title (ClutterStageWindow *stage_window,
     SetWindowTextW (stage_win32->hwnd, stage_win32->wtitle);
 }
 
+void
+_clutter_stage_win32_update_cursor (ClutterStageWin32 *stage_win32)
+{
+  HCURSOR cursor;
+
+  if (stage_win32->is_cursor_visible)
+    cursor = (HCURSOR) GetClassLongPtrW (stage_win32->hwnd, GCL_HCURSOR);
+  else
+    {
+      ClutterBackend *backend = clutter_get_default_backend ();
+      /* The documentation implies that we can just use
+         SetCursor(NULL) to get rid of the cursor but apparently this
+         doesn't work very well so instead we create an invisible
+         cursor */
+      cursor = _clutter_backend_win32_get_invisible_cursor (backend);
+    }
+
+  SetCursor (cursor);
+}
+
 static void
 clutter_stage_win32_set_cursor_visible (ClutterStageWindow *stage_window,
                                         gboolean            cursor_visible)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
 
-  if (stage_win32->is_cursor_visible != cursor_visible &&
-      stage_win32->tracking_mouse)
-    ShowCursor (cursor_visible);
+  if (stage_win32->is_cursor_visible != cursor_visible)
+    {
+      POINT cursor_pos;
+      RECT client_rect;
 
-  stage_win32->is_cursor_visible = cursor_visible;
+      stage_win32->is_cursor_visible = cursor_visible;
+
+      /* If the cursor is already over the client area of the window
+         then we need to update it immediately */
+      GetCursorPos (&cursor_pos);
+      if (WindowFromPoint (cursor_pos) == stage_win32->hwnd &&
+          ScreenToClient (stage_win32->hwnd, &cursor_pos) &&
+          GetClientRect (stage_win32->hwnd, &client_rect) &&
+          cursor_pos.x >= client_rect.left &&
+          cursor_pos.y >= client_rect.top &&
+          cursor_pos.x < client_rect.right &&
+          cursor_pos.y < client_rect.bottom)
+        _clutter_stage_win32_update_cursor (stage_win32);
+    }
 }
 
 static LONG
@@ -442,7 +476,7 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
           win_xpos = stage_win32->fullscreen_rect.left;
           win_ypos = stage_win32->fullscreen_rect.top;
           win_width = stage_win32->fullscreen_rect.right - win_xpos;
-          win_height = stage_win32->fullscreen_rect.left - win_ypos;
+          win_height = stage_win32->fullscreen_rect.bottom - win_ypos;
         }
       else
         {

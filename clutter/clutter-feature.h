@@ -25,14 +25,6 @@
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
 
-/**
- * SECTION:clutter-main
- * @short_description: Various 'global' clutter functions.
- *
- * Functions to retrieve various global Clutter resources and other utility
- * functions for mainloops, events and threads
- */
-
 #ifndef __CLUTTER_FEATURE_H__
 #define __CLUTTER_FEATURE_H__
 
