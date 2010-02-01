@@ -275,42 +275,43 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
                                   CoglTextureFlags flags,
                                   CoglPixelFormat  internal_format)
 {
-  CoglTexture2D         *tex_2d;
-  CoglBitmap            *bmp = (CoglBitmap *)bmp_handle;
-  CoglTextureUploadData  upload_data;
+  CoglTexture2D *tex_2d;
+  CoglBitmap    *bmp = (CoglBitmap *)bmp_handle;
+  CoglBitmap     dst_bmp;
+  gboolean       dst_bmp_owner;
+  GLenum         gl_intformat;
+  GLenum         gl_format;
+  GLenum         gl_type;
 
   g_return_val_if_fail (bmp_handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
 
-  upload_data.bitmap = *bmp;
-  upload_data.bitmap_owner = FALSE;
+  if (!_cogl_texture_prepare_for_upload (bmp,
+                                         internal_format,
+                                         &internal_format,
+                                         &dst_bmp,
+                                         &dst_bmp_owner,
+                                         &gl_intformat,
+                                         &gl_format,
+                                         &gl_type))
+    return COGL_INVALID_HANDLE;
 
-  if (!_cogl_texture_upload_data_prepare_format (&upload_data,
-                                                 &internal_format) ||
-      !_cogl_texture_2d_can_create (upload_data.bitmap.width,
-                                    upload_data.bitmap.height,
-                                    internal_format) ||
-      !_cogl_texture_upload_data_convert (&upload_data, internal_format))
-    {
-      _cogl_texture_upload_data_free (&upload_data);
-      return COGL_INVALID_HANDLE;
-    }
-
-  tex_2d = _cogl_texture_2d_create_base (upload_data.bitmap.width,
-                                         upload_data.bitmap.height,
+  tex_2d = _cogl_texture_2d_create_base (bmp->width,
+                                         bmp->height,
                                          flags,
-                                         upload_data.bitmap.format);
+                                         internal_format);
 
   GE( glGenTextures (1, &tex_2d->gl_texture) );
   _cogl_texture_driver_upload_to_gl (GL_TEXTURE_2D,
                                      tex_2d->gl_texture,
-                                     &upload_data.bitmap,
-                                     upload_data.gl_intformat,
-                                     upload_data.gl_format,
-                                     upload_data.gl_type);
+                                     &dst_bmp,
+                                     gl_intformat,
+                                     gl_format,
+                                     gl_type);
 
-  tex_2d->gl_format = upload_data.gl_intformat;
+  tex_2d->gl_format = gl_intformat;
 
-  _cogl_texture_upload_data_free (&upload_data);
+  if (dst_bmp_owner)
+    g_free (dst_bmp.data);
 
   return _cogl_texture_2d_handle_new (tex_2d);
 }
@@ -431,12 +432,10 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   CoglTexture2D   *tex_2d = COGL_TEXTURE_2D (tex);
   gint             bpp;
   CoglBitmap       source_bmp;
-  CoglBitmap       temp_bmp;
-  gboolean         source_bmp_owner = FALSE;
-  CoglPixelFormat  closest_format;
+  CoglBitmap       tmp_bmp;
+  gboolean         tmp_bmp_owner = FALSE;
   GLenum           closest_gl_format;
   GLenum           closest_gl_type;
-  gboolean         success;
 
   /* Check for valid format */
   if (format == COGL_PIXEL_FORMAT_ANY)
@@ -456,25 +455,16 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   bpp = _cogl_get_format_bpp (format);
   source_bmp.rowstride = (rowstride == 0) ? width * bpp : rowstride;
 
-  /* Find closest format to internal that's supported by GL */
-  closest_format = _cogl_pixel_format_to_gl (tex_2d->format,
-                                             NULL, /* don't need */
-                                             &closest_gl_format,
-                                             &closest_gl_type);
-
-  /* If no direct match, convert */
-  if (closest_format != format)
-    {
-      /* Convert to required format */
-      success = _cogl_bitmap_convert_format_and_premult (&source_bmp,
-                                                         &temp_bmp,
-                                                         closest_format);
-
-      /* Swap bitmaps if succeeded */
-      if (!success) return FALSE;
-      source_bmp = temp_bmp;
-      source_bmp_owner = TRUE;
-    }
+  /* Prepare the bitmap so that it will do the premultiplication
+     conversion */
+  _cogl_texture_prepare_for_upload (&source_bmp,
+                                    tex_2d->format,
+                                    NULL,
+                                    &tmp_bmp,
+                                    &tmp_bmp_owner,
+                                    NULL,
+                                    &closest_gl_format,
+                                    &closest_gl_type);
 
   /* Send data to GL */
   _cogl_texture_driver_upload_subregion_to_gl (GL_TEXTURE_2D,
@@ -482,13 +472,13 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
                                                src_x, src_y,
                                                dst_x, dst_y,
                                                dst_width, dst_height,
-                                               &source_bmp,
+                                               &tmp_bmp,
                                                closest_gl_format,
                                                closest_gl_type);
 
   /* Free data if owner */
-  if (source_bmp_owner)
-    g_free (source_bmp.data);
+  if (tmp_bmp_owner)
+    g_free (tmp_bmp.data);
 
   return TRUE;
 }

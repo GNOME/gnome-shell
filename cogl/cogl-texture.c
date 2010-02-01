@@ -100,25 +100,71 @@ cogl_texture_unref (CoglHandle handle)
   cogl_handle_unref (handle);
 }
 
-void
-_cogl_texture_upload_data_free (CoglTextureUploadData *data)
+gboolean
+_cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
+                                  CoglPixelFormat  dst_format,
+                                  CoglPixelFormat *dst_format_out,
+                                  CoglBitmap      *dst_bmp,
+                                  gboolean        *copied_bitmap,
+                                  GLenum          *out_glintformat,
+                                  GLenum          *out_glformat,
+                                  GLenum          *out_gltype)
 {
-  if (data->bitmap.data != NULL && data->bitmap_owner)
-    g_free (data->bitmap.data);
+  /* If the application hasn't specified a specific format then we'll
+   * pick the most appropriate. By default Cogl will use a
+   * premultiplied internal format. Later we will add control over
+   * this. */
+  if (dst_format == COGL_PIXEL_FORMAT_ANY)
+    {
+      if ((src_bmp->format & COGL_A_BIT) &&
+          src_bmp->format != COGL_PIXEL_FORMAT_A_8)
+        dst_format = src_bmp->format | COGL_PREMULT_BIT;
+      else
+        dst_format = src_bmp->format;
+    }
 
-  data->bitmap.data = NULL;
-  data->bitmap_owner = FALSE;
-}
+  if (dst_bmp)
+    {
+      *copied_bitmap = FALSE;
+      *dst_bmp = *src_bmp;
 
-void
-_cogl_texture_upload_data_swap_bitmap (CoglTextureUploadData *data,
-                                       CoglBitmap            *new_bitmap)
-{
-  if (data->bitmap.data != NULL && data->bitmap_owner)
-    g_free (data->bitmap.data);
+      /* If the source format does not have the same premult flag as the
+         dst format then we need to copy and convert it */
+      if ((src_bmp->format & COGL_A_BIT) &&
+          src_bmp->format != COGL_PIXEL_FORMAT_A_8 &&
+          (src_bmp->format & COGL_PREMULT_BIT) !=
+          (dst_format & COGL_PREMULT_BIT))
+        {
+          dst_bmp->data = g_memdup (dst_bmp->data,
+                                    dst_bmp->height * dst_bmp->rowstride);
+          *copied_bitmap = TRUE;
 
-  data->bitmap = *new_bitmap;
-  data->bitmap_owner = TRUE;
+          if (!_cogl_bitmap_convert_premult_status (dst_bmp,
+                                                    src_bmp->format ^
+                                                    COGL_PREMULT_BIT))
+            {
+              g_free (dst_bmp->data);
+              return FALSE;
+            }
+        }
+    }
+
+  /* Use the source format from the src bitmap type and the internal
+     format from the dst format type so that GL can do the
+     conversion */
+  _cogl_pixel_format_to_gl (src_bmp->format,
+                            NULL, /* internal format */
+                            out_glformat,
+                            out_gltype);
+  _cogl_pixel_format_to_gl (dst_format,
+                            out_glintformat,
+                            NULL,
+                            NULL);
+
+  if (dst_format_out)
+    *dst_format_out = dst_format;
+
+  return TRUE;
 }
 
 void
@@ -155,64 +201,6 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
   CoglTexture *tex = COGL_TEXTURE (handle);
 
   tex->vtable->set_wrap_mode_parameter (tex, wrap_mode);
-}
-
-gboolean
-_cogl_texture_upload_data_prepare_format
-                                    (CoglTextureUploadData *data,
-                                     CoglPixelFormat       *internal_format)
-{
-  /* Was there any internal conversion requested?
-   * By default Cogl will use a premultiplied internal format. Later we will
-   * add control over this. */
-  if (*internal_format == COGL_PIXEL_FORMAT_ANY)
-    {
-      if ((data->bitmap.format & COGL_A_BIT) &&
-          data->bitmap.format != COGL_PIXEL_FORMAT_A_8)
-        *internal_format = data->bitmap.format | COGL_PREMULT_BIT;
-      else
-        *internal_format = data->bitmap.format;
-    }
-
-  /* Find closest format accepted by GL */
-  *internal_format = _cogl_pixel_format_to_gl (*internal_format,
-                                               &data->gl_intformat,
-                                               &data->gl_format,
-                                               &data->gl_type);
-
-  return TRUE;
-}
-
-gboolean
-_cogl_texture_upload_data_convert (CoglTextureUploadData *data,
-                                   CoglPixelFormat internal_format)
-{
-  CoglBitmap        new_bitmap;
-  gboolean          success;
-
-  /* Convert to internal format */
-  if (internal_format != data->bitmap.format)
-    {
-      success = _cogl_bitmap_convert_format_and_premult (&data->bitmap,
-                                                         &new_bitmap,
-                                                         internal_format);
-
-      if (!success)
-	return FALSE;
-
-      /* Update texture with new data */
-      _cogl_texture_upload_data_swap_bitmap (data, &new_bitmap);
-    }
-
-  return TRUE;
-}
-
-gboolean
-_cogl_texture_upload_data_prepare (CoglTextureUploadData *data,
-                                   CoglPixelFormat       internal_format)
-{
-  return (_cogl_texture_upload_data_prepare_format (data, &internal_format) &&
-          _cogl_texture_upload_data_convert (data, internal_format));
 }
 
 /* This is like CoglSpanIter except it deals with floats and it
