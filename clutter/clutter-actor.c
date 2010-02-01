@@ -4582,7 +4582,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
     {
       g_warning ("The actor '%s' is currently inside an allocation "
                  "cycle; calling clutter_actor_queue_relayout() is "
-                 "not allowed",
+                 "not recommended",
                  priv->name ? priv->name
                             : G_OBJECT_TYPE_NAME (self));
     }
