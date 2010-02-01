@@ -2240,6 +2240,17 @@ emit_keyboard_event (ClutterEvent *event)
     clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
 }
 
+static gboolean
+is_off_stage (ClutterActor *stage,
+              gfloat        x,
+              gfloat        y)
+{
+  return (x < 0 ||
+          y < 0 ||
+          x >= clutter_actor_get_width (stage) ||
+          y >= clutter_actor_get_height (stage));
+}
+
 /**
  * clutter_do_event
  * @event: a #ClutterEvent.
@@ -2360,10 +2371,14 @@ _clutter_process_event_details (ClutterActor        *stage,
            */
           if (event->any.source == NULL)
             {
-              /* Handle release off stage */
-              if ((x >= clutter_actor_get_width (stage) ||
-                   y >= clutter_actor_get_height (stage) ||
-                   x < 0 || y < 0))
+              /* emulate X11 the implicit soft grab; the implicit soft grab
+               * keeps relaying motion events when the stage is left with a
+               * pointer button pressed. since this is what happens when we
+               * disable per-actor motion events we need to maintain the same
+               * behaviour when the per-actor motion events are enabled as
+               * well
+               */
+              if (is_off_stage (stage, x, y))
                 {
                   if (event->type == CLUTTER_BUTTON_RELEASE)
                     {
@@ -2373,8 +2388,20 @@ _clutter_process_event_details (ClutterActor        *stage,
 
                       event->button.source = stage;
                       event->button.click_count = 1;
+
                       emit_pointer_event (event, device);
                     }
+                  else if (event->type == CLUTTER_MOTION)
+                    {
+                      CLUTTER_NOTE (EVENT,
+                                    "Motion off stage received at %.2f, %2.f",
+                                    x, y);
+
+                      event->motion.source = stage;
+
+                      emit_pointer_event (event, device);
+                    }
+
                   break;
                 }
 
@@ -2393,9 +2420,10 @@ _clutter_process_event_details (ClutterActor        *stage,
                                             CLUTTER_PICK_REACTIVE);
                 }
 
-              event->any.source = actor;
-              if (event->any.source == NULL)
+              if (actor == NULL)
                 break;
+
+              event->any.source = actor;
             }
           else
             {
