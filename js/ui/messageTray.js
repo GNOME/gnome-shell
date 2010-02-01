@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -25,17 +26,38 @@ const MessageTrayState = {
     TRAY_ONLY: 3 // neither notifiations nor summary are visible, only tray
 };
 
-function Notification(icon, text, source) {
-    this._init(icon, text, source);
+// Notification:
+// @source: the notification's Source
+// @icon: a ClutterActor for the notification's icon
+// @title: the title
+// @banner: the banner text
+// @body: the body text, or %null
+//
+// Creates a notification. In banner mode, it will show
+// @icon, @title (in bold) and @banner, all on a single line
+// (with @banner ellipsized if necessary). If @body is not %null, then
+// the notification will be expandable. In expanded mode, it will show
+// just @icon and @title (in bold) on the first line, and @body on
+// multiple lines underneath.
+function Notification(source, icon, title, banner, body) {
+    this._init(source, icon, title, banner, body);
 }
 
 Notification.prototype = {
-    _init: function(icon, text, source) {
-        this.icon = icon;
-        this.text = text;
+    _init: function(source, icon, title, banner, body) {
         this.source = source;
+        this.icon = icon;
+        this.title = title ? this._cleanMarkup(title.replace('\n', ' ')) : '';
+        this.banner = banner ? this._cleanMarkup(banner.replace('\n', '  ')) : '';
+        this.body = body ? this._cleanMarkup(body) : null;
+    },
+
+    _cleanMarkup: function(text) {
+        // Support <b>, <i>, and <u>, escape anything else
+        // so it displays as raw markup.
+        return text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
     }
-}
+};
 
 function NotificationBox() {
     this._init();
@@ -43,29 +65,122 @@ function NotificationBox() {
 
 NotificationBox.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ name: 'notification' });
+        this.actor = new St.Table({ name: 'notification' });
 
         this._iconBox = new St.Bin();
-        this.actor.add(this._iconBox);
+        this.actor.add(this._iconBox, { row: 0,
+                                        col: 0,
+                                        x_expand: false,
+                                        y_expand: false,
+                                        y_fill: false });
 
-        this._text = new St.Label();
-        this.actor.add(this._text, { expand: true, x_fill: false, y_fill: false, y_align: St.Align.MIDDLE });
+        // The first line should have the title, followed by the
+        // banner text, but ellipsized if they won't both fit. We can't
+        // make St.Table or St.BoxLayout do this the way we want (don't
+        // show banner at all if title needs to be ellipsized), so we
+        // use Shell.GenericContainer.
+        this._bannerBox = new Shell.GenericContainer();
+        this._bannerBox.connect('get-preferred-width', Lang.bind(this, this._bannerBoxGetPreferredWidth));
+        this._bannerBox.connect('get-preferred-height', Lang.bind(this, this._bannerBoxGetPreferredHeight));
+        this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
+        this.actor.add(this._bannerBox, { row: 0,
+                                          col: 1,
+                                          y_expand: false,
+                                          y_fill: false });
 
-        this.notification = null;
+        this._titleText = new St.Label();
+        this._bannerBox.add_actor(this._titleText);
+
+        this._bannerText = new St.Label();
+        this._bannerBox.add_actor(this._bannerText);
+
+        this._bodyText = new St.Label();
+        this._bodyText.clutter_text.line_wrap = true;
+        this._bodyText.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.actor.add(this._bodyText, { row: 1,
+                                         col: 1 });
     },
 
     setContent: function(notification) {
         this.notification = notification;
 
         this._iconBox.child = notification.icon;
+        this._titleText.clutter_text.set_markup('<b>' + notification.title + '</b>');
+        this._bannerText.clutter_text.set_markup(notification.banner);
 
-        // Support <b>, <i>, and <u>, escape anything else
-        // so it displays as raw markup.
-        let markup = notification.text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
-        this._text.clutter_text.set_markup(markup);
+        if (notification.body) {
+            this._bodyText.clutter_text.set_markup(notification.body);
+            this._canPopOut = true;
+        } else {
+            // If there's no body, then normally we wouldn't do pop-out.
+            // But if title+banner is too wide for the notification, then
+            // we'd need to pop out to show the full banner. So we set up
+            // bodyText with that now.
+            this._bodyText.clutter_text.set_markup(notification.banner);
+            this._canPopOut = false;
+        }
+    },
 
-        let primary = global.get_primary_monitor();
-        this.actor.x = Math.round((primary.width - this.actor.width) / 2);
+    _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
+        let [titleMin, titleNat] = this._titleText.get_preferred_width(forHeight);
+        let [bannerMin, bannerNat] = this._bannerText.get_preferred_width(forHeight);
+        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
+
+        alloc.min_size = titleMin;
+        alloc.natural_size = titleNat + (has_spacing ? spacing : 0) + bannerNat;
+    },
+
+    _bannerBoxGetPreferredHeight: function(actor, forWidth, alloc) {
+        [alloc.min_size, alloc.natural_size] =
+            this._titleText.get_preferred_height(forWidth);
+    },
+
+    _bannerBoxAllocate: function(actor, box, flags) {
+        let [titleMinW, titleNatW] = this._titleText.get_preferred_width(-1);
+        let [titleMinH, titleNatH] = this._titleText.get_preferred_height(-1);
+        let [bannerMinW, bannerNatW] = this._bannerText.get_preferred_width(-1);
+        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
+        if (!has_spacing)
+            spacing = 0;
+        let availWidth = box.x2 - box.x1;
+
+        let titleBox = new Clutter.ActorBox();
+        titleBox.x1 = titleBox.y1 = 0;
+        titleBox.x2 = Math.min(titleNatW, availWidth);
+        titleBox.y2 = titleNatH;
+        this._titleText.allocate(titleBox, flags);
+
+        let bannerBox = new Clutter.ActorBox();
+        bannerBox.x1 = Math.min(titleBox.x2 + spacing, availWidth);
+        bannerBox.y1 = 0;
+        bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
+        bannerBox.y2 = titleNatH;
+        this._bannerText.allocate(bannerBox, flags);
+
+        if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
+            this._canPopOut = true;
+    },
+
+    popOut: function() {
+        if (!this._canPopOut)
+            return false;
+
+        Tweener.addTween(this._bannerText,
+                         { opacity: 0,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad" });
+        return true;
+    },
+
+    popIn: function() {
+        if (!this._canPopOut)
+            return false;
+
+        Tweener.addTween(this._bannerText,
+                         { opacity: 255,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad" });
+        return true;
     }
 };
 
@@ -87,8 +202,9 @@ Source.prototype = {
         throw new Error('no implementation of createIcon in ' + this);
     },
 
-    notify: function(text) {
-        this.text = text;
+    notify: function(title, banner, body) {
+        this.notification = new Notification(this, this.createIcon(ICON_SIZE),
+                                             title, banner, body);
         this.emit('notify');
     },
 
@@ -111,7 +227,7 @@ MessageTray.prototype = {
         this.actor = new St.BoxLayout({ name: 'message-tray',
                                         reactive: true });
 
-        this._notificationBin = new St.Bin();
+        this._notificationBin = new St.Bin({ reactive: true });
         this.actor.add(this._notificationBin);
         this._notificationBin.hide();
         this._notificationBox = new NotificationBox();
@@ -133,6 +249,7 @@ MessageTray.prototype = {
         this._state = MessageTrayState.HIDDEN;
         this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false });
+        Main.chrome.trackActor(this._notificationBin, { affectsStruts: false });
 
         global.connect('screen-size-changed',
                        Lang.bind(this, this._setSizePosition));
@@ -211,8 +328,7 @@ MessageTray.prototype = {
     },
 
     _onNotify: function(source) {
-        let notification = new Notification(source.createIcon(ICON_SIZE), source.text, source)
-        this._notificationQueue.push(notification);
+        this._notificationQueue.push(source.notification);
 
         if (this._state == MessageTrayState.HIDDEN)
             this._updateState();
@@ -229,6 +345,15 @@ MessageTray.prototype = {
 
         if (this._state == MessageTrayState.HIDDEN)
             this._updateState();
+        else if (this._state == MessageTrayState.NOTIFICATION) {
+            if (this._notificationBox.popOut()) {
+                Tweener.addTween(this._notificationBin,
+                                 { y: this.actor.height - this._notificationBin.height,
+                                   time: ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });
+            }
+        }
     },
 
     _onMessageTrayLeft: function() {
@@ -345,6 +470,8 @@ MessageTray.prototype = {
     },
 
     _hideNotification: function() {
+        this._notificationBox.popIn();
+
         Tweener.addTween(this._notificationBin,
                          { y: this.actor.height,
                            opacity: 0,

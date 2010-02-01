@@ -556,8 +556,9 @@ StTooltip {
     border-radius: 5px;
     background: rgba(0,0,0,0.9);
     color: white;
-    padding: 2px 10px;
-    spacing: 10px;
+    padding: 2px 10px 10px 10px;
+    spacing-rows: 5px;
+    spacing-columns: 10px;
 }
 
 #summary-mode {

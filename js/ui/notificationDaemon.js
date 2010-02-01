@@ -122,10 +122,7 @@ NotificationDaemon.prototype = {
         }
 
         summary = GLib.markup_escape_text(summary, -1);
-        if (body)
-            source.notify('<b>' + summary + '</b>: ' + body);
-        else
-            source.notify('<b>' + summary + '</b>');
+        source.notify(summary, body);
         return id;
     },
 
