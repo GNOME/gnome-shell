@@ -512,7 +512,7 @@ SwitcherList.prototype = {
 
         let totalSpacing = this._list.spacing * (this._items.length - 1);
         alloc.min_size = this._items.length * maxChildMin + separatorWidth + totalSpacing;
-        alloc.natural_size = this._items.length * maxChildNat + separatorWidth + totalSpacing;
+        alloc.natural_size = alloc.min_size;
     },
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
@@ -528,7 +528,7 @@ SwitcherList.prototype = {
         if (this._squareItems) {
             let [childMin, childNat] = this._maxChildWidth(-1);
             maxChildMin = Math.max(childMin, maxChildMin);
-            maxChildNat = Math.max(childNat, maxChildNat);
+            maxChildNat = maxChildMin;
         }
 
         alloc.min_size = maxChildMin;
