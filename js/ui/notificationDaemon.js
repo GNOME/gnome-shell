@@ -122,7 +122,9 @@ NotificationDaemon.prototype = {
         }
 
         summary = GLib.markup_escape_text(summary, -1);
-        source.notify(summary, body);
+
+        let notification = new MessageTray.Notification(source, summary, body);
+        source.notify(notification);
         return id;
     },
 

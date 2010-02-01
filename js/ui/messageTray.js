@@ -26,53 +26,40 @@ const MessageTrayState = {
     TRAY_ONLY: 3 // neither notifiations nor summary are visible, only tray
 };
 
+function _cleanMarkup(text) {
+    // Support <b>, <i>, and <u>, escape anything else
+    // so it displays as raw markup.
+    return text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
+}
+
 // Notification:
 // @source: the notification's Source
-// @icon: a ClutterActor for the notification's icon
 // @title: the title
 // @banner: the banner text
 // @body: the body text, or %null
 //
 // Creates a notification. In banner mode, it will show
-// @icon, @title (in bold) and @banner, all on a single line
+// @source's icon, @title (in bold) and @banner, all on a single line
 // (with @banner ellipsized if necessary). If @body is not %null, then
 // the notification will be expandable. In expanded mode, it will show
-// just @icon and @title (in bold) on the first line, and @body on
+// just the icon and @title (in bold) on the first line, and @body on
 // multiple lines underneath.
-function Notification(source, icon, title, banner, body) {
-    this._init(source, icon, title, banner, body);
+function Notification(source, title, banner, body) {
+    this._init(source, title, banner, body);
 }
 
 Notification.prototype = {
-    _init: function(source, icon, title, banner, body) {
+    _init: function(source, title, banner, body) {
         this.source = source;
-        this.icon = icon;
-        this.title = title ? this._cleanMarkup(title.replace('\n', ' ')) : '';
-        this.banner = banner ? this._cleanMarkup(banner.replace('\n', '  ')) : '';
-        this.body = body ? this._cleanMarkup(body) : null;
-    },
 
-    _cleanMarkup: function(text) {
-        // Support <b>, <i>, and <u>, escape anything else
-        // so it displays as raw markup.
-        return text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
-    }
-};
-
-function NotificationBox() {
-    this._init();
-}
-
-NotificationBox.prototype = {
-    _init: function() {
         this.actor = new St.Table({ name: 'notification' });
 
-        this._iconBox = new St.Bin();
-        this.actor.add(this._iconBox, { row: 0,
-                                        col: 0,
-                                        x_expand: false,
-                                        y_expand: false,
-                                        y_fill: false });
+        let icon = source.createIcon(ICON_SIZE);
+        this.actor.add(icon, { row: 0,
+                               col: 0,
+                               x_expand: false,
+                               y_expand: false,
+                               y_fill: false });
 
         // The first line should have the title, followed by the
         // banner text, but ellipsized if they won't both fit. We can't
@@ -89,36 +76,33 @@ NotificationBox.prototype = {
                                           y_fill: false });
 
         this._titleText = new St.Label();
+        title = title ? _cleanMarkup(title.replace('\n', ' ')) : '';
+        this._titleText.clutter_text.set_markup('<b>' + title + '</b>');
         this._bannerBox.add_actor(this._titleText);
 
         this._bannerText = new St.Label();
+        banner = banner ? _cleanMarkup(banner.replace('\n', '  ')) : '';
+        this._bannerText.clutter_text.set_markup(banner);
         this._bannerBox.add_actor(this._bannerText);
 
         this._bodyText = new St.Label();
         this._bodyText.clutter_text.line_wrap = true;
         this._bodyText.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.actor.add(this._bodyText, { row: 1,
-                                         col: 1 });
-    },
-
-    setContent: function(notification) {
-        this.notification = notification;
-
-        this._iconBox.child = notification.icon;
-        this._titleText.clutter_text.set_markup('<b>' + notification.title + '</b>');
-        this._bannerText.clutter_text.set_markup(notification.banner);
-
-        if (notification.body) {
-            this._bodyText.clutter_text.set_markup(notification.body);
+        if (body) {
+            body = _cleanMarkup(body);
+            this._bodyText.clutter_text.set_markup(body);
             this._canPopOut = true;
         } else {
-            // If there's no body, then normally we wouldn't do pop-out.
-            // But if title+banner is too wide for the notification, then
-            // we'd need to pop out to show the full banner. So we set up
-            // bodyText with that now.
-            this._bodyText.clutter_text.set_markup(notification.banner);
+            // If there's no body, then normally we wouldn't do
+            // pop-out. But if title+banner is too wide for the
+            // notification, then we'd need to pop out to show the
+            // full banner. So we set up bodyText with that now.
+            this._bodyText.clutter_text.set_markup(banner);
             this._canPopOut = false;
         }
+        this.actor.add(this._bodyText, { row: 1,
+                                         col: 1 });
+
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
@@ -202,10 +186,8 @@ Source.prototype = {
         throw new Error('no implementation of createIcon in ' + this);
     },
 
-    notify: function(title, banner, body) {
-        this.notification = new Notification(this, this.createIcon(ICON_SIZE),
-                                             title, banner, body);
-        this.emit('notify');
+    notify: function(notification) {
+        this.emit('notify', notification);
     },
 
     clicked: function() {
@@ -230,9 +212,8 @@ MessageTray.prototype = {
         this._notificationBin = new St.Bin({ reactive: true });
         this.actor.add(this._notificationBin);
         this._notificationBin.hide();
-        this._notificationBox = new NotificationBox();
-        this._notificationBin.child = this._notificationBox.actor;
         this._notificationQueue = [];
+        this._notification = null;
 
         this._summaryBin = new St.BoxLayout();
         this.actor.add(this._summaryBin);
@@ -315,7 +296,7 @@ MessageTray.prototype = {
 
         // Update state if we are showing a notification from the removed source
         if (this._state == MessageTrayState.NOTIFICATION &&
-            this._notificationBox.notification.source == source)
+            this._notification.source == source)
             this._updateState();
 
         this._summary.remove_actor(this._icons[source.id]);
@@ -327,8 +308,8 @@ MessageTray.prototype = {
         return this._sources[id];
     },
 
-    _onNotify: function(source) {
-        this._notificationQueue.push(source.notification);
+    _onNotify: function(source, notification) {
+        this._notificationQueue.push(notification);
 
         if (this._state == MessageTrayState.HIDDEN)
             this._updateState();
@@ -346,7 +327,7 @@ MessageTray.prototype = {
         if (this._state == MessageTrayState.HIDDEN)
             this._updateState();
         else if (this._state == MessageTrayState.NOTIFICATION) {
-            if (this._notificationBox.popOut()) {
+            if (this._notification.popOut()) {
                 Tweener.addTween(this._notificationBin,
                                  { y: this.actor.height - this._notificationBin.height,
                                    time: ANIMATION_TIME,
@@ -456,7 +437,8 @@ MessageTray.prototype = {
     },
 
     _showNotification: function() {
-        this._notificationBox.setContent(this._notificationQueue.shift());
+        this._notification = this._notificationQueue.shift();
+        this._notificationBin.child = this._notification.actor;
 
         this._notificationBin.opacity = 0;
         this._notificationBin.y = this.actor.height;
@@ -470,7 +452,7 @@ MessageTray.prototype = {
     },
 
     _hideNotification: function() {
-        this._notificationBox.popIn();
+        this._notification.popIn();
 
         Tweener.addTween(this._notificationBin,
                          { y: this.actor.height,
@@ -479,6 +461,8 @@ MessageTray.prototype = {
                            transition: "easeOutQuad",
                            onComplete: Lang.bind(this, function() {
                                this._notificationBin.hide();
+                               this._notificationBin.child = null;
+                               this._notification = null;
                            })});
     },
 
