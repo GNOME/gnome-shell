@@ -459,6 +459,11 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
         AS_IF([test "x$have_x11" = "xyes"],
               [
                 X11_PC_FILES="x11"
+
+                # we actually need to ask for CFLAGS and LIBS
+                X11_CFLAGS=`$PKG_CONFIG --cflags $X11_PC_FILES`
+                X11_LIBS=`$PKG_CONFIG --libs $X11_PC_FILES`
+
                 AC_MSG_RESULT([found])
               ],
               [
