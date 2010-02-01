@@ -747,7 +747,7 @@ SingleView.prototype = {
                 width = children[i].x + children[i].width;
             }
             alloc.min_size = width;
-            alloc.nat_size = width;
+            alloc.natural_size = width;
         }));
         this._indicatorsPanel.connect('get-preferred-height', Lang.bind(this, function (actor, fw, alloc) {
             let children = actor.get_children();
@@ -755,7 +755,7 @@ SingleView.prototype = {
             if (children.length)
                 height = children[0].height;
             alloc.min_size = height;
-            alloc.nat_size = height;
+            alloc.natural_size = height;
         }));
         this._indicatorsPanel.connect('allocate', Lang.bind(this, function (actor, box, flags) {
             let children = actor.get_children();
