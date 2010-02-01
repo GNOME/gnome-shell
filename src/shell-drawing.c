@@ -84,7 +84,6 @@ shell_fade_app_icon (ClutterTexture *source)
 
   cogl_texture_get_data (texture, COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          rowstride, pixels);
-  cogl_texture_unref (texture);
   
   fade_start = width / 2;
   fade_range = width - fade_start;
