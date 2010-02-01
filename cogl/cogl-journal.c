@@ -225,30 +225,51 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     }
 #endif
 
-  /* DEBUGGING CODE XXX:
-   * This path will cause all rectangles to be drawn with a red, green
-   * or blue outline with no blending. This may e.g. help with debugging
-   * texture slicing issues or blending issues, plus it looks quite cool.
+  /* DEBUGGING CODE XXX: This path will cause all rectangles to be
+   * drawn with a coloured outline. Each batch will be rendered with
+   * the same color. This may e.g. help with debugging texture slicing
+   * issues, visually seeing what is batched and debugging blending
+   * issues, plus it looks quite cool.
    */
   if (cogl_debug_flags & COGL_DEBUG_RECTANGLES)
     {
       static CoglHandle outline = COGL_INVALID_HANDLE;
-      static int color = 0;
+      guint8 color_intensity;
       int i;
+
+      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
       if (outline == COGL_INVALID_HANDLE)
         outline = cogl_material_new ();
 
+      /* The least significant three bits represent the three
+         components so that the order of colours goes red, green,
+         yellow, blue, magenta, cyan. Black and white are skipped. The
+         next two bits give four scales of intensity for those colours
+         in the order 0xff, 0xcc, 0x99, and 0x66. This gives a total
+         of 24 colours. If there are more than 24 batches on the stage
+         then it will wrap around */
+      color_intensity = 0xff - 0x33 * (ctxt->journal_rectangles_color >> 3);
+      cogl_material_set_color4ub (outline,
+                                  (ctxt->journal_rectangles_color & 1) ?
+                                  color_intensity : 0,
+                                  (ctxt->journal_rectangles_color & 2) ?
+                                  color_intensity : 0,
+                                  (ctxt->journal_rectangles_color & 4) ?
+                                  color_intensity : 0,
+                                  0xff);
+      _cogl_material_flush_gl_state (outline, NULL);
       cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
-      for (i = 0; i < batch_len; i++, color = (color + 1) % 3)
-        {
-          cogl_material_set_color4ub (outline,
-                                      color == 0 ? 0xff : 0x00,
-                                      color == 1 ? 0xff : 0x00,
-                                      color == 2 ? 0xff : 0x00,
-                                      0xff);
-          _cogl_material_flush_gl_state (outline, NULL);
-          GE( glDrawArrays (GL_LINE_LOOP, 4 * i, 4) );
-        }
+      for (i = 0; i < batch_len; i++)
+        GE( glDrawArrays (GL_LINE_LOOP, 4 * i + state->vertex_offset, 4) );
+
+      /* Go to the next color */
+      do
+        ctxt->journal_rectangles_color = ((ctxt->journal_rectangles_color + 1) &
+                                          ((1 << 5) - 1));
+      /* We don't want to use black or white */
+      while ((ctxt->journal_rectangles_color & 0x07) == 0
+             || (ctxt->journal_rectangles_color & 0x07) == 0x07);
     }
 
   state->vertex_offset += (4 * batch_len);
@@ -779,8 +800,7 @@ _cogl_journal_log_quad (float         x_1,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     cogl_get_modelview_matrix (&entry->model_view);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING
-                  || cogl_debug_flags & COGL_DEBUG_RECTANGLES))
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING))
     _cogl_journal_flush ();
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);

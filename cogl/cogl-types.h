@@ -120,8 +120,8 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * @COGL_PIXEL_FORMAT_RGB_565: RGB, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_4444: RGBA, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_5551: RGBA, 16 bits
- * @COGL_PIXEL_FORMAT_YUV: FIXME
- * @COGL_PIXEL_FORMAT_G_8: FIXME
+ * @COGL_PIXEL_FORMAT_YUV: Not currently supported
+ * @COGL_PIXEL_FORMAT_G_8: Single luminance component
  * @COGL_PIXEL_FORMAT_RGB_888: RGB, 24 bits
  * @COGL_PIXEL_FORMAT_BGR_888: BGR, 24 bits
  * @COGL_PIXEL_FORMAT_RGBA_8888: RGBA, 32 bits
@@ -135,7 +135,23 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * @COGL_PIXEL_FORMAT_RGBA_4444_PRE: Premultiplied RGBA, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_5551_PRE: Premultiplied RGBA, 16 bits
  *
- * Pixel formats used by COGL.
+ * Pixel formats used by COGL. For the formats with a byte per
+ * component, the order of the components specify the order in
+ * increasing memory addresses. So for example
+ * %COGL_PIXEL_FORMAT_RGB_888 would have the red component in the
+ * lowest address, green in the next address and blue after that
+ * regardless of the endinanness of the system.
+ *
+ * For the 16-bit formats the component order specifies the order
+ * within a 16-bit number from most significant bit to least
+ * significant. So for %COGL_PIXEL_FORMAT_RGB_565, the red component
+ * would be in bits 11-15, the green component would be in 6-11 and
+ * the blue component would be in 1-5. Therefore the order in memory
+ * depends on the endianness of the system.
+ *
+ * When uploading a texture %COGL_PIXEL_FORMAT_ANY can be used as the
+ * internal format. Cogl will try to pick the best format to use
+ * internally and convert the texture data if necessary.
  *
  * Since: 0.8
  */

@@ -51,9 +51,9 @@
 int
 cogl_util_next_p2 (int a)
 {
-  int rval=1;
+  int rval = 1;
 
-  while(rval < a)
+  while (rval < a)
     rval <<= 1;
 
   return rval;
@@ -237,8 +237,8 @@ cogl_fixed_get_type (void)
       g_value_register_transform_func (_cogl_fixed_type, G_TYPE_FLOAT,
                                        cogl_value_transform_fixed_float);
       g_value_register_transform_func (G_TYPE_FLOAT, _cogl_fixed_type,
-
                                        cogl_value_transform_float_fixed);
+
       g_value_register_transform_func (_cogl_fixed_type, G_TYPE_DOUBLE,
                                        cogl_value_transform_fixed_double);
       g_value_register_transform_func (G_TYPE_DOUBLE, _cogl_fixed_type,
