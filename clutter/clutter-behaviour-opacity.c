@@ -113,16 +113,22 @@ clutter_behaviour_opacity_set_property (GObject      *gobject,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  ClutterBehaviourOpacity *opacityb = CLUTTER_BEHAVIOUR_OPACITY (gobject);
+  ClutterBehaviourOpacity *self = CLUTTER_BEHAVIOUR_OPACITY (gobject);
 
   switch (prop_id)
     {
     case PROP_OPACITY_START:
-      opacityb->priv->opacity_start = g_value_get_uint (value);
+      clutter_behaviour_opacity_set_bounds (self,
+                                            g_value_get_uint (value),
+                                            self->priv->opacity_end);
       break;
+
     case PROP_OPACITY_END:
-      opacityb->priv->opacity_end = g_value_get_uint (value);
+      clutter_behaviour_opacity_set_bounds (self,
+                                            self->priv->opacity_start,
+                                            g_value_get_uint (value));
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -135,16 +141,18 @@ clutter_behaviour_opacity_get_property (GObject    *gobject,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  ClutterBehaviourOpacity *opacityb = CLUTTER_BEHAVIOUR_OPACITY (gobject);
+  ClutterBehaviourOpacity *self = CLUTTER_BEHAVIOUR_OPACITY (gobject);
 
   switch (prop_id)
     {
     case PROP_OPACITY_START:
-      g_value_set_uint (value, opacityb->priv->opacity_start);
+      g_value_set_uint (value, self->priv->opacity_start);
       break;
+
     case PROP_OPACITY_END:
-      g_value_set_uint (value, opacityb->priv->opacity_end);
+      g_value_set_uint (value, self->priv->opacity_end);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -156,6 +164,9 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
+  GParamSpec *pspec;
+
+  g_type_class_add_private (klass, sizeof (ClutterBehaviourOpacityPrivate));
 
   gobject_class->set_property = clutter_behaviour_opacity_set_property;
   gobject_class->get_property = clutter_behaviour_opacity_get_property;
@@ -167,14 +178,14 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    *
    * Since: 0.2
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_OPACITY_START,
-                                   g_param_spec_uint ("opacity-start",
-                                                      "Opacity Start",
-                                                      "Initial opacity level",
-                                                      0, 255,
-                                                      0,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("opacity-start",
+                             "Opacity Start",
+                             "Initial opacity level",
+                             0, 255,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_OPACITY_START, pspec);
+
   /**
    * ClutterBehaviourOpacity:opacity-end:
    *
@@ -182,18 +193,15 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    *
    * Since: 0.2
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_OPACITY_END,
-                                   g_param_spec_uint ("opacity-end",
-                                                      "Opacity End",
-                                                      "Final opacity level",
-                                                      0, 255,
-                                                      0,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("opacity-end",
+                             "Opacity End",
+                             "Final opacity level",
+                             0, 255,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_OPACITY_END, pspec);
 
   behave_class->alpha_notify = clutter_behaviour_alpha_notify;
-
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourOpacityPrivate));
 }
 
 static void
