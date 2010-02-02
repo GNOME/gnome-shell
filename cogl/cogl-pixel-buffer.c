@@ -78,7 +78,9 @@
 
 static void _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
+#if !defined (COGL_HAS_GLES)
 static const CoglBufferVtable cogl_pixel_buffer_vtable;
+#endif
 static const CoglBufferVtable cogl_malloc_pixel_buffer_vtable;
 
 /* we don't want to use the stock COGL_HANDLE_DEFINE * for 2 reasons:
@@ -149,6 +151,8 @@ cogl_pixel_buffer_new_EXP (guint size)
                            COGL_BUFFER_USAGE_HINT_DRAW,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
+/* malloc version only for GLES */
+#if !defined (COGL_HAS_GLES)
   if (cogl_features_available (COGL_FEATURE_PBOS))
     {
       /* PBOS */
@@ -158,6 +162,7 @@ cogl_pixel_buffer_new_EXP (guint size)
       COGL_BUFFER_SET_FLAG (buffer, BUFFER_OBJECT);
     }
   else
+#endif
     {
       /* malloc fallback subclass */
       buffer->vtable = &cogl_malloc_pixel_buffer_vtable;
@@ -219,6 +224,7 @@ _cogl_pixel_buffer_free (CoglPixelBuffer *buffer)
   g_slice_free (CoglPixelBuffer, buffer);
 }
 
+#if !defined (COGL_HAS_GLES)
 static guchar *
 _cogl_pixel_buffer_map (CoglBuffer       *buffer,
                         CoglBufferAccess  access)
@@ -330,6 +336,7 @@ static const CoglBufferVtable cogl_pixel_buffer_vtable =
   _cogl_pixel_buffer_unmap,
   _cogl_pixel_buffer_set_data,
 };
+#endif
 
 /*
  * Fallback path, buffer->data points to a malloc'ed buffer.

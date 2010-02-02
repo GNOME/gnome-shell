@@ -105,6 +105,15 @@ _cogl_buffer_fini (CoglBuffer *buffer)
     cogl_buffer_unmap (buffer);
 }
 
+/* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map
+ * VBOs for write only, we don't support that in CoglBuffer */
+#if defined (COGL_HAS_GLES)
+GLenum
+_cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
+{
+  return 0;
+}
+#else
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 {
@@ -115,7 +124,25 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
   else
     return GL_READ_ONLY;
 }
+#endif
 
+/* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
+#if defined (COGL_HAS_GLES)
+GLenum
+_cogl_buffer_hint_to_gl_enum (CoglBufferHint usage_hint)
+{
+  switch (usage_hint)
+    {
+    case COGL_BUFFER_HINT_STATIC_DRAW:
+      return GL_STATIC_DRAW;
+    case COGL_BUFFER_HINT_DYNAMIC_DRAW:
+    case COGL_BUFFER_HINT_STREAM_DRAW:
+      return GL_DYNAMIC_DRAW;
+    default:
+      return GL_STATIC_DRAW;
+    }
+}
+#else
 GLenum
 _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
                                CoglBufferUpdateHint update_hint)
@@ -150,6 +177,7 @@ _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
 
   return GL_STATIC_DRAW;
 }
+#endif
 
 void
 _cogl_buffer_bind (CoglBuffer *buffer,
