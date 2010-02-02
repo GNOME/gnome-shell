@@ -25,15 +25,23 @@
 
 /**
  * SECTION:clutter-group
- * @short_description: Actor class containing multiple children.
- * actors.
+ * @short_description: A fixed layout container
  *
  * A #ClutterGroup is an Actor which contains multiple child actors positioned
  * relative to the #ClutterGroup position. Other operations such as scaling,
  * rotating and clipping of the group will apply to the child actors.
  *
- * A #ClutterGroup's size is defined by the size and position of its children.
- * Resize requests via the #ClutterActor API will be ignored.
+ * A #ClutterGroup's size is defined by the size and position of its children;
+ * it will be the smallest non-negative size that covers the right and bottom
+ * edges of all of its children.
+ *
+ * Setting the size on a Group using #ClutterActor methods like
+ * clutter_actor_set_size() will override the natural size of the Group,
+ * however this will not affect the size of the children and they may still
+ * be painted outside of the allocation of the group. One way to constrain
+ * the visible area of a #ClutterGroup to a specified allocation is to
+ * explicitly set the size of the #ClutterGroup and then use the
+ * #ClutterActor:clip-to-allocation property.
  */
 
 #ifdef HAVE_CONFIG_H
