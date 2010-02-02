@@ -178,6 +178,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/script", test_script_animation);
   TEST_CONFORM_SIMPLE ("/script", test_script_named_object);
 
+  TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
+
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);

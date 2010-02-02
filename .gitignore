@@ -241,6 +241,7 @@ TAGS
 /tests/conform/test-actor-destruction
 /tests/conform/test-color-operators
 /tests/conform/test-cogl-texture-mipmaps
+/tests/conform/test-behaviours
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
