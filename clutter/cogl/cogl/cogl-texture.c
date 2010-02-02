@@ -465,7 +465,6 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
                                   const guint      offset)
 {
   CoglHandle texture;
-  CoglBitmap bitmap;
   CoglBuffer *cogl_buffer;
   CoglPixelBuffer *pixel_buffer;
 
@@ -496,8 +495,11 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
       return COGL_INVALID_HANDLE;
     }
 
+#if !defined (COGL_HAS_GLES)
   if (cogl_features_available (COGL_FEATURE_PBOS))
     {
+      CoglBitmap bitmap;
+
       /* Wrap the data into a bitmap */
       bitmap.width = width;
       bitmap.height = height;
@@ -510,6 +512,7 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
       _cogl_buffer_bind (NULL, GL_PIXEL_UNPACK_BUFFER);
     }
   else
+#endif
     {
       texture = cogl_texture_new_from_data (width,
 			                    height,
