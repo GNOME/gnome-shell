@@ -126,7 +126,7 @@ MessageTray.prototype = {
         this._summaryBin.connect('notify::allocation', Lang.bind(this,
             function() {
                 let primary = global.get_primary_monitor();
-                this._summaryBin.x = primary.width - this._summaryBin.width;
+                this._summaryBin.x = primary.x + primary.width - this._summaryBin.width;
             }));
 
         Main.chrome.addActor(this.actor, { affectsStruts: false });
@@ -147,8 +147,8 @@ MessageTray.prototype = {
 
     _setSizePosition: function() {
         let primary = global.get_primary_monitor();
-        this.actor.x = 0;
-        this.actor.y = primary.height - 1;
+        this.actor.x = primary.x;
+        this.actor.y = primary.y + primary.height - 1;
 
         this.actor.width = primary.width;
     },
@@ -311,7 +311,7 @@ MessageTray.prototype = {
     _showTray: function() {
         let primary = global.get_primary_monitor();
         Tweener.addTween(this.actor,
-                         { y: primary.height - this.actor.height,
+                         { y: primary.y + primary.height - this.actor.height,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad"
                          });
@@ -321,7 +321,7 @@ MessageTray.prototype = {
         let primary = global.get_primary_monitor();
 
         Tweener.addTween(this.actor,
-                         { y: primary.height - 1,
+                         { y: primary.y + primary.height - 1,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad"
                          });
@@ -332,13 +332,14 @@ MessageTray.prototype = {
         this._notificationBox.setContent(this._notificationQueue.shift());
 
         let notification = this._notificationBox.actor;
-	notification.opacity = 0;
-        notification.y = this.actor.height;
+        let primary = global.get_primary_monitor();
+        notification.opacity = 0;
+        notification.y = primary.y + this.actor.height;
         notification.show();
-        let futureY = this.actor.height - notification.height;
+        let futureY = primary.y + this.actor.height - notification.height;
 
         Tweener.addTween(notification,
-                         { y: this.actor.height - notification.height,
+                         { y: futureY,
                            opacity: 255,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
@@ -358,11 +359,12 @@ MessageTray.prototype = {
     },
 
     _showSummary: function() {
+        let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
         this._summaryBin.show();
         Tweener.addTween(this._summaryBin,
-                         { y: this.actor.height - this._summaryBin.height,
+                         { y: primary.y + this.actor.height - this._summaryBin.height,
                            opacity: 255,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
