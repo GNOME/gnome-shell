@@ -873,9 +873,7 @@ clutter_text_set_text_internal (ClutterText *self,
     }
 
   if (priv->n_bytes == 0)
-    {
-      clutter_text_set_positions (self, -1, -1);
-    }
+    clutter_text_set_positions (self, -1, -1);
 
   clutter_text_dirty_cache (self);
 
@@ -1578,9 +1576,7 @@ clutter_text_motion (ClutterActor       *actor,
   if (priv->selectable)
     clutter_text_set_cursor_position (self, offset);
   else
-    {
-      clutter_text_set_positions (self, offset, offset);
-    }
+    clutter_text_set_positions (self, offset, offset);
 
   return TRUE;
 }
@@ -1989,9 +1985,8 @@ clutter_text_real_move_up (ClutterText         *self,
   PangoLayout *layout;
   gint line_no;
   gint index_, trailing;
+  gint pos;
   gint x;
-
-  g_object_freeze_notify (G_OBJECT (self));
 
   layout = clutter_text_get_layout (self);
 
@@ -2017,11 +2012,10 @@ clutter_text_real_move_up (ClutterText         *self,
 
   pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
-  {
-    gint pos = bytes_to_offset (priv->text, index_);
+  g_object_freeze_notify (G_OBJECT (self));
 
-    clutter_text_set_cursor_position (self, pos + trailing);
-  }
+  pos = bytes_to_offset (priv->text, index_);
+  clutter_text_set_cursor_position (self, pos + trailing);
 
   /* Store the target x position to avoid drifting left and right when
      moving the cursor up and down */
@@ -2047,8 +2041,7 @@ clutter_text_real_move_down (ClutterText         *self,
   gint line_no;
   gint index_, trailing;
   gint x;
-
-  g_object_freeze_notify (G_OBJECT (self));
+  gint pos;
 
   layout = clutter_text_get_layout (self);
 
@@ -2070,11 +2063,10 @@ clutter_text_real_move_down (ClutterText         *self,
 
   pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
-  {
-    gint pos = bytes_to_offset (priv->text, index_);
+  g_object_freeze_notify (G_OBJECT (self));
 
-    clutter_text_set_cursor_position (self, pos + trailing);
-  }
+  pos = bytes_to_offset (priv->text, index_);
+  clutter_text_set_cursor_position (self, pos + trailing);
 
   /* Store the target x position to avoid drifting left and right when
      moving the cursor up and down */
@@ -4377,9 +4369,9 @@ clutter_text_insert_unichar (ClutterText *self,
   clutter_text_set_text_internal (self, new->str);
 
   if (priv->position >= 0)
-    {
-      clutter_text_set_positions (self, priv->position + 1, priv->position);
-    }
+    clutter_text_set_positions (self,
+                                priv->position + 1,
+                                priv->position + 1);
 
   g_string_free (new, TRUE);
 }
@@ -4419,15 +4411,17 @@ clutter_text_insert_text (ClutterText *self,
   new = g_string_insert (new, pos_bytes, text);
 
   g_signal_emit (self, text_signals[INSERT_TEXT], 0,
-                 text, g_utf8_strlen (text, -1), &position);
+                 text,
+                 g_utf8_strlen (text, -1),
+                 &position);
 
   clutter_text_set_text_internal (self, new->str);
 
   if (position >= 0 && priv->position >= position)
     {
-      clutter_text_set_positions (self,
-                                  priv->position + g_utf8_strlen (text, -1),
-                                  priv->position);
+      gint new_pos = priv->position + g_utf8_strlen (text, -1);
+
+      clutter_text_set_positions (self, new_pos, new_pos);
     }
 
   g_string_free (new, TRUE);
