@@ -36,6 +36,7 @@
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
+#include "cogl-pixel-buffer-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
@@ -476,7 +477,9 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
   cogl_buffer = COGL_BUFFER (buffer);
   pixel_buffer = COGL_PIXEL_BUFFER (buffer);
 
-  /* Rowstride from width if not given */
+  /* Rowstride from CoglBuffer or even width * bpp if not given */
+  if (rowstride == 0)
+    rowstride = pixel_buffer->stride;
   if (rowstride == 0)
     rowstride = width * _cogl_get_format_bpp (format);
 
@@ -493,16 +496,29 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
       return COGL_INVALID_HANDLE;
     }
 
-  /* Wrap the data into a bitmap */
-  bitmap.width = width;
-  bitmap.height = height;
-  bitmap.data = GUINT_TO_POINTER (offset);
-  bitmap.format = format;
-  bitmap.rowstride = rowstride;
+  if (cogl_features_available (COGL_FEATURE_PBOS))
+    {
+      /* Wrap the data into a bitmap */
+      bitmap.width = width;
+      bitmap.height = height;
+      bitmap.data = GUINT_TO_POINTER (offset);
+      bitmap.format = format;
+      bitmap.rowstride = rowstride;
 
-  _cogl_buffer_bind (cogl_buffer, GL_PIXEL_UNPACK_BUFFER);
-  texture =  cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
-  _cogl_buffer_bind (NULL, GL_PIXEL_UNPACK_BUFFER);
+      _cogl_buffer_bind (cogl_buffer, GL_PIXEL_UNPACK_BUFFER);
+      texture =  cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
+      _cogl_buffer_bind (NULL, GL_PIXEL_UNPACK_BUFFER);
+    }
+  else
+    {
+      texture = cogl_texture_new_from_data (width,
+			                    height,
+                                            flags,
+                                            format,
+                                            internal_format,
+                                            rowstride,
+                                            cogl_buffer->data);
+    }
 
   return texture;
 }

@@ -79,6 +79,7 @@
 static void _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
 static const CoglBufferVtable cogl_pixel_buffer_vtable;
+static const CoglBufferVtable cogl_malloc_pixel_buffer_vtable;
 
 /* we don't want to use the stock COGL_HANDLE_DEFINE * for 2 reasons:
  *   - it defines already deprecated symbols
@@ -147,10 +148,24 @@ cogl_pixel_buffer_new_EXP (guint size)
                            size,
                            COGL_BUFFER_USAGE_HINT_DRAW,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
-  buffer->vtable = &cogl_pixel_buffer_vtable;
 
-  GE( glGenBuffers (1, &buffer->gl_handle) );
-  COGL_BUFFER_SET_FLAG (buffer, BUFFER_OBJECT);
+  if (cogl_features_available (COGL_FEATURE_PBOS))
+    {
+      /* PBOS */
+      buffer->vtable = &cogl_pixel_buffer_vtable;
+
+      GE( glGenBuffers (1, &buffer->gl_handle) );
+      COGL_BUFFER_SET_FLAG (buffer, BUFFER_OBJECT);
+    }
+  else
+    {
+      /* malloc fallback subclass */
+      buffer->vtable = &cogl_malloc_pixel_buffer_vtable;
+
+      /* create the buffer here as there's no point for a lazy allocation in
+       * the malloc case */
+      buffer->data = g_malloc (size);
+    }
 
   pixel_buffer->flags = COGL_PIXEL_BUFFER_FLAG_NONE;
 
@@ -314,4 +329,39 @@ static const CoglBufferVtable cogl_pixel_buffer_vtable =
   _cogl_pixel_buffer_map,
   _cogl_pixel_buffer_unmap,
   _cogl_pixel_buffer_set_data,
+};
+
+/*
+ * Fallback path, buffer->data points to a malloc'ed buffer.
+ */
+
+static guchar *
+_cogl_malloc_pixel_buffer_map (CoglBuffer       *buffer,
+                               CoglBufferAccess  access)
+{
+  COGL_BUFFER_SET_FLAG (buffer, MAPPED);
+  return buffer->data;
+}
+
+static void
+_cogl_malloc_pixel_buffer_unmap (CoglBuffer *buffer)
+{
+  COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
+}
+
+static gboolean
+_cogl_malloc_pixel_buffer_set_data (CoglBuffer   *buffer,
+                                    guint         offset,
+                                    const guchar *data,
+                                    guint         size)
+{
+  memcpy (buffer->data + offset, data, size);
+  return TRUE;
+}
+
+static const CoglBufferVtable cogl_malloc_pixel_buffer_vtable =
+{
+  _cogl_malloc_pixel_buffer_map,
+  _cogl_malloc_pixel_buffer_unmap,
+  _cogl_malloc_pixel_buffer_set_data,
 };
