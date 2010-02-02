@@ -357,34 +357,37 @@ DashDocDisplay.prototype = {
     _getPreferredHeight: function(actor, forWidth, alloc) {
         let children = actor.get_children();
 
-        // Two columns, where we go vertically down first.  So just take
-        // the height of half of the children as our preferred height.
+        // The width of an item is our allocated width, minus spacing, divided in half.
+        this._itemWidth = Math.floor((forWidth - DEFAULT_SPACING) / 2);
+
+        let maxNatural = 0;
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            let [minSize, naturalSize] = child.get_preferred_height(this._itemWidth);
+            maxNatural = Math.max(maxNatural, naturalSize);
+        }
+
+        this._itemHeight = maxNatural;
 
         let firstColumnChildren = Math.ceil(children.length / 2);
-
-        let natural = 0;
-        for (let i = 0; i < firstColumnChildren; i++) {
-            let child = children[i];
-            let [minSize, naturalSize] = child.get_preferred_height(-1);
-            natural += naturalSize;
-
-            if (i > 0 && i < children.length - 1) {
-                natural += DEFAULT_SPACING;
-            }
-        }
-        alloc.natural_size = natural;
+        alloc.natural_size = (firstColumnChildren * maxNatural +
+                              (firstColumnChildren - 1) * DEFAULT_SPACING);
     },
 
     _allocate: function(actor, box, flags) {
         let width = box.x2 - box.x1;
         let height = box.y2 - box.y1;
 
+        // Make sure this._itemWidth/Height have been computed, even
+        // if the parent actor didn't check our size before allocating.
+        // (Not clear if that is required or not as a Clutter
+        // invariant; this is safe and cheap because of caching.)
+        actor.get_preferred_height(width);
+
         let children = actor.get_children();
 
-        // The width of an item is our allocated width, minus spacing, divided in half.
-        let itemWidth = Math.floor((width - DEFAULT_SPACING) / 2);
-        let x = box.x1;
-        let y = box.y1;
+        let x = 0;
+        let y = 0;
         let columnIndex = 0;
         let i = 0;
         // Loop over the children, going vertically down first.  When we run
@@ -393,9 +396,7 @@ DashDocDisplay.prototype = {
         while (i < children.length) {
             let child = children[i];
 
-            let [minSize, naturalSize] = child.get_preferred_height(-1);
-
-            if (y + naturalSize > box.y2) {
+            if (y + this._itemHeight > box.y2) {
                 // Is this the second column, or we're in
                 // the first column and can't even fit one
                 // item?  In that case, break.
@@ -404,9 +405,9 @@ DashDocDisplay.prototype = {
                 }
                 // Set x to the halfway point.
                 columnIndex += 1;
-                x = x + itemWidth + DEFAULT_SPACING;
+                x = x + this._itemWidth + DEFAULT_SPACING;
                 // And y is back to the top.
-                y = box.y1;
+                y = 0;
                 // Retry this same item, now that we're in the second column.
                 // By looping back to the top here, we re-test the size
                 // again for the second column.
@@ -416,13 +417,13 @@ DashDocDisplay.prototype = {
             let childBox = new Clutter.ActorBox();
             childBox.x1 = x;
             childBox.y1 = y;
-            childBox.x2 = childBox.x1 + itemWidth;
-            childBox.y2 = y + naturalSize;
+            childBox.x2 = childBox.x1 + this._itemWidth;
+            childBox.y2 = y + this._itemHeight;
 
             y = childBox.y2 + DEFAULT_SPACING;
 
-            child.show();
             child.allocate(childBox, flags);
+            this.actor.set_skip_paint(child, false);
 
             i++;
         }
@@ -438,7 +439,6 @@ DashDocDisplay.prototype = {
             this._checkDocExistence = false;
         }
 
-        let skipPaint = [];
         for (; i < children.length; i++)
             this.actor.set_skip_paint(children[i], true);
     },
