@@ -25,6 +25,7 @@ dist_jsui_DATA =		\
 	search.js           \
 	shellDBus.js		\
 	statusMenu.js		\
+	telepathyClient.js	\
 	tweener.js		\
 	windowAttentionHandler.js      \
 	windowManager.js	\

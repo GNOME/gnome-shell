@@ -24,6 +24,7 @@ const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const ShellDBus = imports.ui.shellDBus;
+const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
@@ -36,9 +37,10 @@ let overview = null;
 let runDialog = null;
 let lookingGlass = null;
 let wm = null;
-let notificationDaemon = null;
 let messageTray = null;
+let notificationDaemon = null;
 let windowAttentionHandler = null;
+let telepathyClient = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -108,9 +110,10 @@ function start() {
     chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
     wm = new WindowManager.WindowManager();
+    messageTray = new MessageTray.MessageTray();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
-    messageTray = new MessageTray.MessageTray();
+    telepathyClient = new TelepathyClient.Client();
 
     _startDate = new Date();
 

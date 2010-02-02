@@ -140,6 +140,17 @@ NotificationDaemon.prototype = {
         let source = Main.messageTray.getSource(this._sourceId(appName));
         let id = null;
 
+        // Filter out notifications from Empathy, since we
+        // handle that information from telepathyClient.js
+        if (appName == 'Empathy') {
+            id = nextNotificationId++;
+            Mainloop.idle_add(Lang.bind(this,
+                                        function () {
+                                            this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
+                                        }));
+            return id;
+        }
+
         // Source may be null if we have never received a notification from
         // this app or if all notifications from this app have been acknowledged.
         if (source == null) {
