@@ -178,7 +178,7 @@ function resumeTweens() {
 function registerSpecialProperty(name, getFunction, setFunction,
                                  parameters, preProcessFunction) {
     Tweener.registerSpecialProperty(name, getFunction, setFunction,
-				    parameters, preProcessFunction);
+                                    parameters, preProcessFunction);
 }
 
 function registerSpecialPropertyModifier(name, modifyFunction, getFunction) {

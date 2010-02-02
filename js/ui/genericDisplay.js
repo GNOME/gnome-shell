@@ -608,10 +608,10 @@ GenericDisplay.prototype = {
         throw new Error("Not implemented");
     },
 
-	// Compares items associated with the item ids based on the order in which the
-	// items should be displayed.
-	// Intended to be used as a compareFunction for array.sort().
-	// Returns an integer value indicating the result of the comparison.
+    // Compares items associated with the item ids based on the order in which the
+    // items should be displayed.
+    // Intended to be used as a compareFunction for array.sort().
+    // Returns an integer value indicating the result of the comparison.
     _compareItems: function(itemIdA, itemIdB) {
         throw new Error("Not implemented");
     },

@@ -27,13 +27,13 @@ WidgetBox.prototype = {
     _init: function(widget, expanded) {
         this.state = expanded ? Widget.STATE_EXPANDED : Widget.STATE_COLLAPSED;
 
-	if (widget instanceof Widget.Widget) {
-	    this._widget = widget;
+        if (widget instanceof Widget.Widget) {
+            this._widget = widget;
             this._widget.state = this.state;
-	} else {
-	    let ctor = this._ctorFromName(widget);
+        } else {
+            let ctor = this._ctorFromName(widget);
             this._widget = new ctor(this.state);
-	}
+        }
 
         if (!this._widget.actor)
             throw new Error("widget has no actor");

@@ -18,15 +18,15 @@ function parse(params, defaults, allowExtras) {
         return defaults;
 
     if (!allowExtras) {
-	for (let prop in params) {
-	    if (!(prop in defaults))
-		throw new Error('Unrecognized parameter "' + prop + '"');
-	}
+        for (let prop in params) {
+            if (!(prop in defaults))
+                throw new Error('Unrecognized parameter "' + prop + '"');
+        }
     }
 
     for (let prop in defaults) {
-	if (!(prop in params))
-	    params[prop] = defaults[prop];
+        if (!(prop in params))
+            params[prop] = defaults[prop];
     }
 
     return params;

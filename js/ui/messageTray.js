@@ -213,7 +213,7 @@ MessageTray.prototype = {
         this._notificationQueue.push(notification);
 
         if (this._state == MessageTrayState.HIDDEN)
-	    this._updateState();
+            this._updateState();
     },
 
     _onMessageTrayEntered: function() {
@@ -267,7 +267,7 @@ MessageTray.prototype = {
                 // NOTIFICATION_TIMEOUT represents the time the notifiation
                 // is fully shown.
                 timeout = (ANIMATION_TIME + NOTIFICATION_TIMEOUT) * 1000;
-	    } else {
+            } else {
                 this._showSummary();
                 this._showTray();
                 this._state = MessageTrayState.SUMMARY;
@@ -284,7 +284,7 @@ MessageTray.prototype = {
                 this._state = MessageTrayState.SUMMARY;
                 timeout = (ANIMATION_TIME + SUMMARY_TIMEOUT) * 1000;
             }
-	    break;
+            break;
         case MessageTrayState.SUMMARY:
             if (this._notificationQueue.length > 0) {
                 this._hideSummary();
