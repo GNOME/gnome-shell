@@ -99,6 +99,11 @@ COGL_FEATURE_FUNCTION (void, glRenderbufferStorageMultisample,
                         GLsizei               width,
                         GLsizei               height))
 COGL_FEATURE_END ()
+COGL_FEATURE_BEGIN (read_pixels_async, 2, 1,
+                    "EXT\0",
+                    "pixel_buffer_object\0",
+                    COGL_FEATURE_PBOS)
+COGL_FEATURE_END ()
 
 /* The function names in OpenGL 2.0 are different so we can't easily
    just check for GL 2.0 */
