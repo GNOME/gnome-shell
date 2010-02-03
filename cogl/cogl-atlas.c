@@ -46,7 +46,7 @@
    the atlas */
 #include <cairo.h>
 
-static void cogl_atlas_dump_image (CoglAtlas *atlas);
+static void _cogl_atlas_dump_image (CoglAtlas *atlas);
 
 #endif /* COGL_ENABLE_DEBUG */
 
@@ -107,23 +107,23 @@ struct _CoglAtlasStackEntry
 };
 
 static CoglAtlasNode *
-cogl_atlas_node_new (void)
+_cogl_atlas_node_new (void)
 {
   return g_slice_new (CoglAtlasNode);
 }
 
 static void
-cogl_atlas_node_free (CoglAtlasNode *node)
+_cogl_atlas_node_free (CoglAtlasNode *node)
 {
   g_slice_free (CoglAtlasNode, node);
 }
 
 CoglAtlas *
-cogl_atlas_new (guint width, guint height,
-                GDestroyNotify value_destroy_func)
+_cogl_atlas_new (guint width, guint height,
+                 GDestroyNotify value_destroy_func)
 {
   CoglAtlas *atlas = g_new (CoglAtlas, 1);
-  CoglAtlasNode *root = cogl_atlas_node_new ();
+  CoglAtlasNode *root = _cogl_atlas_node_new ();
 
   root->type = COGL_ATLAS_EMPTY_LEAF;
   root->parent = NULL;
@@ -141,9 +141,9 @@ cogl_atlas_new (guint width, guint height,
 }
 
 static CoglAtlasStackEntry *
-cogl_atlas_stack_push (CoglAtlasStackEntry *stack,
-                       CoglAtlasNode *node,
-                       gboolean next_index)
+_cogl_atlas_stack_push (CoglAtlasStackEntry *stack,
+                        CoglAtlasNode *node,
+                        gboolean next_index)
 {
   CoglAtlasStackEntry *new_entry = g_slice_new (CoglAtlasStackEntry);
 
@@ -155,7 +155,7 @@ cogl_atlas_stack_push (CoglAtlasStackEntry *stack,
 }
 
 static CoglAtlasStackEntry *
-cogl_atlas_stack_pop (CoglAtlasStackEntry *stack)
+_cogl_atlas_stack_pop (CoglAtlasStackEntry *stack)
 {
   CoglAtlasStackEntry *next = stack->next;
 
@@ -165,8 +165,8 @@ cogl_atlas_stack_pop (CoglAtlasStackEntry *stack)
 }
 
 static CoglAtlasNode *
-cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
-                                    guint left_width)
+_cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
+                                     guint left_width)
 {
   /* Splits the node horizontally (according to emacs' definition, not
      vim) by converting it to a branch and adding two new leaf
@@ -179,7 +179,7 @@ cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
   if (node->rectangle.width == left_width)
     return node;
 
-  left_node = cogl_atlas_node_new ();
+  left_node = _cogl_atlas_node_new ();
   left_node->type = COGL_ATLAS_EMPTY_LEAF;
   left_node->parent = node;
   left_node->rectangle.x = node->rectangle.x;
@@ -188,7 +188,7 @@ cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
   left_node->rectangle.height = node->rectangle.height;
   node->d.branch.left = left_node;
 
-  right_node = cogl_atlas_node_new ();
+  right_node = _cogl_atlas_node_new ();
   right_node->type = COGL_ATLAS_EMPTY_LEAF;
   right_node->parent = node;
   right_node->rectangle.x = node->rectangle.x + left_width;
@@ -203,8 +203,8 @@ cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
 }
 
 static CoglAtlasNode *
-cogl_atlas_node_split_vertically (CoglAtlasNode *node,
-                                  guint top_height)
+_cogl_atlas_node_split_vertically (CoglAtlasNode *node,
+                                   guint top_height)
 {
   /* Splits the node vertically (according to emacs' definition, not
      vim) by converting it to a branch and adding two new leaf
@@ -217,7 +217,7 @@ cogl_atlas_node_split_vertically (CoglAtlasNode *node,
   if (node->rectangle.height == top_height)
     return node;
 
-  top_node = cogl_atlas_node_new ();
+  top_node = _cogl_atlas_node_new ();
   top_node->type = COGL_ATLAS_EMPTY_LEAF;
   top_node->parent = node;
   top_node->rectangle.x = node->rectangle.x;
@@ -226,7 +226,7 @@ cogl_atlas_node_split_vertically (CoglAtlasNode *node,
   top_node->rectangle.height = top_height;
   node->d.branch.left = top_node;
 
-  bottom_node = cogl_atlas_node_new ();
+  bottom_node = _cogl_atlas_node_new ();
   bottom_node->type = COGL_ATLAS_EMPTY_LEAF;
   bottom_node->parent = node;
   bottom_node->rectangle.x = node->rectangle.x;
@@ -241,10 +241,10 @@ cogl_atlas_node_split_vertically (CoglAtlasNode *node,
 }
 
 gboolean
-cogl_atlas_add_rectangle (CoglAtlas *atlas,
-                          guint width, guint height,
-                          gpointer data,
-                          CoglAtlasRectangle *rectangle)
+_cogl_atlas_add_rectangle (CoglAtlas *atlas,
+                           guint width, guint height,
+                           gpointer data,
+                           CoglAtlasRectangle *rectangle)
 {
   /* Stack of nodes to search in */
   CoglAtlasStackEntry *node_stack;
@@ -255,7 +255,7 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
   g_return_val_if_fail (width > 0 && height > 0, FALSE);
 
   /* Start with the root node */
-  node_stack = cogl_atlas_stack_push (NULL, atlas->root, FALSE);
+  node_stack = _cogl_atlas_stack_push (NULL, atlas->root, FALSE);
 
   /* Depth-first search for an empty node that is big enough */
   while (node_stack)
@@ -263,7 +263,7 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
       /* Pop an entry off the stack */
       CoglAtlasNode *node = node_stack->node;
       int next_index = node_stack->next_index;
-      node_stack = cogl_atlas_stack_pop (node_stack);
+      node_stack = _cogl_atlas_stack_pop (node_stack);
 
       /* Regardless of the type of the node, there's no point
          descending any further if the new rectangle won't fit within
@@ -281,20 +281,20 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
             {
               if (next_index)
                 /* Try the right branch */
-                node_stack = cogl_atlas_stack_push (node_stack,
-                                                    node->d.branch.right,
-                                                    0);
+                node_stack = _cogl_atlas_stack_push (node_stack,
+                                                     node->d.branch.right,
+                                                     0);
               else
                 {
                   /* Make sure we remember to try the right branch once
                      we've finished descending the left branch */
-                  node_stack = cogl_atlas_stack_push (node_stack,
-                                                      node,
-                                                      1);
+                  node_stack = _cogl_atlas_stack_push (node_stack,
+                                                       node,
+                                                       1);
                   /* Try the left branch */
-                  node_stack = cogl_atlas_stack_push (node_stack,
-                                                      node->d.branch.left,
-                                                      0);
+                  node_stack = _cogl_atlas_stack_push (node_stack,
+                                                       node->d.branch.left,
+                                                       0);
                 }
             }
         }
@@ -302,7 +302,7 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
 
   /* Free the stack */
   while (node_stack)
-    node_stack = cogl_atlas_stack_pop (node_stack);
+    node_stack = _cogl_atlas_stack_pop (node_stack);
 
   if (found_node)
     {
@@ -311,13 +311,13 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
       if (found_node->rectangle.width - width >
           found_node->rectangle.height - height)
         {
-          found_node = cogl_atlas_node_split_horizontally (found_node, width);
-          found_node = cogl_atlas_node_split_vertically (found_node, height);
+          found_node = _cogl_atlas_node_split_horizontally (found_node, width);
+          found_node = _cogl_atlas_node_split_vertically (found_node, height);
         }
       else
         {
-          found_node = cogl_atlas_node_split_vertically (found_node, height);
-          found_node = cogl_atlas_node_split_horizontally (found_node, width);
+          found_node = _cogl_atlas_node_split_vertically (found_node, height);
+          found_node = _cogl_atlas_node_split_horizontally (found_node, width);
         }
 
       found_node->type = COGL_ATLAS_FILLED_LEAF;
@@ -333,7 +333,7 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
 
 #ifdef COGL_ENABLE_DEBUG
       if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
-        cogl_atlas_dump_image (atlas);
+        _cogl_atlas_dump_image (atlas);
 #endif
 
       return TRUE;
@@ -343,8 +343,8 @@ cogl_atlas_add_rectangle (CoglAtlas *atlas,
 }
 
 void
-cogl_atlas_remove_rectangle (CoglAtlas *atlas,
-                             const CoglAtlasRectangle *rectangle)
+_cogl_atlas_remove_rectangle (CoglAtlas *atlas,
+                              const CoglAtlasRectangle *rectangle)
 {
   CoglAtlasNode *node = atlas->root;
 
@@ -391,8 +391,8 @@ cogl_atlas_remove_rectangle (CoglAtlas *atlas,
           if (node->d.branch.left->type == COGL_ATLAS_EMPTY_LEAF &&
               node->d.branch.right->type == COGL_ATLAS_EMPTY_LEAF)
             {
-              cogl_atlas_node_free (node->d.branch.left);
-              cogl_atlas_node_free (node->d.branch.right);
+              _cogl_atlas_node_free (node->d.branch.left);
+              _cogl_atlas_node_free (node->d.branch.right);
               node->type = COGL_ATLAS_EMPTY_LEAF;
             }
           else
@@ -407,44 +407,44 @@ cogl_atlas_remove_rectangle (CoglAtlas *atlas,
 
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
-    cogl_atlas_dump_image (atlas);
+    _cogl_atlas_dump_image (atlas);
 #endif
 }
 
 guint
-cogl_atlas_get_width (CoglAtlas *atlas)
+_cogl_atlas_get_width (CoglAtlas *atlas)
 {
   return atlas->root->rectangle.width;
 }
 
 guint
-cogl_atlas_get_height (CoglAtlas *atlas)
+_cogl_atlas_get_height (CoglAtlas *atlas)
 {
   return atlas->root->rectangle.height;
 }
 
 guint
-cogl_atlas_get_remaining_space (CoglAtlas *atlas)
+_cogl_atlas_get_remaining_space (CoglAtlas *atlas)
 {
   return atlas->space_remaining;
 }
 
 guint
-cogl_atlas_get_n_rectangles (CoglAtlas *atlas)
+_cogl_atlas_get_n_rectangles (CoglAtlas *atlas)
 {
   return atlas->n_rectangles;
 }
 
 static void
-cogl_atlas_internal_foreach (CoglAtlas *atlas,
-                             CoglAtlasInternalForeachCb callback,
-                             gpointer data)
+_cogl_atlas_internal_foreach (CoglAtlas *atlas,
+                              CoglAtlasInternalForeachCb callback,
+                              gpointer data)
 {
   /* Stack of nodes to search in */
   CoglAtlasStackEntry *node_stack;
 
   /* Start with the root node */
-  node_stack = cogl_atlas_stack_push (NULL, atlas->root, 0);
+  node_stack = _cogl_atlas_stack_push (NULL, atlas->root, 0);
 
   /* Iterate all nodes depth-first */
   while (node_stack)
@@ -460,7 +460,7 @@ cogl_atlas_internal_foreach (CoglAtlas *atlas,
               node_stack->next_index = 1;
 
               /* Explore the left branch next */
-              node_stack = cogl_atlas_stack_push (node_stack,
+              node_stack = _cogl_atlas_stack_push (node_stack,
                                                   node->d.branch.left,
                                                   0);
             }
@@ -470,7 +470,7 @@ cogl_atlas_internal_foreach (CoglAtlas *atlas,
               node_stack->next_index = 2;
 
               /* Explore the right branch next */
-              node_stack = cogl_atlas_stack_push (node_stack,
+              node_stack = _cogl_atlas_stack_push (node_stack,
                                                   node->d.branch.right,
                                                   0);
             }
@@ -478,14 +478,14 @@ cogl_atlas_internal_foreach (CoglAtlas *atlas,
             {
               /* We're finished with this node so we can call the callback */
               callback (node, data);
-              node_stack = cogl_atlas_stack_pop (node_stack);
+              node_stack = _cogl_atlas_stack_pop (node_stack);
             }
           break;
 
         default:
           /* Some sort of leaf node, just call the callback */
           callback (node, data);
-          node_stack = cogl_atlas_stack_pop (node_stack);
+          node_stack = _cogl_atlas_stack_pop (node_stack);
           break;
         }
     }
@@ -501,7 +501,7 @@ typedef struct _CoglAtlasForeachClosure
 } CoglAtlasForeachClosure;
 
 static void
-cogl_atlas_foreach_cb (CoglAtlasNode *node, gpointer data)
+_cogl_atlas_foreach_cb (CoglAtlasNode *node, gpointer data)
 {
   CoglAtlasForeachClosure *closure = data;
 
@@ -510,40 +510,40 @@ cogl_atlas_foreach_cb (CoglAtlasNode *node, gpointer data)
 }
 
 void
-cogl_atlas_foreach (CoglAtlas *atlas,
-                    CoglAtlasCallback callback,
-                    gpointer data)
+_cogl_atlas_foreach (CoglAtlas *atlas,
+                     CoglAtlasCallback callback,
+                     gpointer data)
 {
   CoglAtlasForeachClosure closure;
 
   closure.callback = callback;
   closure.data = data;
 
-  cogl_atlas_internal_foreach (atlas, cogl_atlas_foreach_cb, &closure);
+  _cogl_atlas_internal_foreach (atlas, _cogl_atlas_foreach_cb, &closure);
 }
 
 static void
-cogl_atlas_free_cb (CoglAtlasNode *node, gpointer data)
+_cogl_atlas_free_cb (CoglAtlasNode *node, gpointer data)
 {
   CoglAtlas *atlas = data;
 
   if (node->type == COGL_ATLAS_FILLED_LEAF && atlas->value_destroy_func)
     atlas->value_destroy_func (node->d.data);
 
-  cogl_atlas_node_free (node);
+  _cogl_atlas_node_free (node);
 }
 
 void
-cogl_atlas_free (CoglAtlas *atlas)
+_cogl_atlas_free (CoglAtlas *atlas)
 {
-  cogl_atlas_internal_foreach (atlas, cogl_atlas_free_cb, atlas);
+  _cogl_atlas_internal_foreach (atlas, _cogl_atlas_free_cb, atlas);
   g_free (atlas);
 }
 
 #ifdef COGL_ENABLE_DEBUG
 
 static void
-cogl_atlas_dump_image_cb (CoglAtlasNode *node, gpointer data)
+_cogl_atlas_dump_image_cb (CoglAtlasNode *node, gpointer data)
 {
   cairo_t *cr = data;
 
@@ -572,7 +572,7 @@ cogl_atlas_dump_image_cb (CoglAtlasNode *node, gpointer data)
 }
 
 static void
-cogl_atlas_dump_image (CoglAtlas *atlas)
+_cogl_atlas_dump_image (CoglAtlas *atlas)
 {
   /* This dumps a png to help visualize the atlas. Each leaf rectangle
      is drawn with a white outline. Unused leaves are filled in black
@@ -580,11 +580,11 @@ cogl_atlas_dump_image (CoglAtlas *atlas)
 
   cairo_surface_t *surface =
     cairo_image_surface_create (CAIRO_FORMAT_RGB24,
-                                cogl_atlas_get_width (atlas),
-                                cogl_atlas_get_height (atlas));
+                                _cogl_atlas_get_width (atlas),
+                                _cogl_atlas_get_height (atlas));
   cairo_t *cr = cairo_create (surface);
 
-  cogl_atlas_internal_foreach (atlas, cogl_atlas_dump_image_cb, cr);
+  _cogl_atlas_internal_foreach (atlas, _cogl_atlas_dump_image_cb, cr);
 
   cairo_destroy (cr);
 

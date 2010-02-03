@@ -244,18 +244,18 @@ _cogl_atlas_texture_remove_from_atlas (CoglAtlasTexture *atlas_tex)
     {
       _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-      cogl_atlas_remove_rectangle (ctx->atlas, &atlas_tex->rectangle);
+      _cogl_atlas_remove_rectangle (ctx->atlas, &atlas_tex->rectangle);
 
       COGL_NOTE (ATLAS, "Removed rectangle sized %ix%i",
                  atlas_tex->rectangle.width,
                  atlas_tex->rectangle.height);
       COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
-                 cogl_atlas_get_width (ctx->atlas),
-                 cogl_atlas_get_height (ctx->atlas),
-                 cogl_atlas_get_n_rectangles (ctx->atlas),
-                 cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
-                 (cogl_atlas_get_width (ctx->atlas) *
-                  cogl_atlas_get_height (ctx->atlas)));
+                 _cogl_atlas_get_width (ctx->atlas),
+                 _cogl_atlas_get_height (ctx->atlas),
+                 _cogl_atlas_get_n_rectangles (ctx->atlas),
+                 _cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
+                 (_cogl_atlas_get_width (ctx->atlas) *
+                  _cogl_atlas_get_height (ctx->atlas)));
 
       atlas_tex->in_atlas = FALSE;
     }
@@ -730,16 +730,16 @@ _cogl_atlas_texture_create_atlas (guint                           atlas_width,
      the textures */
   while (atlas_width < max_texture_size && atlas_height < max_texture_size)
     {
-      CoglAtlas *new_atlas = cogl_atlas_new (atlas_width, atlas_height, NULL);
+      CoglAtlas *new_atlas = _cogl_atlas_new (atlas_width, atlas_height, NULL);
       guint i;
 
       /* Add all of the textures and keep track of the new position */
       for (i = 0; i < n_textures; i++)
-        if (!cogl_atlas_add_rectangle (new_atlas,
-                                       textures[i].texture->rectangle.width,
-                                       textures[i].texture->rectangle.height,
-                                       textures[i].texture,
-                                       &textures[i].new_position))
+        if (!_cogl_atlas_add_rectangle (new_atlas,
+                                        textures[i].texture->rectangle.width,
+                                        textures[i].texture->rectangle.height,
+                                        textures[i].texture,
+                                        &textures[i].new_position))
           break;
 
       /* If the atlas can contain all of the textures then we have a
@@ -747,7 +747,7 @@ _cogl_atlas_texture_create_atlas (guint                           atlas_width,
       if (i >= n_textures)
         return new_atlas;
 
-      cogl_atlas_free (new_atlas);
+      _cogl_atlas_free (new_atlas);
       _cogl_atlas_texture_get_next_size (&atlas_width, &atlas_height);
     }
 
@@ -785,17 +785,17 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
   _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* Check if we can fit the rectangle into the existing atlas */
-  if (ctx->atlas && cogl_atlas_add_rectangle (ctx->atlas, width, height,
+  if (ctx->atlas && _cogl_atlas_add_rectangle (ctx->atlas, width, height,
                                               new_sub_tex,
                                               &new_sub_tex->rectangle))
     {
       COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
-                 cogl_atlas_get_width (ctx->atlas),
-                 cogl_atlas_get_height (ctx->atlas),
-                 cogl_atlas_get_n_rectangles (ctx->atlas),
-                 cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
-                 (cogl_atlas_get_width (ctx->atlas) *
-                  cogl_atlas_get_height (ctx->atlas)));
+                 _cogl_atlas_get_width (ctx->atlas),
+                 _cogl_atlas_get_height (ctx->atlas),
+                 _cogl_atlas_get_n_rectangles (ctx->atlas),
+                 _cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
+                 (_cogl_atlas_get_width (ctx->atlas) *
+                  _cogl_atlas_get_height (ctx->atlas)));
 
       return TRUE;
     }
@@ -807,10 +807,11 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
     data.textures = g_malloc (sizeof (CoglAtlasTextureRepositionData));
   else
     {
-      data.textures = g_malloc (sizeof (CoglAtlasTextureRepositionData) *
-                                (cogl_atlas_get_n_rectangles (ctx->atlas) + 1));
-      cogl_atlas_foreach (ctx->atlas, _cogl_atlas_texture_get_rectangles_cb,
-                          &data);
+      data.textures =
+        g_malloc (sizeof (CoglAtlasTextureRepositionData) *
+                  (_cogl_atlas_get_n_rectangles (ctx->atlas) + 1));
+      _cogl_atlas_foreach (ctx->atlas, _cogl_atlas_texture_get_rectangles_cb,
+                           &data);
     }
 
   /* Add the new rectangle as a dummy texture so that it can be
@@ -827,13 +828,13 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
   /* Try to create a new atlas that can contain all of the textures */
   if (ctx->atlas)
     {
-      atlas_width = cogl_atlas_get_width (ctx->atlas);
-      atlas_height = cogl_atlas_get_height (ctx->atlas);
+      atlas_width = _cogl_atlas_get_width (ctx->atlas);
+      atlas_height = _cogl_atlas_get_height (ctx->atlas);
 
       /* If there is enough space in the existing for the new
          rectangle in the existing atlas we'll start with the same
          size, otherwise we'll immediately double it */
-      if (cogl_atlas_get_remaining_space (ctx->atlas) < width * height)
+      if (_cogl_atlas_get_remaining_space (ctx->atlas) < width * height)
         _cogl_atlas_texture_get_next_size (&atlas_width, &atlas_height);
     }
   else
@@ -856,21 +857,21 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
     {
       /* We need to migrate the existing textures into a new texture */
       new_tex =
-        _cogl_texture_2d_new_with_size (cogl_atlas_get_width (new_atlas),
-                                        cogl_atlas_get_height (new_atlas),
+        _cogl_texture_2d_new_with_size (_cogl_atlas_get_width (new_atlas),
+                                        _cogl_atlas_get_height (new_atlas),
                                         COGL_TEXTURE_NONE,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       COGL_NOTE (ATLAS,
                  "Atlas %s with size %ix%i",
                  ctx->atlas == NULL ||
-                 cogl_atlas_get_width (ctx->atlas) !=
-                 cogl_atlas_get_width (new_atlas) ||
-                 cogl_atlas_get_height (ctx->atlas) !=
-                 cogl_atlas_get_height (new_atlas) ?
+                 _cogl_atlas_get_width (ctx->atlas) !=
+                 _cogl_atlas_get_width (new_atlas) ||
+                 _cogl_atlas_get_height (ctx->atlas) !=
+                 _cogl_atlas_get_height (new_atlas) ?
                  "resized" : "reorganized",
-                 cogl_atlas_get_width (new_atlas),
-                 cogl_atlas_get_height (new_atlas));
+                 _cogl_atlas_get_width (new_atlas),
+                 _cogl_atlas_get_height (new_atlas));
 
       if (ctx->atlas)
         {
@@ -881,7 +882,7 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
                                        ctx->atlas_texture,
                                        new_tex,
                                        new_sub_tex);
-          cogl_atlas_free (ctx->atlas);
+          _cogl_atlas_free (ctx->atlas);
           cogl_handle_unref (ctx->atlas_texture);
         }
       else
@@ -893,12 +894,12 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
       ctx->atlas_texture = new_tex;
 
       COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
-                 cogl_atlas_get_width (ctx->atlas),
-                 cogl_atlas_get_height (ctx->atlas),
-                 cogl_atlas_get_n_rectangles (ctx->atlas),
-                 cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
-                 (cogl_atlas_get_width (ctx->atlas) *
-                  cogl_atlas_get_height (ctx->atlas)));
+                 _cogl_atlas_get_width (ctx->atlas),
+                 _cogl_atlas_get_height (ctx->atlas),
+                 _cogl_atlas_get_n_rectangles (ctx->atlas),
+                 _cogl_atlas_get_remaining_space (ctx->atlas) * 100 /
+                 (_cogl_atlas_get_width (ctx->atlas) *
+                  _cogl_atlas_get_height (ctx->atlas)));
 
       ret = TRUE;
     }
@@ -994,7 +995,7 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
                                          &gl_format,
                                          &gl_type))
     {
-      cogl_atlas_remove_rectangle (ctx->atlas, &atlas_tex->rectangle);
+      _cogl_atlas_remove_rectangle (ctx->atlas, &atlas_tex->rectangle);
       g_free (atlas_tex);
       return COGL_INVALID_HANDLE;
     }
