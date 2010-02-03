@@ -153,15 +153,21 @@ Notification.prototype = {
         titleBox.y2 = titleNatH;
         this._titleText.allocate(titleBox, flags);
 
-        let bannerBox = new Clutter.ActorBox();
-        bannerBox.x1 = Math.min(titleBox.x2 + spacing, availWidth);
-        bannerBox.y1 = 0;
-        bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
-        bannerBox.y2 = titleNatH;
-        this._bannerText.allocate(bannerBox, flags);
-
-        if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
+        if (titleBox.x2 + spacing > availWidth) {
+            this._bannerText.hide();
             this._canPopOut = true;
+        } else {
+            let bannerBox = new Clutter.ActorBox();
+            bannerBox.x1 = titleBox.x2 + spacing;
+            bannerBox.y1 = 0;
+            bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
+            bannerBox.y2 = titleNatH;
+            this._bannerText.show();
+            this._bannerText.allocate(bannerBox, flags);
+
+            if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
+                this._canPopOut = true;
+        }
     },
 
     popOut: function() {
