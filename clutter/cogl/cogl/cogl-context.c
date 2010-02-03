@@ -192,7 +192,7 @@ _cogl_destroy_context ()
     cogl_handle_unref (_context->default_material);
 
   if (_context->atlas)
-    cogl_atlas_free (_context->atlas);
+    _cogl_atlas_free (_context->atlas);
   if (_context->atlas_texture)
     cogl_handle_unref (_context->atlas_texture);
 

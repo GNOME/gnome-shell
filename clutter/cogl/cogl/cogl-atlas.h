@@ -40,37 +40,37 @@ struct _CoglAtlasRectangle
 };
 
 CoglAtlas *
-cogl_atlas_new (guint width, guint height,
-                GDestroyNotify value_destroy_func);
+_cogl_atlas_new (guint width, guint height,
+                 GDestroyNotify value_destroy_func);
 
 gboolean
-cogl_atlas_add_rectangle (CoglAtlas *atlas,
-                          guint width, guint height,
-                          gpointer data,
-                          CoglAtlasRectangle *rectangle);
+_cogl_atlas_add_rectangle (CoglAtlas *atlas,
+                           guint width, guint height,
+                           gpointer data,
+                           CoglAtlasRectangle *rectangle);
 
 void
-cogl_atlas_remove_rectangle (CoglAtlas *atlas,
-                             const CoglAtlasRectangle *rectangle);
+_cogl_atlas_remove_rectangle (CoglAtlas *atlas,
+                              const CoglAtlasRectangle *rectangle);
 
 guint
-cogl_atlas_get_width (CoglAtlas *atlas);
+_cogl_atlas_get_width (CoglAtlas *atlas);
 
 guint
-cogl_atlas_get_height (CoglAtlas *atlas);
+_cogl_atlas_get_height (CoglAtlas *atlas);
 
 guint
-cogl_atlas_get_remaining_space (CoglAtlas *atlas);
+_cogl_atlas_get_remaining_space (CoglAtlas *atlas);
 
 guint
-cogl_atlas_get_n_rectangles (CoglAtlas *atlas);
+_cogl_atlas_get_n_rectangles (CoglAtlas *atlas);
 
 void
-cogl_atlas_foreach (CoglAtlas *atlas,
-                    CoglAtlasCallback callback,
-                    gpointer data);
+_cogl_atlas_foreach (CoglAtlas *atlas,
+                     CoglAtlasCallback callback,
+                     gpointer data);
 
 void
-cogl_atlas_free (CoglAtlas *atlas);
+_cogl_atlas_free (CoglAtlas *atlas);
 
 #endif /* __COGL_ATLAS_H */
