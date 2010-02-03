@@ -46,6 +46,10 @@ let modalActorFocusStack = [];
 let _errorLogStack = [];
 let _startDate;
 
+let background = null;
+let _windowAddedSignalId = null;
+let _windowRemovedSignalId = null;
+
 function start() {
     // Add a binding for "global" in the global JS namespace; (gjs
     // keeps the web browser convention of having that namespace be
@@ -134,7 +138,12 @@ function start() {
         }
     });
 
-    _relayout();
+    background = global.create_root_pixmap_actor();
+    global.screen.connect('workspace-switched', _onWorkspaceSwitched);
+    global.stage.add_actor(background);
+    background.lower_bottom();
+    _onWorkspaceSwitched(global.screen, -1);
+
     global.connect('screen-size-changed', _relayout);
 
     ExtensionSystem.init();
@@ -195,11 +204,52 @@ function _getAndClearErrorStack() {
     return errors;
 }
 
+function showBackground() {
+    background.show();
+}
+
+function hideBackground() {
+    background.hide();
+}
+
+function _onWorkspaceSwitched(screen, from) {
+    let workspace = screen.get_active_workspace();
+
+    if (from != -1) {
+        let old_workspace = screen.get_workspace_by_index(from);
+
+        if (_windowAddedSignalId !== null)
+            old_workspace.disconnect(_windowAddedSignalId);
+        if (background.windowRemovedSignalId !== null)
+            old_workspace.disconnect(_windowRemovedSignalId);
+    }
+
+    _windowAddedSignalId = workspace.connect('window-added', function(win) {
+        if (win.window_type == Meta.WindowType.DESKTOP)
+            hideBackground();
+    });
+    _windowRemovedSignalId = workspace.connect('window-removed', function(win) {
+        if (win.window_type == Meta.WindowType.DESKTOP)
+            showBackground();
+    });
+
+    function _isDesktop(win) {
+        return win.window_type == Meta.WindowType.DESKTOP;
+    }
+
+    if (workspace.list_windows().some(_isDesktop))
+        hideBackground();
+    else
+        showBackground();
+}
+
 function _relayout() {
     let primary = global.get_primary_monitor();
     panel.actor.set_position(primary.x, primary.y);
     panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
+
+    background.set_size(global.screen_width, global.screen_height);
 
     // To avoid updating the position and size of the workspaces
     // in the overview, we just hide the overview. The positions

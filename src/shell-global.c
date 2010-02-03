@@ -28,6 +28,7 @@
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
+static void update_root_window_pixmap (ShellGlobal *global);
 
 struct _ShellGlobal {
   GObject parent;
@@ -481,11 +482,7 @@ global_stage_notify_width (GObject    *gobject,
                            gpointer    data)
 {
   ShellGlobal *global = SHELL_GLOBAL (data);
-  ClutterActor *stage = CLUTTER_ACTOR (gobject);
 
-  if (global->root_pixmap)
-    clutter_actor_set_width (CLUTTER_ACTOR (global->root_pixmap),
-                             clutter_actor_get_width (stage));
   g_object_notify (G_OBJECT (global), "screen-width");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
@@ -500,11 +497,7 @@ global_stage_notify_height (GObject    *gobject,
                             gpointer    data)
 {
   ShellGlobal *global = SHELL_GLOBAL (data);
-  ClutterActor *stage = CLUTTER_ACTOR (gobject);
 
-  if (global->root_pixmap)
-    clutter_actor_set_height (CLUTTER_ACTOR (global->root_pixmap),
-                              clutter_actor_get_height (stage));
   g_object_notify (G_OBJECT (global), "screen-height");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
@@ -1041,6 +1034,9 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
   if (global->root_pixmap == NULL)
     {
       global->root_pixmap = clutter_glx_texture_pixmap_new ();
+
+      clutter_texture_set_repeat (CLUTTER_TEXTURE (global->root_pixmap),
+                                  TRUE, TRUE);
 
       /* The low and medium quality filters give nearest-neighbor resizing. */
       clutter_texture_set_filter_quality (CLUTTER_TEXTURE (global->root_pixmap),

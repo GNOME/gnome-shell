@@ -287,10 +287,10 @@ DesktopClone.prototype = {
             this.actor = new Clutter.Clone({ source: window.get_texture(),
                                              reactive: true });
         } else {
-            this.actor = new Clutter.Rectangle({ color: global.stage.color,
-                                                 reactive: true,
-                                                 width: global.screen_width,
-                                                 height: global.screen_height });
+            this.actor = new Clutter.Clone({ source: Main.background.source,
+                                             reactive: true,
+                                             width: global.screen_width,
+                                             height: global.screen_height });
         }
 
         this.actor.connect('button-release-event',
