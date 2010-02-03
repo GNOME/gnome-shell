@@ -145,14 +145,16 @@ tick (ClutterTimeline *timeline,
   Flower **flowers = (Flower**)data;
   gint i = 0;
 
-  for (i=0; i< N_FLOWERS; i++)
+  for (i = 0; i < N_FLOWERS; i++)
     {
+      ClutterActor *stage;
+
       flowers[i]->y   += flowers[i]->v;
       flowers[i]->rot += flowers[i]->rv;
 
-      if (flowers[i]->y > (gint)clutter_actor_get_height
-	                        (clutter_stage_get_default ()))
-	    flowers[i]->y = -clutter_actor_get_height (flowers[i]->ctex);
+      stage = clutter_stage_get_default ();
+      if (flowers[i]->y > (gint) clutter_actor_get_height (stage))
+        flowers[i]->y = -clutter_actor_get_height (flowers[i]->ctex);
 
       clutter_actor_set_position (flowers[i]->ctex,
 				  flowers[i]->x, flowers[i]->y);
@@ -164,11 +166,7 @@ tick (ClutterTimeline *timeline,
                                   clutter_actor_get_height (flowers[i]->ctex)/2,
                                   0);
     }
-
-  return TRUE;
 }
-
-void foo(void) { g_usleep(10000000); }
 
 int
 test_clutter_cairo_flowers_main (int argc, char **argv)
