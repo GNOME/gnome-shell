@@ -2167,6 +2167,42 @@ clutter_text_real_del_next (ClutterText         *self,
 }
 
 static gboolean
+clutter_text_real_del_word_next (ClutterText         *self,
+                                 const gchar         *action,
+                                 guint                keyval,
+                                 ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos;
+  gint len;
+
+  pos = priv->position;
+  len = priv->n_chars;
+
+  if (len && pos != -1 && pos < len)
+    {
+      gint end;
+
+      end = clutter_text_move_word_forward (self, pos);
+      clutter_text_delete_text (self, pos, end);
+
+      if (priv->selection_bound >= end)
+        {
+          gint new_bound;
+
+          new_bound = priv->selection_bound - (end - pos);
+          clutter_text_set_selection_bound (self, new_bound);
+        }
+      else if (priv->selection_bound > pos)
+        {
+          clutter_text_set_selection_bound (self, pos);
+        }
+    }
+
+  return TRUE;
+}
+
+static gboolean
 clutter_text_real_del_prev (ClutterText         *self,
                             const gchar         *action,
                             guint                keyval,
@@ -2195,6 +2231,53 @@ clutter_text_real_del_prev (ClutterText         *self,
           clutter_text_delete_text (self, pos - 1, pos);
 
           clutter_text_set_positions (self, pos - 1, pos - 1);
+        }
+    }
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_del_word_prev (ClutterText         *self,
+                                 const gchar         *action,
+                                 guint                keyval,
+                                 ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos;
+  gint len;
+
+  pos = priv->position;
+  len = priv->n_chars;
+
+  if (pos != 0 && len != 0)
+    {
+      gint new_pos;
+
+      if (pos == -1)
+        {
+          new_pos = clutter_text_move_word_backward (self, len);
+          clutter_text_delete_text (self, new_pos, len);
+
+          clutter_text_set_positions (self, -1, -1);
+        }
+      else
+        {
+          new_pos = clutter_text_move_word_backward (self, pos);
+          clutter_text_delete_text (self, new_pos, pos);
+
+          clutter_text_set_cursor_position (self, new_pos);
+          if (priv->selection_bound >= pos)
+            {
+              gint new_bound;
+
+              new_bound = priv->selection_bound - (pos - new_pos);
+              clutter_text_set_selection_bound (self, new_bound);
+            }
+          else if (priv->selection_bound >= new_pos)
+            {
+              clutter_text_set_selection_bound (self, new_pos);
+            }
         }
     }
 
@@ -2815,12 +2898,24 @@ clutter_text_class_init (ClutterTextClass *klass)
                                        G_CALLBACK (clutter_text_real_del_next),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "delete-next",
+                                       CLUTTER_Delete, CLUTTER_CONTROL_MASK,
+                                       G_CALLBACK (clutter_text_real_del_word_next),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-next",
                                        CLUTTER_KP_Delete, 0,
                                        G_CALLBACK (clutter_text_real_del_next),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-next",
+                                       CLUTTER_KP_Delete, CLUTTER_CONTROL_MASK,
+                                       G_CALLBACK (clutter_text_real_del_word_next),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "delete-prev",
                                        CLUTTER_BackSpace, 0,
                                        G_CALLBACK (clutter_text_real_del_prev),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-prev",
+                                       CLUTTER_BackSpace, CLUTTER_CONTROL_MASK,
+                                       G_CALLBACK (clutter_text_real_del_word_prev),
                                        NULL, NULL);
 
   clutter_binding_pool_install_action (binding_pool, "activate",
