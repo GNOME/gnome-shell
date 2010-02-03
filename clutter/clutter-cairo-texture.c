@@ -81,6 +81,8 @@
 #include "clutter-cairo-texture.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
+#include "cogl/cogl-pixel-buffer.h"
+#include "cogl/cogl-buffer.h"
 
 G_DEFINE_TYPE (ClutterCairoTexture,
                clutter_cairo_texture,
@@ -118,14 +120,15 @@ enum
 
 struct _ClutterCairoTexturePrivate
 {
-  cairo_format_t   format;
+  cairo_format_t format;
 
-  cairo_surface_t *cr_surface;
-  guchar          *cr_surface_data;
+  CoglHandle     buffer;
+  guint          buffer_width;
+  guint          buffer_height;
 
-  guint            width;
-  guint            height;
-  guint            rowstride;
+  guint          width;
+  guint          height;
+  guint          rowstride;
 };
 
 typedef struct
@@ -143,15 +146,6 @@ typedef struct
 } ClutterCairoTextureContext;
 
 static const cairo_user_data_key_t clutter_cairo_texture_surface_key;
-static const cairo_user_data_key_t clutter_cairo_texture_context_key;
-
-static void
-clutter_cairo_texture_surface_destroy (void *data)
-{
-  ClutterCairoTexture *cairo = data;
-
-  cairo->priv->cr_surface = NULL;
-}
 
 static void
 clutter_cairo_texture_set_property (GObject      *object,
@@ -210,23 +204,10 @@ clutter_cairo_texture_finalize (GObject *object)
 {
   ClutterCairoTexturePrivate *priv = CLUTTER_CAIRO_TEXTURE (object)->priv;
 
-  if (priv->cr_surface)
+  if (priv->buffer)
     {
-      cairo_surface_t *surface = priv->cr_surface;
-
-      cairo_surface_finish (priv->cr_surface);
-      cairo_surface_set_user_data (priv->cr_surface,
-                                   &clutter_cairo_texture_surface_key,
-                                   NULL, NULL);
-      cairo_surface_destroy (surface);
-
-      priv->cr_surface = NULL;
-    }
-
-  if (priv->cr_surface_data)
-    {
-      g_free (priv->cr_surface_data);
-      priv->cr_surface_data = NULL;
+      cogl_handle_unref (priv->buffer);
+      priv->buffer = NULL;
     }
 
   G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->finalize (object);
@@ -236,80 +217,30 @@ static inline void
 clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 {
   ClutterCairoTexturePrivate *priv = cairo->priv;
-  CoglHandle cogl_texture;
 
-  if (priv->cr_surface)
+  if (priv->buffer)
     {
-      cairo_surface_t *surface = priv->cr_surface;
-
-      /* If the surface is already the right size then don't bother
+      /* If the buffer is already the right size then don't bother
          doing anything */
-      if (priv->width == cairo_image_surface_get_width (priv->cr_surface)
-          && priv->height == cairo_image_surface_get_height (priv->cr_surface))
+      if (priv->buffer_width == priv->width &&
+          priv->buffer_height == priv->height)
         return;
 
-      cairo_surface_finish (surface);
-      cairo_surface_set_user_data (surface,
-                                   &clutter_cairo_texture_surface_key,
-				   NULL, NULL);
-      cairo_surface_destroy (surface);
-
-      priv->cr_surface = NULL;
-    }
-
-  if (priv->cr_surface_data)
-    {
-      g_free (priv->cr_surface_data);
-      priv->cr_surface_data = NULL;
+      cogl_handle_unref (priv->buffer);
+      priv->buffer = COGL_INVALID_HANDLE;
     }
 
   if (priv->width == 0 || priv->height == 0)
     return;
 
-#if CAIRO_VERSION > 106000
-  priv->rowstride = cairo_format_stride_for_width (priv->format, priv->width);
-#else
-  /* poor man's version of cairo_format_stride_for_width() */
-  switch (priv->format)
-    {
-    case CAIRO_FORMAT_ARGB32:
-    case CAIRO_FORMAT_RGB24:
-      priv->rowstride = priv->width * 4;
-      break;
+  priv->buffer =
+    cogl_pixel_buffer_new_for_size (priv->width,
+                                    priv->height,
+                                    CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                                    &priv->rowstride);
 
-    case CAIRO_FORMAT_A8:
-    case CAIRO_FORMAT_A1:
-      priv->rowstride = priv->width;
-      break;
-
-    default:
-      g_assert_not_reached ();
-      break;
-    }
-#endif /* CAIRO_VERSION > 106000 */
-
-  priv->cr_surface_data = g_malloc0 (priv->height * priv->rowstride);
-  priv->cr_surface =
-    cairo_image_surface_create_for_data (priv->cr_surface_data,
-                                         priv->format,
-                                         priv->width, priv->height,
-                                         priv->rowstride);
-
-  cairo_surface_set_user_data (priv->cr_surface,
-                               &clutter_cairo_texture_surface_key,
-			       cairo,
-                               clutter_cairo_texture_surface_destroy);
-
-  /* Create a blank Cogl texture
-   */
-  cogl_texture = cogl_texture_new_from_data (priv->width, priv->height,
-                                             COGL_TEXTURE_NONE,
-                                             CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
-                                             COGL_PIXEL_FORMAT_ANY,
-                                             priv->rowstride,
-                                             priv->cr_surface_data);
-  clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (cairo), cogl_texture);
-  cogl_handle_unref (cogl_texture);
+  priv->buffer_width = priv->width;
+  priv->buffer_height = priv->height;
 }
 
 static void
@@ -321,8 +252,8 @@ clutter_cairo_texture_notify (GObject    *object,
      that if both the width and height properties are set using a
      single call to g_object_set then the surface will only be resized
      once because the notifications will be frozen in between */
-  if (!strcmp ("surface-width", pspec->name)
-      || !strcmp ("surface-height", pspec->name))
+  if (!strcmp ("surface-width", pspec->name) ||
+      !strcmp ("surface-height", pspec->name))
     {
       ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (object);
 
@@ -453,46 +384,31 @@ clutter_cairo_texture_new (guint width,
 }
 
 static void
-clutter_cairo_texture_context_destroy (void *data)
+clutter_cairo_texture_surface_destroy (void *data)
 {
   ClutterCairoTextureContext *ctxt = data;
   ClutterCairoTexture *cairo = ctxt->cairo;
   ClutterCairoTexturePrivate *priv = cairo->priv;
-  guchar *cairo_data;
-  gint cairo_width, cairo_height;
-  gint surface_width, surface_height;
   CoglHandle cogl_texture;
 
-  if (!priv->cr_surface)
+  if (!priv->buffer)
     return;
 
-  surface_width  = cairo_image_surface_get_width (priv->cr_surface);
-  surface_height = cairo_image_surface_get_height (priv->cr_surface);
+  cogl_buffer_unmap (priv->buffer);
 
-  cairo_width  = MIN (ctxt->rect.width, surface_width);
-  cairo_height = MIN (ctxt->rect.height, surface_height);
+  cogl_texture =
+    cogl_texture_new_from_buffer (priv->buffer,
+                                  priv->buffer_width,
+                                  priv->buffer_height,
+                                  COGL_TEXTURE_NONE,
+                                  CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                                  COGL_PIXEL_FORMAT_ANY,
+                                  priv->rowstride,
+                                  0);
 
-  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (cairo));
+  clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (cairo), cogl_texture);
 
-  if (!cairo_width || !cairo_height || cogl_texture == COGL_INVALID_HANDLE)
-    {
-      g_free (ctxt);
-
-      return;
-    }
-
-  cairo_data = (priv->cr_surface_data
-             + (ctxt->rect.y * priv->rowstride)
-             + (ctxt->rect.x * 4));
-
-  cogl_texture_set_region (cogl_texture,
-                           0, 0,
-                           ctxt->rect.x, ctxt->rect.y,
-                           cairo_width, cairo_height,
-                           cairo_width, cairo_height,
-                           CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
-                           priv->rowstride,
-                           cairo_data);
+  cogl_handle_unref (cogl_texture);
 
   g_free (ctxt);
 
@@ -559,6 +475,8 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   ClutterCairoTextureContext *ctxt;
   ClutterCairoTextureRectangle region, area, inter;
   cairo_t *cr;
+  cairo_surface_t *surface;
+  CoglHandle material;
 
   g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
 
@@ -581,7 +499,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
       return NULL;
     }
 
-  if (!priv->cr_surface)
+  if (!priv->buffer)
     return NULL;
 
   ctxt = g_new0 (ClutterCairoTextureContext, 1);
@@ -605,9 +523,34 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   ctxt->rect.width = inter.width;
   ctxt->rect.height = inter.height;
 
-  cr = cairo_create (priv->cr_surface);
-  cairo_set_user_data (cr, &clutter_cairo_texture_context_key,
-		       ctxt, clutter_cairo_texture_context_destroy);
+  /* Destroy the existing texture so that the GL driver won't have to
+     copy it when we map the PBO */
+  if ((material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (self))))
+    {
+      const GList *layers = cogl_material_get_layers (material);
+      if (layers)
+        cogl_material_set_layer (layers->data, 0, COGL_INVALID_HANDLE);
+    }
+
+  /* Create a surface to render directly to the PBO */
+  surface =
+    cairo_image_surface_create_for_data (cogl_buffer_map (priv->buffer,
+                                                          COGL_BUFFER_ACCESS_READ |
+                                                          COGL_BUFFER_ACCESS_WRITE),
+                                         priv->format,
+                                         priv->buffer_width,
+                                         priv->buffer_height,
+                                         priv->rowstride);
+
+  /* Set a key so that we can recreate the texture when the surface is
+     destroyed */
+  cairo_surface_set_user_data (surface, &clutter_cairo_texture_surface_key,
+                               ctxt, clutter_cairo_texture_surface_destroy);
+
+  cr = cairo_create (surface);
+  /* Remove the reference we have on the surface so that it will be
+     destroyed when the context is destroyed */
+  cairo_surface_destroy (surface);
 
   return cr;
 }
@@ -751,13 +694,16 @@ void
 clutter_cairo_texture_clear (ClutterCairoTexture *self)
 {
   ClutterCairoTexturePrivate *priv;
+  guint8 *data;
 
   g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
 
   priv = self->priv;
 
-  if (!priv->cr_surface_data)
+  if (!priv->buffer)
     return;
 
-  memset (priv->cr_surface_data, 0, priv->height * priv->rowstride);
+  data = cogl_buffer_map (priv->buffer, COGL_BUFFER_ACCESS_WRITE);
+  memset (data, 0, priv->buffer_height * priv->rowstride);
+  cogl_buffer_unmap (priv->buffer);
 }
