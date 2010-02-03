@@ -1520,21 +1520,11 @@ static void
 st_widget_recompute_style (StWidget    *widget,
                            StThemeNode *old_theme_node)
 {
-  ClutterActorBox allocation_box;
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
-
-  clutter_actor_get_allocation_box ((ClutterActor *) widget, &allocation_box);
 
   if (!old_theme_node ||
       !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
     clutter_actor_queue_relayout ((ClutterActor *) widget);
-
-  /* Could compare gradient values here if we hit a performance issue.
-   * Also, only redraw if we've been allocated.
-   */
-  if (allocation_box.x2 - allocation_box.x1 > 0 &&
-      allocation_box.y2 - allocation_box.y1 > 0)
-    st_widget_redraw_gradient (widget);
 
   g_signal_emit (widget, signals[STYLE_CHANGED], 0);
   widget->priv->is_style_dirty = FALSE;
