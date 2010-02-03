@@ -150,6 +150,13 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle);
 void
 _cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
 
+/* Utility function to determine which pixel format to use when
+   dst_format is COGL_PIXEL_FORMAT_ANY. If dst_format is not ANY then
+   it will just be returned directly */
+CoglPixelFormat
+_cogl_texture_determine_internal_format (CoglPixelFormat src_format,
+                                         CoglPixelFormat dst_format);
+
 /* Utility function to help uploading a bitmap. If the bitmap needs
    premult conversion then it will be copied and *copied_bitmap will
    be set to TRUE. Otherwise dst_bmp will be set to a shallow copy of
