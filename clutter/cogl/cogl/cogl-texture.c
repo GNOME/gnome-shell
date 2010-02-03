@@ -100,6 +100,36 @@ cogl_texture_unref (CoglHandle handle)
   cogl_handle_unref (handle);
 }
 
+static gboolean
+_cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
+                                        CoglPixelFormat dst_format)
+{
+  return ((src_format & COGL_A_BIT) &&
+          src_format != COGL_PIXEL_FORMAT_A_8 &&
+          (src_format & COGL_PREMULT_BIT) !=
+          (dst_format & COGL_PREMULT_BIT));
+}
+
+CoglPixelFormat
+_cogl_texture_determine_internal_format (CoglPixelFormat src_format,
+                                         CoglPixelFormat dst_format)
+{
+  /* If the application hasn't specified a specific format then we'll
+   * pick the most appropriate. By default Cogl will use a
+   * premultiplied internal format. Later we will add control over
+   * this. */
+  if (dst_format == COGL_PIXEL_FORMAT_ANY)
+    {
+      if ((src_format & COGL_A_BIT) &&
+          src_format != COGL_PIXEL_FORMAT_A_8)
+        return src_format | COGL_PREMULT_BIT;
+      else
+        return src_format;
+    }
+  else
+    return dst_format;
+}
+
 gboolean
 _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                                   CoglPixelFormat  dst_format,
@@ -110,42 +140,27 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                                   GLenum          *out_glformat,
                                   GLenum          *out_gltype)
 {
-  /* If the application hasn't specified a specific format then we'll
-   * pick the most appropriate. By default Cogl will use a
-   * premultiplied internal format. Later we will add control over
-   * this. */
-  if (dst_format == COGL_PIXEL_FORMAT_ANY)
-    {
-      if ((src_bmp->format & COGL_A_BIT) &&
-          src_bmp->format != COGL_PIXEL_FORMAT_A_8)
-        dst_format = src_bmp->format | COGL_PREMULT_BIT;
-      else
-        dst_format = src_bmp->format;
-    }
+  dst_format = _cogl_texture_determine_internal_format (src_bmp->format,
+                                                        dst_format);
 
-  if (dst_bmp)
-    {
-      *copied_bitmap = FALSE;
-      *dst_bmp = *src_bmp;
+  *copied_bitmap = FALSE;
+  *dst_bmp = *src_bmp;
 
-      /* If the source format does not have the same premult flag as the
-         dst format then we need to copy and convert it */
-      if ((src_bmp->format & COGL_A_BIT) &&
-          src_bmp->format != COGL_PIXEL_FORMAT_A_8 &&
-          (src_bmp->format & COGL_PREMULT_BIT) !=
-          (dst_format & COGL_PREMULT_BIT))
+  /* If the source format does not have the same premult flag as the
+     dst format then we need to copy and convert it */
+  if (_cogl_texture_needs_premult_conversion (src_bmp->format,
+                                              dst_format))
+    {
+      dst_bmp->data = g_memdup (dst_bmp->data,
+                                dst_bmp->height * dst_bmp->rowstride);
+      *copied_bitmap = TRUE;
+
+      if (!_cogl_bitmap_convert_premult_status (dst_bmp,
+                                                src_bmp->format ^
+                                                COGL_PREMULT_BIT))
         {
-          dst_bmp->data = g_memdup (dst_bmp->data,
-                                    dst_bmp->height * dst_bmp->rowstride);
-          *copied_bitmap = TRUE;
-
-          if (!_cogl_bitmap_convert_premult_status (dst_bmp,
-                                                    src_bmp->format ^
-                                                    COGL_PREMULT_BIT))
-            {
-              g_free (dst_bmp->data);
-              return FALSE;
-            }
+          g_free (dst_bmp->data);
+          return FALSE;
         }
     }
 

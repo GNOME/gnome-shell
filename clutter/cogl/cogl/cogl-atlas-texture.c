@@ -949,15 +949,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
 
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", bmp->width, bmp->height);
 
-  if (!_cogl_texture_prepare_for_upload (bmp,
-                                         internal_format,
-                                         &internal_format,
-                                         NULL,
-                                         NULL,
-                                         &gl_intformat,
-                                         &gl_format,
-                                         &gl_type))
-    return COGL_INVALID_HANDLE;
+  internal_format = _cogl_texture_determine_internal_format (bmp->format,
+                                                             internal_format);
 
   /* If the texture is in a strange format then we can't use it */
   if (internal_format != COGL_PIXEL_FORMAT_RGB_888 &&
