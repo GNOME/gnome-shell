@@ -396,16 +396,29 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  CoglHandle bmp;
-  CoglHandle handle;
+  CoglHandle bmp_handle;
+  CoglBitmap *bmp;
+  CoglHandle handle = COGL_INVALID_HANDLE;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  bmp = cogl_bitmap_new_from_file (filename, error);
-  if (bmp == COGL_INVALID_HANDLE)
+  bmp_handle = cogl_bitmap_new_from_file (filename, error);
+  if (bmp_handle == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
-  handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
+  bmp = (CoglBitmap *) bmp_handle;
+
+  /* We know that the bitmap data is solely owned by this function so
+     we can do the premult conversion in place. This avoids having to
+     copy the bitmap which will otherwise happen in
+     _cogl_texture_prepare_for_upload */
+  internal_format = _cogl_texture_determine_internal_format (bmp->format,
+                                                             internal_format);
+  if (!_cogl_texture_needs_premult_conversion (bmp->format, internal_format) ||
+      _cogl_bitmap_convert_premult_status (bmp,
+                                           bmp->format ^= COGL_PREMULT_BIT))
+    handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
+
   cogl_handle_unref (bmp);
 
   return handle;
