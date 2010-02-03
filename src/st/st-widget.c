@@ -778,12 +778,11 @@ st_widget_real_style_changed (StWidget *self)
 
   if (gradient == ST_GRADIENT_NONE)
     {
-      if (gradient != priv->bg_gradient_type)
-        has_changed = TRUE;
-      priv->bg_gradient_type = gradient;
       st_theme_node_get_background_color (theme_node, &color);
-      if (!clutter_color_equal (&color, &priv->bg_color))
+      if (gradient != priv->bg_gradient_type ||
+          !clutter_color_equal (&color, &priv->bg_color))
         {
+          priv->bg_gradient_type = gradient;
           priv->bg_color = color;
           priv->draw_bg_color = color.alpha != 0;
           has_changed = TRUE;
