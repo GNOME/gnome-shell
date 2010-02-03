@@ -97,117 +97,120 @@ struct _ClutterTextClass
 GType clutter_text_get_type (void) G_GNUC_CONST;
 
 ClutterActor *        clutter_text_new                  (void);
-ClutterActor *        clutter_text_new_full             (const gchar        *font_name,
-                                                         const gchar        *text,
-                                                         const ClutterColor *color);
-ClutterActor *        clutter_text_new_with_text        (const gchar        *font_name,
-                                                         const gchar        *text);
+ClutterActor *        clutter_text_new_full             (const gchar          *font_name,
+                                                         const gchar          *text,
+                                                         const ClutterColor   *color);
+ClutterActor *        clutter_text_new_with_text        (const gchar          *font_name,
+                                                         const gchar          *text);
 
-G_CONST_RETURN gchar *clutter_text_get_text             (ClutterText        *self);
-void                  clutter_text_set_text             (ClutterText        *self,
-                                                         const gchar        *text);
-void                  clutter_text_set_markup           (ClutterText        *self,
-                                                         const gchar        *markup);
-void                  clutter_text_set_color            (ClutterText        *self,
-                                                         const ClutterColor *color);
-void                  clutter_text_get_color            (ClutterText        *self,
-                                                         ClutterColor       *color);
-void                  clutter_text_set_font_name        (ClutterText        *self,
-                                                         const gchar        *font_name);
-G_CONST_RETURN gchar *clutter_text_get_font_name        (ClutterText        *self);
+G_CONST_RETURN gchar *clutter_text_get_text             (ClutterText          *self);
+void                  clutter_text_set_text             (ClutterText          *self,
+                                                         const gchar          *text);
+void                  clutter_text_set_markup           (ClutterText          *self,
+                                                         const gchar          *markup);
+void                  clutter_text_set_color            (ClutterText          *self,
+                                                         const ClutterColor   *color);
+void                  clutter_text_get_color            (ClutterText          *self,
+                                                         ClutterColor         *color);
+void                  clutter_text_set_font_name        (ClutterText          *self,
+                                                         const gchar          *font_name);
+G_CONST_RETURN gchar *clutter_text_get_font_name        (ClutterText          *self);
+void                  clutter_text_set_font_description (ClutterText          *self,
+                                                         PangoFontDescription *font_desc);
+PangoFontDescription *clutter_text_get_font_description (ClutterText          *self);
 
-void                  clutter_text_set_ellipsize        (ClutterText        *self,
-                                                         PangoEllipsizeMode  mode);
-PangoEllipsizeMode    clutter_text_get_ellipsize        (ClutterText        *self);
-void                  clutter_text_set_line_wrap        (ClutterText        *self,
-                                                         gboolean            line_wrap);
-gboolean              clutter_text_get_line_wrap        (ClutterText        *self);
-void                  clutter_text_set_line_wrap_mode   (ClutterText        *self,
-                                                         PangoWrapMode       wrap_mode);
-PangoWrapMode         clutter_text_get_line_wrap_mode   (ClutterText        *self);
-PangoLayout *         clutter_text_get_layout           (ClutterText        *self);
-void                  clutter_text_set_attributes       (ClutterText        *self,
-                                                         PangoAttrList      *attrs);
-PangoAttrList *       clutter_text_get_attributes       (ClutterText        *self);
-void                  clutter_text_set_use_markup       (ClutterText        *self,
-                                                         gboolean            setting);
-gboolean              clutter_text_get_use_markup       (ClutterText        *self);
-void                  clutter_text_set_line_alignment   (ClutterText        *self,
-                                                         PangoAlignment      alignment);
-PangoAlignment        clutter_text_get_line_alignment   (ClutterText        *self);
-void                  clutter_text_set_justify          (ClutterText        *self,
-                                                         gboolean            justify);
-gboolean              clutter_text_get_justify          (ClutterText        *self);
+void                  clutter_text_set_ellipsize        (ClutterText          *self,
+                                                         PangoEllipsizeMode    mode);
+PangoEllipsizeMode    clutter_text_get_ellipsize        (ClutterText          *self);
+void                  clutter_text_set_line_wrap        (ClutterText          *self,
+                                                         gboolean              line_wrap);
+gboolean              clutter_text_get_line_wrap        (ClutterText          *self);
+void                  clutter_text_set_line_wrap_mode   (ClutterText          *self,
+                                                         PangoWrapMode         wrap_mode);
+PangoWrapMode         clutter_text_get_line_wrap_mode   (ClutterText          *self);
+PangoLayout *         clutter_text_get_layout           (ClutterText          *self);
+void                  clutter_text_set_attributes       (ClutterText          *self,
+                                                         PangoAttrList        *attrs);
+PangoAttrList *       clutter_text_get_attributes       (ClutterText          *self);
+void                  clutter_text_set_use_markup       (ClutterText          *self,
+                                                         gboolean              setting);
+gboolean              clutter_text_get_use_markup       (ClutterText          *self);
+void                  clutter_text_set_line_alignment   (ClutterText          *self,
+                                                         PangoAlignment        alignment);
+PangoAlignment        clutter_text_get_line_alignment   (ClutterText          *self);
+void                  clutter_text_set_justify          (ClutterText          *self,
+                                                         gboolean              justify);
+gboolean              clutter_text_get_justify          (ClutterText          *self);
 
-void                  clutter_text_insert_unichar       (ClutterText        *self,
-                                                         gunichar            wc);
-void                  clutter_text_delete_chars         (ClutterText        *self,
-                                                         guint               n_chars);
-void                  clutter_text_insert_text          (ClutterText        *self,
-                                                         const gchar        *text,
-                                                         gssize              position);
-void                  clutter_text_delete_text          (ClutterText        *self,
-                                                         gssize              start_pos,
-                                                         gssize              end_pos);
-gchar *               clutter_text_get_chars            (ClutterText        *self,
-                                                         gssize              start_pos,
-                                                         gssize              end_pos);
-void                  clutter_text_set_editable         (ClutterText        *self,
-                                                         gboolean            editable);
-gboolean              clutter_text_get_editable         (ClutterText        *self);
-void                  clutter_text_set_activatable      (ClutterText        *self,
-                                                         gboolean            activatable);
-gboolean              clutter_text_get_activatable      (ClutterText        *self);
+void                  clutter_text_insert_unichar       (ClutterText          *self,
+                                                         gunichar              wc);
+void                  clutter_text_delete_chars         (ClutterText          *self,
+                                                         guint                 n_chars);
+void                  clutter_text_insert_text          (ClutterText          *self,
+                                                         const gchar          *text,
+                                                         gssize                position);
+void                  clutter_text_delete_text          (ClutterText          *self,
+                                                         gssize                start_pos,
+                                                         gssize                end_pos);
+gchar *               clutter_text_get_chars            (ClutterText          *self,
+                                                         gssize                start_pos,
+                                                         gssize                end_pos);
+void                  clutter_text_set_editable         (ClutterText          *self,
+                                                         gboolean              editable);
+gboolean              clutter_text_get_editable         (ClutterText          *self);
+void                  clutter_text_set_activatable      (ClutterText          *self,
+                                                         gboolean              activatable);
+gboolean              clutter_text_get_activatable      (ClutterText          *self);
 
-gint                  clutter_text_get_cursor_position  (ClutterText        *self);
-void                  clutter_text_set_cursor_position  (ClutterText        *self,
-                                                         gint                position);
-void                  clutter_text_set_cursor_visible   (ClutterText        *self,
-                                                         gboolean            cursor_visible);
-gboolean              clutter_text_get_cursor_visible   (ClutterText        *self);
-void                  clutter_text_set_cursor_color     (ClutterText        *self,
-                                                         const ClutterColor *color);
-void                  clutter_text_get_cursor_color     (ClutterText        *self,
-                                                         ClutterColor       *color);
-void                  clutter_text_set_cursor_size      (ClutterText        *self,
-                                                         gint                size);
-guint                 clutter_text_get_cursor_size      (ClutterText        *self);
-void                  clutter_text_set_selectable       (ClutterText        *self,
-                                                         gboolean            selectable);
-gboolean              clutter_text_get_selectable       (ClutterText        *self);
-void                  clutter_text_set_selection_bound  (ClutterText        *self,
-                                                         gint                selection_bound);
-gint                  clutter_text_get_selection_bound  (ClutterText        *self);
-void                  clutter_text_set_selection        (ClutterText        *self,
-                                                         gssize              start_pos,
-                                                         gssize              end_pos);
-gchar *               clutter_text_get_selection        (ClutterText        *self);
-void                  clutter_text_set_selection_color  (ClutterText        *self,
-                                                         const ClutterColor *color);
-void                  clutter_text_get_selection_color  (ClutterText        *self,
-                                                         ClutterColor       *color);
-gboolean              clutter_text_delete_selection     (ClutterText        *self);
-void                  clutter_text_set_password_char    (ClutterText        *self,
-                                                         gunichar            wc);
-gunichar              clutter_text_get_password_char    (ClutterText        *self);
-void                  clutter_text_set_max_length       (ClutterText        *self,
-                                                         gint                max);
-gint                  clutter_text_get_max_length       (ClutterText        *self);
-void                  clutter_text_set_single_line_mode (ClutterText        *self,
-                                                         gboolean            single_line);
-gboolean              clutter_text_get_single_line_mode (ClutterText        *self);
+gint                  clutter_text_get_cursor_position  (ClutterText          *self);
+void                  clutter_text_set_cursor_position  (ClutterText          *self,
+                                                         gint                  position);
+void                  clutter_text_set_cursor_visible   (ClutterText          *self,
+                                                         gboolean              cursor_visible);
+gboolean              clutter_text_get_cursor_visible   (ClutterText          *self);
+void                  clutter_text_set_cursor_color     (ClutterText          *self,
+                                                         const ClutterColor   *color);
+void                  clutter_text_get_cursor_color     (ClutterText          *self,
+                                                         ClutterColor         *color);
+void                  clutter_text_set_cursor_size      (ClutterText          *self,
+                                                         gint                  size);
+guint                 clutter_text_get_cursor_size      (ClutterText          *self);
+void                  clutter_text_set_selectable       (ClutterText          *self,
+                                                         gboolean              selectable);
+gboolean              clutter_text_get_selectable       (ClutterText          *self);
+void                  clutter_text_set_selection_bound  (ClutterText          *self,
+                                                         gint                  selection_bound);
+gint                  clutter_text_get_selection_bound  (ClutterText          *self);
+void                  clutter_text_set_selection        (ClutterText          *self,
+                                                         gssize                start_pos,
+                                                         gssize                end_pos);
+gchar *               clutter_text_get_selection        (ClutterText          *self);
+void                  clutter_text_set_selection_color  (ClutterText          *self,
+                                                         const ClutterColor   *color);
+void                  clutter_text_get_selection_color  (ClutterText          *self,
+                                                         ClutterColor         *color);
+gboolean              clutter_text_delete_selection     (ClutterText          *self);
+void                  clutter_text_set_password_char    (ClutterText          *self,
+                                                         gunichar              wc);
+gunichar              clutter_text_get_password_char    (ClutterText          *self);
+void                  clutter_text_set_max_length       (ClutterText          *self,
+                                                         gint                  max);
+gint                  clutter_text_get_max_length       (ClutterText          *self);
+void                  clutter_text_set_single_line_mode (ClutterText          *self,
+                                                         gboolean              single_line);
+gboolean              clutter_text_get_single_line_mode (ClutterText          *self);
 
-gboolean              clutter_text_activate             (ClutterText        *self);
-gboolean              clutter_text_position_to_coords   (ClutterText        *self,
-                                                         gint                position,
-                                                         gfloat             *x,
-                                                         gfloat             *y,
-                                                         gfloat             *line_height);
+gboolean              clutter_text_activate             (ClutterText          *self);
+gboolean              clutter_text_position_to_coords   (ClutterText          *self,
+                                                         gint                  position,
+                                                         gfloat               *x,
+                                                         gfloat               *y,
+                                                         gfloat               *line_height);
 
-void                  clutter_text_set_preedit_string   (ClutterText        *self,
-                                                         const gchar        *preedit_str,
-                                                         PangoAttrList      *preedit_attrs,
-                                                         guint               cursor_pos);
+void                  clutter_text_set_preedit_string   (ClutterText          *self,
+                                                         const gchar          *preedit_str,
+                                                         PangoAttrList        *preedit_attrs,
+                                                         guint                 cursor_pos);
 
 G_END_DECLS
 
