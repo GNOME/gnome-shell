@@ -102,7 +102,13 @@ function runTestFixedBox() {
 #include <gtk/gtk.h>
 #include <girepository.h>
 
-G_DEFINE_TYPE(ShellGenericContainer, shell_generic_container, CLUTTER_TYPE_GROUP);
+static void shell_generic_container_iface_init (ClutterContainerIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE(ShellGenericContainer,
+                        shell_generic_container,
+                        CLUTTER_TYPE_GROUP,
+                        G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                               shell_generic_container_iface_init));
 
 struct _ShellGenericContainerPrivate {
   GHashTable *skip_paint;
@@ -119,6 +125,7 @@ enum
 
 static guint shell_generic_container_signals [LAST_SIGNAL] = { 0 };
 
+static ClutterContainerIface *parent_container_iface;
 
 static gpointer
 shell_generic_container_allocation_ref (ShellGenericContainerAllocation *alloc)
@@ -227,15 +234,6 @@ shell_generic_container_pick (ClutterActor        *actor,
   g_list_free (children);
 }
 
-static void
-on_skip_paint_weakref (gpointer  user_data,
-                       GObject  *location)
-{
-  ShellGenericContainer *self = SHELL_GENERIC_CONTAINER (user_data);
-
-  g_hash_table_remove (self->priv->skip_paint, location);
-}
-
 /**
  * shell_generic_container_set_skip_paint:
  * @container: A #ShellGenericContainer
@@ -257,29 +255,19 @@ shell_generic_container_set_skip_paint (ShellGenericContainer  *self,
     return;
 
   if (!skip)
-    {
-      g_object_weak_unref ((GObject*) child, on_skip_paint_weakref, self);
-      g_hash_table_remove (self->priv->skip_paint, child);
-    }
+    g_hash_table_remove (self->priv->skip_paint, child);
   else
-    {
-      g_object_weak_ref ((GObject*) child, on_skip_paint_weakref, self);
-      g_hash_table_insert (self->priv->skip_paint, child, child);
-    }
+    g_hash_table_insert (self->priv->skip_paint, child, child);
 }
 
 static void
-shell_generic_container_dispose (GObject  *object)
+shell_generic_container_finalize (GObject *object)
 {
   ShellGenericContainer *self = (ShellGenericContainer*) object;
 
-  if (self->priv->skip_paint != NULL)
-    {
-      g_hash_table_destroy (self->priv->skip_paint);
-      self->priv->skip_paint = NULL;
-    }
+  g_hash_table_destroy (self->priv->skip_paint);
 
-  G_OBJECT_CLASS (shell_generic_container_parent_class)->dispose (object);
+  G_OBJECT_CLASS (shell_generic_container_parent_class)->finalize (object);
 }
 
 static void
@@ -288,7 +276,7 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  gobject_class->dispose = shell_generic_container_dispose;
+  gobject_class->finalize = shell_generic_container_finalize;
 
   actor_class->get_preferred_width = shell_generic_container_get_preferred_width;
   actor_class->get_preferred_height = shell_generic_container_get_preferred_height;
@@ -327,11 +315,30 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
 }
 
 static void
+shell_generic_container_remove (ClutterContainer *container,
+                                     ClutterActor     *actor)
+{
+  ShellGenericContainer *self = SHELL_GENERIC_CONTAINER (container);
+
+  g_hash_table_remove (self->priv->skip_paint, actor);
+
+  parent_container_iface->remove (container, actor);
+}
+
+static void
+shell_generic_container_iface_init (ClutterContainerIface *iface)
+{
+  parent_container_iface = g_type_interface_peek_parent (iface);
+
+  iface->remove = shell_generic_container_remove;
+}
+
+static void
 shell_generic_container_init (ShellGenericContainer *area)
 {
   area->priv = G_TYPE_INSTANCE_GET_PRIVATE (area, SHELL_TYPE_GENERIC_CONTAINER,
                                             ShellGenericContainerPrivate);
-  area->priv->skip_paint = g_hash_table_new_full (NULL, NULL, (GDestroyNotify)g_object_unref, NULL);
+  area->priv->skip_paint = g_hash_table_new (NULL, NULL);
 }
 
 GType shell_generic_container_allocation_get_type (void)
