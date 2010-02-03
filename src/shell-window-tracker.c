@@ -639,6 +639,43 @@ shell_window_tracker_get_window_app (ShellWindowTracker *monitor,
   return app;
 }
 
+
+/**
+ * shell_app_system_get_from_pid:
+ * @self; A #ShellAppSystem
+ * @pid: A Unix process identifier
+ *
+ * Look up the application corresponding to a process.
+ *
+ * Returns: (transfer full): A #ShellApp, or %NULL if none
+ */
+ShellApp *
+shell_window_tracker_get_app_from_pid (ShellWindowTracker *self, 
+                                       int                 pid)
+{
+  ShellGlobal *global = shell_global_get ();
+  GList *windows, *iter;
+  
+  windows = shell_global_get_windows (global);
+  for (iter = windows; iter; iter = iter->next)
+    {
+      MutterWindow *win = iter->data;
+      MetaWindow *metawin;
+      int windowpid;
+      ShellApp *app;
+      
+      metawin = mutter_window_get_meta_window (win);
+      windowpid = meta_window_get_pid (metawin);
+      if (windowpid != pid)
+        continue;
+      
+      app = shell_window_tracker_get_window_app (self, metawin);
+      if (app)
+        return app;
+    }
+  return NULL;
+}
+
 /**
  * shell_window_tracker_get_running_apps:
  * @monitor: An app monitor instance
