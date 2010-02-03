@@ -214,6 +214,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--include=Clutter-1.0			\
 		--pkg=clutter-1.0			\
 		--pkg=gtk+-2.0				\
+		--include=xlib-2.0			\
 		--include=xfixes-4.0			\
 		--program=$$pwd/mutter			\
 		$(filter %.c,$(mutter_SOURCES))		\
