@@ -2109,6 +2109,16 @@ process_tab_grab (MetaDisplay *display,
               return TRUE;
             }
           break;
+        case META_KEYBINDING_ACTION_NONE:
+          {
+            /*
+             * If this is simply user pressing the Shift key, we do not want
+             * to cancel the grab.
+             */
+            if (is_modifier (display, event->xkey.keycode))
+              return TRUE;
+          }
+
         default:
           break;
         }
