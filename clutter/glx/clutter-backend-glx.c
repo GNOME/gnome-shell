@@ -549,6 +549,8 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                          backend_glx->dummy_xwin,
                          backend_glx->gl_context);
 
+  XFree (xvisinfo);
+
   if (clutter_x11_untrap_x_errors ())
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
