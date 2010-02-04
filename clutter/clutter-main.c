@@ -2084,7 +2084,8 @@ event_click_count_generate (ClutterEvent *event)
         break;
 
       default:
-        g_assert (NULL);
+        g_assert_not_reached ();
+        break;
     }
 
   if (event->type == CLUTTER_BUTTON_PRESS && device != NULL)
@@ -2411,7 +2412,9 @@ _clutter_process_event_details (ClutterActor        *stage,
                         x, y,
                         actor);
 
-          if (event->type != CLUTTER_MOTION)
+          /* button presses and releases need a click count */
+          if (event->type == CLUTTER_BUTTON_PRESS ||
+              event->type == CLUTTER_BUTTON_RELEASE)
             {
               /* Generate click count */
               event_click_count_generate (event);
