@@ -371,7 +371,7 @@ clutter_path_add_node_helper (ClutterPath         *path,
  * @x: the x coordinate
  * @y: the y coordinate
  *
- * Adds a #CLUTTER_PATH_MOVE_TO type node to the path. This is usually
+ * Adds a %CLUTTER_PATH_MOVE_TO type node to the path. This is usually
  * used as the first node in a path. It can also be used in the middle
  * of the path to cause the actor to jump to the new coordinate.
  *
@@ -414,7 +414,7 @@ clutter_path_add_rel_move_to (ClutterPath *path,
  * @x: the x coordinate
  * @y: the y coordinate
  *
- * Adds a #CLUTTER_PATH_LINE_TO type node to the path. This causes the
+ * Adds a %CLUTTER_PATH_LINE_TO type node to the path. This causes the
  * actor to move to the new coordinates in a straight line.
  *
  * Since: 1.0
@@ -460,7 +460,7 @@ clutter_path_add_rel_line_to (ClutterPath *path,
  * @x_3: the x coordinate of the third control point
  * @y_3: the y coordinate of the third control point
  *
- * Adds a #CLUTTER_PATH_CURVE_TO type node to the path. This causes
+ * Adds a %CLUTTER_PATH_CURVE_TO type node to the path. This causes
  * the actor to follow a bezier from the last node to (@x_3, @y_3) using
  * (@x_1, @y_1) and (@x_2,@y_2) as control points.
  *
@@ -519,8 +519,8 @@ clutter_path_add_rel_curve_to (ClutterPath *path,
  * clutter_path_add_close:
  * @path: a #ClutterPath
  *
- * Adds a #CLUTTER_PATH_CLOSE type node to the path. This creates a
- * straight line from the last node to the last #CLUTTER_PATH_MOVE_TO
+ * Adds a %CLUTTER_PATH_CLOSE type node to the path. This creates a
+ * straight line from the last node to the last %CLUTTER_PATH_MOVE_TO
  * type node.
  *
  * Since: 1.0

@@ -707,8 +707,8 @@ cogl_fixed_sqrt (CoglFixed x)
  *
  * This function is at least 6x faster than clib sqrt() on x86, and (this is
  * not a typo!) about 500x faster on ARM without FPU. It's error is < 5%
- * for arguments < #COGL_SQRTI_ARG_5_PERCENT and < 10% for arguments <
- * #COGL_SQRTI_ARG_10_PERCENT. The maximum argument that can be passed to
+ * for arguments < %COGL_SQRTI_ARG_5_PERCENT and < 10% for arguments <
+ * %COGL_SQRTI_ARG_10_PERCENT. The maximum argument that can be passed to
  * this function is COGL_SQRTI_ARG_MAX.
  *
  * Return value: integer square root.

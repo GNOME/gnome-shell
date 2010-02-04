@@ -914,7 +914,7 @@ clutter_actor_real_map (ClutterActor *self)
  * clutter_actor_map:
  * @self: A #ClutterActor
  *
- * Sets the #CLUTTER_ACTOR_MAPPED flag on the actor and possibly maps
+ * Sets the %CLUTTER_ACTOR_MAPPED flag on the actor and possibly maps
  * and realizes its children if they are visible. Does nothing if the
  * actor is not visible.
  *
@@ -979,7 +979,7 @@ clutter_actor_real_unmap (ClutterActor *self)
  * clutter_actor_unmap:
  * @self: A #ClutterActor
  *
- * Unsets the #CLUTTER_ACTOR_MAPPED flag on the actor and possibly
+ * Unsets the %CLUTTER_ACTOR_MAPPED flag on the actor and possibly
  * unmaps its children if they were mapped.
  *
  * Calling this is allowed in only one case: you are implementing the
