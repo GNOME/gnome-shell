@@ -1,12 +1,37 @@
-
 Outline of test categories:
 
-The conform/ tests should be non-interactive unit-tests that verify a single feature is behaving as documented. See conform/ADDING_NEW_TESTS for more details.
+The conform/ tests should be non-interactive unit-tests that verify a single
+feature is behaving as documented. See conform/ADDING_NEW_TESTS for more
+details.
 
-The micro-bench/ tests should be focused perfomance test, ideally testing a single metric. Please never forget that these tests are synthetec and if you are using them then you understand what metric is being tested. They probably don't reflect any real world application loads and the intention is that you use these tests once you have already determined the crux of your problem and need focused feedback that your changes are indeed improving matters. There is no exit status requirements for these tests, but they should give clear feedback as to their performance. If the framerate is the feedback metric, then the test should forcibly enable FPS debugging.
+The micro-bench/ tests should be focused perfomance test, ideally testing a
+single metric. Please never forget that these tests are synthetec and if you
+are using them then you understand what metric is being tested. They probably
+don't reflect any real world application loads and the intention is that you
+use these tests once you have already determined the crux of your problem and
+need focused feedback that your changes are indeed improving matters. There is
+no exit status requirements for these tests, but they should give clear
+feedback as to their performance. If the framerate is the feedback metric, then
+the test should forcibly enable FPS debugging.
 
-The interactive/ tests are any tests whos status can not be determined without a user looking at some visual output, or providing some manual input etc. This covers most of the original Clutter tests. Ideally some of these tests will be migrated into the conformance/ directory so they can be used in automated nightly tests.
+The interactive/ tests are any tests whose status can not be determined without
+a user looking at some visual output, or providing some manual input etc. This
+covers most of the original Clutter tests. Ideally some of these tests will be
+migrated into the conformance/ directory so they can be used in automated
+nightly tests.
+
+The data/ directory contains optional data (like images and ClutterScript
+definitions) that can be referenced by a test.
 
 Other notes:
-All tests should ideally include a detailed description in the source explaining exactly what the test is for, how the test was designed to work, and possibly a rationale for the approach taken for testing.
 
+• All tests should ideally include a detailed description in the source
+explaining exactly what the test is for, how the test was designed to work,
+and possibly a rationale for the approach taken for testing.
+
+• When running tests under Valgrind, you should follow the instructions
+available here:
+
+        http://live.gnome.org/Valgrind
+
+and also use the suppression file available inside the data/ directory.
