@@ -504,10 +504,10 @@ AppWellIcon.prototype = {
         return this.app.create_icon_texture(APPICON_SIZE);
     },
 
-    // Returns the original icon that is being used as a source for the cloned texture
-    // that represents the item as it is being dragged.
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
     getDragActorSource: function() {
-        return this.actor;
+        return this._icon.icon;
     }
 }
 Signals.addSignalMethods(AppWellIcon.prototype);
