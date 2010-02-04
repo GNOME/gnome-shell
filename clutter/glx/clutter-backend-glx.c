@@ -538,13 +538,18 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
   clutter_x11_trap_x_errors ();
 
   attrs.override_redirect = True;
+  attrs.colormap = XCreateColormap (xdisplay,
+                                    root_xwin,
+                                    xvisinfo->visual,
+                                    AllocNone);
+
   backend_glx->dummy_xwin = XCreateWindow (xdisplay, root_xwin,
                                            -100, -100, 1, 1,
                                            0,
                                            xvisinfo->depth,
                                            CopyFromParent,
                                            xvisinfo->visual,
-                                           CWOverrideRedirect,
+                                           CWOverrideRedirect | CWColormap,
                                            &attrs);
 
   CLUTTER_NOTE (BACKEND, "Selecting dummy 0x%x for the GLX context",
