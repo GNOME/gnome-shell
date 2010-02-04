@@ -519,6 +519,12 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
    * to make sure that a GLX context exists and is made current, we use
    * a dummy, offscreen override-redirect window to which we can always
    * fall back if no stage is available
+   *
+   * XXX - we need to do this dance because GLX does not allow creating
+   * a context and querying it for basic information (even the function
+   * pointers) unless it's made current to a real Drawable. it should be
+   * possible to avoid this in future releases of Mesa and X11, but right
+   * now this is the best solution available.
    */
   xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
   if (xvisinfo == None)
