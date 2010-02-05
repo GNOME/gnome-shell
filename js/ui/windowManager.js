@@ -74,9 +74,14 @@ WindowManager.prototype = {
          * maybe TODO: get icon geometry passed through and move the window towards it?
          */
         this._minimizing.push(actor);
+
+        let primary = global.get_primary_monitor();
+
         Tweener.addTween(actor,
                          { scale_x: 0.0,
                            scale_y: 0.0,
+                           x: primary.x,
+                           y: 0,
                            time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._minimizeWindowDone,
