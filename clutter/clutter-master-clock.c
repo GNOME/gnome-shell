@@ -179,6 +179,17 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
   g_source_get_current_time (master_clock->source, &now);
 
   next = master_clock->prev_tick;
+
+  /* If time has gone backwards then there's no way of knowing how
+     long we should wait so let's just dispatch immediately */
+  if (now.tv_sec < next.tv_sec ||
+      (now.tv_sec == next.tv_sec && now.tv_usec <= next.tv_usec))
+    {
+      CLUTTER_NOTE (SCHEDULER, "Time has gone backwards");
+
+      return 0;
+    }
+
   g_time_val_add (&next, 1000000L / (gulong) clutter_get_default_frame_rate ());
 
   if (next.tv_sec < now.tv_sec ||
