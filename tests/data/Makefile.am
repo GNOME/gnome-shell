@@ -16,4 +16,4 @@ png_files = \
 	light0.png 		\
 	$(NULL)
 
-EXTRA_DIST = $(json_files) $(png_files)
+EXTRA_DIST = $(json_files) $(png_files) clutter-1.0.suppressions
