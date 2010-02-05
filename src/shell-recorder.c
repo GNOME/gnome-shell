@@ -61,6 +61,8 @@ struct _ShellRecorder {
 
   gboolean only_paint; /* Used to temporarily suppress recording */
 
+  gboolean have_pack_invert; /* True when GL_MESA_pack_invert is available */
+
   char *pipeline_description;
   char *filename;
   gboolean filename_has_count; /* %c used: handle pausing differently */
@@ -423,11 +425,14 @@ recorder_draw_cursor (ShellRecorder *recorder,
                                                  recorder->stage_height,
                                                  recorder->stage_width * 4);
 
-  /* The data we get from glReadPixels is "upside down", so transform
-   * our cairo drawing to match */
+  /* When not using GL_MESA_pack_invert the data we get from glReadPixels is "upside down",
+   * so transform our cairo drawing to match */
   cr = cairo_create (surface);
-  cairo_translate(cr, 0, recorder->stage_height);
-  cairo_scale(cr, 1, -1);
+  if (!recorder->have_pack_invert)
+    {
+      cairo_translate(cr, 0, recorder->stage_height);
+      cairo_scale(cr, 1, -1);
+    }
 
   cairo_set_source_surface (cr,
                             recorder->cursor_image,
@@ -522,12 +527,18 @@ recorder_record_frame (ShellRecorder *recorder)
   glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
   glPixelStorei (GL_PACK_SKIP_ROWS, 0);
 
+  if (recorder->have_pack_invert)
+    glPixelStorei (GL_PACK_INVERT_MESA, TRUE);
+
   glReadBuffer (GL_BACK_LEFT);
   glReadPixels (0, 0,
                 recorder->stage_width, recorder->stage_height,
                 GL_BGRA,
                 GL_UNSIGNED_INT_8_8_8_8_REV,
                 data);
+
+  if (recorder->have_pack_invert)
+    glPixelStorei (GL_PACK_INVERT_MESA, FALSE);
 
   recorder_draw_cursor (recorder, buffer);
 
@@ -830,6 +841,7 @@ recorder_set_stage (ShellRecorder *recorder,
   if (recorder->stage)
     {
       int error_base;
+      const char *gl_extensions;
 
       recorder->stage = stage;
       g_signal_connect (recorder->stage, "destroy",
@@ -852,6 +864,10 @@ recorder_set_stage (ShellRecorder *recorder,
         XFixesSelectCursorInput (clutter_x11_get_default_display (),
                                    clutter_x11_get_stage_window (stage),
                                  XFixesDisplayCursorNotifyMask);
+
+      clutter_stage_ensure_current (stage);
+      gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
+      recorder->have_pack_invert = cogl_check_extension ("GL_MESA_pack_invert", gl_extensions);
 
       recorder_get_initial_cursor_position (recorder);
     }
@@ -1052,31 +1068,38 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
   gst_bin_add (GST_BIN (pipeline->pipeline), ffmpegcolorspace);
 
   /* glReadPixels gives us an upside-down buffer, so we have to flip it back
-   * right-side up. We do this after the color space conversion in the theory
-   * that we might have a smaller buffer to flip; on the other hand flipping
-   * YUV 422 is more complicated than flipping RGB. Probably a toss-up.
+   * right-side up.
    *
-   * When available MESA_pack_invert extension could be used to avoid the
+   * When available MESA_pack_invert extension is used to avoid the
    * flip entirely, since the data is actually stored in the frame buffer
    * in the order that we expect.
    *
    * We use gst_parse_launch to avoid having to know the enum value for flip-vertical
    */
-  videoflip = gst_parse_launch_full ("videoflip method=vertical-flip", NULL,
-                                     GST_PARSE_FLAG_FATAL_ERRORS,
-                                     &error);
-  if (videoflip == NULL)
+
+  if (!pipeline->recorder->have_pack_invert)
     {
-      g_warning("Can't create videoflip element: %s", error->message);
-      g_error_free (error);
-      goto out;
+      videoflip = gst_parse_launch_full ("videoflip method=vertical-flip", NULL,
+                                         GST_PARSE_FLAG_FATAL_ERRORS,
+                                         &error);
+      if (videoflip == NULL)
+        {
+          g_warning("Can't create videoflip element: %s", error->message);
+          g_error_free (error);
+          goto out;
+        }
+
+      gst_bin_add (GST_BIN (pipeline->pipeline), videoflip);
+      gst_element_link_many (pipeline->src, ffmpegcolorspace, videoflip, NULL);
+
+      src_pad = gst_element_get_static_pad (videoflip, "src");
     }
-  gst_bin_add (GST_BIN (pipeline->pipeline), videoflip);
+  else
+    {
+      gst_element_link_many (pipeline->src, ffmpegcolorspace, NULL);
+      src_pad = gst_element_get_static_pad (ffmpegcolorspace, "src");
+    }
 
-  gst_element_link_many (pipeline->src, ffmpegcolorspace, videoflip,
-                         NULL);
-
-  src_pad = gst_element_get_static_pad (videoflip, "src");
   if (!src_pad)
     {
       g_warning("ShellRecorder: can't get src pad to link into pipeline");
