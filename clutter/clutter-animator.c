@@ -1,0 +1,1435 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010 Intel Corporation
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Øyvind Kolås <pippin@linux.intel.com>
+ */
+
+/**
+ * SECTION:clutter-animator
+ * @short_description: Multi-actor tweener
+ * @See_Also: #ClutterAnimatable, #ClutterInterval, #ClutterAlpha,
+ *   #ClutterTimeline
+ *
+ * #ClutterAnimator is an object providing declarative animations for
+ * #GObject properties belonging to one or more #GObject<!-- -->s to
+ * #ClutterIntervals.
+ *
+ * #ClutterAnimator is used to build and describe complex animations
+ * in terms of "key frames". #ClutterAnimator is meant to be used
+ * through the #ClutterScript definition format, but it comes with a
+ * convenience C API.
+ *
+ * #ClutterAnimator is available since Clutter 1.2
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <string.h>
+#include <gobject/gvaluecollector.h>
+
+#include "clutter-animator.h"
+
+#include "clutter-alpha.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-interval.h"
+#include "clutter-private.h"
+
+G_DEFINE_TYPE (ClutterAnimator, clutter_animator, G_TYPE_OBJECT);
+
+#define CLUTTER_ANIMATOR_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ANIMATOR, ClutterAnimatorPrivate))
+
+struct _ClutterAnimatorPrivate
+{
+  ClutterTimeline  *timeline;
+  ClutterTimeline  *slave_timeline;
+
+  GList            *score;
+
+  GHashTable       *properties;
+};
+
+struct _ClutterAnimatorKey
+{
+  GObject             *object;
+  const gchar         *property_name;
+  guint                mode;
+
+  GValue               value;
+
+  /* normalized progress, between 0.0 and 1.0 */
+  gdouble              progress;
+
+  /* back-pointer to the animator which owns the key */
+  ClutterAnimator     *animator;
+
+  /* interpolation mode */
+  ClutterInterpolation interpolation;
+
+  /* ease from the current object state into the animation when it starts */
+  guint                ease_in : 1;
+
+  /* This key is already being destroyed and shouldn't
+   * trigger additional weak unrefs
+   */
+  guint                is_inert : 1;
+
+  gint                 ref_count;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_DURATION
+};
+
+/**
+ * clutter_animator_new:
+ *
+ * Create a new #ClutterAnimator instance.
+ *
+ * Returns: a new #ClutterAnimator.
+ */
+ClutterAnimator *
+clutter_animator_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_ANIMATOR, NULL);
+}
+
+/***/
+
+typedef struct _PropObjectKey {
+  GObject      *object;
+  const gchar  *property_name;
+  guint         mode;
+  gdouble       progress;
+} PropObjectKey;
+
+typedef struct _KeyAnimator {
+  PropObjectKey       *key;
+  ClutterInterval     *interval;
+  ClutterAlpha        *alpha;
+
+  GList               *current;
+
+  gdouble              start;    /* the progress of current */
+  gdouble              end;      /* until which progress it is valid */
+  ClutterInterpolation interpolation;
+
+  guint                ease_in : 1;
+} KeyAnimator;
+
+static PropObjectKey *
+prop_actor_key_new (GObject     *object,
+                    const gchar *property_name)
+{
+  PropObjectKey *key = g_slice_new0 (PropObjectKey);
+
+  key->object = object;
+  key->property_name = g_intern_string (property_name);
+
+  return key;
+}
+
+static void
+prop_actor_key_free (gpointer key)
+{
+  if (key != NULL)
+    g_slice_free (PropObjectKey, key);
+}
+
+static void
+key_animator_free (gpointer key)
+{
+  if (key != NULL)
+    {
+      KeyAnimator *key_animator = key;
+
+      g_object_unref (key_animator->interval);
+      g_object_unref (key_animator->alpha);
+
+      g_slice_free (KeyAnimator, key_animator);
+    }
+}
+
+static KeyAnimator *
+key_animator_new (ClutterAnimator *animator,
+                  PropObjectKey   *key,
+                  GType            type)
+{
+  KeyAnimator *key_animator = g_slice_new (KeyAnimator);
+  ClutterInterval *interval = g_object_new (CLUTTER_TYPE_INTERVAL,
+                                            "value-type", type,
+                                            NULL);
+
+  /* we own this interval */
+  g_object_ref_sink (interval);
+
+  key_animator->interval = interval;
+  key_animator->key = key;
+  key_animator->alpha = clutter_alpha_new ();
+  clutter_alpha_set_timeline (key_animator->alpha,
+                              animator->priv->slave_timeline);
+
+  /* as well as the alpha */
+  g_object_ref_sink (key_animator->alpha);
+
+  return key_animator;
+}
+
+static guint
+prop_actor_hash (gconstpointer value)
+{
+  const PropObjectKey *info = value;
+
+  return GPOINTER_TO_INT (info->property_name)
+       ^ GPOINTER_TO_INT (info->object);
+}
+
+static gboolean
+prop_actor_equal (gconstpointer a, gconstpointer b)
+{
+  const PropObjectKey *infoa = a;
+  const PropObjectKey *infob = b;
+
+  /* property name strings are interned so we can just compare pointers */
+  if (infoa->object == infob->object &&
+      (infoa->property_name == infob->property_name))
+    return TRUE;
+
+  return FALSE;
+}
+
+static gint
+sort_actor_prop_progress_func (gconstpointer a,
+                               gconstpointer b)
+{
+  const ClutterAnimatorKey *pa = a;
+  const ClutterAnimatorKey *pb = b;
+
+  if (pa->object == pb->object)
+    {
+      gint pdiff = pb->property_name - pa->property_name;
+
+      if (pdiff)
+        return pdiff;
+
+      if (pa->progress == pb->progress)
+        return 0;
+
+      if (pa->progress > pb->progress)
+        return 1;
+
+      return -1;
+    }
+
+  return pa->object - pb->object;
+}
+
+static gint
+sort_actor_prop_func (gconstpointer a,
+                      gconstpointer b)
+{
+  const ClutterAnimatorKey *pa = a;
+  const ClutterAnimatorKey *pb = b;
+
+  if (pa->object == pb->object)
+    return pa->property_name - pb->property_name;
+
+  return pa->object - pb->object;
+}
+
+
+static void
+object_disappeared (gpointer  data,
+                    GObject  *where_the_object_was)
+{
+  clutter_animator_remove_key (data, where_the_object_was, NULL, -1.0);
+}
+
+static ClutterAnimatorKey *
+clutter_animator_key_new (ClutterAnimator *animator,
+                          gdouble          progress,
+                          GObject         *object,
+                          guint            mode,
+                          const gchar     *property_name)
+{
+  ClutterAnimatorKey *animator_key;
+
+  animator_key = g_slice_new (ClutterAnimatorKey);
+
+  animator_key->ref_count = 1;
+  animator_key->animator = animator;
+  animator_key->object = object;
+  animator_key->mode = mode;
+  animator_key->progress = progress;
+  animator_key->property_name = g_intern_string (property_name);
+  animator_key->interpolation = CLUTTER_INTERPOLATION_LINEAR;
+  animator_key->ease_in = FALSE;
+  animator_key->is_inert = FALSE;
+
+  /* keep a weak reference on the animator, so that we can release the
+   * back-pointer when needed
+   */
+  g_object_weak_ref (object, object_disappeared,
+                     animator_key->animator);
+
+  return animator_key;
+}
+
+static gpointer
+clutter_animator_key_copy (gpointer boxed)
+{
+  ClutterAnimatorKey *key = boxed;
+
+  if (key != NULL)
+    key->ref_count += 1;
+
+  return key;
+}
+
+static void
+clutter_animator_key_free (gpointer boxed)
+{
+  ClutterAnimatorKey *key = boxed;
+
+  if (key == NULL)
+    return;
+
+  key->ref_count -= 1;
+
+  if (key->ref_count > 0)
+    return;
+
+  if (!key->is_inert)
+    g_object_weak_unref (key->object, object_disappeared, key->animator);
+
+  g_slice_free (ClutterAnimatorKey, key);
+}
+
+static void
+clutter_animator_finalize (GObject *object)
+{
+  ClutterAnimator *animator = CLUTTER_ANIMATOR (object);
+  ClutterAnimatorPrivate *priv = animator->priv;
+
+  g_list_foreach (priv->score, (GFunc) clutter_animator_key_free, NULL);
+  g_list_free (priv->score);
+  priv->score = NULL;
+
+#if 0
+  for (; priv->score;
+       priv->score = g_list_remove (priv->score, priv->score->data))
+    {
+      clutter_animator_key_free (priv->score->data);
+    }
+#endif
+
+  g_object_unref (priv->timeline);
+  g_object_unref (priv->slave_timeline);
+
+  G_OBJECT_CLASS (clutter_animator_parent_class)->finalize (object);
+}
+
+/* XXX: this is copied and slightly modified from glib,
+ * there is only one way to do this. */
+static GList *
+list_find_custom_reverse (GList         *list,
+                          gconstpointer  data,
+                          GCompareFunc   func)
+{
+  while (list)
+    {
+      if (! func (list->data, data))
+        return list;
+
+      list = list->prev;
+    }
+
+  return NULL;
+}
+
+/* Ensures that the interval provided by the animator is correct
+ * for the requested progress value.
+ */
+static void
+animation_animator_ensure_animator (ClutterAnimator *animator,
+                                    KeyAnimator     *key_animator,
+                                    PropObjectKey   *key,
+                                    gdouble          progress)
+{
+
+  if (progress > key_animator->end)
+    {
+      while (progress > key_animator->end)
+        {
+          ClutterAnimatorKey *initial_key, *next_key;
+          GList *initial, *next;
+
+          initial = g_list_find_custom (key_animator->current->next,
+                                        key,
+                                        sort_actor_prop_func);
+          g_assert (initial != NULL);
+
+          initial_key = initial->data;
+
+          clutter_interval_set_initial_value (key_animator->interval,
+                                              &initial_key->value);
+          key_animator->current = initial;
+          key_animator->start = initial_key->progress;
+
+          next = g_list_find_custom (initial->next,
+                                     key,
+                                     sort_actor_prop_func);
+          if (next)
+            {
+              next_key = next->data;
+
+              key_animator->end = next_key->progress;
+            }
+          else
+            {
+              next_key = initial_key;
+
+              key_animator->end = 1.0;
+            }
+
+          clutter_interval_set_final_value (key_animator->interval,
+                                            &next_key->value);
+
+          if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
+            clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+        }
+    }
+  else if (progress < key_animator->start)
+    {
+      while (progress < key_animator->start)
+        {
+          ClutterAnimatorKey *initial_key, *next_key;
+          GList *initial;
+          GList *old = key_animator->current;
+
+          initial = list_find_custom_reverse (key_animator->current->prev,
+                                              key,
+                                              sort_actor_prop_func);
+          g_assert (initial != NULL);
+
+          initial_key = initial->data;
+
+          clutter_interval_set_initial_value (key_animator->interval,
+                                              &initial_key->value);
+          key_animator->current = initial;
+          key_animator->end = key_animator->start;
+          key_animator->start = initial_key->progress;
+
+          if (old)
+            {
+              next_key = old->data;
+
+              key_animator->end = next_key->progress;
+            }
+          else
+            {
+              next_key = initial_key;
+
+              key_animator->end = 1.0;
+            }
+
+          clutter_interval_set_final_value (key_animator->interval,
+                                            &next_key->value);
+          if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
+            clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+        }
+    }
+}
+
+/* XXX - this might be useful as an internal function exposed somewhere */
+static gdouble
+cubic_interpolation (const gdouble dx,
+                     const gdouble prev,
+                     const gdouble j,
+                     const gdouble next,
+                     const gdouble nextnext)
+{
+  return (((( - prev + 3 * j - 3 * next + nextnext ) * dx +
+            ( 2 * prev - 5 * j + 4 * next - nextnext ) ) * dx +
+            ( - prev + next ) ) * dx + (j + j) ) / 2.0;
+}
+
+/* try to get a floating point key value from a key for a property,
+ * failing use the closest key in that direction or the starting point.
+ */
+static gfloat
+list_try_get_rel (GList *list,
+                  gint   count)
+{
+  GList *iter = list;
+  GList *best = list;
+
+  if (count > 0)
+    {
+      while (count -- && iter != NULL)
+        {
+          iter = g_list_find_custom (iter->next, list->data,
+                                     sort_actor_prop_func);
+          if (iter != NULL)
+            best = iter;
+        }
+    }
+  else
+    {
+      while (count ++ < 0 && iter != NULL)
+        {
+          iter = list_find_custom_reverse (iter->prev, list->data,
+                                           sort_actor_prop_func);
+          if (iter != NULL)
+            best = iter;
+        }
+    }
+
+  return g_value_get_float (&(((ClutterAnimatorKey *)best->data)->value));
+}
+
+static void
+animation_animator_new_frame (ClutterTimeline  *timeline,
+                              gint              msecs,
+                              ClutterAnimator  *animator)
+{
+  gdouble progress;
+  GHashTableIter iter;
+  gpointer key, value;
+
+  progress  = 1.0 * msecs / clutter_timeline_get_duration (timeline);
+
+  /* for each property that is managed figure out the GValue to set,
+   * avoid creating new ClutterInterval's for each interval crossed
+   */
+  g_hash_table_iter_init (&iter, animator->priv->properties);
+
+  key = value = NULL;
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      PropObjectKey      *prop_actor_key = key;
+      KeyAnimator        *key_animator   = value;
+      ClutterAnimatorKey *start_key;
+      gdouble             sub_progress;
+
+      animation_animator_ensure_animator (animator, key_animator,
+                                          key,
+                                          progress);
+      start_key = key_animator->current->data;
+
+      sub_progress = (progress - key_animator->start)
+                   / (key_animator->end - key_animator->start);
+
+      /* do not change values if we're not active yet (delay) */
+      if (sub_progress >= 0.0 && sub_progress <= 1.0)
+        {
+          GValue cvalue = { 0, };
+          GType int_type;
+
+          g_value_init (&cvalue, G_VALUE_TYPE (&start_key->value));
+
+          clutter_timeline_advance (animator->priv->slave_timeline,
+                                    sub_progress * 10000);
+
+          sub_progress = clutter_alpha_get_alpha (key_animator->alpha);
+          int_type = clutter_interval_get_value_type (key_animator->interval);
+
+          if (key_animator->interpolation == CLUTTER_INTERPOLATION_CUBIC &&
+              int_type == G_TYPE_FLOAT)
+            {
+              gdouble prev, current, next, nextnext;
+              gdouble res;
+
+              if ((key_animator->ease_in == FALSE ||
+                  (key_animator->ease_in &&
+                   list_find_custom_reverse (key_animator->current->prev,
+                                             key_animator->current->data,
+                                             sort_actor_prop_func))))
+                {
+                  current = g_value_get_float (&start_key->value);
+                  prev = list_try_get_rel (key_animator->current, -1);
+                }
+              else
+                {
+                  /* interpolated and easing in */
+                  clutter_interval_get_initial_value (key_animator->interval,
+                                                      &cvalue);
+                  prev = current = g_value_get_float (&cvalue);
+                }
+
+               next = list_try_get_rel (key_animator->current, 1);
+               nextnext = list_try_get_rel (key_animator->current, 2);
+               res = cubic_interpolation (sub_progress, prev, current, next,
+                                          nextnext);
+
+               g_value_set_float (&cvalue, res);
+            }
+          else
+            clutter_interval_compute_value (key_animator->interval,
+                                            sub_progress,
+                                            &cvalue);
+
+          g_object_set_property (prop_actor_key->object,
+                                 prop_actor_key->property_name,
+                                 &cvalue);
+
+          g_value_unset (&cvalue);
+        }
+    }
+}
+
+static void
+animation_animator_started (ClutterTimeline *timeline,
+                            ClutterAnimator *animator)
+{
+  GList *k;
+
+  /* Ensure that animators exist for all involved properties */
+  for (k = animator->priv->score; k != NULL; k = k->next)
+    {
+      ClutterAnimatorKey *key = k->data;
+      KeyAnimator        *key_animator;
+      PropObjectKey      *prop_actor_key;
+
+      prop_actor_key = prop_actor_key_new (key->object, key->property_name);
+      key_animator = g_hash_table_lookup (animator->priv->properties,
+                                          prop_actor_key);
+      if (key_animator)
+        {
+          prop_actor_key_free (prop_actor_key);
+        }
+      else
+        {
+          GObjectClass *klass = G_OBJECT_GET_CLASS (key->object);
+          GParamSpec *pspec;
+
+          pspec = g_object_class_find_property (klass, key->property_name);
+
+          key_animator = key_animator_new (animator, prop_actor_key,
+                                           G_PARAM_SPEC_VALUE_TYPE (pspec));
+          g_hash_table_insert (animator->priv->properties,
+                               prop_actor_key,
+                               key_animator);
+        }
+    }
+
+  /* initialize animator with initial list pointers */
+  {
+    GHashTableIter iter;
+    gpointer key, value;
+
+    g_hash_table_iter_init (&iter, animator->priv->properties);
+    while (g_hash_table_iter_next (&iter, &key, &value))
+      {
+        KeyAnimator *key_animator = value;
+        ClutterAnimatorKey *initial_key, *next_key;
+        GList *initial;
+        GList *next;
+
+        initial = g_list_find_custom (animator->priv->score,
+                                      key,
+                                      sort_actor_prop_func);
+        g_assert (initial != NULL);
+        initial_key = initial->data;
+        clutter_interval_set_initial_value (key_animator->interval,
+                                            &initial_key->value);
+
+        key_animator->current       = initial;
+        key_animator->start         = initial_key->progress;
+        key_animator->ease_in       = initial_key->ease_in;
+        key_animator->interpolation = initial_key->interpolation;
+
+        if (key_animator->ease_in)
+          {
+            GValue cvalue = { 0, };
+            GType int_type;
+
+            int_type = clutter_interval_get_value_type (key_animator->interval);
+            g_value_init (&cvalue, int_type);
+
+            g_object_get_property (initial_key->object,
+                                   initial_key->property_name,
+                                   &cvalue);
+
+            clutter_interval_set_initial_value (key_animator->interval,
+                                                &cvalue);
+
+            g_value_unset (&cvalue);
+          }
+
+        next = g_list_find_custom (initial->next, key, sort_actor_prop_func);
+        if (next)
+          {
+            next_key = next->data;
+            key_animator->end = next_key->progress;
+          }
+        else
+          {
+            next_key = initial_key;
+            key_animator->end = 1.0;
+          }
+
+        clutter_interval_set_final_value (key_animator->interval,
+                                          &next_key->value);
+        if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
+          clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+      }
+  }
+}
+
+/**
+ * clutter_animator_set_timeline:
+ * @animator: a #ClutterAnimator
+ * @timeline: a #ClutterTimeline
+ *
+ * Sets an external timeline that will be used for driving the animation
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_set_timeline (ClutterAnimator *animator,
+                               ClutterTimeline *timeline)
+{
+  ClutterAnimatorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+
+  priv = animator->priv;
+
+  if (priv->timeline != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (priv->timeline,
+                                            animation_animator_new_frame,
+                                            animator);
+      g_signal_handlers_disconnect_by_func (priv->timeline,
+                                            animation_animator_started,
+                                            animator);
+      g_object_unref (priv->timeline);
+    }
+
+  priv->timeline = timeline;
+  if (timeline != NULL)
+    {
+      g_object_ref_sink (priv->timeline);
+
+      g_signal_connect (priv->timeline, "new-frame",
+                        G_CALLBACK (animation_animator_new_frame),
+                        animator);
+      g_signal_connect (priv->timeline, "started",
+                        G_CALLBACK (animation_animator_started),
+                        animator);
+    }
+}
+
+/**
+ * clutter_animator_get_timeline:
+ * @animator: a #ClutterAnimator
+ *
+ * Get the timeline hooked up for driving the #ClutterAnimator
+ *
+ * Return value: the #ClutterTimeline that drives the animator.
+ */
+ClutterTimeline *
+clutter_animator_get_timeline (ClutterAnimator *animator)
+{
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
+  return animator->priv->timeline;
+}
+
+/**
+ * clutter_animator_run:
+ * @animator: a #ClutterAnimator
+ *
+ * Start the ClutterAnimator, this is a thin wrapper that rewinds
+ * and starts the animators current timeline.
+ *
+ * Return value: the #ClutterTimeline that drives the animator.
+ */
+ClutterTimeline *
+clutter_animator_run (ClutterAnimator *animator)
+{
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
+  clutter_timeline_rewind (animator->priv->timeline);
+  clutter_timeline_start (animator->priv->timeline);
+  return animator->priv->timeline;
+}
+
+/**
+ * clutter_animator_set_duration:
+ * @animator: a #ClutterAnimator
+ * @duration: milliseconds a run of the animator should last.
+ *
+ * Runs the timeline of the #ClutterAnimator with a duration in msecs
+ * as specified.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_set_duration (ClutterAnimator *animator,
+                               guint            duration)
+{
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+
+  clutter_timeline_set_duration (animator->priv->timeline, duration);
+}
+
+/**
+ * clutter_animator_get_duration:
+ * @animator: a #ClutterAnimator
+ *
+ * Retrieves the current duration of an animator
+ *
+ * Return value: the duration of the animation, in milliseconds
+ *
+ * Since: 1.2
+ */
+guint
+clutter_animator_get_duration  (ClutterAnimator *animator)
+{
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), 0);
+
+  return clutter_timeline_get_duration (animator->priv->timeline);
+}
+
+/**
+ * clutter_animator_set:
+ * @animator: a #ClutterAnimator
+ * @first_object: a #GObject
+ * @first_property_name: the property to specify a key for
+ * @first_mode: the id of the alpha function to use
+ * @first_progress: at which stage of the animation this value applies; the
+ *   range is a normalized floating point value between 0 and 1
+ * @VarArgs: the value first_property_name should have for first_object
+ *   at first_progress, followed by more (object, property_name, mode,
+ *   progress, value) tuples, followed by %NULL
+ *
+ * Adds multiple keys to a #ClutterAnimator, specifying the value a given
+ * property should have at a given progress of the animation. The mode
+ * specified is the mode used when going to this key from the previous key of
+ * the @property_name
+ *
+ * If a given (object, property, progress) tuple already exist the mode and
+ * value will be replaced with the new values.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_set (ClutterAnimator *animator,
+                      gpointer         first_object,
+                      const gchar     *first_property_name,
+                      guint            first_mode,
+                      gdouble          first_progress,
+                      ...)
+{
+  GObject      *object;
+  const gchar  *property_name;
+  guint         mode;
+  gdouble       progress;
+  va_list       args;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+
+  object = first_object;
+  property_name = first_property_name;
+  mode = first_mode;
+  progress = first_progress;
+
+  va_start (args, first_progress);
+
+  while (object != NULL)
+    {
+      GParamSpec *pspec;
+      GObjectClass *klass;
+      GValue value = { 0, };
+      gchar *error = NULL;
+
+      g_return_if_fail (object);
+      g_return_if_fail (property_name);
+
+      klass = G_OBJECT_GET_CLASS (object);
+      pspec = g_object_class_find_property (klass, property_name);
+
+      if (!pspec)
+        {
+          g_warning ("Cannot bind property '%s': object of type '%s' "
+                     "do not have this property",
+                     property_name, G_OBJECT_TYPE_NAME (object));
+          break;
+        }
+
+      /* FIXME - Depend on GLib 2.24 and use G_VALUE_COLLECT_INIT() */
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      G_VALUE_COLLECT (&value, args, 0, &error);
+
+      if (error)
+        {
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          break;
+        }
+
+      clutter_animator_set_key (animator,
+                                object,
+                                property_name,
+                                mode,
+                                progress,
+                                &value);
+
+      object= va_arg (args, GObject *);
+      if (object)
+        {
+          property_name = va_arg (args, gchar*);
+          if (!property_name)
+           {
+             g_warning ("%s: expected a property name", G_STRLOC);
+             break;
+           }
+          mode = va_arg (args, guint);
+          progress = va_arg (args, gdouble);
+        }
+    }
+
+  va_end (args);
+}
+
+/**
+ * clutter_animator_set_key:
+ * @animator: a #ClutterAnimator
+ * @object: a #GObject
+ * @property_name: the property to specify a key for
+ * @mode: the id of the alpha function to use
+ * @progress: at which stage of the animation this value applies (range 0.0-1.0)
+ * @value: the value property_name should have at progress.
+ *
+ * As clutter_animator_set but only for a single key.
+ *
+ * Return value: (transfer none): The animator itself.
+ * Since: 1.2
+ */
+ClutterAnimator *
+clutter_animator_set_key (ClutterAnimator *animator,
+                          GObject         *object,
+                          const gchar     *property_name,
+                          guint            mode,
+                          gdouble          progress,
+                          const GValue    *value)
+{
+  ClutterAnimatorPrivate *priv;
+  ClutterAnimatorKey     *animator_key;
+  GList                  *old_item;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (property_name, NULL);
+  g_return_val_if_fail (value, NULL);
+
+  priv = animator->priv;
+  property_name = g_intern_string (property_name);
+
+  animator_key = clutter_animator_key_new (animator, progress, object, mode,
+                                           property_name);
+
+  g_value_init (&animator_key->value, G_VALUE_TYPE (value));
+  g_value_copy (value, &animator_key->value);
+
+  if ((old_item = g_list_find_custom (priv->score, animator_key,
+                                      sort_actor_prop_progress_func)))
+    {
+      ClutterAnimatorKey *old_key = old_item->data;
+      clutter_animator_key_free (old_key);
+      animator->priv->score = g_list_remove (animator->priv->score, old_key);
+    }
+
+  priv->score = g_list_insert_sorted (priv->score, animator_key,
+                                      sort_actor_prop_progress_func);
+  return animator;
+}
+
+/**
+ * clutter_animator_get_keys:
+ * @animator: a #ClutterAnimator instance
+ * @object: a #GObject to search for or NULL for all
+ * @property_name: a specific property name to query for or NULL for all
+ * @progress: a specific progress to search for or a negative value for all
+ *
+ * Returns a list of pointers to opaque structures with accessor functions
+ * that describe the keys added to an animator.
+ *
+ * Return value: (transfer container) (element-type ClutterAnimatorKey): a
+ *   list of #ClutterAnimatorKey<!-- -->s; the contents of the list are owned
+ *   by the #ClutterAnimator, but you should free the returned list when done,
+ *   using g_list_free()
+ *
+ * Since: 1.2
+ */
+GList *
+clutter_animator_get_keys (ClutterAnimator *animator,
+                           GObject         *object,/* or NULL for all */
+                           const gchar     *property_name,
+                           gdouble          progress)
+{
+  GList *keys = NULL;
+  GList *k;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
+
+  property_name = g_intern_string (property_name);
+
+  for (k = animator->priv->score; k; k = k->next)
+    {
+      ClutterAnimatorKey *key = k->data;
+
+      if ((object == NULL || (object == key->object)) &&
+          (property_name == NULL || ((property_name == key->property_name))) &&
+          (progress < 0          || (progress == key->progress)))
+        {
+          keys = g_list_prepend (keys, key);
+        }
+    }
+
+  return g_list_reverse (keys);
+}
+
+/**
+ * clutter_animator_remove:
+ * @object: a #GObject to search for or NULL for all
+ * @property_name: a specific property name to query for or NULL for all
+ * @progress: a specific progress to search for or a negative value for all
+ *
+ * Removes all keys matching the conditions specificed in the arguments.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_remove_key (ClutterAnimator *animator,
+                             GObject         *object,
+                             const gchar     *property_name,
+                             gdouble          progress)
+{
+  ClutterAnimatorPrivate *priv;
+  GList *k;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property_name != NULL);
+
+  property_name = g_intern_string (property_name);
+
+  priv = animator->priv;
+
+  for (k = priv->score; k != NULL; k = k->next)
+    {
+      ClutterAnimatorKey *key = k->data;
+
+      if ((object == NULL        || (object == key->object)) &&
+          (property_name == NULL || ((property_name == key->property_name))) &&
+          (progress < 0          || (progress == key->progress))
+         )
+        {
+          key->is_inert = TRUE;
+
+          clutter_animator_key_free (key);
+
+          /* FIXME: non performant since we reiterate the list many times */
+          k = priv->score = g_list_remove (priv->score, key);
+        }
+    }
+
+  if (object)
+    {
+      GHashTableIter iter;
+      gpointer key, value;
+
+again:
+      g_hash_table_iter_init (&iter, priv->properties);
+      while (g_hash_table_iter_next (&iter, &key, &value))
+        {
+          PropObjectKey *prop_actor_key = key;
+          if (prop_actor_key->object == object)
+            {
+              g_hash_table_remove (priv->properties, key);
+              goto again;
+            }
+        }
+    }
+}
+
+static void
+clutter_animator_set_property (GObject      *gobject,
+                               guint         prop_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
+{
+  ClutterAnimator *self = CLUTTER_ANIMATOR (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_DURATION:
+      clutter_animator_set_duration (self, g_value_get_uint (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_animator_get_property (GObject    *gobject,
+                               guint       prop_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
+{
+  ClutterAnimatorPrivate *priv = CLUTTER_ANIMATOR (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_DURATION:
+      g_value_set_uint (value, clutter_timeline_get_duration (priv->timeline));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_animator_class_init (ClutterAnimatorClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  g_type_class_add_private (klass, sizeof (ClutterAnimatorPrivate));
+
+  gobject_class->set_property = clutter_animator_set_property;
+  gobject_class->get_property = clutter_animator_get_property;
+  gobject_class->finalize = clutter_animator_finalize;
+
+  /**
+   * ClutterAnimator:duration:
+   *
+   * The duration of the #ClutterTimeline used by the #ClutterAnimator
+   * to drive the animation
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_uint ("duration",
+                             "Duration",
+                             "The duration of the animation",
+                             0, G_MAXUINT,
+                             2000,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
+}
+
+static void
+clutter_animator_init (ClutterAnimator *animator)
+{
+  ClutterAnimatorPrivate *priv;
+
+  animator->priv = priv = CLUTTER_ANIMATOR_GET_PRIVATE (animator);
+
+  priv->properties = g_hash_table_new_full (prop_actor_hash,
+                                            prop_actor_equal,
+                                            prop_actor_key_free,
+                                            key_animator_free);
+
+  clutter_animator_set_timeline (animator, clutter_timeline_new (2000));
+
+  priv->slave_timeline = clutter_timeline_new (10000);
+  g_object_ref_sink (priv->slave_timeline);
+}
+
+
+/**
+ * clutter_animator_property_get_ease_in:
+ * @animator: a #ClutterAnimatorKey
+ * @object: a #GObject
+ * @property_name: the name of a property on object
+ *
+ * Checks if a property value is to be eased into the animation.
+ *
+ * Return value: %TRUE if the property is eased in
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_animator_property_get_ease_in (ClutterAnimator *animator,
+                                       GObject         *object,
+                                       const gchar     *property_name)
+{
+  ClutterAnimatorKey  key, *initial_key;
+  GList              *initial;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), FALSE);
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (property_name, FALSE);
+
+  key.object        = object;
+  key.property_name = g_intern_string (property_name);
+  initial = g_list_find_custom (animator->priv->score, &key,
+                                sort_actor_prop_func);
+  if (initial != NULL)
+    {
+      initial_key = initial->data;
+
+      return initial_key->ease_in;
+    }
+
+  return FALSE;
+}
+
+/**
+ * clutter_animator_property_set_ease_in:
+ * @animator: a #ClutterAnimatorKey
+ * @object: a #GObject
+ * @property_name: the name of a property on object
+ * @ease_in: we are going to be easing in this property
+ *
+ * Sets whether a property value is to be eased into the animation.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_property_set_ease_in (ClutterAnimator *animator,
+                                       GObject         *object,
+                                       const gchar     *property_name,
+                                       gboolean         ease_in)
+{
+  ClutterAnimatorKey  key, *initial_key;
+  GList              *initial;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property_name);
+
+  key.object        = object;
+  key.property_name = g_intern_string (property_name);
+  initial = g_list_find_custom (animator->priv->score, &key,
+                                sort_actor_prop_func);
+  if (initial)
+    {
+      initial_key = initial->data;
+      initial_key->ease_in = ease_in;
+    }
+  else
+    g_warning ("The animator has no object of type '%s' with a "
+               "property named '%s'",
+               G_OBJECT_TYPE_NAME (object),
+               property_name);
+}
+
+
+/**
+ * clutter_animator_property_set_interpolation:
+ * @animator: a #ClutterAnimatorKey
+ * @object: a #GObject
+ * @property_name: the name of a property on object
+ * @interpolation: the #ClutterInterpolation to use
+ *
+ * Get the interpolation used by animator for a property on a particular
+ * object.
+ *
+ * Returns: a ClutterInterpolation value.
+ * Since: 1.2
+ */
+ClutterInterpolation
+clutter_animator_property_get_interpolation (ClutterAnimator      *animator,
+                                             GObject              *object,
+                                             const gchar          *property_name,
+                                             ClutterInterpolation  interpolation)
+{
+  GList              *initial;
+  ClutterAnimatorKey  key, *initial_key;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator),
+                        CLUTTER_INTERPOLATION_LINEAR);
+  g_return_val_if_fail (G_IS_OBJECT (object),
+                        CLUTTER_INTERPOLATION_LINEAR);
+  g_return_val_if_fail (property_name,
+                        CLUTTER_INTERPOLATION_LINEAR);
+
+  key.object        = object;
+  key.property_name = g_intern_string (property_name);
+  initial = g_list_find_custom (animator->priv->score, &key,
+                                sort_actor_prop_func);
+  if (initial)
+    {
+      initial_key = initial->data;
+
+      return initial_key->interpolation;
+    }
+
+  return CLUTTER_INTERPOLATION_LINEAR;
+}
+
+/**
+ * clutter_animator_property_set_interpolation:
+ * @animator: a #ClutterAnimatorKey
+ * @object: a #GObject
+ * @property_name: the name of a property on object
+ * @interpolation: the #ClutterInterpolation to use
+ *
+ * Set the interpolation method to use, CLUTTER_INTERPOLATION_LINEAR causes the
+ * values to linearly change between the values, CLUTTER_INTERPOLATION_CUBIC
+ * causes the values to smoothly change between the values.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_property_set_interpolation (ClutterAnimator      *animator,
+                                             GObject              *object,
+                                             const gchar          *property_name,
+                                             ClutterInterpolation  interpolation)
+{
+  GList              *initial;
+  ClutterAnimatorKey  key, *initial_key;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property_name);
+
+  key.object        = object;
+  key.property_name = g_intern_string (property_name);
+  initial = g_list_find_custom (animator->priv->score, &key,
+                                sort_actor_prop_func);
+  if (initial)
+    {
+      initial_key = initial->data;
+      initial_key->interpolation = interpolation;
+    }
+}
+
+GType
+clutter_animator_key_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (!our_type)
+    our_type = g_boxed_type_register_static (I_("ClutterAnimatorKey"),
+                                             clutter_animator_key_copy,
+                                             clutter_animator_key_free);
+
+  return our_type;
+}
+
+
+/**
+ * clutter_animator_key_get_object:
+ * @animator_key: a #ClutterAnimatorKey
+ *
+ * Retrieves the object a key applies to.
+ *
+ * Return value: the object an animator_key exist for.
+ *
+ * Since: 1.2
+ */
+GObject *
+clutter_animator_key_get_object (ClutterAnimatorKey *animator_key)
+{
+  g_return_val_if_fail (animator_key, NULL);
+  return animator_key->object;
+}
+
+/**
+ * clutter_animator_key_get_property_name:
+ * @animator_key: a #ClutterAnimatorKey
+ *
+ * Retrieves the name of the property a key applies to.
+ *
+ * Return value: the name of the property an animator_key exist for.
+ *
+ * Since: 1.2
+ */
+G_CONST_RETURN gchar *
+clutter_animator_key_get_property_name (ClutterAnimatorKey *animator_key)
+{
+  g_return_val_if_fail (animator_key != NULL, NULL);
+
+  return animator_key->property_name;
+}
+
+/**
+ * clutter_animator_key_get_mode:
+ * @animator_key: a #ClutterAnimatorKey
+ *
+ * Retrieves the mode of a #ClutterAnimator key, for the first key of a
+ * property for an object this represents the whether the animation is
+ * open ended and or curved for the remainding keys for the property it
+ * represents the easing mode.
+ *
+ * Return value: the mode of a #ClutterAnimatorKey
+ *
+ * Since: 1.2
+ */
+gulong
+clutter_animator_key_get_mode (ClutterAnimatorKey *animator_key)
+{
+  g_return_val_if_fail (animator_key != NULL, 0);
+
+  return animator_key->mode;
+}
+
+/**
+ * clutter_animator_key_get_progress:
+ * @animator_key: a #ClutterAnimatorKey
+ *
+ * Retrieves the progress of an clutter_animator_key
+ *
+ * Return value: the progress defined for a #ClutterAnimator key.
+ *
+ * Since: 1.2
+ */
+gdouble
+clutter_animator_key_get_progress (ClutterAnimatorKey *animator_key)
+{
+  g_return_val_if_fail (animator_key != NULL, 0.0);
+
+  return animator_key->progress;
+}
+
+/**
+ * clutter_animator_key_get_value:
+ * @animator_key: a #ClutterAnimatorKey
+ * @value: a #GValue initialized with the correct type for the animator key
+ *
+ * Retrieves a copy of the value for a #ClutterAnimatorKey.
+ *
+ * The passed in GValue needs to be already initialized for the value type.
+ *
+ * Use g_value_unset() when done
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_key_get_value (ClutterAnimatorKey *animator_key,
+                                GValue             *value)
+{
+  g_return_if_fail (animator_key != NULL);
+
+  g_value_copy (&animator_key->value, value);
+}

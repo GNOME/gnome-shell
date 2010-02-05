@@ -42,3 +42,4 @@ clutter_flow_layout_get_type
 clutter_box_layout_get_type
 clutter_input_device_get_type
 clutter_device_manager_get_type
+clutter_animator_get_type

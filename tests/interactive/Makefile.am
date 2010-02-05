@@ -19,6 +19,7 @@ UNIT_TESTS = \
 	test-grab.c \
 	test-fullscreen.c \
 	test-shader.c \
+	test-animator.c \
 	test-unproject.c \
 	test-viewport.c \
 	test-fbo.c \

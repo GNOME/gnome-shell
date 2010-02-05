@@ -15,7 +15,7 @@
     </copyright>
 
     <copyright>
-      <year>2009</year>
+      <year>2009, 2010</year>
       <holder>Intel Corporation</holder>
     </copyright>
 
@@ -123,6 +123,8 @@
       <xi:include href="xml/clutter-interval.xml"/>
       <xi:include href="xml/clutter-animation.xml"/>
       <xi:include href="xml/clutter-animatable.xml"/>
+      <xi:include href="xml/clutter-animator.xml"/>
+
     </chapter>
 
   </part>

@@ -66,6 +66,7 @@ source_h =					\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
+	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-depth.h 	\
@@ -138,6 +139,7 @@ source_c = \
 	$(srcdir)/clutter-alpha.c 		\
 	$(srcdir)/clutter-animatable.c		\
 	$(srcdir)/clutter-animation.c		\
+	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
 	$(srcdir)/clutter-behaviour.c 		\
 	$(srcdir)/clutter-behaviour-depth.c	\
