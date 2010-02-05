@@ -7,115 +7,92 @@
 ]>
 
 <book lang="en">
-	<bookinfo>
-		<author>
-			<firstname>Matthew</firstname>
-			<surname>Allum</surname>
-			<address><email>&author_mail;</email></address>
-		</author>
-		<copyright>
-			<year>2007</year>
-		</copyright>
-		<legalnotice>
-			<para>
-				This document is distributed under the terms of the GNU General Public License as published by the Free
-				Software Foundation; either version 2 of the License, or (at your option) any later version.
-				A copy of this license can be found in the file COPYING included with the source code of this
-				program.
-			</para>
-		</legalnotice>
-		<title>Clutter Application Developer Manual</title>
+        <bookinfo>
+                <author>
+                        <firstname>Matthew</firstname>
+                        <surname>Allum</surname>
+                        <address><email>&author_mail;</email></address>
+                </author>
+
+                <copyright>
+                        <year>2007</year>
+                </copyright>
+
+                <legalnotice>
+                        <para>This document is distributed under the terms of
+                        the GNU General Public License as published by the Free
+                        Software Foundation; either version 2 of the License,
+                        or (at your option) any later version.</para>
+                        <para>A copy of this license can be found in the file COPYING included with the source code of this program.</para>
+                </legalnotice>
+
+                <title>Clutter Application Developer Manual</title>
                 <releaseinfo>for Clutter &apiversion;</releaseinfo>
-	</bookinfo>
+        </bookinfo>
 
-	<chapter id="intro">
-		<title>
-			Introduction
-		</title>
-		<section>
-			<title>About Clutter</title>
-			<para>
-			FIXME
-			</para>
-		</section>
-		<section>
-			<title>About this document</title>
-			<para>
-				This documentation is available in various formats like HTML, text and PDF. The latest version is
-				always available at <ulink url="&appurl;">&appurl;</ulink>.
-			</para>
-		</section>
-		<section>
-			<title>Where to get it</title>
-			<para>
-				You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>
-				or perhaps from your distributor.
-			</para>
-		</section>
-		<section>
-			<title>License</title>
-			<para>
-				Clutter is distributed under the terms of the GNU Lesser General Public License as published
-				by the Free	Software Foundation; either version 2 of the License, or (at your option) any later version.
-				A copy of this license can be found in the file COPYING included with the source code of this
-				program.
-			</para>
-		</section>
-	</chapter>
+        <chapter id="intro">
+                <title>Introduction</title>
+                <section>
+                        <title>About Clutter</title>
+                        <para>FIXME</para>
+                </section>
+                <section>
+                        <title>About this document</title>
+                        <para>
+                                This documentation is available in various formats like HTML, text and PDF. The latest version is
+                                always available at <ulink url="&appurl;">&appurl;</ulink>.
+                        </para>
+                </section>
+                <section>
+                        <title>Where to get it</title>
+                        <para>
+                                You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>
+                                or perhaps from your distributor.
+                        </para>
+                </section>
+                <section>
+                        <title>License</title>
+                        <para>
+                                Clutter is distributed under the terms of the GNU Lesser General Public License as published
+                                by the Free        Software Foundation; either version 2 of the License, or (at your option) any later version.
+                                A copy of this license can be found in the file COPYING included with the source code of this
+                                program.
+                        </para>
+                </section>
+        </chapter>
 
-	<chapter id="installation">
-		<title>
-			Installation
-		</title>
-		<section>
-			<title>Requirements</title>
-			<para>
-			</para>
-			<para>
-			</para>
-		</section>
-		<section id="binary_packages">
-			<title>Binary packages</title>
-			<para>
-			</para>
-		</section>
-	</chapter>
+        <chapter id="installation">
+                <title>Installation</title>
+                <section>
+                        <title>Requirements</title>
+                        <para>
+                        </para>
+                        <para>
+                        </para>
+                </section>
+                <section id="binary_packages">
+                        <title>Binary packages</title>
+                        <para>
+                        </para>
+                </section>
+        </chapter>
 
-	<appendix id="FAQ">
-		 <title>
-			Frequently Asked Questions
-		</title>
-		<qandaset defaultlabel='qanda'>
-		<qandaentry>
-			<question>
-				<para>
+        <appendix id="FAQ">
+                 <title>Frequently Asked Questions</title>
+                <qandaset defaultlabel='qanda'>
+                <qandaentry>
+                        <question>
+                                <para>Why do Clutter applications run <emphasis>really</emphasis> slowly on Intel cards even though direct rendering support is reported.</para>
+                        </question>
+                        <answer>
+                                <para>There is a bug in some versions of the Intel drivers that causes the driver to 'stall' when attempting to sync to vblank (as Clutter does by default). The fix is to either upgrade your drivers or set 'CLUTTER_VBLANK=none' when running Clutter applications.</para>
+                        </answer>
+                </qandaentry>
+                </qandaset>
+        </appendix>
 
-				Why do Clutter applications run <emphasis>really</emphasis> slowly on Intel cards even though 
-				direct rendering support is reported.
-
-				</para>
-			</question>			
-			<answer>
-				<para>
-
-				There is a bug in some versions of the Intel drivers that causes the driver to 'stall' when 
-				attempting to sync to vblank (as Clutter does by default). The fix is to either upgrade 
-				your drivers or set 'CLUTTER_VBLANK=none' when running Clutter applications.					
-
-				</para>
-			</answer>
-		</qandaentry>		
-		</qandaset>	
-	</appendix>
-
-	<appendix id="contrib">
-	    <title>Contributing to this document</title>
-	    <para>
-
-		  This document is written in Docbook XML. The source file for it is located in the
-	    	  subdirectory "doc/manual" of the source directory of Clutter.
-
-	    </para>
-	</appendix>
-
+        <appendix id="contrib">
+            <title>Contributing to this document</title>
+            <para>This document is written in Docbook XML. The source file for it is located in the subdirectory "doc/manual" of the source directory of Clutter.</para>
+        </appendix>
 </book>
