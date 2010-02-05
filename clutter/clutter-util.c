@@ -25,11 +25,10 @@
 
 /**
  * SECTION:clutter-util
- * @short_description: Misc utility functions.
+ * @short_description: Utility functions
  *
- * Various misc utilility functions.
+ * Various miscellaneous utilility functions.
  */
-
 
 #include "clutter-util.h"
 #include "clutter-main.h"
@@ -41,13 +40,15 @@
  * Calculates the nearest power of two, greater than or equal to @a.
  *
  * Return value: The nearest power of two, greater or equal to @a.
+ *
+ * Deprecated: 1.2
  */
-int 
-clutter_util_next_p2 (int a)
+gint
+clutter_util_next_p2 (gint a)
 {
-  int rval=1;
+  int rval = 1;
 
-  while(rval < a) 
+  while (rval < a)
     rval <<= 1;
 
   return rval;

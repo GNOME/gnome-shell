@@ -32,9 +32,12 @@
 
 G_BEGIN_DECLS
 
-int 
-clutter_util_next_p2 (int a);
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
+gint clutter_util_next_p2 (gint a) G_GNUC_DEPRECATED;
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_UTIL_H__ */

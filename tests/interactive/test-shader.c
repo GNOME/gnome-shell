@@ -203,6 +203,17 @@ static ShaderSource shaders[]=
 
 static gint shader_no = 0;
 
+static int
+next_p2 (gint a)
+{
+  int rval = 1;
+
+  while (rval < a)
+    rval <<= 1;
+
+  return rval;
+}
+
 static void
 set_shader_num (ClutterActor *actor, gint new_no)
 {
@@ -251,10 +262,14 @@ set_shader_num (ClutterActor *actor, gint new_no)
 
 	  if (CLUTTER_IS_TEXTURE (actor))
 	    {
+              /* XXX - this assumes *a lot* about how things are done
+               * internally on *some* hardware and driver
+               */
 	      tex_width = clutter_actor_get_width (actor);
-	      tex_width = clutter_util_next_p2 (tex_width);
+	      tex_width = next_p2 (tex_width);
+
 	      tex_height = clutter_actor_get_height (actor);
-	      tex_height = clutter_util_next_p2 (tex_height);
+	      tex_height = next_p2 (tex_height);
 
 	      clutter_actor_set_shader_param_float (actor, "x_step",
 					            1.0f / tex_width);
