@@ -98,6 +98,7 @@ const gchar *cogl_gl_error_to_string (GLenum error_code);
 #define COGL_ENABLE_BACKFACE_CULLING  (1<<5)
 
 void    _cogl_features_init (void);
+
 gint    _cogl_get_format_bpp (CoglPixelFormat format);
 
 void    cogl_enable (gulong flags);

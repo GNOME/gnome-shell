@@ -33,31 +33,6 @@
 #include "cogl-context.h"
 #include "cogl-feature-private.h"
 
-gboolean
-cogl_check_extension (const gchar *name, const gchar *ext)
-{
-  gchar *end;
-  gint name_len, n;
-
-  if (name == NULL || ext == NULL)
-    return FALSE;
-
-  end = (gchar*)(ext + strlen(ext));
-
-  name_len = strlen(name);
-
-  while (ext < end)
-    {
-      n = strcspn(ext, " ");
-
-      if ((name_len == n) && (!strncmp(name, ext, n)))
-	return TRUE;
-      ext += (n + 1);
-    }
-
-  return FALSE;
-}
-
 #ifdef HAVE_CLUTTER_OSX
 static gboolean
 really_enable_npot (void)
@@ -142,7 +117,7 @@ _cogl_check_driver_valid (GError **error)
 
   /* OpenGL 1.2 is only supported if we have the multitexturing
      extension */
-  if (!cogl_check_extension ("GL_ARB_multitexture", gl_extensions))
+  if (!_cogl_check_extension ("GL_ARB_multitexture", gl_extensions))
     {
       g_set_error (error,
                    COGL_DRIVER_ERROR,
@@ -215,7 +190,7 @@ _cogl_features_init (void)
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
-      cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
+      _cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
     {
 #ifdef HAVE_CLUTTER_OSX
       if (really_enable_npot ())
@@ -224,7 +199,7 @@ _cogl_features_init (void)
     }
 
 #ifdef GL_YCBCR_MESA
-  if (cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
+  if (_cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
     {
       flags |= COGL_FEATURE_TEXTURE_YUV;
     }

@@ -113,6 +113,8 @@ gboolean        cogl_features_available       (CoglFeatureFlags    features);
  */
 CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_check_extension:
  * @name: extension to check for
@@ -121,9 +123,15 @@ CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
  * Check whether @name occurs in list of extensions in @ext.
  *
  * Return value: %TRUE if the extension occurs in the list, %FALSE otherwize.
+ *
+ * Deprecated: 1.2: OpenGL is an implementation detail for Cogl and so it's not
+ *                  appropriate to expose OpenGL extensions through the Cogl
+ *                  API.
  */
 gboolean        cogl_check_extension          (const gchar        *name,
-                                               const gchar        *ext);
+                                               const gchar        *ext) G_GNUC_DEPRECATED;
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_get_bitmasks:
@@ -1016,6 +1024,7 @@ typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
   COGL_DRIVER_ERROR_INVALID_VERSION
 } CoglDriverError;
 
+gboolean        _cogl_check_extension (const char *name, const char *ext);
 void            _cogl_set_indirect_context  (gboolean indirect);
 void            _cogl_set_viewport (int x, int y, int width, int height);
 gboolean        _cogl_check_driver_valid (GError **error);
