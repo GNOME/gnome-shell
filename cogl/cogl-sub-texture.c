@@ -250,7 +250,7 @@ _cogl_sub_texture_new (CoglHandle full_texture,
   guint           full_width, full_height;
 
   full_width = cogl_texture_get_width (full_texture);
-  full_height = cogl_texture_get_width (full_texture);
+  full_height = cogl_texture_get_height (full_texture);
 
   /* The region must specify a non-zero subset of the full texture */
   g_return_val_if_fail (sub_x >= 0 && sub_y >= 0, COGL_INVALID_HANDLE);
