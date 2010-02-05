@@ -307,7 +307,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
        * no effect.
        */
       if (!check_vblank_env ("dri") &&
-          cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+          _cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
         {
           backend_glx->swap_interval =
             (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
@@ -332,7 +332,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
            * we wait for glXSwapBuffers to complete, and instead we get an X
            * event notifying us of completion... */
           if (!(clutter_debug_flags & CLUTTER_DEBUG_DISABLE_SWAP_EVENTS) &&
-              cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
+              _cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
               flags & CLUTTER_FEATURE_SYNC_TO_VBLANK)
             flags |= CLUTTER_FEATURE_SWAP_EVENTS;
 #endif /* GLX_INTEL_swap_event */
@@ -340,7 +340,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
       if (!check_vblank_env ("dri") &&
           !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
-          cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+          _cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
         {
           CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
 

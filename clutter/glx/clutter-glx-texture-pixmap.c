@@ -198,7 +198,8 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
                                   clutter_x11_get_default_screen ());
 
       /* Check for the texture from pixmap extension */
-      if (cogl_check_extension ("GLX_EXT_texture_from_pixmap", glx_extensions))
+      if (_cogl_check_extension ("GLX_EXT_texture_from_pixmap",
+                                 glx_extensions))
         {
           _gl_bind_tex_image =
             (BindTexImage)cogl_get_proc_address ("glXBindTexImageEXT");
@@ -213,7 +214,7 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
         (GenerateMipmap)cogl_get_proc_address ("glGenerateMipmapEXT");
 
       gl_extensions = (char *) glGetString (GL_EXTENSIONS);
-      _have_tex_rectangle = cogl_check_extension ("GL_ARB_texture_rectangle",
+      _have_tex_rectangle = _cogl_check_extension ("GL_ARB_texture_rectangle",
                                                   gl_extensions);
 
       if ((rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))

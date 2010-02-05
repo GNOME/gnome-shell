@@ -33,31 +33,6 @@
 #include "cogl-feature-private.h"
 
 gboolean
-cogl_check_extension (const gchar *name, const gchar *ext)
-{
-  gchar *end;
-  gint name_len, n;
-
-  if (name == NULL || ext == NULL)
-    return FALSE;
-
-  end = (gchar*)(ext + strlen(ext));
-
-  name_len = strlen(name);
-
-  while (ext < end)
-    {
-      n = strcspn(ext, " ");
-
-      if ((name_len == n) && (!strncmp(name, ext, n)))
-	return TRUE;
-      ext += (n + 1);
-    }
-
-  return FALSE;
-}
-
-gboolean
 _cogl_check_driver_valid (GError **error)
 {
   /* The GLES backend doesn't have any particular version requirements */

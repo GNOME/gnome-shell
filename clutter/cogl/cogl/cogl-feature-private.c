@@ -84,8 +84,8 @@ _cogl_feature_check (const CoglFeatureData *data,
                                    namespace, namespace_len);
               g_string_append_c (full_extension_name, '_');
               g_string_append (full_extension_name, extension);
-              if (!cogl_check_extension (full_extension_name->str,
-                                         extensions_string))
+              if (!_cogl_check_extension (full_extension_name->str,
+                                          extensions_string))
                 break;
             }
 

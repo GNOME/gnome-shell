@@ -112,6 +112,38 @@ cogl_get_proc_address (const gchar* name)
   return NULL;
 }
 
+gboolean
+_cogl_check_extension (const gchar *name, const gchar *ext)
+{
+  gchar *end;
+  gint name_len, n;
+
+  if (name == NULL || ext == NULL)
+    return FALSE;
+
+  end = (gchar*)(ext + strlen(ext));
+
+  name_len = strlen(name);
+
+  while (ext < end)
+    {
+      n = strcspn(ext, " ");
+
+      if ((name_len == n) && (!strncmp(name, ext, n)))
+	return TRUE;
+      ext += (n + 1);
+    }
+
+  return FALSE;
+}
+
+/* XXX: This has been deprecated as public API */
+gboolean
+cogl_check_extension (const char *name, const char *ext)
+{
+  return _cogl_check_extension (name, ext);
+}
+
 void
 cogl_clear (const CoglColor *color, gulong buffers)
 {
