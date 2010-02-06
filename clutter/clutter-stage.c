@@ -1181,8 +1181,8 @@ clutter_stage_init (ClutterStage *self)
   priv->throttle_motion_events = TRUE;
 
   priv->color = default_stage_color;
-  priv->minimum_width = 640;
-  priv->minimum_height = 480;
+  priv->minimum_width = 1;
+  priv->minimum_height = 1;
 
   priv->perspective.fovy   = 60.0; /* 60 Degrees */
   priv->perspective.aspect = 1.0;
