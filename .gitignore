@@ -242,11 +242,12 @@ TAGS
 /tests/conform/test-color-operators
 /tests/conform/test-cogl-texture-mipmaps
 /tests/conform/test-behaviours
+/tests/conform/test-cogl-sub-texture
+/tests/conform/test-cogl-multitexture
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
 /tests/tools/disable-npots.sh
-/tests/conform/test-cogl-multitexture
 /clutter/x11/clutter-x11-enum-types.[ch]
 /clutter/x11/stamp-clutter-x11-enum-types.h
 /po/Makefile.in.in
