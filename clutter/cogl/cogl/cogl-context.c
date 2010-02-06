@@ -147,6 +147,9 @@ cogl_create_context (void)
   cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
+  _context->atlas = NULL;
+  _context->atlas_texture = COGL_INVALID_HANDLE;
+
   return TRUE;
 }
 
@@ -187,6 +190,11 @@ _cogl_destroy_context ()
 
   if (_context->default_material)
     cogl_handle_unref (_context->default_material);
+
+  if (_context->atlas)
+    _cogl_atlas_free (_context->atlas);
+  if (_context->atlas_texture)
+    cogl_handle_unref (_context->atlas_texture);
 
   g_free (_context);
 }

@@ -291,7 +291,8 @@ struct _CoglTextureVertex
 typedef enum {
   COGL_TEXTURE_NONE           = 0,
   COGL_TEXTURE_NO_AUTO_MIPMAP = 1 << 0,
-  COGL_TEXTURE_NO_SLICING     = 1 << 1
+  COGL_TEXTURE_NO_SLICING     = 1 << 1,
+  COGL_TEXTURE_NO_ATLAS       = 1 << 2
 } CoglTextureFlags;
 
 /**

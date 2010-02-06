@@ -30,6 +30,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-material-private.h"
+#include "cogl-atlas.h"
 
 typedef struct
 {
@@ -110,6 +111,9 @@ typedef struct
   gboolean          in_begin_gl_block;
 
   CoglHandle        texture_download_material;
+
+  CoglAtlas        *atlas;
+  CoglHandle        atlas_texture;
 
   /* This debugging variable is used to pick a colour for visually
      displaying the quad batches. It needs to be global so that it can

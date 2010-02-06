@@ -1320,6 +1320,19 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
   _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
 }
 
+void
+_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  if (layer->texture &&
+      (is_mipmap_filter (layer->min_filter) ||
+       is_mipmap_filter (layer->mag_filter)))
+    _cogl_texture_ensure_mipmaps (layer->texture);
+}
+
 /*
  * _cogl_material_flush_layers_gl_state:
  * @fallback_mask: is a bitmask of the material layers that need to be
@@ -1391,6 +1404,8 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #endif
       CoglTextureUnit   *unit;
 
+      _cogl_material_layer_ensure_mipmaps (layer_handle);
+
       new_gl_layer_info.layer0_overridden =
         layer0_override_texture ? TRUE : FALSE;
       new_gl_layer_info.fallback =
@@ -1400,7 +1415,13 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       tex_handle = layer->texture;
       if (tex_handle != COGL_INVALID_HANDLE)
-        cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+        {
+          _cogl_texture_set_filters (tex_handle,
+                                     layer->min_filter,
+                                     layer->mag_filter);
+
+          cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+        }
       else
         {
           new_gl_layer_info.fallback = TRUE;
@@ -1430,13 +1451,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
       unit = _cogl_get_texture_unit (i);
-
-      _cogl_texture_set_filters (layer->texture,
-                                 layer->min_filter,
-                                 layer->mag_filter);
-      if (is_mipmap_filter (layer->min_filter)
-          || is_mipmap_filter (layer->mag_filter))
-        _cogl_texture_ensure_mipmaps (layer->texture);
 
       /* FIXME: We could be more clever here and only bind the texture
          if it is different from gl_layer_info->gl_texture to avoid
@@ -1693,12 +1707,35 @@ _cogl_material_flush_gl_state (CoglHandle handle,
 }
 
 static gboolean
+_cogl_material_texture_equal (CoglHandle texture0, CoglHandle texture1)
+{
+  GLenum gl_handle0, gl_handle1, gl_target0, gl_target1;
+
+  /* If the texture handles are the same then the textures are
+     definitely equal */
+  if (texture0 == texture1)
+    return TRUE;
+
+  /* If neither texture is sliced then they could still be the same if
+     the are referring to the same GL texture */
+  if (cogl_texture_is_sliced (texture0) ||
+      cogl_texture_is_sliced (texture1))
+    return FALSE;
+
+  cogl_texture_get_gl_texture (texture0, &gl_handle0, &gl_target0);
+  cogl_texture_get_gl_texture (texture1, &gl_handle1, &gl_target1);
+
+  return gl_handle0 == gl_handle1 && gl_target0 == gl_target1;
+}
+
+static gboolean
 _cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
                             CoglHandle         material0_layer_texture,
                             CoglMaterialLayer *material1_layer,
                             CoglHandle         material1_layer_texture)
 {
-  if (material0_layer_texture != material1_layer_texture)
+  if (!_cogl_material_texture_equal (material0_layer_texture,
+                                     material1_layer_texture))
     return FALSE;
 
   if ((material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
