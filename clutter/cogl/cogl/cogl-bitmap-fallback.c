@@ -379,6 +379,8 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
         }
     }
 
+  bmp->format &= ~COGL_PREMULT_BIT;
+
   return TRUE;
 }
 
@@ -413,6 +415,8 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
             }
         }
     }
+
+  bmp->format |= COGL_PREMULT_BIT;
 
   return TRUE;
 }
