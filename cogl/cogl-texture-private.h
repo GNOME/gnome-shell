@@ -30,15 +30,18 @@
 
 #define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
 
-typedef struct _CoglTexture       CoglTexture;
-typedef struct _CoglTextureVtable CoglTextureVtable;
+typedef struct _CoglTexture           CoglTexture;
+typedef struct _CoglTextureVtable     CoglTextureVtable;
 
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
                                           GLenum gl_target,
-                                          float *slice_coords,
-                                          float *virtual_coords,
+                                          const float *slice_coords,
+                                          const float *virtual_coords,
                                           void *user_data);
+
+typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
+                                                  void *user_data);
 
 struct _CoglTextureVtable
 {
@@ -80,6 +83,8 @@ struct _CoglTextureVtable
   void (* transform_coords_to_gl) (CoglTexture *tex,
                                    float *s,
                                    float *t);
+  gboolean (* transform_quad_coords_to_gl) (CoglTexture *tex,
+                                            float *coords);
 
   gboolean (* get_gl_texture) (CoglTexture *tex,
                                GLuint *out_gl_handle,
@@ -90,27 +95,21 @@ struct _CoglTextureVtable
                         GLenum mag_filter);
 
   void (* ensure_mipmaps) (CoglTexture *tex);
+  void (* ensure_non_quad_rendering) (CoglTexture *tex);
 
   void (* set_wrap_mode_parameter) (CoglTexture *tex,
                                     GLenum wrap_mode);
+
+  CoglPixelFormat (* get_format) (CoglTexture *tex);
+  GLenum (* get_gl_format) (CoglTexture *tex);
+  gint (* get_width) (CoglTexture *tex);
+  gint (* get_height) (CoglTexture *tex);
 };
 
 struct _CoglTexture
 {
   CoglHandleObject         _parent;
   const CoglTextureVtable *vtable;
-  CoglBitmap               bitmap;
-  gboolean                 bitmap_owner;
-  GLenum                   gl_target;
-  GLenum                   gl_intformat;
-  GLenum                   gl_format;
-  GLenum                   gl_type;
-  GLenum                   min_filter;
-  GLenum                   mag_filter;
-  gboolean                 is_foreign;
-  GLint                    wrap_mode;
-  gboolean                 auto_mipmap;
-  gboolean                 mipmaps_dirty;
 };
 
 void
@@ -129,8 +128,12 @@ void
 _cogl_texture_transform_coords_to_gl (CoglHandle handle,
                                       float *s,
                                       float *t);
+gboolean
+_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+                                           float *coords);
+
 GLenum
-_cogl_texture_get_internal_gl_format (CoglHandle handle);
+_cogl_texture_get_gl_format (CoglHandle handle);
 
 void
 _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
@@ -144,23 +147,30 @@ _cogl_texture_set_filters (CoglHandle handle,
 void
 _cogl_texture_ensure_mipmaps (CoglHandle handle);
 
-
-/* Functions currently only used by CoglTexture implementations or
- * drivers... */
-
 void
-_cogl_texture_free (CoglTexture *tex);
+_cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
 
-void
-_cogl_texture_bitmap_free (CoglTexture *tex);
+/* Utility function to determine which pixel format to use when
+   dst_format is COGL_PIXEL_FORMAT_ANY. If dst_format is not ANY then
+   it will just be returned directly */
+CoglPixelFormat
+_cogl_texture_determine_internal_format (CoglPixelFormat src_format,
+                                         CoglPixelFormat dst_format);
 
-void
-_cogl_texture_bitmap_swap (CoglTexture  *tex,
-			   CoglBitmap   *new_bitmap);
+/* Utility function to help uploading a bitmap. If the bitmap needs
+   premult conversion then it will be copied and *copied_bitmap will
+   be set to TRUE. Otherwise dst_bmp will be set to a shallow copy of
+   src_bmp. The GLenums needed for uploading are returned */
 
 gboolean
-_cogl_texture_bitmap_prepare (CoglTexture     *tex,
-			      CoglPixelFormat  internal_format);
+_cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
+                                  CoglPixelFormat  dst_format,
+                                  CoglPixelFormat *dst_format_out,
+                                  CoglBitmap      *dst_bmp,
+                                  gboolean        *copied_bitmap,
+                                  GLenum          *out_glintformat,
+                                  GLenum          *out_glformat,
+                                  GLenum          *out_gltype);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
@@ -168,8 +178,22 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
 
+/* Utility function for implementing manual repeating. Even texture
+   backends that always support hardware repeating need this because
+   when foreach_sub_texture_in_region is invoked Cogl will set the
+   wrap mode to GL_CLAMP_TO_EDGE so hardware repeating can't be
+   done */
+void
+_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
+                                      float tx_1, float ty_1,
+                                      float tx_2, float ty_2,
+                                      void *user_data);
+
+/* Utility function to use as a fallback for getting the data of any
+   texture via the framebuffer */
+
 gboolean
-_cogl_texture_draw_and_read (CoglTexture *tex,
+_cogl_texture_draw_and_read (CoglHandle   handle,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);

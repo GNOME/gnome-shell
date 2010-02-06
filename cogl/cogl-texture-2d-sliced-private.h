@@ -49,15 +49,30 @@ struct _CoglTexturePixel
 struct _CoglTexture2DSliced
 {
   CoglTexture       _parent;
-  GArray            *slice_x_spans;
-  GArray            *slice_y_spans;
-  GArray            *slice_gl_handles;
-  gint               max_waste;
+  GArray           *slice_x_spans;
+  GArray           *slice_y_spans;
+  GArray           *slice_gl_handles;
+  gint              max_waste;
+
+  /* The internal format of the GL texture represented as a
+     CoglPixelFormat */
+  CoglPixelFormat   format;
+  /* The internal format of the GL texture represented as a GL enum */
+  GLenum            gl_format;
+  GLenum            gl_target;
+  gint              width;
+  gint              height;
+  GLenum            min_filter;
+  GLenum            mag_filter;
+  gboolean          is_foreign;
+  GLint             wrap_mode;
+  gboolean          auto_mipmap;
+  gboolean          mipmaps_dirty;
 
   /* This holds a copy of the first pixel in each slice. It is only
      used to force an automatic update of the mipmaps when
      glGenerateMipmap is not available. */
-  CoglTexturePixel  *first_pixels;
+  CoglTexturePixel *first_pixels;
 };
 
 GQuark
@@ -70,12 +85,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
                                        CoglPixelFormat  internal_format);
 
 CoglHandle
-_cogl_texture_2d_sliced_new_from_file (const gchar       *filename,
-                                       CoglTextureFlags   flags,
-                                       CoglPixelFormat    internal_format,
-                                       GError           **error);
-
-CoglHandle
 _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLenum           gl_target,
                                           GLuint           width,
@@ -83,16 +92,6 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLuint           x_pot_waste,
                                           GLuint           y_pot_waste,
                                           CoglPixelFormat  format);
-
-CoglHandle
-_cogl_texture_2d_sliced_new_from_data (unsigned int     width,
-                                       unsigned int     height,
-                                       CoglTextureFlags flags,
-                                       CoglPixelFormat  format,
-                                       CoglPixelFormat  internal_format,
-                                       unsigned int     rowstride,
-                                       const guint8    *data);
-
 
 CoglHandle
 _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,

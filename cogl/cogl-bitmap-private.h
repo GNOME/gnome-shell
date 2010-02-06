@@ -68,20 +68,16 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 			       CoglPixelFormat   dst_format);
 
 gboolean
-_cogl_bitmap_unpremult (const CoglBitmap *bmp,
-			CoglBitmap       *dst_bmp);
+_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
 
 gboolean
-_cogl_bitmap_fallback_unpremult (const CoglBitmap *bmp,
-				 CoglBitmap       *dst_bmp);
+_cogl_bitmap_fallback_unpremult (CoglBitmap *dst_bmp);
 
 gboolean
-_cogl_bitmap_premult (const CoglBitmap *bmp,
-		      CoglBitmap       *dst_bmp);
+_cogl_bitmap_premult (CoglBitmap *dst_bmp);
 
 gboolean
-_cogl_bitmap_fallback_premult (const CoglBitmap *bmp,
-			       CoglBitmap       *dst_bmp);
+_cogl_bitmap_fallback_premult (CoglBitmap *dst_bmp);
 
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
@@ -93,9 +89,13 @@ _cogl_bitmap_fallback_from_file (CoglBitmap  *bmp,
 				 const gchar *filename);
 
 gboolean
-_cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
-				  CoglBitmap       *dst_bmp,
-				  CoglPixelFormat   dst_format);
+_cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
+                                     CoglPixelFormat  dst_format);
+
+gboolean
+_cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
+                                         CoglBitmap       *dst_bmp,
+                                         CoglPixelFormat   dst_format);
 
 void
 _cogl_bitmap_copy_subregion (CoglBitmap *src,

@@ -205,6 +205,12 @@ typedef enum _CoglMaterialLayerFlags
 gulong _cogl_material_layer_get_flags (CoglHandle layer_handle);
 
 /*
+ * Ensures the mipmaps are available for the texture in the layer if
+ * the filter settings would require it
+ */
+void _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handler);
+
+/*
  * CoglMaterialFlushFlag:
  * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: The fallback_layers member is set to
  *      a guint32 mask of the layers that can't be supported with the user

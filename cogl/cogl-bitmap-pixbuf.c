@@ -64,15 +64,13 @@ _cogl_bitmap_convert (const CoglBitmap *bmp,
 }
 
 gboolean
-_cogl_bitmap_unpremult (const CoglBitmap *bmp,
-			CoglBitmap       *dst_bmp)
+_cogl_bitmap_unpremult (CoglBitmap *dst_bmp)
 {
   return FALSE;
 }
 
 gboolean
-_cogl_bitmap_premult (const CoglBitmap *bmp,
-		      CoglBitmap       *dst_bmp)
+_cogl_bitmap_premult (CoglBitmap *dst_bmp)
 {
   return FALSE;
 }

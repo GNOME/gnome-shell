@@ -71,8 +71,8 @@ static void
 log_quad_sub_textures_cb (CoglHandle texture_handle,
                           GLuint gl_handle,
                           GLenum gl_target,
-                          float *subtexture_coords,
-                          float *virtual_coords,
+                          const float *subtexture_coords,
+                          const float *virtual_coords,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
@@ -249,6 +249,9 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
       const float       *in_tex_coords;
       float             *out_tex_coords;
       float              default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
+      gboolean           need_repeat = FALSE;
+      gint               coord_num;
+      GLenum             wrap_mode;
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -257,27 +260,41 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
 
-      in_tex_coords = &user_tex_coords[i * 4];
+      /* If the user didn't supply texture coordinates for this layer
+         then use the default coords */
+      if (i >= user_tex_coords_len / 4)
+        in_tex_coords = default_tex_coords;
+      else
+        in_tex_coords = &user_tex_coords[i * 4];
+
       out_tex_coords = &final_tex_coords[i * 4];
 
+      memcpy (out_tex_coords, in_tex_coords, sizeof (GLfloat) * 4);
+
+      /* Convert the texture coordinates to GL. We also work out
+         whether any of the texture coordinates are outside the range
+         [0.0,1.0]. We need to do this after calling
+         transform_coords_to_gl in case the texture backend is munging
+         the coordinates (such as in the sub texture backend). This
+         should be safe to call because we know that the texture only
+         has one slice. */
+      if (!_cogl_texture_transform_quad_coords_to_gl (tex_handle,
+                                                      out_tex_coords))
+        /* If the backend can't support these coordinates then bail out */
+        return FALSE;
+      for (coord_num = 0; coord_num < 4; coord_num++)
+        if (out_tex_coords[coord_num] < 0.0f ||
+            out_tex_coords[coord_num] > 1.0f)
+          need_repeat = TRUE;
 
       /* If the texture has waste or we are using GL_TEXTURE_RECT we
-       * can't handle texture repeating so we check that the texture
-       * coords lie in the range [0,1].
-       *
-       * NB: We already know that the texture isn't sliced so we can assume
-       * that the default coords (0,0) and (1,1) would only reference a single
-       * GL texture.
+       * can't handle texture repeating so we can't use the layer if
+       * repeating is required.
        *
        * NB: We already know that no texture matrix is being used if the
        * texture doesn't support hardware repeat.
        */
-      if (!_cogl_texture_can_hardware_repeat (tex_handle)
-           && i < user_tex_coords_len / 4
-           && (in_tex_coords[0] < 0 || in_tex_coords[0] > 1.0
-               || in_tex_coords[1] < 0 || in_tex_coords[1] > 1.0
-               || in_tex_coords[2] < 0 || in_tex_coords[2] > 1.0
-               || in_tex_coords[3] < 0 || in_tex_coords[3] > 1.0))
+      if (!_cogl_texture_can_hardware_repeat (tex_handle) && need_repeat)
         {
           if (i == 0)
             {
@@ -315,45 +332,15 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
             }
         }
 
-
-      /*
-       * Setup the texture unit...
-       */
-
-      /* NB: The user might not have supplied texture coordinates for all
-       * layers... */
-      if (i < (user_tex_coords_len / 4))
-        {
-          GLenum wrap_mode;
-
-          /* If the texture coords are all in the range [0,1] then we want to
-             clamp the coords to the edge otherwise it can pull in edge pixels
-             from the wrong side when scaled */
-          if (in_tex_coords[0] >= 0 && in_tex_coords[0] <= 1.0
-              && in_tex_coords[1] >= 0 && in_tex_coords[1] <= 1.0
-              && in_tex_coords[2] >= 0 && in_tex_coords[2] <= 1.0
-              && in_tex_coords[3] >= 0 && in_tex_coords[3] <= 1.0)
-            wrap_mode = GL_CLAMP_TO_EDGE;
-          else
-            wrap_mode = GL_REPEAT;
-
-          memcpy (out_tex_coords, in_tex_coords, sizeof (GLfloat) * 4);
-
-          _cogl_texture_set_wrap_mode_parameter (tex_handle, wrap_mode);
-        }
+      /* If we're not repeating then we want to clamp the coords
+         to the edge otherwise it can pull in edge pixels from the
+         wrong side when scaled */
+      if (need_repeat)
+        wrap_mode = GL_REPEAT;
       else
-        {
-          memcpy (out_tex_coords, default_tex_coords, sizeof (GLfloat) * 4);
+        wrap_mode = GL_CLAMP_TO_EDGE;
 
-          _cogl_texture_set_wrap_mode_parameter (tex_handle, GL_CLAMP_TO_EDGE);
-        }
-
-      _cogl_texture_transform_coords_to_gl (tex_handle,
-                                            &out_tex_coords[0],
-                                            &out_tex_coords[1]);
-      _cogl_texture_transform_coords_to_gl (tex_handle,
-                                            &out_tex_coords[2],
-                                            &out_tex_coords[3]);
+      _cogl_texture_set_wrap_mode_parameter (tex_handle, wrap_mode);
     }
 
   _cogl_journal_log_quad (x_1,
@@ -413,6 +400,12 @@ _cogl_rectangles_with_multitexture_coords (
       if (cogl_material_layer_get_type (layer)
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
 	continue;
+
+      /* We need to ensure the mipmaps are ready before deciding
+         anything else about the texture because it could become
+         something completely different if it needs to be migrated out
+         of the atlas */
+      _cogl_material_layer_ensure_mipmaps (layer);
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -651,11 +644,11 @@ cogl_rectangle (float x_1,
 
 void
 draw_polygon_sub_texture_cb (CoglHandle tex_handle,
-                       GLuint gl_handle,
-                       GLenum gl_target,
-                       float *subtexture_coords,
-                       float *virtual_coords,
-                       void *user_data)
+                             GLuint gl_handle,
+                             GLenum gl_target,
+                             const float *subtexture_coords,
+                             const float *virtual_coords,
+                             void *user_data)
 {
   TextureSlicedPolygonState *state = user_data;
   GLfloat *v;
@@ -879,6 +872,11 @@ cogl_polygon (const CoglTextureVertex *vertices,
        * _cogl_material_flush_layers_gl_state */
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
+
+      /* Give the texture a chance to know that we're rendering
+         non-quad shaped primitives. If the texture is in an atlas it
+         will be migrated */
+      _cogl_texture_ensure_non_quad_rendering (tex_handle);
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {

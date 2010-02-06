@@ -112,11 +112,19 @@ cogl_sources_c = \
 	$(srcdir)/cogl-blend-string.c			\
 	$(srcdir)/cogl-blend-string.h			\
 	$(srcdir)/cogl-debug.c				\
+	$(srcdir)/cogl-sub-texture-private.h            \
 	$(srcdir)/cogl-texture-private.h		\
+	$(srcdir)/cogl-texture-2d-private.h             \
 	$(srcdir)/cogl-texture-2d-sliced-private.h 	\
 	$(srcdir)/cogl-texture-driver.h			\
+	$(srcdir)/cogl-sub-texture.c                    \
 	$(srcdir)/cogl-texture.c			\
+	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
+	$(srcdir)/cogl-atlas.h                          \
+	$(srcdir)/cogl-atlas.c                          \
+	$(srcdir)/cogl-atlas-texture-private.h          \
+	$(srcdir)/cogl-atlas-texture.c                  \
 	$(srcdir)/cogl-spans.h				\
 	$(srcdir)/cogl-spans.c				\
 	$(srcdir)/cogl-journal-private.h		\

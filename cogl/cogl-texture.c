@@ -38,6 +38,9 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
+#include "cogl-texture-2d-private.h"
+#include "cogl-sub-texture-private.h"
+#include "cogl-atlas-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
@@ -62,8 +65,10 @@ cogl_is_texture (CoglHandle handle)
   if (handle == COGL_INVALID_HANDLE)
     return FALSE;
 
-  return obj->klass->type == _cogl_handle_texture_2d_sliced_get_type ();
-    //|| obj->klass->type == _cogl_handle_texture_3d_get_type ();
+  return (obj->klass->type == _cogl_handle_texture_2d_get_type () ||
+          obj->klass->type == _cogl_handle_atlas_texture_get_type () ||
+          obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
+          obj->klass->type == _cogl_handle_sub_texture_get_type ());
 }
 
 CoglHandle
@@ -95,25 +100,86 @@ cogl_texture_unref (CoglHandle handle)
   cogl_handle_unref (handle);
 }
 
-void
-_cogl_texture_bitmap_free (CoglTexture *tex)
+static gboolean
+_cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
+                                        CoglPixelFormat dst_format)
 {
-  if (tex->bitmap.data != NULL && tex->bitmap_owner)
-    g_free (tex->bitmap.data);
-
-  tex->bitmap.data = NULL;
-  tex->bitmap_owner = FALSE;
+  return ((src_format & COGL_A_BIT) &&
+          src_format != COGL_PIXEL_FORMAT_A_8 &&
+          (src_format & COGL_PREMULT_BIT) !=
+          (dst_format & COGL_PREMULT_BIT));
 }
 
-void
-_cogl_texture_bitmap_swap (CoglTexture     *tex,
-			   CoglBitmap      *new_bitmap)
+CoglPixelFormat
+_cogl_texture_determine_internal_format (CoglPixelFormat src_format,
+                                         CoglPixelFormat dst_format)
 {
-  if (tex->bitmap.data != NULL && tex->bitmap_owner)
-    g_free (tex->bitmap.data);
+  /* If the application hasn't specified a specific format then we'll
+   * pick the most appropriate. By default Cogl will use a
+   * premultiplied internal format. Later we will add control over
+   * this. */
+  if (dst_format == COGL_PIXEL_FORMAT_ANY)
+    {
+      if ((src_format & COGL_A_BIT) &&
+          src_format != COGL_PIXEL_FORMAT_A_8)
+        return src_format | COGL_PREMULT_BIT;
+      else
+        return src_format;
+    }
+  else
+    return dst_format;
+}
 
-  tex->bitmap = *new_bitmap;
-  tex->bitmap_owner = TRUE;
+gboolean
+_cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
+                                  CoglPixelFormat  dst_format,
+                                  CoglPixelFormat *dst_format_out,
+                                  CoglBitmap      *dst_bmp,
+                                  gboolean        *copied_bitmap,
+                                  GLenum          *out_glintformat,
+                                  GLenum          *out_glformat,
+                                  GLenum          *out_gltype)
+{
+  dst_format = _cogl_texture_determine_internal_format (src_bmp->format,
+                                                        dst_format);
+
+  *copied_bitmap = FALSE;
+  *dst_bmp = *src_bmp;
+
+  /* If the source format does not have the same premult flag as the
+     dst format then we need to copy and convert it */
+  if (_cogl_texture_needs_premult_conversion (src_bmp->format,
+                                              dst_format))
+    {
+      dst_bmp->data = g_memdup (dst_bmp->data,
+                                dst_bmp->height * dst_bmp->rowstride);
+      *copied_bitmap = TRUE;
+
+      if (!_cogl_bitmap_convert_premult_status (dst_bmp,
+                                                src_bmp->format ^
+                                                COGL_PREMULT_BIT))
+        {
+          g_free (dst_bmp->data);
+          return FALSE;
+        }
+    }
+
+  /* Use the source format from the src bitmap type and the internal
+     format from the dst format type so that GL can do the
+     conversion */
+  _cogl_pixel_format_to_gl (src_bmp->format,
+                            NULL, /* internal format */
+                            out_glformat,
+                            out_gltype);
+  _cogl_pixel_format_to_gl (dst_format,
+                            out_glintformat,
+                            NULL,
+                            NULL);
+
+  if (dst_format_out)
+    *dst_format_out = dst_format;
+
+  return TRUE;
 }
 
 void
@@ -152,53 +218,99 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
   tex->vtable->set_wrap_mode_parameter (tex, wrap_mode);
 }
 
-gboolean
-_cogl_texture_bitmap_prepare (CoglTexture     *tex,
-			      CoglPixelFormat  internal_format)
+/* This is like CoglSpanIter except it deals with floats and it
+   effectively assumes there is only one span from 0.0 to 1.0 */
+typedef struct _CoglTextureIter
 {
-  CoglBitmap        new_bitmap;
-  CoglPixelFormat   new_data_format;
-  gboolean          success;
+  gfloat pos, end, next_pos;
+  gboolean flipped;
+  gfloat t_1, t_2;
+} CoglTextureIter;
 
-  /* Was there any internal conversion requested?
-   * By default Cogl will use a premultiplied internal format. Later we will
-   * add control over this. */
-  if (internal_format == COGL_PIXEL_FORMAT_ANY)
+static void
+_cogl_texture_iter_update (CoglTextureIter *iter)
+{
+  gfloat t_2;
+  float frac_part;
+
+  frac_part = modff (iter->pos, &iter->next_pos);
+
+  /* modff rounds the int part towards zero so we need to add one if
+     we're meant to be heading away from zero */
+  if (iter->pos >= 0.0f || frac_part == 0.0f)
+    iter->next_pos += 1.0f;
+
+  if (iter->next_pos > iter->end)
+    t_2 = iter->end;
+  else
+    t_2 = iter->next_pos;
+
+  if (iter->flipped)
     {
-      if ((tex->bitmap.format & COGL_A_BIT) &&
-          tex->bitmap.format != COGL_PIXEL_FORMAT_A_8)
-        internal_format = tex->bitmap.format | COGL_PREMULT_BIT;
-      else
-        internal_format = tex->bitmap.format;
+      iter->t_1 = t_2;
+      iter->t_2 = iter->pos;
     }
-
-  /* Find closest format accepted by GL */
-  new_data_format = _cogl_pixel_format_to_gl (internal_format,
-					      &tex->gl_intformat,
-					      &tex->gl_format,
-					      &tex->gl_type);
-
-  /* Convert to internal format */
-  if (new_data_format != tex->bitmap.format)
+  else
     {
-      success = _cogl_bitmap_convert_and_premult (&tex->bitmap,
-						  &new_bitmap,
-						  new_data_format);
-
-      if (!success)
-	return FALSE;
-
-      /* Update texture with new data */
-      _cogl_texture_bitmap_swap (tex, &new_bitmap);
+      iter->t_1 = iter->pos;
+      iter->t_2 = t_2;
     }
-
-  return TRUE;
 }
 
-void
-_cogl_texture_free (CoglTexture *tex)
+static void
+_cogl_texture_iter_begin (CoglTextureIter *iter,
+                              gfloat t_1, gfloat t_2)
 {
-  _cogl_texture_bitmap_free (tex);
+  if (t_1 <= t_2)
+    {
+      iter->pos = t_1;
+      iter->end = t_2;
+      iter->flipped = FALSE;
+    }
+  else
+    {
+      iter->pos = t_2;
+      iter->end = t_1;
+      iter->flipped = TRUE;
+    }
+
+  _cogl_texture_iter_update (iter);
+}
+
+static void
+_cogl_texture_iter_next (CoglTextureIter *iter)
+{
+  iter->pos = iter->next_pos;
+  _cogl_texture_iter_update (iter);
+}
+
+static gboolean
+_cogl_texture_iter_end (CoglTextureIter *iter)
+{
+  return iter->pos >= iter->end;
+}
+
+/* This invokes the callback with enough quads to cover the manually
+   repeated range specified by the virtual texture coordinates without
+   emitting coordinates outside the range [0,1] */
+void
+_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
+                                      float tx_1, float ty_1,
+                                      float tx_2, float ty_2,
+                                      void *user_data)
+{
+  CoglTextureIter x_iter, y_iter;
+
+  for (_cogl_texture_iter_begin (&y_iter, ty_1, ty_2);
+       !_cogl_texture_iter_end (&y_iter);
+       _cogl_texture_iter_next (&y_iter))
+    for (_cogl_texture_iter_begin (&x_iter, tx_1, tx_2);
+         !_cogl_texture_iter_end (&x_iter);
+         _cogl_texture_iter_next (&x_iter))
+      {
+        float coords[4] = { x_iter.t_1, y_iter.t_1, x_iter.t_2, y_iter.t_2 };
+        callback (coords, user_data);
+      }
 }
 
 CoglHandle
@@ -207,10 +319,19 @@ cogl_texture_new_with_size (guint            width,
                             CoglTextureFlags flags,
 			    CoglPixelFormat  internal_format)
 {
-  return _cogl_texture_2d_sliced_new_with_size (width,
-                                                height,
-                                                flags,
-                                                internal_format);
+  CoglHandle tex;
+
+  /* First try creating a fast-path non-sliced texture */
+  tex = _cogl_texture_2d_new_with_size (width, height, flags, internal_format);
+
+  /* If it fails resort to sliced textures */
+  if (tex == COGL_INVALID_HANDLE)
+    tex = _cogl_texture_2d_sliced_new_with_size (width,
+                                                 height,
+                                                 flags,
+                                                 internal_format);
+
+  return tex;
 }
 
 CoglHandle
@@ -222,13 +343,26 @@ cogl_texture_new_from_data (guint             width,
 			    guint             rowstride,
 			    const guchar     *data)
 {
-  return _cogl_texture_2d_sliced_new_from_data (width,
-					        height,
-					        flags,
-					        format,
-					        internal_format,
-					        rowstride,
-					        data);
+  CoglBitmap bitmap;
+
+  if (format == COGL_PIXEL_FORMAT_ANY)
+    return COGL_INVALID_HANDLE;
+
+  if (data == NULL)
+    return COGL_INVALID_HANDLE;
+
+  /* Rowstride from width if not given */
+  if (rowstride == 0)
+    rowstride = width * _cogl_get_format_bpp (format);
+
+  /* Wrap the data into a bitmap */
+  bitmap.width = width;
+  bitmap.height = height;
+  bitmap.data = (guchar *) data;
+  bitmap.format = format;
+  bitmap.rowstride = rowstride;
+
+  return cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
 }
 
 CoglHandle
@@ -236,6 +370,21 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
                               CoglTextureFlags flags,
                               CoglPixelFormat  internal_format)
 {
+  CoglHandle tex;
+
+  /* First try putting the texture in the atlas */
+  if ((tex = _cogl_atlas_texture_new_from_bitmap (bmp_handle,
+                                                  flags,
+                                                  internal_format)))
+    return tex;
+
+  /* If that doesn't work try a fast path 2D texture */
+  if ((tex = _cogl_texture_2d_new_from_bitmap (bmp_handle,
+                                               flags,
+                                               internal_format)))
+    return tex;
+
+  /* Otherwise create a sliced texture */
   return _cogl_texture_2d_sliced_new_from_bitmap (bmp_handle,
                                                   flags,
                                                   internal_format);
@@ -247,10 +396,31 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  return _cogl_texture_2d_sliced_new_from_file (filename,
-                                                flags,
-                                                internal_format,
-                                                error);
+  CoglHandle bmp_handle;
+  CoglBitmap *bmp;
+  CoglHandle handle = COGL_INVALID_HANDLE;
+
+  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+
+  bmp_handle = cogl_bitmap_new_from_file (filename, error);
+  if (bmp_handle == COGL_INVALID_HANDLE)
+    return COGL_INVALID_HANDLE;
+
+  bmp = (CoglBitmap *) bmp_handle;
+
+  /* We know that the bitmap data is solely owned by this function so
+     we can do the premult conversion in place. This avoids having to
+     copy the bitmap which will otherwise happen in
+     _cogl_texture_prepare_for_upload */
+  internal_format = _cogl_texture_determine_internal_format (bmp->format,
+                                                             internal_format);
+  if (!_cogl_texture_needs_premult_conversion (bmp->format, internal_format) ||
+      _cogl_bitmap_convert_premult_status (bmp, bmp->format ^ COGL_PREMULT_BIT))
+    handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
+
+  cogl_handle_unref (bmp);
+
+  return handle;
 }
 
 CoglHandle
@@ -271,6 +441,17 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                    format);
 }
 
+CoglHandle
+cogl_texture_new_from_sub_texture (CoglHandle full_texture,
+                                   gint       sub_x,
+                                   gint       sub_y,
+                                   gint       sub_width,
+                                   gint       sub_height)
+{
+  return _cogl_sub_texture_new (full_texture, sub_x, sub_y,
+                                sub_width, sub_height);
+}
+
 guint
 cogl_texture_get_width (CoglHandle handle)
 {
@@ -281,7 +462,7 @@ cogl_texture_get_width (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.width;
+  return tex->vtable->get_width (tex);
 }
 
 guint
@@ -294,7 +475,7 @@ cogl_texture_get_height (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.height;
+  return tex->vtable->get_height (tex);
 }
 
 CoglPixelFormat
@@ -307,7 +488,7 @@ cogl_texture_get_format (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.format;
+  return tex->vtable->get_format (tex);
 }
 
 guint
@@ -318,9 +499,15 @@ cogl_texture_get_rowstride (CoglHandle handle)
   if (!cogl_is_texture (handle))
     return 0;
 
+  /* FIXME: This function should go away. It previously just returned
+     the rowstride that was used to upload the data as far as I can
+     tell. This is not helpful */
+
   tex = COGL_TEXTURE (handle);
 
-  return tex->bitmap.rowstride;
+  /* Just guess at a suitable rowstride */
+  return (_cogl_get_format_bpp (cogl_texture_get_format (tex))
+          * cogl_texture_get_width (tex));
 }
 
 gint
@@ -387,12 +574,6 @@ _cogl_texture_can_hardware_repeat (CoglHandle handle)
 {
   CoglTexture *tex = (CoglTexture *)handle;
 
-#if HAVE_COGL_GL
-  /* TODO: COGL_TEXTURE_TYPE_2D_RECTANGLE */
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    return FALSE;
-#endif
-
   return tex->vtable->can_hardware_repeat (tex);
 }
 
@@ -409,12 +590,21 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
   tex->vtable->transform_coords_to_gl (tex, s, t);
 }
 
-GLenum
-_cogl_texture_get_internal_gl_format (CoglHandle handle)
+gboolean
+_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+                                           float *coords)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  return tex->gl_intformat;
+  return tex->vtable->transform_quad_coords_to_gl (tex, coords);
+}
+
+GLenum
+_cogl_texture_get_gl_format (CoglHandle handle)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+
+  return tex->vtable->get_gl_format (tex);
 }
 
 gboolean
@@ -458,6 +648,19 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
   tex = COGL_TEXTURE (handle);
 
   tex->vtable->ensure_mipmaps (tex);
+}
+
+void
+_cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
+{
+  CoglTexture *tex;
+
+  if (!cogl_is_texture (handle))
+    return;
+
+  tex = COGL_TEXTURE (handle);
+
+  return tex->vtable->ensure_non_quad_rendering (tex);
 }
 
 gboolean
@@ -505,7 +708,7 @@ cogl_texture_set_region (CoglHandle       handle,
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
 static void
-do_texture_draw_and_read (CoglTexture *tex,
+do_texture_draw_and_read (CoglHandle   handle,
                           CoglBitmap  *target_bmp,
                           GLint       *viewport)
 {
@@ -516,16 +719,18 @@ do_texture_draw_and_read (CoglTexture *tex,
   float       tx2, ty2;
   int         bw,  bh;
   CoglBitmap  rect_bmp;
-  CoglHandle  handle;
+  guint       tex_width, tex_height;
 
-  handle = (CoglHandle) tex;
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
+
+  tex_width = cogl_texture_get_width (handle);
+  tex_height = cogl_texture_get_height (handle);
 
   ry1 = 0; ry2 = 0;
   ty1 = 0; ty2 = 0;
 
   /* Walk Y axis until whole bitmap height consumed */
-  for (bh = tex->bitmap.height; bh > 0; bh -= viewport[3])
+  for (bh = tex_height; bh > 0; bh -= viewport[3])
     {
       /* Rectangle Y coords */
       ry1 = ry2;
@@ -533,13 +738,13 @@ do_texture_draw_and_read (CoglTexture *tex,
 
       /* Normalized texture Y coords */
       ty1 = ty2;
-      ty2 = (ry2 / (float)tex->bitmap.height);
+      ty2 = (ry2 / (float) tex_height);
 
       rx1 = 0; rx2 = 0;
       tx1 = 0; tx2 = 0;
 
       /* Walk X axis until whole bitmap width consumed */
-      for (bw = tex->bitmap.width; bw > 0; bw-=viewport[2])
+      for (bw = tex_width; bw > 0; bw-=viewport[2])
         {
           /* Rectangle X coords */
           rx1 = rx2;
@@ -547,7 +752,7 @@ do_texture_draw_and_read (CoglTexture *tex,
 
           /* Normalized texture X coords */
           tx1 = tx2;
-          tx2 = (rx2 / (float)tex->bitmap.width);
+          tx2 = (rx2 / (float) tex_width);
 
           /* Draw a portion of texture */
           cogl_rectangle_with_texture_coords (0, 0,
@@ -593,7 +798,7 @@ do_texture_draw_and_read (CoglTexture *tex,
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
 gboolean
-_cogl_texture_draw_and_read (CoglTexture *tex,
+_cogl_texture_draw_and_read (CoglHandle   handle,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type)
@@ -648,14 +853,14 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   prev_source = cogl_handle_ref (ctx->source_material);
   cogl_set_source (ctx->texture_download_material);
 
-  cogl_material_set_layer (ctx->texture_download_material, 0, tex);
+  cogl_material_set_layer (ctx->texture_download_material, 0, handle);
 
   cogl_material_set_layer_combine (ctx->texture_download_material,
                                    0, /* layer */
                                    "RGBA = REPLACE (TEXTURE)",
                                    NULL);
 
-  do_texture_draw_and_read (tex, target_bmp, viewport);
+  do_texture_draw_and_read (handle, target_bmp, viewport);
 
   /* Check whether texture has alpha and framebuffer not */
   /* FIXME: For some reason even if ALPHA_BITS is 8, the framebuffer
@@ -670,7 +875,7 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   printf ("G bits: %d\n", g_bits);
   printf ("B bits: %d\n", b_bits);
   printf ("A bits: %d\n", a_bits); */
-  if ((tex->bitmap.format & COGL_A_BIT)/* && a_bits == 0*/)
+  if ((cogl_texture_get_format (handle) & COGL_A_BIT)/* && a_bits == 0*/)
     {
       guchar *srcdata;
       guchar *dstdata;
@@ -692,7 +897,7 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
                                        "RGBA = REPLACE (TEXTURE[A])",
                                        NULL);
 
-      do_texture_draw_and_read (tex, &alpha_bmp, viewport);
+      do_texture_draw_and_read (handle, &alpha_bmp, viewport);
 
       /* Copy temp R to target A */
       srcdata = alpha_bmp.data;

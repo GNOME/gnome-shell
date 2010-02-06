@@ -192,6 +192,7 @@ cogl_texture_new_from_file
 cogl_texture_new_from_data
 cogl_texture_new_from_foreign
 cogl_texture_new_from_bitmap
+cogl_texture_new_from_sub_texture
 cogl_is_texture
 cogl_texture_ref
 cogl_texture_unref

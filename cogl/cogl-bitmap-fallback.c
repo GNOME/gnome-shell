@@ -150,7 +150,7 @@ _cogl_rgba_to_abgr (const guchar *src, guchar *dst)
 /* (Un)Premultiplication */
 
 inline static void
-_cogl_unpremult_alpha_0 (const guchar *src, guchar *dst)
+_cogl_unpremult_alpha_0 (guchar *dst)
 {
   dst[0] = 0;
   dst[1] = 0;
@@ -159,58 +159,58 @@ _cogl_unpremult_alpha_0 (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_unpremult_alpha_last (const guchar *src, guchar *dst)
+_cogl_unpremult_alpha_last (guchar *dst)
 {
-  guchar alpha = src[3];
+  guchar alpha = dst[3];
 
-  dst[0] = (src[0] * 255) / alpha;
-  dst[1] = (src[1] * 255) / alpha;
-  dst[2] = (src[2] * 255) / alpha;
-  dst[3] = alpha;
+  dst[0] = (dst[0] * 255) / alpha;
+  dst[1] = (dst[1] * 255) / alpha;
+  dst[2] = (dst[2] * 255) / alpha;
 }
 
 inline static void
-_cogl_unpremult_alpha_first (const guchar *src, guchar *dst)
+_cogl_unpremult_alpha_first (guchar *dst)
 {
-  guchar alpha = src[0];
+  guchar alpha = dst[0];
 
-  dst[0] = alpha;
-  dst[1] = (src[1] * 255) / alpha;
-  dst[2] = (src[2] * 255) / alpha;
-  dst[3] = (src[3] * 255) / alpha;
+  dst[1] = (dst[1] * 255) / alpha;
+  dst[2] = (dst[2] * 255) / alpha;
+  dst[3] = (dst[3] * 255) / alpha;
 }
 
 /* No division form of floor((c*a + 128)/255) (I first encountered
  * this in the RENDER implementation in the X server.) Being exact
  * is important for a == 255 - we want to get exactly c.
  */
-#define MULT(d,c,a,t) G_STMT_START { t = c * a + 128; d = ((t >> 8) + t) >> 8; } G_STMT_END
+#define MULT(d,a,t)                             \
+  G_STMT_START {                                \
+    t = d * a + 128;                            \
+    d = ((t >> 8) + t) >> 8;                    \
+  } G_STMT_END
 
 inline static void
-_cogl_premult_alpha_last (const guchar *src, guchar *dst)
+_cogl_premult_alpha_last (guchar *dst)
 {
-  guchar alpha = src[3];
+  guchar alpha = dst[3];
   /* Using a separate temporary per component has given slightly better
    * code generation with GCC in the past; it shouldn't do any worse in
    * any case.
    */
   guint t1, t2, t3;
-  MULT(dst[0], src[0], alpha, t1);
-  MULT(dst[1], src[1], alpha, t2);
-  MULT(dst[2], src[2], alpha, t3);
-  dst[3] = alpha;
+  MULT(dst[0], alpha, t1);
+  MULT(dst[1], alpha, t2);
+  MULT(dst[2], alpha, t3);
 }
 
 inline static void
-_cogl_premult_alpha_first (const guchar *src, guchar *dst)
+_cogl_premult_alpha_first (guchar *dst)
 {
-  guchar alpha = src[0];
+  guchar alpha = dst[0];
   guint t1, t2, t3;
 
-  dst[0] = alpha;
-  MULT(dst[1], src[1], alpha, t1);
-  MULT(dst[2], src[2], alpha, t2);
-  MULT(dst[3], src[3], alpha, t3);
+  MULT(dst[1], alpha, t1);
+  MULT(dst[2], alpha, t2);
+  MULT(dst[3], alpha, t3);
 }
 
 #undef MULT
@@ -342,111 +342,81 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 }
 
 gboolean
-_cogl_bitmap_fallback_unpremult (const CoglBitmap *bmp,
-				 CoglBitmap       *dst_bmp)
+_cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 {
-  guchar  *src;
-  guchar  *dst;
-  gint     bpp;
+  guchar  *p;
   gint     x,y;
 
   /* Make sure format supported for un-premultiplication */
   if (!_cogl_bitmap_fallback_can_unpremult (bmp->format))
     return FALSE;
 
-  bpp = _cogl_get_format_bpp (bmp->format);
-
-  /* Initialize destination bitmap */
-  *dst_bmp = *bmp;
-  dst_bmp->format = (bmp->format & COGL_UNPREMULT_MASK);
-
-  /* Allocate a new buffer to hold converted data */
-  dst_bmp->data = g_malloc (sizeof(guchar)
-			    * dst_bmp->height
-			    * dst_bmp->rowstride);
-
   for (y = 0; y < bmp->height; y++)
     {
-      src = (guchar*)bmp->data      + y * bmp->rowstride;
-      dst = (guchar*)dst_bmp->data  + y * dst_bmp->rowstride;
+      p = (guchar*) bmp->data + y * bmp->rowstride;
 
       if (bmp->format & COGL_AFIRST_BIT)
         {
           for (x = 0; x < bmp->width; x++)
             {
-              if (src[0] == 0)
-                _cogl_unpremult_alpha_0 (src, dst);
+              if (p[0] == 0)
+                _cogl_unpremult_alpha_0 (p);
               else
-                _cogl_unpremult_alpha_first (src, dst);
-              src += bpp;
-              dst += bpp;
+                _cogl_unpremult_alpha_first (p);
+              p += 4;
             }
         }
       else
         {
           for (x = 0; x < bmp->width; x++)
             {
-              if (src[0] == 0)
-                _cogl_unpremult_alpha_0 (src, dst);
+              if (p[3] == 0)
+                _cogl_unpremult_alpha_0 (p);
               else
-                _cogl_unpremult_alpha_last (src, dst);
-              src += bpp;
-              dst += bpp;
+                _cogl_unpremult_alpha_last (p);
+              p += 4;
             }
         }
     }
+
+  bmp->format &= ~COGL_PREMULT_BIT;
 
   return TRUE;
 }
 
 gboolean
-_cogl_bitmap_fallback_premult (const CoglBitmap *bmp,
-			       CoglBitmap       *dst_bmp)
+_cogl_bitmap_fallback_premult (CoglBitmap *bmp)
 {
-  guchar  *src;
-  guchar  *dst;
-  gint     bpp;
+  guchar  *p;
   gint     x,y;
 
   /* Make sure format supported for un-premultiplication */
   if (!_cogl_bitmap_fallback_can_premult (bmp->format))
     return FALSE;
 
-  bpp = _cogl_get_format_bpp (bmp->format);
-
-  /* Initialize destination bitmap */
-  *dst_bmp = *bmp;
-  dst_bmp->format |= COGL_PREMULT_BIT;
-
-  /* Allocate a new buffer to hold converted data */
-  dst_bmp->data = g_malloc (sizeof(guchar)
-			    * dst_bmp->height
-			    * dst_bmp->rowstride);
-
   for (y = 0; y < bmp->height; y++)
     {
-      src = (guchar*)bmp->data      + y * bmp->rowstride;
-      dst = (guchar*)dst_bmp->data  + y * dst_bmp->rowstride;
+      p = (guchar*) bmp->data + y * bmp->rowstride;
 
       if (bmp->format & COGL_AFIRST_BIT)
-	{
-	  for (x = 0; x < bmp->width; x++)
-	    {
-	      _cogl_premult_alpha_first (src, dst);
-	      src += bpp;
-	      dst += bpp;
-	    }
-	}
+        {
+          for (x = 0; x < bmp->width; x++)
+            {
+              _cogl_premult_alpha_first (p);
+              p += 4;
+            }
+        }
       else
-	{
-	  for (x = 0; x < bmp->width; x++)
-	    {
-	      _cogl_premult_alpha_last (src, dst);
-	      src += bpp;
-	      dst += bpp;
-	    }
-	}
+        {
+          for (x = 0; x < bmp->width; x++)
+            {
+              _cogl_premult_alpha_last (p);
+              p += 4;
+            }
+        }
     }
+
+  bmp->format |= COGL_PREMULT_BIT;
 
   return TRUE;
 }
