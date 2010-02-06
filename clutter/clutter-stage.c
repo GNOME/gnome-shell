@@ -2344,7 +2344,7 @@ clutter_stage_set_minimum_size (ClutterStage *stage,
                                 guint         height)
 {
   gboolean resize;
-  ClutterGeometry geom;
+  gfloat current_width, current_height;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail ((width > 0) && (height > 0));
@@ -2356,17 +2356,19 @@ clutter_stage_set_minimum_size (ClutterStage *stage,
     return;
 
   resize = FALSE;
-  _clutter_stage_window_get_geometry (stage->priv->impl, &geom);
+  clutter_actor_get_size (CLUTTER_ACTOR (stage),
+                          &current_width,
+                          &current_height);
 
-  if (geom.width < width)
+  if ((guint)current_width < width)
     resize = TRUE;
   else
-    width = geom.width;
+    width = (guint)current_width;
 
-  if (geom.height < height)
+  if ((guint)current_height < height)
     resize = TRUE;
   else
-    height = geom.height;
+    height = (guint)current_height;
 
   if (resize)
     _clutter_stage_window_resize (stage->priv->impl, width, height);
