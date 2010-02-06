@@ -415,8 +415,7 @@ cogl_texture_new_from_file (const gchar       *filename,
   internal_format = _cogl_texture_determine_internal_format (bmp->format,
                                                              internal_format);
   if (!_cogl_texture_needs_premult_conversion (bmp->format, internal_format) ||
-      _cogl_bitmap_convert_premult_status (bmp,
-                                           bmp->format ^= COGL_PREMULT_BIT))
+      _cogl_bitmap_convert_premult_status (bmp, bmp->format ^ COGL_PREMULT_BIT))
     handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
 
   cogl_handle_unref (bmp);
