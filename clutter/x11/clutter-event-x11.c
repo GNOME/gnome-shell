@@ -485,6 +485,10 @@ event_translate (ClutterBackend *backend,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
+          clutter_actor_set_size (CLUTTER_ACTOR (stage),
+                                  xevent->xconfigure.width,
+                                  xevent->xconfigure.height);
+
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper,
                                        CLUTTER_STAGE_IN_RESIZE);
 
