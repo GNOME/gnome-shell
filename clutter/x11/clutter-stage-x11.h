@@ -54,6 +54,7 @@ struct _ClutterStageX11
   guint        fullscreen_on_map    : 1;
   guint        is_cursor_visible    : 1;
   guint        viewport_initialized : 1;
+  guint        first_allocation     : 1;
 
   Window       xwin;
   gint         xwin_width;

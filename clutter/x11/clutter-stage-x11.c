@@ -220,10 +220,12 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
   if (width != stage_x11->xwin_width ||
-      height != stage_x11->xwin_height)
+      height != stage_x11->xwin_height ||
+      stage_x11->first_allocation)
     {
       stage_x11->xwin_width  = width;
       stage_x11->xwin_height = height;
+      stage_x11->first_allocation = FALSE;
 
       if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
         {
@@ -659,6 +661,7 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
+  stage->first_allocation = TRUE;
 
   stage->wm_state = STAGE_X11_WITHDRAWN;
 
