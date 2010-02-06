@@ -138,13 +138,41 @@ shell_embedded_window_check_resize (GtkContainer *container)
     clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
 }
 
+static GObject *
+shell_embedded_window_constructor (GType                  gtype,
+                                   guint                  n_properties,
+                                   GObjectConstructParam *properties)
+{
+  GObject *object;
+  GObjectClass *parent_class;
+
+  parent_class = G_OBJECT_CLASS (shell_embedded_window_parent_class);
+  object = parent_class->constructor (gtype, n_properties, properties);
+
+  /* Setting the resize mode to immediate means that calling queue_resize()
+   * on a widget within the window will immmediately call check_resize()
+   * to be called, instead of having it queued to an idle. From our perspective,
+   * this is ideal since we just are going to queue a resize to Clutter's
+   * idle resize anyways.
+   */
+  g_object_set (object,
+                "resize-mode", GTK_RESIZE_IMMEDIATE,
+                "type", GTK_WINDOW_POPUP,
+                NULL);
+
+  return object;
+}
+
 static void
 shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ShellEmbeddedWindowPrivate));
+
+  object_class->constructor     = shell_embedded_window_constructor;
 
   widget_class->show            = shell_embedded_window_show;
   widget_class->hide            = shell_embedded_window_hide;
@@ -159,17 +187,6 @@ shell_embedded_window_init (ShellEmbeddedWindow *window)
 {
   window->priv = G_TYPE_INSTANCE_GET_PRIVATE (window, SHELL_TYPE_EMBEDDED_WINDOW,
                                               ShellEmbeddedWindowPrivate);
-
-  /* Setting the resize mode to immediate means that calling queue_resize()
-   * on a widget within the window will immmediately call check_resize()
-   * to be called, instead of having it queued to an idle. From our perspective,
-   * this is ideal since we just are going to queue a resize to Clutter's
-   * idle resize anyways.
-   */
-  g_object_set (G_OBJECT (window),
-                "resize-mode", GTK_RESIZE_IMMEDIATE,
-                "type", GTK_WINDOW_POPUP,
-                NULL);
 }
 
 /*
