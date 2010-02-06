@@ -533,6 +533,8 @@ clutter_stage_set_throttle_motion_events
 clutter_stage_get_throttle_motion_events
 clutter_stage_set_use_alpha
 clutter_stage_get_use_alpha
+clutter_stage_set_minimum_size
+clutter_stage_get_minimum_size
 
 <SUBSECTION>
 ClutterPerspective

@@ -191,9 +191,9 @@ clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
 
   if (resize)
     {
-      /* FIXME need API to set this */
-      geometry->width = 1;
-      geometry->height = 1;
+      clutter_stage_get_minimum_size (stage_x11->wrapper,
+                                      &geometry->width,
+                                      &geometry->height);
     }
   else
     {

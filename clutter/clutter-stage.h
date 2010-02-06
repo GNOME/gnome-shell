@@ -247,6 +247,13 @@ void                  clutter_stage_set_use_alpha      (ClutterStage *stage,
                                                         gboolean      use_alpha);
 gboolean              clutter_stage_get_use_alpha      (ClutterStage *stage);
 
+void                  clutter_stage_set_minimum_size (ClutterStage *stage,
+                                                      guint         width,
+                                                      guint         height);
+void                  clutter_stage_get_minimum_size (ClutterStage *stage,
+                                                      guint        *width,
+                                                      guint        *height);
+
 /* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
