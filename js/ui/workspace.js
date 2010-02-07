@@ -117,6 +117,7 @@ WindowClone.prototype = {
         this.actor.connect('scroll-event',
                            Lang.bind(this, this._onScroll));
 
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('enter-event',
                            Lang.bind(this, this._onEnter));
         this.actor.connect('leave-event',
@@ -141,6 +142,11 @@ WindowClone.prototype = {
 
     destroy: function () {
         this.actor.destroy();
+    },
+
+    _onDestroy: function() {
+        if (this._zoomLightbox)
+            this._zoomLightbox.destroy();
     },
 
     _onEnter: function (actor, event) {
@@ -228,7 +234,12 @@ WindowClone.prototype = {
         this.emit('zoom-end');
 
         this.actor.reparent(this._origParent);
-        this.actor.raise(this._stackAbove);
+        // If the workspace has been destroyed while we were reparented to
+        // the stage, _stackAbove will be unparented and we can't raise our
+        // actor above it - as we are bound to be destroyed anyway in that
+        // case, we can skip that step
+        if (this._stackAbove && this._stackAbove.get_parent())
+            this.actor.raise(this._stackAbove);
 
         [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
         [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
@@ -1324,6 +1335,13 @@ Workspace.prototype = {
 
         this._metaWorkspace.disconnect(this._windowAddedId);
         this._metaWorkspace.disconnect(this._windowRemovedId);
+
+        // Usually, the windows will be destroyed automatically with
+        // their parent (this.actor), but we might have a zoomed window
+        // which has been reparented to the stage - _windows[0] holds
+        // the desktop window, which is never reparented
+        for (let w = 1; w < this._windows.length; w++)
+            this._windows[w].destroy();
     },
 
     // Sets this.leavingOverview flag to false.
