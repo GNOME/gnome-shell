@@ -13,6 +13,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
+const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
 const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
@@ -363,6 +364,8 @@ SearchResult.prototype = {
         this.actor.set_child(content);
 
         this.actor.connect('clicked', Lang.bind(this, this._onResultClicked));
+
+        let draggable = DND.makeDraggable(this.actor);
     },
 
     setSelected: function(selected) {
@@ -376,6 +379,18 @@ SearchResult.prototype = {
 
     _onResultClicked: function(actor, event) {
         this.activate();
+    },
+
+    getDragActorSource: function() {
+        return this.metaInfo['icon'];
+    },
+
+    getDragActor: function(stageX, stageY) {
+        return new Clutter.Clone({ source: this.metaInfo['icon'] });
+    },
+
+    shellWorkspaceLaunch: function() {
+        this.provider.activateResult(this.metaInfo.id);
     }
 }
 
