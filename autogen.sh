@@ -5,7 +5,6 @@ srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
 PKG_NAME="gnome-shell"
-REQUIRED_AUTOMAKE_VERSION=1.10
 
 (test -f $srcdir/configure.ac \
   && test -d $srcdir/src) || {
@@ -15,7 +14,7 @@ REQUIRED_AUTOMAKE_VERSION=1.10
 }
 
 which gnome-autogen.sh || {
-    echo "You need to install gnome-common from GNOME Subversion (or from"
+    echo "You need to install gnome-common from GNOME Git (or from"
     echo "your OS vendor's package manager)."
     exit 1
 }

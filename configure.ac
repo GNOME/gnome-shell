@@ -1,29 +1,44 @@
-AC_INIT(gnome-shell, 2.28.1)
+AC_PREREQ(2.63)
+AC_INIT([gnome-shell],[2.28.1],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
-AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/shell-global.c])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([config])
 
-AM_INIT_AUTOMAKE([dist-bzip2 no-dist-gzip foreign])
+AM_INIT_AUTOMAKE([1.10 check-news dist-bzip2 no-dist-gzip foreign])
 AM_MAINTAINER_MODE
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
-
-AC_CONFIG_HEADERS(config.h)
-
-AC_DISABLE_STATIC
+# Checks for programs.
 AC_PROG_CC
 # Needed for per-target cflags, like in gnomeshell-taskpanel
 AM_PROG_CC_C_O
-AM_PROG_LIBTOOL
 
-GETTEXT_PACKAGE=gnome-shell
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
-                   [The prefix for our gettext translation domains.])
+# Initialize libtool
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
 
-PKG_PROG_PKG_CONFIG(0.16)
+# Checks for header files.
+AC_PATH_X
+AC_CHECK_HEADERS([fcntl.h float.h libintl.h paths.h stdlib.h string.h unistd.h])
 
-IT_PROG_INTLTOOL(0.26)
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_TYPE_UID_T
+
+# Checks for library functions.
+AC_CHECK_FUNCS([floor getusershell memset strchr strdup strrchr strstr strtol strtoul])
+
+# i18n
+IT_PROG_INTLTOOL([0.40.6])
+AC_SUBST([GETTEXT_PACKAGE], [gnome-shell])
+AM_GNU_GETTEXT_VERSION([0.17])
 AM_GLIB_GNU_GETTEXT
+AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [The prefix for our gettext translation domains.])
+
+PKG_PROG_PKG_CONFIG([0.22])
 
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 AM_GCONF_SOURCE_2
@@ -94,8 +109,7 @@ AC_SUBST(TYPELIBDIR)
 # Stay command-line compatible with the gnome-common configure option. Here
 # minimum/yes/maximum are the same, however.
 AC_ARG_ENABLE(compile_warnings,
-  AC_HELP_STRING([--enable-compile-warnings=@<:@no/minimum/yes/maximum/error@:>@],
-                 [Turn on compiler warnings]),,
+  AS_HELP_STRING([--enable-compile-warnings=@<:@no/minimum/yes/maximum/error@:>@],[Turn on compiler warnings]),,
   enable_compile_warnings=error)
 
 changequote(,)dnl
@@ -122,7 +136,7 @@ changequote([,])dnl
 AC_PATH_PROG(mutter, [mutter])
 AC_SUBST(mutter)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
   Makefile
   data/Makefile
   js/Makefile
@@ -133,3 +147,4 @@ AC_OUTPUT([
   po/Makefile.in
   man/Makefile
 ])
+AC_OUTPUT
