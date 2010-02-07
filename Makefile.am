@@ -1,4 +1,4 @@
-SUBDIRS = data js src tests po
+SUBDIRS = data js src tests po man
 
 EXTRA_DIST =		\
 	.project	\

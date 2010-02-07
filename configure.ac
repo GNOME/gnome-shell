@@ -131,4 +131,5 @@ AC_OUTPUT([
   src/Makefile
   tests/Makefile
   po/Makefile.in
+  man/Makefile
 ])
