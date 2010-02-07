@@ -328,6 +328,11 @@ WindowOverlay.prototype = {
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         title._spacing = 0;
 
+        this._updateCaptionId = metaWindow.connect('notify::title',
+            Lang.bind(this, function(w) {
+                this.title.text = w.title;
+            }));
+
         let button = new St.Bin({ style_class: "window-close",
                                   reactive: true });
         button.connect('style-changed',
@@ -455,6 +460,7 @@ WindowOverlay.prototype = {
             Mainloop.source_remove(this._idleToggleCloseId);
             this._idleToggleCloseId = 0;
         }
+        this._windowClone.metaWindow.disconnect(this._updateCaptionId);
         this.title.destroy();
         this.closeButton.destroy();
     },
