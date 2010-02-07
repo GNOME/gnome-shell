@@ -1196,9 +1196,6 @@ clutter_stage_init (ClutterStage *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   clutter_stage_set_title (self, g_get_prgname ());
   clutter_stage_set_key_focus (self, NULL);
-
-  /* Set the default size */
-  clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
 }
 
 /**

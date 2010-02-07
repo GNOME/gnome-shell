@@ -657,8 +657,8 @@ static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
   stage->xwin = None;
-  stage->xwin_width = 1;
-  stage->xwin_height = 1;
+  stage->xwin_width = 640;
+  stage->xwin_height = 480;
 
   stage->wm_state = STAGE_X11_WITHDRAWN;
 
