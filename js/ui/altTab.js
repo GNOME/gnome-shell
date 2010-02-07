@@ -84,9 +84,9 @@ AltTabPopup.prototype = {
         this._appSwitcher.connect('item-activated', Lang.bind(this, this._appActivated));
         this._appSwitcher.connect('item-entered', Lang.bind(this, this._appEntered));
 
-        let primary = global.get_primary_monitor();
-        this._appSwitcher.actor.x = primary.x + Math.floor((primary.width - this._appSwitcher.actor.width) / 2);
-        this._appSwitcher.actor.y = primary.y + Math.floor((primary.height - this._appSwitcher.actor.height) / 2);
+        let focus = global.get_focus_monitor();
+        this._appSwitcher.actor.x = focus.x + Math.floor((focus.width - this._appSwitcher.actor.width) / 2);
+        this._appSwitcher.actor.y = focus.y + Math.floor((focus.height - this._appSwitcher.actor.height) / 2);
 
         this._appIcons = this._appSwitcher.icons;
 
@@ -395,8 +395,8 @@ AltTabPopup.prototype = {
             thumbnailCenter = stageX + icon.width / 2;
         } else {
             // Center the thumbnails on the monitor
-            let primary = global.get_primary_monitor();
-            thumbnailCenter = primary.x + primary.width / 2;
+            let focus = global.get_focus_monitor();
+            thumbnailCenter = focus.x + focus.width / 2;
         }
 
         this._thumbnails.actor.x = Math.floor(thumbnailCenter - this._thumbnails.actor.width / 2);
