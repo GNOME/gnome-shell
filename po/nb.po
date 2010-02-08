@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 0.4\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-19 17:42+0100\n"
-"PO-Revision-Date: 2010-01-19 17:43+0100\n"
+"Project-Id-Version: gnome-shell 2.28.x\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2010-02-08 22:52+0100\n"
+"PO-Revision-Date: 2010-02-08 22:58+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -33,19 +33,19 @@ msgstr "PROGRAMMER"
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:649
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:1004
+#: ../js/ui/appDisplay.js:1006
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
@@ -64,7 +64,7 @@ msgstr "Ingen treff."
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
@@ -80,9 +80,9 @@ msgid "Activities"
 msgstr "Aktiviteter"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:549
+#: ../js/ui/panel.js:557
 msgid "%a %l:%M %p"
-msgstr "%a %l:%M"
+msgstr "%a %H:%M"
 
 #: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
@@ -110,32 +110,32 @@ msgstr "Programmer"
 msgid "Recent Documents"
 msgstr "Siste dokumenter"
 
-#: ../src/shell-global.c:890
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:894
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:904
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:909
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
