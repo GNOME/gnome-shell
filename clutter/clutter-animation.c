@@ -403,29 +403,14 @@ clutter_animation_parse_custom_node (ClutterScriptable *scriptable,
 {
   if (strncmp (name, "mode", 4) == 0)
     {
-      if (json_node_get_node_type (node) != JSON_NODE_VALUE)
-        return FALSE;
+      gulong mode;
+
+      mode = clutter_script_resolve_animation_mode (node);
 
       g_value_init (value, G_TYPE_ULONG);
+      g_value_set_ulong (value, mode);
 
-      if (json_node_get_value_type (node) == G_TYPE_INT64)
-        {
-          g_value_set_ulong (value, json_node_get_int (node));
-          return TRUE;
-        }
-      else if (json_node_get_value_type (node) == G_TYPE_STRING)
-        {
-          const gchar *str = json_node_get_string (node);
-          gulong mode = CLUTTER_LINEAR;
-
-          mode = clutter_script_resolve_animation_mode (str);
-          g_value_set_ulong (value, mode);
-
-          return TRUE;
-        }
-      else
-        g_warning ("Expected an integer id or a string id for "
-                   "the ClutterAnimation mode property");
+      return TRUE;
     }
 
   return FALSE;
