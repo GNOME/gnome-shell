@@ -103,7 +103,6 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Flow Layout");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
-  clutter_actor_set_size (stage, 640, 480);
 
   layout = clutter_flow_layout_new (vertical ? CLUTTER_FLOW_VERTICAL
                                              : CLUTTER_FLOW_HORIZONTAL);
