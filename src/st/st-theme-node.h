@@ -171,6 +171,11 @@ void st_theme_node_get_content_box         (StThemeNode        *node,
 gboolean st_theme_node_geometry_equal (StThemeNode *node,
                                        StThemeNode *other);
 
+void st_theme_node_paint (StThemeNode            *node,
+                          const ClutterActorBox  *box,
+                          guint8                  paint_opacity);
+
+
 G_END_DECLS
 
 #endif /* __ST_THEME_NODE_H__ */

@@ -45,7 +45,6 @@
 #include "st-button.h"
 
 #include "st-marshal.h"
-#include "st-texture-frame.h"
 #include "st-texture-cache.h"
 #include "st-private.h"
 

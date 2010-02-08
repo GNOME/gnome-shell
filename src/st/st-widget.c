@@ -38,9 +38,7 @@
 
 #include "st-marshal.h"
 #include "st-private.h"
-#include "st-shadow-texture.h"
 #include "st-texture-cache.h"
-#include "st-texture-frame.h"
 #include "st-theme-context.h"
 #include "st-tooltip.h"
 
@@ -59,7 +57,6 @@ struct _StWidgetPrivate
 
   ClutterActor *border_image;
   ClutterActor *background_image;
-  ClutterActor *background_image_shadow;
   ClutterColor  bg_color;
 
   guint         border_width;
@@ -68,6 +65,7 @@ struct _StWidgetPrivate
   StGradientType bg_gradient_type;
   ClutterColor  bg_gradient_end;
 
+  ClutterActorBox background_allocation;
   gdouble       shadow_xoffset;
   gdouble       shadow_yoffset;
 
@@ -125,7 +123,6 @@ G_DEFINE_ABSTRACT_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 
 static void st_widget_recompute_style (StWidget    *widget,
                                        StThemeNode *old_theme_node);
-static void st_widget_redraw_gradient (StWidget  *widget);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -254,12 +251,6 @@ st_widget_dispose (GObject *gobject)
       priv->border_image = NULL;
     }
 
-  if (priv->background_image_shadow)
-    {
-      clutter_actor_unparent (priv->background_image_shadow);
-      priv->background_image_shadow = NULL;
-    }
-
   if (priv->theme_node)
     {
       g_object_unref (priv->theme_node);
@@ -295,18 +286,20 @@ st_widget_finalize (GObject *gobject)
   G_OBJECT_CLASS (st_widget_parent_class)->finalize (gobject);
 }
 
+
 static void
 st_widget_allocate (ClutterActor          *actor,
                     const ClutterActorBox *box,
                     ClutterAllocationFlags flags)
 {
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidget *self = ST_WIDGET (actor);
+  StWidgetPrivate *priv = self->priv;
   StThemeNode *theme_node;
   ClutterActorClass *klass;
   ClutterGeometry area;
   ClutterVertex in_v, out_v;
 
-  theme_node = st_widget_get_theme_node ((StWidget*) actor);
+  theme_node = st_widget_get_theme_node (self);
 
   klass = CLUTTER_ACTOR_CLASS (st_widget_parent_class);
   klass->allocate (actor, box, flags);
@@ -327,249 +320,20 @@ st_widget_allocate (ClutterActor          *actor,
 
       st_tooltip_set_tip_area (priv->tooltip, &area);
     }
-
-
-
-  if (priv->border_image && priv->bg_gradient_type == ST_GRADIENT_NONE)
-    {
-      ClutterActorBox frame_box;
-
-      frame_box.x1 = frame_box.y1 = 0;
-      frame_box.x2 = box->x2 - box->x1;
-      frame_box.y2 = box->y2 - box->y1;
-
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->border_image),
-                              &frame_box,
-                              flags);
-    }
-  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
-    {
-      guint width,  old_width,
-            height, old_height;
-      ClutterActorBox frame_box;
-
-      frame_box.x1 = frame_box.y1 = 0;
-      frame_box.x2 = box->x2 - box->x1;
-      frame_box.y2 = box->y2 - box->y1;
-
-      width = (guint)(0.5 + frame_box.x2);
-      height = (guint)(0.5 + frame_box.y2);
-
-      clutter_cairo_texture_get_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
-                                              &old_width, &old_height);
-
-      if (width > 0 && height > 0 &&
-          (old_width != width || old_height != height))
-        {
-
-          clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (priv->border_image),
-                                                  width, height);
-          st_widget_redraw_gradient ((StWidget*) actor);
-        }
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->border_image),
-                              &frame_box,
-                              flags);
-    }
-
-  if (priv->background_image)
-    {
-      ClutterActorBox frame_box;
-      gfloat w, h;
-
-      frame_box.x1 = frame_box.y1 = 0;
-      frame_box.x2 = box->x2 - box->x1;
-      frame_box.y2 = box->y2 - box->y1;
-
-      clutter_actor_get_size (CLUTTER_ACTOR (priv->background_image), &w, &h);
-
-      /* scale the background into the allocated bounds */
-      if (w > frame_box.x2 || h > frame_box.y2)
-        {
-          gint new_h, new_w, offset;
-          gint box_w, box_h;
-
-          box_w = (int) frame_box.x2;
-          box_h = (int) frame_box.y2;
-
-          /* scale to fit */
-          new_h = (int)((h / w) * ((gfloat) box_w));
-          new_w = (int)((w / h) * ((gfloat) box_h));
-
-          if (new_h > box_h)
-            {
-              /* center for new width */
-              offset = ((box_w) - new_w) * 0.5;
-              frame_box.x1 = offset;
-              frame_box.x2 = offset + new_w;
-
-              frame_box.y2 = box_h;
-            }
-          else
-            {
-              /* center for new height */
-              offset = ((box_h) - new_h) * 0.5;
-              frame_box.y1 = offset;
-              frame_box.y2 = offset + new_h;
-
-              frame_box.x2 = box_w;
-            }
-
-        }
-      else
-        {
-          /* center the background on the widget */
-          frame_box.x1 = (int)(((box->x2 - box->x1) / 2) - (w / 2));
-          frame_box.y1 = (int)(((box->y2 - box->y1) / 2) - (h / 2));
-          frame_box.x2 = frame_box.x1 + w;
-          frame_box.y2 = frame_box.y1 + h;
-        }
-
-        if (priv->background_image_shadow)
-          {
-            StShadowTexture *shadow;
-            ClutterActorBox  shadow_box;
-
-            shadow_box.x1 = frame_box.x1 + priv->shadow_xoffset;
-            shadow_box.y1 = frame_box.y1 + priv->shadow_yoffset;
-            shadow_box.x2 = frame_box.x2 + priv->shadow_xoffset;
-            shadow_box.y2 = frame_box.y2 + priv->shadow_yoffset;
-
-            /* The shadow texture is larger than the original image due
-               to blurring, so we let it adjust its size.
-               When the original image has been scaled, this will change
-               the effective blur radius - we ignore this for now. */
-            shadow = ST_SHADOW_TEXTURE (priv->background_image_shadow);
-            st_shadow_texture_adjust_allocation (shadow, &shadow_box);
-
-            clutter_actor_allocate (priv->background_image_shadow,
-                                    &shadow_box, flags);
-          }
-
-
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->background_image),
-                              &frame_box,
-                              flags);
-    }
 }
 
 static void
-st_widget_real_draw_background (StWidget *self)
+st_widget_paint (ClutterActor *actor)
 {
-  StWidgetPrivate *priv = self->priv;
-  ClutterActor *actor = CLUTTER_ACTOR (self);
-  ClutterActorBox allocation = { 0, };
-  gfloat w, h;
-  guint8 opacity;
+  StWidget *self = ST_WIDGET (actor);
+  StThemeNode *theme_node;
+  ClutterActorBox allocation;
+
+  theme_node = st_widget_get_theme_node (self);
 
   clutter_actor_get_allocation_box (actor, &allocation);
-  w = allocation.x2 - allocation.x1;
-  h = allocation.y2 - allocation.y1;
 
-  opacity = clutter_actor_get_paint_opacity (actor);
-
-  /* Default implementation just draws the background
-   * colour and the image on top
-   */
-  if (priv->draw_bg_color)
-    {
-      ClutterColor bg_color = priv->bg_color;
-
-      bg_color.alpha = opacity * bg_color.alpha / 255;
-
-      cogl_set_source_color4ub (bg_color.red,
-                                bg_color.green,
-                                bg_color.blue,
-                                bg_color.alpha);
-      cogl_rectangle (0, 0, w, h);
-    }
-
-  if (priv->draw_border_internal)
-    {
-      StThemeNode *node = st_widget_get_theme_node (self);
-      int side;
-      double border_top, border_right, border_bottom, border_left;
-
-      border_top = st_theme_node_get_border_width (node, ST_SIDE_TOP);
-      border_right = st_theme_node_get_border_width (node, ST_SIDE_RIGHT);
-      border_bottom = st_theme_node_get_border_width (node, ST_SIDE_BOTTOM);
-      border_left = st_theme_node_get_border_width (node, ST_SIDE_LEFT);
-
-      for (side = 0; side < 4; side++)
-        {
-          ClutterColor color;
-
-          switch (side)
-          {
-            case ST_SIDE_TOP:
-              if (border_top <= 0)
-                continue;
-              break;
-            case ST_SIDE_RIGHT:
-              if (border_right <= 0)
-                continue;
-              break;
-            case ST_SIDE_BOTTOM:
-              if (border_bottom <= 0)
-                continue;
-              break;
-            case ST_SIDE_LEFT:
-              if (border_left <= 0)
-                continue;
-              break;
-          }
-
-          st_theme_node_get_border_color (node, side, &color);
-
-          color.alpha = (color.alpha * opacity) / 0xff;
-
-          cogl_set_source_color4ub (color.red,
-                                    color.green,
-                                    color.blue,
-                                    color.alpha);
-
-          /* Note top and bottom extend to the ends, left/right
-           * are constrained by them.  See comment above about CSS
-           * conformance.
-           */
-          switch (side)
-          {
-            case ST_SIDE_TOP:
-              cogl_rectangle (0, 0,
-                              w, border_top);
-              break;
-            case ST_SIDE_RIGHT:
-              cogl_rectangle (w - border_right, border_top,
-                              w, h - border_bottom);
-              break;
-            case ST_SIDE_BOTTOM:
-              cogl_rectangle (0, h - border_bottom,
-                              w, h);
-              break;
-            case ST_SIDE_LEFT:
-              cogl_rectangle (0, border_top,
-                              border_left, h - border_bottom);
-              break;
-            }
-        }
-    }
-
-  if (priv->border_image)
-    clutter_actor_paint (priv->border_image);
-}
-
-static void
-st_widget_paint (ClutterActor *self)
-{
-  StWidgetPrivate *priv = ST_WIDGET (self)->priv;
-
-  st_widget_real_draw_background (ST_WIDGET (self));
-
-  if (priv->background_image != NULL)
-    {
-      if (priv->background_image_shadow)
-        clutter_actor_paint (priv->background_image_shadow);
-      clutter_actor_paint (priv->background_image);
-    }
+  st_theme_node_paint (theme_node, &allocation, clutter_actor_get_paint_opacity (actor));
 }
 
 static void
@@ -599,9 +363,6 @@ st_widget_map (ClutterActor *actor)
 
   st_widget_ensure_style ((StWidget*) actor);
 
-  if (priv->background_image_shadow)
-    clutter_actor_map (priv->background_image_shadow);
-
   if (priv->border_image)
     clutter_actor_map (priv->border_image);
 
@@ -619,9 +380,6 @@ st_widget_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
 
-  if (priv->background_image_shadow)
-    clutter_actor_unmap (priv->background_image_shadow);
-
   if (priv->border_image)
     clutter_actor_unmap (priv->border_image);
 
@@ -630,125 +388,6 @@ st_widget_unmap (ClutterActor *actor)
 
   if (priv->tooltip)
     clutter_actor_unmap ((ClutterActor *) priv->tooltip);
-}
-
-static void
-st_widget_redraw_gradient (StWidget  *widget)
-{
-  ClutterCairoTexture *texture;
-  ClutterColor *start, *end;
-  StWidgetPrivate *priv;
-  guint width, height;
-  guint radius[4], i;
-  cairo_t *cr;
-  cairo_pattern_t *pattern;
-  gboolean round_border = FALSE;
-
-  if (widget->priv->bg_gradient_type == ST_GRADIENT_NONE)
-    return;
-
-  texture = CLUTTER_CAIRO_TEXTURE (widget->priv->border_image);
-  priv  = widget->priv;
-  start = &widget->priv->bg_color;
-  end   = &widget->priv->bg_gradient_end;
-
-  for (i = 0; i < 4; i++)
-    {
-      radius[i] = st_theme_node_get_border_radius (priv->theme_node, i);
-      if (radius[i] > 0)
-        round_border = TRUE;
-    }
-
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
-
-  if (priv->bg_gradient_type == ST_GRADIENT_VERTICAL)
-    pattern = cairo_pattern_create_linear (0, 0, 0, height);
-  else if (priv->bg_gradient_type == ST_GRADIENT_HORIZONTAL)
-    pattern = cairo_pattern_create_linear (0, 0, width, 0);
-  else
-    {
-      gdouble cx, cy;
-
-      cx = width / 2.;
-      cy = height / 2.;
-      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, MIN (cx, cy));
-    }
-
-  cairo_pattern_add_color_stop_rgba (pattern, 0,
-                                     start->red / 255.,
-                                     start->green / 255.,
-                                     start->blue / 255.,
-                                     start->alpha / 255.);
-  cairo_pattern_add_color_stop_rgba (pattern, 1,
-                                     end->red / 255.,
-                                     end->green / 255.,
-                                     end->blue / 255.,
-                                     end->alpha / 255.);
-
-  if (round_border)
-    {
-      if (radius[ST_CORNER_TOPLEFT] > 0)
-        cairo_arc (cr,
-                   radius[ST_CORNER_TOPLEFT],
-                   radius[ST_CORNER_TOPLEFT],
-                   radius[ST_CORNER_TOPLEFT], M_PI, 3 * M_PI / 2);
-      else
-        cairo_move_to (cr, 0, 0);
-      cairo_line_to (cr, width - radius[ST_CORNER_TOPRIGHT], 0);
-      if (radius[ST_CORNER_TOPRIGHT] > 0)
-        cairo_arc (cr,
-                   width - radius[ST_CORNER_TOPRIGHT],
-                   radius[ST_CORNER_TOPRIGHT],
-                   radius[ST_CORNER_TOPRIGHT], 3 * M_PI / 2, 2 * M_PI);
-      cairo_line_to (cr, width, height - radius[ST_CORNER_BOTTOMRIGHT]);
-      if (radius[ST_CORNER_BOTTOMRIGHT])
-        cairo_arc (cr,
-                   width - radius[ST_CORNER_BOTTOMRIGHT],
-                   height - radius[ST_CORNER_BOTTOMRIGHT],
-                   radius[ST_CORNER_BOTTOMRIGHT], 0, M_PI / 2);
-      cairo_line_to (cr, radius[ST_CORNER_BOTTOMLEFT], height);
-      if (radius[ST_CORNER_BOTTOMLEFT])
-        cairo_arc (cr,
-                   radius[ST_CORNER_BOTTOMLEFT],
-                   height - radius[ST_CORNER_BOTTOMLEFT],
-                   radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
-      cairo_close_path (cr);
-    }
-  else
-    cairo_rectangle (cr, 0, 0, width, height);
-
-  if (priv->border_width > 0)
-    {
-      guint8 opacity;
-      gdouble effective_alpha;
-      cairo_path_t *path;
-
-      path = cairo_copy_path (cr);
-      opacity = clutter_actor_get_paint_opacity (CLUTTER_ACTOR (widget));
-      effective_alpha = priv->border_color.alpha * opacity / (255. * 255.);
-
-      cairo_set_source_rgba (cr,
-                             priv->border_color.red / 255.,
-                             priv->border_color.green / 255.,
-                             priv->border_color.blue / 255.,
-                             effective_alpha);
-      cairo_fill (cr);
-
-      cairo_translate (cr, priv->border_width, priv->border_width);
-      cairo_scale (cr,
-                   (gdouble)(width - 2 * priv->border_width) / width,
-                   (gdouble)(height - 2 * priv->border_width) / height);
-      cairo_append_path (cr, path);
-      cairo_path_destroy (path);
-    }
-
-  cairo_set_source (cr, pattern);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (pattern);
-  cairo_destroy (cr);
 }
 
 static void notify_children_of_style_change (ClutterContainer *container);
@@ -776,270 +415,12 @@ static void
 st_widget_real_style_changed (StWidget *self)
 {
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
-  StThemeNode *theme_node;
-  StBorderImage *border_image;
-  StShadow *shadow;
-  StTextureCache *texture_cache;
-  ClutterTexture *texture;
-  const char *bg_file = NULL;
-  gboolean relayout_needed = FALSE;
-  gboolean has_changed = FALSE;
-  ClutterColor color;
-  guint border_radius = 0;
-  StGradientType gradient;
-  ClutterColor gradient_end;
-  StSide side;
-  StCorner corner;
-  gboolean uniform_border_width;
 
   /* application has request this widget is not stylable */
   if (!priv->is_stylable)
     return;
 
-  theme_node = st_widget_get_theme_node (self);
-
-  st_theme_node_get_background_gradient (theme_node, &gradient, &color, &gradient_end);
-
-  if (gradient == ST_GRADIENT_NONE)
-    {
-      st_theme_node_get_background_color (theme_node, &color);
-      if (gradient != priv->bg_gradient_type ||
-          !clutter_color_equal (&color, &priv->bg_color))
-        {
-          priv->bg_gradient_type = gradient;
-          priv->bg_color = color;
-          priv->draw_bg_color = color.alpha != 0;
-          has_changed = TRUE;
-        }
-    }
-  else if (gradient != priv->bg_gradient_type ||
-           !clutter_color_equal (&color, &priv->bg_color) ||
-           !clutter_color_equal (&gradient_end, &priv->bg_gradient_end))
-    {
-      priv->bg_gradient_type = gradient;
-      priv->bg_color = color;
-      priv->bg_gradient_end = gradient_end;
-      priv->draw_bg_color = TRUE;
-      has_changed = TRUE;
-    }
-
-  if (priv->background_image_shadow)
-    {
-      clutter_actor_unparent (priv->background_image_shadow);
-      priv->background_image_shadow = NULL;
-    }
-
-  if (priv->border_image)
-    {
-      clutter_actor_unparent (priv->border_image);
-      priv->border_image = NULL;
-    }
-
-  if (priv->background_image)
-    {
-      clutter_actor_unparent (priv->background_image);
-      priv->background_image = NULL;
-    }
-
-  texture_cache = st_texture_cache_get_default ();
-
-
-  /* Rough notes about the relationship of borders and backgrounds in CSS3;
-   * see http://www.w3.org/TR/css3-background/ for more accurate details.
-   *
-   * - Things are drawn in 4 layers, from the bottom:
-   *     Background color
-   *     Background image
-   *     Border color or border image
-   *     Content
-   * - The background color, gradient and image extend to and are clipped by
-   *   the edge of the border area, so will be rounded if the border is
-   *   rounded. (CSS3 background-clip property modifies this)
-   * - The border image replaces what would normally be drawn by the border
-   * - The border image is not clipped by a rounded border-radius
-   * - The border radius rounds the background even if the border is
-   *   zero width or a border image is being used.
-   *
-   * Deviations from the above as implemented here:
-   *  - Nonuniform border widths combined with a non-zero border radius result
-   *    in the border radius being ignored
-   *  - The combination of border image and a non-zero border radius is
-   *    not supported; the background color will be drawn with square
-   *    corners.
-   *  - The combination of border image and a background gradient is not
-   *    supported; the background will be drawn as a solid color
-   *  - The background image is drawn above the border color or image,
-   *    not below it.
-   *  - We don't clip the background image to the (rounded) border area.
-   *
-   * The first three allow us to always draw with no more than a single
-   * border_image and a single background image above it.
-   */
-
-  /* Check whether all border widths are the same.  Also, acquire the
-   * first nonzero border width as well as the border color.
-   */
-  uniform_border_width = TRUE;
-  priv->border_width = st_theme_node_get_border_width (theme_node,
-                                                       ST_SIDE_TOP);
-  if (priv->border_width > 0.5)
-    priv->border_width = (int)(0.5 + priv->border_width);
-  for (side = 0; side < 4; side++)
-    {
-      double width = st_theme_node_get_border_width (theme_node, side);
-      if (width > 0.5)
-        width = (int)(0.5 + width);
-      if (width > 0)
-        {
-          priv->border_width = width;
-          st_theme_node_get_border_color (theme_node,
-                                          side, &priv->border_color);
-        }
-      if ((int)width != priv->border_width)
-        {
-          uniform_border_width = FALSE;
-          break;
-        }
-    }
-
-  /* Pick the first nonzero border radius, but only if we have a uniform border. */
-  if (uniform_border_width)
-    {
-      for (corner = 0; corner < 4; corner++)
-        {
-          double radius = st_theme_node_get_border_radius (theme_node, corner);
-          if (radius > 0.5)
-            {
-              border_radius = (int)(0.5 + radius);
-              break;
-            }
-        }
-    }
-
-  border_image = st_theme_node_get_border_image (theme_node);
-  if (border_image)
-    {
-      const char *filename;
-      gint border_left, border_right, border_top, border_bottom;
-      gint width, height;
-
-      filename = st_border_image_get_filename (border_image);
-
-      /* `border-image' takes precedence over `background-image'.
-       * Firefox lets the background-image shine thru when border-image has
-       * alpha an channel, maybe that would be an option for the future. */
-      texture = (ClutterTexture*) st_texture_cache_load_file_simple (texture_cache,
-                                                                     filename);
-
-      clutter_texture_get_base_size (CLUTTER_TEXTURE (texture),
-                                     &width, &height);
-
-      st_border_image_get_borders (border_image,
-                                   &border_left, &border_right, &border_top, &border_bottom);
-
-      priv->border_image = st_texture_frame_new (texture,
-                                                 border_top,
-                                                 border_right,
-                                                 border_bottom,
-                                                 border_left);
-      clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
-
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-  else if (priv->bg_gradient_type != ST_GRADIENT_NONE)
-    {
-      priv->draw_border_internal = FALSE;
-      priv->draw_bg_color = FALSE;
-      texture = g_object_new (CLUTTER_TYPE_CAIRO_TEXTURE, NULL);
-      priv->border_image = CLUTTER_ACTOR (texture);
-      clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
-
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-  else if (border_radius > 0)
-    {
-      priv->draw_border_internal = FALSE;
-      priv->draw_bg_color = FALSE;
-      priv->border_image = g_object_new (BIG_TYPE_RECTANGLE,
-					 "color", &priv->bg_color,
-					 "border-width", priv->border_width,
-					 "border-color", &priv->border_color,
-					 "corner-radius", border_radius,
-					 NULL);
-
-      clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
-
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-  else if (priv->border_width > 0 && priv->border_color.alpha != 0)
-    {
-      priv->draw_bg_color = TRUE;
-      priv->draw_border_internal = TRUE;
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-  else if (priv->draw_border_internal)
-    {
-      priv->draw_border_internal = FALSE;
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-
-  bg_file = st_theme_node_get_background_image (theme_node);
-  if (bg_file != NULL)
-    {
-      priv->background_image = st_texture_cache_load_file_simple (texture_cache, bg_file);
-      clutter_actor_set_parent (priv->background_image, CLUTTER_ACTOR (self));
-
-      has_changed = TRUE;
-      relayout_needed = TRUE;
-    }
-
-  /* CSS based drop shadows
-   *
-   * Drop shadows in ST are modelled after the CSS3 box-shadow property;
-   * see http://www.css3.info/preview/box-shadow/ for a detailed description.
-   *
-   * While the syntax of the property is mostly identical - we do not support
-   * multiple shadows and allow for a more liberal placement of the color
-   * parameter - its interpretation defers significantly in that the shadow's
-   * shape is not determined by the bounding box, but by the CSS background
-   * image (we could exend this in the future to take other CSS properties
-   * like boder and background color into account).
-   */
-  shadow = st_theme_node_get_shadow (theme_node);
-  if (shadow != NULL)
-    {
-      priv->shadow_xoffset = shadow->xoffset;
-      priv->shadow_yoffset = shadow->yoffset;
-
-      if (priv->background_image)
-        {
-          priv->background_image_shadow =
-              st_shadow_texture_new (priv->background_image,
-                                     &shadow->color,
-                                     shadow->blur);
-
-          clutter_actor_set_parent (priv->background_image_shadow,
-                                    CLUTTER_ACTOR (self));
-          has_changed = TRUE;
-          relayout_needed = TRUE;
-        }
-    }
-
-  /* If there are any properties above that need to cause a relayout they
-   * should set this flag.
-   */
-  if (has_changed)
-    {
-      if (relayout_needed)
-        clutter_actor_queue_relayout ((ClutterActor *) self);
-      else
-        clutter_actor_queue_redraw ((ClutterActor *) self);
-    }
+  clutter_actor_queue_redraw ((ClutterActor *) self);
 
   if (CLUTTER_IS_CONTAINER (self))
     notify_children_of_style_change ((ClutterContainer *)self);
