@@ -82,6 +82,8 @@ struct _ClutterStagePrivate
 {
   /* the stage implementation */
   ClutterStageWindow *impl;
+  guint               minimum_width;
+  guint               minimum_height;
 
   ClutterColor        color;
   ClutterPerspective  perspective;
@@ -1179,6 +1181,8 @@ clutter_stage_init (ClutterStage *self)
   priv->throttle_motion_events = TRUE;
 
   priv->color = default_stage_color;
+  priv->minimum_width = 1;
+  priv->minimum_height = 1;
 
   priv->perspective.fovy   = 60.0; /* 60 Degrees */
   priv->perspective.aspect = 1.0;
@@ -2322,3 +2326,74 @@ clutter_stage_get_use_alpha (ClutterStage *stage)
 
   return stage->priv->use_alpha;
 }
+
+/**
+ * clutter_stage_set_minimum_size:
+ * @stage: a #ClutterStage
+ * @width: width, in pixels
+ * @height: height, in pixels
+ *
+ * Sets the minimum size for a stage window. This has no effect if the stage
+ * is fullscreen.
+ *
+ * Since: 1.2
+ */
+void
+clutter_stage_set_minimum_size (ClutterStage *stage,
+                                guint         width,
+                                guint         height)
+{
+  gboolean resize;
+  ClutterGeometry geom;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail ((width > 0) && (height > 0));
+
+  stage->priv->minimum_width = width;
+  stage->priv->minimum_height = height;
+
+  if (stage->priv->impl == NULL)
+    return;
+
+  resize = FALSE;
+  _clutter_stage_window_get_geometry (stage->priv->impl, &geom);
+
+  if (geom.width < width)
+    resize = TRUE;
+  else
+    width = geom.width;
+
+  if (geom.height < height)
+    resize = TRUE;
+  else
+    height = geom.height;
+
+  if (resize)
+    _clutter_stage_window_resize (stage->priv->impl, width, height);
+}
+
+/**
+ * clutter_stage_get_minimum_size:
+ * @stage: a #ClutterStage
+ * @width: width, in pixels
+ * @height: height, in pixels
+ *
+ * Gets the set minimum size for a stage window. This may not correspond
+ * to the actual minimum size and is specific to the back-end
+ * implementation.
+ *
+ * Since: 1.2
+ */
+void
+clutter_stage_get_minimum_size (ClutterStage *stage,
+                                guint        *width,
+                                guint        *height)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  if (width)
+    *width = stage->priv->minimum_width;
+  if (height)
+    *height = stage->priv->minimum_height;
+}
+

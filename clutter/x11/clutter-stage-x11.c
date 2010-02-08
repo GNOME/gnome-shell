@@ -102,24 +102,20 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
 
   if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
     {
-      gint min_width, min_height;
-      ClutterGeometry min_size;
+      guint min_width, min_height;
       XSizeHints *size_hints;
 
       size_hints = XAllocSizeHints();
 
-      _clutter_stage_window_get_geometry (CLUTTER_STAGE_WINDOW (stage_x11),
-                                          &min_size);
+      clutter_stage_get_minimum_size (stage_x11->wrapper,
+                                      &min_width,
+                                      &min_height);
 
-      if (new_width < 0)
-        min_width = min_size.width;
-      else
-        min_width = new_width;
+      if (new_width <= 0)
+        new_width = min_width;
 
-      if (new_height < 0)
-        min_height = min_size.height;
-      else
-        min_height = new_height;
+      if (new_height <= 0)
+        new_height = min_height;
 
       size_hints->flags = 0;
 
@@ -127,15 +123,19 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
          restrictions on the window size */
       if (!stage_x11->fullscreen_on_map)
         {
-          size_hints->min_width = min_width;
-          size_hints->min_height = min_height;
-          size_hints->flags = PMinSize;
-
-          if (!resize)
+          if (resize)
             {
-              size_hints->max_width = size_hints->min_width;
-              size_hints->max_height = size_hints->min_height;
-              size_hints->flags |= PMaxSize;
+              size_hints->min_width = min_width;
+              size_hints->min_height = min_height;
+              size_hints->flags = PMinSize;
+            }
+          else
+            {
+              size_hints->min_width = new_width;
+              size_hints->min_height = new_height;
+              size_hints->max_width = new_width;
+              size_hints->max_height = new_height;
+              size_hints->flags = PMinSize | PMaxSize;
             }
         }
 
@@ -169,7 +169,7 @@ clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  gboolean is_fullscreen, resize;
+  gboolean is_fullscreen;
 
   g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
@@ -187,19 +187,8 @@ clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
       return;
     }
 
-  resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
-
-  if (resize)
-    {
-      /* FIXME need API to set this */
-      geometry->width = 1;
-      geometry->height = 1;
-    }
-  else
-    {
-      geometry->width = stage_x11->xwin_width;
-      geometry->height = stage_x11->xwin_height;
-    }
+  geometry->width = stage_x11->xwin_width;
+  geometry->height = stage_x11->xwin_height;
 }
 
 static void
