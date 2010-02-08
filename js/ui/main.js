@@ -134,6 +134,16 @@ function start() {
         if (recorder.is_recording()) {
             recorder.pause();
         } else {
+            //read the parameters from GConf always in case they have changed
+            let gconf = Shell.GConf.get_default();
+            recorder.set_framerate(gconf.get_int("recorder/framerate"));
+            recorder.set_filename("shell-%d%u-%c." + gconf.get_string("recorder/file_extension"));
+            let pipeline = gconf.get_string("recorder/pipeline");
+            if (!pipeline.match(/^\s*$/))
+                recorder.set_pipeline(pipeline);
+            else
+                recorder.set_pipeline(null);
+
             recorder.record();
         }
     });

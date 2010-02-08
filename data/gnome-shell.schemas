@@ -117,6 +117,53 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/recorder/framerate</key>
+        <applyto>/desktop/gnome/shell/recorder/framerate</applyto>
+        <owner>gnome-shell</owner>
+        <type>int</type>
+        <default>15</default>
+        <locale name="C">
+          <short>Framerate used for recording screencasts.</short>
+          <long>
+            The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second.
+         </long>
+        </locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/recorder/pipeline</key>
+        <applyto>/desktop/gnome/shell/recorder/pipeline</applyto>
+        <owner>gnome-shell</owner>
+        <type>string</type>
+        <default></default>
+        <locale name="C">
+          <short>The gstreamer pipeline used to encode the screencast</short>
+          <long>
+            Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch.
+            The pipeline should have an unconnected sink pad where the recorded video is recorded. It will
+            normally have a unconnected source pad; output from that pad will be written into the output file.
+            However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar.
+            When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! theoraenc ! oggmux' and records to Ogg Theora.
+         </long>
+        </locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/recorder/file_extension</key>
+        <applyto>/desktop/gnome/shell/recorder/file_extension</applyto>
+        <owner>gnome-shell</owner>
+        <type>string</type>
+        <default>ogg</default>
+        <locale name="C">
+          <short>File extension used for storing the screencast</short>
+          <long>
+            The filename for recorded screencasts will be a unique filename based on the current date, and use this extension.
+            It should be changed when recording to a different container format.
+         </long>
+        </locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>

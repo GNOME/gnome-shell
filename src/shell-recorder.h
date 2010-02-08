@@ -30,6 +30,8 @@ GType              shell_recorder_get_type     (void) G_GNUC_CONST;
 
 ShellRecorder     *shell_recorder_new (ClutterStage  *stage);
 
+void               shell_recorder_set_framerate (ShellRecorder *recorder,
+                                                 int framerate);
 void               shell_recorder_set_filename (ShellRecorder *recorder,
 						const char    *filename);
 void               shell_recorder_set_pipeline (ShellRecorder *recorder,

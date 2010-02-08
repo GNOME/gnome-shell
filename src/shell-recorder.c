@@ -63,6 +63,7 @@ struct _ShellRecorder {
 
   gboolean have_pack_invert; /* True when GL_MESA_pack_invert is available */
 
+  int framerate;
   char *pipeline_description;
   char *filename;
   gboolean filename_has_count; /* %c used: handle pausing differently */
@@ -93,6 +94,8 @@ struct _RecorderPipeline
 
 static void recorder_set_stage    (ShellRecorder *recorder,
                                    ClutterStage  *stage);
+static void recorder_set_framerate (ShellRecorder *recorder,
+                                    int framerate);
 static void recorder_set_pipeline (ShellRecorder *recorder,
                                    const char    *pipeline);
 static void recorder_set_filename (ShellRecorder *recorder,
@@ -104,6 +107,7 @@ static void recorder_pipeline_closed   (RecorderPipeline *pipeline);
 enum {
   PROP_0,
   PROP_STAGE,
+  PROP_FRAMERATE,
   PROP_PIPELINE,
   PROP_FILENAME
 };
@@ -117,7 +121,7 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * as theora for a minimal size increase. This may be an artifact of the
  * encoding process.
  */
-#define FRAMES_PER_SECOND 15
+#define DEFAULT_FRAMES_PER_SECOND 15
 
 /* The time (in milliseconds) between querying the server for the cursor
  * position.
@@ -246,6 +250,7 @@ shell_recorder_init (ShellRecorder *recorder)
   recorder->memory_target = get_memory_target();
 
   recorder->state = RECORDER_STATE_CLOSED;
+  recorder->framerate = DEFAULT_FRAMES_PER_SECOND;
 }
 
 static void
@@ -874,6 +879,21 @@ recorder_set_stage (ShellRecorder *recorder,
 }
 
 static void
+recorder_set_framerate (ShellRecorder *recorder,
+                        int framerate)
+{
+  if (framerate == recorder->framerate)
+    return;
+
+  if (recorder->current_pipeline)
+    shell_recorder_close (recorder);
+
+  recorder->framerate = framerate;
+
+  g_object_notify (G_OBJECT (recorder), "framerate");
+}
+
+static void
 recorder_set_pipeline (ShellRecorder *recorder,
                        const char    *pipeline)
 {
@@ -924,6 +944,9 @@ shell_recorder_set_property (GObject      *object,
     case PROP_STAGE:
       recorder_set_stage (recorder, g_value_get_object (value));
       break;
+    case PROP_FRAMERATE:
+      recorder_set_framerate (recorder, g_value_get_int (value));
+      break;
     case PROP_PIPELINE:
       recorder_set_pipeline (recorder, g_value_get_string (value));
       break;
@@ -948,6 +971,9 @@ shell_recorder_get_property (GObject         *object,
     {
     case PROP_STAGE:
       g_value_set_object (value, G_OBJECT (recorder->stage));
+      break;
+    case PROP_FRAMERATE:
+      g_value_set_int (value, recorder->framerate);
       break;
     case PROP_PIPELINE:
       g_value_set_string (value, recorder->pipeline_description);
@@ -977,6 +1003,17 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "Stage to record",
                                                         CLUTTER_TYPE_STAGE,
                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_FRAMERATE,
+                                   g_param_spec_int ("framerate",
+                                                     "Framerate",
+                                                     "Framerate used for resulting video in frames-per-second",
+                                                      0,
+                                                      G_MAXINT,
+                                                      DEFAULT_FRAMES_PER_SECOND,
+                                                      G_PARAM_READWRITE));
+
   g_object_class_install_property (gobject_class,
                                    PROP_PIPELINE,
                                    g_param_spec_string ("pipeline",
@@ -1018,7 +1055,7 @@ recorder_pipeline_set_caps (RecorderPipeline *pipeline)
                               "blue_mask",  G_TYPE_INT, 0x0000ff,
 #endif
                               "endianness", G_TYPE_INT, G_BIG_ENDIAN,
-                              "framerate", GST_TYPE_FRACTION, FRAMES_PER_SECOND, 1,
+                              "framerate", GST_TYPE_FRACTION, pipeline->recorder->framerate, 1,
                               "width", G_TYPE_INT, pipeline->recorder->stage_width,
                               "height", G_TYPE_INT, pipeline->recorder->stage_height,
                               NULL);
@@ -1521,6 +1558,24 @@ shell_recorder_new (ClutterStage  *stage)
   return g_object_new (SHELL_TYPE_RECORDER,
                        "stage",    stage,
                        NULL);
+}
+
+/**
+ * shell_recorder_set_framerate:
+ * @recorder: the #ShellRecorder
+ * @framerate: Framerate used for resulting video in frames-per-second.
+ *
+ * Sets the number of frames per second we configure for the GStreamer pipeline.
+ *
+ * The default value is 15.
+ */
+void
+shell_recorder_set_framerate (ShellRecorder *recorder,
+                             int framerate)
+{
+  g_return_if_fail (SHELL_IS_RECORDER (recorder));
+
+  recorder_set_framerate (recorder, framerate);
 }
 
 /**
