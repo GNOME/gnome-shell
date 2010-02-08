@@ -1,3 +1,56 @@
+Clutter 1.1.8 (08/02/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.6
+
+    o Added ClutterAnimator, a class that allows defining complex
+      implicit animations involving multiple actors and states; this
+      class is mostly meant to be used through the ClutterScript
+      definition format, but it provides a convenience C API for
+      easily building animations.
+
+    o Fixed the issues with resizable stages getting a 1x1 window with
+      the X11 backends
+
+    o Expose input devices for every event; by default, X11 and Windows
+      backends expose the core devices only.
+
+    o Add the ClutterStage:key-focus property, for key focus tracking.
+
+    o Allow setting transformable value types in ClutterAnimation when
+      calling clutter_animation_bind() and clutter_animation_update().
+
+    o Delay the creation of the default Stage until clutter_stage_get_default()
+      is actually called; this reduces the work of clutter_init().
+
+    o Implement Ctrl+Delete and Ctrl+Backspace in ClutterText
+
+    o Improve the extendability of CoglTexture with internal backends.
+
+    o Add implicit texture atlasing; Cogl will try to put every texture
+      inside the same texture atlas by default, to avoid state changes
+      in the driver and (hopefully) improve performance.
+
+    o Fix notification of the cursor and selection changes in ClutterText;
+      this improves the usage of Clutter from A11Y toolkits.
+
+    o Do not wait for a frame if the system clock goes backwards.
+
+    o Fix the dirtying of the clip state; this unbreaks cogl_path_fill().
+
+    o Documentation and build fixes.
+
+Many thanks to:
+
+  Neil Roberts
+  Chris Lord
+  Damien Lespiau
+  Alejandro Piñeiro
+  Jussi Kukkonen
+  Kristian Høgsberg
+  Robert Bragg
+  Øyvind Kolås
+
 Clutter 1.1.6 (18/01/2010)
 ===============================================================================
 
