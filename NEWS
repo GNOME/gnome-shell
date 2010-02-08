@@ -9,6 +9,10 @@ Clutter 1.1.8 (08/02/2010)
       definition format, but it provides a convenience C API for
       easily building animations.
 
+    o New experimental COGL API to expose "hardware" buffers such as PBOs or
+      drm surfaces. This API can be used, for instance, to make texture
+      uploading faster.
+
     o Fixed the issues with resizable stages getting a 1x1 window with
       the X11 backends
 
