@@ -148,7 +148,7 @@ cogl_pixel_buffer_new_EXP (guint size)
   /* parent's constructor */
   _cogl_buffer_initialize (buffer,
                            size,
-                           COGL_BUFFER_USAGE_HINT_DRAW,
+                           COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
 /* malloc version only for GLES */

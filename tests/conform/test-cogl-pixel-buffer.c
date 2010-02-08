@@ -72,10 +72,10 @@ create_map_tile (TestTile *tile)
   g_assert (cogl_is_buffer (buffer));
 
   /* while at it, set/get the hints */
-  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_DRAW);
+  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_TEXTURE);
   g_assert_cmpint (cogl_buffer_get_usage_hint (buffer),
                    ==,
-                   COGL_BUFFER_USAGE_HINT_DRAW);
+                   COGL_BUFFER_USAGE_HINT_TEXTURE);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
   g_assert_cmpint (cogl_buffer_get_update_hint (buffer),
             ==,
@@ -112,8 +112,8 @@ create_set_region_tile (TestTile *tile)
   g_assert (cogl_is_buffer (buffer));
 
   /* while at it, set/get the hint */
-  cogl_buffer_set_hint (buffer, COGL_BUFFER_HINT_STATIC_DRAW);
-  g_assert (cogl_buffer_get_hint (buffer) == COGL_BUFFER_HINT_STATIC_DRAW);
+  cogl_buffer_set_hint (buffer, COGL_BUFFER_HINT_STATIC_TEXTURE);
+  g_assert (cogl_buffer_get_hint (buffer) == COGL_BUFFER_HINT_STATIC_TEXTURE);
 
   data = g_malloc (TILE_SIZE * TILE_SIZE * 4);
   /* create a buffer with the data we want to copy to the buffer */
@@ -161,10 +161,10 @@ create_set_data_tile (TestTile *tile)
   g_assert_cmpint (cogl_buffer_get_size (buffer), ==, rowstride * TILE_SIZE);
 
   /* while at it, set/get the hint */
-  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_DRAW);
+  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_TEXTURE);
   g_assert_cmpint (cogl_buffer_get_usage_hint (buffer),
                    ==,
-                   COGL_BUFFER_USAGE_HINT_DRAW);
+                   COGL_BUFFER_USAGE_HINT_TEXTURE);
 
   /* create a buffer with the data we want to copy to the buffer */
   data = g_malloc (TILE_SIZE * TILE_SIZE * 4);

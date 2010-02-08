@@ -75,12 +75,8 @@ cogl_buffer_get_size (CoglHandle handle);
 
 /**
  * CoglBufferUsageHint:
- * @COGL_BUFFER_USAGE_HINT_DRAW: the buffer will be used as a source for
- *   drawing commands (e.g. texture), the data coming from the application
- * @COGL_BUFFER_USAGE_HINT_READ: the buffer will be read by the application,
- *   the data store being modified by the GPU
- * @COGL_BUFFER_USAGE_HINT_COPY: the buffer will be used as a source for
- *   drawing commands, the data coming from the GPU
+ * @COGL_BUFFER_USAGE_HINT_TEXTURE: the buffer will be used as a source data
+ *   for a texture
  *
  * The usage hint on a buffer allows the user to give some clue on how the
  * buffer will be used.
@@ -89,9 +85,7 @@ cogl_buffer_get_size (CoglHandle handle);
  * Stability: Unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
- COGL_BUFFER_USAGE_HINT_DRAW,
- COGL_BUFFER_USAGE_HINT_READ,
- COGL_BUFFER_USAGE_HINT_COPY,
+ COGL_BUFFER_USAGE_HINT_TEXTURE,
 } CoglBufferUsageHint;
 
 /**

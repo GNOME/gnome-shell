@@ -147,33 +147,13 @@ GLenum
 _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
                                CoglBufferUpdateHint update_hint)
 {
-  if (usage_hint == COGL_BUFFER_USAGE_HINT_DRAW)
-    {
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-        return GL_STATIC_DRAW;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
-        return GL_DYNAMIC_DRAW;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
-        return GL_STREAM_DRAW;
-    }
-  if (usage_hint == COGL_BUFFER_USAGE_HINT_READ)
-    {
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-        return GL_STATIC_READ;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
-        return GL_DYNAMIC_READ;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
-        return GL_STREAM_READ;
-    }
-  if (usage_hint == COGL_BUFFER_USAGE_HINT_COPY)
-    {
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-        return GL_STATIC_COPY;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
-        return GL_DYNAMIC_COPY;
-      if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
-        return GL_STREAM_COPY;
-    }
+  /* usage hint is always TEXTURE for now */
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
+    return GL_STATIC_DRAW;
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
+    return GL_DYNAMIC_DRAW;
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
+    return GL_STREAM_DRAW;
 
   return GL_STATIC_DRAW;
 }
@@ -219,8 +199,8 @@ cogl_buffer_set_usage_hint_EXP (CoglHandle          handle,
   if (!cogl_is_buffer (handle))
     return;
 
-  if (G_UNLIKELY (hint > COGL_BUFFER_USAGE_HINT_COPY))
-    hint = COGL_BUFFER_USAGE_HINT_DRAW;
+  if (G_UNLIKELY (hint > COGL_BUFFER_USAGE_HINT_TEXTURE))
+    hint = COGL_BUFFER_USAGE_HINT_TEXTURE;
 
   COGL_BUFFER (handle)->usage_hint = hint;
 }
