@@ -937,22 +937,6 @@ root_window_filter (GdkXEvent *native, GdkEvent *event, gpointer data)
   return GDK_FILTER_CONTINUE;
 }
 
-/* Workaround for a clutter bug where if ClutterGLXTexturePixmap
- * is painted without the pixmap being set, a crash will occur inside
- * Cogl.
- *
- * http://bugzilla.openedhand.com/show_bug.cgi?id=1644
- */
-static void
-root_pixmap_paint (ClutterActor *actor, gpointer data)
-{
-  Pixmap pixmap;
-
-  g_object_get (G_OBJECT (actor), "pixmap", &pixmap, NULL);
-  if (!pixmap)
-    g_signal_stop_emission_by_name (actor, "paint");
-}
-
 /*
  * Called when the root window pixmap actor is destroyed.
  */
@@ -1028,6 +1012,7 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
 {
   GdkWindow *window;
   ClutterActor *stage;
+  ClutterColor stage_color;
 
   /* The actor created is actually a ClutterClone of global->root_pixmap. */
 
@@ -1042,15 +1027,24 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
       clutter_texture_set_filter_quality (CLUTTER_TEXTURE (global->root_pixmap),
                                           CLUTTER_TEXTURE_QUALITY_HIGH);
 
+      /* Initialize to the stage color, since that's what will be seen
+       * in the main view if there's no actual background window.
+       */
+      stage = mutter_plugin_get_stage (global->plugin);
+      clutter_stage_get_color (CLUTTER_STAGE (stage), &stage_color);
+      clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (global->root_pixmap),
+                                         /* ClutterColor has the same layout
+                                          * as one pixel of RGB(A) data.
+                                          */
+                                         (const guchar *)&stage_color, FALSE,
+                                         /* w, h, rowstride, bpp, flags */
+                                         1, 1, 3, 3, 0, NULL);
+
       /* We can only clone an actor within a stage, so we hide the source
        * texture then add it to the stage */
       clutter_actor_hide (global->root_pixmap);
-      stage = mutter_plugin_get_stage (global->plugin);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                    global->root_pixmap);
-
-      g_signal_connect (global->root_pixmap, "paint",
-                        G_CALLBACK (root_pixmap_paint), NULL);
 
       /* This really should never happen; but just in case... */
       g_signal_connect (global->root_pixmap, "destroy",
