@@ -284,6 +284,12 @@ Release Notes for Clutter 1.2
 * Clutter now depends on the system copy of JSON-GLib, and will fall
   back to the internal copy only if JSON-GLib is not installed.
 
+* ClutterActor:opacity is now defined using GParamSpecUint instead of
+  GParamSpecUchar; the same interval of [ 0, 255 ] applies, and GValue
+  has internal transformation functions for converting between G_TYPE_UINT
+  and G_TYPE_UCHAR, so this change should be fully transparent to the
+  user of the code.
+
 Cogl API changes for Clutter 1.2
 -------------------------------------------------------------------------------
 
