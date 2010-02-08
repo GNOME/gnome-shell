@@ -1340,24 +1340,25 @@ clutter_animator_key_get_type (void)
 
 /**
  * clutter_animator_key_get_object:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the object a key applies to.
  *
- * Return value: the object an animator_key exist for.
+ * Return value: (transfer none): the object an animator_key exist for.
  *
  * Since: 1.2
  */
 GObject *
-clutter_animator_key_get_object (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_object (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key, NULL);
-  return animator_key->object;
+  g_return_val_if_fail (key != NULL, NULL);
+
+  return key->object;
 }
 
 /**
  * clutter_animator_key_get_property_name:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the name of the property a key applies to.
  *
@@ -1366,16 +1367,37 @@ clutter_animator_key_get_object (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 G_CONST_RETURN gchar *
-clutter_animator_key_get_property_name (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_property_name (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
-  return animator_key->property_name;
+  return key->property_name;
+}
+
+/**
+ * clutter_animator_key_get_property_type:
+ * @key: a #ClutterAnimatorKey
+ *
+ * Retrieves the #GType of the property a key applies to
+ *
+ * You can use this type to initialize the #GValue to pass to
+ * clutter_animator_key_get_value()
+ *
+ * Return value: the #GType of the property
+ *
+ * Since: 1.2
+ */
+GType
+clutter_animator_key_get_property_type (const ClutterAnimatorKey *key)
+{
+  g_return_val_if_fail (key != NULL, G_TYPE_INVALID);
+
+  return G_VALUE_TYPE (&key->value);
 }
 
 /**
  * clutter_animator_key_get_mode:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the mode of a #ClutterAnimator key, for the first key of a
  * property for an object this represents the whether the animation is
@@ -1387,16 +1409,16 @@ clutter_animator_key_get_property_name (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 gulong
-clutter_animator_key_get_mode (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_mode (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, 0);
+  g_return_val_if_fail (key != NULL, 0);
 
-  return animator_key->mode;
+  return key->mode;
 }
 
 /**
  * clutter_animator_key_get_progress:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the progress of an clutter_animator_key
  *
@@ -1405,31 +1427,52 @@ clutter_animator_key_get_mode (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 gdouble
-clutter_animator_key_get_progress (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_progress (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, 0.0);
+  g_return_val_if_fail (key != NULL, 0.0);
 
-  return animator_key->progress;
+  return key->progress;
 }
 
 /**
  * clutter_animator_key_get_value:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  * @value: a #GValue initialized with the correct type for the animator key
  *
  * Retrieves a copy of the value for a #ClutterAnimatorKey.
  *
- * The passed in GValue needs to be already initialized for the value type.
+ * The passed in #GValue needs to be already initialized for the value
+ * type of the key or to a type that allow transformation from the value
+ * type of the key.
  *
- * Use g_value_unset() when done
+ * Use g_value_unset() when done.
+ *
+ * Return value: %TRUE if the passed #GValue was successfully set, and
+ *   %FALSE otherwise
  *
  * Since: 1.2
  */
-void
-clutter_animator_key_get_value (ClutterAnimatorKey *animator_key,
-                                GValue             *value)
+gboolean
+clutter_animator_key_get_value (const ClutterAnimatorKey *key,
+                                GValue                   *value)
 {
-  g_return_if_fail (animator_key != NULL);
+  GType gtype;
 
-  g_value_copy (&animator_key->value, value);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  gtype = G_VALUE_TYPE (&key->value);
+
+  if (g_value_type_compatible (gtype, G_VALUE_TYPE (value)))
+    {
+      g_value_copy (&key->value, value);
+      return TRUE;
+    }
+
+  if (g_value_type_transformable (gtype, G_VALUE_TYPE (value)))
+    {
+      if (g_value_transform (&key->value, value))
+        return TRUE;
+    }
+
+  return FALSE;
 }
