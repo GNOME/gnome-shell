@@ -103,11 +103,6 @@ StTooltip {
     padding-left: 4px;
 }
 
-.panel-button:pressed {
-    background-color: rgba(50,76,111,0.98);
-    border-radius: 4px;
-}
-
 #appMenu {
     spacing: 4px;
 }
@@ -120,11 +115,23 @@ StTooltip {
 .panel-button {
     padding: 4px 12px 3px;
     border-radius: 5px;
+    border-radius-bottomleft: 0px;
+    border-radius-bottomright: 0px;
     font: 16px sans-serif;
 }
 
-.panel-button:active, .panel-button:checked {
-    background-color: #314a6c;
+.panel-button:active, .panel-button:checked, .panel-button:pressed {
+    background-gradient-direction: vertical;
+    background-gradient-start: #3c3c3c;
+    background-gradient-end: #131313;
+}
+
+#panelActivities {
+    border-radius-topleft: 0px;
+}
+
+#panelStatus {
+    border-radius-topright: 0px;
 }
 
 #statusMenu {
