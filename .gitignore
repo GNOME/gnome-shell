@@ -245,6 +245,8 @@ TAGS
 /tests/conform/test-behaviours
 /tests/conform/test-cogl-sub-texture
 /tests/conform/test-cogl-multitexture
+/tests/conform/test-animator-base
+/tests/conform/test-animator-properties
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking

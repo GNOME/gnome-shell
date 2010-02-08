@@ -8,6 +8,8 @@ json_files = \
 	test-script-named-object.json		\
 	test-script-object-property.json	\
 	test-script-single.json			\
+	test-animator-1.json			\
+	test-animator-2.json			\
 	$(NULL)
 
 png_files = \

@@ -45,6 +45,7 @@ test_conformance_SOURCES = 		\
 	test-script-parser.c		\
 	test-actor-destroy.c		\
 	test-behaviours.c		\
+	test-animator.c			\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
