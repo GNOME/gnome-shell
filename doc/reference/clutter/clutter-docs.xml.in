@@ -10,12 +10,15 @@
     <releaseinfo>for Clutter &version;</releaseinfo>
 
     <copyright>
-      <year>2006,2007,2008</year>
+      <year>2006</year>
+      <year>2007</year>
+      <year>2008</year>
       <holder>OpenedHand LTD</holder>
     </copyright>
 
     <copyright>
-      <year>2009, 2010</year>
+      <year>2009</year>
+      <year>2010</year>
       <holder>Intel Corporation</holder>
     </copyright>
 
