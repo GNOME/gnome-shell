@@ -37,6 +37,65 @@
  * through the #ClutterScript definition format, but it comes with a
  * convenience C API.
  *
+ * <refsect2 id="ClutterAnimator-script">
+ *   <title>ClutterAnimator description for #ClutterScript</title>
+ *   <para>#ClutterAnimator defines a custom "properties" property
+ *   which allows describing the key frames for objects.</para>
+ *   <para>The "properties" property has the following syntax:</para>
+ *   <informalexample>
+ *     <programlisting>
+ *  {
+ *    "properties" : [
+ *      {
+ *        "object" : &lt;id of an object&gt;,
+ *        "name" : &lt;name of the property&gt;,
+ *        "ease-in" : &lt;boolean&gt;,
+ *        "interpolation" : &lt;#ClutterInterpolation value&gt;,
+ *        "keys" : [
+ *          [ &lt;progress&gt;, &lt;easing mode&gt;, &lt;final value&gt; ]
+ *        ]
+ *    ]
+ *  }
+ *     </programlisting>
+ *   </informalexample>
+ *   <example id="ClutterAnimator-script-example">
+ *     <title>ClutterAnimator definition<title>
+ *     <para>The following JSON fragment defines a #ClutterAnimator
+ *     with the duration of 1 second and operating on the x and y
+ *     properties of a #ClutterActor named "rect-01", with two frames
+ *     for each property. The first frame will linearly move the actor
+ *     from its current position to the 100, 100 position in 20 percent
+ *     of the duration of the animation; the second will using a cubic
+ *     easing to move the actor to the 200, 200 coordinates.</para>
+ *     <programlisting>
+ *  {
+ *    "type" : "ClutterAnimator",
+ *    "duration" : 1000,
+ *    "properties" : [
+ *      {
+ *        "object" : "rect-01",
+ *        "name" : "x",
+ *        "ease-in" : true,
+ *        "keys" : [
+ *          [ 0.2, "linear",       100.0 ],
+ *          [ 1.0, "easeOutCubic", 200.0 ]
+ *        ]
+ *      },
+ *      {
+ *        "object" : "rect-01",
+ *        "name" : "y",
+ *        "ease-in" : true,
+ *        "keys" : [
+ *          [ 0.2, "linear",       100.0 ],
+ *          [ 1.0, "easeOutCubic", 200.0 ]
+ *        ]
+ *      }
+ *    ]
+ *  }
+ *     </programlisting>
+ *   </example>
+ * </refsect2>
+ *
  * #ClutterAnimator is available since Clutter 1.2
  */
 
