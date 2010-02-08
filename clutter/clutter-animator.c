@@ -349,6 +349,7 @@ clutter_animator_key_new (ClutterAnimator *animator,
   animator_key->animator = animator;
   animator_key->object = object;
   animator_key->mode = mode;
+  memset (&(animator_key->value), 0, sizeof (GValue));
   animator_key->progress = progress;
   animator_key->property_name = g_intern_string (property_name);
   animator_key->interpolation = CLUTTER_INTERPOLATION_LINEAR;
@@ -1297,7 +1298,6 @@ parse_animator_property (JsonArray *array,
       ClutterAnimatorKey *animator_key;
       gdouble progress;
       gulong mode;
-      GValue *value;
       gboolean res;
 
       progress = json_array_get_double_element (key, 0);
@@ -1308,9 +1308,9 @@ parse_animator_property (JsonArray *array,
                                                pname,
                                                progress,
                                                mode);
-      value = &animator_key->value;
+
       res = clutter_script_parse_node (clos->script,
-                                       value,
+                                       &(animator_key->value),
                                        pname,
                                        json_array_get_element (key, 2),
                                        pspec);
