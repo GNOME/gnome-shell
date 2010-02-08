@@ -3,7 +3,10 @@
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
+const Main = imports.ui.main;
 
 function AppFavorites() {
     this._init();
@@ -61,23 +64,50 @@ AppFavorites.prototype = {
         return appId in this._favorites;
     },
 
-    addFavorite: function(appId) {
+    _addFavorite: function(appId) {
         if (appId in this._favorites)
-            return;
+            return false;
+
         let app = Shell.AppSystem.get_default().get_app(appId);
+
         if (!app)
-            return;
+            return false;
+
         let ids = this._getIds();
         ids.push(appId);
         this._gconf.set_string_list(this.FAVORITE_APPS_KEY, ids);
         this._favorites[appId] = app;
+        return true;
+    },
+
+    addFavorite: function(appId) {
+        if (!this._addFavorite(appId))
+            return;
+
+        let app = Shell.AppSystem.get_default().get_app(appId);
+
+        Main.overview.infoBar.setMessage(_('%s has been added to your favorites.').format(app.get_name()), Lang.bind(this, function () {
+            this._removeFavorite(appId);
+        }));
+    },
+
+    _removeFavorite: function(appId) {
+        if (!appId in this._favorites)
+            return false;
+
+        let ids = this._getIds().filter(function (id) { return id != appId; });
+        this._gconf.set_string_list(this.FAVORITE_APPS_KEY, ids);
+        return true;
     },
 
     removeFavorite: function(appId) {
-        if (!appId in this._favorites)
+        if (!this._removeFavorite(appId))
             return;
-        let ids = this._getIds().filter(function (id) { return id != appId; });
-        this._gconf.set_string_list(this.FAVORITE_APPS_KEY, ids);
+
+        Main.overview.infoBar.setMessage(_('%s has been removed from your favorites.').format(this._favorites[appId].get_name()),
+                                         Lang.bind(this, function () {
+            this._addFavorite(appId);
+        }));
     }
 };
 Signals.addSignalMethods(AppFavorites.prototype);

@@ -133,6 +133,27 @@ StTooltip {
 
 /* Overlay */
 
+.info-bar {
+    border-radius: 3px;
+    border: 1px solid #5c5c5c;
+    background: #1e1e1e;
+    color: #cccccc;
+    font-size: 14px;
+    height: 26px;
+}
+
+.info-bar-panel {
+    padding: 11px;
+}
+
+.info-bar-link-button {
+    text-decoration: underline;
+}
+
+.info-bar-link-button:hover {
+    color: #ffffff;
+}
+
 .workspaces {
     color: white;
 }

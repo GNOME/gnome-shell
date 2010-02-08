@@ -9,6 +9,8 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
@@ -74,9 +76,118 @@ const SHADOW_WIDTH = 6;
 
 const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
 
+const INFO_BAR_HIDE_TIMEOUT = 30;
+
 let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
+
+function InfoBar() {
+    this._init();
+}
+
+InfoBar.prototype = {
+    _init: function() {
+        this.actor = new St.Bin({ style_class: 'info-bar-panel',
+                                  x_fill: true,
+                                  y_fill: false });
+        this._label = new St.Label();
+        this._undo = new St.Button({ label: _('Undo'),
+                                     style_class: 'info-bar-link-button' });
+
+        let bin = new St.Bin({ style_class: 'info-bar',
+                               x_fill: false,
+                               y_fill: false,
+                               x_align: St.Align.MIDDLE,
+                               y_align: St.Align.MIDDLE });
+        this.actor.set_child(bin);
+
+        let box = new St.BoxLayout();
+        bin.set_child(box);
+        this._timeoutId = 0;
+
+        box.add(this._label, {'y-fill' : false, 'y-align' : St.Align.MIDDLE});
+        box.add(this._undo);
+
+        this.actor.set_opacity(0);
+
+        this._undoCallback = null;
+        this._undo.connect('clicked', Lang.bind(this, this._onUndoClicked));
+
+        this._overviewWasHidden = false;
+        this._hidingOverviewId = 0;
+    },
+
+    _onUndoClicked: function() {
+        Mainloop.source_remove(this._timeoutId);
+        this._timeoutId = 0;
+
+        if (this._undoCallback)
+            this._undoCallback();
+        this.actor.set_opacity(0);
+        this._undoCallback = null;
+    },
+
+    _hideDone: function() {
+        this._undoCallback = null;
+    },
+
+    _hide: function() {
+        this._overviewWasHidden = false;
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           transition: 'easeOutQuad',
+                           time: ANIMATION_TIME,
+                           onComplete: this._hideDone,
+                           onCompleteScope: this
+                         });
+    },
+
+    _onTimeout: function() {
+        this._timeoutId = 0;
+        if (this._overviewWasHidden)
+            this._hide();
+        return false;
+    },
+
+    _onOverviewHiding: function() {
+        if (this._timeoutId == 0)
+            this._hide();
+        else
+            this._overviewWasHidden = true;
+    },
+
+    setMessage: function(text, undoCallback) {
+        if (this._timeoutId)
+            Mainloop.source_remove(this._timeoutId);
+
+        if (this._hidingOverviewId == 0) {
+            // Set here, because when constructor is called, overview is null.
+            if (!Main.overview)
+                return;
+            // We don't actually use the ID, it's just a way of tracking whether we've hooked up the signal
+            this._hidingOverviewId = Main.overview.connect('hiding', Lang.bind(this, this._onOverviewHiding));
+        }
+        this._timeout = false;
+        this._overviewWasHidden = false;
+
+        this._label.text = text + '  ';
+
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           transition: 'easeOutQuad',
+                           time: ANIMATION_TIME
+                         });
+
+        this._timeoutId = Mainloop.timeout_add_seconds(INFO_BAR_HIDE_TIMEOUT, Lang.bind(this, this._onTimeout));
+
+        this._undoCallback = undoCallback;
+        if (undoCallback)
+            this._undo.show();
+        else
+            this._undo.hide();
+    }
+};
 
 function Overview() {
     this._init();
@@ -86,6 +197,9 @@ Overview.prototype = {
     _init : function() {
         this._group = new Clutter.Group();
         this._group._delegate = this;
+
+        this.infoBar = new InfoBar();
+        this._group.add_actor(this.infoBar.actor);
 
         this._workspacesViewSwitch = new WorkspacesView.WorkspacesViewSwitch();
         this._workspacesViewSwitch.connect('view-changed', Lang.bind(this, this._onViewChanged));
@@ -228,6 +342,10 @@ Overview.prototype = {
         this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
         this._dash.searchResults.actor.height = this._workspacesHeight;
+
+        this.infoBar.actor.set_position(displayGridColumnWidth, Panel.PANEL_HEIGHT);
+        this.infoBar.actor.set_size(primary.width - displayGridColumnWidth, this._workspacesY - Panel.PANEL_HEIGHT);
+        this.infoBar.actor.raise_top();
 
         // place the 'Add Workspace' button in the bottom row of the grid
         this._workspacesBarX = this._workspacesX;
