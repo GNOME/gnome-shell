@@ -769,26 +769,39 @@ static const struct
 static const gint n_animation_modes = G_N_ELEMENTS (animation_modes);
 
 gulong
-clutter_script_resolve_animation_mode (const gchar *name)
+clutter_script_resolve_animation_mode (JsonNode *node)
 {
-  gint i, res = 0;
+  gint i, res = CLUTTER_CUSTOM_MODE;
 
-  /* XXX - we might be able to optimize by changing the ordering
-   * of the animation_modes array, e.g.
-   *  - special casing linear
-   *  - tokenizing ('ease', 'In', 'Sine') and matching on token
-   *  - binary searching?
-   */
-  for (i = 0; i < n_animation_modes; i++)
+  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
+    return CLUTTER_CUSTOM_MODE;
+
+  if (json_node_get_value_type (node) == G_TYPE_INT64)
+    return json_node_get_int (node);
+
+  if (json_node_get_value_type (node) == G_TYPE_STRING)
     {
-      if (strcmp (animation_modes[i].name, name) == 0)
-        return animation_modes[i].mode;
+      const gchar *name = json_node_get_string (node);
+
+      /* XXX - we might be able to optimize by changing the ordering
+       * of the animation_modes array, e.g.
+       *  - special casing linear
+       *  - tokenizing ('ease', 'In', 'Sine') and matching on token
+       *  - binary searching?
+       */
+      for (i = 0; i < n_animation_modes; i++)
+        {
+          if (strcmp (animation_modes[i].name, name) == 0)
+            return animation_modes[i].mode;
+        }
+
+      if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
+                                           name,
+                                           &res))
+        return res;
+
+      g_warning ("Unable to find the animation mode '%s'", name);
     }
-
-  if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE, name, &res))
-    return res;
-
-  g_warning ("Unable to find the animation mode '%s'", name);
 
   return CLUTTER_CUSTOM_MODE;
 }
@@ -850,8 +863,8 @@ _clutter_script_parse_alpha (ClutterScript *script,
     }
 
   val = json_object_get_member (object, "mode");
-  if (val && json_node_get_string (val) != NULL)
-    mode = clutter_script_resolve_animation_mode (json_node_get_string (val));
+  if (val)
+    mode = clutter_script_resolve_animation_mode (val);
 
   if (mode == CLUTTER_CUSTOM_MODE)
     {

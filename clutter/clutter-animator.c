@@ -37,6 +37,65 @@
  * through the #ClutterScript definition format, but it comes with a
  * convenience C API.
  *
+ * <refsect2 id="ClutterAnimator-script">
+ *   <title>ClutterAnimator description for #ClutterScript</title>
+ *   <para>#ClutterAnimator defines a custom "properties" property
+ *   which allows describing the key frames for objects.</para>
+ *   <para>The "properties" property has the following syntax:</para>
+ *   <informalexample>
+ *     <programlisting>
+ *  {
+ *    "properties" : [
+ *      {
+ *        "object" : &lt;id of an object&gt;,
+ *        "name" : &lt;name of the property&gt;,
+ *        "ease-in" : &lt;boolean&gt;,
+ *        "interpolation" : &lt;#ClutterInterpolation value&gt;,
+ *        "keys" : [
+ *          [ &lt;progress&gt;, &lt;easing mode&gt;, &lt;final value&gt; ]
+ *        ]
+ *    ]
+ *  }
+ *     </programlisting>
+ *   </informalexample>
+ *   <example id="ClutterAnimator-script-example">
+ *     <title>ClutterAnimator definition<title>
+ *     <para>The following JSON fragment defines a #ClutterAnimator
+ *     with the duration of 1 second and operating on the x and y
+ *     properties of a #ClutterActor named "rect-01", with two frames
+ *     for each property. The first frame will linearly move the actor
+ *     from its current position to the 100, 100 position in 20 percent
+ *     of the duration of the animation; the second will using a cubic
+ *     easing to move the actor to the 200, 200 coordinates.</para>
+ *     <programlisting>
+ *  {
+ *    "type" : "ClutterAnimator",
+ *    "duration" : 1000,
+ *    "properties" : [
+ *      {
+ *        "object" : "rect-01",
+ *        "name" : "x",
+ *        "ease-in" : true,
+ *        "keys" : [
+ *          [ 0.2, "linear",       100.0 ],
+ *          [ 1.0, "easeOutCubic", 200.0 ]
+ *        ]
+ *      },
+ *      {
+ *        "object" : "rect-01",
+ *        "name" : "y",
+ *        "ease-in" : true,
+ *        "keys" : [
+ *          [ 0.2, "linear",       100.0 ],
+ *          [ 1.0, "easeOutCubic", 200.0 ]
+ *        ]
+ *      }
+ *    ]
+ *  }
+ *     </programlisting>
+ *   </example>
+ * </refsect2>
+ *
  * #ClutterAnimator is available since Clutter 1.2
  */
 
@@ -54,8 +113,8 @@
 #include "clutter-enum-types.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"
-
-G_DEFINE_TYPE (ClutterAnimator, clutter_animator, G_TYPE_OBJECT);
+#include "clutter-script-private.h"
+#include "clutter-scriptable.h"
 
 #define CLUTTER_ANIMATOR_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ANIMATOR, ClutterAnimatorPrivate))
 
@@ -104,6 +163,13 @@ enum
   PROP_DURATION
 };
 
+static void clutter_scriptable_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterAnimator,
+                         clutter_animator,
+                         G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_init));
 /**
  * clutter_animator_new:
  *
@@ -270,10 +336,10 @@ object_disappeared (gpointer  data,
 
 static ClutterAnimatorKey *
 clutter_animator_key_new (ClutterAnimator *animator,
-                          gdouble          progress,
                           GObject         *object,
-                          guint            mode,
-                          const gchar     *property_name)
+                          const gchar     *property_name,
+                          gdouble          progress,
+                          guint            mode)
 {
   ClutterAnimatorKey *animator_key;
 
@@ -771,10 +837,16 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
 ClutterTimeline *
 clutter_animator_run (ClutterAnimator *animator)
 {
+  ClutterAnimatorPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
-  clutter_timeline_rewind (animator->priv->timeline);
-  clutter_timeline_start (animator->priv->timeline);
-  return animator->priv->timeline;
+
+  priv = animator->priv;
+
+  clutter_timeline_rewind (priv->timeline);
+  clutter_timeline_start (priv->timeline);
+
+  return priv->timeline;
 }
 
 /**
@@ -915,18 +987,47 @@ clutter_animator_set (ClutterAnimator *animator,
   va_end (args);
 }
 
+static inline void
+clutter_animator_set_key_internal (ClutterAnimator    *animator,
+                                   ClutterAnimatorKey *key)
+{
+  ClutterAnimatorPrivate *priv = animator->priv;
+  GList *old_item;
+
+  old_item = g_list_find_custom (priv->score, key,
+                                 sort_actor_prop_progress_func);
+
+  /* replace the key if we already have a similar one */
+  if (old_item != NULL)
+    {
+      ClutterAnimatorKey *old_key = old_item->data;
+
+      clutter_animator_key_free (old_key);
+
+      priv->score = g_list_remove (priv->score, old_key);
+    }
+
+  priv->score = g_list_insert_sorted (priv->score, key,
+                                      sort_actor_prop_progress_func);
+}
+
 /**
  * clutter_animator_set_key:
  * @animator: a #ClutterAnimator
  * @object: a #GObject
  * @property_name: the property to specify a key for
  * @mode: the id of the alpha function to use
- * @progress: at which stage of the animation this value applies (range 0.0-1.0)
+ * @progress: the normalized range at which stage of the animation this
+ *   value applies
  * @value: the value property_name should have at progress.
  *
- * As clutter_animator_set but only for a single key.
+ * Sets a single key in the #ClutterAnimator for the @property_name of
+ * @object at @progress.
  *
- * Return value: (transfer none): The animator itself.
+ * See also: clutter_animator_set()
+ *
+ * Return value: (transfer none): The animator instance
+ *
  * Since: 1.2
  */
 ClutterAnimator *
@@ -939,7 +1040,6 @@ clutter_animator_set_key (ClutterAnimator *animator,
 {
   ClutterAnimatorPrivate *priv;
   ClutterAnimatorKey     *animator_key;
-  GList                  *old_item;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
@@ -949,22 +1049,16 @@ clutter_animator_set_key (ClutterAnimator *animator,
   priv = animator->priv;
   property_name = g_intern_string (property_name);
 
-  animator_key = clutter_animator_key_new (animator, progress, object, mode,
-                                           property_name);
+  animator_key = clutter_animator_key_new (animator,
+                                           object, property_name,
+                                           progress,
+                                           mode);
 
   g_value_init (&animator_key->value, G_VALUE_TYPE (value));
   g_value_copy (value, &animator_key->value);
 
-  if ((old_item = g_list_find_custom (priv->score, animator_key,
-                                      sort_actor_prop_progress_func)))
-    {
-      ClutterAnimatorKey *old_key = old_item->data;
-      clutter_animator_key_free (old_key);
-      animator->priv->score = g_list_remove (animator->priv->score, old_key);
-    }
+  clutter_animator_set_key_internal (animator, animator_key);
 
-  priv->score = g_list_insert_sorted (priv->score, animator_key,
-                                      sort_actor_prop_progress_func);
   return animator;
 }
 
@@ -1075,6 +1169,228 @@ again:
             }
         }
     }
+}
+
+typedef struct _ParseClosure {
+  ClutterAnimator *animator;
+  ClutterScript *script;
+
+  GValue *value;
+
+  gboolean result;
+} ParseClosure;
+
+static ClutterInterpolation
+resolve_interpolation (JsonNode *node)
+{
+  if ((JSON_NODE_TYPE (node) != JSON_NODE_VALUE))
+    return CLUTTER_INTERPOLATION_LINEAR;
+
+  if (json_node_get_value_type (node) == G_TYPE_INT64)
+    {
+      return json_node_get_int (node);
+    }
+  else if (json_node_get_value_type (node) == G_TYPE_STRING)
+    {
+      const gchar *str = json_node_get_string (node);
+      gboolean res;
+      gint enum_value;
+
+      res = clutter_script_enum_from_string (CLUTTER_TYPE_INTERPOLATION,
+                                             str,
+                                             &enum_value);
+      if (res)
+        return enum_value;
+    }
+
+  return CLUTTER_INTERPOLATION_LINEAR;
+}
+
+static void
+parse_animator_property (JsonArray *array,
+                         guint      index_,
+                         JsonNode  *element,
+                         gpointer   data)
+{
+  ParseClosure *clos = data;
+  JsonObject *object;
+  JsonArray *keys;
+  GObject *gobject;
+  const gchar *id, *pname;
+  GObjectClass *klass;
+  GParamSpec *pspec;
+  GSList *valid_keys = NULL;
+  GList *k;
+  ClutterInterpolation interpolation = CLUTTER_INTERPOLATION_LINEAR;
+  gboolean ease_in = FALSE;
+
+  if (JSON_NODE_TYPE (element) != JSON_NODE_OBJECT)
+    {
+      g_warning ("The 'properties' member of a ClutterAnimator description "
+                 "should be an array of objects, but the element %d of the "
+                 "array is of type '%s'. The element will be ignored.",
+                 index_,
+                 json_node_type_name (element));
+      return;
+    }
+
+  object = json_node_get_object (element);
+
+  if (!json_object_has_member (object, "object") ||
+      !json_object_has_member (object, "name") ||
+      !json_object_has_member (object, "keys"))
+    {
+      g_warning ("The property description at index %d is missing one of "
+                 "the mandatory fields: object, name and keys",
+                 index_);
+      return;
+    }
+
+  id = json_object_get_string_member (object, "object");
+  gobject = clutter_script_get_object (clos->script, id);
+  if (gobject == NULL)
+    {
+      g_warning ("No object with id '%s' has been defined.", id);
+      return;
+    }
+
+  pname = json_object_get_string_member (object, "name");
+  klass = G_OBJECT_GET_CLASS (gobject);
+  pspec = g_object_class_find_property (klass, pname);
+  if (pspec == NULL)
+    {
+      g_warning ("The object of type '%s' and name '%s' has no "
+                 "property named '%s'",
+                 G_OBJECT_TYPE_NAME (gobject),
+                 id,
+                 pname);
+      return;
+    }
+
+  if (json_object_has_member (object, "ease-in"))
+    ease_in = json_object_get_boolean_member (object, "ease-in");
+
+  if (json_object_has_member (object, "interpolation"))
+    {
+      JsonNode *node = json_object_get_member (object, "interpolation");
+
+      interpolation = resolve_interpolation (node);
+    }
+
+  keys = json_object_get_array_member (object, "keys");
+  if (keys == NULL)
+    {
+      g_warning ("The property description at index %d has an invalid "
+                 "key field of type '%s' when an array was expected.",
+                 index_,
+                 json_node_type_name (json_object_get_member (object, "keys")));
+      return;
+    }
+
+  valid_keys = NULL;
+  for (k = json_array_get_elements (keys);
+       k != NULL;
+       k = k->next)
+    {
+      JsonNode *node = k->data;
+      JsonArray *key = json_node_get_array (node);
+      ClutterAnimatorKey *animator_key;
+      gdouble progress;
+      gulong mode;
+      GValue *value;
+      gboolean res;
+
+      progress = json_array_get_double_element (key, 0);
+      mode = clutter_script_resolve_animation_mode (json_array_get_element (key, 1));
+
+      animator_key = clutter_animator_key_new (clos->animator,
+                                               gobject,
+                                               pname,
+                                               progress,
+                                               mode);
+      value = &animator_key->value;
+      res = clutter_script_parse_node (clos->script,
+                                       value,
+                                       pname,
+                                       json_array_get_element (key, 2),
+                                       pspec);
+      if (!res)
+        {
+          g_warning ("Unable to parse the key value for the "
+                     "property '%s' (progress: %.2f) at index %d",
+                     pname,
+                     progress,
+                     index_);
+          continue;
+        }
+
+      animator_key->ease_in = ease_in;
+      animator_key->interpolation = interpolation;
+
+      valid_keys = g_slist_prepend (valid_keys, animator_key);
+    }
+
+  g_value_init (clos->value, G_TYPE_POINTER);
+  g_value_set_pointer (clos->value, g_slist_reverse (valid_keys));
+
+  clos->result = TRUE;
+}
+
+static gboolean
+clutter_animator_parse_custom_node (ClutterScriptable *scriptable,
+                                    ClutterScript     *script,
+                                    GValue            *value,
+                                    const gchar       *name,
+                                    JsonNode          *node)
+{
+  ParseClosure parse_closure;
+
+  if (strcmp (name, "properties") != 0)
+    return FALSE;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    return FALSE;
+
+  parse_closure.animator = CLUTTER_ANIMATOR (scriptable);
+  parse_closure.script = script;
+  parse_closure.value = value;
+  parse_closure.result = FALSE;
+
+  json_array_foreach_element (json_node_get_array (node),
+                              parse_animator_property,
+                              &parse_closure);
+
+  /* we return TRUE if we had at least one key parsed */
+
+  return parse_closure.result;
+}
+
+static void
+clutter_animator_set_custom_property (ClutterScriptable *scriptable,
+                                      ClutterScript     *script,
+                                      const gchar       *name,
+                                      const GValue      *value)
+{
+  if (strcmp (name, "properties") == 0)
+    {
+      ClutterAnimator *animator = CLUTTER_ANIMATOR (scriptable);
+      GSList *keys = g_value_get_pointer (value);
+      GSList *k;
+
+      for (k = keys; k != NULL; k = k->next)
+        clutter_animator_set_key_internal (animator, k->data);
+
+      g_slist_free (keys);
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static void
+clutter_scriptable_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_animator_parse_custom_node;
+  iface->set_custom_property = clutter_animator_set_custom_property;
 }
 
 static void
@@ -1340,24 +1656,25 @@ clutter_animator_key_get_type (void)
 
 /**
  * clutter_animator_key_get_object:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the object a key applies to.
  *
- * Return value: the object an animator_key exist for.
+ * Return value: (transfer none): the object an animator_key exist for.
  *
  * Since: 1.2
  */
 GObject *
-clutter_animator_key_get_object (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_object (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key, NULL);
-  return animator_key->object;
+  g_return_val_if_fail (key != NULL, NULL);
+
+  return key->object;
 }
 
 /**
  * clutter_animator_key_get_property_name:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the name of the property a key applies to.
  *
@@ -1366,16 +1683,37 @@ clutter_animator_key_get_object (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 G_CONST_RETURN gchar *
-clutter_animator_key_get_property_name (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_property_name (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
-  return animator_key->property_name;
+  return key->property_name;
+}
+
+/**
+ * clutter_animator_key_get_property_type:
+ * @key: a #ClutterAnimatorKey
+ *
+ * Retrieves the #GType of the property a key applies to
+ *
+ * You can use this type to initialize the #GValue to pass to
+ * clutter_animator_key_get_value()
+ *
+ * Return value: the #GType of the property
+ *
+ * Since: 1.2
+ */
+GType
+clutter_animator_key_get_property_type (const ClutterAnimatorKey *key)
+{
+  g_return_val_if_fail (key != NULL, G_TYPE_INVALID);
+
+  return G_VALUE_TYPE (&key->value);
 }
 
 /**
  * clutter_animator_key_get_mode:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the mode of a #ClutterAnimator key, for the first key of a
  * property for an object this represents the whether the animation is
@@ -1387,16 +1725,16 @@ clutter_animator_key_get_property_name (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 gulong
-clutter_animator_key_get_mode (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_mode (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, 0);
+  g_return_val_if_fail (key != NULL, 0);
 
-  return animator_key->mode;
+  return key->mode;
 }
 
 /**
  * clutter_animator_key_get_progress:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  *
  * Retrieves the progress of an clutter_animator_key
  *
@@ -1405,31 +1743,52 @@ clutter_animator_key_get_mode (ClutterAnimatorKey *animator_key)
  * Since: 1.2
  */
 gdouble
-clutter_animator_key_get_progress (ClutterAnimatorKey *animator_key)
+clutter_animator_key_get_progress (const ClutterAnimatorKey *key)
 {
-  g_return_val_if_fail (animator_key != NULL, 0.0);
+  g_return_val_if_fail (key != NULL, 0.0);
 
-  return animator_key->progress;
+  return key->progress;
 }
 
 /**
  * clutter_animator_key_get_value:
- * @animator_key: a #ClutterAnimatorKey
+ * @key: a #ClutterAnimatorKey
  * @value: a #GValue initialized with the correct type for the animator key
  *
  * Retrieves a copy of the value for a #ClutterAnimatorKey.
  *
- * The passed in GValue needs to be already initialized for the value type.
+ * The passed in #GValue needs to be already initialized for the value
+ * type of the key or to a type that allow transformation from the value
+ * type of the key.
  *
- * Use g_value_unset() when done
+ * Use g_value_unset() when done.
+ *
+ * Return value: %TRUE if the passed #GValue was successfully set, and
+ *   %FALSE otherwise
  *
  * Since: 1.2
  */
-void
-clutter_animator_key_get_value (ClutterAnimatorKey *animator_key,
-                                GValue             *value)
+gboolean
+clutter_animator_key_get_value (const ClutterAnimatorKey *key,
+                                GValue                   *value)
 {
-  g_return_if_fail (animator_key != NULL);
+  GType gtype;
 
-  g_value_copy (&animator_key->value, value);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  gtype = G_VALUE_TYPE (&key->value);
+
+  if (g_value_type_compatible (gtype, G_VALUE_TYPE (value)))
+    {
+      g_value_copy (&key->value, value);
+      return TRUE;
+    }
+
+  if (g_value_type_transformable (gtype, G_VALUE_TYPE (value)))
+    {
+      if (g_value_transform (&key->value, value))
+        return TRUE;
+    }
+
+  return FALSE;
 }

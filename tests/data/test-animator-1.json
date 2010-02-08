@@ -1,0 +1,5 @@
+{
+  "type" : "ClutterAnimator",
+  "id" : "animator",
+  "duration" : 1000
+}

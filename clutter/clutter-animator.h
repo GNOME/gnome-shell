@@ -154,12 +154,13 @@ void                 clutter_animator_property_set_interpolation (ClutterAnimato
                                                                   ClutterInterpolation  interpolation);
 
 GType                 clutter_animator_key_get_type          (void) G_GNUC_CONST;
-GObject *             clutter_animator_key_get_object        (ClutterAnimatorKey  *animator_key);
-G_CONST_RETURN gchar *clutter_animator_key_get_property_name (ClutterAnimatorKey  *animator_key);
-gulong                clutter_animator_key_get_mode          (ClutterAnimatorKey  *animator_key);
-gdouble               clutter_animator_key_get_progress      (ClutterAnimatorKey  *animator_key);
-void                  clutter_animator_key_get_value         (ClutterAnimatorKey  *animator_key,
-                                                              GValue              *value);
+GObject *             clutter_animator_key_get_object        (const ClutterAnimatorKey *animator_key);
+G_CONST_RETURN gchar *clutter_animator_key_get_property_name (const ClutterAnimatorKey *animator_key);
+GType                 clutter_animator_key_get_property_type (const ClutterAnimatorKey *animator_key);
+gulong                clutter_animator_key_get_mode          (const ClutterAnimatorKey *animator_key);
+gdouble               clutter_animator_key_get_progress      (const ClutterAnimatorKey *animator_key);
+gboolean              clutter_animator_key_get_value         (const ClutterAnimatorKey *animator_key,
+                                                              GValue                   *value);
 
 G_END_DECLS
 
