@@ -73,10 +73,6 @@ struct _StButtonPrivate
 {
   gchar            *text;
 
-  ClutterActor     *old_bg;
-  gboolean          old_bg_parented; /* TRUE if we have adopted old_bg */
-  gboolean          old_bg_animating; /* TRUE if the opacity animation is running and we hold a self-ref */
-
   guint8            old_opacity;
 
   guint             is_pressed : 1;
@@ -110,49 +106,13 @@ st_button_update_label_style (StButton *button)
 }
 
 static void
-st_button_dispose_old_bg (StButton *button)
-{
-  StButtonPrivate *priv = button->priv;
-
-  if (priv->old_bg)
-    {
-      if (priv->old_bg_parented)
-        {
-          clutter_actor_unparent (priv->old_bg);
-          priv->old_bg_parented = FALSE;
-        }
-      g_object_unref (priv->old_bg);
-      priv->old_bg = NULL;
-      if (priv->old_bg_animating)
-        {
-          g_object_unref (button);
-          priv->old_bg_animating = FALSE;
-        }
-    }
-}
-
-static void
-st_animation_completed (ClutterAnimation *animation,
-                        StButton         *button)
-{
-  st_button_dispose_old_bg (button);
-}
-
-static void
 st_button_style_changed (StWidget *widget)
 {
   StButton *button = ST_BUTTON (widget);
   StButtonPrivate *priv = button->priv;
   StButtonClass *button_class = ST_BUTTON_GET_CLASS (button);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (button));
-  ClutterActor *bg_image;
   double spacing;
-
-  st_button_dispose_old_bg (button);
-
-  bg_image = st_widget_get_border_image ((StWidget*) button);
-  if (bg_image)
-    button->priv->old_bg = g_object_ref (bg_image);
 
   ST_WIDGET_CLASS (st_button_parent_class)->style_changed (widget);
 
@@ -166,42 +126,7 @@ st_button_style_changed (StWidget *widget)
   /* run a transition if applicable */
   if (button_class->transition)
     {
-      button_class->transition (button, priv->old_bg);
-    }
-  else
-    {
-      if (priv->old_bg &&
-          (!st_widget_get_style_pseudo_class (widget)))
-        {
-          ClutterAnimation *animation;
-          if (!clutter_actor_get_parent (priv->old_bg))
-            {
-              clutter_actor_set_parent (priv->old_bg, (ClutterActor*) widget);
-              priv->old_bg_parented = TRUE;
-            }
-          if (priv->transition_duration > 0)
-            {
-              animation = clutter_actor_animate (priv->old_bg,
-                                                 CLUTTER_LINEAR,
-                                                 priv->transition_duration,
-                                                 "opacity", 0,
-                                                 NULL);
-              /* The reference counting here is looped; through the button, old_bg,
-               * and the animation.  However, that's not a problem because we will
-               * break the cycle when either the animation completes, or when
-               * we dispose.
-               */
-              priv->old_bg_animating = TRUE;
-              g_object_ref (button);
-              g_signal_connect (animation, "completed",
-                                G_CALLBACK (st_animation_completed), button);
-            }
-          else
-            {
-              st_button_dispose_old_bg (button);
-            }
-
-        }
+      button_class->transition (button);
     }
 }
 
@@ -395,49 +320,6 @@ st_button_finalize (GObject *gobject)
 }
 
 static void
-st_button_dispose (GObject *gobject)
-{
-  st_button_dispose_old_bg (ST_BUTTON (gobject));
-
-  G_OBJECT_CLASS (st_button_parent_class)->dispose (gobject);
-}
-
-static void
-st_button_map (ClutterActor *self)
-{
-  StButtonPrivate *priv = ST_BUTTON (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_button_parent_class)->map (self);
-
-  if (priv->old_bg && priv->old_bg_parented)
-    clutter_actor_map (priv->old_bg);
-}
-
-static void
-st_button_unmap (ClutterActor *self)
-{
-  StButtonPrivate *priv = ST_BUTTON (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_button_parent_class)->unmap (self);
-
-  if (priv->old_bg && priv->old_bg_parented)
-    clutter_actor_unmap (priv->old_bg);
-}
-
-static void
-st_button_draw_background (StWidget         *widget)
-{
-  StButtonPrivate *priv;
-
-  ST_WIDGET_CLASS (st_button_parent_class)->draw_background (widget);
-
-  priv = ST_BUTTON (widget)->priv;
-
-  if (priv->old_bg && priv->old_bg_parented)
-    clutter_actor_paint (priv->old_bg);
-}
-
-static void
 st_button_class_init (StButtonClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -452,7 +334,6 @@ st_button_class_init (StButtonClass *klass)
 
   gobject_class->set_property = st_button_set_property;
   gobject_class->get_property = st_button_get_property;
-  gobject_class->dispose = st_button_dispose;
   gobject_class->finalize = st_button_finalize;
 
   actor_class->button_press_event = st_button_button_press;
@@ -460,10 +341,6 @@ st_button_class_init (StButtonClass *klass)
   actor_class->enter_event = st_button_enter;
   actor_class->leave_event = st_button_leave;
 
-  actor_class->map = st_button_map;
-  actor_class->unmap = st_button_unmap;
-
-  widget_class->draw_background = st_button_draw_background;
   widget_class->style_changed = st_button_style_changed;
 
   pspec = g_param_spec_string ("label",

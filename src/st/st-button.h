@@ -68,8 +68,7 @@ struct _StButtonClass
   /* vfuncs, not signals */
   void (* pressed)    (StButton     *button);
   void (* released)   (StButton     *button);
-  void (* transition) (StButton     *button,
-                       ClutterActor *old_bg);
+  void (* transition) (StButton     *button);
 
   /* signals */
   void (* clicked) (StButton *button);

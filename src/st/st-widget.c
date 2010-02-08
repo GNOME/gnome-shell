@@ -537,9 +537,8 @@ static void
 st_widget_paint (ClutterActor *self)
 {
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
-  StWidgetClass *klass = ST_WIDGET_GET_CLASS (self);
 
-  klass->draw_background (ST_WIDGET (self));
+  st_widget_real_draw_background (ST_WIDGET (self));
 
   if (priv->background_image != NULL)
     {
@@ -1190,7 +1189,6 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->leave_event = st_widget_leave;
   actor_class->hide = st_widget_hide;
 
-  klass->draw_background = st_widget_real_draw_background;
   klass->style_changed = st_widget_real_style_changed;
 
   /**
@@ -1574,40 +1572,6 @@ st_widget_set_direction (StWidget *self, StTextDirection dir)
 }
 
 /**
- * st_widget_get_border_image:
- * @actor: A #StWidget
- *
- * Get the texture used as the border image. This is set using the
- * "border-image" CSS property. This function should normally only be used
- * by subclasses.
- *
- * Returns: (transfer none): #ClutterActor
- */
-ClutterActor *
-st_widget_get_border_image (StWidget *actor)
-{
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
-  return priv->border_image;
-}
-
-/**
- * st_widget_get_background_image:
- * @actor: A #StWidget
- *
- * Get the texture used as the background image. This is set using the
- * "background-image" CSS property. This function should normally only be used
- * by subclasses.
- *
- * Returns: (transfer none): a #ClutterActor
- */
-ClutterActor *
-st_widget_get_background_image (StWidget *actor)
-{
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
-  return priv->background_image;
-}
-
-/**
  * st_widget_set_has_tooltip:
  * @widget: A #StWidget
  * @has_tooltip: #TRUE if the widget should display a tooltip
@@ -1767,28 +1731,4 @@ st_widget_hide_tooltip (StWidget *widget)
 
   if (widget->priv->tooltip)
     st_tooltip_hide (widget->priv->tooltip);
-}
-
-/**
- * st_widget_draw_background:
- * @widget: a #StWidget
- *
- * Invokes #StWidget::draw_background() using the default background
- * image and/or color from the @widget style
- *
- * This function should be used by subclasses of #StWidget that override
- * the paint() virtual function and cannot chain up
- */
-void
-st_widget_draw_background (StWidget *self)
-{
-  StWidgetPrivate *priv;
-  StWidgetClass *klass;
-
-  g_return_if_fail (ST_IS_WIDGET (self));
-
-  priv = self->priv;
-
-  klass = ST_WIDGET_GET_CLASS (self);
-  klass->draw_background (ST_WIDGET (self));
 }

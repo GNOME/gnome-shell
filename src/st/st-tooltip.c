@@ -148,27 +148,13 @@ st_tooltip_get_preferred_width (ClutterActor *self,
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  gfloat label_height, arrow_height;
-  ClutterActor *arrow_image;
+  gfloat label_height;
 
   st_theme_node_adjust_for_height (theme_node, &for_height);
 
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-  if (arrow_image)
-    {
-      clutter_actor_get_preferred_height (arrow_image,
-                                          -1,
-                                          NULL,
-                                          &arrow_height);
-    }
-  else
-    {
-      arrow_height = 0;
-    }
-
   if (for_height > -1)
     {
-      label_height = for_height - arrow_height;
+      label_height = for_height;
     }
   else
     {
@@ -194,25 +180,9 @@ st_tooltip_get_preferred_height (ClutterActor *self,
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  gfloat arrow_height;
   gfloat min_label_h, natural_label_h;
-  ClutterActor *arrow_image;
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
-
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-
-  if (arrow_image && !priv->actor_below)
-    {
-      clutter_actor_get_preferred_height (arrow_image,
-                                          -1,
-                                          NULL,
-                                          &arrow_height);
-    }
-  else
-    {
-      arrow_height = 0;
-    }
 
   if (priv->label)
     {
@@ -228,10 +198,10 @@ st_tooltip_get_preferred_height (ClutterActor *self,
     }
 
   if (min_height_p)
-    *min_height_p = arrow_height + min_label_h;
+    *min_height_p = min_label_h;
 
   if (natural_height_p)
-    *natural_height_p = arrow_height + natural_label_h;
+    *natural_height_p = natural_label_h;
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
@@ -243,9 +213,7 @@ st_tooltip_allocate (ClutterActor          *self,
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  ClutterActorBox content_box, child_box, arrow_box;
-  gfloat arrow_height, arrow_width;
-  ClutterActor *border_image, *arrow_image;
+  ClutterActorBox content_box, child_box;
 
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->allocate (self,
                                                            box,
@@ -253,60 +221,22 @@ st_tooltip_allocate (ClutterActor          *self,
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-
-  if (arrow_image && !priv->actor_below)
-    {
-      clutter_actor_get_preferred_height (arrow_image, -1, NULL, &arrow_height);
-      clutter_actor_get_preferred_width (arrow_image, -1, NULL, &arrow_width);
-
-      arrow_box.x1 = (float)(priv->arrow_offset) - (int)(arrow_width / 2);
-      arrow_box.y1 = 0;
-      arrow_box.x2 = arrow_box.x1 + arrow_width;
-      arrow_box.y2 = arrow_box.y1 + arrow_height;
-
-      clutter_actor_allocate (arrow_image, &arrow_box, flags);
-    }
-  else
-    {
-      arrow_height = 0;
-      arrow_width = 0;
-    }
-
   child_box.x1 = child_box.y1 = 0;
   child_box.x2 = (box->x2 - box->x1);
   child_box.y2 = (box->y2 - box->y1);
 
-  /* remove the space that is used by the arrow */
-  child_box.y1 += arrow_height;
-
-  border_image = st_widget_get_border_image (ST_WIDGET (self));
-  if (border_image)
-    clutter_actor_allocate (border_image, &child_box, flags);
-
   if (priv->label)
     {
       child_box = content_box;
-      child_box.y1 += arrow_height;
 
       clutter_actor_allocate (priv->label, &child_box, flags);
     }
 }
 
-
 static void
 st_tooltip_paint (ClutterActor *self)
 {
-  ClutterActor *border_image, *arrow_image;
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
-
-  border_image = st_widget_get_border_image (ST_WIDGET (self));
-  if (border_image)
-    clutter_actor_paint (border_image);
-
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-  if (arrow_image && !priv->actor_below)
-    clutter_actor_paint (arrow_image);
 
   clutter_actor_paint (priv->label);
 }
@@ -315,17 +245,8 @@ static void
 st_tooltip_map (ClutterActor *self)
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
-  ClutterActor *border_image, *arrow_image;
 
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->map (self);
-
-  border_image = st_widget_get_border_image (ST_WIDGET (self));
-  if (border_image)
-    clutter_actor_map (border_image);
-
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-  if (arrow_image)
-    clutter_actor_map (arrow_image);
 
   clutter_actor_map (priv->label);
 }
@@ -334,17 +255,8 @@ static void
 st_tooltip_unmap (ClutterActor *self)
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
-  ClutterActor *border_image, *arrow_image;
 
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->unmap (self);
-
-  border_image = st_widget_get_border_image (ST_WIDGET (self));
-  if (border_image)
-    clutter_actor_unmap (border_image);
-
-  arrow_image = st_widget_get_background_image (ST_WIDGET (self));
-  if (arrow_image)
-    clutter_actor_unmap (arrow_image);
 
   clutter_actor_unmap (priv->label);
 }
