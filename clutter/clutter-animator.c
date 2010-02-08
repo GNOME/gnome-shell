@@ -59,7 +59,7 @@
  *     </programlisting>
  *   </informalexample>
  *   <example id="ClutterAnimator-script-example">
- *     <title>ClutterAnimator definition<title>
+ *     <title>ClutterAnimator definition</title>
  *     <para>The following JSON fragment defines a #ClutterAnimator
  *     with the duration of 1 second and operating on the x and y
  *     properties of a #ClutterActor named "rect-01", with two frames

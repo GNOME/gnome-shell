@@ -59,8 +59,8 @@ typedef struct _ClutterAnimatorKey     ClutterAnimatorKey;
 
 /**
  * ClutterInterpolation:
- * @CLUTTER_INTERPOLATION_LINEAR:
- * @CLUTTER_INTERPOLATION_CUBIC:
+ * @CLUTTER_INTERPOLATION_LINEAR: linear interpolation
+ * @CLUTTER_INTERPOLATION_CUBIC: cubic interpolation
  *
  * The mode of interpolation between key frames
  *
@@ -154,12 +154,12 @@ void                 clutter_animator_property_set_interpolation (ClutterAnimato
                                                                   ClutterInterpolation  interpolation);
 
 GType                 clutter_animator_key_get_type          (void) G_GNUC_CONST;
-GObject *             clutter_animator_key_get_object        (const ClutterAnimatorKey *animator_key);
-G_CONST_RETURN gchar *clutter_animator_key_get_property_name (const ClutterAnimatorKey *animator_key);
-GType                 clutter_animator_key_get_property_type (const ClutterAnimatorKey *animator_key);
-gulong                clutter_animator_key_get_mode          (const ClutterAnimatorKey *animator_key);
-gdouble               clutter_animator_key_get_progress      (const ClutterAnimatorKey *animator_key);
-gboolean              clutter_animator_key_get_value         (const ClutterAnimatorKey *animator_key,
+GObject *             clutter_animator_key_get_object        (const ClutterAnimatorKey *key);
+G_CONST_RETURN gchar *clutter_animator_key_get_property_name (const ClutterAnimatorKey *key);
+GType                 clutter_animator_key_get_property_type (const ClutterAnimatorKey *key);
+gulong                clutter_animator_key_get_mode          (const ClutterAnimatorKey *key);
+gdouble               clutter_animator_key_get_progress      (const ClutterAnimatorKey *key);
+gboolean              clutter_animator_key_get_value         (const ClutterAnimatorKey *key,
                                                               GValue                   *value);
 
 G_END_DECLS
