@@ -53,30 +53,36 @@ CFILE_GLOB=\
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
-	cogl-bitmap-private.h \
-	cogl-blend-string.h \
-	cogl-clip-stack.h \
-	cogl-context.h \
-	cogl-debug.h \
-	cogl-defines.h \
-	cogl-deprecated.h \
-	cogl-draw-buffer-private.h \
-	cogl-feature-private.h \
-	cogl-handle.h \
-	cogl-internal.h \
-	cogl-journal-private.h \
-	cogl-material-private.h \
-	cogl-matrix-mesa.h \
-	cogl-matrix-private.h \
-	cogl-matrix-stack.h \
-	cogl-spans.h \
-	cogl-primitives.h \
-	cogl-texture-2d-sliced-private.h \
-	cogl-texture-driver.h \
-	cogl-texture-private.h \
-	cogl-util.h \
-	cogl-vertex-buffer-private.h \
-	driver \
+	cogl-atlas-texture-private.h 		\
+	cogl-bitmap-private.h 			\
+	cogl-blend-string.h 			\
+	cogl-buffer-private.h 			\
+	cogl-clip-stack.h 			\
+	cogl-context.h 				\
+	cogl-debug.h 				\
+	cogl-defines.h 				\
+	cogl-deprecated.h 			\
+	cogl-draw-buffer-private.h 		\
+	cogl-feature-private.h 			\
+	cogl-framebuffer-private.h 		\
+	cogl-handle.h 				\
+	cogl-internal.h 			\
+	cogl-journal-private.h 			\
+	cogl-material-private.h 		\
+	cogl-matrix-mesa.h 			\
+	cogl-matrix-private.h 			\
+	cogl-matrix-stack.h 			\
+	cogl-spans.h 				\
+	cogl-pixel-buffer-private.h		\
+	cogl-primitives.h 			\
+	cogl-sub-texture-private.h		\
+	cogl-texture-2d-private.h		\
+	cogl-texture-2d-sliced-private.h 	\
+	cogl-texture-driver.h 			\
+	cogl-texture-private.h 			\
+	cogl-util.h 				\
+	cogl-vertex-buffer-private.h 		\
+	driver 					\
 	winsys
 
 EXTRA_HFILES=
