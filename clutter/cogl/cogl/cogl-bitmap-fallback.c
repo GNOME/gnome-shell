@@ -226,7 +226,7 @@ _cogl_premult_alpha_first (guchar *dst)
 #ifdef COGL_USE_PREMULT_SSE2
 
 inline static void
-_cogl_premult_alpha_last_four_pixels_sse2 (const guint8 *p)
+_cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 {
   /* 8 copies of 128 used below */
   static const gint16 eight_halves[8] __attribute__ ((aligned (16))) =
