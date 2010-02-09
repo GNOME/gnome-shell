@@ -1085,6 +1085,48 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
   return CLUTTER_ACTOR (texture);
 }
 
+static CoglHandle
+st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
+                                                StTextureCachePolicy policy,
+                                                const gchar    *uri,
+                                                int             available_width,
+                                                int             available_height,
+                                                GError         **error)
+{
+  CoglHandle texdata;
+  GdkPixbuf *pixbuf;
+  CacheKey key;
+
+  memset (&key, 0, sizeof (CacheKey));
+  key.policy = policy;
+  key.uri = (char*)uri;
+  key.size = available_width;
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+
+  if (texdata == NULL)
+    {
+      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, error);
+      if (!pixbuf)
+        {
+          return COGL_INVALID_HANDLE;
+        }
+
+      texdata = pixbuf_to_cogl_handle (pixbuf);
+      g_object_unref (pixbuf);
+
+      if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
+        {
+          cogl_handle_ref (texdata);
+          g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+        }
+    }
+  else
+    cogl_handle_ref (texdata);
+
+  return texdata;
+}
+
 /**
  * st_texture_cache_load_uri_sync:
  *
@@ -1111,44 +1153,54 @@ st_texture_cache_load_uri_sync (StTextureCache *cache,
                                 int                available_height,
                                 GError            **error)
 {
-  ClutterTexture *texture;
   CoglHandle texdata;
-  GdkPixbuf *pixbuf;
-  CacheKey key;
+  ClutterTexture *texture;
+
+  texdata = st_texture_cache_load_uri_sync_to_cogl_texture (cache, policy, uri, available_width, available_height, error);
+
+  if (texdata == COGL_INVALID_HANDLE)
+    return NULL;
 
   texture = create_default_texture (cache);
-
-  memset (&key, 0, sizeof (CacheKey));
-  key.policy = policy;
-  key.uri = (char*)uri;
-  key.size = available_width;
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
-
-  if (texdata == NULL)
-    {
-      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, error);
-      if (!pixbuf)
-        {
-          g_object_unref (texture);
-          return NULL;
-        }
-
-      texdata = pixbuf_to_cogl_handle (pixbuf);
-      g_object_unref (pixbuf);
-
-      set_texture_cogl_texture (texture, texdata);
-
-      if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-        {
-          g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
-        }
-      else
-        cogl_handle_unref (texdata);
-    }
-  else
-    set_texture_cogl_texture (texture, texdata);
+  set_texture_cogl_texture (texture, texdata);
+  cogl_handle_unref (texdata);
 
   return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * st_texture_cache_load_file_to_cogl_texture:
+ * @cache: A #StTextureCache
+ * @file_path: Path to a file in supported image format
+ *
+ * This function synchronously loads the given file path
+ * into a COGL texture.  On error, a warning is emitted
+ * and %COGL_INVALID_HANDLE is returned.
+ */
+CoglHandle
+st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
+                                            const gchar    *file_path)
+{
+  CoglHandle texture;
+  GFile *file;
+  char *uri;
+  GError *error = NULL;
+
+  file = g_file_new_for_path (file_path);
+  uri = g_file_get_uri (file);
+
+  texture = st_texture_cache_load_uri_sync_to_cogl_texture (cache, ST_TEXTURE_CACHE_POLICY_FOREVER,
+                                                            uri, -1, -1, &error);
+  g_object_unref (file);
+  g_free (uri);
+
+  if (texture == NULL)
+    {
+      g_warning ("Failed to load %s: %s", file_path, error->message);
+      g_clear_error (&error);
+      return COGL_INVALID_HANDLE;
+    }
+  return texture;
 }
 
 /**

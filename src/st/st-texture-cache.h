@@ -80,6 +80,9 @@ ClutterActor *st_texture_cache_load_uri_sync (StTextureCache       *cache,
                                               int                   available_height,
                                               GError              **error);
 
+CoglHandle    st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
+                                                          const gchar    *file_path);
+
 ClutterActor *st_texture_cache_load_file_simple (StTextureCache *cache,
                                                  const gchar    *file_path);
 
