@@ -21,9 +21,6 @@ const Dash = imports.ui.dash;
 const Tweener = imports.ui.tweener;
 const WorkspacesView = imports.ui.workspacesView;
 
-const ROOT_OVERVIEW_COLOR = new Clutter.Color();
-ROOT_OVERVIEW_COLOR.from_pixel(0x000000ff);
-
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
@@ -194,7 +191,7 @@ function Overview() {
 
 Overview.prototype = {
     _init : function() {
-        this._group = new Clutter.Group();
+        this._group = new St.BoxLayout({ style_class: 'overview' });
         this._group._delegate = this;
 
         this.infoBar = new InfoBar();
@@ -226,7 +223,7 @@ Overview.prototype = {
         this._group.add_actor(this._transparentBackground);
 
         // Background color for the Overview
-        this._backOver = new Clutter.Rectangle({ color: ROOT_OVERVIEW_COLOR });
+        this._backOver = new St.Label();
         this._group.add_actor(this._backOver);
 
         this._group.hide();

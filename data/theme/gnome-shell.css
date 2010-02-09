@@ -140,6 +140,10 @@ StTooltip {
 
 /* Overlay */
 
+.overview {
+    background-color: #000;
+}
+
 .info-bar {
     color: #cccccc;
     font-size: 14px;
@@ -263,7 +267,6 @@ StTooltip {
 #dash {
     color: #5f5f5f;
     font-size: 12px;
-    background-color: rgba(0,0,0,0.75);
     padding: 0px 14px;
 }
 
