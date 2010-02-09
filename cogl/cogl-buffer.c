@@ -267,7 +267,7 @@ cogl_buffer_unmap_EXP (CoglHandle handle)
   if (!COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
     return;
 
-  return buffer->vtable->unmap (buffer);
+  buffer->vtable->unmap (buffer);
 }
 
 gboolean

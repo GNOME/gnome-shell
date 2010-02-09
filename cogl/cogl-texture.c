@@ -734,7 +734,7 @@ _cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->vtable->ensure_non_quad_rendering (tex);
+  tex->vtable->ensure_non_quad_rendering (tex);
 }
 
 gboolean

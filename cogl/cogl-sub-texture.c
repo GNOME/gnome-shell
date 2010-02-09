@@ -317,7 +317,7 @@ _cogl_sub_texture_transform_coords_to_gl (CoglTexture *tex,
   *t = ((*t * sub_tex->sub_height + sub_tex->sub_y) /
         cogl_texture_get_height (sub_tex->full_texture));
 
-  return _cogl_texture_transform_coords_to_gl (sub_tex->full_texture, s, t);
+  _cogl_texture_transform_coords_to_gl (sub_tex->full_texture, s, t);
 }
 
 static gboolean
