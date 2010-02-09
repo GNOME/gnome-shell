@@ -304,7 +304,7 @@ G_BEGIN_DECLS
 #define COGL_FIXED_FROM_DOUBLE(x)       (cogl_double_to_fixed (x))
 
 /**
- * COGL_FIXED_TO_FLOAT:
+ * COGL_FIXED_TO_DOUBLE:
  * @x: a #CoglFixed number
  *
  * Converts @x from a fixed point to a floating point notation, in

@@ -21,6 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:cogl-color
+ * @short_description: A generic color definition
+ *
+ * #CoglColor is a simple structure holding the definition of a color such
+ * that it can be efficiently used by GL
+ *
+ * Since: 1.0
+ */
+
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
@@ -32,8 +42,39 @@
 
 G_BEGIN_DECLS
 
+/**
+ * cogl_color_new:
+ *
+ * Creates a new (empty) color
+ *
+ * Return value: a newly-allocated #CoglColor. Use cogl_color_free()
+ *   to free the allocated resources
+ *
+ * Since: 1.0
+ */
 CoglColor *cogl_color_new  (void);
+
+/**
+ * cogl_color_copy:
+ * @color: the color to copy
+ *
+ * Creates a copy of @color
+ *
+ * Return value: a newly-allocated #CoglColor. Use cogl_color_free()
+ *   to free the allocate resources
+ *
+ * Since: 1.0
+ */
 CoglColor *cogl_color_copy (const CoglColor *color);
+
+/**
+ * cogl_color_free:
+ * @color: the color to free
+ *
+ * Frees the resources allocated by cogl_color_new() and cogl_color_copy()
+ *
+ * Since: 1.0
+ */
 void       cogl_color_free (CoglColor       *color);
 
 /**

@@ -148,7 +148,7 @@ struct _CoglMaterial
 /*
  * SECTION:cogl-material-internals
  * @short_description: Functions for creating custom primitives that make use
- *                     of Cogl materials for filling.
+ *    of Cogl materials for filling.
  *
  * Normally you shouldn't need to use this API directly, but if you need to
  * developing a custom/specialised primitive - probably using raw OpenGL - then
