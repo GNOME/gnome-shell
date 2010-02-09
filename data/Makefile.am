@@ -31,13 +31,12 @@ dist_theme_DATA =				\
 	theme/scroll-button-down.png		\
 	theme/scroll-button-up-hover.png	\
 	theme/scroll-button-up.png		\
-	theme/scroll-vhandle.png        \
+	theme/scroll-hhandle.svg        \
+	theme/scroll-vhandle.svg        \
 	theme/section-back.svg          \
 	theme/section-more.svg          \
 	theme/single-view-active.svg          \
 	theme/single-view.svg          \
-	theme/switch-scroll-hhandle.svg		\
-	theme/switch-scroll-hhandle-hover.svg		\
 	theme/ws-switch-arrow-left.svg		\
 	theme/ws-switch-arrow-right.svg
 

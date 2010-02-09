@@ -41,36 +41,32 @@ StScrollView
   scrollbar-height: 16px;
 }
 
-StButton#up-stepper
-{
-  border-image: url("scroll-button-up.png") 5;
-}
-
-StButton#up-stepper:hover,
-StButton#up-stepper:active
-{
-  border-image: url("scroll-button-up-hover.png") 5;
-}
-
-StButton#down-stepper
-{
-  border-image: url("scroll-button-down.png") 5;
-}
-
-StButton#down-stepper:hover,
-StButton#down-stepper:active
-{
-  border-image: url("scroll-button-down-hover.png") 5;
+StScrollBar {
+    background-color: #080808;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
 }
 
 StScrollBar StButton#vhandle
 {
-  border-image: url("scroll-vhandle.png") 5;
+    background-image: url("scroll-vhandle.svg");
+    background-color: #252525;
+    border: 1px solid #080808;
+    border-radius: 8px;
 }
 
+StScrollBar StButton#hhandle
+{
+    background-image: url("scroll-hhandle.svg");
+    background-color: #252525;
+    border: 1px solid #080808;
+    border-radius: 8px;
+}
+
+StScrollBar StButton#hhandle:hover,
 StScrollBar StButton#vhandle:hover
 {
-  border-image: url("scroll-vhandle.png") 5;
+    background-color: #292929;
 }
 
 StTooltip {
@@ -89,6 +85,7 @@ StTooltip {
     background-gradient-direction: vertical;
     background-gradient-start: #161616;
     background-gradient-end: #000000;
+    border-bottom: 1px solid #1f1f1f;
 }
 
 #panelLeft, #panelCenter, #panelRight {
@@ -138,35 +135,27 @@ StTooltip {
     spacing: 4px;
 }
 
-/* Overlay */
+/* Overview */
 
 .overview {
-    background-color: #000;
+    background-color: #111;
 }
 
 .info-bar {
-    color: #cccccc;
+    color: #fff;
     font-size: 14px;
-    spacing: 8px;
-}
-
-.info-bar-panel {
-    padding: 11px;
-}
-
-.info-bar-panel > StBin {
-    border-radius: 3px;
-    border: 1px solid #5c5c5c;
-    background: #1e1e1e;
-    height: 26px;
+    spacing: 20px;
 }
 
 .info-bar-link-button {
-    text-decoration: underline;
+    background-color: #2d2d2d;
+    padding: 2px 14px;
+    border-radius: 10px;
+    border: 1px solid #181818;
 }
 
 .info-bar-link-button:hover {
-    color: #ffffff;
+    border: 1px solid #666666;
 }
 
 .workspaces {
@@ -177,7 +166,7 @@ StTooltip {
     height: 48px;
 }
 
-.workspaces-bar StBoxLayout {
+.workspaces-bar, .workspaces-bar * {
     spacing: 5px;
 }
 
@@ -239,27 +228,11 @@ StTooltip {
 }
 
 #SwitchScroll {
-    height: 16px;
+    height: 14px;
 }
 
-#SwitchScroll StBin{
-    border: 1px solid rgba(128,128,128,0.40);
-    border-radius: 8px;
-}
-
-#SwitchScroll StButton#hhandle {
-  border-image: url("switch-scroll-hhandle.svg") 5;
-}
-
-#SwitchScroll StButton#hhandle:hover {
-  border-image: url("switch-scroll-hhandle-hover.svg") 5;
-}
-
-#SwitchScroll StButton#backward-stepper,
-#SwitchScroll StButton#forward-stepper
-{
-    width: 0px;
-    border: 0px;
+#SwitchScroll #hhandle {
+    border-radius: 7px;
 }
 
 /* Dash */
@@ -408,7 +381,7 @@ StTooltip {
 }
 
 .app-well-app {
-    border: 1px solid #080808;
+    border: 1px solid #181818;
     border-radius: 4px;
     padding: 2px;
     width: 70px;
@@ -418,8 +391,8 @@ StTooltip {
 
 .app-well-app.running {
     background-gradient-direction: vertical;
-    background-gradient-start: #3c3c3c;
-    background-gradient-end: #000000;
+    background-gradient-start: #3d3d3d;
+    background-gradient-end: #181818;
 }
 
 .app-well-app:hover {
