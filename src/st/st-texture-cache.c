@@ -9,29 +9,21 @@
 #include <string.h>
 #include <glib.h>
 
-typedef struct
-{
-  StTextureCachePolicy policy;
-
-  /* These are exclusive */
-  GIcon *icon;
-  gchar *uri;
-  gchar *thumbnail_uri;
-  gchar *checksum;
-
-  /* This one is common to all */
-  guint size;
-} CacheKey;
+#define CACHE_PREFIX_GICON "gicon:"
+#define CACHE_PREFIX_URI "uri:"
+#define CACHE_PREFIX_THUMBNAIL_URI "thumbnail-uri:"
+#define CACHE_PREFIX_RAW_CHECKSUM "raw-checksum:"
+#define CACHE_PREFIX_COMPRESSED_CHECKSUM "compressed-checksum:"
 
 struct _StTextureCachePrivate
 {
   /* Things that were loaded with a cache policy != NONE */
-  GHashTable *keyed_cache; /* CacheKey -> CoglTexture* */
+  GHashTable *keyed_cache; /* char * -> CoglTexture* */
   /* Presently this is used to de-duplicate requests for GIcons,
    * it could in theory be extended to async URL loading and other
    * cases too.
    */
-  GHashTable *outstanding_requests; /* CacheKey -> AsyncTextureLoadData * */
+  GHashTable *outstanding_requests; /* char * -> AsyncTextureLoadData * */
   GnomeDesktopThumbnailFactory *thumbnails;
 };
 
@@ -39,78 +31,6 @@ static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
 
 G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
-
-static guint
-cache_key_hash (gconstpointer a)
-{
-  CacheKey *akey = (CacheKey *)a;
-  guint base_hash;
-
-  if (akey->icon)
-    base_hash = g_icon_hash (akey->icon);
-  else if (akey->uri)
-    base_hash = g_str_hash (akey->uri);
-  else if (akey->thumbnail_uri)
-    base_hash = g_str_hash (akey->thumbnail_uri);
-  else if (akey->checksum)
-    base_hash = g_str_hash (akey->checksum);
-  else
-    g_assert_not_reached ();
-  return base_hash + 31*akey->size;
-}
-
-static gboolean
-cache_key_equal (gconstpointer a,
-                 gconstpointer b)
-{
-  CacheKey *akey = (CacheKey*)a;
-  CacheKey *bkey = (CacheKey*)b;
-
-  /* We don't compare policy here, since we need
-   * a way to look up a cache key without respect to
-   * the policy. */
-
-  if (akey->size != bkey->size)
-    return FALSE;
-
-  if (akey->icon && bkey->icon)
-    return g_icon_equal (akey->icon, bkey->icon);
-  else if (akey->uri && bkey->uri)
-    return strcmp (akey->uri, bkey->uri) == 0;
-  else if (akey->thumbnail_uri && bkey->thumbnail_uri)
-    return strcmp (akey->thumbnail_uri, bkey->thumbnail_uri) == 0;
-  else if (akey->checksum && bkey->checksum)
-    return strcmp (akey->checksum, bkey->checksum) == 0;
-
-  return FALSE;
-}
-
-static CacheKey *
-cache_key_dup (CacheKey *key)
-{
-  CacheKey *ret = g_new0 (CacheKey, 1);
-  ret->policy = key->policy;
-  if (key->icon)
-    ret->icon = g_object_ref (key->icon);
-  ret->uri = g_strdup (key->uri);
-  ret->thumbnail_uri = g_strdup (key->thumbnail_uri);
-  ret->checksum = g_strdup (key->checksum);
-  ret->size = key->size;
-  return ret;
-}
-
-static void
-cache_key_destroy (gpointer a)
-{
-  CacheKey *akey = (CacheKey*)a;
-  if (akey->icon)
-    g_object_unref (akey->icon);
-  g_free (akey->uri);
-  g_free (akey->thumbnail_uri);
-  g_free (akey->checksum);
-  g_free (akey);
-}
-
 
 /* We want to preserve the aspect ratio by default, also the default
  * material for an empty texture is full opacity white, which we
@@ -145,10 +65,10 @@ static void
 st_texture_cache_init (StTextureCache *self)
 {
   self->priv = g_new0 (StTextureCachePrivate, 1);
-  self->priv->keyed_cache = g_hash_table_new_full (cache_key_hash, cache_key_equal,
-                                                   cache_key_destroy, cogl_handle_unref);
-  self->priv->outstanding_requests = g_hash_table_new_full (cache_key_hash, cache_key_equal,
-                                                            cache_key_destroy, NULL);
+  self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                   g_free, cogl_handle_unref);
+  self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                            g_free, NULL);
   self->priv->thumbnails = gnome_desktop_thumbnail_factory_new (GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL);
 }
 
@@ -160,6 +80,10 @@ st_texture_cache_dispose (GObject *object)
   if (self->priv->keyed_cache)
     g_hash_table_destroy (self->priv->keyed_cache);
   self->priv->keyed_cache = NULL;
+
+  if (self->priv->outstanding_requests)
+    g_hash_table_destroy (self->priv->outstanding_requests);
+  self->priv->outstanding_requests = NULL;
 
   if (self->priv->thumbnails)
     g_object_unref (self->priv->thumbnails);
@@ -663,6 +587,7 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
 
 typedef struct {
   StTextureCachePolicy policy;
+  char *key;
   char *uri;
   gboolean thumbnail;
   char *mimetype;
@@ -737,28 +662,15 @@ on_pixbuf_loaded (GObject      *source,
   GdkPixbuf *pixbuf;
   GError *error = NULL;
   CoglHandle texdata = NULL;
-  CacheKey key;
 
   data = user_data;
   cache = ST_TEXTURE_CACHE (source);
 
-  memset (&key, 0, sizeof(key));
-  key.policy = data->policy;
-  if (data->icon)
-    key.icon = data->icon;
-  else if (data->recent_info && data->thumbnail)
-    key.thumbnail_uri = (char*)gtk_recent_info_get_uri (data->recent_info);
-  else if (data->thumbnail)
-    key.thumbnail_uri = (char*)data->uri;
-  else if (data->uri)
-    key.uri = data->uri;
-  key.size = data->width;
-
-  g_hash_table_remove (cache->priv->outstanding_requests, &key);
+  g_hash_table_remove (cache->priv->outstanding_requests, data->key);
 
   pixbuf = load_pixbuf_async_finish (cache, result, &error);
   if (pixbuf == NULL)
-    pixbuf = load_pixbuf_fallback(data);
+    pixbuf = load_pixbuf_fallback (data);
   if (pixbuf == NULL)
     goto out;
 
@@ -770,11 +682,11 @@ on_pixbuf_loaded (GObject      *source,
     {
       gpointer orig_key, value;
 
-      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, &key,
+      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
                                          &orig_key, &value))
         {
           cogl_handle_ref (texdata);
-          g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key),
+          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (data->key),
                                texdata);
         }
     }
@@ -788,6 +700,8 @@ on_pixbuf_loaded (GObject      *source,
 out:
   if (texdata)
     cogl_handle_unref (texdata);
+  g_free (data->key);
+
   if (data->icon)
     {
       gtk_icon_info_free (data->icon_info);
@@ -919,7 +833,8 @@ st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
 /**
  * create_texture_and_ensure_request:
  * @cache:
- * @key: A filled in #CacheKey
+ * @key: A cache key
+ * @size: Size in pixels
  * @request: (out): If no request is outstanding, one will be created and returned here
  * @texture: (out): A new texture, also added to the request
  *
@@ -931,7 +846,8 @@ st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
  */
 static gboolean
 create_texture_and_ensure_request (StTextureCache        *cache,
-                                   CacheKey              *key,
+                                   const char            *key,
+                                   guint                  size,
                                    AsyncTextureLoadData **request,
                                    ClutterActor         **texture)
 {
@@ -940,7 +856,7 @@ create_texture_and_ensure_request (StTextureCache        *cache,
   gboolean had_pending;
 
   *texture = (ClutterActor *) create_default_texture (cache);
-  clutter_actor_set_size (*texture, key->size, key->size);
+  clutter_actor_set_size (*texture, size, size);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
 
@@ -958,7 +874,8 @@ create_texture_and_ensure_request (StTextureCache        *cache,
     {
       /* Not cached and no pending request, create it */
       *request = g_new0 (AsyncTextureLoadData, 1);
-      g_hash_table_insert (cache->priv->outstanding_requests, cache_key_dup (key), *request);
+      (*request)->key = g_strdup (key);
+      g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
     }
   else
    *request = pending;
@@ -984,16 +901,20 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 {
   AsyncTextureLoadData *request;
   ClutterActor *texture;
-  CacheKey key;
+  char *gicon_string;
+  char *key;
   GtkIconTheme *theme;
   GtkIconInfo *info;
 
-  memset (&key, 0, sizeof(key));
-  key.icon = icon;
-  key.size = size;
+  gicon_string = g_icon_to_string (icon);
+  key = g_strconcat (CACHE_PREFIX_GICON, gicon_string, NULL);
+  g_free (gicon_string);
 
-  if (create_texture_and_ensure_request (cache, &key, &request, &texture))
-    return texture;
+  if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
+    {
+      g_free (key);
+      return texture;
+    }
 
   /* Do theme lookups in the main thread to avoid thread-unsafety */
   theme = gtk_icon_theme_get_default ();
@@ -1003,6 +924,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     {
       /* hardcoded here for now; we should actually blow this away on
        * icon theme changes probably */
+      request->key = g_strdup (key);
       request->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       request->icon = g_object_ref (icon);
       request->icon_info = info;
@@ -1018,9 +940,10 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
        g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
        g_slist_free (request->textures);
        g_free (request);
-       g_hash_table_remove (cache->priv->outstanding_requests, &key);
+       g_hash_table_remove (cache->priv->outstanding_requests, key);
     }
 
+  g_free (key);
   return CLUTTER_ACTOR (texture);
 }
 
@@ -1075,6 +998,7 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
   texture = create_default_texture (cache);
 
   data = g_new0 (AsyncTextureLoadData, 1);
+  data->key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
   data->policy = ST_TEXTURE_CACHE_POLICY_NONE;
   data->uri = g_strdup (uri);
   data->width = available_width;
@@ -1095,22 +1019,17 @@ st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
 {
   CoglHandle texdata;
   GdkPixbuf *pixbuf;
-  CacheKey key;
+  char *key;
 
-  memset (&key, 0, sizeof (CacheKey));
-  key.policy = policy;
-  key.uri = (char*)uri;
-  key.size = available_width;
+  key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
 
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
 
   if (texdata == NULL)
     {
       pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, error);
       if (!pixbuf)
-        {
-          return COGL_INVALID_HANDLE;
-        }
+        goto out;
 
       texdata = pixbuf_to_cogl_handle (pixbuf);
       g_object_unref (pixbuf);
@@ -1118,12 +1037,14 @@ st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
           cogl_handle_ref (texdata);
-          g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
         }
     }
   else
     cogl_handle_ref (texdata);
 
+out:
+  g_free (key);
   return texdata;
 }
 
@@ -1262,25 +1183,24 @@ st_texture_cache_load_from_data (StTextureCache    *cache,
   ClutterTexture *texture;
   CoglHandle texdata;
   GdkPixbuf *pixbuf;
-  CacheKey key;
-  gchar *checksum;
+  char *key;
+  char *checksum;
 
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+  key = g_strconcat (CACHE_PREFIX_COMPRESSED_CHECKSUM, checksum, NULL);
+  g_free (checksum);
 
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.checksum = checksum;
-
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (texdata == NULL)
     {
       pixbuf = impl_load_pixbuf_data (data, len, size, size, error);
       if (!pixbuf)
         {
           g_object_unref (texture);
+          g_free (key);
           return NULL;
         }
 
@@ -1289,10 +1209,10 @@ st_texture_cache_load_from_data (StTextureCache    *cache,
 
       set_texture_cogl_texture (texture, texdata);
 
-      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+      g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
     }
 
-  g_free (key.checksum);
+  g_free (key);
 
   set_texture_cogl_texture (texture, texdata);
   return CLUTTER_ACTOR (texture);
@@ -1327,8 +1247,8 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
 {
   ClutterTexture *texture;
   CoglHandle texdata;
-  CacheKey key;
-  gchar *checksum;
+  char *key;
+  char *checksum;
 
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
@@ -1337,22 +1257,20 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
    * pixel data. We ignore that theory.
    */
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
+  key = g_strconcat (CACHE_PREFIX_RAW_CHECKSUM, checksum, NULL);
+  g_free (checksum);
 
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.checksum = checksum;
-
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (texdata == NULL)
     {
       texdata = cogl_texture_new_from_data (width, height, COGL_TEXTURE_NONE,
                                             has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
                                             COGL_PIXEL_FORMAT_ANY,
                                             rowstride, data);
-      g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
+      g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
     }
 
-  g_free (key.checksum);
+  g_free (key);
 
   set_texture_cogl_texture (texture, texdata);
   return CLUTTER_ACTOR (texture);
@@ -1382,7 +1300,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
 {
   ClutterTexture *texture;
   AsyncTextureLoadData *data;
-  CacheKey key;
+  char *key;
   CoglHandle texdata;
 
   /* Don't attempt to load thumbnails for non-local URIs */
@@ -1395,14 +1313,13 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.thumbnail_uri = (char*)uri;
+  key = g_strconcat (CACHE_PREFIX_THUMBNAIL_URI, uri, NULL);
 
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (!texdata)
     {
       data = g_new0 (AsyncTextureLoadData, 1);
+      data->key = g_strdup (key);
       data->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       data->uri = g_strdup (uri);
       data->mimetype = g_strdup (mimetype);
@@ -1417,6 +1334,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
       set_texture_cogl_texture (texture, texdata);
     }
 
+  g_free (key);
   return CLUTTER_ACTOR (texture);
 }
 
@@ -1456,7 +1374,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
 {
   ClutterTexture *texture;
   AsyncTextureLoadData *data;
-  CacheKey key;
+  char *key;
   CoglHandle texdata;
   const char *uri;
 
@@ -1472,14 +1390,13 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
   texture = CLUTTER_TEXTURE (clutter_texture_new ());
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.thumbnail_uri = (char*)gtk_recent_info_get_uri (info);
+  key = g_strconcat (CACHE_PREFIX_THUMBNAIL_URI, uri, NULL);
 
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (!texdata)
     {
       data = g_new0 (AsyncTextureLoadData, 1);
+      data->key = g_strdup (key);
       data->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       data->thumbnail = TRUE;
       data->recent_info = gtk_recent_info_ref (info);
@@ -1493,6 +1410,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
       set_texture_cogl_texture (texture, texdata);
     }
 
+  g_free (key);
   return CLUTTER_ACTOR (texture);
 }
 
@@ -1508,20 +1426,11 @@ void
 st_texture_cache_evict_thumbnail (StTextureCache    *cache,
                                   const char        *uri)
 {
-  GHashTableIter iter;
-  gpointer key, value;
+  char *target_key;
 
-  g_hash_table_iter_init (&iter, cache->priv->keyed_cache);
-
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      CacheKey *cachekey = key;
-
-      if (cachekey->thumbnail_uri == NULL || strcmp (cachekey->thumbnail_uri, uri) != 0)
-        continue;
-
-      g_hash_table_iter_remove (&iter);
-    }
+  target_key = g_strconcat (CACHE_PREFIX_THUMBNAIL_URI, uri, NULL);
+  g_hash_table_remove (cache->priv->keyed_cache, target_key);
+  g_free (target_key);
 }
 
 /**
