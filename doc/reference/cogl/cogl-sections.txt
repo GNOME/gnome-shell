@@ -184,7 +184,6 @@ cogl_is_bitmap
 <SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>Textures</TITLE>
-COGL_TEXTURE_MAX_WASTE
 CoglTextureVertex
 CoglTextureFlags
 cogl_texture_new_with_size
@@ -207,6 +206,9 @@ cogl_texture_is_sliced
 cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_region
+
+<SUBSECTION Private>
+COGL_TEXTURE_MAX_WASTE
 </SECTION>
 
 <SECTION>
@@ -247,7 +249,7 @@ cogl_offscreen_ref
 cogl_offscreen_unref
 cogl_is_offscreen
 cogl_set_framebuffer
-cogl_push_frameffer
+cogl_push_framebuffer
 cogl_pop_framebuffer
 cogl_set_draw_buffer
 cogl_pop_draw_buffer
@@ -443,7 +445,6 @@ cogl_material_get_shininess
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
 CoglBlendStringError
-COGL_BLEND_STRING_ERROR
 cogl_material_set_blend
 cogl_material_set_blend_constant
 cogl_material_set_layer
@@ -462,15 +463,6 @@ cogl_material_layer_get_mag_filter
 <SUBSECTION Private>
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark
-</SECTION>
-
-<SECTION>
-<FILE>cogl-material-internals</FILE>
-<TITLE>Material Internals</TITLE>
-cogl_material_get_layers
-CoglMaterialLayerType
-cogl_material_layer_get_type
-cogl_material_layer_get_texture
 </SECTION>
 
 <SECTION>

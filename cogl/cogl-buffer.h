@@ -93,7 +93,7 @@ typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
  * @handle: a buffer handle
  * @hint: the new hint
  *
- * Set the usage hint on a buffer. See #CoglBufferUsageHint for a description
+ * Sets the usage hint on a buffer. See #CoglBufferUsageHint for a description
  * of the available hints.
  *
  * Since: 1.2
@@ -106,6 +106,8 @@ cogl_buffer_set_usage_hint (CoglHandle          handle,
 /**
  * cogl_buffer_get_usage_hint:
  * @handle: a buffer handle
+ *
+ * Retrieves the usage hint set using cogl_buffer_set_usage_hint()
  *
  * Return value: the #CoglBufferUsageHint currently used by the buffer
  *
@@ -122,7 +124,7 @@ cogl_buffer_get_usage_hint (CoglHandle handle);
  * @COGL_BUFFER_UPDATE_HINT_STREAM: the buffer will be used once or a couple of
  *   times
  *
- * The update hint on a buffer allows the user to give some clue on how often
+ * The update hint on a buffer allows the user to give some detail on how often
  * the buffer data is going to be updated.
  *
  * Since: 1.2
@@ -139,7 +141,7 @@ typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
  * @handle: a buffer handle
  * @hint: the new hint
  *
- * Set the update hint on a buffer. See #CoglBufferUpdateHint for a description
+ * Sets the update hint on a buffer. See #CoglBufferUpdateHint for a description
  * of the available hints.
  *
  * Since: 1.2
@@ -152,6 +154,8 @@ cogl_buffer_set_update_hint (CoglHandle          handle,
 /**
  * cogl_buffer_get_update_hint:
  * @handle: a buffer handle
+ *
+ * Retrieves the update hints set using cogl_buffer_set_update_hint()
  *
  * Return value: the #CoglBufferUpdateHint currently used by the buffer
  *
@@ -167,6 +171,8 @@ cogl_buffer_get_update_hint (CoglHandle handle);
  * @COGL_BUFFER_ACCESS_WRITE: the buffer will written to
  * @COGL_BUFFER_ACCESS_READ_WRITE: the buffer will be used for both reading and
  *   writing
+ *
+ * The access hints for cogl_buffer_set_update_hint()
  *
  * Since: 1.2
  * Stability: Unstable

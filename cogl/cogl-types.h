@@ -283,8 +283,10 @@ struct _CoglTextureVertex
  *   the mipmap pyramid from the base level image whenever it is
  *   updated. The mipmaps are only generated when the texture is
  *   rendered with a mipmap filter so it should be free to leave out
- *   this flag when using other filtering modes.
+ *   this flag when using other filtering modes
  * @COGL_TEXTURE_NO_SLICING: Disables the slicing of the texture
+ * @COGL_TEXTURE_NO_ATLAS: Disables the insertion of the texture inside
+ *   the texture atlas used by Cogl
  *
  * Flags to pass to the cogl_texture_new_* family of functions.
  *
@@ -331,8 +333,27 @@ typedef enum {
   COGL_FOG_MODE_EXPONENTIAL_SQUARED
 } CoglFogMode;
 
+/**
+ * COGL_BLEND_STRING_ERROR:
+ *
+ * #GError domain for blend string parser errors
+ *
+ * Since: 1.0
+ */
 #define COGL_BLEND_STRING_ERROR (cogl_blend_string_error_quark ())
 
+/**
+ * CoglBlendStringError:
+ * @COGL_BLEND_STRING_ERROR_PARSE_ERROR: Generic parse error
+ * @COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR: Argument parse error
+ * @COGL_BLEND_STRING_ERROR_INVALID_ERROR: Internal parser error
+ * @COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR: Blend string not
+ *   supported by the GPU
+ *
+ * Error enumeration for the blend strings parser
+ *
+ * Since: 1.0
+ */
 typedef enum { /*< prefix=COGL_BLEND_STRING_ERROR >*/
   COGL_BLEND_STRING_ERROR_PARSE_ERROR,
   COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,

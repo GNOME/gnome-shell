@@ -151,7 +151,8 @@ void cogl_matrix_rotate (CoglMatrix *matrix,
 			 float y,
 			 float z);
 
-/* cogl_matrix_translate:
+/**
+ * cogl_matrix_translate:
  * @matrix: A 4x4 transformation matrix
  * @x: The X translation you want to apply
  * @y: The Y translation you want to apply
