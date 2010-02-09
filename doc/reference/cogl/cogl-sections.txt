@@ -8,14 +8,6 @@ cogl_handle_unref
 
 <SUBSECTION>
 CoglFuncPtr
-COGL_PIXEL_FORMAT_24
-COGL_PIXEL_FORMAT_32
-COGL_A_BIT
-COGL_BGR_BIT
-COGL_AFIRST_BIT
-COGL_PREMULT_BIT
-COGL_UNORDERED_MASK
-COGL_UNPREMULT_MASK
 CoglPixelFormat
 CoglBufferTarget
 CoglBufferBit
@@ -119,6 +111,14 @@ cogl_read_pixels_flags_get_type
 cogl_shader_type_get_type
 cogl_texture_flags_get_type
 cogl_vertices_mode_get_type
+COGL_AFIRST_BIT
+COGL_A_BIT
+COGL_BGR_BIT
+COGL_PIXEL_FORMAT_24
+COGL_PIXEL_FORMAT_32
+COGL_PREMULT_BIT
+COGL_UNORDERED_MASK
+COGL_UNPREMULT_MASK
 </SECTION>
 
 <SECTION>
