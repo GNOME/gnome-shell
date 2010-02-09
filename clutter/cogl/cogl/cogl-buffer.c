@@ -272,9 +272,9 @@ cogl_buffer_unmap_EXP (CoglHandle handle)
 
 gboolean
 cogl_buffer_set_data_EXP (CoglHandle    handle,
-                          guint         offset,
+                          gsize         offset,
                           const guchar *data,
-                          guint         size)
+                          gsize         size)
 {
   CoglBuffer *buffer;
 
