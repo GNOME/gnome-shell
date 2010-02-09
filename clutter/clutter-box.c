@@ -149,7 +149,6 @@ clutter_box_real_foreach (ClutterContainer *container,
                           gpointer          user_data)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-  GList *l;
 
   for (l = priv->children; l != NULL; l = l->next)
     (* callback) (l->data, user_data);
