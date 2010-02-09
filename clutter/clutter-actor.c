@@ -7032,7 +7032,8 @@ clutter_actor_reparent (ClutterActor *self,
  *
  * Puts @self above @below.
  *
- * Both actors must have the same parent.
+ * Both actors must have the same parent, and the parent must implement
+ * the #ClutterContainer interface
  *
  * This function is the equivalent of clutter_container_raise_child().
  */
@@ -7045,21 +7046,26 @@ clutter_actor_raise (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   parent = clutter_actor_get_parent (self);
-  if (!parent)
+  if (parent == NULL || !CLUTTER_IS_CONTAINER (parent))
     {
-      g_warning ("Actor of type %s is not inside a container",
-                 g_type_name (G_OBJECT_TYPE (self)));
+      g_warning ("%s: Actor '%s' is not inside a container",
+                 G_STRFUNC,
+                 self->priv->name != NULL ? self->priv->name
+                                          : G_OBJECT_TYPE_NAME (self));
       return;
     }
 
-  if (below)
+  if (below != NULL)
     {
       if (parent != clutter_actor_get_parent (below))
         {
-          g_warning ("Actor of type %s is not in the same "
-                     "container of actor of type %s",
-                     g_type_name (G_OBJECT_TYPE (self)),
-                     g_type_name (G_OBJECT_TYPE (below)));
+          g_warning ("%s Actor '%s' is not in the same container as "
+                     "actor '%s'",
+                     G_STRFUNC,
+                     self->priv->name != NULL ? self->priv->name
+                                              : G_OBJECT_TYPE_NAME (self),
+                     below->priv->name != NULL ? below->priv->name
+                                               : G_OBJECT_TYPE_NAME (below));
           return;
         }
     }
@@ -7074,7 +7080,8 @@ clutter_actor_raise (ClutterActor *self,
  *
  * Puts @self below @above.
  *
- * Both actors must have the same parent.
+ * Both actors must have the same parent, and the parent must implement
+ * the #ClutterContainer interface.
  *
  * This function is the equivalent of clutter_container_lower_child().
  */
@@ -7087,10 +7094,12 @@ clutter_actor_lower (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR(self));
 
   parent = clutter_actor_get_parent (self);
-  if (!parent)
+  if (parent == NULL || !CLUTTER_IS_CONTAINER (parent))
     {
-      g_warning ("Actor of type %s is not inside a container",
-                 g_type_name (G_OBJECT_TYPE (self)));
+      g_warning ("%s: Actor of type %s is not inside a container",
+                 G_STRFUNC,
+                 self->priv->name != NULL ? self->priv->name
+                                          : G_OBJECT_TYPE_NAME (self));
       return;
     }
 
@@ -7098,10 +7107,13 @@ clutter_actor_lower (ClutterActor *self,
     {
       if (parent != clutter_actor_get_parent (above))
         {
-          g_warning ("Actor of type %s is not in the same "
-                     "container of actor of type %s",
-                     g_type_name (G_OBJECT_TYPE (self)),
-                     g_type_name (G_OBJECT_TYPE (above)));
+          g_warning ("%s: Actor '%s' is not in the same container as "
+                     "actor '%s'",
+                     G_STRFUNC,
+                     self->priv->name != NULL ? self->priv->name
+                                              : G_OBJECT_TYPE_NAME (self),
+                     above->priv->name != NULL ? above->priv->name
+                                               : G_OBJECT_TYPE_NAME (above));
           return;
         }
     }
