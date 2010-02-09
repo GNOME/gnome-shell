@@ -101,6 +101,15 @@ ClutterActor *st_texture_cache_load_from_raw  (StTextureCache    *cache,
                                                int                size,
                                                GError           **error);
 
+typedef CoglHandle (*StTextureCacheLoader) (StTextureCache *cache, const char *key, void *data, GError **error);
+
+CoglHandle st_texture_cache_load (StTextureCache       *cache,
+                                  const char           *key,
+                                  StTextureCachePolicy  policy,
+                                  StTextureCacheLoader  load,
+                                  void                 *data,
+                                  GError              **error);
+
 gboolean st_texture_cache_pixbuf_equal (StTextureCache *cache, GdkPixbuf *a, GdkPixbuf *b);
 
 #endif /* __ST_TEXTURE_CACHE_H__ */

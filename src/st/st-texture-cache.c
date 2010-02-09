@@ -831,6 +831,45 @@ st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
 }
 
 /**
+ * st_texture_cache_load:
+ * @cache: A #StTextureCache
+ * @key: Arbitrary string used to refer to item
+ * @policy: Caching policy
+ * @load: Function to create the texture, if not already cached
+ * @data: User data passed to @load
+ * @error: A #GError
+ *
+ * Load an arbitrary texture, caching it.  The string chosen for @key
+ * should be of the form "type-prefix:type-uuid".  For example,
+ * "url:file:///usr/share/icons/hicolor/48x48/apps/firefox.png", or
+ * "stock-icon:gtk-ok".
+ *
+ * Returns: (transfer full): A newly-referenced handle to the texture
+ */
+CoglHandle
+st_texture_cache_load (StTextureCache       *cache,
+                       const char           *key,
+                       StTextureCachePolicy  policy,
+                       StTextureCacheLoader  load,
+                       void                 *data,
+                       GError              **error)
+{
+  CoglHandle texture;
+
+  texture = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  if (!texture)
+    {
+      texture = load (cache, key, data, error);
+      if (texture)
+        g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texture);
+      else
+        return COGL_INVALID_HANDLE;
+    }
+  cogl_texture_ref (texture);
+  return texture;
+}
+
+/**
  * create_texture_and_ensure_request:
  * @cache:
  * @key: A cache key
