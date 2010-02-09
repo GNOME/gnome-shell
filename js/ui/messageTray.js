@@ -36,25 +36,55 @@ function _cleanMarkup(text) {
 // @source: the notification's Source
 // @title: the title
 // @banner: the banner text
-// @body: the body text, or %null
+// @overflow: whether or not to do banner overflow (see below)
 //
 // Creates a notification. In banner mode, it will show
 // @source's icon, @title (in bold) and @banner, all on a single line
-// (with @banner ellipsized if necessary). If @body is not %null, then
-// the notification will be expandable. In expanded mode, it will show
-// just the icon and @title (in bold) on the first line, and @body on
-// multiple lines underneath.
-function Notification(source, title, banner, body) {
-    this._init(source, title, banner, body);
+// (with @banner ellipsized if necessary).
+//
+// Additional notification details can be added via addBody(),
+// addAction(), and addActor(). If any of these are called, then the
+// notification will expand to show the additional actors (while
+// hiding the @banner) if the pointer is moved into it while it is
+// visible.
+//
+// If @overflow is %true, and @banner is too long to fit in the
+// single-line mode, then the notification will automatically call
+// addBody() to show the full text of @banner in expanded mode.
+function Notification(source, title, banner, overflow) {
+    this._init(source, title, banner, overflow);
 }
 
 Notification.prototype = {
-    _init: function(source, title, banner, body) {
+    _init: function(source, title, banner, overflow) {
         this.source = source;
+        this._overflow = overflow;
 
         this.actor = new St.Table({ name: 'notification' });
+        this.update(title, banner, true);
+    },
 
-        let icon = source.createIcon(ICON_SIZE);
+    // update:
+    // @title: the new title
+    // @banner: the new banner
+    // @clear: whether or not to clear out extra actors
+    //
+    // Updates the notification by regenerating its icon and updating
+    // the title/banner. If @clear is %true, it will also remove any
+    // additional actors/action buttons previously added.
+    update: function(title, banner, clear) {
+        let children = this.actor.get_children();
+        for (let i = 0; i < children.length; i++) {
+            let meta = this.actor.get_child_meta(children[i]);
+            if (clear || meta.row == 0)
+                children[i].destroy();
+        }
+        if (clear) {
+            this.actions = {};
+            this._actionBox = null;
+        }
+
+        let icon = this.source.createIcon(ICON_SIZE);
         this.actor.add(icon, { row: 0,
                                col: 0,
                                x_expand: false,
@@ -80,42 +110,101 @@ Notification.prototype = {
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
         this._bannerBox.add_actor(this._titleLabel);
 
+        if (this._overflow)
+            this._overflowText = banner;
+
         this._bannerLabel = new St.Label();
         banner = banner ? _cleanMarkup(banner.replace('\n', '  ')) : '';
         this._bannerLabel.clutter_text.set_markup(banner);
         this._bannerBox.add_actor(this._bannerLabel);
-
-        this._bodyLabel = new St.Label();
-        this._bodyLabel.clutter_text.line_wrap = true;
-        this._bodyLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        if (body) {
-            body = _cleanMarkup(body);
-            this._bodyLabel.clutter_text.set_markup(body);
-            this._canPopOut = true;
-        } else {
-            // If there's no body, then normally we wouldn't do
-            // pop-out. But if title+banner is too wide for the
-            // notification, then we'd need to pop out to show the
-            // full banner. So we set up bodyLabel with that now.
-            this._bodyLabel.clutter_text.set_markup(banner);
-            this._canPopOut = false;
-        }
-        this.actor.add(this._bodyLabel, { row: 1,
-                                          col: 1 });
-
-        this.actions = {};
-        this._actionBox = null;
     },
 
+    // addActor:
+    // @actor: actor to add to the notification
+    // @props: (optional) child properties
+    //
+    // Adds @actor to the notification's St.Table, using @props.
+    //
+    // If @props does not specify a %row, then @actor will be added
+    // to the bottom of the notification (unless there are action
+    // buttons present, in which case it will be added above them).
+    //
+    // If @props does not specify a %col, it will default to column 1.
+    // (Normally only the icon is in column 0.)
+    //
+    // If @props specifies an already-occupied cell, then the existing
+    // contents of the table will be shifted down to make room for it.
+    addActor: function(actor, props) {
+        if (!props)
+            props = {};
+
+        if (!('col' in props))
+            props.col = 1;
+
+        if ('row' in props) {
+            let children = this.actor.get_children();
+            let i, meta, collision = false;
+
+            for (i = 0; i < children.length; i++) {
+                meta = this.actor.get_child_meta(children[i]);
+                if (meta.row == props.row && meta.col == props.col) {
+                    collision = true;
+                    break;
+                }
+            }
+
+            if (collision) {
+                for (i = 0; i < children.length; i++) {
+                    meta = this.actor.get_child_meta(children[i]);
+                    if (meta.row >= props.row)
+                        meta.row++;
+                }
+            }
+        } else {
+            if (this._actionBox) {
+                props.row = this.actor.row_count - 1;
+                this.actor.get_child_meta(this._actionBox).row++;
+            } else {
+                props.row = this.actor.row_count;
+            }
+        }
+
+        this.actor.add(actor, props);
+    },
+
+    // addBody:
+    // @text: the text
+    // @props: (optional) properties for addActor()
+    //
+    // Adds a multi-line label containing @text to the notification.
+    addBody: function(text, props) {
+        let body = new St.Label();
+        body.clutter_text.line_wrap = true;
+        body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+
+        text = text ? _cleanMarkup(text) : '';
+        body.clutter_text.set_markup(text);
+
+        this.addActor(body, props);
+    },
+
+    // addAction:
+    // @id: the action ID
+    // @label: the label for the action's button
+    //
+    // Adds a button with the given @label to the notification. All
+    // action buttons will appear in a single row at the bottom of
+    // the notification.
+    //
+    // If the button is clicked, the notification will emit the
+    // %action-invoked signal with @id as a parameter
     addAction: function(id, label) {
         if (!this._actionBox) {
-            this._actionBox = new St.BoxLayout({ name: 'notification-actions' });
-            this.actor.add(this._actionBox, { row: 2,
-                                              col: 1,
-                                              x_expand: false,
-                                              x_fill: false,
-                                              x_align: 1.0 });
-            this._canPopOut = true;
+            let box = new St.BoxLayout({ name: 'notification-actions' });
+            this.addActor(box, { x_expand: false,
+                                 x_fill: false,
+                                 x_align: 1.0 });
+            this._actionBox = box;
         }
 
         let button = new St.Button({ style_class: 'notification-button',
@@ -153,9 +242,10 @@ Notification.prototype = {
         titleBox.y2 = titleNatH;
         this._titleLabel.allocate(titleBox, flags);
 
+        let overflow = false;
         if (titleBox.x2 + spacing > availWidth) {
             this._bannerLabel.hide();
-            this._canPopOut = true;
+            overflow = true;
         } else {
             let bannerBox = new Clutter.ActorBox();
             bannerBox.x1 = titleBox.x2 + spacing;
@@ -166,12 +256,17 @@ Notification.prototype = {
             this._bannerLabel.allocate(bannerBox, flags);
 
             if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
-                this._canPopOut = true;
+                overflow = true;
+        }
+
+        if (overflow && this._overflowText) {
+            this.addBody(this._overflowText, { row: 1 });
+            this._overflowText = null;
         }
     },
 
     popOut: function() {
-        if (!this._canPopOut)
+        if (this.actor.row_count <= 1)
             return false;
 
         Tweener.addTween(this._bannerLabel,
@@ -182,7 +277,7 @@ Notification.prototype = {
     },
 
     popIn: function() {
-        if (!this._canPopOut)
+        if (this.actor.row_count <= 1)
             return false;
 
         Tweener.addTween(this._bannerLabel,

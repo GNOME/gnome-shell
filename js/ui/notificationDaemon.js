@@ -123,7 +123,7 @@ NotificationDaemon.prototype = {
 
         summary = GLib.markup_escape_text(summary, -1);
 
-        let notification = new MessageTray.Notification(source, summary, body);
+        let notification = new MessageTray.Notification(source, summary, body, true);
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addAction(actions[i], actions[i + 1]);
