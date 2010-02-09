@@ -88,8 +88,6 @@ typedef enum {
  */
 CoglHandle cogl_material_new (void);
 
-#ifndef COGL_DISABLE_DEPRECATED
-
 /**
  * cogl_material_copy:
  *
@@ -107,6 +105,8 @@ CoglHandle cogl_material_new (void);
  * Since: 1.2
  */
 CoglHandle cogl_material_copy (CoglHandle source);
+
+#ifndef COGL_DISABLE_DEPRECATED
 
 /**
  * cogl_material_ref:
