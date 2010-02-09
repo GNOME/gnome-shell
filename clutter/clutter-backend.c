@@ -290,7 +290,7 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   else
     stage_window = NULL;
 
-  if (stage_window != NULL)
+  if (stage_window == NULL)
     return NULL;
 
   g_assert (CLUTTER_IS_STAGE_WINDOW (stage_window));
