@@ -1952,10 +1952,8 @@ clutter_text_real_move_right (ClutterText         *self,
 {
   ClutterTextPrivate *priv = self->priv;
   gint pos = priv->position;
-  gint new_pos;
-  gint len;
-
-  len = priv->n_chars;
+  gint len = priv->n_chars;
+  gint new_pos = 0;
 
   g_object_freeze_notify (G_OBJECT (self));
 

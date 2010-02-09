@@ -285,10 +285,12 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   stage_manager = clutter_stage_manager_get_default ();
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->create_stage)
+  if (klass->create_stage != NULL)
     stage_window = klass->create_stage (backend, wrapper, error);
+  else
+    stage_window = NULL;
 
-  if (!stage_window)
+  if (stage_window != NULL)
     return NULL;
 
   g_assert (CLUTTER_IS_STAGE_WINDOW (stage_window));

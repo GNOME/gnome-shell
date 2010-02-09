@@ -459,6 +459,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
           continue;
         }
 
+      child_width = child_height = 0;
       request = clutter_actor_get_request_mode (child);
       if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
         {
