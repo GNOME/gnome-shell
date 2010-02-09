@@ -408,19 +408,23 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
 
   if (ctx->flushed_matrix_mode != mode)
     {
-      GLenum gl_mode;
+      GLenum gl_mode = 0;
+
       switch (mode)
         {
         case COGL_MATRIX_MODELVIEW:
           gl_mode = GL_MODELVIEW;
           break;
+
         case COGL_MATRIX_PROJECTION:
           gl_mode = GL_PROJECTION;
           break;
+
         case COGL_MATRIX_TEXTURE:
           gl_mode = GL_TEXTURE;
           break;
         }
+
       GE (glMatrixMode (gl_mode));
       ctx->flushed_matrix_mode = mode;
     }
