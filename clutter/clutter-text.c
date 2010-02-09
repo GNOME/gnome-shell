@@ -3097,8 +3097,7 @@ clutter_text_set_editable (ClutterText *self,
     {
       priv->editable = editable;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "editable");
     }
@@ -3148,8 +3147,7 @@ clutter_text_set_selectable (ClutterText *self,
     {
       priv->selectable = selectable;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "selectable");
     }
@@ -3203,8 +3201,7 @@ clutter_text_set_activatable (ClutterText *self,
     {
       priv->activatable = activatable;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "activatable");
     }
@@ -3295,8 +3292,7 @@ clutter_text_set_cursor_visible (ClutterText *self,
     {
       priv->cursor_visible = cursor_visible;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "cursor-visible");
     }
@@ -3350,8 +3346,7 @@ clutter_text_set_cursor_color (ClutterText        *self,
   else
     priv->cursor_color_set = FALSE;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
   g_object_notify (G_OBJECT (self), "cursor-color");
   g_object_notify (G_OBJECT (self), "cursor-color-set");
@@ -3493,8 +3488,7 @@ clutter_text_set_selection_bound (ClutterText *self,
       else
         priv->selection_bound = selection_bound;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "selection-bound");
     }
@@ -3550,8 +3544,7 @@ clutter_text_set_selection_color (ClutterText        *self,
   else
     priv->selection_color_set = FALSE;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
   g_object_notify (G_OBJECT (self), "selection-color");
   g_object_notify (G_OBJECT (self), "selection-color-set");
@@ -3895,8 +3888,7 @@ clutter_text_set_color (ClutterText        *self,
 
   priv->text_color = *color;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
   g_object_notify (G_OBJECT (self), "color");
 }
@@ -4355,8 +4347,7 @@ clutter_text_set_cursor_position (ClutterText *self,
      time the cursor is moved up or down */
   priv->x_pos = -1;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
   g_object_notify (G_OBJECT (self), "position");
 }
@@ -4390,8 +4381,7 @@ clutter_text_set_cursor_size (ClutterText *self,
 
       priv->cursor_size = size;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
       g_object_notify (G_OBJECT (self), "cursor-size");
     }

@@ -147,8 +147,7 @@ clutter_group_real_remove (ClutterContainer *container,
    */
   g_signal_emit_by_name (container, "actor-removed", actor);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (container)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 
   g_object_unref (actor);
 }
@@ -207,8 +206,7 @@ clutter_group_real_raise (ClutterContainer *container,
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (container))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -247,8 +245,7 @@ clutter_group_real_lower (ClutterContainer *container,
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (container))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -258,8 +255,7 @@ clutter_group_real_sort_depth_order (ClutterContainer *container)
 
   priv->children = g_list_sort (priv->children, sort_by_depth);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (container))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static void

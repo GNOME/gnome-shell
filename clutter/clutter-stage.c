@@ -1253,8 +1253,7 @@ clutter_stage_set_color (ClutterStage       *stage,
 
   priv->color = *color;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (stage))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   g_object_notify (G_OBJECT (stage), "color");
 }
@@ -1880,8 +1879,7 @@ clutter_stage_set_use_fog (ClutterStage *stage,
       CLUTTER_NOTE (MISC, "%s depth-cueing inside stage",
                     priv->use_fog ? "enabling" : "disabling");
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (stage))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
       g_object_notify (G_OBJECT (stage), "use-fog");
     }
@@ -1958,7 +1956,7 @@ clutter_stage_set_fog (ClutterStage *stage,
 
   priv->fog = *fog;
 
-  if (priv->use_fog && CLUTTER_ACTOR_IS_VISIBLE (stage))
+  if (priv->use_fog)
     clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 

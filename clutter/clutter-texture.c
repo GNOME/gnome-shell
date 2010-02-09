@@ -1285,8 +1285,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   g_object_notify (G_OBJECT (texture), "cogl-texture");
 
   /* If resized actor may need resizing but paint() will do this */
-  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 }
 
 static gboolean
@@ -1882,8 +1881,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
       g_object_notify (G_OBJECT (texture), "filter-quality");
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (texture))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
     }
 }
 
@@ -2124,8 +2122,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   /* rename signal */
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
   return TRUE;
 }

@@ -2499,8 +2499,7 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
   g_object_thaw_notify (G_OBJECT (self));
   g_object_unref (self);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_queue_redraw (self);
 }
 
 static void
@@ -6077,8 +6076,7 @@ clutter_actor_set_scale (ClutterActor *self,
   priv->scale_y = scale_y;
   g_object_notify (G_OBJECT (self), "scale-y");
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_queue_redraw (self);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -7362,7 +7360,7 @@ clutter_actor_set_anchor_point (ClutterActor *self,
 
   clutter_anchor_coord_set_units (&priv->anchor, anchor_x, anchor_y, 0);
 
-  if (changed && CLUTTER_ACTOR_IS_VISIBLE (self))
+  if (changed)
     clutter_actor_queue_redraw (self);
 
   g_object_thaw_notify (G_OBJECT (self));
@@ -8792,8 +8790,7 @@ clutter_actor_set_shader_param (ClutterActor *self,
   g_value_copy (value, var);
   g_hash_table_insert (shader_data->value_hash, g_strdup (param), var);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_queue_redraw (self);
 }
 
 /**
