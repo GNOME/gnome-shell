@@ -243,16 +243,24 @@ MessageTray.prototype = {
 
         this._summaryBin = new St.BoxLayout();
         this.actor.add(this._summaryBin);
-        this._summaryBin.hide();
-        this._summary = new St.BoxLayout({ name: 'summary-mode' });
+        this._summary = new St.BoxLayout({ name: 'summary-mode',
+                                           reactive: true });
         this._summaryBin.add(this._summary, { x_align: St.Align.END,
                                               x_fill: false,
                                               expand: true });
 
+
+        this._summary.connect('enter-event',
+                           Lang.bind(this, this._showMessageTray));
+
         this.actor.connect('enter-event',
-                           Lang.bind(this, this._onMessageTrayEntered));
+                           Lang.bind(this, function() {
+                                                if (this._state == MessageTrayState.NOTIFICATION || this._state == MessageTrayState.SUMMARY)
+                                                    this._showMessageTray();
+                                            }));
+
         this.actor.connect('leave-event',
-                           Lang.bind(this, this._onMessageTrayLeft));
+                           Lang.bind(this, this._hideMessageTray));
         this._state = MessageTrayState.HIDDEN;
         this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false });
@@ -341,7 +349,7 @@ MessageTray.prototype = {
             this._updateState();
     },
 
-    _onMessageTrayEntered: function() {
+    _showMessageTray: function() {
         // Don't hide the message tray after a timeout if the user has moved
         // the mouse over it.
         // We might have a timeout in place if the user moved the mouse away
@@ -363,7 +371,7 @@ MessageTray.prototype = {
         }
     },
 
-    _onMessageTrayLeft: function() {
+    _hideMessageTray: function() {
         if (this._state == MessageTrayState.HIDDEN)
             return;
 
@@ -380,8 +388,8 @@ MessageTray.prototype = {
     //
     // State changes are triggered when
     // - a notification arrives (see _onNotify())
-    // - the mouse enters the tray (see _onMessageTrayEntered())
-    // - the mouse leaves the tray (see _onMessageTrayLeft())
+    // - the mouse enters the tray (see _showMessageTray())
+    // - the mouse leaves the tray (see _hideMessageTray())
     // - a timeout expires (usually set up in a previous invocation of this function)
     _updateState: function() {
         if (this._updateTimeoutId > 0)
@@ -496,9 +504,8 @@ MessageTray.prototype = {
         let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
-        this._summaryBin.show();
         Tweener.addTween(this._summaryBin,
-                         { y: primary.y + this.actor.height - this._summaryBin.height,
+                         { y: 0,
                            opacity: 255,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
@@ -506,12 +513,9 @@ MessageTray.prototype = {
 
     _hideSummary: function() {
         Tweener.addTween(this._summaryBin,
-                         { y: this._summaryBin.y + this._summaryBin.height,
-                           opacity: 0,
+                         { opacity: 0,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: Lang.bind(this, function() {
-                               this._summaryBin.hide();
-                           })});
+                           transition: "easeOutQuad"
+                          });
     }
 };
