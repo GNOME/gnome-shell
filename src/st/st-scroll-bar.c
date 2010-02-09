@@ -271,7 +271,7 @@ st_scroll_bar_allocate (ClutterActor          *actor,
   StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox content_box, bw_box, fw_box, trough_box;
-  gfloat stepper_size;
+  gfloat bw_stepper_size, fw_stepper_size, min_size, natural_size;
 
   /* Chain up */
   CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->
@@ -281,52 +281,70 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 
   if (priv->vertical)
     {
-      stepper_size = content_box.x2 - content_box.x1;
+      gfloat width = content_box.x2 - content_box.x1;
+
+      clutter_actor_get_preferred_height (priv->bw_stepper, width,
+                                          &min_size, &natural_size);
+      bw_stepper_size = MAX (min_size, natural_size);
 
       /* Backward stepper */
       bw_box.x1 = content_box.x1;
       bw_box.y1 = content_box.y1;
       bw_box.x2 = content_box.x2;
-      bw_box.y2 = bw_box.y1 + stepper_size;
+      bw_box.y2 = bw_box.y1 + bw_stepper_size;
       clutter_actor_allocate (priv->bw_stepper, &bw_box, flags);
+
+
+      clutter_actor_get_preferred_height (priv->fw_stepper, width,
+                                          &min_size, &natural_size);
+      fw_stepper_size = MAX (min_size, natural_size);
 
       /* Forward stepper */
       fw_box.x1 = content_box.x1;
-      fw_box.y1 = content_box.y2 - stepper_size;
+      fw_box.y1 = content_box.y2 - fw_stepper_size;
       fw_box.x2 = content_box.x2;
       fw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->fw_stepper, &fw_box, flags);
 
       /* Trough */
       trough_box.x1 = content_box.x1;
-      trough_box.y1 = content_box.y1 + stepper_size;
+      trough_box.y1 = content_box.y1 + bw_stepper_size;
       trough_box.x2 = content_box.x2;
-      trough_box.y2 = content_box.y2 - stepper_size;
+      trough_box.y2 = content_box.y2 - fw_stepper_size;
       clutter_actor_allocate (priv->trough, &trough_box, flags);
 
     }
   else
     {
-      stepper_size = content_box.y2 - content_box.y1;
+      gfloat height = content_box.y2 - content_box.y1;
+
+      clutter_actor_get_preferred_width (priv->bw_stepper, height,
+                                         &min_size, &natural_size);
+      bw_stepper_size = MAX (min_size, natural_size);
 
       /* Backward stepper */
       bw_box.x1 = content_box.x1;
       bw_box.y1 = content_box.y1;
-      bw_box.x2 = bw_box.x1 + stepper_size;
+      bw_box.x2 = bw_box.x1 + bw_stepper_size;
       bw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->bw_stepper, &bw_box, flags);
 
+
+      clutter_actor_get_preferred_width (priv->fw_stepper, height,
+                                         &min_size, &natural_size);
+      fw_stepper_size = MAX (min_size, natural_size);
+
       /* Forward stepper */
-      fw_box.x1 = content_box.x2 - stepper_size;
+      fw_box.x1 = content_box.x2 - fw_stepper_size;
       fw_box.y1 = content_box.y1;
       fw_box.x2 = content_box.x2;
       fw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->fw_stepper, &fw_box, flags);
 
       /* Trough */
-      trough_box.x1 = content_box.x1 + stepper_size;
+      trough_box.x1 = content_box.x1 + bw_stepper_size;
       trough_box.y1 = content_box.y1;
-      trough_box.x2 = content_box.x2 - stepper_size;
+      trough_box.x2 = content_box.x2 - fw_stepper_size;
       trough_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->trough, &trough_box, flags);
     }
@@ -335,9 +353,11 @@ st_scroll_bar_allocate (ClutterActor          *actor,
   if (priv->adjustment)
     {
       StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-      float handle_size, position, avail_size;
+      float handle_size, position, avail_size, stepper_size;
       gdouble value, lower, upper, page_size, increment, min_size, max_size;
       ClutterActorBox handle_box = { 0, };
+
+      stepper_size = bw_stepper_size + fw_stepper_size;
 
       st_adjustment_get_values (priv->adjustment,
                                 &value,
@@ -365,7 +385,7 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 
       if (priv->vertical)
         {
-          avail_size = content_box.y2 - content_box.y1 - stepper_size * 2;
+          avail_size = content_box.y2 - content_box.y1 - stepper_size;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
@@ -377,7 +397,7 @@ st_scroll_bar_allocate (ClutterActor          *actor,
         }
       else
         {
-          avail_size = content_box.x2 - content_box.x1 - stepper_size * 2;
+          avail_size = content_box.x2 - content_box.x1 - stepper_size;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
