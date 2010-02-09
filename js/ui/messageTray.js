@@ -75,42 +75,42 @@ Notification.prototype = {
                                           y_expand: false,
                                           y_fill: false });
 
-        this._titleText = new St.Label();
+        this._titleLabel = new St.Label();
         title = title ? _cleanMarkup(title.replace('\n', ' ')) : '';
-        this._titleText.clutter_text.set_markup('<b>' + title + '</b>');
-        this._bannerBox.add_actor(this._titleText);
+        this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
+        this._bannerBox.add_actor(this._titleLabel);
 
-        this._bannerText = new St.Label();
+        this._bannerLabel = new St.Label();
         banner = banner ? _cleanMarkup(banner.replace('\n', '  ')) : '';
-        this._bannerText.clutter_text.set_markup(banner);
-        this._bannerBox.add_actor(this._bannerText);
+        this._bannerLabel.clutter_text.set_markup(banner);
+        this._bannerBox.add_actor(this._bannerLabel);
 
-        this._bodyText = new St.Label();
-        this._bodyText.clutter_text.line_wrap = true;
-        this._bodyText.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._bodyLabel = new St.Label();
+        this._bodyLabel.clutter_text.line_wrap = true;
+        this._bodyLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         if (body) {
             body = _cleanMarkup(body);
-            this._bodyText.clutter_text.set_markup(body);
+            this._bodyLabel.clutter_text.set_markup(body);
             this._canPopOut = true;
         } else {
             // If there's no body, then normally we wouldn't do
             // pop-out. But if title+banner is too wide for the
             // notification, then we'd need to pop out to show the
-            // full banner. So we set up bodyText with that now.
-            this._bodyText.clutter_text.set_markup(banner);
+            // full banner. So we set up bodyLabel with that now.
+            this._bodyLabel.clutter_text.set_markup(banner);
             this._canPopOut = false;
         }
-        this.actor.add(this._bodyText, { row: 1,
-                                         col: 1 });
+        this.actor.add(this._bodyLabel, { row: 1,
+                                          col: 1 });
 
         this.actions = {};
-        this._buttonBox = null;
+        this._actionBox = null;
     },
 
     addAction: function(id, label) {
-        if (!this._buttonBox) {
-            this._buttonBox = new St.BoxLayout({ name: 'notification-actions' });
-            this.actor.add(this._buttonBox, { row: 2,
+        if (!this._actionBox) {
+            this._actionBox = new St.BoxLayout({ name: 'notification-actions' });
+            this.actor.add(this._actionBox, { row: 2,
                                               col: 1,
                                               x_expand: false,
                                               x_fill: false,
@@ -120,13 +120,13 @@ Notification.prototype = {
 
         let button = new St.Button({ style_class: 'notification-button',
                                      label: label });
-        this._buttonBox.add(button);
+        this._actionBox.add(button);
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
-        let [titleMin, titleNat] = this._titleText.get_preferred_width(forHeight);
-        let [bannerMin, bannerNat] = this._bannerText.get_preferred_width(forHeight);
+        let [titleMin, titleNat] = this._titleLabel.get_preferred_width(forHeight);
+        let [bannerMin, bannerNat] = this._bannerLabel.get_preferred_width(forHeight);
         let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
 
         alloc.min_size = titleMin;
@@ -135,13 +135,13 @@ Notification.prototype = {
 
     _bannerBoxGetPreferredHeight: function(actor, forWidth, alloc) {
         [alloc.min_size, alloc.natural_size] =
-            this._titleText.get_preferred_height(forWidth);
+            this._titleLabel.get_preferred_height(forWidth);
     },
 
     _bannerBoxAllocate: function(actor, box, flags) {
-        let [titleMinW, titleNatW] = this._titleText.get_preferred_width(-1);
-        let [titleMinH, titleNatH] = this._titleText.get_preferred_height(-1);
-        let [bannerMinW, bannerNatW] = this._bannerText.get_preferred_width(-1);
+        let [titleMinW, titleNatW] = this._titleLabel.get_preferred_width(-1);
+        let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(-1);
+        let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(-1);
         let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
         if (!has_spacing)
             spacing = 0;
@@ -151,10 +151,10 @@ Notification.prototype = {
         titleBox.x1 = titleBox.y1 = 0;
         titleBox.x2 = Math.min(titleNatW, availWidth);
         titleBox.y2 = titleNatH;
-        this._titleText.allocate(titleBox, flags);
+        this._titleLabel.allocate(titleBox, flags);
 
         if (titleBox.x2 + spacing > availWidth) {
-            this._bannerText.hide();
+            this._bannerLabel.hide();
             this._canPopOut = true;
         } else {
             let bannerBox = new Clutter.ActorBox();
@@ -162,8 +162,8 @@ Notification.prototype = {
             bannerBox.y1 = 0;
             bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
             bannerBox.y2 = titleNatH;
-            this._bannerText.show();
-            this._bannerText.allocate(bannerBox, flags);
+            this._bannerLabel.show();
+            this._bannerLabel.allocate(bannerBox, flags);
 
             if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
                 this._canPopOut = true;
@@ -174,7 +174,7 @@ Notification.prototype = {
         if (!this._canPopOut)
             return false;
 
-        Tweener.addTween(this._bannerText,
+        Tweener.addTween(this._bannerLabel,
                          { opacity: 0,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
@@ -185,7 +185,7 @@ Notification.prototype = {
         if (!this._canPopOut)
             return false;
 
-        Tweener.addTween(this._bannerText,
+        Tweener.addTween(this._bannerLabel,
                          { opacity: 255,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
