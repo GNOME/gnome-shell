@@ -19,6 +19,7 @@ opacity_behaviour (BehaviourFixture *fixture)
 {
   ClutterBehaviour *behaviour;
   guint8 start, end;
+  guint starti;
 
   behaviour = clutter_behaviour_opacity_new (fixture->alpha, 0, 255);
   g_assert (CLUTTER_IS_BEHAVIOUR_OPACITY (behaviour));
@@ -38,14 +39,16 @@ opacity_behaviour (BehaviourFixture *fixture)
   clutter_behaviour_opacity_set_bounds (CLUTTER_BEHAVIOUR_OPACITY (behaviour),
                                         255,
                                         0);
-
-  start = 0;
-  g_object_get (G_OBJECT (behaviour), "opacity-start", &start, NULL);
+  /* XXX: The gobject property is actually a unsigned int not unsigned char
+   * property so we have to be careful not to corrupt the stack by passing
+   * a guint8 pointer here... */
+  starti = 0;
+  g_object_get (G_OBJECT (behaviour), "opacity-start", &starti, NULL);
 
   if (g_test_verbose ())
     g_print ("BehaviourOpacity:start = %d (expected: 255)\n", start);
 
-  g_assert_cmpint (start, ==, 255);
+  g_assert_cmpint (starti, ==, 255);
 
   g_object_unref (behaviour);
 }
