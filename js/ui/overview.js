@@ -95,14 +95,13 @@ InfoBar.prototype = {
         this._undo = new St.Button({ label: _('Undo'),
                                      style_class: 'info-bar-link-button' });
 
-        let bin = new St.Bin({ style_class: 'info-bar',
-                               x_fill: false,
+        let bin = new St.Bin({ x_fill: false,
                                y_fill: false,
                                x_align: St.Align.MIDDLE,
                                y_align: St.Align.MIDDLE });
         this.actor.set_child(bin);
 
-        let box = new St.BoxLayout();
+        let box = new St.BoxLayout({ style_class: 'info-bar' });
         bin.set_child(box);
         this._timeoutId = 0;
 
@@ -171,7 +170,7 @@ InfoBar.prototype = {
         this._timeout = false;
         this._overviewWasHidden = false;
 
-        this._label.text = text + '  ';
+        this._label.text = text;
 
         Tweener.addTween(this.actor,
                          { opacity: 255,
