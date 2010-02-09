@@ -63,6 +63,8 @@ struct MetaEdgeResistanceData
   ResistanceDataForAnEdge bottom_data;
 };
 
+static void compute_resistance_and_snapping_edges (MetaDisplay *display);
+
 /* !WARNING!: this function can return invalid indices (namely, either -1 or
  * edges->len); this is by design, but you need to remember this.
  */
@@ -550,7 +552,9 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
   gboolean                modified;
   int new_left, new_right, new_top, new_bottom;
 
-  g_assert (display->grab_edge_resistance_data != NULL);
+  if (display->grab_edge_resistance_data == NULL)
+    compute_resistance_and_snapping_edges (display);
+
   edge_data = display->grab_edge_resistance_data;
 
   if (auto_snap)
@@ -671,7 +675,8 @@ meta_display_cleanup_edges (MetaDisplay *display)
   MetaEdgeResistanceData *edge_data = display->grab_edge_resistance_data;
   GHashTable *edges_to_be_freed;
 
-  g_assert (edge_data != NULL);
+  if (edge_data == NULL) /* Not currently cached */
+    return;
 
   /* We first need to clean out any window edges */
   edges_to_be_freed = g_hash_table_new_full (g_direct_hash, g_direct_equal,
@@ -938,8 +943,8 @@ initialize_grab_edge_resistance_data (MetaDisplay *display)
   edge_data->bottom_data.keyboard_buildup = 0;
 }
 
-void
-meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
+static void
+compute_resistance_and_snapping_edges (MetaDisplay *display)
 {
   GList *stacked_windows;
   GList *cur_window_iter;
@@ -951,6 +956,11 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
    * in the layer that we are working on
    */
   GSList *rem_windows, *rem_win_stacking;
+
+  g_assert (display->grab_window != NULL);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Computing edges to resist-movement or snap-to for %s.\n",
+              display->grab_window->desc);
 
   /*
    * 1st: Get the list of relevant windows, from bottom to top

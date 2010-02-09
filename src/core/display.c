@@ -3636,18 +3636,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_window != NULL || display->grab_screen != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
-  /* If this is a move or resize, cache the window edges for
-   * resistance/snapping
-   */
-  if (meta_grab_op_is_resizing (display->grab_op) || 
-      meta_grab_op_is_moving (display->grab_op))
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Computing edges to resist-movement or snap-to for %s.\n",
-                  window->desc);
-      meta_display_compute_resistance_and_snapping_edges (display);
-    }
-
   /* Save the old stacking */
   if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
     {

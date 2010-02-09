@@ -390,9 +390,8 @@ void meta_display_grab_focus_window_button   (MetaDisplay *display,
 void meta_display_ungrab_focus_window_button (MetaDisplay *display,
                                               MetaWindow  *window);
 
-/* Next two functions are defined in edge-resistance.c */
-void meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display);
-void meta_display_cleanup_edges                         (MetaDisplay *display);
+/* Next function is defined in edge-resistance.c */
+void meta_display_cleanup_edges              (MetaDisplay *display);
 
 /* make a request to ensure the event serial has changed */
 void     meta_display_increment_event_serial (MetaDisplay *display);
