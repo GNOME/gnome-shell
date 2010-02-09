@@ -85,8 +85,8 @@ DocDisplayItem.prototype = {
             return null;
 
         try {
-            return Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.NONE,
-                                                                  this._docInfo.uri, -1, -1);
+            return St.TextureCache.get_default().load_uri_sync(St.TextureCachePolicy.NONE,
+                                                               this._docInfo.uri, -1, -1);
         } catch (e) {
             // An exception will be raised when the image format isn't know
             /* FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=591480: should

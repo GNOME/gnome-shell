@@ -318,7 +318,7 @@ Source.prototype = {
     },
 
     createIcon: function(size) {
-        let textureCache = Shell.TextureCache.get_default();
+        let textureCache = St.TextureCache.get_default();
 
         if (this._icon) {
             if (this._icon.substr(0, 7) == 'file://')

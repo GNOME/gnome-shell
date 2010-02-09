@@ -268,11 +268,11 @@ SearchEntry.prototype = {
         box.append(this._iconBox, Big.BoxPackFlags.END);
 
         let magnifierUri = "file://" + global.imagedir + "magnifier.svg";
-        this._magnifierIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                             magnifierUri, 18, 18);
+        this._magnifierIcon = St.TextureCache.get_default().load_uri_sync(St.TextureCachePolicy.FOREVER,
+                                                                          magnifierUri, 18, 18);
         let closeUri = "file://" + global.imagedir + "close-black.svg";
-        this._closeIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                         closeUri, 18, 18);
+        this._closeIcon = St.TextureCache.get_default().load_uri_sync(St.TextureCachePolicy.FOREVER,
+                                                                      closeUri, 18, 18);
         this._closeIcon.reactive = true;
         this._closeIcon.connect('button-press-event', Lang.bind(this, function () {
             // Resetting this.entry.text will trigger notify::text signal which will

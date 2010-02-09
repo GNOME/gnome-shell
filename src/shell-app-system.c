@@ -14,7 +14,7 @@
 
 #include "shell-app-private.h"
 #include "shell-global.h"
-#include "shell-texture-cache.h"
+#include "st/st-texture-cache.h"
 #include "display.h"
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
@@ -1100,9 +1100,9 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
 
   if (info->type == SHELL_APP_INFO_TYPE_WINDOW)
     {
-      return shell_texture_cache_bind_pixbuf_property (shell_texture_cache_get_default (),
-                                                       G_OBJECT (info->window),
-                                                       "icon");
+      return st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
+                                                    G_OBJECT (info->window),
+                                                    "icon");
     }
 
   icon = shell_app_info_get_icon (info);
@@ -1113,7 +1113,7 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
     }
   else
     {
-      ret = shell_texture_cache_load_gicon (shell_texture_cache_get_default (), icon, (int)size);
+      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), icon, (int)size);
       g_object_unref (icon);
     }
 

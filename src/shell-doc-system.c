@@ -5,7 +5,6 @@
 #include "shell-doc-system.h"
 
 #include "shell-global.h"
-#include "shell-texture-cache.h"
 
 
 /**

@@ -905,8 +905,8 @@ st_widget_real_style_changed (StWidget *self)
       /* `border-image' takes precedence over `background-image'.
        * Firefox lets the background-image shine thru when border-image has
        * alpha an channel, maybe that would be an option for the future. */
-      texture = st_texture_cache_get_texture (texture_cache,
-                                                filename);
+      texture = (ClutterTexture*) st_texture_cache_load_file_simple (texture_cache,
+                                                                     filename);
 
       clutter_texture_get_base_size (CLUTTER_TEXTURE (texture),
                                      &width, &height);
@@ -968,16 +968,8 @@ st_widget_real_style_changed (StWidget *self)
   bg_file = st_theme_node_get_background_image (theme_node);
   if (bg_file != NULL)
     {
-      texture = st_texture_cache_get_texture (texture_cache, bg_file);
-      priv->background_image = (ClutterActor*) texture;
-
-      if (priv->background_image != NULL)
-        {
-          clutter_actor_set_parent (priv->background_image,
-                                    CLUTTER_ACTOR (self));
-        }
-      else
-        g_warning ("Could not load %s", bg_file);
+      priv->background_image = st_texture_cache_load_file_simple (texture_cache, bg_file);
+      clutter_actor_set_parent (priv->background_image, CLUTTER_ACTOR (self));
 
       has_changed = TRUE;
       relayout_needed = TRUE;

@@ -77,7 +77,7 @@ PlaceDeviceInfo.prototype = {
 
     iconFactory: function(size) {
         let icon = this._mount.get_icon();
-        return Shell.TextureCache.get_default().load_gicon(icon, size);
+        return St.TextureCache.get_default().load_gicon(icon, size);
     },
 
     launch: function() {
@@ -122,7 +122,7 @@ PlacesManager.prototype = {
         let homeIcon = Shell.util_get_icon_for_uri (homeUri);
         this._home = new PlaceInfo('special:home', homeLabel,
             function(size) {
-                return Shell.TextureCache.get_default().load_gicon(homeIcon, size);
+                return St.TextureCache.get_default().load_gicon(homeIcon, size);
             },
             function() {
                 Gio.app_info_launch_default_for_uri(homeUri, global.create_app_launch_context());
@@ -135,7 +135,7 @@ PlacesManager.prototype = {
         let desktopIcon = Shell.util_get_icon_for_uri (desktopUri);
         this._desktopMenu = new PlaceInfo('special:desktop', desktopLabel,
             function(size) {
-                return Shell.TextureCache.get_default().load_gicon(desktopIcon, size);
+                return St.TextureCache.get_default().load_gicon(desktopIcon, size);
             },
             function() {
                 Gio.app_info_launch_default_for_uri(desktopUri, global.create_app_launch_context());
@@ -143,7 +143,7 @@ PlacesManager.prototype = {
 
         this._connect = new PlaceInfo('special:connect', _("Connect to..."),
             function (size) {
-                return Shell.TextureCache.get_default().load_icon_name("applications-internet", size);
+                return St.TextureCache.get_default().load_icon_name("applications-internet", size);
             },
             function () {
                 new Shell.Process({ args: ['nautilus-connect-server'] }).run();
@@ -310,7 +310,7 @@ PlacesManager.prototype = {
 
             let item = new PlaceInfo('bookmark:' + bookmark, label,
                 function(size) {
-                    return Shell.TextureCache.get_default().load_gicon(icon, size);
+                    return St.TextureCache.get_default().load_gicon(icon, size);
                 },
                 function() {
                     Gio.app_info_launch_default_for_uri(bookmark, global.create_app_launch_context());
@@ -414,7 +414,7 @@ DashPlaceDisplayItem.prototype = {
         this.actor.append(text, Big.BoxPackFlags.EXPAND);
 
         if (info.isRemovable()) {
-            let removeIcon = Shell.TextureCache.get_default().load_icon_name ('media-eject', PLACES_ICON_SIZE);
+            let removeIcon = St.TextureCache.get_default().load_icon_name ('media-eject', PLACES_ICON_SIZE);
             let removeIconBox = new St.Button({ child: removeIcon,
                                                 reactive: true });
             this.actor.append(removeIconBox, Big.BoxPackFlags.NONE);

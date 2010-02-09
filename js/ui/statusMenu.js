@@ -36,7 +36,7 @@ StatusMenu.prototype = {
         this._iconBox = new St.Bin();
         this.actor.add(this._iconBox, { y_align: St.Align.MIDDLE });
 
-        let textureCache = Shell.TextureCache.get_default();
+        let textureCache = St.TextureCache.get_default();
         // FIXME: these icons are all wrong (likewise in createSubMenu)
         this._availableIcon = textureCache.load_icon_name('gtk-yes', 16);
         this._busyIcon = textureCache.load_icon_name('gtk-no', 16);

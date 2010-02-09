@@ -90,8 +90,6 @@ libgnome_shell_la_SOURCES =			\
 	shell-stack.h				\
 	shell-tray-manager.c			\
 	shell-tray-manager.h			\
-	shell-texture-cache.c			\
-	shell-texture-cache.h			\
 	shell-uri-util.c           \
 	shell-uri-util.h           \
 	shell-window-tracker.c		\

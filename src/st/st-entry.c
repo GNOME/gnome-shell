@@ -842,9 +842,7 @@ _st_entry_set_icon_from_file (StEntry       *entry,
 
       cache = st_texture_cache_get_default ();
 
-
-
-      *icon = (ClutterActor*) st_texture_cache_get_texture (cache, filename);
+      *icon = (ClutterActor*) st_texture_cache_load_file_simple (cache, filename);
 
       clutter_actor_set_reactive (*icon, TRUE);
       clutter_actor_set_parent (*icon, CLUTTER_ACTOR (entry));

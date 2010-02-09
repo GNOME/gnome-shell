@@ -694,7 +694,7 @@ AppIconMenu.prototype = {
         this._windowContainer.show();
 
         let iconsDiffer = false;
-        let texCache = Shell.TextureCache.get_default();
+        let texCache = St.TextureCache.get_default();
         if (windows.length > 0) {
             let firstIcon = windows[0].mini_icon;
             for (let i = 1; i < windows.length; i++) {

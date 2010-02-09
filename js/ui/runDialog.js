@@ -7,9 +7,9 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 

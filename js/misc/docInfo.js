@@ -3,8 +3,9 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Shell = imports.gi.Shell;
 
+const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Search = imports.ui.search;
@@ -30,7 +31,7 @@ DocInfo.prototype = {
     },
 
     createIcon : function(size) {
-        return Shell.TextureCache.get_default().load_recent_thumbnail(size, this.recentInfo);
+        return St.TextureCache.get_default().load_recent_thumbnail(size, this.recentInfo);
     },
 
     launch : function() {
