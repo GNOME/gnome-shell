@@ -262,8 +262,7 @@ _cogl_texture_2d_new_with_size (unsigned int     width,
 
   tex_2d = _cogl_texture_2d_create_base (width, height, flags, internal_format);
 
-  GE( glGenTextures (1, &tex_2d->gl_texture) );
-  GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
+  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
   GE( glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                     width, height, 0, gl_format, gl_type, NULL) );
