@@ -171,8 +171,11 @@ clutter_box_real_foreach (ClutterContainer *container,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
 
-  for (l = priv->children; l != NULL; l = l->next)
-    (* callback) (l->data, user_data);
+  /* Using g_list_foreach instead of iterating the list manually
+     because it has better protection against the current node being
+     removed. This will happen for example if someone calls
+     clutter_container_foreach(container, clutter_actor_destroy) */
+  g_list_foreach (priv->children, (GFunc) callback, user_data);
 }
 
 static void
