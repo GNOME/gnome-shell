@@ -1,3 +1,22 @@
+Clutter 1.1.10 (09/02/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.8
+
+    o Fixed a regression in textures that caused all the textures to be
+      drawn as white rectangles.
+
+    o Fixed compilation with the Sun C compiler.
+
+    o Use SSE2 instructions to premultiply RGBA images, if available.
+
+    o Improve readability of ClutterActor::raise/::lower warnings.
+
+Many thanks to:
+
+  Neil Roberts
+  Halton Huo
+
 Clutter 1.1.8 (08/02/2010)
 ===============================================================================
 
