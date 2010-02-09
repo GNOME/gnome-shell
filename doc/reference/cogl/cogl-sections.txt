@@ -424,6 +424,7 @@ cogl_matrix_get_inverse
 <FILE>cogl-material</FILE>
 <TITLE>Materials</TITLE>
 cogl_material_new
+cogl_material_copy
 cogl_material_ref
 cogl_material_unref
 cogl_is_material
@@ -456,6 +457,7 @@ cogl_material_get_layers
 cogl_material_get_n_layers
 CoglMaterialFilter
 cogl_material_set_layer_filters
+CoglMaterialLayerType
 cogl_material_layer_get_type
 cogl_material_layer_get_texture
 cogl_material_layer_get_min_filter
@@ -484,9 +486,14 @@ cogl_buffer_set_data
 <SUBSECTION>
 cogl_pixel_buffer_new
 cogl_pixel_buffer_new_for_size
+cogl_pixel_buffer_set_region
 cogl_is_pixel_buffer
 
 <SUBSECTION>
 cogl_texture_new_from_buffer
 
+<SUBSECTION Private>
+cogl_buffer_access_get_type
+cogl_buffer_update_hint_get_type
+cogl_buffer_usage_hint_get_type
 </SECTION>
