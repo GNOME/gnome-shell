@@ -234,11 +234,11 @@ function _onWorkspaceSwitched(screen, from) {
             old_workspace.disconnect(_windowRemovedSignalId);
     }
 
-    _windowAddedSignalId = workspace.connect('window-added', function(win) {
+    _windowAddedSignalId = workspace.connect('window-added', function(workspace, win) {
         if (win.window_type == Meta.WindowType.DESKTOP)
             hideBackground();
     });
-    _windowRemovedSignalId = workspace.connect('window-removed', function(win) {
+    _windowRemovedSignalId = workspace.connect('window-removed', function(workspace, win) {
         if (win.window_type == Meta.WindowType.DESKTOP)
             showBackground();
     });
