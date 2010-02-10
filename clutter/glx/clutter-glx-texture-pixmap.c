@@ -380,7 +380,7 @@ create_cogl_texture (ClutterTexture *texture,
       priv->using_rectangle = using_rectangle;
 
       clutter_texture_set_cogl_texture (texture, handle);
-      cogl_texture_unref(handle);
+      cogl_handle_unref(handle);
 
       return TRUE;
     }

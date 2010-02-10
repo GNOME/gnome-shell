@@ -385,7 +385,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
  * Deprecated: 1.2: Use cogl_handle_ref() instead
  */
 CoglHandle
-cogl_vertex_buffer_ref (CoglHandle handle);
+cogl_vertex_buffer_ref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 /**
  * cogl_vertex_buffer_unref:
@@ -396,7 +396,7 @@ cogl_vertex_buffer_ref (CoglHandle handle);
  * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void
-cogl_vertex_buffer_unref (CoglHandle handle);
+cogl_vertex_buffer_unref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 

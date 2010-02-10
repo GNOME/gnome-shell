@@ -433,7 +433,7 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
  * Return value: the @handle.
  */
 CoglHandle
-cogl_texture_ref (CoglHandle handle);
+cogl_texture_ref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 /**
  * cogl_texture_unref:
@@ -444,7 +444,7 @@ cogl_texture_ref (CoglHandle handle);
  * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void
-cogl_texture_unref (CoglHandle handle);
+cogl_texture_unref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 

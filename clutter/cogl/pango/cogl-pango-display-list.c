@@ -144,7 +144,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       /* Get rid of the vertex buffer so that it will be recreated */
       if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
         {
-          cogl_vertex_buffer_unref (node->d.texture.vertex_buffer);
+          cogl_handle_unref (node->d.texture.vertex_buffer);
           node->d.texture.vertex_buffer = COGL_INVALID_HANDLE;
         }
     }
@@ -156,7 +156,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       node->type = COGL_PANGO_DISPLAY_LIST_TEXTURE;
       node->color_override = dl->color_override;
       node->color = dl->color;
-      node->d.texture.texture = cogl_texture_ref (texture);
+      node->d.texture.texture = cogl_handle_ref (texture);
       node->d.texture.verts
         = g_array_new (FALSE, FALSE, sizeof (CoglPangoDisplayListVertex));
       node->d.texture.vertex_buffer = COGL_INVALID_HANDLE;
@@ -392,9 +392,9 @@ _cogl_pango_display_list_node_free (CoglPangoDisplayListNode *node)
     {
       g_array_free (node->d.texture.verts, TRUE);
       if (node->d.texture.texture != COGL_INVALID_HANDLE)
-        cogl_texture_unref (node->d.texture.texture);
+        cogl_handle_unref (node->d.texture.texture);
       if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
-        cogl_vertex_buffer_unref (node->d.texture.vertex_buffer);
+        cogl_handle_unref (node->d.texture.vertex_buffer);
     }
 
   g_slice_free (CoglPangoDisplayListNode, node);

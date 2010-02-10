@@ -69,6 +69,8 @@ typedef enum {
 CoglHandle
 cogl_create_shader (CoglShaderType shader_type);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_shader_ref:
  * @handle: A #CoglHandle to a shader.
@@ -78,7 +80,7 @@ cogl_create_shader (CoglShaderType shader_type);
  * Returns: @handle
  */
 CoglHandle
-cogl_shader_ref (CoglHandle handle);
+cogl_shader_ref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 /**
  * cogl_shader_unref:
@@ -88,7 +90,9 @@ cogl_shader_ref (CoglHandle handle);
  * shader object will be destroyed.
  */
 void
-cogl_shader_unref (CoglHandle handle);
+cogl_shader_unref (CoglHandle handle) G_GNUC_DEPRECATED;
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 /**
  * cogl_is_shader:
