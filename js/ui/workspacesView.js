@@ -25,9 +25,6 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
-const GRID_SPACING = 15;
-const SINGLE_VIEW_SPACING = 25;
-
 const WorkspacesViewType = {
     SINGLE: 0,
     MOSAIC: 1
@@ -43,11 +40,19 @@ GenericWorkspacesView.prototype = {
         this._actor = new Clutter.Group();
 
         this.actor.add_actor(this._actor);
+        this.actor.connect('style-changed', Lang.bind(this,
+            function() {
+                let node = this.actor.get_theme_node();
+                let [a, spacing] = node.get_length('spacing', false);
+                this._spacing = spacing;
+                this._positionWorkspaces();
+            }));
 
         this._width = width;
         this._height = height;
         this._x = x;
         this._y = y;
+        this._spacing = 0;
 
         this._windowSelectionAppId = null;
 
@@ -62,7 +67,6 @@ GenericWorkspacesView.prototype = {
             this._addWorkspaceActor(w);
         }
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
-        this._positionWorkspaces();
 
         // Position/scale the desktop windows and their children after the
         // workspaces have been created. This cannot be done first because
@@ -264,6 +268,7 @@ MosaicView.prototype = {
     _init: function(width, height, x, y, animate) {
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, animate);
 
+        this.actor.style_class = "workspaces mosaic";
         this._workspaces[global.screen.get_active_workspace_index()].setSelected(true);
 
         this._removeButton = null;
@@ -284,8 +289,8 @@ MosaicView.prototype = {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
-        let wsWidth = (this._width - (gridWidth - 1) * GRID_SPACING) / gridWidth;
-        let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
+        let wsWidth = (this._width - (gridWidth - 1) * this._spacing) / gridWidth;
+        let wsHeight = (this._height - (gridHeight - 1) * this._spacing) / gridHeight;
         let scale = wsWidth / global.screen_width;
 
         let span = 1, n = 0, row = 0, col = 0, horiz = true;
@@ -296,8 +301,8 @@ MosaicView.prototype = {
             workspace.gridRow = row;
             workspace.gridCol = col;
 
-            workspace.gridX = this._x + workspace.gridCol * (wsWidth + GRID_SPACING);
-            workspace.gridY = this._y + workspace.gridRow * (wsHeight + GRID_SPACING);
+            workspace.gridX = this._x + workspace.gridCol * (wsWidth + this._spacing);
+            workspace.gridY = this._y + workspace.gridRow * (wsHeight + this._spacing);
             workspace.scale = scale;
 
             if (horiz) {
@@ -454,6 +459,7 @@ SingleView.prototype = {
     _init: function(width, height, x, y, animate) {
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, animate);
 
+        this.actor.style_class = "workspaces single";
         this._actor.set_clip(x, y, width, height);
         this._addButton = null;
         this._removeButton = null;
@@ -476,7 +482,7 @@ SingleView.prototype = {
 
             workspace.scale = scale;
             let _width = workspace.actor.width * scale;
-            workspace.gridX = this._x + (w - active) * (_width + SINGLE_VIEW_SPACING);
+            workspace.gridX = this._x + (w - active) * (_width + this._spacing);
             workspace.gridY = this._y;
 
             workspace.setSelected(false);

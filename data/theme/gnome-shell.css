@@ -162,6 +162,14 @@ StTooltip {
     color: white;
 }
 
+.workspaces.single {
+    spacing: 25px;
+}
+
+.workspaces.mosaic {
+    spacing: 15px;
+}
+
 .workspaces-bar {
     height: 48px;
 }
