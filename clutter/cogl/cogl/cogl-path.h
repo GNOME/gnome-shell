@@ -33,17 +33,14 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:cogl-primitives
- * @short_description: Functions that draw various primitive shapes and
- * allow for construction of more complex paths.
+ * SECTION:cogl-paths
+ * @short_description: Functions for constructing and drawing 2D paths.
  *
- * There are three levels on which drawing with cogl can be used. The
- * highest level functions construct various simple primitive shapes
- * to be either filled or stroked. Using a lower-level set of functions
- * more complex and arbitrary paths can be constructed by concatenating
- * straight line, bezier curve and arc segments. Additionally there
- * are utility functions that draw the most common primitives - rectangles
- * and trapezoids - in a maximaly optimized fashion.
+ * There are two levels on which drawing with cogl-paths can be used.
+ * The highest level functions construct various simple primitive
+ * shapes to be either filled or stroked. Using a lower-level set of
+ * functions more complex and arbitrary paths can be constructed by
+ * concatenating straight line, bezier curve and arc segments.
  *
  * When constructing arbitrary paths, the current pen location is
  * initialized using the move_to command. The subsequent path segments
@@ -53,21 +50,6 @@ G_BEGIN_DECLS
  * vertices of the path segments relative to the last pen location
  * rather then in the absolute coordinates.
  */
-
-/**
- * cogl_rectangle:
- * @x_1: X coordinate of the top-left corner
- * @y_1: Y coordinate of the top-left corner
- * @x_2: X coordinate of the bottom-right corner
- * @y_2: Y coordinate of the bottom-right corner
- *
- * Fills a rectangle at the given coordinates with the current source material
- **/
-void
-cogl_rectangle (float x_1,
-                float y_1,
-                float x_2,
-                float y_2);
 
 /**
  * cogl_path_fill:
@@ -100,7 +82,6 @@ cogl_path_fill_preserve (void);
  **/
 void
 cogl_path_stroke (void);
-
 
 /**
  * cogl_path_stroke_preserve:

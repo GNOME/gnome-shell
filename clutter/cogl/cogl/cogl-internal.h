@@ -27,6 +27,34 @@
 #include "cogl.h"
 #include "cogl-matrix-stack.h"
 
+typedef struct _floatVec2
+{
+  float x;
+  float y;
+} floatVec2;
+
+typedef struct _CoglPathNode
+{
+  float x;
+  float y;
+  unsigned int path_size;
+} CoglPathNode;
+
+typedef struct _CoglBezQuad
+{
+  floatVec2 p1;
+  floatVec2 p2;
+  floatVec2 p3;
+} CoglBezQuad;
+
+typedef struct _CoglBezCubic
+{
+  floatVec2 p1;
+  floatVec2 p2;
+  floatVec2 p3;
+  floatVec2 p4;
+} CoglBezCubic;
+
 typedef enum
 {
   COGL_FRONT_WINDING_CLOCKWISE,

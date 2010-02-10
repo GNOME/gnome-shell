@@ -61,6 +61,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-material.h 		\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
+	$(srcdir)/cogl-primitives.h 		\
 	$(srcdir)/cogl-path.h 			\
 	$(srcdir)/cogl-pixel-buffer.h		\
 	$(srcdir)/cogl-shader.h 		\
@@ -96,6 +97,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-bitmap-fallback.c 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
+	$(srcdir)/cogl-path.h 				\
+	$(srcdir)/cogl-path.c 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
