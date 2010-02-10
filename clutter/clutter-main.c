@@ -572,6 +572,7 @@ _clutter_do_pick (ClutterStage   *stage,
                         "The time spent issuing a read pixels",
                         0 /* no application private data */);
 
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
   if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
     return CLUTTER_ACTOR (stage);
