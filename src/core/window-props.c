@@ -427,7 +427,7 @@ set_title_text (MetaWindow  *window,
 
               errno = 0;
               pwd = getpwuid (window_owner);
-              if (errno==0 || pwd==NULL)
+              if (errno==0 && pwd!=NULL)
                 {
                   found_name = pwd->pw_name;
                 }
