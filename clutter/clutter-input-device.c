@@ -452,9 +452,11 @@ _clutter_input_device_update (ClutterInputDevice *device)
 
   g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
 
-  clutter_input_device_get_device_coords (device, &x, &y);
-
   stage = device->stage;
+  if (stage == NULL)
+    return NULL;
+
+  clutter_input_device_get_device_coords (device, &x, &y);
 
   old_cursor_actor = device->cursor_actor;
   new_cursor_actor = _clutter_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
