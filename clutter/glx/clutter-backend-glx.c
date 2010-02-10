@@ -154,7 +154,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
    * time Mesa has exported a hybrid GLX, exporting extensions specified
    * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
   if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
-      || !(glx_major > 1 || glx_minor > 2))
+      || !(glx_major == 1 && glx_minor >= 2))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
