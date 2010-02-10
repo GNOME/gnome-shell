@@ -1613,8 +1613,8 @@ shell_recorder_set_filename (ShellRecorder *recorder,
 /**
  * shell_recorder_set_pipeline:
  * @recorder: the #ShellRecorder
- * @filename: the GStreamer pipeline used to encode recordings
- *            or %NULL for the defalt value.
+ * @pipeline: (allow-none): the GStreamer pipeline used to encode recordings
+ *            or %NULL for the default value.
  *
  * Sets the GStreamer pipeline used to encode recordings.
  * It follows the syntax used for gst-launch. The pipeline
