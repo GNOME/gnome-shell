@@ -1853,7 +1853,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
        * the height accordingly
        */
       logical_height = logical_rect.y + logical_rect.height;
-      layout_height = (gfloat) logical_height / 1024.0f;
+      layout_height = ceilf ((gfloat) logical_height / 1024.0f + 0.5);
 
       if (min_height_p)
         {
