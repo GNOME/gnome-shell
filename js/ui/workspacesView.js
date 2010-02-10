@@ -329,8 +329,6 @@ MosaicView.prototype = {
         let oldGridHeight = Math.ceil(oldNumWorkspaces / oldGridWidth);
         let lostWorkspaces = [];
 
-        // The old last workspace is no longer removable.
-
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Create new workspace groups
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
@@ -343,9 +341,6 @@ MosaicView.prototype = {
             // the end of the list, not the start/middle
             lostWorkspaces = this._workspaces.splice(newNumWorkspaces);
         }
-
-        // The new last workspace may be removable
-        let newLastWorkspace = this._workspaces[this._workspaces.length - 1];
 
         // Figure out the new layout
         this._positionWorkspaces();
@@ -457,7 +452,6 @@ SingleView.prototype = {
     __proto__: GenericWorkspacesView.prototype,
 
     _init: function(width, height, x, y, animate) {
-        this._scroll = null;
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, animate);
 
         this._actor.set_clip(x, y, width, height);
@@ -465,25 +459,14 @@ SingleView.prototype = {
         this._removeButton = null;
         this._indicatorsPanel = null;
         this._indicatorsPanelWidth = null;
-
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        for (let w = 0; w < this._workspaces.length; w++) {
-            if (w != activeWorkspaceIndex) {
-                this._workspaces[w].actor.hide();
-                continue;
-            }
-            this._workspaces[w].actor.show();
-            this._workspaces[w]._windowOverlaysGroup.show();
-        }
+        this._scroll = null;
+        this._scrolling = false;
+        this._animatingScroll = false;
     },
 
     _positionWorkspaces: function() {
-        let position = global.screen.get_active_workspace_index();
         let scale = this._width / global.screen_width;
-
-        if (this._scroll != null)
-            position = this._scroll.adjustment.value;
-        let isInt = (Math.round(position) === position);
+        let active = global.screen.get_active_workspace_index();
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
@@ -492,156 +475,255 @@ SingleView.prototype = {
             workspace.gridCol = 0;
 
             workspace.scale = scale;
-            workspace.actor.set_scale(scale, scale);
             let _width = workspace.actor.width * scale;
-            workspace.gridX = this._x
-                              + (w - position) * (_width + SINGLE_VIEW_SPACING);
+            workspace.gridX = this._x + (w - active) * (_width + SINGLE_VIEW_SPACING);
             workspace.gridY = this._y;
+
+            workspace.setSelected(false);
+        }
+    },
+
+    _updateWorkspaceActors: function() {
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+
+            workspace.actor.set_scale(workspace.scale, workspace.scale);
             workspace.actor.set_position(workspace.gridX, workspace.gridY);
-            // show the overlay unconditionally first, so items get
-            // positioned correctly, then hide if necessary
-            workspace._windowOverlaysGroup.show();
-            if (isInt) {
-                if (this.actor.get_stage() != null)
-                   workspace.positionWindows(0);
-                if (w == position) {
-                    workspace.actor.show();
-                } else {
-                    workspace._windowOverlaysGroup.hide();
-                    workspace.actor.hide();
-                }
+            workspace.positionWindows(0);
+        }
+    },
+
+    _scrollToActive: function(showAnimation) {
+        let active = global.screen.get_active_workspace_index();
+
+        this._scrollWorkspacesToIndex(active, showAnimation);
+        this._scrollScrollBarToIndex(active, showAnimation);
+    },
+
+    _scrollWorkspacesToIndex: function(index, showAnimation) {
+        let active = global.screen.get_active_workspace_index();
+        let targetWorkspaceNewX = this._x;
+        let targetWorkspaceCurrentX = this._workspaces[index].gridX;
+        let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
+
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+
+            workspace.gridX += dx;
+            workspace.actor.show();
+            workspace._hideAllOverlays();
+
+            let visible = (w == active);
+            if (showAnimation) {
+                Tweener.addTween(workspace.actor,
+                    { x: workspace.gridX,
+                      time: WORKSPACE_SWITCH_TIME,
+                      transition: 'easeOutQuad',
+                      onComplete: function() {
+                          if (visible)
+                              workspace._fadeInAllOverlays();
+                          else
+                              workspace.actor.hide();
+                    }});
             } else {
-                workspace._windowOverlaysGroup.hide();
-                if (Math.abs(w - position) <= 1)
-                    workspace.actor.show();
+                workspace.actor.x = workspace.gridX;
+                if (visible)
+                    workspace._fadeInAllOverlays();
                 else
                     workspace.actor.hide();
             }
         }
     },
 
+    _scrollScrollBarToIndex: function(index, showAnimation) {
+        if (!this._scroll || this._scrolling)
+            return;
+
+        this._animatingScroll = true;
+
+        if (showAnimation) {
+            Tweener.addTween(this._scroll.adjustment, {
+               value: index,
+               time: WORKSPACE_SWITCH_TIME,
+               transition: 'easeOutQuad',
+               onComplete: Lang.bind(this,
+                   function() {
+                       this._animatingScroll = false;
+                   })
+            });
+        } else {
+            this._scroll.adjustment.value = index;
+            this._animatingScroll = false;
+        }
+    },
+
     _workspacesChanged: function() {
         let oldNumWorkspaces = this._workspaces.length;
         let newNumWorkspaces = global.screen.n_workspaces;
+	let active = global.screen.get_active_workspace_index();
 
         if (oldNumWorkspaces == newNumWorkspaces)
             return;
 
-        if (this._scroll != null) {
-            let adj = this._scroll.get_adjustment();
-            adj.upper = newNumWorkspaces;
-            this._scroll.adjustment = adj;
-        }
-        let lostWorkspaces = [];
+        if (this._scroll != null)
+            this._scroll.adjustment.upper = newNumWorkspaces;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Create new workspace groups
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
                 this._addWorkspaceActor(w);
-                this._workspaces[w].actor.hide();
-            }
+            this._positionWorkspaces();
+            this._updateWorkspaceActors();
+            this._scrollScrollBarToIndex(active + 1, false);
 
         } else {
             for (let i = 0; i < this._workspaces.length; i++)
                 this._workspaces[i].destroy();
+            this._workspaces = [];
             this._actor.remove_all();
 
-            //Without this will be a lot of warnings
+            // Without this there will be lots of warnings
             this._actor.hide();
-
-            this._workspaces = [];
-            let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-            for (let w = 0; w < global.screen.n_workspaces; w++) {
+            for (let w = 0; w < global.screen.n_workspaces; w++)
                 this._addWorkspaceActor(w);
-                if (w == activeWorkspaceIndex) {
-                    this._workspaces[w].actor.show();
-                } else {
-                    this._workspaces[w].actor.hide();
-                }
-            }
             this._actor.show();
+            this._positionWorkspaces();
+            this._updateWorkspaceActors();
         }
-        this._positionWorkspaces();
-
-        // Reset the selection state; if we went from > 1 workspace to 1,
-        // this has the side effect of removing the frame border
-        let activeIndex = global.screen.get_active_workspace_index();
-        this._workspaces[activeIndex].actor.show();
-        this._workspaces[activeIndex]._windowOverlaysGroup.show();
 
         this._updatePanelVisibility();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
         this._updatePanelVisibility();
-        let showAnimation = true;
 
-        if (this._scroll != null) {
-            let adj = this._scroll.get_adjustment();
-            if (Math.round(adj.value - to) != adj.value - to)
-                showAnimation = false;
-            if (adj.value - to == 0)
-                showAnimation = false;
-            adj.value = to;
-            this._scroll.adjustment = adj;
-        }
-        if (showAnimation) {
-            let fx;
-            if (from > to) {
-                fx = this._workspaces[0].actor.width;
-            } else {
-                fx = -this._workspaces[0].actor.width;
-            }
-            this._workspaces[from]._windowOverlaysGroup.hide();
-            this._workspaces[to].actor.set_position(this._x - fx, this._workspaces[to].gridY);
-            this._workspaces[to].actor.show();
-            Tweener.addTween(this._workspaces[to].actor,
-                             { x: this._x,
-                               transition: 'easeOutQuad',
-                               time: WORKSPACE_SWITCH_TIME
-                              });
+        if (this._scrolling)
+            return;
 
-            Tweener.addTween(this._workspaces[from].actor,
-                             { x: this._x + fx,
-                               transition: 'easeOutQuad',
-                               time: WORKSPACE_SWITCH_TIME,
-                               onComplete: this._positionWorkspaces,
-                               onCompleteScope: this
-                              });
-        } else
-            this._positionWorkspaces();
+        this._scrollToActive(true);
     },
 
     _addWorkspaceActor: function(workspaceNum) {
         let workspace  = new Workspace.Workspace(workspaceNum, this._actor);
-        this._actor.add_actor(workspace.actor);
-        workspace._windowOverlaysGroup.hide();
 
+        this._actor.add_actor(workspace.actor);
         this._workspaces[workspaceNum] = workspace;
+    },
+
+    // handle changes to the scroll bar's adjustment:
+    // sync the workspaces' positions to the position of the scroll bar handle
+    // and change the active workspace if appropriate
+    _onScroll: function(adj) {
+        if (this._animatingScroll)
+            return;
+
+        let active = global.screen.get_active_workspace_index();
+        let current = Math.round(adj.value);
+
+        if (active != current) {
+            let metaWorkspace = this._workspaces[current]._metaWorkspace;
+
+            if (!this._scrolling) {
+                // This here is a little tricky - we get here when StScrollBar
+                // animates paging; we switch the active workspace, but
+                // leave out any extra animation (just like we would do when
+                // the handle was dragged)
+                // If StScrollBar emitted scroll-start before and scroll-stop
+                // after the animation, this would not be necessary
+                this._scrolling = true;
+                metaWorkspace.activate(global.get_current_time());
+                this._scrolling = false;
+            } else {
+                metaWorkspace.activate(global.get_current_time());
+            }
+        }
+
+        let last = this._workspaces.length - 1;
+        let firstWorkspaceX = this._workspaces[0].actor.x;
+        let lastWorkspaceX = this._workspaces[last].actor.x;
+        let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
+
+        // The scrollbar is hidden when there is only one workspace, so
+        // adj.upper should at least be 2 - but better be safe than sorry
+        if (adj.upper == 1)
+            return;
+
+        let currentX = firstWorkspaceX;
+        let newX = this._x - adj.value / (adj.upper - 1) * workspacesWidth;
+
+        let dx = newX - currentX;
+
+        for (let i = 0; i < this._workspaces.length; i++) {
+            this._workspaces[i]._hideAllOverlays();
+            if (Math.abs(i - adj.value) <= 1)
+                this._workspaces[i].actor.show();
+            else
+                this._workspaces[i].actor.hide();
+            this._workspaces[i].actor.x += dx;
+        }
+
+        if (!this._scrolling && active == adj.value) {
+            // Again, work around the paging in StScrollBar: simulate
+            // the effect of scroll-stop
+            this._scrolling = true;
+            this._scrollToActive(false);
+            this._scrolling = false;
+        }
+    },
+
+    // handle scroll wheel events:
+    // activate the next or previous workspace and let the signal handler
+    // manage the animation
+    _onScrollEvent: function(actor, event) {
+        let direction = event.get_scroll_direction();
+        let current = global.screen.get_active_workspace_index();
+        let last = global.screen.n_workspaces - 1;
+        let activate = current;
+        if (direction == Clutter.ScrollDirection.DOWN && current < last)
+            activate++;
+        else if (direction == Clutter.ScrollDirection.UP && current > 0)
+            activate--;
+
+        if (activate != current) {
+            let metaWorkspace = this._workspaces[activate]._metaWorkspace;
+            metaWorkspace.activate(global.get_current_time());
+        }
     },
 
     createControllerBar: function() {
         let panel = new St.BoxLayout({ 'pack-start': true, vertical: true });
 
         let actor = new St.BoxLayout({ 'pack-start': true });
-        let adj = new St.Adjustment({ value: global.screen.get_active_workspace_index(),
+        let active = global.screen.get_active_workspace_index();
+        let adj = new St.Adjustment({ value: active,
                                       lower: 0,
-                                      'page-increment': 1,
-                                      'page-size': 1,
-                                      'step-increment': 1,
+                                      page_increment: 1,
+                                      page_size: 1,
+                                      step_increment: 0,
                                       upper: this._workspaces.length });
-        this._scroll = new St.ScrollBar({ adjustment: null, vertical: false, name: 'SwitchScroll' });
+        this._scroll = new St.ScrollBar({ adjustment: adj,
+                                          vertical: false,
+                                          name: 'SwitchScroll' });
 
-        this._scroll.connect('notify::adjustment', Lang.bind(this, function() {
-            this._scroll.adjustment.connect('notify::value', Lang.bind(this, function () {
-                if (Math.abs(Math.round(this._scroll.adjustment.value) - this._scroll.adjustment.value) < 0.1) {
-                    this._scroll.adjustment.set_value (Math.round(this._scroll.adjustment.value));
-                    this._workspaces[Math.round(this._scroll.adjustment.value)]._metaWorkspace.activate(global.get_current_time());
-                } else
-                    this._positionWorkspaces();
+        // we have set adj.step_increment to 0, so all scroll wheel events
+        // are processed with this handler - this allows us to animate the
+        // workspace switch
+        this._scroll.connect('scroll-event',
+            Lang.bind(this, this._onScrollEvent));
+
+        this._scroll.adjustment.connect('notify::value',
+            Lang.bind(this, this._onScroll));
+
+
+        this._scroll.connect('scroll-start', Lang.bind(this,
+            function() {
+                this._scrolling = true;
             }));
-        }));
-        this._scroll.adjustment = adj;
+        this._scroll.connect('scroll-stop', Lang.bind(this,
+            function() {
+                this._scrolling = false;
+                this._scrollToActive(true);
+            }));
 
         let addButton = new St.Button({ style_class: "workspace-controls add" });
         this._addButton = addButton;
@@ -680,7 +762,7 @@ SingleView.prototype = {
         if (active) {
             actor.style_class = 'workspace-indicator active';
         }
-        actor.connect('button-release-event', Lang.bind(this, function() {
+        actor.connect('clicked', Lang.bind(this, function() {
             if (this._workspaces[i] != undefined)
                 this._workspaces[i]._metaWorkspace.activate(global.get_current_time());
         }));
@@ -695,16 +777,7 @@ SingleView.prototype = {
                 return false;
         });
 
-       actor.connect('scroll-event', Lang.bind(this, function(actor, event) {
-            let direction = event.get_scroll_direction();
-            let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-            let numWorkspaces = global.screen.n_workspaces;
-            if (direction == Clutter.ScrollDirection.DOWN && activeWorkspaceIndex < numWorkspaces - 1) {
-                this._workspaces[activeWorkspaceIndex+1]._metaWorkspace.activate(global.get_current_time());
-            } else if (direction == Clutter.ScrollDirection.UP && activeWorkspaceIndex > 0) {
-                this._workspaces[activeWorkspaceIndex-1]._metaWorkspace.activate(global.get_current_time());
-            }
-        }));
+        actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._indicatorsPanel.add_actor(actor);
 
@@ -806,11 +879,9 @@ SingleView.prototype = {
     },
 
     _addNewWorkspace: function() {
-        // Button with opacity 0 is clickable.
-        if (global.screen.n_workspaces >= MAX_WORKSPACES)
-            return;
-        global.screen.append_new_workspace(false, global.get_current_time());
-        this._workspaces[this._workspaces.length - 1]._metaWorkspace.activate(Clutter.get_current_event_time());
+        let ws = global.screen.append_new_workspace(false,
+                                                    global.get_current_time());
+        ws.activate(global.get_current_time());
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
