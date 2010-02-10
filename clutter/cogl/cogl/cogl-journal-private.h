@@ -40,8 +40,6 @@ typedef struct _CoglJournalEntry
    * later. */
 } CoglJournalEntry;
 
-void _cogl_journal_flush (void);
-
 void
 _cogl_journal_log_quad (float         x_1,
                         float         y_1,
@@ -53,5 +51,8 @@ _cogl_journal_log_quad (float         x_1,
                         GLuint        layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len);
+
+void
+_cogl_journal_flush (void);
 
 #endif /* __COGL_JOURNAL_PRIVATE_H */

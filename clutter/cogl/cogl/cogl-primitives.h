@@ -57,7 +57,4 @@ struct _CoglBezCubic
   floatVec2 p4;
 };
 
-void
-_cogl_journal_flush (void);
-
 #endif /* __COGL_PRIMITIVES_H */

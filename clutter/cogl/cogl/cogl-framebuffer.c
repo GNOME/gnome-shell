@@ -33,6 +33,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-clip-stack.h"
+#include "cogl-journal-private.h"
 
 #ifdef HAVE_COGL_GLES2
 

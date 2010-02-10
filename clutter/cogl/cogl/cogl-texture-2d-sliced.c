@@ -41,6 +41,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-spans.h"
+#include "cogl-journal-private.h"
 
 #include <string.h>
 #include <stdlib.h>

@@ -36,6 +36,7 @@
 #include "cogl-material-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
+#include "cogl-journal-private.h"
 
 #include <glib.h>
 #include <string.h>
