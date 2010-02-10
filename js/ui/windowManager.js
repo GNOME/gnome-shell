@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const AltTab = imports.ui.altTab;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
@@ -88,11 +89,14 @@ WindowManager.prototype = {
         this._minimizing.push(actor);
 
         let primary = global.get_primary_monitor();
+        let xDest = primary.x;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            xDest += primary.width;
 
         Tweener.addTween(actor,
                          { scale_x: 0.0,
                            scale_y: 0.0,
-                           x: primary.x,
+                           x: xDest,
                            y: 0,
                            time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
