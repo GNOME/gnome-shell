@@ -38,6 +38,7 @@
 #include <cogl/cogl-material.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-offscreen.h>
+#include <cogl/cogl-primitives.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
