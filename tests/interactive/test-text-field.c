@@ -15,7 +15,7 @@ on_entry_paint (ClutterActor *actor,
   clutter_actor_box_clamp_to_pixel (&allocation);
   clutter_actor_box_get_size (&allocation, &width, &height);
 
-  cogl_set_source_color4ub (255, 255, 255, 255);
+  cogl_set_source_color4ub (255, 255, 255, 24);
   cogl_path_round_rectangle (0, 0, width, height, 4.0, 1.0);
   cogl_path_stroke ();
 }
