@@ -1750,6 +1750,11 @@ _cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
     return FALSE;
 #endif
 
+  if (material0_layer->mag_filter != material1_layer->mag_filter)
+    return FALSE;
+  if (material0_layer->min_filter != material1_layer->min_filter)
+    return FALSE;
+
   return TRUE;
 }
 
