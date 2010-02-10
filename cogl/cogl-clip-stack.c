@@ -36,6 +36,7 @@
 #include "cogl-context.h"
 #include "cogl-internal.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-journal-private.h"
 
 void _cogl_add_path_to_stencil_buffer (floatVec2    nodes_min,
                                        floatVec2    nodes_max,

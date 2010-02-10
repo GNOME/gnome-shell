@@ -31,6 +31,7 @@
 #include "cogl-internal.h"
 #include "cogl-handle.h"
 #include "cogl-context.h"
+#include "cogl-journal-private.h"
 
 #include <glib.h>
 

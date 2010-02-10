@@ -36,6 +36,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-journal-private.h"
 
 #include <string.h>
 #include <math.h>
