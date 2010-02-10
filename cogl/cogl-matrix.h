@@ -101,9 +101,9 @@ struct _CoglMatrix
     /* Note: we may want to extend this later with private flags
      * and a cache of the inverse transform matrix. */
     float   inv[16];
-    gulong  type;
-    gulong  flags;
-    gulong  _padding3;
+    unsigned long  type;
+    unsigned long  flags;
+    unsigned long  _padding3;
 };
 
 /**
@@ -119,7 +119,8 @@ struct _CoglMatrix
  *   .wx=0; .wy=0; .wz=0; .ww=1;
  * ]|
  */
-void cogl_matrix_init_identity (CoglMatrix *matrix);
+void
+cogl_matrix_init_identity (CoglMatrix *matrix);
 
 /**
  * cogl_matrix_multiply:
@@ -130,9 +131,10 @@ void cogl_matrix_init_identity (CoglMatrix *matrix);
  * Multiplies the two supplied matrices together and stores
  * the resulting matrix inside @result
  */
-void cogl_matrix_multiply (CoglMatrix *result,
-			   const CoglMatrix *a,
-			   const CoglMatrix *b);
+void
+cogl_matrix_multiply (CoglMatrix *result,
+		      const CoglMatrix *a,
+		      const CoglMatrix *b);
 
 /**
  * cogl_matrix_rotate:
@@ -145,11 +147,12 @@ void cogl_matrix_multiply (CoglMatrix *result,
  * Multiplies @matrix with a rotation matrix that applies a rotation
  * of @angle degrees around the specified 3D vector.
  */
-void cogl_matrix_rotate (CoglMatrix *matrix,
-			 float angle,
-			 float x,
-			 float y,
-			 float z);
+void
+cogl_matrix_rotate (CoglMatrix *matrix,
+		    float angle,
+		    float x,
+		    float y,
+		    float z);
 
 /**
  * cogl_matrix_translate:
@@ -161,10 +164,11 @@ void cogl_matrix_rotate (CoglMatrix *matrix,
  * Multiplies @matrix with a transform matrix that translates along
  * the X, Y and Z axis.
  */
-void cogl_matrix_translate (CoglMatrix *matrix,
-			    float x,
-			    float y,
-			    float z);
+void
+cogl_matrix_translate (CoglMatrix *matrix,
+		       float x,
+		       float y,
+		       float z);
 
 /**
  * cogl_matrix_scale:
@@ -176,10 +180,11 @@ void cogl_matrix_translate (CoglMatrix *matrix,
  * Multiplies @matrix with a transform matrix that scales along the X,
  * Y and Z axis.
  */
-void cogl_matrix_scale (CoglMatrix *matrix,
-			float sx,
-			float sy,
-			float sz);
+void
+cogl_matrix_scale (CoglMatrix *matrix,
+		   float sx,
+		   float sy,
+		   float sz);
 
 /**
  * cogl_matrix_frustum:
@@ -193,13 +198,14 @@ void cogl_matrix_scale (CoglMatrix *matrix,
  *
  * Multiplies @matrix by the given frustum perspective matrix.
  */
-void cogl_matrix_frustum (CoglMatrix *matrix,
-                          float       left,
-                          float       right,
-                          float       bottom,
-                          float       top,
-                          float       z_near,
-                          float       z_far);
+void
+cogl_matrix_frustum (CoglMatrix *matrix,
+                     float       left,
+                     float       right,
+                     float       bottom,
+                     float       top,
+                     float       z_near,
+                     float       z_far);
 
 /**
  * cogl_matrix_perspective:
@@ -218,11 +224,12 @@ void cogl_matrix_frustum (CoglMatrix *matrix,
  * be enough precision to identify the depth of objects near to each
  * other.</note>
  */
-void cogl_matrix_perspective (CoglMatrix *matrix,
-                              float       fov_y,
-                              float       aspect,
-                              float       z_near,
-                              float       z_far);
+void
+cogl_matrix_perspective (CoglMatrix *matrix,
+                         float       fov_y,
+                         float       aspect,
+                         float       z_near,
+                         float       z_far);
 
 /**
  * cogl_matrix_ortho:
@@ -238,13 +245,14 @@ void cogl_matrix_perspective (CoglMatrix *matrix,
  *
  * Multiplies @matrix by a parallel projection matrix.
  */
-void cogl_matrix_ortho (CoglMatrix *matrix,
-                        float       left,
-                        float       right,
-                        float       bottom,
-                        float       top,
-                        float       z_near,
-                        float       z_far);
+void
+cogl_matrix_ortho (CoglMatrix *matrix,
+                   float       left,
+                   float       right,
+                   float       bottom,
+                   float       top,
+                   float       z_near,
+                   float       z_far);
 
 /**
  * cogl_matrix_init_from_array:
@@ -253,8 +261,9 @@ void cogl_matrix_ortho (CoglMatrix *matrix,
  *
  * Initializes @matrix with the contents of @array
  */
-void cogl_matrix_init_from_array (CoglMatrix *matrix,
-                                  const float *array);
+void
+cogl_matrix_init_from_array (CoglMatrix *matrix,
+                             const float *array);
 
 /**
  * cogl_matrix_get_array:
@@ -264,7 +273,8 @@ void cogl_matrix_init_from_array (CoglMatrix *matrix,
  *
  * Return value: a pointer to the float array
  */
-G_CONST_RETURN float *cogl_matrix_get_array (const CoglMatrix *matrix);
+G_CONST_RETURN float *
+cogl_matrix_get_array (const CoglMatrix *matrix);
 
 /**
  * cogl_matrix_get_inverse:
@@ -286,8 +296,9 @@ G_CONST_RETURN float *cogl_matrix_get_array (const CoglMatrix *matrix);
  *
  * Since: 1.2
  */
-gboolean cogl_matrix_get_inverse (const CoglMatrix *matrix,
-                                  CoglMatrix *inverse);
+gboolean
+cogl_matrix_get_inverse (const CoglMatrix *matrix,
+                         CoglMatrix *inverse);
 
 /**
  * cogl_matrix_transform_point:
@@ -300,11 +311,12 @@ gboolean cogl_matrix_get_inverse (const CoglMatrix *matrix,
  * Transforms a point whos position is given and returned as four float
  * components.
  */
-void cogl_matrix_transform_point (const CoglMatrix *matrix,
-                                  float *x,
-                                  float *y,
-                                  float *z,
-                                  float *w);
+void
+cogl_matrix_transform_point (const CoglMatrix *matrix,
+                             float *x,
+                             float *y,
+                             float *z,
+                             float *w);
 
 G_END_DECLS
 

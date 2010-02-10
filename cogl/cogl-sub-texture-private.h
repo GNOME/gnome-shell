@@ -38,10 +38,10 @@ struct _CoglSubTexture
   CoglHandle  full_texture;
 
   /* The region represented by this sub-texture */
-  gint        sub_x;
-  gint        sub_y;
-  gint        sub_width;
-  gint        sub_height;
+  int         sub_x;
+  int         sub_y;
+  int         sub_width;
+  int         sub_height;
 };
 
 GQuark
@@ -49,7 +49,9 @@ _cogl_handle_sub_texture_get_type (void);
 
 CoglHandle
 _cogl_sub_texture_new (CoglHandle full_texture,
-                       gint sub_x, gint sub_y,
-                       gint sub_width, gint sub_height);
+                       int sub_x,
+                       int sub_y,
+                       int sub_width,
+                       int sub_height);
 
 #endif /* __COGL_SUB_TEXTURE_H */

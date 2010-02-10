@@ -59,13 +59,14 @@ typedef struct _CoglPixelBuffer
 
   GLenum                gl_target;
   CoglPixelFormat       format;
-  guint                 width;
-  guint                 height;
-  guint                 stride;
+  unsigned int          width;
+  unsigned int          height;
+  unsigned int          stride;
 
 } CoglPixelBuffer;
 
-GQuark    _cogl_handle_pixel_buffer_get_type    (void);
+GQuark
+_cogl_handle_pixel_buffer_get_type (void);
 
 G_END_DECLS
 

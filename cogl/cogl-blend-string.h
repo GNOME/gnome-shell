@@ -65,7 +65,7 @@ typedef struct _CoglBlendStringColorSourceInfo
 {
   CoglBlendStringColorSourceType type;
   const char *name;
-  size_t name_len;
+  gsize name_len;
 } CoglBlendStringColorSourceInfo;
 
 typedef struct _CoglBlendStringColorSource
@@ -111,7 +111,7 @@ typedef struct _CoglBlendStringFunctionInfo
 {
   enum _CoglBlendStringFunctionType type;
   const char *name;
-  size_t name_len;
+  gsize name_len;
   int argc;
 } CoglBlendStringFunctionInfo;
 

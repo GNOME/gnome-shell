@@ -56,8 +56,9 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-CoglHandle      cogl_bitmap_new_from_file      (const gchar  *filename,
-                                                GError      **error);
+CoglHandle
+cogl_bitmap_new_from_file (const char *filename,
+                           GError **error);
 
 /**
  * cogl_bitmap_get_size_from_file:
@@ -72,9 +73,10 @@ CoglHandle      cogl_bitmap_new_from_file      (const gchar  *filename,
  *
  * Since: 1.0
  */
-gboolean        cogl_bitmap_get_size_from_file (const gchar  *filename,
-                                                gint         *width,
-                                                gint         *height);
+gboolean
+cogl_bitmap_get_size_from_file (const char *filename,
+                                int *width,
+                                int *height);
 
 /**
  * cogl_is_bitmap:
@@ -87,7 +89,8 @@ gboolean        cogl_bitmap_get_size_from_file (const gchar  *filename,
  *
  * Since: 1.0
  */
-gboolean        cogl_is_bitmap                 (CoglHandle    handle);
+gboolean
+cogl_is_bitmap (CoglHandle handle);
 
 G_END_DECLS
 

@@ -52,7 +52,7 @@ _cogl_texture_driver_gen (GLenum   gl_target,
                           GLsizei  n,
                           GLuint  *textures)
 {
-  guint i;
+  unsigned int i;
 
   GE (glGenTextures (n, textures));
 

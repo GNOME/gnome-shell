@@ -62,7 +62,7 @@ typedef enum {
 #else
 #define COGL_NOTE(type,...)                     G_STMT_START {  \
         if (cogl_debug_flags & COGL_DEBUG_##type) {             \
-          gchar *_fmt = g_strdup_printf (__VA_ARGS__);          \
+          char *_fmt = g_strdup_printf (__VA_ARGS__);          \
           g_message ("[" #type "] " G_STRLOC ": %s", _fmt);     \
           g_free (_fmt);                                        \
         }                                       } G_STMT_END
@@ -75,7 +75,7 @@ typedef enum {
 
 #endif /* COGL_ENABLE_DEBUG */
 
-extern guint cogl_debug_flags;
+extern unsigned int cogl_debug_flags;
 
 G_END_DECLS
 

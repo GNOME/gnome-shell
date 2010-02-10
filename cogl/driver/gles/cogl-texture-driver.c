@@ -52,7 +52,7 @@ _cogl_texture_driver_gen (GLenum   gl_target,
                           GLsizei  n,
                           GLuint  *textures)
 {
-  guint i;
+  unsigned int i;
 
   GE (glGenTextures (n, textures));
 
@@ -125,7 +125,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   slice_bmp.width  = width;
   slice_bmp.height = height;
   slice_bmp.rowstride = bpp * slice_bmp.width;
-  slice_bmp.data = (guchar*) g_malloc (slice_bmp.rowstride * slice_bmp.height);
+  slice_bmp.data = g_malloc (slice_bmp.rowstride * slice_bmp.height);
 
   /* Setup gl alignment to match rowstride and top-left corner */
   _cogl_texture_driver_prep_gl_for_pixels_upload (slice_bmp.rowstride,

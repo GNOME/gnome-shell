@@ -39,7 +39,7 @@ typedef struct _CoglHandleClass
  */
 typedef struct _CoglHandleObject
 {
-  guint            ref_count;
+  unsigned int     ref_count;
   CoglHandleClass *klass;
 } CoglHandleObject;
 

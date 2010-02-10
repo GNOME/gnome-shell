@@ -99,7 +99,7 @@ cogl_shader_compile (CoglHandle handle)
   glCompileShader (shader->gl_handle);
 }
 
-gchar *
+char *
 cogl_shader_get_info_log (CoglHandle handle)
 {
   CoglShader *shader;
@@ -200,7 +200,7 @@ cogl_shader_compile (CoglHandle shader_handle)
 {
 }
 
-gchar *
+char *
 cogl_shader_get_info_log (CoglHandle handle)
 {
   return NULL;

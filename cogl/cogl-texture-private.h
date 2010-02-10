@@ -74,7 +74,7 @@ struct _CoglTextureVtable
                                           CoglTextureSliceCallback callback,
                                           void *user_data);
 
-  gint (* get_max_waste) (CoglTexture *tex);
+  int (* get_max_waste) (CoglTexture *tex);
 
   gboolean (* is_sliced) (CoglTexture *tex);
 
@@ -102,8 +102,8 @@ struct _CoglTextureVtable
 
   CoglPixelFormat (* get_format) (CoglTexture *tex);
   GLenum (* get_gl_format) (CoglTexture *tex);
-  gint (* get_width) (CoglTexture *tex);
-  gint (* get_height) (CoglTexture *tex);
+  int (* get_width) (CoglTexture *tex);
+  int (* get_height) (CoglTexture *tex);
 };
 
 struct _CoglTexture

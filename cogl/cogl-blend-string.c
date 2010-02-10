@@ -413,9 +413,9 @@ get_function_info (const char *mark,
                    const char *p,
                    CoglBlendStringContext context)
 {
-  size_t len = p - mark;
+  gsize len = p - mark;
   CoglBlendStringFunctionInfo *functions;
-  size_t array_len;
+  gsize array_len;
   int i;
 
   if (context == COGL_BLEND_STRING_CONTEXT_BLENDING)
@@ -443,9 +443,9 @@ get_color_src_info (const char *mark,
                     const char *p,
                     CoglBlendStringContext context)
 {
-  size_t len = p - mark;
+  gsize len = p - mark;
   CoglBlendStringColorSourceInfo *sources;
-  size_t array_len;
+  gsize array_len;
   int i;
 
   if (context == COGL_BLEND_STRING_CONTEXT_BLENDING)
@@ -617,7 +617,7 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_SCRAPING_MASK:
           if (*p == ']')
             {
-              size_t len = p - mark;
+              gsize len = p - mark;
               CoglBlendStringColorSource *source =
                 parsing_factor ? &arg->factor.source : &arg->source;
 
@@ -678,7 +678,7 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_MAYBE_SRC_ALPHA_SATURATE:
           if (!is_symbol_char (*p))
             {
-              size_t len = p - mark;
+              gsize len = p - mark;
               if (len >= strlen ("SRC_ALPHA_SATURATE") &&
                   strncmp (mark, "SRC_ALPHA_SATURATE", len) == 0)
                 {

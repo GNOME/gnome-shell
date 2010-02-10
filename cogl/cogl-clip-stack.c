@@ -37,9 +37,9 @@
 #include "cogl-internal.h"
 #include "cogl-framebuffer-private.h"
 
-void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
-                                       floatVec2 nodes_max,
-                                       guint         path_size,
+void _cogl_add_path_to_stencil_buffer (floatVec2    nodes_min,
+                                       floatVec2    nodes_max,
+                                       unsigned int path_size,
                                        CoglPathNode *path,
                                        gboolean      merge,
                                        gboolean      need_clear);
@@ -97,7 +97,7 @@ struct _CoglClipStackEntryPath
   floatVec2              path_nodes_min;
   floatVec2              path_nodes_max;
 
-  guint                  path_size;
+  unsigned int           path_size;
   CoglPathNode           path[1];
 };
 
@@ -642,10 +642,10 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
   GList *node;
-  gint scissor_x0 = 0;
-  gint scissor_y0 = 0;
-  gint scissor_x1 = G_MAXINT;
-  gint scissor_y1 = G_MAXINT;
+  int scissor_x0 = 0;
+  int scissor_y0 = 0;
+  int scissor_x1 = G_MAXINT;
+  int scissor_y1 = G_MAXINT;
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
 

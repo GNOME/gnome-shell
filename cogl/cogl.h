@@ -73,7 +73,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-GOptionGroup *  cogl_get_option_group         (void);
+GOptionGroup *
+cogl_get_option_group (void);
 
 /* Misc */
 /**
@@ -85,7 +86,8 @@ GOptionGroup *  cogl_get_option_group         (void);
  *
  * Since: 0.8
  */
-CoglFeatureFlags cogl_get_features         (void);
+CoglFeatureFlags
+cogl_get_features (void);
 
 /**
  * cogl_features_available:
@@ -98,7 +100,8 @@ CoglFeatureFlags cogl_get_features         (void);
  *
  * Return value: %TRUE if the features are available, %FALSE otherwise.
  */
-gboolean        cogl_features_available       (CoglFeatureFlags    features);
+gboolean
+cogl_features_available (CoglFeatureFlags features);
 
 /**
  * cogl_get_proc_address:
@@ -111,7 +114,8 @@ gboolean        cogl_features_available       (CoglFeatureFlags    features);
  * Return value: a pointer to the requested function or %NULL if the
  *   function is not available.
  */
-CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
+CoglFuncPtr
+cogl_get_proc_address (const char *name);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -128,8 +132,9 @@ CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
  *                  appropriate to expose OpenGL extensions through the Cogl
  *                  API.
  */
-gboolean        cogl_check_extension          (const gchar        *name,
-                                               const gchar        *ext) G_GNUC_DEPRECATED;
+gboolean
+cogl_check_extension (const char *name,
+                      const char *ext) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -144,10 +149,11 @@ gboolean        cogl_check_extension          (const gchar        *name,
  * in the color buffer. Pass %NULL for any of the arguments if the
  * value is not required.
  */
-void            cogl_get_bitmasks             (gint               *red,
-                                               gint               *green,
-                                               gint               *blue,
-                                               gint               *alpha);
+void
+cogl_get_bitmasks (int *red,
+                   int *green,
+                   int *blue,
+                   int *alpha);
 
 /**
  * cogl_perspective:
@@ -159,10 +165,11 @@ void            cogl_get_bitmasks             (gint               *red,
  * Replaces the current projection matrix with a perspective matrix
  * based on the provided values.
  */
-void            cogl_perspective              (float        fovy,
-                                               float        aspect,
-                                               float        z_near,
-                                               float        z_far);
+void
+cogl_perspective (float fovy,
+                  float aspect,
+                  float z_near,
+                  float z_far);
 
 /**
  * cogl_frustum:
@@ -178,12 +185,13 @@ void            cogl_perspective              (float        fovy,
  *
  * Since: 0.8.2
  */
-void            cogl_frustum                  (float        left,
-					       float        right,
-					       float        bottom,
-					       float        top,
-                                               float        z_near,
-                                               float        z_far);
+void
+cogl_frustum (float left,
+              float right,
+              float bottom,
+              float top,
+              float z_near,
+              float z_far);
 
 /**
  * cogl_ortho:
@@ -201,12 +209,13 @@ void            cogl_frustum                  (float        left,
  *
  * Since: 1.0
  */
-void            cogl_ortho                    (float left,
-                                               float right,
-                                               float bottom,
-                                               float top,
-                                               float near,
-                                               float far);
+void
+cogl_ortho (float left,
+            float right,
+            float bottom,
+            float top,
+            float near,
+            float far);
 
 /*
  * _cogl_setup_viewport:
@@ -226,12 +235,13 @@ void            cogl_ortho                    (float left,
  *
  * This function is used only by Clutter.
  */
-void            _cogl_setup_viewport          (guint        width,
-                                               guint        height,
-                                               float        fovy,
-                                               float        aspect,
-                                               float        z_near,
-                                               float        z_far);
+void
+_cogl_setup_viewport (unsigned int width,
+                      unsigned int height,
+                      float fovy,
+                      float aspect,
+                      float z_near,
+                      float z_far);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -246,8 +256,9 @@ void            _cogl_setup_viewport          (guint        width,
  *
  * Deprecated: 1.2: Use cogl_set_viewport() instead
  */
-void            cogl_viewport                 (guint               width,
-					       guint               height) G_GNUC_DEPRECATED;
+void
+cogl_viewport (unsigned int width,
+	       unsigned int height) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -262,10 +273,11 @@ void            cogl_viewport                 (guint               width,
  *
  * Since: 1.2
  */
-void            cogl_set_viewport             (int x,
-                                               int y,
-                                               int width,
-					       int height);
+void
+cogl_set_viewport (int x,
+                   int y,
+                   int width,
+                   int height);
 
 /**
  * cogl_push_matrix:
@@ -273,14 +285,16 @@ void            cogl_set_viewport             (int x,
  * Stores the current model-view matrix on the matrix stack. The matrix
  * can later be restored with cogl_pop_matrix().
  */
-void            cogl_push_matrix              (void);
+void
+cogl_push_matrix (void);
 
 /**
  * cogl_pop_matrix:
  *
  * Restores the current model-view matrix from the matrix stack.
  */
-void            cogl_pop_matrix               (void);
+void
+cogl_pop_matrix (void);
 
 /**
  * cogl_scale:
@@ -291,9 +305,10 @@ void            cogl_pop_matrix               (void);
  * Multiplies the current model-view matrix by one that scales the x,
  * y and z axes by the given values.
  */
-void            cogl_scale                    (float        x,
-                                               float        y,
-                                               float        z);
+void
+cogl_scale (float x,
+            float y,
+            float z);
 
 /**
  * cogl_translate:
@@ -304,9 +319,10 @@ void            cogl_scale                    (float        x,
  * Multiplies the current model-view matrix by one that translates the
  * model along all three axes according to the given values.
  */
-void            cogl_translate                (float                x,
-                                               float                y,
-                                               float                z);
+void
+cogl_translate (float x,
+                float y,
+                float z);
 
 /**
  * cogl_rotate:
@@ -321,10 +337,11 @@ void            cogl_translate                (float                x,
  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
  * rotation.
  */
-void            cogl_rotate                   (float                angle,
-                                               float                x,
-                                               float                y,
-                                               float                z);
+void
+cogl_rotate (float angle,
+             float x,
+             float y,
+             float z);
 
 /**
  * cogl_get_modelview_matrix:
@@ -332,7 +349,8 @@ void            cogl_rotate                   (float                angle,
  *
  * Stores the current model-view matrix in @matrix.
  */
-void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
+void
+cogl_get_modelview_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_set_modelview_matrix:
@@ -340,7 +358,8 @@ void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
  *
  * Loads @matrix as the new model-view matrix.
  */
-void            cogl_set_modelview_matrix     (CoglMatrix *matrix);
+void
+cogl_set_modelview_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_get_projection_matrix:
@@ -348,7 +367,8 @@ void            cogl_set_modelview_matrix     (CoglMatrix *matrix);
  *
  * Stores the current projection matrix in @matrix.
  */
-void            cogl_get_projection_matrix    (CoglMatrix *matrix);
+void
+cogl_get_projection_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_set_projection_matrix:
@@ -356,7 +376,8 @@ void            cogl_get_projection_matrix    (CoglMatrix *matrix);
  *
  * Loads matrix as the new projection matrix.
  */
-void            cogl_set_projection_matrix    (CoglMatrix *matrix);
+void
+cogl_set_projection_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:
@@ -367,7 +388,8 @@ void            cogl_set_projection_matrix    (CoglMatrix *matrix);
  * position of the viewport and @v[2] and @v[3] get the width and
  * height.
  */
-void            cogl_get_viewport             (float        v[4]);
+void
+cogl_get_viewport (float v[4]);
 
 /**
  * cogl_set_depth_test_enabled:
@@ -379,7 +401,8 @@ void            cogl_get_viewport             (float        v[4]);
  * clutter_actor_lower(), otherwise it will also take into account the
  * actor's depth. Depth testing is disabled by default.
  */
-void            cogl_set_depth_test_enabled   (gboolean setting);
+void
+cogl_set_depth_test_enabled (gboolean setting);
 
 /**
  * cogl_get_depth_test_enabled:
@@ -388,7 +411,8 @@ void            cogl_set_depth_test_enabled   (gboolean setting);
  *
  * Return value: %TRUE if depth testing is enabled, and %FALSE otherwise
  */
-gboolean        cogl_get_depth_test_enabled   (void);
+gboolean
+cogl_get_depth_test_enabled (void);
 
 /**
  * cogl_set_backface_culling_enabled:
@@ -400,7 +424,8 @@ gboolean        cogl_get_depth_test_enabled   (void);
  * only affects calls to the cogl_rectangle* family of functions and
  * cogl_vertex_buffer_draw*. Backface culling is disabled by default.
  */
-void            cogl_set_backface_culling_enabled (gboolean setting);
+void
+cogl_set_backface_culling_enabled (gboolean setting);
 
 /**
  * cogl_get_backface_culling_enabled:
@@ -410,7 +435,8 @@ void            cogl_set_backface_culling_enabled (gboolean setting);
  *
  * Return value: %TRUE if backface culling is enabled, and %FALSE otherwise
  */
-gboolean        cogl_get_backface_culling_enabled (void);
+gboolean
+cogl_get_backface_culling_enabled (void);
 
 /**
  * cogl_set_fog:
@@ -437,11 +463,12 @@ gboolean        cogl_get_backface_culling_enabled (void);
  * opaque primitives. This might improve in the future when we can depend
  * on fragment shaders.</note>
  */
-void            cogl_set_fog                  (const CoglColor *fog_color,
-                                               CoglFogMode      mode,
-                                               float            density,
-                                               float            z_near,
-                                               float            z_far);
+void
+cogl_set_fog (const CoglColor *fog_color,
+              CoglFogMode mode,
+              float density,
+              float z_near,
+              float z_far);
 
 /**
  * cogl_disable_fog:
@@ -449,7 +476,8 @@ void            cogl_set_fog                  (const CoglColor *fog_color,
  * This function disables fogging, so primitives drawn afterwards will not be
  * blended with any previously set fog color.
  */
-void            cogl_disable_fog              (void);
+void
+cogl_disable_fog (void);
 
 /**
  * CoglBufferBit:
@@ -476,8 +504,9 @@ typedef enum {
  * Clears all the auxiliary buffers identified in the @buffers mask, and if
  * that includes the color buffer then the specified @color is used.
  */
-void            cogl_clear                    (const CoglColor *color,
-                                               gulong           buffers);
+void
+cogl_clear (const CoglColor *color,
+            unsigned long buffers);
 
 /**
  * cogl_set_source:
@@ -492,7 +521,8 @@ void            cogl_clear                    (const CoglColor *color,
  *
  * Since: 1.0
  */
-void            cogl_set_source               (CoglHandle material);
+void
+cogl_set_source (CoglHandle material);
 
 /**
  * cogl_set_source_color:
@@ -511,7 +541,8 @@ void            cogl_set_source               (CoglHandle material);
  *
  * Since: 1.0
  */
-void            cogl_set_source_color         (const CoglColor *color);
+void
+cogl_set_source_color (const CoglColor *color);
 
 /**
  * cogl_set_source_color4ub:
@@ -529,10 +560,11 @@ void            cogl_set_source_color         (const CoglColor *color);
  *
  * Since: 1.0
  */
-void            cogl_set_source_color4ub      (guint8 red,
-                                               guint8 green,
-                                               guint8 blue,
-                                               guint8 alpha);
+void
+cogl_set_source_color4ub (guint8 red,
+                          guint8 green,
+                          guint8 blue,
+                          guint8 alpha);
 
 /**
  * cogl_set_source_color4f:
@@ -551,10 +583,11 @@ void            cogl_set_source_color4ub      (guint8 red,
  *
  * Since: 1.0
  */
-void            cogl_set_source_color4f       (float red,
-                                               float green,
-                                               float blue,
-                                               float alpha);
+void
+cogl_set_source_color4f (float red,
+                         float green,
+                         float blue,
+                         float alpha);
 
 /**
  * cogl_set_source_texture:
@@ -576,7 +609,8 @@ void            cogl_set_source_color4f       (float red,
  *
  * Since: 1.0
  */
-void            cogl_set_source_texture       (CoglHandle texture_handle);
+void
+cogl_set_source_texture (CoglHandle texture_handle);
 
 /**
  * SECTION:cogl-clipping
@@ -607,10 +641,11 @@ void            cogl_set_source_texture       (CoglHandle texture_handle);
  *
  * Deprecated: 1.2: Use cogl_clip_push_window_rectangle() instead
  */
-void            cogl_clip_push_window_rect    (float x_offset,
-                                               float y_offset,
-                                               float width,
-                                               float height) G_GNUC_DEPRECATED;
+void
+cogl_clip_push_window_rect (float x_offset,
+                            float y_offset,
+                            float width,
+                            float height) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -632,10 +667,11 @@ void            cogl_clip_push_window_rect    (float x_offset,
  *
  * Since: 1.2
  */
-void            cogl_clip_push_window_rectangle (int x_offset,
-                                                 int y_offset,
-                                                 int width,
-                                                 int height);
+void
+cogl_clip_push_window_rectangle (int x_offset,
+                                 int y_offset,
+                                 int width,
+                                 int height);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -661,10 +697,11 @@ void            cogl_clip_push_window_rectangle (int x_offset,
  *   extending up, it's awkward to use. Please use cogl_clip_push_rectangle()
  *   instead
  */
-void            cogl_clip_push                (float        x_offset,
-                                               float        y_offset,
-                                               float        width,
-                                               float        height) G_GNUC_DEPRECATED;
+void
+cogl_clip_push (float x_offset,
+                float y_offset,
+                float width,
+                float height) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -686,10 +723,11 @@ void            cogl_clip_push                (float        x_offset,
  *
  * Since: 1.2
  */
-void            cogl_clip_push_rectangle      (float        x0,
-                                               float        y0,
-                                               float        x1,
-                                               float        y1);
+void
+cogl_clip_push_rectangle (float x0,
+                          float y0,
+                          float x1,
+                          float y1);
 
 /**
  * cogl_clip_push_from_path:
@@ -701,7 +739,8 @@ void            cogl_clip_push_rectangle      (float        x0,
  *
  * Since: 1.0
  */
-void            cogl_clip_push_from_path       (void);
+void
+cogl_clip_push_from_path (void);
 
 /**
  * cogl_clip_push_from_path_preserve:
@@ -713,7 +752,8 @@ void            cogl_clip_push_from_path       (void);
  *
  * Since: 1.0
  */
-void            cogl_clip_push_from_path_preserve (void);
+void
+cogl_clip_push_from_path_preserve (void);
 
 /**
  * cogl_clip_pop:
@@ -721,7 +761,8 @@ void            cogl_clip_push_from_path_preserve (void);
  * Reverts the clipping region to the state before the last call to
  * cogl_clip_push().
  */
-void            cogl_clip_pop               (void);
+void
+cogl_clip_pop (void);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -737,7 +778,8 @@ void            cogl_clip_pop               (void);
  *
  * Since: 1.0
  */
-void            cogl_clip_ensure              (void) G_GNUC_DEPRECATED;
+void
+cogl_clip_ensure (void) G_GNUC_DEPRECATED;
 
 /**
  * cogl_clip_stack_save:
@@ -756,7 +798,8 @@ void            cogl_clip_ensure              (void) G_GNUC_DEPRECATED;
  *
  * Since: 0.8.2
  */
-void            cogl_clip_stack_save          (void) G_GNUC_DEPRECATED;
+void
+cogl_clip_stack_save (void) G_GNUC_DEPRECATED;
 
 /**
  * cogl_clip_stack_restore:
@@ -772,7 +815,8 @@ void            cogl_clip_stack_save          (void) G_GNUC_DEPRECATED;
  *
  * Since: 0.8.2
  */
-void            cogl_clip_stack_restore       (void) G_GNUC_DEPRECATED;
+void
+cogl_clip_stack_restore (void) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -788,7 +832,8 @@ void            cogl_clip_stack_restore       (void) G_GNUC_DEPRECATED;
  *
  * Since: 1.2
  */
-void            cogl_set_framebuffer          (CoglHandle buffer);
+void
+cogl_set_framebuffer (CoglHandle buffer);
 
 /**
  * cogl_push_framebuffer:
@@ -804,7 +849,8 @@ void            cogl_set_framebuffer          (CoglHandle buffer);
  *
  * Since: 1.2
  */
-void            cogl_push_framebuffer         (CoglHandle buffer);
+void
+cogl_push_framebuffer (CoglHandle buffer);
 
 /**
  * cogl_pop_framebuffer:
@@ -814,7 +860,8 @@ void            cogl_push_framebuffer         (CoglHandle buffer);
  *
  * Since: 1.2
  */
-void            cogl_pop_framebuffer          (void);
+void
+cogl_pop_framebuffer (void);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -833,8 +880,9 @@ void            cogl_pop_framebuffer          (void);
  * Deprecated: 1.2: The target argument was redundant since we could look at
  *    the type of CoglHandle given instead.
  */
-void            cogl_set_draw_buffer          (CoglBufferTarget    target,
-                                               CoglHandle          offscreen) G_GNUC_DEPRECATED;
+void
+cogl_set_draw_buffer (CoglBufferTarget target,
+                      CoglHandle offscreen) G_GNUC_DEPRECATED;
 
 /**
  * cogl_push_draw_buffer:
@@ -843,7 +891,8 @@ void            cogl_set_draw_buffer          (CoglBufferTarget    target,
  *
  * Deprecated: 1.2: The draw buffer API was replaced with a framebuffer API
  */
-void            cogl_push_draw_buffer         (void) G_GNUC_DEPRECATED;
+void
+cogl_push_draw_buffer (void) G_GNUC_DEPRECATED;
 
 /**
  * cogl_pop_draw_buffer:
@@ -852,7 +901,8 @@ void            cogl_push_draw_buffer         (void) G_GNUC_DEPRECATED;
  *
  * Deprecated: 1.2: The draw buffer API was replaced with a framebuffer API
  */
-void            cogl_pop_draw_buffer          (void) G_GNUC_DEPRECATED;
+void
+cogl_pop_draw_buffer (void) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -884,13 +934,14 @@ typedef enum { /*< prefix=COGL_READ_PIXELS >*/
  * position (0, 0) is the top left. The pixel at (x, y) is the first
  * read, and the data is returned with a rowstride of (width * 4)
  */
-void            cogl_read_pixels (int x,
-                                  int y,
-                                  int width,
-                                  int height,
-                                  CoglReadPixelsFlags source,
-                                  CoglPixelFormat format,
-                                  guint8 *pixels);
+void
+cogl_read_pixels (int x,
+                  int y,
+                  int width,
+                  int height,
+                  CoglReadPixelsFlags source,
+                  CoglPixelFormat format,
+                  guint8 *pixels);
 
 /**
  * cogl_flush:
@@ -918,7 +969,8 @@ void            cogl_read_pixels (int x,
  *
  * Since: 1.0
  */
-void            cogl_flush (void);
+void
+cogl_flush (void);
 
 /**
  * cogl_begin_gl:
@@ -993,7 +1045,8 @@ void            cogl_flush (void);
  *
  * Since: 1.0
  */
-void            cogl_begin_gl (void);
+void
+cogl_begin_gl (void);
 
 /**
  * cogl_end_gl:
@@ -1003,7 +1056,8 @@ void            cogl_begin_gl (void);
  *
  * Since: 1.0
  */
-void            cogl_end_gl (void);
+void
+cogl_end_gl (void);
 
 /*
  * Internal API available only to Clutter.
@@ -1014,7 +1068,8 @@ void            cogl_end_gl (void);
  * move down into Cogl and these functions will be removed.
  */
 
-void            _cogl_destroy_context          (void);
+void
+_cogl_destroy_context (void);
 
 /*< private >*/
 #define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
@@ -1024,11 +1079,20 @@ typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
   COGL_DRIVER_ERROR_INVALID_VERSION
 } CoglDriverError;
 
-gboolean        _cogl_check_extension (const char *name, const char *ext);
-void            _cogl_set_indirect_context  (gboolean indirect);
-void            _cogl_set_viewport (int x, int y, int width, int height);
-gboolean        _cogl_check_driver_valid (GError **error);
-GQuark          _cogl_driver_error_quark (void);
+gboolean
+_cogl_check_extension (const char *name, const char *ext);
+
+void
+_cogl_set_indirect_context  (gboolean indirect);
+
+void
+_cogl_set_viewport (int x, int y, int width, int height);
+
+gboolean
+_cogl_check_driver_valid (GError **error);
+
+GQuark
+_cogl_driver_error_quark (void);
 
 void
 _cogl_onscreen_clutter_backend_set_size (int width, int height);

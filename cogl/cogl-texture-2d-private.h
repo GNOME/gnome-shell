@@ -43,8 +43,8 @@ struct _CoglTexture2D
   GLenum          gl_format;
   /* The texture object number */
   GLuint          gl_texture;
-  gint            width;
-  gint            height;
+  int             width;
+  int             height;
   GLenum          min_filter;
   GLenum          mag_filter;
   GLint           wrap_mode;

@@ -316,7 +316,7 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
   return _cogl_texture_2d_handle_new (tex_2d);
 }
 
-static gint
+static int
 _cogl_texture_2d_get_max_waste (CoglTexture *tex)
 {
   return -1;
@@ -430,7 +430,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
                              const guint8   *data)
 {
   CoglTexture2D   *tex_2d = COGL_TEXTURE_2D (tex);
-  gint             bpp;
+  int              bpp;
   CoglBitmap       source_bmp;
   CoglBitmap       tmp_bmp;
   gboolean         tmp_bmp_owner = FALSE;
@@ -449,7 +449,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   source_bmp.width = width;
   source_bmp.height = height;
   source_bmp.format = format;
-  source_bmp.data = (guchar*) data;
+  source_bmp.data = (guint8 *)data;
 
   /* Rowstride from width if none specified */
   bpp = _cogl_get_format_bpp (format);
@@ -490,18 +490,18 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
                            guint8          *data)
 {
   CoglTexture2D   *tex_2d = COGL_TEXTURE_2D (tex);
-  gint             bpp;
-  gint             byte_size;
+  int              bpp;
+  int              byte_size;
   CoglPixelFormat  closest_format;
-  gint             closest_bpp;
+  int              closest_bpp;
   GLenum           closest_gl_format;
   GLenum           closest_gl_type;
   CoglBitmap       target_bmp;
   CoglBitmap       new_bmp;
   gboolean         success;
-  guchar          *src;
-  guchar          *dst;
-  gint             y;
+  guint8          *src;
+  guint8          *dst;
+  int              y;
 
   /* Default to internal format if none specified */
   if (format == COGL_PIXEL_FORMAT_ANY)
@@ -509,11 +509,13 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
 
   /* Rowstride from texture width if none specified */
   bpp = _cogl_get_format_bpp (format);
-  if (rowstride == 0) rowstride = tex_2d->width * bpp;
+  if (rowstride == 0)
+    rowstride = tex_2d->width * bpp;
 
   /* Return byte size if only that requested */
   byte_size =  tex_2d->height * rowstride;
-  if (data == NULL) return byte_size;
+  if (data == NULL)
+    return byte_size;
 
   closest_format =
     _cogl_texture_driver_find_best_gl_get_data_format (format,
@@ -537,8 +539,7 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
       /* Target intermediate buffer */
       target_bmp.format = closest_format;
       target_bmp.rowstride = target_bmp.width * closest_bpp;
-      target_bmp.data = (guchar*) g_malloc (target_bmp.height
-                                            * target_bmp.rowstride);
+      target_bmp.data = g_malloc (target_bmp.height * target_bmp.rowstride);
     }
 
   GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
@@ -566,7 +567,8 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
 
       /* Free intermediate data and return if failed */
       g_free (target_bmp.data);
-      if (!success) return 0;
+      if (!success)
+        return 0;
 
       /* Copy to user buffer */
       for (y = 0; y < new_bmp.height; ++y)
@@ -595,13 +597,13 @@ _cogl_texture_2d_get_gl_format (CoglTexture *tex)
   return COGL_TEXTURE_2D (tex)->gl_format;
 }
 
-static gint
+static int
 _cogl_texture_2d_get_width (CoglTexture *tex)
 {
   return COGL_TEXTURE_2D (tex)->width;
 }
 
-static gint
+static int
 _cogl_texture_2d_get_height (CoglTexture *tex)
 {
   return COGL_TEXTURE_2D (tex)->height;

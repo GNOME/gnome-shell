@@ -35,17 +35,19 @@ typedef void (* CoglAtlasCallback) (const CoglAtlasRectangle *rectangle,
 
 struct _CoglAtlasRectangle
 {
-  guint x, y;
-  guint width, height;
+  unsigned int x, y;
+  unsigned int width, height;
 };
 
 CoglAtlas *
-_cogl_atlas_new (guint width, guint height,
+_cogl_atlas_new (unsigned int width,
+                 unsigned int height,
                  GDestroyNotify value_destroy_func);
 
 gboolean
 _cogl_atlas_add_rectangle (CoglAtlas *atlas,
-                           guint width, guint height,
+                           unsigned int width,
+                           unsigned int height,
                            gpointer data,
                            CoglAtlasRectangle *rectangle);
 
@@ -53,16 +55,16 @@ void
 _cogl_atlas_remove_rectangle (CoglAtlas *atlas,
                               const CoglAtlasRectangle *rectangle);
 
-guint
+unsigned int
 _cogl_atlas_get_width (CoglAtlas *atlas);
 
-guint
+unsigned int
 _cogl_atlas_get_height (CoglAtlas *atlas);
 
-guint
+unsigned int
 _cogl_atlas_get_remaining_space (CoglAtlas *atlas);
 
-guint
+unsigned int
 _cogl_atlas_get_n_rectangles (CoglAtlas *atlas);
 
 void

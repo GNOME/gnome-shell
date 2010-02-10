@@ -468,7 +468,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_sin    (CoglFixed angle);
+CoglFixed
+cogl_fixed_sin (CoglFixed angle);
 
 /**
  * cogl_fixed_tan:
@@ -480,7 +481,8 @@ CoglFixed cogl_fixed_sin    (CoglFixed angle);
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_tan    (CoglFixed angle);
+CoglFixed
+cogl_fixed_tan (CoglFixed angle);
 
 /**
  * cogl_fixed_cos:
@@ -492,7 +494,7 @@ CoglFixed cogl_fixed_tan    (CoglFixed angle);
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_cos    (CoglFixed angle);
+CoglFixed cogl_fixed_cos (CoglFixed angle);
 
 /**
  * cogl_fixed_atani:
@@ -504,7 +506,8 @@ CoglFixed cogl_fixed_cos    (CoglFixed angle);
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_atani  (CoglFixed a);
+CoglFixed
+cogl_fixed_atani (CoglFixed a);
 
 /**
  * cogl_fixed_atan2:
@@ -519,19 +522,25 @@ CoglFixed cogl_fixed_atani  (CoglFixed a);
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_atan2 (CoglFixed a,
-                            CoglFixed b);
+CoglFixed
+cogl_fixed_atan2 (CoglFixed a,
+                  CoglFixed b);
 
 /*< public >*/
 
 /* Fixed point math routines */
-G_INLINE_FUNC CoglFixed cogl_fixed_mul     (CoglFixed a,
-                                            CoglFixed b);
-G_INLINE_FUNC CoglFixed cogl_fixed_div     (CoglFixed a,
-                                            CoglFixed b);
-G_INLINE_FUNC CoglFixed cogl_fixed_mul_div (CoglFixed a,
-                                            CoglFixed b,
-                                            CoglFixed c);
+G_INLINE_FUNC CoglFixed
+cogl_fixed_mul (CoglFixed a,
+                CoglFixed b);
+
+G_INLINE_FUNC CoglFixed
+cogl_fixed_div (CoglFixed a,
+                CoglFixed b);
+
+G_INLINE_FUNC CoglFixed
+cogl_fixed_mul_div (CoglFixed a,
+                    CoglFixed b,
+                    CoglFixed c);
 
 /**
  * COGL_SQRTI_ARG_MAX:
@@ -585,7 +594,8 @@ G_INLINE_FUNC CoglFixed cogl_fixed_mul_div (CoglFixed a,
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_sqrt (CoglFixed x);
+CoglFixed
+cogl_fixed_sqrt (CoglFixed x);
 
 /**
  * cogl_fixed_log2:
@@ -600,7 +610,8 @@ CoglFixed cogl_fixed_sqrt (CoglFixed x);
  *
  * Since: 1.0
  */
-CoglFixed cogl_fixed_log2 (guint     x);
+CoglFixed
+cogl_fixed_log2 (unsigned int x);
 
 /**
  * cogl_fixed_pow2:
@@ -615,7 +626,8 @@ CoglFixed cogl_fixed_log2 (guint     x);
  *
  * Since: 1.0
  */
-guint     cogl_fixed_pow2 (CoglFixed x);
+unsigned int
+cogl_fixed_pow2 (CoglFixed x);
 
 /**
  * cogl_fixed_pow:
@@ -628,8 +640,9 @@ guint     cogl_fixed_pow2 (CoglFixed x);
  *
  * Since: 1.0
  */
-guint     cogl_fixed_pow  (guint     x,
-                           CoglFixed y);
+unsigned int
+cogl_fixed_pow  (unsigned int x,
+                 CoglFixed y);
 
 /**
  * cogl_sqrti:
@@ -647,7 +660,8 @@ guint     cogl_fixed_pow  (guint     x,
  *
  * Since: 1.0
  */
-gint      cogl_sqrti      (gint      x);
+int
+cogl_sqrti (int x);
 
 /**
  * COGL_ANGLE_FROM_DEG:
@@ -700,7 +714,8 @@ gint      cogl_sqrti      (gint      x);
  *
  * Since: 1.0
  */
-CoglFixed cogl_angle_sin (CoglAngle angle);
+CoglFixed
+cogl_angle_sin (CoglAngle angle);
 
 /**
  * cogl_angle_tan:
@@ -712,7 +727,8 @@ CoglFixed cogl_angle_sin (CoglAngle angle);
  *
  * Since: 1.0
  */
-CoglFixed cogl_angle_tan (CoglAngle angle);
+CoglFixed
+cogl_angle_tan (CoglAngle angle);
 
 /**
  * cogl_angle_cos:
@@ -724,7 +740,8 @@ CoglFixed cogl_angle_tan (CoglAngle angle);
  *
  * Since: 1.0
  */
-CoglFixed cogl_angle_cos (CoglAngle angle);
+CoglFixed
+cogl_angle_cos (CoglAngle angle);
 
 /*< private >*/
 
@@ -773,9 +790,14 @@ cogl_fixed_mul_div (CoglFixed a,
 }
 #endif
 
-extern CoglFixed cogl_double_to_fixed (double value);
-extern gint      cogl_double_to_int   (double value);
-extern guint     cogl_double_to_unit  (double value);
+CoglFixed
+cogl_double_to_fixed (double value);
+
+int
+cogl_double_to_int   (double value);
+
+unsigned int
+cogl_double_to_unit (double value);
 
 G_END_DECLS
 

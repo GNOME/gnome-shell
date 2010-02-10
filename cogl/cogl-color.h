@@ -52,7 +52,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-CoglColor *cogl_color_new  (void);
+CoglColor *
+cogl_color_new (void);
 
 /**
  * cogl_color_copy:
@@ -65,7 +66,8 @@ CoglColor *cogl_color_new  (void);
  *
  * Since: 1.0
  */
-CoglColor *cogl_color_copy (const CoglColor *color);
+CoglColor *
+cogl_color_copy (const CoglColor *color);
 
 /**
  * cogl_color_free:
@@ -75,7 +77,8 @@ CoglColor *cogl_color_copy (const CoglColor *color);
  *
  * Since: 1.0
  */
-void       cogl_color_free (CoglColor       *color);
+void
+cogl_color_free (CoglColor *color);
 
 /**
  * cogl_color_set_from_4ub:
@@ -89,11 +92,12 @@ void       cogl_color_free (CoglColor       *color);
  *
  * Since: 1.0
  */
-void cogl_color_set_from_4ub (CoglColor *dest,
-                              guint8 red,
-                              guint8 green,
-                              guint8 blue,
-                              guint8 alpha);
+void
+cogl_color_set_from_4ub (CoglColor *dest,
+                         guint8 red,
+                         guint8 green,
+                         guint8 blue,
+                         guint8 alpha);
 
 /**
  * cogl_color_set_from_4f:
@@ -107,11 +111,12 @@ void cogl_color_set_from_4ub (CoglColor *dest,
  *
  * Since: 1.0
  */
-void cogl_color_set_from_4f (CoglColor *dest,
-                             float  red,
-                             float  green,
-                             float  blue,
-                             float  alpha);
+void
+cogl_color_set_from_4f (CoglColor *dest,
+                        float red,
+                        float green,
+                        float blue,
+                        float alpha);
 
 /**
  * cogl_color_get_red_byte:
@@ -124,7 +129,8 @@ void cogl_color_set_from_4f (CoglColor *dest,
  *
  * Since: 1.0
  */
-unsigned char cogl_color_get_red_byte    (const CoglColor *color);
+unsigned char
+cogl_color_get_red_byte (const CoglColor *color);
 
 /**
  * cogl_color_get_green_byte:
@@ -137,7 +143,8 @@ unsigned char cogl_color_get_red_byte    (const CoglColor *color);
  *
  * Since: 1.0
  */
-unsigned char cogl_color_get_green_byte   (const CoglColor *color);
+unsigned char
+cogl_color_get_green_byte (const CoglColor *color);
 
 /**
  * cogl_color_get_blue_byte:
@@ -150,7 +157,8 @@ unsigned char cogl_color_get_green_byte   (const CoglColor *color);
  *
  * Since: 1.0
  */
-unsigned char cogl_color_get_blue_byte   (const CoglColor *color);
+unsigned char
+cogl_color_get_blue_byte (const CoglColor *color);
 
 /**
  * cogl_color_get_alpha_byte:
@@ -163,7 +171,8 @@ unsigned char cogl_color_get_blue_byte   (const CoglColor *color);
  *
  * Since: 1.0
  */
-unsigned char cogl_color_get_alpha_byte  (const CoglColor *color);
+unsigned char
+cogl_color_get_alpha_byte (const CoglColor *color);
 
 /**
  * cogl_color_get_red_float:
@@ -176,7 +185,8 @@ unsigned char cogl_color_get_alpha_byte  (const CoglColor *color);
  *
  * Since: 1.0
  */
-float         cogl_color_get_red_float   (const CoglColor *color);
+float
+cogl_color_get_red_float (const CoglColor *color);
 
 /**
  * cogl_color_get_green_float:
@@ -189,7 +199,8 @@ float         cogl_color_get_red_float   (const CoglColor *color);
  *
  * Since: 1.0
  */
-float         cogl_color_get_green_float (const CoglColor *color);
+float
+cogl_color_get_green_float (const CoglColor *color);
 
 /**
  * cogl_color_get_blue_float:
@@ -202,7 +213,8 @@ float         cogl_color_get_green_float (const CoglColor *color);
  *
  * Since: 1.0
  */
-float         cogl_color_get_blue_float  (const CoglColor *color);
+float
+cogl_color_get_blue_float (const CoglColor *color);
 
 /**
  * cogl_color_get_alpha_float:
@@ -215,7 +227,8 @@ float         cogl_color_get_blue_float  (const CoglColor *color);
  *
  * Since: 1.0
  */
-float         cogl_color_get_alpha_float (const CoglColor *color);
+float
+cogl_color_get_alpha_float (const CoglColor *color);
 
 /**
  * cogl_color_get_red:
@@ -228,7 +241,8 @@ float         cogl_color_get_alpha_float (const CoglColor *color);
  *
  * Since: 1.0
  */
-float     cogl_color_get_red         (const CoglColor *color);
+float
+cogl_color_get_red (const CoglColor *color);
 
 /**
  * cogl_color_get_green:
@@ -241,7 +255,8 @@ float     cogl_color_get_red         (const CoglColor *color);
  *
  * Since: 1.0
  */
-float     cogl_color_get_green       (const CoglColor *color);
+float
+cogl_color_get_green (const CoglColor *color);
 
 /**
  * cogl_color_get_blue:
@@ -254,7 +269,8 @@ float     cogl_color_get_green       (const CoglColor *color);
  *
  * Since: 1.0
  */
-float     cogl_color_get_blue        (const CoglColor *color);
+float
+cogl_color_get_blue (const CoglColor *color);
 
 /**
  * cogl_color_get_alpha:
@@ -267,7 +283,8 @@ float     cogl_color_get_blue        (const CoglColor *color);
  *
  * Since: 1.0
  */
-float     cogl_color_get_alpha       (const CoglColor *color);
+float
+cogl_color_get_alpha (const CoglColor *color);
 
 /**
  * cogl_color_premultiply:
@@ -279,7 +296,8 @@ float     cogl_color_get_alpha       (const CoglColor *color);
  *
  * Since: 1.0
  */
-void cogl_color_premultiply (CoglColor *color);
+void
+cogl_color_premultiply (CoglColor *color);
 
 /**
  * cogl_color_equal:
@@ -295,8 +313,9 @@ void cogl_color_premultiply (CoglColor *color);
  *
  * Since: 1.0
  */
-gboolean cogl_color_equal (gconstpointer v1,
-                           gconstpointer v2);
+gboolean
+cogl_color_equal (gconstpointer v1,
+                  gconstpointer v2);
 
 G_END_DECLS
 

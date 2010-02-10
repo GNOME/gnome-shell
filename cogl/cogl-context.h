@@ -49,7 +49,7 @@ typedef struct
   CoglHandle        default_material;
 
   /* Enable cache */
-  gulong            enable_flags;
+  unsigned long     enable_flags;
   guint8            color_alpha;
 
   gboolean          enable_backface_culling;
@@ -83,10 +83,10 @@ typedef struct
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
-  gulong            current_material_flags;
+  unsigned long     current_material_flags;
   CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
-  guint             n_texcoord_arrays_enabled;
+  unsigned int      n_texcoord_arrays_enabled;
 
   /* PBOs */
   /* This can be used to check if a pbo is bound */
@@ -102,7 +102,7 @@ typedef struct
   floatVec2         path_start;
   floatVec2         path_pen;
   GArray           *path_nodes;
-  guint             last_path;
+  unsigned int      last_path;
   floatVec2         path_nodes_min;
   floatVec2         path_nodes_max;
   CoglHandle        stencil_material;
@@ -110,7 +110,7 @@ typedef struct
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
      out of a vertex array of quads */
   CoglHandle        quad_indices_byte;
-  guint             quad_indices_short_len;
+  unsigned int      quad_indices_short_len;
   CoglHandle        quad_indices_short;
 
   gboolean          in_begin_gl_block;

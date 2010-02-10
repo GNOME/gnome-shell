@@ -53,10 +53,10 @@ static const GDebugKey cogl_debug_keys[] = {
   { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS }
 };
 
-static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
+static const int n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
 #endif /* COGL_ENABLE_DEBUG */
 
-guint cogl_debug_flags = 0;
+unsigned int cogl_debug_flags = 0;
 
 #ifdef COGL_ENABLE_DEBUG
 static gboolean
@@ -73,8 +73,8 @@ cogl_arg_debug_cb (const char *key,
 
 static gboolean
 cogl_arg_no_debug_cb (const char *key,
-                         const char *value,
-                         gpointer    user_data)
+                      const char *value,
+                      gpointer    user_data)
 {
   cogl_debug_flags &=
     ~g_parse_debug_string (value,

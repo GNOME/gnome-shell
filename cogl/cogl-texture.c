@@ -224,15 +224,15 @@ _cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
    effectively assumes there is only one span from 0.0 to 1.0 */
 typedef struct _CoglTextureIter
 {
-  gfloat pos, end, next_pos;
+  float pos, end, next_pos;
   gboolean flipped;
-  gfloat t_1, t_2;
+  float t_1, t_2;
 } CoglTextureIter;
 
 static void
 _cogl_texture_iter_update (CoglTextureIter *iter)
 {
-  gfloat t_2;
+  float t_2;
   float frac_part;
 
   frac_part = modff (iter->pos, &iter->next_pos);
@@ -261,7 +261,7 @@ _cogl_texture_iter_update (CoglTextureIter *iter)
 
 static void
 _cogl_texture_iter_begin (CoglTextureIter *iter,
-                              gfloat t_1, gfloat t_2)
+                          float t_1, float t_2)
 {
   if (t_1 <= t_2)
     {
@@ -316,8 +316,8 @@ _cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
 }
 
 CoglHandle
-cogl_texture_new_with_size (guint            width,
-			    guint            height,
+cogl_texture_new_with_size (unsigned int     width,
+			    unsigned int     height,
                             CoglTextureFlags flags,
 			    CoglPixelFormat  internal_format)
 {
@@ -337,13 +337,13 @@ cogl_texture_new_with_size (guint            width,
 }
 
 CoglHandle
-cogl_texture_new_from_data (guint             width,
-			    guint             height,
+cogl_texture_new_from_data (unsigned int      width,
+			    unsigned int      height,
                             CoglTextureFlags  flags,
 			    CoglPixelFormat   format,
 			    CoglPixelFormat   internal_format,
-			    guint             rowstride,
-			    const guchar     *data)
+			    unsigned int      rowstride,
+			    const guint8     *data)
 {
   CoglBitmap bitmap;
 
@@ -360,7 +360,7 @@ cogl_texture_new_from_data (guint             width,
   /* Wrap the data into a bitmap */
   bitmap.width = width;
   bitmap.height = height;
-  bitmap.data = (guchar *) data;
+  bitmap.data = (guint8 *) data;
   bitmap.format = format;
   bitmap.rowstride = rowstride;
 
@@ -393,7 +393,7 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
 }
 
 CoglHandle
-cogl_texture_new_from_file (const gchar       *filename,
+cogl_texture_new_from_file (const char        *filename,
                             CoglTextureFlags   flags,
                             CoglPixelFormat    internal_format,
                             GError           **error)
@@ -445,24 +445,24 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 
 CoglHandle
 cogl_texture_new_from_sub_texture (CoglHandle full_texture,
-                                   gint       sub_x,
-                                   gint       sub_y,
-                                   gint       sub_width,
-                                   gint       sub_height)
+                                   int        sub_x,
+                                   int        sub_y,
+                                   int        sub_width,
+                                   int        sub_height)
 {
   return _cogl_sub_texture_new (full_texture, sub_x, sub_y,
                                 sub_width, sub_height);
 }
 
 CoglHandle
-cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
-                                  guint            width,
-                                  guint            height,
-                                  CoglTextureFlags flags,
-                                  CoglPixelFormat  format,
-                                  CoglPixelFormat  internal_format,
-                                  guint            rowstride,
-                                  const guint      offset)
+cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
+                                  unsigned int        width,
+                                  unsigned int        height,
+                                  CoglTextureFlags    flags,
+                                  CoglPixelFormat     format,
+                                  CoglPixelFormat     internal_format,
+                                  unsigned int        rowstride,
+                                  const unsigned int  offset)
 {
   CoglHandle texture;
   CoglBuffer *cogl_buffer;
@@ -526,7 +526,7 @@ cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
   return texture;
 }
 
-guint
+unsigned int
 cogl_texture_get_width (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -539,7 +539,7 @@ cogl_texture_get_width (CoglHandle handle)
   return tex->vtable->get_width (tex);
 }
 
-guint
+unsigned int
 cogl_texture_get_height (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -565,7 +565,7 @@ cogl_texture_get_format (CoglHandle handle)
   return tex->vtable->get_format (tex);
 }
 
-guint
+unsigned int
 cogl_texture_get_rowstride (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -584,7 +584,7 @@ cogl_texture_get_rowstride (CoglHandle handle)
           * cogl_texture_get_width (tex));
 }
 
-gint
+int
 cogl_texture_get_max_waste (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -739,17 +739,17 @@ _cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
 
 gboolean
 cogl_texture_set_region (CoglHandle       handle,
-			 gint             src_x,
-			 gint             src_y,
-			 gint             dst_x,
-			 gint             dst_y,
-			 guint            dst_width,
-			 guint            dst_height,
-			 gint             width,
-			 gint             height,
+			 int              src_x,
+			 int              src_y,
+			 int              dst_x,
+			 int              dst_y,
+			 unsigned int     dst_width,
+			 unsigned int     dst_height,
+			 int              width,
+			 int              height,
 			 CoglPixelFormat  format,
-			 guint            rowstride,
-			 const guchar    *data)
+			 unsigned int     rowstride,
+			 const guint8    *data)
 {
   CoglTexture *tex;
 
@@ -786,14 +786,14 @@ do_texture_draw_and_read (CoglHandle   handle,
                           CoglBitmap  *target_bmp,
                           GLint       *viewport)
 {
-  gint        bpp;
+  int         bpp;
   float       rx1, ry1;
   float       rx2, ry2;
   float       tx1, ty1;
   float       tx2, ty2;
   int         bw,  bh;
   CoglBitmap  rect_bmp;
-  guint       tex_width, tex_height;
+  unsigned int  tex_width, tex_height;
 
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
 
@@ -840,8 +840,8 @@ do_texture_draw_and_read (CoglHandle   handle,
           rect_bmp.width = rx2 - rx1;
           rect_bmp.height = ry2 - ry1;
           rect_bmp.rowstride = bpp * rect_bmp.width;
-          rect_bmp.data = (guchar*) g_malloc (rect_bmp.rowstride *
-                                              rect_bmp.height);
+          rect_bmp.data = g_malloc (rect_bmp.rowstride *
+                                    rect_bmp.height);
 
           _cogl_texture_driver_prep_gl_for_pixels_download (rect_bmp.rowstride,
                                                             bpp);
@@ -877,7 +877,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type)
 {
-  gint       bpp;
+  int        bpp;
   CoglHandle framebuffer;
   int        viewport[4];
   CoglBitmap alpha_bmp;
@@ -951,19 +951,19 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   printf ("A bits: %d\n", a_bits); */
   if ((cogl_texture_get_format (handle) & COGL_A_BIT)/* && a_bits == 0*/)
     {
-      guchar *srcdata;
-      guchar *dstdata;
-      guchar *srcpixel;
-      guchar *dstpixel;
-      gint    x,y;
+      guint8 *srcdata;
+      guint8 *dstdata;
+      guint8 *srcpixel;
+      guint8 *dstpixel;
+      int     x,y;
 
       /* Create temp bitmap for alpha values */
       alpha_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888;
       alpha_bmp.width = target_bmp->width;
       alpha_bmp.height = target_bmp->height;
       alpha_bmp.rowstride = bpp * alpha_bmp.width;
-      alpha_bmp.data = (guchar*) g_malloc (alpha_bmp.rowstride *
-                                           alpha_bmp.height);
+      alpha_bmp.data = g_malloc (alpha_bmp.rowstride *
+                                 alpha_bmp.height);
 
       /* Draw alpha values into RGB channels */
       cogl_material_set_layer_combine (ctx->texture_download_material,
@@ -1003,11 +1003,11 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   return TRUE;
 }
 
-gint
+int
 cogl_texture_get_data (CoglHandle       handle,
 		       CoglPixelFormat  format,
-		       guint            rowstride,
-		       guchar          *data)
+		       unsigned int     rowstride,
+		       guint8          *data)
 {
   CoglTexture *tex;
 

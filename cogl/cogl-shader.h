@@ -66,7 +66,8 @@ typedef enum {
  *
  * Returns: a new shader handle.
  */
-CoglHandle      cogl_create_shader            (CoglShaderType      shader_type);
+CoglHandle
+cogl_create_shader (CoglShaderType shader_type);
 
 /**
  * cogl_shader_ref:
@@ -76,7 +77,8 @@ CoglHandle      cogl_create_shader            (CoglShaderType      shader_type);
  *
  * Returns: @handle
  */
-CoglHandle      cogl_shader_ref               (CoglHandle          handle);
+CoglHandle
+cogl_shader_ref (CoglHandle handle);
 
 /**
  * cogl_shader_unref:
@@ -85,7 +87,8 @@ CoglHandle      cogl_shader_ref               (CoglHandle          handle);
  * Removes a reference to a shader. If it was the last reference the
  * shader object will be destroyed.
  */
-void            cogl_shader_unref             (CoglHandle          handle);
+void
+cogl_shader_unref (CoglHandle handle);
 
 /**
  * cogl_is_shader:
@@ -96,7 +99,7 @@ void            cogl_shader_unref             (CoglHandle          handle);
  * Returns: %TRUE if the handle references a shader,
  *   %FALSE otherwise
  */
-gboolean        cogl_is_shader               (CoglHandle          handle);
+gboolean cogl_is_shader (CoglHandle handle);
 
 /**
  * cogl_shader_source:
@@ -106,8 +109,9 @@ gboolean        cogl_is_shader               (CoglHandle          handle);
  * Replaces the current GLSL source associated with a shader with a new
  * one.
  */
-void            cogl_shader_source            (CoglHandle         shader,
-                                               const gchar       *source);
+void
+cogl_shader_source (CoglHandle  shader,
+                    const char *source);
 /**
  * cogl_shader_compile:
  * @handle: #CoglHandle for a shader.
@@ -115,7 +119,8 @@ void            cogl_shader_source            (CoglHandle         shader,
  * Compiles the shader, no return value, but the shader is now ready for
  * linking into a program.
  */
-void            cogl_shader_compile           (CoglHandle         handle);
+void
+cogl_shader_compile (CoglHandle handle);
 
 /**
  * cogl_shader_get_info_log:
@@ -129,7 +134,8 @@ void            cogl_shader_compile           (CoglHandle         handle);
  * Return value: a newly allocated string containing the info log. Use
  *   g_free() to free it
  */
-gchar *         cogl_shader_get_info_log      (CoglHandle         handle);
+char *
+cogl_shader_get_info_log (CoglHandle handle);
 
 /**
  * cogl_shader_get_type:
@@ -140,7 +146,8 @@ gchar *         cogl_shader_get_info_log      (CoglHandle         handle);
  * Return value: %COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
  *          or %COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
  */
-CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
+CoglShaderType
+cogl_shader_get_type (CoglHandle handle);
 
 /**
  * cogl_shader_is_compiled:
@@ -150,7 +157,8 @@ CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
  *
  * Return value: %TRUE if the shader object has sucessfully be compiled
  */
-gboolean        cogl_shader_is_compiled       (CoglHandle          handle);
+gboolean
+cogl_shader_is_compiled (CoglHandle handle);
 
 /**
  * cogl_create_program:
@@ -160,7 +168,8 @@ gboolean        cogl_shader_is_compiled       (CoglHandle          handle);
  *
  * Returns: a new cogl program.
  */
-CoglHandle      cogl_create_program           (void);
+CoglHandle
+cogl_create_program (void);
 
 /**
  * cogl_program_ref:
@@ -170,7 +179,8 @@ CoglHandle      cogl_create_program           (void);
  *
  * Returns: @handle
  */
-CoglHandle      cogl_program_ref              (CoglHandle        handle);
+CoglHandle
+cogl_program_ref (CoglHandle handle);
 
 /**
  * cogl_program_unref:
@@ -179,7 +189,8 @@ CoglHandle      cogl_program_ref              (CoglHandle        handle);
  * Removes a reference to a program. If it was the last reference the
  * program object will be destroyed.
  */
-void            cogl_program_unref            (CoglHandle        handle);
+void
+cogl_program_unref (CoglHandle handle);
 
 /**
  * cogl_is_program:
@@ -190,7 +201,8 @@ void            cogl_program_unref            (CoglHandle        handle);
  * Returns: %TRUE if the handle references a program,
  *   %FALSE otherwise
  */
-gboolean        cogl_is_program               (CoglHandle          handle);
+gboolean
+cogl_is_program (CoglHandle handle);
 
 /**
  * cogl_program_attach_shader:
@@ -200,8 +212,9 @@ gboolean        cogl_is_program               (CoglHandle          handle);
  * Attaches a shader to a program object, a program can have one vertex shader
  * and one fragment shader attached.
  */
-void            cogl_program_attach_shader    (CoglHandle        program_handle,
-                                               CoglHandle        shader_handle);
+void
+cogl_program_attach_shader (CoglHandle program_handle,
+                            CoglHandle shader_handle);
 
 
 /**
@@ -210,7 +223,8 @@ void            cogl_program_attach_shader    (CoglHandle        program_handle,
  *
  * Links a program making it ready for use.
  */
-void            cogl_program_link             (CoglHandle        handle);
+void
+cogl_program_link (CoglHandle handle);
 
 /**
  * cogl_program_use:
@@ -220,7 +234,8 @@ void            cogl_program_link             (CoglHandle        handle);
  * rendering pipeline, if passed in %COGL_INVALID_HANDLE the default
  * behavior of GL is reinstated.
  */
-void            cogl_program_use              (CoglHandle        handle);
+void
+cogl_program_use (CoglHandle handle);
 
 /**
  * cogl_program_get_uniform_location:
@@ -235,9 +250,9 @@ void            cogl_program_use              (CoglHandle        handle);
  *   This uniform can be set using cogl_program_uniform_1f() when the
  *   program is in use.
  */
-int         cogl_program_get_uniform_location
-                                              (CoglHandle       handle,
-                                               const char      *uniform_name);
+int
+cogl_program_get_uniform_location (CoglHandle  handle,
+                                   const char *uniform_name);
 
 /**
  * cogl_program_uniform_1f:
@@ -247,8 +262,9 @@ int         cogl_program_get_uniform_location
  * Changes the value of a floating point uniform in the currently
  * used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_1f       (int              uniform_no,
-                                               float            value);
+void
+cogl_program_uniform_1f (int   uniform_no,
+                         float value);
 
 /**
  * cogl_program_uniform_1i:
@@ -258,8 +274,9 @@ void            cogl_program_uniform_1f       (int              uniform_no,
  * Changes the value of an integer uniform in the currently
  * used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_1i       (int              uniform_no,
-                                               int              value);
+void
+cogl_program_uniform_1i (int uniform_no,
+                         int value);
 
  /**
  * cogl_program_uniform_float:
@@ -271,10 +288,11 @@ void            cogl_program_uniform_1i       (int              uniform_no,
  * Changes the value of a float vector uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_float    (int            uniform_no,
-                                               int            size,
-                                               int            count,
-                                               const GLfloat *value);
+void
+cogl_program_uniform_float (int            uniform_no,
+                            int            size,
+                            int            count,
+                            const GLfloat *value);
 
 /**
  * cogl_program_uniform_int:
@@ -286,10 +304,11 @@ void            cogl_program_uniform_float    (int            uniform_no,
  * Changes the value of a int vector uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_int      (int           uniform_no,
-                                               int           size,
-                                               int           count,
-                                               const int    *value);
+void
+cogl_program_uniform_int (int        uniform_no,
+                          int        size,
+                          int        count,
+                          const int *value);
 
 /**
  * cogl_program_uniform_matrix:
@@ -303,11 +322,12 @@ void            cogl_program_uniform_int      (int           uniform_no,
  * currently used (see cogl_program_use()) shader program. The @size
  * parameter is used to determine the square size of the matrix.
  */
-void            cogl_program_uniform_matrix   (int           uniform_no,
-                                               int           size,
-                                               int           count,
-                                               gboolean      transpose,
-                                               const float  *value);
+void
+cogl_program_uniform_matrix (int          uniform_no,
+                             int          size,
+                             int          count,
+                             gboolean     transpose,
+                             const float *value);
 
 G_END_DECLS
 

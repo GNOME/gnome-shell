@@ -98,7 +98,7 @@ gboolean
 _cogl_check_driver_valid (GError **error)
 {
   int major, minor;
-  const gchar *gl_extensions;
+  const char *gl_extensions;
 
   if (!_cogl_get_gl_version (&major, &minor))
     {
@@ -113,7 +113,7 @@ _cogl_check_driver_valid (GError **error)
   if (COGL_CHECK_GL_VERSION (major, minor, 1, 3))
     return TRUE;
 
-  gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
   /* OpenGL 1.2 is only supported if we have the multitexturing
      extension */
@@ -175,7 +175,7 @@ void
 _cogl_features_init (void)
 {
   CoglFeatureFlags  flags = 0;
-  const gchar      *gl_extensions;
+  const char       *gl_extensions;
   GLint             max_clip_planes = 0;
   GLint             num_stencil_bits = 0;
   int               gl_major = 0, gl_minor = 0;
@@ -187,7 +187,7 @@ _cogl_features_init (void)
 
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
-  gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))

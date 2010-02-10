@@ -67,8 +67,8 @@ struct _CoglAtlas
 {
   CoglAtlasNode *root;
 
-  guint space_remaining;
-  guint n_rectangles;
+  unsigned int space_remaining;
+  unsigned int n_rectangles;
 
   GDestroyNotify value_destroy_func;
 };
@@ -119,7 +119,8 @@ _cogl_atlas_node_free (CoglAtlasNode *node)
 }
 
 CoglAtlas *
-_cogl_atlas_new (guint width, guint height,
+_cogl_atlas_new (unsigned int width,
+                 unsigned int height,
                  GDestroyNotify value_destroy_func)
 {
   CoglAtlas *atlas = g_new (CoglAtlas, 1);
@@ -166,7 +167,7 @@ _cogl_atlas_stack_pop (CoglAtlasStackEntry *stack)
 
 static CoglAtlasNode *
 _cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
-                                     guint left_width)
+                                     unsigned int left_width)
 {
   /* Splits the node horizontally (according to emacs' definition, not
      vim) by converting it to a branch and adding two new leaf
@@ -204,7 +205,7 @@ _cogl_atlas_node_split_horizontally (CoglAtlasNode *node,
 
 static CoglAtlasNode *
 _cogl_atlas_node_split_vertically (CoglAtlasNode *node,
-                                   guint top_height)
+                                   unsigned int top_height)
 {
   /* Splits the node vertically (according to emacs' definition, not
      vim) by converting it to a branch and adding two new leaf
@@ -242,7 +243,8 @@ _cogl_atlas_node_split_vertically (CoglAtlasNode *node,
 
 gboolean
 _cogl_atlas_add_rectangle (CoglAtlas *atlas,
-                           guint width, guint height,
+                           unsigned int width,
+                           unsigned int height,
                            gpointer data,
                            CoglAtlasRectangle *rectangle)
 {
@@ -411,25 +413,25 @@ _cogl_atlas_remove_rectangle (CoglAtlas *atlas,
 #endif
 }
 
-guint
+unsigned int
 _cogl_atlas_get_width (CoglAtlas *atlas)
 {
   return atlas->root->rectangle.width;
 }
 
-guint
+unsigned int
 _cogl_atlas_get_height (CoglAtlas *atlas)
 {
   return atlas->root->rectangle.height;
 }
 
-guint
+unsigned int
 _cogl_atlas_get_remaining_space (CoglAtlas *atlas)
 {
   return atlas->space_remaining;
 }
 
-guint
+unsigned int
 _cogl_atlas_get_n_rectangles (CoglAtlas *atlas)
 {
   return atlas->n_rectangles;

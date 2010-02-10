@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -129,27 +129,27 @@ cogl_value_init_fixed (GValue *value)
 
 static void
 cogl_value_copy_fixed (const GValue *src,
-                          GValue       *dest)
+                       GValue       *dest)
 {
   dest->data[0].v_int = src->data[0].v_int;
 }
 
-static gchar *
-cogl_value_collect_fixed (GValue      *value,
-                             guint        n_collect_values,
-                             GTypeCValue *collect_values,
-                             guint        collect_flags)
+static char *
+cogl_value_collect_fixed (GValue       *value,
+                          unsigned int  n_collect_values,
+                          GTypeCValue  *collect_values,
+                          unsigned int  collect_flags)
 {
   value->data[0].v_int = collect_values[0].v_int;
 
   return NULL;
 }
 
-static gchar *
+static char *
 cogl_value_lcopy_fixed (const GValue *value,
-                           guint         n_collect_values,
-                           GTypeCValue  *collect_values,
-                           guint         collect_flags)
+                        unsigned int  n_collect_values,
+                        GTypeCValue  *collect_values,
+                        unsigned int  collect_flags)
 {
   gint32 *fixed_p = collect_values[0].v_pointer;
 
@@ -178,28 +178,28 @@ cogl_value_transform_fixed_double (const GValue *src,
 
 static void
 cogl_value_transform_fixed_float (const GValue *src,
-                                     GValue       *dest)
+                                  GValue       *dest)
 {
   dest->data[0].v_float = COGL_FIXED_TO_FLOAT (src->data[0].v_int);
 }
 
 static void
 cogl_value_transform_int_fixed (const GValue *src,
-                                   GValue       *dest)
+                                GValue       *dest)
 {
   dest->data[0].v_int = COGL_FIXED_FROM_INT (src->data[0].v_int);
 }
 
 static void
 cogl_value_transform_double_fixed (const GValue *src,
-                                      GValue       *dest)
+                                   GValue       *dest)
 {
   dest->data[0].v_int = COGL_FIXED_FROM_DOUBLE (src->data[0].v_double);
 }
 
 static void
 cogl_value_transform_float_fixed (const GValue *src,
-                                     GValue       *dest)
+                                  GValue       *dest)
 {
   dest->data[0].v_int = COGL_FIXED_FROM_FLOAT (src->data[0].v_float);
 }

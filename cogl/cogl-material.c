@@ -740,7 +740,7 @@ cogl_material_set_blend_constant (CoglHandle handle,
  */
 static CoglMaterialLayer *
 _cogl_material_get_layer (CoglMaterial *material,
-			  gint          index_,
+			  int           index_,
 			  gboolean      create_if_not_found)
 {
   CoglMaterialLayer *layer;
@@ -801,7 +801,7 @@ _cogl_material_get_layer (CoglMaterial *material,
 
 void
 cogl_material_set_layer (CoglHandle material_handle,
-			 gint layer_index,
+			 int layer_index,
 			 CoglHandle texture_handle)
 {
   CoglMaterial	    *material;
@@ -934,7 +934,7 @@ setup_texture_combine_state (CoglBlendStringStatement *statement,
 
 gboolean
 cogl_material_set_layer_combine (CoglHandle handle,
-				 gint layer_index,
+				 int layer_index,
 				 const char *combine_description,
                                  GError **error)
 {
@@ -1004,7 +1004,7 @@ cogl_material_set_layer_combine (CoglHandle handle,
 
 void
 cogl_material_set_layer_combine_constant (CoglHandle handle,
-				          gint layer_index,
+				          int layer_index,
                                           CoglColor *constant_color)
 {
   CoglMaterial      *material;
@@ -1031,7 +1031,7 @@ cogl_material_set_layer_combine_constant (CoglHandle handle,
 
 void
 cogl_material_set_layer_matrix (CoglHandle material_handle,
-				gint layer_index,
+				int layer_index,
 				CoglMatrix *matrix)
 {
   CoglMaterial *material;
@@ -1062,7 +1062,7 @@ _cogl_material_layer_free (CoglMaterialLayer *layer)
 
 void
 cogl_material_remove_layer (CoglHandle material_handle,
-			    gint layer_index)
+			    int layer_index)
 {
   CoglMaterial	     *material;
   CoglMaterialLayer  *layer;
@@ -1099,11 +1099,11 @@ cogl_material_remove_layer (CoglHandle material_handle,
 
 /* XXX: This API is hopfully just a stop-gap solution. Ideally cogl_enable
  * will be replaced. */
-gulong
+unsigned long
 _cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
 {
   CoglMaterial	*material;
-  gulong	 enable_flags = 0;
+  unsigned long	 enable_flags = 0;
 
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -1169,7 +1169,7 @@ cogl_material_layer_get_texture (CoglHandle layer_handle)
   return layer->texture;
 }
 
-gulong
+unsigned long
 _cogl_material_layer_get_flags (CoglHandle layer_handle)
 {
   CoglMaterialLayer *layer;
@@ -1196,7 +1196,7 @@ _cogl_material_layer_copy (CoglHandle layer_handle)
   return _cogl_material_layer_handle_new (layer_copy);
 }
 
-static guint
+static unsigned int
 get_n_args_for_combine_func (GLint func)
 {
   switch (func)
@@ -2056,7 +2056,7 @@ cogl_material_layer_get_mag_filter (CoglHandle layer_handle)
 
 void
 cogl_material_set_layer_filters (CoglHandle         handle,
-                                 gint               layer_index,
+                                 int                layer_index,
                                  CoglMaterialFilter min_filter,
                                  CoglMaterialFilter mag_filter)
 {

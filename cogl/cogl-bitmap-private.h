@@ -33,11 +33,11 @@
 typedef struct _CoglBitmap
 {
   CoglHandleObject _parent;
-  guchar          *data;
+  guint8          *data;
   CoglPixelFormat  format;
-  gint             width;
-  gint             height;
-  gint             rowstride;
+  int              width;
+  int              height;
+  int              rowstride;
 } CoglBitmap;
 
 gboolean
@@ -81,12 +81,12 @@ _cogl_bitmap_fallback_premult (CoglBitmap *dst_bmp);
 
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const gchar *filename,
+			const char *filename,
 			GError     **error);
 
 gboolean
 _cogl_bitmap_fallback_from_file (CoglBitmap  *bmp,
-				 const gchar *filename);
+				 const char *filename);
 
 gboolean
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
@@ -100,16 +100,16 @@ _cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
 void
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
-			     gint        src_x,
-			     gint        src_y,
-			     gint        dst_x,
-			     gint        dst_y,
-			     gint        width,
-			     gint        height);
+			     int         src_x,
+			     int         src_y,
+			     int         dst_x,
+			     int         dst_y,
+			     int         width,
+			     int         height);
 
 gboolean
-_cogl_bitmap_get_size_from_file (const gchar *filename,
-                                 gint        *width,
-                                 gint        *height);
+_cogl_bitmap_get_size_from_file (const char *filename,
+                                 int        *width,
+                                 int        *height);
 
 #endif /* __COGL_BITMAP_H */

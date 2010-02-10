@@ -295,7 +295,7 @@ static const CoglFixed sqrt_tbl[] =
 /* the difference of the angle for two adjacent values in the
  * sin_tbl table, expressed as CoglFixed number
  */
-static const gint sin_tbl_size = G_N_ELEMENTS (sin_tbl) - 1;
+static const int sin_tbl_size = G_N_ELEMENTS (sin_tbl) - 1;
 
 static const double _magic = 68719476736.0 * 1.5;
 
@@ -346,11 +346,11 @@ cogl_double_to_fixed (double val)
  *
  * Return value: Integer part of the double
  */
-gint
+int
 cogl_double_to_int (double val)
 {
 #ifdef COGL_NO_FAST_CONVERSIONS
-  return (gint) (val);
+  return (int) (val);
 #else
   union {
     double d;
@@ -364,11 +364,11 @@ cogl_double_to_int (double val)
 #endif
 }
 
-guint
+unsigned int
 cogl_double_to_uint (double val)
 {
 #ifdef COGL_NO_FAST_CONVERSIONS
-  return (guint)(val);
+  return (unsigned int)(val);
 #else
   union {
     double d;
@@ -716,8 +716,8 @@ cogl_fixed_sqrt (CoglFixed x)
  *
  * Since: 0.2
  */
-gint
-cogl_sqrti (gint number)
+int
+cogl_sqrti (int number)
 {
 #if defined __SSE2__
     /* The GCC built-in with SSE2 (sqrtsd) is up to twice as fast as
@@ -859,7 +859,7 @@ cogl_fixed_mul_div (CoglFixed a,
  */
 
 CoglFixed
-cogl_fixed_log2 (guint x)
+cogl_fixed_log2 (unsigned int x)
 {
   /* Note: we could easily have a version for CoglFixed x, but the int
    *       precision is enough for the current purposes.
@@ -889,7 +889,7 @@ cogl_fixed_log2 (guint x)
   return flt.i + y;
 }
 
-guint
+unsigned int
 cogl_fixed_pow2 (CoglFixed x)
 {
   /* Note: we could easily have a version that produces CoglFixed result,
@@ -926,9 +926,9 @@ cogl_fixed_pow2 (CoglFixed x)
   return COGL_FLOAT_TO_UINT (flt.f);
 }
 
-guint
-cogl_fixed_pow (guint     x,
-                CoglFixed y)
+unsigned int
+cogl_fixed_pow (unsigned int  x,
+                CoglFixed     y)
 {
   return cogl_fixed_pow2 (COGL_FIXED_MUL (y, cogl_fixed_log2 (x)));
 }

@@ -788,7 +788,7 @@ cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
 
     case COGL_BOXED_INT:
       {
-	gint *ptr;
+	int *ptr;
 
 	if (value->count == 1)
 	  ptr = value->v.int_value;
@@ -807,7 +807,7 @@ cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
 
     case COGL_BOXED_FLOAT:
       {
-	gfloat *ptr;
+	float *ptr;
 
 	if (value->count == 1)
 	  ptr = value->v.float_value;
@@ -826,7 +826,7 @@ cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
 
     case COGL_BOXED_MATRIX:
       {
-	gfloat *ptr;
+	float *ptr;
 
 	if (value->count == 1)
 	  ptr = value->v.matrix;

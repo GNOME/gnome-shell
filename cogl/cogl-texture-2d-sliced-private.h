@@ -52,7 +52,7 @@ struct _CoglTexture2DSliced
   GArray           *slice_x_spans;
   GArray           *slice_y_spans;
   GArray           *slice_gl_handles;
-  gint              max_waste;
+  int               max_waste;
 
   /* The internal format of the GL texture represented as a
      CoglPixelFormat */
@@ -60,8 +60,8 @@ struct _CoglTexture2DSliced
   /* The internal format of the GL texture represented as a GL enum */
   GLenum            gl_format;
   GLenum            gl_target;
-  gint              width;
-  gint              height;
+  int               width;
+  int               height;
   GLenum            min_filter;
   GLenum            mag_filter;
   gboolean          is_foreign;

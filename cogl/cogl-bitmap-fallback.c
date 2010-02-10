@@ -34,7 +34,7 @@
 /* TO rgba */
 
 inline static void
-_cogl_g_to_rgba (const guchar *src, guchar *dst)
+_cogl_g_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[0];
   dst[1] = src[0];
@@ -43,7 +43,7 @@ _cogl_g_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgb_to_rgba (const guchar *src, guchar *dst)
+_cogl_rgb_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[0];
   dst[1] = src[1];
@@ -52,7 +52,7 @@ _cogl_rgb_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_bgr_to_rgba (const guchar *src, guchar *dst)
+_cogl_bgr_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[2];
   dst[1] = src[1];
@@ -61,7 +61,7 @@ _cogl_bgr_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_bgra_to_rgba (const guchar *src, guchar *dst)
+_cogl_bgra_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[2];
   dst[1] = src[1];
@@ -70,7 +70,7 @@ _cogl_bgra_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_argb_to_rgba (const guchar *src, guchar *dst)
+_cogl_argb_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[1];
   dst[1] = src[2];
@@ -79,7 +79,7 @@ _cogl_argb_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_abgr_to_rgba (const guchar *src, guchar *dst)
+_cogl_abgr_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[3];
   dst[1] = src[2];
@@ -88,7 +88,7 @@ _cogl_abgr_to_rgba (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgba_to_rgba (const guchar *src, guchar *dst)
+_cogl_rgba_to_rgba (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[0];
   dst[1] = src[1];
@@ -99,13 +99,13 @@ _cogl_rgba_to_rgba (const guchar *src, guchar *dst)
 /* FROM rgba */
 
 inline static void
-_cogl_rgba_to_g (const guchar *src, guchar *dst)
+_cogl_rgba_to_g (const guint8 *src, guint8 *dst)
 {
   dst[0] = (src[0] + src[1] + src[2]) / 3;
 }
 
 inline static void
-_cogl_rgba_to_rgb (const guchar *src, guchar *dst)
+_cogl_rgba_to_rgb (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[0];
   dst[1] = src[1];
@@ -113,7 +113,7 @@ _cogl_rgba_to_rgb (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgba_to_bgr (const guchar *src, guchar *dst)
+_cogl_rgba_to_bgr (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[2];
   dst[1] = src[1];
@@ -121,7 +121,7 @@ _cogl_rgba_to_bgr (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgba_to_bgra (const guchar *src, guchar *dst)
+_cogl_rgba_to_bgra (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[2];
   dst[1] = src[1];
@@ -130,7 +130,7 @@ _cogl_rgba_to_bgra (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgba_to_argb (const guchar *src, guchar *dst)
+_cogl_rgba_to_argb (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[3];
   dst[1] = src[0];
@@ -139,7 +139,7 @@ _cogl_rgba_to_argb (const guchar *src, guchar *dst)
 }
 
 inline static void
-_cogl_rgba_to_abgr (const guchar *src, guchar *dst)
+_cogl_rgba_to_abgr (const guint8 *src, guint8 *dst)
 {
   dst[0] = src[3];
   dst[1] = src[2];
@@ -150,7 +150,7 @@ _cogl_rgba_to_abgr (const guchar *src, guchar *dst)
 /* (Un)Premultiplication */
 
 inline static void
-_cogl_unpremult_alpha_0 (guchar *dst)
+_cogl_unpremult_alpha_0 (guint8 *dst)
 {
   dst[0] = 0;
   dst[1] = 0;
@@ -159,9 +159,9 @@ _cogl_unpremult_alpha_0 (guchar *dst)
 }
 
 inline static void
-_cogl_unpremult_alpha_last (guchar *dst)
+_cogl_unpremult_alpha_last (guint8 *dst)
 {
-  guchar alpha = dst[3];
+  guint8 alpha = dst[3];
 
   dst[0] = (dst[0] * 255) / alpha;
   dst[1] = (dst[1] * 255) / alpha;
@@ -169,9 +169,9 @@ _cogl_unpremult_alpha_last (guchar *dst)
 }
 
 inline static void
-_cogl_unpremult_alpha_first (guchar *dst)
+_cogl_unpremult_alpha_first (guint8 *dst)
 {
-  guchar alpha = dst[0];
+  guint8 alpha = dst[0];
 
   dst[1] = (dst[1] * 255) / alpha;
   dst[2] = (dst[2] * 255) / alpha;
@@ -189,24 +189,24 @@ _cogl_unpremult_alpha_first (guchar *dst)
   } G_STMT_END
 
 inline static void
-_cogl_premult_alpha_last (guchar *dst)
+_cogl_premult_alpha_last (guint8 *dst)
 {
-  guchar alpha = dst[3];
+  guint8 alpha = dst[3];
   /* Using a separate temporary per component has given slightly better
    * code generation with GCC in the past; it shouldn't do any worse in
    * any case.
    */
-  guint t1, t2, t3;
+  unsigned int t1, t2, t3;
   MULT(dst[0], alpha, t1);
   MULT(dst[1], alpha, t2);
   MULT(dst[2], alpha, t3);
 }
 
 inline static void
-_cogl_premult_alpha_first (guchar *dst)
+_cogl_premult_alpha_first (guint8 *dst)
 {
-  guchar alpha = dst[0];
-  guint t1, t2, t3;
+  guint8 alpha = dst[0];
+  unsigned int t1, t2, t3;
 
   MULT(dst[1], alpha, t1);
   MULT(dst[2], alpha, t2);
@@ -342,12 +342,12 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 			       CoglBitmap       *dst_bmp,
 			       CoglPixelFormat   dst_format)
 {
-  guchar  *src;
-  guchar  *dst;
-  gint     src_bpp;
-  gint     dst_bpp;
-  gint     x,y;
-  guchar   temp_rgba[4] = {0,0,0,0};
+  guint8  *src;
+  guint8  *dst;
+  int      src_bpp;
+  int      dst_bpp;
+  int      x,y;
+  guint8   temp_rgba[4] = {0,0,0,0};
 
   /* Make sure conversion supported */
   if (!_cogl_bitmap_fallback_can_convert (bmp->format, dst_format))
@@ -358,20 +358,20 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 
   /* Initialize destination bitmap */
   *dst_bmp = *bmp;
-  dst_bmp->rowstride = sizeof(guchar) * dst_bpp * dst_bmp->width;
+  dst_bmp->rowstride = sizeof(guint8) * dst_bpp * dst_bmp->width;
   dst_bmp->format = ((bmp->format & COGL_PREMULT_BIT) |
 		     (dst_format & COGL_UNPREMULT_MASK));
 
   /* Allocate a new buffer to hold converted data */
-  dst_bmp->data = g_malloc (sizeof(guchar)
+  dst_bmp->data = g_malloc (sizeof(guint8)
 			    * dst_bmp->height
 			    * dst_bmp->rowstride);
 
   /* FIXME: Optimize */
   for (y = 0; y < bmp->height; y++)
     {
-      src = (guchar*)bmp->data      + y * bmp->rowstride;
-      dst = (guchar*)dst_bmp->data  + y * dst_bmp->rowstride;
+      src = (guint8*)bmp->data      + y * bmp->rowstride;
+      dst = (guint8*)dst_bmp->data  + y * dst_bmp->rowstride;
 
       for (x = 0; x < bmp->width; x++)
 	{
@@ -429,8 +429,8 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 gboolean
 _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 {
-  guchar  *p;
-  gint     x,y;
+  guint8  *p;
+  int      x,y;
 
   /* Make sure format supported for un-premultiplication */
   if (!_cogl_bitmap_fallback_can_unpremult (bmp->format))
@@ -438,7 +438,7 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 
   for (y = 0; y < bmp->height; y++)
     {
-      p = (guchar*) bmp->data + y * bmp->rowstride;
+      p = (guint8*) bmp->data + y * bmp->rowstride;
 
       if (bmp->format & COGL_AFIRST_BIT)
         {
@@ -472,8 +472,8 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 gboolean
 _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
 {
-  guchar  *p;
-  gint     x,y;
+  guint8  *p;
+  int      x,y;
 
   /* Make sure format supported for un-premultiplication */
   if (!_cogl_bitmap_fallback_can_premult (bmp->format))
@@ -481,7 +481,7 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
 
   for (y = 0; y < bmp->height; y++)
     {
-      p = (guchar*) bmp->data + y * bmp->rowstride;
+      p = (guint8*) bmp->data + y * bmp->rowstride;
 
       if (bmp->format & COGL_AFIRST_BIT)
         {
@@ -525,7 +525,7 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
 
 gboolean
 _cogl_bitmap_fallback_from_file (CoglBitmap  *bmp,
-				 const gchar *filename)
+				 const char  *filename)
 {
   /* FIXME: use jpeglib, libpng, etc. manually maybe */
   return FALSE;

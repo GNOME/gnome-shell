@@ -85,7 +85,7 @@ cogl_is_buffer_EXP (CoglHandle handle)
 
 void
 _cogl_buffer_initialize (CoglBuffer           *buffer,
-                         guint                 size,
+                         unsigned int          size,
                          CoglBufferUsageHint   usage_hint,
                          CoglBufferUpdateHint  update_hint)
 {
@@ -183,7 +183,7 @@ _cogl_buffer_bind (CoglBuffer *buffer,
   ctx->current_pbo = buffer;
 }
 
-guint
+unsigned int
 cogl_buffer_get_size_EXP (CoglHandle handle)
 {
   if (!cogl_is_buffer (handle))
@@ -236,7 +236,7 @@ cogl_buffer_get_update_hint_EXP (CoglHandle handle)
   return COGL_BUFFER (handle)->update_hint;
 }
 
-guchar *
+guint8 *
 cogl_buffer_map_EXP (CoglHandle       handle,
                      CoglBufferAccess access)
 {
@@ -273,7 +273,7 @@ cogl_buffer_unmap_EXP (CoglHandle handle)
 gboolean
 cogl_buffer_set_data_EXP (CoglHandle    handle,
                           gsize         offset,
-                          const guchar *data,
+                          const guint8 *data,
                           gsize         size)
 {
   CoglBuffer *buffer;

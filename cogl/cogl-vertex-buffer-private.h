@@ -133,7 +133,7 @@ typedef struct _CoglVertexBufferVBO
    * a GLuint VBO name, but when the driver doesn't support VBOs then
    * this simply points to an malloc'd buffer. */
   void  *vbo_name; /*!< The name of the corresponding buffer object */
-  size_t vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
+  gsize vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
   GList *attributes;
 } CoglVertexBufferVBO;
 

@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2009 Intel Corporation.
+ * Copyright (C) 2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,12 +47,12 @@ COGL_HANDLE_DEFINE (SubTexture, sub_texture);
 static const CoglTextureVtable cogl_sub_texture_vtable;
 
 static void
-_cogl_sub_texture_map_range (gfloat *t1, gfloat *t2,
-                             gint sub_offset,
-                             gint sub_size,
-                             gint full_size)
+_cogl_sub_texture_map_range (float *t1, float *t2,
+                             int sub_offset,
+                             int sub_size,
+                             int full_size)
 {
-  gfloat t1_frac, t1_int, t2_frac, t2_int;
+  float t1_frac, t1_int, t2_frac, t2_int;
 
   t1_frac = modff (*t1, &t1_int);
   t2_frac = modff (*t2, &t2_int);
@@ -98,10 +98,10 @@ _cogl_sub_texture_map_range (gfloat *t1, gfloat *t2,
 
 static void
 _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
-                            gfloat *coords)
+                            float *coords)
 {
-  guint full_width = cogl_texture_get_width (sub_tex->full_texture);
-  guint full_height = cogl_texture_get_height (sub_tex->full_texture);
+  unsigned int full_width = cogl_texture_get_width (sub_tex->full_texture);
+  unsigned int full_height = cogl_texture_get_height (sub_tex->full_texture);
 
   _cogl_sub_texture_map_range (coords + 0, coords + 2,
                                sub_tex->sub_x, sub_tex->sub_width,
@@ -113,13 +113,13 @@ _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
 
 /* Maps from the texture coordinates of the full texture to the
    texture coordinates of the sub texture */
-static gfloat
-_cogl_sub_texture_unmap_coord (gfloat t,
-                               gint sub_offset,
-                               gint sub_size,
-                               gint full_size)
+static float
+_cogl_sub_texture_unmap_coord (float t,
+                               int sub_offset,
+                               int sub_size,
+                               int full_size)
 {
-  gfloat frac_part, int_part;
+  float frac_part, int_part;
 
   /* Convert the fractional part leaving the integer part in tact */
   frac_part = modff (t, &int_part);
@@ -135,11 +135,11 @@ _cogl_sub_texture_unmap_coord (gfloat t,
 
 static void
 _cogl_sub_texture_unmap_coords (CoglSubTexture *sub_tex,
-                                gfloat *s,
-                                gfloat *t)
+                                float *s,
+                                float *t)
 {
-  guint full_width = cogl_texture_get_width (sub_tex->full_texture);
-  guint full_height = cogl_texture_get_height (sub_tex->full_texture);
+  unsigned int full_width = cogl_texture_get_width (sub_tex->full_texture);
+  unsigned int full_height = cogl_texture_get_height (sub_tex->full_texture);
 
   *s = _cogl_sub_texture_unmap_coord (*s, sub_tex->sub_x, sub_tex->sub_width,
                                       full_width);
@@ -242,12 +242,12 @@ _cogl_sub_texture_free (CoglSubTexture *sub_tex)
 
 CoglHandle
 _cogl_sub_texture_new (CoglHandle full_texture,
-                       gint sub_x, gint sub_y,
-                       gint sub_width, gint sub_height)
+                       int sub_x, int sub_y,
+                       int sub_width, int sub_height)
 {
   CoglSubTexture *sub_tex;
   CoglTexture    *tex;
-  guint           full_width, full_height;
+  unsigned int    full_width, full_height;
 
   full_width = cogl_texture_get_width (full_texture);
   full_height = cogl_texture_get_height (full_texture);
@@ -273,7 +273,7 @@ _cogl_sub_texture_new (CoglHandle full_texture,
   return _cogl_sub_texture_handle_new (sub_tex);
 }
 
-static gint
+static int
 _cogl_sub_texture_get_max_waste (CoglTexture *tex)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
@@ -403,14 +403,14 @@ _cogl_sub_texture_set_region (CoglTexture    *tex,
 }
 
 static void
-_cogl_sub_texture_copy_region (guchar *dst,
-                               const guchar *src,
-                               gint dst_x, gint dst_y,
-                               gint src_x, gint src_y,
-                               gint width, gint height,
-                               gint dst_rowstride,
-                               gint src_rowstride,
-                               gint bpp)
+_cogl_sub_texture_copy_region (guint8 *dst,
+                               const guint8 *src,
+                               int dst_x, int dst_y,
+                               int src_x, int src_y,
+                               int width, int height,
+                               int dst_rowstride,
+                               int src_rowstride,
+                               int bpp)
 {
   int y;
 
@@ -435,8 +435,8 @@ _cogl_sub_texture_get_data (CoglTexture     *tex,
   unsigned int full_rowstride;
   guint8 *full_data;
   int byte_size, full_size;
-  gint bpp;
-  gint full_tex_width, full_tex_height;
+  int bpp;
+  int full_tex_width, full_tex_height;
 
   /* FIXME: This gets the full data from the full texture and then
      copies a subregion of that. It would be better if there was a
@@ -500,7 +500,7 @@ _cogl_sub_texture_get_gl_format (CoglTexture *tex)
   return _cogl_texture_get_gl_format (sub_tex->full_texture);
 }
 
-static gint
+static int
 _cogl_sub_texture_get_width (CoglTexture *tex)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
@@ -508,7 +508,7 @@ _cogl_sub_texture_get_width (CoglTexture *tex)
   return sub_tex->sub_width;
 }
 
-static gint
+static int
 _cogl_sub_texture_get_height (CoglTexture *tex)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);

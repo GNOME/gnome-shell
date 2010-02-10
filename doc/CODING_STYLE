@@ -1,0 +1,49 @@
+Cogl Coding Style
+--------------------
+
+This document is intended to be a short description of the preferred
+coding style to be used for the Cogl source code.
+
+Coding style is a matter of consistency, readability and maintainance;
+coding style is also completely arbitrary and a matter of taste. This
+document will use examples at the very least to provide authoritative
+and consistent answers to common questions regarding the coding style,
+and will also try to identify the allowed exceptions.
+
+The Cogl coding style is currently defined relative to the Clutter
+coding style, so please first read clutter/docs/CODING_STYLE.
+
+Differences to the Clutter coding style:
+
++ Headers
+
+Cogl headers are not exempt from the 80 characters limit as they are in
+Clutter. Function prototypes should not be arranged into vertical
+columns but should instead follow the "+ Functions" section of the
+Clutter CODING_STYLE like:
+
+void
+my_function (CoglType     type,
+	     CoglType	 *a_pointer,
+	     CoglType	  another_type);
+
++ Types
+
+Avoid the use of redundant glib typedefs and wherever possible simply
+use ANSI C types.
+
+The following types should not be used:
+  gint, guint, gfloat, gdouble, glong, gulong, gchar and guchar
+Instead use:
+  int, unsigned int, float, double, long, unsigned long, char, and
+  guint8/unsigned char
+
+The glib types that we continue to use for portability are gboolean,
+gint{8,16,32,64}, guint{8,16,32,64} and gsize. When ever you need a
+byte size type for dealing with pixel data then guint8 should be used.
+
+The general intention is that Cogl should look palatable to the widest
+range of C programmers including those outside the Gnome community so
+- especially for the public API - we want to minimize the number of
+foreign looking typedefs.
+

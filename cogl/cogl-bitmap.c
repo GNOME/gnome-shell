@@ -42,10 +42,10 @@ _cogl_bitmap_free (CoglBitmap *bmp)
   g_free (bmp);
 }
 
-gint
+int
 _cogl_get_format_bpp (CoglPixelFormat format)
 {
-  gint bpp_lut[] = {
+  int bpp_lut[] = {
     0, /* invalid  */
     1, /* A_8      */
     3, /* 888      */
@@ -119,17 +119,17 @@ _cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
 void
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
-			     gint        src_x,
-			     gint        src_y,
-			     gint        dst_x,
-			     gint        dst_y,
-			     gint        width,
-			     gint        height)
+			     int         src_x,
+			     int         src_y,
+			     int         dst_x,
+			     int         dst_y,
+			     int         width,
+			     int         height)
 {
-  guchar *srcdata;
-  guchar *dstdata;
-  gint    bpp;
-  gint    line;
+  guint8 *srcdata;
+  guint8 *dstdata;
+  int    bpp;
+  int    line;
 
   /* Intended only for fast copies when format is equal! */
   g_assert (src->format == dst->format);
@@ -147,16 +147,16 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 }
 
 gboolean
-cogl_bitmap_get_size_from_file (const gchar *filename,
-                                gint        *width,
-                                gint        *height)
+cogl_bitmap_get_size_from_file (const char *filename,
+                                int        *width,
+                                int        *height)
 {
   return _cogl_bitmap_get_size_from_file (filename, width, height);
 }
 
 CoglHandle
-cogl_bitmap_new_from_file (const gchar    *filename,
-                           GError        **error)
+cogl_bitmap_new_from_file (const char  *filename,
+                           GError     **error)
 {
   CoglBitmap   bmp;
   CoglBitmap  *ret;

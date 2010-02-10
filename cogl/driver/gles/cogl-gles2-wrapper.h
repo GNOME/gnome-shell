@@ -128,8 +128,8 @@ struct _CoglGles2WrapperSettings
   /* The current in-use user program */
   CoglHandle user_program;
 
-  guint	   alpha_test_enabled:1;
-  guint	   fog_enabled:1;
+  unsigned int alpha_test_enabled:1;
+  unsigned int fog_enabled:1;
 };
 
 struct _CoglGles2WrapperTextureUnit
@@ -141,8 +141,8 @@ struct _CoglGles2WrapperTextureUnit
   GLsizei      texture_coords_stride;
   const void  *texture_coords_pointer;
 
-  guint	   texture_coords_enabled:1;
-  guint	   dirty_matrix:1; /*!< shader uniform needs updating */
+  unsigned int texture_coords_enabled:1;
+  unsigned int dirty_matrix:1; /*!< shader uniform needs updating */
 };
 
 struct _CoglGles2Wrapper
@@ -150,8 +150,8 @@ struct _CoglGles2Wrapper
   GLuint     matrix_mode;
   CoglMatrix modelview_matrix;
   CoglMatrix projection_matrix;
-  guint	     active_texture_unit;
-  guint	     active_client_texture_unit;
+  unsigned int	active_texture_unit;
+  unsigned int  active_client_texture_unit;
 
   CoglGles2WrapperTextureUnit texture_units[COGL_GLES2_MAX_TEXTURE_UNITS];
 

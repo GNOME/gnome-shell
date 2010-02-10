@@ -54,7 +54,7 @@
 /* GL error to string conversion */
 static const struct {
   GLuint error_code;
-  const gchar *error_string;
+  const char *error_string;
 } gl_errors[] = {
   { GL_NO_ERROR,          "No error" },
   { GL_INVALID_ENUM,      "Invalid enumeration value" },
@@ -69,12 +69,12 @@ static const struct {
 #endif
 };
 
-static const guint n_gl_errors = G_N_ELEMENTS (gl_errors);
+static const unsigned int n_gl_errors = G_N_ELEMENTS (gl_errors);
 
-const gchar *
+const char *
 cogl_gl_error_to_string (GLenum error_code)
 {
-  gint i;
+  int i;
 
   for (i = 0; i < n_gl_errors; i++)
     {
@@ -87,7 +87,7 @@ cogl_gl_error_to_string (GLenum error_code)
 #endif /* COGL_GL_DEBUG */
 
 CoglFuncPtr
-cogl_get_proc_address (const gchar* name)
+cogl_get_proc_address (const char* name)
 {
   void *address;
   static GModule *module = NULL;
@@ -113,15 +113,15 @@ cogl_get_proc_address (const gchar* name)
 }
 
 gboolean
-_cogl_check_extension (const gchar *name, const gchar *ext)
+_cogl_check_extension (const char *name, const gchar *ext)
 {
-  gchar *end;
-  gint name_len, n;
+  char *end;
+  int name_len, n;
 
   if (name == NULL || ext == NULL)
     return FALSE;
 
-  end = (gchar*)(ext + strlen(ext));
+  end = (char*)(ext + strlen(ext));
 
   name_len = strlen(name);
 
@@ -145,7 +145,7 @@ cogl_check_extension (const char *name, const char *ext)
 }
 
 void
-cogl_clear (const CoglColor *color, gulong buffers)
+cogl_clear (const CoglColor *color, unsigned long buffers)
 {
   GLbitfield gl_buffers = 0;
 
@@ -203,8 +203,8 @@ cogl_clear (const CoglColor *color, gulong buffers)
 
 static inline gboolean
 cogl_toggle_flag (CoglContext *ctx,
-		  gulong new_flags,
-		  gulong flag,
+		  unsigned long new_flags,
+		  unsigned long flag,
 		  GLenum gl_flag)
 {
   /* Toggles and caches a single enable flag on or off
@@ -230,8 +230,8 @@ cogl_toggle_flag (CoglContext *ctx,
 
 static inline gboolean
 cogl_toggle_client_flag (CoglContext *ctx,
-			 gulong new_flags,
-			 gulong flag,
+			 unsigned long new_flags,
+			 unsigned long flag,
 			 GLenum gl_flag)
 {
   /* Toggles and caches a single client-side enable flag
@@ -256,7 +256,7 @@ cogl_toggle_client_flag (CoglContext *ctx,
 }
 
 void
-cogl_enable (gulong flags)
+cogl_enable (unsigned long flags)
 {
   /* This function essentially caches glEnable state() in the
    * hope of lessening number GL traffic.
@@ -280,7 +280,7 @@ cogl_enable (gulong flags)
 			   GL_COLOR_ARRAY);
 }
 
-gulong
+unsigned long
 cogl_get_enable ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
@@ -402,15 +402,15 @@ cogl_set_viewport (int x,
 /* XXX: This should be deprecated, and we should expose a way to also
  * specify an x and y viewport offset */
 void
-cogl_viewport (guint width,
-	       guint height)
+cogl_viewport (unsigned int width,
+	       unsigned int height)
 {
   cogl_set_viewport (0, 0, width, height);
 }
 
 void
-_cogl_setup_viewport (guint width,
-                      guint height,
+_cogl_setup_viewport (unsigned int width,
+                      unsigned int height,
                       float fovy,
                       float aspect,
                       float z_near,
@@ -525,10 +525,10 @@ cogl_get_viewport (float v[4])
 }
 
 void
-cogl_get_bitmasks (gint *red,
-                   gint *green,
-                   gint *blue,
-                   gint *alpha)
+cogl_get_bitmasks (int *red,
+                   int *green,
+                   int *blue,
+                   int *alpha)
 {
   GLint value;
 
@@ -698,7 +698,7 @@ void
 cogl_begin_gl (void)
 {
   CoglMaterialFlushOptions options;
-  gulong enable_flags = 0;
+  unsigned long enable_flags = 0;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -851,7 +851,7 @@ _cogl_destroy_texture_units (void)
  * Note that, for now, we use GL_MAX_TEXTURE_UNITS as we are exposing the
  * fixed function pipeline.
  */
-guint
+unsigned int
 _cogl_get_max_texture_image_units (void)
 {
   GLint nb_texture_image_units;
