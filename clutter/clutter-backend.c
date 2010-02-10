@@ -310,7 +310,7 @@ _clutter_backend_redraw (ClutterBackend *backend,
                           "Increments for each _clutter_backend_redraw call",
                           0 /* no application private data */);
   CLUTTER_STATIC_TIMER (redraw_timer,
-                        "Mainloop", /* parent */
+                        "Master Clock", /* parent */
                         "Redrawing",
                         "The time spent redrawing everything",
                         0 /* no application private data */);
