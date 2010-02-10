@@ -959,6 +959,23 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   }
 }
 
+static gboolean
+strut_lists_equal (GSList *l,
+                   GSList *m)
+{
+  for (; l && m; l = l->next, m = m->next)
+    {
+      MetaStrut *a = l->data;
+      MetaStrut *b = m->data;
+
+      if (a->side != b->side ||
+          !meta_rectangle_equal (&a->rect, &b->rect))
+        return FALSE;
+    }
+
+  return l == NULL && m == NULL;
+}
+
 /**
  * meta_workspace_set_builtin_struts:
  * @workspace: a #MetaWorkspace
@@ -972,6 +989,12 @@ void
 meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                    GSList        *struts)
 {
+  /* Reordering doesn't actually matter, so we don't catch all
+   * no-impact changes, but this is just a (possibly unnecessary
+   * anyways) optimization */
+  if (strut_lists_equal (struts, workspace->builtin_struts))
+    return;
+
   workspace_free_builtin_struts (workspace);
   workspace->builtin_struts = copy_strut_list (struts);
 
