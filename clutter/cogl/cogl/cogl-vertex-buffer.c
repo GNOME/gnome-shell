@@ -210,7 +210,7 @@ COGL_HANDLE_DEFINE (VertexBuffer, vertex_buffer);
 COGL_HANDLE_DEFINE (VertexBufferIndices, vertex_buffer_indices);
 
 CoglHandle
-cogl_vertex_buffer_new (guint n_vertices)
+cogl_vertex_buffer_new (unsigned int n_vertices)
 {
   CoglVertexBuffer *buffer = g_slice_alloc (sizeof (CoglVertexBuffer));
 
@@ -223,7 +223,7 @@ cogl_vertex_buffer_new (guint n_vertices)
   return _cogl_vertex_buffer_handle_new (buffer);
 }
 
-guint
+unsigned int
 cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
 {
   CoglVertexBuffer *buffer;
@@ -958,7 +958,7 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
 {
 #if HAVE_COGL_GL
   GList *tmp;
-  guint offset = 0;
+  unsigned int offset = 0;
   char *buf;
   gboolean fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
@@ -1004,7 +1004,7 @@ static void
 upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
-  guint offset = 0;
+  unsigned int offset = 0;
   gboolean fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
@@ -1511,8 +1511,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 #ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint       generic_index = 0;
 #endif
-  gulong       enable_flags = 0;
-  gint         max_texcoord_attrib_unit = -1;
+  unsigned long enable_flags = 0;
+  int          max_texcoord_attrib_unit = -1;
   const GList *layers;
   guint32      fallback_layers = 0;
   guint32      disable_layers = ~0;
@@ -1797,7 +1797,7 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
 {
   gboolean fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  size_t indices_bytes;
+  gsize indices_bytes;
   CoglVertexBufferIndices *indices;
 
   _COGL_GET_CONTEXT (ctx, 0);
@@ -1885,7 +1885,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
   CoglVertexBuffer *buffer;
   gboolean fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  size_t byte_offset;
+  gsize byte_offset;
   CoglVertexBufferIndices *indices = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -1936,7 +1936,7 @@ _cogl_vertex_buffer_free (CoglVertexBuffer *buffer)
 }
 
 CoglHandle
-cogl_vertex_buffer_indices_get_for_quads (guint n_indices)
+cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
 {
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 

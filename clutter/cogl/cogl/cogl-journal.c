@@ -88,7 +88,7 @@ typedef CoglVertexBufferIndices  CoglJournalIndices;
 
 typedef struct _CoglJournalFlushState
 {
-  size_t              stride;
+  gsize              stride;
   /* Note: this is a pointer to handle fallbacks. It normally holds a VBO
    * offset, but when the driver doesn't support VBOs then this points into
    * our GArray of logged vertices. */
@@ -96,7 +96,7 @@ typedef struct _CoglJournalFlushState
   GLuint              vertex_offset;
 #ifndef HAVE_COGL_GL
   CoglJournalIndices *indices;
-  size_t              indices_type_size;
+  gsize              indices_type_size;
 #endif
   CoglMatrixStack    *modelview_stack;
 } CoglJournalFlushState;
@@ -110,7 +110,7 @@ typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
 void
 _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
 {
-  size_t stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
+  gsize stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -144,7 +144,7 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
 void
 _cogl_journal_dump_quad_batch (guint8 *data, int n_layers, int n_quads)
 {
-  size_t byte_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
+  gsize byte_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
   int i;
 
   g_print ("_cogl_journal_dump_quad_batch: n_layers = %d, n_quads = %d\n",
@@ -304,10 +304,10 @@ compare_entry_modelviews (CoglJournalEntry *entry0,
  * materials, but they may not all have the same modelview matrix */
 static void
 _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
-                                          gint              batch_len,
+                                          int               batch_len,
                                           void             *data)
 {
-  gulong                 enable_flags = 0;
+  unsigned long enable_flags = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -367,7 +367,7 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 static void
 _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                                           CoglJournalEntry *batch_start,
-                                          gint              batch_len,
+                                          int               batch_len,
                                           void             *data)
 {
   CoglJournalFlushState *state = data;
@@ -423,11 +423,11 @@ compare_entry_n_layers (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
  * of journal entries */
 static void
 _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
-                                             gint              batch_len,
+                                             int               batch_len,
                                              void             *data)
 {
   CoglJournalFlushState   *state = data;
-  size_t                   stride;
+  gsize                   stride;
 #ifndef HAVE_COGL_GL
   int                      needed_indices = batch_len * 6;
   CoglHandle               indices_handle;
@@ -502,7 +502,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   /* progress forward through the VBO containing all our vertices */
   state->vbo_offset += (stride * 4 * batch_len);
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
-    g_print ("new vbo offset = %lu\n", (gulong)state->vbo_offset);
+    g_print ("new vbo offset = %lu\n", (unsigned long)state->vbo_offset);
 }
 
 static gboolean
@@ -524,7 +524,7 @@ compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 static GLuint
 upload_vertices_to_vbo (GArray *vertices, CoglJournalFlushState *state)
 {
-  size_t needed_vbo_len;
+  gsize needed_vbo_len;
   GLuint journal_vbo;
 
   _COGL_GET_CONTEXT (ctx, 0);
@@ -668,8 +668,8 @@ _cogl_journal_log_quad (float         x_1,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
-  size_t            stride;
-  size_t            byte_stride;
+  gsize            stride;
+  gsize            byte_stride;
   int               next_vert;
   GLfloat          *v;
   GLubyte          *c;

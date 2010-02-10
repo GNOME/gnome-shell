@@ -49,7 +49,8 @@ typedef gpointer CoglHandle;
 #define COGL_INVALID_HANDLE NULL
 
 #define COGL_TYPE_HANDLE        (cogl_handle_get_type ())
-GType cogl_handle_get_type (void) G_GNUC_CONST;
+GType
+cogl_handle_get_type (void) G_GNUC_CONST;
 
 /**
  * cogl_handle_ref:
@@ -59,7 +60,8 @@ GType cogl_handle_get_type (void) G_GNUC_CONST;
  *
  * Returns: the handle, with its reference count increased
  */
-CoglHandle cogl_handle_ref   (CoglHandle handle);
+CoglHandle
+cogl_handle_ref (CoglHandle handle);
 
 /**
  * cogl_handle_unref:
@@ -68,7 +70,8 @@ CoglHandle cogl_handle_ref   (CoglHandle handle);
  * Drecreases the reference count of @handle by 1; if the reference
  * count reaches 0, the resources allocated by @handle will be freed
  */
-void       cogl_handle_unref (CoglHandle Handle);
+void
+cogl_handle_unref (CoglHandle Handle);
 
 /**
  * CoglFuncPtr:
@@ -87,7 +90,8 @@ typedef void (* CoglFuncPtr) (void);
 typedef gint32 CoglFixed;
 
 #define COGL_TYPE_FIXED         (cogl_fixed_get_type ())
-GType cogl_fixed_get_type (void) G_GNUC_CONST;
+GType
+cogl_fixed_get_type (void) G_GNUC_CONST;
 
 /**
  * CoglAngle:
@@ -361,7 +365,8 @@ typedef enum { /*< prefix=COGL_BLEND_STRING_ERROR >*/
   COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR
 } CoglBlendStringError;
 
-GQuark cogl_blend_string_error_quark (void);
+GQuark
+cogl_blend_string_error_quark (void);
 
 G_END_DECLS
 

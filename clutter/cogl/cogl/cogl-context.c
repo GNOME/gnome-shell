@@ -46,7 +46,7 @@ static gboolean
 cogl_create_context (void)
 {
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
-  gulong  enable_flags = 0;
+  unsigned long  enable_flags = 0;
   CoglHandle window_buffer;
 
   if (_context != NULL)

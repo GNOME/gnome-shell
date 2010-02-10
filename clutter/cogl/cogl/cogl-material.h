@@ -86,7 +86,8 @@ typedef enum {
  *
  * Return value: a handle to the new material
  */
-CoglHandle cogl_material_new (void);
+CoglHandle
+cogl_material_new (void);
 
 /**
  * cogl_material_copy:
@@ -104,7 +105,8 @@ CoglHandle cogl_material_new (void);
  *
  * Since: 1.2
  */
-CoglHandle cogl_material_copy (CoglHandle source);
+CoglHandle
+cogl_material_copy (CoglHandle source);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
@@ -120,7 +122,8 @@ CoglHandle cogl_material_copy (CoglHandle source);
  *
  * Deprecated: 1.2: Use cogl_handle_ref() instead
  */
-CoglHandle cogl_material_ref (CoglHandle handle);
+CoglHandle
+cogl_material_ref (CoglHandle handle);
 
 /**
  * cogl_material_unref:
@@ -132,7 +135,8 @@ CoglHandle cogl_material_ref (CoglHandle handle);
  *
  * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
-void cogl_material_unref (CoglHandle handle);
+void
+cogl_material_unref (CoglHandle handle);
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -145,7 +149,8 @@ void cogl_material_unref (CoglHandle handle);
  * Return value: %TRUE if the handle references a #CoglMaterial,
  *   %FALSE otherwise
  */
-gboolean cogl_is_material (CoglHandle handle);
+gboolean
+cogl_is_material (CoglHandle handle);
 
 /**
  * cogl_material_set_color:
@@ -163,8 +168,9 @@ gboolean cogl_is_material (CoglHandle handle);
  *
  * Since: 1.0
  */
-void cogl_material_set_color (CoglHandle       material,
-                              const CoglColor *color);
+void
+cogl_material_set_color (CoglHandle       material,
+                         const CoglColor *color);
 
 /**
  * cogl_material_set_color4ub:
@@ -180,11 +186,12 @@ void cogl_material_set_color (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_set_color4ub (CoglHandle material,
-			         guint8     red,
-                                 guint8     green,
-                                 guint8     blue,
-                                 guint8     alpha);
+void
+cogl_material_set_color4ub (CoglHandle material,
+			    guint8     red,
+                            guint8     green,
+                            guint8     blue,
+                            guint8     alpha);
 
 /**
  * cogl_material_set_color4f:
@@ -200,11 +207,12 @@ void cogl_material_set_color4ub (CoglHandle material,
  *
  * Since: 1.0
  */
-void cogl_material_set_color4f (CoglHandle material,
-                                float      red,
-                                float      green,
-                                float      blue,
-                                float      alpha);
+void
+cogl_material_set_color4f (CoglHandle material,
+                           float      red,
+                           float      green,
+                           float      blue,
+                           float      alpha);
 
 /**
  * cogl_material_get_color:
@@ -215,8 +223,9 @@ void cogl_material_set_color4f (CoglHandle material,
  *
  * Since: 1.0
  */
-void cogl_material_get_color (CoglHandle  material,
-                              CoglColor  *color);
+void
+cogl_material_get_color (CoglHandle  material,
+                         CoglColor  *color);
 
 /**
  * cogl_material_set_ambient:
@@ -234,8 +243,9 @@ void cogl_material_get_color (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_ambient (CoglHandle       material,
-				const CoglColor *ambient);
+void
+cogl_material_set_ambient (CoglHandle       material,
+			   const CoglColor *ambient);
 
 /**
  * cogl_material_get_ambient:
@@ -246,8 +256,9 @@ void cogl_material_set_ambient (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_get_ambient (CoglHandle  material,
-                                CoglColor  *ambient);
+void
+cogl_material_get_ambient (CoglHandle  material,
+                           CoglColor  *ambient);
 
 /**
  * cogl_material_set_diffuse:
@@ -262,8 +273,9 @@ void cogl_material_get_ambient (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_diffuse (CoglHandle       material,
-				const CoglColor *diffuse);
+void
+cogl_material_set_diffuse (CoglHandle       material,
+			   const CoglColor *diffuse);
 
 /**
  * cogl_material_get_diffuse:
@@ -274,8 +286,9 @@ void cogl_material_set_diffuse (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_get_diffuse (CoglHandle  material,
-                                CoglColor  *diffuse);
+void
+cogl_material_get_diffuse (CoglHandle  material,
+                           CoglColor  *diffuse);
 
 /**
  * cogl_material_set_ambient_and_diffuse:
@@ -291,8 +304,9 @@ void cogl_material_get_diffuse (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_ambient_and_diffuse (CoglHandle       material,
-					    const CoglColor *color);
+void
+cogl_material_set_ambient_and_diffuse (CoglHandle       material,
+				       const CoglColor *color);
 
 /**
  * cogl_material_set_specular:
@@ -307,8 +321,9 @@ void cogl_material_set_ambient_and_diffuse (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_set_specular (CoglHandle       material,
-				 const CoglColor *specular);
+void
+cogl_material_set_specular (CoglHandle       material,
+			    const CoglColor *specular);
 
 /**
  * cogl_material_get_specular:
@@ -319,8 +334,9 @@ void cogl_material_set_specular (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_get_specular (CoglHandle  material,
-                                 CoglColor  *specular);
+void
+cogl_material_get_specular (CoglHandle  material,
+                            CoglColor  *specular);
 
 /**
  * cogl_material_set_shininess:
@@ -335,8 +351,10 @@ void cogl_material_get_specular (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_shininess (CoglHandle material,
-				  float      shininess);
+void
+cogl_material_set_shininess (CoglHandle material,
+			     float      shininess);
+
 /**
  * cogl_material_get_shininess:
  * @material: A CoglMaterial object
@@ -347,7 +365,8 @@ void cogl_material_set_shininess (CoglHandle material,
  *
  * Since: 1.0
  */
-float cogl_material_get_shininess (CoglHandle material);
+float
+cogl_material_get_shininess (CoglHandle material);
 
 /**
  * cogl_material_set_emission:
@@ -362,8 +381,9 @@ float cogl_material_get_shininess (CoglHandle material);
  *
  * Since: 1.0
  */
-void cogl_material_set_emission (CoglHandle       material,
-				 const CoglColor *emission);
+void
+cogl_material_set_emission (CoglHandle       material,
+			    const CoglColor *emission);
 
 /**
  * cogl_material_get_emission:
@@ -374,8 +394,9 @@ void cogl_material_set_emission (CoglHandle       material,
  *
  * Since: 1.0
  */
-void cogl_material_get_emission (CoglHandle material,
-                                 CoglColor *emission);
+void
+cogl_material_get_emission (CoglHandle material,
+                            CoglColor *emission);
 
 /**
  * CoglMaterialAlphaFunc:
@@ -427,9 +448,10 @@ typedef enum {
  *
  * Since: 1.0
  */
-void cogl_material_set_alpha_test_function (CoglHandle            material,
-					    CoglMaterialAlphaFunc alpha_func,
-					    float                 alpha_reference);
+void
+cogl_material_set_alpha_test_function (CoglHandle            material,
+				       CoglMaterialAlphaFunc alpha_func,
+				       float                 alpha_reference);
 
 /**
  * cogl_material_set_blend:
@@ -515,9 +537,10 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  *
  * Since: 1.0
  */
-gboolean cogl_material_set_blend (CoglHandle  material,
-                                  const char *blend_string,
-                                  GError    **error);
+gboolean
+cogl_material_set_blend (CoglHandle  material,
+                         const char *blend_string,
+                         GError    **error);
 
 /**
  * cogl_material_set_blend_constant:
@@ -529,8 +552,9 @@ gboolean cogl_material_set_blend (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_blend_constant (CoglHandle material,
-                                       CoglColor *constant_color);
+void
+cogl_material_set_blend_constant (CoglHandle material,
+                                  CoglColor *constant_color);
 
 /**
  * cogl_material_set_layer:
@@ -551,9 +575,10 @@ void cogl_material_set_blend_constant (CoglHandle material,
  *
  * Since: 1.0
  */
-void cogl_material_set_layer (CoglHandle material,
-			      int        layer_index,
-			      CoglHandle texture);
+void
+cogl_material_set_layer (CoglHandle material,
+			 int        layer_index,
+			 CoglHandle texture);
 
 /**
  * cogl_material_remove_layer:
@@ -562,8 +587,9 @@ void cogl_material_set_layer (CoglHandle material,
  *
  * This function removes a layer from your material
  */
-void cogl_material_remove_layer (CoglHandle material,
-				 gint       layer_index);
+void
+cogl_material_remove_layer (CoglHandle material,
+			    int        layer_index);
 
 
 /**
@@ -660,7 +686,7 @@ void cogl_material_remove_layer (CoglHandle material,
  */
 gboolean
 cogl_material_set_layer_combine (CoglHandle   material,
-				 gint         layer_index,
+				 int          layer_index,
 				 const char  *blend_string,
                                  GError     **error);
 
@@ -676,9 +702,10 @@ cogl_material_set_layer_combine (CoglHandle   material,
  *
  * Since: 1.0
  */
-void cogl_material_set_layer_combine_constant (CoglHandle  material,
-                                               int         layer_index,
-                                               CoglColor  *constant);
+void
+cogl_material_set_layer_combine_constant (CoglHandle  material,
+                                          int         layer_index,
+                                          CoglColor  *constant);
 
 /**
  * cogl_material_set_layer_matrix:
@@ -689,9 +716,10 @@ void cogl_material_set_layer_combine_constant (CoglHandle  material,
  * This function lets you set a matrix that can be used to e.g. translate
  * and rotate a single layer of a material used to fill your geometry.
  */
-void cogl_material_set_layer_matrix (CoglHandle  material,
-				     int         layer_index,
-				     CoglMatrix *matrix);
+void
+cogl_material_set_layer_matrix (CoglHandle  material,
+				int         layer_index,
+				CoglMatrix *matrix);
 
 /**
  * cogl_material_get_layers:
@@ -705,7 +733,8 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
  *   functions. The list is owned by COGL and it  should not be modified or
  *   freed
  */
-G_CONST_RETURN GList *cogl_material_get_layers (CoglHandle material);
+G_CONST_RETURN GList *
+cogl_material_get_layers (CoglHandle material);
 
 /**
  * cogl_material_get_n_layers:
@@ -717,7 +746,8 @@ G_CONST_RETURN GList *cogl_material_get_layers (CoglHandle material);
  *
  * Since: 1.0
  */
-int cogl_material_get_n_layers (CoglHandle material);
+int
+cogl_material_get_n_layers (CoglHandle material);
 
 /**
  * CoglMaterialLayerType:
@@ -747,7 +777,8 @@ typedef enum {
  *
  * Return value: the type of the layer
  */
-CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer);
+CoglMaterialLayerType
+cogl_material_layer_get_type (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_texture:
@@ -763,7 +794,8 @@ CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer);
  *
  * Return value: a #CoglHandle for the texture inside the layer
  */
-CoglHandle cogl_material_layer_get_texture (CoglHandle layer);
+CoglHandle
+cogl_material_layer_get_texture (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_min_filter:
@@ -773,7 +805,8 @@ CoglHandle cogl_material_layer_get_texture (CoglHandle layer);
  *
  * Return value: the current downscaling filter
  */
-CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer);
+CoglMaterialFilter
+cogl_material_layer_get_min_filter (CoglHandle layer);
 
 /**
  * cogl_material_layer_get_mag_filter:
@@ -783,7 +816,8 @@ CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer);
  *
  * Return value: the current downscaling filter
  */
-CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer);
+CoglMaterialFilter
+cogl_material_layer_get_mag_filter (CoglHandle layer);
 
 /**
  * cogl_material_set_layer_filters:
@@ -795,10 +829,11 @@ CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer);
  * Changes the decimation and interpolation filters used when a texture is
  * drawn at other scales than 100%.
  */
-void cogl_material_set_layer_filters (CoglHandle         material,
-                                      gint               layer_index,
-                                      CoglMaterialFilter min_filter,
-                                      CoglMaterialFilter mag_filter);
+void
+cogl_material_set_layer_filters (CoglHandle         material,
+                                 int                layer_index,
+                                 CoglMaterialFilter min_filter,
+                                 CoglMaterialFilter mag_filter);
 
 G_END_DECLS
 

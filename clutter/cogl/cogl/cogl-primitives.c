@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -250,7 +250,7 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
       float             *out_tex_coords;
       float              default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       gboolean           need_repeat = FALSE;
-      gint               coord_num;
+      int               coord_num;
       GLenum             wrap_mode;
 
       tex_handle = cogl_material_layer_get_texture (layer);
@@ -364,13 +364,13 @@ struct _CoglMutiTexturedRect
   float        x_2;
   float        y_2;
   const float *tex_coords;
-  gint             tex_coords_len;
+  int          tex_coords_len;
 };
 
 static void
 _cogl_rectangles_with_multitexture_coords (
                                         struct _CoglMutiTexturedRect *rects,
-                                        gint                          n_rects)
+                                        int                           n_rects)
 {
   CoglHandle	 material;
   const GList	*layers;
@@ -395,7 +395,7 @@ _cogl_rectangles_with_multitexture_coords (
     {
       CoglHandle     layer = tmp->data;
       CoglHandle     tex_handle;
-      gulong         flags;
+      unsigned long  flags;
 
       if (cogl_material_layer_get_type (layer)
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
@@ -542,7 +542,7 @@ _cogl_rectangles_with_multitexture_coords (
 
 void
 cogl_rectangles (const float *verts,
-                 guint        n_rects)
+                 unsigned int n_rects)
 {
   struct _CoglMutiTexturedRect *rects;
   int i;
@@ -564,7 +564,7 @@ cogl_rectangles (const float *verts,
 
 void
 cogl_rectangles_with_texture_coords (const float *verts,
-                                     guint        n_rects)
+                                     unsigned int n_rects)
 {
   struct _CoglMutiTexturedRect *rects;
   int i;
@@ -617,7 +617,7 @@ cogl_rectangle_with_multitexture_coords (float        x_1,
 			                 float        x_2,
 			                 float        y_2,
 			                 const float *user_tex_coords,
-                                         gint         user_tex_coords_len)
+                                         int          user_tex_coords_len)
 {
   struct _CoglMutiTexturedRect rect;
 
@@ -756,9 +756,9 @@ _cogl_texture_polygon_multiple_primitives (const CoglTextureVertex *vertices,
 
 static void
 _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
-                                             guint n_vertices,
-                                             guint n_layers,
-                                             guint stride,
+                                             unsigned int n_vertices,
+                                             unsigned int n_layers,
+                                             unsigned int stride,
                                              gboolean use_color,
                                              guint32 fallback_layers)
 {
@@ -835,7 +835,7 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
 
 void
 cogl_polygon (const CoglTextureVertex *vertices,
-              guint                    n_vertices,
+              unsigned int             n_vertices,
 	      gboolean                 use_color)
 {
   CoglHandle           material;
@@ -844,8 +844,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
   gboolean	       use_sliced_polygon_fallback = FALSE;
   guint32              fallback_layers = 0;
   int                  i;
-  gulong               enable_flags;
-  guint                stride;
+  unsigned long        enable_flags;
+  unsigned int         stride;
   gsize                stride_bytes;
   GLfloat             *v;
   int                  prev_n_texcoord_arrays_enabled;
@@ -1081,7 +1081,7 @@ _cogl_path_stroke_nodes (void)
                                            path_start);
 
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
-                           (guchar *) path
+                           (guint8 *) path
                            + G_STRUCT_OFFSET (CoglPathNode, x)) );
       GE( glDrawArrays (GL_LINE_STRIP, 0, path->path_size) );
 
@@ -1200,7 +1200,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   while (path_start < path_size)
     {
       GE (glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
-                           (guchar *) path
+                           (guint8 *) path
                            + G_STRUCT_OFFSET (CoglPathNode, x)));
       GE (glDrawArrays (GL_TRIANGLE_FAN, 0, path->path_size));
 
@@ -1273,7 +1273,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   cogl_handle_unref (prev_source);
 }
 
-static gint
+static int
 compare_ints (gconstpointer a,
               gconstpointer b)
 {
@@ -1359,7 +1359,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
               y - bounds_y < bounds_h &&
               lastline != y)
             {
-              gint x = prev_x + (dx * (y-prev_y)) / dy;
+              int x = prev_x + (dx * (y-prev_y)) / dy;
 
               scanlines[ y - bounds_y ]=
                 g_slist_insert_sorted (scanlines[ y - bounds_y],
@@ -1640,9 +1640,9 @@ cogl_path_line (float x_1,
 
 void
 cogl_path_polyline (float *coords,
-	            gint num_points)
+	            int num_points)
 {
-  gint c = 0;
+  int c = 0;
 
   cogl_path_move_to (coords[0], coords[1]);
 
@@ -1652,7 +1652,7 @@ cogl_path_polyline (float *coords,
 
 void
 cogl_path_polygon (float *coords,
-	           gint          num_points)
+	           int    num_points)
 {
   cogl_path_polyline (coords, num_points);
   cogl_path_close ();
@@ -1679,7 +1679,7 @@ _cogl_path_arc (float center_x,
                 float angle_1,
                 float angle_2,
                 float angle_step,
-                guint        move_first)
+                unsigned int move_first)
 {
   float a     = 0x0;
   float cosa  = 0x0;
@@ -1856,7 +1856,7 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
   floatVec2  c3;
   floatVec2  c4;
   floatVec2  c5;
-  gint           cindex;
+  int           cindex;
 
   /* Put first curve on stack */
   cubics[0] = *cubic;
@@ -2001,7 +2001,7 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
   floatVec2   c1;
   floatVec2   c2;
   floatVec2   c3;
-  gint            qindex;
+  int            qindex;
 
   /* Put first curve on stack */
   quads[0] = *quad;

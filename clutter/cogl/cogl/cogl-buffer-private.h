@@ -50,15 +50,15 @@ typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable
 {
-  guchar * (* map)          (CoglBuffer       *buffer,
+  guint8 * (* map)          (CoglBuffer       *buffer,
                              CoglBufferAccess  access);
 
   void     (* unmap)        (CoglBuffer *buffer);
 
   gboolean (* set_data)     (CoglBuffer   *buffer,
-                             guint         offset,
-                             const guchar *data,
-                             guint         size);
+                             unsigned int  offset,
+                             const guint8 *data,
+                             unsigned int  size);
 };
 
 typedef enum _CoglBufferFlags
@@ -76,18 +76,18 @@ struct _CoglBuffer
   CoglBufferFlags         flags;
 
   GLuint                  gl_handle;  /* OpenGL handle */
-  guint                   size;       /* size of the buffer, in bytes */
+  unsigned int            size;       /* size of the buffer, in bytes */
   CoglBufferUsageHint     usage_hint;
   CoglBufferUpdateHint    update_hint;
 
-  guchar                 *data;      /* points to the mapped memory when
+  guint8                 *data;      /* points to the mapped memory when
                                       * the CoglBuffer is a VBO, PBO, ... or
                                       * points to allocated memory in the
                                       * fallback paths */
 };
 
 void    _cogl_buffer_initialize         (CoglBuffer          *buffer,
-                                         guint                size,
+                                         unsigned int         size,
                                          CoglBufferUsageHint  usage_hint,
                                          CoglBufferUpdateHint update_hint);
 void    _cogl_buffer_fini               (CoglBuffer *buffer);

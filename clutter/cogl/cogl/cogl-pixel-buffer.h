@@ -50,7 +50,7 @@ G_BEGIN_DECLS
  * Stability: Unstable
  */
 CoglHandle
-cogl_pixel_buffer_new (guint size);
+cogl_pixel_buffer_new (unsigned int size);
 
 /**
  * cogl_pixel_buffer_new_for_size:
@@ -75,10 +75,10 @@ cogl_pixel_buffer_new (guint size);
  * Stability: Unstable
  */
 CoglHandle
-cogl_pixel_buffer_new_for_size (guint            width,
-                                guint            height,
+cogl_pixel_buffer_new_for_size (unsigned int     width,
+                                unsigned int     height,
                                 CoglPixelFormat  format,
-                                guint           *stride);
+                                unsigned int    *stride);
 
 /**
  * cogl_is_pixel_buffer:
@@ -117,13 +117,13 @@ cogl_is_pixel_buffer (CoglHandle handle);
  */
 #if 0
 gboolean
-cogl_pixel_buffer_set_region (CoglHandle  buffer,
-                              guchar     *data,
-                              guint       src_width,
-                              guint       src_height,
-                              guint       src_rowstride,
-                              guint       dst_x,
-                              guint       dst_y);
+cogl_pixel_buffer_set_region (CoglHandle    buffer,
+                              guint8       *data,
+                              unsigned int  src_width,
+                              unsigned int  src_height,
+                              unsigned int  src_rowstride,
+                              unsigned int  dst_x,
+                              unsigned int  dst_y);
 #endif
 
 /* the functions above are experimental, the actual symbols are suffixed by
@@ -132,25 +132,25 @@ cogl_pixel_buffer_set_region (CoglHandle  buffer,
  * above into the real symbols */
 
 CoglHandle
-cogl_pixel_buffer_new_EXP (guint size);
+cogl_pixel_buffer_new_EXP (unsigned int size);
 
 CoglHandle
-cogl_pixel_buffer_new_for_size_EXP (guint            width,
-                                    guint            height,
-                                    CoglPixelFormat  format,
-                                    guint           *stride);
+cogl_pixel_buffer_new_for_size_EXP (unsigned int    width,
+                                    unsigned int    height,
+                                    CoglPixelFormat format,
+                                    unsigned int   *stride);
 gboolean
 cogl_is_pixel_buffer_EXP (CoglHandle handle);
 
 #if 0
 gboolean
-cogl_pixel_buffer_set_region_EXP (CoglHandle  buffer,
-                                  guchar     *data,
-                                  guint       src_width,
-                                  guint       src_height,
-                                  guint       src_rowstride,
-                                  guint       dst_x,
-                                  guint       dst_y);
+cogl_pixel_buffer_set_region_EXP (CoglHandle   buffer,
+                                  guint8      *data,
+                                  unsigned int src_width,
+                                  unsigned int src_height,
+                                  unsigned int src_rowstride,
+                                  unsigned int dst_x,
+                                  unsigned int dst_y);
 #endif
 
 #define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP

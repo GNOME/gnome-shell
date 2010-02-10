@@ -76,12 +76,15 @@
 
 #endif
 
-static void _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
+static void
+_cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
 #if !defined (COGL_HAS_GLES)
-static const CoglBufferVtable cogl_pixel_buffer_vtable;
+static const CoglBufferVtable
+cogl_pixel_buffer_vtable;
 #endif
-static const CoglBufferVtable cogl_malloc_pixel_buffer_vtable;
+static const CoglBufferVtable
+cogl_malloc_pixel_buffer_vtable;
 
 /* we don't want to use the stock COGL_HANDLE_DEFINE * for 2 reasons:
  *   - it defines already deprecated symbols
@@ -138,7 +141,7 @@ cogl_is_##type_name##_EXP (CoglHandle handle)		        \
 COGL_HANDLE_DEFINE_EXP(PixelBuffer, pixel_buffer)
 
 CoglHandle
-cogl_pixel_buffer_new_EXP (guint size)
+cogl_pixel_buffer_new_EXP (unsigned int size)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
@@ -179,14 +182,14 @@ cogl_pixel_buffer_new_EXP (guint size)
 }
 
 CoglHandle
-cogl_pixel_buffer_new_for_size_EXP (guint            width,
-                                    guint            height,
-                                    CoglPixelFormat  format,
-                                    guint           *rowstride)
+cogl_pixel_buffer_new_for_size_EXP (unsigned int    width,
+                                    unsigned int    height,
+                                    CoglPixelFormat format,
+                                    unsigned int   *rowstride)
 {
   CoglHandle buffer;
   CoglPixelBuffer *pixel_buffer;
-  guint stride;
+  unsigned int stride;
 
   /* creating a buffer to store "any" format does not make sense */
   if (G_UNLIKELY (format == COGL_PIXEL_FORMAT_ANY))
@@ -225,13 +228,13 @@ _cogl_pixel_buffer_free (CoglPixelBuffer *buffer)
 }
 
 #if !defined (COGL_HAS_GLES)
-static guchar *
+static guint8 *
 _cogl_pixel_buffer_map (CoglBuffer       *buffer,
                         CoglBufferAccess  access)
 {
   CoglPixelBuffer *pixel_buffer = COGL_PIXEL_BUFFER (buffer);
   GLenum gl_target;
-  guchar *data;
+  guint8 *data;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -281,9 +284,9 @@ _cogl_pixel_buffer_unmap (CoglBuffer *buffer)
 
 static gboolean
 _cogl_pixel_buffer_set_data (CoglBuffer   *buffer,
-                             guint         offset,
-                             const guchar *data,
-                             guint         size)
+                             unsigned int  offset,
+                             const guint8 *data,
+                             unsigned int  size)
 {
   CoglPixelBuffer *pixel_buffer = COGL_PIXEL_BUFFER (buffer);
 
@@ -315,13 +318,13 @@ _cogl_pixel_buffer_set_data (CoglBuffer   *buffer,
 
 #if 0
 gboolean
-cogl_pixel_buffer_set_region_EXP (CoglHandle  buffer,
-                                  guchar     *data,
-                                  guint       src_width,
-                                  guint       src_height,
-                                  guint       src_rowstride,
-                                  guint       dst_x,
-                                  guint       dst_y)
+cogl_pixel_buffer_set_region_EXP (CoglHandle   buffer,
+                                  guint8      *data,
+                                  unsigned int src_width,
+                                  unsigned int src_height,
+                                  unsigned int src_rowstride,
+                                  unsigned int dst_x,
+                                  unsigned int dst_y)
 {
   if (!cogl_is_pixel_buffer (buffer))
     return FALSE;
@@ -342,7 +345,7 @@ static const CoglBufferVtable cogl_pixel_buffer_vtable =
  * Fallback path, buffer->data points to a malloc'ed buffer.
  */
 
-static guchar *
+static guint8 *
 _cogl_malloc_pixel_buffer_map (CoglBuffer       *buffer,
                                CoglBufferAccess  access)
 {
@@ -358,9 +361,9 @@ _cogl_malloc_pixel_buffer_unmap (CoglBuffer *buffer)
 
 static gboolean
 _cogl_malloc_pixel_buffer_set_data (CoglBuffer   *buffer,
-                                    guint         offset,
-                                    const guchar *data,
-                                    guint         size)
+                                    unsigned int  offset,
+                                    const guint8 *data,
+                                    unsigned int  size)
 {
   memcpy (buffer->data + offset, data, size);
   return TRUE;

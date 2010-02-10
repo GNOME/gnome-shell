@@ -60,23 +60,23 @@ typedef enum _CoglMaterialLayerPrivFlags
 /* For tracking the state of a layer that's been flushed to OpenGL */
 typedef struct _CoglLayerInfo
 {
-  CoglHandle  handle;
-  gulong      flags;
-  GLenum      gl_target;
-  GLuint      gl_texture;
-  gboolean    fallback;
-  gboolean    disabled;
-  gboolean    layer0_overridden;
+  CoglHandle    handle;
+  unsigned long flags;
+  GLenum        gl_target;
+  GLuint        gl_texture;
+  gboolean      fallback;
+  gboolean      disabled;
+  gboolean      layer0_overridden;
 } CoglLayerInfo;
 
 struct _CoglMaterialLayer
 {
   CoglHandleObject _parent;
-  guint	       index;	/*!< lowest index is blended first then others
-			     on top */
-  gulong       flags;
-  CoglHandle   texture;	/*!< The texture for this layer, or COGL_INVALID_HANDLE
-			     for an empty layer */
+  unsigned int	   index;   /*!< lowest index is blended first then others on
+                              top */
+  unsigned long    flags;
+  CoglHandle       texture; /*!< The texture for this layer, or
+                              COGL_INVALID_HANDLE for an empty layer */
 
   CoglMaterialFilter mag_filter;
   CoglMaterialFilter min_filter;
@@ -112,9 +112,9 @@ typedef enum _CoglMaterialFlags
 struct _CoglMaterial
 {
   CoglHandleObject _parent;
-  gulong           journal_ref_count;
+  unsigned long    journal_ref_count;
 
-  gulong    flags;
+  unsigned long    flags;
 
   /* If no lighting is enabled; this is the basic material color */
   GLubyte   unlit[4];
@@ -141,8 +141,8 @@ struct _CoglMaterial
   GLint blend_src_factor_rgb;
   GLint blend_dst_factor_rgb;
 
-  GList	   *layers;
-  guint     n_layers;
+  GList	       *layers;
+  unsigned int  n_layers;
 };
 
 /*
@@ -179,7 +179,8 @@ _cogl_material_init_default_material (void);
  * will be replaced.
  */
 /* TODO: find a nicer solution! */
-gulong _cogl_material_get_cogl_enable_flags (CoglHandle handle);
+unsigned long
+_cogl_material_get_cogl_enable_flags (CoglHandle handle);
 
 /*
  * CoglMaterialLayerFlags:
@@ -202,13 +203,15 @@ typedef enum _CoglMaterialLayerFlags
  * internally, but if you are developing custom primitives directly with
  * OpenGL you may need this.
  */
-gulong _cogl_material_layer_get_flags (CoglHandle layer_handle);
+unsigned long
+_cogl_material_layer_get_flags (CoglHandle layer_handle);
 
 /*
  * Ensures the mipmaps are available for the texture in the layer if
  * the filter settings would require it
  */
-void _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handler);
+void
+_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handler);
 
 /*
  * CoglMaterialFlushFlag:
@@ -251,19 +254,25 @@ typedef struct _CoglMaterialFlushOptions
 
 
 
-void _cogl_material_get_colorubv (CoglHandle  handle,
-                                  guint8     *color);
+void
+_cogl_material_get_colorubv (CoglHandle  handle,
+                             guint8     *color);
 
-void _cogl_material_flush_gl_state (CoglHandle material,
-                                    CoglMaterialFlushOptions *options);
+void
+_cogl_material_flush_gl_state (CoglHandle material,
+                               CoglMaterialFlushOptions *options);
 
-gboolean _cogl_material_equal (CoglHandle material0_handle,
-                               CoglMaterialFlushOptions *material0_flush_options,
-                               CoglHandle material1_handle,
-                               CoglMaterialFlushOptions *material1_flush_options);
+gboolean
+_cogl_material_equal (CoglHandle material0_handle,
+                      CoglMaterialFlushOptions *material0_flush_options,
+                      CoglHandle material1_handle,
+                      CoglMaterialFlushOptions *material1_flush_options);
 
-CoglHandle _cogl_material_journal_ref (CoglHandle material_handle);
-void _cogl_material_journal_unref (CoglHandle material_handle);
+CoglHandle
+_cogl_material_journal_ref (CoglHandle material_handle);
+
+void
+_cogl_material_journal_unref (CoglHandle material_handle);
 
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */

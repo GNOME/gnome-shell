@@ -92,8 +92,8 @@ typedef struct _CoglAtlasTextureBlitData
      complete texture data in */
   unsigned char *image_data;
   CoglPixelFormat format;
-  gint bpp;
-  guint src_height, src_width;
+  int bpp;
+  unsigned int src_height, src_width;
 
   GLenum dst_gl_target;
 } CoglAtlasTextureBlitData;
@@ -169,12 +169,12 @@ _cogl_atlas_texture_blit_begin (CoglAtlasTextureBlitData *data,
 
 static void
 _cogl_atlas_texture_blit (CoglAtlasTextureBlitData *data,
-                          guint src_x,
-                          guint src_y,
-                          guint dst_x,
-                          guint dst_y,
-                          guint width,
-                          guint height)
+                          unsigned int src_x,
+                          unsigned int src_y,
+                          unsigned int dst_x,
+                          unsigned int dst_y,
+                          unsigned int width,
+                          unsigned int height)
 {
   /* If we have an FBO then we can do a fast blit */
   if (data->fbo)
@@ -269,7 +269,7 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
   cogl_handle_unref (atlas_tex->sub_texture);
 }
 
-static gint
+static int
 _cogl_atlas_texture_get_max_waste (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
@@ -506,7 +506,7 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
      pixels to the border */
   if (atlas_tex->in_atlas)
     {
-      gint             bpp;
+      int              bpp;
       CoglBitmap       source_bmp;
       CoglBitmap       tmp_bmp;
       gboolean         tmp_bmp_owner = FALSE;
@@ -524,7 +524,7 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
       source_bmp.width = width;
       source_bmp.height = height;
       source_bmp.format = format;
-      source_bmp.data = (guchar*) data;
+      source_bmp.data = (guint8 *)data;
 
       /* Rowstride from width if none specified */
       bpp = _cogl_get_format_bpp (format);
@@ -604,7 +604,7 @@ _cogl_atlas_texture_get_gl_format (CoglTexture *tex)
   return _cogl_texture_get_gl_format (atlas_tex->sub_texture);
 }
 
-static gint
+static int
 _cogl_atlas_texture_get_width (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
@@ -613,7 +613,7 @@ _cogl_atlas_texture_get_width (CoglTexture *tex)
   return cogl_texture_get_width (atlas_tex->sub_texture);
 }
 
-static gint
+static int
 _cogl_atlas_texture_get_height (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
@@ -644,13 +644,13 @@ typedef struct _CoglAtlasTextureRepositionData
 } CoglAtlasTextureRepositionData;
 
 static void
-_cogl_atlas_texture_migrate (guint                           n_textures,
+_cogl_atlas_texture_migrate (unsigned int                    n_textures,
                              CoglAtlasTextureRepositionData *textures,
                              CoglHandle                      old_texture,
                              CoglHandle                      new_texture,
                              CoglAtlasTexture               *skip_texture)
 {
-  guint i;
+  unsigned int i;
   CoglAtlasTextureBlitData blit_data;
 
   _cogl_atlas_texture_blit_begin (&blit_data, new_texture, old_texture);
@@ -686,7 +686,7 @@ typedef struct _CoglAtlasTextureGetRectanglesData
 {
   CoglAtlasTextureRepositionData *textures;
   /* Number of textures found so far */
-  guint n_textures;
+  unsigned int n_textures;
 } CoglAtlasTextureGetRectanglesData;
 
 static void
@@ -700,8 +700,8 @@ _cogl_atlas_texture_get_rectangles_cb (const CoglAtlasRectangle *rectangle,
 }
 
 static void
-_cogl_atlas_texture_get_next_size (guint *atlas_width,
-                                   guint *atlas_height)
+_cogl_atlas_texture_get_next_size (unsigned int *atlas_width,
+                                   unsigned int *atlas_height)
 {
   /* Double the size of the texture by increasing whichever dimension
      is smaller */
@@ -712,9 +712,9 @@ _cogl_atlas_texture_get_next_size (guint *atlas_width,
 }
 
 static CoglAtlas *
-_cogl_atlas_texture_create_atlas (guint                           atlas_width,
-                                  guint                           atlas_height,
-                                  guint                           n_textures,
+_cogl_atlas_texture_create_atlas (unsigned int                    atlas_width,
+                                  unsigned int                    atlas_height,
+                                  unsigned int                    n_textures,
                                   CoglAtlasTextureRepositionData *textures)
 {
   GLint max_texture_size = 1024;
@@ -731,7 +731,7 @@ _cogl_atlas_texture_create_atlas (guint                           atlas_width,
   while (atlas_width < max_texture_size && atlas_height < max_texture_size)
     {
       CoglAtlas *new_atlas = _cogl_atlas_new (atlas_width, atlas_height, NULL);
-      guint i;
+      unsigned int i;
 
       /* Add all of the textures and keep track of the new position */
       for (i = 0; i < n_textures; i++)
@@ -763,7 +763,7 @@ _cogl_atlas_texture_compare_size_cb (const void *a,
 {
   const CoglAtlasTextureRepositionData *ta = a;
   const CoglAtlasTextureRepositionData *tb = b;
-  guint a_size, b_size;
+  unsigned int a_size, b_size;
 
   a_size = ta->texture->rectangle.width * ta->texture->rectangle.height;
   b_size = tb->texture->rectangle.width * tb->texture->rectangle.height;
@@ -773,13 +773,13 @@ _cogl_atlas_texture_compare_size_cb (const void *a,
 
 static gboolean
 _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
-                                   guint                width,
-                                   guint                height)
+                                   unsigned int         width,
+                                   unsigned int         height)
 {
   CoglAtlasTextureGetRectanglesData data;
   CoglAtlas *new_atlas;
   CoglHandle new_tex;
-  guint atlas_width, atlas_height;
+  unsigned int atlas_width, atlas_height;
   gboolean ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);

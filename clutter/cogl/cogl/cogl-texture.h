@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -59,10 +59,11 @@ G_BEGIN_DECLS
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_with_size    (guint            width,
-                                               guint            height,
-                                               CoglTextureFlags flags,
-                                               CoglPixelFormat  internal_format);
+CoglHandle
+cogl_texture_new_with_size (unsigned int width,
+                            unsigned int height,
+                            CoglTextureFlags flags,
+                            CoglPixelFormat internal_format);
 
 /**
  * cogl_texture_new_from_file:
@@ -85,10 +86,11 @@ CoglHandle      cogl_texture_new_with_size    (guint            width,
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
-                                               CoglTextureFlags   flags,
-                                               CoglPixelFormat    internal_format,
-                                               GError           **error);
+CoglHandle
+cogl_texture_new_from_file (const char       *filename,
+                            CoglTextureFlags   flags,
+                            CoglPixelFormat    internal_format,
+                            GError           **error);
 
 /**
  * cogl_texture_new_from_data:
@@ -115,13 +117,14 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_data    (guint             width,
-                                               guint             height,
-                                               CoglTextureFlags  flags,
-                                               CoglPixelFormat   format,
-                                               CoglPixelFormat   internal_format,
-                                               guint             rowstride,
-                                               const guchar     *data);
+CoglHandle
+cogl_texture_new_from_data (unsigned int      width,
+                            unsigned int      height,
+                            CoglTextureFlags  flags,
+                            CoglPixelFormat   format,
+                            CoglPixelFormat   internal_format,
+                            unsigned int      rowstride,
+                            const guint8     *data);
 
 /**
  * cogl_texture_new_from_foreign:
@@ -142,13 +145,14 @@ CoglHandle      cogl_texture_new_from_data    (guint             width,
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_foreign (GLuint          gl_handle,
-                                               GLenum          gl_target,
-                                               GLuint          width,
-                                               GLuint          height,
-                                               GLuint          x_pot_waste,
-                                               GLuint          y_pot_waste,
-                                               CoglPixelFormat format);
+CoglHandle
+cogl_texture_new_from_foreign (GLuint          gl_handle,
+                               GLenum          gl_target,
+                               GLuint          width,
+                               GLuint          height,
+                               GLuint          x_pot_waste,
+                               GLuint          y_pot_waste,
+                               CoglPixelFormat format);
 
 /**
  * cogl_texture_new_from_bitmap:
@@ -164,9 +168,10 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint          gl_handle,
  *
  * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
-                                              CoglTextureFlags flags,
-                                              CoglPixelFormat  internal_format);
+CoglHandle
+cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
+                              CoglTextureFlags flags,
+                              CoglPixelFormat  internal_format);
 
 /**
  * cogl_is_texture:
@@ -177,7 +182,8 @@ CoglHandle      cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
  * Return value: %TRUE if the handle references a texture, and
  *   %FALSE otherwise
  */
-gboolean        cogl_is_texture               (CoglHandle          handle);
+gboolean
+cogl_is_texture (CoglHandle handle);
 
 /**
  * cogl_texture_get_width:
@@ -187,7 +193,8 @@ gboolean        cogl_is_texture               (CoglHandle          handle);
  *
  * Return value: the width of the GPU side texture in pixels
  */
-guint           cogl_texture_get_width        (CoglHandle          handle);
+unsigned int
+cogl_texture_get_width (CoglHandle handle);
 
 /**
  * cogl_texture_get_height:
@@ -197,7 +204,8 @@ guint           cogl_texture_get_width        (CoglHandle          handle);
  *
  * Return value: the height of the GPU side texture in pixels
  */
-guint           cogl_texture_get_height       (CoglHandle          handle);
+unsigned int
+cogl_texture_get_height (CoglHandle handle);
 
 /**
  * cogl_texture_get_format:
@@ -207,7 +215,8 @@ guint           cogl_texture_get_height       (CoglHandle          handle);
  *
  * Return value: the #CoglPixelFormat of the GPU side texture
  */
-CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
+CoglPixelFormat
+cogl_texture_get_format (CoglHandle handle);
 
 
 /**
@@ -218,7 +227,8 @@ CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
  *
  * Return value: the offset in bytes between each consequetive row of pixels
  */
-guint           cogl_texture_get_rowstride    (CoglHandle          handle);
+unsigned int
+cogl_texture_get_rowstride (CoglHandle handle);
 
 /**
  * cogl_texture_get_max_waste:
@@ -229,7 +239,8 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
  *
  * Return value: the maximum waste
  */
-gint            cogl_texture_get_max_waste    (CoglHandle          handle);
+int
+cogl_texture_get_max_waste (CoglHandle handle);
 
 /**
  * cogl_texture_is_sliced:
@@ -241,7 +252,8 @@ gint            cogl_texture_get_max_waste    (CoglHandle          handle);
  * Return value: %TRUE if the texture is sliced, %FALSE if the texture
  *   is stored as a single GPU texture
  */
-gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
+gboolean
+cogl_texture_is_sliced (CoglHandle handle);
 
 /**
  * cogl_texture_get_gl_texture:
@@ -259,9 +271,10 @@ gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
  * Return value: %TRUE if the handle was successfully retrieved, %FALSE
  *   if the handle was invalid
  */
-gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
-                                               GLuint            *out_gl_handle,
-                                               GLenum            *out_gl_target);
+gboolean
+cogl_texture_get_gl_texture (CoglHandle   handle,
+                             GLuint      *out_gl_handle,
+                             GLenum      *out_gl_target);
 
 /**
  * cogl_texture_get_data:
@@ -277,10 +290,11 @@ gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
  * Return value: the size of the texture data in bytes, or 0 if the texture
  *   is not valid
  */
-gint            cogl_texture_get_data         (CoglHandle          handle,
-                                               CoglPixelFormat     format,
-                                               guint               rowstride,
-                                               guchar             *data);
+int
+cogl_texture_get_data (CoglHandle       handle,
+                       CoglPixelFormat  format,
+                       unsigned int     rowstride,
+                       guint8          *data);
 
 /**
  * cogl_texture_set_region:
@@ -304,18 +318,19 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
  * Return value: %TRUE if the subregion upload was successful, and
  *   %FALSE otherwise
  */
-gboolean        cogl_texture_set_region       (CoglHandle          handle,
-                                               gint                src_x,
-                                               gint                src_y,
-                                               gint                dst_x,
-                                               gint                dst_y,
-                                               guint               dst_width,
-                                               guint               dst_height,
-                                               gint                width,
-                                               gint                height,
-                                               CoglPixelFormat     format,
-                                               guint               rowstride,
-                                               const guchar       *data);
+gboolean
+cogl_texture_set_region (CoglHandle       handle,
+                         int              src_x,
+                         int              src_y,
+                         int              dst_x,
+                         int              dst_y,
+                         unsigned int     dst_width,
+                         unsigned int     dst_height,
+                         int              width,
+                         int              height,
+                         CoglPixelFormat  format,
+                         unsigned int     rowstride,
+                         const guint8    *data);
 
 /**
  * cogl_texture_new_from_sub_texture:
@@ -337,12 +352,12 @@ gboolean        cogl_texture_set_region       (CoglHandle          handle,
  *
  * Since: 1.2
  */
-CoglHandle      cogl_texture_new_from_sub_texture
-                                              (CoglHandle full_texture,
-                                               gint       sub_x,
-                                               gint       sub_y,
-                                               gint       sub_width,
-                                               gint       sub_height);
+CoglHandle
+cogl_texture_new_from_sub_texture (CoglHandle full_texture,
+                                   int        sub_x,
+                                   int        sub_y,
+                                   int        sub_width,
+                                   int        sub_height);
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
@@ -376,29 +391,30 @@ CoglHandle      cogl_texture_new_from_sub_texture
  * Since: 1.2
  * Stability: Unstable
  */
-CoglHandle      cogl_texture_new_from_buffer  (CoglHandle       buffer,
-                                               guint            width,
-                                               guint            height,
-                                               CoglTextureFlags flags,
-                                               CoglPixelFormat  format,
-                                               CoglPixelFormat  internal_format,
-                                               guint            rowstride,
-                                               guint            offset);
+CoglHandle
+cogl_texture_new_from_buffer  (CoglHandle       buffer,
+                               unsigned int     width,
+                               unsigned int     height,
+                               CoglTextureFlags flags,
+                               CoglPixelFormat  format,
+                               CoglPixelFormat  internal_format,
+                               unsigned int     rowstride,
+                               unsigned int     offset);
 
 /* the function above is experimental, the actual symbol is suffixed by _EXP so
  * we can ensure ABI compatibility and leave the cogl_buffer namespace free for
  * future use. A bunch of defines translates the symbols documented above into
  * the real symbols */
 
-CoglHandle      cogl_texture_new_from_buffer_EXP
-                                              (CoglHandle       buffer,
-                                               guint            width,
-                                               guint            height,
-                                               CoglTextureFlags flags,
-                                               CoglPixelFormat  format,
-                                               CoglPixelFormat  internal_format,
-                                               guint            rowstride,
-                                               guint            offset);
+CoglHandle
+cogl_texture_new_from_buffer_EXP (CoglHandle       buffer,
+                                  unsigned int     width,
+                                  unsigned int     height,
+                                  CoglTextureFlags flags,
+                                  CoglPixelFormat  format,
+                                  CoglPixelFormat  internal_format,
+                                  unsigned int     rowstride,
+                                  unsigned int     offset);
 
 #define cogl_texture_new_from_buffer cogl_texture_new_from_buffer_EXP
 
@@ -416,7 +432,8 @@ CoglHandle      cogl_texture_new_from_buffer_EXP
  *
  * Return value: the @handle.
  */
-CoglHandle      cogl_texture_ref              (CoglHandle          handle);
+CoglHandle
+cogl_texture_ref (CoglHandle handle);
 
 /**
  * cogl_texture_unref:
@@ -426,7 +443,8 @@ CoglHandle      cogl_texture_ref              (CoglHandle          handle);
  *
  * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
-void            cogl_texture_unref            (CoglHandle          handle);
+void
+cogl_texture_unref (CoglHandle handle);
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -447,14 +465,15 @@ void            cogl_texture_unref            (CoglHandle          handle);
  *
  * Since: 1.0
  */
-void cogl_rectangle_with_texture_coords (float  x1,
-                                         float  y1,
-                                         float  x2,
-                                         float  y2,
-                                         float  tx1,
-                                         float  ty1,
-                                         float  tx2,
-                                         float  ty2);
+void
+cogl_rectangle_with_texture_coords (float  x1,
+                                    float  y1,
+                                    float  x2,
+                                    float  y2,
+                                    float  tx1,
+                                    float  ty1,
+                                    float  tx2,
+                                    float  ty2);
 
 /**
  * cogl_rectangle_with_multitexture_coords:
@@ -483,12 +502,13 @@ void cogl_rectangle_with_texture_coords (float  x1,
  *
  * Since: 1.0
  */
-void cogl_rectangle_with_multitexture_coords (float        x1,
-                                              float        y1,
-                                              float        x2,
-                                              float        y2,
-                                              const float *tex_coords,
-                                              gint         tex_coords_len);
+void
+cogl_rectangle_with_multitexture_coords (float        x1,
+                                         float        y1,
+                                         float        x2,
+                                         float        y2,
+                                         const float *tex_coords,
+                                         int         tex_coords_len);
 
 /**
  * cogl_rectangles_with_texture_coords:
@@ -507,8 +527,9 @@ void cogl_rectangle_with_multitexture_coords (float        x1,
  *
  * Since: 0.8.6
  */
-void  cogl_rectangles_with_texture_coords (const float *verts,
-                                           guint        n_rects);
+void
+cogl_rectangles_with_texture_coords (const float *verts,
+                                     unsigned int n_rects);
 
 /**
  * cogl_rectangles:
@@ -527,9 +548,9 @@ void  cogl_rectangles_with_texture_coords (const float *verts,
  *
  * Since: 1.0
  */
-void cogl_rectangles (const float *verts,
-                      guint        n_rects);
-
+void
+cogl_rectangles (const float *verts,
+                 unsigned int n_rects);
 
 /**
  * cogl_polygon:
@@ -555,9 +576,10 @@ void cogl_rectangles (const float *verts,
  *
  * Since: 1.0
  */
-void cogl_polygon (const CoglTextureVertex  *vertices,
-                   guint                     n_vertices,
-                   gboolean                  use_color);
+void
+cogl_polygon (const CoglTextureVertex  *vertices,
+              unsigned int              n_vertices,
+              gboolean                  use_color);
 
 G_END_DECLS
 

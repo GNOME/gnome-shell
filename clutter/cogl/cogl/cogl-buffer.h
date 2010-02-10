@@ -70,7 +70,7 @@ cogl_is_buffer (CoglHandle handle);
  * Since: 1.2
  * Stability: Unstable
  */
-guint
+unsigned int
 cogl_buffer_get_size (CoglHandle handle);
 
 /**
@@ -85,7 +85,7 @@ cogl_buffer_get_size (CoglHandle handle);
  * Stability: Unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
- COGL_BUFFER_USAGE_HINT_TEXTURE,
+  COGL_BUFFER_USAGE_HINT_TEXTURE,
 } CoglBufferUsageHint;
 
 /**
@@ -148,7 +148,7 @@ typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
  * Stability: Unstable
  */
 void
-cogl_buffer_set_update_hint (CoglHandle          handle,
+cogl_buffer_set_update_hint (CoglHandle           handle,
                              CoglBufferUpdateHint hint);
 
 /**
@@ -196,7 +196,7 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * Since: 1.2
  * Stability: Unstable
  */
-guchar *
+guint8 *
 cogl_buffer_map (CoglHandle       handle,
                  CoglBufferAccess access);
 
@@ -230,9 +230,9 @@ cogl_buffer_unmap (CoglHandle handle);
  */
 gboolean
 cogl_buffer_set_data (CoglHandle    handle,
-                      gsize         offset,
-                      const guchar *data,
-                      gsize         size);
+                      gsize        offset,
+                      const guint8 *data,
+                      gsize        size);
 
 /* the functions above are experimental, the actual symbols are suffixed by
  * _EXP so we can ensure ABI compatibility and leave the cogl_buffer namespace
@@ -242,7 +242,7 @@ cogl_buffer_set_data (CoglHandle    handle,
 gboolean
 cogl_is_buffer_EXP (CoglHandle handle);
 
-guint
+unsigned int
 cogl_buffer_get_size_EXP (CoglHandle handle);
 
 void
@@ -253,13 +253,13 @@ CoglBufferUsageHint
 cogl_buffer_get_usage_hint_EXP (CoglHandle handle);
 
 void
-cogl_buffer_set_update_hint_EXP (CoglHandle          handle,
+cogl_buffer_set_update_hint_EXP (CoglHandle           handle,
                                  CoglBufferUpdateHint hint);
 
 CoglBufferUpdateHint
 cogl_buffer_get_update_hint_EXP (CoglHandle handle);
 
-guchar *
+guint8 *
 cogl_buffer_map_EXP (CoglHandle       handle,
                      CoglBufferAccess access);
 
@@ -268,9 +268,9 @@ cogl_buffer_unmap_EXP (CoglHandle handle);
 
 gboolean
 cogl_buffer_set_data_EXP (CoglHandle    handle,
-                          gsize         offset,
-                          const guchar *data,
-                          gsize         size);
+                          gsize        offset,
+                          const guint8 *data,
+                          gsize        size);
 
 #define cogl_is_buffer  cogl_is_buffer_EXP
 #define cogl_buffer_get_size cogl_buffer_get_size_EXP

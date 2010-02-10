@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,11 +48,11 @@ typedef struct _CoglBoxedValue
   gboolean transpose;
 
   union {
-    gfloat float_value[4];
-    gint int_value[4];
-    gfloat matrix[16];
-    gfloat *float_array;
-    gint *int_array;
+    float float_value[4];
+    int int_value[4];
+    float matrix[16];
+    float *float_array;
+    int *int_array;
     gpointer array;
   } v;
 } CoglBoxedValue;
@@ -60,7 +60,8 @@ typedef struct _CoglBoxedValue
 
 #ifdef COGL_GL_DEBUG
 
-const gchar *cogl_gl_error_to_string (GLenum error_code);
+const char *
+cogl_gl_error_to_string (GLenum error_code);
 
 #define GE(x)                           G_STMT_START {  \
   GLenum __err;                                         \
@@ -97,12 +98,17 @@ const gchar *cogl_gl_error_to_string (GLenum error_code);
 #define COGL_ENABLE_COLOR_ARRAY       (1<<4)
 #define COGL_ENABLE_BACKFACE_CULLING  (1<<5)
 
-void    _cogl_features_init (void);
+void
+_cogl_features_init (void);
 
-gint    _cogl_get_format_bpp (CoglPixelFormat format);
+int
+_cogl_get_format_bpp (CoglPixelFormat format);
 
-void    cogl_enable (gulong flags);
-gulong  cogl_get_enable (void);
+void
+cogl_enable (gulong flags);
+
+unsigned long
+cogl_get_enable (void);
 
 typedef struct _CoglTextureUnit
 {
@@ -112,9 +118,11 @@ typedef struct _CoglTextureUnit
 
 CoglTextureUnit *
 _cogl_get_texture_unit (int index_);
+
 void
 _cogl_destroy_texture_units (void);
-guint
+
+unsigned int
 _cogl_get_max_texture_image_units (void);
 
 void

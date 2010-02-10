@@ -24,10 +24,10 @@
 #ifndef __COGL_PRIMITIVES_H
 #define __COGL_PRIMITIVES_H
 
-typedef struct _floatVec2    floatVec2;
-typedef struct _CoglBezQuad      CoglBezQuad;
-typedef struct _CoglBezCubic     CoglBezCubic;
-typedef struct _CoglPathNode     CoglPathNode;
+typedef struct _floatVec2     floatVec2;
+typedef struct _CoglBezQuad   CoglBezQuad;
+typedef struct _CoglBezCubic  CoglBezCubic;
+typedef struct _CoglPathNode  CoglPathNode;
 
 struct _floatVec2
 {
@@ -39,7 +39,7 @@ struct _CoglPathNode
 {
   float x;
   float y;
-  guint path_size;
+  unsigned int path_size;
 };
 
 struct _CoglBezQuad
@@ -57,6 +57,7 @@ struct _CoglBezCubic
   floatVec2 p4;
 };
 
-void _cogl_journal_flush (void);
+void
+_cogl_journal_flush (void);
 
 #endif /* __COGL_PRIMITIVES_H */

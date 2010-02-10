@@ -94,9 +94,9 @@ cogl_bitmap_error_quark (void)
 }
 
 gboolean
-_cogl_bitmap_get_size_from_file (const gchar *filename,
-                                 gint        *width,
-                                 gint        *height)
+_cogl_bitmap_get_size_from_file (const char *filename,
+                                 int        *width,
+                                 int        *height)
 {
   if (width)
     *width = 0;
@@ -110,7 +110,7 @@ _cogl_bitmap_get_size_from_file (const gchar *filename,
 /* the error does not contain the filename as the caller already has it */
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const gchar *filename,
+			const char  *filename,
 			GError     **error)
 {
   g_assert (bmp != NULL);
@@ -145,8 +145,8 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   CGImageRef image = CGImageSourceCreateImageAtIndex (image_source, 0, NULL);
   CFRelease (image_source);
 
-  size_t width = CGImageGetWidth (image);
-  size_t height = CGImageGetHeight (image);
+  gsize width = CGImageGetWidth (image);
+  gsize height = CGImageGetHeight (image);
   if (width == 0 || height == 0)
     {
       /* incomplete or corrupt */
@@ -157,7 +157,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
     }
 
   /* allocate buffer big enough to hold pixel data */
-  size_t rowstride;
+  gsize rowstride;
   rowstride = 4 * width;
   guint8 *out_data = g_malloc0 (height * rowstride);
 
@@ -188,9 +188,9 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 #elif defined(USE_GDKPIXBUF)
 
 gboolean
-_cogl_bitmap_get_size_from_file (const gchar *filename,
-                                 gint        *width,
-                                 gint        *height)
+_cogl_bitmap_get_size_from_file (const char *filename,
+                                 int        *width,
+                                 int        *height)
 {
   g_return_val_if_fail (filename != NULL, FALSE);
 
@@ -202,23 +202,23 @@ _cogl_bitmap_get_size_from_file (const gchar *filename,
 
 gboolean
 _cogl_bitmap_from_file (CoglBitmap   *bmp,
-			const gchar  *filename,
+			const char   *filename,
 			GError      **error)
 {
   GdkPixbuf        *pixbuf;
   gboolean          has_alpha;
   GdkColorspace     color_space;
   CoglPixelFormat   pixel_format;
-  gint              width;
-  gint              height;
-  gint              rowstride;
-  gint              bits_per_sample;
-  gint              n_channels;
-  gint              last_row_size;
-  guchar           *pixels;
-  guchar           *out_data;
-  guchar           *out;
-  gint              r;
+  int               width;
+  int               height;
+  int               rowstride;
+  int               bits_per_sample;
+  int               n_channels;
+  int               last_row_size;
+  guint8           *pixels;
+  guint8           *out_data;
+  guint8           *out;
+  int               r;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
@@ -270,7 +270,7 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   /* FIXME: Any way to destroy pixbuf but retain pixel data? */
 
   pixels   = gdk_pixbuf_get_pixels (pixbuf);
-  out_data = (guchar*) g_malloc (height * rowstride);
+  out_data = g_malloc (height * rowstride);
   out      = out_data;
 
   /* Copy up to last row */
@@ -305,9 +305,9 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
 #include "stb_image.c"
 
 gboolean
-_cogl_bitmap_get_size_from_file (const gchar *filename,
-                                 gint        *width,
-                                 gint        *height)
+_cogl_bitmap_get_size_from_file (const char *filename,
+                                 int        *width,
+                                 int        *height)
 {
   if (width)
     *width = 0;
@@ -320,13 +320,13 @@ _cogl_bitmap_get_size_from_file (const gchar *filename,
 
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const gchar *filename,
+			const char  *filename,
 			GError     **error)
 {
-  gint              stb_pixel_format;
-  gint              width;
-  gint              height;
-  guchar           *pixels;
+  int      stb_pixel_format;
+  int      width;
+  int      height;
+  guint8  *pixels;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 

@@ -34,11 +34,12 @@
 
 gboolean
 _cogl_feature_check (const CoglFeatureData *data,
-                     guint gl_major, guint gl_minor,
-                     const gchar *extensions_string)
+                     unsigned int gl_major,
+                     unsigned int gl_minor,
+                     const char *extensions_string)
 
 {
-  const gchar *suffix = NULL;
+  const char *suffix = NULL;
   int func_num;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -51,14 +52,14 @@ _cogl_feature_check (const CoglFeatureData *data,
   else
     {
       /* Otherwise try all of the extensions */
-      const gchar *namespace, *namespace_suffix;
-      guint namespace_len;
+      const char *namespace, *namespace_suffix;
+      unsigned int namespace_len;
 
       for (namespace = data->namespaces;
            *namespace;
            namespace += strlen (namespace) + 1)
         {
-          const gchar *extension;
+          const char *extension;
           GString *full_extension_name = g_string_new ("");
 
           /* If the namespace part contains a ':' then the suffix for
@@ -110,7 +111,7 @@ _cogl_feature_check (const CoglFeatureData *data,
   for (func_num = 0; data->functions[func_num].name; func_num++)
     {
       void *func;
-      gchar *full_function_name;
+      char *full_function_name;
 
       full_function_name = g_strconcat (data->functions[func_num].name,
                                         suffix, NULL);
@@ -121,7 +122,7 @@ _cogl_feature_check (const CoglFeatureData *data,
         break;
 
       /* Set the function pointer in the context */
-      *(void **) ((guchar *) ctx +
+      *(void **) ((guint8 *) ctx +
                   data->functions[func_num].pointer_offset) = func;
     }
 
@@ -132,7 +133,7 @@ _cogl_feature_check (const CoglFeatureData *data,
   if (data->functions[func_num].name)
     {
       while (func_num-- > 0)
-        *(void **) ((guchar *) ctx +
+        *(void **) ((guint8 *) ctx +
                     data->functions[func_num].pointer_offset) = NULL;
       return FALSE;
     }

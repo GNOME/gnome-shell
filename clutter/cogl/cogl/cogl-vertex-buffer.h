@@ -83,7 +83,7 @@ G_BEGIN_DECLS
  * Return value: a new #CoglHandle
  */
 CoglHandle
-cogl_vertex_buffer_new (guint n_vertices);
+cogl_vertex_buffer_new (unsigned int n_vertices);
 
 /**
  * cogl_vertex_buffer_get_n_vertices:
@@ -93,7 +93,7 @@ cogl_vertex_buffer_new (guint n_vertices);
  *
  * Return value: the number of vertices
  */
-guint
+unsigned int
 cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
 
 /**
@@ -439,7 +439,7 @@ cogl_vertex_buffer_unref (CoglHandle handle);
  * owned by Cogl and should not be modified or unref'd.
  */
 CoglHandle
-cogl_vertex_buffer_indices_get_for_quads (guint n_indices);
+cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices);
 
 /**
  * cogl_is_vertex_buffer:
