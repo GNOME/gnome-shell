@@ -124,7 +124,7 @@ _cogl_sub_texture_unmap_coord (gfloat t,
   /* Convert the fractional part leaving the integer part in tact */
   frac_part = modff (t, &int_part);
 
-  if (signbit (frac_part))
+  if (cogl_util_float_signbit (frac_part))
     frac_part = ((1.0f + frac_part) * full_size -
                  sub_offset - sub_size) / sub_size;
   else
