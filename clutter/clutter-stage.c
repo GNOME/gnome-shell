@@ -666,13 +666,7 @@ clutter_stage_set_property (GObject      *object,
 			    const GValue *value,
 			    GParamSpec   *pspec)
 {
-  ClutterStage        *stage;
-  ClutterStagePrivate *priv;
-  ClutterActor        *actor;
-
-  stage = CLUTTER_STAGE (object);
-  actor = CLUTTER_ACTOR (stage);
-  priv = stage->priv;
+  ClutterStage *stage = CLUTTER_STAGE (object);
 
   switch (prop_id)
     {
