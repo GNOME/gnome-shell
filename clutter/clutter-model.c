@@ -563,10 +563,6 @@ clutter_model_set_n_columns (ClutterModel *model,
                              gboolean      set_names)
 {
   ClutterModelPrivate *priv = model->priv;
-  gboolean types_set, names_set;
-
-  types_set = (priv->column_types != NULL);
-  names_set = (priv->column_names != NULL);
 
   if (priv->n_columns > 0 && priv->n_columns != n_columns)
     return;
@@ -790,12 +786,10 @@ void
 clutter_model_append (ClutterModel *model,
                       ...)
 {
-  ClutterModelPrivate *priv;
   ClutterModelIter *iter;
   va_list args;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
-  priv = model->priv;
 
   iter = CLUTTER_MODEL_GET_CLASS (model)->insert_row (model, -1);
   g_assert (CLUTTER_IS_MODEL_ITER (iter));
@@ -1084,12 +1078,10 @@ G_CONST_RETURN gchar *
 clutter_model_get_column_name (ClutterModel *model,
                                guint         column)
 {
-  ClutterModelPrivate *priv;
   ClutterModelClass *klass;
 
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), NULL);
 
-  priv = model->priv;
   if (column < 0 || column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
@@ -1118,12 +1110,10 @@ GType
 clutter_model_get_column_type (ClutterModel *model,
                                guint         column)
 {
-  ClutterModelPrivate *priv;
   ClutterModelClass *klass;
 
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), G_TYPE_INVALID);
 
-  priv = model->priv;
   if (column < 0 || column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
