@@ -41,10 +41,7 @@ typedef struct _CoglJournalEntry
 } CoglJournalEntry;
 
 void
-_cogl_journal_log_quad (float         x_1,
-                        float         y_1,
-                        float         x_2,
-                        float         y_2,
+_cogl_journal_log_quad (const float  *position,
                         CoglHandle    material,
                         int           n_layers,
                         guint32       fallback_layers,
