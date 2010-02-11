@@ -1,17 +1,17 @@
 # Hungarian translation of mutter
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the mutter package.
 #
 # Andras Timar <timar at gnome dot hu>, 2002, 2003.
 # Gabor Sari <saga at externet dot hu>, 2003.
 # Laszlo Dvornik <dvornik at gnome dot hu>, 2004.
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2004, 2005, 2006, 2007, 2008, 2009.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-29 14:22+0200\n"
-"PO-Revision-Date: 2009-08-29 14:25+0200\n"
+"POT-Creation-Date: 2010-02-11 23:07+0100\n"
+"PO-Revision-Date: 2010-02-11 23:34+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -20,48 +20,53 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Csengetés esemény"
+
 #: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Ismeretlen ablakinformáció-kérés: %d"
 
-#: ../src/core/delete.c:105
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt> nem válaszol.</b></big>\n"
-"\n"
-"<i>Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás "
-"teljes kilépését.</i>"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> nem válaszol."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:99
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás "
+"teljes kilépését."
+
+#: ../src/core/delete.c:108
 msgid "_Wait"
 msgstr "Vá_rakozás"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:108
 msgid "_Force Quit"
 msgstr "_Erőltetett kilépés"
 
-#: ../src/core/delete.c:217
+#: ../src/core/delete.c:206
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Hiba a gépnév lekérdezése közben: %s\n"
 
-#: ../src/core/display.c:329
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Hiányzik a kompozit ablakkezeléshez szükséges %s kiterjesztés"
 
-#: ../src/core/display.c:414
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nem sikerült megnyitni a(z) „%s” X Window rendszer képernyőt\n"
 
-#: ../src/core/errors.c:236
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -73,7 +78,7 @@ msgstr ""
 "megsemmisítette\n"
 "az ablakkezelőt.\n"
 
-#: ../src/core/errors.c:243
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Végzetes IO hiba %d (%s) a(z) „%s” képernyőn.\n"
@@ -90,7 +95,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2392
+#: ../src/core/keybindings.c:2388
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -101,94 +106,100 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2482
+#: ../src/core/keybindings.c:2478
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nincs %d parancs meghatározva.\n"
 
-#: ../src/core/keybindings.c:3495
+#: ../src/core/keybindings.c:3491
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Nincs terminálparancs meghatározva.\n"
 
-#: ../src/core/main.c:127
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., és mások\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., és mások\n"
 "Ez egy szabad szoftver; lásd a forrást a másolás feltételeiről.\n"
 "NINCS garancia; még az ELADHATÓSÁGRA vagy EGY ADOTT CÉLRA VALÓ ALKALMASSÁGRA "
 "vonatkozólag sem.\n"
 
-#: ../src/core/main.c:257
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "A munkamenet-kezelőhöz való csatlakozás tiltása"
 
-#: ../src/core/main.c:263
+#: ../src/core/main.c:267
 msgid "Replace the running window manager with Mutter"
 msgstr "A futó ablakkezelő helyettesítése a Mutterrel"
 
-#: ../src/core/main.c:269
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "A munkamenet-kezelő azonosítójának megadása"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "A használandó X megjelenítő"
 
-#: ../src/core/main.c:280
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "A munkamenet előkészítése a mentési fájlból"
 
-#: ../src/core/main.c:286
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Verzió kinyomtatása"
 
-#: ../src/core/main.c:292
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Az X-hívások szinkronná tétele"
 
-#: ../src/core/main.c:298
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "Kompozitálás bekapcsolása"
 
-#: ../src/core/main.c:304
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "Kompozitálás kikapcsolása"
 
-#: ../src/core/main.c:310
+#: ../src/core/main.c:314
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Ne tegye teljes képernyőssé a maximalizált és díszítésekkel nem rendelkező "
+"ablakokat"
+
+#: ../src/core/main.c:320
 msgid "Comma-separated list of compositor plugins"
 msgstr "Kompozitáló bővítmények vesszőkkel elválasztott listája"
 
-#: ../src/core/main.c:316
+#: ../src/core/main.c:326
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr ""
 "Ablakok közti váltáskor a felbukkanó ablakválasztó vagy a keret megjelenjen-"
 "e."
 
-#: ../src/core/main.c:323
+#: ../src/core/main.c:333
 msgid "Internal argument for GObject introspection"
 msgstr "Belső argumentum a GObject betekintéshez"
 
-#: ../src/core/main.c:668
+#: ../src/core/main.c:662
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
-#: ../src/core/main.c:684
+#: ../src/core/main.c:678
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Nem található téma! Bizonyosodjon meg róla hogy a(z) %s létezik és "
 "tartalmazza a szokásos témákat.\n"
 
-#: ../src/core/main.c:745
+#: ../src/core/main.c:742
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Újraindítás sikertelen: %s\n"
@@ -204,26 +215,26 @@ msgstr "Újraindítás sikertelen: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:522 ../src/core/prefs.c:683
+#: ../src/core/prefs.c:525 ../src/core/prefs.c:686
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "„%s” GConf kulcs érvénytelen értékre van állítva\n"
 
-#: ../src/core/prefs.c:609 ../src/core/prefs.c:852
+#: ../src/core/prefs.c:612 ../src/core/prefs.c:855
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "%d, ami a(z) %s GConf kulcsban van tárolva, a tartományon (%d - %d) kívül "
 "van\n"
 
-#: ../src/core/prefs.c:653 ../src/core/prefs.c:730 ../src/core/prefs.c:778
-#: ../src/core/prefs.c:842 ../src/core/prefs.c:1142 ../src/core/prefs.c:1158
-#: ../src/core/prefs.c:1175 ../src/core/prefs.c:1191
+#: ../src/core/prefs.c:656 ../src/core/prefs.c:733 ../src/core/prefs.c:781
+#: ../src/core/prefs.c:845 ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:1178 ../src/core/prefs.c:1194
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "„%s” GConf kulcs érvénytelen típusú\n"
 
-#: ../src/core/prefs.c:1282
+#: ../src/core/prefs.c:1285
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -231,14 +242,14 @@ msgstr ""
 "A hibás alkalmazások hibáinak megkerülése nincs engedélyezve. Néhány "
 "alkalmazás lehet, hogy nem fog helyesen működni.\n"
 
-#: ../src/core/prefs.c:1353
+#: ../src/core/prefs.c:1356
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Nem sikerült feldolgozni a(z) „%s” betűkészlet leírását a(z) „%s” GConf "
 "kulcsból\n"
 
-#: ../src/core/prefs.c:1415
+#: ../src/core/prefs.c:1418
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -247,17 +258,17 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” érvénytelen érték az egérgomb "
 "módosítóhoz\n"
 
-#: ../src/core/prefs.c:1839
+#: ../src/core/prefs.c:1845
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Hiba a munkaterületek számának beállításánál a következőre: %d: %s\n"
 
-#: ../src/core/prefs.c:2023 ../src/core/prefs.c:2529
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2511
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. munkaterület"
 
-#: ../src/core/prefs.c:2056 ../src/core/prefs.c:2234
+#: ../src/core/prefs.c:2038 ../src/core/prefs.c:2216
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -266,37 +277,37 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” nem érvényes érték a következő "
 "billentyűkombinációhoz: „%s”\n"
 
-#: ../src/core/prefs.c:2610
+#: ../src/core/prefs.c:2592
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Hiba a(z) %d. munkaterület nevének beállításánál a következőre: „%s”: %s\n"
 
-#: ../src/core/prefs.c:2808
+#: ../src/core/prefs.c:2796
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Hiba a kompozitáló állapotának beállításakor: %s\n"
 
-#: ../src/core/prefs.c:2836
+#: ../src/core/prefs.c:2824
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Hiba a clutter bővítménylista beállításakor: %s\n"
 
-#: ../src/core/prefs.c:2879
+#: ../src/core/prefs.c:2867
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Hiba az élő rejtett ablakok állapot beállításakor: %s\n"
 
-#: ../src/core/prefs.c:2907
+#: ../src/core/prefs.c:2895
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Hiba a nincs tab felugró állapot beállításakor: %s\n"
 
-#: ../src/core/screen.c:561
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A(z) %d képernyő a(z) „%s” megjelenítőn érvénytelen\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -305,77 +316,71 @@ msgstr ""
 "A(z) %d képernyő a(z) „%s” megjelenítőn már rendelkezik egy ablakkezelővel; "
 "próbálja a --replace opcióval helyettesíteni a jelenlegi ablakkezelőt.\n"
 
-#: ../src/core/screen.c:604
+#: ../src/core/screen.c:620
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) „%"
 "s” megjelenítőn\n"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A(z) %d képernyőnek a(z) „%s” megjelenítőn már van ablakkezelője\n"
 
-#: ../src/core/screen.c:871
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nem sikerült elengedni a(z) %d képernyőt a(z) „%s” kijelzőn\n"
 
-#: ../src/core/session.c:851 ../src/core/session.c:858
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nem lehet létrehozni a(z) „%s” könyvtárat: %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nem sikerült a(z) „%s” munkamenet fájlt írásra megnyitni: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Hiba történt a(z) „%s” munkamenet fájl írása közben: %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Hiba történt a(z) „%s” munkamenet fájl lezárása közben: %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1107
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Hiba történt a(z) „%s” munkamenet fájl olvasása közben: %s\n"
-
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nem sikerült feldolgozni a mentett munkamenet fájlt: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1198
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "A <mutter_session> attribútum megjelent, de már van munkamenet-azonosító"
 
-#: ../src/core/session.c:1208 ../src/core/session.c:1283
-#: ../src/core/session.c:1315 ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ismeretlen %s attribútum a(z) <%s> elemen"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "beágyazott <window> tag"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ismeretlen elem: %s"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1822
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -384,51 +389,51 @@ msgstr ""
 "mentését&quot;, emiatt ezeket a legközelebbi bejelentkezéskor manuálisan "
 "újra kell indítania."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nem sikerült megnyitni a hibakeresési naplót: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nem sikerült megnyitni az fdopen()-nel a(z) „%s” naplófájlt: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "%s naplófájl megnyitva\n"
 
-#: ../src/core/util.c:138 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "A Mutter ablakkezelőt a részletes mód támogatása nélkül fordították\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Ablakkezelő: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Hiba az ablakkezelőben: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Figyelmeztetés az ablakkezelőtől: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Hibaüzenet az ablakkezelőtől: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6072
+#: ../src/core/window.c:6183
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -444,7 +449,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6735
+#: ../src/core/window.c:6846
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -464,7 +469,7 @@ msgstr "Az alkalmazás hibás _NET_WM_PID-értéket állított be: %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (ezen: %s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1435
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -486,12 +491,12 @@ msgstr ""
 "Ez valószínűleg az alkalmazás hibája, nem pedig az ablakkezelőé.\n"
 "Az ablak címe=„%s” osztálya=„%s” neve=„%s”\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
@@ -1298,7 +1303,7 @@ msgstr "A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem op
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "A téma által tartalmazott kifejezés hibát okozott: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4203
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1307,23 +1312,23 @@ msgstr ""
 "Ehhez a keretstílushoz meg kell határozni a következő elemet: <button "
 "function=\"%s\" state=\"%s\" draw_ops=\"bármi\"/>"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Hiba a(z) „%s” téma betöltése közben: %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nincs <%s> beállítva a(z) „%s” témához"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:4946
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1332,14 +1337,14 @@ msgstr ""
 "Nincs keretstílus beállítva a(z) „%s” ablaktípushoz a(z) „%s” témában, adjon "
 "hozzá egy <window type=\"%s\" style_set=\"bármi\"/> elemet"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "A felhasználó által meghatározott konstansoknak nagybetűvel kell kezdődniük, "
 "a(z) „%s” nem ilyen"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "A(z) „%s” konstans már definiálva van"
@@ -1462,10 +1467,10 @@ msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "„%s” ablak típushoz már hozzá van rendelve egy stílus beállítás"
 
 #: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "<%s> elem nem engedélyezett <%s> alatt"
@@ -1494,108 +1499,108 @@ msgstr "„%s” méretarány ismeretlen"
 msgid "Border \"%s\" is unknown"
 msgstr "„%s” határ ismeretlen"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "A(z) <%s> elemnek nincs „start_angle” vagy „from” attribútuma"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "A(z) <%s> elemnek nincs „extent_angle” vagy „to” attribútuma"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Nem sikerült „%s” értéket értelmezni színátmenet típusaként"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Nem sikerült a(z) „%s” fájltípust értelmezni a(z) <%s> elem számára"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Nem sikerült értelmezni a(z) „%s” állapotot a(z) <%s> elem számára"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Nem sikerült „%s” árnyékot értelmezni a(z) <%s> elem számára"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Nem sikerült értelmezni a(z) „%s” nyilat a(z) <%s> elem számára"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Nincsen „%s” nevű <draw_ops> meghatározva"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "„%s” draw_ops ide beépítésével körkörös hivatkozás alakulna ki"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "„%s” pozíció ismeretlen a keretdarabhoz"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "A keretstílusnak már van egy darabja a(z) „%s” pozícióban"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Nincs „%s” nevű <draw_ops> meghatározva"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "„%s” funkció ismeretlen a gombhoz"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "A(z) „%s” gombfunkció nem létezik ebben a verzióban (%d, szükséges: %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "„%s” állapot ismeretlen a gombhoz"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "A keretstílusnak már van gombja a(z) „%s” funkcióra a(z) „%s” állapotban"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "„%s” érték érvénytelen a fókusz attribútumhoz"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "„%s” érték érvénytelen az állapot attribútumhoz"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "„%s” nevű stílus nincs meghatározva"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "„%s” érték érvénytelen az átméretezés attribútumhoz"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3047
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1604,24 +1609,24 @@ msgstr ""
 "A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
 "méretű/felgördített állapothoz"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
 "méretű állapothoz"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "%s állapothoz és %s fókuszhoz már meg van határozva stílus"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3147
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1630,7 +1635,7 @@ msgstr ""
 "draw_ops attribútumot és egy <draw_ops> elemet, vagy két elemet határozott "
 "meg)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3185
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1638,7 +1643,7 @@ msgstr ""
 "Nem lehet két draw_ops-a egy <button> elemnek (a téma meghatározott egy "
 "draw_ops attribútumot és egy <draw_ops> elemet, vagy két elemet)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3223
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1646,76 +1651,63 @@ msgstr ""
 "Nem lehet két draw_ops-a egy <menu_icon> elemnek (a téma meghatározott egy "
 "draw_ops attribútumot és egy <draw_ops> elemet, vagy két elemet)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "A téma legkülső eleme <metacity_theme> kell legyen, nem pedig <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "A(z) <%s> elem nem megengedett egy <constant> elemen belül"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "<%s> elem nem megengedett egy rajzoló művelet elemen belül"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "<%s> elem nem megengedett egy <%s> elemen belül"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Nincsen draw_ops a keretdarabhoz"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Nincs draw_ops megadva a gombhoz"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Nincs szöveg engedélyezve a(z) <%s> elemen belül"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<name> kétszer lett meghatározva ehhez a témához"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> kétszer lett megadva ehhez a témához"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<author> kétszer lett meghatározva ehhez a témához"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> kétszer lett meghatározva ehhez a témához"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<date> kétszer lett meghatározva ehhez a témához"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<description> kétszer lett meghatározva ehhez a témához"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nem található érvényes fájl a következő témához: %s\n"
 
-#: ../src/ui/theme-parser.c:4083
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "%s téma fájl nem tartalmaz gyökér <metacity_theme> elemet"
