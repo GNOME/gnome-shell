@@ -32,7 +32,6 @@ gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
         $(LIBGNOMEUI_CFLAGS)                    \
 	-I$(srcdir)/tray			\
-	-DGETTEXT_PACKAGE=\"gnome-shell\"		\
 	-DLOCALEDIR=\"$(datadir)/locale\" \
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
