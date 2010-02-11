@@ -361,9 +361,9 @@ MessageTray.prototype = {
                                               x_fill: false,
                                               expand: true });
 
-
         this._summary.connect('enter-event',
-                           Lang.bind(this, this._showMessageTray));
+                              Lang.bind(this, this._showMessageTray));
+        this._summaryBin.opacity = 0;
 
         this.actor.connect('enter-event',
                            Lang.bind(this, function() {
