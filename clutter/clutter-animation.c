@@ -909,7 +909,6 @@ clutter_animation_update (ClutterAnimation *animation,
                           const gchar      *property_name,
                           const GValue     *final)
 {
-  ClutterAnimationPrivate *priv;
   ClutterInterval *interval;
   GType int_type;
 
@@ -917,8 +916,6 @@ clutter_animation_update (ClutterAnimation *animation,
   g_return_val_if_fail (property_name != NULL, NULL);
   g_return_val_if_fail (final != NULL, NULL);
   g_return_val_if_fail (G_VALUE_TYPE (final) != G_TYPE_INVALID, NULL);
-
-  priv = animation->priv;
 
   interval = clutter_animation_get_interval (animation, property_name);
   if (interval == NULL)
@@ -1536,7 +1533,12 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
                           animation);
     }
   else
-    timeline = clutter_animation_get_timeline_internal (animation);
+    {
+      /* FIXME - add a create_timeline_internal() because this does
+       * not look very good
+       */
+      (void) clutter_animation_get_timeline_internal (animation);
+    }
 
 out:
   /* emit all relevant notifications */
