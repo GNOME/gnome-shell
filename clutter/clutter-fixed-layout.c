@@ -152,6 +152,22 @@ clutter_fixed_layout_allocate (ClutterLayoutManager   *manager,
   g_list_free (children);
 }
 
+void
+clutter_fixed_layout_set_container (ClutterLayoutManager *manager,
+                                    ClutterContainer *container)
+{
+  if (container)
+    {
+      /* signal Clutter that we don't impose any layout on
+       * our children, so we can shave off some relayout
+       * operations
+       */
+      CLUTTER_ACTOR_SET_FLAGS (container, CLUTTER_ACTOR_NO_LAYOUT);
+    }
+  else
+    CLUTTER_ACTOR_UNSET_FLAGS (container, CLUTTER_ACTOR_NO_LAYOUT);
+}
+
 static void
 clutter_fixed_layout_class_init (ClutterFixedLayoutClass *klass)
 {
@@ -163,6 +179,7 @@ clutter_fixed_layout_class_init (ClutterFixedLayoutClass *klass)
   manager_class->get_preferred_height =
     clutter_fixed_layout_get_preferred_height;
   manager_class->allocate = clutter_fixed_layout_allocate;
+  manager_class->set_container = clutter_fixed_layout_set_container;
 }
 
 static void
