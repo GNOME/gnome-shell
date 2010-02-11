@@ -209,7 +209,7 @@ static gboolean
 clutter_timeout_pool_check (GSource *source)
 {
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
-  GList *l = pool->timeouts;
+  GList *l;
 
   clutter_threads_enter ();
 
