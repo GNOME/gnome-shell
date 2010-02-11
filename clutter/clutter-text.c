@@ -4682,7 +4682,6 @@ clutter_text_delete_chars (ClutterText *self,
 {
   ClutterTextPrivate *priv;
   GString *new = NULL;
-  gint len;
   gint pos;
   gint num_pos;
   gint start_pos;
@@ -4694,7 +4693,6 @@ clutter_text_delete_chars (ClutterText *self,
   if (!priv->text)
     return;
 
-  len = priv->n_chars;
   new = g_string_new (priv->text);
 
   if (priv->position == -1)
