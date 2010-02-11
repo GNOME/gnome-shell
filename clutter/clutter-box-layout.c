@@ -919,10 +919,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     }
 
   if (n_expand_children == 0)
-    {
-      extra_space = 0;
-      n_expand_children = 1;
-    }
+    extra_space = 0;
   else
     {
       if (priv->is_vertical)
