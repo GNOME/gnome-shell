@@ -680,10 +680,8 @@ clutter_actor_update_map_state (ClutterActor  *self,
                                 MapStateChange change)
 {
   gboolean was_mapped;
-  gboolean was_realized;
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
-  was_realized = CLUTTER_ACTOR_IS_REALIZED (self);
 
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
@@ -1619,7 +1617,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (x1_changed || y1_changed || x2_changed || y2_changed)
+  if (x1_changed || y1_changed || x2_changed || y2_changed || flags_changed)
     {
       g_object_notify (G_OBJECT (self), "allocation");
 
@@ -4498,11 +4496,7 @@ clutter_actor_init (ClutterActor *self)
 void
 clutter_actor_destroy (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
 
   g_object_ref (self);
 
@@ -4623,7 +4617,6 @@ clutter_actor_get_preferred_size (ClutterActor *self,
                                   gfloat       *natural_height_p)
 {
   ClutterActorPrivate *priv;
-  gfloat for_width, for_height;
   gfloat min_width, min_height;
   gfloat natural_width, natural_height;
 
@@ -4631,7 +4624,6 @@ clutter_actor_get_preferred_size (ClutterActor *self,
 
   priv = self->priv;
 
-  for_width = for_height = 0;
   min_width = min_height = 0;
   natural_width = natural_height = 0;
 
@@ -4676,10 +4668,8 @@ _clutter_actor_get_cached_size_request (gfloat         for_size,
                                         SizeRequest   *cached_size_requests,
                                         SizeRequest  **result)
 {
-  gboolean found_free_cache;
   guint i;
 
-  found_free_cache = FALSE;
   *result = &cached_size_requests[0];
 
   for (i = 0; i < N_CACHED_SIZE_REQUESTS; i++)
