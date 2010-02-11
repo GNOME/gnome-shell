@@ -998,7 +998,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
                                        CoglPixelFormat  internal_format)
 {
   CoglTexture2DSliced   *tex_2ds;
-  CoglTexture           *tex;
   CoglBitmap             bmp;
 
   /* Since no data, we need some internal format */
@@ -1007,8 +1006,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
 
   /* Init texture with empty bitmap */
   tex_2ds = g_new (CoglTexture2DSliced, 1);
-
-  tex = COGL_TEXTURE (tex_2ds);
 
   bmp.width = width;
   bmp.height = height;
@@ -1037,15 +1034,12 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
                                          CoglPixelFormat  internal_format)
 {
   CoglTexture2DSliced   *tex_2ds;
-  CoglTexture           *tex;
   CoglBitmap            *bmp = (CoglBitmap *)bmp_handle;
 
   g_return_val_if_fail (bmp_handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
 
   /* Create new texture and fill with loaded data */
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
-
-  tex = COGL_TEXTURE (tex_2ds);
 
   if (flags & COGL_TEXTURE_NO_SLICING)
     tex_2ds->max_waste = -1;
@@ -1121,7 +1115,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
     return COGL_INVALID_HANDLE;
 
   /* Make sure binding succeeds */
-  gl_error = glGetError ();
+  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+    ;
   glBindTexture (gl_target, gl_handle);
   if (glGetError () != GL_NO_ERROR)
     return COGL_INVALID_HANDLE;
