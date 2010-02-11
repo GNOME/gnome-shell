@@ -1539,8 +1539,8 @@ apply_child_properties (ClutterScript    *script,
     {
       PropertyInfo *pinfo = l->data;
       GValue value = { 0, };
+      gboolean res = FALSE;
       const gchar *name;
-      gboolean res;
 
       if (!pinfo->is_child)
         {
