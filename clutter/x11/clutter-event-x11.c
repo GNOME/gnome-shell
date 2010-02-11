@@ -421,7 +421,6 @@ event_translate (ClutterBackend *backend,
   ClutterStageWindow *impl;
   gboolean res, not_yet_handled = FALSE;
   Window xwindow, stage_xwindow;
-  ClutterDeviceManager *manager;
   ClutterInputDevice *device;
 
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
@@ -461,8 +460,6 @@ event_translate (ClutterBackend *backend,
   stage = clutter_x11_get_stage_from_window (xwindow);
   if (stage == NULL)
     return FALSE;
-
-  manager = clutter_device_manager_get_default ();
 
   impl = _clutter_stage_get_window (stage);
   stage_x11 = CLUTTER_STAGE_X11 (impl);
