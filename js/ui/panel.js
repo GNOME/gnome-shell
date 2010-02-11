@@ -560,7 +560,7 @@ Panel.prototype = {
 	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %R")));
 	} else {
 	  /* Translators: This is a time format.  */
-	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %k:%M %p")));
+	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
 	}
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
