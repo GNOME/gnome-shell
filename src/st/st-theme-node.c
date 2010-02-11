@@ -28,8 +28,8 @@ struct _StThemeNode {
   ClutterColor foreground_color;
   ClutterColor border_color[4];
 
-  double border_width[4];
-  double border_radius[4];
+  int border_width[4];
+  int border_radius[4];
   guint padding[4];
 
   int width;
@@ -721,6 +721,21 @@ get_length_from_term (StThemeNode *node,
 }
 
 static GetFromTermResult
+get_length_from_term_int (StThemeNode *node,
+                          CRTerm      *term,
+                          gboolean     use_parent_font,
+                          gint        *length)
+{
+  double value;
+  GetFromTermResult result;
+
+  result = get_length_from_term (node, term, use_parent_font, &value);
+  if (result != VALUE_NOT_FOUND)
+    *length = (int) (0.5 + value);
+  return result;
+}
+
+static GetFromTermResult
 get_length_internal (StThemeNode *node,
                      const char  *property_name,
                      const char  *suffixed,
@@ -795,9 +810,9 @@ do_border_radius_term (StThemeNode *node,
                        gboolean     bottomright,
                        gboolean     bottomleft)
 {
-  gdouble value;
+  int value;
 
-  if (get_length_from_term (node, term, FALSE, &value) != VALUE_FOUND)
+  if (get_length_from_term_int (node, term, FALSE, &value) != VALUE_FOUND)
     return;
 
   if (topleft)
@@ -877,7 +892,7 @@ do_border_property (StThemeNode   *node,
   StSide side = (StSide)-1;
   ClutterColor color;
   gboolean color_set = FALSE;
-  double width;
+  int width;
   gboolean width_set = FALSE;
   int j;
 
@@ -948,7 +963,7 @@ do_border_property (StThemeNode   *node,
 
           if (term->type == TERM_NUMBER)
             {
-              result = get_length_from_term (node, term, FALSE, &width);
+              result = get_length_from_term_int (node, term, FALSE, &width);
               if (result != VALUE_NOT_FOUND)
                 {
                   width_set = result == VALUE_FOUND;
@@ -979,7 +994,7 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term (node, decl->value, FALSE, &width) == VALUE_FOUND)
+      if (get_length_from_term_int (node, decl->value, FALSE, &width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
@@ -1011,23 +1026,19 @@ do_padding_property_term (StThemeNode *node,
                           gboolean     top,
                           gboolean     bottom)
 {
-  gdouble value;
-  int int_value;
+  int value;
 
-  if (get_length_from_term (node, term, FALSE, &value) != VALUE_FOUND)
+  if (get_length_from_term_int (node, term, FALSE, &value) != VALUE_FOUND)
     return;
 
-  /* Round the value */
-  int_value = (int) (0.5 + value);
-
   if (left)
-    node->padding[ST_SIDE_LEFT] = int_value;
+    node->padding[ST_SIDE_LEFT] = value;
   if (right)
-    node->padding[ST_SIDE_RIGHT] = int_value;
+    node->padding[ST_SIDE_RIGHT] = value;
   if (top)
-    node->padding[ST_SIDE_TOP] = int_value;
+    node->padding[ST_SIDE_TOP] = value;
   if (bottom)
-    node->padding[ST_SIDE_BOTTOM] = int_value;
+    node->padding[ST_SIDE_BOTTOM] = value;
 }
 
 static void
@@ -1092,12 +1103,9 @@ do_padding_property (StThemeNode   *node,
 static void
 do_size_property (StThemeNode   *node,
                   CRDeclaration *decl,
-		  int           *node_value)
+                  int           *node_value)
 {
-  gdouble value;
-
-  if (get_length_from_term (node, decl->value, FALSE, &value) == VALUE_FOUND)
-    *node_value = (int) (0.5 + value);
+  get_length_from_term_int (node, decl->value, FALSE, node_value);
 }
 
 static void
@@ -1177,7 +1185,7 @@ ensure_geometry (StThemeNode *node)
     node->height = node->min_height;
 }
 
-double
+int
 st_theme_node_get_border_width (StThemeNode *node,
                                 StSide       side)
 {
@@ -1189,7 +1197,7 @@ st_theme_node_get_border_width (StThemeNode *node,
   return node->border_width[side];
 }
 
-double
+int
 st_theme_node_get_border_radius (StThemeNode *node,
                                  StCorner     corner)
 {

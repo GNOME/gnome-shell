@@ -118,9 +118,9 @@ void st_theme_node_get_background_gradient (StThemeNode   *node,
 
 const char *st_theme_node_get_background_image (StThemeNode *node);
 
-double st_theme_node_get_border_width  (StThemeNode  *node,
+int    st_theme_node_get_border_width  (StThemeNode  *node,
                                         StSide        side);
-double st_theme_node_get_border_radius (StThemeNode  *node,
+int    st_theme_node_get_border_radius (StThemeNode  *node,
                                         StCorner      corner);
 void   st_theme_node_get_border_color  (StThemeNode  *node,
                                         StSide        side,
