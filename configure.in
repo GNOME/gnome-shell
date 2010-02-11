@@ -124,7 +124,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-MUTTER_PC_MODULES='gtk+-2.0 >= 2.10.0 pango >= 1.2.0 libcanberra-gtk'
+MUTTER_PC_MODULES='gtk+-2.0 >= 2.10.0 pango >= 1.2.0'
 
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
@@ -159,6 +159,11 @@ AC_ARG_WITH(introspection,
   AC_HELP_STRING([--without-introspection],
                  [disable the use of GObject introspection]),,
   with_introspection=auto)
+
+AC_ARG_WITH(libcanberra,
+  AC_HELP_STRING([--without-libcanberra],
+                 [disable the use of libcanberra for playing sounds]),,
+  with_libcanberra=auto)
 
 AC_ARG_ENABLE(xsync,
   AC_HELP_STRING([--disable-xsync],
@@ -210,6 +215,24 @@ if test x$have_startup_notification = xyes; then
   AC_DEFINE(HAVE_STARTUP_NOTIFICATION, , [Building with startup notification support])
 else
   echo "Building without libstartup-notification"
+fi
+
+have_libcanberra=no
+AC_MSG_CHECKING([libcanberra-gtk])
+if test x$with_libcanberra = xno ; then
+  AC_MSG_RESULT([disabled])
+else
+  if $PKG_CONFIG --exists libcanberra-gtk; then
+    have_libcanberra=yes
+    AC_MSG_RESULT(yes)
+    MUTTER_PC_MODULES="$MUTTER_PC_MODULES libcanberra-gtk"
+    AC_DEFINE([HAVE_LIBCANBERRA], 1, [Building with libcanberra for playing sounds])
+  else
+    AC_MSG_RESULT(no)
+    if test x$with_libcanberra = xyes ; then
+      AC_MSG_ERROR([libcanberra forced and libcanberra-gtk was not found])
+    fi
+  fi
 fi
 
 XCOMPOSITE_VERSION=0.2
@@ -532,6 +555,7 @@ mutter-$VERSION:
 	XFree86 Xinerama:         ${use_xfree_xinerama}
 	Solaris Xinerama:         ${use_solaris_xinerama}
 	Startup notification:     ${have_startup_notification}
+	libcanberra:              ${have_libcanberra}
 	Introspection:            ${have_introspection}
 	Session management:       ${found_sm}
 	Shape extension:          ${found_shape}

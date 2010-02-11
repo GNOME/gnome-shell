@@ -52,7 +52,9 @@
 #include "bell.h"
 #include "screen-private.h"
 #include "prefs.h"
+#ifdef HAVE_LIBCANBERRA
 #include <canberra-gtk.h>
+#endif
 
 /**
  * Flashes one entire screen.  This is done by making a window the size of the
@@ -287,6 +289,7 @@ meta_bell_notify (MetaDisplay *display,
   if (meta_prefs_get_visual_bell ()) 
     bell_visual_notify (display, xkb_ev);
 
+#ifdef HAVE_LIBCANBERRA
   if (meta_prefs_bell_is_audible ())
     {
       ca_proplist *p;
@@ -326,12 +329,27 @@ meta_bell_notify (MetaDisplay *display,
                               xkb_bell_event->percent);
         }
     }
+#endif /* HAVE_LIBCANBERRA */
 }
 #endif /* HAVE_XKB */
 
 void
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
+#ifdef HAVE_XKB
+#ifdef HAVE_LIBCANBERRA
+  /* When we are playing sounds using libcanberra support, we handle the
+   * bell whether its an audible bell or a visible bell */
+  gboolean enable_system_bell = FALSE;
+#else
+  gboolean enable_system_bell = audible;
+#endif /* HAVE_LIBCANBERRA */
+
+  XkbChangeEnabledControls (display->xdisplay,
+                            XkbUseCoreKbd,
+                            XkbAudibleBellMask,
+                            enable_system_bell ? XkbAudibleBellMask : 0);
+#endif /* HAVE_XKB */
 }
 
 gboolean
@@ -358,10 +376,7 @@ meta_bell_init (MetaDisplay *display)
 		       XkbUseCoreKbd,
 		       XkbBellNotifyMask,
 		       XkbBellNotifyMask);
-      XkbChangeEnabledControls (display->xdisplay,
-				XkbUseCoreKbd,
-				XkbAudibleBellMask,
-                                0);
+      meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
       if (visual_bell_auto_reset) {
 	XkbSetAutoResetControls (display->xdisplay,
 				 XkbAudibleBellMask,

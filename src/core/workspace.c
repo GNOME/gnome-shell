@@ -33,7 +33,9 @@
 
 #include <X11/Xatom.h>
 #include <string.h>
+#ifdef HAVE_LIBCANBERRA
 #include <canberra-gtk.h>
+#endif
 
 enum {
   PROP_0,
@@ -444,6 +446,7 @@ static void
 workspace_switch_sound(MetaWorkspace *from,
                        MetaWorkspace *to)
 {
+#ifdef HAVE_LIBCANBERRA
   MetaWorkspaceLayout layout;
   int i, nw, x, y, fi, ti;
   const char *e;
@@ -499,6 +502,7 @@ workspace_switch_sound(MetaWorkspace *from,
 
  finish:
   meta_screen_free_workspace_layout (&layout);
+#endif /* HAVE_LIBCANBERRA */
 }
 
 /**
