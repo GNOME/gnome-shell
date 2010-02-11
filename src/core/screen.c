@@ -1266,7 +1266,8 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   GList         *l;
   MetaWorkspace *neighbour = NULL;
   GList         *next = NULL;
-  int index;
+  int            index;
+  int            new_num;
 
   l = screen->workspaces;
   while (l)
@@ -1308,7 +1309,10 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   /* This also removes the workspace from the screens list */
   meta_workspace_remove (workspace);
 
-  set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
+  new_num = g_list_length (screen->workspaces);
+
+  set_number_of_spaces_hint (screen, new_num);
+  meta_prefs_set_num_workspaces (new_num);
 
   l = next;
   while (l)
@@ -1344,6 +1348,7 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
                                   guint32 timestamp)
 {
   MetaWorkspace *w;
+  int new_num;
 
   /* This also adds the workspace to the screen list */
   w = meta_workspace_new (screen);
@@ -1354,7 +1359,10 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
   if (activate)
     meta_workspace_activate (w, timestamp);
 
-  set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
+  new_num = g_list_length (screen->workspaces);
+
+  set_number_of_spaces_hint (screen, new_num);
+  meta_prefs_set_num_workspaces (new_num);
 
   meta_screen_queue_workarea_recalc (screen);
 
@@ -1380,6 +1388,9 @@ update_num_workspaces (MetaScreen *screen,
   new_num = meta_prefs_get_num_workspaces ();
 
   g_assert (new_num > 0);
+
+  if (g_list_length (screen->workspaces) == (guint) new_num)
+    return;
 
   last_remaining = NULL;
   extras = NULL;
