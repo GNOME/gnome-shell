@@ -74,13 +74,9 @@ static const ClutterColor default_border_color = {   0,   0,   0, 255 };
 static void
 clutter_rectangle_paint (ClutterActor *self)
 {
-  ClutterRectangle        *rectangle = CLUTTER_RECTANGLE(self);
-  ClutterRectanglePrivate *priv;
-  ClutterGeometry          geom;
-  guint8                   tmp_alpha;
-
-  rectangle = CLUTTER_RECTANGLE(self);
-  priv = rectangle->priv;
+  ClutterRectanglePrivate *priv = CLUTTER_RECTANGLE (self)->priv;
+  ClutterGeometry geom;
+  guint8 tmp_alpha;
 
   CLUTTER_NOTE (PAINT,
                 "painting rect '%s'",
