@@ -466,6 +466,7 @@ SingleView.prototype = {
         this._indicatorsPanel = null;
         this._indicatorsPanelWidth = null;
         this._scroll = null;
+        this._lostWorkspaces = [];
         this._scrolling = false;
         this._animatingScroll = false;
     },
@@ -539,6 +540,37 @@ SingleView.prototype = {
                     workspace.actor.hide();
             }
         }
+
+        for (let l = 0; l < this._lostWorkspaces.length; l++) {
+            let workspace = this._lostWorkspaces[l];
+
+            workspace.gridX += dx;
+            workspace.actor.show();
+            workspace._hideAllOverlays();
+
+            if (showAnimation) {
+                Tweener.addTween(workspace.actor,
+                    { x: workspace.gridX,
+                      time: WORKSPACE_SWITCH_TIME,
+                      transition: 'easeOutQuad',
+                      onComplete: Lang.bind(this, this._cleanWorkspaces)
+                    });
+            } else {
+                this._cleanWorkspaces();
+            }
+        }
+    },
+
+    _cleanWorkspaces: function() {
+        if (this._lostWorkspaces.length == 0)
+            return;
+
+        for (let l = 0; l < this._lostWorkspaces.length; l++)
+            this._lostWorkspaces[l].destroy();
+        this._lostWorkspaces = [];
+
+        this._positionWorkspaces();
+        this._updateWorkspaceActors();
     },
 
     _scrollScrollBarToIndex: function(index, showAnimation) {
@@ -583,18 +615,27 @@ SingleView.prototype = {
             this._scrollScrollBarToIndex(active + 1, false);
 
         } else {
-            for (let i = 0; i < this._workspaces.length; i++)
-                this._workspaces[i].destroy();
-            this._workspaces = [];
-            this._actor.remove_all();
+            let active = global.screen.get_active_workspace_index();
+            let removedNum = oldNumWorkspaces - newNumWorkspaces;
+            let removedIndex = active + 1;
+            this._lostWorkspaces = this._workspaces.splice(removedIndex,
+                                                           removedNum);
 
-            // Without this there will be lots of warnings
-            this._actor.hide();
-            for (let w = 0; w < global.screen.n_workspaces; w++)
-                this._addWorkspaceActor(w);
-            this._actor.show();
-            this._positionWorkspaces();
-            this._updateWorkspaceActors();
+            // Don't let the user try to select this workspace as it's
+            // making its exit.
+            for (let l = 0; l < this._lostWorkspaces.length; l++)
+                this._lostWorkspaces[l]._desktop.actor.reactive = false;
+
+            // reassign workspaceNum and metaWorkspace, as lost workspaces
+            // have not necessarily been removed from the end
+            for (let i = removedIndex; i < this._workspaces.length; i++) {
+                let metaWorkspace = global.screen.get_workspace_by_index(i);
+                this._workspaces[i].workspaceNum = i;
+                this._workspaces[i]._metaWorkspace = metaWorkspace;
+            }
+
+            this._scrollScrollBarToIndex(active, false);
+            this._scrollToActive(true);
         }
 
         this._updatePanelVisibility();
