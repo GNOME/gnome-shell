@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-01-09 08:17+0000\n"
-"PO-Revision-Date: 2010-01-11 08:31+0100\n"
+"POT-Creation-Date: 2010-02-11 19:43+0000\n"
+"PO-Revision-Date: 2010-02-11 20:54+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Upravljanje oken in zaganjanje programov"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:252
-#: ../js/ui/dash.js:865
+#: ../js/ui/dash.js:880
 msgid "APPLICATIONS"
 msgstr "Programi"
 
@@ -39,44 +39,44 @@ msgstr "Programi"
 msgid "PREFERENCES"
 msgstr "Možnosti"
 
-#: ../js/ui/appDisplay.js:707
+#: ../js/ui/appDisplay.js:649
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:711
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:712
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1064
+#: ../js/ui/appDisplay.js:1006
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
-#: ../js/ui/dash.js:240
+#: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Najdi ..."
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/dash.js:508
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:522
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885
-#: ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:900
+#: ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
+#: ../js/ui/dash.js:907
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
 
@@ -87,7 +87,12 @@ msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:549
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a. %R"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -95,11 +100,11 @@ msgstr "%a, %H:%M"
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/runDialog.js:351
+#: ../js/ui/runDialog.js:361
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
@@ -117,11 +122,11 @@ msgstr "Programi"
 msgid "Recent Documents"
 msgstr "Nedavni dokumenti"
 
-#: ../src/shell-global.c:890
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:893
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -130,7 +135,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:896
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -139,7 +144,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -148,7 +153,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:902
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
