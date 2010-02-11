@@ -1185,14 +1185,10 @@ clutter_timeline_set_direction (ClutterTimeline          *timeline,
 guint
 clutter_timeline_get_delta (ClutterTimeline *timeline)
 {
-  ClutterTimelinePrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
   if (!clutter_timeline_is_playing (timeline))
     return 0;
-
-  priv = timeline->priv;
 
   return timeline->priv->msecs_delta;
 }
