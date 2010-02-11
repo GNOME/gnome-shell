@@ -19,11 +19,11 @@ const MESSAGE_TRAY_TIMEOUT = 0.2;
 
 const ICON_SIZE = 24;
 
-const MessageTrayState = {
-    HIDDEN: 0, // entire message tray is hidden
-    NOTIFICATION: 1, // notifications are visible
-    SUMMARY: 2, // summary is visible
-    TRAY_ONLY: 3 // neither notifiations nor summary are visible, only tray
+const State = {
+    HIDDEN:  0,
+    SHOWING: 1,
+    SHOWN:   2,
+    HIDING:  3
 };
 
 function _cleanMarkup(text) {
@@ -360,20 +360,24 @@ MessageTray.prototype = {
         this._summaryBin.add(this._summary, { x_align: St.Align.END,
                                               x_fill: false,
                                               expand: true });
-
         this._summary.connect('enter-event',
-                              Lang.bind(this, this._showMessageTray));
+                              Lang.bind(this, this._onSummaryEntered));
+        this._summary.connect('leave-event',
+                              Lang.bind(this, this._onSummaryLeft));
         this._summaryBin.opacity = 0;
 
-        this.actor.connect('enter-event',
-                           Lang.bind(this, function() {
-                                                if (this._state == MessageTrayState.NOTIFICATION || this._state == MessageTrayState.SUMMARY)
-                                                    this._showMessageTray();
-                                            }));
+        this.actor.connect('enter-event', Lang.bind(this, this._onTrayEntered));
+        this.actor.connect('leave-event', Lang.bind(this, this._onTrayLeft));
 
-        this.actor.connect('leave-event',
-                           Lang.bind(this, this._hideMessageTray));
-        this._state = MessageTrayState.HIDDEN;
+        this._trayState = State.HIDDEN;
+        this._trayLeftTimeoutId = 0;
+        this._pointerInTray = false;
+        this._summaryState = State.HIDDEN;
+        this._summaryTimeoutId = 0;
+        this._pointerInSummary = false;
+        this._notificationState = State.HIDDEN;
+        this._notificationTimeoutId = 0;
+
         this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false });
         Main.chrome.trackActor(this._notificationBin, { affectsStruts: false });
@@ -409,6 +413,7 @@ MessageTray.prototype = {
         let iconBox = new St.Bin({ reactive: true });
         iconBox.child = source.createIcon(ICON_SIZE);
         this._summary.insert_actor(iconBox, 0);
+        this._summaryNeedsToBeShown = true;
         this._icons[source.id] = iconBox;
         this._sources[source.id] = source;
 
@@ -437,14 +442,18 @@ MessageTray.prototype = {
         }
         this._notificationQueue = newNotificationQueue;
 
-        // Update state if we are showing a notification from the removed source
-        if (this._state == MessageTrayState.NOTIFICATION &&
-            this._notification.source == source)
-            this._updateState();
-
         this._summary.remove_actor(this._icons[source.id]);
+        this._summaryNeedsToBeShown = true;
         delete this._icons[source.id];
         delete this._sources[source.id];
+
+        if (this._notification && this._notification.source == source) {
+            if (this._notificationTimeoutId) {
+                Mainloop.source_remove(this._notificationTimeoutId);
+                this._notificationTimeoutId = 0;
+            }
+            this._updateState();
+        }
     },
 
     getSource: function(id) {
@@ -453,130 +462,134 @@ MessageTray.prototype = {
 
     _onNotify: function(source, notification) {
         this._notificationQueue.push(notification);
-
-        if (this._state == MessageTrayState.HIDDEN)
-            this._updateState();
+        this._updateState();
     },
 
-    _showMessageTray: function() {
-        // Don't hide the message tray after a timeout if the user has moved
-        // the mouse over it.
-        // We might have a timeout in place if the user moved the mouse away
-        // from the message tray for a very short period of time or if we are
-        // showing a notification.
-        if (this._updateTimeoutId > 0)
-            Mainloop.source_remove(this._updateTimeoutId);
-
-        if (this._state == MessageTrayState.HIDDEN)
-            this._updateState();
-        else if (this._state == MessageTrayState.NOTIFICATION) {
-            if (this._notification.popOut()) {
-                Tweener.addTween(this._notificationBin,
-                                 { y: this.actor.height - this._notificationBin.height,
-                                   time: ANIMATION_TIME,
-                                   transition: "easeOutQuad"
-                                 });
-            }
-        }
+    _onSummaryEntered: function() {
+        this._pointerInSummary = true;
+        this._updateState();
     },
 
-    _hideMessageTray: function() {
-        if (this._state == MessageTrayState.HIDDEN)
+    _onSummaryLeft: function() {
+        this._pointerInSummary = false;
+        this._updateState();
+    },
+
+    _onTrayEntered: function() {
+        if (this._trayLeftTimeoutId) {
+            Mainloop.source_remove(this._trayLeftTimeoutId);
+            this._trayLeftTimeoutId = 0;
             return;
-
-        // We wait just a little before hiding the message tray in case the
-        // user will quickly move the mouse back over it.
-        let timeout = MESSAGE_TRAY_TIMEOUT * 1000;
-        this._updateTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._updateState));
-    },
-
-    // As tray, notification box and summary view are all animated separately,
-    // but dependant on each other's states, it appears less confusing
-    // handling all transitions in a state machine rather than spread out
-    // over different event handlers.
-    //
-    // State changes are triggered when
-    // - a notification arrives (see _onNotify())
-    // - the mouse enters the tray (see _showMessageTray())
-    // - the mouse leaves the tray (see _hideMessageTray())
-    // - a timeout expires (usually set up in a previous invocation of this function)
-    _updateState: function() {
-        if (this._updateTimeoutId > 0)
-            Mainloop.source_remove(this._updateTimeoutId);
-
-        this._updateTimeoutId = 0;
-        let timeout = -1;
-
-        switch (this._state) {
-        case MessageTrayState.HIDDEN:
-            if (this._notificationQueue.length > 0) {
-                this._showNotification();
-                this._showTray();
-                this._state = MessageTrayState.NOTIFICATION;
-                // Because we set up the timeout before we do the animation,
-                // we add ANIMATION_TIME to NOTIFICATION_TIMEOUT, so that
-                // NOTIFICATION_TIMEOUT represents the time the notifiation
-                // is fully shown.
-                timeout = (ANIMATION_TIME + NOTIFICATION_TIMEOUT) * 1000;
-            } else {
-                this._showSummary();
-                this._showTray();
-                this._state = MessageTrayState.SUMMARY;
-            }
-            break;
-        case MessageTrayState.NOTIFICATION:
-            if (this._notificationQueue.length > 0) {
-                this._hideNotification();
-                this._state = MessageTrayState.TRAY_ONLY;
-                timeout = ANIMATION_TIME * 1000;
-            } else {
-                this._hideNotification();
-                this._showSummary();
-                this._state = MessageTrayState.SUMMARY;
-                timeout = (ANIMATION_TIME + SUMMARY_TIMEOUT) * 1000;
-            }
-            break;
-        case MessageTrayState.SUMMARY:
-            if (this._notificationQueue.length > 0) {
-                this._hideSummary();
-                this._showNotification();
-                this._state = MessageTrayState.NOTIFICATION;
-                timeout = (ANIMATION_TIME + NOTIFICATION_TIMEOUT) * 1000;
-            } else {
-                this._hideSummary();
-                this._hideTray();
-                this._state = MessageTrayState.HIDDEN;
-            }
-            break;
-        case MessageTrayState.TRAY_ONLY:
-            this._showNotification();
-            this._state = MessageTrayState.NOTIFICATION;
-            timeout = (ANIMATION_TIME + NOTIFICATION_TIMEOUT) * 1000;
-            break;
         }
 
-        if (timeout > -1)
-            this._updateTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._updateState));
+        this._pointerInTray = true;
+        this._updateState();
+    },
+
+    _onTrayLeft: function() {
+        // We wait just a little before hiding the message tray in case the
+        // user quickly moves the mouse back into it.
+        let timeout = MESSAGE_TRAY_TIMEOUT * 1000;
+        this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
+    },
+
+    _onTrayLeftTimeout: function() {
+        this._trayLeftTimeoutId = 0;
+        this._pointerInTray = false;
+        this._pointerInSummary = false;
+        this._updateState();
+        return false;
+    },
+
+    // All of the logic for what happens when occurs here; the various
+    // event handlers merely update variables such as
+    // "this._pointerInTray", "this._summaryState", etc, and
+    // _updateState() figures out what (if anything) needs to be done
+    // at the present time.
+    _updateState: function() {
+        // Notifications
+        let notificationsPending = this._notificationQueue.length > 0;
+        let notificationPinned = this._pointerInTray && !this._pointerInSummary;
+        let notificationExpanded = this._notificationBin.y < 0;
+        let notificationExpired = this._notificationTimeoutId == 0 && !this._pointerInTray;
+
+        if (this._notificationState == State.HIDDEN) {
+            if (notificationsPending)
+                this._showNotification();
+        } else if (this._notificationState == State.SHOWN) {
+            if (notificationExpired)
+                this._hideNotification();
+            else if (notificationPinned && !notificationExpanded)
+                this._expandNotification();
+        }
+
+        // Summary
+        let summarySummoned = this._pointerInSummary;
+        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned;
+        let notificationsVisible = (this._notificationState == State.SHOWING ||
+                                    this._notificationState == State.SHOWN);
+        let notificationsDone = !notificationsVisible && !notificationsPending;
+
+        if (this._summaryState == State.HIDDEN) {
+            if (notificationsDone && this._summaryNeedsToBeShown)
+                this._showSummary(true);
+            else if (!notificationsVisible && summarySummoned)
+                this._showSummary(false);
+        } else if (this._summaryState == State.SHOWN) {
+            if (!summaryPinned)
+                this._hideSummary();
+        }
+
+        // Tray itself
+        let trayIsVisible = (this._trayState == State.SHOWING ||
+                             this._trayState == State.SHOWN);
+        let trayShouldBeVisible = (!notificationsDone ||
+                                   this._summaryState == State.SHOWING ||
+                                   this._summaryState == State.SHOWN);
+        if (!trayIsVisible && trayShouldBeVisible)
+            this._showTray();
+        else if (trayIsVisible && !trayShouldBeVisible)
+            this._hideTray();
+    },
+
+    _tween: function(actor, statevar, value, params) {
+        let onComplete = params.onComplete;
+        let onCompleteScope = params.onCompleteScope;
+        let onCompleteParams = params.onCompleteParams;
+
+        params.onComplete = this._tweenComplete;
+        params.onCompleteScope = this;
+        params.onCompleteParams = [statevar, value, onComplete, onCompleteScope, onCompleteParams];
+
+        Tweener.addTween(actor, params);
+
+        let valuing = (value == State.SHOWN) ? State.SHOWING : State.HIDING;
+        this[statevar] = valuing;
+    },
+
+    _tweenComplete: function(statevar, value, onComplete, onCompleteScope, onCompleteParams) {
+        this[statevar] = value;
+        if (onComplete)
+            onComplete.apply(onCompleteScope, onCompleteParams);
+        this._updateState();
     },
 
     _showTray: function() {
         let primary = global.get_primary_monitor();
-        Tweener.addTween(this.actor,
-                         { y: primary.y + primary.height - this.actor.height,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
+        this._tween(this.actor, "_trayState", State.SHOWN,
+                    { y: primary.y + primary.height - this.actor.height,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad"
+                    });
     },
 
     _hideTray: function() {
         let primary = global.get_primary_monitor();
-
-        Tweener.addTween(this.actor,
-                         { y: primary.y + primary.height - 1,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
-        return false;
+        this._tween(this.actor, "_trayState", State.HIDDEN,
+                    { y: primary.y + primary.height - 1,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad"
+                    });
     },
 
     _showNotification: function() {
@@ -587,44 +600,94 @@ MessageTray.prototype = {
         this._notificationBin.y = this.actor.height;
         this._notificationBin.show();
 
-        Tweener.addTween(this._notificationBin,
-                         { y: 0,
-                           opacity: 255,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad" });
+        this._tween(this._notificationBin, "_notificationState", State.SHOWN,
+                    { y: 0,
+                      opacity: 255,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad",
+                      onComplete: this._showNotificationCompleted,
+                      onCompleteScope: this
+                    });
+    },
+
+    _showNotificationCompleted: function() {
+        this._notificationTimeoutId =
+            Mainloop.timeout_add(NOTIFICATION_TIMEOUT * 1000,
+                                 Lang.bind(this, this._notificationTimeout));
+    },
+
+    _notificationTimeout: function() {
+        this._notificationTimeoutId = 0;
+        this._updateState();
+        return false;
     },
 
     _hideNotification: function() {
         this._notification.popIn();
 
-        Tweener.addTween(this._notificationBin,
-                         { y: this.actor.height,
-                           opacity: 0,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: Lang.bind(this, function() {
-                               this._notificationBin.hide();
-                               this._notificationBin.child = null;
-                               this._notification = null;
-                           })});
+        this._tween(this._notificationBin, "_notificationState", State.HIDDEN,
+                    { y: this.actor.height,
+                      opacity: 0,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad",
+                      onComplete: this._hideNotificationCompleted,
+                      onCompleteScope: this
+                    });
     },
 
-    _showSummary: function() {
+    _hideNotificationCompleted: function() {
+        this._notificationBin.hide();
+        this._notificationBin.child = null;
+        this._notification = null;
+    },
+
+    _expandNotification: function() {
+        if (this._notification && this._notification.popOut()) {
+            this._tween(this._notificationBin, "_notificationState", State.SHOWN,
+                        { y: this.actor.height - this._notificationBin.height,
+                          time: ANIMATION_TIME,
+                          transition: "easeOutQuad"
+                        });
+        }
+    },
+
+    _showSummary: function(withTimeout) {
         let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
-        Tweener.addTween(this._summaryBin,
-                         { y: 0,
-                           opacity: 255,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad" });
+        this._tween(this._summaryBin, "_summaryState", State.SHOWN,
+                    { y: 0,
+                      opacity: 255,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad",
+                      onComplete: this._showSummaryCompleted,
+                      onCompleteScope: this,
+                      onCompleteParams: [withTimeout]
+                    });
+    },
+
+    _showSummaryCompleted: function(withTimeout) {
+        this._summaryNeedsToBeShown = false;
+
+        if (withTimeout) {
+            this._summaryTimeoutId =
+                Mainloop.timeout_add(SUMMARY_TIMEOUT * 1000,
+                                     Lang.bind(this, this._summaryTimeout));
+        }
+    },
+
+    _summaryTimeout: function() {
+        this._summaryTimeoutId = 0;
+        this._updateState();
+        return false;
     },
 
     _hideSummary: function() {
-        Tweener.addTween(this._summaryBin,
-                         { opacity: 0,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                          });
+        this._tween(this._summaryBin, "_summaryState", State.HIDDEN,
+                    { opacity: 0,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad"
+                    });
+        this._summaryNeedsToBeShown = false;
     }
 };
