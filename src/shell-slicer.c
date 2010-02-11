@@ -119,7 +119,7 @@ shell_slicer_paint_child (ShellSlicer *self)
 
   cogl_push_matrix ();
 
-  cogl_clip_push (0, 0, width, height);
+  cogl_clip_push_rectangle (0, 0, width, height);
   cogl_translate ((int)(0.5 + x_align_factor * (width - child_width)),
                   (int)(0.5 + y_align_factor * (height - child_height)),
                   0);

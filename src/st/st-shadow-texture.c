@@ -191,8 +191,8 @@ st_shadow_texture_create_shadow (StShadowTexture *st,
 
   clutter_texture_set_cogl_material (CLUTTER_TEXTURE (st), material);
 
-  cogl_texture_unref  (texture);
-  cogl_material_unref (material);
+  cogl_handle_unref  (texture);
+  cogl_handle_unref (material);
 
   g_free (pixels_in);
   g_free (pixels_out);

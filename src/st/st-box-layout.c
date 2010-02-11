@@ -1024,10 +1024,10 @@ st_box_layout_paint (ClutterActor *actor)
    * the borders and background stay in place; after drawing the borders and
    * background, we clip to the content area */
   if (priv->hadjustment || priv->vadjustment)
-    cogl_clip_push ((int)content_box.x1,
-                    (int)content_box.y1,
-                    (int)content_box.x2 - (int)content_box.x1,
-                    (int)content_box.y2 - (int)content_box.y1);
+    cogl_clip_push_rectangle ((int)content_box.x1,
+                              (int)content_box.y1,
+                              (int)content_box.x2,
+                              (int)content_box.y2);
 
   for (l = priv->children; l; l = g_list_next (l))
     {
@@ -1098,10 +1098,10 @@ st_box_layout_pick (ClutterActor       *actor,
   content_box.y2 += y;
 
   if (priv->hadjustment || priv->vadjustment)
-    cogl_clip_push ((int)content_box.x1,
-                    (int)content_box.y1,
-                    (int)content_box.x2 - (int)content_box.x1,
-                    (int)content_box.y2 - (int)content_box.y1);
+    cogl_clip_push_rectangle ((int)content_box.x1,
+                              (int)content_box.y1,
+                              (int)content_box.x2,
+                              (int)content_box.y2);
 
   for (l = priv->children; l; l = g_list_next (l))
     {

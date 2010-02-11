@@ -233,7 +233,7 @@ corner_unref(Corner *corner)
     if (corner->ref_count == 0) {
         g_hash_table_remove(all_corners, corner);
 
-        cogl_texture_unref(corner->texture);
+        cogl_handle_unref(corner->texture);
         g_free(corner->data);
         g_free(corner);
     }
@@ -608,17 +608,17 @@ big_rectangle_dispose(GObject *object)
     }
 
     if (rectangle->corner_material) {
-        cogl_material_unref (rectangle->corner_material);
+        cogl_handle_unref (rectangle->corner_material);
         rectangle->corner_material = NULL;
     }
 
     if (rectangle->background_material) {
-        cogl_material_unref (rectangle->background_material);
+        cogl_handle_unref (rectangle->background_material);
         rectangle->background_material = NULL;
     }
 
     if (rectangle->border_material) {
-        cogl_material_unref (rectangle->border_material);
+        cogl_handle_unref (rectangle->border_material);
         rectangle->border_material = NULL;
     }
 

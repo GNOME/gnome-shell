@@ -111,7 +111,7 @@ shell_fade_app_icon (ClutterTexture *source)
     
   result = (ClutterTexture*)clutter_texture_new ();
   clutter_texture_set_cogl_texture (result, texture);
-  cogl_texture_unref (texture);
+  cogl_handle_unref (texture);
   
   return result;
 }

@@ -280,7 +280,7 @@ shell_recorder_finalize (GObject  *object)
   recorder_set_pipeline (recorder, NULL);
   recorder_set_filename (recorder, NULL);
 
-  cogl_texture_unref (recorder->recording_icon);
+  cogl_handle_unref (recorder->recording_icon);
 
   G_OBJECT_CLASS (shell_recorder_parent_class)->finalize (object);
 }
@@ -872,7 +872,7 @@ recorder_set_stage (ShellRecorder *recorder,
 
       clutter_stage_ensure_current (stage);
       gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
-      recorder->have_pack_invert = cogl_check_extension ("GL_MESA_pack_invert", gl_extensions);
+      recorder->have_pack_invert = strstr (gl_extensions, "GL_MESA_pack_invert") != NULL;
 
       recorder_get_initial_cursor_position (recorder);
     }

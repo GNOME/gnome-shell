@@ -55,10 +55,14 @@ fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
+CLUTTER_MIN_VERSION=1.2.0
+
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins >= 2.29.0
                                  gjs-gi-1.0 libgnome-menu $recorder_modules gconf-2.0
-                                 gdk-x11-2.0 clutter-x11-1.0 clutter-glx-1.0
+                                 gdk-x11-2.0
+				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
+				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                  libstartup-notification-1.0
                                  gobject-introspection-1.0 >= 0.6.5)
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
