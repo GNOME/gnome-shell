@@ -645,9 +645,6 @@ static void
 clutter_texture_dispose (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
-  ClutterTexturePrivate *priv;
-
-  priv = texture->priv;
 
   texture_free_gl_resources (texture);
   texture_fbo_free_resources (texture);
@@ -1372,12 +1369,9 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
 				   ClutterTextureFlags   flags,
 				   GError              **error)
 {
-  ClutterTexturePrivate *priv;
   CoglPixelFormat source_format;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
-
-  priv = texture->priv;
 
   /* Convert the flags to a CoglPixelFormat */
   if (has_alpha)
@@ -1447,8 +1441,6 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
 				   ClutterTextureFlags flags,
 				   GError            **error)
 {
-  ClutterTexturePrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
   if (!clutter_feature_available (CLUTTER_FEATURE_TEXTURE_YUV))
@@ -1458,8 +1450,6 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
                    "YUV textures are not supported");
       return FALSE;
     }
-
-  priv = texture->priv;
 
   /* Convert the flags to a CoglPixelFormat */
   if ((flags & CLUTTER_TEXTURE_YUV_FLAG_YUV2))
@@ -2054,11 +2044,8 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
                                         ClutterTextureFlags flags,
                                         GError            **error)
 {
-  ClutterTexturePrivate *priv;
-  CoglPixelFormat        source_format;
-  CoglHandle             cogl_texture;
-
-  priv = texture->priv;
+  CoglPixelFormat source_format;
+  CoglHandle cogl_texture;
 
   if (has_alpha)
     {
@@ -2069,6 +2056,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 		       "Unsupported BPP");
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGBA_8888;
     }
   else
@@ -2080,17 +2068,22 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 		       "Unsupported BPP");
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGB_888;
     }
+
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
     source_format |= COGL_BGR_BIT;
+
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
     source_format |= COGL_PREMULT_BIT;
 
   /* attempt to realize ... */
   if (!CLUTTER_ACTOR_IS_REALIZED (texture) &&
       clutter_actor_get_stage (CLUTTER_ACTOR (texture)) != NULL)
-    clutter_actor_realize (CLUTTER_ACTOR (texture));
+    {
+      clutter_actor_realize (CLUTTER_ACTOR (texture));
+    }
 
   /* due to the fudging of clutter_texture_set_cogl_texture()
    * which allows setting a texture pre-realize, we may end
