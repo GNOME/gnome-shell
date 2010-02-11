@@ -800,8 +800,8 @@ do_texture_draw_and_read (CoglHandle   handle,
   tex_width = cogl_texture_get_width (handle);
   tex_height = cogl_texture_get_height (handle);
 
-  ry1 = 0; ry2 = 0;
-  ty1 = 0; ty2 = 0;
+  ry2 = 0;
+  ty2 = 0;
 
   /* Walk Y axis until whole bitmap height consumed */
   for (bh = tex_height; bh > 0; bh -= viewport[3])
@@ -814,8 +814,8 @@ do_texture_draw_and_read (CoglHandle   handle,
       ty1 = ty2;
       ty2 = (ry2 / (float) tex_height);
 
-      rx1 = 0; rx2 = 0;
-      tx1 = 0; tx2 = 0;
+      rx2 = 0;
+      tx2 = 0;
 
       /* Walk X axis until whole bitmap width consumed */
       for (bw = tex_width; bw > 0; bw-=viewport[2])
