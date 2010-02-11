@@ -1047,15 +1047,13 @@ clutter_animator_set_key (ClutterAnimator *animator,
                           gdouble          progress,
                           const GValue    *value)
 {
-  ClutterAnimatorPrivate *priv;
-  ClutterAnimatorKey     *animator_key;
+  ClutterAnimatorKey *animator_key;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (property_name, NULL);
   g_return_val_if_fail (value, NULL);
 
-  priv = animator->priv;
   property_name = g_intern_string (property_name);
 
   animator_key = clutter_animator_key_new (animator,
