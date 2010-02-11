@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
-"POT-Creation-Date: 2010-02-10 19:39+0000\n"
-"PO-Revision-Date: 2010-02-11 08:15+0100\n"
+"POT-Creation-Date: 2010-02-11 18:07+0000\n"
+"PO-Revision-Date: 2010-02-11 20:58+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,10 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Dogodek zvonjenja"
 
 #: ../src/core/core.c:213
 #, c-format
@@ -60,7 +64,7 @@ msgstr "Manjka razširitev %s, ki je ključna za sestavljanje"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
 
-#: ../src/core/errors.c:236
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -71,7 +75,7 @@ msgstr ""
 "najverjetneje se je strežnik X ugasnil ali pa prisilno izklopljen\n"
 "upravljalnik oken.\n"
 
-#: ../src/core/errors.c:243
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Usodna napaka IO %d (%s) na zaslonu '%s'.\n"
@@ -169,7 +173,7 @@ msgstr "Ali naj bo prikazan okvir okna med kroženjem oken."
 
 #: ../src/core/main.c:333
 msgid "Internal argument for GObject introspection"
-msgstr "Notranji argment za GObject"
+msgstr "Notranji argument za GObject"
 
 #: ../src/core/main.c:662
 #, c-format
@@ -326,43 +330,37 @@ msgstr "Napaka ob zapisovanju datoteke seje '%s': %s\n"
 msgid "Error closing session file '%s': %s\n"
 msgstr "Napaka ob zapiranju datoteke seje '%s': %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1112
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Ni mogoče prebrati datoteke shranjene seje %s: %s\n"
-
-#: ../src/core/session.c:1151
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ni mogoče razčleniti datoteke shranjene seje: %s\n"
 
-#: ../src/core/session.c:1200
+#: ../src/core/session.c:1198
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "atribut <mutter_session> je zaznan, vendar je že določen ID seje"
 
-#: ../src/core/session.c:1213
-#: ../src/core/session.c:1288
-#: ../src/core/session.c:1320
-#: ../src/core/session.c:1392
-#: ../src/core/session.c:1452
+#: ../src/core/session.c:1211
+#: ../src/core/session.c:1286
+#: ../src/core/session.c:1318
+#: ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Neznan atribut %s elementa <%s>"
 
-#: ../src/core/session.c:1230
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "gnezdena označba <window>"
 
-#: ../src/core/session.c:1472
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznan element %s"
 
 # G:2 K:6 O:0
-#: ../src/core/session.c:1824
+#: ../src/core/session.c:1822
 msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
 msgstr "Ta okna ne podpirajo možnosti &quot;shranjevanja trenutnih nastavitev&quot;, zato jih bo treba ob naslednji prijavi zagnati ročno."
 
@@ -413,7 +411,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6179
+#: ../src/core/window.c:6183
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -425,7 +423,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6842
+#: ../src/core/window.c:6846
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
@@ -1368,7 +1366,7 @@ msgstr "Ni mogoče razčleniti \"%s\" kot števila s plavajočo vejico"
 #: ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Vrednosti boolean morajo biti \"true\" ali \"false\" in ne \"%s\""
+msgstr "Logične vrednosti morajo biti \"prav\" ali \"napak\" in ne \"%s\""
 
 #: ../src/ui/theme-parser.c:663
 #, c-format
@@ -1863,6 +1861,8 @@ msgstr "vrednost z je %d, pričakovana pa je %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
 
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "Ni mogoče prebrati datoteke shranjene seje %s: %s\n"
 #~ msgid "<author> specified twice for this theme"
 #~ msgstr "Za to temo je element <author> naveden dvakrat"
 #~ msgid "<copyright> specified twice for this theme"
