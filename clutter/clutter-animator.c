@@ -551,6 +551,7 @@ static gfloat
 list_try_get_rel (GList *list,
                   gint   count)
 {
+  ClutterAnimatorKey *key;
   GList *iter = list;
   GList *best = list;
 
@@ -575,7 +576,14 @@ list_try_get_rel (GList *list,
         }
     }
 
-  return g_value_get_float (&(((ClutterAnimatorKey *)best->data)->value));
+  if (best != NULL && best->data != NULL)
+    {
+      key = best->data;
+
+      return g_value_get_float (&(key->value));
+    }
+
+  return 0;
 }
 
 static void
