@@ -553,8 +553,15 @@ Panel.prototype = {
             displayDate.setMinutes(displayDate.getMinutes() + 1);
             msecRemaining += 60000;
         }
-        /* Translators: This is a time format.  */
-        this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
+	/* If there is no am or pm, time format is 24h */
+	let isTime24h = displayDate.toLocaleFormat("x%p") == "x";
+	if (isTime24h) {
+	  /* Translators: This is a time format.  */
+	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %R")));
+	} else {
+	  /* Translators: This is a time format.  */
+	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %k:%M %p")));
+	}
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
     },
