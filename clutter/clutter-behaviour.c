@@ -355,10 +355,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 static void
 clutter_behaviour_init (ClutterBehaviour *self)
 {
-  ClutterBehaviourPrivate *priv;
-
-  self->priv = priv = CLUTTER_BEHAVIOUR_GET_PRIVATE (self);
-
+  self->priv = CLUTTER_BEHAVIOUR_GET_PRIVATE (self);
 }
 
 static void
