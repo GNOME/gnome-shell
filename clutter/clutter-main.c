@@ -263,13 +263,11 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 void
 _clutter_do_redraw (ClutterStage *stage)
 {
-  ClutterMainContext *ctx;
-  ClutterMasterClock *master_clock;
   static GTimer *timer = NULL;
   static guint timer_n_frames = 0;
+  ClutterMainContext *ctx;
 
-  ctx  = _clutter_context_get_default ();
-  master_clock = _clutter_master_clock_get_default ();
+  ctx = _clutter_context_get_default ();
 
   /* Before we can paint, we have to be sure we have the latest layout */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
@@ -2447,15 +2445,13 @@ _clutter_process_event_details (ClutterActor        *stage,
 void
 _clutter_process_event (ClutterEvent *event)
 {
-  ClutterMainContext  *context;
-  ClutterBackend      *backend;
-  ClutterActor        *stage;
+  ClutterMainContext *context;
+  ClutterActor *stage;
 
   context = _clutter_context_get_default ();
-  backend = context->backend;
-  stage   = CLUTTER_ACTOR(event->any.stage);
 
-  if (!stage)
+  stage = CLUTTER_ACTOR (event->any.stage);
+  if (stage == NULL)
     return;
 
   CLUTTER_TIMESTAMP (EVENT, "Event received");
@@ -2498,8 +2494,6 @@ clutter_base_init (void)
 
   if (!initialised)
     {
-      GType foo; /* Quiet gcc */
-
       initialised = TRUE;
 
       bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -2507,9 +2501,6 @@ clutter_base_init (void)
 
       /* initialise GLib type system */
       g_type_init ();
-
-      /* CLUTTER_TYPE_ACTOR */
-      foo = clutter_actor_get_type ();
     }
 }
 
