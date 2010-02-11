@@ -657,10 +657,7 @@ _cogl_journal_init (void)
 }
 
 void
-_cogl_journal_log_quad (float         x_1,
-                        float         y_1,
-                        float         x_2,
-                        float         y_2,
+_cogl_journal_log_quad (const float  *position,
                         CoglHandle    material,
                         int           n_layers,
                         guint32       fallback_layers,
@@ -722,15 +719,20 @@ _cogl_journal_log_quad (float         x_1,
       memcpy (c, src_c, 4);
     }
 
+#define X0 0
+#define Y0 1
+#define X1 2
+#define Y1 3
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     {
-      v[0] = x_1; v[1] = y_1;
+      v[0] = position[X0]; v[1] = position[Y0];
       v += stride;
-      v[0] = x_1; v[1] = y_2;
+      v[0] = position[X0]; v[1] = position[Y1];
       v += stride;
-      v[0] = x_2; v[1] = y_2;
+      v[0] = position[X1]; v[1] = position[Y1];
       v += stride;
-      v[0] = x_2; v[1] = y_1;
+      v[0] = position[X1]; v[1] = position[Y0];
     }
   else
     {
@@ -739,22 +741,27 @@ _cogl_journal_log_quad (float         x_1,
 
       cogl_get_modelview_matrix (&mv);
 
-      x = x_1, y = y_1, z = 0; w = 1;
+      x = position[X0], y = position[Y0], z = 0; w = 1;
       cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
       v[0] = x; v[1] = y; v[2] = z;
       v += stride;
-      x = x_1, y = y_2, z = 0; w = 1;
+      x = position[X0], y = position[Y1], z = 0; w = 1;
       cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
       v[0] = x; v[1] = y; v[2] = z;
       v += stride;
-      x = x_2, y = y_2, z = 0; w = 1;
+      x = position[X1], y = position[Y1], z = 0; w = 1;
       cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
       v[0] = x; v[1] = y; v[2] = z;
       v += stride;
-      x = x_2, y = y_1, z = 0; w = 1;
+      x = position[X1], y = position[Y0], z = 0; w = 1;
       cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
       v[0] = x; v[1] = y; v[2] = z;
     }
+
+#undef X0
+#undef Y0
+#undef X1
+#undef Y1
 
   for (i = 0; i < n_layers; i++)
     {

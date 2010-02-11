@@ -112,10 +112,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
 
   /* FIXME: when the wrap mode becomes part of the material we need to
    * be able to override the wrap mode when logging a quad. */
-  _cogl_journal_log_quad (quad_coords[0],
-                          quad_coords[1],
-                          quad_coords[2],
-                          quad_coords[3],
+  _cogl_journal_log_quad (quad_coords,
                           state->material,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
@@ -141,10 +138,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
 static void
 _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                                         CoglHandle   material,
-                                        float        x_1,
-                                        float        y_1,
-                                        float        x_2,
-                                        float        y_2,
+                                        const float *position,
                                         float        tx_1,
                                         float        ty_1,
                                         float        tx_2,
@@ -175,15 +169,20 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
    * inversions when we emit the final geometry.
    */
 
+#define X0 0
+#define Y0 1
+#define X1 2
+#define Y1 3
+
   tex_virtual_flipped_x = (tx_1 > tx_2) ? TRUE : FALSE;
   tex_virtual_flipped_y = (ty_1 > ty_2) ? TRUE : FALSE;
   state.tex_virtual_origin_x = tex_virtual_flipped_x ? tx_2 : tx_1;
   state.tex_virtual_origin_y = tex_virtual_flipped_y ? ty_2 : ty_1;
 
-  quad_flipped_x = (x_1 > x_2) ? TRUE : FALSE;
-  quad_flipped_y = (y_1 > y_2) ? TRUE : FALSE;
-  state.quad_origin_x = quad_flipped_x ? x_2 : x_1;
-  state.quad_origin_y = quad_flipped_y ? y_2 : y_1;
+  quad_flipped_x = (position[X0] > position[X1]) ? TRUE : FALSE;
+  quad_flipped_y = (position[Y0] > position[Y1]) ? TRUE : FALSE;
+  state.quad_origin_x = quad_flipped_x ? position[X1] : position[X0];
+  state.quad_origin_y = quad_flipped_y ? position[Y1] : position[Y0];
 
   /* flatten the two forms of coordinate inversion into one... */
   state.flipped_x = tex_virtual_flipped_x ^ quad_flipped_x;
@@ -192,8 +191,13 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
   /* We use the _len_AXIS naming here instead of _width and _height because
    * log_quad_slice_cb uses a macro with symbol concatenation to handle both
    * axis, so this is more convenient... */
-  state.quad_len_x = fabs (x_2 - x_1);
-  state.quad_len_y = fabs (y_2 - y_1);
+  state.quad_len_x = fabs (position[X1] - position[X0]);
+  state.quad_len_y = fabs (position[Y1] - position[Y0]);
+
+#undef X0
+#undef Y0
+#undef X1
+#undef Y1
 
   state.v_to_q_scale_x = fabs (state.quad_len_x / (tx_2 - tx_1));
   state.v_to_q_scale_y = fabs (state.quad_len_y / (ty_2 - ty_1));
@@ -221,10 +225,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
  *   require repeating.
  */
 static gboolean
-_cogl_multitexture_quad_single_primitive (float        x_1,
-                                          float        y_1,
-                                          float        x_2,
-                                          float        y_2,
+_cogl_multitexture_quad_single_primitive (const float *position,
                                           CoglHandle   material,
                                           guint32      fallback_layers,
                                           const float *user_tex_coords,
@@ -343,10 +344,7 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
       _cogl_texture_set_wrap_mode_parameter (tex_handle, wrap_mode);
     }
 
-  _cogl_journal_log_quad (x_1,
-                          y_1,
-                          x_2,
-                          y_2,
+  _cogl_journal_log_quad (position,
                           material,
                           n_layers,
                           fallback_layers,
@@ -359,12 +357,9 @@ _cogl_multitexture_quad_single_primitive (float        x_1,
 
 struct _CoglMutiTexturedRect
 {
-  float        x_1;
-  float        y_1;
-  float        x_2;
-  float        y_2;
-  const float *tex_coords;
-  int          tex_coords_len;
+  const float *position; /* x0,y0,x1,y1 */
+  const float *tex_coords; /* (tx0,ty0,tx1,ty1)(tx0,ty0,tx1,ty1)(... */
+  int          tex_coords_len; /* number of floats in tex_coords? */
 };
 
 static void
@@ -495,10 +490,7 @@ _cogl_rectangles_with_multitexture_coords (
       if (!all_use_sliced_quad_fallback)
         {
           gboolean success =
-            _cogl_multitexture_quad_single_primitive (rects[i].x_1,
-                                                      rects[i].y_1,
-                                                      rects[i].x_2,
-                                                      rects[i].y_2,
+            _cogl_multitexture_quad_single_primitive (rects[i].position,
                                                       material,
                                                       fallback_layers,
                                                       rects[i].tex_coords,
@@ -525,8 +517,7 @@ _cogl_rectangles_with_multitexture_coords (
 
       _cogl_texture_quad_multiple_primitives (tex_handle,
                                               material,
-                                              rects[i].x_1, rects[i].y_1,
-                                              rects[i].x_2, rects[i].y_2,
+                                              rects[i].position,
                                               tex_coords[0],
                                               tex_coords[1],
                                               tex_coords[2],
@@ -547,14 +538,16 @@ cogl_rectangles (const float *verts,
   struct _CoglMutiTexturedRect *rects;
   int i;
 
+  /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
+   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_rectangles_with_multitexture_coords.
+   */
+
   rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
-      rects[i].x_1 = verts[i * 4];
-      rects[i].y_1 = verts[i * 4 + 1];
-      rects[i].x_2 = verts[i * 4 + 2];
-      rects[i].y_2 = verts[i * 4 + 3];
+      rects[i].position = &verts[i * 4];
       rects[i].tex_coords = NULL;
       rects[i].tex_coords_len = 0;
     }
@@ -569,17 +562,16 @@ cogl_rectangles_with_texture_coords (const float *verts,
   struct _CoglMutiTexturedRect *rects;
   int i;
 
+  /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
+   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_rectangles_with_multitexture_coords.
+   */
+
   rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
-      rects[i].x_1 = verts[i * 8];
-      rects[i].y_1 = verts[i * 8 + 1];
-      rects[i].x_2 = verts[i * 8 + 2];
-      rects[i].y_2 = verts[i * 8 + 3];
-      /* FIXME: rect should be defined to have a const float *geom;
-       * instead, to avoid this copy
-       * rect[i].geom = &verts[n_rects * 8]; */
+      rects[i].position = &verts[i * 8];
       rects[i].tex_coords = &verts[i * 8 + 4];
       rects[i].tex_coords_len = 4;
     }
@@ -597,18 +589,20 @@ cogl_rectangle_with_texture_coords (float x_1,
 			            float tx_2,
 			            float ty_2)
 {
-  float verts[8];
+  const float position[4] = {x_1, y_1, x_2, y_2};
+  const float tex_coords[4] = {tx_1, ty_1, tx_2, ty_2};
+  struct _CoglMutiTexturedRect rect;
 
-  verts[0] = x_1;
-  verts[1] = y_1;
-  verts[2] = x_2;
-  verts[3] = y_2;
-  verts[4] = tx_1;
-  verts[5] = ty_1;
-  verts[6] = tx_2;
-  verts[7] = ty_2;
+  /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
+   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_rectangles_with_multitexture_coords.
+   */
 
-  cogl_rectangles_with_texture_coords (verts, 1);
+  rect.position = position;
+  rect.tex_coords = tex_coords;
+  rect.tex_coords_len = 4;
+
+  _cogl_rectangles_with_multitexture_coords (&rect, 1);
 }
 
 void
@@ -619,12 +613,15 @@ cogl_rectangle_with_multitexture_coords (float        x_1,
 			                 const float *user_tex_coords,
                                          int          user_tex_coords_len)
 {
+  const float position[4] = {x_1, y_1, x_2, y_2};
   struct _CoglMutiTexturedRect rect;
 
-  rect.x_1 = x_1;
-  rect.y_1 = y_1;
-  rect.x_2 = x_2;
-  rect.y_2 = y_2;
+  /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
+   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_rectangles_with_multitexture_coords.
+   */
+
+  rect.position = position;
   rect.tex_coords = user_tex_coords;
   rect.tex_coords_len = user_tex_coords_len;
 
@@ -637,9 +634,19 @@ cogl_rectangle (float x_1,
                 float x_2,
                 float y_2)
 {
-  cogl_rectangle_with_multitexture_coords (x_1, y_1,
-                                           x_2, y_2,
-                                           NULL, 0);
+  const float position[4] = {x_1, y_1, x_2, y_2};
+  struct _CoglMutiTexturedRect rect;
+
+  /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
+   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_rectangles_with_multitexture_coords.
+   */
+
+  rect.position = position;
+  rect.tex_coords = NULL;
+  rect.tex_coords_len = 0;
+
+  _cogl_rectangles_with_multitexture_coords (&rect, 1);
 }
 
 void
