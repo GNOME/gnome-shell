@@ -164,11 +164,7 @@ clutter_alpha_set_property (GObject      *object,
 			    const GValue *value, 
 			    GParamSpec   *pspec)
 {
-  ClutterAlpha *alpha;
-  ClutterAlphaPrivate *priv;
-
-  alpha = CLUTTER_ALPHA (object);
-  priv = alpha->priv;
+  ClutterAlpha *alpha = CLUTTER_ALPHA (object);
 
   switch (prop_id) 
     {
@@ -192,11 +188,7 @@ clutter_alpha_get_property (GObject    *object,
 			    GValue     *value, 
 			    GParamSpec *pspec)
 {
-  ClutterAlpha        *alpha;
-  ClutterAlphaPrivate *priv;
-
-  alpha = CLUTTER_ALPHA (object);
-  priv = alpha->priv;
+  ClutterAlphaPrivate *priv = CLUTTER_ALPHA (object)->priv;
 
   switch (prop_id) 
     {
