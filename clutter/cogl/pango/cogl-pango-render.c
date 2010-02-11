@@ -673,20 +673,17 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
                                                   gi->glyph);
 
 	  if (cache_value == NULL)
-            cogl_pango_renderer_draw_box (renderer,
-                                          x,
-                                          y,
-                                          PANGO_UNKNOWN_GLYPH_WIDTH,
-                                          PANGO_UNKNOWN_GLYPH_HEIGHT);
+            {
+              cogl_pango_renderer_draw_box (renderer,
+                                            x,
+                                            y,
+                                            PANGO_UNKNOWN_GLYPH_WIDTH,
+                                            PANGO_UNKNOWN_GLYPH_HEIGHT);
+            }
 	  else
 	    {
-              float width, height;
-
 	      x += (float)(cache_value->draw_x);
 	      y += (float)(cache_value->draw_y);
-
-              width = x + (float)(cache_value->draw_width);
-              height = y + (float)(cache_value->draw_height);
 
               cogl_pango_renderer_draw_glyph (priv, cache_value, x, y);
 	    }
