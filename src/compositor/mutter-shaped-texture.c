@@ -427,24 +427,34 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 	}
       else
 	{
-	  float coords[MAX_RECTS * 8];
+	  float coords[8];
+          float x1, y1, x2, y2;
+
 	  for (i = 0; i < n_rects; i++)
 	    {
 	      GdkRectangle *rect = &rects[i];
 
-	      coords[i * 8 + 0] = rect->x;
-	      coords[i * 8 + 1] = rect->y;
-	      coords[i * 8 + 2] = rect->x + rect->width;
-	      coords[i * 8 + 3] = rect->y + rect->height;
-	      coords[i * 8 + 4] = rect->x / (alloc.x2 - alloc.x1);
-	      coords[i * 8 + 5] = rect->y / (alloc.y2 - alloc.y1);
-	      coords[i * 8 + 6] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
-	      coords[i * 8 + 7] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
-	    }
+	      x1 = rect->x;
+	      y1 = rect->y;
+	      x2 = rect->x + rect->width;
+	      y2 = rect->y + rect->height;
+
+              coords[0] = rect->x / (alloc.x2 - alloc.x1);
+	      coords[1] = rect->y / (alloc.y2 - alloc.y1);
+	      coords[2] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
+	      coords[3] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
+
+              coords[4] = coords[0];
+              coords[5] = coords[1];
+              coords[6] = coords[2];
+              coords[7] = coords[3];
+
+              cogl_rectangle_with_multitexture_coords (x1, y1, x2, y2,
+                                                       &coords[0], 8);
+            }
 
 	  g_free (rects);
 
-	  cogl_rectangles_with_texture_coords (coords, n_rects);
 	  return;
 	}
     }
