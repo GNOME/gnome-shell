@@ -141,6 +141,8 @@ enum {
   PROP_MINI_ICON,
   PROP_DECORATED,
   PROP_FULLSCREEN,
+  PROP_MAXIMIZED_HORIZONTALLY,
+  PROP_MAXIMIZED_VERTICALLY,
   PROP_WINDOW_TYPE,
   PROP_USER_TIME,
   PROP_DEMANDS_ATTENTION,
@@ -207,6 +209,12 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_FULLSCREEN:
       g_value_set_boolean (value, win->fullscreen);
+      break;
+    case PROP_MAXIMIZED_HORIZONTALLY:
+      g_value_set_boolean (value, win->maximized_horizontally);
+      break;
+    case PROP_MAXIMIZED_VERTICALLY:
+      g_value_set_boolean (value, win->maximized_vertically);
       break;
     case PROP_WINDOW_TYPE:
       g_value_set_enum (value, win->type);
@@ -277,7 +285,7 @@ meta_window_class_init (MetaWindowClass *klass)
                                    PROP_DECORATED,
                                    g_param_spec_boolean ("decorated",
                                                          "Decorated",
-                                                         "Whether windos is decorated",
+                                                         "Whether window is decorated",
                                                          TRUE,
                                                          G_PARAM_READABLE));
 
@@ -285,7 +293,23 @@ meta_window_class_init (MetaWindowClass *klass)
                                    PROP_FULLSCREEN,
                                    g_param_spec_boolean ("fullscreen",
                                                          "Fullscreen",
-                                                         "Whether windos is fullscreened",
+                                                         "Whether window is fullscreened",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_MAXIMIZED_HORIZONTALLY,
+                                   g_param_spec_boolean ("maximized-horizontally",
+                                                         "Maximized horizontally",
+                                                         "Whether window is maximized horizontally",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_MAXIMIZED_VERTICALLY,
+                                   g_param_spec_boolean ("maximized-vertically",
+                                                         "Maximizing vertically",
+                                                         "Whether window is maximized vertically",
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -3027,6 +3051,11 @@ meta_window_maximize_internal (MetaWindow        *window,
 
   recalc_window_features (window);
   set_net_wm_state (window);
+
+  g_object_freeze_notify (G_OBJECT (window));
+  g_object_notify (G_OBJECT (window), "maximized-horizontally");
+  g_object_notify (G_OBJECT (window), "maximized-vertically");
+  g_object_thaw_notify (G_OBJECT (window));
 }
 
 void
@@ -3231,6 +3260,11 @@ meta_window_unmaximize (MetaWindow        *window,
       recalc_window_features (window);
       set_net_wm_state (window);
     }
+
+    g_object_freeze_notify (G_OBJECT (window));
+    g_object_notify (G_OBJECT (window), "maximized-horizontally");
+    g_object_notify (G_OBJECT (window), "maximized-vertically");
+    g_object_thaw_notify (G_OBJECT (window));
 }
 
 void
