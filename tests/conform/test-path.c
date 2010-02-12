@@ -46,7 +46,7 @@ static const ClutterPathNode path_nodes[] =
 static gboolean
 path_test_add_move_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_MOVE_TO;
   node.points[0].x = 1;
@@ -62,7 +62,7 @@ path_test_add_move_to (CallbackData *data)
 static gboolean
 path_test_add_line_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_LINE_TO;
   node.points[0].x = 3;
@@ -78,7 +78,7 @@ path_test_add_line_to (CallbackData *data)
 static gboolean
 path_test_add_curve_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_CURVE_TO;
   node.points[0].x = 5;
@@ -101,7 +101,7 @@ path_test_add_curve_to (CallbackData *data)
 static gboolean
 path_test_add_close (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_CLOSE;
 
@@ -115,7 +115,7 @@ path_test_add_close (CallbackData *data)
 static gboolean
 path_test_add_rel_move_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_REL_MOVE_TO;
   node.points[0].x = 11;
@@ -131,7 +131,7 @@ path_test_add_rel_move_to (CallbackData *data)
 static gboolean
 path_test_add_rel_line_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_REL_LINE_TO;
   node.points[0].x = 13;
@@ -147,7 +147,7 @@ path_test_add_rel_line_to (CallbackData *data)
 static gboolean
 path_test_add_rel_curve_to (CallbackData *data)
 {
-  ClutterPathNode node;
+  ClutterPathNode node = { 0, };
 
   node.type = CLUTTER_PATH_REL_CURVE_TO;
   node.points[0].x = 15;
