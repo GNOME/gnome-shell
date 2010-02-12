@@ -234,19 +234,23 @@ GenericWorkspacesView.prototype = {
         return [activeWorkspace.gridX, activeWorkspace.gridY];
     },
 
-    _setButtonSensitivity: function(button, sensitive) {
-        if (button == null)
-            return;
-        if (sensitive && !button.reactive) {
-            button.reactive = true;
-            button.opacity = 255;
-        } else if (!sensitive && button.reactive) {
-            button.reactive = false;
-            button.opacity = 85;
-        }
+    createControllerBar: function() {
+        throw new Error("Not implemented");
     },
 
-    createControllerBar: function() {
+    canAddWorkspace: function() {
+        return global.screen.n_workspaces < MAX_WORKSPACES;
+    },
+
+    addWorkspace: function() {
+        throw new Error("Not implemented");
+    },
+
+    canRemoveWorkspace: function() {
+        throw new Error("Not implemented");
+    },
+
+    removeWorkspace: function() {
         throw new Error("Not implemented");
     },
 
@@ -283,9 +287,6 @@ MosaicView.prototype = {
                              width + 2 * Workspace.FRAME_SIZE,
                              height + 2 * Workspace.FRAME_SIZE);
         this._workspaces[global.screen.get_active_workspace_index()].setSelected(true);
-
-        this._removeButton = null;
-        this._addButton = null;
     },
 
     // Assign grid positions to workspaces. We can't just do a simple
@@ -406,8 +407,6 @@ MosaicView.prototype = {
         // this has the side effect of removing the frame border
         let activeIndex = global.screen.get_active_workspace_index();
         this._workspaces[activeIndex].setSelected(true);
-
-        this._updateButtonsVisibility();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
@@ -422,45 +421,21 @@ MosaicView.prototype = {
     },
 
     createControllerBar: function() {
-        let actor = new St.BoxLayout({ 'pack-start': true });
-        let bin = new St.Bin();
-        let addButton = new St.Button({ style_class: "workspace-controls add" });
-        this._addButton = addButton;
-        addButton.connect('clicked', Lang.bind(this, this._addNewWorkspace));
-        addButton._delegate = addButton;
-        addButton._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
-            return this._acceptNewWorkspaceDrop(source, actor, x, y, time);
-        });
-        actor.add(bin, { x_align: St.Align.END });
-        bin.set_child(addButton);
-        bin.set_alignment(St.Align.END, St.Align.START);
-
-        bin = new St.Bin();
-        let removeButton = new St.Button({ style_class: "workspace-controls remove" });
-        this._removeButton = removeButton;
-        removeButton.connect('clicked', Lang.bind(this, function() {
-            if (this._workspaces.length <= 1)
-                return;
-            global.screen.remove_workspace(this._workspaces[this._workspaces.length - 1]._metaWorkspace, global.get_current_time());
-        }));
-        actor.add(bin, { expand: true, x_fill: true, x_align: St.Align.END });
-        this._updateButtonsVisibility();
-        bin.set_child(removeButton);
-        bin.set_alignment(St.Align.END, St.Align.START);
-
-        return actor;
+        return null;
     },
 
-    _updateButtonsVisibility: function() {
-        let canRemove = (global.screen.n_workspaces > 1);
-        let canAdd = (global.screen.n_workspaces < MAX_WORKSPACES);
-
-        this._setButtonSensitivity(this._removeButton, canRemove);
-        this._setButtonSensitivity(this._addButton, canAdd);
-    },
-
-    _addNewWorkspace: function() {
+    addWorkspace: function() {
         global.screen.append_new_workspace(false, global.get_current_time());
+    },
+
+    canRemoveWorkspace: function() {
+        return global.screen.n_workspaces > 1;
+    },
+
+    removeWorkspace: function() {
+        let last = this._workspaces.length - 1;
+        global.screen.remove_workspace(this._workspaces[last]._metaWorkspace,
+                                       global.get_current_time());
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
@@ -522,10 +497,8 @@ SingleView.prototype = {
 
         this.actor.style_class = "workspaces single";
         this._actor.set_clip(x, y, width, height);
-        this._addButton = null;
-        this._removeButton = null;
         this._indicatorsPanel = null;
-        this._indicatorsPanelWidth = null;
+        this._indicatorsPanelWidth = 0;
         this._scroll = null;
         this._lostWorkspaces = [];
         this._scrolling = false;
@@ -988,11 +961,10 @@ SingleView.prototype = {
     },
 
     createControllerBar: function() {
-        let panel = new St.BoxLayout({ style_class: 'single-view-controls',
+        let actor = new St.BoxLayout({ style_class: 'single-view-controls',
                                        pack_start: true,
                                        vertical: true });
 
-        let actor = new St.BoxLayout({ 'pack-start': true });
         let active = global.screen.get_active_workspace_index();
         let adj = new St.Adjustment({ value: active,
                                       lower: 0,
@@ -1024,34 +996,15 @@ SingleView.prototype = {
                 this._scrollToActive(true);
             }));
 
-        let addButton = new St.Button({ style_class: "workspace-controls add" });
-        this._addButton = addButton;
-        addButton.connect('clicked', Lang.bind(this, this._addNewWorkspace));
-        addButton._delegate = addButton;
-        addButton._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
-            return this._acceptNewWorkspaceDrop(source, actor, x, y, time);
-        });
-        actor.add(addButton, {x_align: St.Align.END, y_align: St.Align.START, 'y-fill': false});
-
-        let removeButton = new St.Button({ style_class: "workspace-controls remove" });
-        this._removeButton = removeButton;
-        removeButton.connect('clicked', Lang.bind(this, function() {
-            if (this._workspaces.length <= 1)
-                return;
-            let index = global.screen.get_active_workspace_index();
-            if (index == 0)
-                return;
-            global.screen.remove_workspace(this._workspaces[index]._metaWorkspace, global.get_current_time());
-        }));
-        actor.add(removeButton, { x_align: St.Align.END, y_align: St.Align.START, 'y-fill': false });
-        this._updatePanelVisibility();
-
-        panel.add(this._createPositionalIndicator(), {expand: true, 'x-fill': true, 'y-fill': true});
-        panel.add(this._scroll, { expand: true,
-                                  'x-fill': true,
-                                  'y-fill': false,
+        actor.add(this._createPositionalIndicator(), { expand: true,
+                                                       x_fill: true,
+                                                       y_fill: true });
+        actor.add(this._scroll, { expand: true,
+                                  x_fill: true,
+                                  y_fill: false,
                                   y_align: St.Align.START });
-        actor.add(panel, {expand: true, 'x-fill': true, 'y-fill': true});
+
+        this._updatePanelVisibility();
 
         return actor;
     },
@@ -1087,7 +1040,7 @@ SingleView.prototype = {
     },
 
     _fillPositionalIndicator: function() {
-        if (this._indicatorsPanel == null || this._indicatorsPanelWidth == null)
+        if (this._indicatorsPanel == null || this._indicatorsPanelWidth == 0)
             return;
         let width = this._indicatorsPanelWidth;
         this._indicatorsPanel.remove_all();
@@ -1154,13 +1107,11 @@ SingleView.prototype = {
         return actor;
     },
 
+    canRemoveWorkspace: function() {
+        return global.screen.get_active_workspace_index() != 0;
+    },
+
     _updatePanelVisibility: function() {
-        let canRemove = (global.screen.get_active_workspace_index() != 0);
-        let canAdd = (global.screen.n_workspaces < MAX_WORKSPACES);
-
-        this._setButtonSensitivity(this._removeButton, canRemove);
-        this._setButtonSensitivity(this._addButton, canAdd);
-
         let showSwitches = (global.screen.n_workspaces > 1);
         if (this._scroll != null) {
             if (showSwitches)
@@ -1177,34 +1128,46 @@ SingleView.prototype = {
         this._fillPositionalIndicator();
     },
 
-    _addNewWorkspace: function() {
+    addWorkspace: function() {
         let ws = global.screen.append_new_workspace(false,
                                                     global.get_current_time());
         ws.activate(global.get_current_time());
     },
 
+    removeWorkspace: function() {
+        let active = global.screen.get_active_workspace_index();
+        global.screen.remove_workspace(this._workspaces[active]._metaWorkspace,
+                                       global.get_current_time());
+    },
+
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        this._addNewWorkspace();
+        this.addWorkspace();
         return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
 
-function WorkspacesViewSwitch() {
+function WorkspacesControls() {
     this._init();
 }
 
-WorkspacesViewSwitch.prototype = {
+WorkspacesControls.prototype = {
     _init: function() {
+        this.actor = null;
         this._gconf = Shell.GConf.get_default();
         this._mosaicViewButton = null;
         this._singleViewButton = null;
-        this._controlsBar = null;
+        this._addButton = null;
+        this._removeButton = null;
 
         let view = this._gconf.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
         if (view in WorkspacesViewType)
             this._currentViewType = WorkspacesViewType[view];
         else
             this._currentViewType = WorkspacesViewType.SINGLE;
+
+        this._currentView = null;
+        this._nWorkspacesNotifyId = 0;
+        this._switchWorkspaceNotifyId = 0;
     },
 
     _setView: function(view) {
@@ -1221,58 +1184,130 @@ WorkspacesViewSwitch.prototype = {
     createCurrentWorkspaceView: function(width, height, x, y, animate) {
         switch (this._currentViewType) {
             case WorkspacesViewType.SINGLE:
-                return new SingleView(width, height, x, y, animate);
+                this._currentView = new SingleView(width, height, x, y, animate);
+                break;
             case WorkspacesViewType.GRID:
-                return new MosaicView(width, height, x, y, animate);
             default:
-                return new MosaicView(width, height, x, y, animate);
+                this._currentView = new MosaicView(width, height, x, y, animate);
+                break;
         }
+        this._updateControlsBar();
+        return this._currentView;
     },
 
-    createControlsBar: function() {
-        let actor = new St.BoxLayout();
+    _updateControlsBar: function() {
+        if (this.actor)
+            this.actor.remove_all();
+        else
+            this.actor = new St.BoxLayout({ style_class: 'workspaces-bar' });
 
-        this._mosaicViewButton = new St.Button({ style_class: "workspace-controls switch-mosaic" });
-        this._mosaicViewButton.set_toggle_mode(true);
+        // View switcher buttons
+        this._mosaicViewButton = new St.Button({ style_class: 'workspace-controls switch-mosaic',
+                                                 toggle_mode: true });
         this._mosaicViewButton.connect('clicked', Lang.bind(this, function() {
             this._setView(WorkspacesViewType.GRID);
         }));
-        actor.add(this._mosaicViewButton, {'y-fill' : false, 'y-align' : St.Align.START});
+        this.actor.add(this._mosaicViewButton, { y_fill: false,
+                                                 y_align: St.Align.START });
 
-        this._singleViewButton = new St.Button({ style_class: "workspace-controls switch-single" });
-        this._singleViewButton.set_toggle_mode(true);
+        this._singleViewButton = new St.Button({ style_class: 'workspace-controls switch-single',
+                                                 toggle_mode: true });
         this._singleViewButton.connect('clicked', Lang.bind(this, function() {
             this._setView(WorkspacesViewType.SINGLE);
         }));
-        actor.add(this._singleViewButton, {'y-fill' : false, 'y-align' : St.Align.START});
+        this.actor.add(this._singleViewButton, { y_fill: false,
+                                                 y_align: St.Align.START });
 
         if (this._currentViewType == WorkspacesViewType.GRID)
             this._mosaicViewButton.set_checked(true);
         else
             this._singleViewButton.set_checked(true);
 
+        // View specific controls
+        let bar = this._currentView.createControllerBar();
+        if (!bar)
+            bar = new St.Bin();
+
+        this.actor.add(bar, { expand: true,
+                              x_fill: true,
+                              y_fill: true,
+                              y_align: St.Align.MIDDLE,
+                              x_align: St.Align.START });
+
+        // Add/remove workspace buttons
+        this._removeButton = new St.Button({ style_class: 'workspace-controls remove' });
+        this._removeButton.connect('clicked', Lang.bind(this, function() {
+            this._currentView.removeWorkspace();
+        }));
+        this.actor.add(this._removeButton, { y_fill: false,
+                                             y_align: St.Align.START });
+
+        this._addButton = new St.Button({ style_class: 'workspace-controls add' });
+        this._addButton.connect('clicked', Lang.bind(this, function() {
+            this._currentView.addWorkspace()
+        }));
+        this._addButton._delegate = this._addButton;
+        this._addButton._delegate.acceptDrop = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                let view = this._currentView;
+                return view._acceptNewWorkspaceDrop(source, actor, x, y, time);
+            });
+        this.actor.add(this._addButton, { y_fill: false,
+                                          y_align: St.Align.START });
+
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
 
-        actor.connect('destroy', Lang.bind(this, function() {
-            this._controlsBar = null;
-            global.screen.disconnect(this._nWorkspacesNotifyId);
-        }));
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this._updateButtonSensitivity));
 
-        this._controlsBar = actor;
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
         this._workspacesChanged();
-        return actor;
+    },
+
+    _onDestroy: function() {
+        this.actor = null;
+        if (this._nWorkspacesNotifyId > 0) {
+            global.screen.disconnect(this._nWorkspacesNotifyId);
+            this._nWorkspacesNotifyId = 0;
+        }
+        if (this._switchWorkspaceNotifyId > 0) {
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+            this._switchWorkspaceNotifyId = 0;
+        }
+    },
+
+    _setButtonSensitivity: function(button, sensitive) {
+        if (button == null)
+            return;
+        button.reactive = sensitive;
+        button.opacity = sensitive ? 255 : 85;
+    },
+
+    _updateButtonSensitivity: function() {
+        this._setButtonSensitivity(this._addButton,
+                                   this._currentView.canAddWorkspace());
+        this._setButtonSensitivity(this._removeButton,
+                                   this._currentView.canRemoveWorkspace());
     },
 
     _workspacesChanged: function() {
-        if (this._controlsBar == null)
+        if (this.actor == null)
             return;
-        if (global.screen.n_workspaces == 1)
-            this._controlsBar.set_opacity(0);
-        else
-            this._controlsBar.set_opacity(255);
+
+        this._updateButtonSensitivity();
+
+        if (global.screen.n_workspaces == 1) {
+            this._mosaicViewButton.hide();
+            this._singleViewButton.hide();
+        } else {
+            this._mosaicViewButton.show();
+            this._singleViewButton.show();
+        }
     }
 };
 
-Signals.addSignalMethods(WorkspacesViewSwitch.prototype);
+Signals.addSignalMethods(WorkspacesControls.prototype);

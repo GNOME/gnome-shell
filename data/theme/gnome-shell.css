@@ -216,7 +216,7 @@ StTooltip {
     height: 48px;
 }
 
-.workspaces-bar, .workspaces-bar * {
+.workspaces-bar {
     spacing: 5px;
 }
 
