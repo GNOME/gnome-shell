@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2009 Intel Corporation.
+ * Copyright (C) 2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,7 @@
 #include "cogl-handle.h"
 #include "cogl-texture-driver.h"
 #include "cogl-atlas.h"
+#include "cogl-journal-private.h"
 
 #include <stdlib.h>
 
@@ -353,6 +354,13 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
       _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
       COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
+
+      /* Although this texture is being moved out of the atlas, we
+         don't need to flush the journal here because the contents of
+         the old image will still be left in the same position in the
+         atlas. The only way this would get overwritten would be if a
+         new texture was added, but in that case we flush the journal
+         anyway */
 
       cogl_handle_unref (atlas_tex->sub_texture);
 
@@ -961,6 +969,22 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
 
       return COGL_INVALID_HANDLE;
     }
+
+  /* We need to flush the journal when adding a new atlas texture for
+     two reasons:
+
+     1) If the atlas gets reorganized then any existing textures may
+        be moved so the coordinates in journal will be wrong.
+
+     2) We don't want to flush before migrating a texture out of the
+        atlas because we will potentially already be in the middle of
+        a flush to cause the migration. Therefore we rely on the old
+        contents of the texture still remaining in the atlas so that
+        any existing journal entries will still be valid. However once
+        the texture is migrated out the space would be free to be
+        reclaimed by this new texture. That won't matter if we flush
+        now */
+  _cogl_journal_flush ();
 
   /* We need to allocate the texture now because we need the pointer
      to set as the data for the rectangle in the atlas */
