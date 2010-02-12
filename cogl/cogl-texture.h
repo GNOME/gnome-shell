@@ -348,6 +348,10 @@ cogl_texture_set_region (CoglHandle       handle,
  * of the range [0,1] are used. They also do not work with
  * CoglVertexBuffers.
  *
+ * The sub texture will keep a reference to the full texture so you do
+ * not need to keep one separately if you only want to use the sub
+ * texture.
+ *
  * Return value: a #CoglHandle to the new texture.
  *
  * Since: 1.2

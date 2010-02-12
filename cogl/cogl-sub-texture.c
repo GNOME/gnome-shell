@@ -235,34 +235,51 @@ _cogl_sub_texture_set_wrap_mode_parameter (CoglTexture *tex,
 static void
 _cogl_sub_texture_free (CoglSubTexture *sub_tex)
 {
+  cogl_handle_unref (sub_tex->next_texture);
   cogl_handle_unref (sub_tex->full_texture);
 
   g_free (sub_tex);
 }
 
 CoglHandle
-_cogl_sub_texture_new (CoglHandle full_texture,
+_cogl_sub_texture_new (CoglHandle next_texture,
                        int sub_x, int sub_y,
                        int sub_width, int sub_height)
 {
+  CoglHandle      full_texture;
   CoglSubTexture *sub_tex;
   CoglTexture    *tex;
-  unsigned int    full_width, full_height;
+  unsigned int    next_width, next_height;
 
-  full_width = cogl_texture_get_width (full_texture);
-  full_height = cogl_texture_get_height (full_texture);
+  next_width = cogl_texture_get_width (next_texture);
+  next_height = cogl_texture_get_height (next_texture);
 
   /* The region must specify a non-zero subset of the full texture */
   g_return_val_if_fail (sub_x >= 0 && sub_y >= 0, COGL_INVALID_HANDLE);
   g_return_val_if_fail (sub_width > 0 && sub_height > 0, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (sub_x + sub_width <= full_width, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (sub_y + sub_height <= full_height, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (sub_x + sub_width <= next_width, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (sub_y + sub_height <= next_height, COGL_INVALID_HANDLE);
 
   sub_tex = g_new (CoglSubTexture, 1);
 
   tex = COGL_TEXTURE (sub_tex);
   tex->vtable = &cogl_sub_texture_vtable;
 
+  /* If the next texture is also a sub texture we can avoid one level
+     of indirection by referencing the full texture of that texture
+     instead. */
+  if (cogl_is_sub_texture (next_texture))
+    {
+      CoglSubTexture *other_sub_tex =
+        _cogl_sub_texture_pointer_from_handle (next_texture);
+      full_texture = other_sub_tex->full_texture;
+      sub_x += other_sub_tex->sub_x;
+      sub_y += other_sub_tex->sub_y;
+    }
+  else
+    full_texture = next_texture;
+
+  sub_tex->next_texture = cogl_handle_ref (next_texture);
   sub_tex->full_texture = cogl_handle_ref (full_texture);
 
   sub_tex->sub_x = sub_x;
