@@ -90,12 +90,11 @@ can be overridden:
      from the GL or GLES implementation, plus the eventual backend-specific
      features.
 
-  ClutterBackend::get_display_size
-  -- Use this function to retrieve the size of the display.
-
   ClutterBackend::create_context
   -- This function is used to create the drawing context to be used
-     by Clutter.
+     by Clutter. Clutter will call this function during the initialization
+     phase. A GL (or GLES) context must always be available after the
+     initialization, so that Cogl and Clutter can query it for capabilities.
 
   ClutterBackend::ensure_context
   -- This function is used to ensure that the backend drawing context
@@ -140,8 +139,9 @@ ClutterStage actor using the ClutterStageWindow implementation.
 In the ::realize virtual function the stage implementation should:
 
   - create a new native window handle
-  - if the backend doesn't have a drawing context (either GL or GLES),
-    create one and pass it to the backend
+  - ensure that there is a GL (or GLES) context
+  - make sure that the native window handle is compatible with
+    the GL (or GLES) context
 
 The return value should be TRUE if the stage implementation was successfully
 realized, and FALSE otherwise.
