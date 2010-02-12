@@ -668,3 +668,52 @@ StTooltip {
     height: 52px;
     background-image: url("corner-ripple.png");
 }
+
+/* Workspace Switcher */
+.workspace-switcher-container {
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(128,128,128,0.40);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.workspace-switcher {
+    background: transparent;
+    border: 0px;
+    border-radius: 0px;
+    padding: 4px;
+}
+
+.ws-switcher-active-left {
+    width: 98px;
+    height: 98px;
+    border: 0px;
+    background: rgba(255,255,255,0.5);
+    background-image: url("ws-switch-arrow-left.svg");
+    border-radius: 4px;
+}
+
+.ws-switcher-active-right {
+    width: 98px;
+    height: 98px;
+    border: 0px;
+    background: rgba(255,255,255,0.5);
+    background-image: url("ws-switch-arrow-right.svg");
+    border-radius: 4px;
+}
+
+.ws-switcher-spacer {
+    width: 0.5px;
+    height: 96px;
+    border: 0px;
+    background: transparent;
+    padding: 4px;
+}
+
+.ws-switcher-box {
+    width: 96px;
+    height: 96px;
+    border: 2px solid rgba(85,85,85,0.5);
+    background: transparent;
+    border-radius: 4px;
+}
