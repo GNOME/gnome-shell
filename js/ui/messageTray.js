@@ -189,6 +189,7 @@ Notification.prototype = {
     addBody: function(text, props) {
         let body = new St.Label();
         body.clutter_text.line_wrap = true;
+        body.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
         body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         text = text ? _cleanMarkup(text) : '';
@@ -345,7 +346,8 @@ MessageTray.prototype = {
         this.actor = new St.BoxLayout({ name: 'message-tray',
                                         reactive: true });
 
-        this._notificationBin = new St.Bin({ reactive: true });
+        this._notificationBin = new St.Bin({ reactive: true,
+                                             x_align: St.Align.MIDDLE });
         this.actor.add(this._notificationBin);
         this._notificationBin.hide();
         this._notificationQueue = [];
@@ -390,11 +392,8 @@ MessageTray.prototype = {
         this.actor.y = primary.y + primary.height - 1;
         this.actor.width = primary.width;
 
-        let third = Math.floor(this.actor.width / 3);
-        this._notificationBin.x = third;
-        this._notificationBin.width = third;
-        this._summaryBin.x = this.actor.width - third;
-        this._summaryBin.width = third;
+        this._notificationBin.x = this._summaryBin.x = 0;
+        this._notificationBin.width = this._summaryBin.width = primary.width;
     },
 
     contains: function(source) {
