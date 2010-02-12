@@ -36,7 +36,7 @@ function _cleanMarkup(text) {
 // @source: the notification's Source
 // @title: the title
 // @banner: the banner text
-// @overflow: whether or not to do banner overflow (see below)
+// @bannerBody: whether or not to promote the banner to the body on overflow
 //
 // Creates a notification. In banner mode, it will show
 // @source's icon, @title (in bold) and @banner, all on a single line
@@ -48,17 +48,18 @@ function _cleanMarkup(text) {
 // hiding the @banner) if the pointer is moved into it while it is
 // visible.
 //
-// If @overflow is %true, and @banner is too long to fit in the
-// single-line mode, then the notification will automatically call
-// addBody() to show the full text of @banner in expanded mode.
-function Notification(source, title, banner, overflow) {
-    this._init(source, title, banner, overflow);
+// If @bannerBody is %true, then @banner will also be used as the body
+// of the notification (as with addBody()) when the banner is expanded.
+// In this case, if @banner is too long to fit in the single-line mode,
+// the notification will be made expandable automatically.
+function Notification(source, title, banner, bannerBody) {
+    this._init(source, title, banner, bannerBody);
 }
 
 Notification.prototype = {
-    _init: function(source, title, banner, overflow) {
+    _init: function(source, title, banner, bannerBody) {
         this.source = source;
-        this._overflow = overflow;
+        this._bannerBody = bannerBody;
 
         this.actor = new St.Table({ name: 'notification' });
         this.update(title, banner, true);
@@ -116,8 +117,10 @@ Notification.prototype = {
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
         this._bannerBox.add_actor(this._titleLabel);
 
-        if (this._overflow)
-            this._overflowText = banner;
+        if (this._bannerBody)
+            this._bannerBodyText = banner;
+        else
+            this._bannerBodyText = null;
 
         this._bannerLabel = new St.Label();
         banner = banner ? _cleanMarkup(banner.replace('\n', '  ')) : '';
@@ -194,6 +197,11 @@ Notification.prototype = {
         this.addActor(body, props);
     },
 
+    _addBannerBody: function() {
+        this.addBody(this._bannerBodyText, { row: 1 });
+        this._bannerBodyText = null;
+    },
+
     // addAction:
     // @id: the action ID
     // @label: the label for the action's button
@@ -206,6 +214,9 @@ Notification.prototype = {
     // %action-invoked signal with @id as a parameter
     addAction: function(id, label) {
         if (!this._actionBox) {
+            if (this._bannerBodyText)
+                this._addBannerBody();
+
             let box = new St.BoxLayout({ name: 'notification-actions' });
             this.addActor(box, { x_expand: false,
                                  x_fill: false,
@@ -265,10 +276,8 @@ Notification.prototype = {
                 overflow = true;
         }
 
-        if (overflow && this._overflowText) {
-            this.addBody(this._overflowText, { row: 1 });
-            this._overflowText = null;
-        }
+        if (overflow && this._bannerBodyText)
+            this._addBannerBody();
     },
 
     popOut: function() {
