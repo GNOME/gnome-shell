@@ -72,8 +72,11 @@ cogl_end_gl
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
 COGL_TYPE_BLEND_STRING_ERROR
+COGL_TYPE_BUFFER_ACCESS
 COGL_TYPE_BUFFER_BIT
 COGL_TYPE_BUFFER_TARGET
+COGL_TYPE_BUFFER_UPDATE_HINT
+COGL_TYPE_BUFFER_USAGE_HINT
 COGL_TYPE_DEBUG_FLAGS
 COGL_TYPE_DRIVER_ERROR
 COGL_TYPE_FEATURE_FLAGS
@@ -335,9 +338,6 @@ cogl_angle_sin
 cogl_angle_tan
 
 <SUBSECTION Private>
-cogl_fixed_mul
-cogl_fixed_div
-cogl_fixed_mul_div
 cogl_double_to_fixed
 cogl_double_to_int
 cogl_double_to_unit
@@ -445,6 +445,7 @@ cogl_material_set_shininess
 cogl_material_get_shininess
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
+COGL_BLEND_STRING_ERROR
 CoglBlendStringError
 cogl_material_set_blend
 cogl_material_set_blend_constant
@@ -486,7 +487,6 @@ cogl_buffer_set_data
 <SUBSECTION>
 cogl_pixel_buffer_new
 cogl_pixel_buffer_new_for_size
-cogl_pixel_buffer_set_region
 cogl_is_pixel_buffer
 
 <SUBSECTION>
