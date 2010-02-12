@@ -91,6 +91,7 @@ cogl_material_new (void);
 
 /**
  * cogl_material_copy:
+ * @source: the handle for the material to copy
  *
  * Creates a new material handle with the configuration copied from the
  * source material.

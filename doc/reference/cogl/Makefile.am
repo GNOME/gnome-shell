@@ -53,6 +53,7 @@ CFILE_GLOB=\
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
+	cogl-atlas.h				\
 	cogl-atlas-texture-private.h 		\
 	cogl-bitmap-private.h 			\
 	cogl-blend-string.h 			\
@@ -74,7 +75,7 @@ IGNORE_HFILES=\
 	cogl-matrix-stack.h 			\
 	cogl-spans.h 				\
 	cogl-pixel-buffer-private.h		\
-	cogl-primitives.h 			\
+	cogl-profile.h				\
 	cogl-sub-texture-private.h		\
 	cogl-texture-2d-private.h		\
 	cogl-texture-2d-sliced-private.h 	\

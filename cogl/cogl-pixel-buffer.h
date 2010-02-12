@@ -95,6 +95,7 @@ cogl_pixel_buffer_new_for_size (unsigned int     width,
 gboolean
 cogl_is_pixel_buffer (CoglHandle handle);
 
+#if 0
 /*
  * cogl_pixel_buffer_set_region:
  * @buffer: the #CoglHandle of a pixel buffer
@@ -115,7 +116,6 @@ cogl_is_pixel_buffer (CoglHandle handle);
  * Since: 1.2
  * Stability: Unstable
  */
-#if 0
 gboolean
 cogl_pixel_buffer_set_region (CoglHandle    buffer,
                               guint8       *data,
