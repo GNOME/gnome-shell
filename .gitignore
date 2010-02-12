@@ -22,6 +22,7 @@ intltool-extract.in
 intltool-merge.in
 intltool-update.in
 libtool
+m4/
 omf.make
 po/*.gmo
 po/Makefile.in.in
