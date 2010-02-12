@@ -854,11 +854,17 @@ _cogl_destroy_texture_units (void)
 unsigned int
 _cogl_get_max_texture_image_units (void)
 {
-  GLint nb_texture_image_units;
+  _COGL_GET_CONTEXT (ctx, 0);
 
-  GE( glGetIntegerv(GL_MAX_TEXTURE_UNITS, &nb_texture_image_units) );
+  /* This function is called quite often so we cache the value to
+     avoid too many GL calls */
+  if (ctx->max_texture_units == -1)
+    {
+      ctx->max_texture_units = 1;
+      GE( glGetIntegerv (GL_MAX_TEXTURE_UNITS, &ctx->max_texture_units) );
+    }
 
-  return nb_texture_image_units;
+  return ctx->max_texture_units;
 }
 
 void

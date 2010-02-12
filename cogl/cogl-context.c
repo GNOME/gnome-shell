@@ -152,6 +152,8 @@ cogl_create_context (void)
 
   _context->current_pbo = NULL;
 
+  _context->max_texture_units = -1;
+
   return TRUE;
 }
 

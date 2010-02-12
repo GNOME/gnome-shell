@@ -126,6 +126,10 @@ typedef struct
      chances of getting the same colour during an animation */
   guint8            journal_rectangles_color;
 
+  /* Cached value for GL_MAX_TEXTURE_UNITS to avoid calling
+     glGetInteger too often */
+  GLint             max_texture_units;
+
   CoglContextDriver drv;
 } CoglContext;
 
