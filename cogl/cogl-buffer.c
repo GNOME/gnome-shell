@@ -129,18 +129,13 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
 #if defined (COGL_HAS_GLES)
 GLenum
-_cogl_buffer_hint_to_gl_enum (CoglBufferHint usage_hint)
+_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint usage_hint,
+                               CoglBufferUpdateHint update_hint)
 {
-  switch (usage_hint)
-    {
-    case COGL_BUFFER_HINT_STATIC_DRAW:
+  /* usage hint is always TEXTURE for now */
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
       return GL_STATIC_DRAW;
-    case COGL_BUFFER_HINT_DYNAMIC_DRAW:
-    case COGL_BUFFER_HINT_STREAM_DRAW:
-      return GL_DYNAMIC_DRAW;
-    default:
-      return GL_STATIC_DRAW;
-    }
+  return GL_DYNAMIC_DRAW;
 }
 #else
 GLenum
