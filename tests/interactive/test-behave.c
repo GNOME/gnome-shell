@@ -212,6 +212,10 @@ test_behave_main (int argc, char *argv[])
         p_behave = clutter_behaviour_path_new (alpha, path);
       }
       break;
+
+    default:
+      g_assert_not_reached ();
+      break;
     }
 
   clutter_behaviour_apply (p_behave, group);
