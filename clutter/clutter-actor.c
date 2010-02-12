@@ -6287,13 +6287,13 @@ clutter_actor_get_paint_opacity (ClutterActor *self)
 
   priv = self->priv;
 
-  if (priv->opacity_parent)
+  if (priv->opacity_parent != NULL)
     return clutter_actor_get_paint_opacity (priv->opacity_parent);
 
   parent = priv->parent_actor;
 
   /* Factor in the actual actors opacity with parents */
-  if (G_LIKELY (parent))
+  if (G_LIKELY (parent != NULL))
     {
       guint8 opacity = clutter_actor_get_paint_opacity (parent);
 
@@ -6301,7 +6301,7 @@ clutter_actor_get_paint_opacity (ClutterActor *self)
         return (opacity * priv->opacity) / 0xff;
     }
 
-  return clutter_actor_get_opacity (self);
+  return priv->opacity;
 }
 
 /**
