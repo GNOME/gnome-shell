@@ -36,6 +36,8 @@ struct _StThemeNode {
   int height;
   int min_width;
   int min_height;
+  int max_width;
+  int max_height;
 
   char *background_image;
   StBorderImage *border_image;
@@ -1120,6 +1122,8 @@ ensure_geometry (StThemeNode *node)
   node->height = -1;
   node->min_width = -1;
   node->min_height = -1;
+  node->max_width = -1;
+  node->max_height = -1;
 
   for (i = 0; i < node->n_properties; i++)
     {
@@ -1138,14 +1142,22 @@ ensure_geometry (StThemeNode *node)
         do_size_property (node, decl, &node->min_width);
       else if (strcmp (property_name, "min-height") == 0)
         do_size_property (node, decl, &node->min_height);
+      else if (strcmp (property_name, "max-width") == 0)
+        do_size_property (node, decl, &node->max_width);
+      else if (strcmp (property_name, "max-height") == 0)
+        do_size_property (node, decl, &node->max_height);
     }
 
   if (node->width != -1)
     {
       if (node->min_width == -1)
         node->min_width = node->width;
-      else if (node->width <= node->min_width)
+      else if (node->width < node->min_width)
         node->width = node->min_width;
+      if (node->max_width == -1)
+        node->max_width = node->width;
+      else if (node->width > node->max_width)
+        node->width = node->max_width;
     }
   else
     node->width = node->min_width;
@@ -1154,8 +1166,12 @@ ensure_geometry (StThemeNode *node)
     {
       if (node->min_height == -1)
         node->min_height = node->height;
-      else if (node->height <= node->min_height)
+      else if (node->height < node->min_height)
         node->height = node->min_height;
+      if (node->max_height == -1)
+        node->max_height = node->height;
+      else if (node->height > node->max_height)
+        node->height = node->max_height;
     }
   else
     node->height = node->min_height;
@@ -1219,6 +1235,24 @@ st_theme_node_get_min_height (StThemeNode *node)
 
   ensure_geometry (node);
   return node->min_height;
+}
+
+int
+st_theme_node_get_max_width (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->max_width;
+}
+
+int
+st_theme_node_get_max_height (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->max_height;
 }
 
 static GetFromTermResult
@@ -2255,9 +2289,10 @@ st_theme_node_adjust_for_height (StThemeNode  *node,
  * @for_height: (inout): the height to adjust
  *
  * Adjusts the minimum and natural width computed for an actor by
- * adding on the necessary space for borders and padding. This is a
- * convenience function meant to be called from the get_preferred_width()
- * method of a #ClutterActor subclass
+ * adding on the necessary space for borders and padding and taking
+ * into account any minimum or maximum width. This is a convenience
+ * function meant to be called from the get_preferred_width() method
+ * of a #ClutterActor subclass
  */
 void
 st_theme_node_adjust_preferred_width (StThemeNode  *node,
@@ -2283,6 +2318,8 @@ st_theme_node_adjust_preferred_width (StThemeNode  *node,
     {
       if (node->width != -1)
         *natural_width_p = node->width;
+      if (node->max_width != -1)
+        *natural_width_p = MIN (*natural_width_p, node->max_width);
       *natural_width_p += width_inc;
     }
 }
@@ -2319,9 +2356,10 @@ st_theme_node_adjust_for_width (StThemeNode  *node,
  * @for_height: (inout): the height to adjust
  *
  * Adjusts the minimum and natural height computed for an actor by
- * adding on the necessary space for borders and padding. This is a
- * convenience function meant to be called from the get_preferred_height()
- * method of a #ClutterActor subclass
+ * adding on the necessary space for borders and padding and taking
+ * into account any minimum or maximum height. This is a convenience
+ * function meant to be called from the get_preferred_height() method
+ * of a #ClutterActor subclass
  */
 void
 st_theme_node_adjust_preferred_height (StThemeNode  *node,
@@ -2346,6 +2384,8 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
     {
       if (node->height != -1)
         *natural_height_p = node->height;
+      if (node->max_height != -1)
+        *natural_height_p = MIN (*natural_height_p, node->max_height);
       *natural_height_p += height_inc;
     }
 }
@@ -2425,6 +2465,8 @@ st_theme_node_geometry_equal (StThemeNode *node,
   if (node->width != other->width || node->height != other->height)
     return FALSE;
   if (node->min_width != other->min_width || node->min_height != other->min_height)
+    return FALSE;
+  if (node->max_width != other->max_width || node->max_height != other->max_height)
     return FALSE;
 
   return TRUE;
