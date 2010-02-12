@@ -35,9 +35,22 @@ struct _CoglSubTexture
 {
   CoglTexture _parent;
 
+  /* This is the texture that was passed in to
+     _cogl_sub_texture_new. If this is also a sub texture then we will
+     use the full texture from that to render instead of making a
+     chain. However we want to preserve the next texture in case the
+     user is expecting us to keep a reference and also so that we can
+     later add a cogl_sub_texture_get_full_texture() function. */
+  CoglHandle  next_texture;
+  /* This is the texture that will actually be used to draw. It will
+     point to the end of the chain if a sub texture of a sub texture
+     is created */
   CoglHandle  full_texture;
 
-  /* The region represented by this sub-texture */
+  /* The region represented by this sub-texture. This is the region of
+     full_texture which won't necessarily be the same as the region
+     passed to _cogl_sub_texture_new if next_texture is actually
+     already a sub texture */
   int         sub_x;
   int         sub_y;
   int         sub_width;
@@ -48,7 +61,7 @@ GQuark
 _cogl_handle_sub_texture_get_type (void);
 
 CoglHandle
-_cogl_sub_texture_new (CoglHandle full_texture,
+_cogl_sub_texture_new (CoglHandle next_texture,
                        int sub_x,
                        int sub_y,
                        int sub_width,

@@ -67,10 +67,41 @@ create_source (void)
                                      data);
 }
 
+static CoglHandle
+create_test_texture (void)
+{
+  CoglHandle tex;
+  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
+  int x, y;
+
+  /* Create a texture that is 256x256 where the red component ranges
+     from 0->255 along the x axis and the green component ranges from
+     0->255 along the y axis. The blue and alpha components are all
+     255 */
+  for (y = 0; y < 256; y++)
+    for (x = 0; x < 256; x++)
+      {
+        *(p++) = x;
+        *(p++) = y;
+        *(p++) = 255;
+        *(p++) = 255;
+      }
+
+  tex = cogl_texture_new_from_data (256, 256, COGL_TEXTURE_NONE,
+                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                    COGL_PIXEL_FORMAT_ANY,
+                                    256 * 4,
+                                    data);
+
+  g_free (data);
+
+  return tex;
+}
+
 static void
 draw_frame (TestState *state)
 {
-  CoglHandle sub_texture;
+  CoglHandle full_texture, sub_texture, sub_sub_texture;
 
   /* Create a sub texture of the bottom right quarter of the texture */
   sub_texture = cogl_texture_new_from_sub_texture (state->tex,
@@ -98,6 +129,19 @@ draw_frame (TestState *state)
                                       0.0f, 0.0f,
                                       2.0f, 1.0f);
   cogl_handle_unref (sub_texture);
+
+  /* Create a sub texture of a sub texture */
+  full_texture = create_test_texture ();
+  sub_texture = cogl_texture_new_from_sub_texture (full_texture,
+                                                   20, 10, 30, 20);
+  sub_sub_texture = cogl_texture_new_from_sub_texture (sub_texture,
+                                                       20, 10, 10, 10);
+  cogl_set_source_texture (sub_sub_texture);
+  cogl_rectangle (0.0f, SOURCE_SIZE * 2.0f,
+                  10.0f, SOURCE_SIZE * 2.0f + 10.0f);
+  cogl_handle_unref (sub_sub_texture);
+  cogl_handle_unref (sub_texture);
+  cogl_handle_unref (full_texture);
 }
 
 static gboolean
@@ -129,37 +173,6 @@ validate_part (TestState *state,
       }
 
   return pass;
-}
-
-static CoglHandle
-create_test_texture (void)
-{
-  CoglHandle tex;
-  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
-  int x, y;
-
-  /* Create a texture that is 256x256 where the red component ranges
-     from 0->255 along the x axis and the green component ranges from
-     0->255 along the y axis. The blue and alpha components are all
-     255 */
-  for (y = 0; y < 256; y++)
-    for (x = 0; x < 256; x++)
-      {
-        *(p++) = x;
-        *(p++) = y;
-        *(p++) = 255;
-        *(p++) = 255;
-      }
-
-  tex = cogl_texture_new_from_data (256, 256, COGL_TEXTURE_NONE,
-                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                    COGL_PIXEL_FORMAT_ANY,
-                                    256 * 4,
-                                    data);
-
-  g_free (data);
-
-  return tex;
 }
 
 static guint8 *
@@ -206,6 +219,18 @@ validate_result (TestState *state)
                                SOURCE_SIZE,
                                DIVISION_WIDTH, DIVISION_HEIGHT,
                                corner_colors + division_num));
+
+  /* Sub sub texture */
+  p = texture_data = clutter_stage_read_pixels (CLUTTER_STAGE (state->stage),
+                                                0, SOURCE_SIZE * 2, 10, 10);
+  for (y = 0; y < 10; y++)
+    for (x = 0; x < 10; x++)
+      {
+        g_assert (*(p++) == x + 40);
+        g_assert (*(p++) == y + 20);
+        p += 2;
+      }
+  g_free (texture_data);
 
   /* Try reading back the texture data */
   sub_texture = cogl_texture_new_from_sub_texture (state->tex,
