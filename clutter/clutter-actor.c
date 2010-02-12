@@ -6261,6 +6261,40 @@ clutter_actor_set_opacity (ClutterActor *self,
     }
 }
 
+/*
+ * clutter_actor_get_paint_opacity_internal:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the absolute opacity of the actor, as it appears on the stage
+ *
+ * This function does not do type checks
+ *
+ * Return value: the absolute opacity of the actor
+ */
+static guint8
+clutter_actor_get_paint_opacity_internal (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterActor *parent;
+
+  if (priv->opacity_parent != NULL)
+    return clutter_actor_get_paint_opacity_internal (priv->opacity_parent);
+
+  parent = priv->parent_actor;
+
+  /* Factor in the actual actors opacity with parents */
+  if (parent != NULL)
+    {
+      guint8 opacity = clutter_actor_get_paint_opacity_internal (parent);
+
+      if (opacity != 0xff)
+        return (opacity * priv->opacity) / 0xff;
+    }
+
+  return priv->opacity;
+
+}
+
 /**
  * clutter_actor_get_paint_opacity:
  * @self: A #ClutterActor
@@ -6280,28 +6314,9 @@ clutter_actor_set_opacity (ClutterActor *self,
 guint8
 clutter_actor_get_paint_opacity (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
-  ClutterActor *parent;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  priv = self->priv;
-
-  if (priv->opacity_parent != NULL)
-    return clutter_actor_get_paint_opacity (priv->opacity_parent);
-
-  parent = priv->parent_actor;
-
-  /* Factor in the actual actors opacity with parents */
-  if (G_LIKELY (parent != NULL))
-    {
-      guint8 opacity = clutter_actor_get_paint_opacity (parent);
-
-      if (opacity != 0xff)
-        return (opacity * priv->opacity) / 0xff;
-    }
-
-  return priv->opacity;
+  return clutter_actor_get_paint_opacity_internal (self);
 }
 
 /**
