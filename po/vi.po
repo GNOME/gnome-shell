@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-13 21:09+0700\n"
-"PO-Revision-Date: 2010-02-12 21:21+0700\n"
+"PO-Revision-Date: 2010-02-13 22:01+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -39,15 +39,15 @@ msgstr "Cửa sổ mới"
 
 #: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
-msgstr "Loại khỏi Ưa thích"
+msgstr "Bỏ đánh dấu ưa thích"
 
 #: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
-msgstr "Thêm vào Ưa thích"
+msgstr "Đánh dấu ưa thích"
 
 #: ../js/ui/appDisplay.js:1006
 msgid "Drag here to add favorites"
-msgstr "Kéo vào đây để thêm vào Ưa thích"
+msgstr "Kéo vào đây để thêm vào danh mục ưa thích"
 
 #: ../js/ui/dash.js:241
 msgid "Find..."
