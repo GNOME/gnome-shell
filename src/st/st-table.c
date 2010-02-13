@@ -278,120 +278,6 @@ st_table_dispose (GObject *gobject)
   G_OBJECT_CLASS (st_table_parent_class)->dispose (gobject);
 }
 
-#define CLAMP_TO_PIXEL(x) ((float)((int)(x)))
-
-/* Utility function to modify a child allocation box with respect to the
- * x/y-fill child properties. Expects childbox to contain the available
- * allocation space.
- */
-static void
-st_table_allocate_fill (ClutterActor    *child,
-                        ClutterActorBox *childbox,
-                        gdouble          x_align,
-                        gdouble          y_align,
-                        gboolean         x_fill,
-                        gboolean         y_fill,
-                        gboolean         ltr)
-{
-  gfloat natural_width, natural_height;
-  gfloat min_width, min_height;
-  gfloat child_width, child_height;
-  gfloat available_width, available_height;
-  ClutterRequestMode request;
-  ClutterActorBox allocation = { 0, };
-
-  available_width  = childbox->x2 - childbox->x1;
-  available_height = childbox->y2 - childbox->y1;
-
-  if (available_width < 0)
-    available_width = 0;
-
-  if (available_height < 0)
-    available_height = 0;
-
-  if (x_fill)
-    {
-      if (ltr)
-        {
-          allocation.x1 = childbox->x1;
-          allocation.x2 = (int)(allocation.x1 + available_width);
-        }
-      else
-        {
-          allocation.x2 = childbox->x2;
-          allocation.x1 = (int)(allocation.x2 - available_width);
-        }
-    }
-
-  if (y_fill)
-    {
-      allocation.y1 = childbox->y1;
-      allocation.y2 = (int)(allocation.y1 + available_height);
-    }
-
-  /* if we are filling horizontally and vertically then we're done */
-  if (x_fill && y_fill)
-    {
-      *childbox = allocation;
-      return;
-    }
-
-  request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
-  g_object_get (G_OBJECT (child), "request-mode", &request, NULL);
-
-  if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
-    {
-      clutter_actor_get_preferred_width (child, available_height,
-                                         &min_width,
-                                         &natural_width);
-
-      child_width = CLAMP (natural_width, min_width, available_width);
-
-      clutter_actor_get_preferred_height (child, child_width,
-                                          &min_height,
-                                          &natural_height);
-
-      child_height = CLAMP (natural_height, min_height, available_height);
-    }
-  else
-    {
-      clutter_actor_get_preferred_height (child, available_width,
-                                          &min_height,
-                                          &natural_height);
-
-      child_height = CLAMP (natural_height, min_height, available_height);
-
-      clutter_actor_get_preferred_width (child, child_height,
-                                         &min_width,
-                                         &natural_width);
-
-      child_width = CLAMP (natural_width, min_width, available_width);
-    }
-
-  if (!x_fill)
-    {
-      if (ltr)
-        {
-          allocation.x1 = childbox->x1 + (int)((available_width - child_width) * x_align);
-          allocation.x2 = allocation.x1 + (int) child_width;
-        }
-      else
-        {
-          allocation.x2 = childbox->x2 - (int)((available_width - child_width) * x_align);
-          allocation.x1 = allocation.x2 - (int) child_width;
-        }
-    }
-
-  if (!y_fill)
-    {
-      allocation.y1 = childbox->y1 + (int)((available_height - child_height) * y_align);
-      allocation.y2 = allocation.y1 + (int) child_height;
-    }
-
-  *childbox = allocation;
-
-}
-
 static void
 st_table_homogeneous_allocate (ClutterActor          *self,
                                const ClutterActorBox *content_box,
@@ -453,7 +339,8 @@ st_table_homogeneous_allocate (ClutterActor          *self,
       childbox.y1 = content_box->y1 + (row_height + row_spacing) * row;
       childbox.y2 = childbox.y1 + (row_height * row_span) + (row_spacing * (row_span - 1));
 
-      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill, ltr);
+      _st_allocate_fill (ST_WIDGET (self), child, &childbox,
+                         x_align, y_align, x_fill, y_fill);
 
       clutter_actor_allocate (child, &childbox, flags);
     }
@@ -510,7 +397,7 @@ st_table_calculate_col_widths (StTable *table,
       if (x_expand)
         is_expand_col[col] = TRUE;
 
-      clutter_actor_get_preferred_width (child, -1, &w_min, &w_pref);
+      _st_actor_get_preferred_width (child, -1, meta->y_fill, &w_min, &w_pref);
       if (col_span == 1 && w_pref > pref_widths[col])
         {
           pref_widths[col] = w_pref;
@@ -630,11 +517,12 @@ st_table_calculate_row_heights (StTable *table,
       if (!meta->x_fill)
         {
           gfloat width;
-          clutter_actor_get_preferred_width (child, -1, NULL, &width);
+          _st_actor_get_preferred_width (child, -1, meta->y_fill, NULL, &width);
           cell_width = MIN (cell_width, width);
         }
 
-      clutter_actor_get_preferred_height (child, cell_width, &h_min, &h_pref);
+      _st_actor_get_preferred_height (child, cell_width, meta->x_fill,
+                                      &h_min, &h_pref);
 
       if (row_span == 1 && h_pref > pref_heights[row])
         {
@@ -874,7 +762,8 @@ st_table_preferred_allocate (ClutterActor          *self,
       childbox.y2 = (float) MAX (0, child_y + row_height);
 
 
-      st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill, ltr);
+      _st_allocate_fill (ST_WIDGET (self), child, &childbox,
+                         x_align, y_align, x_fill, y_fill);
 
       clutter_actor_allocate (child, &childbox, flags);
     }
@@ -954,7 +843,7 @@ st_table_get_preferred_width (ClutterActor *self,
       col = meta->col;
       col_span = meta->col_span;
 
-      clutter_actor_get_preferred_width (child, -1, &w_min, &w_pref);
+      _st_actor_get_preferred_width (child, -1, meta->y_fill, &w_min, &w_pref);
 
       if (col_span == 1 && w_min > min_widths[col])
         min_widths[col] = w_min;
@@ -1041,8 +930,8 @@ st_table_get_preferred_height (ClutterActor *self,
       for (i = 0; i < col_span && col + i < priv->n_cols; i++)
         cell_width += min_widths[col + i];
 
-      clutter_actor_get_preferred_height (child,
-                                          (float) cell_width, &min, &pref);
+      _st_actor_get_preferred_height (child, (float) cell_width, meta->x_fill,
+                                      &min, &pref);
 
       if (row_span == 1 && min > min_heights[row])
         min_heights[row] = min;

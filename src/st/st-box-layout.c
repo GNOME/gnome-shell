@@ -528,6 +528,7 @@ get_content_preferred_width (StBoxLayout *self,
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
+      gboolean child_fill;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -540,18 +541,20 @@ get_content_preferred_width (StBoxLayout *self,
           continue;
         }
 
-      clutter_actor_get_preferred_width (child,
-                                         (!priv->is_vertical) ? for_height : -1,
-                                         &child_min,
-                                         &child_nat);
-
       if (priv->is_vertical)
         {
+          _st_actor_get_preferred_width (child, -1, FALSE,
+                                         &child_min, &child_nat);
           min_width = MAX (child_min, min_width);
           natural_width = MAX (child_nat, natural_width);
         }
       else
         {
+          clutter_container_child_get ((ClutterContainer*) self, child,
+                                       "y-fill", &child_fill,
+                                       NULL);
+          _st_actor_get_preferred_width (child, for_height, child_fill,
+                                         &child_min, &child_nat);
           min_width += child_min;
           natural_width += child_nat;
         }
@@ -606,6 +609,7 @@ get_content_preferred_height (StBoxLayout *self,
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
+      gboolean child_fill = FALSE;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -618,10 +622,17 @@ get_content_preferred_height (StBoxLayout *self,
           continue;
         }
 
-      clutter_actor_get_preferred_height (child,
-                                          (priv->is_vertical) ? for_width : -1,
-                                          &child_min,
-                                          &child_nat);
+      if (priv->is_vertical)
+        {
+          clutter_container_child_get ((ClutterContainer*) self, child,
+                                       "x-fill", &child_fill,
+                                       NULL);
+        }
+      _st_actor_get_preferred_height (child,
+                                      (priv->is_vertical) ? for_width : -1,
+                                      child_fill,
+                                      &child_min,
+                                      &child_nat);
 
       if (!priv->is_vertical)
         {
@@ -713,6 +724,7 @@ compute_shrinks (StBoxLayout *self,
     {
       ClutterActor *child = l->data;
       gfloat child_min, child_nat;
+      gboolean child_fill;
       gboolean fixed;
 
       child = (ClutterActor*) l->data;
@@ -722,13 +734,23 @@ compute_shrinks (StBoxLayout *self,
       if (CLUTTER_ACTOR_IS_VISIBLE (child) && !fixed)
         {
           if (priv->is_vertical)
-            clutter_actor_get_preferred_height (child,
-                                                for_length,
-                                                &child_min, &child_nat);
+            {
+              clutter_container_child_get ((ClutterContainer*) self, child,
+                                           "x-fill", &child_fill,
+                                           NULL);
+              _st_actor_get_preferred_height (child,
+                                              for_length, child_fill,
+                                              &child_min, &child_nat);
+            }
           else
-            clutter_actor_get_preferred_width (child,
-                                               for_length,
-                                               &child_min, &child_nat);
+            {
+              clutter_container_child_get ((ClutterContainer*) self, child,
+                                           "y-fill", &child_fill,
+                                           NULL);
+              _st_actor_get_preferred_width (child,
+                                             for_length, child_fill,
+                                             &child_min, &child_nat);
+            }
 
           shrinks[i].shrink_amount = MAX (0., child_nat - child_min);
           n_possible_shrink_children++;
@@ -943,13 +965,13 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       if (priv->is_vertical)
         {
-          clutter_actor_get_preferred_height (child, avail_width,
-                                              &child_min, &child_nat);
+          _st_actor_get_preferred_height (child, avail_width, xfill,
+                                          &child_min, &child_nat);
         }
       else
         {
-          clutter_actor_get_preferred_width (child, avail_height,
-                                             &child_min, &child_nat);
+          _st_actor_get_preferred_width (child, avail_height, yfill,
+                                         &child_min, &child_nat);
         }
 
       child_allocated = child_nat;
@@ -973,7 +995,8 @@ st_box_layout_allocate (ClutterActor          *actor,
           else
             child_box.x2 = content_box.x2;
 
-          _st_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
+          _st_allocate_fill (ST_WIDGET (actor), child, &child_box,
+                             xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
 
         }
@@ -996,7 +1019,8 @@ st_box_layout_allocate (ClutterActor          *actor,
           else
             child_box.y2 = content_box.y2;
 
-          _st_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
+          _st_allocate_fill (ST_WIDGET (actor), child, &child_box,
+                             xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
         }
 

@@ -37,9 +37,9 @@ shell_slicer_get_preferred_width (ClutterActor *self,
     }
   else
     {
-      clutter_actor_get_preferred_width (child, for_height,
-                                         NULL,
-                                         natural_width_p);
+      _st_actor_get_preferred_width (child, for_height, FALSE,
+                                     NULL,
+                                     natural_width_p);
     }
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
@@ -66,9 +66,9 @@ shell_slicer_get_preferred_height (ClutterActor *self,
     }
   else
     {
-      clutter_actor_get_preferred_height (child, for_width,
-                                          NULL,
-                                          natural_height_p);
+      _st_actor_get_preferred_height (child, for_width, FALSE,
+                                      NULL,
+                                      natural_height_p);
     }
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
@@ -97,14 +97,17 @@ shell_slicer_paint_child (ShellSlicer *self)
   ClutterActorBox self_box;
   ClutterActorBox child_box;
   float width, height, child_width, child_height;
-  double x_align, y_align;
+  StAlign x_align, y_align;
+  double x_align_factor, y_align_factor;
 
   child = st_bin_get_child (ST_BIN (self));
 
   if (!child)
     return;
 
-  _st_bin_get_align_factors (ST_BIN (self), &x_align, &y_align);
+  st_bin_get_alignment (ST_BIN (self), &x_align, &y_align);
+  _st_get_align_factors (ST_WIDGET (self), x_align, y_align,
+                         &x_align_factor, &y_align_factor);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self), &self_box);
   clutter_actor_get_allocation_box (child, &child_box);
@@ -117,8 +120,8 @@ shell_slicer_paint_child (ShellSlicer *self)
   cogl_push_matrix ();
 
   cogl_clip_push (0, 0, width, height);
-  cogl_translate ((int)(0.5 + x_align * (width - child_width)),
-                  (int)(0.5 + y_align * (height - child_height)),
+  cogl_translate ((int)(0.5 + x_align_factor * (width - child_width)),
+                  (int)(0.5 + y_align_factor * (height - child_height)),
                   0);
 
   clutter_actor_paint (child);

@@ -71,59 +71,6 @@ G_DEFINE_TYPE_WITH_CODE (StBin, st_bin, ST_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init));
 
-void
-_st_bin_get_align_factors (StBin   *bin,
-                           gdouble *x_align,
-                           gdouble *y_align)
-{
-  StBinPrivate *priv = bin->priv;
-  gdouble factor;
-
-  switch (priv->x_align)
-    {
-    case ST_ALIGN_START:
-      factor = 0.0;
-      break;
-
-    case ST_ALIGN_MIDDLE:
-      factor = 0.5;
-      break;
-
-    case ST_ALIGN_END:
-      factor = 1.0;
-      break;
-
-    default:
-      factor = 0.0;
-      break;
-    }
-
-  if (x_align)
-    *x_align = factor;
-
-  switch (priv->y_align)
-    {
-    case ST_ALIGN_START:
-      factor = 0.0;
-      break;
-
-    case ST_ALIGN_MIDDLE:
-      factor = 0.5;
-      break;
-
-    case ST_ALIGN_END:
-      factor = 1.0;
-      break;
-
-    default:
-      factor = 0.0;
-      break;
-    }
-
-  if (y_align)
-    *y_align = factor;
-}
-
 static void
 st_bin_add (ClutterContainer *container,
             ClutterActor     *actor)
@@ -199,92 +146,13 @@ st_bin_allocate (ClutterActor          *self,
   if (priv->child)
     {
       StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-      gfloat natural_width, natural_height;
-      gfloat min_width, min_height;
-      gfloat child_width, child_height;
-      gfloat available_width, available_height;
-      ClutterRequestMode request;
-      ClutterActorBox content_box;
-      ClutterActorBox allocation = { 0, };
-      gdouble x_align, y_align;
+      ClutterActorBox childbox;
 
-      st_theme_node_get_content_box (theme_node, box, &content_box);
-
-      _st_bin_get_align_factors (ST_BIN (self), &x_align, &y_align);
-
-      available_width  = content_box.x2 - content_box.x1;
-      available_height = content_box.y2 - content_box.y1;
-
-      if (available_width < 0)
-        available_width = 0;
-
-      if (available_height < 0)
-        available_height = 0;
-
-      if (priv->x_fill)
-        {
-          allocation.x1 = (int) content_box.x1;
-          allocation.x2 = (int) content_box.x2;
-        }
-
-      if (priv->y_fill)
-        {
-          allocation.y1 = (int) content_box.y1;
-          allocation.y2 = (int) content_box.y2;
-        }
-
-      /* if we are filling horizontally and vertically then we're done */
-      if (priv->x_fill && priv->y_fill)
-        {
-          clutter_actor_allocate (priv->child, &allocation, flags);
-          return;
-        }
-
-      request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
-      g_object_get (G_OBJECT (priv->child), "request-mode", &request, NULL);
-
-      if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
-        {
-          clutter_actor_get_preferred_width (priv->child, available_height,
-                                             &min_width,
-                                             &natural_width);
-
-          child_width = CLAMP (natural_width, min_width, available_width);
-
-          clutter_actor_get_preferred_height (priv->child, child_width,
-                                              &min_height,
-                                              &natural_height);
-
-          child_height = CLAMP (natural_height, min_height, available_height);
-        }
-      else
-        {
-          clutter_actor_get_preferred_height (priv->child, available_width,
-                                              &min_height,
-                                              &natural_height);
-
-          child_height = CLAMP (natural_height, min_height, available_height);
-
-          clutter_actor_get_preferred_width (priv->child, child_height,
-                                             &min_width,
-                                             &natural_width);
-
-          child_width = CLAMP (natural_width, min_width, available_width);
-        }
-
-      if (!priv->x_fill)
-        {
-          allocation.x1 = content_box.x1 + (int) ((available_width - child_width) * x_align);
-          allocation.x2 = allocation.x1 + child_width;
-        }
-
-      if (!priv->y_fill)
-        {
-          allocation.y1 = content_box.y1 + (int) ((available_height - child_height) * y_align);
-          allocation.y2 = allocation.y1 + child_height;
-        }
-
-      clutter_actor_allocate (priv->child, &allocation, flags);
+      st_theme_node_get_content_box (theme_node, box, &childbox);
+      _st_allocate_fill (ST_WIDGET (self), priv->child, &childbox,
+                         priv->x_align, priv->y_align,
+                         priv->x_fill, priv->y_fill);
+      clutter_actor_allocate (priv->child, &childbox, flags);
     }
 }
 
@@ -309,9 +177,9 @@ st_bin_get_preferred_width (ClutterActor *self,
     }
   else
     {
-      clutter_actor_get_preferred_width (priv->child, for_height,
-                                         min_width_p,
-                                         natural_width_p);
+      _st_actor_get_preferred_width (priv->child, for_height, priv->y_fill,
+                                     min_width_p,
+                                     natural_width_p);
     }
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
@@ -338,9 +206,9 @@ st_bin_get_preferred_height (ClutterActor *self,
     }
   else
     {
-      clutter_actor_get_preferred_height (priv->child, for_width,
-                                          min_height_p,
-                                          natural_height_p);
+      _st_actor_get_preferred_height (priv->child, for_width, priv->x_fill,
+                                      min_height_p,
+                                      natural_height_p);
     }
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);

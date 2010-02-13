@@ -44,11 +44,25 @@ G_END_DECLS
 
 ClutterActor *_st_widget_get_dnd_clone (StWidget *widget);
 
-void _st_bin_get_align_factors (StBin   *bin,
-                                gdouble *x_align,
-                                gdouble *y_align);
+void _st_get_align_factors (StWidget *widget,
+                            StAlign   x_align,
+                            StAlign   y_align,
+                            gdouble  *x_align_out,
+                            gdouble  *y_align_out);
 
-void _st_allocate_fill (ClutterActor    *child,
+void _st_actor_get_preferred_width  (ClutterActor *actor,
+                                     gfloat        for_height,
+                                     gboolean      y_fill,
+                                     gfloat       *min_width_p,
+                                     gfloat       *natural_width_p);
+void _st_actor_get_preferred_height (ClutterActor *actor,
+                                     gfloat        for_width,
+                                     gboolean      x_fill,
+                                     gfloat       *min_height_p,
+                                     gfloat       *natural_height_p);
+
+void _st_allocate_fill (StWidget        *parent,
+                        ClutterActor    *child,
                         ClutterActorBox *childbox,
                         StAlign          x_align,
                         StAlign          y_align,
