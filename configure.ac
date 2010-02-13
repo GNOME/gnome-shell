@@ -8,6 +8,7 @@ AC_CONFIG_AUX_DIR([config])
 
 AM_INIT_AUTOMAKE([1.10 dist-bzip2 no-dist-gzip foreign])
 AM_MAINTAINER_MODE
+
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 # Checks for programs.
@@ -19,27 +20,14 @@ AM_PROG_CC_C_O
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
-# Checks for header files.
-AC_PATH_X
-AC_CHECK_HEADERS([fcntl.h float.h libintl.h paths.h stdlib.h string.h unistd.h])
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_C_INLINE
-AC_TYPE_SIZE_T
-AC_TYPE_UID_T
-
-# Checks for library functions.
-AC_CHECK_FUNCS([floor getusershell memset strchr strdup strrchr strstr strtol strtoul])
-
-# i18n
-IT_PROG_INTLTOOL([0.40.6])
-AC_SUBST([GETTEXT_PACKAGE], [gnome-shell])
-AM_GNU_GETTEXT_VERSION([0.17])
+GETTEXT_PACKAGE=gnome-shell
+IT_PROG_INTLTOOL(0.26)
 AM_GLIB_GNU_GETTEXT
-AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [The prefix for our gettext translation domains.])
+AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [The prefix for our gettext translation domain])
 
 PKG_PROG_PKG_CONFIG([0.22])
 
+# GConf stuff
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 AM_GCONF_SOURCE_2
 
