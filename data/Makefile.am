@@ -37,7 +37,9 @@ dist_theme_DATA =				\
 	theme/single-view-active.svg          \
 	theme/single-view.svg          \
 	theme/switch-scroll-hhandle.svg		\
-	theme/switch-scroll-hhandle-hover.svg
+	theme/switch-scroll-hhandle-hover.svg		\
+	theme/ws-switch-arrow-left.svg		\
+	theme/ws-switch-arrow-right.svg
 
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@

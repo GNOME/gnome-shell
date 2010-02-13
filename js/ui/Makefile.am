@@ -31,4 +31,5 @@ dist_jsui_DATA =		\
 	widgetBox.js		\
 	windowManager.js	\
 	workspacesView.js	\
+	workspaceSwitcherPopup.js	\
 	workspace.js
