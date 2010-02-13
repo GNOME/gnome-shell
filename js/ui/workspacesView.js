@@ -25,10 +25,13 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
+// The values here are also used for gconf, and the key and value
+// names must match
 const WorkspacesViewType = {
-    SINGLE: 0,
-    MOSAIC: 1
+    SINGLE: 'single',
+    GRID:   'grid'
 };
+const WORKSPACES_VIEW_KEY = 'overview/workspaces_view';
 
 function GenericWorkspacesView(width, height, x, y, animate) {
     this._init(width, height, x, y, animate);
@@ -950,24 +953,27 @@ function WorkspacesViewSwitch() {
 }
 
 WorkspacesViewSwitch.prototype = {
-    VIEW_KEY: 'view',
-
     _init: function() {
         this._gconf = Shell.GConf.get_default();
         this._mosaicViewButton = null;
         this._singleViewButton = null;
-        this._currentViewType = this._gconf.get_int(this.VIEW_KEY);
         this._controlsBar = null;
+
+        let view = this._gconf.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
+        if (view in WorkspacesViewType)
+            this._currentViewType = WorkspacesViewType[view];
+        else
+            this._currentViewType = WorkspacesViewType.SINGLE;
     },
 
     _setView: function(view) {
-        this._mosaicViewButton.set_checked(WorkspacesViewType.MOSAIC == view);
+        this._mosaicViewButton.set_checked(WorkspacesViewType.GRID == view);
         this._singleViewButton.set_checked(WorkspacesViewType.SINGLE == view);
 
         if (this._currentViewType == view)
             return;
         this._currentViewType = view;
-        this._gconf.set_int(this.VIEW_KEY, view);
+        this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
         this.emit('view-changed');
     },
 
@@ -975,7 +981,7 @@ WorkspacesViewSwitch.prototype = {
         switch (this._currentViewType) {
             case WorkspacesViewType.SINGLE:
                 return new SingleView(width, height, x, y, animate);
-            case WorkspacesViewType.MOSAIC:
+            case WorkspacesViewType.GRID:
                 return new MosaicView(width, height, x, y, animate);
             default:
                 return new MosaicView(width, height, x, y, animate);
@@ -988,7 +994,7 @@ WorkspacesViewSwitch.prototype = {
         this._mosaicViewButton = new St.Button({ style_class: "workspace-controls switch-mosaic" });
         this._mosaicViewButton.set_toggle_mode(true);
         this._mosaicViewButton.connect('clicked', Lang.bind(this, function() {
-            this._setView(WorkspacesViewType.MOSAIC);
+            this._setView(WorkspacesViewType.GRID);
         }));
         actor.add(this._mosaicViewButton, {'y-fill' : false, 'y-align' : St.Align.START});
 
@@ -999,7 +1005,7 @@ WorkspacesViewSwitch.prototype = {
         }));
         actor.add(this._singleViewButton, {'y-fill' : false, 'y-align' : St.Align.START});
 
-        if (this._currentViewType == WorkspacesViewType.MOSAIC)
+        if (this._currentViewType == WorkspacesViewType.GRID)
             this._mosaicViewButton.set_checked(true);
         else
             this._singleViewButton.set_checked(true);

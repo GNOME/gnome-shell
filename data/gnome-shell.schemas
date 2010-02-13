@@ -164,6 +164,21 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/overview/workspaces_view</key>
+        <applyto>/desktop/gnome/shell/overview/workspaces_view</applyto>
+        <owner>gnome-shell</owner>
+        <type>string</type>
+        <default>single</default>
+        <locale name="C">
+          <short>Overview workspace view mode</short>
+          <long>
+            The selected workspace view mode in the overview.
+            Supported values are "single" and "grid".
+          </long>
+        </locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>
