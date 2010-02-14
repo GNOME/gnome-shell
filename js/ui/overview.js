@@ -201,8 +201,7 @@ Overview.prototype = {
         this.infoBar = new InfoBar();
         this._group.add_actor(this.infoBar.actor);
 
-        this._workspacesControls = new WorkspacesView.WorkspacesControls();
-        this._workspacesControls.connect('view-changed', Lang.bind(this, this._onViewChanged));
+        this._workspacesManager = null;
 
         this.visible = false;
         this.animationInProgress = false;
@@ -258,13 +257,8 @@ Overview.prototype = {
     _onViewChanged: function() {
         if (!this.visible)
             return;
-        // Remove old workspacesView
-        this._workspaces.hide();
-        this._group.remove_actor(this._workspaces.actor);
-        this._workspaces.destroy();
 
-        this._workspaces = this._workspacesControls.createCurrentWorkspaceView(this._workspacesWidth, this._workspacesHeight,
-                                                                               this._workspacesX, this._workspacesY, false);
+        this._workspaces = this._workspacesManager.workspacesView;
 
         // Show new workspacesView
         this._group.add_actor(this._workspaces.actor);
@@ -459,8 +453,14 @@ Overview.prototype = {
         this._dash.show();
 
         /* TODO: make this stuff dynamic */
-        this._workspaces = this._workspacesControls.createCurrentWorkspaceView(this._workspacesWidth, this._workspacesHeight,
-                                                                               this._workspacesX, this._workspacesY, true);
+        this._workspacesManager =
+            new WorkspacesView.WorkspacesManager(this._workspacesWidth,
+                                                 this._workspacesHeight,
+                                                 this._workspacesX,
+                                                 this._workspacesY);
+        this._workspacesManager.connect('view-changed',
+                                        Lang.bind(this, this._onViewChanged));
+        this._workspaces = this._workspacesManager.workspacesView;
         this._group.add_actor(this._workspaces.actor);
 
         // The workspaces actor is as big as the screen, so we have to raise the dash above it
@@ -468,7 +468,7 @@ Overview.prototype = {
         // be as big as the screen.
         this._dash.actor.raise(this._workspaces.actor);
 
-        this._workspacesBar = this._workspacesControls.actor;
+        this._workspacesBar = this._workspacesManager.controlsBar.actor;
         this._workspacesBar.set_position(this._workspacesBarX,
                                          this._workspacesBarY);
         this._workspacesBar.width = this._workspacesBarWidth;
@@ -592,6 +592,8 @@ Overview.prototype = {
 
         this._workspacesBar.destroy();
         this._workspacesBar = null;
+
+        this._workspacesManager = null;
 
         this._dash.hide();
         this._group.hide();

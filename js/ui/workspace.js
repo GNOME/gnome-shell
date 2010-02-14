@@ -639,33 +639,29 @@ const WindowPositionFlags = {
 };
 
 /**
- * @workspaceNum: Workspace index
- * @parentActor: The actor which will be the parent of this workspace;
- *               we need this in order to add chrome such as the icons
- *               on top of the windows without having them be scaled.
+ * @metaWorkspace: a #Meta.Workspace
  */
-function Workspace(workspaceNum, parentActor) {
-    this._init(workspaceNum, parentActor);
+function Workspace(metaWorkspace) {
+    this._init(metaWorkspace);
 }
 
 Workspace.prototype = {
-    _init : function(workspaceNum, parentActor) {
+    _init : function(metaWorkspace) {
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
-        this.workspaceNum = workspaceNum;
+        this.metaWorkspace = metaWorkspace;
         this._windowOverlaysGroup = new Clutter.Group();
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
-
-        this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
-
-        parentActor.add_actor(this._windowOverlaysGroup);
-        this._parentActor = parentActor;
 
         this.actor = new Clutter.Group();
         this.actor._delegate = this;
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
+        // Items in _windowOverlaysGroup should not be scaled, so we don't
+        // add them to this.actor, but to its parent whenever it changes
+        this.actor.connect('parent-set', Lang.bind(this, this._onParentSet));
 
         // Auto-sizing is unreliable in the presence of ClutterClone, so rather than
         // implicitly counting on the workspace actor to be sized to the size of the
@@ -695,7 +691,7 @@ Workspace.prototype = {
                                             // We check for "2" here because the Desktop does not really count
                                             // as a window in this context.
                                             if (this._windows.length <= 2) {
-                                                this._metaWorkspace.activate(time);
+                                                this.metaWorkspace.activate(time);
                                                 Main.overview.hide();
                                             }
                                         }));
@@ -715,9 +711,9 @@ Workspace.prototype = {
         this._showOnlyWindows = null;
 
         // Track window changes
-        this._windowAddedId = this._metaWorkspace.connect('window-added',
+        this._windowAddedId = this.metaWorkspace.connect('window-added',
                                                           Lang.bind(this, this._windowAdded));
-        this._windowRemovedId = this._metaWorkspace.connect('window-removed',
+        this._windowRemovedId = this.metaWorkspace.connect('window-removed',
                                                             Lang.bind(this, this._windowRemoved));
         this._repositionWindowsId = 0;
 
@@ -735,6 +731,17 @@ Workspace.prototype = {
             }
         }
         return -1;
+    },
+
+    _onParentSet: function(actor, old_parent) {
+        let new_parent = this.actor.get_parent();
+        if (new_parent == null)
+            return;
+
+        if (old_parent)
+            this._windowOverlaysGroup.reparent(new_parent);
+        else
+            new_parent.add_actor(this._windowOverlaysGroup);
     },
 
     /**
@@ -817,6 +824,16 @@ Workspace.prototype = {
             this._frame.destroy();
             this._frame = null;
         }
+    },
+
+    /**
+     * setReactive:
+     * @reactive: %true iff the workspace should be reactive
+     *
+     * Set the workspace (desktop) reactive
+     **/
+    setReactive: function(reactive) {
+        this._desktop.actor.reactive = reactive;
     },
 
     _updateFramePosition : function() {
@@ -1350,19 +1367,19 @@ Workspace.prototype = {
     },
 
     // Animate the full-screen to Overview transition.
-    zoomToOverview : function(animate) {
+    zoomToOverview : function() {
         this.actor.set_position(this.gridX, this.gridY);
         this.actor.set_scale(this.scale, this.scale);
 
         // Position and scale the windows.
-        if (animate)
+        if (Main.overview.animationInProgress)
             this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
         else
             this.positionWindows(WindowPositionFlags.ZOOM);
 
-        let active = global.screen.get_active_workspace_index();
-        let fadeInIcons = (animate &&
-                           active == this.workspaceNum &&
+        let active = global.screen.get_active_workspace();
+        let fadeInIcons = (Main.overview.animationInProgress &&
+                           active == this.metaWorkspace &&
                            !this._haveMaximizedWindows());
         this._desktop.zoomToOverview(fadeInIcons);
 
@@ -1412,8 +1429,8 @@ Workspace.prototype = {
             }
         }
 
-        let active = global.screen.get_active_workspace_index();
-        let fadeOutIcons = (active == this.workspaceNum &&
+        let active = global.screen.get_active_workspace();
+        let fadeOutIcons = (active == this.metaWorkspace &&
                             !this._haveMaximizedWindows());
         this._desktop.zoomFromOverview(fadeOutIcons);
 
@@ -1494,8 +1511,8 @@ Workspace.prototype = {
         }
         Tweener.removeTweens(actor);
 
-        this._metaWorkspace.disconnect(this._windowAddedId);
-        this._metaWorkspace.disconnect(this._windowRemovedId);
+        this.metaWorkspace.disconnect(this._windowAddedId);
+        this.metaWorkspace.disconnect(this._windowRemovedId);
 
         if (this._repositionWindowsId > 0)
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1516,7 +1533,7 @@ Workspace.prototype = {
 
     // Tests if @win belongs to this workspaces
     _isMyWindow : function (win) {
-        return win.get_workspace() == this.workspaceNum ||
+        return win.get_workspace() == this.metaWorkspace.index() ||
             (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
     },
 
@@ -1589,14 +1606,12 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.activateWindow(clone.metaWindow, time, this.workspaceNum);
+        Main.activateWindow(clone.metaWindow, time,
+                            this.metaWorkspace.index());
     },
 
     _removeSelf : function(actor, event) {
-        let screen = global.screen;
-        let workspace = screen.get_workspace_by_index(this.workspaceNum);
-
-        screen.remove_workspace(workspace, event.get_time());
+        screen.remove_workspace(this.metaWorkspace, event.get_time());
         return true;
     },
 
@@ -1616,12 +1631,12 @@ Workspace.prototype = {
             };
 
             let metaWindow = win.get_meta_window();
-            metaWindow.change_workspace_by_index(this.workspaceNum,
+            metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
                                                  false, // don't create workspace
                                                  time);
             return true;
         } else if (source.shellWorkspaceLaunch) {
-            this._metaWorkspace.activate(time);
+            this.metaWorkspace.activate(time);
             source.shellWorkspaceLaunch();
             return true;
         }
