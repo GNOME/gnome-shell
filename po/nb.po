@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.28.x\n"
-"Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2010-02-08 22:52+0100\n"
-"PO-Revision-Date: 2010-02-08 22:58+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-14 13:45+0100\n"
+"PO-Revision-Date: 2010-02-14 13:46+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:880
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
@@ -49,27 +49,27 @@ msgstr "Legg til i favoritter"
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
-#: ../js/ui/dash.js:240
+#: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Finn..."
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/dash.js:508
 msgid "Searching..."
 msgstr "Søker..."
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:522
 msgid "No matching results."
 msgstr "Ingen treff."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
+#: ../js/ui/dash.js:907
 msgid "RECENT ITEMS"
 msgstr "SISTE OPPFØRINGER"
 
@@ -79,8 +79,13 @@ msgstr "SISTE OPPFØRINGER"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:557
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
