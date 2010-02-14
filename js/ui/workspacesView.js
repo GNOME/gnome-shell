@@ -744,7 +744,9 @@ SingleView.prototype = {
     },
 
     createControllerBar: function() {
-        let panel = new St.BoxLayout({ 'pack-start': true, vertical: true });
+        let panel = new St.BoxLayout({ style_class: 'single-view-controls',
+                                       pack_start: true,
+                                       vertical: true });
 
         let actor = new St.BoxLayout({ 'pack-start': true });
         let active = global.screen.get_active_workspace_index();

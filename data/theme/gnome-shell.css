@@ -206,6 +206,10 @@ StTooltip {
     -shell-close-overlap: 16px;
 }
 
+.single-view-controls {
+    padding: 0px 15px;
+}
+
 .workspace-controls {
     width: 24px;
     height: 16px;
