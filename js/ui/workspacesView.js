@@ -699,6 +699,16 @@ SingleView.prototype = {
                 this._workspaces[i]._metaWorkspace.activate(global.get_current_time());
         }));
 
+        actor._delegate = {};
+        actor._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
+            if (this._workspaces[i].acceptDrop(source, actor, x, y, time)) {
+                this._workspaces[i]._metaWorkspace.activate(global.get_current_time());
+                return true;
+            }
+            else
+                return false;
+        });
+
        actor.connect('scroll-event', Lang.bind(this, function(actor, event) {
             let direction = event.get_scroll_direction();
             let activeWorkspaceIndex = global.screen.get_active_workspace_index();
