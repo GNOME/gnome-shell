@@ -77,7 +77,7 @@ on_paint (ClutterActor *actor, TestState *state)
                                    COGL_MATERIAL_FILTER_NEAREST);
   cogl_rectangle (1, 0, 2, 1);
 
-  cogl_material_unref (material);
+  cogl_handle_unref (material);
 
   /* Read back the two pixels we rendered */
   cogl_read_pixels (0, 0, 2, 1,

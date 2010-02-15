@@ -94,7 +94,7 @@ test_blend (TestState *state,
                   y * QUAD_WIDTH,
                   x * QUAD_WIDTH + QUAD_WIDTH,
                   y * QUAD_WIDTH + QUAD_WIDTH);
-  cogl_material_unref (material);
+  cogl_handle_unref (material);
 
   /*
    * Now blend a rectangle over our well defined destination:
@@ -120,7 +120,7 @@ test_blend (TestState *state,
                   y * QUAD_WIDTH,
                   x * QUAD_WIDTH + QUAD_WIDTH,
                   y * QUAD_WIDTH + QUAD_WIDTH);
-  cogl_material_unref (material);
+  cogl_handle_unref (material);
 
   /* See what we got... */
 
@@ -247,8 +247,8 @@ test_tex_combine (TestState *state,
                   y * QUAD_WIDTH,
                   x * QUAD_WIDTH + QUAD_WIDTH,
                   y * QUAD_WIDTH + QUAD_WIDTH);
-  cogl_material_unref (material);
 
+  cogl_handle_unref (material);
   cogl_handle_unref (tex0);
   cogl_handle_unref (tex1);
 

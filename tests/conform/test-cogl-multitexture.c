@@ -149,8 +149,8 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_set_source (material);
   cogl_rectangle_with_multitexture_coords (0, 0, QUAD_WIDTH, QUAD_WIDTH,
                                            tex_coords, 8);
-  cogl_material_unref (material);
 
+  cogl_handle_unref (material);
   cogl_handle_unref (tex0);
   cogl_handle_unref (tex1);
 
