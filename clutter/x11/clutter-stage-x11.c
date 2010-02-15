@@ -270,7 +270,7 @@ set_wm_pid (ClutterStageX11 *stage_x11)
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   long pid;
 
-  if (stage_x11->xwin == None)
+  if (stage_x11->xwin == None || stage_x11->is_foreign_xwin)
     return;
 
   /* this will take care of WM_CLIENT_MACHINE and WM_LOCALE_NAME */
@@ -280,7 +280,7 @@ set_wm_pid (ClutterStageX11 *stage_x11)
                     NULL, 0,
                     NULL, NULL, NULL);
 
-  pid = getpid();
+  pid = getpid ();
   XChangeProperty (backend_x11->xdpy,
                    stage_x11->xwin,
                    backend_x11->atom_NET_WM_PID, XA_CARDINAL, 32,
@@ -297,7 +297,7 @@ set_wm_title (ClutterStageX11 *stage_x11)
   g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (stage_x11->xwin == None)
+  if (stage_x11->xwin == None || stage_x11->is_foreign_xwin)
     return;
 
   if (stage_x11->title == NULL)
