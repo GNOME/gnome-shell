@@ -2042,11 +2042,10 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * to control the animation or to know when the animation has been
  * completed.
  *
- * If a name argument starts with "signal::", "signal-after::" or
- * "signal-swapped::" the two following arguments are used as callback
- * function and data for a signal handler installed on the
- * #ClutterAnimation object for the specified signal name, for
- * instance:
+ * If a name argument starts with "signal::", "signal-after::",
+ * "signal-swapped::" or "signal-swapped-after::" the two following arguments
+ * are used as callback function and data for a signal handler installed on
+ * the #ClutterAnimation object for the specified signal name, for instance:
  *
  * |[
  *
@@ -2063,13 +2062,28 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                          NULL);
  * ]|
  *
+ * or, to automatically destroy an actor at the end of the animation:
+ *
+ * |[
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 100,
+ *                          "opacity", 0,
+ *                          "signal-swapped-after::completed",
+ *                            clutter_actor_destroy,
+ *                            actor,
+ *                          NULL);
+ * ]|
+ *
  * The "signal::" modifier is the equivalent of using g_signal_connect();
  * the "signal-after::" modifier is the equivalent of using
- * g_signal_connect_after(); the "signal-swapped::" modifier is the equivalent
- * of using g_signal_connect_swapped(). The clutter_actor_animate() function
- * will not keep track of multiple connections to the same signal, so it is
- * your responsability to avoid them when calling clutter_actor_animate()
- * multiple times on the same actor.
+ * g_signal_connect_after() or g_signal_connect_data() with the
+ * %G_CONNECT_AFTER; the "signal-swapped::" modifier is the equivalent
+ * of using g_signal_connect_swapped() or g_signal_connect_data() with the
+ * %G_CONNECT_SWAPPED flah; finally, the "signal-swapped-after::" modifier
+ * is the equivalent of using g_signal_connect_data() with both the
+ * %G_CONNECT_AFTER and %G_CONNECT_SWAPPED flags. The clutter_actor_animate()
+ * function will not keep track of multiple connections to the same signal,
+ * so it is your responsability to avoid them when calling
+ * clutter_actor_animate() multiple times on the same actor.
  *
  * Calling this function on an actor that is already being animated
  * will cause the current animation to change with the new final values,
