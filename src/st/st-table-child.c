@@ -25,6 +25,7 @@
 #include "st-private.h"
 #include "st-table-child.h"
 #include "st-table-private.h"
+#include "st-enum-types.h"
 #include <st/st-widget.h>
 #include <st/st-table.h>
 
@@ -96,11 +97,11 @@ table_child_set_property (GObject      *gobject,
       clutter_actor_queue_relayout (CLUTTER_ACTOR (table));
       break;
     case CHILD_PROP_X_ALIGN:
-      child->x_align = g_value_get_double (value);
+      child->x_align = g_value_get_enum (value);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (table));
       break;
     case CHILD_PROP_Y_ALIGN:
-      child->y_align = g_value_get_double (value);
+      child->y_align = g_value_get_enum (value);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (table));
       break;
     case CHILD_PROP_X_FILL:
@@ -151,10 +152,10 @@ table_child_get_property (GObject    *gobject,
       g_value_set_boolean (value, child->y_expand);
       break;
     case CHILD_PROP_X_ALIGN:
-      g_value_set_double (value, child->x_align);
+      g_value_set_enum (value, child->x_align);
       break;
     case CHILD_PROP_Y_ALIGN:
-      g_value_set_double (value, child->y_align);
+      g_value_set_enum (value, child->y_align);
       break;
     case CHILD_PROP_X_FILL:
       g_value_set_boolean (value, child->x_fill);
@@ -237,21 +238,21 @@ st_table_child_class_init (StTableChildClass *klass)
 
   g_object_class_install_property (gobject_class, CHILD_PROP_Y_EXPAND, pspec);
 
-  pspec = g_param_spec_double ("x-align",
-                               "X Alignment",
-                               "X alignment of the widget within the cell",
-                               0, 1,
-                               0.5,
-                               ST_PARAM_READWRITE);
+  pspec = g_param_spec_enum ("x-align",
+                             "X Alignment",
+                             "X alignment of the widget within the cell",
+                             ST_TYPE_ALIGN,
+                             ST_ALIGN_MIDDLE,
+                             ST_PARAM_READWRITE);
 
   g_object_class_install_property (gobject_class, CHILD_PROP_X_ALIGN, pspec);
 
-  pspec = g_param_spec_double ("y-align",
-                               "Y Alignment",
-                               "Y alignment of the widget within the cell",
-                               0, 1,
-                               0.5,
-                               ST_PARAM_READWRITE);
+  pspec = g_param_spec_enum ("y-align",
+                             "Y Alignment",
+                             "Y alignment of the widget within the cell",
+                             ST_TYPE_ALIGN,
+                             ST_ALIGN_MIDDLE,
+                             ST_PARAM_READWRITE);
 
   g_object_class_install_property (gobject_class, CHILD_PROP_Y_ALIGN, pspec);
 
@@ -291,8 +292,8 @@ st_table_child_init (StTableChild *self)
   self->col_span = 1;
   self->row_span = 1;
 
-  self->x_align = 0.5;
-  self->y_align = 0.5;
+  self->x_align = ST_ALIGN_MIDDLE;
+  self->y_align = ST_ALIGN_MIDDLE;
 
   self->x_expand = TRUE;
   self->y_expand = TRUE;
@@ -637,12 +638,7 @@ st_table_child_get_x_align (StTable      *table,
 
   meta = get_child_meta (table, child);
 
-  if (meta->x_align == 0.0)
-    return ST_ALIGN_START;
-  else if (meta->x_align == 1.0)
-    return ST_ALIGN_END;
-  else
-    return ST_ALIGN_MIDDLE;
+  return meta->x_align;
 
 }
 
@@ -668,19 +664,7 @@ st_table_child_set_x_align (StTable      *table,
 
   meta = get_child_meta (table, child);
 
-  switch (align)
-    {
-    case ST_ALIGN_START:
-      meta->x_align = 0.0;
-      break;
-    case ST_ALIGN_MIDDLE:
-      meta->x_align = 0.5;
-      break;
-    case ST_ALIGN_END:
-      meta->x_align = 1.0;
-      break;
-    }
-
+  meta->x_align = align;
   clutter_actor_queue_relayout (child);
 }
 
@@ -704,13 +688,7 @@ st_table_child_get_y_align (StTable      *table,
 
   meta = get_child_meta (table, child);
 
-  if (meta->y_align == 0.0)
-    return ST_ALIGN_START;
-  else if (meta->y_align == 1.0)
-    return ST_ALIGN_END;
-  else
-    return ST_ALIGN_MIDDLE;
-
+  return meta->y_align;
 }
 
 /**
@@ -735,19 +713,7 @@ st_table_child_set_y_align (StTable      *table,
 
   meta = get_child_meta (table, child);
 
-  switch (align)
-    {
-    case ST_ALIGN_START:
-      meta->y_align = 0.0;
-      break;
-    case ST_ALIGN_MIDDLE:
-      meta->y_align = 0.5;
-      break;
-    case ST_ALIGN_END:
-      meta->y_align = 1.0;
-      break;
-    }
-
+  meta->y_align = align;
   clutter_actor_queue_relayout (child);
 }
 

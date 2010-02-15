@@ -89,7 +89,7 @@ Calendar.prototype = {
             this.actor.add(new St.Label({ text: iter.toLocaleFormat("%a") }),
                            { row: 1,
                              col: (7 + iter.getDay() - this._weekStart) % 7,
-                             x_fill: false, x_align: 1.0 });
+                             x_fill: false, x_align: St.Align.END });
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
 
@@ -168,7 +168,7 @@ Calendar.prototype = {
                 label.style_class = "calendar-day";
             this.actor.add(label,
                            { row: row, col: (7 + iter.getDay() - this._weekStart) % 7,
-                             x_fill: false, x_align: 1.0 });
+                             x_fill: false, x_align: St.Align.END });
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
             if (iter.getDay() == this._weekStart) {

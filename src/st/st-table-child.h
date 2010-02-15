@@ -61,8 +61,8 @@ struct _StTableChild
   gint row;
   gint col_span;
   gint row_span;
-  gdouble x_align;
-  gdouble y_align;
+  StAlign x_align;
+  StAlign y_align;
   guint allocate_hidden : 1;
   guint x_expand : 1;
   guint y_expand : 1;

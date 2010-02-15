@@ -47,8 +47,8 @@ table.add(L("5", "#ff00ff"),
           { row: 2, col: 1, x_expand: 0 });
 table.add(L("6", "#00ffff"),
           { row: 2, col: 2,
-            x_expand: 0, x_fill: 0, x_align: 1.0,
-            y_expand: 0, y_fill: 0, y_align: 1.0 });
+            x_expand: 0, x_fill: 0, x_align: St.Align.END,
+            y_expand: 0, y_fill: 0, y_align: St.Align.END });
 
 ////////////////////////////////////////////////////////////////////////////////
 

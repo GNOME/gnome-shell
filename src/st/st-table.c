@@ -419,7 +419,7 @@ st_table_homogeneous_allocate (ClutterActor          *self,
       StTableChild *meta;
       ClutterActor *child;
       ClutterActorBox childbox;
-      gdouble x_align, y_align;
+      StAlign x_align, y_align;
       gboolean x_fill, y_fill;
 
       child = CLUTTER_ACTOR (list->data);
@@ -779,7 +779,7 @@ st_table_preferred_allocate (ClutterActor          *self,
       ClutterActor *child;
       ClutterActorBox childbox;
       gint child_x, child_y;
-      gdouble x_align, y_align;
+      StAlign x_align, y_align;
       gboolean x_fill, y_fill;
 
       child = CLUTTER_ACTOR (list->data);

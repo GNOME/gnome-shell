@@ -220,7 +220,7 @@ Notification.prototype = {
             let box = new St.BoxLayout({ name: 'notification-actions' });
             this.addActor(box, { x_expand: false,
                                  x_fill: false,
-                                 x_align: 1.0 });
+                                 x_align: St.Align.END });
             this._actionBox = box;
         }
 
