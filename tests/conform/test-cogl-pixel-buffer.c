@@ -1,6 +1,3 @@
-
-#define COGL_ENABLE_EXPERIMENTAL_API
-
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
