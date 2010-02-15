@@ -25,6 +25,7 @@ libtool
 m4/
 omf.make
 po/*.gmo
+po/gnome-shell.pot
 po/Makefile.in.in
 po/POTFILES
 po/stamp-it
