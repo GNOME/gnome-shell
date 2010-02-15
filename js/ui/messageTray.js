@@ -85,11 +85,17 @@ Notification.prototype = {
         }
 
         let icon = this.source.createIcon(ICON_SIZE);
+        icon.reactive = true;
         this.actor.add(icon, { row: 0,
                                col: 0,
                                x_expand: false,
                                y_expand: false,
                                y_fill: false });
+
+        icon.connect('button-release-event', Lang.bind(this,
+            function () {
+                this.source.clicked();
+            }));
 
         // The first line should have the title, followed by the
         // banner text, but ellipsized if they won't both fit. We can't

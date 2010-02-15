@@ -12,6 +12,26 @@ const Params = imports.misc.params;
 
 let nextNotificationId = 1;
 
+// Should really be defined in dbus.js
+const BusIface = {
+    name: 'org.freedesktop.DBus',
+    methods: [{ name: 'GetConnectionUnixProcessID',
+                inSignature: 's',
+                outSignature: 'i' }]
+}
+
+const Bus = function () {
+    this._init();
+}
+
+Bus.prototype = {
+     _init: function() {
+         DBus.session.proxifyObject(this, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
+     }
+}
+
+DBus.proxifyPrototype(Bus.prototype, BusIface);
+
 const NotificationDaemonIface = {
     name: 'org.freedesktop.Notifications',
     methods: [{ name: 'Notify',
@@ -119,6 +139,13 @@ NotificationDaemon.prototype = {
                     source.destroy();
                     this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 }));
+
+            let sender = DBus.getCurrentMessageContext().sender;
+            let busProxy = new Bus();
+            busProxy.GetConnectionUnixProcessIDRemote(sender, function (result, excp) {
+                let app = Shell.WindowTracker.get_default().get_app_from_pid(result);
+                source.setApp(app);
+            });
         }
 
         summary = GLib.markup_escape_text(summary, -1);
@@ -200,6 +227,9 @@ Source.prototype = {
         this._icon = icon;
         this._iconData = hints.icon_data;
         this._urgency = hints.urgency;
+
+        this.app = null;
+        this._openAppRequested = false;
     },
 
     createIcon: function(size) {
@@ -231,5 +261,29 @@ Source.prototype = {
             }
             return textureCache.load_icon_name(stockIcon, size);
         }
+    },
+
+    clicked: function() {
+        this.openApp();
+        MessageTray.Source.prototype.clicked.call(this);
+    },
+
+    setApp: function(app) {
+        this.app = app;
+        if (this._openAppRequested)
+            this.openApp();
+    },
+
+    openApp: function() {
+        if (this.app == null) {
+            this._openAppRequested = true;
+            return;
+        }
+        let windows = this.app.get_windows();
+        if (windows.length > 0) {
+            let mostRecentWindow = windows[0];
+            Main.activateWindow(mostRecentWindow);
+        }
+        this._openAppRequested = false;
     }
 };
