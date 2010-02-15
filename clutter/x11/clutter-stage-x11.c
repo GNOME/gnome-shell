@@ -219,27 +219,26 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  if (width != stage_x11->xwin_width ||
-      height != stage_x11->xwin_height)
+  if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
     {
-      stage_x11->xwin_width  = width;
-      stage_x11->xwin_height = height;
+      clutter_stage_x11_fix_window_size (stage_x11, width, height);
 
-      if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
+      if (width != stage_x11->xwin_width ||
+          height != stage_x11->xwin_height)
         {
           CLUTTER_NOTE (BACKEND, "%s: XResizeWindow[%x] (%d, %d)",
                         G_STRLOC,
                         (unsigned int) stage_x11->xwin,
-                        stage_x11->xwin_width,
-                        stage_x11->xwin_height);
+                        width,
+                        height);
 
           CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper,
                                      CLUTTER_STAGE_IN_RESIZE);
 
           XResizeWindow (backend_x11->xdpy,
                          stage_x11->xwin,
-                         stage_x11->xwin_width,
-                         stage_x11->xwin_height);
+                         width,
+                         height);
 
           /* If the viewport hasn't previously been initialized then even
            * though we can't guarantee that the server will honour our request
@@ -249,17 +248,14 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
             {
               ClutterPerspective perspective;
               clutter_stage_get_perspective (stage, &perspective);
-              _cogl_setup_viewport (stage_x11->xwin_width,
-                                    stage_x11->xwin_height,
+              _cogl_setup_viewport (width,
+                                    height,
                                     perspective.fovy,
                                     perspective.aspect,
                                     perspective.z_near,
                                     perspective.z_far);
             }
         }
-
-      if (!resize)
-        clutter_stage_x11_fix_window_size (stage_x11, width, height);
     }
 }
 

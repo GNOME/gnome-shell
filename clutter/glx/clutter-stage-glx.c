@@ -114,6 +114,7 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
       XSetWindowAttributes xattr;
       unsigned long mask;
       XVisualInfo *xvisinfo;
+      gfloat width, height;
 
       CLUTTER_NOTE (MISC, "Creating stage X window");
 
@@ -133,6 +134,18 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                                         xvisinfo->visual,
                                         AllocNone);
       mask = CWBorderPixel | CWColormap;
+
+      /* Call get_size - this will either get the geometry size (which
+       * before we create the window is set to 640x480), or if a size
+       * is set, it will get that. This lets you set a size on the
+       * stage before it's realized.
+       */
+      clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper),
+                              &width,
+                              &height);
+      stage_x11->xwin_width = (gint)width;
+      stage_x11->xwin_height = (gint)height;
+
       stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
                                        backend_x11->xwin_root,
                                        0, 0,
@@ -144,9 +157,11 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                                        xvisinfo->visual,
                                        mask, &xattr);
 
-      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x",
+      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x, size: %dx%d",
                     stage_window,
-                    (unsigned int) stage_x11->xwin);
+                    (unsigned int) stage_x11->xwin,
+                    stage_x11->xwin_width,
+                    stage_x11->xwin_height);
 
       XFree (xvisinfo);
     }

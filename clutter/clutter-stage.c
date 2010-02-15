@@ -182,6 +182,7 @@ clutter_stage_allocate (ClutterActor           *self,
                         ClutterAllocationFlags  flags)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterGeometry geom = { 0, };
   gboolean origin_changed;
   gint width, height;
 
@@ -192,6 +193,11 @@ clutter_stage_allocate (ClutterActor           *self,
 
   width = clutter_actor_box_get_width (box);
   height = clutter_actor_box_get_height (box);
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
+
+  /* XXX: Until Cogl becomes fully responsible for backend windows Clutter
+   * need to manually keep it informed of the current window size */
+  _cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
 
   /* if the stage is fixed size (for instance, it's using a frame-buffer)
    * then we simply ignore any allocation request and override the
@@ -201,10 +207,6 @@ clutter_stage_allocate (ClutterActor           *self,
     {
       ClutterActorClass *klass;
 
-      /* XXX: Until Cogl becomes fully responsible for backend windows Clutter
-       * need to manually keep it informed of the current window size */
-      _cogl_onscreen_clutter_backend_set_size (width, height);
-
       CLUTTER_NOTE (LAYOUT,
                     "Following allocation to %dx%d (origin %s)",
                     width, height,
@@ -213,19 +215,14 @@ clutter_stage_allocate (ClutterActor           *self,
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, box, flags);
 
-      _clutter_stage_window_resize (priv->impl, width, height);
+      /* Ensure the window is sized correctly */
+      if ((geom.width != width) || (geom.height != height))
+        _clutter_stage_window_resize (priv->impl, width, height);
     }
   else
     {
       ClutterActorBox override = { 0, };
-      ClutterGeometry geom = { 0, };
       ClutterActorClass *klass;
-
-      _clutter_stage_window_get_geometry (priv->impl, &geom);
-
-      /* XXX: Until Cogl becomes fully responsible for backend windows Clutter
-       * need to manually keep it informed of the current window size */
-      _cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
 
       override.x1 = 0;
       override.y1 = 0;
@@ -2335,7 +2332,6 @@ clutter_stage_set_minimum_size (ClutterStage *stage,
                                 guint         width,
                                 guint         height)
 {
-  gboolean resize;
   ClutterGeometry geom;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
@@ -2347,20 +2343,18 @@ clutter_stage_set_minimum_size (ClutterStage *stage,
   if (stage->priv->impl == NULL)
     return;
 
-  resize = FALSE;
   _clutter_stage_window_get_geometry (stage->priv->impl, &geom);
 
-  if (geom.width < width)
-    resize = TRUE;
-  else
+  if (geom.width > width)
     width = geom.width;
 
-  if (geom.height < height)
-    resize = TRUE;
-  else
+  if (geom.height > height)
     height = geom.height;
 
-  if (resize)
+  /* Call resize to ensure that the minimum size is enforced by
+   * the backend.
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (stage))
     _clutter_stage_window_resize (stage->priv->impl, width, height);
 }
 
