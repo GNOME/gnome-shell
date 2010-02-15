@@ -130,6 +130,7 @@ WindowClone.prototype = {
         this._inDrag = false;
 
         this._zooming = false;
+        this._selected = false;
     },
 
     setStackAbove: function (actor) {
@@ -142,6 +143,20 @@ WindowClone.prototype = {
 
     destroy: function () {
         this.actor.destroy();
+    },
+
+    zoomFromOverview: function() {
+        if (this._zooming) {
+            // If the user clicked on the zoomed window, or we are
+            // returning there anyways, then we can zoom right to the
+            // window, but if we are going to some other window, then
+            // we need to cancel the zoom before animating, or it
+            // will look funny.
+
+            if (!this._selected &&
+                this.metaWindow != global.screen.get_display().focus_window)
+                this._zoomEnd();
+        }
     },
 
     _onDestroy: function() {
@@ -256,6 +271,7 @@ WindowClone.prototype = {
     },
 
     _onButtonRelease : function (actor, event) {
+        this._selected = true;
         this.emit('selected', event.get_time());
     },
 
@@ -1225,11 +1241,13 @@ Workspace.prototype = {
         this._hideAllOverlays();
 
         Main.overview.connect('hidden', Lang.bind(this,
-                                                 this._doneLeavingOverview));
+                                                  this._doneLeavingOverview));
 
         // Position and scale the windows.
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
+
+            clone.zoomFromOverview();
 
             if (clone.metaWindow.showing_on_its_workspace()) {
                 Tweener.addTween(clone.actor,
