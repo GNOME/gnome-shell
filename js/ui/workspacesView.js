@@ -55,7 +55,10 @@ GenericWorkspacesView.prototype = {
                 let node = this.actor.get_theme_node();
                 let [a, spacing] = node.get_length('spacing', false);
                 this._spacing = spacing;
-                this._positionWorkspaces();
+                if (Main.overview.animationInProgress)
+                    this._positionWorkspaces();
+                else
+                    this._transitionWorkspaces();
             }));
 
         this._width = width;
@@ -248,6 +251,10 @@ GenericWorkspacesView.prototype = {
         throw new Error("Not implemented");
     },
 
+    _transitionWorkspaces: function() {
+        throw new Error("Not implemented");
+    },
+
     _positionWorkspaces: function() {
         throw new Error("Not implemented");
     },
@@ -323,6 +330,54 @@ MosaicView.prototype = {
                     span++;
                 }
             }
+        }
+    },
+
+    _transitionWorkspaces: function() {
+        // update workspace parameters
+        this._positionWorkspaces();
+
+        let active = global.screen.get_active_workspace_index();
+        let activeWorkspace = this._workspaces[active];
+        // scale is the factor needed to translate from the new scale
+        // (this view) to the currently active scale (previous view)
+        let scale = this._workspaces[0].actor.scale_x / activeWorkspace.scale;
+
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+            let originX, originY;
+            let dx, dy;
+
+            // The correct transition would be a straightforward animation
+            // of each workspace's old position/scale to the new one;
+            // however, this looks overly busy, so we only use a zoom effect.
+            // Unfortunately this implies that we cannot pretend to not knowing
+            // the other view's layout at this point:
+            // We position the workspaces in the grid, which we scale up so
+            // that the active workspace fills the viewport.
+            dx = workspace.gridX - activeWorkspace.gridX;
+            dy = workspace.gridY - activeWorkspace.gridY;
+            originX = this._x + scale * dx;
+            originY = this._y + scale * dy;
+
+            workspace.actor.set_position(originX, originY);
+
+            workspace.positionWindows(Workspace.WindowPositionFlags.ANIMATE);
+            workspace.setSelected(false);
+            workspace.hideWindowsOverlays();
+
+            Tweener.addTween(workspace.actor,
+                             { x: workspace.gridX,
+                               y: workspace.gridY,
+                               scale_x: workspace.scale,
+                               scale_y: workspace.scale,
+                               time: Overview.ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: function() {
+                                   workspace.zoomToOverview(false);
+                                   if (workspace.metaWorkspace.index() == active)
+                                       workspace.setSelected(true);
+                             }});
         }
     },
 
@@ -527,6 +582,46 @@ SingleView.prototype = {
         this._rightShadow.scale = scale;
         this._rightShadow.gridX = this._x + (this._width - _width) / 2 + (_width + this._spacing);
         this._rightShadow.gridY = this._y + (this._height - this._rightShadow.height * scale) / 2;
+    },
+
+    _transitionWorkspaces: function() {
+        // update workspace parameters
+        this._positionWorkspaces();
+
+        let active = global.screen.get_active_workspace_index();
+        let activeActor = this._workspaces[active].actor;
+        // scale is the factor needed to translate from the currently
+        // active scale (previous view) to the new scale (this view)
+        let scale = this._workspaces[active].scale / activeActor.scale_x;
+
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+            let targetX, targetY;
+
+            // The correct transition would be a straightforward animation
+            // of each workspace's old position/scale to the new one;
+            // however, this looks overly busy, so we only use a zoom effect.
+            // Therefore we scale up each workspace's distance to the active
+            // workspace, so the latter fills the viewport while the other
+            // workspaces maintain their relative position
+            targetX = this._x + scale * (workspace.actor.x - activeActor.x);
+            targetY = this._y + scale * (workspace.actor.y - activeActor.y);
+
+            workspace.positionWindows(Workspace.WindowPositionFlags.ANIMATE);
+            workspace.setSelected(false);
+            workspace._hideAllOverlays();
+
+            Tweener.addTween(workspace.actor,
+                             { x: targetX,
+                               y: targetY,
+                               scale_x: workspace.scale,
+                               scale_y: workspace.scale,
+                               time: Overview.ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: function() {
+                                   workspace.zoomToOverview(false);
+                             }});
+        }
     },
 
     _scrollToActive: function(showAnimation) {
@@ -1228,11 +1323,9 @@ function WorkspacesControls() {
 WorkspacesControls.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ style_class: 'workspaces-bar' });
-        this._gconf = Shell.GConf.get_default();
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._toggleViewButton = null;
-        this._addButton = null;
-        this._removeButton = null;
+        this._gconf = Shell.GConf.get_default();
 
         let view = this._gconf.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
         if (view in WorkspacesViewType)
@@ -1240,30 +1333,7 @@ WorkspacesControls.prototype = {
         else
             this._currentViewType = WorkspacesViewType.SINGLE;
 
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
-
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-    },
-
-    _updateToggleButtonStyle: function() {
-       if (this._currentViewType == WorkspacesViewType.SINGLE)
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
-        else
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
-    },
-
-    _setView: function(view) {
-        if (this._currentViewType == view)
-            return;
-        this._currentViewType = view;
-        this._updateToggleButtonStyle();
-        this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
-    },
-
-    updateControls: function(currentView) {
-        this.actor.remove_all();
+        this._currentView = null;
 
         // View switcher button
         this._toggleViewButton = new St.Button();
@@ -1279,38 +1349,77 @@ WorkspacesControls.prototype = {
         this.actor.add(this._toggleViewButton, { y_fill: false, y_align: St.Align.START });
 
         // View specific controls
-        let viewControls = currentView.createControllerBar();
-        if (!viewControls)
-            viewControls = new St.Bin();
-        this.actor.add(viewControls, { expand: true,
-                                       x_fill: true,
-                                       y_fill: true,
-                                       y_align: St.Align.MIDDLE,
-                                       x_align: St.Align.START });
+        this._viewControls = new St.Bin({ x_fill: true, y_fill: true });
+        this.actor.add(this._viewControls, { expand: true, x_fill: true });
 
         // Add/remove workspace buttons
         this._removeButton = new St.Button({ style_class: 'workspace-controls remove' });
         this._removeButton.connect('clicked', Lang.bind(this, function() {
-            currentView.removeWorkspace();
+            this._currentView.removeWorkspace();
         }));
         this.actor.add(this._removeButton, { y_fill: false,
                                              y_align: St.Align.START });
 
         this._addButton = new St.Button({ style_class: 'workspace-controls add' });
         this._addButton.connect('clicked', Lang.bind(this, function() {
-            currentView.addWorkspace()
+            this._currentView.addWorkspace()
         }));
         this._addButton._delegate = this._addButton;
         this._addButton._delegate.acceptDrop = Lang.bind(this,
             function(source, actor, x, y, time) {
-                let view = currentView;
-                return view._acceptNewWorkspaceDrop(source, actor, x, y, time);
-return false;
+                return this._currentView._acceptNewWorkspaceDrop(source, actor, x, y, time);
             });
         this.actor.add(this._addButton, { y_fill: false,
                                           y_align: St.Align.START });
 
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces',
+                                  Lang.bind(this, this._workspacesChanged));
+
         this._workspacesChanged();
+    },
+
+    updateControls: function(view) {
+        this._currentView = view;
+
+        let newControls = this._currentView.createControllerBar();
+        if (newControls) {
+            this._viewControls.child = newControls;
+            this._viewControls.child.opacity = 0;
+            Tweener.addTween(this._viewControls.child,
+                             { opacity: 255,
+                               time: Overview.ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        } else {
+            if (this._viewControls.child)
+                Tweener.addTween(this._viewControls.child,
+                                 { opacity: 0,
+                                   time: Overview.ANIMATION_TIME,
+                                   transition: 'easeOutQuad',
+                                   onComplete: Lang.bind(this, function() {
+                                       this._viewControls.child.destroy();
+                                 })});
+        }
+    },
+
+    _updateToggleButtonStyle: function() {
+       if (this._currentViewType == WorkspacesViewType.SINGLE)
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
+        else
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
+    },
+
+    _setView: function(view) {
+        if (this._currentViewType == view)
+            return;
+
+        if (WorkspacesViewType.SINGLE == view)
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
+        else
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
+
+        this._currentViewType = view;
+        this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
     },
 
     setCanRemove: function(canRemove) {

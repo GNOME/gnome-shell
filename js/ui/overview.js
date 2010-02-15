@@ -263,9 +263,6 @@ Overview.prototype = {
         // Show new workspacesView
         this._group.add_actor(this._workspaces.actor);
         this._dash.actor.raise(this._workspaces.actor);
-
-        // Set new position and scale to workspaces.
-        this.emit('showing');
     },
 
     _recalculateGridSizes: function () {

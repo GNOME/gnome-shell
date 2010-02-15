@@ -1212,6 +1212,9 @@ Workspace.prototype = {
         cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
         cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
 
+        if (!this._windowOverlaysGroup.visible)
+            this._windowOverlaysGroup.show();
+
         if (overlay) {
             overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
             overlay.fadeIn();
