@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-02-11 19:43+0000\n"
-"PO-Revision-Date: 2010-02-11 20:54+0100\n"
+"POT-Creation-Date: 2010-02-15 17:28+0000\n"
+"PO-Revision-Date: 2010-02-15 19:03+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -55,6 +55,16 @@ msgstr "Dodaj med priljubljene"
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "Program \"%s\" je dodan med priljubljeno."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "Program \"%s\" je odstranjen iz priljubljenih."
+
 #: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Najdi ..."
@@ -77,8 +87,41 @@ msgstr "Mesta in naprave"
 
 #. **** Documents ****
 #: ../js/ui/dash.js:907
+#: ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
+
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "Ni nameščenih razširitev"
+
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Omogočeno"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Onemogočeno"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Napaka"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Zastarelo"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Poglej vir"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Spletna stran"
+
+#: ../js/ui/overview.js:95
+msgid "Undo"
+msgstr "Razveljavi"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -86,12 +129,12 @@ msgstr "Nedavni predmeti"
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#. Translators: This is a time format.
+#. Translators: This is the time format used in 24-hour mode.
 #: ../js/ui/panel.js:560
 msgid "%a %R"
 msgstr "%a. %R"
 
-#. Translators: This is a time format.
+#. Translators: This is a time format used for AM/PM.
 #: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
@@ -108,6 +151,46 @@ msgstr "Vnos ukaza:"
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Razpoložljivo"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Zasedeno"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Nevidno"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Podrobnosti računa ..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Stranska vrstica"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Sistemske možnosti ..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Zakleni zaslon"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Preklop uporabnika"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Odjava ..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Izklopi ..."
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -199,20 +282,6 @@ msgstr "%1$s: %2$s"
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
-#~ msgid "Account Information..."
-#~ msgstr "Podrobnosti računa ..."
-#~ msgid "Sidebar"
-#~ msgstr "Stranska vrstica"
-#~ msgid "System Preferences..."
-#~ msgstr "Sistemske možnosti ..."
-#~ msgid "Lock Screen"
-#~ msgstr "Zakleni zaslon"
-#~ msgid "Switch User"
-#~ msgstr "Preklop uporabnika"
-#~ msgid "Log Out..."
-#~ msgstr "Odjava ..."
-#~ msgid "Shut Down..."
-#~ msgstr "Izklopi ..."
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
 #~ msgid "More"
