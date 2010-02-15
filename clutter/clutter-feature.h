@@ -44,6 +44,7 @@ G_BEGIN_DECLS
  * @CLUTTER_FEATURE_SHADERS_GLSL: Set if the backend supports GLSL shaders.
  * @CLUTTER_FEATURE_OFFSCREEN: Set if the backend supports offscreen rendering.
  * @CLUTTER_FEATURE_STAGE_MULTIPLE: Set if multiple stages are supported.
+ * @CLUTTER_FEATURE_SWAP_EVENTS: Set if the GLX_INTEL_swap_event is supported.
  *
  * Runtime flags indicating specific features available via Clutter window
  * sysytem and graphics backend.
