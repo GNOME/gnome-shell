@@ -351,6 +351,8 @@ struct _ClutterActorPrivate
   ClutterActor   *opacity_parent;
 
   ClutterTextDirection text_direction;
+
+  gint internal_child;
 };
 
 enum
@@ -6782,7 +6784,6 @@ clutter_actor_set_parent (ClutterActor *self,
 {
   ClutterActorPrivate *priv;
   ClutterTextDirection text_dir;
-  ClutterMainContext *ctx;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
@@ -6812,12 +6813,10 @@ clutter_actor_set_parent (ClutterActor *self,
   g_object_ref_sink (self);
   priv->parent_actor = parent;
 
-  ctx = _clutter_context_get_default ();
-
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
    */
-  if (ctx->internal_child)
+  if (parent->priv->internal_child)
     CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_INTERNAL_CHILD);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
@@ -9723,6 +9722,7 @@ clutter_actor_get_text_direction (ClutterActor *self)
 
 /**
  * clutter_actor_push_internal:
+ * @self: a #ClutterActor
  *
  * Should be used by actors implementing the #ClutterContainer and with
  * internal children added through clutter_actor_set_parent(), for instance:
@@ -9733,7 +9733,7 @@ clutter_actor_get_text_direction (ClutterActor *self)
  *   {
  *     self->priv = SELF_ACTOR_GET_PRIVATE (self);
  *
- *     clutter_actor_push_internal ();
+ *     clutter_actor_push_internal (CLUTTER_ACTOR (self));
  *
  *     /&ast; calling clutter_actor_set_parent() now will result in
  *      &ast; the internal flag being set on a child of MyActor
@@ -9749,7 +9749,7 @@ clutter_actor_get_text_direction (ClutterActor *self)
  *     clutter_actor_set_parent (self->priv->label,
  *                               CLUTTER_ACTOR (self));
  *
- *     clutter_actor_pop_internal ();
+ *     clutter_actor_pop_internal (CLUTTER_ACTOR (self));
  *
  *     /&ast; calling clutter_actor_set_parent() now will not result in
  *      &ast; the internal flag being set on a child of MyActor
@@ -9771,26 +9771,31 @@ clutter_actor_get_text_direction (ClutterActor *self)
  * Since: 1.2
  */
 void
-clutter_actor_push_internal (void)
+clutter_actor_push_internal (ClutterActor *self)
 {
-  ClutterMainContext *ctx = _clutter_context_get_default ();
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  ctx->internal_child += 1;
+  self->priv->internal_child += 1;
 }
 
 /**
  * clutter_actor_pop_internal:
+ * @self: a #ClutterActor
  *
  * Disables the effects of clutter_actor_pop_internal()
  *
  * Since: 1.2
  */
 void
-clutter_actor_pop_internal (void)
+clutter_actor_pop_internal (ClutterActor *self)
 {
-  ClutterMainContext *ctx = _clutter_context_get_default ();
+  ClutterActorPrivate *priv;
 
-  if (ctx->internal_child == 0)
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->internal_child == 0)
     {
       g_warning ("Mismatched %s: you need to call "
                  "clutter_actor_push_composite() at least once before "
@@ -9798,7 +9803,7 @@ clutter_actor_pop_internal (void)
       return;
     }
 
-  ctx->internal_child -= 1;
+  priv->internal_child -= 1;
 }
 
 /**

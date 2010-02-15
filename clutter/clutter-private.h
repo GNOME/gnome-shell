@@ -180,8 +180,6 @@ struct _ClutterMainContext
   gulong redraw_count;
 
   GList *repaint_funcs;
-
-  gint internal_child;
 };
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())

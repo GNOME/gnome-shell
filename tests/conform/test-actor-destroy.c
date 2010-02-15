@@ -131,7 +131,7 @@ test_destroy_class_init (TestDestroyClass *klass)
 static void
 test_destroy_init (TestDestroy *self)
 {
-  clutter_actor_push_internal ();
+  clutter_actor_push_internal (CLUTTER_ACTOR (self));
 
   if (g_test_verbose ())
     g_print ("Adding internal children...\n");
@@ -144,7 +144,7 @@ test_destroy_init (TestDestroy *self)
   clutter_actor_set_parent (self->label, CLUTTER_ACTOR (self));
   clutter_actor_set_name (self->label, "Label");
 
-  clutter_actor_pop_internal ();
+  clutter_actor_pop_internal (CLUTTER_ACTOR (self));
 
   self->tex = clutter_texture_new ();
   clutter_actor_set_parent (self->tex, CLUTTER_ACTOR (self));

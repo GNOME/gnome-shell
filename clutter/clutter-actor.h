@@ -538,8 +538,8 @@ void                 clutter_actor_set_text_direction (ClutterActor         *sel
                                                        ClutterTextDirection  text_dir);
 ClutterTextDirection clutter_actor_get_text_direction (ClutterActor         *self);
 
-void                 clutter_actor_push_internal      (void);
-void                 clutter_actor_pop_internal       (void);
+void                 clutter_actor_push_internal      (ClutterActor         *self);
+void                 clutter_actor_pop_internal       (ClutterActor         *self);
 
 G_END_DECLS
 
