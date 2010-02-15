@@ -438,7 +438,7 @@ shell_global_get_windows (ShellGlobal *global)
 }
 
 static gboolean
-emit_screen_size_changed_cb (gpointer data)
+on_screen_size_changed_cb (gpointer data)
 {
   ShellGlobal *global = SHELL_GLOBAL (data);
 
@@ -451,6 +451,10 @@ emit_screen_size_changed_cb (gpointer data)
       g_signal_emit (G_OBJECT (global), shell_global_signals[SCREEN_SIZE_CHANGED], 0);
       global->last_change_screen_width = width;
       global->last_change_screen_height = height;
+
+      /* update size of background actor to fix tiled backgrounds */
+      clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
+                              width, height);
     }
 
   return FALSE;
@@ -466,7 +470,7 @@ global_stage_notify_width (GObject    *gobject,
   g_object_notify (G_OBJECT (global), "screen-width");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
-                  emit_screen_size_changed_cb,
+                  on_screen_size_changed_cb,
                   global,
                   NULL);
 }
@@ -481,7 +485,7 @@ global_stage_notify_height (GObject    *gobject,
   g_object_notify (G_OBJECT (global), "screen-height");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
-                  emit_screen_size_changed_cb,
+                  on_screen_size_changed_cb,
                   global,
                   NULL);
 }
