@@ -237,6 +237,16 @@ BaseAppSearchProvider.prototype = {
 
     activateResult: function(id) {
         let app = this._appSys.get_app(id);
+        let windows = app.get_windows();
+
+        if (windows.length > 0)
+            Main.overview.activateWindow(windows[0], global.get_current_time());
+        else
+            app.launch();
+    },
+
+    dragActivateResult: function(id) {
+        let app = this._appSys.get_app(id);
         app.launch();
     }
 };

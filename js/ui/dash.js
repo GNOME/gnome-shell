@@ -390,7 +390,10 @@ SearchResult.prototype = {
     },
 
     shellWorkspaceLaunch: function() {
-        this.provider.activateResult(this.metaInfo.id);
+        if (this.provider.dragActivateResult)
+            this.provider.dragActivateResult(this.metaInfo.id);
+        else
+            this.provider.activateResult(this.metaInfo.id);
     }
 }
 
