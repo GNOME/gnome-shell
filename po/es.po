@@ -1,15 +1,14 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-01-07 23:31+0000\n"
-"PO-Revision-Date: 2010-01-09 09:08+0100\n"
+"POT-Creation-Date: 2010-02-11 19:43+0000\n"
+"PO-Revision-Date: 2010-02-15 11:24+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +25,7 @@ msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:880
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
@@ -34,44 +33,43 @@ msgstr "APLICACIONES"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
+#: ../js/ui/appDisplay.js:649
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:1064
+#: ../js/ui/appDisplay.js:1006
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
-#: ../js/ui/dash.js:240
+#: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Buscar…"
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/dash.js:508
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:522
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
-#| msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:907
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
@@ -82,7 +80,12 @@ msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:549
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
@@ -90,11 +93,11 @@ msgstr "%a %H:%M"
 msgid "Connect to..."
 msgstr "Conectar a…"
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/runDialog.js:351
+#: ../js/ui/runDialog.js:361
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
@@ -112,32 +115,32 @@ msgstr "Aplicaciones"
 msgid "Recent Documents"
 msgstr "Documentos recientes"
 
-#: ../src/shell-global.c:890
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:893
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:896
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:902
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
