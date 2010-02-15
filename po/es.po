@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-02-11 19:43+0000\n"
-"PO-Revision-Date: 2010-02-15 11:24+0100\n"
+"POT-Creation-Date: 2010-02-15 13:36+0000\n"
+"PO-Revision-Date: 2010-02-15 21:45+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,6 +49,17 @@ msgstr "Añadir a los favoritos"
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "Se ha añadido %s a sus favoritos."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+#| msgid "Remove from Favorites"
+msgid "%s has been removed from your favorites."
+msgstr "Se ha quitado %s de sus favoritos."
+
 #: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Buscar…"
@@ -69,9 +80,41 @@ msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
+
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "No hay extensiones instaladas"
+
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Activado"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Desactivado"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Error"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Caducado"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Ver fuente"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Página web"
+
+#: ../js/ui/overview.js:95
+msgid "Undo"
+msgstr "Deshacer"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -79,12 +122,12 @@ msgstr "ELEMENTOS RECIENTES"
 msgid "Activities"
 msgstr "Actividades"
 
-#. Translators: This is a time format.
+#. Translators: This is the time format used in 24-hour mode.
 #: ../js/ui/panel.js:560
 msgid "%a %R"
 msgstr "%a %R"
 
-#. Translators: This is a time format.
+#. Translators: This is a time format used for AM/PM.
 #: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
@@ -101,6 +144,46 @@ msgstr "Introduzca un comando:"
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Ocupado"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Invisible"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Información de la cuenta…"
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Barra lateral"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Preferencias del sistema…"
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Bloquear la pantalla"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Salir…"
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Apagar…"
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -199,27 +282,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Can't logout: %s"
 #~ msgstr "No se puede salir de la sesión: %s"
-
-#~ msgid "Account Information..."
-#~ msgstr "Información de la cuenta…"
-
-#~ msgid "Sidebar"
-#~ msgstr "Barra lateral"
-
-#~ msgid "System Preferences..."
-#~ msgstr "Preferencias del sistema…"
-
-#~ msgid "Lock Screen"
-#~ msgstr "Bloquear la pantalla"
-
-#~ msgid "Switch User"
-#~ msgstr "Cambiar de usuario"
-
-#~ msgid "Log Out..."
-#~ msgstr "Salir…"
-
-#~ msgid "Shut Down..."
-#~ msgstr "Apagar…"
 
 #~ msgid "Browse"
 #~ msgstr "Examine"
