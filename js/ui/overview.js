@@ -92,7 +92,7 @@ InfoBar.prototype = {
                                   x_fill: true,
                                   y_fill: false });
         this._label = new St.Label();
-        this._undo = new St.Button({ label: _('Undo'),
+        this._undo = new St.Button({ label: _("Undo"),
                                      style_class: 'info-bar-link-button' });
 
         let bin = new St.Bin({ x_fill: false,

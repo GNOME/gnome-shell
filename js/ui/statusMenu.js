@@ -104,17 +104,17 @@ StatusMenu.prototype = {
 
         let item;
 
-        item = this._createImageMenuItem(_('Available'), 'gtk-yes', true);
+        item = this._createImageMenuItem(_("Available"), 'gtk-yes', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.AVAILABLE));
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Busy'), 'gtk-no', true);
+        item = this._createImageMenuItem(_("Busy"), 'gtk-no', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.BUSY));
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Invisible'), 'gtk-close', true);
+        item = this._createImageMenuItem(_("Invisible"), 'gtk-close', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.INVISIBLE));
         this._menu.append(item);
         item.show();
@@ -123,13 +123,13 @@ StatusMenu.prototype = {
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Account Information...'), 'user-info');
+        item = this._createImageMenuItem(_("Account Information..."), 'user-info');
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
         this._menu.append(item);
         item.show();
 
         let gconf = Shell.GConf.get_default();
-        item = new Gtk.CheckMenuItem({ label: _('Sidebar'),
+        item = new Gtk.CheckMenuItem({ label: _("Sidebar"),
                                        active: gconf.get_boolean(SIDEBAR_VISIBLE_KEY) });
         item.connect('activate', Lang.bind(this,
             function() {
@@ -139,7 +139,7 @@ StatusMenu.prototype = {
         item.show();
         this._sidebarItem = item;
 
-        item = this._createImageMenuItem(_('System Preferences...'), 'preferences-desktop');
+        item = this._createImageMenuItem(_("System Preferences..."), 'preferences-desktop');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this._menu.append(item);
         item.show();
@@ -148,23 +148,23 @@ StatusMenu.prototype = {
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Lock Screen'), 'system-lock-screen');
+        item = this._createImageMenuItem(_("Lock Screen"), 'system-lock-screen');
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Switch User'), 'system-users');
+        item = this._createImageMenuItem(_("Switch User"), 'system-users');
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
         this._menu.append(item);
         item.show();
         this._loginScreenItem = item;
 
-        item = this._createImageMenuItem(_('Log Out...'), 'system-log-out');
+        item = this._createImageMenuItem(_("Log Out..."), 'system-log-out');
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this._menu.append(item);
         item.show();
 
-        item = this._createImageMenuItem(_('Shut Down...'), 'system-shutdown');
+        item = this._createImageMenuItem(_("Shut Down..."), 'system-shutdown');
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this._menu.append(item);
         item.show();

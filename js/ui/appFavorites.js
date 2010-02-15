@@ -86,7 +86,7 @@ AppFavorites.prototype = {
 
         let app = Shell.AppSystem.get_default().get_app(appId);
 
-        Main.overview.infoBar.setMessage(_('%s has been added to your favorites.').format(app.get_name()), Lang.bind(this, function () {
+        Main.overview.infoBar.setMessage(_("%s has been added to your favorites.").format(app.get_name()), Lang.bind(this, function () {
             this._removeFavorite(appId);
         }));
     },
@@ -104,7 +104,7 @@ AppFavorites.prototype = {
         if (!this._removeFavorite(appId))
             return;
 
-        Main.overview.infoBar.setMessage(_('%s has been removed from your favorites.').format(this._favorites[appId].get_name()),
+        Main.overview.infoBar.setMessage(_("%s has been removed from your favorites.").format(this._favorites[appId].get_name()),
                                          Lang.bind(this, function () {
             this._addFavorite(appId);
         }));
