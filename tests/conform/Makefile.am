@@ -88,6 +88,7 @@ INCLUDES = \
 
 test_conformance_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
+	-DCOGL_DISABLE_DEPRECATED \
 	-DCLUTTER_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
 
