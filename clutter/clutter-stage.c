@@ -2393,7 +2393,15 @@ clutter_stage_get_minimum_size (ClutterStage *stage,
 int
 _clutter_stage_get_pending_swaps (ClutterStage *stage)
 {
-  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  ClutterStageWindow *stage_window;
+
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    return 0;
+
+  stage_window = _clutter_stage_get_window (stage);
+  if (stage_window == NULL)
+    return 0;
+
   return _clutter_stage_window_get_pending_swaps (stage_window);
 }
 

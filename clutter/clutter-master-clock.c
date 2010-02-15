@@ -129,11 +129,14 @@ master_clock_is_running (ClutterMasterClock *master_clock)
   /* If all of the stages are busy waiting for a swap-buffers to complete
    * then we stop the master clock... */
   for (l = stages; l != NULL; l = l->next)
-    if (_clutter_stage_get_pending_swaps (l->data) == 0)
-      {
-        stage_free = TRUE;
-        break;
-      }
+    {
+      if (_clutter_stage_get_pending_swaps (l->data) == 0)
+        {
+          stage_free = TRUE;
+          break;
+        }
+    }
+
   if (!stage_free)
     return FALSE;
 
@@ -141,9 +144,11 @@ master_clock_is_running (ClutterMasterClock *master_clock)
     return TRUE;
 
   for (l = stages; l; l = l->next)
-    if (_clutter_stage_has_queued_events (l->data) ||
-        _clutter_stage_needs_update (l->data))
-      return TRUE;
+    {
+      if (_clutter_stage_has_queued_events (l->data) ||
+          _clutter_stage_needs_update (l->data))
+        return TRUE;
+    }
 
   if (master_clock->ensure_next_iteration)
     {
