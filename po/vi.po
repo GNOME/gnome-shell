@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-13 21:09+0700\n"
-"PO-Revision-Date: 2010-02-13 22:01+0700\n"
+"POT-Creation-Date: 2010-02-16 19:32+0700\n"
+"PO-Revision-Date: 2010-02-16 19:36+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -49,6 +49,16 @@ msgstr "Đánh dấu ưa thích"
 msgid "Drag here to add favorites"
 msgstr "Kéo vào đây để thêm vào danh mục ưa thích"
 
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "Đã được đánh dấu ưa thích cho %s."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "Đã bỏ đánh dấu ưa thích cho %s"
+
 #: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Tìm"
@@ -69,9 +79,41 @@ msgid "PLACES & DEVICES"
 msgstr "ĐỊA ĐIỂM & THIẾT BỊ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "MỤC GẦN ĐÂY"
+
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "Chưa cài phần mở rộng"
+
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Bật"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Tắt"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Lỗi"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Hết hạn"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Xem mã nguồn"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Trang Web"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Hoàn lại"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -101,6 +143,46 @@ msgstr "Vui lòng nhập lệnh:"
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Lỗi thực hiện '%s':"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Có mặt"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Bận"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Giấu mặt"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Thông tin tài khoản..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Thanh bên"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Thiết lập hệ thống..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Khoá màn hình"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Chuyển người dùng"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Đăng xuất..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Tắt máy..."
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
