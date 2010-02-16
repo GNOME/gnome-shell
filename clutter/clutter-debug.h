@@ -23,10 +23,16 @@ typedef enum {
   CLUTTER_DEBUG_MULTISTAGE          = 1 << 13,
   CLUTTER_DEBUG_ANIMATION           = 1 << 14,
   CLUTTER_DEBUG_LAYOUT              = 1 << 15,
-  CLUTTER_DEBUG_NOP_PICKING         = 1 << 16,
-  CLUTTER_DEBUG_DUMP_PICK_BUFFERS   = 1 << 17,
-  CLUTTER_DEBUG_DISABLE_SWAP_EVENTS = 1 << 18,
 } ClutterDebugFlag;
+
+typedef enum {
+  CLUTTER_DEBUG_NOP_PICKING         = 1 << 0,
+  CLUTTER_DEBUG_DUMP_PICK_BUFFERS   = 1 << 1
+} ClutterPickDebugFlag;
+
+typedef enum {
+  CLUTTER_DEBUG_DISABLE_SWAP_EVENTS = 1 << 0
+} ClutterDrawDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG
 
@@ -88,6 +94,8 @@ typedef enum {
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 extern guint clutter_debug_flags;
+extern guint clutter_pick_debug_flags;
+extern guint clutter_paint_debug_flags;
 
 G_END_DECLS
 

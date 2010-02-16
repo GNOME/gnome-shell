@@ -137,6 +137,9 @@ static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
+guint clutter_paint_debug_flags = 0;
+guint clutter_pick_debug_flags = 0;
+
 guint clutter_profile_flags = 0;  /* global clutter profile flag */
 
 const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
@@ -160,17 +163,23 @@ static const GDebugKey clutter_debug_keys[] = {
   { "shader", CLUTTER_DEBUG_SHADER },
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
-  { "layout", CLUTTER_DEBUG_LAYOUT },
-  { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
-  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS },
-  { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS }
+  { "layout", CLUTTER_DEBUG_LAYOUT }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+static const GDebugKey clutter_pick_debug_keys[] = {
+  { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
+  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
+};
+
+static const GDebugKey clutter_paint_debug_keys[] = {
+  { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS }
+};
+
 #ifdef CLUTTER_ENABLE_PROFILE
 static const GDebugKey clutter_profile_keys[] = {
-      {"picking-only", CLUTTER_PROFILE_PICKING_ONLY },
-      {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
+  {"picking-only", CLUTTER_PROFILE_PICKING_ONLY },
+  {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -411,7 +420,7 @@ _clutter_id_to_color (guint id, ClutterColor *col)
    * otherwise pick buffers dumped to an image will pretty much just look
    * black.
    */
-  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
       col->red   = (col->red << 4)   | (col->red >> 4);
       col->green = (col->green << 4) | (col->green >> 4);
@@ -431,7 +440,7 @@ _clutter_pixel_to_id (guchar pixel[4])
   /* reduce the pixel components to the number of bits actually used of the
    * 8bits.
    */
-  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
       guchar tmp;
 
@@ -590,7 +599,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
-  if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_push_window_rectangle (x, y, 1, 1);
 
   cogl_disable_fog ();
@@ -615,7 +624,7 @@ _clutter_do_pick (ClutterStage   *stage,
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
-  if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_pop ();
 
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
@@ -629,7 +638,7 @@ _clutter_do_pick (ClutterStage   *stage,
                     pixel);
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
-  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
       read_pixels_to_file ("pick-buffer", 0, 0,
                            clutter_actor_get_width (CLUTTER_ACTOR (stage)),
@@ -1645,6 +1654,26 @@ pre_parse_hook (GOptionContext  *context,
       env_string = NULL;
     }
 #endif /* CLUTTER_ENABLE_PROFILE */
+
+  env_string = g_getenv ("CLUTTER_PICK");
+  if (env_string != NULL)
+    {
+      clutter_pick_debug_flags =
+        g_parse_debug_string (env_string,
+                              clutter_pick_debug_keys,
+                              G_N_ELEMENTS (clutter_pick_debug_keys));
+      env_string = NULL;
+    }
+
+  env_string = g_getenv ("CLUTTER_PAINT");
+  if (env_string != NULL)
+    {
+      clutter_paint_debug_flags =
+        g_parse_debug_string (env_string,
+                              clutter_paint_debug_keys,
+                              G_N_ELEMENTS (clutter_paint_debug_keys));
+      env_string = NULL;
+    }
 
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
