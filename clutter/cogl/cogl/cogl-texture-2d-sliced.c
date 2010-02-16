@@ -1076,11 +1076,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           CoglPixelFormat  format)
 {
   /* NOTE: width, height and internal format are not queriable
-     in GLES, hence such a function prototype. However, for
-     OpenGL they are still queried from the texture for improved
-     robustness and for completeness in case one day GLES gains
-     support for them.
-     */
+   * in GLES, hence such a function prototype.
+   */
 
   GLenum               gl_error = 0;
   GLboolean            gl_istexture;
@@ -1132,19 +1129,16 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   GE( glGetTexLevelParameteriv (gl_target, 0,
                                 GL_TEXTURE_INTERNAL_FORMAT,
                                 &gl_int_format) );
+#endif
 
-
-  GE( glGetTexLevelParameteriv (gl_target, 0,
-                                GL_TEXTURE_WIDTH,
-                                &gl_width) );
-
-  GE( glGetTexLevelParameteriv (gl_target, 0,
-                                GL_TEXTURE_HEIGHT,
-                                &gl_height) );
-#else
+  /* Note: We always trust the given width and height without querying
+   * the texture object because the user may be creating a Cogl
+   * texture for a texture_from_pixmap object where glTexImage2D may
+   * not have been called and the texture_from_pixmap spec doesn't
+   * clarify that it is reliable to query back the size from OpenGL.
+   */
   gl_width = width + x_pot_waste;
   gl_height = height + y_pot_waste;
-#endif
 
   GE( glGetTexParameteriv (gl_target,
                            GL_GENERATE_MIPMAP,
