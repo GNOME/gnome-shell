@@ -47,7 +47,8 @@ UNIT_TESTS = \
 	test-cogl-vertex-buffer.c \
 	test-bin-layout.c \
 	test-flow-layout.c \
-	test-box-layout.c
+	test-box-layout.c \
+	test-stage-sizing.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
