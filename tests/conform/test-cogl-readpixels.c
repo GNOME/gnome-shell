@@ -73,11 +73,10 @@ on_paint (ClutterActor *actor, void *state)
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     (guchar *)pixels);
 
-  g_assert (pixels[0] == 0xff0000ff);
-  g_assert (pixels[FRAMEBUFFER_WIDTH - 1] == 0xff00ff00);
-  g_assert (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH] == 0xffff0000);
-  g_assert (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH +
-                   FRAMEBUFFER_WIDTH - 1] == 0xffffffff);
+  g_assert_cmpint (pixels[0], ==, 0xff0000ff);
+  g_assert_cmpint (pixels[FRAMEBUFFER_WIDTH - 1], ==, 0xff00ff00);
+  g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH], ==, 0xffff0000);
+  g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH + FRAMEBUFFER_WIDTH - 1], ==, 0xffffffff);
   g_free (pixels);
 
   cogl_pop_framebuffer ();
@@ -95,11 +94,10 @@ on_paint (ClutterActor *actor, void *state)
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     (guchar *)pixels);
 
-  g_assert (pixels[0] == 0xff0000ff);
-  g_assert (pixels[FRAMEBUFFER_WIDTH - 1] == 0xff00ff00);
-  g_assert (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH] == 0xffff0000);
-  g_assert (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH +
-                   FRAMEBUFFER_WIDTH - 1] == 0xffffffff);
+  g_assert_cmpint (pixels[0], ==, 0xff0000ff);
+  g_assert_cmpint (pixels[FRAMEBUFFER_WIDTH - 1], ==, 0xff00ff00);
+  g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH], ==, 0xffff0000);
+  g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH + FRAMEBUFFER_WIDTH - 1], ==, 0xffffffff);
   g_free (pixels);
 
   cogl_handle_unref (tex);
