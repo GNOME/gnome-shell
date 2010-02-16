@@ -127,7 +127,6 @@ test_pick (TestConformSimpleFixture *fixture,
 
   state.stage = clutter_stage_get_default ();
 
-  clutter_actor_set_size (state.stage, STAGE_WIDTH, STAGE_HEIGHT);
   state.actor_width = STAGE_WIDTH / ACTORS_X;
   state.actor_height = STAGE_HEIGHT / ACTORS_Y;
 

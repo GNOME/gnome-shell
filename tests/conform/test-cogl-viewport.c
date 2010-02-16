@@ -393,7 +393,6 @@ test_cogl_viewport (TestConformSimpleFixture *fixture,
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_set_size (stage, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
