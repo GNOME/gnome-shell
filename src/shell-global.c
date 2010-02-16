@@ -76,8 +76,6 @@ enum {
 /* Signals */
 enum
 {
-  PANEL_RUN_DIALOG,
-  PANEL_MAIN_MENU,
   SCREEN_SIZE_CHANGED,
   LAST_SIGNAL
 };
@@ -205,24 +203,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
-
-  shell_global_signals[PANEL_RUN_DIALOG] =
-    g_signal_new ("panel-run-dialog",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellGlobalClass, panel_run_dialog),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__INT,
-		  G_TYPE_NONE, 1, G_TYPE_INT);
-
-  shell_global_signals[PANEL_MAIN_MENU] =
-    g_signal_new ("panel-main-menu",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellGlobalClass, panel_main_menu),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__INT,
-		  G_TYPE_NONE, 1, G_TYPE_INT);
 
   shell_global_signals[SCREEN_SIZE_CHANGED] =
     g_signal_new ("screen-size-changed",

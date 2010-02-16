@@ -26,10 +26,6 @@ struct _ShellGlobalClass
 {
   GObjectClass parent_class;
 
-  void (*panel_run_dialog) (ShellGlobal *global,
-			    int      timestamp);
-  void (*panel_main_menu) (ShellGlobal *global,
-			   int      timestamp);
   void (*screen_size_changed) (ShellGlobal *global);
 };
 

@@ -99,10 +99,6 @@ function start() {
     let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
     themeContext.set_theme (theme);
 
-    global.connect('panel-run-dialog', function(panel) {
-        // Make sure not more than one run dialog is shown.
-        getRunDialog().open();
-    });
     let shellwm = global.window_manager;
     shellwm.takeover_keybinding("panel_main_menu");
     shellwm.connect("keybinding::panel_main_menu", function () {
@@ -159,7 +155,6 @@ function start() {
 
     let display = global.screen.get_display();
     display.connect('overlay-key', Lang.bind(overview, overview.toggle));
-    global.connect('panel-main-menu', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
