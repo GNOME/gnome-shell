@@ -2,8 +2,8 @@
 
 #include "test-conform-common.h"
 
-#define STAGE_WIDTH  320
-#define STAGE_HEIGHT 200
+#define STAGE_WIDTH  640
+#define STAGE_HEIGHT 480
 #define ACTORS_X 12
 #define ACTORS_Y 16
 
