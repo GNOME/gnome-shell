@@ -208,7 +208,7 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
        */
       stage_x11->xwin_width = width;
       stage_x11->xwin_height = height;
-      clutter_actor_queue_relayout (stage_x11->wrapper);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
       return;
     }
 
