@@ -200,6 +200,13 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   ClutterStage *stage = stage_x11->wrapper;
   gboolean resize;
 
+  if (stage_x11->is_foreign_xwin)
+    {
+      stage_x11->xwin_width = width;
+      stage_x11->xwin_height = height;
+      return;
+    }
+
   /* If we're going fullscreen, don't mess with the size */
   if (stage_x11->fullscreening)
     return;
@@ -221,7 +228,7 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
+  if (stage_x11->xwin != None)
     {
       clutter_stage_x11_fix_window_size (stage_x11, width, height);
 
