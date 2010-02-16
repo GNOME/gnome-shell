@@ -147,6 +147,7 @@ TAGS
 /tests/interactive/test-box-layout
 /tests/interactive/stamp-test-interactive
 /tests/interactive/test-animator
+/tests/interactive/test-stage-sizing
 /tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-cogl-backface-culling
