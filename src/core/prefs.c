@@ -124,9 +124,10 @@ static gboolean no_tab_popup = FALSE;
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
 
-static gboolean update_key_binding     (const char *name,
-                                        const char *value);
+static char *binding_name (const char *gconf_key);
 
+static gboolean update_key_binding     (const char *key,
+                                        const char *value);
 typedef enum
   {
     META_LIST_OF_STRINGS,
@@ -134,10 +135,10 @@ typedef enum
   } MetaStringListType;
 
 static gboolean find_and_update_list_binding (MetaKeyPref       *bindings,
-                                              const char        *name,
+                                              const char        *key,
                                               GSList            *value,
                                               MetaStringListType type_of_value);
-static gboolean update_key_list_binding (const char         *name,
+static gboolean update_key_list_binding (const char         *key,
                                          GSList             *value,
                                          MetaStringListType  type_of_value);
 static gboolean update_command            (const char  *name,
@@ -154,8 +155,8 @@ static char* gconf_key_for_workspace_name (int i);
 
 static void queue_changed (MetaPreference  pref);
 
-static gboolean update_list_binding       (MetaKeyPref *binding,
-                                           GSList      *value,
+static gboolean update_list_binding       (MetaKeyPref       *binding,
+                                           GSList            *value,
                                            MetaStringListType type_of_value);
 
 static void     cleanup_error             (GError **error);
@@ -1909,6 +1910,9 @@ init_bindings (void)
   const char *key;
   GConfEntry *entry;
   GConfValue *value;
+  GHashTable *to_update;
+
+  to_update = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   for (i = 0; prefix[i]; i++)
     {
@@ -1920,6 +1924,11 @@ init_bindings (void)
           value = gconf_entry_get_value (entry);
           if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
             {
+              /* List bindings are used in addition to the normal bindings and never
+               * have defaults, so we just go ahead and set them immediately; there
+               * will be only a few of them, so don't worry about the linear scan
+               * in find_and_update_list_binding.
+               */
               list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, NULL);
  
               update_key_list_binding (key, list_val, META_LIST_OF_STRINGS);
@@ -1929,12 +1938,23 @@ init_bindings (void)
           else
             {
               str_val = gconf_value_get_string (value);
-              update_key_binding (key, str_val);
+              g_hash_table_insert (to_update, binding_name (key), g_strdup (str_val));
             }
           gconf_entry_free (entry);
         }
       g_slist_free (list);
     }
+
+  i = 0;
+  while (key_bindings[i].name)
+    {
+      update_binding (&key_bindings[i],
+                      g_hash_table_lookup (to_update, key_bindings[i].name));
+
+      ++i;
+    }
+
+  g_hash_table_destroy (to_update);
 
 #else /* HAVE_GCONF */
   int i = 0;
@@ -2260,16 +2280,22 @@ update_list_binding (MetaKeyPref *binding,
   return changed;
 }
 
-static const gchar*
-relative_key (const gchar* key)
+static char *
+binding_name (const char *gconf_key)
 {
-  const gchar* end;
-  
-  end = strrchr (key, '/');
+  const char *start, *end;
 
-  ++end;
+  if (*gconf_key == '/')
+    start = strrchr (gconf_key, '/') + 1;
+  else
+    start = gconf_key;
 
-  return end;
+  if (g_str_has_suffix (gconf_key, KEY_LIST_BINDINGS_SUFFIX))
+    end = gconf_key + strlen(gconf_key) - strlen (KEY_LIST_BINDINGS_SUFFIX);
+  else
+    end = gconf_key + strlen(gconf_key);
+
+  return g_strndup (start, end - start);
 }
 
 /* Return value is TRUE if a preference changed and we need to
@@ -2277,21 +2303,18 @@ relative_key (const gchar* key)
  */
 static gboolean
 find_and_update_binding (MetaKeyPref *bindings, 
-                         const char  *name,
+                         const char  *key,
                          const char  *value)
 {
-  const char *key;
+  char *name = binding_name (key);
   int i;
-  
-  if (*name == '/')
-    key = relative_key (name);
-  else
-    key = name;
 
   i = 0;
   while (bindings[i].name &&
-         strcmp (key, bindings[i].name) != 0)
+         strcmp (name, bindings[i].name) != 0)
     ++i;
+
+  g_free (name);
 
   if (bindings[i].name)
     return update_binding (&bindings[i], value);
@@ -2300,35 +2323,27 @@ find_and_update_binding (MetaKeyPref *bindings,
 }
 
 static gboolean
-update_key_binding (const char *name,
-                       const char *value)
+update_key_binding (const char *key,
+                    const char *value)
 {
-  return find_and_update_binding (key_bindings, name, value);
+  return find_and_update_binding (key_bindings, key, value);
 }
 
 static gboolean
 find_and_update_list_binding (MetaKeyPref       *bindings,
-                              const char        *name,
+                              const char        *key,
                               GSList            *value,
                               MetaStringListType type_of_value)
 {
-  const char *key;
+  char *name = binding_name (key);
   int i;
-  gchar *name_without_suffix = g_strdup(name);
-
-  name_without_suffix[strlen(name_without_suffix) - strlen(KEY_LIST_BINDINGS_SUFFIX)] = 0;
-
-  if (*name_without_suffix == '/')
-    key = relative_key (name_without_suffix);
-  else
-    key = name_without_suffix;
 
   i = 0;
   while (bindings[i].name &&
-         strcmp (key, bindings[i].name) != 0)
+         strcmp (name, bindings[i].name) != 0)
     ++i;
 
-  g_free (name_without_suffix);
+  g_free (name);
 
   if (bindings[i].name)
     return update_list_binding (&bindings[i], value, type_of_value);
@@ -2337,11 +2352,11 @@ find_and_update_list_binding (MetaKeyPref       *bindings,
 }
 
 static gboolean
-update_key_list_binding (const char        *name,
+update_key_list_binding (const char        *key,
                          GSList            *value,
                          MetaStringListType type_of_value)
 {
-  return find_and_update_list_binding (key_bindings, name, value, type_of_value);
+  return find_and_update_list_binding (key_bindings, key, value, type_of_value);
 }
 
 static gboolean
