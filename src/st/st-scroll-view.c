@@ -64,6 +64,9 @@ struct _StScrollViewPrivate
   ClutterActor *hscroll;
   ClutterActor *vscroll;
 
+  GtkPolicyType hscroll_policy;
+  GtkPolicyType vscroll_policy;
+
   gfloat        row_size;
   gfloat        column_size;
 
@@ -77,6 +80,8 @@ enum {
 
   PROP_HSCROLL,
   PROP_VSCROLL,
+  PROP_HSCROLLBAR_POLICY,
+  PROP_VSCROLLBAR_POLICY,
   PROP_MOUSE_SCROLL
 };
 
@@ -96,6 +101,12 @@ st_scroll_view_get_property (GObject    *object,
     case PROP_VSCROLL:
       g_value_set_object (value, priv->vscroll);
       break;
+    case PROP_HSCROLLBAR_POLICY:
+      g_value_set_enum (value, priv->hscroll_policy);
+      break;
+    case PROP_VSCROLLBAR_POLICY:
+      g_value_set_enum (value, priv->vscroll_policy);
+      break;
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
       break;
@@ -110,11 +121,25 @@ st_scroll_view_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
+  StScrollView *self = ST_SCROLL_VIEW (object);
+  StScrollViewPrivate *priv = self->priv;
+
   switch (property_id)
     {
     case PROP_MOUSE_SCROLL:
-      st_scroll_view_set_mouse_scrolling ((StScrollView *) object,
+      st_scroll_view_set_mouse_scrolling (self,
                                           g_value_get_boolean (value));
+      break;
+    case PROP_HSCROLLBAR_POLICY:
+      st_scroll_view_set_policy (self,
+                                 g_value_get_enum (value),
+                                 priv->vscroll_policy);
+      break;
+    case PROP_VSCROLLBAR_POLICY:
+      st_scroll_view_set_policy (self,
+                                 priv->hscroll_policy,
+                                 g_value_get_enum (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -474,6 +499,23 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                                         ST_TYPE_SCROLL_BAR,
                                                         G_PARAM_READABLE));
 
+
+  pspec = g_param_spec_enum ("vscrollbar-policy",
+                             "Vertical Scrollbar Policy",
+                             "When the vertical scrollbar is displayed",
+                             GTK_TYPE_POLICY_TYPE,
+                             GTK_POLICY_ALWAYS,
+                             G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_VSCROLLBAR_POLICY, pspec);
+
+  pspec = g_param_spec_enum ("hscrollbar-policy",
+                             "Horizontal Scrollbar Policy",
+                             "When the horizontal scrollbar is displayed",
+                             GTK_TYPE_POLICY_TYPE,
+                             GTK_POLICY_ALWAYS,
+                             G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_HSCROLLBAR_POLICY, pspec);
+
   pspec = g_param_spec_boolean ("enable-mouse-scrolling",
                                 "Enable Mouse Scrolling",
                                 "Enable automatic mouse wheel scrolling",
@@ -525,6 +567,9 @@ child_hadjustment_notify_cb (GObject    *gobject,
                                           child_adjustment_changed_cb,
                                           priv->hscroll);
 
+  if (priv->hscroll_policy == GTK_POLICY_NEVER)
+    return;
+
   st_scrollable_get_adjustments (ST_SCROLLABLE (actor), &hadjust, NULL);
   if (hadjust)
     {
@@ -537,9 +582,13 @@ child_hadjustment_notify_cb (GObject    *gobject,
         }
 
       st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->hscroll), hadjust);
-      g_signal_connect (hadjust, "changed", G_CALLBACK (
-                          child_adjustment_changed_cb), priv->hscroll);
-      child_adjustment_changed_cb (hadjust, priv->hscroll);
+
+      if (priv->hscroll_policy == GTK_POLICY_AUTOMATIC)
+        {
+          g_signal_connect (hadjust, "changed", G_CALLBACK (
+                           child_adjustment_changed_cb), priv->hscroll);
+          child_adjustment_changed_cb (hadjust, priv->hscroll);
+        }
     }
 }
 
@@ -559,6 +608,9 @@ child_vadjustment_notify_cb (GObject    *gobject,
                                           child_adjustment_changed_cb,
                                           priv->vscroll);
 
+  if (priv->vscroll_policy == GTK_POLICY_NEVER)
+    return;
+
   st_scrollable_get_adjustments (ST_SCROLLABLE(actor), NULL, &vadjust);
   if (vadjust)
     {
@@ -571,9 +623,12 @@ child_vadjustment_notify_cb (GObject    *gobject,
         }
 
       st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->vscroll), vadjust);
-      g_signal_connect (vadjust, "changed", G_CALLBACK (
-                          child_adjustment_changed_cb), priv->vscroll);
-      child_adjustment_changed_cb (vadjust, priv->vscroll);
+      if (priv->vscroll_policy == GTK_POLICY_AUTOMATIC)
+        {
+          g_signal_connect (vadjust, "changed", G_CALLBACK (
+                            child_adjustment_changed_cb), priv->vscroll);
+          child_adjustment_changed_cb (vadjust, priv->vscroll);
+        }
     }
 }
 
@@ -581,6 +636,9 @@ static void
 st_scroll_view_init (StScrollView *self)
 {
   StScrollViewPrivate *priv = self->priv = SCROLL_VIEW_PRIVATE (self);
+
+  priv->hscroll_policy = GTK_POLICY_AUTOMATIC;
+  priv->vscroll_policy = GTK_POLICY_AUTOMATIC;
 
   priv->hscroll = CLUTTER_ACTOR (st_scroll_bar_new (NULL));
   priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR, "vertical", TRUE, NULL);
@@ -841,4 +899,74 @@ st_scroll_view_get_mouse_scrolling (StScrollView *scroll)
   priv = ST_SCROLL_VIEW (scroll)->priv;
 
   return priv->mouse_scroll;
+}
+
+/**
+ * st_scroll_view_set_policy:
+ * @scroll: A #StScrollView
+ * @hscroll: Whether to enable horizontal scrolling
+ * @vscroll: Whether to enable vertical scrolling
+ *
+ * Set the scroll policy.
+ */
+void
+st_scroll_view_set_policy (StScrollView   *scroll,
+                           GtkPolicyType   hscroll,
+                           GtkPolicyType   vscroll)
+{
+  StScrollViewPrivate *priv;
+  StAdjustment *hadjust, *vadjust;
+
+  g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
+  g_return_if_fail (hscroll == GTK_POLICY_ALWAYS || vscroll == GTK_POLICY_ALWAYS);
+
+  priv = ST_SCROLL_VIEW (scroll)->priv;
+
+  if (priv->hscroll_policy == hscroll && priv->vscroll_policy == vscroll)
+    return;
+
+  g_object_freeze_notify ((GObject *) scroll);
+
+  if (priv->hscroll_policy != hscroll)
+    {
+      priv->hscroll_policy = hscroll;
+      g_object_notify ((GObject *) scroll, "hscrollbar-policy");
+    }
+  if (priv->vscroll_policy != vscroll)
+    {
+      priv->vscroll_policy = vscroll;
+      g_object_notify ((GObject *) scroll, "vscrollbar-policy");
+    }
+
+  st_scrollable_get_adjustments (ST_SCROLLABLE (priv->child), &hadjust, &vadjust);
+
+  if (priv->hscroll_policy == GTK_POLICY_NEVER)
+    {
+      hadjust = NULL;
+      clutter_actor_hide (priv->hscroll);
+    }
+  else if (priv->hscroll_policy == GTK_POLICY_AUTOMATIC)
+    {
+      /* We call this function because we need to set up the adjustment
+       * notification hooks, and the _show will queue a reallocate, from which we'll figure
+       * out if we need to really show or hide the scrollbar.
+       */
+      child_hadjustment_notify_cb (G_OBJECT (priv->child), NULL, scroll);
+      clutter_actor_show (priv->hscroll);
+    }
+
+  if (priv->vscroll_policy == GTK_POLICY_NEVER)
+    {
+      vadjust = NULL;
+      clutter_actor_hide (priv->vscroll);
+    }
+  else
+    {
+      child_vadjustment_notify_cb (G_OBJECT (priv->child), NULL, scroll);
+      clutter_actor_show (priv->vscroll);
+    }
+
+  st_scrollable_set_adjustments (ST_SCROLLABLE (priv->child), hadjust, vadjust);
+
+  g_object_thaw_notify ((GObject *) scroll);
 }

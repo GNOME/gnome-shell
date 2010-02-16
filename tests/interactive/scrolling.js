@@ -14,8 +14,18 @@ let vbox = new St.BoxLayout({ vertical: true,
                               style: "padding: 10px;" });
 stage.add_actor(vbox);
 
+let toggle = new St.Button({ label: 'Horizontal Scrolling',
+                         toggle_mode: true });
+vbox.add(toggle);
+
 let v = new St.ScrollView();
 vbox.add(v, { expand: true });
+
+toggle.connect('notify::checked', function () {
+    v.set_policy(toggle.checked ? St.ScrollPolicy.AUTOMATIC
+                                : St.ScrollPolicy.NEVER,
+                 St.ScrollPolicy.AUTOMATIC);
+});
 
 let b = new St.BoxLayout({ vertical: true,
                            style: "border: 2px solid #880000; border-radius: 10px; padding: 0px 5px;" });

@@ -217,6 +217,7 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libst-1.0.la Makefile
 	        --namespace=St							\
 	        --nsversion=1.0							\
 	        --include=Clutter-1.0						\
+	        --include=Gtk-2.0						\
 		--add-include-path=$(builddir)     				\
 	        --libtool="$(LIBTOOL)"						\
 	        --program=mutter						\
