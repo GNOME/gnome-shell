@@ -703,7 +703,6 @@ StTooltip {
 }
 
 .ws-switcher-active-left {
-    width: 98px;
     height: 98px;
     border: 0px;
     background: rgba(255,255,255,0.5);
@@ -712,7 +711,6 @@ StTooltip {
 }
 
 .ws-switcher-active-right {
-    width: 98px;
     height: 98px;
     border: 0px;
     background: rgba(255,255,255,0.5);
@@ -729,7 +727,6 @@ StTooltip {
 }
 
 .ws-switcher-box {
-    width: 96px;
     height: 96px;
     border: 2px solid rgba(85,85,85,0.5);
     background: transparent;

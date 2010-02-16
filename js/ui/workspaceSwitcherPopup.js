@@ -27,13 +27,16 @@ WorkspaceSwitcherPopup.prototype = {
                                          height: global.screen_height });
         global.stage.add_actor(this.actor);
 
+        this._scaleWidth = global.screen_width / global.screen_height;
+
         this._container = new St.BoxLayout({ style_class: "workspace-switcher-container" });
         this._list = new St.BoxLayout({ style_class: "workspace-switcher" });
 
-        this._redraw();
-
         this._container.add(this._list);
+
         this.actor.add_actor(this._container);
+
+        this._redraw();
 
         this._position();
 
@@ -55,6 +58,7 @@ WorkspaceSwitcherPopup.prototype = {
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
 
            this._list.add(indicator);
+           indicator.set_width(Math.round(indicator.get_height() * this._scaleWidth));
 
            if (i < global.screen.n_workspaces - 1) {
                let spacer = new St.Bin({ style_class: 'ws-switcher-spacer' });
