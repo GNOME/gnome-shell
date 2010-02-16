@@ -202,8 +202,13 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 
   if (stage_x11->is_foreign_xwin)
     {
+      /* If this is a foreign window we won't get a ConfigureNotify,
+       * so we need to manually set the size and queue a relayout on the
+       * stage here (as is normally done in response to ConfigureNotify).
+       */
       stage_x11->xwin_width = width;
       stage_x11->xwin_height = height;
+      clutter_actor_queue_relayout (stage_x11->wrapper);
       return;
     }
 
