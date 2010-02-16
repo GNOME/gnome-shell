@@ -482,8 +482,15 @@ event_translate (ClutterBackend *backend,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
-          stage_x11->xwin_width = xevent->xconfigure.width;
-          stage_x11->xwin_height = xevent->xconfigure.height;
+          /* If we're fullscreened, we want these variables to
+           * represent the size of the window before it was set
+           * to fullscreen.
+           */
+          if (!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+            {
+              stage_x11->xwin_width = xevent->xconfigure.width;
+              stage_x11->xwin_height = xevent->xconfigure.height;
+            }
 
           clutter_actor_set_size (CLUTTER_ACTOR (stage),
                                   xevent->xconfigure.width,
@@ -551,6 +558,8 @@ event_translate (ClutterBackend *backend,
                     stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
                   else
                     stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
+
+                  stage_x11->fullscreening = fullscreen_set;
 
                   event->type = CLUTTER_STAGE_STATE;
                   event->stage_state.changed_mask =

@@ -216,7 +216,8 @@ clutter_stage_allocate (ClutterActor           *self,
       klass->allocate (self, box, flags);
 
       /* Ensure the window is sized correctly */
-      if ((geom.width != width) || (geom.height != height))
+      if (!priv->is_fullscreen &&
+          ((geom.width != width) || (geom.height != height)))
         _clutter_stage_window_resize (priv->impl, width, height);
     }
   else

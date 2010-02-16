@@ -66,6 +66,8 @@ send_wmspec_change_state (ClutterBackendX11 *backend_x11,
 {
   XClientMessageEvent xclient;
 
+  CLUTTER_NOTE (BACKEND, "%s NET_WM state", add ? "adding" : "removing");
+
   memset (&xclient, 0, sizeof (xclient));
 
   xclient.type         = ClientMessage;
@@ -121,7 +123,7 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
 
       /* If we are going fullscreen then we don't want any
          restrictions on the window size */
-      if (!stage_x11->fullscreen_on_map)
+      if (!stage_x11->fullscreening)
         {
           if (resize)
             {
@@ -169,17 +171,13 @@ clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  gboolean is_fullscreen;
 
   g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  is_fullscreen = FALSE;
-  g_object_get (G_OBJECT (stage_x11->wrapper),
-                "fullscreen-set", &is_fullscreen,
-                NULL);
-
-  if (is_fullscreen || stage_x11->fullscreen_on_map)
+  /* If we're fullscreen, return the size of the display. */
+  if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) &&
+      stage_x11->fullscreening)
     {
       geometry->width = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
       geometry->height = DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num);
@@ -201,6 +199,10 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterStage *stage = stage_x11->wrapper;
   gboolean resize;
+
+  /* If we're going fullscreen, don't mess with the size */
+  if (stage_x11->fullscreening)
+    return;
 
   resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
 
@@ -389,6 +391,11 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   if (stage == NULL)
     return;
 
+  if (!!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) == is_fullscreen)
+    return;
+
+  CLUTTER_NOTE (BACKEND, "%ssetting fullscreen", is_fullscreen ? "" : "un");
+
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 
   if (is_fullscreen)
@@ -403,17 +410,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
       width  = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
       height = DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num);
 
-      /* we force the stage to the screen size here, in order to
-       * get the fullscreen stage size right after the call to
-       * clutter_stage_fullscreen(). XXX this might break in case
-       * the stage is not fullscreened, but if that does not happen
-       * we are massively screwed anyway
-       */
-      stage_x11->xwin_width = width;
-      stage_x11->xwin_height = height;
-
-      if (!STAGE_X11_IS_MAPPED (stage_x11))
-        stage_x11->fullscreen_on_map = TRUE;
+      /* Set the fullscreen hint so we can retain the old size of the window. */
+      stage_x11->fullscreening = TRUE;
 
       if (stage_x11->xwin != None)
         {
@@ -422,8 +420,10 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
            * a resize when calling clutter_stage_fullscreen() before showing
            * the stage
            */
-          if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
+          if (!/*CLUTTER_ACTOR_IS_MAPPED (stage_x11->wrapper)*/ STAGE_X11_IS_MAPPED (stage_x11))
             {
+              CLUTTER_NOTE (BACKEND, "Fullscreening unmapped stage");
+
               /* FIXME: This wont work if we support more states */
               XChangeProperty (backend_x11->xdpy,
                                stage_x11->xwin,
@@ -433,6 +433,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
             }
           else
             {
+              CLUTTER_NOTE (BACKEND, "Fullscreening mapped stage");
+
               /* We need to fix the window size so that it will remove
                  the maximum and minimum window hints. Otherwise
                  metacity will honour the restrictions and not
@@ -447,13 +449,14 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
     }
   else
     {
-      if (!STAGE_X11_IS_MAPPED (stage_x11))
-        stage_x11->fullscreen_on_map = FALSE;
+      stage_x11->fullscreening = FALSE;
 
       if (stage_x11->xwin != None)
         {
-          if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
+          if (!/*CLUTTER_ACTOR_IS_MAPPED (stage_x11->wrapper)*/ STAGE_X11_IS_MAPPED (stage_x11))
             {
+              CLUTTER_NOTE (BACKEND, "Un-fullscreening unmapped stage");
+
               /* FIXME: This wont work if we support more states */
               XDeleteProperty (backend_x11->xdpy,
                                stage_x11->xwin, 
@@ -461,6 +464,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
             }
           else
             {
+              CLUTTER_NOTE (BACKEND, "Un-fullscreening mapped stage");
+
               send_wmspec_change_state (backend_x11,
                                         stage_x11->xwin,
                                         backend_x11->atom_NET_WM_STATE_FULLSCREEN,
@@ -468,7 +473,9 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
               /* Fix the window size to restore the minimum/maximum
                  restriction */
-              clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
+              clutter_stage_x11_fix_window_size (stage_x11,
+                                                 stage_x11->xwin_width,
+                                                 stage_x11->xwin_height);
             }
         }
     }
@@ -504,7 +511,9 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
+  clutter_stage_x11_fix_window_size (stage_x11,
+                                     stage_x11->xwin_width,
+                                     stage_x11->xwin_height);
 }
 
 static void
@@ -575,14 +584,14 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
           CLUTTER_NOTE (BACKEND, "Mapping stage[%lu]",
                         (unsigned long) stage_x11->xwin);
 
-          if (stage_x11->fullscreen_on_map)
-            clutter_stage_x11_set_fullscreen (stage_window, TRUE);
-          else
-            clutter_stage_x11_set_fullscreen (stage_window, FALSE);
-
           set_stage_state (stage_x11, STAGE_X11_WITHDRAWN, 0);
 
           update_wm_hints (stage_x11);
+
+          if (stage_x11->fullscreening)
+            clutter_stage_x11_set_fullscreen (stage_window, TRUE);
+          else
+            clutter_stage_x11_set_fullscreen (stage_window, FALSE);
         }
 
       g_assert (STAGE_X11_IS_MAPPED (stage_x11));
@@ -659,7 +668,7 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->wm_state = STAGE_X11_WITHDRAWN;
 
   stage->is_foreign_xwin = FALSE;
-  stage->fullscreen_on_map = FALSE;
+  stage->fullscreening = FALSE;
   stage->is_cursor_visible = TRUE;
   stage->viewport_initialized = FALSE;
 
