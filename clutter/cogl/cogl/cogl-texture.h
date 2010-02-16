@@ -132,13 +132,20 @@ cogl_texture_new_from_data (unsigned int      width,
  * @gl_target: opengl target type of foreign texture
  * @width: width of foreign texture
  * @height: height of foreign texture.
- * @x_pot_waste: maximum horizontal waste.
- * @y_pot_waste: maximum vertical waste.
+ * @x_pot_waste: horizontal waste on the right hand edge of the texture.
+ * @y_pot_waste: vertical waste on the bottom edge of the texture.
  * @format: format of the foreign texture.
  *
  * Creates a COGL texture based on an existing OpenGL texture; the
- * width, height and format are passed along since it is not possible
- * to query this from a handle with GLES 1.0.
+ * width, height and format are passed along since it is not always
+ * possible to query these from OpenGL.
+ *
+ * The waste arguments allow you to create a Cogl texture that maps to
+ * a region smaller than the real OpenGL texture. For instance if your
+ * hardware only supports power-of-two textures you may load a
+ * non-power-of-two image into a larger power-of-two texture and use
+ * the waste arguments to tell Cogl which region should be mapped to
+ * the texture coordinate range [0:1].
  *
  * Return value: a #CoglHandle to the newly created texture or
  *   %COGL_INVALID_HANDLE on failure
