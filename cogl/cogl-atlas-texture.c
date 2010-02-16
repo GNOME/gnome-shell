@@ -955,9 +955,11 @@ _cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
   if (bmp->width < 1 || bmp->height < 1)
     return COGL_INVALID_HANDLE;
 
-  /* If we can't read back texture data then it will be too slow to
-     migrate textures and we shouldn't use the atlas */
-  if (!cogl_features_available (COGL_FEATURE_TEXTURE_READ_PIXELS))
+  /* If we can't use FBOs or we can't read back texture data then it
+     will be too slow to migrate textures and we shouldn't use the
+     atlas */
+  if (!cogl_features_available (COGL_FEATURE_TEXTURE_READ_PIXELS) ||
+      !cogl_features_available (COGL_FEATURE_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", bmp->width, bmp->height);
