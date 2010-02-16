@@ -2811,6 +2811,7 @@ meta_prefs_get_clutter_plugins (void)
 void
 meta_prefs_set_clutter_plugins (GSList *list)
 {
+#ifdef HAVE_GCONF
   GError *err = NULL;
 
   gconf_client_set_list (default_client,
@@ -2825,6 +2826,7 @@ meta_prefs_set_clutter_plugins (GSList *list)
                     err->message);
       g_error_free (err);
     }
+#endif
 }
 
 void
