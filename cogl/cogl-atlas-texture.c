@@ -861,15 +861,20 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
       COGL_NOTE (ATLAS, "Could not fit texture in the atlas");
       ret = FALSE;
     }
+  /* We need to migrate the existing textures into a new texture */
+  else if ((new_tex =
+            _cogl_texture_2d_new_with_size (_cogl_atlas_get_width (new_atlas),
+                                            _cogl_atlas_get_height (new_atlas),
+                                            COGL_TEXTURE_NONE,
+                                            COGL_PIXEL_FORMAT_RGBA_8888)) ==
+           COGL_INVALID_HANDLE)
+    {
+      COGL_NOTE (ATLAS, "Could not create a CoglTexture2D");
+      _cogl_atlas_free (new_atlas);
+      ret = FALSE;
+    }
   else
     {
-      /* We need to migrate the existing textures into a new texture */
-      new_tex =
-        _cogl_texture_2d_new_with_size (_cogl_atlas_get_width (new_atlas),
-                                        _cogl_atlas_get_height (new_atlas),
-                                        COGL_TEXTURE_NONE,
-                                        COGL_PIXEL_FORMAT_RGBA_8888);
-
       COGL_NOTE (ATLAS,
                  "Atlas %s with size %ix%i",
                  ctx->atlas == NULL ||
