@@ -50,8 +50,6 @@ SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
 BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
 
-const APPS = "apps";
-const PREFS = "prefs";
 const DOCS = "docs";
 const PLACES = "places";
 
@@ -69,11 +67,7 @@ function _getIndexWrapped(index, increment, length) {
 }
 
 function _createDisplay(displayType, flags) {
-    if (displayType == APPS)
-        return new AppDisplay.AppDisplay(false, flags);
-    else if (displayType == PREFS)
-        return new AppDisplay.AppDisplay(true, flags);
-    else if (displayType == DOCS)
+    if (displayType == DOCS)
         return new DocDisplay.DocDisplay(flags);
     else if (displayType == PLACES)
         return new PlaceDisplay.PlaceDisplay(flags);
@@ -619,8 +613,8 @@ MoreLink.prototype = {
                                         reactive: true });
         this.pane = null;
 
-        let expander = new St.Bin({ style_class: "more-link-expander" });
-        this.actor.add(expander, { expand: true, y_fill: false });
+        this._expander = new St.Bin({ style_class: "more-link-expander" });
+        this.actor.add(this._expander, { expand: true, y_fill: false });
     },
 
     activate: function() {
@@ -635,6 +629,10 @@ MoreLink.prototype = {
     setPane: function (pane) {
         this._pane = pane;
         this._pane.connect('open-state-changed', Lang.bind(this, function(pane, isOpen) {
+            if (!isOpen)
+                this._expander.style_class = 'more-link-expander';
+            else
+                this._expander.style_class = 'more-link-expander open';
         }));
     }
 }
@@ -884,13 +882,12 @@ Dash.prototype = {
         let appWell = new AppDisplay.AppWell();
         this._appsSection.content.add(appWell.actor, { expand: true });
 
-        this._moreAppsPane = null;
+        this._allApps = null;
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
-            if (this._moreAppsPane == null) {
-                this._moreAppsPane = new ResultPane(this);
-                this._moreAppsPane.packResults(APPS);
-                this._addPane(this._moreAppsPane);
-                link.setPane(this._moreAppsPane);
+            if (this._allApps == null) {
+                this._allApps = new AppDisplay.AllAppDisplay();
+                this._addPane(this._allApps);
+                link.setPane(this._allApps);
            }
         }));
 

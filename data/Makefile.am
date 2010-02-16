@@ -35,6 +35,7 @@ dist_theme_DATA =				\
 	theme/scroll-vhandle.svg        \
 	theme/section-back.svg          \
 	theme/section-more.svg          \
+	theme/section-more-open.svg          \
 	theme/single-view-active.svg          \
 	theme/single-view.svg          \
 	theme/ws-switch-arrow-left.svg		\

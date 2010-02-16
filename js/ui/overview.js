@@ -234,8 +234,7 @@ Overview.prototype = {
         this._group.add_actor(this._dash.actor);
 
         // Container to hold popup pane chrome.
-        this._paneContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                             spacing: 6 });
+        this._paneContainer = new St.BoxLayout({ style_class: 'overview-pane' });
         // Note here we explicitly don't set the paneContainer to be reactive yet; that's done
         // inside the notify::visible handler on panes.
         this._paneContainer.connect('button-release-event', Lang.bind(this, function(background) {
@@ -245,7 +244,7 @@ Overview.prototype = {
         this._group.add_actor(this._paneContainer);
 
         this._transparentBackground.lower_bottom();
-        this._paneContainer.lower_bottom();
+        this._paneContainer.hide();
 
         this._coverPane.lower_bottom();
 
@@ -362,12 +361,10 @@ Overview.prototype = {
         this._transparentBackground.set_size(primary.width - this._paneContainer.x,
                                              this._paneContainer.height);
 
-        if (this._activeDisplayPane != null)
-            this._activeDisplayPane.actor.width = displayGridColumnWidth * 2;
     },
 
     addPane: function (pane) {
-        this._paneContainer.append(pane.actor, Big.BoxPackFlags.NONE);
+        this._paneContainer.add(pane.actor, { expand: true, y_fill: false, y_align: St.Align.START });
         // When a pane is displayed, we raise the transparent background to the top
         // and connect to button-release-event on it, then raise the pane above that.
         // The idea here is that clicking anywhere outside the pane should close it.
@@ -375,10 +372,10 @@ Overview.prototype = {
         let backgroundEventId = null;
         pane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
             if (isOpen) {
-                pane.actor.width = displayGridColumnWidth * 2;
                 this._activeDisplayPane = pane;
                 this._transparentBackground.raise_top();
                 this._paneContainer.raise_top();
+                this._paneContainer.show();
                 if (backgroundEventId != null)
                     this._transparentBackground.disconnect(backgroundEventId);
                 backgroundEventId = this._transparentBackground.connect('button-release-event', Lang.bind(this, function () {
@@ -393,7 +390,7 @@ Overview.prototype = {
                     backgroundEventId = null;
                 }
                 this._transparentBackground.lower_bottom();
-                this._paneContainer.lower_bottom();
+                this._paneContainer.hide();
                 this._workspaces.actor.opacity = 255;
             }
         }));

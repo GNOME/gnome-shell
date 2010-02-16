@@ -24,195 +24,110 @@ const Workspace = imports.ui.workspace;
 const APPICON_SIZE = 48;
 const WELL_MAX_COLUMNS = 8;
 
-/* This class represents a single display item containing information about an application.
- *
- * appInfo - AppInfo object containing information about the application
- */
-function AppDisplayItem(appInfo) {
-    this._init(appInfo);
+function AllAppView() {
+    this._init();
 }
 
-AppDisplayItem.prototype = {
-    __proto__:  GenericDisplay.GenericDisplayItem.prototype,
-
-    _init : function(appInfo) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this);
-        this._appInfo = appInfo;
-
-        this._setItemInfo(appInfo.get_name(), appInfo.get_description());
+AllAppView.prototype = {
+    _init: function(apps) {
+        this.actor = new St.BoxLayout({ vertical: true });
+        this._grid = new WellGrid(true);
+        this._appSystem = Shell.AppSystem.get_default();
+        this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
     },
 
-    getId: function() {
-        return this._appInfo.get_id();
+    _removeAll: function() {
+        this._grid.removeAll();
+        this._apps = [];
     },
 
-    //// Public method overrides ////
+    _addApp: function(app) {
+        let App = new AppWellIcon(this._appSystem.get_app(app.get_id()));
+        App.connect('launching', Lang.bind(this, function() {
+            this.emit('launching');
+        }));
+        App._draggable.connect('drag-begin', Lang.bind(this, function() {
+            this.emit('drag-begin');
+        }));
 
-    // Opens an application represented by this display item.
-    launch : function() {
-        let appSys = Shell.AppSystem.get_default();
-        let app = appSys.get_app(this._appInfo.get_id());
-        let windows = app.get_windows();
-        if (windows.length > 0) {
-            let mostRecentWindow = windows[0];
-            Main.activateWindow(mostRecentWindow);
-        } else {
-            this._appInfo.launch();
+        this._grid.addItem(App.actor);
+
+        this._apps.push(App);
+    },
+
+    refresh: function(apps) {
+        let ids = [];
+        for (let i in apps)
+            ids.push(i);
+        ids.sort(function(a, b) {
+            return apps[a].get_name().localeCompare(apps[b].get_name());
+        });
+
+        this._removeAll();
+
+        for (let i = 0; i < ids.length; i++) {
+            this._addApp(apps[ids[i]]);
         }
-    },
-
-    //// Protected method overrides ////
-
-    // Returns an icon for the item.
-    _createIcon : function() {
-        return this._appInfo.create_icon_texture(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
-    },
-
-    // Returns a preview icon for the item.
-    _createPreviewIcon : function() {
-        return this._appInfo.create_icon_texture(GenericDisplay.PREVIEW_ICON_SIZE);
-    },
-
-    shellWorkspaceLaunch: function() {
-        this.launch();
     }
 };
+
+Signals.addSignalMethods(AllAppView.prototype);
 
 /* This class represents a display containing a collection of application items.
- * The applications are sorted based on their popularity by default, and based on
- * their name if some search filter is applied.
- *
- * showPrefs - a boolean indicating if this AppDisplay should contain preference
- *             applets, rather than applications
+ * The applications are sorted based on their name.
  */
-function AppDisplay(showPrefs, flags) {
-    this._init(showPrefs, flags);
+function AllAppDisplay() {
+    this._init();
 }
 
-AppDisplay.prototype = {
-    __proto__:  GenericDisplay.GenericDisplay.prototype,
-
-    _init : function(showPrefs, flags) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
-
-        this._showPrefs = showPrefs;
-
-        this._menus = [];
-        this._menuDisplays = [];
-        // map<search term, map<appId, true>>
-        // We use a map of appIds instead of an array to ensure that we don't have duplicates and for easier lookup.
-        this._menuSearchAppMatches = {};
-
+AllAppDisplay.prototype = {
+    _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
-        this._appsStale = true;
-        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
-            this._appsStale = true;
-            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
+        this._appSystem.connect('installed-changed', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._workId);
         }));
+
+        let bin = new St.BoxLayout({ style_class: 'all-app-controls-panel' });
+        this.actor = new St.BoxLayout({ style_class: 'all-app', vertical: true });
+        this.actor.hide();
+
+        let view = new St.ScrollView({ x_fill: true, y_fill: false, style_class: 'all-app-scroll-view' });
+        this._scrollView = view;
+        this.actor.add(bin);
+        this.actor.add(view, { expand: true, y_fill: false, y_align: St.Align.START });
+
+        this._appView = new AllAppView();
+        this._appView.connect('launching', Lang.bind(this, this.close));
+        this._appView.connect('drag-begin', Lang.bind(this, this.close));
+        this._scrollView.add_actor(this._appView.actor);
+
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS);
+
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
     },
 
-    //// Private ////
+    _redisplay: function() {
+        let apps = this._appSystem.get_flattened_apps().filter(function(app) {
+            return !app.get_is_nodisplay();
+        });
 
-    _addApp: function(appInfo) {
-        let appId = appInfo.get_id();
-        this._allItems[appId] = appInfo;
+        this._appView.refresh(apps);
     },
 
-    //// Protected method overrides ////
+    toggle: function() {
+        this.emit('open-state-changed', !this.actor.visible);
 
-    // Gets information about all applications by calling Gio.app_info_get_all().
-    _refreshCache : function() {
-        if (!this._appsStale)
-            return true;
-        this._allItems = {};
-
-        if (this._showPrefs) {
-            // Get the desktop file ids for settings/preferences.
-            // These are used for search results, but not in the app menus.
-            let settings = this._appSystem.get_all_settings();
-            for (let i = 0; i < settings.length; i++) {
-                let app = settings[i];
-                this._addApp(app);
-            }
-        } else {
-            let apps = this._appSystem.get_flattened_apps();
-            for (let i = 0; i < apps.length; i++) {
-                let app = apps[i];
-                this._addApp(app);
-            }
-        }
-
-        this._appsStale = false;
-        return false;
+        this.actor.visible = !this.actor.visible;
     },
 
-    _setDefaultList : function() {
-        this._matchedItems = this._allItems;
-        this._matchedItemKeys = [];
-        for (let itemId in this._matchedItems) {
-            let app = this._allItems[itemId];
-            if (app.get_is_nodisplay())
-                continue;
-            this._matchedItemKeys.push(itemId);
-        }
-        this._matchedItemKeys.sort(Lang.bind(this, this._compareItems));
-    },
-
-    // Compares items associated with the item ids based on the alphabetical order
-    // of the item names.
-    // Returns an integer value indicating the result of the comparison.
-    _compareItems : function(itemIdA, itemIdB) {
-        let appA = this._allItems[itemIdA];
-        let appB = this._allItems[itemIdB];
-        return appA.get_name().localeCompare(appB.get_name());
-    },
-
-    // Checks if the item info can be a match for the search string by checking
-    // the name, description, execution command, and category for the application.
-    // Item info is expected to be Shell.AppInfo.
-    // Returns a boolean flag indicating if itemInfo is a match.
-    _isInfoMatching : function(itemInfo, search) {
-        // Don't show nodisplay items here
-        if (itemInfo.get_is_nodisplay())
-            return false;
-
-        if (search == null || search == '')
-            return true;
-
-        let fold = function(s) {
-            if (!s)
-                return s;
-            return GLib.utf8_casefold(GLib.utf8_normalize(s, -1,
-                                                          GLib.NormalizeMode.ALL), -1);
-        };
-        let name = fold(itemInfo.get_name());
-        if (name.indexOf(search) >= 0)
-            return true;
-
-        let description = fold(itemInfo.get_description());
-        if (description) {
-            if (description.indexOf(search) >= 0)
-                return true;
-        }
-
-        let exec = fold(itemInfo.get_executable());
-        if (exec == null) {
-            log("Missing an executable for " + itemInfo.name);
-        } else {
-            if (exec.indexOf(search) >= 0)
-                return true;
-        }
-
-        return false;
-    },
-
-    // Creates an AppDisplayItem based on itemInfo, which is expected be an Shell.AppInfo object.
-    _createDisplayItem: function(itemInfo) {
-        return new AppDisplayItem(itemInfo);
+    close: function() {
+        if (!this.actor.visible)
+            return;
+        this.toggle();
     }
 };
 
-Signals.addSignalMethods(AppDisplay.prototype);
+Signals.addSignalMethods(AllAppDisplay.prototype);
 
 function BaseAppSearchProvider() {
     this._init();
@@ -414,6 +329,10 @@ AppWellIcon.prototype = {
         return false;
     },
 
+    getId: function() {
+        return this.app.get_id();
+    },
+
     popupMenu: function(activatingButton) {
         if (!this._menu) {
             this._menu = new AppIconMenu(this);
@@ -482,6 +401,7 @@ AppWellIcon.prototype = {
 
     _onActivate: function (event) {
         let running = this._getRunning();
+        this.emit('launching');
 
         if (!running) {
             this.app.launch();
@@ -826,12 +746,12 @@ function WellGrid() {
 
 WellGrid.prototype = {
     _init: function() {
-        this.actor = new St.Bin({ name: "dashAppWell" });
+        this.actor = new St.BoxLayout({ name: "dashAppWell", vertical: true });
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._item_size = 48;
         this._grid = new Shell.GenericContainer();
-        this.actor.set_child(this._grid);
+        this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
         this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -1021,7 +941,7 @@ AppWell.prototype = {
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
         let app = null;
-        if (source instanceof AppDisplayItem) {
+        if (source instanceof AppWellIcon) {
             app = this._appSystem.get_app(source.getId());
         } else if (source instanceof Workspace.WindowClone) {
             app = this._tracker.get_window_app(source.metaWindow);

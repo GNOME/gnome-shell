@@ -307,6 +307,12 @@ StTooltip {
     height: 9px;
 }
 
+.more-link-expander.open {
+    background-image: url("section-more-open.svg");
+    width: 9px;
+    height: 9px;
+}
+
 .dash-pane {
     background-color: rgba(0,0,0,0.95);
     border: 1px solid #262626;
@@ -383,9 +389,31 @@ StTooltip {
 
 /* Apps */
 
+.overview-pane {
+    width: 440px;
+}
+
 #dashAppWell {
     spacing: 6px;
     -shell-grid-item-size: 70px;
+}
+
+.all-app {
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.95);
+    border: 1px solid #262626;
+    color: #ffffff;
+    height: 400px;
+}
+
+.all-app-controls-panel {
+    height: 30px;
+}
+
+.all-app-scroll-view {
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
 }
 
 .app-well-app {
