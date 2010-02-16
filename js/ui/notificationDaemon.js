@@ -69,6 +69,16 @@ const Urgency = {
     CRITICAL: 2
 };
 
+const rewriteRules = {
+    'XChat': [
+        { pattern:     /^XChat: Private message from: (\S*) \(.*\)$/,
+          replacement: '&lt;$1&gt;' },
+        { pattern:     /^XChat: New public message from: (\S*) \((.*)\)$/,
+          replacement: '$2 &lt;$1&gt;' },
+        { pattern:     /^XChat: Highlighted message from: (\S*) \((.*)\)$/,
+          replacement: '$2 &lt;$1&gt;' }
+    ]
+};
 function NotificationDaemon() {
     this._init();
 }
@@ -149,6 +159,15 @@ NotificationDaemon.prototype = {
         }
 
         summary = GLib.markup_escape_text(summary, -1);
+
+        let rewrites = rewriteRules[appName];
+        if (rewrites) {
+            for (let i = 0; i < rewrites.length; i++) {
+                let rule = rewrites[i];
+                if (summary.search(rule.pattern) != -1)
+                    summary = summary.replace(rule.pattern, rule.replacement);
+            }
+        }
 
         let notification = new MessageTray.Notification(source, summary, body, true);
         if (actions.length) {
