@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-01-07 23:31+0000\n"
-"PO-Revision-Date: 2010-01-22 00:55+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-16 10:04+0100\n"
+"PO-Revision-Date: 2010-02-16 10:10+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:880
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
@@ -34,47 +34,87 @@ msgstr "ALKALMAZÁSOK"
 msgid "PREFERENCES"
 msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
+#: ../js/ui/appDisplay.js:649
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
-#: ../js/ui/appDisplay.js:1064
+#: ../js/ui/appDisplay.js:1006
 msgid "Drag here to add favorites"
 msgstr "Ide húzással kedvenceket vehet fel"
 
-#: ../js/ui/dash.js:240
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s felvéve a Kedvencek közé."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s eltávolítva a Kedvencek közül"
+
+#: ../js/ui/dash.js:241
 msgid "Find..."
 msgstr "Keresés…"
 
-#: ../js/ui/dash.js:493
-#| msgid "Search"
+#: ../js/ui/dash.js:508
 msgid "Searching..."
 msgstr "Keresés…"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:522
 msgid "No matching results."
 msgstr "Nincs találat."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "HELYEK ÉS ESZKÖZÖK"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
-#| msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "LEGUTÓBBI ELEMEK"
+
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "Nincsenek kiterjesztések telepítve"
+
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Engedélyezve"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Tiltva"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Hiba"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Elavult"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Forrás megtekintése"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Weblap"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Visszavonás"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -82,23 +122,68 @@ msgstr "LEGUTÓBBI ELEMEK"
 msgid "Activities"
 msgstr "Tevékenységek"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:549
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
-msgstr "%a., %k.%M"
+msgstr "%a, %p %l.%M"
 
 #: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Kapcsolódás…"
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../js/ui/runDialog.js:351
+#: ../js/ui/runDialog.js:361
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Elérhető"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Elfoglalt"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Láthatatlan"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Fiókinformációk…"
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Oldalsáv"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Rendszerbeállítások…"
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Képernyő zárolása"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Felhasználóváltás"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Kijelentkezés…"
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Leállítás…"
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -113,32 +198,32 @@ msgstr "Alkalmazások"
 msgid "Recent Documents"
 msgstr "Legutóbbi dokumentumok"
 
-#: ../src/shell-global.c:890
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:893
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:896
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:902
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
