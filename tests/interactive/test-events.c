@@ -257,11 +257,12 @@ G_MODULE_EXPORT int
 test_events_main (int argc, char *argv[])
 {
   ClutterActor    *stage, *actor, *focus_box, *group;
-  ClutterColor    rcol = { 0xff, 0, 0, 0xff}, 
-                  bcol = { 0, 0, 0xff, 0xff },
-		  gcol = { 0, 0xff, 0, 0xff },
-		  ycol = { 0xff, 0xff, 0, 0xff },
-		  ncol = { 0, 0, 0, 0xff };
+  ClutterColor    rcol = { 0xff, 0,    0,    0xff },
+                  bcol = { 0,    0,    0xff, 0xff },
+		  gcol = { 0,    0xff, 0,    0xff },
+		  ycol = { 0xff, 0xff, 0,    0xff },
+		  ncol = { 0,    0,    0,    0xff },
+                  xcol = { 0xff, 0,    0xff, 0xff };
 
   clutter_init (&argc, &argv);
 
@@ -349,6 +350,17 @@ test_events_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (stage), group, NULL);
   clutter_actor_set_position (group, 100, 350);
   clutter_actor_show_all (group);
+
+  /* border actor */
+  actor = clutter_rectangle_new_with_color (&xcol);
+  clutter_actor_set_name (actor, "Border Box");
+  clutter_actor_set_size (actor, 100, 100);
+  clutter_actor_set_position (actor,
+                              (clutter_actor_get_width (stage) - 100) / 2,
+                              clutter_actor_get_height (stage) - 100);
+  clutter_actor_set_reactive (actor, TRUE);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
+  g_signal_connect (actor, "event", G_CALLBACK (input_cb), NULL);
 
   clutter_actor_show_all (CLUTTER_ACTOR (stage));
 

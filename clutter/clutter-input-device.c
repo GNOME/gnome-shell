@@ -261,15 +261,36 @@ void
 _clutter_input_device_set_stage (ClutterInputDevice *device,
                                  ClutterStage       *stage)
 {
+  ClutterStage *old_stage;
+
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
+  old_stage = device->stage;
   device->stage = stage;
 
   /* if we left the stage then we also need to unset the
    * cursor actor (and update its :has-pointer property)
    */
-  if (device->stage == NULL && device->cursor_actor != NULL)
+  if (device->stage == NULL &&
+      device->cursor_actor != NULL &&
+      device->cursor_actor != CLUTTER_ACTOR (old_stage))
     {
+      ClutterEvent cev;
+
+      cev.crossing.type = CLUTTER_LEAVE;
+      cev.crossing.time = device->current_time;
+      cev.crossing.flags = 0;
+      cev.crossing.stage = old_stage;
+      cev.crossing.source = device->cursor_actor;
+      cev.crossing.x = device->current_x;
+      cev.crossing.y = device->current_y;
+      cev.crossing.device = device;
+      cev.crossing.related = device->stage != NULL
+                             ? CLUTTER_ACTOR (device->stage)
+                             : CLUTTER_ACTOR (old_stage);
+
+      _clutter_stage_queue_event (old_stage, &cev);
+
       _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
       g_object_weak_unref (G_OBJECT (device->cursor_actor),
                            cursor_weak_unref,
