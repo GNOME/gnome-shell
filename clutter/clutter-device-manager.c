@@ -46,15 +46,19 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
-#define CLUTTER_DEVICE_MANAGER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerClass))
-#define CLUTTER_IS_DEVICE_MANAGER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_DEVICE_MANAGER))
-#define CLUTTER_DEVICE_MANAGER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerClass))
+#define CLUTTER_DEVICE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerPrivate))
 
-typedef struct _ClutterDeviceManagerClass       ClutterDeviceManagerClass;
-
-struct _ClutterDeviceManagerClass
+struct _ClutterDeviceManagerPrivate
 {
-  GObjectClass parent_instance;
+  /* back-pointer to the backend */
+  ClutterBackend *backend;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND
 };
 
 enum
@@ -65,15 +69,69 @@ enum
   LAST_SIGNAL
 };
 
-static ClutterDeviceManager *default_manager = NULL;
-
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterDeviceManager, clutter_device_manager, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterDeviceManager,
+                        clutter_device_manager,
+                        G_TYPE_OBJECT);
+
+static void
+clutter_device_manager_set_property (GObject      *gobject,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
+{
+  ClutterDeviceManagerPrivate *priv = CLUTTER_DEVICE_MANAGER (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      priv->backend = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    }
+}
+
+static void
+clutter_device_manager_get_property (GObject    *gobject,
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
+{
+  ClutterDeviceManagerPrivate *priv = CLUTTER_DEVICE_MANAGER (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      g_value_set_object (value, priv->backend);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    }
+}
 
 static void
 clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  g_type_class_add_private (klass, sizeof (ClutterDeviceManagerPrivate));
+
+  gobject_class->set_property = clutter_device_manager_set_property;
+  gobject_class->get_property = clutter_device_manager_get_property;
+
+  pspec = g_param_spec_object ("backend",
+                               "Backend",
+                               "The ClutterBackend of the device manager",
+                               CLUTTER_TYPE_BACKEND,
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
+
   /**
    * ClutterDeviceManager::device-added:
    * @manager: the #ClutterDeviceManager that emitted the signal
@@ -118,6 +176,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 static void
 clutter_device_manager_init (ClutterDeviceManager *self)
 {
+  self->priv = CLUTTER_DEVICE_MANAGER_GET_PRIVATE (self);
 }
 
 /**
@@ -134,10 +193,12 @@ clutter_device_manager_init (ClutterDeviceManager *self)
 ClutterDeviceManager *
 clutter_device_manager_get_default (void)
 {
-  if (G_UNLIKELY (default_manager == NULL))
-    default_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER, NULL);
+  ClutterBackendClass *klass;
 
-  return default_manager;
+  klass = CLUTTER_BACKEND_GET_CLASS (clutter_get_default_backend ());
+  g_assert (klass->get_device_manager != NULL);
+
+  return klass->get_device_manager (clutter_get_default_backend ());
 }
 
 /**
@@ -155,9 +216,13 @@ clutter_device_manager_get_default (void)
 GSList *
 clutter_device_manager_list_devices (ClutterDeviceManager *device_manager)
 {
+  const GSList *devices;
+
   g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager), NULL);
 
-  return g_slist_copy (device_manager->devices);
+  devices = clutter_device_manager_peek_devices (device_manager);
+
+  return g_slist_copy ((GSList *) devices);
 }
 
 /**
@@ -176,9 +241,12 @@ clutter_device_manager_list_devices (ClutterDeviceManager *device_manager)
 const GSList *
 clutter_device_manager_peek_devices (ClutterDeviceManager *device_manager)
 {
+  ClutterDeviceManagerClass *manager_class;
+
   g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager), NULL);
 
-  return device_manager->devices;
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  return manager_class->get_devices (device_manager);
 }
 
 /**
@@ -198,35 +266,40 @@ ClutterInputDevice *
 clutter_device_manager_get_device (ClutterDeviceManager *device_manager,
                                    gint                  device_id)
 {
-  GSList *l;
+  ClutterDeviceManagerClass *manager_class;
 
   g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager), NULL);
 
-  for (l = device_manager->devices; l != NULL; l = l->next)
-    {
-      ClutterInputDevice *device = l->data;
-
-      if (device->id == device_id)
-        return device;
-    }
-
-  return NULL;
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  return manager_class->get_device (device_manager, device_id);
 }
 
-static gint
-input_device_cmp (gconstpointer a,
-                  gconstpointer b)
+/**
+ * clutter_device_manager_get_core_device:
+ * @device_manager: a #ClutterDeviceManager
+ * @device_type: the type of the core device
+ *
+ * Retrieves the core #ClutterInputDevice of type @device_type
+ *
+ * Core devices are devices created automatically by the default
+ * Clutter backend
+ *
+ * Return value: (transfer none): a #ClutterInputDevice or %NULL. The
+ *   returned device is owned by the #ClutterDeviceManager and should
+ *   not be modified or freed
+ *
+ * Since: 1.2
+ */
+ClutterInputDevice *
+clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
+                                        ClutterInputDeviceType  device_type)
 {
-  const ClutterInputDevice *device_a = a;
-  const ClutterInputDevice *device_b = b;
+  ClutterDeviceManagerClass *manager_class;
 
-  if (device_a->id < device_b->id)
-    return -1;
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager), NULL);
 
-  if (device_a->id > device_b->id)
-    return 1;
-
-  return 0;
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  return manager_class->get_core_device (device_manager, device_type);
 }
 
 /*
@@ -246,11 +319,14 @@ void
 _clutter_device_manager_add_device (ClutterDeviceManager *device_manager,
                                     ClutterInputDevice   *device)
 {
+  ClutterDeviceManagerClass *manager_class;
+
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
 
-  device_manager->devices = g_slist_insert_sorted (device_manager->devices,
-                                                   device,
-                                                   input_device_cmp);
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  g_assert (manager_class->add_device != NULL);
+
+  manager_class->add_device (device_manager, device);
 
   g_signal_emit (device_manager, manager_signals[DEVICE_ADDED], 0, device);
 }
@@ -272,12 +348,14 @@ void
 _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
                                        ClutterInputDevice   *device)
 {
+  ClutterDeviceManagerClass *manager_class;
+
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
 
-  if (g_slist_find (device_manager->devices, device) == NULL)
-    return;
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  g_assert (manager_class->remove_device != NULL);
 
-  device_manager->devices = g_slist_remove (device_manager->devices, device);
+  manager_class->remove_device (device_manager, device);
 
   g_signal_emit (device_manager, manager_signals[DEVICE_REMOVED], 0, device);
 }
@@ -293,7 +371,7 @@ _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
 void
 _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
 {
-  GSList *d;
+  const GSList *d;
 
   /* the user disabled motion events delivery on actors; we
    * don't perform any picking since the source of the events
@@ -302,7 +380,9 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
   if (!clutter_get_motion_events_enabled ())
     return;
 
-  for (d = device_manager->devices; d != NULL; d = d->next)
+  for (d = clutter_device_manager_peek_devices (device_manager);
+       d != NULL;
+       d = d->next)
     {
       ClutterInputDevice *device = d->data;
       ClutterInputDeviceType device_type;

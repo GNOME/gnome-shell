@@ -71,23 +71,10 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
 
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
-  manager = clutter_device_manager_get_default ();
-
-  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
-                         "id", 0,
-                         "name", "Core Pointer",
-                         "device-type", CLUTTER_POINTER_DEVICE,
-                         NULL);
-  _clutter_device_manager_add_device (manager, device);
-  backend_win32->core_pointer = device;
-
-  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
-                         "id", 1,
-                         "name", "Core Keyboard",
-                         "device-type", CLUTTER_KEYBOARD_DEVICE,
-                         NULL);
-  _clutter_device_manager_add_device (manager, device);
-  backend_win32->core_keyboard = device;
+  backend_win32->device_manager =
+    g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
+                  "backend", backend_win32,
+                  NULL);
 
   _clutter_backend_win32_events_init (backend);
 }
@@ -537,6 +524,22 @@ clutter_backend_win32_create_stage (ClutterBackend  *backend,
   return stage;
 }
 
+static ClutterDeviceManager *
+clutter_backend_win32_get_device_manager (ClutterBackend *backend)
+{
+  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+
+  if (G_UNLIKELY (backend_win32->device_manager == NULL))
+    {
+      backend_win32->device_manager =
+        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
+                      "backend", backend_win32,
+                      NULL);
+    }
+
+  return backend_win32->device_manager;
+}
+
 static void
 clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 {
@@ -555,6 +558,7 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->redraw           = clutter_backend_win32_redraw;
   backend_class->create_context   = clutter_backend_win32_create_context;
   backend_class->ensure_context   = clutter_backend_win32_ensure_context;
+  backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
 }
 
 static void

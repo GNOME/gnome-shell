@@ -26,6 +26,8 @@ noinst_LTLIBRARIES = libclutter-win32.la
 libclutter_win32_la_SOURCES = \
 	clutter-backend-win32.h \
 	clutter-backend-win32.c \
+	clutter-device-manager-win32.h \
+	clutter-device-manager-win32.c \
 	clutter-event-win32.c \
 	clutter-stage-win32.h \
 	clutter-stage-win32.c \

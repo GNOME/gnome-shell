@@ -42,6 +42,8 @@ noinst_LTLIBRARIES = libclutter-x11.la
 libclutter_x11_la_SOURCES = \
 	clutter-backend-x11.h \
 	clutter-backend-x11.c \
+	clutter-device-manager-x11.h \
+	clutter-device-manager-x11.c \
 	clutter-event-x11.c \
 	clutter-input-device-x11.h \
 	clutter-input-device-x11.c \

@@ -127,13 +127,6 @@ struct _ClutterStageManager
   GSList *stages;
 };
 
-struct _ClutterDeviceManager
-{
-  GObject parent_instance;
-
-  GSList *devices;
-};
-
 struct _ClutterMainContext
 {
   ClutterBackend  *backend;            /* holds a pointer to the windowing 

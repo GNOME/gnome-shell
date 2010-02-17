@@ -54,8 +54,7 @@ struct _ClutterBackendWin32
 
   GSource       *event_source;
 
-  ClutterInputDevice *core_pointer;
-  ClutterInputDevice *core_keyboard;
+  ClutterDeviceManager *device_manager;
 };
 
 struct _ClutterBackendWin32Class

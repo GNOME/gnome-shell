@@ -419,6 +419,7 @@ event_translate (ClutterBackend *backend,
   ClutterStageX11 *stage_x11;
   ClutterStage *stage;
   ClutterStageWindow *impl;
+  ClutterDeviceManager *manager;
   gboolean res, not_yet_handled = FALSE;
   Window xwindow, stage_xwindow;
   ClutterInputDevice *device;
@@ -470,6 +471,8 @@ event_translate (ClutterBackend *backend,
   res = TRUE;
 
   update_last_event_time (backend_x11, xevent);
+
+  manager = clutter_device_manager_get_default ();
 
   switch (xevent->type)
     {
@@ -652,7 +655,9 @@ event_translate (ClutterBackend *backend,
 
     case KeyPress:
       event->key.type = event->type = CLUTTER_KEY_PRESS;
-      event->key.device = backend_x11->core_keyboard;
+      event->key.device =
+        clutter_device_manager_get_core_device (manager,
+                                                CLUTTER_POINTER_DEVICE);
 
       translate_key_event (backend, event, xevent);
 
@@ -687,7 +692,9 @@ event_translate (ClutterBackend *backend,
         }
 
       event->key.type = event->type = CLUTTER_KEY_RELEASE;
-      event->key.device = backend_x11->core_keyboard;
+      event->key.device =
+        clutter_device_manager_get_core_device (manager,
+                                                CLUTTER_KEYBOARD_DEVICE);
 
       translate_key_event (backend, event, xevent);
       break;
@@ -701,7 +708,8 @@ event_translate (ClutterBackend *backend,
   /* Input device event handling.. */
   if (not_yet_handled)
     {
-      device = backend_x11->core_pointer;
+      device = clutter_device_manager_get_core_device (manager,
+                                                       CLUTTER_POINTER_DEVICE);
 
       /* Regular X event */
       switch (xevent->type)

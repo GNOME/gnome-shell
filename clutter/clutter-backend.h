@@ -33,6 +33,7 @@
 #include <pango/pango.h>
 
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-device-manager.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-feature.h>
 #include <clutter/clutter-stage.h>
@@ -64,24 +65,25 @@ struct _ClutterBackendClass
   GObjectClass parent_class;
 
   /* vfuncs */
-  gboolean            (* pre_parse)        (ClutterBackend  *backend,
-                                            GError         **error);
-  gboolean            (* post_parse)       (ClutterBackend  *backend,
-                                            GError         **error);
-  ClutterStageWindow *(* create_stage)     (ClutterBackend  *backend,
-                                            ClutterStage    *wrapper,
-                                            GError         **error);
-  void                (* init_events)      (ClutterBackend  *backend);
-  void                (* init_features)    (ClutterBackend  *backend);
-  void                (* add_options)      (ClutterBackend  *backend,
-                                            GOptionGroup    *group);
-  ClutterFeatureFlags (* get_features)     (ClutterBackend  *backend);
-  void                (* redraw)           (ClutterBackend  *backend,
-                                            ClutterStage    *stage);
-  gboolean            (* create_context)   (ClutterBackend  *backend,
-                                            GError         **error);
-  void                (* ensure_context)   (ClutterBackend  *backend,
-                                            ClutterStage    *stage);
+  gboolean              (* pre_parse)          (ClutterBackend  *backend,
+                                                GError         **error);
+  gboolean              (* post_parse)         (ClutterBackend  *backend,
+                                                GError         **error);
+  ClutterStageWindow *  (* create_stage)       (ClutterBackend  *backend,
+                                                ClutterStage    *wrapper,
+                                                GError         **error);
+  void                  (* init_events)        (ClutterBackend  *backend);
+  void                  (* init_features)      (ClutterBackend  *backend);
+  void                  (* add_options)        (ClutterBackend  *backend,
+                                                GOptionGroup    *group);
+  ClutterFeatureFlags   (* get_features)       (ClutterBackend  *backend);
+  void                  (* redraw)             (ClutterBackend  *backend,
+                                                ClutterStage    *stage);
+  gboolean              (* create_context)     (ClutterBackend  *backend,
+                                                GError         **error);
+  void                  (* ensure_context)     (ClutterBackend  *backend,
+                                                ClutterStage    *stage);
+  ClutterDeviceManager *(* get_device_manager) (ClutterBackend  *backend);
 
   /* signals */
   void (* resolution_changed) (ClutterBackend *backend);

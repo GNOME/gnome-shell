@@ -333,6 +333,8 @@ message_translate (ClutterBackend *backend,
 {
   ClutterBackendWin32  *backend_win32;
   ClutterStageWin32    *stage_win32;
+  ClutterDeviceManager *manager;
+  ClutterInputDevice   *core_device, *core_keyboard;
   ClutterStage         *stage;
   ClutterStageWindow   *impl;
   gboolean              res;
@@ -348,6 +350,12 @@ message_translate (ClutterBackend *backend,
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
 
   event->any.stage = stage;
+
+  manager = clutter_device_manager_get_default ();
+  core_pointer =
+    clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  core_keyboard =
+    clutter_device_manager_get_core_device (manager, CLUTTER_KEYBOARD_DEVICE);
 
   res = TRUE;
 
@@ -434,39 +442,39 @@ message_translate (ClutterBackend *backend,
       break;
 
     case WM_LBUTTONDOWN:
-      make_button_event (msg, event, 1, 1, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 1, 1, FALSE, core_pointer);
       break;
 
     case WM_MBUTTONDOWN:
-      make_button_event (msg, event, 2, 1, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 2, 1, FALSE, core_pointer);
       break;
 
     case WM_RBUTTONDOWN:
-      make_button_event (msg, event, 3, 1, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 3, 1, FALSE, core_pointer);
       break;
 
     case WM_LBUTTONUP:
-      make_button_event (msg, event, 1, 1, TRUE, backend_win32->core_pointer);
+      make_button_event (msg, event, 1, 1, TRUE, core_pointer);
       break;
 
     case WM_MBUTTONUP:
-      make_button_event (msg, event, 2, 1, TRUE, backend_win32->core_pointer);
+      make_button_event (msg, event, 2, 1, TRUE, core_pointer);
       break;
 
     case WM_RBUTTONUP:
-      make_button_event (msg, event, 3, 1, TRUE, backend_win32->core_pointer);
+      make_button_event (msg, event, 3, 1, TRUE, core_pointer);
       break;
 
     case WM_LBUTTONDBLCLK:
-      make_button_event (msg, event, 1, 2, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 1, 2, FALSE, core_pointer);
       break;
 
     case WM_MBUTTONDBLCLK:
-      make_button_event (msg, event, 2, 2, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 2, 2, FALSE, core_pointer);
       break;
 
     case WM_RBUTTONDBLCLK:
-      make_button_event (msg, event, 3, 2, FALSE, backend_win32->core_pointer);
+      make_button_event (msg, event, 3, 2, FALSE, core_pointer);
       break;
 
     case WM_MOUSEWHEEL:
@@ -475,7 +483,7 @@ message_translate (ClutterBackend *backend,
       event->type = CLUTTER_SCROLL;
       event->scroll.time = msg->time;
       event->scroll.modifier_state = get_modifier_state (LOWORD (msg->wParam));
-      event->scroll.device = backend_win32->core_pointer;
+      event->scroll.device = core_pointer;
 
       /* conversion to window coordinates is required */
       {
@@ -505,7 +513,7 @@ message_translate (ClutterBackend *backend,
       event->motion.x = GET_X_LPARAM (msg->lParam);
       event->motion.y = GET_Y_LPARAM (msg->lParam);
       event->motion.modifier_state = get_modifier_state (msg->wParam);
-      event->motion.device = backend_win32->core_pointer;
+      event->motion.device = core_pointer;
 
       /* We need to start tracking when the mouse enters the stage if
          we're not already */
@@ -530,7 +538,7 @@ message_translate (ClutterBackend *backend,
       event->crossing.time = msg->time;
       event->crossing.x = msg->pt.x;
       event->crossing.y = msg->pt.y;
-      event->crossing.device = backend_win32->core_pointer;
+      event->crossing.device = core_pointer;
 
       /* we left the stage */
       _clutter_input_device_set_stage (event->crossing.device, NULL);
@@ -618,7 +626,7 @@ message_translate (ClutterBackend *backend,
 	event->key.time = msg->time;
 	event->key.modifier_state = get_key_modifier_state (key_states);
 	event->key.hardware_keycode = scan_code;
-        event->key.device = backend_win32->core_keyboard;
+        event->key.device = core_keyboard;
       }
       break;
 

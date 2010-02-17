@@ -82,8 +82,7 @@ struct _ClutterBackendX11
 
   Time last_event_time;
 
-  ClutterInputDevice *core_pointer;
-  ClutterInputDevice *core_keyboard;
+  ClutterDeviceManager *device_manager;
 };
 
 struct _ClutterBackendX11Class

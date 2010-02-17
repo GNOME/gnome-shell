@@ -37,6 +37,7 @@
 #include <errno.h>
 
 #include "clutter-backend-x11.h"
+#include "clutter-device-manager-x11.h"
 #include "clutter-input-device-x11.h"
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
@@ -94,129 +95,6 @@ static gboolean clutter_synchronise = FALSE;
 /* X error trap */
 static int TrappedErrorCode = 0;
 static int (* old_error_handler) (Display *, XErrorEvent *);
-
-static void
-clutter_x11_register_input_devices (ClutterBackendX11 *backend)
-{
-  ClutterDeviceManager *manager;
-  ClutterInputDevice *device;
-#ifdef HAVE_XINPUT
-  XDeviceInfo *x_devices = NULL;
-  int res, opcode, event, error;
-  int i, n_devices;
-#endif /* HAVE_XINPUT */
-
-  manager = clutter_device_manager_get_default ();
-
-  if (!clutter_enable_xinput)
-    {
-      CLUTTER_NOTE (BACKEND, "XInput support not enabled");
-      goto default_device;
-    }
-
-#ifdef HAVE_XINPUT
-  res = XQueryExtension (backend->xdpy, "XInputExtension",
-                         &opcode,
-                         &event,
-                         &error);
-  if (!res)
-    {
-      CLUTTER_NOTE (BACKEND, "No XInput extension available");
-      goto default_device;
-    }
-
-  backend->xi_event_base = event;
-
-  x_devices = XListInputDevices (backend->xdpy, &n_devices);
-  if (n_devices == 0)
-    {
-      CLUTTER_NOTE (BACKEND, "No XInput devices found");
-      goto default_device;
-    }
-
-  for (i = 0; i < n_devices; i++)
-    {
-      XDeviceInfo *info = x_devices + i;
-
-      CLUTTER_NOTE (BACKEND,
-                    "Considering device %li with type %d, %d of %d",
-                    info->id,
-                    info->use,
-                    i, n_devices);
-
-      /* we only want 'raw' devices, not virtual ones */
-      if (info->use == IsXExtensionPointer ||
-       /* info->use == IsXExtensionKeyboard || XInput1 is broken */
-          info->use == IsXExtensionDevice)
-        {
-          ClutterInputDeviceType device_type;
-          gint n_events = 0;
-
-          switch (info->use)
-            {
-            case IsXExtensionPointer:
-              device_type = CLUTTER_POINTER_DEVICE;
-              break;
-
-            /* XInput1 is broken for keyboards */
-            case IsXExtensionKeyboard:
-              device_type = CLUTTER_KEYBOARD_DEVICE;
-              break;
-
-            case IsXExtensionDevice:
-              device_type = CLUTTER_EXTENSION_DEVICE;
-              break;
-            }
-
-          device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                                 "id", info->id,
-                                 "device-type", device_type,
-                                 "name", info->name,
-                                 NULL);
-          n_events = _clutter_input_device_x11_construct (device, backend);
-
-          _clutter_device_manager_add_device (manager, device);
-
-          if (info->use == IsXExtensionPointer && n_events > 0)
-            backend->have_xinput = TRUE;
-        }
-    }
-
-  XFree (x_devices);
-#endif /* HAVE_XINPUT */
-
-default_device:
-  /* fallback code in case:
-   *
-   *  - we do not have XInput support compiled in
-   *  - we do not have XInput support enabled
-   *  - we do not have the XInput extension
-   *
-   * we register two default devices, one for the pointer
-   * and one for the keyboard. this block must also be
-   * executed for the XInput support because XI does not
-   * cover core devices
-   */
-  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                         "id", 0,
-                         "name", "Core Pointer",
-                         "device-type", CLUTTER_POINTER_DEVICE,
-                         "is-core", TRUE,
-                         NULL);
-  CLUTTER_NOTE (BACKEND, "Added core pointer device");
-  _clutter_device_manager_add_device (manager, device);
-  backend->core_pointer = device;
-
-  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                         "id", 1,
-                         "name", "Core Keyboard",
-                         "device-type", CLUTTER_KEYBOARD_DEVICE,
-                         "is-core", TRUE,
-                         NULL);
-  CLUTTER_NOTE (BACKEND, "Added core keyboard device");
-  _clutter_device_manager_add_device (manager, device);
-  backend->core_keyboard = device;
-}
 
 gboolean
 clutter_backend_x11_pre_parse (ClutterBackend  *backend,
@@ -309,7 +187,11 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       clutter_backend_set_resolution (backend, dpi);
 
       /* register input devices */
-      clutter_x11_register_input_devices (backend_x11);
+      backend_x11->device_manager =
+        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
+                      "use-xinput-1", clutter_enable_xinput,
+                      "backend", backend_x11,
+                      NULL);
 
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
@@ -464,6 +346,23 @@ clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
   return FALSE;
 }
 
+static ClutterDeviceManager *
+clutter_backend_x11_get_device_manager (ClutterBackend *backend)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  if (G_UNLIKELY (backend_x11->device_manager == NULL))
+    {
+      backend_x11->device_manager =
+        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
+                      "use-xinput-1", clutter_enable_xinput,
+                      "backend", backend_x11,
+                      NULL);
+    }
+
+  return backend_x11->device_manager;
+}
+
 static void
 clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 {
@@ -475,11 +374,12 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
-  backend_class->pre_parse        = clutter_backend_x11_pre_parse;
-  backend_class->post_parse       = clutter_backend_x11_post_parse;
-  backend_class->init_events      = clutter_backend_x11_init_events;
-  backend_class->add_options      = clutter_backend_x11_add_options;
-  backend_class->get_features     = clutter_backend_x11_get_features;
+  backend_class->pre_parse = clutter_backend_x11_pre_parse;
+  backend_class->post_parse = clutter_backend_x11_post_parse;
+  backend_class->init_events = clutter_backend_x11_init_events;
+  backend_class->add_options = clutter_backend_x11_add_options;
+  backend_class->get_features = clutter_backend_x11_get_features;
+  backend_class->get_device_manager = clutter_backend_x11_get_device_manager;
 
   backendx11_class->handle_event = clutter_backend_x11_handle_event;
 }
@@ -589,11 +489,13 @@ clutter_x11_set_display (Display *xdpy)
  * clutter_x11_enable_xinput:
  *
  * Enables the use of the XInput extension if present on connected
- * XServer and support built into Clutter.  XInput allows for multiple
- * pointing devices to be used. This must be called before
- * clutter_init().
+ * XServer and support built into Clutter. XInput allows for multiple
+ * pointing devices to be used.
  *
- * You should use #clutter_x11_has_xinput to see if support was enabled.
+ * This function must be called before clutter_init().
+ *
+ * Since XInput might not be supported by the X server, you might
+ * want to use clutter_x11_has_xinput() to see if support was enabled.
  *
  * Since: 0.8
  */
