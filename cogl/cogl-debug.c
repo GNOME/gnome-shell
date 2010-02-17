@@ -48,6 +48,7 @@ static const GDebugKey cogl_log_debug_keys[] = {
   { "batching", COGL_DEBUG_BATCHING },
   { "matrices", COGL_DEBUG_MATRICES },
   { "draw", COGL_DEBUG_DRAW },
+  { "opengl", COGL_DEBUG_OPENGL },
   { "pango", COGL_DEBUG_PANGO },
 };
 static const int n_cogl_log_debug_keys =
@@ -114,6 +115,7 @@ _cogl_parse_debug_string (const char *value,
       OPT ("force-scanline-paths:", "use a scanline based path rasterizer");
       OPT ("dump-atlas-image:", "dump atlas changes to an image file");
       OPT ("disable-atlas:", "disable texture atlasing");
+      OPT ("opengl:", "traces some select OpenGL calls");
       g_printerr ("\n%28s\n", "Special debug values:");
       OPT ("all:", "Enables all non-behavioural debug options");
       OPT ("verbose:", "Enables all non-behavioural debug options");

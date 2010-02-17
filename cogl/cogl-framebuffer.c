@@ -681,6 +681,12 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
         gl_viewport_y = framebuffer->height -
           (framebuffer->viewport_y + framebuffer->viewport_height);
 
+      COGL_NOTE (OPENGL, "Calling glViewport(%d, %d, %d, %d)",
+                 framebuffer->viewport_x,
+                 gl_viewport_y,
+                 framebuffer->viewport_width,
+                 framebuffer->viewport_height);
+
       GE (glViewport (framebuffer->viewport_x,
                       gl_viewport_y,
                       framebuffer->viewport_width,
