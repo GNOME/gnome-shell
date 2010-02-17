@@ -275,6 +275,10 @@ MosaicView.prototype = {
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, animate);
 
         this.actor.style_class = "workspaces mosaic";
+        this._actor.set_clip(x - Workspace.FRAME_SIZE,
+                             y - Workspace.FRAME_SIZE,
+                             width + 2 * Workspace.FRAME_SIZE,
+                             height + 2 * Workspace.FRAME_SIZE);
         this._workspaces[global.screen.get_active_workspace_index()].setSelected(true);
 
         this._removeButton = null;
@@ -295,8 +299,12 @@ MosaicView.prototype = {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
+        // adjust vertical spacing so workspaces can preserve their aspect
+        // ratio without exceeding this._height
+        let verticalSpacing = this._spacing * this._height / this._width;
+
         let wsWidth = (this._width - (gridWidth - 1) * this._spacing) / gridWidth;
-        let wsHeight = (this._height - (gridHeight - 1) * this._spacing) / gridHeight;
+        let wsHeight = (this._height - (gridHeight - 1) * verticalSpacing) / gridHeight;
         let scale = wsWidth / global.screen_width;
 
         let span = 1, n = 0, row = 0, col = 0, horiz = true;
@@ -308,7 +316,7 @@ MosaicView.prototype = {
             workspace.gridCol = col;
 
             workspace.gridX = this._x + workspace.gridCol * (wsWidth + this._spacing);
-            workspace.gridY = this._y + workspace.gridRow * (wsHeight + this._spacing);
+            workspace.gridY = this._y + workspace.gridRow * (wsHeight + verticalSpacing);
             workspace.scale = scale;
 
             if (horiz) {
