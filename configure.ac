@@ -642,7 +642,7 @@ AS_CASE([$enable_debug],
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
-m4_define([cogl_debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [minimum], [no])])
+m4_define([cogl_debug_default], [minimum])
 AC_ARG_ENABLE([cogl-debug],
               [AC_HELP_STRING([--enable-cogl-debug=@<:@no/yes@:>@],
                               [Control COGL debugging level @<:@default=cogl_debug_default@:>@])],
@@ -721,7 +721,7 @@ AC_MSG_CHECKING([whether to build with gcov testing])
 
 AC_ARG_ENABLE([gcov],
               [AS_HELP_STRING([--enable-gcov],
-                              [Whether to enable coverage testing (requires gcc 
+                              [Whether to enable coverage testing (requires gcc
 and gcov)])],
               [],
               [enable_gcov=no])
