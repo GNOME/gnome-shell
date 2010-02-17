@@ -1819,7 +1819,7 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
   indices_bytes = get_indices_type_size (indices->type) * indices_len;
   if (fallback)
     {
-      indices->vbo_name = g_malloc (indices_len);
+      indices->vbo_name = g_malloc (indices_bytes);
       memcpy (indices->vbo_name, indices_array, indices_bytes);
     }
   else
