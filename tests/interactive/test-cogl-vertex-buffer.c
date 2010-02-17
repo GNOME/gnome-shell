@@ -147,7 +147,7 @@ on_paint (ClutterActor *actor, TestState *state)
                                     state->indices,
                                     0, /* min index */
                                     (MESH_WIDTH + 1) *
-                                    (MESH_HEIGHT + 1), /* max index */
+                                    (MESH_HEIGHT + 1) - 1, /* max index */
                                     0, /* indices offset */
                                     state->n_static_indices);
 }
