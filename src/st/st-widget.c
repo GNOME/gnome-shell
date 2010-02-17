@@ -1101,8 +1101,7 @@ st_widget_get_theme_node (StWidget *widget)
 
       if (stage == NULL)
         {
-          g_warning ("st_widget_get_theme_node called on a widget not in a stage");
-          stage = CLUTTER_STAGE (clutter_stage_get_default ());
+          g_error ("st_widget_get_theme_node called on a widget not in a stage");
         }
 
       if (parent_node == NULL)
