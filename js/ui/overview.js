@@ -564,20 +564,6 @@ Overview.prototype = {
         return this._workspaces;
     },
 
-    /**
-     * activateWindow:
-     * @metaWindow: A #MetaWindow
-     * @time: Event timestamp integer
-     *
-     * Make the given MetaWindow be the focus window, switching
-     * to the workspace it's on if necessary.  This function
-     * should only be used when the Overview is currently active;
-     * outside of that, use the relevant methods on MetaDisplay.
-     */
-    activateWindow: function (metaWindow, time) {
-         this._workspaces.activateWindowFromOverview(metaWindow, time);
-    },
-
     //// Private methods ////
 
     _showDone: function() {

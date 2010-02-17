@@ -1419,7 +1419,7 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.overview.activateWindow(clone.metaWindow, time);
+        Main.activateWindow(clone.metaWindow, time);
     },
 
     _removeSelf : function(actor, event) {

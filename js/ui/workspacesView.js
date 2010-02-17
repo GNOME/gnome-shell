@@ -163,26 +163,12 @@ GenericWorkspacesView.prototype = {
         }
     },
 
-    /**
-     * activateWindowFromOverview:
-     * @metaWindow: A #MetaWindow
-     * @time: Integer even timestamp
-     *
-     * This function exits the overview, switching to the given @metaWindow.
-     * If an application filter is in effect, it will be cleared.
-     */
-    activateWindowFromOverview: function (metaWindow, time) {
-        if (this._windowSelectionAppId != null) {
-            this._clearApplicationWindowSelection(false);
-        }
-
-        Main.activateWindow(metaWindow, time);
-        Main.overview.hide();
-    },
-
     hide: function() {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
+
+        if (this._windowSelectionAppId != null)
+            this._clearApplicationWindowSelection(false);
 
         activeWorkspace.actor.raise_top();
 

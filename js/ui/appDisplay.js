@@ -55,7 +55,7 @@ AppDisplayItem.prototype = {
         let windows = app.get_windows();
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
-            Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
+            Main.activateWindow(mostRecentWindow);
         } else {
             this._appInfo.launch();
         }
@@ -240,7 +240,7 @@ BaseAppSearchProvider.prototype = {
         let windows = app.get_windows();
 
         if (windows.length > 0)
-            Main.overview.activateWindow(windows[0], global.get_current_time());
+            Main.activateWindow(windows[0]);
         else
             app.launch();
     },
@@ -439,7 +439,7 @@ AppWellIcon.prototype = {
 
     activateMostRecentWindow: function () {
         let mostRecentWindow = this.app.get_windows()[0];
-        Main.overview.activateWindow(mostRecentWindow, global.get_current_time());
+        Main.activateWindow(mostRecentWindow);
     },
 
     highlightWindow: function(metaWindow) {
@@ -453,7 +453,7 @@ AppWellIcon.prototype = {
     activateWindow: function(metaWindow) {
         if (metaWindow) {
             this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, global.get_current_time());
+            Main.activateWindow(metaWindow);
         } else
             Main.overview.hide();
     },

@@ -401,7 +401,8 @@ function getRunDialog() {
  * @window: the Meta.Window to activate
  * @time: (optional) current event time
  *
- * Activates @window, switching to its workspace first if necessary
+ * Activates @window, switching to its workspace first if necessary,
+ * and switching out of the overview if it's currently active
  */
 function activateWindow(window, time) {
     let activeWorkspaceNum = global.screen.get_active_workspace_index();
@@ -416,6 +417,8 @@ function activateWindow(window, time) {
     } else {
         window.activate(time);
     }
+
+    overview.hide();
 }
 
 // TODO - replace this timeout with some system to guess when the user might
