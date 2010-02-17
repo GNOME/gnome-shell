@@ -592,7 +592,10 @@ AppIcon.prototype = {
         this.actor = new St.BoxLayout({ style_class: "alt-tab-app",
                                          vertical: true });
         this._icon = this.app.create_icon_texture(POPUP_APPICON_SIZE);
-        this.actor.add(this._icon, { x_fill: false, y_fill: false } );
+        let iconBin = new St.Bin({height: POPUP_APPICON_SIZE, width: POPUP_APPICON_SIZE});
+        iconBin.child = this._icon;
+
+        this.actor.add(iconBin, { x_fill: false, y_fill: false } );
         this._label = new St.Label({ text: this.app.get_name() });
         this.actor.add(this._label, { x_fill: false });
     }
