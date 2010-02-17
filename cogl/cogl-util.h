@@ -52,4 +52,12 @@ cogl_util_float_signbit (float x)
 }
 #endif
 
+/* This is a replacement for the nearbyint function which always
+   rounds to the nearest integer. nearbyint is apparently a C99
+   function so it might not always be available but also it seems in
+   glibc it is defined as a function call so this macro could end up
+   faster anyway. We can't just add 0.5f because it will break for
+   negative numbers. */
+#define COGL_UTIL_NEARBYINT(x) ((int) ((x) < 0.0f ? (x) - 0.5f : (x) + 0.5f))
+
 #endif /* __COGL_UTIL_H */
