@@ -37,6 +37,7 @@
 #include "cogl-internal.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
+#include "cogl-util.h"
 
 void _cogl_add_path_to_stencil_buffer (floatVec2    nodes_min,
                                        floatVec2    nodes_max,
@@ -483,7 +484,10 @@ try_pushing_rect_as_window_rect (float x_1,
     SWAP (y_1, y_2);
 #undef SWAP
 
-  cogl_clip_push_window_rectangle (x_1, y_1, x_2 - x_1, y_2 - y_1);
+  cogl_clip_push_window_rectangle (COGL_UTIL_NEARBYINT (x_1),
+                                   COGL_UTIL_NEARBYINT (y_1),
+                                   COGL_UTIL_NEARBYINT (x_2 - x_1),
+                                   COGL_UTIL_NEARBYINT (y_2 - y_1));
   return TRUE;
 }
 
