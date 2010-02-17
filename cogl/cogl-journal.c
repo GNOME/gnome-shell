@@ -126,7 +126,8 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
       guint8 *c = data + (POS_STRIDE * 4) + (i * stride * 4);
       int j;
 
-      if (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)
+      if (G_UNLIKELY (cogl_debug_flags &
+                      COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
         g_print ("v%d: x = %f, y = %f, rgba=0x%02X%02X%02X%02X",
                  i, v[0], v[1], c[0], c[1], c[2], c[3]);
       else
@@ -234,7 +235,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
    * issues, visually seeing what is batched and debugging blending
    * issues, plus it looks quite cool.
    */
-  if (cogl_debug_flags & COGL_DEBUG_RECTANGLES)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
     {
       static CoglHandle outline = COGL_INVALID_HANDLE;
       guint8 color_intensity;
@@ -331,7 +332,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
-  if (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     {
       batch_and_call (batch_start,
                       batch_len,
@@ -479,7 +480,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
    * VBO using a vertex offset passed to glDraw{Arrays,Elements} */
   state->vertex_offset = 0;
 
-  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     {
       guint8 *verts;
 

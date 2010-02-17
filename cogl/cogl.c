@@ -487,7 +487,7 @@ cogl_get_features (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
-  if (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
 
   return ctx->feature_flags;
