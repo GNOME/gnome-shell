@@ -29,26 +29,23 @@
 G_BEGIN_DECLS
 
 typedef enum {
-  COGL_DEBUG_MISC             = 1 << 0,
-  COGL_DEBUG_TEXTURE          = 1 << 1,
-  COGL_DEBUG_MATERIAL         = 1 << 2,
-  COGL_DEBUG_SHADER           = 1 << 3,
-  COGL_DEBUG_OFFSCREEN        = 1 << 4,
-  COGL_DEBUG_DRAW             = 1 << 5,
-  COGL_DEBUG_PANGO            = 1 << 6,
-  COGL_DEBUG_RECTANGLES       = 1 << 7,
-  COGL_DEBUG_HANDLE           = 1 << 8,
-  COGL_DEBUG_BLEND_STRINGS    = 1 << 9,
-  COGL_DEBUG_DISABLE_BATCHING = 1 << 10,
-  COGL_DEBUG_DISABLE_VBOS     = 1 << 11,
-  COGL_DEBUG_JOURNAL          = 1 << 12,
-  COGL_DEBUG_BATCHING         = 1 << 13,
-  COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM = 1 << 14,
-  COGL_DEBUG_MATRICES         = 1 << 15,
-  COGL_DEBUG_FORCE_SCANLINE_PATHS = 1 << 16,
-  COGL_DEBUG_ATLAS            = 1 << 17,
-  COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 18,
-  COGL_DEBUG_DISABLE_ATLAS    = 1 << 19
+  COGL_DEBUG_SLICING          = 1 << 1,
+  COGL_DEBUG_OFFSCREEN        = 1 << 2,
+  COGL_DEBUG_DRAW             = 1 << 3,
+  COGL_DEBUG_PANGO            = 1 << 4,
+  COGL_DEBUG_RECTANGLES       = 1 << 5,
+  COGL_DEBUG_HANDLE           = 1 << 6,
+  COGL_DEBUG_BLEND_STRINGS    = 1 << 7,
+  COGL_DEBUG_DISABLE_BATCHING = 1 << 8,
+  COGL_DEBUG_DISABLE_VBOS     = 1 << 9,
+  COGL_DEBUG_JOURNAL          = 1 << 10,
+  COGL_DEBUG_BATCHING         = 1 << 11,
+  COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM = 1 << 12,
+  COGL_DEBUG_MATRICES         = 1 << 13,
+  COGL_DEBUG_FORCE_SCANLINE_PATHS = 1 << 14,
+  COGL_DEBUG_ATLAS            = 1 << 15,
+  COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 16,
+  COGL_DEBUG_DISABLE_ATLAS    = 1 << 17
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG

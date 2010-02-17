@@ -841,7 +841,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
         {
           x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, x);
 
-          COGL_NOTE (TEXTURE, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
+          COGL_NOTE (SLICING, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
                      x, y,
                      x_span->size - x_span->waste,
                      y_span->size - y_span->waste);
