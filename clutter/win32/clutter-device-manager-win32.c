@@ -25,25 +25,19 @@
 #include "config.h"
 #endif
 
-#include "clutter-backend-x11.h"
-#include "clutter-device-manager-x11.h"
-#include "clutter-input-device-x11.h"
-#include "clutter-stage-x11.h"
+#include "clutter-backend-win32.h"
+#include "clutter-device-manager-win32.h"
+#include "clutter-device-manager-win32.h"
+#include "clutter-stage-win32.h"
 
 #include "clutter-backend.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager.h"
 #include "clutter-private.h"
 
-#ifdef HAVE_XINPUT
-#include <X11/extensions/XInput.h>
-#endif
-
 enum
 {
-  PROP_0,
-
-  PROP_USE_XINPUT_1
+  PROP_0
 };
 
 G_DEFINE_TYPE (ClutterDeviceManagerWin32,
@@ -155,7 +149,7 @@ static void
 clutter_device_manager_win32_class_init (ClutterDeviceManagerWin32Class *klass)
 {
   ClutterDeviceManagerClass *manager_class;
-  GObjectClass *gobject_class;
+  GObjectClass *gobject_class = (GObjectClass *) klass;
 
   gobject_class->constructed = clutter_device_manager_win32_constructed;
   

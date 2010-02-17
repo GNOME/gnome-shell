@@ -28,6 +28,7 @@
 #include "clutter-backend-win32.h"
 #include "clutter-stage-win32.h"
 #include "clutter-win32.h"
+#include "clutter-device-manager-win32.h"
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
@@ -66,8 +67,6 @@ static void
 clutter_backend_win32_init_events (ClutterBackend *backend)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  ClutterDeviceManager *manager;
-  ClutterInputDevice *device;
 
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
@@ -229,7 +228,7 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
      for the swap control extension */
   if (getenv ("__GL_SYNC_TO_VBLANK") || check_vblank_env ("default"))
     CLUTTER_NOTE (BACKEND, "vblank sync: left at default at user request");
-  else if (cogl_check_extension ("WGL_EXT_swap_control", extensions)
+  else if (_cogl_check_extension ("WGL_EXT_swap_control", extensions)
 	   && (swap_interval = (SwapIntervalProc)
 	       cogl_get_proc_address ("wglSwapIntervalEXT")))
     {

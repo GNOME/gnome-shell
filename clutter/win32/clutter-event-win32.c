@@ -334,7 +334,7 @@ message_translate (ClutterBackend *backend,
   ClutterBackendWin32  *backend_win32;
   ClutterStageWin32    *stage_win32;
   ClutterDeviceManager *manager;
-  ClutterInputDevice   *core_device, *core_keyboard;
+  ClutterInputDevice   *core_pointer, *core_keyboard;
   ClutterStage         *stage;
   ClutterStageWindow   *impl;
   gboolean              res;
