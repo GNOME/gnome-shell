@@ -429,9 +429,9 @@ WindowOverlay.prototype = {
         return this.closeButton.width - this.closeButton._overlap;
     },
 
-    chromeHeight: function () {
-        return this.closeButton.height - this.closeButton._overlap +
-               this.title.height + this.title._spacing;
+    chromeHeights: function () {
+        return [this.closeButton.height - this.closeButton._overlap,
+               this.title.height + this.title._spacing];
     },
 
     /**
@@ -975,24 +975,26 @@ Workspace.prototype = {
      */
     _computeWindowRelativeLayout: function(metaWindow, slot) {
         let [xCenter, yCenter, fraction] = slot;
+        let [x, y, width, height] = this._getSlotRelativeGeometry(slot);
 
         xCenter = xCenter * global.screen_width;
-        yCenter = yCenter * global.screen_height;
 
         let rect = new Meta.Rectangle();
         metaWindow.get_outer_rect(rect);
 
-        let chromeHeight = this._windowOverlays[1].chromeHeight() / this.scale;
-        let chromeWidth = this._windowOverlays[1].chromeWidth() / this.scale;
+        let [buttonOuterHeight, captionHeight] = this._windowOverlays[1].chromeHeights();
+        buttonOuterHeight /= this.scale;
+        captionHeight /= this.scale;
+        let buttonOuterWidth = this._windowOverlays[1].chromeWidth() / this.scale;
 
-        let desiredWidth = (global.screen_width - chromeWidth) * fraction;
-        let desiredHeight = (global.screen_height - chromeHeight) * fraction;
-        let scale = Math.min(desiredWidth / (rect.width + chromeWidth),
-                             desiredHeight / (rect.height + chromeHeight),
+        let desiredWidth = global.screen_width * fraction;
+        let desiredHeight = global.screen_height * fraction;
+        let scale = Math.min((desiredWidth - buttonOuterWidth) / rect.width,
+                             (desiredHeight - buttonOuterHeight - captionHeight) / rect.height,
                              1.0 / this.scale);
 
-        let x = xCenter - 0.5 * scale * (rect.width + chromeWidth);
-        let y = yCenter - 0.5 * scale * (rect.height + chromeHeight);
+        x = xCenter - 0.5 * scale * rect.width;
+        y = y + height - rect.height * scale - captionHeight;
 
         return [x, y, scale];
     },
