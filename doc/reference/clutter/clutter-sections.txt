@@ -1024,10 +1024,12 @@ clutter_input_device_get_type
 <FILE>clutter-device-manager</FILE>
 <TITLE>ClutterDeviceManager</TITLE>
 ClutterDeviceManager
+ClutterDeviceManagerClass
 clutter_device_manager_get_default
 clutter_device_manager_list_devices
 clutter_device_manager_peek_devices
 clutter_device_manager_get_device
+clutter_device_manager_get_core_device
 
 <SUBSECTION>
 clutter_get_input_device_for_id
@@ -1035,9 +1037,13 @@ clutter_get_input_device_for_id
 <SUBSECTION Standard>
 CLUTTER_TYPE_DEVICE_MANAGER
 CLUTTER_DEVICE_MANAGER
+CLUTTER_DEVICE_MANAGER_CLASS
 CLUTTER_IS_DEVICE_MANAGER
+CLUTTER_IS_DEVICE_MANAGER_CLASS
+CLUTTER_DEVICE_MANAGER_GET_CLASS
 
 <SUBSECTION Private>
+ClutterDeviceManagerPrivate
 clutter_device_manager_get_type
 </SECTION>
 

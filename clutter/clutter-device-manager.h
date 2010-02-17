@@ -81,13 +81,13 @@ struct _ClutterDeviceManagerClass
 GType clutter_device_manager_get_type (void) G_GNUC_CONST;
 
 ClutterDeviceManager *clutter_device_manager_get_default     (void);
-GSList *              clutter_device_manager_list_devices    (ClutterDeviceManager *device_manager);
-const GSList *        clutter_device_manager_peek_devices    (ClutterDeviceManager *device_manager);
+GSList *              clutter_device_manager_list_devices    (ClutterDeviceManager   *device_manager);
+const GSList *        clutter_device_manager_peek_devices    (ClutterDeviceManager   *device_manager);
 
-ClutterInputDevice *  clutter_device_manager_get_device      (ClutterDeviceManager *device_manager,
-                                                              gint                  device_id);
-ClutterInputDevice *  clutter_device_manager_get_core_device (ClutterDeviceManager *device_manager,
-                                                              ClutterInputDeviceType  type);
+ClutterInputDevice *  clutter_device_manager_get_device      (ClutterDeviceManager   *device_manager,
+                                                              gint                    device_id);
+ClutterInputDevice *  clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
+                                                              ClutterInputDeviceType  device_type);
 
 G_END_DECLS
 
