@@ -527,6 +527,25 @@ clutter_input_device_get_pointer_actor (ClutterInputDevice *device)
 }
 
 /**
+ * clutter_input_device_get_pointer_stage:
+ * @device: a #ClutterInputDevice of type %CLUTTER_POINTER_DEVICE
+ *
+ * Retrieves the #ClutterStage underneath the pointer of @device
+ *
+ * Return value: (transfer none): a pointer to the #ClutterStage or %NULL
+ *
+ * Since: 1.2
+ */
+ClutterStage *
+clutter_input_device_get_pointer_stage (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+  g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
+
+  return device->stage;
+}
+
+/**
  * clutter_input_device_get_device_name:
  * @device: a #ClutterInputDevice
  *
@@ -544,4 +563,44 @@ clutter_input_device_get_device_name (ClutterInputDevice *device)
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
 
   return device->device_name;
+}
+
+/**
+ * clutter_input_device_update_from_event:
+ * @device: a #ClutterInputDevice
+ * @event: a #ClutterEvent
+ * @update_stage: whether to update the #ClutterStage of the @device
+ *   using the stage of the event
+ *
+ * Forcibly updates the state of the @device using a #ClutterEvent
+ *
+ * This function should never be used by applications: it is meant
+ * for integration with embedding toolkits, like clutter-gtk
+ *
+ * Since: 1.2
+ */
+void
+clutter_input_device_update_from_event (ClutterInputDevice *device,
+                                        ClutterEvent       *event,
+                                        gboolean            update_stage)
+{
+  ClutterModifierType event_state;
+  ClutterStage *event_stage;
+  gfloat event_x, event_y;
+  guint32 event_time;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (event != NULL);
+
+  event_state = clutter_event_get_state (event);
+  event_time = clutter_event_get_time (event);
+  event_stage = clutter_event_get_stage (event);
+  clutter_event_get_coords (event, &event_x, &event_y);
+
+  _clutter_input_device_set_coords (device, event_x, event_y);
+  _clutter_input_device_set_state (device, event_state);
+  _clutter_input_device_set_time (device, event_time);
+
+  if (update_stage)
+    _clutter_input_device_set_stage (device, event_stage);
 }

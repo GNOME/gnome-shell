@@ -1005,6 +1005,8 @@ clutter_input_device_get_device_type
 clutter_input_device_get_device_name
 clutter_input_device_get_device_coords
 clutter_input_device_get_pointer_actor
+clutter_input_device_get_pointer_stage
+clutter_input_device_update_from_event
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_INPUT_DEVICE

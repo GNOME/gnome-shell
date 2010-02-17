@@ -46,6 +46,8 @@ typedef struct _ClutterChildMeta        ClutterChildMeta;
 typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
 typedef struct _ClutterAnimator         ClutterAnimator;
 
+typedef union _ClutterEvent             ClutterEvent;
+
 /**
  * ClutterGravity:
  * @CLUTTER_GRAVITY_NONE: Do not apply any gravity

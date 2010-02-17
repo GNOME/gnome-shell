@@ -92,7 +92,12 @@ void                   clutter_input_device_get_device_coords (ClutterInputDevic
                                                                gint               *x,
                                                                gint               *y);
 ClutterActor *         clutter_input_device_get_pointer_actor (ClutterInputDevice *device);
+ClutterStage *         clutter_input_device_get_pointer_stage (ClutterInputDevice *device);
 G_CONST_RETURN gchar * clutter_input_device_get_device_name   (ClutterInputDevice *device);
+
+void                   clutter_input_device_update_from_event (ClutterInputDevice *device,
+                                                               ClutterEvent       *event,
+                                                               gboolean            update_stage);
 
 G_END_DECLS
 

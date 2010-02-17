@@ -192,8 +192,6 @@ typedef enum
   CLUTTER_STAGE_STATE_ACTIVATED        = (1<<3)
 } ClutterStageState;
 
-typedef union _ClutterEvent ClutterEvent;
-
 typedef struct _ClutterAnyEvent         ClutterAnyEvent;
 typedef struct _ClutterButtonEvent      ClutterButtonEvent;
 typedef struct _ClutterKeyEvent         ClutterKeyEvent;
