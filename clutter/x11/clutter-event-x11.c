@@ -482,6 +482,22 @@ event_translate (ClutterBackend *backend,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
+          /* Queue a relayout - we want glViewport to be called
+           * with the correct values, and this is done in ClutterStage
+           * via _cogl_onscreen_clutter_backend_set_size ().
+           *
+           * We queue a relayout, because if this ConfigureNotify is
+           * in response to a size we set in the application, the
+           * set_size above is essentially a null-op.
+           *
+           * Make sure we do this only when the size has changed,
+           * otherwise we end up relayouting on window moves.
+           */
+          if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) ||
+              (stage_x11->xwin_width != xevent->xconfigure.width) ||
+              (stage_x11->xwin_height != xevent->xconfigure.height))
+          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+
           /* If we're fullscreened, we want these variables to
            * represent the size of the window before it was set
            * to fullscreen.
@@ -503,16 +519,6 @@ event_translate (ClutterBackend *backend,
            * to set up the GL viewport with the new size
            */
           clutter_stage_ensure_viewport (stage);
-
-          /* Also queue a relayout - we want glViewport to be called
-           * with the correct values, and this is done in ClutterStage
-           * via _cogl_onscreen_clutter_backend_set_size ().
-           *
-           * We queue a relayout, because if this ConfigureNotify is
-           * in response to a size we set in the application, the
-           * set_size above is essentially a null-op.
-           */
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
         }
       res = FALSE;
       break;
