@@ -48,8 +48,12 @@ struct _CoglPangoRenderer
   /* The material used for solid fills. (boxes, rectangles + trapezoids) */
   CoglMaterial *solid_material;
 
-  /* Caches of glyphs as textures */
+  /* Two caches of glyphs as textures, one with mipmapped textures and
+     one without */
   CoglPangoGlyphCache *glyph_cache;
+  CoglPangoGlyphCache *mipmapped_glyph_cache;
+
+  gboolean use_mipmapping;
 
   /* The current display list that is being built */
   CoglPangoDisplayList *display_list;
@@ -72,6 +76,10 @@ struct _CoglPangoRendererQdata
   /* A reference to the first line of the layout. This is just used to
      detect changes */
   PangoLayoutLine *first_line;
+  /* Whether mipmapping was previously used to render this layout. We
+     need to regenerate the display list if the mipmapping value is
+     changed because it will be using a different set of textures */
+  gboolean mipmapping_used;
 };
 
 static void
@@ -149,8 +157,9 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
 
   priv->solid_material = cogl_material_new ();
 
-  priv->glyph_cache = cogl_pango_glyph_cache_new ();
-
+  priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
+  priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
+  priv->use_mipmapping = TRUE;
   _cogl_pango_renderer_set_use_mipmapping (priv, FALSE);
 }
 
@@ -172,6 +181,7 @@ cogl_pango_renderer_finalize (GObject *object)
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (object);
 
+  cogl_pango_glyph_cache_free (priv->mipmapped_glyph_cache);
   cogl_pango_glyph_cache_free (priv->glyph_cache);
 
   G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->finalize (object);
@@ -275,8 +285,10 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   /* Check if the layout has changed since the last build of the
      display list. This trick was suggested by Behdad Esfahbod here:
      http://mail.gnome.org/archives/gtk-i18n-list/2009-May/msg00019.html */
-  if (qdata->display_list && qdata->first_line
-      && qdata->first_line->layout != layout)
+  if (qdata->display_list &&
+      ((qdata->first_line &&
+        qdata->first_line->layout != layout) ||
+       qdata->mipmapping_used != priv->use_mipmapping))
     cogl_pango_render_qdata_forget_display_list (qdata);
 
   if (qdata->display_list == NULL)
@@ -295,6 +307,8 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
       priv->display_list = qdata->display_list;
       pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, 0, 0);
       priv->display_list = NULL;
+
+      qdata->mipmapping_used = priv->use_mipmapping;
     }
 
   cogl_push_matrix ();
@@ -389,31 +403,34 @@ void
 _cogl_pango_renderer_clear_glyph_cache (CoglPangoRenderer *renderer)
 {
   cogl_pango_glyph_cache_clear (renderer->glyph_cache);
+  cogl_pango_glyph_cache_clear (renderer->mipmapped_glyph_cache);
 }
 
 void
 _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
                                          gboolean value)
 {
-  if (value)
-    cogl_material_set_layer_filters (renderer->glyph_material, 0,
-                                     COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR,
-                                     COGL_MATERIAL_FILTER_LINEAR);
-  else
-    cogl_material_set_layer_filters (renderer->glyph_material, 0,
-                                     COGL_MATERIAL_FILTER_LINEAR,
-                                     COGL_MATERIAL_FILTER_LINEAR);
+  if (renderer->use_mipmapping != value)
+    {
+      CoglMaterialFilter min_filter;
+
+      renderer->use_mipmapping = value;
+
+      if (value)
+        min_filter = COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR;
+      else
+        min_filter = COGL_MATERIAL_FILTER_LINEAR;
+
+      cogl_material_set_layer_filters (renderer->glyph_material, 0,
+                                       min_filter,
+                                       COGL_MATERIAL_FILTER_LINEAR);
+    }
 }
 
 gboolean
 _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer)
 {
-  const GList *layers = cogl_material_get_layers (renderer->glyph_material);
-
-  g_return_val_if_fail (layers != NULL, FALSE);
-
-  return (cogl_material_layer_get_min_filter (layers->data)
-          == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
+  return renderer->use_mipmapping;
 }
 
 static CoglPangoGlyphCacheValue *
@@ -423,8 +440,13 @@ cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
                                       PangoGlyph     glyph)
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
+  CoglPangoGlyphCache *glyph_cache;
 
-  return cogl_pango_glyph_cache_lookup (priv->glyph_cache, create, font, glyph);
+  glyph_cache = (priv->use_mipmapping ?
+                 priv->mipmapped_glyph_cache :
+                 priv->glyph_cache);
+
+  return cogl_pango_glyph_cache_lookup (glyph_cache, create, font, glyph);
 }
 
 static void
@@ -509,6 +531,15 @@ _cogl_pango_ensure_glyph_cache_for_layout_line_internal (PangoLayoutLine *line)
 }
 
 static void
+_cogl_pango_set_dirty_glyphs (CoglPangoRenderer *priv)
+{
+  _cogl_pango_glyph_cache_set_dirty_glyphs
+    (priv->glyph_cache, cogl_pango_renderer_set_dirty_glyph);
+  _cogl_pango_glyph_cache_set_dirty_glyphs
+    (priv->mipmapped_glyph_cache, cogl_pango_renderer_set_dirty_glyph);
+}
+
+static void
 _cogl_pango_ensure_glyph_cache_for_layout_line (PangoLayoutLine *line)
 {
   PangoContext *context;
@@ -521,8 +552,7 @@ _cogl_pango_ensure_glyph_cache_for_layout_line (PangoLayoutLine *line)
 
   /* Now that we know all of the positions are settled we'll fill in
      any dirty glyphs */
-  _cogl_pango_glyph_cache_set_dirty_glyphs
-    (priv->glyph_cache, cogl_pango_renderer_set_dirty_glyph);
+  _cogl_pango_set_dirty_glyphs (priv);
 }
 
 void
@@ -554,8 +584,7 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
 
   /* Now that we know all of the positions are settled we'll fill in
      any dirty glyphs */
-  _cogl_pango_glyph_cache_set_dirty_glyphs
-    (priv->glyph_cache, cogl_pango_renderer_set_dirty_glyph);
+  _cogl_pango_set_dirty_glyphs (priv);
 }
 
 static void

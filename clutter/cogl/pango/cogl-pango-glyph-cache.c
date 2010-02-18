@@ -101,7 +101,7 @@ cogl_pango_glyph_cache_equal_func (gconstpointer a,
 }
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (void)
+cogl_pango_glyph_cache_new (gboolean use_mipmapping)
 {
   CoglPangoGlyphCache *cache;
 

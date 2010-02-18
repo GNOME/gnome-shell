@@ -60,7 +60,7 @@ typedef void (* CoglPangoGlyphCacheDirtyFunc) (PangoFont *font,
                                                CoglPangoGlyphCacheValue *value);
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (void);
+cogl_pango_glyph_cache_new (gboolean use_mipmapping);
 
 void
 cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache);
