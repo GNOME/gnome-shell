@@ -216,10 +216,12 @@ void          _clutter_input_device_set_actor  (ClutterInputDevice  *device,
 ClutterActor *_clutter_input_device_update     (ClutterInputDevice  *device);
 
 /* stage manager */
-void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,
-                                          ClutterStage        *stage);
-void _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
-                                          ClutterStage        *stage);
+void _clutter_stage_manager_add_stage         (ClutterStageManager *stage_manager,
+                                               ClutterStage        *stage);
+void _clutter_stage_manager_remove_stage      (ClutterStageManager *stage_manager,
+                                               ClutterStage        *stage);
+void _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
+                                               ClutterStage        *stage);
 
 /* stage */
 void                _clutter_stage_set_window           (ClutterStage       *stage,

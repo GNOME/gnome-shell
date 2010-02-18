@@ -1217,6 +1217,7 @@ clutter_stage_get_default (void)
        * reference will be claimed by the stage manager.
        */
       stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+      _clutter_stage_manager_set_default_stage (stage_manager, stage);
 
       /* the default stage is realized by default */
       clutter_actor_realize (CLUTTER_ACTOR (stage));

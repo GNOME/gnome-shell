@@ -212,6 +212,31 @@ clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
 {
 }
 
+/*
+ * _clutter_stage_manager_set_default_stage:
+ * @stage_manager: a #ClutterStageManager
+ * @stage: a #ClutterStage
+ *
+ * Sets @stage as the default stage
+ *
+ * A no-op if there already is a default stage
+ *
+ * This is called by clutter_stage_get_default() and should be removed
+ * along with #ClutterStageManager:default-stage when we stop having
+ * the default stage
+ */
+void
+_clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
+                                          ClutterStage        *stage)
+{
+  if (G_UNLIKELY (default_stage == NULL))
+    {
+      default_stage = stage;
+
+      g_object_notify (G_OBJECT (stage_manager), "default-stage");
+    }
+}
+
 /**
  * clutter_stage_manager_get_default_stage:
  * @stage_manager: a #ClutterStageManager
@@ -281,13 +306,6 @@ _clutter_stage_manager_add_stage (ClutterStageManager *stage_manager,
 
   stage_manager->stages = g_slist_append (stage_manager->stages, stage);
 
-  if (G_UNLIKELY (default_stage == NULL))
-    {
-      default_stage = stage;
-
-      g_object_notify (G_OBJECT (stage_manager), "default-stage");
-    }
-  
   g_signal_emit (stage_manager, manager_signals[STAGE_ADDED], 0, stage);
 }
 
