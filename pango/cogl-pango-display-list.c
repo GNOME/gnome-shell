@@ -27,6 +27,7 @@
 
 #include <glib.h>
 #include <cogl/cogl.h>
+#include <cogl/cogl-texture-private.h>
 #include <string.h>
 
 #include "cogl-pango-display-list.h"
@@ -325,7 +326,10 @@ _cogl_pango_display_list_render_texture (CoglMaterial *material,
    * with other geometry. */
   /* FIXME: 100 is a number I plucked out of thin air; it would be good
    * to determine this empirically! */
-  if (node->d.texture.verts->len < 100)
+  if (node->d.texture.verts->len < 100 ||
+      /* We can't use a VBO if the texture can't be hardware repeated
+         because Cogl will reject it */
+      !_cogl_texture_can_hardware_repeat (node->d.texture.texture))
     emit_rectangles_through_journal (node);
   else
     emit_vertex_buffer_geometry (node);
