@@ -63,4 +63,10 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat  internal_format);
 
+CoglHandle
+_cogl_atlas_texture_new_with_size (unsigned int     width,
+                                   unsigned int     height,
+                                   CoglTextureFlags flags,
+                                   CoglPixelFormat  internal_format);
+
 #endif /* __COGL_ATLAS_TEXTURE_H */
