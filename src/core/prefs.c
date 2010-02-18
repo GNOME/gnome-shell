@@ -126,11 +126,20 @@ static gboolean handle_preference_update_enum (const gchar *key, GConfValue *val
 
 static gboolean update_key_binding     (const char *name,
                                         const char *value);
-static gboolean find_and_update_list_binding (MetaKeyPref *bindings,
-                                              const char  *name,
-                                              GSList      *value);
-static gboolean update_key_list_binding (const char *name,
-                                         GSList      *value);
+
+typedef enum
+  {
+    META_LIST_OF_STRINGS,
+    META_LIST_OF_GCONFVALUE_STRINGS
+  } MetaStringListType;
+
+static gboolean find_and_update_list_binding (MetaKeyPref       *bindings,
+                                              const char        *name,
+                                              GSList            *value,
+                                              MetaStringListType type_of_value);
+static gboolean update_key_list_binding (const char         *name,
+                                         GSList             *value,
+                                         MetaStringListType  type_of_value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_workspace_name     (const char  *name,
@@ -144,12 +153,6 @@ static void change_notify (GConfClient    *client,
 static char* gconf_key_for_workspace_name (int i);
 
 static void queue_changed (MetaPreference  pref);
-
-typedef enum
-  {
-    META_LIST_OF_STRINGS,
-    META_LIST_OF_GCONFVALUE_STRINGS
-  } MetaStringListType;
 
 static gboolean update_list_binding       (MetaKeyPref *binding,
                                            GSList      *value,
@@ -1149,7 +1152,7 @@ change_notify (GConfClient    *client,
 
           list = value ? gconf_value_get_list (value) : NULL;
 
-          if (update_key_list_binding (key, list))
+          if (update_key_list_binding (key, list, META_LIST_OF_GCONFVALUE_STRINGS))
             queue_changed (META_PREF_KEYBINDINGS);
         }
       else
@@ -1919,7 +1922,7 @@ init_bindings (void)
             {
               list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, NULL);
  
-              update_key_list_binding (key, list_val);
+              update_key_list_binding (key, list_val, META_LIST_OF_STRINGS);
               g_slist_foreach (list_val, (GFunc)g_free, NULL);
               g_slist_free (list_val);
             }
@@ -2304,9 +2307,10 @@ update_key_binding (const char *name,
 }
 
 static gboolean
-find_and_update_list_binding (MetaKeyPref *bindings,
-                              const char  *name,
-                              GSList      *value)
+find_and_update_list_binding (MetaKeyPref       *bindings,
+                              const char        *name,
+                              GSList            *value,
+                              MetaStringListType type_of_value)
 {
   const char *key;
   int i;
@@ -2327,16 +2331,17 @@ find_and_update_list_binding (MetaKeyPref *bindings,
   g_free (name_without_suffix);
 
   if (bindings[i].name)
-    return update_list_binding (&bindings[i], value, META_LIST_OF_GCONFVALUE_STRINGS);
+    return update_list_binding (&bindings[i], value, type_of_value);
   else
     return FALSE;
 }
 
 static gboolean
-update_key_list_binding (const char *name,
-                            GSList *value)
+update_key_list_binding (const char        *name,
+                         GSList            *value,
+                         MetaStringListType type_of_value)
 {
-  return find_and_update_list_binding (key_bindings, name, value);
+  return find_and_update_list_binding (key_bindings, name, value, type_of_value);
 }
 
 static gboolean
