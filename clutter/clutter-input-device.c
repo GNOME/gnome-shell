@@ -577,6 +577,55 @@ clutter_input_device_get_device_name (ClutterInputDevice *device)
  * This function should never be used by applications: it is meant
  * for integration with embedding toolkits, like clutter-gtk
  *
+ * Embedding toolkits that disable the event collection inside Clutter
+ * need to use this function to update the state of input devices depending
+ * on a #ClutterEvent that they are going to submit to the event handling code
+ * in Clutter though clutter_do_event(). Since the input devices hold the state
+ * that is going to be used to fill in fields like the #ClutterButtonEvent
+ * click count, or to emit synthesized events like %CLUTTER_ENTER and
+ * %CLUTTER_LEAVE, it is necessary for embedding toolkits to also be
+ * responsible of updating the input device state.
+ *
+ * For instance, this might be the code to translate an embedding toolkit
+ * native motion notification into a Clutter #ClutterMotionEvent and ask
+ * Clutter to process it:
+ *
+ * |[
+ *   ClutterEvent c_event;
+ *
+ *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *
+ *   clutter_do_event (&amp;c_event);
+ * ]|
+ *
+ * Before letting clutter_do_event() process the event, it is necessary to call
+ * clutter_input_device_update_from_event():
+ *
+ * |[
+ *   ClutterEvent c_event;
+ *   ClutterDeviceManager *manager;
+ *   ClutterInputDevice *device;
+ *
+ *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *
+ *   /&ast; get the device manager &ast;/
+ *   manager = clutter_device_manager_get_default ();
+ *
+ *   /&ast; use the default Core Pointer that Clutter
+ *    &ast; backends register by default
+ *    &ast;/
+ *   device = clutter_device_manager_get_core_device (manager, %CLUTTER_POINTER_DEVICE);
+ *
+ *   /&ast; update the state of the input device &ast;/
+ *   clutter_input_device_update_from_event (device, &amp;c_event, FALSE);
+ *
+ *   clutter_do_event (&amp;c_event);
+ * ]|
+ *
+ * The @update_stage boolean argument should be used when the input device
+ * enters and leaves a #ClutterStage; it will use the #ClutterStage field
+ * of the passed @event to update the stage associated to the input device.
+ *
  * Since: 1.2
  */
 void
