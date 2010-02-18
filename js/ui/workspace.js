@@ -361,8 +361,6 @@ WindowOverlay.prototype = {
 
         let title = new St.Label({ style_class: "window-caption",
                                    text: metaWindow.title });
-        title.connect('style-changed',
-                      Lang.bind(this, this._onStyleChanged));
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         title._spacing = 0;
 
@@ -372,8 +370,6 @@ WindowOverlay.prototype = {
             }));
 
         let button = new St.Button({ style_class: "window-close" });
-        button.connect('style-changed',
-                       Lang.bind(this, this._onStyleChanged));
         button._overlap = 0;
 
         this._idleToggleCloseId = 0;
@@ -396,6 +392,14 @@ WindowOverlay.prototype = {
 
         parentActor.add_actor(this.title);
         parentActor.add_actor(this.closeButton);
+        title.connect('style-changed',
+                      Lang.bind(this, this._onStyleChanged));
+        button.connect('style-changed',
+                       Lang.bind(this, this._onStyleChanged));
+        // force a style change if we are already on a stage - otherwise
+        // the signal will be emitted normally when we are added
+        if (parentActor.get_stage())
+            this._onStyleChanged();
     },
 
     hide: function() {
