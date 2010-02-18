@@ -47,7 +47,7 @@ Lightbox.prototype = {
         container.add_actor(this.actor);
         this.actor.raise_top();
 
-        this._destroySignalId = this.actor.connect('destroy', Lang.bind(this, this.destroy));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         if (width && height) {
             this.actor.width = width;
@@ -135,18 +135,24 @@ Lightbox.prototype = {
     /**
      * destroy:
      *
-     * Destroys the lightbox. This is called automatically if the
-     * lightbox's container is destroyed.
+     * Destroys the lightbox.
      */
     destroy : function() {
+        this.actor.destroy();
+    },
+
+    /**
+     * _onDestroy:
+     *
+     * This is called when the lightbox' actor is destroyed, either
+     * by destroying its container or by explicitly calling this.destroy().
+     */
+    _onDestroy: function() {
         if (this._allocationChangedSignalId != 0)
             this._container.disconnect(this._allocationChangedSignalId);
         this._container.disconnect(this._actorAddedSignalId);
         this._container.disconnect(this._actorRemovedSignalId);
 
-        this.actor.disconnect(this._destroySignalId);
-
         this.highlight(null);
-        this.actor.destroy();
     }
 };

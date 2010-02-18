@@ -39,6 +39,8 @@ GenericWorkspacesView.prototype = {
         this.actor = new St.Bin({ style_class: "workspaces" });
         this._actor = new Clutter.Group();
 
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
         this.actor.add_actor(this._actor);
         this.actor.connect('style-changed', Lang.bind(this,
             function() {
@@ -181,12 +183,13 @@ GenericWorkspacesView.prototype = {
     },
 
     destroy: function() {
+        this.actor.destroy();
+    },
+
+    _onDestroy: function() {
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].destroy();
         this._workspaces = [];
-
-        this.actor.destroy();
-        this.actor = null;
 
         Main.overview.disconnect(this._overviewShowingId);
         global.screen.disconnect(this._nWorkspacesNotifyId);

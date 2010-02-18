@@ -581,6 +581,9 @@ Workspace.prototype = {
 
         this.actor = new Clutter.Group();
         this.actor._delegate = this;
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
         // Auto-sizing is unreliable in the presence of ClutterClone, so rather than
         // implicitly counting on the workspace actor to be sized to the size of the
         // included desktop actor clone, set the size explicitly to the screen size.
@@ -1330,10 +1333,11 @@ Workspace.prototype = {
     },
 
     destroy : function() {
-        Tweener.removeTweens(this.actor);
         this.actor.destroy();
-        this.actor = null;
-        this._windowOverlaysGroup.destroy();
+    },
+
+    _onDestroy: function(actor) {
+        Tweener.removeTweens(actor);
 
         this._metaWorkspace.disconnect(this._windowAddedId);
         this._metaWorkspace.disconnect(this._windowRemovedId);
