@@ -30,6 +30,7 @@
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-private.h"
 #include "cogl/cogl-atlas.h"
+#include "cogl/cogl-atlas-texture-private.h"
 
 typedef struct _CoglPangoGlyphCacheKey     CoglPangoGlyphCacheKey;
 
@@ -49,6 +50,10 @@ struct _CoglPangoGlyphCache
      optimization in _cogl_pango_glyph_cache_set_dirty_glyphs to avoid
      iterating the hash table if we know none of them are dirty */
   gboolean          has_dirty_glyphs;
+
+  /* Whether mipmapping is being used for this cache. This only
+     affects whether we decide to put the glyph in the global atlas */
+  gboolean          use_mipmapping;
 };
 
 struct _CoglPangoGlyphCacheKey
@@ -118,6 +123,8 @@ cogl_pango_glyph_cache_new (gboolean use_mipmapping)
 
   cache->has_dirty_glyphs = FALSE;
 
+  cache->use_mipmapping = use_mipmapping;
+
   return cache;
 }
 
@@ -179,6 +186,86 @@ cogl_pango_glyph_cache_reorganize_cb (void *user_data)
   g_hook_list_invoke (&cache->reorganize_callbacks, FALSE);
 }
 
+static gboolean
+cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
+                                            PangoFont *font,
+                                            PangoGlyph glyph,
+                                            CoglPangoGlyphCacheValue *value)
+{
+  CoglHandle texture;
+
+  /* If the cache is using mipmapping then we can't use the global
+     atlas because it would just get migrated back out */
+  if (cache->use_mipmapping)
+    return FALSE;
+
+  texture = _cogl_atlas_texture_new_with_size (value->draw_width,
+                                               value->draw_height,
+                                               COGL_TEXTURE_NONE,
+                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+
+  if (texture == COGL_INVALID_HANDLE)
+    return FALSE;
+
+  value->texture = texture;
+  value->tx1 = 0;
+  value->ty1 = 0;
+  value->tx2 = 1;
+  value->ty2 = 1;
+  value->tx_pixel = 0;
+  value->ty_pixel = 0;
+
+  return TRUE;
+}
+
+static gboolean
+cogl_pango_glyph_cache_add_to_local_atlas (CoglPangoGlyphCache *cache,
+                                           PangoFont *font,
+                                           PangoGlyph glyph,
+                                           CoglPangoGlyphCacheValue *value)
+{
+  CoglAtlas *atlas = NULL;
+  GSList *l;
+
+  /* Look for an atlas that can reserve the space */
+  for (l = cache->atlases; l; l = l->next)
+    if (_cogl_atlas_reserve_space (l->data,
+                                   value->draw_width + 1,
+                                   value->draw_height + 1,
+                                   value))
+      {
+        atlas = l->data;
+        break;
+      }
+
+  /* If we couldn't find one then start a new atlas */
+  if (atlas == NULL)
+    {
+      atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_A_8,
+                               COGL_ATLAS_CLEAR_TEXTURE |
+                               COGL_ATLAS_DISABLE_MIGRATION,
+                               cogl_pango_glyph_cache_update_position_cb);
+      COGL_NOTE (ATLAS, "Created new atlas for glyphs: %p", atlas);
+      /* If we still can't reserve space then something has gone
+         seriously wrong so we'll just give up */
+      if (!_cogl_atlas_reserve_space (atlas,
+                                      value->draw_width + 1,
+                                      value->draw_height + 1,
+                                      value))
+        {
+          cogl_object_unref (atlas);
+          return FALSE;
+        }
+
+      _cogl_atlas_add_reorganize_callback
+        (atlas, cogl_pango_glyph_cache_reorganize_cb, NULL, cache);
+
+      cache->atlases = g_slist_prepend (cache->atlases, atlas);
+    }
+
+  return TRUE;
+}
+
 CoglPangoGlyphCacheValue *
 cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
                                gboolean             create,
@@ -197,53 +284,31 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
     {
       CoglPangoGlyphCacheKey *key;
       PangoRectangle ink_rect;
-      CoglAtlas *atlas = NULL;
-      GSList *l;
+
+      value = g_slice_new (CoglPangoGlyphCacheValue);
+      value->texture = COGL_INVALID_HANDLE;
+      value->dirty = TRUE;
 
       pango_font_get_glyph_extents (font, glyph, &ink_rect, NULL);
       pango_extents_to_pixels (&ink_rect, NULL);
 
-      value = g_slice_new (CoglPangoGlyphCacheValue);
-      value->texture = COGL_INVALID_HANDLE;
       value->draw_x = ink_rect.x;
       value->draw_y = ink_rect.y;
       value->draw_width = ink_rect.width;
       value->draw_height = ink_rect.height;
-      value->dirty = TRUE;
 
-      /* Look for an atlas that can reserve the space */
-      for (l = cache->atlases; l; l = l->next)
-        if (_cogl_atlas_reserve_space (l->data,
-                                       ink_rect.width + 1, ink_rect.height + 1,
-                                       value))
-          {
-            atlas = l->data;
-            break;
-          }
-
-      /* If we couldn't find one then start a new atlas */
-      if (atlas == NULL)
+      /* Try adding the glyph to the global atlas... */
+      if (!cogl_pango_glyph_cache_add_to_global_atlas (cache,
+                                                       font,
+                                                       glyph,
+                                                       value) &&
+          !cogl_pango_glyph_cache_add_to_local_atlas (cache,
+                                                      font,
+                                                      glyph,
+                                                      value))
         {
-          atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_A_8,
-                                   COGL_ATLAS_CLEAR_TEXTURE |
-                                   COGL_ATLAS_DISABLE_MIGRATION,
-                                   cogl_pango_glyph_cache_update_position_cb);
-          COGL_NOTE (ATLAS, "Created new atlas for glyphs: %p", atlas);
-          /* If we still can't reserve space then something has gone
-             seriously wrong so we'll just give up */
-          if (!_cogl_atlas_reserve_space (atlas,
-                                          ink_rect.width + 1,
-                                          ink_rect.height + 1, value))
-            {
-              cogl_object_unref (atlas);
-              cogl_pango_glyph_cache_value_free (value);
-              return NULL;
-            }
-
-          _cogl_atlas_add_reorganize_callback
-            (atlas, cogl_pango_glyph_cache_reorganize_cb, NULL, cache);
-
-          cache->atlases = g_slist_prepend (cache->atlases, atlas);
+          cogl_pango_glyph_cache_value_free (value);
+          return NULL;
         }
 
       key = g_slice_new (CoglPangoGlyphCacheKey);
