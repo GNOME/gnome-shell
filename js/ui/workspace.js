@@ -371,21 +371,19 @@ WindowOverlay.prototype = {
                 this.title.text = w.title;
             }));
 
-        let button = new St.Bin({ style_class: "window-close",
-                                  reactive: true });
+        let button = new St.Button({ style_class: "window-close" });
         button.connect('style-changed',
                        Lang.bind(this, this._onStyleChanged));
         button._overlap = 0;
+
+        this._idleToggleCloseId = 0;
+        button.connect('clicked', Lang.bind(this, this._closeWindow));
 
         windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         windowClone.actor.connect('enter-event',
                                   Lang.bind(this, this._onEnter));
         windowClone.actor.connect('leave-event',
                                   Lang.bind(this, this._onLeave));
-
-        this._idleToggleCloseId = 0;
-        button.connect('button-release-event',
-                       Lang.bind(this, this._closeWindow));
 
         this._windowAddedId = 0;
         windowClone.connect('zoom-start', Lang.bind(this, this.hide));
@@ -461,7 +459,7 @@ WindowOverlay.prototype = {
         title.set_position(Math.floor(titleX), Math.floor(titleY));
     },
 
-    _closeWindow: function(actor, event) {
+    _closeWindow: function(actor) {
         let metaWindow = this._windowClone.metaWindow;
         this._workspace = metaWindow.get_workspace();
 
@@ -469,7 +467,7 @@ WindowOverlay.prototype = {
                                                       Lang.bind(this,
                                                                 this._onWindowAdded));
 
-        metaWindow.delete(event.get_time());
+        metaWindow.delete(global.get_current_time());
     },
 
     _onWindowAdded: function(workspace, win) {
