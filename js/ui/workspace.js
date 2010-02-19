@@ -1417,7 +1417,7 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.activateWindow(clone.metaWindow, time);
+        Main.activateWindow(clone.metaWindow, time, this.workspaceNum);
     },
 
     _removeSelf : function(actor, event) {

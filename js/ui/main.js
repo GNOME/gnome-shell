@@ -400,13 +400,14 @@ function getRunDialog() {
  * activateWindow:
  * @window: the Meta.Window to activate
  * @time: (optional) current event time
+ * @workspaceNum: (optional) window's workspace number
  *
  * Activates @window, switching to its workspace first if necessary,
  * and switching out of the overview if it's currently active
  */
-function activateWindow(window, time) {
+function activateWindow(window, time, workspaceNum) {
     let activeWorkspaceNum = global.screen.get_active_workspace_index();
-    let windowWorkspaceNum = window.get_workspace().index();
+    let windowWorkspaceNum = (workspaceNum !== undefined) ? workspaceNum : window.get_workspace().index();
 
     if (!time)
         time = global.get_current_time();
