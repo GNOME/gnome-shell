@@ -373,8 +373,11 @@ MosaicView.prototype = {
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Slide new workspaces in from offscreen
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
+            // New workspaces can contain windows.
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+                this._workspaces[w].positionWindows(0);
                 this._workspaces[w].slideIn(oldScale);
+            }
         } else {
             // Slide old workspaces out
             for (let w = 0; w < lostWorkspaces.length; w++) {

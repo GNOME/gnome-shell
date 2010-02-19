@@ -764,10 +764,6 @@ Workspace.prototype = {
         return visible;
     },
 
-    _getVisibleWindows: function() {
-        return this._getVisibleClones().map(function (clone) { return clone.metaWindow; });
-    },
-
     _resetCloneVisibility: function () {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
@@ -858,14 +854,14 @@ Workspace.prototype = {
      * Iterate over all permutations of the windows, and determine the
      * permutation which has the least total motion.
      */
-    _orderWindowsPermutations: function (windows, slots, slotGeometries) {
+    _orderWindowsPermutations: function (clones, slots, slotGeometries) {
         let minimumMotionPermutation = null;
         let minimumMotion = -1;
         let permIndex = 0;
-        this._forEachPermutations(windows, Lang.bind(this, function (permutation) {
+        this._forEachPermutations(clones, Lang.bind(this, function (permutation) {
             let motion = 0;
             for (let i = 0; i < permutation.length; i++) {
-                let metaWindow = permutation[i];
+                let metaWindow = permutation[i].metaWindow;
                 let slot = slots[i];
                 let slotAbsGeometry = slotGeometries[i];
 
@@ -889,26 +885,26 @@ Workspace.prototype = {
      * Iterate over available slots in order, placing into each one the window
      * we find with the smallest motion to that slot.
      */
-    _orderWindowsGreedy: function(windows, slots, slotGeometries) {
+    _orderWindowsGreedy: function(clones, slots, slotGeometries) {
         let result = [];
         let slotIndex = 0;
         // Copy since we mutate below
-        let windowCopy = windows.concat();
+        let clonesCopy = clones.concat();
         for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
             let slotGeometry = slotGeometries[i];
             let minimumMotionIndex = -1;
             let minimumMotion = -1;
-            for (let j = 0; j < windowCopy.length; j++) {
-                let metaWindow = windowCopy[j];
+            for (let j = 0; j < clonesCopy.length; j++) {
+                let metaWindow = clonesCopy[j].metaWindow;
                 let delta = this._computeWindowMotion(metaWindow, slot, slotGeometry);
                 if (minimumMotionIndex == -1 || delta < minimumMotion) {
                     minimumMotionIndex = j;
                     minimumMotion = delta;
                 }
             }
-            result.push(windowCopy[minimumMotionIndex]);
-            windowCopy.splice(minimumMotionIndex, 1);
+            result.push(clonesCopy[minimumMotionIndex]);
+            clonesCopy.splice(minimumMotionIndex, 1);
         }
         return result;
     },
@@ -922,15 +918,15 @@ Workspace.prototype = {
      * to move to the final screen coordinates of @slots.  Ties are broken in a stable
      * fashion by the order in which the windows were created.
      */
-    _orderWindowsByMotionAndStartup: function(windows, slots) {
-        windows.sort(function(w1, w2) {
-            return w2.get_stable_sequence() - w1.get_stable_sequence();
+    _orderWindowsByMotionAndStartup: function(clones, slots) {
+        clones.sort(function(w1, w2) {
+            return w2.metaWindow.get_stable_sequence() - w1.metaWindow.get_stable_sequence();
         });
         let slotGeometries = slots.map(Lang.bind(this, this._getSlotAbsoluteGeometry));
-        if (windows.length <= POSITIONING_PERMUTATIONS_MAX)
-            return this._orderWindowsPermutations(windows, slots, slotGeometries);
+        if (clones.length <= POSITIONING_PERMUTATIONS_MAX)
+            return this._orderWindowsPermutations(clones, slots, slotGeometries);
         else
-            return this._orderWindowsGreedy(windows, slots, slotGeometries);
+            return this._orderWindowsGreedy(clones, slots, slotGeometries);
     },
 
     /**
@@ -1009,20 +1005,20 @@ Workspace.prototype = {
     positionWindows : function(flags) {
         let totalVisible = 0;
 
-        let visibleWindows = this._getVisibleWindows();
+        let visibleClones = this._getVisibleClones();
 
         let workspaceZooming = flags & WindowPositionFlags.ZOOM;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
         // Start the animations
-        let slots = this._computeAllWindowSlots(visibleWindows.length);
-        visibleWindows = this._orderWindowsByMotionAndStartup(visibleWindows, slots);
+        let slots = this._computeAllWindowSlots(visibleClones.length);
+        visibleClones = this._orderWindowsByMotionAndStartup(visibleClones, slots);
 
-        for (let i = 0; i < visibleWindows.length; i++) {
+        for (let i = 0; i < visibleClones.length; i++) {
             let slot = slots[i];
-            let metaWindow = visibleWindows[i];
+            let clone = visibleClones[i];
+            let metaWindow = clone.metaWindow;
             let mainIndex = this._lookupIndex(metaWindow);
-            let clone = metaWindow._delegate;
             let overlay = this._windowOverlays[mainIndex];
 
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
