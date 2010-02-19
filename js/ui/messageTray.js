@@ -377,6 +377,7 @@ MessageTray.prototype = {
         this._pointerInSummary = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
+        this._overviewVisible = false;
 
         this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false,
@@ -387,8 +388,16 @@ MessageTray.prototype = {
                        Lang.bind(this, this._setSizePosition));
         this._setSizePosition();
 
-        Main.overview.connect('shown', Lang.bind(this, this._updateState));
-        Main.overview.connect('hidden', Lang.bind(this, this._updateState));
+        Main.overview.connect('showing', Lang.bind(this,
+            function() {
+                this._overviewVisible = true;
+                this._updateState();
+            }));
+        Main.overview.connect('hiding', Lang.bind(this,
+            function() {
+                this._overviewVisible = false;
+                this._updateState();
+            }));
 
         this._sources = {};
         this._icons = {};
@@ -528,7 +537,7 @@ MessageTray.prototype = {
         }
 
         // Summary
-        let summarySummoned = this._pointerInSummary || Main.overview.visible;
+        let summarySummoned = this._pointerInSummary || this._overviewVisible;
         let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned;
         let notificationsVisible = (this._notificationState == State.SHOWING ||
                                     this._notificationState == State.SHOWN);
