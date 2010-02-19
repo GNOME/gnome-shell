@@ -66,7 +66,7 @@ fi
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins >= 2.29.0
                                  gjs-gi-1.0 libgnome-menu $recorder_modules gconf-2.0
                                  gdk-x11-2.0 clutter-x11-1.0 clutter-glx-1.0
                                  gnome-desktop-2.0 >= 2.26 libstartup-notification-1.0

@@ -170,7 +170,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir St-1.0.gir libgnome-shell.l
 		--nsversion=0.1				\
 		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
 		--include=Clutter-1.0			\
-		--include=Meta-2.28			\
+		--include=Meta-2.29			\
 		--libtool="$(LIBTOOL)"    \
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
