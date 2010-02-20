@@ -27,9 +27,12 @@ const State = {
 };
 
 function _cleanMarkup(text) {
+    // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
+    // occurrences of '&'.
+    let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, "&amp;");
     // Support <b>, <i>, and <u>, escape anything else
     // so it displays as raw markup.
-    return text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
+    return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
 }
 
 // Notification:
@@ -295,7 +298,6 @@ Notification.prototype = {
     popIn: function() {
         if (this.actor.row_count <= 1)
             return false;
-
         Tweener.addTween(this._bannerLabel,
                          { opacity: 255,
                            time: ANIMATION_TIME,
