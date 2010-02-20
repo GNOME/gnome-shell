@@ -116,7 +116,7 @@ Notification.prototype = {
                                           y_fill: false });
 
         this._titleLabel = new St.Label();
-        title = title ? _cleanMarkup(title.replace('\n', ' ')) : '';
+        title = title ? _cleanMarkup(title.replace(/\n/g, ' ')) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
         this._bannerBox.add_actor(this._titleLabel);
 
@@ -126,7 +126,7 @@ Notification.prototype = {
             this._bannerBodyText = null;
 
         this._bannerLabel = new St.Label();
-        banner = banner ? _cleanMarkup(banner.replace('\n', '  ')) : '';
+        banner = banner ? _cleanMarkup(banner.replace(/\n/g, '  ')) : '';
         this._bannerLabel.clutter_text.set_markup(banner);
         this._bannerBox.add_actor(this._bannerLabel);
     },
