@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-28 05:03+0200\n"
-"PO-Revision-Date: 2010-01-28 05:03+0200\n"
+"POT-Creation-Date: 2010-02-20 14:29+0200\n"
+"PO-Revision-Date: 2010-02-16 21:13+0200\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,53 +25,95 @@ msgid "Window management and application launching"
 msgstr "Управление на прозорци и стартиране на програми"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:177 ../js/ui/dash.js:881
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:276
+#: ../js/ui/appDisplay.js:201
 msgid "PREFERENCES"
 msgstr "ПРЕДПОЧИТАНИЯ"
 
-#: ../js/ui/appDisplay.js:649
+#: ../js/ui/appDisplay.js:579
 msgid "New Window"
 msgstr "Нов прозорец"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:583
 msgid "Remove from Favorites"
 msgstr "Премахване от „Любими“"
 
-#: ../js/ui/appDisplay.js:654
+#: ../js/ui/appDisplay.js:584
 msgid "Add to Favorites"
-msgstr "Добавяне към „Любими“"
+msgstr "Добавяне в „Любими“"
 
-#: ../js/ui/appDisplay.js:1006
+#: ../js/ui/appDisplay.js:936
 msgid "Drag here to add favorites"
 msgstr "Довлачете до тук обектите за да ги добавите към „Любими“"
 
-#: ../js/ui/dash.js:240
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "Програмата „%s“ беше добавена в „Любими“"
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "Програмата „%s“ беше премахната от „Любими“"
+
+#: ../js/ui/dash.js:235
 msgid "Find..."
 msgstr "Търсене…"
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/dash.js:505
 msgid "Searching..."
 msgstr "Търсене…"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:519
 msgid "No matching results."
 msgstr "Няма съвпадения."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
 msgid "PLACES & DEVICES"
 msgstr "МЕСТА И УСТРОЙСТВА"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "СКОРО ОТВАРЯНИ"
+
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "Няма инсталирани разширения"
+
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Включено"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Изключено"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Грешка"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Остаряло"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Преглед на програмния код"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Домашна страница"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Отмяна"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -79,8 +121,13 @@ msgstr "СКОРО ОТВАРЯНИ"
 msgid "Activities"
 msgstr "Дейности"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:557
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a, %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:563
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -97,6 +144,46 @@ msgstr "Въведете команда:"
 msgid "Execution of '%s' failed:"
 msgstr "Неуспешно изпълнение на „%s“:"
 
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Налично"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Заето"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Невидимо"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Информация за настройките на потребителя…"
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Странична лента"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Системни настройки…"
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Заключване на екрана"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Смяна на потребител"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Изход…"
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Изключване на компютъра…"
+
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
 msgid "%H:%M"
@@ -110,32 +197,32 @@ msgstr "Програми"
 msgid "Recent Documents"
 msgstr "Скоро отваряни документи"
 
-#: ../src/shell-global.c:984
+#: ../src/shell-global.c:960
 msgid "Less than a minute ago"
 msgstr "Преди по-малко от минута"
 
-#: ../src/shell-global.c:988
+#: ../src/shell-global.c:964
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "преди %d минута"
 msgstr[1] "преди %d минути"
 
-#: ../src/shell-global.c:993
+#: ../src/shell-global.c:969
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "преди %d час"
 msgstr[1] "преди %d часа"
 
-#: ../src/shell-global.c:998
+#: ../src/shell-global.c:974
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "преди %d ден"
 msgstr[1] "преди %d дни"
 
-#: ../src/shell-global.c:1003
+#: ../src/shell-global.c:979
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
