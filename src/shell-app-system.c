@@ -484,6 +484,32 @@ shell_app_system_get_app (ShellAppSystem   *self,
   return app;
 }
 
+/**
+ * shell_app_system_get_app_for_window:
+ * @self: A #ShellAppSystem
+ * @window: A #MetaWindow
+ *
+ * Find or create a #ShellApp for window
+ *
+ * Return value: (transfer full): The #ShellApp for window, or %NULL if none
+ */
+ShellApp *
+shell_app_system_get_app_for_window (ShellAppSystem *self,
+                                     MetaWindow *window)
+{
+  char *id = g_strdup_printf ("window:%p", window);
+  ShellApp *app = g_hash_table_lookup (self->priv->app_id_to_app, id);
+
+  if (app)
+    g_object_ref (G_OBJECT (app));
+  else
+    app = _shell_app_new_for_window (window);
+
+  g_free (id);
+
+  return app;
+}
+
 /* ShellAppSystem ensures we have a unique instance of
  * apps per id.
  */

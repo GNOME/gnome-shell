@@ -302,15 +302,15 @@ get_app_for_window_direct (MetaWindow  *window)
   char *wmclass;
   char *with_desktop;
 
+  appsys = shell_app_system_get_default ();
   wmclass = get_appid_from_window (window);
 
   if (!wmclass)
-    return _shell_app_new_for_window (window);
+    return shell_app_system_get_app_for_window (appsys, window);
 
   with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
   g_free (wmclass);
 
-  appsys = shell_app_system_get_default ();
   app = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
   g_free (with_desktop);
 
@@ -323,9 +323,7 @@ get_app_for_window_direct (MetaWindow  *window)
     }
 
   if (app == NULL)
-    {
-      app = _shell_app_new_for_window (window);
-    }
+    app = shell_app_system_get_app_for_window (appsys, window);
 
   return app;
 }

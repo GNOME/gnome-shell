@@ -66,6 +66,7 @@ gboolean shell_app_info_launch (ShellAppInfo *info,
 ShellAppInfo *shell_app_system_load_from_desktop_file (ShellAppSystem *system, const char *filename, GError **error);
 
 ShellApp *shell_app_system_get_app (ShellAppSystem *system, const char *id);
+ShellApp *shell_app_system_get_app_for_window (ShellAppSystem *self, MetaWindow *window);
 
 void _shell_app_system_register_app (ShellAppSystem *self, ShellApp *app);
 
