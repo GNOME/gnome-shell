@@ -489,6 +489,12 @@ MessageTray.prototype = {
         }
     },
 
+    removeSourceByApp: function(app) {
+        for (let source in this._sources)
+            if (this._sources[source].app == app)
+                this.removeSource(this._sources[source]);
+    },
+
     removeNotification: function(notification) {
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
             if (this._notificationTimeoutId) {

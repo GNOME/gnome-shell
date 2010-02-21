@@ -100,6 +100,9 @@ NotificationDaemon.prototype = {
                                   Lang.bind(this, this._lostName));
 
         this._currentNotifications = {};
+
+        Shell.WindowTracker.get_default().connect('notify::focus-app',
+            Lang.bind(this, this._onFocusAppChanged));
     },
 
     _acquiredName: function() {
@@ -258,6 +261,10 @@ NotificationDaemon.prototype = {
             '0.1', // FIXME, get this from somewhere
             '1.0'
         ];
+    },
+
+    _onFocusAppChanged: function(tracker) {
+        Main.messageTray.removeSourceByApp(tracker.focus_app);
     },
 
     _actionInvoked: function(notification, action, source, id) {
