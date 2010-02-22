@@ -101,7 +101,7 @@ AllAppDisplay.prototype = {
         this._appView.connect('drag-begin', Lang.bind(this, this.close));
         this._scrollView.add_actor(this._appView.actor);
 
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS);
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
     },
