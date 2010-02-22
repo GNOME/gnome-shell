@@ -41,6 +41,22 @@ StScrollView
   scrollbar-height: 16px;
 }
 
+StScrollView > .top-shadow
+{
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(0, 0, 0, 255);
+    background-gradient-end: rgba(0, 0, 0, 0);
+    height: 30px;
+}
+
+StScrollView > .bottom-shadow
+{
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(0, 0, 0, 0);
+    background-gradient-end: rgba(0, 0, 0, 255);
+    height: 30px;
+}
+
 StScrollBar {
     background-color: #080808;
     border: 1px solid #2d2d2d;

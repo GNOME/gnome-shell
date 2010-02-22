@@ -37,6 +37,7 @@
 #include "st-scroll-bar.h"
 #include "st-scrollable.h"
 #include <clutter/clutter.h>
+#include <math.h>
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
@@ -67,9 +68,13 @@ struct _StScrollViewPrivate
   GtkPolicyType hscroll_policy;
   GtkPolicyType vscroll_policy;
 
+  ClutterActor *top_shadow;
+  ClutterActor *bottom_shadow;
+
   gfloat        row_size;
   gfloat        column_size;
 
+  gboolean      vshadows;
   gboolean      row_size_set : 1;
   gboolean      column_size_set : 1;
   guint         mouse_scroll : 1;
@@ -82,7 +87,8 @@ enum {
   PROP_VSCROLL,
   PROP_HSCROLLBAR_POLICY,
   PROP_VSCROLLBAR_POLICY,
-  PROP_MOUSE_SCROLL
+  PROP_MOUSE_SCROLL,
+  PROP_VSHADOWS
 };
 
 static void
@@ -110,9 +116,65 @@ st_scroll_view_get_property (GObject    *object,
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
       break;
+    case PROP_VSHADOWS:
+      g_value_set_boolean (value, priv->vshadows);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
+}
+
+static void
+update_shadow_visibility (GObject    *gobject,
+                          GParamSpec *arg1,
+                          gpointer    user_data)
+{
+  StAdjustment *vadjust = ST_ADJUSTMENT (gobject);
+  StScrollViewPrivate *priv = ST_SCROLL_VIEW (user_data)->priv;
+
+  gdouble value, lower, upper, page_size;
+
+  st_adjustment_get_values (vadjust, &value, &lower, &upper, NULL, NULL, &page_size);
+
+  if (fabs (value - lower) > 0.1 && priv->vshadows)
+    clutter_actor_show (priv->top_shadow);
+  else
+    clutter_actor_hide (priv->top_shadow);
+
+  if (fabs (upper - value - page_size) > 0.1 && priv->vshadows)
+    clutter_actor_show (priv->bottom_shadow);
+  else
+    clutter_actor_hide (priv->bottom_shadow);
+}
+
+/**
+ * st_scroll_view_set_vshadows:
+ * @self: a #StScrollView
+ * @vshadows: Whether to enable vertical shadows
+ *
+ * Sets whether to show shadows at the top and bottom of the area. Shadows
+ * are omitted when fully scrolled to that edge.
+ */
+void
+st_scroll_view_set_vshadows (StScrollView *self,
+                             gboolean      vshadows)
+{
+  StAdjustment *vadjust;
+  StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
+
+  vshadows = vshadows != FALSE;
+  if (priv->vshadows == vshadows)
+    return;
+
+  priv->vshadows = vshadows;
+
+  vadjust = st_scroll_bar_get_adjustment (ST_SCROLL_BAR(priv->vscroll));
+
+  if (!vadjust)
+    return;
+
+  update_shadow_visibility (G_OBJECT (vadjust), NULL, self);
+  g_object_notify (G_OBJECT (self), "vshadows");
 }
 
 static void
@@ -126,6 +188,9 @@ st_scroll_view_set_property (GObject      *object,
 
   switch (property_id)
     {
+    case PROP_VSHADOWS:
+      st_scroll_view_set_vshadows (self, g_value_get_boolean (value));
+      break;
     case PROP_MOUSE_SCROLL:
       st_scroll_view_set_mouse_scrolling (self,
                                           g_value_get_boolean (value));
@@ -170,6 +235,11 @@ st_scroll_view_dispose (GObject *object)
 static void
 st_scroll_view_finalize (GObject *object)
 {
+  StScrollViewPrivate *priv = ST_SCROLL_VIEW (object)->priv;
+
+  g_object_unref (priv->top_shadow);
+  g_object_unref (priv->bottom_shadow);
+
   G_OBJECT_CLASS (st_scroll_view_parent_class)->finalize (object);
 }
 
@@ -186,6 +256,11 @@ st_scroll_view_paint (ClutterActor *actor)
     clutter_actor_paint (priv->hscroll);
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     clutter_actor_paint (priv->vscroll);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
+    clutter_actor_paint (priv->top_shadow);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
+    clutter_actor_paint (priv->bottom_shadow);
 }
 
 static void
@@ -202,6 +277,11 @@ st_scroll_view_pick (ClutterActor       *actor,
     clutter_actor_paint (priv->hscroll);
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     clutter_actor_paint (priv->vscroll);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
+    clutter_actor_paint (priv->top_shadow);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
+    clutter_actor_paint (priv->bottom_shadow);
 }
 
 static double
@@ -372,6 +452,25 @@ st_scroll_view_allocate (ClutterActor          *actor,
 
   if (priv->child)
     clutter_actor_allocate (priv->child, &child_box, flags);
+
+  /*Shadows*/
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
+    {
+      child_box.x1 = content_box.x1;
+      child_box.y1 = content_box.y1;
+      child_box.x2 = MAX (child_box.x1, content_box.x2 - sb_width);
+      child_box.y2 = MAX (child_box.y1, content_box.y1 + clutter_actor_get_height (priv->top_shadow));
+      clutter_actor_allocate (priv->top_shadow, &child_box, flags);
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
+    {
+      child_box.x1 = content_box.x1;
+      child_box.y1 = content_box.y2 - clutter_actor_get_height (priv->bottom_shadow);
+      child_box.x2 = MAX (child_box.x1, content_box.x2 - sb_width);
+      child_box.y2 = content_box.y2 + 1;
+      clutter_actor_allocate (priv->bottom_shadow, &child_box, flags);
+    }
 }
 
 static void
@@ -381,6 +480,9 @@ st_scroll_view_style_changed (StWidget *widget)
 
   st_widget_style_changed (ST_WIDGET (priv->hscroll));
   st_widget_style_changed (ST_WIDGET (priv->vscroll));
+
+  st_widget_style_changed (ST_WIDGET (priv->top_shadow));
+  st_widget_style_changed (ST_WIDGET (priv->bottom_shadow));
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
@@ -525,6 +627,14 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
+  pspec = g_param_spec_boolean ("vshadows",
+                                "Vertical Shadows",
+                                "Show shadows at the top and and bottom of the area unless fully scrolled to that edge",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_VSHADOWS,
+                                   pspec);
 }
 
 static void
@@ -535,6 +645,9 @@ child_adjustment_changed_cb (StAdjustment *adjustment,
   gdouble lower, upper, page_size;
 
   scroll = ST_SCROLL_VIEW (clutter_actor_get_parent (bar));
+
+  if (bar == scroll->priv->vscroll)
+    update_shadow_visibility (G_OBJECT (adjustment), NULL, scroll);
 
   /* Determine if this scroll-bar should be visible */
   st_adjustment_get_values (adjustment, NULL,
@@ -604,13 +717,16 @@ child_vadjustment_notify_cb (GObject    *gobject,
 
   vadjust = st_scroll_bar_get_adjustment (ST_SCROLL_BAR(priv->vscroll));
   if (vadjust)
-    g_signal_handlers_disconnect_by_func (vadjust,
-                                          child_adjustment_changed_cb,
-                                          priv->vscroll);
-
+    {
+      g_signal_handlers_disconnect_by_func (vadjust,
+                                            update_shadow_visibility,
+                                            user_data);
+      g_signal_handlers_disconnect_by_func (vadjust,
+                                            child_adjustment_changed_cb,
+                                            priv->vscroll);
+    }
   if (priv->vscroll_policy == GTK_POLICY_NEVER)
     return;
-
   st_scrollable_get_adjustments (ST_SCROLLABLE(actor), NULL, &vadjust);
   if (vadjust)
     {
@@ -627,7 +743,10 @@ child_vadjustment_notify_cb (GObject    *gobject,
         {
           g_signal_connect (vadjust, "changed", G_CALLBACK (
                             child_adjustment_changed_cb), priv->vscroll);
+          g_signal_connect (vadjust, "notify::value", G_CALLBACK (
+                            update_shadow_visibility), user_data);
           child_adjustment_changed_cb (vadjust, priv->vscroll);
+          update_shadow_visibility (G_OBJECT (vadjust), NULL, user_data);
         }
     }
 }
@@ -645,6 +764,12 @@ st_scroll_view_init (StScrollView *self)
 
   clutter_actor_set_parent (priv->hscroll, CLUTTER_ACTOR (self));
   clutter_actor_set_parent (priv->vscroll, CLUTTER_ACTOR (self));
+
+  priv->top_shadow = g_object_new (ST_TYPE_BIN, "style-class", "top-shadow", NULL);
+  priv->bottom_shadow = g_object_new (ST_TYPE_BIN, "style-class", "bottom-shadow", NULL);
+
+  clutter_actor_set_parent (priv->bottom_shadow, CLUTTER_ACTOR (self));
+  clutter_actor_set_parent (priv->top_shadow, CLUTTER_ACTOR (self));
 
   /* mouse scroll is enabled by default, so we also need to be reactive */
   priv->mouse_scroll = TRUE;
@@ -725,6 +850,9 @@ st_scroll_view_foreach_with_internals (ClutterContainer *container,
 
   if (priv->vscroll != NULL)
     callback (priv->vscroll, user_data);
+
+  callback (priv->top_shadow, user_data);
+  callback (priv->bottom_shadow, user_data);
 }
 
 static void

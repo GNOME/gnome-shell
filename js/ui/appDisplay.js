@@ -91,7 +91,10 @@ AllAppDisplay.prototype = {
         this.actor = new St.BoxLayout({ style_class: 'all-app', vertical: true });
         this.actor.hide();
 
-        let view = new St.ScrollView({ x_fill: true, y_fill: false, style_class: 'all-app-scroll-view' });
+        let view = new St.ScrollView({ x_fill: true,
+                                       y_fill: false,
+                                       style_class: 'all-app-scroll-view',
+                                       vshadows: true });
         this._scrollView = view;
         this.actor.add(bin);
         this.actor.add(view, { expand: true, y_fill: false, y_align: St.Align.START });
