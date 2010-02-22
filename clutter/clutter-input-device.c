@@ -286,8 +286,8 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
       cev.crossing.y = device->current_y;
       cev.crossing.device = device;
       cev.crossing.related = device->stage != NULL
-                             ? CLUTTER_ACTOR (device->stage)
-                             : CLUTTER_ACTOR (old_stage);
+                           ? CLUTTER_ACTOR (device->stage)
+                           : CLUTTER_ACTOR (old_stage);
 
       _clutter_stage_queue_event (old_stage, &cev);
 
@@ -363,11 +363,30 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
       cev.crossing.time = device->current_time;
       cev.crossing.flags = 0;
       cev.crossing.stage = device->stage;
-      cev.crossing.source = actor;
       cev.crossing.x = device->current_x;
       cev.crossing.y = device->current_y;
       cev.crossing.device = device;
-      cev.crossing.related = old_actor;
+
+      /* if there is an actor overlapping the Stage boundary and we
+       * don't do this check then we'll emit an ENTER event only on
+       * the actor instead of emitting it on the Stage *and* the
+       * actor
+       */
+      if (old_actor == NULL && actor != CLUTTER_ACTOR (device->stage))
+        {
+          cev.crossing.source = CLUTTER_ACTOR (device->stage);
+          cev.crossing.related = NULL;
+
+          _clutter_process_event (&cev);
+
+          cev.crossing.source = actor;
+          cev.crossing.related = CLUTTER_ACTOR (device->stage);
+        }
+      else
+        {
+          cev.crossing.source = actor;
+          cev.crossing.related = old_actor;
+        }
 
       /* as above: we need to make sure that this event is processed
        * before any other event we might have queued up until now, so
