@@ -29,6 +29,7 @@ dist_jsui_DATA =		\
 	tweener.js		\
 	widget.js		\
 	widgetBox.js		\
+	windowAttentionHandler.js      \
 	windowManager.js	\
 	workspacesView.js	\
 	workspaceSwitcherPopup.js	\

@@ -22,6 +22,7 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
+const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const ShellDBus = imports.ui.shellDBus;
 const Sidebar = imports.ui.sidebar;
 const WindowManager = imports.ui.windowManager;
@@ -39,6 +40,7 @@ let lookingGlass = null;
 let wm = null;
 let notificationDaemon = null;
 let messageTray = null;
+let windowAttentionHandler = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -116,6 +118,7 @@ function start() {
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
+    windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     messageTray = new MessageTray.MessageTray();
 
     _startDate = new Date();
