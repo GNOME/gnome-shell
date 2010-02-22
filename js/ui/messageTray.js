@@ -287,7 +287,8 @@ Notification.prototype = {
                 overflow = true;
         }
 
-        if (overflow && this._bannerBodyText)
+        if (this._bannerBodyText &&
+            (overflow || this._bannerBodyText.indexOf('\n') > -1))
             this._addBannerBody();
     },
 
