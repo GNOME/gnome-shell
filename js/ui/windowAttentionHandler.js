@@ -71,7 +71,7 @@ WindowAttentionHandler.prototype = {
             source.connect('clicked', Lang.bind(this, function() { source.destroy(); }));
         }
 
-        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window), true);
+        let notification = new MessageTray.Notification(window.get_startup_id(), source, this._getTitle(app, window), this._getBanner(app, window), true);
         source.notify(notification);
 
         window.connect('notify::title', Lang.bind(this, function(win) {
