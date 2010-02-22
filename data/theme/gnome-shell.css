@@ -347,7 +347,6 @@ StTooltip {
 
 .dash-search-section-results {
     color: #ffffff;
-    padding-left: 4px;
 }
 
 .dash-search-section-list-results {
@@ -443,6 +442,10 @@ StTooltip {
     background-gradient-direction: vertical;
     background-gradient-start: #3d3d3d;
     background-gradient-end: #181818;
+}
+
+.app-well-app.selected {
+    border: 1px solid #666666;
 }
 
 .app-well-app:hover {

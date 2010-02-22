@@ -132,6 +132,128 @@ AllAppDisplay.prototype = {
 
 Signals.addSignalMethods(AllAppDisplay.prototype);
 
+function AppSearchResultDisplay(provider) {
+    this._init(provider);
+}
+
+AppSearchResultDisplay.prototype = {
+    __proto__: Search.SearchResultDisplay.prototype,
+
+    _init: function (provider) {
+        Search.SearchResultDisplay.prototype._init.call(this, provider);
+        this._spacing = 0;
+        this.actor = new St.Bin({ name: 'dashAppSearchResults',
+                                  x_align: St.Align.START });
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        let container = new Shell.GenericContainer();
+        this._container = container;
+        this.actor.set_child(container);
+        container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        container.connect('allocate', Lang.bind(this, this._allocate));
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        let children = actor.get_children();
+
+        for (let i = 0; i < children.length; i++) {
+            let [minSize, natSize] = children[i].get_preferred_width(forHeight);
+            alloc.natural_size += natSize;
+        }
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        let children = actor.get_children();
+
+        for (let i = 0; i < children.length; i++) {
+            let [minSize, natSize] = children[i].get_preferred_height(forWidth);
+            if (minSize > alloc.min_size)
+                alloc.min_size = minSize;
+            if (natSize > alloc.natural_size)
+                alloc.natural_size = natSize;
+        }
+    },
+
+    _allocate: function (actor, box, flags) {
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        let children = actor.get_children();
+
+        let x = 0;
+        let i;
+        for (i = 0; i < children.length; i++) {
+            let child = children[i];
+            let childBox = new Clutter.ActorBox();
+
+            let [minWidth, minHeight, natWidth, natHeight] = child.get_preferred_size();
+
+            if (x + natWidth > availWidth) {
+                actor.set_skip_paint(child, true);
+                continue;
+            }
+
+            let yPadding = Math.max(0, availHeight - natHeight);
+
+            childBox.x1 = x;
+            childBox.x2 = childBox.x1 + natWidth;
+            childBox.y1 = Math.floor(yPadding / 2);
+            childBox.y2 = availHeight - childBox.y1;
+
+            x = childBox.x2 + this._spacing;
+
+            child.allocate(childBox, flags);
+            actor.set_skip_paint(child, false);
+        }
+    },
+
+    _onStyleChanged: function () {
+        let themeNode = this.actor.get_theme_node();
+        let [success, len] = themeNode.get_length('spacing', false);
+        if (success)
+            this._spacing = len;
+        this._container.queue_relayout();
+    },
+
+    renderResults: function(results, terms) {
+        let appSys = Shell.AppSystem.get_default();
+        for (let i = 0; i < results.length && i < WELL_MAX_COLUMNS; i++) {
+            let result = results[i];
+            let app = appSys.get_app(result);
+            let display = new AppWellIcon(app);
+            this._container.add_actor(display.actor);
+        }
+    },
+
+    clear: function () {
+        this._container.get_children().forEach(function (actor) { actor.destroy(); });
+        this.selectionIndex = -1;
+    },
+
+    getVisibleResultCount: function() {
+        let nChildren = this._container.get_children().length;
+        return nChildren - this._container.get_n_skip_paint();
+    },
+
+    selectIndex: function (index) {
+        let nVisible = this.getVisibleResultCount();
+        let children = this._container.get_children();
+        if (this.selectionIndex >= 0) {
+            let prevActor = children[this.selectionIndex];
+            prevActor._delegate.setSelected(false);
+        }
+        this.selectionIndex = -1;
+        if (index >= nVisible)
+            return false;
+        else if (index < 0)
+            return false;
+        let targetActor = children[index];
+        targetActor._delegate.setSelected(true);
+        this.selectionIndex = index;
+        return true;
+    }
+}
+
 function BaseAppSearchProvider() {
     this._init();
 }
@@ -186,6 +308,14 @@ AppSearchProvider.prototype = {
 
     getSubsearchResultSet: function(previousResults, terms) {
         return this._appSys.subsearch(false, previousResults, terms);
+    },
+
+    createResultContainerActor: function () {
+        return new AppSearchResultDisplay(this);
+    },
+
+    createResultActor: function (resultMeta, terms) {
+        return new AppIcon(resultMeta.id);
     },
 
     expandSearch: function(terms) {
@@ -293,11 +423,13 @@ AppWellIcon.prototype = {
     _updateStyleClass: function() {
         let windows = this.app.get_windows();
         let running = windows.length > 0;
-        if (running == this._running)
-            return;
         this._running = running;
-        this.actor.style_class = this._running ? "app-well-app running"
-                                               : "app-well-app";
+        let style = "app-well-app";
+        if (this._running)
+            style += " running";
+        if (this._selected)
+            style += " selected";
+        this.actor.style_class = style;
     },
 
     _onButtonPress: function(actor, event) {
@@ -378,6 +510,11 @@ AppWellIcon.prototype = {
             Main.activateWindow(metaWindow);
         } else
             Main.overview.hide();
+    },
+
+    setSelected: function (isSelected) {
+        this._selected = isSelected;
+        this._updateStyleClass();
     },
 
     _onMenuPoppedUp: function() {

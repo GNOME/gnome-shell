@@ -403,6 +403,10 @@ OverflowSearchResults.prototype = {
         this.actor = new St.OverflowBox({ style_class: 'dash-search-section-list-results' });
     },
 
+    getVisibleResultCount: function() {
+        return this.actor.get_n_visible();
+    },
+
     renderResults: function(results, terms) {
         for (let i = 0; i < results.length && i < MAX_RENDERED_SEARCH_RESULTS; i++) {
             let result = results[i];
@@ -410,10 +414,6 @@ OverflowSearchResults.prototype = {
             let display = new SearchResult(this.provider, meta, terms);
             this.actor.add_actor(display.actor);
         }
-    },
-
-    getVisibleCount: function() {
-        return this.actor.get_n_visible();
     },
 
     selectIndex: function(index) {
@@ -546,7 +546,7 @@ SearchResults.prototype = {
         let success;
         let index = resultDisplay.getSelectionIndex();
         if (up && index == -1)
-            index = resultDisplay.getVisibleCount() - 1;
+            index = resultDisplay.getVisibleResultCount() - 1;
         else if (up)
             index = index - 1;
         else
