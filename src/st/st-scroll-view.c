@@ -504,7 +504,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                              "Vertical Scrollbar Policy",
                              "When the vertical scrollbar is displayed",
                              GTK_TYPE_POLICY_TYPE,
-                             GTK_POLICY_ALWAYS,
+                             GTK_POLICY_AUTOMATIC,
                              G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_VSCROLLBAR_POLICY, pspec);
 
@@ -512,7 +512,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                              "Horizontal Scrollbar Policy",
                              "When the horizontal scrollbar is displayed",
                              GTK_TYPE_POLICY_TYPE,
-                             GTK_POLICY_ALWAYS,
+                             GTK_POLICY_AUTOMATIC,
                              G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_HSCROLLBAR_POLICY, pspec);
 
@@ -918,7 +918,7 @@ st_scroll_view_set_policy (StScrollView   *scroll,
   StAdjustment *hadjust, *vadjust;
 
   g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
-  g_return_if_fail (hscroll == GTK_POLICY_ALWAYS || vscroll == GTK_POLICY_ALWAYS);
+  g_return_if_fail (hscroll != GTK_POLICY_ALWAYS && vscroll != GTK_POLICY_ALWAYS);
 
   priv = ST_SCROLL_VIEW (scroll)->priv;
 

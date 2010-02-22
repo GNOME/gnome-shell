@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 
 const UI = imports.testcommon.ui;
@@ -22,9 +23,9 @@ let v = new St.ScrollView();
 vbox.add(v, { expand: true });
 
 toggle.connect('notify::checked', function () {
-    v.set_policy(toggle.checked ? St.ScrollPolicy.AUTOMATIC
-                                : St.ScrollPolicy.NEVER,
-                 St.ScrollPolicy.AUTOMATIC);
+    v.set_policy(toggle.checked ? Gtk.PolicyType.AUTOMATIC
+                                : Gtk.PolicyType.NEVER,
+                 Gtk.PolicyType.AUTOMATIC);
 });
 
 let b = new St.BoxLayout({ vertical: true,
