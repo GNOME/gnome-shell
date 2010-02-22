@@ -328,6 +328,7 @@ Source.prototype = {
         this.text = null;
         if (createIcon)
             this.createIcon = createIcon;
+        this.handleReplacing = true;
     },
 
     // This can be overridden by a subclass, or by the createIcon
@@ -520,7 +521,7 @@ MessageTray.prototype = {
     },
 
     _onNotify: function(source, notification) {
-        if (this._getNotification(notification.id, source) == null) {
+        if (!notification.source.handleReplacing || this._getNotification(notification.id, source) == null) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
             this._notificationQueue.push(notification);
