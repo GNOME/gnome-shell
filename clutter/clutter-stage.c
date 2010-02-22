@@ -530,21 +530,36 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
     {
       ClutterEvent *event;
       ClutterEvent *next_event;
+      ClutterInputDevice *device;
+      ClutterInputDevice *next_device;
+      gboolean check_device = FALSE;
 
       event = l->data;
       next_event = l->next ? l->next->data : NULL;
 
-      /* Skip consecutive motion events */
+      device = clutter_event_get_device (event);
+
+      if (next_event != NULL)
+        next_device = clutter_event_get_device (next_event);
+      else
+        next_device = NULL;
+
+      if (device != NULL && next_device != NULL)
+        check_device = TRUE;
+
+      /* Skip consecutive motion events coming from the same device */
       if (priv->throttle_motion_events &&
-          next_event &&
+          next_event != NULL &&
 	  event->type == CLUTTER_MOTION &&
 	  (next_event->type == CLUTTER_MOTION ||
-	   next_event->type == CLUTTER_LEAVE))
+	   next_event->type == CLUTTER_LEAVE) &&
+          (!check_device || (device == next_device)))
 	{
-	  CLUTTER_NOTE (EVENT,
-			"Omitting motion event at %.2f, %.2f",
-			event->motion.x, event->motion.y);
-	  goto next_event;
+          CLUTTER_NOTE (EVENT,
+                        "Omitting motion event at %d, %d",
+                        (int) event->motion.x,
+                        (int) event->motion.y);
+          goto next_event;
 	}
 
       _clutter_process_event (event);
