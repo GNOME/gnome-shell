@@ -36,6 +36,7 @@ function _cleanMarkup(text) {
 }
 
 // Notification:
+// @id: the notification's id
 // @source: the notification's Source
 // @title: the title
 // @banner: the banner text
@@ -55,14 +56,20 @@ function _cleanMarkup(text) {
 // of the notification (as with addBody()) when the banner is expanded.
 // In this case, if @banner is too long to fit in the single-line mode,
 // the notification will be made expandable automatically.
-function Notification(source, title, banner, bannerBody) {
-    this._init(source, title, banner, bannerBody);
+function Notification(id, source, title, banner, bannerBody) {
+    this._init(id, source, title, banner, bannerBody);
 }
 
 Notification.prototype = {
-    _init: function(source, title, banner, bannerBody) {
+    _init: function(id, source, title, banner, bannerBody) {
+        this.id = id;
         this.source = source;
         this._bannerBody = bannerBody;
+
+        source.connect('clicked', Lang.bind(this,
+            function() {
+                this.emit('dismissed');
+            }));
 
         this.actor = new St.Table({ name: 'notification' });
         this.update(title, banner, true);
@@ -303,6 +310,10 @@ Notification.prototype = {
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad" });
         return true;
+    },
+
+    destroy: function() {
+        this.emit('destroy');
     }
 };
 Signals.addSignalMethods(Notification.prototype);
@@ -380,6 +391,7 @@ MessageTray.prototype = {
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
         this._overviewVisible = false;
+        this._notificationRemoved = false;
 
         this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false,
@@ -441,11 +453,11 @@ MessageTray.prototype = {
 
         source.connect('destroy', Lang.bind(this,
             function () {
-                this.remove(source);
+                this.removeSource(source);
             }));
     },
 
-    remove: function(source) {
+    removeSource: function(source) {
         if (!this.contains(source))
             return;
 
@@ -458,7 +470,10 @@ MessageTray.prototype = {
         this._notificationQueue = newNotificationQueue;
 
         this._summary.remove_actor(this._icons[source.id]);
-        this._summaryNeedsToBeShown = true;
+        if (this._summary.get_children().length > 0)
+            this._summaryNeedsToBeShown = true;
+        else
+            this._summaryNeedsToBeShown = false;
         delete this._icons[source.id];
         delete this._sources[source.id];
 
@@ -467,16 +482,50 @@ MessageTray.prototype = {
                 Mainloop.source_remove(this._notificationTimeoutId);
                 this._notificationTimeoutId = 0;
             }
+            this._notificationRemoved = true;
             this._updateState();
         }
+    },
+
+    removeNotification: function(notification) {
+        if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
+            if (this._notificationTimeoutId) {
+                Mainloop.source_remove(this._notificationTimeoutId);
+                this._notificationTimeoutId = 0;
+            }
+            this._notificationRemoved = true;
+            this._updateState();
+            return;
+        }
+
+        let index = this._notificationQueue.indexOf(notification);
+        if (index != -1)
+            this._notificationQueue.splice(index, 1);
     },
 
     getSource: function(id) {
         return this._sources[id];
     },
 
+    _getNotification: function(id, source) {
+        if (this._notification && this._notification.id == id)
+            return this._notification;
+
+        for (let i = 0; i < this._notificationQueue.length; i++) {
+            if (this._notificationQueue[i].id == id && this._notificationQueue[i].source == source)
+                return this._notificationQueue[i];
+        }
+
+        return null;
+    },
+
     _onNotify: function(source, notification) {
-        this._notificationQueue.push(notification);
+        if (this._getNotification(notification.id, source) == null) {
+            notification.connect('destroy',
+                                 Lang.bind(this, this.removeNotification));
+            this._notificationQueue.push(notification);
+        }
+
         this._updateState();
     },
 
@@ -524,9 +573,9 @@ MessageTray.prototype = {
     _updateState: function() {
         // Notifications
         let notificationsPending = this._notificationQueue.length > 0;
-        let notificationPinned = this._pointerInTray && !this._pointerInSummary;
+        let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = this._notificationTimeoutId == 0 && !this._pointerInTray;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !this._pointerInTray) || this._notificationRemoved;
 
         if (this._notificationState == State.HIDDEN) {
             if (notificationsPending)
@@ -541,6 +590,7 @@ MessageTray.prototype = {
         // Summary
         let summarySummoned = this._pointerInSummary || this._overviewVisible;
         let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned;
+
         let notificationsVisible = (this._notificationState == State.SHOWING ||
                                     this._notificationState == State.SHOWN);
         let notificationsDone = !notificationsVisible && !notificationsPending;
@@ -638,6 +688,7 @@ MessageTray.prototype = {
     },
 
     _hideNotification: function() {
+        this._notificationRemoved = false;
         this._notification.popIn();
 
         this._tween(this._notificationBin, "_notificationState", State.HIDDEN,

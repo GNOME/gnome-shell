@@ -96,6 +96,8 @@ NotificationDaemon.prototype = {
                                   DBus.MANY_INSTANCES,
                                   Lang.bind(this, this._acquiredName),
                                   Lang.bind(this, this._lostName));
+
+        this._currentNotifications = {};
     },
 
     _acquiredName: function() {
@@ -124,30 +126,23 @@ NotificationDaemon.prototype = {
     },
 
     _sourceId: function(id) {
-        return 'notification-' + id;
+        return 'source-' + id;
     },
 
     Notify: function(appName, replacesId, icon, summary, body,
                      actions, hints, timeout) {
-        let id, source = null;
+        let source = Main.messageTray.getSource(this._sourceId(appName));
+        let id = null;
 
-        if (replacesId != 0) {
-            id = replacesId;
-            source = Main.messageTray.getSource(this._sourceId(id));
-            // source may be null if the current source was destroyed
-            // right as the client sent the new notification
-        }
-
+        // Source may be null if we have never received a notification from
+        // this app or if all notifications from this app have been acknowledged.
         if (source == null) {
-            id = nextNotificationId++;
-
-            source = new Source(this._sourceId(id), icon, hints);
+            source = new Source(this._sourceId(appName), icon, hints);
             Main.messageTray.add(source);
 
             source.connect('clicked', Lang.bind(this,
                 function() {
                     source.destroy();
-                    this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 }));
 
             let sender = DBus.getCurrentMessageContext().sender;
@@ -156,6 +151,8 @@ NotificationDaemon.prototype = {
                 let app = Shell.WindowTracker.get_default().get_app_from_pid(result);
                 source.setApp(app);
             });
+        } else {
+            source.update(icon, hints);
         }
 
         summary = GLib.markup_escape_text(summary, -1);
@@ -169,7 +166,27 @@ NotificationDaemon.prototype = {
             }
         }
 
-        let notification = new MessageTray.Notification(source, summary, body, true);
+        let notification;
+        if (replacesId != 0) {
+            id = replacesId;
+            notification = this._currentNotifications[id];
+        }
+
+        if (notification == null) {
+            id = nextNotificationId++;
+            notification = new MessageTray.Notification(id, source, summary, body, true);
+            this._currentNotifications[id] = notification;
+            notification.connect('dismissed', Lang.bind(this,
+                function(n) {
+                    n.destroy();
+                    this._emitNotificationClosed(n.id, NotificationClosedReason.DISMISSED);
+                }));
+        } else {
+            // passing in true as the last parameter will clear out extra actors,
+            // such as actions
+            notification.update(summary, body, true);
+        }
+
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addAction(actions[i], actions[i + 1]);
@@ -181,9 +198,9 @@ NotificationDaemon.prototype = {
     },
 
     CloseNotification: function(id) {
-        let source = Main.messageTray.getSource(this._sourceId(id));
-        if (source)
-            source.destroy();
+        let notification = this._currentNotifications[id];
+        if (notification)
+            notification.destroy();
         this._emitNotificationClosed(id, NotificationClosedReason.APP_CLOSED);
     },
 
@@ -215,6 +232,7 @@ NotificationDaemon.prototype = {
     },
 
     _emitNotificationClosed: function(id, reason) {
+        delete this._currentNotifications[id];
         DBus.session.emit_signal('/org/freedesktop/Notifications',
                                  'org.freedesktop.Notifications',
                                  'NotificationClosed', 'uu',
@@ -241,6 +259,10 @@ Source.prototype = {
     _init: function(sourceId, icon, hints) {
         MessageTray.Source.prototype._init.call(this, sourceId);
 
+        this.update(icon, hints);
+    },
+
+    update: function(icon, hints) {
         hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
 
         this._icon = icon;
