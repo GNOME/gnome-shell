@@ -833,16 +833,15 @@ Workspace.prototype = {
      * Currently this is the square of the distance between the
      * centers.
      */
-    _computeWindowMotion: function (metaWindow, slot, slotGeometry) {
+    _computeWindowMotion: function (metaWindow, slot) {
         let rect = new Meta.Rectangle();
         metaWindow.get_outer_rect(rect);
 
-        let [slotX, slotY, slotWidth, slotHeight] = slotGeometry;
-        let distanceSquared;
-        let xDelta, yDelta;
+        let [xCenter, yCenter, fraction] = slot;
+        let xDelta, yDelta, distanceSquared;
 
-        xDelta = (rect.x + rect.width / 2) - (slotX + slotWidth / 2);
-        yDelta = (rect.y + rect.height / 2) - (slotY + slotHeight / 2);
+        xDelta = rect.x + rect.width / 2.0 - xCenter * global.screen_width;
+        yDelta = rect.y + rect.height / 2.0 - yCenter * global.screen_height;
         distanceSquared = xDelta * xDelta + yDelta * yDelta;
 
         return distanceSquared;
@@ -854,7 +853,7 @@ Workspace.prototype = {
      * Iterate over all permutations of the windows, and determine the
      * permutation which has the least total motion.
      */
-    _orderWindowsPermutations: function (clones, slots, slotGeometries) {
+    _orderWindowsPermutations: function (clones, slots) {
         let minimumMotionPermutation = null;
         let minimumMotion = -1;
         let permIndex = 0;
@@ -863,9 +862,8 @@ Workspace.prototype = {
             for (let i = 0; i < permutation.length; i++) {
                 let metaWindow = permutation[i].metaWindow;
                 let slot = slots[i];
-                let slotAbsGeometry = slotGeometries[i];
 
-                let delta = this._computeWindowMotion(metaWindow, slot, slotAbsGeometry);
+                let delta = this._computeWindowMotion(metaWindow, slot);
 
                 motion += delta;
             }
@@ -885,19 +883,18 @@ Workspace.prototype = {
      * Iterate over available slots in order, placing into each one the window
      * we find with the smallest motion to that slot.
      */
-    _orderWindowsGreedy: function(clones, slots, slotGeometries) {
+    _orderWindowsGreedy: function(clones, slots) {
         let result = [];
         let slotIndex = 0;
         // Copy since we mutate below
         let clonesCopy = clones.concat();
         for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
-            let slotGeometry = slotGeometries[i];
             let minimumMotionIndex = -1;
             let minimumMotion = -1;
             for (let j = 0; j < clonesCopy.length; j++) {
                 let metaWindow = clonesCopy[j].metaWindow;
-                let delta = this._computeWindowMotion(metaWindow, slot, slotGeometry);
+                let delta = this._computeWindowMotion(metaWindow, slot);
                 if (minimumMotionIndex == -1 || delta < minimumMotion) {
                     minimumMotionIndex = j;
                     minimumMotion = delta;
@@ -922,11 +919,10 @@ Workspace.prototype = {
         clones.sort(function(w1, w2) {
             return w2.metaWindow.get_stable_sequence() - w1.metaWindow.get_stable_sequence();
         });
-        let slotGeometries = slots.map(Lang.bind(this, this._getSlotAbsoluteGeometry));
         if (clones.length <= POSITIONING_PERMUTATIONS_MAX)
-            return this._orderWindowsPermutations(clones, slots, slotGeometries);
+            return this._orderWindowsPermutations(clones, slots);
         else
-            return this._orderWindowsGreedy(clones, slots, slotGeometries);
+            return this._orderWindowsGreedy(clones, slots);
     },
 
     /**
@@ -946,19 +942,6 @@ Workspace.prototype = {
         let y = yCenter * global.screen_height - height / 2;
 
         return [x, y, width, height];
-    },
-
-    /**
-     * _getSlotAbsoluteGeometry:
-     * @slot: A layout slot
-     *
-     * Returns: the screen coordiantes [x, y, width, height]
-     * of a given window layout slot.
-     */
-    _getSlotAbsoluteGeometry: function(slot) {
-        let [x, y, width, height] = this._getSlotRelativeGeometry(slot);
-        return [ this.gridX + x, this.gridY + y,
-                 this.scale * width, this.scale * height];
     },
 
     /**
