@@ -80,7 +80,7 @@ Notification.prototype = {
         let children = this.actor.get_children();
         for (let i = 0; i < children.length; i++) {
             let meta = this.actor.get_child_meta(children[i]);
-            if (clear || meta.row == 0)
+            if (clear || meta.row == 0 || (this._bannerBody && meta.row == 1))
                 children[i].destroy();
         }
         if (clear) {
