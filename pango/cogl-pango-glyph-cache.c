@@ -70,7 +70,8 @@ struct _CoglPangoGlyphCacheKey
 static void
 cogl_pango_glyph_cache_value_free (CoglPangoGlyphCacheValue *value)
 {
-  cogl_handle_unref (value->texture);
+  if (value->texture)
+    cogl_handle_unref (value->texture);
   g_slice_free (CoglPangoGlyphCacheValue, value);
 }
 
@@ -307,7 +308,6 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
 
       value = g_slice_new (CoglPangoGlyphCacheValue);
       value->texture = COGL_INVALID_HANDLE;
-      value->dirty = TRUE;
 
       pango_font_get_glyph_extents (font, glyph, &ink_rect, NULL);
       pango_extents_to_pixels (&ink_rect, NULL);
@@ -317,18 +317,29 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
       value->draw_width = ink_rect.width;
       value->draw_height = ink_rect.height;
 
-      /* Try adding the glyph to the global atlas... */
-      if (!cogl_pango_glyph_cache_add_to_global_atlas (cache,
-                                                       font,
-                                                       glyph,
-                                                       value) &&
-          !cogl_pango_glyph_cache_add_to_local_atlas (cache,
-                                                      font,
-                                                      glyph,
-                                                      value))
+      /* If the glyph is zero-sized then we don't need to reserve any
+         space for it and we can just avoid painting anything */
+      if (ink_rect.width < 1 || ink_rect.height < 1)
+        value->dirty = FALSE;
+      else
         {
-          cogl_pango_glyph_cache_value_free (value);
-          return NULL;
+          /* Try adding the glyph to the global atlas... */
+          if (!cogl_pango_glyph_cache_add_to_global_atlas (cache,
+                                                           font,
+                                                           glyph,
+                                                           value) &&
+              /* If it fails try the local atlas */
+              !cogl_pango_glyph_cache_add_to_local_atlas (cache,
+                                                          font,
+                                                          glyph,
+                                                          value))
+            {
+              cogl_pango_glyph_cache_value_free (value);
+              return NULL;
+            }
+
+          value->dirty = TRUE;
+          cache->has_dirty_glyphs = TRUE;
         }
 
       key = g_slice_new (CoglPangoGlyphCacheKey);
@@ -336,8 +347,6 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
       key->glyph = glyph;
 
       g_hash_table_insert (cache->hash_table, key, value);
-
-      cache->has_dirty_glyphs = TRUE;
     }
 
   return value;

@@ -501,6 +501,11 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
 
   COGL_NOTE (PANGO, "redrawing glyph %i", glyph);
 
+  /* Glyphs that don't take up any space will end up without a
+     texture. These should never become dirty so they shouldn't end up
+     here */
+  g_return_if_fail (value->texture != COGL_INVALID_HANDLE);
+
   surface = cairo_image_surface_create (CAIRO_FORMAT_A8,
                                         value->draw_width,
                                         value->draw_height);
@@ -824,7 +829,7 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
                                             PANGO_UNKNOWN_GLYPH_WIDTH,
                                             PANGO_UNKNOWN_GLYPH_HEIGHT);
             }
-	  else
+	  else if (cache_value->texture)
 	    {
 	      x += (float)(cache_value->draw_x);
 	      y += (float)(cache_value->draw_y);
