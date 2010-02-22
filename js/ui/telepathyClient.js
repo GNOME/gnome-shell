@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
@@ -10,6 +11,11 @@ const MessageTray = imports.ui.messageTray;
 const Telepathy = imports.misc.telepathy;
 
 let avatarManager;
+
+// See Notification.appendMessage
+const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
+const SCROLLBACK_RECENT_LENGTH = 20;
+const SCROLLBACK_IDLE_LENGTH = 5;
 
 // This is GNOME Shell's implementation of the Telepathy "Client"
 // interface. Specifically, the shell is a Telepathy "Approver", which
@@ -316,7 +322,7 @@ Source.prototype = {
         }
 
         this._channelText = new Telepathy.ChannelText(DBus.session, connName, channelPath);
-        this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._receivedMessage));
+        this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
 
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
     },
@@ -330,7 +336,7 @@ Source.prototype = {
             return;
 
         for (let i = 0; i < msgs.length; i++)
-            this._receivedMessage.apply(this, [this._channel].concat(msgs[i]));
+            this._messageReceived.apply(this, [this._channel].concat(msgs[i]));
     },
 
     _channelClosed: function() {
@@ -339,26 +345,131 @@ Source.prototype = {
         this.destroy();
     },
 
-    _receivedMessage: function(channel, id, timestamp, sender,
+    _messageReceived: function(channel, id, timestamp, sender,
                                type, flags, text) {
         if (!Main.messageTray.contains(this))
             Main.messageTray.add(this);
 
-        let notification = new Notification(this._targetId, this, text);
-        this.notify(notification);
+        if (!this._notification)
+            this._notification = new Notification(this._targetId, this);
+        this._notification.appendMessage(text);
+        this.notify(this._notification);
 
         this._channelText.AcknowledgePendingMessagesRemote([id]);
+    },
+
+    respond: function(text) {
+        this._channelText.SendRemote(Telepathy.ChannelTextMessageType.NORMAL, text);
     }
 };
 
-function Notification(id, source, text) {
-    this._init(id, source, text);
+function Notification(id, source) {
+    this._init(id, source);
 }
 
 Notification.prototype = {
     __proto__:  MessageTray.Notification.prototype,
 
-    _init: function(id, source, text) {
-        MessageTray.Notification.prototype._init.call(this, id, source, source.name, text, true);
+    _init: function(id, source) {
+        MessageTray.Notification.prototype._init.call(this, id, source, source.name);
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+
+        this._responseEntry = new St.Entry({ style_class: 'chat-response' });
+        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, this._onEntryFocused));
+        this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
+        this.setActionArea(this._responseEntry);
+
+        this._history = [];
+    },
+
+    appendMessage: function(text) {
+        this.update(this.source.name, text);
+        this._append(text, 'chat-received');
+    },
+
+    _append: function(text, style) {
+        let body = this.addBody(text);
+        body.add_style_class_name(style);
+        this.scrollTo(St.Side.BOTTOM);
+
+        let now = new Date().getTime() / 1000;
+        this._history.unshift({ actor: body, time: now });
+
+        if (this._history.length > 1) {
+            // Keep the scrollback from growing too long. If the most
+            // recent message (before the one we just added) is within
+            // SCROLLBACK_RECENT_TIME, we will keep
+            // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
+            // we'll keep SCROLLBACK_IDLE_LENGTH messages.
+
+            let lastMessageTime = this._history[1].time;
+            let maxLength = (lastMessageTime < now - SCROLLBACK_RECENT_TIME) ?
+                SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
+            if (this._history.length > maxLength) {
+                let expired = this._history.splice(maxLength);
+                for (let i = 0; i < expired.length; i++)
+                    expired[i].actor.destroy();
+            }
+        }
+    },
+
+    _onButtonPress: function(notification, event) {
+        if (!this._active)
+            return false;
+
+        let source = event.get_source ();
+        while (source) {
+            if (source == notification)
+                return false;
+            source = source.get_parent();
+        }
+
+        // @source is outside @notification, which has to mean that
+        // we have a pointer grab, and the user clicked outside the
+        // notification, so we should deactivate.
+        this._deactivate();
+        return true;
+    },
+
+    _onEntryFocused: function() {
+        if (this._active)
+            return;
+
+        if (!Main.pushModal(this.actor))
+            return;
+        Clutter.grab_pointer(this.actor);
+
+        this._active = true;
+        Main.messageTray.lock();
+    },
+
+    _onEntryActivated: function() {
+        let text = this._responseEntry.get_text();
+        if (text == '') {
+            this._deactivate();
+            return;
+        }
+
+        this._responseEntry.set_text('');
+        this._append(text, 'chat-sent');
+        this.source.respond(text);
+    },
+
+    _deactivate: function() {
+        if (this._active) {
+            Clutter.ungrab_pointer(this.actor);
+            Main.popModal(this.actor);
+            global.stage.set_key_focus(null);
+
+            // We have to do this after calling popModal(), because
+            // that will return the keyboard focus to
+            // this._responseEntry (because that's where it was when
+            // pushModal() was called), which will cause
+            // _onEntryFocused() to be called again, but we don't want
+            // it to do anything.
+            this._active = false;
+
+            Main.messageTray.unlock();
+        }
     }
 };

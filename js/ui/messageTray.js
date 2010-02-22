@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
@@ -46,11 +47,15 @@ function _cleanMarkup(text) {
 // @source's icon, @title (in bold) and @banner, all on a single line
 // (with @banner ellipsized if necessary).
 //
-// Additional notification details can be added via addBody(),
-// addAction(), and addActor(). If any of these are called, then the
-// notification will expand to show the additional actors (while
-// hiding the @banner) if the pointer is moved into it while it is
-// visible.
+// Additional notification details can be added, in which case the
+// notification can be expanded by moving the pointer into it. In
+// expanded mode, the banner text disappears, and there can be one or
+// more rows of additional content. This content is put inside a
+// scrollview, so if it gets too tall, the notification will scroll
+// rather than continuing to grow. In addition to this main content
+// area, there is also a single-row "action area", which is not
+// scrolled and can contain a single actor. There are also convenience
+// methods for creating a button box in the action area.
 //
 // If @bannerBody is %true, then @banner will also be used as the body
 // of the notification (as with addBody()) when the banner is expanded.
@@ -71,39 +76,44 @@ Notification.prototype = {
                 this.emit('dismissed');
             }));
 
-        this.actor = new St.Table({ name: 'notification' });
+        this.actor = new St.Table({ name: 'notification',
+                                    reactive: true });
         this.update(title, banner, true);
     },
 
     // update:
     // @title: the new title
     // @banner: the new banner
-    // @clear: whether or not to clear out extra actors
+    // @clear: whether or not to clear out body and action actors
     //
     // Updates the notification by regenerating its icon and updating
     // the title/banner. If @clear is %true, it will also remove any
     // additional actors/action buttons previously added.
     update: function(title, banner, clear) {
-        let children = this.actor.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let meta = this.actor.get_child_meta(children[i]);
-            if (clear || meta.row == 0 || (this._bannerBody && meta.row == 1))
-                children[i].destroy();
+        if (this._icon)
+            this._icon.destroy();
+        if (this._bannerBox)
+            this._bannerBox.destroy();
+        if (this._scrollArea && (this._bannerBody || clear)) {
+            this._scrollArea.destroy();
+            this._scrollArea = null;
+            this._contentArea = null;
         }
-        if (clear) {
-            this.actions = {};
-            this._actionBox = null;
+        if (this._actionArea && clear) {
+            this._actionArea.destroy();
+            this._actionArea = null;
+            this._buttonBox = null;
         }
 
-        let icon = this.source.createIcon(ICON_SIZE);
-        icon.reactive = true;
-        this.actor.add(icon, { row: 0,
-                               col: 0,
-                               x_expand: false,
-                               y_expand: false,
-                               y_fill: false });
+        this._icon = this.source.createIcon(ICON_SIZE);
+        this._icon.reactive = true;
+        this.actor.add(this._icon, { row: 0,
+                                     col: 0,
+                                     x_expand: false,
+                                     y_expand: false,
+                                     y_fill: false });
 
-        icon.connect('button-release-event', Lang.bind(this,
+        this._icon.connect('button-release-event', Lang.bind(this,
             function () {
                 this.source.clicked();
             }));
@@ -139,64 +149,32 @@ Notification.prototype = {
     },
 
     // addActor:
-    // @actor: actor to add to the notification
-    // @props: (optional) child properties
+    // @actor: actor to add to the body of the notification
     //
-    // Adds @actor to the notification's St.Table, using @props.
-    //
-    // If @props does not specify a %row, then @actor will be added
-    // to the bottom of the notification (unless there are action
-    // buttons present, in which case it will be added above them).
-    //
-    // If @props does not specify a %col, it will default to column 1.
-    // (Normally only the icon is in column 0.)
-    //
-    // If @props specifies an already-occupied cell, then the existing
-    // contents of the table will be shifted down to make room for it.
-    addActor: function(actor, props) {
-        if (!props)
-            props = {};
-
-        if (!('col' in props))
-            props.col = 1;
-
-        if ('row' in props) {
-            let children = this.actor.get_children();
-            let i, meta, collision = false;
-
-            for (i = 0; i < children.length; i++) {
-                meta = this.actor.get_child_meta(children[i]);
-                if (meta.row == props.row && meta.col == props.col) {
-                    collision = true;
-                    break;
-                }
-            }
-
-            if (collision) {
-                for (i = 0; i < children.length; i++) {
-                    meta = this.actor.get_child_meta(children[i]);
-                    if (meta.row >= props.row)
-                        meta.row++;
-                }
-            }
-        } else {
-            if (this._actionBox) {
-                props.row = this.actor.row_count - 1;
-                this.actor.get_child_meta(this._actionBox).row++;
-            } else {
-                props.row = this.actor.row_count;
-            }
+    // Appends @actor to the notification's body
+    addActor: function(actor) {
+        if (!this._scrollArea) {
+            this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
+                                                   vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
+                                                   hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                                   vshadows: true });
+            this.actor.add(this._scrollArea, { row: 1,
+                                               col: 1 });
+            this._contentArea = new St.BoxLayout({ name: 'notification-body',
+                                                   vertical: true });
+            this._scrollArea.add_actor(this._contentArea);
         }
 
-        this.actor.add(actor, props);
+        this._contentArea.add(actor);
     },
 
     // addBody:
     // @text: the text
-    // @props: (optional) properties for addActor()
     //
     // Adds a multi-line label containing @text to the notification.
-    addBody: function(text, props) {
+    //
+    // Return value: the newly-added label
+    addBody: function(text) {
         let body = new St.Label();
         body.clutter_text.line_wrap = true;
         body.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
@@ -205,15 +183,56 @@ Notification.prototype = {
         text = text ? _cleanMarkup(text) : '';
         body.clutter_text.set_markup(text);
 
-        this.addActor(body, props);
+        this.addActor(body);
+        return body;
     },
 
     _addBannerBody: function() {
-        this.addBody(this._bannerBodyText, { row: 1 });
+        this.addBody(this._bannerBodyText);
         this._bannerBodyText = null;
     },
 
-    // addAction:
+    // scrollTo:
+    // @side: St.Side.TOP or St.Side.BOTTOM
+    //
+    // Scrolls the content area (if scrollable) to the indicated edge
+    scrollTo: function(side) {
+        // Hack to force a relayout, since the caller probably
+        // just added or removed something to scrollArea, and
+        // the adjustment needs to reflect that.
+        global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, 0, 0);
+
+        let adjustment = this._scrollArea.vscroll.adjustment;
+        if (side == St.Side.TOP)
+            adjustment.value = adjustment.lower;
+        else if (side == St.Side.BOTTOM)
+            adjustment.value = adjustment.upper;
+    },
+
+    // setActionArea:
+    // @actor: the actor
+    // @props: (option) St.Table child properties
+    //
+    // Puts @actor into the action area of the notification, replacing
+    // the previous contents
+    setActionArea: function(actor, props) {
+        if (this._actionArea) {
+            this._actionArea.destroy();
+            this._actionArea = null;
+            if (this._buttonBox)
+                this._buttonBox = null;
+        }
+        this._actionArea = actor;
+
+        if (!props)
+            props = {};
+        props.row = 2;
+        props.col = 1;
+
+        this.actor.add(this._actionArea, props);
+    },
+
+    // addButton:
     // @id: the action ID
     // @label: the label for the action's button
     //
@@ -223,21 +242,21 @@ Notification.prototype = {
     //
     // If the button is clicked, the notification will emit the
     // %action-invoked signal with @id as a parameter
-    addAction: function(id, label) {
-        if (!this._actionBox) {
+    addButton: function(id, label) {
+        if (!this._buttonBox) {
             if (this._bannerBodyText)
                 this._addBannerBody();
 
             let box = new St.BoxLayout({ name: 'notification-actions' });
-            this.addActor(box, { x_expand: false,
-                                 x_fill: false,
-                                 x_align: St.Align.END });
-            this._actionBox = box;
+            this.setActionArea(box, { x_expand: false,
+                                      x_fill: false,
+                                      x_align: St.Align.END });
+            this._buttonBox = box;
         }
 
         let button = new St.Button({ style_class: 'notification-button',
                                      label: label });
-        this._actionBox.add(button);
+        this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
     },
 
@@ -563,6 +582,19 @@ MessageTray.prototype = {
         return null;
     },
 
+    lock: function() {
+        this._locked = true;
+    },
+
+    unlock: function() {
+        this._locked = false;
+
+        this.actor.sync_hover();
+        this._summary.sync_hover();
+
+        this._updateState();
+    },
+
     _onNotify: function(source, notification) {
         if (this._getNotification(notification.id, source) == null) {
             notification.connect('destroy',
@@ -647,7 +679,7 @@ MessageTray.prototype = {
         let notificationsPending = this._notificationQueue.length > 0;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !this._pointerInTray) || this._notificationRemoved;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !this._pointerInTray && !this._locked) || this._notificationRemoved;
 
         if (this._notificationState == State.HIDDEN) {
             if (notificationsPending)
@@ -778,6 +810,11 @@ MessageTray.prototype = {
     _hideNotification: function() {
         this._notification.popIn();
 
+        if (this._reExpandNotificationId) {
+            this._notificationBin.disconnect(this._reExpandNotificationId);
+            this._reExpandNotificationId = 0;
+        }
+
         this._tween(this._notificationBin, "_notificationState", State.HIDDEN,
                     { y: this.actor.height,
                       opacity: 0,
@@ -802,6 +839,9 @@ MessageTray.prototype = {
                           time: ANIMATION_TIME,
                           transition: "easeOutQuad"
                         });
+
+            if (!this._reExpandNotificationId)
+                this._reExpandNotificationId = this._notificationBin.connect('notify::height', Lang.bind(this, this._expandNotification));
         }
     },
 

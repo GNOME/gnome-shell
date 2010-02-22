@@ -207,7 +207,7 @@ NotificationDaemon.prototype = {
 
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2)
-                notification.addAction(actions[i], actions[i + 1]);
+                notification.addButton(actions[i], actions[i + 1]);
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         }
 

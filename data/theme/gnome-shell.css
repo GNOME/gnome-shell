@@ -723,6 +723,18 @@ StTooltip {
     padding-bottom: 38px;
 }
 
+#notification-scrollview {
+    max-height: 10em;
+}
+
+#notification-scrollview > .top-shadow, #notification-scrollview > .bottom-shadow {
+    height: 1em;
+}
+
+#notification-body {
+    spacing: 5px;
+}
+
 #notification-actions {
     spacing: 5px;
 }
@@ -743,6 +755,24 @@ StTooltip {
 .notification-button:active {
     border: 2px solid white;
     background: #808080;
+}
+
+.chat-received {
+    background-gradient-direction: horizontal;
+    background-gradient-start: #606060;
+    background-gradient-end: #000000;
+
+    min-width: 20em;
+}
+
+.chat-sent {
+    background-gradient-direction: horizontal;
+    background-gradient-start: #000000;
+    background-gradient-end: #606060;
+}
+
+.chat-response {
+    border: 1px solid white;
 }
 
 /* The spacing and padding on the summary is tricky; we want to keep

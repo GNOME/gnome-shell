@@ -215,6 +215,10 @@ const ChannelTextIface = {
         { name: 'AcknowledgePendingMessages',
           inSignature: 'au',
           outSignature: ''
+        },
+        { name: 'Send',
+          inSignature: 'us',
+          outSignature: ''
         }
     ],
     signals: [
