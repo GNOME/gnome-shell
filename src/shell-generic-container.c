@@ -235,6 +235,18 @@ shell_generic_container_pick (ClutterActor        *actor,
 }
 
 /**
+ * shell_generic_container_get_n_skip_paint:
+ * @container:  A #ShellGenericContainer
+ *
+ * Returns: Number of children which will not be painted.
+ */
+guint
+shell_generic_container_get_n_skip_paint (ShellGenericContainer  *self)
+{
+  return g_hash_table_size (self->priv->skip_paint);
+}
+
+/**
  * shell_generic_container_set_skip_paint:
  * @container: A #ShellGenericContainer
  * @child: Child #ClutterActor
