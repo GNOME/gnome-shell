@@ -21,9 +21,11 @@ LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
 GETTEXT_PACKAGE=gnome-shell
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
+                   [The prefix for our gettext translation domains.])
 IT_PROG_INTLTOOL(0.26)
 AM_GLIB_GNU_GETTEXT
-AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [The prefix for our gettext translation domain])
 
 PKG_PROG_PKG_CONFIG([0.22])
 
