@@ -593,12 +593,6 @@ shell_global_display_is_grabbed (ShellGlobal *global)
   return meta_display_get_grab_op (display) != META_GRAB_OP_NONE;
 }
 
-/* Defining this here for now, see
- * https://bugzilla.gnome.org/show_bug.cgi?id=604075
- * for upstreaming status.
- */
-JSContext * gjs_context_get_context (GjsContext *context);
-
 /**
  * shell_global_add_extension_importer:
  * @target_object_script: JavaScript code evaluating to a target object
@@ -621,7 +615,7 @@ shell_global_add_extension_importer (ShellGlobal *global,
 {
   jsval target_object;
   JSObject *importer;
-  JSContext *context = gjs_context_get_context (global->js_context);
+  JSContext *context = gjs_context_get_native_context (global->js_context);
   char *search_path[2] = { 0, 0 };
 
   // This is a bit of a hack; ideally we'd be able to pass our target
@@ -799,7 +793,7 @@ shell_global_reexec_self (ShellGlobal *global)
 void
 shell_global_gc (ShellGlobal *global)
 {
-  JSContext *context = gjs_context_get_context (global->js_context);
+  JSContext *context = gjs_context_get_native_context (global->js_context);
 
   JS_GC (context);
 }
