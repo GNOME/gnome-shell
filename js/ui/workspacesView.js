@@ -36,6 +36,8 @@ const WORKSPACES_VIEW_KEY = 'overview/workspaces_view';
 const WORKSPACE_DRAGGING_SCALE = 0.85;
 const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
 
+const WORKSPACE_DRAG_THRESHOLD = 0.2;
+
 function GenericWorkspacesView(width, height, x, y, animate) {
     this._init(width, height, x, y, animate);
 }
@@ -511,6 +513,10 @@ SingleView.prototype = {
         this._dropGroup._delegate = this;
         global.stage.add_actor(this._dropGroup);
         this._dropGroup.lower_bottom();
+        this._dragIndex = -1;
+
+        this._buttonPressId = 0;
+        this._capturedEventId = 0;
         this._timeoutId = 0;
     },
 
@@ -523,6 +529,8 @@ SingleView.prototype = {
             scale = this._width / global.screen_width;
         let active = global.screen.get_active_workspace_index();
         let _width = this._workspaces[0].actor.width * scale;
+
+        this._setWorkspaceDraggable(active, true);
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
@@ -564,6 +572,108 @@ SingleView.prototype = {
         this._scrollScrollBarToIndex(active, showAnimation);
     },
 
+    // _setWorkspaceDraggable:
+    // @index: workspace index
+    // @draggable: whether workspace @index should be draggable
+    //
+    // If @draggable is %true, set up workspace @index to allow switching
+    // workspaces by dragging the desktop - if a draggable workspace has
+    // been set up before, it will be reset before the new one is made
+    // draggable.
+    // If @draggable is %false, workspace @index is reset to no longer allow
+    // dragging.
+    _setWorkspaceDraggable: function(index, draggable) {
+        if (index < 0 || index >= global.n_workspaces)
+            return;
+
+        let dragActor = this._workspaces[index]._desktop.actor;
+
+        if (draggable) {
+            this._workspaces[index].actor.reactive = true;
+
+            // reset old draggable workspace
+            if (this._dragIndex > -1)
+                this._setWorkspaceDraggable(this._dragIndex, false);
+
+            this._dragIndex = index;
+            this._buttonPressId = dragActor.connect('button-press-event',
+                                      Lang.bind(this, this._onButtonPress));
+        } else {
+            this._dragIndex = -1;
+
+            if (this._buttonPressId > 0) {
+                if (dragActor.get_stage())
+                    dragActor.disconnect(this._buttonPressId);
+                this._buttonPressId = 0;
+            }
+
+            if (this._capturedEventId > 0) {
+                global.stage.disconnect(this._capturedEventId);
+                this._capturedEventId = 0;
+            }
+        }
+    },
+
+    // start dragging the active workspace
+    _onButtonPress: function(actor, event) {
+        if (this._dragIndex == -1)
+            return;
+
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = this._dragX = stageX;
+        this._scrolling = true;
+        this._capturedEventId = global.stage.connect('captured-event',
+            Lang.bind(this, this._onCapturedEvent));
+    },
+
+    // handle captured events while dragging a workspace
+    _onCapturedEvent: function(actor, event) {
+        let active = global.screen.get_active_workspace_index();
+        let stageX, stageY;
+
+        switch (event.type()) {
+            case Clutter.EventType.BUTTON_RELEASE:
+                this._scrolling = false;
+
+                [stageX, stageY] = event.get_coords();
+
+                // default to snapping back to the original workspace
+                let activate = this._dragIndex;
+                let last = global.screen.n_workspaces - 1;
+
+                // switch workspaces according to the drag direction
+                if (stageX > this._dragStartX && activate > 0)
+                    activate--;
+                else if (stageX < this._dragStartX && activate < last)
+                    activate++;
+
+                if (activate != active) {
+                    let workspace = this._workspaces[activate]._metaWorkspace;
+                    workspace.activate(global.get_current_time());
+                } else {
+                    this._scrollToActive(true);
+                }
+
+                if (stageX == this._dragStartX)
+                    // no motion? It's a click!
+                    return false;
+
+                return true;
+
+            case Clutter.EventType.MOTION:
+                [stageX, stageY] = event.get_coords();
+                let dx = this._dragX - stageX;
+                let primary = global.get_primary_monitor();
+
+                this._scroll.adjustment.value += (dx / primary.width);
+                this._dragX = stageX;
+
+                return true;
+        }
+
+        return false;
+    },
+
     _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
 
@@ -571,6 +681,7 @@ SingleView.prototype = {
 
         let dx = this._workspaces[0].gridX - this._workspaces[0].actor.x;
 
+        this._setWorkspaceDraggable(active, true);
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
@@ -766,6 +877,7 @@ SingleView.prototype = {
 
     _onDestroy: function() {
         GenericWorkspacesView.prototype._onDestroy.call(this);
+        this._setWorkspaceDraggable(this._dragIndex, false);
         this._dropGroup.destroy();
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
