@@ -1394,6 +1394,10 @@ ensure_background (StThemeNode *node)
             {
               node->background_gradient_type = ST_GRADIENT_RADIAL;
             }
+          else if (strcmp (term->content.str->stryng->str, "none") == 0)
+            {
+              node->background_gradient_type = ST_GRADIENT_NONE;
+            }
           else
             {
               g_warning ("Unrecognized background-gradient-direction \"%s\"",
