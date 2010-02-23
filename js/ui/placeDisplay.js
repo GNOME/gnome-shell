@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
 const GLib = imports.gi.GLib;
@@ -516,28 +515,25 @@ DashPlaceDisplay.prototype = {
         // look better in that there would be an even number of items left+right,
         // but it seems like we want some sort of differentiation between actions
         // like "Connect to server..." and regular folders
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   spacing: 4 });
-        this._leftBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.actor.append(this._leftBox, Big.BoxPackFlags.EXPAND);
-        this._rightBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.actor.append(this._rightBox, Big.BoxPackFlags.EXPAND);
+        this.actor = new St.Table({ style_class: 'places-section',
+                                    homogeneous: true });
 
-        // Subdivide left into actions and devices
         this._actionsBox = new St.BoxLayout({ style_class: 'places-actions',
-                                               vertical: true });
+                                              vertical: true });
 
         this._devBox = new St.BoxLayout({ style_class: 'places-actions',
-                                           name: 'placesDevices',
-                                           vertical: true });
+                                          name: 'placesDevices',
+                                          vertical: true });
 
         this._dirsBox = new St.BoxLayout({ style_class: 'places-actions',
-                                            vertical: true });
+                                           vertical: true });
 
-        this._leftBox.append(this._actionsBox, Big.BoxPackFlags.NONE);
-        this._leftBox.append(this._devBox, Big.BoxPackFlags.NONE);
+        // Subdivide left into actions and devices
+        this.actor.add(this._actionsBox, { row: 0, col: 0 });
+        this.actor.add(this._devBox, { row: 1, col: 0 });
 
-        this._rightBox.append(this._dirsBox, Big.BoxPackFlags.NONE);
+        // Bookmarks span the entire right
+        this.actor.add(this._dirsBox, { row: 0, col: 1, row_span: 2 });
 
         Main.placesManager.connect('defaults-updated', Lang.bind(this, this._updateDefaults));
         Main.placesManager.connect('bookmarks-updated', Lang.bind(this, this._updateBookmarks));

@@ -518,6 +518,10 @@ StTooltip {
 
 /* Places */
 
+.places-section {
+    spacing-columns: 4px;
+}
+
 .places-item-box {
     spacing: 4px;
 }
