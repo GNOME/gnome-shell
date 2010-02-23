@@ -31,15 +31,6 @@
 #define M_LOG2E 1.4426950408889634074
 #endif
 
-#if !CLUTTER_CHECK_VERSION(1,1,3)
-static PFNGLACTIVETEXTUREARBPROC activeTexture;
-static PFNGLGENFRAMEBUFFERSPROC genFramebuffers;
-static PFNGLDELETEFRAMEBUFFERSPROC deleteFramebuffers;
-static PFNGLBINDFRAMEBUFFERPROC bindFramebuffer;
-static PFNGLFRAMEBUFFERTEXTURE2DPROC framebufferTexture2D;
-#endif
-
-
 #define MAX_TEXTURE_LEVELS 12
 
 /* If the texture format in memory doesn't match this, then Mesa
@@ -68,11 +59,7 @@ struct _MutterTextureTower
 {
   int n_levels;
   CoglHandle textures[MAX_TEXTURE_LEVELS];
-#if CLUTTER_CHECK_VERSION(1,1,3)
   CoglHandle fbos[MAX_TEXTURE_LEVELS];
-#else
-  GLuint fbos[MAX_TEXTURE_LEVELS];
-#endif
   Box invalid[MAX_TEXTURE_LEVELS];
 };
 
@@ -131,7 +118,7 @@ free_texture (CoglHandle texture)
   if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
     glDeleteTextures (1, &gl_tex);
 
-  cogl_texture_unref (texture);
+  cogl_handle_unref (texture);
 }
 
 /**
@@ -165,22 +152,14 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
               tower->textures[i] = COGL_INVALID_HANDLE;
             }
 
-#if CLUTTER_CHECK_VERSION(1,1,3)
           if (tower->fbos[i] != COGL_INVALID_HANDLE)
             {
               cogl_handle_unref (tower->fbos[i]);
               tower->fbos[i] = COGL_INVALID_HANDLE;
             }
-#else
-          if (tower->fbos[i] != 0)
-            {
-              (*deleteFramebuffers) (1, &tower->fbos[i]);
-              tower->fbos[i] = 0;
-            }
-#endif
         }
 
-      cogl_texture_unref (tower->textures[0]);
+      cogl_handle_unref (tower->textures[0]);
     }
 
   tower->textures[0] = texture;
@@ -189,7 +168,7 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
     {
       int width, height;
 
-      cogl_texture_ref (tower->textures[0]);
+      cogl_handle_ref (tower->textures[0]);
 
       width = cogl_texture_get_width (tower->textures[0]);
       height = cogl_texture_get_height (tower->textures[0]);
@@ -429,17 +408,6 @@ texture_tower_create_texture (MutterTextureTower *tower,
   tower->invalid[level].y2 = height;
 }
 
-/* The COGL fbo (render-to-texture) support is pretty hard to use in
- * Clutter 1.0; there's no way to save and restore the old projection
- * matrix and viewport without ugly workarounds that require explicit
- * access to the ClutterStage.  In Clutter 1.2, the save/restore is
- * automatic. For now, until we depend on Clutter 1.2, we use GL
- * directly for render-to-texture. The main downside (other than
- * a lot of verbosity) is that we have to save the state, reset anything
- * that we think COGL might have left in a way we don't want it, then
- * restore the old state.
- */
-#if CLUTTER_CHECK_VERSION(1,1,3)
 static gboolean
 texture_tower_revalidate_fbo (MutterTextureTower *tower,
                               int                 level)
@@ -478,162 +446,6 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
 
   return TRUE;
 }
-#else
-static void
-initialize_gl_functions (void)
-{
-  static gboolean initialized = FALSE;
-
-  if (!initialized)
-    {
-      initialized = TRUE;
-
-      activeTexture = (PFNGLACTIVETEXTUREARBPROC) cogl_get_proc_address ("glActiveTextureARB");
-      genFramebuffers = (PFNGLGENFRAMEBUFFERSPROC) cogl_get_proc_address ("glGenFramebuffersEXT");
-      deleteFramebuffers = (PFNGLDELETEFRAMEBUFFERSPROC) cogl_get_proc_address ("glDeleteFramebuffersEXT");
-      bindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC) cogl_get_proc_address ("glBindFramebufferEXT");
-      framebufferTexture2D = (PFNGLFRAMEBUFFERTEXTURE2DPROC) cogl_get_proc_address ("glFramebufferTexture2D");
-    }
-}
-
-static gboolean
-texture_tower_revalidate_fbo (MutterTextureTower *tower,
-                              int                 level)
-{
-  CoglHandle source_texture = tower->textures[level - 1];
-  int source_texture_width = cogl_texture_get_width (source_texture);
-  int source_texture_height = cogl_texture_get_height (source_texture);
-  CoglHandle dest_texture = tower->textures[level];
-  int dest_texture_width = cogl_texture_get_width (dest_texture);
-  int dest_texture_height = cogl_texture_get_height (dest_texture);
-  ClutterActorBox source_box;
-  Box *dest_box;
-
-  GLuint source_gl_tex;
-  GLenum source_gl_target;
-
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    return FALSE;
-
-  initialize_gl_functions ();
-
-  /* Create the frame-buffer object that renders to the texture, if
-   * it doesn't exist; just bind it for rendering if it does */
-  if (tower->fbos[level] == 0)
-    {
-      GLuint dest_gl_tex;
-      GLenum dest_gl_target;
-
-      cogl_texture_get_gl_texture (dest_texture, &dest_gl_tex, &dest_gl_target);
-
-      (*genFramebuffers) (1, &tower->fbos[level]);
-      (*bindFramebuffer) (GL_FRAMEBUFFER_EXT, tower->fbos[level]);
-      (*framebufferTexture2D) (GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
-                               dest_gl_target, dest_gl_tex, 0);
-    }
-  else
-    {
-      (*bindFramebuffer) (GL_FRAMEBUFFER_EXT, tower->fbos[level]);
-    }
-
-  /* Save the old state (other than the transformation matrices) */
-  glPushAttrib (GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_TEXTURE_BIT | GL_VIEWPORT_BIT);
-
-  /* And set up the state we need */
-  glDisable (GL_BLEND);
-  glDisable (GL_SCISSOR_TEST);
-  glDisable (GL_STENCIL_TEST);
-
-  glDisable (GL_CLIP_PLANE3);
-  glDisable (GL_CLIP_PLANE2);
-  glDisable (GL_CLIP_PLANE1);
-  glDisable (GL_CLIP_PLANE0);
-
-  cogl_texture_get_gl_texture (source_texture, &source_gl_tex, &source_gl_target);
-
-  (*activeTexture) (GL_TEXTURE0_ARB);
-  if (source_gl_target == GL_TEXTURE_2D)
-    glDisable (GL_TEXTURE_RECTANGLE_ARB);
-  else
-    glDisable (GL_TEXTURE_2D);
-  glEnable (source_gl_target);
-  glBindTexture (source_gl_target, source_gl_tex);
-  glTexParameteri (source_gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri (source_gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri (source_gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-  /* In theory, we should loop over all the texture units supported
-   * by the GL implementation, but here we just assume that no more
-   * than three are used by Mutter and all GL implementations we care
-   * about will support at least 3.
-   */
-  (*activeTexture) (GL_TEXTURE1_ARB);
-  glDisable (GL_TEXTURE_2D);
-  glDisable (GL_TEXTURE_RECTANGLE_ARB);
-  (*activeTexture) (GL_TEXTURE2_ARB);
-  glDisable (GL_TEXTURE_2D);
-  glDisable (GL_TEXTURE_RECTANGLE_ARB);
-
-  glViewport (0, 0, dest_texture_width, dest_texture_height);
-
-  /* Save the transformation matrices and set up new ones that map
-   * coordinates directly onto the destination texture */
-  glMatrixMode (GL_MODELVIEW);
-  glPushMatrix ();
-  glLoadIdentity ();
-
-  glMatrixMode (GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity ();
-  glOrtho (0, dest_texture_width, 0, dest_texture_height, -1., 1.);
-
-  /* Draw */
-
-  dest_box = &tower->invalid[level];
-  if (texture_is_rectangle (source_texture))
-    {
-      source_box.x1 = 2 * dest_box->x1;
-      source_box.y1 = 2 * dest_box->y1;
-      source_box.x2 = 2 * dest_box->x2;
-      source_box.y2 = 2 * dest_box->y2;
-    }
-  else
-    {
-      source_box.x1 = (2. * dest_box->x1) / source_texture_width;
-      source_box.y1 = (2. * dest_box->y1) / source_texture_height;
-      source_box.x2 = (2. * dest_box->x2) / source_texture_width;
-      source_box.y2 = (2. * dest_box->y2) / source_texture_height;
-    }
-
-  glColor3f (0., 1., 1.);
-
-  glBegin (GL_QUADS);
-  glTexCoord2f (source_box.x1, source_box.y1);
-  glVertex2f (dest_box->x1, dest_box->y1);
-  glTexCoord2f (source_box.x2, source_box.y1);
-  glVertex2f (dest_box->x2, dest_box->y1);
-  glTexCoord2f (source_box.x2, source_box.y2);
-  glVertex2f (dest_box->x2, dest_box->y2);
-  glTexCoord2f (source_box.x1, source_box.y2);
-  glVertex2f (dest_box->x1, dest_box->y2);
-  glEnd ();
-
-  /* And restore everything back the way we found it */
-
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix ();
-  glMatrixMode (GL_MODELVIEW);
-  glPopMatrix ();
-
-  glPopAttrib ();
-
-  (*bindFramebuffer) (GL_FRAMEBUFFER_EXT, 0);
-
-  return TRUE;
-}
-#endif
 
 static void
 fill_copy (guchar       *buf,

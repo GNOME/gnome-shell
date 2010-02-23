@@ -124,18 +124,18 @@ mutter_shaped_texture_dispose (GObject *object)
 
   if (priv->material != COGL_INVALID_HANDLE)
     {
-      cogl_material_unref (priv->material);
+      cogl_handle_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
   if (priv->material_unshaped != COGL_INVALID_HANDLE)
     {
-      cogl_material_unref (priv->material_unshaped);
+      cogl_handle_unref (priv->material_unshaped);
       priv->material_unshaped = COGL_INVALID_HANDLE;
     }
 #if 1 /* see comment in mutter_shaped_texture_paint */
   if (priv->material_workaround != COGL_INVALID_HANDLE)
     {
-      cogl_material_unref (priv->material_workaround);
+      cogl_handle_unref (priv->material_workaround);
       priv->material_workaround = COGL_INVALID_HANDLE;
     }
 #endif
@@ -194,7 +194,7 @@ mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
       if (mask_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         glDeleteTextures (1, &mask_gl_tex);
 
-      cogl_texture_unref (priv->mask_texture);
+      cogl_handle_unref (priv->mask_texture);
       priv->mask_texture = COGL_INVALID_HANDLE;
     }
 }

@@ -155,7 +155,7 @@ tidy_texture_frame_unrealize (ClutterActor *self)
   if (priv->material == COGL_INVALID_HANDLE)
     return;
 
-  cogl_material_unref (priv->material);
+  cogl_handle_unref (priv->material);
   priv->material = COGL_INVALID_HANDLE;
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
@@ -415,7 +415,7 @@ tidy_texture_frame_dispose (GObject *gobject)
 
   if (priv->material)
     {
-      cogl_material_unref (priv->material);
+      cogl_handle_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
 
