@@ -1,1 +1,1 @@
-man_MANS = gnome-shell.1
+dist_man_MANS = gnome-shell.1
