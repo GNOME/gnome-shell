@@ -300,6 +300,9 @@ Source.prototype = {
     _init: function(sourceId, icon, hints) {
         MessageTray.Source.prototype._init.call(this, sourceId);
 
+        this.app = null;
+        this._openAppRequested = false;
+
         this.update(icon, hints);
     },
 
@@ -309,9 +312,6 @@ Source.prototype = {
         this._icon = icon;
         this._iconData = hints.icon_data;
         this._urgency = hints.urgency;
-
-        this.app = null;
-        this._openAppRequested = false;
     },
 
     createIcon: function(size) {
