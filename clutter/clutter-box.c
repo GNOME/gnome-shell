@@ -119,7 +119,7 @@ sort_by_depth (gconstpointer a,
   if (depth_a < depth_b)
     return -1;
 
-  if (depth_a > depth_b)
+  if (depth_a >= depth_b)
     return 1;
 
   return 0;
