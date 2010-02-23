@@ -171,6 +171,11 @@
 
 #endif
 
+/* This isn't defined in the GLES headers */
+#ifndef GL_UNSIGNED_INT
+#define GL_UNSIGNED_INT 0x1405
+#endif
+
 /*
  * GL/GLES compatability defines for shader things:
  */
@@ -1782,8 +1787,10 @@ get_indices_type_size (GLuint indices_type)
 {
   if (indices_type == GL_UNSIGNED_BYTE)
     return sizeof (GLubyte);
-  if (indices_type == GL_UNSIGNED_SHORT)
+  else if (indices_type == GL_UNSIGNED_SHORT)
     return sizeof (GLushort);
+  else if (indices_type == GL_UNSIGNED_INT)
+    return sizeof (GLuint);
   else
     {
       g_critical ("Unknown indices type %d\n", indices_type);
@@ -1809,6 +1816,14 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
     indices->type = GL_UNSIGNED_BYTE;
   else if (indices_type == COGL_INDICES_TYPE_UNSIGNED_SHORT)
     indices->type = GL_UNSIGNED_SHORT;
+  else if (indices_type == COGL_INDICES_TYPE_UNSIGNED_INT)
+    {
+      g_return_val_if_fail (cogl_features_available
+                            (COGL_FEATURE_UNSIGNED_INT_INDICES),
+                            COGL_INVALID_HANDLE);
+
+      indices->type = GL_UNSIGNED_INT;
+    }
   else
     {
       g_critical ("unknown indices type %d", indices_type);
