@@ -784,6 +784,19 @@ shell_global_reexec_self (ShellGlobal *global)
 }
 
 /**
+ * shell_global_breakpoint:
+ * @global: A #ShellGlobal
+ *
+ * Using G_BREAKPOINT(), interrupt the current process.  This is useful
+ * in conjunction with a debugger such as gdb.
+ */
+void
+shell_global_breakpoint (ShellGlobal *global)
+{
+  G_BREAKPOINT ();
+}
+
+/**
  * shell_global_gc:
  * @global: A #ShellGlobal
  *
