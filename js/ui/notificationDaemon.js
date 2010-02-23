@@ -11,8 +11,6 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 
-const EMPATHY = 'Empathy';
-
 let nextNotificationId = 1;
 
 // Should really be defined in dbus.js
@@ -139,46 +137,13 @@ NotificationDaemon.prototype = {
 
     Notify: function(appName, replacesId, icon, summary, body,
                      actions, hints, timeout) {
-        let notification, id;
-        // We associate each application with a source and set the source id to be based on
-        // the appName. We support application updates by creating a new Notification object
-        // only if replacesId was not specified or if we no longer have the notification with
-        // the specified replacesId.
-        //
-        // We are planning to add Empathy-specific features in the message tray, but in the
-        // meantime we handle Empathy notifications received through the notification daemon
-        // differently from other notifications.
-        // 1) We display different people sending messages as different sources. So we use
-        //    notification id instead of the appName when creating id for the source.
-        // 2) We queue notification with different messages to show them one after another,
-        //    rather than replace the notification on the spot. So we create a new Notification
-        //    object each time, disregarding the fact that we might already have another
-        //    notification with the same replacesId.
-        // Empathy uses replacesId for all the notifications from the same window until the
-        // notification with that id is dismissed. Notifications from different people in
-        // different tabs have the same replacesId. So while being closer to the eventual design,
-        // our special-handling of Empathy notifications is somewhat buggy. The user might end up
-        // with multiple icons for the same person if the user dismisses the window for that person
-        // (which doesn't result in removing the icon) or the user might not get the icon for
-        // the person after a new notification in one of the tabs of the chat window for which
-        // another person's icon is already displayed.
-
-        let isEmpathy = appName == EMPATHY;
-        if (replacesId != 0) {
-            id = replacesId;
-            if (!isEmpathy)
-                notification = this._currentNotifications[id];
-        } else {
-            id = nextNotificationId++;
-        }
-
-        let sourceId = this._sourceId(isEmpathy ? id : appName);
-        let source = Main.messageTray.getSource(sourceId);
+        let source = Main.messageTray.getSource(this._sourceId(appName));
+        let id = null;
 
         // Source may be null if we have never received a notification from
         // this app or if all notifications from this app have been acknowledged.
         if (source == null) {
-            source = new Source(sourceId, icon, hints);
+            source = new Source(this._sourceId(appName), icon, hints);
             Main.messageTray.add(source);
 
             source.connect('clicked', Lang.bind(this,
@@ -208,14 +173,15 @@ NotificationDaemon.prototype = {
             }
         }
 
+        let notification;
+        if (replacesId != 0) {
+            id = replacesId;
+            notification = this._currentNotifications[id];
+        }
+
         if (notification == null) {
+            id = nextNotificationId++;
             notification = new MessageTray.Notification(id, source, summary, body, true);
-            // This will result in us keeping only the latest Empathy notification with the given
-            // id in this._currentNotifications, which will only affect not being able to close all
-            // the Empathy notifications with a given id in CloseNotification(). Since this not a
-            // a likely scenario and this special-casing of Empathy in the notification daemon is
-            // temporary, it doesn't seem worthwhile to change this._currentNotifications to
-            // {id, [array of notifications]} just for that case.
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
@@ -359,9 +325,6 @@ Source.prototype = {
         this.app = app;
         if (this._openAppRequested)
             this.openApp();
-
-        if (app.get_name() == EMPATHY)
-            this.handleReplacing = false;
     },
 
     openApp: function() {
