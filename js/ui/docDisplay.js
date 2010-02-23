@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
@@ -267,24 +266,26 @@ function DashDocDisplayItem(docInfo) {
 DashDocDisplayItem.prototype = {
     _init: function(docInfo) {
         this._info = docInfo;
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   spacing: DEFAULT_SPACING,
-                                   reactive: true });
-        this.actor.connect('button-release-event', Lang.bind(this, function () {
+        this._icon = docInfo.createIcon(DASH_DOCS_ICON_SIZE);
+
+        this.actor = new St.Clickable({ style_class: 'recent-docs-item',
+                                        reactive: true,
+                                        x_align: St.Align.START });
+
+        let box = new St.BoxLayout({ style_class: 'recent-docs-item-box' });
+        this.actor.set_child(box);
+
+        box.add(this._icon);
+
+        let text = new St.Label({ text: docInfo.name });
+        box.add(text);
+
+        this.actor.connect('clicked', Lang.bind(this, function () {
             docInfo.launch();
             Main.overview.hide();
         }));
 
         this.actor._delegate = this;
-
-        this._icon = docInfo.createIcon(DASH_DOCS_ICON_SIZE);
-        let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-        iconBox.append(this._icon, Big.BoxPackFlags.NONE);
-        this.actor.append(iconBox, Big.BoxPackFlags.NONE);
-        let name = new St.Label({ style_class: 'dash-recent-docs-item',
-                                   text: docInfo.name });
-        this.actor.append(name, Big.BoxPackFlags.EXPAND);
-
         let draggable = DND.makeDraggable(this.actor);
     },
 

@@ -538,6 +538,16 @@ StTooltip {
     padding-top: 4px;
 }
 
+/* Recent items */
+
+.recent-docs-item-box {
+    spacing: 4px;
+}
+
+.recent-docs-item {
+    padding: 2px;
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog
