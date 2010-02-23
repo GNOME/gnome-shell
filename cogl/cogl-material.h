@@ -124,7 +124,7 @@ cogl_material_copy (CoglHandle source);
  * Deprecated: 1.2: Use cogl_handle_ref() instead
  */
 CoglHandle
-cogl_material_ref (CoglHandle handle);
+cogl_material_ref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 /**
  * cogl_material_unref:
@@ -137,7 +137,7 @@ cogl_material_ref (CoglHandle handle);
  * Deprecated: 1.2: Use cogl_handle_unref() instead
  */
 void
-cogl_material_unref (CoglHandle handle);
+cogl_material_unref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
