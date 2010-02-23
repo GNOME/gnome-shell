@@ -179,6 +179,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir St-1.0.gir libgnome-shell.l
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
 		$(libgnome_shell_la_CPPFLAGS)		\
+		-I $(srcdir)				\
 		-o $@
 CLEANFILES += Shell-0.1.gir
 
