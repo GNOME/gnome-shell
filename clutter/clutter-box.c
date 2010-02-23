@@ -130,12 +130,31 @@ clutter_box_real_add (ClutterContainer *container,
                       ClutterActor     *actor)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+  GList *l, *prev = NULL;
+  gfloat actor_depth;
 
   g_object_ref (actor);
 
-  priv->children = g_list_insert_sorted (priv->children,
-                                         actor,
-                                         sort_by_depth);
+  actor_depth = clutter_actor_get_depth (actor);
+
+  /* Find the right place to insert the child so that it will still be
+     sorted and the child will be after all of the actors at the same
+     depth */
+  for (l = priv->children;
+       l && (clutter_actor_get_depth (l->data) <= actor_depth);
+       l = l->next)
+    prev = l;
+
+  /* Insert the node before the found node */
+  l = g_list_prepend (l, actor);
+  /* Fixup the links */
+  if (prev)
+    {
+      prev->next = l;
+      l->prev = prev;
+    }
+  else
+    priv->children = l;
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
