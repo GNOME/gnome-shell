@@ -528,7 +528,13 @@ StTooltip {
 }
 
 .places-item {
+    border-radius: 4px;
     padding: 2px;
+    border: 1px solid #181818;
+}
+
+.places-item:hover {
+    border: 1px solid #666666;
 }
 
 .places-actions {
@@ -546,7 +552,13 @@ StTooltip {
 }
 
 .recent-docs-item {
+    border-radius: 4px;
     padding: 2px;
+    border: 1px solid #181818;
+}
+
+.recent-docs-item:hover {
+    border: 1px solid #666666;
 }
 
 /* LookingGlass */
