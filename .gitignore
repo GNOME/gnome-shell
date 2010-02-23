@@ -41,7 +41,7 @@ src/gnome-shell
 src/test-recorder
 src/test-recorder.ogg
 src/test-theme
-src/st/st.h
+src/st.h
 stamp-h1
 tests/run-test.sh
 xmldocs.make

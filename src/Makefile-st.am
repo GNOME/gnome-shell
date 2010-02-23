@@ -97,14 +97,14 @@ st_source_h =					\
     st/st-types.h				\
     st/st-widget.h				\
     $(NULL)
-    
-st/st.h: Makefile
+
+st.h: Makefile
 	$(AM_V_GEN) (echo "#define ST_H_INSIDE 1";	\
 	for name in $(st_source_h); do			\
 	  echo "#include <"$$name">";			\
-	done; echo "#undef ST_H_INSIDE") > st/st.h.tmp && mv st/st.h.tmp st/st.h
+	done; echo "#undef ST_H_INSIDE") > st.h.tmp && mv st.h.tmp st.h
 
-BUILT_SOURCES += st/st.h
+BUILT_SOURCES += st.h
 
 st_source_private_h =				\
     st/st-private.h				\
@@ -152,7 +152,7 @@ libst_1_0_la_SOURCES =				\
     $(st_source_private_h)			\
     $(st_source_private_c)			\
     $(st_source_h)				\
-    st/st.h					\
+    st.h					\
     $(st_built_sources)				\
     $(NULL)
 libst_1_0_la_CPPFLAGS = $(st_cflags)

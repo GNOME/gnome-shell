@@ -2,7 +2,7 @@
 #ifndef __SHELL_SLICER_H__
 #define __SHELL_SLICER_H__
 
-#include "st/st.h"
+#include "st.h"
 
 #define SHELL_TYPE_SLICER                 (shell_slicer_get_type ())
 #define SHELL_SLICER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_SLICER, ShellSlicer))
