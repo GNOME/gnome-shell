@@ -516,8 +516,16 @@ StTooltip {
 
 /* Places */
 
-.places-actions {
+.places-item-box {
     spacing: 4px;
+}
+
+.places-item {
+    padding: 2px;
+}
+
+.places-actions {
+    spacing: 2px;
 }
 
 #placesDevices {

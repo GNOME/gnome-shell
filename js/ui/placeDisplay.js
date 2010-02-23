@@ -408,36 +408,77 @@ DashPlaceDisplayItem.prototype = {
         this.name = info.name;
         this._info = info;
         this._icon = info.iconFactory(PLACES_ICON_SIZE);
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   spacing: 4 });
-        let text = new St.Button({ style_class: 'places-item',
-                                   label: info.name,
-                                   x_align: St.Align.START });
-        text.connect('clicked', Lang.bind(this, this._onClicked));
-        let iconBox = new St.Bin({ child: this._icon, reactive: true });
-        iconBox.connect('button-release-event',
-                        Lang.bind(this, this._onClicked));
-        this.actor.append(iconBox, Big.BoxPackFlags.NONE);
-        this.actor.append(text, Big.BoxPackFlags.EXPAND);
+
+        this.actor = new St.Clickable({ style_class: 'places-item',
+                                        reactive: true,
+                                        x_align: St.Align.START,
+                                        x_fill: true });
+
+        let box = new St.BoxLayout({ style_class: 'places-item-box' });
+        this.actor.set_child(box);
+
+        let bin = new St.Bin({ child: this._icon });
+        box.add(bin);
+
+        let text = new St.Label({ text: info.name });
+        box.add(text, { expand: true, x_fill: true });
 
         if (info.isRemovable()) {
             let removeIcon = St.TextureCache.get_default().load_icon_name ('media-eject', PLACES_ICON_SIZE);
-            let removeIconBox = new St.Button({ child: removeIcon,
-                                                reactive: true });
-            this.actor.append(removeIconBox, Big.BoxPackFlags.NONE);
+            let removeIconBox = new St.Clickable({ child: removeIcon,
+                                                   reactive: true });
+            box.add(removeIconBox);
             removeIconBox.connect('clicked',
                                   Lang.bind(this, function() {
                                                   this._info.remove();
                                             }));
         }
 
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('notify::hover',
+                           Lang.bind(this, this._onHoverChanged));
+        this.actor.connect('button-press-event',
+                           Lang.bind(this, this._onButtonPress));
+        this.actor.connect('button-release-event',
+                           Lang.bind(this, this._onButtonRelease));
+
         this.actor._delegate = this;
-        let draggable = DND.makeDraggable(this.actor);
+        this._dragStartX = null;
+        this._dragStartY = null;
+        this._draggable = DND.makeDraggable(this.actor, true);
     },
 
     _onClicked: function(b) {
         this._info.launch();
         Main.overview.hide();
+    },
+
+    _onButtonPress: function(actor, event) {
+        if (event.get_button() != 1)
+            return false;
+
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+    },
+
+    _onButtonRelease: function(actor, event) {
+        if (event.get_button() != 1)
+            return false;
+
+        this._dragStartX = null;
+        this._dragStartY = null;
+    },
+
+    _onHoverChanged: function(button) {
+        let hover = button.hover;
+        if (!hover) {
+            if (button.pressed && this._dragStartX != null) {
+                button.fake_release();
+                this._draggable.startDrag(this._dragStartX, this._dragStartY,
+                                          global.get_current_time());
+            }
+        }
     },
 
     getDragActorSource: function() {
