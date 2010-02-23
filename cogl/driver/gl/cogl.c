@@ -185,7 +185,8 @@ _cogl_features_init (void)
 
   _cogl_get_gl_version (&gl_major, &gl_minor);
 
-  flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
+  flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
+           | COGL_FEATURE_UNSIGNED_INT_INDICES);
 
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 

@@ -301,14 +301,22 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
  * CoglIndicesType:
  * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
  * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
+ * @COGL_INDICES_TYPE_UNSIGNED_INT: Your indices are unsigned ints
  *
  * You should aim to use the smallest data type that gives you enough
  * range, since it reduces the size of your index array and can help
  * reduce the demand on memory bandwidth.
+ *
+ * Note that %COGL_INDICES_TYPE_UNSIGNED_INT is only supported if the
+ * %COGL_FEATURE_UNSIGNED_INT_INDICES feature is available. This
+ * should always be available on OpenGL but on OpenGL ES it will only
+ * be available if the GL_OES_element_index_uint extension is
+ * advertized.
  */
 typedef enum {
   COGL_INDICES_TYPE_UNSIGNED_BYTE,
   COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  COGL_INDICES_TYPE_UNSIGNED_INT,
 } CoglIndicesType;
 
 /**

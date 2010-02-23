@@ -70,3 +70,9 @@ COGL_FEATURE_FUNCTION (void, glDeleteFramebuffers,
 COGL_FEATURE_FUNCTION (void, glGenerateMipmap,
                        (GLenum                target))
 COGL_FEATURE_END ()
+
+COGL_FEATURE_BEGIN (element_index_uint, 255, 255,
+                    "OES\0",
+                    "element_index_uint\0",
+                    COGL_FEATURE_UNSIGNED_INT_INDICES)
+COGL_FEATURE_END ()
