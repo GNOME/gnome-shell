@@ -37,6 +37,7 @@ typedef struct _CoglGles2WrapperTextureUnit
 
 typedef struct _CoglGles2WrapperAttributes  CoglGles2WrapperAttributes;
 typedef struct _CoglGles2WrapperUniforms  CoglGles2WrapperUniforms;
+typedef struct _CoglGles2WrapperTexEnv    CoglGles2WrapperTexEnv;
 typedef struct _CoglGles2WrapperTextureUnitSettings
 					  CoglGles2WrapperTextureUnitSettings;
 typedef struct _CoglGles2WrapperSettings  CoglGles2WrapperSettings;
@@ -115,6 +116,19 @@ struct _CoglGles2WrapperUniforms
   GLint      texture_unit_uniform;
 };
 
+struct _CoglGles2WrapperTexEnv
+{
+  GLenum texture_combine_rgb_func;
+  GLenum texture_combine_rgb_src[3];
+  GLenum texture_combine_rgb_op[3];
+
+  GLenum texture_combine_alpha_func;
+  GLenum texture_combine_alpha_src[3];
+  GLenum texture_combine_alpha_op[3];
+
+  GLfloat texture_combine_constant[4];
+};
+
 /* NB: We get a copy of this for each fragment/vertex
  * program varient we generate so we try to keep it
  * fairly lean */
@@ -130,6 +144,8 @@ struct _CoglGles2WrapperSettings
 
   unsigned int alpha_test_enabled:1;
   unsigned int fog_enabled:1;
+
+  CoglGles2WrapperTexEnv tex_env[COGL_GLES2_MAX_TEXTURE_UNITS];
 };
 
 struct _CoglGles2WrapperTextureUnit

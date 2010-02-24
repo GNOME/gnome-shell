@@ -130,6 +130,31 @@ initialize_texture_units (CoglGles2Wrapper *w)
       w->active_texture_unit = i;
       GE( cogl_wrap_glMatrixMode (GL_TEXTURE));
       GE( cogl_wrap_glLoadIdentity ());
+
+      /* The real GL default is GL_MODULATE but the shader only
+         supports GL_COMBINE so let's default to that instead */
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,
+                               GL_COMBINE) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,
+                               GL_MODULATE) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
+                               GL_PREVIOUS) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
+                               GL_TEXTURE) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
+                               GL_SRC_COLOR) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
+                               GL_SRC_COLOR) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA,
+                               GL_MODULATE) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
+                               GL_PREVIOUS) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
+                               GL_TEXTURE) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
+                               GL_SRC_COLOR) );
+      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
+                               GL_SRC_COLOR) );
     }
 
   GE( cogl_wrap_glMatrixMode ((GLenum) prev_mode));
@@ -172,12 +197,35 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   initialize_texture_units (wrapper);
 }
 
+static int
+cogl_gles2_get_n_args_for_combine_func (GLenum func)
+{
+  switch (func)
+    {
+    case GL_REPLACE:
+      return 1;
+    case GL_MODULATE:
+    case GL_ADD:
+    case GL_ADD_SIGNED:
+    case GL_SUBTRACT:
+    case GL_DOT3_RGB:
+    case GL_DOT3_RGBA:
+      return 2;
+    case GL_INTERPOLATE:
+      return 3;
+    default:
+      return 0;
+    }
+}
+
 static gboolean
 cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
 			   const CoglGles2WrapperSettings *b,
 			   gboolean vertex_tests,
 			   gboolean fragment_tests)
 {
+  int i;
+
   if (a->texture_units != b->texture_units)
     return FALSE;
 
@@ -194,6 +242,34 @@ cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
 
   if (vertex_tests && a->fog_enabled && a->fog_mode != b->fog_mode)
     return FALSE;
+
+  /* Compare layer combine operation for each active unit */
+  if (fragment_tests)
+    for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+      if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (a->texture_units, i))
+        {
+          const CoglGles2WrapperTexEnv *tex_env_a = a->tex_env + i;
+          const CoglGles2WrapperTexEnv *tex_env_b = b->tex_env + i;
+          int arg, n_args;
+          GLenum func;
+
+          func = tex_env_a->texture_combine_rgb_func;
+
+          if (func != tex_env_b->texture_combine_rgb_func)
+            return FALSE;
+
+          n_args = cogl_gles2_get_n_args_for_combine_func (func);
+
+          for (arg = 0; arg < n_args; arg++)
+            {
+              if (tex_env_a->texture_combine_rgb_src[arg] !=
+                  tex_env_b->texture_combine_rgb_src[arg])
+                return FALSE;
+              if (tex_env_a->texture_combine_rgb_op[arg] !=
+                  tex_env_b->texture_combine_rgb_op[arg])
+                return FALSE;
+            }
+        }
 
   return TRUE;
 }
@@ -307,6 +383,187 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   return shader;
 }
 
+static void
+cogl_gles2_add_arg (int unit,
+                    GLenum src,
+                    GLenum operand,
+                    const char *swizzle,
+                    GString *shader_source)
+{
+  char alpha_swizzle[5] = "aaaa";
+
+  g_string_append_c (shader_source, '(');
+
+  if (operand == GL_ONE_MINUS_SRC_COLOR || operand == GL_ONE_MINUS_SRC_ALPHA)
+    g_string_append_printf (shader_source,
+                            "vec4(1.0, 1.0, 1.0, 1.0).%s - ",
+                            swizzle);
+
+  /* If the operand is reading from the alpha then replace the swizzle
+     with the same number of copies of the alpha */
+  if (operand == GL_SRC_ALPHA || operand == GL_ONE_MINUS_SRC_ALPHA)
+    {
+      alpha_swizzle[strlen (swizzle)] = '\0';
+      swizzle = alpha_swizzle;
+    }
+
+  switch (src)
+    {
+    case GL_TEXTURE:
+      g_string_append_printf (shader_source,
+                              "texture2D (texture_unit[%d], tex_coord[%d]).%s",
+                              unit, unit, swizzle);
+      break;
+
+    case GL_CONSTANT:
+      g_string_append_printf (shader_source, "combine_constant[%d].%s",
+                              unit, swizzle);
+      break;
+
+    case GL_PREVIOUS:
+      if (unit > 0)
+        {
+          g_string_append_printf (shader_source, "gl_FragColor.%s", swizzle);
+          break;
+        }
+      /* flow through */
+    case GL_PRIMARY_COLOR:
+      g_string_append_printf (shader_source, "frag_color.%s", swizzle);
+      break;
+
+    default:
+      if (src >= GL_TEXTURE0 &&
+          src < GL_TEXTURE0 + COGL_GLES2_MAX_TEXTURE_UNITS)
+        g_string_append_printf (shader_source,
+                                "texture2D (texture_unit[%d], "
+                                "tex_coord[%d]).%s",
+                                src - GL_TEXTURE0,
+                                src - GL_TEXTURE0,
+                                swizzle);
+      break;
+    }
+
+  g_string_append_c (shader_source, ')');
+}
+
+static void
+cogl_gles2_add_operation (int unit,
+                          GLenum combine_func,
+                          const GLenum *sources,
+                          const GLenum *operands,
+                          const char *swizzle,
+                          GString *shader_source)
+{
+  switch (combine_func)
+    {
+    case GL_REPLACE:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      break;
+
+    case GL_MODULATE:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " * ");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          swizzle, shader_source);
+      break;
+
+    case GL_ADD:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " + ");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          swizzle, shader_source);
+      break;
+
+    case GL_ADD_SIGNED:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " + ");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          swizzle, shader_source);
+      g_string_append_printf (shader_source,
+                              " - vec4(0.5, 0.5, 0.5, 0.5).%s",
+                              swizzle);
+      break;
+
+    case GL_SUBTRACT:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " - ");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          swizzle, shader_source);
+      break;
+
+    case GL_INTERPOLATE:
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " * ");
+      cogl_gles2_add_arg (unit, sources[2], operands[2],
+                          swizzle, shader_source);
+      g_string_append (shader_source, " + ");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          swizzle, shader_source);
+      g_string_append_printf (shader_source,
+                              " * (vec4(1.0, 1.0, 1.0, 1.0).%s - ",
+                              swizzle);
+      cogl_gles2_add_arg (unit, sources[2], operands[2],
+                          swizzle, shader_source);
+      g_string_append_c (shader_source, ')');
+      break;
+
+    case GL_DOT3_RGB:
+    case GL_DOT3_RGBA:
+      g_string_append (shader_source, "vec4(4 * ((");
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          "r", shader_source);
+      g_string_append (shader_source, " - 0.5) * (");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          "r", shader_source);
+      g_string_append (shader_source, " - 0.5) + (");
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          "g", shader_source);
+      g_string_append (shader_source, " - 0.5) * (");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          "g", shader_source);
+      g_string_append (shader_source, " - 0.5) + (");
+      cogl_gles2_add_arg (unit, sources[0], operands[0],
+                          "b", shader_source);
+      g_string_append (shader_source, " - 0.5) * (");
+      cogl_gles2_add_arg (unit, sources[1], operands[1],
+                          "b", shader_source);
+      g_string_append_printf (shader_source, " - 0.5))).%s", swizzle);
+      break;
+    }
+}
+
+static gboolean
+cogl_gles2_rgb_and_alpha_equal (const CoglGles2WrapperTexEnv *tex_env)
+{
+  int arg, n_args;
+
+  if (tex_env->texture_combine_rgb_func != tex_env->texture_combine_alpha_func)
+    return FALSE;
+
+  n_args =
+    cogl_gles2_get_n_args_for_combine_func (tex_env->texture_combine_rgb_func);
+
+  for (arg = 0; arg < n_args; arg++)
+    {
+      if (tex_env->texture_combine_rgb_src[arg] !=
+          tex_env->texture_combine_alpha_src[arg])
+        return FALSE;
+
+      if (tex_env->texture_combine_rgb_op[arg] != GL_SRC_COLOR ||
+          tex_env->texture_combine_alpha_op[arg] != GL_SRC_ALPHA)
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+
 static CoglGles2WrapperShader *
 cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
 {
@@ -359,29 +616,55 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
      apparent bug in the PowerVR drivers. Without it the alpha
      blending seems to stop working */
   g_string_append (shader_source,
-		   "vec4 frag_color_copy = frag_color;\n");
-  g_string_append (shader_source, "gl_FragColor = frag_color;\n");
+                   "vec4 frag_color_copy = frag_color;\n");
 
-  for (i = 0; i < n_texture_units; i++)
-    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
-      {
-        if (COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY (settings->texture_units, i))
-          /* If the texture only has an alpha channel (eg, with the textures
-             from the pango renderer) then the RGB components will be
-             black. We want to use the RGB from the current color in that
-             case */
-          g_string_append_printf (shader_source,
-                                  "gl_FragColor.a *= "
-                                  "texture2D (texture_unit[%d], "
-                                  "tex_coord[%d]).a;\n",
-                                  i, i);
-        else
-          g_string_append_printf (shader_source,
-                                  "gl_FragColor *= "
-                                  "texture2D (texture_unit[%d], "
-                                  "tex_coord[%d]);\n",
-                                  i, i);
-      }
+  /* If there are no textures units enabled then we can just directly
+     use the color from the vertex shader */
+  if (n_texture_units == 0)
+    g_string_append (shader_source, "gl_FragColor = frag_color;\n");
+  else
+    /* Otherwise we need to calculate the value based on the layer
+       combine settings */
+    for (i = 0; i < n_texture_units; i++)
+      if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+        {
+          const CoglGles2WrapperTexEnv *tex_env = settings->tex_env + i;
+
+          /* If the rgb and alpha combine functions are the same then
+             we can do both with a single statement, otherwise we need
+             to do them separately */
+          if (cogl_gles2_rgb_and_alpha_equal (tex_env))
+            {
+              g_string_append (shader_source, "gl_FragColor.rgba = ");
+              cogl_gles2_add_operation (i,
+                                        tex_env->texture_combine_rgb_func,
+                                        tex_env->texture_combine_rgb_src,
+                                        tex_env->texture_combine_rgb_op,
+                                        "rgba",
+                                        shader_source);
+              g_string_append (shader_source, ";\n");
+            }
+          else
+            {
+              g_string_append (shader_source, "gl_FragColor.rgb = ");
+              cogl_gles2_add_operation (i,
+                                        tex_env->texture_combine_rgb_func,
+                                        tex_env->texture_combine_rgb_src,
+                                        tex_env->texture_combine_rgb_op,
+                                        "rgb",
+                                        shader_source);
+              g_string_append (shader_source,
+                               ";\n"
+                               "gl_FragColor.a = ");
+              cogl_gles2_add_operation (i,
+                                        tex_env->texture_combine_alpha_func,
+                                        tex_env->texture_combine_alpha_src,
+                                        tex_env->texture_combine_alpha_op,
+                                        "a",
+                                        shader_source);
+              g_string_append (shader_source, ";\n");
+            }
+        }
 
   if (settings->fog_enabled)
     g_string_append (shader_source, cogl_fixed_fragment_shader_fog);
@@ -1079,16 +1362,61 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 void
 cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
-  /* This function is only used to set the texture mode once to
-     GL_MODULATE. The shader is hard-coded to modulate the texture so
-     nothing needs to be done here. */
+  if (target == GL_TEXTURE_ENV)
+    {
+      CoglGles2WrapperTexEnv *tex_env;
+
+      _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+      tex_env = w->settings.tex_env + w->active_texture_unit;
+
+      switch (pname)
+        {
+        case GL_COMBINE_RGB:
+          tex_env->texture_combine_rgb_func = param;
+          break;
+        case GL_COMBINE_ALPHA:
+          tex_env->texture_combine_alpha_func = param;
+          break;
+        case GL_SRC0_RGB:
+        case GL_SRC1_RGB:
+        case GL_SRC2_RGB:
+          tex_env->texture_combine_rgb_src[pname - GL_SRC0_RGB] = param;
+          break;
+        case GL_SRC0_ALPHA:
+        case GL_SRC1_ALPHA:
+        case GL_SRC2_ALPHA:
+          tex_env->texture_combine_alpha_src[pname - GL_SRC0_ALPHA] = param;
+          break;
+        case GL_OPERAND0_RGB:
+        case GL_OPERAND1_RGB:
+        case GL_OPERAND2_RGB:
+          tex_env->texture_combine_rgb_op[pname - GL_OPERAND0_RGB] = param;
+          break;
+        case GL_OPERAND0_ALPHA:
+        case GL_OPERAND1_ALPHA:
+        case GL_OPERAND2_ALPHA:
+          tex_env->texture_combine_alpha_op[pname - GL_OPERAND0_ALPHA] = param;
+          break;
+        }
+
+      w->settings_dirty = TRUE;
+    }
 }
 
 void
 cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
 {
-  /* FIXME: Currently needed to support texture combining using
-   * COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT */
+  if (target == GL_TEXTURE_ENV && pname == GL_TEXTURE_ENV_COLOR)
+    {
+      CoglGles2WrapperTexEnv *tex_env;
+
+      _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+      tex_env = w->settings.tex_env + w->active_texture_unit;
+
+      memcpy (tex_env->texture_combine_constant, params, sizeof (GLfloat) * 4);
+    }
 }
 
 void
