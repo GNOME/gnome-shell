@@ -1,86 +1,71 @@
-# Copyright (C) 2002-2009 Free Software Foundation, Inc.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Aviary.pl
 # Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Review całości pliku: 17.03.2009 Piotr Leszczyński
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-19 10:44+0100\n"
-"PO-Revision-Date: 2009-03-19 12:20+0100\n"
-"Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
+"POT-Creation-Date: 2010-02-24 19:29+0100\n"
+"PO-Revision-Date: 2010-02-24 19:22+0100\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Pulpit"
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Zdarzenie sygnału dźwiękowego"
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Zarządzanie oknami"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Żądanie nieznanej informacji okna: %d"
 
-#: ../src/core/delete.c:70
-#: ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50
-#: ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Nie można przetworzyć \"%s\" jako liczby całkowitej (int)"
+msgid "<tt>%s</tt> is not responding."
+msgstr "Okno <tt>%s</tt> nie odpowiada."
 
-#: ../src/core/delete.c:77
-#: ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57
-#: ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Nie można rozpoznać końcowych znaków \"%s\" w napisie \"%s\""
+#: ../src/core/delete.c:99
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
 
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Nie można przetworzyć komunikatu \"%s\" od procesu okna\n"
+#: ../src/core/delete.c:108
+msgid "_Wait"
+msgstr "_Czekaj"
 
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Błąd przy odczycie z procesu obsługującego okno: %s\n"
+#: ../src/core/delete.c:108
+msgid "_Force Quit"
+msgstr "_Zakończ"
 
-#: ../src/core/delete.c:336
-#, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Przy uruchamianiu metacity-dialog (pytającego o zniszczenie okna) wystąpił błąd: %s\n"
-
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:206
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Nie można uzyskać nazwy komputera: %s\n"
+msgstr "Uzyskanie nazwy komputera się nie powiodło: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr "Brak rozszerzenia %s wymaganego przez compositing"
+msgstr "Brak rozszerzenia %s wymaganego przez składanie"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Nie można otworzyć połączenia z ekranem \"%s\" systemu X Window\n"
+msgstr ""
+"Otwarcie połączenia z ekranem \"%s\" systemu X Window się nie powiodło\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -88,107 +73,137 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Utracono połączenie z ekranem \"%s\".\n"
-"Prawdopodobnie przestał funkcjonować serwer X lub przerwano działanie menedżera okien.\n"
+"Prawdopodobnie przestał funkcjonować serwer X lub przerwano działanie "
+"menedżera okien.\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Poważny błąd we/wy %d (%s) na ekranie \"%s\".\n"
+msgstr "Krytyczny błąd wejścia/wyjścia %d (%s) na ekranie \"%s\".\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:697
 #, c-format
-msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
-msgstr "Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny program\n"
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny "
+"program\n"
 
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2388
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
 "\n"
 "%s"
 msgstr ""
-"Podczas uruchamiania <tt>%s</tt> wystąpił błąd:\n"
+"Wystąpił błąd podczas uruchamiania <tt>%s</tt>:\n"
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2478
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr "Nie zdefiniowano polecenia %d.\n"
+msgstr "Nie określono polecenia %d.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3491
 #, c-format
 msgid "No terminal command has been defined.\n"
-msgstr "Nie zdefiniowano polecenia terminala.\n"
+msgstr "Nie określono polecenia terminala.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., oraz inni\n"
-"Program ten stanowi wolne oprogramowanie, aby poznać warunki, pod\n"
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., oraz inni\n"
+"Niniejszy program jest wolnym oprogramowaniem, aby poznać warunki, pod\n"
 "jakimi dopuszczalne jest kopiowanie programu, zajrzyj do jego źródeł.\n"
 "Na program nie udziela się ŻADNYCH GWARANCJI, nawet domyślnej gwarancji\n"
 "PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Wyłącza połączenie z menedżerem sesji"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "Podmienia uruchomionego menedżera okien na Metacity"
+#: ../src/core/main.c:267
+msgid "Replace the running window manager with Mutter"
+msgstr "Podmienia uruchomionego menedżera okien na Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
-msgstr "Określa ID zarządzania sesji"
+msgstr "Określa identyfikator zarządzania sesją"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:278
 msgid "X Display to use"
-msgstr "Używany wyświetlacz X"
+msgstr "Używany ekran X"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
-msgstr "Inicjowanie sesji z zapisanego pliku"
+msgstr "Inicjuje sesję z zapisanego pliku"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
-msgstr "Wezwania X synchroniczne"
+msgstr "Synchroniczne wezwania X"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
-msgstr "Włączenie kompozycji"
+msgstr "Włącza składanie"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
-msgstr "Wyłączenie kompozycji"
+msgstr "Wyłącza składanie"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:314
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Nie przełącza okien na pełny ekran, jeśli są zmaksymalizowane i nie "
+"posiadają dekoracji"
+
+#: ../src/core/main.c:320
+msgid "Comma-separated list of compositor plugins"
+msgstr "Lista wtyczek składania oddzielonych przecinkami"
+
+#: ../src/core/main.c:326
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr ""
+"Określa, czy okno wyskakujące/ramka powinna być wyświetlana podczas "
+"przełączania okien."
+
+#: ../src/core/main.c:333
+msgid "Internal argument for GObject introspection"
+msgstr "Wewnętrzny parametr dla introspekcji GObject"
+
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Nie można przejrzeć katalogu z motywami: %s\n"
+msgstr "Przejrzenie katalogu z motywami się nie powiodło: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:679
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "Nie można odnaleźć żadnego motywu. Proszę sprawdzić, że katalog %s istnieje i zawiera standardowe motywy.\n"
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Nie można odnaleźć żadnego motywu. Proszę sprawdzić, czy katalog %s istnieje "
+"i zawiera standardowe motywy.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
+msgstr "Ponowne uruchomienie się nie powiodło: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -201,231 +216,232 @@ msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505
-#: ../src/core/prefs.c:660
+#: ../src/core/prefs.c:529 ../src/core/prefs.c:690
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "Kluczowi GConf \"%s\" jest przypisana niepoprawna wartość\n"
+msgstr "Kluczowi GConf \"%s\" jest przypisana nieprawidłowa wartość\n"
 
-#: ../src/core/prefs.c:586
-#: ../src/core/prefs.c:829
+#: ../src/core/prefs.c:616 ../src/core/prefs.c:859
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "Wartość %d zapisana w kluczu GConf %s jest poza zakresem %d - %d\n"
 
-#: ../src/core/prefs.c:630
-#: ../src/core/prefs.c:707
-#: ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819
-#: ../src/core/prefs.c:1112
-#: ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145
-#: ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:660 ../src/core/prefs.c:737 ../src/core/prefs.c:785
+#: ../src/core/prefs.c:849 ../src/core/prefs.c:1149 ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1182 ../src/core/prefs.c:1198
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "Klucz GConf \"%s\" jest niewłaściwego typu\n"
+msgstr "Klucz GConf \"%s\" jest nieprawidłowego typu\n"
 
-#: ../src/core/prefs.c:1231
-msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
-msgstr "Obejścia dla niepoprawnie działających programów są nieaktywne. Niektóre z nich mogą się więc zachowywać w sposób nieprzewidywalny.\n"
+#: ../src/core/prefs.c:1289
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Obejścia dla błędnie działających programów są wyłączone. Niektóre z nich "
+"mogą się więc zachowywać w sposób nieprzewidywalny.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1360
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Nie można przetworzyć opisu \"%s\", powiązanego z kluczem GConf %s\n"
+msgstr ""
+"Nie można przetworzyć opisu czcionki \"%s\", powiązanego z kluczem GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1422
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
-msgstr "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje poprawnie modyfikatora przycisku myszy\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
+"prawidłowo modyfikatora przycisku myszy\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1849
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Przy ustawianiu liczby obszarów roboczych na %d wystąpił błąd: %s\n"
+msgstr "Błąd podczas ustawiania liczby obszarów roboczych na %d: %s\n"
 
-#: ../src/core/prefs.c:1971
-#: ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#: ../src/core/prefs.c:2001
-#: ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2061 ../src/core/prefs.c:2239
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
-msgstr "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje poprawnie skrótu klawiszowego \"%s\"\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
+"prawidłowo skrótu klawiszowego \"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2612
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Błąd przy ustawianiu nazwy obszaru roboczego %d na \"%s\": %s\n"
+msgstr "Błąd podczas ustawianiu nazwy obszaru roboczego %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2816
 #, c-format
 msgid "Error setting compositor status: %s\n"
-msgstr "Błąd przy ustawianiu stanu menedżera kompozycji: %s\n"
+msgstr "Błąd podczas ustawiania stanu menedżera składania: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:2845
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "Błąd podczas ustawiania listy wtyczek biblioteki Clutter: %s\n"
+
+#: ../src/core/prefs.c:2889
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Błąd podczas ustawiania stanu ukrytych aktywnych okien: %s\n"
+
+#: ../src/core/prefs.c:2917
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "Błąd podczas ustawiania stanu bez wyskakujących okien: %s\n"
+
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Podekran %d ekranu \"%s\" jest niepoprawny\n"
+msgstr "Podekran %d ekranu \"%s\" jest nieprawidłowy\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:593
 #, c-format
-msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
-msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić działającego menedżera okien, spróbuj użyć opcji --replace.\n"
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić "
+"działającego menedżera okien, proszę spróbować użyć opcji --replace.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:620
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s"
+"\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Przykładowy zapis ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny atrybut \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Przykładowy zapis ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1.\n"
-"\n"
-"Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy.\n"
-"Działanie skrótu może zostać odwrócone poprzez naciśnięcie klawisza \"shift\"; z tego powodu, do skrótu nie można przypisać klawisza \"shift\"."
-
-#: ../src/core/session.c:837
-#: ../src/core/session.c:844
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nie można utworzyć katalogu \"%s\": %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Nie można otworzyć pliku sesji \"%s\" do zapisu: %s\n"
+msgstr "Nie można otworzyć pliku sesji \"%s\" do zapisania: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Błąd przy zapisie do pliku sesji \"%s\": %s\n"
+msgstr "Błąd podczas zapisywania pliku sesji \"%s\": %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Błąd przy zamykaniu pliku sesji \"%s\": %s\n"
+msgstr "Błąd podczas zamykania pliku sesji \"%s\": %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Nie można odczytać zapisanego pliku sesji \"%s\": %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Nie można przetworzyć zapisanego pliku sesji: %s\n"
+msgstr "Przetworzenie zapisanego pliku sesji się nie powiodło: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1198
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "Odnaleziono atrybut <metacity_session>, kiedy ID sesji został już ustawiony"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr ""
+"Odnaleziono atrybut <mutter_session>, kiedy identyfikator sesji został już "
+"ustawiony"
 
-#: ../src/core/session.c:1194
-#: ../src/core/session.c:1269
-#: ../src/core/session.c:1301
-#: ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Nieznany atrybut %s elementu <%s>"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "zagnieżdżony znacznik <window>"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Nieznany element %s"
 
-#: ../src/core/session.c:1879
-#, c-format
-msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
-msgstr "Przy uruchamianiu metacity-dialog (z ostrzeżeniem na temat programu bez obsługi sesji) wystąpił błąd: %s\n"
+#: ../src/core/session.c:1822
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Te okna nie obsługują opcji zapisu aktualnego stanu (\"save current setup"
+"\"), więc przy następnym zalogowaniu będą musiały zostać uruchomione ręcznie."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Nie można otworzyć dziennika z zapisem wykonania: %s\n"
+msgstr "Otwarcie dziennika z zapisem wykonania się nie powiodło: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Nie można wykonać fdopen() na pliku dziennika %s: %s\n"
+msgstr "Wykonać fdopen() na pliku dziennika %s się nie powiodło: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otwarty plik dziennika %s\n"
 
-#: ../src/core/util.c:136
-#: ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Program Metacity został skompilowany bez obsługi trybu z obszerną informacją\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr ""
+"Program Mutter został skompilowany bez obsługi trybu z obszerną informacją\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Menedżer okien: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Błąd w programie menedżera okien: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Ostrzeżenie menedżera okien: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577
-#: ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6217
 #, c-format
-msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
-msgstr "Okno %s ustawia na sobie SM_CLIENT_ID, zamiast na oknie WM_CLIENT_LEADER, jak to określono w specyfikacji ICCCM.\n"
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Okno %s ustawia na sobie SM_CLIENT_ID, zamiast na oknie WM_CLIENT_LEADER, "
+"jak to określono w specyfikacji ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -434,25 +450,31 @@ msgstr "Okno %s ustawia na sobie SM_CLIENT_ID, zamiast na oknie WM_CLIENT_LEADER
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:6880
 #, c-format
-msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "Okno %s ustawia atrybut MWM, określający, że jego rozmiar okna jest niezmienny, lecz jednocześnie ustawia minimalny rozmiar na %d x %d, a maksymalny rozmiar na %d x %d. To nie ma żadnego sensu.\n"
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Okno %s ustawia atrybut MWM, określający, że jego rozmiar okna jest "
+"niezmienny, lecz jednocześnie ustawia minimalny rozmiar na %d x %d, a "
+"maksymalny rozmiar na %d x %d. To nie ma żadnego sensu.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program ustawił błędną wartość _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1435
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Nieprawidłowa wartość WM_TRANSIENT_FOR dla okna 0x%lx określona w %s.\n"
+msgstr ""
+"Nieprawidłowa wartość WM_TRANSIENT_FOR dla okna 0x%lx określona w %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -469,15 +491,20 @@ msgstr ""
 "Prawdopodobnie jest to błąd programu, a nie menedżera okien.\n"
 "Właściwości okna: tytuł=\"%s\" klasa=\"%s\" nazwa=\"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Własność %s odnosząca się do okna 0x%lx zawiera niepoprawną sekwencję UTF-8\n"
+msgstr ""
+"Własność %s odnosząca się do okna 0x%lx zawiera nieprawidłową sekwencję UTF-"
+"8\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Własność %s odnosząca się do okna 0x%lx zawiera niepoprawną sekwencję UTF-8 w %d. elemencie listy\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Własność %s odnosząca się do okna 0x%lx zawiera nieprawidłową sekwencję UTF-"
+"8 w %d. elemencie listy\n"
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -591,415 +618,242 @@ msgstr "Natychmiastowe przejście pomiędzy panelami i biurkiem"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Przejście wstecz pomiędzy panelami i biurkiem"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Ukrycie wszystkich okien i uaktywnienie pulpitu"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Wyświetlenie głównego menu panelu"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Wyświetlenie okna uruchamiania panelu"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Rozpoczęcie lub zatrzymanie nagrywania sesji"
+
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Pobranie zrzutu ekranu"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Pobranie zrzutu okna"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Uruchomienie terminala"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Otwarcie menu okna"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Przełączenie trybu pełnoekranowego"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Przełączenie trybu maksymalizacji"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Przełączanie widoczności okna na samej górze"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Maksymalizacja okna"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Przywrócenie okna"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Przełączenie trybu zwinięcia"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Minimalizacja okna"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Zamknięcie okna"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Przeniesienie okna"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Zmiana rozmiaru okna"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Przełączenie obecności okna na wszystkich obszarach roboczych/tylko jednym"
+msgstr ""
+"Przełączenie obecności okna na wszystkich obszarach roboczych/tylko jednym"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Przeniesienie okna na 1. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Przeniesienie okna na 2. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Przeniesienie okna na 3. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Przeniesienie okna na 4. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Przeniesienie okna na 5. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Przeniesienie okna na 6. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Przeniesienie okna na 7. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Przeniesienie okna na 8. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Przeniesienie okna na 9. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Przeniesienie okna na 10. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Przeniesienie okna na 11. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Przeniesienie okna na 12. obszar roboczy"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Przeniesienie okna o obszar roboczy w lewo"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Przeniesienie okna o obszar roboczy w prawo"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Przeniesienie okna o obszar roboczy w górę"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Przeniesienie okna o obszar roboczy w dół"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Wysunięcie okna, jeśli jest zasłonięte, odsunięcie w przeciwnym wypadku."
+msgstr ""
+"Wysunięcie okna, jeśli jest zasłonięte, odsunięcie w przeciwnym wypadku."
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Wysunięcie okna przed pozostałe"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Odsunięcie okna pod pozostałe"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Pionowa maksymalizacja okna"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Pozioma maksymalizacja okna"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Przeniesienie okna do lewej górnej części ekranu"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Przeniesienie okna do prawej górnej części ekranu"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Przeniesienie okna do lewej dolnej części ekranu"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Przeniesienie okna do prawej dolnej części ekranu"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Przeniesienie okna do górnej części ekranu"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Przeniesienie okna do dolnej części ekranu"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Przeniesienie okna do prawej części ekranu"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Przeniesienie okna do lewej części ekranu"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Przeniesienie okna na środek ekranu"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Nie zaimplementowane) Oparcie nawigacji na programach, zamiast na oknach"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Wtyczki biblioteki Clutter"
 
-#: ../src/metacity.schemas.in.in.h:2
-msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
-msgstr "Napis opisujący czcionkę używaną na paskach tytułowych okien. Rozmiar z tego opisu będzie jednak użyty tylko, jeśli opcja titlebar_font_size ma wartość 0. Opcja ta jest wyłączona, jeśli opcja titlebar_uses_desktop_font jest ustawiona na wartość true. "
+#: ../src/mutter.schemas.in.h:2
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+"Określa, czy ukryte okna (tzn. okna zminimalizowane i okna na innych "
+"obszarach roboczych niż bieżący) powinny pozostać aktywne."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Operacja przy dwukrotnym kliknięciu paska tytułowego"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "Aktywne ukryte okna"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Operacja przy kliknięciu paska tytułowego środkowym klawiszem"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "Modyfikator używany do rozszerzonych działań menedżera okien"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Operacja przy kliknięciu paska tytułowego prawym klawiszem"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr ""
+"Wtyczki do wczytania dla menedżera składania opartego na bibliotece Clutter."
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Rozmieszczenie przycisków na pasku tytułowym"
+#: ../src/mutter.schemas.in.h:6
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"Ten klawisz inicjuje tryb \"overlay\", który jest połączeniem podglądu okien "
+"i systemu uruchamiania programów. Domyślnie jest przeznaczony do powiązania "
+"z klawiszem \"Windows\" na sprzęcie typu PC. Ustawienie tego powiązania "
+"powinno być domyślne lub puste."
 
-#: ../src/metacity.schemas.in.in.h:7
-msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
-msgstr "Rozmieszczenie przycisków na pasku tytułowym. Wartość powinna być napisem w postaci \"menu:minimize,maximize,close\". Dwukropek rozdziela lewy róg okna od prawego, zaś nazwy przycisków są rozdzielone przecinkami. Nie można używać dwóch takich samych przycisków. Nieznane nazwy przycisków są ignorowane, aby w przyszłych wersjach programu mogły zostać dodane nowe przyciski nie powodując konfliktów. Aby rozdzielić dwa sąsiadujące ze sobą przyciski, można użyć specjalnego znacznika rozdzielenia ."
-
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Automatyczne wysuwanie uaktywnianych okien"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). The left and right operations may be swapped using the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
-msgstr "Kliknięcie okna przy przytrzymaniu tego modyfikatora spowoduje przesunięcie okna (lewy przycisk), zmianę jego rozmiaru (środkowy przycisk) lub wyświetlenie menu okna (prawy przycisk). Funkcjonalność lewego i prawego klawisza myszy można odwrócić za pomocą klawisza \"mouse_button_resize\". Przykładowy zapis modyfikatora ma postać \"&lt;Alt&gt;\" lub \"&lt;Super&gt;\"."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Polecenia uruchamiane w odpowiedzi na użycia skrótów klawiszowych"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Menedżer kompozycji"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Określa, w jaki sposób uaktywniane są okna"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Bieżący motyw"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Opóźnienie w milisekundach używane przez opcję automatycznego wysuwania"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Określa, czy program Metacity ma być menedżerem kompozycji."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr "Określa, czy programy lub system mogą generować słyszalne sygnały dźwiękowe; opcja może być używana razem z opcją \"wizualne sygnały dźwiękowe\", przedstawiającą sygnały dźwiękowe w formie graficznej."
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Wyłącza własności, które wymagane są przez stare i niewłaściwie zaimplementowane programy."
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Włączone wizualne sygnały dźwiękowe"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
-msgstr "Jeśli właściwość ta jest ustawiona, a sposób uaktywniania ustawiono jako \"sloppy\" (ang. luźny) lub \"mouse\" (ang. mysz), uaktywniane okno będzie automatycznie wysuwane po upływie czasu określanego przez klucz auto_raise_delay.Opcja ta nie ma zastosowania w przypadku klikania na oknie, aby je wysunąć, ani w przypadku przechodzenia do okna podczas przeciągania go."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
-msgstr "Ustawienie opcji powoduje ignorowanie opcji titlebar_font i używanie zamiast tego na paskach tytułowych standardowej czcionki systemowej używanej przez programy."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
-msgstr "Ustawienie tej opcji spowoduje, że menedżer Metacity ograniczy interakcję z użytkownikiem poprzez użycie ramek przy skalowaniu okien, wyłączenie animacji i podobne. Dla wielu użytkowników może być to znaczące ograniczenie funkcjonalności, ale może pozwolić starszym programom i terminalom na normalną pracę, która w innym wypadku byłaby niemożliwa. Ramki skalowania okien będą jednak wyłączone po włączeniu technologii wspierających."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
-msgstr "Ustawienie tej opcji powoduje, że menedżer Metacity pracuje w ramach programów, nie okien. Pojęcie to jest nieco abstrakcyjne, ale ogólnie ustawienia oparte na programach przypominają raczej działanie systemu MacOS niż systemu Windows. Gdy menedżer pracuje w trybie programów, po uaktywnieniu okna wszystkie okna danego programu zostaną wysunięte. W trybie programów kliknięcia aktywujące nie są przekazywane do okien innych programów. Aktualnie tryb programów nie jest jednak w pełni obsługiwany."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "Jeżeli ustawione, zmniejsza zużycie zasobów kosztem funkcjonalności"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "Modyfikator używany do wykonywania operacji poprzez kliknięcie okna"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Nazwa obszaru roboczego"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Liczba obszarów roboczych"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
-msgstr "Liczba obszarów roboczych. Musi być większa od zera i ma ustalone maksimum (aby zapobiec przypadkowemu unieruchomieniu środowiska przez żądanie zbyt wielu obszarów roboczych)."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Uruchomienie zdefiniowanego polecenia"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid "Set this to true to resize with the right button and show a menu with the middle button while holding down the key given in \"mouse_button_modifier\"; set it to false to make it work the opposite way around."
-msgstr "Po włączeniu użytkownik będzie mógł zmieniać rozmiar okna po wciśnięciu prawego przycisku myszy i wyświetlać menu za pomocą środkowego przycisku przy jednoczesnym wciśnięciu przycisku podanego w opcji \"mouse_button_modifier\"; po wyłączeniu, sytuacja będzie odwrotna."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
-msgstr "Wyłączenie tej opcji może prowadzić do nieprawidłowego działania, dlatego zaleca się, aby użytkownicy nie zmieniali jej domyślnej wartości. Wiele działań (np. kliknięcie w obszarze klienta, przesuwanie lub zmiana rozmiaru okna) powoduje jednoczesne wysunięcie okna. Odznaczenie tej opcji spowoduje oddzielenie wysuwania okna od innych działań użytkownika oraz ignorowanie żądań wysunięcia okna wysyłanych przez programy. Więcej informacji można także znaleźć na stronie http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6.Jednak nawet, gdy opcja jest wyłączona, okno może być wysunięte za pomocą kliknięcia lewym przyciskiem myszy w obszarze okna z jednoczesnym przytrzymaniem klawisza alt, zwykłego kliknięcia na dekoracji okna, lub specjalnych komunikatów systemowych, jak np. żądania aktywacji z apletu listy zadań.Opcja ta jest wyłączona w trybie uaktywnienia przez kliknięcie.Lista sposobów wysuwających okna, gdy opcja rise_on_click nie jest włączona, nie zawiera programowych żądań wysunięcia okna wysyłanych przez programy; te żądania będą ignorowane, niezależnie od ich powodu. Rada dla programistów: jeśli użytkownik uskarża się, że program po wyłączeniu tej opcji nie działa, należy uświadomić mu, że to _jego_ wina, oraz że powinien włączyć ją z powrotem, jeśli chce się pozbyć problemu."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
-msgstr "Niektóre programy nie stosują się do specyfikacji, co może powodować nieprawidłowe zachowanie menedżera okien. Ta opcja przestawia Metacity w tryb ściśle prawidłowy, w którym interfejs użytkownika jest bardziej spójny, o ile nie są uruchamiane żadne programy łamiące specyfikacje."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "Brzęczyk systemowy jest słyszalny"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
-msgstr "Opcja określa, w jaki sposób Metacity ma graficznie przedstawić odtworzenie dźwięku przez brzęczyk systemowy lub program, który z niego korzysta. Aktualnie obsługiwane są dwie wartości \"fullscreen\", która powoduje mignięcie całego ekranu na czarno i biało oraz \"frame_flash\", która powoduje mignięcie paska tytułowego programu podczas wydawania dźwięku. Jeśli program, który wysłał sygnał dźwiękowy będzie nieznany (jak to ma zwykle miejsce przy domyślnym \"dźwięku systemowym\"), pasek tytułowy aktywnego okna zamigocze."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
-msgstr "Klucze /apps/metacity/global_keybindings/run_command_N definiują skróty klawiszowe, które odpowiadają tym poleceniom. Użycie skrótu zapisanego w run_command_N spowoduje wykonanie polecenia zapisanego w command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "Klucz /apps/metacity/global_keybindings/run_command_screenshot definiuje skrót klawiszowy wywołujący polecenie określone przez to ustawienie."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "Klucz /apps/metacity/global_keybindings/run_command_window_screenshot definiuje skrót klawiszowy wywołujący polecenia określone przez to ustawienie."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Skrót klawiszowy, który wykonuje polecenie o odpowiadającym mu numerze, pobrane z ustawienia o kluczu /apps/metacity/keybinding_commands. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "Nazwa obszaru roboczego."
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "Polecenie pobrania zrzutu ekranu"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid "The theme determines the appearance of window borders, titlebar, and so forth."
-msgstr "Motyw określa wygląd krawędzi okien, pasków tytułowych, itp."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
-msgstr "Opóźnienie czasowe przed wysunięciem okna, jeśli opcja automatycznego wysuwania (auto_rise) jest ustawiona. Opóźnienie jest podane w tysięcznych częściach sekundy."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
-msgstr "Tryb uaktywnienia określa, w jaki sposób aktywowane są okna. Opcja ta może przyjmować trzy wartości; \"click\" (ang. kliknięcie) oznacza, że okno musi zostać kliknięte, aby zostało uaktywnione, \"sloppy\" (ang. luźny) oznacza, że okno otrzymuje skupienie, gdy przesunięty zostanie na jego obszar kursor myszy, zaś \"mouse\" (ang. mysz) oznacza, że okno zostaje uaktywnione, gdy kursor myszy przesunięty zostanie na jego obszar, a po opuszczeniu go aktywacja jest wyłączana."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "Polecenie pobrania zrzutu okna"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "Ta opcja określa skutek dwukrotnego kliknięcia paska tytułowego okna. Aktualnie poprawnymi opcjami są: \"toggle_shade\" (zwija/rozwija okno), \"toggle_maximize\" (maksymalizuje/przywraca rozmiar okna), \"toggle_maximize_horizontally\" i \"toggle_maximize_vertically\" (maksymalizują/minimalizują okno w poziomie lub w pionie), \"minimize\" (minimalizuje okno), \"shade\" (zwija okno), \"menu\" (wyświetla menu okna), \"lower\" (chowa okno pod pozostałe) i \"none\" (brak jakiegokolwiek efektu)."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "Ta opcja określa skutek kliknięcia środkowym przyciskiem myszy na pasku tytułowym okna. Aktualnie poprawnymi opcjami są: \"toggle_shade\" (zwija/rozwija okno), \"toggle_maximize\" (maksymalizuje/przywraca rozmiar okna), \"toggle_maximize_horizontally\" i \"toggle_maximize_vertically\" (maksymalizują/minimalizują okno w poziomie lub w pionie), \"minimize\" (minimalizuje okno), \"shade\" (zwija okno), \"menu\" (wyświetla menu okna), \"lower\" (chowa okno pod pozostałe) i \"none\" (brak jakiegokolwiek efektu)."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "Ta opcja określa skutek kliknięcia prawym przyciskiem myszy na pasku tytułowym okna. Aktualnie poprawnymi opcjami są: \"toggle_shade\" (zwija/rozwija okno), \"toggle_maximize\" (maksymalizuje/przywraca rozmiar okna), \"toggle_maximize_horizontally\" i \"toggle_maximize_vertically\" (maksymalizują/minimalizują okno w poziomie lub w pionie), \"minimize\" (minimalizuje okno), \"shade\" (zwija okno), \"menu\" (wyświetla menu okna), \"lower\" (chowa okno pod pozostałe) i \"none\" (brak jakiegokolwiek efektu)."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
-msgstr "Ta opcja daje dodatkowe możliwości konfiguracji sposobu, w jaki nowo utworzone okna zostają uaktywnione. Dostępne są dwie wartości: \"smart\" - typowy tryb uaktywniania wg ustawień użytkownika i \"strict\" - okna otwarte z poziomu terminala nie zostaną uaktywnione."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
-msgstr "Włączenie opcji spowoduje, że w przypadku gdy program lub system wyda sygnał dźwiękowy, wyświetlony zostanie komunikat; jest ona użyteczna dla użytkowników niedosłyszących oraz w środowiskach o dużym natężeniu dźwięku."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "Użycie w paskach tytułowych okien standardowej czcionki systemowej"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Typ wizualnego sygnału dźwiękowego"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Określa, czy wysuwanie okna powinno towarzyszyć innym działaniom użytkownika"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Określa czy zmieniać rozmiar okna za pomocą prawego przycisku myszy"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Tryb uaktywnienia okna"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Czcionka tytułu okna"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Użycie: %s\n"
@@ -1090,8 +944,7 @@ msgstr "Przeno_szenie paska tytułowego na ekranie"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87
-#: ../src/ui/menu.c:89
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
 msgstr "Zawsze na _wierzchu"
 
@@ -1240,44 +1093,6 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "Okno \"%s\" nie odpowiada."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
-msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Czekaj"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Zakończ"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Tytuł"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasa"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
-msgstr "Te okna nie obsługują opcji zapisu aktualnego stanu (\"save current setup\"), więc przy następnym zalogowaniu będą musiały być uruchomione ręcznie."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Przy wykonywaniu \"%s\" wystąpił błąd:\n"
-"%s."
-
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
@@ -1315,7 +1130,8 @@ msgstr "Rozmiar ramki nie określa wymiaru \"%s\" dla krawędzi \"%s\""
 #: ../src/ui/theme.c:343
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Współczynnik proporcji przycisku %g nie mieści się w rozsądnych granicach"
+msgstr ""
+"Współczynnik proporcji przycisku %g nie mieści się w rozsądnych granicach"
 
 #: ../src/ui/theme.c:355
 #, c-format
@@ -1329,13 +1145,22 @@ msgstr "Gradienty powinny się składać co najmniej z dwóch kolorów"
 
 #: ../src/ui/theme.c:1146
 #, c-format
-msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "Specyfikacja koloru GTK musi zawierać stan w nawiasach kwadratowych, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można przeanalizować \"%s\""
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"Specyfikacja koloru GTK+ musi zawierać stan w nawiasach kwadratowych, np. "
+"gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można przetworzyć \"%s\""
 
 #: ../src/ui/theme.c:1160
 #, c-format
-msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "Specyfikacja koloru GTK musi po nazwie stanu zawierać zamykający nawias kwadratowy, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można przeanalizować \"%s\""
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"Specyfikacja koloru GTK+ musi po nazwie stanu zawierać zamykający nawias "
+"kwadratowy, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można "
+"przetworzyć \"%s\""
 
 #: ../src/ui/theme.c:1171
 #, c-format
@@ -1349,8 +1174,12 @@ msgstr "Niezrozumiała definicja koloru \"%s\" w specyfikacji koloru"
 
 #: ../src/ui/theme.c:1214
 #, c-format
-msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
-msgstr "Formatem przenikania jest \"blend/bg_color/fg_color/alpha\", \"%s\" nie pasuje do formatu"
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Formatem przenikania jest \"blend/bg_color/fg_color/alpha\", \"%s\" nie "
+"pasuje do formatu"
 
 #: ../src/ui/theme.c:1225
 #, c-format
@@ -1360,17 +1189,24 @@ msgstr "Nie można przetworzyć wartości alfa \"%s\" w przenikającym kolorze"
 #: ../src/ui/theme.c:1235
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Wartość alfa \"%s\" w przenikającym kolorze nie zawiera się pomiędzy 0,0 i 1,0"
+msgstr ""
+"Wartość alfa \"%s\" w przenikającym kolorze nie zawiera się pomiędzy 0,0 i "
+"1,0"
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Formatem przenikania jest \"shade/base_color/factor\", \"%s\" nie pasuje do formatu"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Formatem przenikania jest \"shade/base_color/factor\", \"%s\" nie pasuje do "
+"formatu"
 
 #: ../src/ui/theme.c:1293
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Nie można przetworzyć współczynnika przenikania \"%s\" w przenikającym kolorze"
+msgstr ""
+"Nie można przetworzyć współczynnika przenikania \"%s\" w przenikającym "
+"kolorze"
 
 #: ../src/ui/theme.c:1303
 #, c-format
@@ -1389,61 +1225,82 @@ msgstr "Wyrażenie określające współrzędne zawiera niedozwolony znak \"%s\"
 
 #: ../src/ui/theme.c:1609
 #, c-format
-msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
-msgstr "Wyrażenie określające współrzędne zawiera liczbę zmiennoprzecinkową \"%s\", której nie można przetworzyć"
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"Wyrażenie określające współrzędne zawiera liczbę zmiennoprzecinkową \"%s\", "
+"której nie można przetworzyć"
 
 #: ../src/ui/theme.c:1623
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Wyrażenie określające współrzędne zawiera liczbę całkowitą \"%s\", której nie można przetworzyć"
+msgstr ""
+"Wyrażenie określające współrzędne zawiera liczbę całkowitą \"%s\", której "
+"nie można przetworzyć"
 
 #: ../src/ui/theme.c:1745
 #, c-format
-msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
-msgstr "Wyrażenie określające współrzędne zawiera nieznany operator na początku tekstu: \"%s\""
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Wyrażenie określające współrzędne zawiera nieznany operator na początku "
+"tekstu: \"%s\""
 
 #: ../src/ui/theme.c:1802
 #, c-format
 msgid "Coordinate expression was empty or not understood"
-msgstr "Wyrażenie określające współrzędne jest puste lub nie można go rozpoznać"
+msgstr ""
+"Wyrażenie określające współrzędne jest puste lub nie można go rozpoznać"
 
-#: ../src/ui/theme.c:1913
-#: ../src/ui/theme.c:1923
-#: ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Wyrażenie opisujące położenie zawiera dzielenie przez zero"
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Wyrażenie opisujące położenie używa operatora dzielenia modulo z argumentem zmiennoprzecinkowym"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Wyrażenie opisujące położenie używa operatora dzielenia modulo z argumentem "
+"zmiennoprzecinkowym"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Wyrażenie opisujące położenie zawiera operator \"%s\" w miejscu, w którym oczekiwano argumentu"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Wyrażenie opisujące położenie zawiera operand \"%s\" w miejscu, w którym "
+"oczekiwano argumentu"
 
 #: ../src/ui/theme.c:2030
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Wyrażenie opisujące położenie zawiera argument w miejscu, w którym oczekiwano operatora"
+msgstr ""
+"Wyrażenie opisujące położenie zawiera operand w miejscu, w którym oczekiwano "
+"operatora"
 
 #: ../src/ui/theme.c:2038
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Wyrażenie opisujące położenie kończy się operatorem zamiast argumentem"
+msgstr "Wyrażenie opisujące położenie kończy się operatorem zamiast operandem"
 
 #: ../src/ui/theme.c:2048
 #, c-format
-msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
-msgstr "Wyrażenie opisujące położenie zawiera argument \"%c\" bezpośrednio po argumencie \"%c\" bez rozdzielającego ich operatora"
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Wyrażenie opisujące położenie zawiera argument \"%c\" bezpośrednio po "
+"argumencie \"%c\" bez rozdzielającego ich operatora"
 
-#: ../src/ui/theme.c:2195
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Wyrażenie opisujące położenie zawiera nieznaną zmienną lub stałą \"%s\""
+msgstr ""
+"Wyrażenie opisujące położenie zawiera nieznaną zmienną lub stałą \"%s\""
 
 #: ../src/ui/theme.c:2290
 #, c-format
@@ -1453,68 +1310,76 @@ msgstr "Parser wyrażeń określających współrzędne przepełnił swój bufor
 #: ../src/ui/theme.c:2319
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Wyrażenie opisujące położenie zawiera nawias zamykający bez odpowiadającego mu nawiasu otwierającego"
+msgstr ""
+"Wyrażenie opisujące położenie zawiera nawias zamykający bez odpowiadającego "
+"mu nawiasu otwierającego"
 
 #: ../src/ui/theme.c:2383
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Wyrażenie opisujące położenie zawiera nawias otwierający bez odpowiadającego mu nawiasu zamykającego"
+msgstr ""
+"Wyrażenie opisujące położenie zawiera nawias otwierający bez odpowiadającego "
+"mu nawiasu zamykającego"
 
 #: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Wyrażenie opisujące położenie nie zawiera żadnych operatorów ani argumentów"
+msgstr ""
+"Wyrażenie opisujące położenie nie zawiera żadnych operatorów ani operandów"
 
-#: ../src/ui/theme.c:2596
-#: ../src/ui/theme.c:2616
-#: ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Motyw zawiera wyrażenie, przy którego obliczaniu wystąpił błąd: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4203
 #, c-format
-msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
-msgstr "Przy tym stylu ramki należy podać <button function=\"%s\" state=\"%s\" draw_ops=\"cokolwiek\"/>"
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"Przy tym stylu ramki należy podać <button function=\"%s\" state=\"%s\" "
+"draw_ops=\"cokolwiek\"/>"
 
-#: ../src/ui/theme.c:4695
-#: ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Brak <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"cokolwiek\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Brak <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"cokolwiek\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nie można odczytać motywu \"%s\": %s\n"
+msgstr "Wczytanie motywu \"%s\" się nie powiodło: %s\n"
 
-#: ../src/ui/theme.c:4894
-#: ../src/ui/theme.c:4901
-#: ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915
-#: ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nie określono elementu <%s> dla motywu \"%s\""
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:4946
 #, c-format
-msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
-msgstr "Przy typie okna \"%s\" w motywie \"%s\" nie ustawiono stylu ramki. Dodaj element <window type=\"%s\" style_set=\"cokolwiek\"/>"
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Przy typie okna \"%s\" w motywie \"%s\" nie ustawiono stylu ramki. Należy "
+"dodać element <window type=\"%s\" style_set=\"cokolwiek\"/>"
 
-#: ../src/ui/theme.c:5383
-#: ../src/ui/theme.c:5445
-#: ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "Stałe definiowane przez użytkownika powinny rozpoczynać się wielką literą, natomiast \"%s\" nie spełnia tego warunku"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Stałe definiowane przez użytkownika powinny rozpoczynać się wielką literą, "
+"natomiast \"%s\" nie spełnia tego warunku"
 
-#: ../src/ui/theme.c:5391
-#: ../src/ui/theme.c:5453
-#: ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Stała \"%s\" została już zdefiniowana"
+msgstr "Stała \"%s\" została już określona"
 
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
@@ -1524,8 +1389,7 @@ msgstr "Stała \"%s\" została już zdefiniowana"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Brak atrybutu \"%s\" w elemencie <%s>"
 
-#: ../src/ui/theme-parser.c:231
-#: ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Wiersz %d, znak %d: %s"
@@ -1535,11 +1399,21 @@ msgstr "Wiersz %d, znak %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atrybut \"%s\" wystąpił dwukrotnie wewnątrz jednego elementu <%s>"
 
-#: ../src/ui/theme-parser.c:437
-#: ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Atrybut \"%s\" jest niepoprawny wewnątrz elementu <%s> w tym kontekście"
+msgstr ""
+"Atrybut \"%s\" jest nieprawidłowy wewnątrz elementu <%s> w tym kontekście"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Nie można przetworzyć \"%s\" jako liczby całkowitej"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Nie można rozpoznać końcowych znaków \"%s\" w napisie \"%s\""
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -1551,14 +1425,12 @@ msgstr "Liczba całkowita %ld musi być dodatnia"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Liczba całkowita %ld jest zbyt duża, obecne maksimum to %d"
 
-#: ../src/ui/theme-parser.c:577
-#: ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Napis \"%s\" nie jest zapisem liczby zmiennoprzecinkowej"
 
-#: ../src/ui/theme-parser.c:608
-#: ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Wartościami logicznymi są \"true\" i \"false\", a nie \"%s\""
@@ -1571,37 +1443,40 @@ msgstr "Wartość kąta musi się mieścić pomiędzy 0,0 i 360,0, odczytano %g\
 #: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Wartość alfa musi się mieścić pomiędzy 0,0 (niewidoczne) i 1,0 (w pełni przezroczyste), odczytano %g\n"
+msgstr ""
+"Wartość alfa musi się mieścić pomiędzy 0,0 (niewidoczne) i 1,0 (w pełni "
+"przezroczyste), odczytano %g\n"
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
-msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
-msgstr "Niewłaściwy rozmiar tytułu \"%s\" (musi on być jedną z wartości: xx-small, x-small, small, medium, large, x-large, xx-large)\n"
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"Nieprawidłowy rozmiar tytułu \"%s\" (musi on być jedną z wartości: xx-small, "
+"x-small, small, medium, large, x-large, xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936
-#: ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033
-#: ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>: użyto nazwy \"%s\" po raz drugi"
 
-#: ../src/ui/theme-parser.c:948
-#: ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
 #: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s>: nie zdefiniowano elementu nadrzędnego o nazwie \"%s\""
+msgstr "<%s>: nie określono elementu nadrzędnego o nazwie \"%s\""
 
 #: ../src/ui/theme-parser.c:1058
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s>: nie zdefiniowano geometrii o nazwie \"%s\""
+msgstr "<%s>: nie określono geometrii o nazwie \"%s\""
 
 #: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> musi albo określać geometrię albo element nadrzędny z geometrią"
+msgstr "<%s> musi albo określać geometrię, albo element nadrzędny z geometrią"
 
 #: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
@@ -1622,25 +1497,23 @@ msgstr "Nieznana wartość atrybutu \"style_set\" (%s) wewnątrz elementu <%s>"
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Z typem okna \"%s\" powiązano już zbiór stylów"
 
-#: ../src/ui/theme-parser.c:1229
-#: ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519
-#: ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778
-#: ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118
-#: ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194
-#: ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> nie jest dopuszczalny poniżej <%s>"
 
-#: ../src/ui/theme-parser.c:1343
-#: ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
-msgstr "Nie można jednocześnie określać dla przycisku jego szerokości i wysokości oraz współczynnika proporcji"
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"Nie można jednocześnie określać dla przycisku jego szerokości i wysokości "
+"oraz współczynnika proporcji"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
@@ -1657,220 +1530,225 @@ msgstr "Współczynnik proporcji \"%s\" jest nieznany"
 msgid "Border \"%s\" is unknown"
 msgstr "Krawędź \"%s\" jest nieznana"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Brak atrybutu \"start_angle\" wewnątrz elementu <%s>"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Brak atrybutu \"extent_angle\" wewnątrz elementu <%s>"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Niezrozumiała wartość \"%s\" typu gradientu"
 
-#: ../src/ui/theme-parser.c:2101
-#: ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Niezrozumiały typ wypełnienia \"%s\" elementu <%s>"
 
-#: ../src/ui/theme-parser.c:2268
-#: ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Niezrozumiały stan \"%s\" (atrybut state) elementu <%s>"
 
-#: ../src/ui/theme-parser.c:2278
-#: ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Niezrozumiały cień \"%s\" (atrybut shadow) elementu <%s>"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Niezrozumiała strzałka \"%s\" (atrybut arrow) elementu <%s>"
 
-#: ../src/ui/theme-parser.c:2588
-#: ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Nie zdefiniowano elementu <draw_ops> o nazwie \"%s\""
+msgstr "Nie określono elementu <draw_ops> o nazwie \"%s\""
 
-#: ../src/ui/theme-parser.c:2600
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Włączenie tutaj elementu draw_ops o nazwie \"%s\" spowodowałoby zapętlone odwołanie"
+msgstr ""
+"Włączenie tutaj elementu draw_ops o nazwie \"%s\" spowodowałoby zapętlone "
+"odwołanie"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Nieznane położenie \"%s\" elementu ramki"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Styl ramki zawiera już element o położeniu %s"
 
-#: ../src/ui/theme-parser.c:2836
-#: ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Nie zdefiniowano elementu <draw_ops> o nazwie \"%s\""
+msgstr "Nie określono elementu <draw_ops> o nazwie \"%s\""
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Nieznana funkcja \"%s\" powiązana z przyciskiem"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Funkcja \"%s\" przycisku nie istnieje w tej wersji (%d, wymaga %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Nieznany stan \"%s\" powiązany z przyciskiem"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Dla stylu ramki określono już przycisk, związany z funkcją %s i stanem %s"
+msgstr ""
+"Dla stylu ramki określono już przycisk, związany z funkcją %s i stanem %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" nie jest poprawną wartością atrybutu \"focus\""
+msgstr "\"%s\" nie jest prawidłową wartością atrybutu \"focus\""
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" nie jest poprawną wartością atrybutu \"state\""
+msgstr "\"%s\" nie jest prawidłową wartością atrybutu \"state\""
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Nie zdefiniowano stylu o nazwie \"%s\""
+msgstr "Nie określono stylu o nazwie \"%s\""
 
-#: ../src/ui/theme-parser.c:3005
-#: ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" nie jest poprawną wartością atrybutu \"resize\""
+msgstr "\"%s\" nie jest prawidłową wartością atrybutu \"resize\""
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3047
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
-msgstr "Element <%s> nie powinien zawierać atrybutu \"resize\" przy stanie zmaksymalizowanym lub zwiniętym"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Element <%s> nie powinien zawierać atrybutu \"resize\" przy stanie "
+"zmaksymalizowanym lub zwiniętym"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "Element <%s> nie powinien zawierać atrybutu \"resize\" przy stanie zmaksymalizowanym"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr ""
+"Element <%s> nie powinien zawierać atrybutu \"resize\" przy stanie "
+"zmaksymalizowanym"
 
-#: ../src/ui/theme-parser.c:3067
-#: ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Zdefiniowano już styl dla stanu %s, rozmiaru %s i uaktywnienia %s"
+msgstr "Określono już styl dla stanu %s, rozmiaru %s i uaktywnienia %s"
 
-#: ../src/ui/theme-parser.c:3078
-#: ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Zdefiniowano już styl dla stanu %s i uaktywnienia %s"
+msgstr "Określono już styl dla stanu %s i uaktywnienia %s"
 
-#: ../src/ui/theme-parser.c:3139
-msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Element <piece> nie może zawierać dwóch draw_ops (motyw zawiera atrybut draw_ops i element <draw_ops> lub dwa elementy)"
+#: ../src/ui/theme-parser.c:3147
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Element <piece> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
+"draw_ops i element <draw_ops> lub dwa elementy)"
 
-#: ../src/ui/theme-parser.c:3177
-msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Element <button> nie może zawierać dwóch draw_ops (motyw zawiera atrybut draw_ops i element <draw_ops> lub dwa elementy)"
+#: ../src/ui/theme-parser.c:3185
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Element <button> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
+"draw_ops i element <draw_ops> lub dwa elementy)"
 
-#: ../src/ui/theme-parser.c:3215
-msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Element <menu_icon> nie może zawierać dwóch draw_ops (motyw zawiera atrybut draw_ops i element <draw_ops> lub dwa elementy)"
+#: ../src/ui/theme-parser.c:3223
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Element <menu_icon> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
+"draw_ops i element <draw_ops> lub dwa elementy)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Głównym elementem motywu musi być <metacity_theme>, nie <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu name/author/date/description"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Element <%s> nie jest dopuszczalny wewnątrz elementu name/author/date/"
+"description"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu <constant>"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu distance/border/aspect_ratio"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Element <%s> nie jest dopuszczalny wewnątrz elementu distance/border/"
+"aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu operacji rysowania"
+msgstr ""
+"Element <%s> nie jest dopuszczalny wewnątrz elementu operacji rysowania"
 
-#: ../src/ui/theme-parser.c:3332
-#: ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367
-#: ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu <%s>"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Brak elementu <draw_ops> powiązanego z elementem ramki"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Brak elementu <draw_ops> powiązanego z przyciskiem"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Wewnątrz elementu <%s> nie jest dopuszczalny tekst"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "Dwukrotnie określono dla tego motywu element <name>"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> określono dwukrotnie dla tego motywu"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "Dwukrotnie określono dla tego motywu element <author>"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "Dwukrotnie określono dla tego motywu element <copyright>"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "Dwukrotnie określono dla tego motywu element <date>"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "Dwukrotnie określono dla tego motywu element <description>"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Nie można znaleźć poprawnego pliku dla motywu %s\n"
+msgstr "Odnalezienie prawidłowego pliku dla motywu %s się nie powiodło\n"
 
-#: ../src/ui/theme-parser.c:4083
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Plik tematu %s nie zawiera głównego elementu <metacity_theme>"
@@ -1923,1472 +1801,155 @@ msgstr "/Okna/_Wszystkie doki"
 msgid "/Windows/Des_ktop"
 msgstr "/Okna/Pu_lpit"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Otwiera kolejne z tych okien"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "To jest przycisk demonstracyjny z ikoną \"otwórz\""
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "To jest przycisk demonstracyjny z ikoną \"zakończ\""
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "To jest przykładowy komunikat w prostym oknie dialogowym"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Imitacja elementu menu %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Okno zawierające tylko krawędzie"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Pasek"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Zwykłe okno programu"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Okno dialogowe"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Modalne okno dialogowe"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Paleta narzędziowa"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Menu rozwijane"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Krawędź"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test układu przycisków %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g milisekund(y) do narysowania jednej ramki okna"
+msgstr "%g milisekundy do narysowania jednej ramki okna"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Użycie: methacity-theme-viewer [NAZWA_MOTYWU]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Błąd przy wczytywaniu motywu: %s\n"
+msgstr "Błąd podczas wczytywania motywu: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Wczytano motyw \"%s\" w ciągu %g sekund(y)\n"
+msgstr "Wczytano motyw \"%s\" w ciągu %g sekund\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Zwykła czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Mała czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Duża czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Układy przycisków"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Test wydajności"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Tutaj znajduje się tytuł okna"
 
 # FIXME - bełkot
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
-msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
-msgstr "Narysowano %d ramek w ciągu %g sekund klienta (%g milisekund na ramkę) oraz %g sekund rzeczywistych, włączając w to zasoby serwera X (%g milisekund na ramkę)\n"
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"Narysowano %d ramek w ciągu %g sekund klienta (%g milisekund na ramkę) oraz %"
+"g sekund rzeczywistych, włączając w to zasoby serwera X (%g milisekund na "
+"ramkę)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
-msgstr "test wyrażenia pozycji zwrócił wartość PRAWDA lecz ustawił błąd"
+msgstr "test wyrażenia pozycji zwrócił wartość PRAWDA, lecz ustawił błąd"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
-msgstr "test wyrażenia pozycji zwrócił wartość FAŁSZ lecz nie ustawił błędu"
+msgstr "test wyrażenia pozycji zwrócił wartość FAŁSZ, lecz nie ustawił błędu"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
-msgstr "Spodziewano się błędu lecz nie podano żadnego"
+msgstr "Spodziewano się błędu, lecz nie podano żadnego"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr "Spodziewano się błędu %d lecz otrzymano %d"
+msgstr "Spodziewano się błędu %d, lecz otrzymano %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Nie spodziewano się błędu, lecz został on zwrócony: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "wartością x było %d, spodziewano się wartości %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "wartością y było %d, spodziewano się wartości %d"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "wyrażenia współrzędnych %d zostało zanalizowane w %g sekund (średnio %g sekund(y))\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr ""
-#~ "Przy uruchamianiu metacity-dialog (informującego o błędzie dotyczącym "
-#~ "polecenia) wystąpił błąd: %s\n"
-#~ msgid "Type of %s was not integer"
-#~ msgstr "Typ %s nie jest liczbą całkowitą (int)"
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
-#~ msgstr ""
-#~ "Wartość %d zapisana w kluczu GConfa %s nie jest rozsądną wartością dla "
-#~ "cursor_size, musi się ona zawierać w przedziale 1...128\n"
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr ""
-#~ "Wartość %d zapisana w kluczu GConfa %s nie jest poprawną liczbą biurek; "
-#~ "aktualne maksimum wynosi %d\n"
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Nieznany atrybut %s wewnątrz elementu <metacity_session>"
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "Nieznany atrybut %s wewnątrz elementu <maximized>"
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "Nieznany atrybut %s wewnątrz elementu <geometry>"
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Setting this option "
-#~ "to false, which is strongly discouraged, will decouple raising from other "
-#~ "user actions, and ignore raise requests generated by applications. See "
-#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Wiele czynności (np. kliknięcie obszaru klienckiego, przenoszenie lub "
-#~ "zmiana rozmiaru okna) zwykle ma skutek uboczny w postaci przeniesienia "
-#~ "okna na wierzch. Ustawienie tej opcji na wartość false jest bardzo "
-#~ "niezalecane, spowoduje ignorowanie żądań przenoszenia okien na wierzch "
-#~ "przez aplikacje. Więcej informacji http://bugzilla.gnome.org/show_bug.cgi?"
-#~ "id=445447#c6."
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na obszar roboczy powyżej bieżącego. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na obszar roboczy poniżej bieżącego. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na obszar roboczy na lewo od bieżącego. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na obszar roboczy na prawo od "
-#~ "bieżącego. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 1. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 10. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 11. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 12. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 2. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 3. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 4. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 5. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 6. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 7. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 8. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza na 9. obszar roboczy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który otwiera menu okna. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który powoduje przejście w \"tryb przenoszenia\", "
-#~ "pozwalający na przenoszenie okna przy użyciu klawiatury. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który powoduje przejście w \"tryb zmiany rozmiaru\", "
-#~ "pozwalający na zmianę rozmiaru okna przy użyciu klawiatury. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który ukrywa wszystkie zwykłe okna i przekazuje "
-#~ "skupienie na tło biurka. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który maksymalizuje okno. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1\". Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który minimalizuje okno. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na obszar roboczy poniżej "
-#~ "bieżącego. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na obszar roboczy na lewo od "
-#~ "bieżącego. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na obszar roboczy na prawo od "
-#~ "bieżącego. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na obszar roboczy powyżej "
-#~ "bieżącego. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 1. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 10. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 10. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 11. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 11. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 12. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 12. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 2. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 2. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 3. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 3. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 4. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 4. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 5. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 5. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 6. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 6. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 7. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 7. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 8. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 8. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 9. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przenosi okno na 9. obszar roboczy. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy panelami i "
-#~ "biurkiem, używając przy tym wyskakującego okna. Przykładowy zapis skrótu "
-#~ "ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy panelami i "
-#~ "biurkiem, bez używania przy tym wyskakującego okna. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy oknami "
-#~ "aplikacji, bez używania przy tym wyskakującego okna. Przytrzymanie przy "
-#~ "tym klawisza \"shift\" powoduje przywrócenie porządku okien. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy oknami "
-#~ "aplikacji, używając przy tym wyskakującego okna. Przytrzymanie przy tym "
-#~ "klawisza \"shift\" powoduje przywrócenie porządku okien. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy oknami, bez "
-#~ "używania przy tym wyskakującego okna. Przytrzymanie przy tym klawisza "
-#~ "\"shift\" powoduje przywrócenie porządku okien. Przykładowy zapis skrótu "
-#~ "ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie wstecz pomiędzy oknami, "
-#~ "używając przy tym wyskakującego okna. Przytrzymanie przy tym klawisza "
-#~ "\"shift\" powoduje przywrócenie porządku okien. Przykładowy zapis skrótu "
-#~ "ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy panelami i "
-#~ "biurkiem, używając przy tym wyskakującego okna. Przykładowy zapis skrótu "
-#~ "ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy panelami i "
-#~ "biurkiem, bez używania przy tym wyskakującego okna. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy oknami aplikacji, "
-#~ "bez używania przy tym wyskakującego okna. Przytrzymanie przy tym klawisza "
-#~ "\"shift\" powoduje odwrócenie porządku okien. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy oknami aplikacji, "
-#~ "używając przy tym wyskakującego okna (tradycyjnie jest to &lt;Alt&gt;F6). "
-#~ "Przytrzymanie przy tym klawisza \"shift\" powoduje odwrócenie porządku "
-#~ "okien. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy oknami, bez "
-#~ "używania przy tym wyskakującego okna (tradycyjnie jest to &lt;Alt&gt;"
-#~ "Escape). Przytrzymanie przy tym klawisza \"shift\" powoduje odwrócenie "
-#~ "porządku okien. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" "
-#~ "lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przekazuje skupienie pomiędzy oknami, używając "
-#~ "przy tym wyskakującego okna (tradycyjnie jest to &lt;Alt&gt;Tab). "
-#~ "Przytrzymanie przy tym klawisza \"shift\" powoduje odwrócenie porządku "
-#~ "okien. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza tryb zawsze na wierzchu. Okno które "
-#~ "jest zawsze na wierzchu, będzie zawsze widoczne ponad innymi "
-#~ "nakładającymi się oknami. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza w tryb pełnoekranowy. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza tryb maksymalizacji. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który zwija lub rozwija okno. Przykładowy zapis skrótu "
-#~ "ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza pomiędzy zajmowaniem przez okno jednego "
-#~ "lub wielu obszarów roboczych. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przywraca zmaksymalizowane okno. Przykładowy "
-#~ "zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który wyświetla okno dialogowe panelu \"Uruchom program"
-#~ "\". Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który uruchamia terminal. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1.\" Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który wywołuje narzędzie panelu pobierajace zrzuty "
-#~ "ekranu do utrwalenia obrazu okna. Przykładowy zapis skrótu ma postać "
-#~ "\"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa "
-#~ "jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich "
-#~ "liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". "
-#~ "Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-#~ "nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który wywołuje narzędzie panelu do pobierania zrzutów "
-#~ "ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który otwiera główne menu panelu. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który przełącza pomiędzy wyświetlaniem okna ponad "
-#~ "innymi oknami lub poniżej ich. Jeśli okno jest przykryte przez inne, "
-#~ "zostaje wysunięte na wierzch. Jeśli okno jest w pełni widoczne, jest "
-#~ "przesuwane pod inne okna. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-#~ "postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-#~ "składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-#~ "wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;"
-#~ "Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled"
-#~ "\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót "
-#~ "klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do północnej (górnej) krawędzi ekranu. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do wschodniej (prawej) krawędzi ekranu. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do północno-wschodniej (prawej-górnej) "
-#~ "krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" "
-#~ "lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do północno-zachodniej (lewej górnej) "
-#~ "krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" "
-#~ "lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do południowej (dolnej) krawędzi ekranu. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do południowo-wschodniej (prawej dolnej) "
-#~ "krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" "
-#~ "lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do południowo-zachodniej (lewej dolnej) "
-#~ "krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" "
-#~ "lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt "
-#~ "restrykcyjna - pozwala to na używanie małych i wielkich liter oraz "
-#~ "skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
-#~ "zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Ten skrót klawiszowy odsuwa okno do zachodniej (lewej) krawędzi ekranu. "
-#~ "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-#~ "pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-#~ "\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-#~ "specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie "
-#~ "będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który wysuwa okno przed pozostałe. Przykładowy zapis "
-#~ "skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie "
-#~ "małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
-#~ "\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
-#~ "\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany "
-#~ "żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który zmienia rozmiar okna tak, aby wypełniło całą "
-#~ "wolną przestrzeń w poziomie. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Skrót klawiszowy, który zmienia rozmiar okna tak, aby wypełniło całą "
-#~ "wolną przestrzeń w pionie. Przykładowy zapis skrótu ma postać \"&lt;"
-#~ "Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest "
-#~ "niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
-#~ "oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli "
-#~ "opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), "
-#~ "wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
-#~ msgid "Toggle always on top state"
-#~ msgstr "Przełączenie trybu zawsze na wierzchu"
-#~ msgid "Unmaximize window"
-#~ msgstr "Przywrócenie zmaksymalizowanego okna"
-#~ msgid "Unmaximize Window"
-#~ msgstr "Przywraca zmaksymalizowane okno"
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"%s\" wewnątrz elementu <%s>"
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "Motyw posiada już domyślną ikonę"
-#~ msgid "Theme already has a fallback mini_icon"
-#~ msgstr "Motyw posiada już domyślną mini_ikoną"
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"name\" wewnątrz elementu <%s>"
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"value\" wewnątrz elementu <%s>"
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"top\" wewnątrz elementu <%s>"
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"bottom\" wewnątrz elementu <%s>"
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"left\" wewnątrz elementu <%s>"
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"right\" wewnątrz elementu <%s>"
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"color\" wewnątrz elementu <%s>"
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"x1\" wewnątrz elementu <%s>"
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"y1\" wewnątrz elementu <%s>"
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"x2\" wewnątrz elementu <%s>"
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"y2\" wewnątrz elementu <%s>"
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"y\" wewnątrz elementu <%s>"
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"width\" wewnątrz elementu <%s>"
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"height\" wewnątrz elementu <%s>"
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"start_angle\" wewnątrz elementu <%s>"
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"extent_angle\" wewnątrz elementu <%s>"
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"alpha\" wewnątrz elementu <%s>"
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"type\" wewnątrz elementu <%s>"
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"filename\" wewnątrz elementu <%s>"
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"state\" wewnątrz elementu <%s>"
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"shadow\" wewnątrz elementu <%s>"
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Brak atrybutu \"array\" wewnątrz elementu <%s>"
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"value\" wewnątrz elementu <%s>"
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"position\" wewnątrz elementu <%s>"
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"function\" wewnątrz elementu <%s>"
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"state\" wewnątrz elementu <%s>"
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"focus\" wewnątrz elementu <%s>"
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"style\" wewnątrz elementu <%s>"
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Brak atrybutu \"resize\" wewnątrz elementu <%s>"
-#~ msgid "On _Top"
-#~ msgstr "Na wierzc_hu"
-#~ msgid ""
-#~ "Forcing this application to quit will cause you to lose any unsaved "
-#~ "changes."
-#~ msgstr ""
-#~ "Wymuszenie zakończenia tej aplikacji spowoduje utratę niezapisanych zmian."
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Nieznana funkcja \"%s\" związana z ikoną menu"
-#~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "Nieznany stan \"%s\" związany z ikoną menu"
-#~ msgid "Theme already has a menu icon for function %s state %s"
-#~ msgstr ""
-#~ "W temacie określono już ikonę menu, związaną z funkcją %s i stanem %s"
-#~ msgid "No draw_ops provided for menu icon"
-#~ msgstr "Z ikoną menu nie jest powiązany element <draw_ops>"
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "Nie można odczytać motywu z pliku %s: %s\n"
-#~ msgid ""
-#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-#~ "specified for this theme"
-#~ msgstr ""
-#~ "Motyw musi zawierać <menu_icon function=\"%s\" state=\"%s\" draw_ops="
-#~ "\"cokolwiek\"/>"
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "Niektóre aplikacje naruszają specyfikacje, czego wynikiem jest błędna "
-#~ "obsługa ich okien przez menedżera okien. Na przykład, w przypadku "
-#~ "idealnym menedżer Metacity umieszczałby wszystkie okna dialogowe zawsze w "
-#~ "jednakowym położeniu w stosunku do ich okien nadrzędnych. Wymaga to "
-#~ "zignorowania położenia okien dialogowych określanego przez aplikacje. "
-#~ "Niektóre wersje języka Java z biblioteką Swing oznaczają jednak swoje "
-#~ "menu podręczne jako okna dialogowe, więc menedżer Metacity musi wyłączyć "
-#~ "pozycjonowanie okien dialogowych, aby umożliwić działanie menu w błędnych "
-#~ "aplikacjach napisanych w języku Java. Istnieje jeszcze kilka innych "
-#~ "przykładów podobnych do powyższego. Opcja ta powoduje przejście menedżera "
-#~ "Metacity w tryb pełnej poprawności, dzięki czemu uzyskuje się nieco "
-#~ "ładniejszy interfejs użytkownika, o ile nie ma potrzeby uruchamiania "
-#~ "żadnych błędnych aplikacji. Niestety, tryb naprawiania błędów musi być "
-#~ "domyślnie włączony; świat rzeczywisty jest okropnym miejscem. Niektóre "
-#~ "obejścia błędów są tak naprawdę obejściami ograniczeń samej specyfikacji, "
-#~ "czasem więc błąd w trybie bez naprawiania błędów aplikacji nie będzie "
-#~ "możliwy do poprawienia bez poprawiania samej specyfikacji."
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "Podczas analizy składniowej wyrażenia określającego współrzędne wystąpiło "
-#~ "przepełnienie bufora. Jest to błąd w Metacity, ale czy na pewno "
-#~ "potrzebujesz tak wielkiego wyrażenia?"
-
+msgstr ""
+"wyrażenia współrzędnych %d zostało przetworzone w %g sekund (średnio %g "
+"sekund(y))\n"
