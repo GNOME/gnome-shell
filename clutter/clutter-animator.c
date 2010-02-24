@@ -1294,7 +1294,11 @@ parse_animator_property (JsonArray *array,
       return;
     }
 
-  valid_keys = NULL;
+  if (G_IS_VALUE (clos->value))
+    valid_keys = g_slist_reverse (g_value_get_pointer (clos->value));
+  else
+    g_value_init (clos->value, G_TYPE_POINTER);
+
   for (k = json_array_get_elements (keys);
        k != NULL;
        k = k->next)
@@ -1336,7 +1340,6 @@ parse_animator_property (JsonArray *array,
       valid_keys = g_slist_prepend (valid_keys, animator_key);
     }
 
-  g_value_init (clos->value, G_TYPE_POINTER);
   g_value_set_pointer (clos->value, g_slist_reverse (valid_keys));
 
   clos->result = TRUE;
