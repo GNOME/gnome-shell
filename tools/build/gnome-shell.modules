@@ -14,6 +14,35 @@
     <branch repo="git.gnome.org" module="gobject-introspection"/>
   </autotools>
 
+  <autotools id="glib">
+    <branch repo="git.gnome.org" module="glib"/>
+  </autotools>
+
+  <autotools id="atk">
+    <branch repo="git.gnome.org" module="atk"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pango">
+    <branch repo="git.gnome.org" module="pango"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk+">
+    <branch repo="git.gnome.org" module="gtk+"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="pango"/>
+      <dep package="atk"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gir-repository">
     <branch repo="git.gnome.org" module="gir-repository"/>
     <dependencies>
@@ -35,8 +64,10 @@
     <branch repo="git.clutter-project.org" module="clutter" revision="clutter-1.0"/>
     <dependencies>
         <dep package="gobject-introspection"/>
-        <dep package="gir-repository"/>
     </dependencies>
+    <after>
+      <dep package="gir-repository"/>
+    </after>
   </autotools>
 
   <autotools id="gconf" autogenargs="--disable-defaults-service">
@@ -46,21 +77,36 @@
   <autotools id="mutter" autogenargs="--with-clutter">
     <branch repo="git.gnome.org" module="mutter"/>
     <dependencies>
-      <dep package="gir-repository"/>
       <dep package="clutter"/>
       <dep package="gconf"/>
     </dependencies>
+    <after>
+      <dep package="gtk+"/>
+    </after>
   </autotools>
 
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
         <dep package="gobject-introspection"/>
-        <dep package="gir-repository"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
         <dep package="gconf"/>
     </dependencies>
   </autotools>
+
+  <metamodule id="gnome-shell-using-gir-repository">
+    <dependencies>
+        <dep package="gir-repository"/>
+        <dep package="gnome-shell"/>
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="gnome-shell-full">
+    <dependencies>
+        <dep package="gtk+"/>
+        <dep package="gnome-shell"/>
+    </dependencies>
+  </metamodule>
 
 </moduleset>

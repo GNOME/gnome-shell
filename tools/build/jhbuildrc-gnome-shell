@@ -20,7 +20,9 @@ build_policy = 'updated'
 
 moduleset = 'http://git.gnome.org/browse/gnome-shell/plain/tools/build/gnome-shell.modules'
 
-modules = [ 'gnome-shell' ]
+modules = [ 'gnome-shell-using-gir-repository' ]
+# Enable this one to use introspection built from the stack itself
+# modules = [ 'gnome-shell-full' ]
 
 # what directory should the source be checked out to?
 checkoutroot = os.path.expanduser('~/gnome-shell/source')
