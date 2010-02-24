@@ -6,79 +6,66 @@
 # Xiong Jiang <jxiong@offtopic.org>, 2003
 # Funda Wang <fundawang@linux.net.cn>, 2003, 2004
 # 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2009
+# jiero <lililjlj@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&amp;component=general\n"
-"POT-Creation-Date: 2008-12-25 16:53+0000\n"
-"PO-Revision-Date: 2009-01-05 20:29+0700\n"
-"Last-Translator: 甘露(Gan Lu) <rhythm.gan@gmail.com>\n"
-"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&component=general\n"
+"POT-Creation-Date: 2010-02-18 21:26+0000\n"
+"PO-Revision-Date: 2010-02-24 18:57+0800\n"
+"Last-Translator: jiero <lililjlj@gmail.com>\n"
+"Language-Team: Simplified Chinese <i10n>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: UTF-8\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "桌面"
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr ""
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "窗口管理"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "未知的窗口信息请求：%d"
 
-#: ../src/core/delete.c:70
-#: ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50
-#: ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "无法将 \"%s\" 解析为整数"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> 未响应。"
 
-#: ../src/core/delete.c:77
-#: ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57
-#: ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "不理解结尾字符 \"%1$s\" (位于字符串 \"%2$s\"中)"
+#: ../src/core/delete.c:99
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"您可以选择稍等一会儿，或者强制退出该应用程序。"
 
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "无法通过对话进程解析消息“%s”\n"
+#: ../src/core/delete.c:108
+msgid "_Wait"
+msgstr "等待(_W)"
 
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "读取对话显示进程时出错：%s\n"
+#: ../src/core/delete.c:108
+msgid "_Force Quit"
+msgstr "强制退出(_F)"
 
-#: ../src/core/delete.c:336
-#, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
-
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:206
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "缺少复合效果所需的 %s 扩展"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -89,20 +76,22 @@ msgstr ""
 "可能是 X 服务器已关闭或者您杀死/摧毁了\n"
 "窗口管理器。\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:697
 #, c-format
-msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
 msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2388
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -113,76 +102,101 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2478
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3491
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "终端命令尚未定义。\n"
 
-#: ../src/core/main.c:116
-#, c-format
+#: ../src/core/main.c:130
+#, fuzzy, c-format
+#| msgid ""
+#| "mutter %s\n"
+#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
 msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"版权所有 (C) 2001-2008 Havoc Pennington, Red Hat, Inc., 以及其他人\n"
-"这是自由软件：版权条款请参见源码.\n"
-"不存在任何保证：即使是对适销性或者适合某种特定目的也不作保证。\n"
+"mutter %s\n"
+"版权所有 (C) 2001-2008 Havoc Pennington, Red Hat, Inc., 以及其他\n"
+"为自由软件：版权条款请参见源码\n"
+"不存在任何保证：即便是对商业性或者特定目的的适应性也不作保证。\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "禁止连接到会话管理器"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "将运行中的窗口管理器替换为 Metacity"
+#: ../src/core/main.c:267
+msgid "Replace the running window manager with Mutter"
+msgstr "将运行中的窗口管理器替换为 Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "指定会话管理 ID"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "要使用的 X 显示"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "从保存文件中初始化会话"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "使 X 调用同步"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "打开复合效果"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "关闭复合效果"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:314
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+
+#: ../src/core/main.c:320
+msgid "Comma-separated list of compositor plugins"
+msgstr "逗号分开 列表和混合渲染器插件"
+
+#: ../src/core/main.c:326
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr "窗口弹出或者/窗口是否切换窗口"
+
+#: ../src/core/main.c:333
+msgid "Internal argument for GObject introspection"
+msgstr ""
+
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "扫描主题目录失败：%s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:679
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "无法找到主题！请确认 %s 存在并且含有正常的主题。\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "无法重启动：%s\n"
@@ -198,233 +212,220 @@ msgstr "无法重启动：%s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:499
-#: ../src/core/prefs.c:654
+#: ../src/core/prefs.c:529 ../src/core/prefs.c:690
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/core/prefs.c:580
-#: ../src/core/prefs.c:823
+#: ../src/core/prefs.c:616 ../src/core/prefs.c:859
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 %3$d 到 %4$d 的范围\n"
 
-#: ../src/core/prefs.c:624
-#: ../src/core/prefs.c:701
-#: ../src/core/prefs.c:749
-#: ../src/core/prefs.c:813
-#: ../src/core/prefs.c:1106
-#: ../src/core/prefs.c:1122
-#: ../src/core/prefs.c:1139
-#: ../src/core/prefs.c:1155
+#: ../src/core/prefs.c:660 ../src/core/prefs.c:737 ../src/core/prefs.c:785
+#: ../src/core/prefs.c:849 ../src/core/prefs.c:1149 ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1182 ../src/core/prefs.c:1198
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/core/prefs.c:1225
-msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+#: ../src/core/prefs.c:1289
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: ../src/core/prefs.c:1296
+#: ../src/core/prefs.c:1360
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: ../src/core/prefs.c:1356
+#: ../src/core/prefs.c:1422
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/core/prefs.c:1771
+#: ../src/core/prefs.c:1849
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/core/prefs.c:1960
-#: ../src/core/prefs.c:2463
+#: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
 
-#: ../src/core/prefs.c:1990
-#: ../src/core/prefs.c:2168
+#: ../src/core/prefs.c:2061 ../src/core/prefs.c:2239
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/core/prefs.c:2544
+#: ../src/core/prefs.c:2612
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
 
-#: ../src/core/prefs.c:2730
+#: ../src/core/prefs.c:2816
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "设置复合管理器状态时出错：%s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:2845
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "设置clutter插件列表时出错：%s\n"
+
+#: ../src/core/prefs.c:2889
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "设置实时隐藏窗口状态时出错：%s\n"
+
+#: ../src/core/prefs.c:2917
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "设置无标签页弹出状态时出错：%s\n"
+
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 无效\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:593
 #, c-format
-msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
-msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换当前的窗口管理器。\n"
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换当"
+"前的窗口管理器。\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:620
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定项\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "在显示 \"%2$s\" 上的 %1$d 屏幕已经有一个窗口管理器\n"
+msgstr "在显示“%2$s”上的 %1$d 屏幕已经有一个窗口管理器\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:165
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"其格式类似于 \"<Control>a\" 或 <Shift><Alt>F1\"。\n"
-"\n"
-"该解析程序相当自由，大小写以及诸如 \"<Ctl>\" 和 \"<Ctrl>\" 的缩写均允许使用。如果将该选项设置为特殊字符串 \"disabled\"，那么此操作将没有按键组合。"
-
-#: ../src/core/schema-bindings.c:173
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"其格式类似于 \"<Control>a\" 或 <Shift><Alt>F1\"。\n"
-"\n"
-"该解析程序相当自由，大小写以及诸如 \"<Ctl>\" 和 \"<Ctrl>\" 的缩写均允许使用。如果将该选项设置为特殊字符串 \"disabled\"，那么此操作将没有按键组合。"
-
-#: ../src/core/session.c:837
-#: ../src/core/session.c:844
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "无法创建目录“%s”：%s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "无法打开会话文件“%s”进行写入：%s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "写入会话文件“%s”时出错：%s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "关闭会话文件“%s”时出错：%s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "无法读取保存的会话文件 %s：%s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "无法解析保存的会话文件：%s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1198
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> 属性已看到，但我们已经拥有该会话 ID"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "<mutter_session> 属性已看到，但我们已经拥有该会话 ID"
 
-#: ../src/core/session.c:1194
-#: ../src/core/session.c:1269
-#: ../src/core/session.c:1301
-#: ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "<%2$s> 元素上未知的属性 %1$s"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "嵌套 <window> 标记"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "未知的元素 %s"
 
-#: ../src/core/session.c:1879
-#, c-format
-msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
-msgstr "启动 metacity-dialog 以警告应用程序不支持会话管理时出错：%s\n"
+#: ../src/core/session.c:1822
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"这些窗口不支持 &quot;保存当前设置 &quot;  您在下次登录时，必须手动重启动它"
+"们。"
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "无法打开调试日志：%s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "无法对日志文件 %s 进行 fdopen() 操作：%s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "打开的日志文件 %s\n"
 
-#: ../src/core/util.c:136
-#: ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity 编译的时候没有加入详细模式的支持\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter 编译的时候没有加入详细模式的支持\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "窗口管理器："
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "窗口管理器中的错误："
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "窗口管理器警告："
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "窗口管理器错误："
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577
-#: ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5743
+#: ../src/core/window.c:6217
 #, c-format
-msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
-msgstr "窗口 %s 在它自身上设置 SM_CLIENT_ID，而不是按照 ICCCM 规定的那样，设置在 WM_CLIENT_LEADER 窗口上。\n"
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"窗口 %s 在它自身上设置 SM_CLIENT_ID，而不是按照 ICCCM 规定的那样，设置在 "
+"WM_CLIENT_LEADER 窗口上。\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -433,22 +434,26 @@ msgstr "窗口 %s 在它自身上设置 SM_CLIENT_ID，而不是按照 ICCCM 规
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6308
+#: ../src/core/window.c:6880
 #, c-format
-msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "窗口 %s 设置了一个 MWM 提示，表明它是不可改变大小的，但设置最小尺寸为 %d x %d，最大尺寸为 %d x %d；这没有任何意义。\n"
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"窗口 %s 设置了一个 MWM 提示，表明它是不可改变大小的，但设置最小尺寸为 %d x %"
+"d，最大尺寸为 %d x %d；这没有任何意义。\n"
 
-#: ../src/core/window-props.c:206
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:338
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (于 %s)"
 
-#: ../src/core/window-props.c:1422
+#: ../src/core/window-props.c:1435
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "为 %2$s 指定了无效的 WM_TRANSIENT_FOR 窗口 0x%1$lx。\n"
@@ -468,14 +473,15 @@ msgstr ""
 "这很可能是应用程序的错误，不是窗口管理器的错误。\n"
 "窗口的标题为“%s”，类别为“%s”，名称为“%s”\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
 
 #: ../src/include/all-keybindings.h:88
@@ -590,452 +596,280 @@ msgstr "在面板和桌面之间立即移动焦点"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "在面板和桌面之间立即反向移动焦点"
 
-#: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop background"
-msgstr "隐藏所有正常窗口并将桌面背景设置为焦点"
+#: ../src/include/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "隐藏所有正常窗口并将焦点设置到桌面"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "显示面板主菜单"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "显示面板的\"运行应用程序\"对话框"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "开始或停止记录会话"
+
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "屏幕抓图"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "窗口抓图"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "运行终端"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "激活窗口菜单"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "切换全屏模式"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "切换最大化状态"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "在窗口是否永远可见于其它窗口之上间切换"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "最大化窗口"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "恢复窗口"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "切换卷起状态"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "最小化窗口"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "关闭窗口"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "移动窗口"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "改变窗口大小"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "在窗口位于所有或仅一个工作区间切换"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "将窗口移到工作区 1"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "将窗口移到工作区 2"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "将窗口移到工作区 3"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "将窗口移到工作区 4"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "将窗口移到工作区 5"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "将窗口移到工作区 6"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "将窗口移到工作区 7"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "将窗口移到工作区 8"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "将窗口移到工作区 9"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "将窗口移到工作区 10"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "将窗口移到工作区 11"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "将窗口移到工作区 12"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "将窗口左移一个工作区"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "将窗口右移一个工作区"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "将窗口上移一个工作区"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "将窗口下移一个工作区"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr "如果窗口被其他窗口遮盖，则提升它，否则降低它"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "将窗口提升到其它窗口之上"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "将窗口降低到其它窗口之下"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "垂直最大化窗口"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "水平最大化窗口"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "将窗口移到西北(左上)角"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "将窗口移到东北(右上)角"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "将窗口移到西南(左下)角"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "将窗口移到东南(右下)角"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "将窗口移到屏幕北(顶)侧"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "将窗口移到屏幕南(底)侧"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "将窗口移到屏幕东(右)侧"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "将窗口移到屏幕西(左)侧"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "将窗口移到屏幕中心"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(未实现)导航以应用程序而不是窗口的方式工作"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Clutter 插件"
 
-#: ../src/metacity.schemas.in.in.h:2
-msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
-msgstr "描述窗口标题栏所用字体的字体描述字符串。但是，只有在 titlebar_font_size 选项设置为 0 时，才使用该说明中的字体大小。同时，如果 titlebar_uses_desktop_font 选项设置为真，则禁用该选项。默认情况下不设置 titlebar_font。"
+#: ../src/mutter.schemas.in.h:2
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr "判断是否隐藏的窗口(比如，最小化窗口和其他工作区的窗口)应该保持状态。"
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "双击标题栏时的动作"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "实时隐藏窗口"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "鼠标中键单击标题栏时的动作"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "用于修改窗口点击动作的修饰键 met"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "鼠标右键单击标题栏时的动作"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr "插件载入到基于 Clutter 的混合管理器。"
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "标题栏上按钮的排列"
+#: ../src/mutter.schemas.in.h:6
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"这个键指出的“覆盖”是一种混合窗口概述和应用程序运行的系统。默认要求使用 "
+"“Super 键”。可能使用默认或者空白。"
 
-#: ../src/metacity.schemas.in.in.h:7
-msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
-msgstr "标题栏上按钮的排列。它的值必须是一个字符串，比如“menu:minimize,maximize,spacer,close”；冒号分隔窗口左上角和右上角的按钮，按钮名称之间用逗号分隔。不允许指定重复的按钮。未知的按钮名称将被忽略，因此在将来版本的 metacity 中可以添加新的按钮，而不至于破坏旧的版本。而特殊的 spacer 标记可在两个按钮之间添加一些空格。"
-
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "自动提升获得焦点的窗口"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
-msgstr "单击窗口时如果按住这个修饰键将移动窗口(左键单击)、改变窗口大小(中键单击)、或者显示窗口菜单(右键单击)。修饰键可写作“&lt;Alt&gt;”或者“&lt;Super&gt;”。"
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "按键组合对应的执行命令"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "复合管理器"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "控制新窗口如何获得窗口"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "当前主题"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "自动提升选项的几毫秒延迟"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "决定 Metacity 是否是复合管理器。"
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr "决定应用程序或系统是否可以生成听得见的铃声；可以和“视觉铃声”一起使用，以便允许静默的铃声。"
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "禁用旧的或有缺陷的应用程序所需的错误功能"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "启用视觉铃声"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
-msgstr "如果为 true，而聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将会在指定延迟后自动升起，延迟的时间由 auto_raise_delay 键指定。此选项与单击行为并没有什么关系，它也与拖放时进入窗口无关。"
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
-msgstr "如果为 true，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
-msgstr "如果为 true，metacity 将会给用户提供较少的反馈，方法是使用线框、避免动画或者其它途径。这对许多用户来说，可用性大打折扣，但是这将允许较早的应用程序和终端服务器能够顺利运行。此外，如果开启了辅助功能，系统会自动禁用线框特性。"
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
-msgstr "如果为 true，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，但通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您以基于应用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在基于应用程序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。但是，基于应用程序的模式目前还基本没有实现。"
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "如果为 true，则以可用性为代价而降低资源占用"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "用于修改窗口点击动作的修饰键"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "工作区名称"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "工作区数量"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
-msgstr "工作区数量。必须大于零，并有一个固定的最大值，以防由于不小心请求调用太多工作区而摧毁您的桌面。"
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "运行预定义的命令"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
-msgstr "将本选项设定为 false (假)将导致有缺陷的行为，所以强烈反对用户将该值由默认的 true (真)进行更改。许多动作(例如在客户区域内单击，移动或调整窗口大小)通常都会提升窗口，这其实是个副作用。将该选项设定为 false (假)，在此强烈反对，将从其他用户动作中 decouple 提升，同时忽略由程序产生的提升要求。参见 http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6。但即便该选项为 false (假)，仍然可以通过 alt + 左键单击窗口任何地方，在窗口装饰条上正常单击，或从寻呼中的特别消息(诸如从任务列表小程序的激活要求)来提升窗口。该选项目前在单击以聚焦(click-to-focus)模式中禁用。注意：当 raise_on_click 设为 false (假)而同时要提升窗口的一系列办法中并不包括从程序来的编程请求；此类请求将被忽略而不管为什么请求。如果你是一名程序开发者，而有某用户埋怨你的程序无法在该设定禁用下工作，告诉他们这都是他们破坏他们窗口管理器所犯的错，他们要么将该选项改回为 true (真)，或好好享受他们自找的麻烦。"
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
-msgstr "某些应用程序破坏规定从而导致窗口管理器功能失常。该选项将 Metacity 置于完全正确模式下，这样的用户界面会更具有一致性，假定您不需要运行任何有缺陷的应用程序。"
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid "System Bell is Audible"
-msgstr "系统铃声发声"
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
-msgstr "通知 Metacity 如何实现系统铃声或其它应用程序响铃的视觉标识。目前有两种值，“全屏”将以黑白色闪烁整个屏幕，而“框架闪烁”将闪烁发出响铃信号的应用程序的标题栏。如果发送响铃的程序未知(通常是默认的“系统响铃”)，则闪烁当前窗口的标题栏。"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
-msgstr "/apps/metacity/global_keybindings/run_command_N 键值定义这些命令对应的按键组合。按下 run_command_N 对应的按键组合将执行命令 command_N。"
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "/apps/metacity/global_keybindings/run_command_screenshot 键值定义了导致调用此设置的按键组合。"
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "/apps/metacity/global_keybindings/run_command_window_screenshot 键值定义了导致调用此设置的按键组合。"
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "运行 /apps/metacity/keybinding_commands 中相应编号的命令的按键组合。其格式类似于“&lt;Control&gt;a”或者“&lt;Shift&gt;&lt;Alt&gt;F1”。该分析程序的格式相当自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid "The name of a workspace."
-msgstr "工作区名称。"
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The screenshot command"
-msgstr "屏幕抓图命令"
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The theme determines the appearance of window borders, titlebar, and so forth."
-msgstr "主题决定窗口边框、标题栏等的外观。"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
-msgstr "提升窗口前的延迟时间(如果 auto_raise 设置为真)。延迟时间的单位为毫秒。"
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
-msgstr "窗口焦点模式指明窗口的激活方式。它有三个可能的值；“click”表示必须单击窗口才能聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示当鼠标进入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid "The window screenshot command"
-msgstr "窗口抓图命令"
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操作。"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "这个选项决定在标题栏上单击中键的效果。当前有效的选项包括，“toggle_shade”将卷起/展开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操作。"
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "这个选项决定在标题栏上单击右键的效果。当前有效的选项包括，“toggle_shade”将卷起/展开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操作。"
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
-msgstr "此选项提供了关于新创建的窗口如何获得焦点的额外控制。目前有效的选项包括，“smart”将应用用户普通的聚焦模式，而“strict”将使得通过终端启动的窗口不获得焦点。"
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
-msgstr "当应用程序或系统发出“铃声”时，打开视觉标识；适合有听力障碍的用户以及在吵闹的环境中使用。"
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid "Use standard system font in window titles"
-msgstr "在窗口标题中使用标准系统字体"
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Visual Bell Type"
-msgstr "视觉铃声类型"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "升起是否作为其它用户交互的副作用"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Window focus mode"
-msgstr "窗口焦点模式"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Window title font"
-msgstr "窗口标题字体"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "用法：%s\n"
 
-#: ../src/ui/frames.c:1077
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "关闭窗口"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-#: ../src/ui/frames.c:1089
+#: ../src/ui/frames.c:1130
 msgid "Restore Window"
 msgstr "恢复窗口"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "卷起窗口"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "展开窗口"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "窗口常居顶端"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "取消窗口常居顶端"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "总在可见工作区"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "只将窗口放在一个工作区"
 
@@ -1081,8 +915,7 @@ msgstr "将标题栏上移动到屏幕上(_S)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87
-#: ../src/ui/menu.c:89
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
 msgstr "常居顶端(_T)"
 
@@ -1231,44 +1064,6 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "“%s”未响应。"
-
-#: ../src/ui/metacity-dialog.c:97
-msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
-msgstr "您可以选择稍等一会儿，或者强制退出该应用程序。"
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "等待(_W)"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "强制退出(_F)"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "标题"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "类别"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
-msgstr "这些窗口不支持“保存当前设置”，您在下次登录时，必须手动重启动它们。"
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"运行“%s”时发生错误：\n"
-"%s"
-
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
@@ -1320,13 +1115,21 @@ msgstr "渐变应至少有两种颜色"
 
 #: ../src/ui/theme.c:1146
 #, c-format
-msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；无法解析“%s”"
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
+"无法解析“%s”"
 
 #: ../src/ui/theme.c:1160
 #, c-format
-msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状态；无法解析“%s”"
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
+"态；无法解析“%s”"
 
 #: ../src/ui/theme.c:1171
 #, c-format
@@ -1340,7 +1143,9 @@ msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
 #: ../src/ui/theme.c:1214
 #, c-format
-msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
 #: ../src/ui/theme.c:1225
@@ -1355,7 +1160,8 @@ msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
 #: ../src/ui/theme.c:1293
@@ -1380,7 +1186,9 @@ msgstr "坐标表达式包含不允许的字符“%s”"
 
 #: ../src/ui/theme.c:1609
 #, c-format
-msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
 #: ../src/ui/theme.c:1623
@@ -1390,7 +1198,9 @@ msgstr "坐标表达式包含无法解析的整数“%s”"
 
 #: ../src/ui/theme.c:1745
 #, c-format
-msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
 #: ../src/ui/theme.c:1802
@@ -1398,21 +1208,21 @@ msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-#: ../src/ui/theme.c:1913
-#: ../src/ui/theme.c:1923
-#: ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
 #: ../src/ui/theme.c:2030
@@ -1427,11 +1237,12 @@ msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
 #: ../src/ui/theme.c:2048
 #, c-format
-msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-#: ../src/ui/theme.c:2195
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
@@ -1456,53 +1267,54 @@ msgstr "坐标表达式有一个开括号，而没有闭括号"
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-#: ../src/ui/theme.c:2596
-#: ../src/ui/theme.c:2616
-#: ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "主题包含的一个表达式产生错误：%s\n"
 
-#: ../src/ui/theme.c:4155
+#: ../src/ui/theme.c:4203
 #, c-format
-msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
-msgstr "必须为该框架风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>"
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"必须为该框架风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
+"\"/>"
 
-#: ../src/ui/theme.c:4635
-#: ../src/ui/theme.c:4660
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4704
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-#: ../src/ui/theme.c:4834
-#: ../src/ui/theme.c:4841
-#: ../src/ui/theme.c:4848
-#: ../src/ui/theme.c:4855
-#: ../src/ui/theme.c:4862
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-#: ../src/ui/theme.c:4870
+#: ../src/ui/theme.c:4946
 #, c-format
-msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
-msgstr "没有为窗口类型“%s”(在主题“%s”中)设置框架风格，请添加一个 <window type=\"%s\" style_set=\"whatever\"/> 元素"
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"没有为窗口类型“%s”(在主题“%s”中)设置框架风格，请添加一个 <window type=\"%s\" "
+"style_set=\"whatever\"/> 元素"
 
-#: ../src/ui/theme.c:5237
-#: ../src/ui/theme.c:5299
-#: ../src/ui/theme.c:5362
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-#: ../src/ui/theme.c:5245
-#: ../src/ui/theme.c:5307
-#: ../src/ui/theme.c:5370
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
@@ -1515,8 +1327,7 @@ msgstr "常数“%s”已被定义"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "元素 <%2$s> 上没有 \"%1$s\" 属性"
 
-#: ../src/ui/theme-parser.c:231
-#: ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "行 %d 字符 %d：%s"
@@ -1526,11 +1337,20 @@ msgstr "行 %d 字符 %d：%s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "属性“%s”在同一个 <%s> 元素上重复了两次"
 
-#: ../src/ui/theme-parser.c:437
-#: ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "在该上下文中，属性“%s”对 <%s> 元素无效"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "无法将 \"%s\" 解析为整数"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "不理解结尾字符 \"%1$s\" (位于字符串 \"%2$s\"中)"
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -1542,14 +1362,12 @@ msgstr "整数 %ld 必须是正数"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "整数 %ld 过大，当前最大值为 %d"
 
-#: ../src/ui/theme-parser.c:577
-#: ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "无法将“%s”解析为浮点数"
 
-#: ../src/ui/theme-parser.c:608
-#: ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "布尔值必须为“真”或“假”，不能为“%s”"
@@ -1566,19 +1384,20 @@ msgstr "Alpha 值必须界于 0.0(不可见)到 1.0(完全不透明)之间，现
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
-msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
-msgstr "无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-large、xx-large 中的一个)\n"
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-large、"
+"xx-large 中的一个)\n"
 
-#: ../src/ui/theme-parser.c:936
-#: ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033
-#: ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "再次使用了 <%s> 名称“%s”"
 
-#: ../src/ui/theme-parser.c:948
-#: ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
 #: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
@@ -1613,25 +1432,22 @@ msgstr "未知的 style_set“%s”在元素 <%s> 上"
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "已经为窗口类型“%s”指定了一种风格设置"
 
-#: ../src/ui/theme-parser.c:1229
-#: ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519
-#: ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778
-#: ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118
-#: ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194
-#: ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "不允许元素 <%s> 在 <%s> 下方"
 
-#: ../src/ui/theme-parser.c:1343
-#: ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
-msgstr "不能同时指定按钮的 \"button_width\"/\"button_height\" 和 \"aspect_ratio\""
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"不能同时指定按钮的 \"button_width\"/\"button_height\" 和 \"aspect_ratio\""
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
@@ -1648,220 +1464,214 @@ msgstr "长宽比“%s”未知"
 msgid "Border \"%s\" is unknown"
 msgstr "边框“%s”未知"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“start_angle”或“from”属性"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“extent_angle”或“to”属性"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "不理解梯度类型的值“%s”"
 
-#: ../src/ui/theme-parser.c:2101
-#: ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "不理解填充类型“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2268
-#: ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "不理解状态“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2278
-#: ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "不理解阴影“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "不理解箭头“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2588
-#: ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-#: ../src/ui/theme-parser.c:2600
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "此处包括 draw_ops“%s”将创建一个循环引用"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "框架段的位置“%s”未知"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "在位置 %s 处已经有一段框架风格"
 
-#: ../src/ui/theme-parser.c:2836
-#: ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "按钮的函数“%s”未知"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "按钮函数“%s”在此版本(%d，需要的是 %d)中不存在"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "按钮的状态“%s”未知"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "框架风格已经有一个函数为 %s、状态为 %s 的按钮"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "“%s”不是 focus 属性的有效值"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "“%s”不是 state 属性的有效值"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "尚未定义名为“%s”的风格"
 
-#: ../src/ui/theme-parser.c:3005
-#: ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "“%s”不是 resize 属性的有效值"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3047
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
 msgstr "状态为 maximized/shaded 的 <%s> 元素不应有“resize”属性"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "状态为 maximized 的 <%s> 元素不应有“resize”属性"
 
-#: ../src/ui/theme-parser.c:3067
-#: ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "已经为 state 属性 %s、resize 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/ui/theme-parser.c:3078
-#: ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "已经为 state 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/ui/theme-parser.c:3139
-msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "一个 <piece> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 <draw_ops> 元素，或者指定了两个元素)"
+#: ../src/ui/theme-parser.c:3147
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"一个 <piece> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3177
-msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "一个 <button> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 <draw_ops> 元素，或者指定了两个元素)"
+#: ../src/ui/theme-parser.c:3185
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"一个 <button> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3215
-msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "一个 <menu_icon> 元素不能有两个 draw_ops(主题指定了一个draw_ops 属性和一个 <draw_ops> 元素，或者指定了两个元素)"
+#: ../src/ui/theme-parser.c:3223
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"一个 <menu_icon> 元素不能有两个 draw_ops(主题指定了一个draw_ops 属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "主题中最外面的元素必须是 <metacity_theme>，而不能是 <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "name/author/date/description 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<constant> 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "distance/border/aspect_ratio 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "draw operation 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3332
-#: ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367
-#: ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "元素 <%s> 不允许出现在 <%s> 元素内"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "没有为框架段提供 draw_ops"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "没有为按钮提供 draw_ops"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "元素 <%s> 中不允许有文本"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, fuzzy, c-format
+#| msgid "<name> specified twice for this theme"
+msgid "<%s> specified twice for this theme"
 msgstr "为此主题指定了两次 <name>"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "为此主题指定了两次 <author>"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "为此主题指定了两次 <copyright>"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "为此主题指定了两次 <date>"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "为此主题指定了两次 <description>"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "找不到主题 %s 的有效文件\n"
 
-#: ../src/ui/theme-parser.c:4083
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "主题文件 %s 不包含根 <metacity_theme> 元素"
@@ -1914,159 +1724,609 @@ msgstr "/窗口(W)/全部停靠(_A)"
 msgid "/Windows/Des_ktop"
 msgstr "/窗口(W)/桌面(_K)"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "打开这些窗口中的另外一个"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "这是一个演示按钮，带有“打开”图标"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "这是一个演示按钮，带有“退出”图标"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "这是示例对话框中的示例消息"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "虚假菜单项 %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "只有边框的窗口"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "栏"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "普通的应用程序窗口"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "对话框"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "模态对话框"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "工具盘"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "撕下的菜单"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "边框"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "按钮布局测试 %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g 毫秒用来绘制一个窗口框架"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法：metacity-theme-viewer [主题名称]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "装入主题出错：%s\n"
+msgstr "载入主题出错：%s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "在 %2$g 秒内装入主题“%1$s”\n"
+msgstr "在 %2$g 秒内载入主题“%1$s”\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "普通标题字体"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "小标题字体"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "大标题字体"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "按钮布局"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "基准"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "窗口标题在这里"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
-msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
-msgstr "在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间"
+"(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr "位置表达式测试返回了 TRUE 但设置错误"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置表达式测试返回了 FALSE 但并没有设置错误"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "期待错误但没有给出错误"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "期待错误 %d，但给出了 %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "未期待错误，但返回了错误：%s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x 值为 %d，但应该为 %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y 值为 %d，但应该为 %d "
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "无法读取保存的会话文件 %s：%s\n"
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "为此主题指定了两次 <author>"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "为此主题指定了两次 <copyright>"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "为此主题指定了两次 <date>"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "为此主题指定了两次 <description>"
+
+#~ msgid "Desktop"
+#~ msgstr "桌面"
+
+#~ msgid "Window Management"
+#~ msgstr "窗口管理"
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "无法通过对话进程解析消息“%s”\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "读取对话显示进程时出错：%s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "其格式类似于 \"<Control>a\" 或 <Shift><Alt>F1\"。\n"
+#~ "\n"
+#~ "该解析程序相当自由，大小写以及诸如 \"<Ctl>\" 和 \"<Ctrl>\" 的缩写均允许使"
+#~ "用。如果将该选项设置为特殊字符串 \"disabled\"，那么此操作将没有按键组合。"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "其格式类似于 \"<Control>a\" 或 <Shift><Alt>F1\"。\n"
+#~ "\n"
+#~ "该解析程序相当自由，大小写以及诸如 \"<Ctl>\" 和 \"<Ctrl>\" 的缩写均允许使"
+#~ "用。如果将该选项设置为特殊字符串 \"disabled\"，那么此操作将没有按键组合。"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr "启动 metacity-dialog 以警告应用程序不支持会话管理时出错：%s\n"
+
+#~ msgid "Metacity"
+#~ msgstr "Metacity"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr "(未实现)导航以应用程序而不是窗口的方式工作"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "描述窗口标题栏所用字体的字体描述字符串。但是，只有在 titlebar_font_size 选"
+#~ "项设置为 0 时，才使用该说明中的字体大小。同时，如果 "
+#~ "titlebar_uses_desktop_font 选项设置为真，则禁用该选项。默认情况下不设置 "
+#~ "titlebar_font。"
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "双击标题栏时的动作"
+
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "鼠标中键单击标题栏时的动作"
+
+#~ msgid "Action on title bar right-click"
+#~ msgstr "鼠标右键单击标题栏时的动作"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "标题栏上按钮的排列"
+
+#~ msgid ""
+#~ "Arrangement of buttons on the titlebar. The value should be a string, "
+#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
+#~ "left corner of the window from the right corner, and the button names are "
+#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~ "are silently ignored so that buttons can be added in future metacity "
+#~ "versions without breaking older versions. A special spacer tag can be "
+#~ "used to insert some space between two adjacent buttons."
+#~ msgstr ""
+#~ "标题栏上按钮的排列。它的值必须是一个字符串，比如“menu:minimize,maximize,"
+#~ "spacer,close”；冒号分隔窗口左上角和右上角的按钮，按钮名称之间用逗号分隔。"
+#~ "不允许指定重复的按钮。未知的按钮名称将被忽略，因此在将来版本的 metacity 中"
+#~ "可以添加新的按钮，而不至于破坏旧的版本。而特殊的 spacer 标记可在两个按钮之"
+#~ "间添加一些空格。"
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "自动提升获得焦点的窗口"
+
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;"
+#~ "Super&gt;\" for example."
+#~ msgstr ""
+#~ "单击窗口时如果按住这个修饰键将移动窗口(左键单击)、改变窗口大小(中键单击)、"
+#~ "或者显示窗口菜单(右键单击)。修饰键可写作“&lt;Alt&gt;”或者“&lt;Super&gt;”。"
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr "按键组合对应的执行命令"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "复合管理器"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "控制新窗口如何获得窗口"
+
+#~ msgid "Current theme"
+#~ msgstr "当前主题"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr "自动提升选项的几毫秒延迟"
+
+#~ msgid "Determines whether Metacity is a compositing manager."
+#~ msgstr "决定 Metacity 是否是复合管理器。"
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "决定应用程序或系统是否可以生成听得见的铃声；可以和“视觉铃声”一起使用，以便"
+#~ "允许静默的铃声。"
+
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr "禁用旧的或有缺陷的应用程序所需的错误功能"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "启用视觉铃声"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "如果为 true，而聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将会在指定延迟后"
+#~ "自动升起，延迟的时间由 auto_raise_delay 键指定。此选项与单击行为并没有什么"
+#~ "关系，它也与拖放时进入窗口无关。"
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "如果为 true，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback by using wireframes, "
+#~ "avoiding animations, or other means. This is a significant reduction in "
+#~ "usability for many users, but may allow legacy applications to continue "
+#~ "working, and may also be a useful tradeoff for terminal servers. However, "
+#~ "the wireframe feature is disabled when accessibility is on."
+#~ msgstr ""
+#~ "如果为 true，metacity 将会给用户提供较少的反馈，方法是使用线框、避免动画或"
+#~ "者其它途径。这对许多用户来说，可用性大打折扣，但是这将允许较早的应用程序和"
+#~ "终端服务器能够顺利运行。此外，如果开启了辅助功能，系统会自动禁用线框特性。"
+
+#~ msgid ""
+#~ "If true, then Metacity works in terms of applications rather than "
+#~ "windows. The concept is a bit abstract, but in general an application-"
+#~ "based setup is more like the Mac and less like Windows. When you focus a "
+#~ "window in application-based mode, all the windows in the application will "
+#~ "be raised. Also, in application-based mode, focus clicks are not passed "
+#~ "through to windows in other applications. Application-based mode is, "
+#~ "however, largely unimplemented at the moment."
+#~ msgstr ""
+#~ "如果为 true，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽"
+#~ "象，但通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您"
+#~ "以基于应用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在"
+#~ "基于应用程序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。但是，基于"
+#~ "应用程序的模式目前还基本没有实现。"
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr "如果为 true，则以可用性为代价而降低资源占用"
+
+#~ msgid "Name of workspace"
+#~ msgstr "工作区名称"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "工作区数量"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "工作区数量。必须大于零，并有一个固定的最大值，以防由于不小心请求调用太多工"
+#~ "作区而摧毁您的桌面。"
+
+#~ msgid "Run a defined command"
+#~ msgstr "运行预定义的命令"
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "将本选项设定为 false (假)将导致有缺陷的行为，所以强烈反对用户将该值由默认"
+#~ "的 true (真)进行更改。许多动作(例如在客户区域内单击，移动或调整窗口大小)通"
+#~ "常都会提升窗口，这其实是个副作用。将该选项设定为 false (假)，在此强烈反"
+#~ "对，将从其他用户动作中 decouple 提升，同时忽略由程序产生的提升要求。参见 "
+#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6。但即便该选项为 false "
+#~ "(假)，仍然可以通过 alt + 左键单击窗口任何地方，在窗口装饰条上正常单击，或"
+#~ "从寻呼中的特别消息(诸如从任务列表小程序的激活要求)来提升窗口。该选项目前在"
+#~ "单击以聚焦(click-to-focus)模式中禁用。注意：当 raise_on_click 设为 false "
+#~ "(假)而同时要提升窗口的一系列办法中并不包括从程序来的编程请求；此类请求将被"
+#~ "忽略而不管为什么请求。如果你是一名程序开发者，而有某用户埋怨你的程序无法在"
+#~ "该设定禁用下工作，告诉他们这都是他们破坏他们窗口管理器所犯的错，他们要么将"
+#~ "该选项改回为 true (真)，或好好享受他们自找的麻烦。"
+
+#~ msgid ""
+#~ "Some applications disregard specifications in ways that result in window "
+#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
+#~ "mode, which gives a more consistent user interface, provided one does not "
+#~ "need to run any misbehaving applications."
+#~ msgstr ""
+#~ "某些应用程序破坏规定从而导致窗口管理器功能失常。该选项将 Metacity 置于完全"
+#~ "正确模式下，这样的用户界面会更具有一致性，假定您不需要运行任何有缺陷的应用"
+#~ "程序。"
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "系统铃声发声"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ msgstr ""
+#~ "通知 Metacity 如何实现系统铃声或其它应用程序响铃的视觉标识。目前有两种"
+#~ "值，“全屏”将以黑白色闪烁整个屏幕，而“框架闪烁”将闪烁发出响铃信号的应用程序"
+#~ "的标题栏。如果发送响铃的程序未知(通常是默认的“系统响铃”)，则闪烁当前窗口的"
+#~ "标题栏。"
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
+#~ "keybindings that correspond to these commands. Pressing the keybinding "
+#~ "for run_command_N will execute command_N."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_N 键值定义这些命令对应的按键"
+#~ "组合。按下 run_command_N 对应的按键组合将执行命令 command_N。"
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
+#~ "a keybinding which causes the command specified by this setting to be "
+#~ "invoked."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_screenshot 键值定义了导致调"
+#~ "用此设置的按键组合。"
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+#~ "defines a keybinding which causes the command specified by this setting "
+#~ "to be invoked."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_window_screenshot 键值定义了"
+#~ "导致调用此设置的按键组合。"
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "运行 /apps/metacity/keybinding_commands 中相应编号的命令的按键组合。其格式"
+#~ "类似于“&lt;Control&gt;a”或者“&lt;Shift&gt;&lt;Alt&gt;F1”。该分析程序的格式"
+#~ "相当自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选"
+#~ "项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+
+#~ msgid "The name of a workspace."
+#~ msgstr "工作区名称。"
+
+#~ msgid "The screenshot command"
+#~ msgstr "屏幕抓图命令"
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr "主题决定窗口边框、标题栏等的外观。"
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "提升窗口前的延迟时间(如果 auto_raise 设置为真)。延迟时间的单位为毫秒。"
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "窗口焦点模式指明窗口的激活方式。它有三个可能的值；“click”表示必须单击窗口"
+#~ "才能聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示"
+#~ "当鼠标进入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
+
+#~ msgid "The window screenshot command"
+#~ msgstr "窗口抓图命令"
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷"
+#~ "起/展开窗口，“toggle_maximize”将最大化/还原窗"
+#~ "口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水"
+#~ "平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗"
+#~ "口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操"
+#~ "作。"
+
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "这个选项决定在标题栏上单击中键的效果。当前有效的选项包括，“toggle_shade”将"
+#~ "卷起/展开窗口，“toggle_maximize”将最大化/还原窗"
+#~ "口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水"
+#~ "平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗"
+#~ "口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操"
+#~ "作。"
+
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "这个选项决定在标题栏上单击右键的效果。当前有效的选项包括，“toggle_shade”将"
+#~ "卷起/展开窗口，“toggle_maximize”将最大化/还原窗"
+#~ "口，“toggle_maximize_horizontally”和“toggle_maximize_vertically”将分别在水"
+#~ "平和垂直方向上最大化窗口，“minimize”将最小化窗口，“shade”将卷起窗"
+#~ "口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而“none”将不执行任何操"
+#~ "作。"
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "此选项提供了关于新创建的窗口如何获得焦点的额外控制。目前有效的选项包"
+#~ "括，“smart”将应用用户普通的聚焦模式，而“strict”将使得通过终端启动的窗口不"
+#~ "获得焦点。"
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "当应用程序或系统发出“铃声”时，打开视觉标识；适合有听力障碍的用户以及在吵闹"
+#~ "的环境中使用。"
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr "在窗口标题中使用标准系统字体"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "视觉铃声类型"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr "升起是否作为其它用户交互的副作用"
+
+#~ msgid "Window focus mode"
+#~ msgstr "窗口焦点模式"
+
+#~ msgid "Window title font"
+#~ msgstr "窗口标题字体"
+
+#~ msgid "Title"
+#~ msgstr "标题"
+
+#~ msgid "Class"
+#~ msgstr "类别"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "运行“%s”时发生错误：\n"
+#~ "%s"
+
 #~ msgid ""
 #~ "Error launching metacity-dialog to print an error about a command: %s\n"
 #~ msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
+
 #~ msgid "Unknown attribute %s on <metacity_session> element"
 #~ msgstr "<metacity_session> 元素上未知的属性 %s"
+
 #~ msgid "Unknown attribute %s on <maximized> element"
 #~ msgstr "<maximized> 元素上未知的属性 %s"
+
 #~ msgid "Unknown attribute %s on <geometry> element"
 #~ msgstr "<geometry> 元素上未知的属性 %s"
+
 #~ msgid ""
 #~ "Many actions (e.g. clicking in the client area, moving or resizing the "
 #~ "window) normally raise the window as a side-effect. Setting this option "
@@ -2077,6 +2337,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "许多动作(如点击客户区域，移动窗口或改变其大小)一般会有提升窗口的副作用。将"
 #~ "此设定为 false 将会使其它的用户动作不再提升窗口，且忽略应用程序生成的提升"
 #~ "请求。参见 http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace above the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2089,6 +2350,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace below the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2101,6 +2363,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the left of the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2113,6 +2376,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the right of the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2125,6 +2389,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2137,6 +2402,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2149,6 +2415,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2161,6 +2428,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2173,6 +2441,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2185,6 +2454,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2197,6 +2467,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2209,6 +2480,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2221,6 +2493,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2233,6 +2506,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2245,6 +2519,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2257,6 +2532,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2269,6 +2545,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to activate the window menu. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -2281,6 +2558,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to enter \"move mode\" and begin moving a window "
 #~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2293,6 +2571,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
 #~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2305,6 +2584,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自"
 #~ "由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项"
 #~ "设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to hide all normal windows and set the focus to the "
 #~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2317,6 +2597,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to maximize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2329,6 +2610,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to minimize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2341,6 +2623,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace down. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2353,6 +2636,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the left. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2365,6 +2649,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the right. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2377,6 +2662,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace up. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2389,6 +2675,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 1. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2401,6 +2688,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 10. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2413,6 +2701,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 11. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2425,6 +2714,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 12. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2437,6 +2727,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 2. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2449,6 +2740,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 3. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2461,6 +2753,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 4. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2473,6 +2766,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 5. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2485,6 +2779,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 6. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2497,6 +2792,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 7. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2509,6 +2805,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 8. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2521,6 +2818,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 9. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2533,6 +2831,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
 #~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
@@ -2545,6 +2844,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
 #~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
@@ -2557,6 +2857,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
 #~ "application without a popup window. Holding \"shift\" together with this "
@@ -2572,6 +2873,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
 #~ "application, using a popup window. Holding \"shift\" together with this "
@@ -2587,6 +2889,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows without a "
 #~ "popup window. Holding \"shift\" together with this binding makes the "
@@ -2601,6 +2904,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows, using a "
 #~ "popup window. Holding \"shift\" together with this binding makes the "
@@ -2615,6 +2919,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between panels and the desktop, using a "
 #~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2627,6 +2932,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between panels and the desktop, without "
 #~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2639,6 +2945,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application "
 #~ "without a popup window. Holding the \"shift\" key while using this "
@@ -2654,6 +2961,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application, "
 #~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
@@ -2669,6 +2977,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows without a popup window. "
 #~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
@@ -2684,6 +2993,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows, using a popup window. "
 #~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -2699,6 +3009,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to toggle always on top. A window that is always on "
 #~ "top will always be visible over other overlapping windows. The format "
@@ -2713,6 +3024,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
 #~ "Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组"
 #~ "合。"
+
 #~ msgid ""
 #~ "The keybinding used to toggle fullscreen mode. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -2725,6 +3037,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2737,6 +3050,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to toggle shaded/unshaded state. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2749,6 +3063,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to toggle whether the window is on all workspaces or "
 #~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2761,6 +3076,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自"
 #~ "由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项"
 #~ "设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2773,6 +3089,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding which display's the panel's \"Run Application\" dialog "
 #~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2785,6 +3102,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2797,6 +3115,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility to take a "
 #~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
@@ -2809,6 +3128,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility. The format "
 #~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -2821,6 +3141,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "The keybinding which shows the panel's main menu. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -2833,6 +3154,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding changes whether a window is above or below other windows. "
 #~ "If the window is covered by another one, it raises the window above all "
@@ -2849,6 +3171,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 #~ "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操"
 #~ "作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding lowers a window below other windows. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2861,6 +3184,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window against the north (top) side of the "
 #~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2873,6 +3197,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the east (right) side of the screen. "
 #~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2885,6 +3210,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the north-east (top right) corner of "
 #~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2897,6 +3223,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the north-west (top left) corner of "
 #~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2909,6 +3236,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south (bottom) side of the "
 #~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2921,6 +3249,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south-east (bottom right) corner "
 #~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2933,6 +3262,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south-west (bottom left) corner "
 #~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2945,6 +3275,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding moves a window into the west (left) side of the screen. "
 #~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2957,6 +3288,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 #~ "例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding raises the window above other windows. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2969,6 +3301,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
 #~ "和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 #~ "串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding resizes a window to fill available horizontal space. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2981,6 +3314,7 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid ""
 #~ "This keybinding resizes a window to fill available vertical space. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2993,88 +3327,125 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
 #~ "许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 #~ "特殊字符串“disabled”，那么此操作将没有按键组合。"
+
 #~ msgid "Toggle always on top state"
 #~ msgstr "切换常居顶层状态"
+
 #~ msgid "Unmaximize window"
 #~ msgstr "取消最大化窗口"
+
 #~ msgid "Unmaximize Window"
 #~ msgstr "取消最大化窗口"
+
 #~ msgid "No \"%s\" attribute on <%s> element"
 #~ msgstr "无“%s”属性在 <%s> 元素上"
+
 #~ msgid "Theme already has a fallback icon"
 #~ msgstr "主题已经有默认图标了"
+
 #~ msgid "Theme already has a fallback mini_icon"
 #~ msgstr "主题已经有默认迷你图标了"
+
 #~ msgid "No \"name\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“name”属性"
+
 #~ msgid "No \"value\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“value”属性"
+
 #~ msgid "No \"top\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“top”属性"
+
 #~ msgid "No \"bottom\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“bottom”属性"
+
 #~ msgid "No \"left\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“left”属性"
+
 #~ msgid "No \"right\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“right”属性"
+
 #~ msgid "No \"color\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“color”属性"
+
 #~ msgid "No \"x1\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“x1”属性"
+
 #~ msgid "No \"y1\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“y1”属性"
+
 #~ msgid "No \"x2\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“x2”属性"
+
 #~ msgid "No \"y2\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“y2”属性"
+
 #~ msgid "No \"y\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“y”属性"
+
 #~ msgid "No \"width\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“width”属性"
+
 #~ msgid "No \"height\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“height”属性"
+
 #~ msgid "No \"start_angle\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“start_angle”属性"
+
 #~ msgid "No \"extent_angle\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“extent_angle”属性"
+
 #~ msgid "No \"alpha\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“alpha”属性"
+
 #~ msgid "No \"type\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“type”属性"
+
 #~ msgid "No \"filename\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“filename”属性"
+
 #~ msgid "No \"state\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“state”属性"
+
 #~ msgid "No \"shadow\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“shadow”属性"
+
 #~ msgid "No \"arrow\" attribute on element <%s>"
 #~ msgstr "元素 <%s> 上没有“arrow”属性"
+
 #~ msgid "No \"value\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“value”属性"
+
 #~ msgid "No \"position\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“position”属性"
+
 #~ msgid "No \"function\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“function”属性"
+
 #~ msgid "No \"state\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“state”属性"
+
 #~ msgid "No \"focus\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“focus”属性"
+
 #~ msgid "No \"style\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“style”属性"
+
 #~ msgid "No \"resize\" attribute on <%s> element"
 #~ msgstr "元素 <%s> 上没有“resize”属性"
+
 #~ msgid "Type of %s was not integer"
 #~ msgstr "%s 的类型不是整型"
+
 #~ msgid ""
 #~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 #~ "range 1..128\n"
 #~ msgstr ""
 #~ "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 "
 #~ "到 128 之间\n"
+
 #~ msgid ""
 #~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
 #~ "current maximum is %d\n"
 #~ msgstr ""
 #~ "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值"
 #~ "为 %3$d\n"
-
