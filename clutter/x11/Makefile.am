@@ -1,5 +1,7 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
+NULL =
+
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterX11\"           \
         -DCLUTTER_COMPILATION                   \
@@ -18,48 +20,39 @@ source_h = \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h
 
-BUILT_SOURCES = clutter-x11-enum-types.h clutter-x11-enum-types.c
+BUILT_SOURCES =
 
-clutter-x11-enum-types.h: stamp-clutter-x11-enum-types.h
-	@true
-stamp-clutter-x11-enum-types.h: $(source_h) Makefile
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-		--template $(srcdir)/clutter-x11-enum-types.h.in \
-	  $(source_h) ) >> xgen-ceth && \
-	(cmp -s xgen-ceth clutter-x11-enum-types.h || cp xgen-ceth clutter-x11-enum-types.h ) && \
-	rm -f xgen-ceth && \
-	echo timestamp > $(@F)
+EXTRA_DIST =
 
-clutter-x11-enum-types.c: clutter-x11-enum-types.h
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-		--template $(srcdir)/clutter-x11-enum-types.c.in \
-	  $(source_h) ) >> xgen-cetc && \
-	cp xgen-cetc clutter-x11-enum-types.c && \
-	rm -f xgen-cetc
+CLEANFILES =
+
+DISTCLEANFILES =
+
+# glib-mkenums rules
+glib_enum_h = clutter-x11-enum-types.h
+glib_enum_c = clutter-x11-enum-types.c
+glib_enum_headers = $(source_h)
+include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 noinst_LTLIBRARIES = libclutter-x11.la
 
 libclutter_x11_la_SOURCES = \
-	clutter-backend-x11.h \
-	clutter-backend-x11.c \
-	clutter-device-manager-x11.h \
-	clutter-device-manager-x11.c \
-	clutter-event-x11.c \
-	clutter-input-device-x11.h \
-	clutter-input-device-x11.c \
-	clutter-stage-x11.h \
-	clutter-stage-x11.c \
-	clutter-x11-enum-types.h \
-	clutter-x11-enum-types.c \
-        clutter-x11-texture-pixmap.h \
-        clutter-x11-texture-pixmap.c \
-	clutter-x11.h
+	$(srcdir)/clutter-backend-x11.h 	\
+	$(srcdir)/clutter-backend-x11.c 	\
+	$(srcdir)/clutter-device-manager-x11.h 	\
+	$(srcdir)/clutter-device-manager-x11.c 	\
+	$(srcdir)/clutter-event-x11.c 		\
+	$(srcdir)/clutter-input-device-x11.h 	\
+	$(srcdir)/clutter-input-device-x11.c 	\
+	$(srcdir)/clutter-stage-x11.h 		\
+	$(srcdir)/clutter-stage-x11.c 		\
+        $(srcdir)/clutter-x11-texture-pixmap.c 	\
+	clutter-x11-enum-types.h 		\
+	clutter-x11-enum-types.c 		\
+	$(NULL)
 
 libclutter_x11_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/x11
-libclutter_x11_include_HEADERS = \
-	clutter-x11.h \
-	clutter-x11-enum-types.h \
-	clutter-x11-texture-pixmap.h
+libclutter_x11_include_HEADERS = $(source_h) clutter-x11-texture-pixmap.h
 
 clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc
 	@cp -f $< $(@F)
@@ -67,14 +60,6 @@ clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc
 pkgconfig_DATA = clutter-x11-@CLUTTER_API_VERSION@.pc
 pkgconfigdir   = $(libdir)/pkgconfig
 
-CLEANFILES = clutter-x11-$(CLUTTER_API_VERSION).pc
+CLEANFILES += clutter-x11-$(CLUTTER_API_VERSION).pc
 
-DISTCLEANFILES = \
-	stamp-clutter-x11-enum-types.h \
-	clutter-x11-enum-types.h \
-	clutter-x11-enum-types.c
-
-EXTRA_DIST = \
-	clutter-x11.pc.in \
-	clutter-x11-enum-types.h.in \
-	clutter-x11-enum-types.c.in
+EXTRA_DIST += clutter-x11.pc.in
