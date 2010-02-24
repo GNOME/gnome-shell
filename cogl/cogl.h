@@ -127,11 +127,14 @@ cogl_get_proc_address (const char *name);
  *
  * Check whether @name occurs in list of extensions in @ext.
  *
- * Return value: %TRUE if the extension occurs in the list, %FALSE otherwize.
+ * Return value: %TRUE if the extension occurs in the list, %FALSE otherwise.
  *
- * Deprecated: 1.2: OpenGL is an implementation detail for Cogl and so it's not
- *                  appropriate to expose OpenGL extensions through the Cogl
- *                  API.
+ * Deprecated: 1.2: OpenGL is an implementation detail for Cogl and so it's
+ *   not appropriate to expose OpenGL extensions through the Cogl API. This
+ *   function can be replaced by the following equivalent code:
+ * |[
+ *   gboolean retval = (strstr (ext, name) != NULL) ? TRUE : FALSE;
+ * ]|
  */
 gboolean
 cogl_check_extension (const char *name,
