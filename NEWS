@@ -1,3 +1,36 @@
+Clutter 1.1.12 (16/02/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.10
+
+    o Fix compilation on 64bit platforms
+
+    o Fix some races of the Stage resizing on X11
+
+    o Documentation fixes for Cogl: the coverage is now 100%
+
+    o Fix rounding errors in the preferred height of the ClutterText
+      actor
+
+    o Remove redundant type checks in clutter_actor_get_paint_opacity()
+
+    o Add support for the GLX_INTEL_swap_event extension; when using this
+      extension on GLX the glXSwapBuffers() call becomes non-blocking and
+      Clutter will use an event to control the master clock.
+
+    o Improve consistency between ClutterBox and ClutterGroup.
+
+    o On X11, do not set the _NET_WM_PID and WM_TITLE properties on a
+      Stage X window if the window was not created by Clutter itself
+
+    o Improve caching of GL constant values
+
+    o Optimize creating sub-textures of sub-textures
+
+    o Various fixes for the atlas and the journal
+
+    o Disable the atlas if FBOs are not supported
+
 Clutter 1.1.10 (09/02/2010)
 ===============================================================================
 

@@ -290,6 +290,15 @@ Release Notes for Clutter 1.2
   and G_TYPE_UCHAR, so this change should be fully transparent to the
   user of the code.
 
+* On X11 Clutter will emulate XKB's detectable key auto-repeat; this means
+  that when holding down a key, Clutter will emit multiple CLUTTER_KEY_PRESS
+  events and a single CLUTTER_KEY_RELEASE event instead of a list of
+  CLUTTER_KEY_PRESS and CLUTTER_KEY_RELEASE pairs.
+
+* On X11 and Win32 the default Stage is created when
+  clutter_stage_get_default() is called for the first time, and not as
+  part of the stage initialization.
+
 Cogl API changes for Clutter 1.2
 -------------------------------------------------------------------------------
 
@@ -326,6 +335,18 @@ Cogl API changes for Clutter 1.2
     /* draw */
     cogl_pop_framebuffer ();
 
+* All cogl_<type>_ref() and cogl_<type>_unref() functions have been
+  deprecated, and superceded by cogl_handle_ref() and cogl_handle_unref()
+  respectively.
+
+* The cogl_check_extension() function has been deprecated. This function
+  was never meant to be public, since it depends on calling glGetString()
+  before its invocation. Users of this function can be replaced by the
+  equivalent code:
+
+    gl_ext = glGetString (GL_EXTENSIONS);
+  - has_ext = cogl_check_extension (ext_name, gl_ext);
+  + has_ext = strstr (gl_ext, ext_name) != NULL ? TRUE : FALSE;
 
 Release Notes for Clutter 1.0
 -------------------------------------------------------------------------------
