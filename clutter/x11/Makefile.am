@@ -52,7 +52,7 @@ libclutter_x11_la_SOURCES = \
 	$(NULL)
 
 libclutter_x11_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/x11
-libclutter_x11_include_HEADERS = $(source_h) clutter-x11-texture-pixmap.h
+libclutter_x11_include_HEADERS = $(source_h) clutter-x11-enum-types.h
 
 clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc
 	@cp -f $< $(@F)
