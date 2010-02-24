@@ -308,20 +308,6 @@ clutter_box_real_get_preferred_width (ClutterActor *actor,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
 
-  /* if we don't have any children don't bother proxying the
-   * call to the layout manager instance
-   */
-  if (priv->children == NULL || priv->manager == NULL)
-    {
-      if (min_width)
-        *min_width = 0.0;
-
-      if (natural_width)
-        *natural_width = 0.0;
-
-      return;
-    }
-
   clutter_layout_manager_get_preferred_width (priv->manager,
                                               CLUTTER_CONTAINER (actor),
                                               for_height,
@@ -335,20 +321,6 @@ clutter_box_real_get_preferred_height (ClutterActor *actor,
                                        gfloat       *natural_height)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-
-  /* if we don't have any children don't bother proxying the
-   * call to the layout manager instance
-   */
-  if (priv->children == NULL || priv->manager == NULL)
-    {
-      if (min_height)
-        *min_height = 0.0;
-
-      if (natural_height)
-        *natural_height = 0.0;
-
-      return;
-    }
 
   clutter_layout_manager_get_preferred_height (priv->manager,
                                                CLUTTER_CONTAINER (actor),
@@ -366,9 +338,6 @@ clutter_box_real_allocate (ClutterActor           *actor,
 
   klass = CLUTTER_ACTOR_CLASS (clutter_box_parent_class);
   klass->allocate (actor, allocation, flags);
-
-  if (priv->children == NULL || priv->manager == NULL)
-    return;
 
   clutter_layout_manager_allocate (priv->manager,
                                    CLUTTER_CONTAINER (actor),
