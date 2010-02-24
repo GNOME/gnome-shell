@@ -103,6 +103,8 @@ NotificationDaemon.prototype = {
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));
+        Main.overview.connect('hidden',
+            Lang.bind(this, this._onFocusAppChanged));
     },
 
     _acquiredName: function() {
@@ -263,7 +265,8 @@ NotificationDaemon.prototype = {
         ];
     },
 
-    _onFocusAppChanged: function(tracker) {
+    _onFocusAppChanged: function() {
+        let tracker = Shell.WindowTracker.get_default();
         Main.messageTray.removeSourceByApp(tracker.focus_app);
     },
 
