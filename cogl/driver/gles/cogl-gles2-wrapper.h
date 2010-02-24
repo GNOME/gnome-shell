@@ -301,6 +301,8 @@ struct _CoglGles2WrapperShader
 #define GL_EMISSION            0x1600
 #define GL_SHININESS           0x1601
 
+#define GL_MAX_TEXTURE_UNITS   0x84e2
+
 #endif /* GL_MODELVIEW */
 
 void cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper);

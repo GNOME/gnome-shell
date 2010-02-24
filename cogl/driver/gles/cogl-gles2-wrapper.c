@@ -1285,6 +1285,12 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
       *params = w->matrix_mode;
       break;
 
+    case GL_MAX_TEXTURE_UNITS:
+      glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, params);
+      if (*params > COGL_GLES2_MAX_TEXTURE_UNITS)
+        *params = COGL_GLES2_MAX_TEXTURE_UNITS;
+      break;
+
     default:
       glGetIntegerv (pname, params);
       break;
