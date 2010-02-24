@@ -71,6 +71,7 @@ test_mapped (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
 
   stage = clutter_stage_get_default ();
+  clutter_actor_show (stage);
 
   actor = clutter_rectangle_new ();
 
@@ -85,6 +86,7 @@ test_mapped (TestConformSimpleFixture *fixture,
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
 
   clutter_actor_destroy (actor);
+  clutter_actor_hide (stage);
 }
 
 void
@@ -95,6 +97,7 @@ test_realize_not_recursive (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
 
   stage = clutter_stage_get_default ();
+  clutter_actor_show (stage);
 
   group = clutter_group_new ();
 
@@ -124,6 +127,7 @@ test_realize_not_recursive (TestConformSimpleFixture *fixture,
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
 
   clutter_actor_destroy (group);
+  clutter_actor_hide (stage);
 }
 
 void
@@ -134,6 +138,7 @@ test_map_recursive (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
 
   stage = clutter_stage_get_default ();
+  clutter_actor_show (stage);
 
   group = clutter_group_new ();
 
@@ -173,6 +178,7 @@ test_map_recursive (TestConformSimpleFixture *fixture,
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
 
   clutter_actor_destroy (group);
+  clutter_actor_hide (stage);
 }
 
 void
@@ -233,6 +239,7 @@ test_clone_no_map (TestConformSimpleFixture *fixture,
   ClutterActor *clone;
 
   stage = clutter_stage_get_default ();
+  clutter_actor_show (stage);
 
   group = clutter_group_new ();
   actor = clutter_rectangle_new ();
@@ -255,4 +262,6 @@ test_clone_no_map (TestConformSimpleFixture *fixture,
 
   clutter_actor_destroy (CLUTTER_ACTOR (clone));
   clutter_actor_destroy (CLUTTER_ACTOR (group));
+
+  clutter_actor_hide (stage);
 }
