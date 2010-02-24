@@ -1,3 +1,39 @@
+Clutter 1.1.14 (24/02/2010)
+===============================================================================
+
+  * List of changes since Clutter 1.1.12
+
+    o Fix interaction between user resizable Stages and fullscreen on X11
+
+    o Define the semantics of ENTER and LEAVE events when actors are on the
+      border of the Stage window
+
+    o Take the InputDevice of an event into consideration when throttling
+      MOTION events
+
+    o Round the coordinates when clipping to a rectangle in window coordinates
+
+    o Always trust the user-provided coordinates when creating a CoglTexture
+      from a foreign GL texture
+
+    o Split Clutter's debug annotations from the pick and paint mode
+      behavioural modifiers
+
+    o Improve the usage of the CLUTTER_ACTOR_NO_LAYOUT flag so that every
+      actor using a ClutterFixedLayout manager will automatically benefit
+      from it
+
+    o Fix the packing order of ClutterBox so that the convention of
+      first-in-first-painted is maintained
+
+    o Documentation fixes
+
+Many thanks to:
+
+  Robert Bragg
+  Chris Lord
+  Neil Roberts
+
 Clutter 1.1.12 (16/02/2010)
 ===============================================================================
 
@@ -30,6 +66,14 @@ Clutter 1.1.12 (16/02/2010)
     o Various fixes for the atlas and the journal
 
     o Disable the atlas if FBOs are not supported
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Damien Lespiau
+  Bastian Winkler
+  Chris Lord
 
 Clutter 1.1.10 (09/02/2010)
 ===============================================================================
