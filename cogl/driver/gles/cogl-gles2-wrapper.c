@@ -1338,28 +1338,6 @@ cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
 }
 
 void
-cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
-				 GLenum internal_format)
-{
-  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
-
-  glBindTexture (target, texture);
-
-  /* We need to keep track of whether the texture is alpha-only
-     because the emulation of GL_MODULATE needs to work differently in
-     that case */
-  if (COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY (w->settings.texture_units,
-                                             w->active_texture_unit)
-      != (internal_format == GL_ALPHA))
-    {
-      COGL_GLES2_TEXTURE_UNIT_SET_ALPHA_ONLY (w->settings.texture_units,
-                                              w->active_texture_unit,
-                                              internal_format == GL_ALPHA);
-      w->settings_dirty = TRUE;
-    }
-}
-
-void
 cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
   if (target == GL_TEXTURE_ENV)

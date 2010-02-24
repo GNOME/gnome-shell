@@ -74,14 +74,6 @@ _cogl_texture_driver_gen (GLenum   gl_target,
     }
 }
 
-void
-_cogl_texture_driver_bind (GLenum gl_target,
-                           GLuint gl_handle,
-                           GLenum gl_intformat)
-{
-  GE (glBindTexture (gl_target, gl_handle));
-}
-
 /* OpenGL - unlike GLES - can upload a sub region of pixel data from a larger
  * source buffer */
 static void
@@ -149,8 +141,6 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                   src_y,
                                   bpp);
 
-  /* We don't need to use _cogl_texture_driver_bind here because we're
-     not using the bound texture to render yet */
   GE( glBindTexture (gl_target, gl_handle) );
 
   GE( glTexSubImage2D (gl_target, 0,
@@ -174,8 +164,6 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, bpp);
 
-  /* We don't need to use _cogl_texture_driver_bind here because we're
-     not using the bound texture to render yet */
   GE( glBindTexture (gl_target, gl_handle) );
 
   GE( glTexImage2D (gl_target, 0,

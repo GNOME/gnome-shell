@@ -1400,9 +1400,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
       CoglHandle         tex_handle;
       GLuint             gl_texture;
       GLenum             gl_target;
-#ifdef HAVE_COGL_GLES2
-      GLenum             gl_internal_format;
-#endif
       CoglTextureUnit   *unit;
 
       _cogl_material_layer_ensure_mipmaps (layer_handle);
@@ -1460,14 +1457,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
          we'd need to ensure they affect the cache. Also deleting a
          texture should clear it from the cache in case a new texture
          is generated with the same number */
-#ifdef HAVE_COGL_GLES2
-      gl_internal_format = _cogl_texture_get_internal_gl_format (tex_handle);
-      cogl_gles2_wrapper_bind_texture (gl_target,
-                                       gl_texture,
-                                       gl_internal_format);
-#else
       GE (glBindTexture (gl_target, gl_texture));
-#endif
 
       /* XXX: Once we add caching for glBindTexture state, these
        * checks should be moved back up to the top of the loop!
