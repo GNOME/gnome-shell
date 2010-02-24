@@ -248,10 +248,9 @@ AppPanelMenu.prototype = {
         let focusedApp = tracker.focus_app;
 
         let lastSequence = null;
-        if (focusedApp == null) {
-            let sequences = tracker.get_startup_sequences();
-            if (sequences.length > 0)
-                lastSequence = sequences[sequences.length - 1];
+        let sequences = tracker.get_startup_sequences();
+        if (sequences.length > 0) {
+            lastSequence = sequences[sequences.length - 1];
         }
 
         // If the currently focused app hasn't changed and the current
@@ -262,13 +261,17 @@ AppPanelMenu.prototype = {
                     && lastSequence.get_id() == this._activeSequence.get_id())))
             return;
 
-        this._focusedApp = focusedApp;
-        this._activeSequence = lastSequence;
-
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
         this._label.setText('');
+
+        if (focusedApp == null && lastSequence != null)
+            focusedApp = lastSequence.get_app();
+
+        this._focusedApp = focusedApp;
+        this._activeSequence = lastSequence;
+
         let icon;
         if (this._focusedApp != null) {
             icon = this._focusedApp.get_faded_icon(AppDisplay.APPICON_SIZE);

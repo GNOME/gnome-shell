@@ -70,6 +70,17 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1
 				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                  libstartup-notification-1.0
                                  gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION)
+
+# This is for the newly added application id bits, we can replace this with
+# a version check later
+saved_CFLAGS=$CFLAGS
+saved_LIBS=$LIBS
+CFLAGS=$MUTTER_PLUGIN_CFLAGS
+LIBS=$MUTTER_PLUGIN_LIBS
+AC_CHECK_FUNCS(sn_startup_sequence_get_application_id)
+CFLAGS=$saved_CFLAGS
+LIBS=$saved_LIBS
+
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-2.0 libcroco-0.6 gnome-desktop-2.0 >= 2.26)
 PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)

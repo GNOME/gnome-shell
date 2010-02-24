@@ -50,6 +50,7 @@ typedef struct _ShellStartupSequence ShellStartupSequence;
 GType shell_startup_sequence_get_type (void);
 
 const char *shell_startup_sequence_get_id (ShellStartupSequence *sequence);
+ShellApp *shell_startup_sequence_get_app (ShellStartupSequence *sequence);
 const char *shell_startup_sequence_get_name (ShellStartupSequence *sequence);
 gboolean shell_startup_sequence_get_completed (ShellStartupSequence *sequence);
 ClutterActor *shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size);

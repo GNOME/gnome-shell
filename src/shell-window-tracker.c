@@ -286,16 +286,16 @@ shell_window_tracker_is_window_interesting (MetaWindow *window)
 }
 
 /**
- * get_app_for_window_direct:
+ * get_app_from_window_wmclass:
  *
  * Looks only at the given window, and attempts to determine
- * an application based on WM_CLASS.  If that fails, then
- * a "transient" application is created.
+ * an application based on WM_CLASS.  If one can't be determined,
+ * return %NULL.
  *
- * Return value: (transfer full): A newly-referenced #ShellApp
+ * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
  */
 static ShellApp *
-get_app_for_window_direct (MetaWindow  *window)
+get_app_from_window_wmclass (MetaWindow  *window)
 {
   ShellApp *app;
   ShellAppSystem *appsys;
@@ -306,7 +306,7 @@ get_app_for_window_direct (MetaWindow  *window)
   wmclass = get_appid_from_window (window);
 
   if (!wmclass)
-    return shell_app_system_get_app_for_window (appsys, window);
+    return NULL;
 
   with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
   g_free (wmclass);
@@ -322,10 +322,55 @@ get_app_for_window_direct (MetaWindow  *window)
         app = shell_app_system_get_app (appsys, id);
     }
 
-  if (app == NULL)
-    app = shell_app_system_get_app_for_window (appsys, window);
-
   return app;
+}
+
+/**
+ * get_app_from_window_group:
+ * @monitor: a #ShellWindowTracker
+ * @window: a #MetaWindow
+ *
+ * Check other windows in the group for @window to see if we have
+ * an application for one of them.
+ *
+ * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
+ */
+static ShellApp*
+get_app_from_window_group (ShellWindowTracker  *monitor,
+                           MetaWindow          *window)
+{
+  ShellApp *result;
+  GSList *group_windows;
+  MetaGroup *group;
+  GSList *iter;
+
+  group = meta_window_get_group (window);
+  if (group == NULL)
+    return NULL;
+
+  group_windows = meta_group_list_windows (group);
+
+  result = NULL;
+  /* Try finding a window in the group of type NORMAL; if we
+   * succeed, use that as our source. */
+  for (iter = group_windows; iter; iter = iter->next)
+    {
+      MetaWindow *group_window = iter->data;
+
+      if (meta_window_get_window_type (group_window) != META_WINDOW_NORMAL)
+        continue;
+
+      result = g_hash_table_lookup (monitor->window_to_app, group_window);
+      if (result)
+        break;
+    }
+
+  g_slist_free (group_windows);
+
+  if (result)
+    g_object_ref (result);
+
+  return result;
 }
 
 /**
@@ -340,12 +385,12 @@ get_app_for_window (ShellWindowTracker    *monitor,
                     MetaWindow         *window)
 {
   ShellApp *result;
-  MetaWindow *source_window;
-  GSList *group_windows;
-  MetaGroup *group;
-  GSList *iter;
+  const char *startup_id;
 
   result = NULL;
+  /* First, we check whether we already know about this window,
+   * if so, just return that.
+   */
   if (meta_window_get_window_type (window) == META_WINDOW_NORMAL)
     {
       result = g_hash_table_lookup (monitor->window_to_app, window);
@@ -354,43 +399,44 @@ get_app_for_window (ShellWindowTracker    *monitor,
           g_object_ref (result);
           return result;
         }
-      else
-        return get_app_for_window_direct (window);
     }
 
-  group = meta_window_get_group (window);
-  if (group == NULL)
-    group_windows = g_slist_prepend (NULL, window);
-  else
-    group_windows = meta_group_list_windows (group);
-
-  source_window = window;
-
-  result = NULL;
-  /* Try finding a window in the group of type NORMAL; if we
-   * succeed, use that as our source. */
-  for (iter = group_windows; iter; iter = iter->next)
-    {
-      MetaWindow *group_window = iter->data;
-
-      if (meta_window_get_window_type (group_window) != META_WINDOW_NORMAL)
-        continue;
-
-       source_window = group_window;
-       result = g_hash_table_lookup (monitor->window_to_app, group_window);
-       if (result)
-         break;
-    }
-
-  g_slist_free (group_windows);
-
+  /* Check if the app's WM_CLASS specifies an app */
+  result = get_app_from_window_wmclass (window);
   if (result != NULL)
+    return result;
+
+  /* Now we check whether we have a match through startup-notification */
+  startup_id = meta_window_get_startup_id (window);
+  if (startup_id)
     {
-      g_object_ref (result);
-      return result;
+      GSList *iter, *sequences;
+
+      sequences = shell_window_tracker_get_startup_sequences (monitor);
+      for (iter = sequences; iter; iter = iter->next)
+        {
+          ShellStartupSequence *sequence = iter->data;
+          const char *id = shell_startup_sequence_get_id (sequence);
+          if (strcmp (id, startup_id) != 0)
+            continue;
+
+          result = shell_startup_sequence_get_app (sequence);
+          if (result)
+            break;
+        }
     }
 
-  return get_app_for_window_direct (source_window);
+  /* If we didn't get a startup-notification match, see if we matched
+   * any other windows in the group.
+   */
+  if (result == NULL)
+    result = get_app_from_window_group (monitor, window);
+
+  /* Our last resort - we create a fake app from the window */
+  if (result == NULL)
+    result = shell_app_system_get_app_for_window (shell_app_system_get_default (), window);
+
+  return result;
 }
 
 const char *
@@ -588,7 +634,6 @@ on_startup_sequence_changed (MetaScreen            *screen,
                              SnStartupSequence     *sequence,
                              ShellWindowTracker    *self)
 {
-  /* Just proxy the signal */
   g_signal_emit (G_OBJECT (self), signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
 }
 
@@ -793,6 +838,32 @@ const char *
 shell_startup_sequence_get_id (ShellStartupSequence *sequence)
 {
   return sn_startup_sequence_get_id ((SnStartupSequence*)sequence);
+}
+
+/**
+ * shell_startup_sequence_get_app:
+ * @sequence: A #ShellStartupSequence
+ *
+ * Returns: (transfer full): The application being launched, or %NULL if unknown.
+ */
+ShellApp *
+shell_startup_sequence_get_app (ShellStartupSequence *sequence)
+{
+#ifdef HAVE_SN_STARTUP_SEQUENCE_GET_APPLICATION_ID
+  const char *appid;
+  ShellAppSystem *appsys;
+  ShellApp *app;
+
+  appid = sn_startup_sequence_get_application_id ((SnStartupSequence*)sequence);
+  if (!appid)
+    return NULL;
+
+  appsys = shell_app_system_get_default ();
+  app = shell_app_system_get_app_for_path (appsys, appid);
+  return app;
+#else
+  return NULL;
+#endif
 }
 
 const char *

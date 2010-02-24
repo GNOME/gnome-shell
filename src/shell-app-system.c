@@ -1224,10 +1224,16 @@ shell_app_info_launch_full (ShellAppInfo *info,
       meta_window_activate (info->window, timestamp);
       return TRUE;
     }
-
-  filename = shell_app_info_get_desktop_file_path (info);
-  gapp = g_desktop_app_info_new_from_filename (filename);
-  g_free (filename);
+  else if (info->type == SHELL_APP_INFO_TYPE_ENTRY)
+    {
+      gapp = g_desktop_app_info_new (shell_app_info_get_id (info));
+    }
+  else
+    {
+      filename = shell_app_info_get_desktop_file_path (info);
+      gapp = g_desktop_app_info_new_from_filename (filename);
+      g_free (filename);
+    }
 
   if (!gapp)
     {
