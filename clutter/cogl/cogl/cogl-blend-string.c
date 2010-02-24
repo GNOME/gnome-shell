@@ -172,15 +172,6 @@ validate_tex_combine_statements (CoglBlendStringStatement *statements,
 
   for (i = 0; i < n_statements; i++)
     {
-#ifdef HAVE_COGL_GLES2
-      if (statements[i].function->type != COGL_BLEND_STRING_FUNCTION_MODULATE)
-        {
-          error_string = "Using anything but MODULATE() for texture combining"
-                         " under GLES 2 is currently unsupported";
-          detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
-          goto error;
-        }
-#endif
       for (j = 0; j < statements[i].function->argc; j++)
         {
           CoglBlendStringArgument *arg = &statements[i].args[j];
