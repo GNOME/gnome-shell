@@ -181,6 +181,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/script", test_script_named_object);
   TEST_CONFORM_SIMPLE ("/script", test_animator_base);
   TEST_CONFORM_SIMPLE ("/script", test_animator_properties);
+  TEST_CONFORM_SIMPLE ("/script", test_animator_multi_properties);
 
   TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
 
