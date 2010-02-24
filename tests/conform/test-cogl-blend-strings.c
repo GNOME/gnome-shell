@@ -355,6 +355,52 @@ on_paint (ClutterActor *actor, TestState *state)
                     "A = MODULATE (PRIMARY, TEXTURE)", /* tex combine */
                     0xffffff10); /* expected */
 
+  test_tex_combine (state, 8, 0, /* position */
+                    0x11111111, /* texture 0 color */
+                    0x22222222, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGBA = ADD (PREVIOUS, 1-TEXTURE)", /* tex combine */
+                    0xeeeeeeee); /* expected */
+
+  /* this is again assuming a primary color of 0x80808080 */
+  test_tex_combine (state, 9, 0, /* position */
+                    0x10101010, /* texture 0 color */
+                    0x20202020, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGBA = INTERPOLATE (PREVIOUS, TEXTURE, PRIMARY)",
+                    0x18181818); /* expected */
+
+#if 0 /* using TEXTURE_N appears to be broken in cogl-blend-string.c */
+  test_tex_combine (state, 0, 1, /* position */
+                    0xDEADBEEF, /* texture 0 color (not used) */
+                    0x11223344, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGBA = ADD (TEXTURE_1, TEXTURE)", /* tex combine */
+                    0x22446688); /* expected */
+#endif
+
+  test_tex_combine (state, 1, 1, /* position */
+                    0x21314151, /* texture 0 color */
+                    0x99999999, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGBA = ADD_SIGNED (PREVIOUS, TEXTURE)", /* tex combine */
+                    0x3a4a5a6a); /* expected */
+
+  test_tex_combine (state, 2, 1, /* position */
+                    0xfedcba98, /* texture 0 color */
+                    0x11111111, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGBA = SUBTRACT (PREVIOUS, TEXTURE)", /* tex combine */
+                    0xedcba987); /* expected */
+
+  test_tex_combine (state, 3, 1, /* position */
+                    0x8899aabb, /* texture 0 color */
+                    0xbbaa9988, /* texture 1 color */
+                    TEX_CONSTANT_UNUSED,
+                    "RGB = DOT3_RGBA (PREVIOUS, TEXTURE)"
+                    "A = REPLACE (PREVIOUS)",
+                    0x2a2a2abb); /* expected */
+
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
    * few frames and a few seconds:
