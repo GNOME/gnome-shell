@@ -74,15 +74,6 @@ _cogl_texture_driver_gen (GLenum   gl_target,
     }
 }
 
-
-void
-_cogl_texture_driver_bind (GLenum gl_target,
-                           GLuint gl_handle,
-                           GLenum gl_intformat)
-{
-  GE (cogl_gles2_wrapper_bind_texture (gl_target, gl_handle, gl_intformat));
-}
-
 void
 _cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
                                                 int pixels_bpp)
@@ -140,8 +131,6 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                slice_bmp.width,
                                slice_bmp.height);
 
-  /* We don't need to use _cogl_texture_driver_bind here because we're
-     not using the bound texture to render yet */
   GE( glBindTexture (gl_target, gl_handle) );
 
   GE( glTexSubImage2D (gl_target, 0,
@@ -186,8 +175,6 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   _cogl_texture_driver_prep_gl_for_pixels_upload (bmp.rowstride,
                                                   bpp);
 
-  /* We don't need to use _cogl_texture_driver_bind here because we're
-     not using the bound texture to render yet */
   GE( glBindTexture (gl_target, gl_handle) );
 
   GE( glTexImage2D (gl_target, 0,

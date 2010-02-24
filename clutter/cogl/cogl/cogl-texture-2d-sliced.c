@@ -847,9 +847,8 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
                      y_span->size - y_span->waste);
 
           /* Setup texture parameters */
-          GE( _cogl_texture_driver_bind (tex_2ds->gl_target,
-                                         gl_handles[y * n_x_slices + x],
-                                         gl_intformat) );
+          GE( glBindTexture (tex_2ds->gl_target,
+                             gl_handles[y * n_x_slices + x] ) );
 
           _cogl_texture_driver_try_setting_gl_border_color (tex_2ds->gl_target,
                                                             transparent_color);

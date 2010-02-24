@@ -55,14 +55,10 @@ typedef struct _CoglGles2WrapperShader	  CoglGles2WrapperShader;
 /* Accessors for the texture unit bit mask */
 #define COGL_GLES2_TEXTURE_UNIT_IS_ENABLED(mask, unit)  \
   (((mask) & (1 << ((unit) * 2))) ? TRUE : FALSE)
-#define COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY(mask, unit)       \
-  (((mask) & (1 << ((unit) * 2 + 1))) ? TRUE : FALSE)
 #define COGL_GLES2_SET_BIT(mask, bit, val)                              \
   ((val) ? ((mask) |= (1 << (bit))) : ((mask) &= ~(1 << (bit))))
 #define COGL_GLES2_TEXTURE_UNIT_SET_ENABLED(mask, unit, val)    \
   COGL_GLES2_SET_BIT ((mask), (unit) * 2, (val))
-#define COGL_GLES2_TEXTURE_UNIT_SET_ALPHA_ONLY(mask, unit, val) \
-  COGL_GLES2_SET_BIT ((mask), (unit) * 2 + 1, (val))
 
 #define COGL_GLES2_MAX_TEXTURE_UNITS (sizeof (guint32) * 8 / 2)
 
@@ -379,9 +375,6 @@ void cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
                                const GLvoid *indices);
 void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 
-void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
-				      GLenum internal_format);
-
 void cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params);
 
 /* This function is only available on GLES 2 */
@@ -429,11 +422,6 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #endif /* COGL_GLES2_WRAPPER_NO_REMAP */
 
 #else /* HAVE_COGL_GLES2 */
-
-/* The extra third parameter of the bind texture wrapper isn't needed
-   so we can just directly call glBindTexture */
-#define cogl_gles2_wrapper_bind_texture(target, texture, internal_format) \
-  glBindTexture ((target), (texture))
 
 /* COGL uses the automatic mipmap generation for GLES 1 so
    glGenerateMipmap doesn't need to do anything */
