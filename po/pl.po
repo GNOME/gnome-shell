@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-09 03:06+0200\n"
-"PO-Revision-Date: 2009-09-09 03:02+0100\n"
-"Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
+"POT-Creation-Date: 2010-02-24 18:28+0100\n"
+"PO-Revision-Date: 2010-02-23 07:25+0100\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,59 +28,184 @@ msgstr "Powłoka środowiska GNOME"
 msgid "Window management and application launching"
 msgstr "Zarządzanie oknami i uruchamianiem programów"
 
-#. left side
-#: ../js/ui/panel.js:269
-msgid "Activities"
-msgstr "Czynności"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:180 ../js/ui/dash.js:881
+msgid "APPLICATIONS"
+msgstr "Programy"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:452
-msgid "%a %l:%M %p"
-msgstr "%a, %H:%M"
+#: ../js/ui/appDisplay.js:204
+msgid "PREFERENCES"
+msgstr "Preferencje"
 
-#: ../js/ui/dash.js:255
+#: ../js/ui/appDisplay.js:582
+msgid "New Window"
+msgstr "Nowe okno"
+
+#: ../js/ui/appDisplay.js:586
+msgid "Remove from Favorites"
+msgstr "Usuń z ulubionych"
+
+#: ../js/ui/appDisplay.js:587
+msgid "Add to Favorites"
+msgstr "Dodaj do ulubionych"
+
+#: ../js/ui/appDisplay.js:939
+msgid "Drag here to add favorites"
+msgstr "Przeciągnięcie tutaj doda do ulubionych"
+
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s zostało dodane do ulubionych."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s zostało usunięte z ulubionych."
+
+#: ../js/ui/dash.js:235
 msgid "Find..."
 msgstr "Znajdź..."
 
-#: ../js/ui/dash.js:372
-msgid "Browse"
-msgstr "Przeglądaj"
+#: ../js/ui/dash.js:505
+msgid "Searching..."
+msgstr "Wyszukiwanie..."
 
-#: ../js/ui/dash.js:508
-msgid "(see all)"
-msgstr "(wyświetl wszystko)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:700 ../js/ui/dash.js:756 ../js/ui/dash.js:887
-msgid "APPLICATIONS"
-msgstr "Programy"
+#: ../js/ui/dash.js:519
+msgid "No matching results."
+msgstr "Brak wyników."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:720
-msgid "PLACES"
-msgstr "Miejsca"
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
+msgid "PLACES & DEVICES"
+msgstr "Miejsca i urządzenia"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:727 ../js/ui/dash.js:768 ../js/ui/dash.js:861
-msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
+msgid "RECENT ITEMS"
 msgstr "Ostatnie dokumenty"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:746 ../js/ui/dash.js:850 ../js/ui/dash.js:876
-msgid "SEARCH RESULTS"
-msgstr "Wyniki wyszukiwania"
+#: ../js/ui/lookingGlass.js:356
+msgid "No extensions installed"
+msgstr "Nie zainstalowano rozszerzeń"
 
-#: ../js/ui/runDialog.js:90
+#: ../js/ui/lookingGlass.js:393
+msgid "Enabled"
+msgstr "Włączone"
+
+#: ../js/ui/lookingGlass.js:395
+msgid "Disabled"
+msgstr "Wyłączone"
+
+#: ../js/ui/lookingGlass.js:397
+msgid "Error"
+msgstr "Błąd"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Out of date"
+msgstr "Przestarzałe"
+
+#: ../js/ui/lookingGlass.js:424
+msgid "View Source"
+msgstr "Wyświetl źródło"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "Web Page"
+msgstr "Strona WWW"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Cofnij"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:336
+msgid "Activities"
+msgstr "Podgląd"
+
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:560
+msgid "%a %R"
+msgstr "%a, %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:563
+msgid "%a %l:%M %p"
+msgstr "%a, %H:%M"
+
+#: ../js/ui/placeDisplay.js:144
+msgid "Connect to..."
+msgstr "Połącz z..."
+
+#: ../js/ui/runDialog.js:245
 msgid "Please enter a command:"
 msgstr "Proszę wprowadzić polecenie:"
 
-#: ../src/shell-global.c:799
+#: ../js/ui/runDialog.js:361
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Wykonanie \"%s\" się nie powiodło:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Dostępny"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Zajęty"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Niewidoczny"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Informacje o koncie..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Panel boczny"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Preferencje systemu..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Zablokuj ekran"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Przełącz użytkownika"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Wyloguj się..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Wyłącz komputer..."
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Programy"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Ostatnie dokumenty"
+
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Mniej niż minutę temu"
 
-#: ../src/shell-global.c:802
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -88,7 +213,7 @@ msgstr[0] "%d minuta temu"
 msgstr[1] "%d minuty temu"
 msgstr[2] "%d minut temu"
 
-#: ../src/shell-global.c:805
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -96,7 +221,7 @@ msgstr[0] "%d godzina temu"
 msgstr[1] "%d godziny temu"
 msgstr[2] "%d godzin temu"
 
-#: ../src/shell-global.c:808
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -104,7 +229,7 @@ msgstr[0] "%d dzień temu"
 msgstr[1] "%d dni temu"
 msgstr[2] "%d dni temu"
 
-#: ../src/shell-global.c:811
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -112,68 +237,17 @@ msgstr[0] "%d tydzień temu"
 msgstr[1] "%d tygodnie temu"
 msgstr[2] "%d tygodni temu"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Nieznane"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Nie można zablokować ekranu: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Nie można tymczasowo ustawić wygaszacza ekranu na wygaszenie ekranu: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Nie można się wylogować: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Informacje o koncie..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Panel boczny"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Preferencje systemu..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Zablokuj ekran"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Przełącz użytkownika"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Wyloguj się..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Wyłącz komputer..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Katalog domowy"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "System plików"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Wyszukaj"
 
@@ -182,7 +256,7 @@ msgstr "Wyszukaj"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
