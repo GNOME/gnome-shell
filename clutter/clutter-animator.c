@@ -1579,7 +1579,6 @@ clutter_animator_property_set_ease_in (ClutterAnimator *animator,
  * @animator: a #ClutterAnimatorKey
  * @object: a #GObject
  * @property_name: the name of a property on object
- * @interpolation: the #ClutterInterpolation to use
  *
  * Get the interpolation used by animator for a property on a particular
  * object.
@@ -1588,10 +1587,9 @@ clutter_animator_property_set_ease_in (ClutterAnimator *animator,
  * Since: 1.2
  */
 ClutterInterpolation
-clutter_animator_property_get_interpolation (ClutterAnimator      *animator,
-                                             GObject              *object,
-                                             const gchar          *property_name,
-                                             ClutterInterpolation  interpolation)
+clutter_animator_property_get_interpolation (ClutterAnimator *animator,
+                                             GObject         *object,
+                                             const gchar     *property_name)
 {
   GList              *initial;
   ClutterAnimatorKey  key, *initial_key;
@@ -1631,10 +1629,10 @@ clutter_animator_property_get_interpolation (ClutterAnimator      *animator,
  * Since: 1.2
  */
 void
-clutter_animator_property_set_interpolation (ClutterAnimator      *animator,
-                                             GObject              *object,
-                                             const gchar          *property_name,
-                                             ClutterInterpolation  interpolation)
+clutter_animator_property_set_interpolation (ClutterAnimator     *animator,
+                                             GObject             *object,
+                                             const gchar         *property_name,
+                                             ClutterInterpolation interpolation)
 {
   GList              *initial;
   ClutterAnimatorKey  key, *initial_key;

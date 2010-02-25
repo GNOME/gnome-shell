@@ -146,8 +146,7 @@ void                 clutter_animator_property_set_ease_in       (ClutterAnimato
 
 ClutterInterpolation clutter_animator_property_get_interpolation (ClutterAnimator      *animator,
                                                                   GObject              *object,
-                                                                  const gchar          *property_name,
-                                                                  ClutterInterpolation  interpolation);
+                                                                  const gchar          *property_name);
 void                 clutter_animator_property_set_interpolation (ClutterAnimator      *animator,
                                                                   GObject              *object,
                                                                   const gchar          *property_name,
