@@ -58,6 +58,90 @@
       </schema>
 
       <schema>
+        <key>/schemas/desktop/gnome/shell/clock/format</key>
+	<applyto>/desktop/gnome/shell/clock/format</applyto>
+	<owner>gnome-shell</owner>
+	<type>string</type>
+	<default>
+            <!-- Translators:
+               This controls whether the GNOME panel clock should display time
+               in 24 hour mode or 12 hour mode by default. The only valid values
+               for this are "24-hour" and "12-hour".
+               If your locale uses 24 hour time notation, translate this to
+               "24-hour".
+               If your locale uses 12 hour time notation with am/pm, translate
+               this to "12-hour".
+
+               Do NOT translate this into anything else than "24-hour" or
+               "12-hour". For example, if you translate this to "24 sata" or
+               anything else that isn't "24-hour" or "12-hour", things will
+               not work.
+            -->
+          24-hour
+        </default>
+	<locale name="C">
+	  <short>Hour format</short>
+	  <long>
+        This key specifies the hour format used by the panel clock.
+        Possible values are "12-hour", "24-hour", "unix" and "custom".
+        If set to "unix", the clock will display time in seconds since Epoch,
+        i.e. 1970-01-01.
+        If set to "custom", the clock will display time according to the format
+        specified in the custom_format key.
+        Note that if set to either "unix" or "custom", the show_date and
+        show_seconds keys are ignored.
+	  </long>
+	</locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/clock/custom_format</key>
+        <applyto>/desktop/gnome/shell/clock/custom_format</applyto>
+	<owner>gnome-shell</owner>
+	<type>string</type>
+	<default></default>
+	<locale name="C">
+	  <short>Custom format of the clock</short>
+	  <long>
+	    This key specifies the format used by the panel clock when the
+            format key is set to "custom". You can use conversion specifiers
+            understood by strftime() to obtain a specific format. See the
+            strftime() manual for more information.
+	  </long>
+	</locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/clock/show_seconds</key>
+	<applyto>/desktop/gnome/shell/clock/show_seconds</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	  <short>Show time with seconds</short>
+	  <long>
+              If true and format is either "12-hour" or "24-hour",
+              display seconds in time.
+          </long>
+	</locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/clock/show_date</key>
+	<applyto>/desktop/gnome/shell/clock/show_date</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	  <short>Show date in clock</short>
+	  <long>
+              If true and format is either "12-hour" or "24-hour",
+              display date in the clock, in addition to time.
+          </long>
+	</locale>
+      </schema>
+
+      <schema>
         <key>/schemas/desktop/gnome/shell/disabled_extensions</key>
         <applyto>/desktop/gnome/shell/disabled_extensions</applyto>
         <owner>gnome-shell</owner>

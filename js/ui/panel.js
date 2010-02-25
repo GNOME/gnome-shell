@@ -33,6 +33,11 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'gnome-power-manager': 'battery'
 };
 
+const CLOCK_FORMAT_KEY        = 'clock/format';
+const CLOCK_CUSTOM_FORMAT_KEY = 'clock/custom_format';
+const CLOCK_SHOW_DATE_KEY     = 'clock/show_date';
+const CLOCK_SHOW_SECONDS_KEY  = 'clock/show_seconds';
+
 function TextShadower() {
     this._init();
 }
@@ -478,6 +483,9 @@ Panel.prototype = {
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
 
+        let gconf = Shell.GConf.get_default();
+        gconf.connect('changed', Lang.bind(this, this._updateClock));
+
         // Start the clock
         this._updateClock();
     },
@@ -544,29 +552,68 @@ Panel.prototype = {
     },
 
     _updateClock: function() {
-        let displayDate = new Date();
-        let msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
-                                     displayDate.getMilliseconds());
-        if (msecRemaining < 500) {
-            displayDate.setMinutes(displayDate.getMinutes() + 1);
-            msecRemaining += 60000;
+        let gconf = Shell.GConf.get_default();
+        let format = gconf.get_string(CLOCK_FORMAT_KEY);
+        let showDate = gconf.get_boolean(CLOCK_SHOW_DATE_KEY);
+        let showSeconds = gconf.get_boolean(CLOCK_SHOW_SECONDS_KEY);
+
+        let clockFormat;
+        switch (format) {
+            case 'unix':
+                // force updates every second
+                showSeconds = true;
+                clockFormat = "%s";
+                break;
+            case 'custom':
+                // force updates every second
+                showSeconds = true;
+                clockFormat = gconf.get_string(CLOCK_CUSTOM_FORMAT_KEY);
+                break;
+            case '24-hour':
+                if (showDate)
+	            /* Translators: This is the time format with date used
+                       in 24-hour mode. */
+                    clockFormat = showSeconds ? _("%a %b %e, %R:%S")
+                                              : _("%a %b %e, %R");
+                else
+	            /* Translators: This is the time format without date used
+                       in 24-hour mode. */
+                    clockFormat = showSeconds ? _("%a %R:%S")
+                                              : _("%a %R");
+                break;
+            case '12-hour':
+            default:
+                if (showDate)
+	            /* Translators: This is a time format with date used
+                       for AM/PM. */
+                    clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
+                                              : _("%a %b %e, %l:%M %p");
+                else
+	            /* Translators: This is a time format without date used
+                       for AM/PM. */
+                    clockFormat = showSeconds ? _("%a %l:%M:%S %p")
+                                              : _("%a %l:%M %p");
+                break;
         }
 
-        // if the locale representations of 05:00 and 17:00 do not
-        // start with the same 2 digits, it must be a 24h clock
-        let fiveAm = new Date();
-        fiveAm.setHours(5);
-        let fivePm = new Date();
-        fivePm.setHours(17);
-        let isTime24h = fiveAm.toLocaleFormat("%X").substr(0,2) !=
-                        fivePm.toLocaleFormat("%X").substr(0,2);
-        if (isTime24h) {
-            /* Translators: This is the time format used in 24-hour mode. */
-            this._clock.set_text(displayDate.toLocaleFormat(_("%a %R")));
+        let displayDate = new Date();
+        let msecRemaining;
+        if (showSeconds) {
+            msecRemaining = 1000 - displayDate.getMilliseconds();
+            if (msecRemaining < 50) {
+                displayDate.setSeconds(displayDate.getSeconds() + 1);
+                msecRemaining += 1000;
+            }
         } else {
-            /* Translators: This is a time format used for AM/PM. */
-            this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
+            msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
+                                     displayDate.getMilliseconds());
+            if (msecRemaining < 500) {
+                displayDate.setMinutes(displayDate.getMinutes() + 1);
+                msecRemaining += 60000;
+            }
         }
+
+        this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
     },
