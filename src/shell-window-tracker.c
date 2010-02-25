@@ -724,25 +724,22 @@ shell_window_tracker_get_running_apps (ShellWindowTracker *monitor,
   return ret;
 }
 
-static gboolean
-idle_handle_focus_change (gpointer data)
+static void
+on_focus_window_changed (MetaDisplay        *display,
+                         GParamSpec         *spec,
+                         ShellWindowTracker *tracker)
 {
   MetaScreen *screen;
-  MetaDisplay *display;
-  ShellWindowTracker *tracker = data;
   MetaWindow *new_focus_win;
   ShellApp *new_focus_app;
 
-  tracker->idle_focus_change_id = 0;
-
   screen = shell_global_get_screen (shell_global_get ());
-  display = meta_screen_get_display (screen);
 
   new_focus_win = meta_display_get_focus_window (display);
   new_focus_app = new_focus_win ? g_hash_table_lookup (tracker->window_to_app, new_focus_win) : NULL;
 
   if (new_focus_app == tracker->focus_app)
-    return FALSE;
+    return;
 
   if (tracker->focus_app != NULL)
     g_object_unref (tracker->focus_app);
@@ -754,21 +751,7 @@ idle_handle_focus_change (gpointer data)
     tracker->focus_app = g_object_ref (new_focus_app);
 
   g_object_notify (G_OBJECT (tracker), "focus-app");
-
-  return FALSE;
 }
-
-static void
-on_focus_window_changed (MetaDisplay     *display,
-                         GParamSpec      *spec,
-                         ShellWindowTracker *self)
-{
-  if (self->idle_focus_change_id != 0)
-    return;
-
-  self->idle_focus_change_id = meta_later_add (META_LATER_BEFORE_REDRAW, idle_handle_focus_change, self, NULL);
-}
-
 
 /**
  * shell_window_tracker_get_startup_sequences:
