@@ -97,6 +97,7 @@
     <xi:include href="xml/cogl-buffer.xml"/>
     <xi:include href="xml/cogl-vector.xml"/>
     <xi:include href="xml/cogl-texture-3d.xml"/>
+    <xi:include href="xml/cogl-quaternion.xml"/>
 
   </chapter>
 

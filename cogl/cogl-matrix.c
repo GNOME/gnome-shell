@@ -32,6 +32,8 @@
 
 #include <cogl.h>
 #include "cogl-debug.h"
+#include <cogl-quaternion.h>
+#include <cogl-quaternion-private.h>
 #include <cogl-matrix.h>
 #include <cogl-matrix-private.h>
 #ifdef USE_MESA_MATRIX_API
@@ -71,6 +73,13 @@ cogl_matrix_init_identity (CoglMatrix *matrix)
   _math_matrix_init_identity (matrix);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
+                                  CoglQuaternion *quaternion)
+{
+  _math_matrix_init_from_quaternion (matrix, quaternion);
 }
 
 void

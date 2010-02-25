@@ -51,6 +51,7 @@
 #define _M_MATRIX_H
 
 #include <cogl-matrix.h>
+#include <cogl-quaternion.h>
 
 #include <glib.h>
 
@@ -109,6 +110,10 @@ _math_matrix_multiply_array (CoglMatrix *result, const float *b);
 
 void
 _math_matrix_init_from_array (CoglMatrix *matrix, const float *array);
+
+void
+_math_matrix_init_from_quaternion (CoglMatrix *matrix,
+                                   CoglQuaternion *quaternion);
 
 void
 _math_matrix_translate (CoglMatrix *matrix, float x, float y, float z);

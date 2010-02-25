@@ -118,6 +118,10 @@ cogl_object_unref (void *object);
  */
 typedef void (* CoglFuncPtr) (void);
 
+/* We forward declare this in cogl-types to avoid circular dependencies
+ * between cogl-matrix.h, cogl-euler.h and cogl-quaterion.h */
+typedef struct _CoglMatrix      CoglMatrix;
+
 /**
  * CoglFixed:
  *
