@@ -457,36 +457,47 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
           initial = g_list_find_custom (key_animator->current->next,
                                         key,
                                         sort_actor_prop_func);
-          g_assert (initial != NULL);
 
-          initial_key = initial->data;
-
-          clutter_interval_set_initial_value (key_animator->interval,
-                                              &initial_key->value);
-          key_animator->current = initial;
-          key_animator->start = initial_key->progress;
-
-          next = g_list_find_custom (initial->next,
-                                     key,
-                                     sort_actor_prop_func);
-          if (next)
+          if (initial)
             {
-              next_key = next->data;
+              initial_key = initial->data;
 
-              key_animator->end = next_key->progress;
+              clutter_interval_set_initial_value (key_animator->interval,
+                                                  &initial_key->value);
+              key_animator->current = initial;
+              key_animator->start = initial_key->progress;
+
+              next = g_list_find_custom (initial->next,
+                                         key,
+                                         sort_actor_prop_func);
+              if (next)
+                {
+                  next_key = next->data;
+
+                  key_animator->end = next_key->progress;
+                }
+              else
+                {
+                  next_key = initial_key;
+
+                  key_animator->end = 1.0;
+                }
+
+              clutter_interval_set_final_value (key_animator->interval,
+                                                &next_key->value);
+
+              if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
+                clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
             }
-          else
+          else /* no relevant interval */
             {
-              next_key = initial_key;
-
-              key_animator->end = 1.0;
+              ClutterAnimatorKey *current_key = key_animator->current->data;
+              clutter_interval_set_initial_value (key_animator->interval,
+                                                  &current_key->value);
+              clutter_interval_set_final_value (key_animator->interval,
+                                                &current_key->value);
+              break;
             }
-
-          clutter_interval_set_final_value (key_animator->interval,
-                                            &next_key->value);
-
-          if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
-            clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
         }
     }
   else if (progress < key_animator->start)
@@ -500,33 +511,44 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
           initial = list_find_custom_reverse (key_animator->current->prev,
                                               key,
                                               sort_actor_prop_func);
-          g_assert (initial != NULL);
 
-          initial_key = initial->data;
-
-          clutter_interval_set_initial_value (key_animator->interval,
-                                              &initial_key->value);
-          key_animator->current = initial;
-          key_animator->end = key_animator->start;
-          key_animator->start = initial_key->progress;
-
-          if (old)
+          if (initial)
             {
-              next_key = old->data;
+              initial_key = initial->data;
 
-              key_animator->end = next_key->progress;
+              clutter_interval_set_initial_value (key_animator->interval,
+                                                  &initial_key->value);
+              key_animator->current = initial;
+              key_animator->end = key_animator->start;
+              key_animator->start = initial_key->progress;
+
+              if (old)
+                {
+                  next_key = old->data;
+
+                  key_animator->end = next_key->progress;
+                }
+              else
+                {
+                  next_key = initial_key;
+
+                  key_animator->end = 1.0;
+                }
+
+              clutter_interval_set_final_value (key_animator->interval,
+                                                &next_key->value);
+              if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
+                clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
             }
-          else
+          else /* no relevant interval */
             {
-              next_key = initial_key;
-
-              key_animator->end = 1.0;
+              ClutterAnimatorKey *current_key = key_animator->current->data;
+              clutter_interval_set_initial_value (key_animator->interval,
+                                                  &current_key->value);
+              clutter_interval_set_final_value (key_animator->interval,
+                                                &current_key->value);
+              break;
             }
-
-          clutter_interval_set_final_value (key_animator->interval,
-                                            &next_key->value);
-          if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
-            clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
         }
     }
 }
