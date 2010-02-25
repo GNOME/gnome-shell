@@ -195,9 +195,11 @@ G_DEFINE_TYPE_WITH_CODE (ClutterAnimator,
 /**
  * clutter_animator_new:
  *
- * Create a new #ClutterAnimator instance.
+ * Creates a new #ClutterAnimator instance
  *
- * Returns: a new #ClutterAnimator.
+ * Return value: a new #ClutterAnimator.
+ *
+ * Since: 1.2
  */
 ClutterAnimator *
 clutter_animator_new (void)
@@ -832,9 +834,9 @@ animation_animator_started (ClutterTimeline *timeline,
  * If the property is an ease-in property, the current value of the property
  * on the object will be used as the starting point for computation.
  *
- * Returns: TRUE if the computation yields has a value, otherwise (when an
- * error occurs or the progress is before any of the keys FALSE is returned
- * and value is left untouched.
+ * Return value: %TRUE if the computation yields has a value, otherwise (when
+ *   an error occurs or the progress is before any of the keys) %FALSE is
+ *   returned and the #GValue is left untouched
  *
  * Since: 1.2
  */
@@ -988,16 +990,20 @@ clutter_animator_compute_value (ClutterAnimator *animator,
               clutter_interval_compute_value (interval,
                                               sub_progress,
                                               value);
+
             g_object_ref_sink (interval);
             g_object_unref (interval);
             g_object_ref_sink (alpha);
             g_object_unref (alpha);
+
             return TRUE;
          }
 
     }
+
   /* We're at, or past the end, use the last value */
   g_value_copy (&next->value, value);
+
   return TRUE;
 }
 
@@ -1052,7 +1058,9 @@ clutter_animator_set_timeline (ClutterAnimator *animator,
  *
  * Get the timeline hooked up for driving the #ClutterAnimator
  *
- * Return value: the #ClutterTimeline that drives the animator.
+ * Return value: (transfer none): the #ClutterTimeline that drives the animator
+ *
+ * Since: 1.2
  */
 ClutterTimeline *
 clutter_animator_get_timeline (ClutterAnimator *animator)
@@ -1069,6 +1077,8 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
  * and starts the animators current timeline.
  *
  * Return value: the #ClutterTimeline that drives the animator.
+ *
+ * Since: 1.2
  */
 ClutterTimeline *
 clutter_animator_run (ClutterAnimator *animator)
@@ -1304,9 +1314,11 @@ clutter_animator_set_key (ClutterAnimator *animator,
 /**
  * clutter_animator_get_keys:
  * @animator: a #ClutterAnimator instance
- * @object: a #GObject to search for or NULL for all
- * @property_name: a specific property name to query for or NULL for all
- * @progress: a specific progress to search for or a negative value for all
+ * @object: (allow-none): a #GObject to search for, or %NULL for all objects
+ * @property_name: (allow-none): a specific property name to query for,
+ *   or %NULL for all properties
+ * @progress: a specific progress to search for, or a negative value for all
+ *   progresses
  *
  * Returns a list of pointers to opaque structures with accessor functions
  * that describe the keys added to an animator.
@@ -1320,7 +1332,7 @@ clutter_animator_set_key (ClutterAnimator *animator,
  */
 GList *
 clutter_animator_get_keys (ClutterAnimator *animator,
-                           GObject         *object,/* or NULL for all */
+                           GObject         *object,
                            const gchar     *property_name,
                            gdouble          progress)
 {
@@ -1328,6 +1340,7 @@ clutter_animator_get_keys (ClutterAnimator *animator,
   GList *k;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), NULL);
+  g_return_val_if_fail (object == NULL || G_IS_OBJECT (object), NULL);
 
   property_name = g_intern_string (property_name);
 
@@ -1876,9 +1889,10 @@ clutter_animator_property_get_interpolation (ClutterAnimator *animator,
  * @property_name: the name of a property on object
  * @interpolation: the #ClutterInterpolation to use
  *
- * Set the interpolation method to use, CLUTTER_INTERPOLATION_LINEAR causes the
- * values to linearly change between the values, CLUTTER_INTERPOLATION_CUBIC
- * causes the values to smoothly change between the values.
+ * Set the interpolation method to use, %CLUTTER_INTERPOLATION_LINEAR causes
+ * the values to linearly change between the values, and
+ * %CLUTTER_INTERPOLATION_CUBIC causes the values to smoothly change between
+ * the values.
  *
  * Since: 1.2
  */
