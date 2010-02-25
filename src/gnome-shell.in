@@ -14,6 +14,50 @@ import termios
 import time
 import errno
 
+def get_running_session_environs():
+    wanted_environment = ['DBUS_SESSION_BUS_ADDRESS', 'DISPLAY', 'XDG_DATA_DIRS',
+                          'XAUTHORITY', 'XDG_SESSION_COOKIE', 'ORBIT_SOCKETDIR',
+                          'SESSION_MANAGER']
+    num_re = re.compile('^[0-9]+$')
+    myuid = os.getuid()
+    if not os.path.isdir('/proc'):
+        return {}
+    for filename in os.listdir('/proc'):
+        if not num_re.match(filename):
+            continue
+        piddir = '/proc/' + filename
+        try:
+            stat = os.stat(piddir)
+        except OSError, e:
+            continue
+        if not stat.st_uid == myuid:
+            continue
+        try:
+            exe = os.readlink(piddir + '/exe')
+        except OSError, e:
+            continue
+        if os.path.basename(exe) != 'gnome-session':
+            continue
+        try:
+            f = open(os.path.join(piddir, 'environ'))
+        except OSError, e:
+            continue
+        environ_data = f.read()
+        f.close()
+        # There's a trailing null at the last one, so remove the
+        # empty string
+        environs = environ_data.split('\0')[:-1]
+        # Rumor has it the presence of just FOO (instead of FOO=bar)
+        # represents a deleted environment variable
+        environs = filter(lambda x: '=' in x, environs)
+        # Turn it into a dictionary
+        environs = dict(map(lambda x: x.split('=', 1), environs))
+        result = {}
+        for key in wanted_environment:
+            if key in environs:
+                result[key] = environs[key]
+        return result
+
 def start_xephyr():
     tmpdir = tempfile.mkdtemp("", "gnome-shell.")
     atexit.register(shutil.rmtree, tmpdir)
@@ -342,6 +386,12 @@ else:
 
 if options.verbose:
     print "Starting shell"
+
+
+# Handle ssh logins
+if 'DISPLAY' not in os.environ:
+    running_env = get_running_session_environs()
+    os.environ.update(running_env)
 
 if options.debug:
     # Record initial terminal state so we can reset it to that
