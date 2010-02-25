@@ -1838,7 +1838,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
             }
 
 #if GLIB_CHECK_VERSION (2, 23, 2)
-          G_VALUE_COLLECT_INIT (&file, G_PARAM_SPEC_VALUE_TYPE (pspec),
+          G_VALUE_COLLECT_INIT (&final, G_PARAM_SPEC_VALUE_TYPE (pspec),
                                 var_args, 0,
                                 &error);
 #else
