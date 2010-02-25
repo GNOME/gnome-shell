@@ -205,6 +205,8 @@ clutter_container_child_set
 clutter_container_child_get
 
 <SUBSECTION>
+clutter_container_create_child_meta
+clutter_container_destroy_child_meta
 clutter_container_get_child_meta
 
 <SUBSECTION Standard>

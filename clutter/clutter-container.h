@@ -169,6 +169,10 @@ GParamSpec *      clutter_container_class_find_child_property   (GObjectClass   
 GParamSpec **     clutter_container_class_list_child_properties (GObjectClass     *klass,
                                                                  guint            *n_properties);
 
+void              clutter_container_create_child_meta           (ClutterContainer *container,
+                                                                 ClutterActor     *actor);
+void              clutter_container_destroy_child_meta          (ClutterContainer *container,
+                                                                 ClutterActor     *actor);
 ClutterChildMeta *clutter_container_get_child_meta              (ClutterContainer *container,
                                                                  ClutterActor     *actor);
 

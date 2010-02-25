@@ -93,12 +93,6 @@ static void              create_child_meta  (ClutterContainer *container,
 static void              destroy_child_meta (ClutterContainer *container,
                                              ClutterActor     *actor);
 
-static void clutter_container_create_child_meta  (ClutterContainer *container,
-                                                  ClutterActor     *actor);
-static void clutter_container_destroy_child_meta (ClutterContainer *container,
-                                                  ClutterActor     *actor);
-
-
 static void
 clutter_container_base_init (gpointer g_iface)
 {
@@ -780,7 +774,7 @@ clutter_container_get_child_meta (ClutterContainer *container,
   return NULL;
 }
 
-/*
+/**
  * clutter_container_create_child_meta:
  * @container: a #ClutterContainer
  * @actor: a #ClutterActor
@@ -788,12 +782,25 @@ clutter_container_get_child_meta (ClutterContainer *container,
  * Creates the #ClutterChildMeta wrapping @actor inside the
  * @container, if the #ClutterContainerIface::child_meta_type
  * class member is not set to %G_TYPE_INVALID.
+ *
+ * This function is only useful when adding a #ClutterActor to
+ * a #ClutterContainer implementation outside of the
+ * #ClutterContainer::add() virtual function implementation.
+ *
+ * Applications should not call this function.
+ *
+ * Since: 1.2
  */
-static void
+void
 clutter_container_create_child_meta (ClutterContainer *container,
                                      ClutterActor     *actor)
 {
-  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  ClutterContainerIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (container));
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
@@ -804,19 +811,32 @@ clutter_container_create_child_meta (ClutterContainer *container,
     iface->create_child_meta (container, actor);
 }
 
-/*
+/**
  * clutter_container_destroy_child_meta:
  * @container: a #ClutterContainer
  * @actor: a #ClutterActor
  *
  * Destroys the #ClutterChildMeta wrapping @actor inside the
  * @container, if any.
+ *
+ * This function is only useful when removing a #ClutterActor to
+ * a #ClutterContainer implementation outside of the
+ * #ClutterContainer::add() virtual function implementation.
+ *
+ * Applications should not call this function.
+ *
+ * Since: 1.2
  */
-static void
+void
 clutter_container_destroy_child_meta (ClutterContainer *container,
                                       ClutterActor     *actor)
 {
-  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  ClutterContainerIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
