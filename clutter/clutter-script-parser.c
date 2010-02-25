@@ -1669,6 +1669,18 @@ add_children (ClutterScript *script,
           continue;
         }
 
+      if (!CLUTTER_IS_ACTOR (object))
+        {
+          g_warning ("The object definition '%s' (type: %s) is not "
+                     "an actor, but it is referenced in the 'children' "
+                     "member of the container '%s' (type: %s); skipping.",
+                     child_info->id,
+                     g_type_name (child_info->gtype),
+                     oinfo->id,
+                     g_type_name (oinfo->gtype));
+          continue;
+        }
+
       CLUTTER_NOTE (SCRIPT, "Adding children '%s' to actor of type '%s'",
                     name,
                     g_type_name (G_OBJECT_TYPE (container)));
