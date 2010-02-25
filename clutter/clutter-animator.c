@@ -160,7 +160,8 @@ enum
 {
   PROP_0,
 
-  PROP_DURATION
+  PROP_DURATION,
+  PROP_TIMELINE
 };
 
 static void clutter_scriptable_init (ClutterScriptableIface *iface);
@@ -1630,6 +1631,10 @@ clutter_animator_set_property (GObject      *gobject,
       clutter_animator_set_duration (self, g_value_get_uint (value));
       break;
 
+    case PROP_TIMELINE:
+      clutter_animator_set_timeline (self, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -1648,6 +1653,10 @@ clutter_animator_get_property (GObject    *gobject,
     {
     case PROP_DURATION:
       g_value_set_uint (value, clutter_timeline_get_duration (priv->timeline));
+      break;
+
+    case PROP_TIMELINE:
+      g_value_set_object (value, priv->timeline);
       break;
 
     default:
@@ -1683,6 +1692,21 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
                              2000,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
+
+  /**
+   * ClutterAnimator:timeline:
+   *
+   * The #ClutterTimeline used by the #ClutterAnimator to drive the
+   * animation
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_object ("timeline",
+                               "Timeline",
+                               "The timeline of the animation",
+                               CLUTTER_TYPE_TIMELINE,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);
 }
 
 static void
