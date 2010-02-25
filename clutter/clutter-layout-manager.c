@@ -871,8 +871,15 @@ clutter_layout_manager_child_set (ClutterLayoutManager *manager,
           break;
         }
 
+#if GLIB_CHECK_VERSION (2, 23, 2)
+      G_VALUE_COLLECT_INIT (&value, G_PARAM_SPEC_VALUE_TYPE (pspec),
+                            var_args, 0,
+                            &error);
+#else
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       G_VALUE_COLLECT (&value, var_args, 0, &error);
+#endif /* GLIB_CHECK_VERSION (2, 23, 2) */
+
       if (error)
         {
           g_warning ("%s: %s", G_STRLOC, error);

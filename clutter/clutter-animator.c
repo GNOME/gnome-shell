@@ -961,9 +961,14 @@ clutter_animator_set (ClutterAnimator *animator,
           break;
         }
 
-      /* FIXME - Depend on GLib 2.24 and use G_VALUE_COLLECT_INIT() */
+#if GLIB_CHECK_VERSION (2, 23, 2)
+      G_VALUE_COLLECT_INIT (&value, G_PARAM_SPEC_VALUE_TYPE (pspec),
+                            args, 0,
+                            &error);
+#else
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       G_VALUE_COLLECT (&value, args, 0, &error);
+#endif /* GLIB_CHECK_VERSION (2, 23, 2) */
 
       if (error)
         {

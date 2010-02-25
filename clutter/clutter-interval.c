@@ -422,8 +422,13 @@ clutter_interval_set_interval_valist (ClutterInterval *interval,
   gchar *error;
 
   /* initial value */
+#if GLIB_CHECK_VERSION (2, 23, 2)
+  G_VALUE_COLLECT_INIT (&value, gtype, var_args, 0, &error);
+#else
   g_value_init (&value, gtype);
   G_VALUE_COLLECT (&value, var_args, 0, &error);
+#endif /* GLIB_CHECK_VERSION (2, 23, 2) */
+
   if (error)
     {
       g_warning ("%s: %s", G_STRLOC, error);
@@ -440,8 +445,13 @@ clutter_interval_set_interval_valist (ClutterInterval *interval,
   g_value_unset (&value);
 
   /* final value */
+#if GLIB_CHECK_VERSION (2, 23, 2)
+  G_VALUE_COLLECT_INIT (&value, gtype, var_args, 0, &error);
+#else
   g_value_init (&value, gtype);
   G_VALUE_COLLECT (&value, var_args, 0, &error);
+#endif /* GLIB_CHECK_VERSION (2, 23, 2) */
+
   if (error)
     {
       g_warning ("%s: %s", G_STRLOC, error);
