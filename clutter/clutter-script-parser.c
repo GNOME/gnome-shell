@@ -1698,26 +1698,6 @@ add_children (ClutterScript *script,
   oinfo->children = unresolved;
 }
 
-/* top-level classes: these classes are the roots of the
- * hiearchy; some of them must be unreferenced, whilst
- * others are owned by other instances
- */
-static const struct
-{
-  const gchar *type_name;
-  guint is_toplevel : 1;
-} clutter_toplevels[] = {
-  { "ClutterActor",          FALSE },
-  { "ClutterAlpha",          FALSE },
-  { "ClutterBehaviour",      TRUE  },
-  { "ClutterEffectTemplate", TRUE  },
-  { "ClutterModel",          TRUE  },
-  { "ClutterScore",          TRUE  },
-  { "ClutterTimeline",       TRUE  }
-};
-
-static guint n_clutter_toplevels = G_N_ELEMENTS (clutter_toplevels);
-
 static inline void
 _clutter_script_check_unresolved (ClutterScript *script,
                                   ObjectInfo    *oinfo)
@@ -1824,18 +1804,10 @@ _clutter_script_construct_object (ClutterScript *script,
       if (G_UNLIKELY (oinfo->gtype == G_TYPE_INVALID))
         return;
 
-      for (i = 0; i < n_clutter_toplevels; i++)
-        {
-          const gchar *t_name = clutter_toplevels[i].type_name;
-          GType t_type;
-
-          t_type = clutter_script_get_type_from_name (script, t_name);
-          if (g_type_is_a (oinfo->gtype, t_type))
-            {
-              oinfo->is_toplevel = clutter_toplevels[i].is_toplevel;
-              break;
-            }
-        }
+      oinfo->is_toplevel =
+        g_type_is_a (oinfo->gtype, G_TYPE_INITIALLY_UNOWNED)
+          ? FALSE
+          : TRUE;
     }
 
   if (oinfo->gtype == CLUTTER_TYPE_STAGE && oinfo->is_stage_default)
