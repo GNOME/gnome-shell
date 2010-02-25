@@ -621,10 +621,10 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
       /* do not change values if we're not active yet (delay) */
       if (sub_progress >= 0.0 && sub_progress <= 1.0)
         {
-          GValue cvalue = { 0, };
+          GValue tmp_value = { 0, };
           GType int_type;
 
-          g_value_init (&cvalue, G_VALUE_TYPE (&start_key->value));
+          g_value_init (&tmp_value, G_VALUE_TYPE (&start_key->value));
 
           clutter_timeline_advance (animator->priv->slave_timeline,
                                     sub_progress * 10000);
@@ -651,8 +651,8 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
                 {
                   /* interpolated and easing in */
                   clutter_interval_get_initial_value (key_animator->interval,
-                                                      &cvalue);
-                  prev = current = g_value_get_float (&cvalue);
+                                                      &tmp_value);
+                  prev = current = g_value_get_float (&tmp_value);
                 }
 
                next = list_try_get_rel (key_animator->current, 1);
@@ -660,18 +660,18 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
                res = cubic_interpolation (sub_progress, prev, current, next,
                                           nextnext);
 
-               g_value_set_float (&cvalue, res);
+               g_value_set_float (&tmp_value, res);
             }
           else
             clutter_interval_compute_value (key_animator->interval,
                                             sub_progress,
-                                            &cvalue);
+                                            &tmp_value);
 
           g_object_set_property (prop_actor_key->object,
                                  prop_actor_key->property_name,
-                                 &cvalue);
+                                 &tmp_value);
 
-          g_value_unset (&cvalue);
+          g_value_unset (&tmp_value);
         }
     }
 }
@@ -739,20 +739,20 @@ animation_animator_started (ClutterTimeline *timeline,
 
         if (key_animator->ease_in)
           {
-            GValue cvalue = { 0, };
+            GValue tmp_value = { 0, };
             GType int_type;
 
             int_type = clutter_interval_get_value_type (key_animator->interval);
-            g_value_init (&cvalue, int_type);
+            g_value_init (&tmp_value, int_type);
 
             g_object_get_property (initial_key->object,
                                    initial_key->property_name,
-                                   &cvalue);
+                                   &tmp_value);
 
             clutter_interval_set_initial_value (key_animator->interval,
-                                                &cvalue);
+                                                &tmp_value);
 
-            g_value_unset (&cvalue);
+            g_value_unset (&tmp_value);
           }
 
         next = g_list_find_custom (initial->next, key, sort_actor_prop_func);
@@ -774,6 +774,189 @@ animation_animator_started (ClutterTimeline *timeline,
       }
   }
 }
+
+/**
+ * clutter_animator_compute_value:
+ * @animator: a #ClutterAnimator
+ * @object: a #GObject
+ * @property_name: the name of the property on object to check
+ * @progress: a value between 0.0 and 1.0
+ * @value: an initialized value to store the computed result
+ *
+ * Compute the value for a managed property at a given progress.
+ *
+ * If the property is an ease-in property, the current value of the property
+ * on the object will be used as the starting point for computation.
+ *
+ * Returns: TRUE if the computation yields has a value, otherwise (when an
+ * error occurs or the progress is before any of the keys FALSE is returned
+ * and value is left untouched.
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_animator_compute_value (ClutterAnimator *animator,
+                                GObject         *object,
+                                const gchar     *property_name,
+                                gdouble          progress,
+                                GValue          *value)
+{
+  ClutterAnimatorKey   key;
+  ClutterAnimatorKey  *previous;
+  ClutterAnimatorKey  *next = NULL;
+  GParamSpec          *pspec;
+  GList               *initial_l;
+  GList               *previous_l;
+  GList               *next_l;
+  gboolean             ease_in;
+  ClutterInterpolation interpolation;
+ 
+  g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), FALSE);
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (property_name, FALSE);
+  g_return_val_if_fail (value, FALSE);
+  
+  ease_in = clutter_animator_property_get_ease_in (animator, object,
+                                                   property_name);
+  interpolation = clutter_animator_property_get_interpolation (animator,
+                                                   object, property_name);
+
+  property_name = g_intern_string (property_name);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object),
+                                        property_name);
+
+  key.object        = object;
+  key.property_name = property_name;
+
+  initial_l = g_list_find_custom (animator->priv->score, &key,
+                                  sort_actor_prop_func);
+  if (!initial_l)
+    return FALSE;
+
+  /* first find the interval we belong in, that is the first interval
+   * existing between keys
+   */
+
+  for (previous_l = initial_l, next_l = previous_l->next ;
+       previous_l->next ;
+       previous_l = previous_l->next, next_l = previous_l->next)
+    {
+       previous = previous_l->data;
+       if (next_l)
+         {
+           next = next_l->data;
+           if (next->object != object ||
+               next->property_name != property_name)
+             {
+               next_l = NULL;
+               next = NULL;
+             }
+         }
+       else
+         {
+           next = NULL;
+         }
+
+       if (progress < previous->progress)
+         {
+            /* we are before the defined values */
+
+            /* value has not been set */
+            return FALSE;
+         }
+
+       if (!next && previous->progress <= progress)
+         {
+            /* we only had one key for this object/property */
+            /* and we are past it, that is our value */
+            g_value_copy (&previous->value, value);
+            return TRUE;
+         }
+       if (next->progress >= progress)
+         {
+            ClutterInterval *interval;
+            ClutterAlpha    *alpha;
+
+            gdouble sub_progress = (progress - previous->progress)
+                                    / (next->progress - previous->progress);
+            /* this should be our interval */
+            interval = g_object_new (CLUTTER_TYPE_INTERVAL,
+                                     "value-type", pspec->value_type,
+                                     NULL);
+
+            if (ease_in && previous_l == initial_l)
+              {
+                GValue tmp_value = {0, };
+                g_value_init (&tmp_value, pspec->value_type);
+                g_object_get_property (object, property_name, &tmp_value);
+                clutter_interval_set_initial_value (interval, &tmp_value);
+                g_value_unset (&tmp_value);
+              }
+            else
+              {
+                clutter_interval_set_initial_value (interval, &previous->value);
+              }
+            clutter_interval_set_final_value (interval, &next->value);
+
+            alpha = clutter_alpha_new ();
+            clutter_alpha_set_timeline (alpha,
+                                        animator->priv->slave_timeline);
+            clutter_alpha_set_mode (alpha, next->mode);
+
+            clutter_timeline_advance (animator->priv->slave_timeline,
+                                      sub_progress * 10000);
+            sub_progress = clutter_alpha_get_alpha (alpha);
+
+            if (interpolation == CLUTTER_INTERPOLATION_CUBIC &&
+                pspec->value_type == G_TYPE_FLOAT)
+              {
+                gdouble prev, current, nextv, nextnext;
+                gdouble res;
+
+                if ((ease_in == FALSE ||
+                    (ease_in &&
+                     list_find_custom_reverse (previous_l->prev,
+                                               previous_l->data,
+                                               sort_actor_prop_func))))
+                  {
+                    current = g_value_get_float (&previous->value);
+                    prev = list_try_get_rel (previous_l, -1);
+                  }
+                else
+                  {
+                    /* interpolated and easing in */
+                    GValue tmp_value = {0, };
+                    g_value_init (&tmp_value, pspec->value_type);
+                    clutter_interval_get_initial_value (interval,
+                                                        &tmp_value);
+                    prev = current = g_value_get_float (&tmp_value);
+                    g_value_unset (&tmp_value);
+                  }
+
+                 nextv = list_try_get_rel (previous_l, 1);
+                 nextnext = list_try_get_rel (previous_l, 2);
+                 res = cubic_interpolation (sub_progress, prev, current, nextv,
+                                            nextnext);
+                 g_value_set_float (value, res);
+              }
+            else
+              clutter_interval_compute_value (interval,
+                                              sub_progress,
+                                              value);
+            g_object_ref_sink (interval);
+            g_object_unref (interval);
+            g_object_ref_sink (alpha);
+            g_object_unref (alpha);
+            return TRUE;
+         }
+
+    }
+  /* We're at, or past the end, use the last value */
+  g_value_copy (&next->value, value);
+  return TRUE;
+}
+
 
 /**
  * clutter_animator_set_timeline:
@@ -1182,6 +1365,9 @@ again:
         }
     }
 }
+
+
+
 
 typedef struct _ParseClosure {
   ClutterAnimator *animator;
