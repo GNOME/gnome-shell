@@ -37,6 +37,27 @@
  * through the #ClutterScript definition format, but it comes with a
  * convenience C API.
  *
+ * <refsect2 id="ClutterAnimator-key-frames">
+ *   <title>Key Frames</title>
+ *   <para>Every animation handled by a #ClutterAnimator can be
+ *   described in terms of "key frames". For each #GObject property
+ *   there can be multiple key frames, each one defined by the end
+ *   value for the property to be computed starting from the current
+ *   value to a specific point in time, using a given easing
+ *   mode.</para>
+ *   <para>The point in time is defined using a value representing
+ *   the progress in the normalized interval of [ 0, 1 ]. This maps
+ *   the value returned by clutter_timeline_get_duration().</para>
+ *   <figure id="easing-modes">
+ *     <title>Key Frames</title>
+ *     <graphic fileref="animator-key-frames.png" format="PNG"/>
+ *   </figure>
+ *   <para>In the image above the duration of the animation is
+ *   represented by the blue line. Each key frame is the white dot,
+ *   along with its progress. The red line represents the computed
+ *   function of time given the easing mode.</para>
+ * </refsect2>
+ *
  * <refsect2 id="ClutterAnimator-script">
  *   <title>ClutterAnimator description for #ClutterScript</title>
  *   <para>#ClutterAnimator defines a custom "properties" property

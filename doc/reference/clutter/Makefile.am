@@ -106,6 +106,7 @@ EXTRA_HFILES=\
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES=\
 	actor-box.png \
+	animator-key-frames.png \
 	bin-layout.png \
 	box-layout.png \
         easing-modes.png \
@@ -157,6 +158,8 @@ include $(top_srcdir)/gtk-doc.make
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += \
 	actor-box.png \
+	animator-key-frames.png \
+	animator-key-frames.svg \
 	bin-layout.png \
 	box-layout.png \
         easing-modes.png \
