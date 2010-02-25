@@ -238,6 +238,7 @@ TAGS
 /tests/conform/test-texture-fbo
 /tests/conform/test-script-single
 /tests/conform/test-script-child
+/tests/conform/test-list-model-from-script
 /tests/conform/test-script-implicit-alpha
 /tests/conform/test-script-object-property
 /tests/conform/test-script-animation

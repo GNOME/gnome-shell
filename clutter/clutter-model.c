@@ -132,8 +132,14 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-scriptable.h"
 
-G_DEFINE_ABSTRACT_TYPE (ClutterModel, clutter_model, G_TYPE_OBJECT);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE
+        (ClutterModel, clutter_model, G_TYPE_OBJECT,
+         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                clutter_scriptable_iface_init));
 
 enum
 {
@@ -445,6 +451,103 @@ clutter_model_check_type (GType gtype)
 }
 
 
+typedef struct {
+    gchar *name;
+    GType  type;
+} ColumnInfo;
+
+static gboolean
+clutter_model_parse_custom_node (ClutterScriptable *scriptable,
+                                 ClutterScript     *script,
+                                 GValue            *value,
+                                 const gchar       *name,
+                                 JsonNode          *node)
+{
+  GSList *columns = NULL;
+  GList *elements, *l;
+
+  if (strcmp (name, "columns") != 0)
+    return FALSE;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    return FALSE;
+
+  elements = json_array_get_elements (json_node_get_array (node));
+
+  for (l = elements; l != NULL; l = l->next)
+    {
+      JsonNode *child_node = l->data;
+      JsonArray *array = json_node_get_array (child_node);
+      ColumnInfo *cinfo;
+      const gchar *column_name;
+      const gchar *type_name;
+
+      if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY ||
+          json_array_get_length (array) != 2)
+        {
+          g_warning ("A column must be an array of "
+                     "[\"column-name\", \"GType-name\"] pairs");
+          return FALSE;
+        }
+
+      column_name = json_array_get_string_element (array, 0);
+      type_name = json_array_get_string_element (array, 1);
+
+      cinfo = g_slice_new0 (ColumnInfo);
+      cinfo->name = g_strdup (column_name);
+      cinfo->type = clutter_script_get_type_from_name (script, type_name);
+
+      columns = g_slist_prepend (columns, cinfo);
+    }
+
+  g_list_free (elements);
+
+  g_value_init (value, G_TYPE_POINTER);
+  g_value_set_pointer (value, g_slist_reverse (columns));
+
+  return TRUE;
+}
+
+static void
+clutter_model_set_custom_property (ClutterScriptable *scriptable,
+                                   ClutterScript     *script,
+                                   const gchar       *name,
+                                   const GValue      *value)
+{
+  if (strcmp (name, "columns") == 0)
+    {
+      ClutterModel *model = CLUTTER_MODEL (scriptable);
+      GSList *columns, *l;
+      guint n_columns;
+      gint i;
+
+      columns = g_value_get_pointer (value);
+      n_columns = g_slist_length (columns);
+
+      clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+
+      for (i = 0, l = columns; l != NULL; l = l->next, i++)
+        {
+          ColumnInfo *cinfo = l->data;
+
+          clutter_model_set_column_name (model, i, cinfo->name);
+          clutter_model_set_column_type (model, i, cinfo->type);
+
+          g_free (cinfo->name);
+          g_slice_free (ColumnInfo, cinfo);
+        }
+
+      g_slist_free (columns);
+    }
+}
+
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_model_parse_custom_node;
+  iface->set_custom_property = clutter_model_set_custom_property;
+}
 
 /**
  * clutter_model_resort:

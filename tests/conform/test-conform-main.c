@@ -158,6 +158,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
+  TEST_CONFORM_SIMPLE ("/model", test_list_model_from_script);
 
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);

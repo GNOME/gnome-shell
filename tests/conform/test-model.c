@@ -335,3 +335,37 @@ test_list_model_populate (TestConformSimpleFixture *fixture,
 
   g_object_unref (test_data.model);
 }
+
+void
+test_list_model_from_script (TestConformSimpleFixture *fixture,
+                             gconstpointer dummy)
+{
+  ClutterScript *script = clutter_script_new ();
+  GObject *model;
+  GError *error = NULL;
+  gchar *test_file;
+  const gchar *name;
+  GType type;
+
+  test_file = clutter_test_get_data_file ("test-script-model.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
+  g_assert (error == NULL);
+
+  model = clutter_script_get_object (script, "test-model");
+
+  g_assert (CLUTTER_IS_MODEL (model));
+  g_assert (clutter_model_get_n_columns (CLUTTER_MODEL (model)) == 3);
+
+  name = clutter_model_get_column_name (CLUTTER_MODEL (model), 0);
+  type = clutter_model_get_column_type (CLUTTER_MODEL (model), 0);
+  g_assert (strcmp (name, "text-column") == 0);
+  g_assert (type == G_TYPE_STRING);
+
+  name = clutter_model_get_column_name (CLUTTER_MODEL (model), 2);
+  type = clutter_model_get_column_type (CLUTTER_MODEL (model), 2);
+  g_print ("type: %s\n", g_type_name (type));
+  g_assert (strcmp (name, "actor-column") == 0);
+  g_assert (type == CLUTTER_TYPE_RECTANGLE);
+}

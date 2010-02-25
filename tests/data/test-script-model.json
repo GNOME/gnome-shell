@@ -1,0 +1,9 @@
+{
+  "id" : "test-model",
+  "type" : "ClutterListModel",
+  "columns" : [
+    [ "text-column", "gchararray" ],
+    [ "int-column", "gint" ],
+    [ "actor-column", "ClutterRectangle" ]
+  ]
+}
