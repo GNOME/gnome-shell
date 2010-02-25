@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
 "POT-Creation-Date: 2009-11-24 21:04+0000\n"
-"PO-Revision-Date: 2009-11-26 21:39+0100\n"
+"PO-Revision-Date: 2010-02-25 16:58+0100\n"
 "Last-Translator: Nils-Christoph Fiedler <fiedler@medienkompanie.de>\n"
 "Language-Team: Low German <nds-lowgerman@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -335,7 +335,7 @@ msgstr ""
 #: ../src/core/session.c:1468
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Unbekanntes Element %s"
 
 #: ../src/core/session.c:1820
 msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
@@ -364,7 +364,7 @@ msgstr ""
 
 #: ../src/core/util.c:239
 msgid "Window manager: "
-msgstr ""
+msgstr "Finsteroppasser:"
 
 #: ../src/core/util.c:391
 msgid "Bug in window manager: "
@@ -384,7 +384,7 @@ msgstr ""
 #: ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
-msgstr ""
+msgstr "Mutter"
 
 #. first time through
 #: ../src/core/window.c:6161
@@ -441,51 +441,51 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "Nah Schrievdisk 1 wesseln"
 
 #: ../src/include/all-keybindings.h:90
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "Nah Schrievdisk 2 wesseln"
 
 #: ../src/include/all-keybindings.h:92
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "Nah Schrievdisk 3 wesseln"
 
 #: ../src/include/all-keybindings.h:94
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "Nah Schrievdisk 4 wesseln"
 
 #: ../src/include/all-keybindings.h:96
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "Nah Schrievdisk 5 wesseln"
 
 #: ../src/include/all-keybindings.h:98
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "Nah Schrievdisk 6 wesseln"
 
 #: ../src/include/all-keybindings.h:100
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "Nah Schrievdisk 7 wesseln"
 
 #: ../src/include/all-keybindings.h:102
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "Nah Schrievdisk 8 wesseln"
 
 #: ../src/include/all-keybindings.h:104
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "Nah Schrievdisk 9 wesseln"
 
 #: ../src/include/all-keybindings.h:106
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "Nah Schrievdisk 10 wesseln"
 
 #: ../src/include/all-keybindings.h:108
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "Nah Schrievdisk 11 wesseln"
 
 #: ../src/include/all-keybindings.h:110
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "Nah Schrievdisk 12 wesseln"
 
 #: ../src/include/all-keybindings.h:122
 msgid "Switch to workspace on the left of the current workspace"
@@ -577,7 +577,7 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
-msgstr ""
+msgstr "Een Terminal lööpen laten"
 
 #: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
