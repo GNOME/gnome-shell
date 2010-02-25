@@ -696,7 +696,6 @@ MessageTray.prototype = {
     },
 
     _hideNotification: function() {
-        this._notificationRemoved = false;
         this._notification.popIn();
 
         this._tween(this._notificationBin, "_notificationState", State.HIDDEN,
@@ -710,6 +709,7 @@ MessageTray.prototype = {
     },
 
     _hideNotificationCompleted: function() {
+        this._notificationRemoved = false;
         this._notificationBin.hide();
         this._notificationBin.child = null;
         this._notification = null;
