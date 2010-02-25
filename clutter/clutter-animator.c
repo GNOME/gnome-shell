@@ -1326,9 +1326,11 @@ clutter_animator_get_keys (ClutterAnimator *animator,
 
 /**
  * clutter_animator_remove:
- * @object: a #GObject to search for or NULL for all
- * @property_name: a specific property name to query for or NULL for all
- * @progress: a specific progress to search for or a negative value for all
+ * @object: (allow-none): a #GObject to search for, or %NULL for all
+ * @property_name: (allow-none): a specific property name to query for,
+ *   or %NULL for all
+ * @progress: a specific progress to search for or a negative value
+ *   for all
  *
  * Removes all keys matching the conditions specificed in the arguments.
  *
@@ -1344,8 +1346,7 @@ clutter_animator_remove_key (ClutterAnimator *animator,
   GList *k;
 
   g_return_if_fail (CLUTTER_IS_ANIMATOR (animator));
-  g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (property_name != NULL);
+  g_return_if_fail (object == NULL || G_IS_OBJECT (object));
 
   property_name = g_intern_string (property_name);
 
