@@ -262,6 +262,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   const gchar *glx_extensions = NULL;
   ClutterFeatureFlags flags;
+  gboolean use_dri = FALSE;
 
   flags = clutter_backend_x11_get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
@@ -275,7 +276,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
                 "  GL_VENDOR: %s\n"
                 "  GL_RENDERER: %s\n"
                 "  GL_VERSION: %s\n"
-                "  GL_EXTENSIONS: %s\n",
+                "  GL_EXTENSIONS: %s",
                 glGetString (GL_VENDOR),
                 glGetString (GL_RENDERER),
                 glGetString (GL_VERSION),
@@ -283,113 +284,126 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   glx_extensions =
     glXQueryExtensionsString (clutter_x11_get_default_display (),
-			      clutter_x11_get_default_screen ());
+                              clutter_x11_get_default_screen ());
 
-  CLUTTER_NOTE (BACKEND, "GLX Extensions: %s", glx_extensions);
+  CLUTTER_NOTE (BACKEND, "  GLX Extensions: %s", glx_extensions);
+
+  use_dri = check_vblank_env ("dri");
 
   /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
-  if (getenv ("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
+  if (check_vblank_env ("none"))
     {
       CLUTTER_NOTE (BACKEND, "vblank sync: disabled at user request");
+      goto done;
     }
-  else
+
+  if (g_getenv ("__GL_SYNC_TO_VBLANK") != NULL)
     {
-      /* We try two GL vblank syncing mechanisms.
-       * glXSwapIntervalSGI is tried first, then glXGetVideoSyncSGI.
-       *
-       * glXSwapIntervalSGI is known to work with Mesa and in particular
-       * the Intel drivers. glXGetVideoSyncSGI has serious problems with
-       * Intel drivers causing terrible frame rate so it only tried as a
-       * fallback.
-       *
-       * How well glXGetVideoSyncSGI works with other driver (ATI etc) needs
-       * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
-       * no effect.
-       */
-      if (!check_vblank_env ("dri") &&
-          _cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+      backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
+      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+
+      CLUTTER_NOTE (BACKEND, "Using __GL_SYNC_TO_VBLANK hint");
+      goto done;
+    }
+
+  /* We try two GL vblank syncing mechanisms.
+   * glXSwapIntervalSGI is tried first, then glXGetVideoSyncSGI.
+   *
+   * glXSwapIntervalSGI is known to work with Mesa and in particular
+   * the Intel drivers. glXGetVideoSyncSGI has serious problems with
+   * Intel drivers causing terrible frame rate so it only tried as a
+   * fallback.
+   *
+   * How well glXGetVideoSyncSGI works with other driver (ATI etc) needs
+   * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
+   * no effect.
+   */
+  if (!use_dri &&
+      _cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+    {
+      backend_glx->swap_interval =
+        (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
+
+      CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
+
+      if (backend_glx->swap_interval != NULL &&
+          backend_glx->swap_interval (1) == 0)
         {
-          backend_glx->swap_interval =
-            (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
+          backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
+          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 
-          CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
-
-          if (backend_glx->swap_interval != NULL)
-            {
-              if (backend_glx->swap_interval (1) == 0)
-                {
-                  backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
-                  flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-                  CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
-                }
-            }
-
-          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-            CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
+          CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
 
 #ifdef GLX_INTEL_swap_event
-          /* GLX_INTEL_swap_event allows us to avoid blocking the CPU while
-           * we wait for glXSwapBuffers to complete, and instead we get an X
-           * event notifying us of completion... */
+          /* GLX_INTEL_swap_event allows us to avoid blocking the CPU
+           * while we wait for glXSwapBuffers to complete, and instead
+           * we get an X event notifying us of completion...
+           */
           if (!(clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_SWAP_EVENTS) &&
-              _cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
-              flags & CLUTTER_FEATURE_SYNC_TO_VBLANK)
+              _cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions))
             {
               flags |= CLUTTER_FEATURE_SWAP_EVENTS;
             }
 #endif /* GLX_INTEL_swap_event */
+
+          goto done;
         }
 
-      if (!check_vblank_env ("dri") &&
-          !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
-          _cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
-        {
-          CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
-
-          backend_glx->get_video_sync =
-            (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
-
-          backend_glx->wait_video_sync =
-            (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
-
-          if ((backend_glx->get_video_sync != NULL) &&
-              (backend_glx->wait_video_sync != NULL))
-            {
-              CLUTTER_NOTE (BACKEND,
-                            "glXGetVideoSyncSGI vblank setup success");
-
-              backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
-              flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-            }
-
-          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-            CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
-        }
-
-#ifdef __linux__
-      /*
-       * DRI is really an extreme fallback -rumoured to work with Via chipsets
-       */
-      if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-        {
-          CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
-          backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
-          if (backend_glx->dri_fd >= 0)
-            {
-              CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
-              backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
-              flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-            }
-
-          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-            CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
-        }
-#endif /* __linux__ */
-
-      if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-        CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
+      CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
     }
 
+  if (!use_dri &&
+      !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
+      _cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+    {
+      CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
+
+      backend_glx->get_video_sync =
+        (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
+
+      backend_glx->wait_video_sync =
+        (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
+
+      if ((backend_glx->get_video_sync != NULL) &&
+          (backend_glx->wait_video_sync != NULL))
+        {
+          CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup success");
+
+          backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
+          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+
+          goto done;
+        }
+
+      CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
+    }
+
+#ifdef __linux__
+  /*
+   * DRI is really an extreme fallback -rumoured to work with Via chipsets
+   */
+  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+    {
+      CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
+
+      backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
+      if (backend_glx->dri_fd >= 0)
+        {
+          CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
+
+          backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
+          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+
+          goto done;
+        }
+
+      CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
+    }
+#endif /* __linux__ */
+
+  CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
+
+done:
   CLUTTER_NOTE (BACKEND, "backend features checked");
 
   return flags;
@@ -747,7 +761,7 @@ glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
   switch (backend_glx->vblank_type)
     {
     case CLUTTER_VBLANK_GLX_SWAP:
-      /* Nothing */
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank (swap)");
       break;
 
     case CLUTTER_VBLANK_GLX:
@@ -756,6 +770,7 @@ glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
 
         glFinish ();
 
+        CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
         backend_glx->get_video_sync (&retraceCount);
         backend_glx->wait_video_sync (2,
                                       (retraceCount + 1) % 2,
@@ -770,6 +785,7 @@ glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
 
         glFinish ();
 
+        CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
         blank.request.type     = DRM_VBLANK_RELATIVE;
         blank.request.sequence = 1;
         blank.request.signal   = 0;
@@ -828,7 +844,6 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
         stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
 
       /* wait for the next vblank */
-      CLUTTER_NOTE (BACKEND, "Waiting for vblank");
       glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
 
       /* push on the screen */
