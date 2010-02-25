@@ -114,6 +114,30 @@
  * implementation called #ClutterListModel which has been optimised
  * for insertion and look up in sorted lists.
  *
+ * <refsect2 id="ClutterModel-script">
+ *   <title>ClutterModel custom properties for #ClutterScript</title>
+ *   <para>#ClutterModel defines a custom property "columns" for #ClutterScript
+ *   which allows defining the column names and types.</para>
+ *   <example id=ClutterModel-script-column-example">
+ *     <title>Example of the "columns" custom property</title>
+ *     <para>The definition below will create a #ClutterListModel with three
+ *     columns: the first one with name "Name" and containing strings; the
+ *     second one with name "Score" and containing integers; the third one with
+ *     name "Icon" and containing #ClutterTexture<!-- -->s.</para>
+ *     <programlisting>
+ *  {
+ *    "type" : "ClutterListModel",
+ *    "id" : "teams-model",
+ *    "columns" : [
+ *      [ "Name", "gchararray" ],
+ *      [ "Score", "gint" ],
+ *      [ "Icon", "ClutterTexture" ]
+ *    ]
+ *  }
+ *     </programlisting>
+ *   </example>
+ * </refsect2>
+ *
  * #ClutterModel is available since Clutter 0.6
  */
 
