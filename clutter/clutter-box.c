@@ -920,6 +920,11 @@ clutter_box_pack_at (ClutterBox   *box,
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (box));
   clutter_actor_queue_relayout (actor);
 
+  /* we need to explicitly call this, because we're not going through
+   * the default code paths provided by clutter_container_add()
+   */
+  clutter_container_create_child_meta (CLUTTER_CONTAINER (box), actor);
+
   g_signal_emit_by_name (box, "actor-added", actor);
 
   if (first_property == NULL || *first_property == '\0')
