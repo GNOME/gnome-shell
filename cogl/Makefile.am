@@ -64,6 +64,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-material-compat.h 	\
 	$(srcdir)/cogl-pipeline.h 		\
 	$(srcdir)/cogl-vector.h 		\
+	$(srcdir)/cogl-euler.h 			\
 	$(srcdir)/cogl-quaternion.h 		\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
@@ -231,6 +232,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-primitive.c			\
 	$(srcdir)/cogl-matrix.c				\
 	$(srcdir)/cogl-vector.c				\
+	$(srcdir)/cogl-euler.c				\
 	$(srcdir)/cogl-quaternion.c			\
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\

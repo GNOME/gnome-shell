@@ -49,6 +49,8 @@ G_BEGIN_DECLS
  * rotation may become aligned and you loose a degree of freedom.
  * (<ulink url="http://en.wikipedia.org/wiki/Gimbal_lock"/>).
  */
+#include <cogl/cogl-vector.h>
+#include <cogl/cogl-euler.h>
 
 /**
  * CoglQuaternion:
@@ -243,6 +245,10 @@ cogl_quaternion_init_from_y_rotation (CoglQuaternion *quaternion,
 void
 cogl_quaternion_init_from_z_rotation (CoglQuaternion *quaternion,
                                       float angle);
+
+void
+cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
+                                 const CoglEuler *euler);
 
 /**
  * cogl_quaternion_equal:

@@ -122,6 +122,14 @@ typedef void (* CoglFuncPtr) (void);
  * between cogl-matrix.h, cogl-euler.h and cogl-quaterion.h */
 typedef struct _CoglMatrix      CoglMatrix;
 
+/* Same as above we forward declared CoglQuaternion to avoid
+ * circular dependencies. */
+typedef struct _CoglQuaternion CoglQuaternion;
+
+/* Same as above we forward declared CoglEuler to avoid
+ * circular dependencies. */
+typedef struct _CoglEuler CoglEuler;
+
 /**
  * CoglFixed:
  *

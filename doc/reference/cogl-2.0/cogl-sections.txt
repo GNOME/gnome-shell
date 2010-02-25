@@ -355,6 +355,17 @@ cogl_matrix_get_array
 cogl_matrix_get_inverse
 </SECTION>
 
+<FILE>cogl-euler</FILE>
+<TITLE>Eulers (Rotations)</TITLE>
+CoglEuler
+cogl_euler_init
+cogl_euler_init_from_matrix
+cogl_euler_init_from_quaternion
+cogl_euler_equal
+cogl_euler_copy
+cogl_euler_free
+</SECTION>
+
 <SECTION>
 <FILE>cogl-quaternion</FILE>
 <TITLE>Quaternions (Rotations)</TITLE>

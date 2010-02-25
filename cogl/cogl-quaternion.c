@@ -39,6 +39,7 @@
 #include <cogl-quaternion-private.h>
 #include <cogl-matrix.h>
 #include <cogl-vector.h>
+#include <cogl-euler.h>
 
 #include <string.h>
 #include <math.h>
@@ -172,6 +173,42 @@ cogl_quaternion_init_from_z_rotation (CoglQuaternion *quaternion,
   quaternion->x = 0.0f;
   quaternion->y = 0.0f;
   quaternion->z = sinf (half_angle);
+}
+
+void
+cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
+                                 const CoglEuler *euler)
+{
+  /* NB: We are using quaternions to represent an axis (a), angle (𝜃) pair
+   * in this form:
+   * [w=cos(𝜃/2) ( x=sin(𝜃/2)*a.x, y=sin(𝜃/2)*a.y, z=sin(𝜃/2)*a.x )]
+   */
+  float sin_heading =
+    sinf (euler->heading * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+  float sin_pitch =
+    sinf (euler->pitch * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+  float sin_roll =
+    sinf (euler->roll * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+  float cos_heading =
+    cosf (euler->heading * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+  float cos_pitch =
+    cosf (euler->pitch * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+  float cos_roll =
+    cosf (euler->roll * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f);
+
+  quaternion->w =
+    cos_heading * cos_pitch * cos_roll +
+    sin_heading * sin_pitch * sin_roll;
+
+  quaternion->x =
+    cos_heading * sin_pitch * cos_roll +
+    sin_heading * cos_pitch * sin_roll;
+  quaternion->y =
+    sin_heading * cos_pitch * cos_roll -
+    cos_heading * sin_pitch * sin_roll;
+  quaternion->z =
+    cos_heading * cos_pitch * sin_roll -
+    sin_heading * sin_pitch * cos_roll;
 }
 
 void
