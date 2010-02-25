@@ -677,6 +677,11 @@ StTooltip {
     max-width: 40em;
 }
 
+#summary-notification-bin #notification {
+    /* message-tray.height + notification.padding-bottom */
+    padding-bottom: 38px;
+}
+
 #notification-actions {
     spacing: 5px;
 }
@@ -699,9 +704,26 @@ StTooltip {
     background: #808080;
 }
 
+/* The spacing and padding on the summary is tricky; we want to keep
+ * the icons from touching each other or the edges of the screen, but
+ * we also want them to be "Fitts"-y with respect to the edges, so the
+ * summary area's bottom and right padding must actually be part of
+ * the icons. However, we can't put *all* of the padding into the
+ * icons, because then the summary would be 0x0 when there were no
+ * icons in it, and so you wouldn't be able to hover over it to
+ * activate it.
+ *
+ * The padding-right on the non-rightmost icons is noticeable and
+ * slightly annoying. If StBoxLayout implemented the ":last-child"
+ * pseudo-class we could fix that...
+ */
 #summary-mode {
-    spacing: 10px;
-    padding: 2px 4px;
+    spacing: 6px;
+    padding: 2px 0px 0px 4px;
+}
+
+.summary-icon  {
+    padding: 0px 4px 2px 0px;
 }
 
 /* App Switcher */

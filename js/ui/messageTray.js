@@ -15,7 +15,7 @@ const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;
 
-const MESSAGE_TRAY_TIMEOUT = 0.2;
+const HIDE_TIMEOUT = 0.2;
 
 const ICON_SIZE = 24;
 
@@ -339,6 +339,19 @@ Source.prototype = {
     },
 
     notify: function(notification) {
+        if (this.notification)
+            this.notification.disconnect(this._notificationDestroyedId);
+
+        this.notification = notification;
+
+        this._notificationDestroyedId = notification.connect('destroy', Lang.bind(this,
+            function () {
+                if (this.notification == notification) {
+                    this.notification = null;
+                    this._notificationDestroyedId = 0;
+                }
+            }));
+
         this.emit('notify', notification);
     },
 
@@ -379,6 +392,17 @@ MessageTray.prototype = {
         this._summaryBin.child = this._summary;
         this._summaryBin.opacity = 0;
 
+        this._summaryNotificationBin = new St.Bin({ name: 'summary-notification-bin',
+                                                    x_align: St.Align.END,
+                                                    reactive: true,
+                                                    track_hover: true });
+        this.actor.add(this._summaryNotificationBin);
+        this._summaryNotificationBin.lower_bottom();
+        this._summaryNotificationBin.hide();
+        this._summaryNotificationBin.connect('notify::hover', Lang.bind(this, this._onSummaryNotificationHoverChanged));
+        this._summaryNotification = null;
+        this._hoverSource = null;
+
         this._trayState = State.HIDDEN;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
@@ -387,13 +411,15 @@ MessageTray.prototype = {
         this._pointerInSummary = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
+        this._summaryNotificationState = State.HIDDEN;
+        this._summaryNotificationTimeoutId = 0;
         this._overviewVisible = false;
         this._notificationRemoved = false;
 
-        this.actor.show();
         Main.chrome.addActor(this.actor, { affectsStruts: false,
                                            visibleInOverview: true });
         Main.chrome.trackActor(this._notificationBin, { affectsStruts: false });
+        Main.chrome.trackActor(this._summaryNotificationBin, { affectsStruts: false });
 
         global.connect('screen-size-changed',
                        Lang.bind(this, this._setSizePosition));
@@ -420,8 +446,8 @@ MessageTray.prototype = {
         this.actor.y = primary.y + primary.height - 1;
         this.actor.width = primary.width;
 
-        this._notificationBin.x = this._summaryBin.x = 0;
-        this._notificationBin.width = this._summaryBin.width = primary.width;
+        this._notificationBin.x = this._summaryBin.x = this._summaryNotificationBin.x = 0;
+        this._notificationBin.width = this._summaryBin.width = this._summaryNotificationBin.width = primary.width;
     },
 
     contains: function(source) {
@@ -434,7 +460,8 @@ MessageTray.prototype = {
             return;
         }
 
-        let iconBox = new St.Clickable({ reactive: true });
+        let iconBox = new St.Clickable({ style_class: 'summary-icon',
+                                         reactive: true });
         iconBox.child = source.createIcon(ICON_SIZE);
         this._summary.insert_actor(iconBox, 0);
         this._summaryNeedsToBeShown = true;
@@ -443,6 +470,10 @@ MessageTray.prototype = {
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
+        iconBox.connect('notify::hover', Lang.bind(this,
+            function () {
+                this._onSourceHoverChanged(source, iconBox.hover);
+            }));
         iconBox.connect('clicked', Lang.bind(this,
             function () {
                 source.clicked();
@@ -474,14 +505,23 @@ MessageTray.prototype = {
         delete this._icons[source.id];
         delete this._sources[source.id];
 
+        let needUpdate = false;
+
         if (this._notification && this._notification.source == source) {
             if (this._notificationTimeoutId) {
                 Mainloop.source_remove(this._notificationTimeoutId);
                 this._notificationTimeoutId = 0;
             }
             this._notificationRemoved = true;
-            this._updateState();
+            needUpdate = true;
         }
+        if (this._hoverSource == source) {
+            this._hoverSource = null;
+            needUpdate = true;
+        }
+
+        if (needUpdate);
+            this._updateState();
     },
 
     removeSourceByApp: function(app) {
@@ -532,6 +572,39 @@ MessageTray.prototype = {
         this._updateState();
     },
 
+    _onSourceHoverChanged: function(source, hover) {
+        if (!source.notification)
+            return;
+
+        if (this._summaryNotificationTimeoutId != 0) {
+            Mainloop.source_remove(this._summaryNotificationTimeoutId);
+            this._summaryNotificationTimeoutId = 0;
+        }
+
+        if (hover) {
+            this._hoverSource = source;
+            this._updateState();
+        } else if (this._hoverSource == source) {
+            let timeout = HIDE_TIMEOUT * 1000;
+            this._summaryNotificationTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onSourceHoverChangedTimeout, source));
+        }
+    },
+
+    _onSourceHoverChangedTimeout: function(source) {
+        this._summaryNotificationTimeoutId = 0;
+        if (this._hoverSource == source) {
+            this._hoverSource = null;
+            this._updateState();
+        }
+    },
+
+    _onSummaryNotificationHoverChanged: function() {
+        if (!this._summaryNotification)
+            return;
+        this._onSourceHoverChanged(this._summaryNotification.source,
+                                   this._summaryNotificationBin.hover);
+    },
+
     _onSummaryHoverChanged: function() {
         this._pointerInSummary = this._summary.hover;
         this._updateState();
@@ -550,7 +623,7 @@ MessageTray.prototype = {
         } else {
             // We wait just a little before hiding the message tray in case the
             // user quickly moves the mouse back into it.
-            let timeout = MESSAGE_TRAY_TIMEOUT * 1000;
+            let timeout = HIDE_TIMEOUT * 1000;
             this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
         }
     },
@@ -601,6 +674,22 @@ MessageTray.prototype = {
         } else if (this._summaryState == State.SHOWN) {
             if (!summaryPinned)
                 this._hideSummary();
+        }
+
+        // Summary notification
+        let haveSummaryNotification = this._hoverSource != null;
+        let summaryNotificationIsMainNotification = (haveSummaryNotification &&
+                                                     this._hoverSource.notification == this._notification);
+        let canShowSummaryNotification = this._summaryState == State.SHOWN;
+        let wrongSummaryNotification = (haveSummaryNotification &&
+                                        this._summaryNotification != this._hoverSource.notification);
+
+        if (this._summaryNotificationState == State.HIDDEN) {
+            if (haveSummaryNotification && !summaryNotificationIsMainNotification && canShowSummaryNotification)
+                this._showSummaryNotification();
+        } else if (this._summaryNotificationState == State.SHOWN) {
+            if (!haveSummaryNotification || !canShowSummaryNotification || wrongSummaryNotification)
+                this._hideSummaryNotification();
         }
 
         // Tray itself
@@ -753,5 +842,46 @@ MessageTray.prototype = {
                       transition: "easeOutQuad"
                     });
         this._summaryNeedsToBeShown = false;
+    },
+
+    _showSummaryNotification: function() {
+        this._summaryNotification = this._hoverSource.notification;
+
+        let index = this._notificationQueue.indexOf(this._summaryNotification);
+        if (index != -1)
+            this._notificationQueue.splice(index, 1);
+
+        this._summaryNotificationBin.child = this._summaryNotification.actor;
+        this._summaryNotification.popOut();
+
+        this._summaryNotificationBin.opacity = 0;
+        this._summaryNotificationBin.y = this.actor.height;
+        this._summaryNotificationBin.show();
+
+        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.SHOWN,
+                    { y: this.actor.height - this._summaryNotificationBin.height,
+                      opacity: 255,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad"
+                    });
+    },
+
+    _hideSummaryNotification: function() {
+        this._summaryNotification.popIn();
+
+        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.HIDDEN,
+                    { y: this.actor.height,
+                      opacity: 0,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad",
+                      onComplete: this._hideSummaryNotificationCompleted,
+                      onCompleteScope: this
+                    });
+    },
+
+    _hideSummaryNotificationCompleted: function() {
+        this._summaryNotificationBin.hide();
+        this._summaryNotificationBin.child = null;
+        this._summaryNotification = null;
     }
 };
