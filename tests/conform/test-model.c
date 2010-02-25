@@ -360,12 +360,19 @@ test_list_model_from_script (TestConformSimpleFixture *fixture,
 
   name = clutter_model_get_column_name (CLUTTER_MODEL (model), 0);
   type = clutter_model_get_column_type (CLUTTER_MODEL (model), 0);
+
+  if (g_test_verbose ())
+    g_print ("column[0]: %s, type: %s\n", name, g_type_name (type));
+
   g_assert (strcmp (name, "text-column") == 0);
   g_assert (type == G_TYPE_STRING);
 
   name = clutter_model_get_column_name (CLUTTER_MODEL (model), 2);
   type = clutter_model_get_column_type (CLUTTER_MODEL (model), 2);
-  g_print ("type: %s\n", g_type_name (type));
+
+  if (g_test_verbose ())
+    g_print ("column[2]: %s, type: %s\n", name, g_type_name (type));
+
   g_assert (strcmp (name, "actor-column") == 0);
   g_assert (type == CLUTTER_TYPE_RECTANGLE);
 }
