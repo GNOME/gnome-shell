@@ -467,6 +467,8 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
   cairo_t *cr;
   cairo_scaled_font_t *scaled_font;
   cairo_glyph_t cairo_glyph;
+  cairo_format_t format_cairo;
+  CoglPixelFormat format_cogl;
 
   COGL_NOTE (PANGO, "redrawing glyph %i", glyph);
 
@@ -475,13 +477,35 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
      here */
   g_return_if_fail (value->texture != COGL_INVALID_HANDLE);
 
-  surface = cairo_image_surface_create (CAIRO_FORMAT_A8,
+  if (cogl_texture_get_format (value->texture) == COGL_PIXEL_FORMAT_A_8)
+    {
+      format_cairo = CAIRO_FORMAT_A8;
+      format_cogl = COGL_PIXEL_FORMAT_A_8;
+    }
+  else
+    {
+      format_cairo = CAIRO_FORMAT_ARGB32;
+
+      /* Cairo stores the data in native byte order as ARGB but Cogl's
+         pixel formats specify the actual byte order. Therefore we
+         need to use a different format depending on the
+         architecture */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+      format_cogl = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+#else
+      format_cogl = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+#endif
+    }
+
+  surface = cairo_image_surface_create (format_cairo,
                                         value->draw_width,
                                         value->draw_height);
   cr = cairo_create (surface);
 
   scaled_font = pango_cairo_font_get_scaled_font (PANGO_CAIRO_FONT (font));
   cairo_set_scaled_font (cr, scaled_font);
+
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);
 
   cairo_glyph.x = -value->draw_x;
   cairo_glyph.y = -value->draw_y;
@@ -503,7 +527,7 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
                            value->draw_height, /* dst_height */
                            value->draw_width, /* width */
                            value->draw_height, /* height */
-                           COGL_PIXEL_FORMAT_A_8,
+                           format_cogl,
                            cairo_image_surface_get_stride (surface),
                            cairo_image_surface_get_data (surface));
 

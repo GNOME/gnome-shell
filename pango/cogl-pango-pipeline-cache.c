@@ -39,7 +39,8 @@ struct _CoglPangoPipelineCache
 {
   GHashTable *hash_table;
 
-  CoglPipeline *base_texture_pipeline;
+  CoglPipeline *base_texture_alpha_pipeline;
+  CoglPipeline *base_texture_rgba_pipeline;
 
   gboolean use_mipmapping;
 };
@@ -89,7 +90,8 @@ _cogl_pango_pipeline_cache_new (gboolean use_mipmapping)
                            _cogl_pango_pipeline_cache_key_destroy,
                            _cogl_pango_pipeline_cache_value_destroy);
 
-  cache->base_texture_pipeline = NULL;
+  cache->base_texture_rgba_pipeline = NULL;
+  cache->base_texture_alpha_pipeline = NULL;
 
   cache->use_mipmapping = use_mipmapping;
 
@@ -97,13 +99,36 @@ _cogl_pango_pipeline_cache_new (gboolean use_mipmapping)
 }
 
 static CoglPipeline *
-get_base_texture_pipeline (CoglPangoPipelineCache *cache)
+get_base_texture_rgba_pipeline (CoglPangoPipelineCache *cache)
 {
-  if (cache->base_texture_pipeline == NULL)
+  if (cache->base_texture_rgba_pipeline == NULL)
     {
       CoglPipeline *pipeline;
 
-      pipeline = cache->base_texture_pipeline = cogl_pipeline_new ();
+      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new ();
+
+      cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
+                                         COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+
+      if (cache->use_mipmapping)
+        cogl_pipeline_set_layer_filters
+          (pipeline, 0,
+           COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR,
+           COGL_PIPELINE_FILTER_LINEAR);
+    }
+
+  return cache->base_texture_rgba_pipeline;
+}
+
+static CoglPipeline *
+get_base_texture_alpha_pipeline (CoglPangoPipelineCache *cache)
+{
+  if (cache->base_texture_alpha_pipeline == NULL)
+    {
+      CoglPipeline *pipeline;
+
+      pipeline = cogl_pipeline_copy (get_base_texture_rgba_pipeline (cache));
+      cache->base_texture_alpha_pipeline = pipeline;
 
       /* The default combine mode of materials is to modulate (A x B)
        * the texture RGBA channels with the RGBA channels of the
@@ -122,17 +147,9 @@ get_base_texture_pipeline (CoglPangoPipelineCache *cache)
       cogl_pipeline_set_layer_combine (pipeline, 0, /* layer */
                                        "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
                                        NULL);
-      cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
-                                         COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
-
-      if (cache->use_mipmapping)
-        cogl_pipeline_set_layer_filters
-          (pipeline, 0,
-           COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR,
-           COGL_PIPELINE_FILTER_LINEAR);
     }
 
-  return cache->base_texture_pipeline;
+  return cache->base_texture_alpha_pipeline;
 }
 
 typedef struct
@@ -169,8 +186,16 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
 
   if (texture)
     {
+      CoglPipeline *base;
+
       entry->texture = cogl_handle_ref (texture);
-      entry->pipeline = cogl_pipeline_copy (get_base_texture_pipeline (cache));
+
+      if (cogl_texture_get_format (entry->texture) == COGL_PIXEL_FORMAT_A_8)
+        base = get_base_texture_alpha_pipeline (cache);
+      else
+        base = get_base_texture_rgba_pipeline (cache);
+
+      entry->pipeline = cogl_pipeline_copy (base);
 
       cogl_pipeline_set_layer_texture (entry->pipeline, 0 /* layer */, texture);
     }
@@ -202,8 +227,10 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
 void
 _cogl_pango_pipeline_cache_free (CoglPangoPipelineCache *cache)
 {
-  if (cache->base_texture_pipeline)
-    cogl_object_unref (cache->base_texture_pipeline);
+  if (cache->base_texture_rgba_pipeline)
+    cogl_object_unref (cache->base_texture_rgba_pipeline);
+  if (cache->base_texture_alpha_pipeline)
+    cogl_object_unref (cache->base_texture_alpha_pipeline);
 
   g_hash_table_destroy (cache->hash_table);
 
