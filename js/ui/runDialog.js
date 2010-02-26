@@ -9,22 +9,12 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
-const BOX_BACKGROUND_COLOR = new Clutter.Color();
-BOX_BACKGROUND_COLOR.from_pixel(0x000000cc);
-
-const BOX_TEXT_COLOR = new Clutter.Color();
-BOX_TEXT_COLOR.from_pixel(0xffffffff);
-
-const DIALOG_WIDTH = 320;
-const DIALOG_PADDING = 6;
-const ICON_SIZE = 24;
-const ICON_BOX_SIZE = 36;
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 function CommandCompleter() {
@@ -210,87 +200,60 @@ RunDialog.prototype = {
         // All actors are inside _group. We create it initially
         // hidden then show it in show()
         this._group = new Clutter.Group({ visible: false,
-                                          x: 0,
-                                          y: 0,
-                                          width: global.screen_width,
-                                          height: global.screen_height });
+                                          x: 0, y: 0 });
         global.stage.add_actor(this._group);
 
-        let lightbox = new Lightbox.Lightbox(this._group, true);
+        this._box = new St.Bin({ style_class: 'run-dialog-box',
+                                 x_align: St.Align.MIDDLE,
+                                 y_align: St.Align.MIDDLE,
+                                 reactive: true });
 
-        this._boxH = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   x_align: Big.BoxAlignment.CENTER,
-                                   y_align: Big.BoxAlignment.CENTER });
+        this._group.add_actor(this._box);
 
-        this._group.add_actor(this._boxH);
-        lightbox.highlight(this._boxH);
+        let dialogBox = new St.BoxLayout({ style_class: 'run-dialog', vertical: true });
 
-        let boxV = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                 y_align: Big.BoxAlignment.CENTER });
+        this._box.set_child(dialogBox);
 
-        this._boxH.append(boxV, Big.BoxPackFlags.NONE);
+        let label = new St.Label({ style_class: 'run-dialog-label',
+                                   text: _("Please enter a command:") });
 
+        dialogBox.add(label, { expand: true, y_fill: false });
 
-        let dialogBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      background_color: BOX_BACKGROUND_COLOR,
-                                      corner_radius: 4,
-                                      reactive: false,
-                                      padding: DIALOG_PADDING,
-                                      width: DIALOG_WIDTH });
+        let entry = new St.Entry({ style_class: 'run-dialog-entry' });
 
-        this._boxH.append(dialogBox, Big.BoxPackFlags.NONE);
+        this._entryText = entry.clutter_text;
+        dialogBox.add(entry, { expand: true });
 
-        let label = new Clutter.Text({ color: BOX_TEXT_COLOR,
-                                       font_name: '18px Sans',
-                                       text: _("Please enter a command:") });
+        this._errorBox = new St.BoxLayout();
 
-        dialogBox.append(label, Big.BoxPackFlags.EXPAND);
+        dialogBox.add(this._errorBox, { expand: true });
 
-        this._entry = new Clutter.Text({ color: BOX_TEXT_COLOR,
-                                         font_name: '20px Sans Bold',
-                                         editable: true,
-                                         activatable: true,
-                                         singleLineMode: true });
+        let errorIcon = new St.Button({ style_class: 'run-dialog-error-icon' });
 
-        dialogBox.append(this._entry, Big.BoxPackFlags.EXPAND);
-
-        this._errorBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                       padding_top: DIALOG_PADDING });
-
-        dialogBox.append(this._errorBox, Big.BoxPackFlags.EXPAND);
-
-        let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                    y_align: Big.BoxAlignment.CENTER,
-                                    x_align: Big.BoxAlignment.CENTER,
-                                    width: ICON_BOX_SIZE,
-                                    height: ICON_BOX_SIZE });
-
-        this._errorBox.append(iconBox, Big.BoxPackFlags.NONE);
+        this._errorBox.add(errorIcon);
 
         this._commandError = false;
 
-        let errorIcon = Shell.TextureCache.get_default().load_icon_name("gtk-dialog-error", ICON_SIZE);
-        iconBox.append(errorIcon, Big.BoxPackFlags.EXPAND);
+        this._errorMessage = new St.Label({ style_class: 'run-dialog-error-label' });
+        this._errorMessage.clutter_text.line_wrap = true;
 
-        this._errorMessage = new Clutter.Text({ color: BOX_TEXT_COLOR,
-                                                font_name: '18px Sans Bold',
-                                                line_wrap: true });
-
-        this._errorBox.append(this._errorMessage, Big.BoxPackFlags.EXPAND);
+        this._errorBox.add(this._errorMessage, { expand: true });
 
         this._errorBox.hide();
-
-        this._entry.connect('activate', Lang.bind(this, function (o, e) {
-            this._run(o.get_text());
-            if (!this._commandError)
-                this.close();
-        }));
 
         this._pathCompleter = new Gio.FilenameCompleter();
         this._commandCompleter = new CommandCompleter();
         this._group.connect('notify::visible', Lang.bind(this._commandCompleter, this._commandCompleter.update));
-        this._entry.connect('key-press-event', Lang.bind(this, function(o, e) {
+        this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
+            if (symbol == Clutter.Return) {
+                if (e.get_state() & Clutter.ModifierType.CONTROL_MASK)
+                    this._run(o.get_text(), true);
+                else
+                    this._run(o.get_text(), false);
+                if (!this._commandError)
+                    this.close();
+            }
             if (symbol == Clutter.Escape) {
                 this.close();
                 return true;
@@ -335,7 +298,7 @@ RunDialog.prototype = {
         }
     },
 
-    _run : function(command) {
+    _run : function(command, inTerminal) {
         this._commandError = false;
         let f;
         if (this._enableInternalCommands)
@@ -346,8 +309,10 @@ RunDialog.prototype = {
             f();
         } else if (command) {
             try {
+                if (inTerminal)
+                    command = 'gnome-terminal -x ' + command;
                 let [ok, len, args] = GLib.shell_parse_argv(command);
-                let p = new Shell.Process({'args' : args});
+                let p = new Shell.Process({ 'args' : args });
                 p.run();
             } catch (e) {
                 this._commandError = true;
@@ -360,7 +325,10 @@ RunDialog.prototype = {
                 let m = /.+\((.+)\)/.exec(e);
                 let errorStr = _("Execution of '%s' failed:").format(command) + "\n" + m[1];
                 this._errorMessage.set_text(errorStr);
+
                 this._errorBox.show();
+                // preferred_size change. Without this, message will show with delay
+                this._errorBox.get_parent().queue_relayout();
             }
         }
     },
@@ -375,13 +343,13 @@ RunDialog.prototype = {
         // Position the dialog on the current monitor
         let monitor = global.get_focus_monitor();
 
-        this._boxH.set_position(monitor.x, monitor.y);
-        this._boxH.set_size(monitor.width, monitor.height);
+        this._box.set_position(monitor.x, monitor.y);
+        this._box.set_size(monitor.width, monitor.height);
 
         this._isOpen = true;
         this._group.show();
 
-        global.stage.set_key_focus(this._entry);
+        global.stage.set_key_focus(this._entryText);
     },
 
     close : function() {
@@ -389,12 +357,12 @@ RunDialog.prototype = {
             return;
 
         this._isOpen = false;
-        
+
         this._errorBox.hide();
         this._commandError = false;
 
         this._group.hide();
-        this._entry.set_text('');
+        this._entryText.set_text('');
 
         Main.popModal(this._group);
     }

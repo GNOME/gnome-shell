@@ -748,3 +748,38 @@ StTooltip {
     background: transparent;
     border-radius: 4px;
 }
+
+/* Run Dialog */
+.run-dialog-label {
+    font: 12px sans-serif;
+    color: white;
+}
+
+.run-dialog-error-icon {
+    background-image: url("dialog-error.svg");
+    width: 36px;
+    height: 36px;
+}
+
+.run-dialog-error-label {
+    font: 16px sans-serif;
+    color: white;
+}
+
+.run-dialog-entry {
+    font: 14px sans-serif;
+    font-weight: bold;
+    width: 320px;
+    color: white;
+}
+
+.run-dialog-box {
+    background: rgba(0,0,0,0.3);
+}
+
+.run-dialog {
+    padding: 8px;
+    border: 1px solid rgba(128,128,128,0.40);
+    border-radius: 4px;
+    background: rgba(0,0,0,0.8);
+}
