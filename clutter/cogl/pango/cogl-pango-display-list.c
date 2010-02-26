@@ -43,10 +43,11 @@ typedef struct _CoglPangoDisplayListVertex CoglPangoDisplayListVertex;
 
 struct _CoglPangoDisplayList
 {
-  gboolean   color_override;
-  CoglColor  color;
-  GSList    *nodes;
-  GSList    *last_node;
+  gboolean                color_override;
+  CoglColor               color;
+  GSList                 *nodes;
+  GSList                 *last_node;
+  CoglPangoPipelineCache *pipeline_cache;
 };
 
 struct _CoglPangoDisplayListNode
@@ -55,6 +56,8 @@ struct _CoglPangoDisplayListNode
 
   gboolean color_override;
   CoglColor color;
+
+  CoglPipeline *pipeline;
 
   union
   {
@@ -92,9 +95,13 @@ struct _CoglPangoDisplayListVertex
 };
 
 CoglPangoDisplayList *
-_cogl_pango_display_list_new (void)
+_cogl_pango_display_list_new (CoglPangoPipelineCache *pipeline_cache)
 {
-  return g_slice_new0 (CoglPangoDisplayList);
+  CoglPangoDisplayList *dl = g_slice_new0 (CoglPangoDisplayList);
+
+  dl->pipeline_cache = pipeline_cache;
+
+  return dl;
 }
 
 static void
@@ -156,6 +163,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       node->type = COGL_PANGO_DISPLAY_LIST_TEXTURE;
       node->color_override = dl->color_override;
       node->color = dl->color;
+      node->pipeline = NULL;
       node->d.texture.texture = cogl_handle_ref (texture);
       node->d.texture.verts
         = g_array_new (FALSE, FALSE, sizeof (CoglPangoDisplayListVertex));
@@ -205,6 +213,7 @@ _cogl_pango_display_list_add_rectangle (CoglPangoDisplayList *dl,
   node->d.rectangle.y_1 = y_1;
   node->d.rectangle.x_2 = x_2;
   node->d.rectangle.y_2 = y_2;
+  node->pipeline = NULL;
 
   _cogl_pango_display_list_append_node (dl, node);
 }
@@ -229,6 +238,7 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
   node->d.trapezoid.y_2 = y_2;
   node->d.trapezoid.x_12 = x_12;
   node->d.trapezoid.x_22 = x_22;
+  node->pipeline = NULL;
 
   _cogl_pango_display_list_append_node (dl, node);
 }
@@ -309,17 +319,8 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
 }
 
 static void
-_cogl_pango_display_list_render_texture (CoglMaterial *material,
-                                         const CoglColor *color,
-                                         CoglPangoDisplayListNode *node)
+_cogl_pango_display_list_render_texture (CoglPangoDisplayListNode *node)
 {
-  CoglColor premult_color = *color;
-
-  cogl_material_set_layer (material, 0, node->d.texture.texture);
-  cogl_material_set_color (material, &premult_color);
-
-  cogl_push_source (material);
-
   /* For small runs of text like icon labels, we can get better performance
    * going through the Cogl journal since text may then be batched together
    * with other geometry. */
@@ -329,15 +330,11 @@ _cogl_pango_display_list_render_texture (CoglMaterial *material,
     emit_rectangles_through_journal (node);
   else
     emit_vertex_buffer_geometry (node);
-
-  cogl_pop_source ();
 }
 
 void
 _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
-                                 const CoglColor *color,
-                                 CoglMaterial *glyph_material,
-                                 CoglMaterial *solid_material)
+                                 const CoglColor *color)
 {
   GSList *l;
 
@@ -345,6 +342,18 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
     {
       CoglPangoDisplayListNode *node = l->data;
       CoglColor draw_color;
+
+      if (node->pipeline == NULL)
+        {
+          if (node->type == COGL_PANGO_DISPLAY_LIST_TEXTURE)
+            node->pipeline =
+              _cogl_pango_pipeline_cache_get (dl->pipeline_cache,
+                                              node->d.texture.texture);
+          else
+            node->pipeline =
+              _cogl_pango_pipeline_cache_get (dl->pipeline_cache,
+                                              NULL);
+        }
 
       if (node->color_override)
         /* Use the override color but preserve the alpha from the
@@ -358,21 +367,20 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
         draw_color = *color;
       cogl_color_premultiply (&draw_color);
 
+      cogl_pipeline_set_color (node->pipeline, &draw_color);
+      cogl_push_source (node->pipeline);
+
       switch (node->type)
         {
         case COGL_PANGO_DISPLAY_LIST_TEXTURE:
-          _cogl_pango_display_list_render_texture (glyph_material,
-                                                   &draw_color, node);
+          _cogl_pango_display_list_render_texture (node);
           break;
 
         case COGL_PANGO_DISPLAY_LIST_RECTANGLE:
-          cogl_material_set_color (solid_material, &draw_color);
-          cogl_push_source (solid_material);
           cogl_rectangle (node->d.rectangle.x_1,
                           node->d.rectangle.y_1,
                           node->d.rectangle.x_2,
                           node->d.rectangle.y_2);
-          cogl_pop_source ();
           break;
 
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
@@ -389,16 +397,15 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
             points[6] =  node->d.trapezoid.x_21;
             points[7] =  node->d.trapezoid.y_1;
 
-            cogl_material_set_color (solid_material, &draw_color);
-            cogl_push_source (solid_material);
             path = cogl_path_new ();
             cogl_path_polygon (path, points, 4);
             cogl_path_fill (path);
             cogl_object_unref (path);
-            cogl_pop_source ();
           }
           break;
         }
+
+      cogl_pop_source ();
     }
 }
 
@@ -413,6 +420,9 @@ _cogl_pango_display_list_node_free (CoglPangoDisplayListNode *node)
       if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
         cogl_handle_unref (node->d.texture.vertex_buffer);
     }
+
+  if (node->pipeline)
+    cogl_object_unref (node->pipeline);
 
   g_slice_free (CoglPangoDisplayListNode, node);
 }

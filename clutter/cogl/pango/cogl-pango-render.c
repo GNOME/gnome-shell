@@ -44,15 +44,13 @@ struct _CoglPangoRenderer
 {
   PangoRenderer parent_instance;
 
-  /* The material used to texture from the glyph cache with */
-  CoglMaterial *glyph_material;
-  /* The material used for solid fills. (boxes, rectangles + trapezoids) */
-  CoglMaterial *solid_material;
-
   /* Two caches of glyphs as textures, one with mipmapped textures and
      one without */
   CoglPangoGlyphCache *glyph_cache;
   CoglPangoGlyphCache *mipmapped_glyph_cache;
+
+  CoglPangoPipelineCache *pipeline_cache;
+  CoglPangoPipelineCache *mipmapped_pipeline_cache;
 
   gboolean use_mipmapping;
 
@@ -173,30 +171,8 @@ G_DEFINE_TYPE (CoglPangoRenderer, cogl_pango_renderer, PANGO_TYPE_RENDERER);
 static void
 cogl_pango_renderer_init (CoglPangoRenderer *priv)
 {
-  priv->glyph_material = cogl_material_new ();
-
-  /* The default combine mode of materials is to modulate (A x B) the texture
-   * RGBA channels with the RGBA channels of the previous layer (which in our
-   * case is just the font color)
-   *
-   * Since the RGB for an alpha texture is defined as 0, this gives us:
-   *
-   *  result.rgb = color.rgb * 0
-   *  result.a = color.a * texture.a
-   *
-   * What we want is premultiplied rgba values:
-   *
-   *  result.rgba = color.rgb * texture.a
-   *  result.a = color.a * texture.a
-   */
-  cogl_material_set_layer_combine (priv->glyph_material, 0, /* layer */
-                                   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
-                                   NULL);
-  cogl_material_set_layer_wrap_mode (priv->glyph_material, 0,
-                                     COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
-
-  priv->solid_material = cogl_material_new ();
-
+  priv->pipeline_cache = _cogl_pango_pipeline_cache_new (FALSE);
+  priv->mipmapped_pipeline_cache = _cogl_pango_pipeline_cache_new (TRUE);
   priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
   priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
   priv->use_mipmapping = TRUE;
@@ -223,6 +199,9 @@ cogl_pango_renderer_finalize (GObject *object)
 
   cogl_pango_glyph_cache_free (priv->mipmapped_glyph_cache);
   cogl_pango_glyph_cache_free (priv->glyph_cache);
+
+  _cogl_pango_pipeline_cache_free (priv->pipeline_cache);
+  _cogl_pango_pipeline_cache_free (priv->mipmapped_pipeline_cache);
 
   G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->finalize (object);
 }
@@ -333,9 +312,13 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
 
   if (qdata->display_list == NULL)
     {
+      CoglPangoPipelineCache *pipeline_cache =
+        (priv->use_mipmapping ?
+         priv->mipmapped_pipeline_cache : priv->pipeline_cache);
+
       cogl_pango_ensure_glyph_cache_for_layout (layout);
 
-      qdata->display_list = _cogl_pango_display_list_new ();
+      qdata->display_list = _cogl_pango_display_list_new (pipeline_cache);
 
       /* Register for notification of when the glyph cache changes so
          we can rebuild the display list */
@@ -354,9 +337,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   cogl_push_matrix ();
   cogl_translate (x / (gfloat) PANGO_SCALE, y / (gfloat) PANGO_SCALE, 0);
   _cogl_pango_display_list_render (qdata->display_list,
-                                   color,
-                                   priv->glyph_material,
-                                   priv->solid_material);
+                                   color);
   cogl_pop_matrix ();
 
   /* Keep a reference to the first line of the layout so we can detect
@@ -416,24 +397,26 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
                                int              y,
                                const CoglColor *color)
 {
-  PangoContext      *context;
-  CoglPangoRenderer *priv;
+  PangoContext           *context;
+  CoglPangoRenderer      *priv;
+  CoglPangoPipelineCache *pipeline_cache;
 
   context = pango_layout_get_context (line->layout);
   priv = cogl_pango_get_renderer_from_context (context);
   if (G_UNLIKELY (!priv))
     return;
 
-  priv->display_list = _cogl_pango_display_list_new ();
+  pipeline_cache = (priv->use_mipmapping ?
+                    priv->mipmapped_pipeline_cache : priv->pipeline_cache);
+
+  priv->display_list = _cogl_pango_display_list_new (pipeline_cache);
 
   _cogl_pango_ensure_glyph_cache_for_layout_line (line);
 
   pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
 
   _cogl_pango_display_list_render (priv->display_list,
-                                   color,
-                                   priv->glyph_material,
-                                   priv->solid_material);
+                                   color);
 
   _cogl_pango_display_list_free (priv->display_list);
   priv->display_list = NULL;
@@ -450,21 +433,7 @@ void
 _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
                                          gboolean value)
 {
-  if (renderer->use_mipmapping != value)
-    {
-      CoglMaterialFilter min_filter;
-
-      renderer->use_mipmapping = value;
-
-      if (value)
-        min_filter = COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR;
-      else
-        min_filter = COGL_MATERIAL_FILTER_LINEAR;
-
-      cogl_material_set_layer_filters (renderer->glyph_material, 0,
-                                       min_filter,
-                                       COGL_MATERIAL_FILTER_LINEAR);
-    }
+  renderer->use_mipmapping = value;
 }
 
 gboolean
