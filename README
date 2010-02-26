@@ -109,8 +109,7 @@ Clutter has additional command line options for the configure script:
                 the default for developers snapshots.
 
         no:
-                Disable support for COGL runtime debugging notes. This is
-                the default for stable releases.
+                Disable support for COGL runtime debugging notes.
 
  --enable-maintainer-flags=[no/yes]
         Use strict compiler flags. This defaults to 'yes' for developers
