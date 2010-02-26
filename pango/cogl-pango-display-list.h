@@ -26,12 +26,13 @@
 
 #include <glib.h>
 #include <cogl/cogl.h>
+#include "cogl-pango-pipeline-cache.h"
 
 G_BEGIN_DECLS
 
 typedef struct _CoglPangoDisplayList CoglPangoDisplayList;
 
-CoglPangoDisplayList *_cogl_pango_display_list_new (void);
+CoglPangoDisplayList *_cogl_pango_display_list_new (CoglPangoPipelineCache *);
 
 void _cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
                                                   const CoglColor *color);
@@ -57,9 +58,7 @@ void _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
                                              float x_22);
 
 void _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
-                                      const CoglColor *color,
-                                      CoglMaterial *glyph_material,
-                                      CoglMaterial *solid_material);
+                                      const CoglColor *color);
 
 void _cogl_pango_display_list_clear (CoglPangoDisplayList *dl);
 
