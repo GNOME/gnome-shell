@@ -1,32 +1,32 @@
 Clutter 1.1.14 (24/02/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.12
+  • List of changes since Clutter 1.1.12
 
-    o Fix interaction between user resizable Stages and fullscreen on X11
+    » Fix interaction between user resizable Stages and fullscreen on X11
 
-    o Define the semantics of ENTER and LEAVE events when actors are on the
+    » Define the semantics of ENTER and LEAVE events when actors are on the
       border of the Stage window
 
-    o Take the InputDevice of an event into consideration when throttling
+    » Take the InputDevice of an event into consideration when throttling
       MOTION events
 
-    o Round the coordinates when clipping to a rectangle in window coordinates
+    » Round the coordinates when clipping to a rectangle in window coordinates
 
-    o Always trust the user-provided coordinates when creating a CoglTexture
+    » Always trust the user-provided coordinates when creating a CoglTexture
       from a foreign GL texture
 
-    o Split Clutter's debug annotations from the pick and paint mode
+    » Split Clutter's debug annotations from the pick and paint mode
       behavioural modifiers
 
-    o Improve the usage of the CLUTTER_ACTOR_NO_LAYOUT flag so that every
+    » Improve the usage of the CLUTTER_ACTOR_NO_LAYOUT flag so that every
       actor using a ClutterFixedLayout manager will automatically benefit
       from it
 
-    o Fix the packing order of ClutterBox so that the convention of
+    » Fix the packing order of ClutterBox so that the convention of
       first-in-first-painted is maintained
 
-    o Documentation fixes
+    » Documentation fixes
 
 Many thanks to:
 
@@ -37,35 +37,35 @@ Many thanks to:
 Clutter 1.1.12 (16/02/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.10
+  • List of changes since Clutter 1.1.10
 
-    o Fix compilation on 64bit platforms
+    » Fix compilation on 64bit platforms
 
-    o Fix some races of the Stage resizing on X11
+    » Fix some races of the Stage resizing on X11
 
-    o Documentation fixes for Cogl: the coverage is now 100%
+    » Documentation fixes for Cogl: the coverage is now 100%
 
-    o Fix rounding errors in the preferred height of the ClutterText
+    » Fix rounding errors in the preferred height of the ClutterText
       actor
 
-    o Remove redundant type checks in clutter_actor_get_paint_opacity()
+    » Remove redundant type checks in clutter_actor_get_paint_opacity()
 
-    o Add support for the GLX_INTEL_swap_event extension; when using this
+    » Add support for the GLX_INTEL_swap_event extension; when using this
       extension on GLX the glXSwapBuffers() call becomes non-blocking and
       Clutter will use an event to control the master clock.
 
-    o Improve consistency between ClutterBox and ClutterGroup.
+    » Improve consistency between ClutterBox and ClutterGroup.
 
-    o On X11, do not set the _NET_WM_PID and WM_TITLE properties on a
+    » On X11, do not set the _NET_WM_PID and WM_TITLE properties on a
       Stage X window if the window was not created by Clutter itself
 
-    o Improve caching of GL constant values
+    » Improve caching of GL constant values
 
-    o Optimize creating sub-textures of sub-textures
+    » Optimize creating sub-textures of sub-textures
 
-    o Various fixes for the atlas and the journal
+    » Various fixes for the atlas and the journal
 
-    o Disable the atlas if FBOs are not supported
+    » Disable the atlas if FBOs are not supported
 
 Many thanks to:
 
@@ -78,16 +78,16 @@ Many thanks to:
 Clutter 1.1.10 (09/02/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.8
+  • List of changes since Clutter 1.1.8
 
-    o Fixed a regression in textures that caused all the textures to be
+    » Fixed a regression in textures that caused all the textures to be
       drawn as white rectangles.
 
-    o Fixed compilation with the Sun C compiler.
+    » Fixed compilation with the Sun C compiler.
 
-    o Use SSE2 instructions to premultiply RGBA images, if available.
+    » Use SSE2 instructions to premultiply RGBA images, if available.
 
-    o Improve readability of ClutterActor::raise/::lower warnings.
+    » Improve readability of ClutterActor::raise/::lower warnings.
 
 Many thanks to:
 
@@ -97,48 +97,48 @@ Many thanks to:
 Clutter 1.1.8 (08/02/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.6
+  • List of changes since Clutter 1.1.6
 
-    o Added ClutterAnimator, a class that allows defining complex
+    » Added ClutterAnimator, a class that allows defining complex
       implicit animations involving multiple actors and states; this
       class is mostly meant to be used through the ClutterScript
       definition format, but it provides a convenience C API for
       easily building animations.
 
-    o New experimental COGL API to expose "hardware" buffers such as PBOs or
+    » New experimental COGL API to expose "hardware" buffers such as PBOs or
       drm surfaces. This API can be used, for instance, to make texture
       uploading faster.
 
-    o Fixed the issues with resizable stages getting a 1x1 window with
+    » Fixed the issues with resizable stages getting a 1x1 window with
       the X11 backends
 
-    o Expose input devices for every event; by default, X11 and Windows
+    » Expose input devices for every event; by default, X11 and Windows
       backends expose the core devices only.
 
-    o Add the ClutterStage:key-focus property, for key focus tracking.
+    » Add the ClutterStage:key-focus property, for key focus tracking.
 
-    o Allow setting transformable value types in ClutterAnimation when
+    » Allow setting transformable value types in ClutterAnimation when
       calling clutter_animation_bind() and clutter_animation_update().
 
-    o Delay the creation of the default Stage until clutter_stage_get_default()
+    » Delay the creation of the default Stage until clutter_stage_get_default()
       is actually called; this reduces the work of clutter_init().
 
-    o Implement Ctrl+Delete and Ctrl+Backspace in ClutterText
+    » Implement Ctrl+Delete and Ctrl+Backspace in ClutterText
 
-    o Improve the extendability of CoglTexture with internal backends.
+    » Improve the extendability of CoglTexture with internal backends.
 
-    o Add implicit texture atlasing; Cogl will try to put every texture
+    » Add implicit texture atlasing; Cogl will try to put every texture
       inside the same texture atlas by default, to avoid state changes
       in the driver and (hopefully) improve performance.
 
-    o Fix notification of the cursor and selection changes in ClutterText;
+    » Fix notification of the cursor and selection changes in ClutterText;
       this improves the usage of Clutter from A11Y toolkits.
 
-    o Do not wait for a frame if the system clock goes backwards.
+    » Do not wait for a frame if the system clock goes backwards.
 
-    o Fix the dirtying of the clip state; this unbreaks cogl_path_fill().
+    » Fix the dirtying of the clip state; this unbreaks cogl_path_fill().
 
-    o Documentation and build fixes.
+    » Documentation and build fixes.
 
 Many thanks to:
 
@@ -154,40 +154,40 @@ Many thanks to:
 Clutter 1.1.6 (18/01/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.4
+  • List of changes since Clutter 1.1.4
 
-    o Some fixes for the Win32 backend (bug #1905).
+    » Some fixes for the Win32 backend (bug #1905).
 
-    o Profiling support via the UProf library. Configure with
+    » Profiling support via the UProf library. Configure with
       --enable-profile to get a report after each Clutter application is
       run.
 
-    o Improved conformance tests with coverage reports via gcov.
+    » Improved conformance tests with coverage reports via gcov.
 
-    o ClutterTexture no longer tries to read back texture data into
+    » ClutterTexture no longer tries to read back texture data into
       g_malloc'd memory on unrealize (bug #1842).
 
-    o The CGL_* defines from cogl-defines.h have been removed. These
+    » The CGL_• defines from cogl-defines.h have been removed. These
       should not have been used by any applications, but if they were
       being used then please replace them either with the Cogl enums or
-      with the appropriate GL_* enum if you are using GL directly.
+      with the appropriate GL_• enum if you are using GL directly.
 
-    o Added a delete-event signal to the stage.
+    » Added a delete-event signal to the stage.
 
-    o Fix for using cogl_rectangle with different texture coordinates
+    » Fix for using cogl_rectangle with different texture coordinates
       for multiple layers (bug #1937).
 
-    o Fix for using stencil and depth buffers in FBOs on Intel drivers
+    » Fix for using stencil and depth buffers in FBOs on Intel drivers
       in Mesa (bug #1873).
 
-    o Support for subtitles in ClutterMedia.
+    » Support for subtitles in ClutterMedia.
 
-    o ClutterGLX will now use an RGB visual by default. For
+    » ClutterGLX will now use an RGB visual by default. For
       applications (and toolkit integration libraries) that want to
       enable the ClutterStage:use-alpha property there is a new
       function: clutter_x11_set_use_argb_visual().
 
-    o Fix ClutterText to allow using Pango markup and attributes in
+    » Fix ClutterText to allow using Pango markup and attributes in
       the same actor (bug #1940).
 
 Many thanks to:
@@ -203,43 +203,43 @@ Many thanks to:
 Clutter 1.1.4 (03/01/2010)
 ===============================================================================
 
-  * List of changes since Clutter 1.1.2
+  • List of changes since Clutter 1.1.2
 
-    o Update the ClutterScript parser to be more resilient, and support
+    » Update the ClutterScript parser to be more resilient, and support
       constructor and ChildMeta properties. The parser also respects the
       order of the properties in the UI definitions when applying them,
       and will apply the properties of an Actor after building the scene
       graph.
 
-    o Simplified the implementation of LayoutManager sub-classes, and added
+    » Simplified the implementation of LayoutManager sub-classes, and added
       support for animating a layout manager.
 
-    o Allow short-circuiting some layout operations by setting a specific
+    » Allow short-circuiting some layout operations by setting a specific
       flag on ClutterActor.
 
-    o Improve caching of the preferred size of a ClutterActor.
+    » Improve caching of the preferred size of a ClutterActor.
 
-    o Allow declaring "internal children" for a ClutterContainer
+    » Allow declaring "internal children" for a ClutterContainer
       implementation: the memory management of these actors will be deferred
       entirely to the Container.
 
-    o Let the ClutterStage honour the :opacity property and the alpha component
+    » Let the ClutterStage honour the :opacity property and the alpha component
       of the stage color. This requires support in the Clutter backend used.
 
-    o Improve Windows and OSX backends.
+    » Improve Windows and OSX backends.
 
-    o Simplify the feature detection code for OpenGL; this also reduced the
+    » Simplify the feature detection code for OpenGL; this also reduced the
       required OpenGL version to 1.2.
 
-    o Improve the matrix stack handling code. The matrices can be debugged by
+    » Improve the matrix stack handling code. The matrices can be debugged by
       using the COGL_DEBUG environment variable, assuming that Clutter was
       compiled with the right configure-time switch.
 
-    o Improve COGL API for draw buffers, and for offscreen buffer support.
+    » Improve COGL API for draw buffers, and for offscreen buffer support.
 
-    o Add support for text direction to ClutterActor.
+    » Add support for text direction to ClutterActor.
 
-    o Documentation, introspection and build fixes.
+    » Documentation, introspection and build fixes.
 
 Many thanks to:
 
@@ -259,17 +259,17 @@ Many thanks to:
 Clutter 1.1.2 (23/10/2009)
 ===============================================================================
 
-  * List of changes since Clutter 1.0
+  • List of changes since Clutter 1.0
 
-    o Add ClutterLayoutManager, an abstract proxy class for easily
+    » Add ClutterLayoutManager, an abstract proxy class for easily
       writing layout management policies; also add ClutterLayoutMeta,
       a class for storing layout properties.
 
-    o Add ClutterBox, a generic container actor that relies on a
+    » Add ClutterBox, a generic container actor that relies on a
       ClutterLayoutManager instance to manage the layout of its
       children.
 
-    o Add the following layout managers:
+    » Add the following layout managers:
 
       - ClutterFixedLayout - a layout manager implementing the
         policy used by ClutterGroup
@@ -283,54 +283,54 @@ Clutter 1.1.2 (23/10/2009)
       - ClutterBoxLayout - a layout manager arranging actors as
         a single line
 
-    o Remove the requirement for the backend-specific implementation
+    » Remove the requirement for the backend-specific implementation
       of ClutterStage to be a ClutterActor: a Stage implementation must
       only implement the ClutterStageWindow interface. This cleans up
       the backend code.
 
-    o COGL source tree clean up and rationalization; COGL now
+    » COGL source tree clean up and rationalization; COGL now
       knows the platform, and not only the driver (GL or GLES) so
       we can migrate part of the low-level backend code from Clutter
       to COGL where it makes sense.
 
-    o Remove code duplication across whole COGL.
+    » Remove code duplication across whole COGL.
 
-    o The GLES 2.0 driver for COGL, and the EGLX backend for Clutter
+    » The GLES 2.0 driver for COGL, and the EGLX backend for Clutter
       have been fixed and confirmed working.
 
-    o Add "dump-pick-buffer" to CLUTTER_DEBUG: this debug options
+    » Add "dump-pick-buffer" to CLUTTER_DEBUG: this debug options
       dumps the contents of each pick() buffer into a PNG file, for
       debugging purposes.
 
-    o Allow interpolating intervals of ClutterUnits for animating
+    » Allow interpolating intervals of ClutterUnits for animating
       unit-based properties.
 
-    o Increase strictness and correctness of the ClutterUnits
+    » Increase strictness and correctness of the ClutterUnits
       grammar parser.
 
-    o Add GValue transformation functions for ClutterPath to and
+    » Add GValue transformation functions for ClutterPath to and
       from a string.
 
-    o Fix word movement in ClutterText; implement GObject getter for
+    » Fix word movement in ClutterText; implement GObject getter for
       :use-markup; emit notification for :position; decouple the
       :text property from the :use-markup property.
 
-    o Do not queue redraws or relayouts on actors currently being
+    » Do not queue redraws or relayouts on actors currently being
       destroyed. 
 
-    o Support #rrggbb and #rgb notations for ClutterColor.
+    » Support #rrggbb and #rgb notations for ClutterColor.
 
-    o Multiple bug fixes.
+    » Multiple bug fixes.
 
-    o Provide _NET_WM_PID on the X11 stage implementation.
+    » Provide _NET_WM_PID on the X11 stage implementation.
 
-    o Documentation and Introspection annotation fixes.
+    » Documentation and Introspection annotation fixes.
 
-    o Add test units for the ClutterActor size requesition.
+    » Add test units for the ClutterActor size requesition.
 
-    o Build fixes.
+    » Build fixes.
 
-    o Use AM_SILENT_RULES if Automake 1.11 is detected, and fall
+    » Use AM_SILENT_RULES if Automake 1.11 is detected, and fall
       back to Shave on older Automake versions.
 
 Many thanks to:
@@ -354,22 +354,22 @@ Many thanks to:
 Clutter 1.0.0 (28/07/2009)
 ===============================================================================
 
-  * List of changes since 0.9.8
+  • List of changes since 0.9.8
 
-    o Allow per-stage disabling of motion event throttling; this should allow
+    » Allow per-stage disabling of motion event throttling; this should allow
       platforms or applications that require all the motion events not for
       drawing purposes to get them exactly like Clutter gets them from the
       windowing system.
 
-    o Various documentation fixes.
+    » Various documentation fixes.
 
-    o Add per-word key navigation inside ClutterText.
+    » Add per-word key navigation inside ClutterText.
 
-    o Fix the RGB<->HLS conversion.
+    » Fix the RGB<->HLS conversion.
 
-    o Various fixes for the OSX backend.
+    » Various fixes for the OSX backend.
 
-    o Various build-related fixes.
+    » Various build-related fixes.
 
 Many thanks to:
 
@@ -380,31 +380,31 @@ Many thanks to:
 Clutter 0.9.8 (17/07/2009)
 ===============================================================================
 
-  * List of changes since 0.9.6
+  • List of changes since 0.9.6
 
-    o Add more introspection annotations for language bindings.
+    » Add more introspection annotations for language bindings.
 
-    o Fix a bug in clutter_animation_set_alpha(), which also broke the
+    » Fix a bug in clutter_animation_set_alpha(), which also broke the
       clutter_actor_animate_with_alpha() function.
 
-    o Check if the stage requires a relayout before showing it; this fixes
+    » Check if the stage requires a relayout before showing it; this fixes
       a bug in the X11-based backends, especially under compositing window
       managers, where a 640x480 window would flicker before the default
       stage was shown for the first time.
 
-    o Performance fixes for Cogl.
+    » Performance fixes for Cogl.
 
-    o Sliced textures were broken by the COGL journalling.
+    » Sliced textures were broken by the COGL journalling.
 
-    o Use the redraw cycle when asynchronously loading textures from
+    » Use the redraw cycle when asynchronously loading textures from
       files.
 
-    o Miscellaneous compilation fixes for the OS X and Windows backends.
+    » Miscellaneous compilation fixes for the OS X and Windows backends.
 
-    o Allow querying from within the paint function of an Actor whether
+    » Allow querying from within the paint function of an Actor whether
       the actor is currently being directly painted or by a Clone actor.
 
-    o In the GLX backend, when using the non-implicit sync-to-vblank inside
+    » In the GLX backend, when using the non-implicit sync-to-vblank inside
       glXSwapBuffers(), call glFinish() to avoid potential tearing.
 
 Many thanks to:
@@ -418,37 +418,37 @@ Many thanks to:
 Clutter 0.9.6 (01/07/2009)
 ===============================================================================
 
-  * List of changes since 0.9.4:
+  • List of changes since 0.9.4:
 
-    o Allow the manipulation of the actor's transformation matrix, so that is
+    » Allow the manipulation of the actor's transformation matrix, so that is
       is possible to apply additional transformations in a way that is
       compatible with the transformations already applied by the scene graph.
 
-    o Fix a race in the X11 backend that happened between resizing the stage
+    » Fix a race in the X11 backend that happened between resizing the stage
       drawable and the call to glViewport().
 
-    o Merge the cogl-journal-batching branch; this branch implements batching
+    » Merge the cogl-journal-batching branch; this branch implements batching
       the geometry of the elements of the scene graph before sending it to
       OpenGL, thus minimizing the number of state changes and improving the
       overall performance of Clutter-based applications.
 
-    o Add more debugging states for Clutter and COGL, which allow the developer
+    » Add more debugging states for Clutter and COGL, which allow the developer
       to track the state of the journal; to check the VBO fallback paths; to
       disable picking for reliable profiling; to disable software-side matrix
       transformations in favour of the driver/GPU ones.
 
-    o Improve the ability to "break out" of COGL by using gl_begin/gl_end
+    » Improve the ability to "break out" of COGL by using gl_begin/gl_end
       semantics; applications that drop into raw GL are, though, ignoring all
       the caching performed by COGL and might incur in performance issues.
 
-    o Fixed the :load-async and :load-data-async properties of Texture by
+    » Fixed the :load-async and :load-data-async properties of Texture by
       removing the unneeded G_PARAM_CONSTRUCT flag.
 
-    o Added an initial migration guide that shows the porting process from
+    » Added an initial migration guide that shows the porting process from
       older releases of Clutter to the 1.0 API; the first chapter deals with
       the migration from ClutterEffect to the new implicit animations API.
 
-    o Fixed MT-safety for the master clock.
+    » Fixed MT-safety for the master clock.
 
 Many thanks to:
 
@@ -458,62 +458,62 @@ Many thanks to:
 Clutter 0.9.4 (19/06/2009)
 ===============================================================================
 
-  * List of changes since 0.9.2:
+  • List of changes since 0.9.2:
 
-    o Set the layout height in ClutterText, so that wrapping and ellipsization
+    » Set the layout height in ClutterText, so that wrapping and ellipsization
       work correctly to fill all the allocated area.
 
-    o Remove all the units-based API, and migrate all the positional and
+    » Remove all the units-based API, and migrate all the positional and
       dimensional accessors to use floating point values when dealing with
       pixels. All the properties dealing with pixels now that a floating
       point value as well.
 
-    o Add the ability to track wether an actor is going to be painted or not,
+    » Add the ability to track wether an actor is going to be painted or not,
       using the "mapped" flag. This also allows Clutter to be more strict
       in the handling of the scenegraph, ensuring correctness and avoiding
       wasting resources on nodes that won't be painted.
 
-    o Add debugging facilities for COGL, similar to those of Clutter; through
+    » Add debugging facilities for COGL, similar to those of Clutter; through
       them is also possible to have an on screen debugging mode that shows the
       boundaries of each rectangle sent to the GPU.
 
-    o Rework "units" into real logical distance units that can be converted
+    » Rework "units" into real logical distance units that can be converted
       between millimeters, typographic points and ems into pixels.
 
-    o Simplify the Animation class to avoid redundancy and the possibility
+    » Simplify the Animation class to avoid redundancy and the possibility
       of it going out of sync with the Timeline and Alpha instances it uses.
 
-    o Move every operation into a single "master clock" source that advances
+    » Move every operation into a single "master clock" source that advances
       the timelines, dispatches events and redraws the stages in a predictable
       sequence, thus avoiding unneeded redraws. The default is to follow the
       sync-to-vblank cycle, if it is supported by the drivers.
 
-    o Cache the glyphs geometry into a vertex buffer object to avoid
+    » Cache the glyphs geometry into a vertex buffer object to avoid
       resubmitting too much information to the GPU.
 
-    o Rework the behaviour of ClutterModel when a filter is applied.
+    » Rework the behaviour of ClutterModel when a filter is applied.
 
-    o Allow submitting premultiplied texture data; this removes the need
+    » Allow submitting premultiplied texture data; this removes the need
       for unpremultiplying data in CairoTexture.
 
-    o Add a simple API for submitting blending and texture combining modes
+    » Add a simple API for submitting blending and texture combining modes
       through a string description.
 
-    o Move Timelines to pure time-based objects.
+    » Move Timelines to pure time-based objects.
 
-    o Lots of performance improvements.
+    » Lots of performance improvements.
 
-    o Removal of all the deprecated API.
+    » Removal of all the deprecated API.
 
-    o Removal of all the fixed point entry points.
+    » Removal of all the fixed point entry points.
 
-    o Lots of documentation fixes - the coverage is now 99% of the exported
+    » Lots of documentation fixes - the coverage is now 99% of the exported
       1600 symbols for Clutter and 80%+ of the 300 exported symbols for COGL.
 
-    o Generate the GObject Introspection data for both Clutter and COGL
+    » Generate the GObject Introspection data for both Clutter and COGL
       at build time.
 
-    o Build environment fixes.
+    » Build environment fixes.
 
 Many thanks to:
 
@@ -744,25 +744,25 @@ Robert Bragg (28):
       [cogl-vertex-buffer] Some fixes for texturing and color arrays
       [docs] Various gtk-doc updates for Cogl
       [tests] Some improvements for test-pixmap
-      [Cogl] cogl_clip_{set*,unset} renamed to cogl_clip_{push*,pop}
+      [Cogl] cogl_clip_{set•,unset} renamed to cogl_clip_{push*,pop}
       [Cogl] Renames cogl_paint_init to cogl_clear and adds a cogl_disable_fog function
       [cogl-color.c] #include fix for the cogl_set_source_color prototype
-      [Cogl] the cogl_get_*_matrix functions now work with CoglMatrix types
+      [Cogl] the cogl_get_•_matrix functions now work with CoglMatrix types
       [Cogl] Fixes automatic handling of the GL blend enable state.
       [cogl-material] Always glBindTexture when flushing material state
       [Cogl] Remove a debugging assert that was triggering on false positives
       [test-vertex-buffer-contiguous] Improves the texturing test
       [cogl-matrix] Adds padding to CoglMatrix
       [cogl-matrix] Documents that CoglMatrix members should be considered read only
-      Removes need for casting (const float *) to (GLfloat *) in _cogl_set_clip_planes
+      Removes need for casting (const float •) to (GLfloat *) in _cogl_set_clip_planes
       80 char fix
-      Avoid casting CoglMatrix to a GLfloat * when calling glGetFloatv
+      Avoid casting CoglMatrix to a GLfloat • when calling glGetFloatv
       Explicitly make the modelview-matrix current in cogl_{rotate,transform,etc}
       Use Cogl enum when making modelview-matrix current in cogl_{rotate,transform,etc}
       Finish GLES{1,2} support for client side matrix stacks
       Maintain the Cogl assumption that the modelview matrix is normally current
       Merge branch 'cogl-client-matrix-stacks'
-      [cogl-vertex-buffer] Add a flush of attribute changes in the *_draw() functions
+      [cogl-vertex-buffer] Add a flush of attribute changes in the •_draw() functions
       [cogl-vertex-buffer] Allow querying back the number of vertices a buffer represents
       [cogl-vertex-buffer] fix cogl_vertex_buffer_draw_elements prototype
       [tests] Adds an interactive cogl vertex buffer unit test
@@ -795,306 +795,306 @@ Tomas Frydrych (3):
 Clutter 0.9.0 (30/01/2009)
 ===============================================================================
 
- * List of changes between 0.8.6 and 0.9.0
+ • List of changes between 0.8.6 and 0.9.0
 
-   o ClutterText is a new actor allowing text display, text editing
+   » ClutterText is a new actor allowing text display, text editing
      both in multi-line and single-line modes, and text selection using
      the pointer devices and the keyboard. ClutterText supercedes both
      ClutterLabel and ClutterEntry.
-   o ClutterClone is a new actor that allows cloning of other actors,
+   » ClutterClone is a new actor that allows cloning of other actors,
      both simple and composite. ClutterClone supercedes ClutterCloneTexture.
-   o ClutterBindingPool is a new API that allows to easily add key bindings
+   » ClutterBindingPool is a new API that allows to easily add key bindings
      to an actor.
-   o ClutterAnimation is a new API for implicit animations, similar to
+   » ClutterAnimation is a new API for implicit animations, similar to
      the tweening API used in toolkits like jQuery, Tween and Flash. This
      new API supercedes the ClutterEffect API.
-   o ClutterAlpha uses "animation modes" instead of raw function
+   » ClutterAlpha uses "animation modes" instead of raw function
      pointers; it is still possible to pass alpha functions. The alpha
      functions provided by Clutter have been removed from the public
      API. It is possible to register global alpha functions and use
      them though a logical id.
-   o The interval of the ClutterAlpha:alpha property has been changed
+   » The interval of the ClutterAlpha:alpha property has been changed
      to a floating point value in the [ -1.0, 2.0 ] range; this allowed
      the addition of "overshooting" easing modes.
-   o COGL now supports backface culling.
-   o The COGL-based Pango renderer is public API and it is accessible
+   » COGL now supports backface culling.
+   » The COGL-based Pango renderer is public API and it is accessible
      to developers. It is also possible to access the PangoContext used
      by Clutter in order to create PangoLayouts to render text.
-   o The ClutterFixed API has been moved to COGL.
-   o COGL does not depend on Clutter data types anymore.
-   o The ClutterMedia interface has been overhauled: implementations
+   » The ClutterFixed API has been moved to COGL.
+   » COGL does not depend on Clutter data types anymore.
+   » The ClutterMedia interface has been overhauled: implementations
      now must only override the interface properties. The ranges of
      some properties have been changed to normalized values.
-   o COGL now exposes only floating point entry points, and reserves
+   » COGL now exposes only floating point entry points, and reserves
      the eventual conversion to fixed point only when needed. The
      fixed point type and macros are publicly available for developers
      concerned about floating point operations.
-   o COGL has a new Vertex Attribues API that allows submitting an
+   » COGL has a new Vertex Attribues API that allows submitting an
      extensible number of vertex attributes to OpenGL in a way that
      does not require format conversions and allows fast re-use.
-   o COGL has a new Material API that decouples paths from fills; it
+   » COGL has a new Material API that decouples paths from fills; it
      is possible to create an arbitrary path and fill it with a COGL
      texture. The Material API also allows setting multiple texture
      layers and defining the blend modes and colors.
-   o ClutterTexture has the ability to use a worker thread to asynchronously
+   » ClutterTexture has the ability to use a worker thread to asynchronously
      load an image from a file, as long as the GLib threading support has
      been enabled prior to calling clutter_init().
-   o Clutter now supports localization of the help output, and it
+   » Clutter now supports localization of the help output, and it
      also supports globally setting the text direction for non left to
      right locales.
-   o ClutterCairoTexture is a new actor that allows using Cairo
+   » ClutterCairoTexture is a new actor that allows using Cairo
      to draw on a ClutterTexture; since Cairo does not have an OpenGL
      backend, the drawing is not hardware accelerated.
-   o Clutter has a unit testing suite, based on the GLib unit test
+   » Clutter has a unit testing suite, based on the GLib unit test
      framework, which can be used to track regressions.
-   o A ClutterPath object has been added, and it is used by the
+   » A ClutterPath object has been added, and it is used by the
      BehaviourPath. The Path object allows defining paths using a set
      of coordinates and operations. A Path can be "painted" either using
      COGL primitives or using Cairo primitives, allowing an easier way
      to paint non-rectangular shaped actors.
-   o ClutterInterval is a simple object, used by ClutterAnimation, that
+   » ClutterInterval is a simple object, used by ClutterAnimation, that
      describes an interval between two values, and interpolates between
      the initial and final values of the interval.
 
- * List of bugs fixed since 0.8.6
+ • List of bugs fixed since 0.8.6
 
-   o #835 - Optimize clutter_actor_real_pick()
-   o #851 - setting anchor point causes picking problem
-   o #883 - Outstanding COGL merge issues
-   o #1003 - Add clutter_actor_take_key_focus
-   o #1014 - Clutter Animation API Improvements.
-   o #1049 - Clutter doesn't support most GLSL uniforms
-   o #1051 - WebKit/Clutter product/component?
-   o #1058 - Build clutter-box2d with Clutter 0.8
-   o #1066 - Clipping regression in 0.8
-   o #1086 - virtualize stage_queue_redraw
-   o #1105 - low level access to PangoClutter
-   o #1106 - ClutterText instead of ClutterLabel and ClutterEntry
-   o #1108 - Enter/Leave events logics wrt. skipped motion events
-   o #1109 - clutter-0.8.0 fails to compile
-   o #1123 - Crash when FBO actor is used and the stage is MINIMIZED
-   o #1144 - Provide an option to load images asynchronously in ClutterTexture
-   o #1162 - Add unit testing for Clutter
-   o #1164 - Mesh API
-   o #1172 - Disjoint paths and clip to path
-   o #1189 - Backface culling
-   o #1209 - Move fixed point API in COGL
-   o #1210 - Add CoglColor API
-   o #1211 - Drop ClutterFeatureFlags usage from COGL
-   o #1212 - Allow only a single include file for Clutter
-   o #1215 - Move the Pango renderer to the public API
-   o #1219 - Clean up cogl.h
-   o #1231 - Build fails in gles flavour in revision 3442
-   o #1233 - CLUTTER_ALPHA_SINE_INC is broken in trunk
-   o #1251 - Merge the Cairo texture actor in core
-   o #1252 - Merge ClutterBehaviourPath and ClutterBehaviourBspline
-   o #1261 - [patch] Minimize differences between gl/cogl-texture.c and
+   » #835 - Optimize clutter_actor_real_pick()
+   » #851 - setting anchor point causes picking problem
+   » #883 - Outstanding COGL merge issues
+   » #1003 - Add clutter_actor_take_key_focus
+   » #1014 - Clutter Animation API Improvements.
+   » #1049 - Clutter doesn't support most GLSL uniforms
+   » #1051 - WebKit/Clutter product/component?
+   » #1058 - Build clutter-box2d with Clutter 0.8
+   » #1066 - Clipping regression in 0.8
+   » #1086 - virtualize stage_queue_redraw
+   » #1105 - low level access to PangoClutter
+   » #1106 - ClutterText instead of ClutterLabel and ClutterEntry
+   » #1108 - Enter/Leave events logics wrt. skipped motion events
+   » #1109 - clutter-0.8.0 fails to compile
+   » #1123 - Crash when FBO actor is used and the stage is MINIMIZED
+   » #1144 - Provide an option to load images asynchronously in ClutterTexture
+   » #1162 - Add unit testing for Clutter
+   » #1164 - Mesh API
+   » #1172 - Disjoint paths and clip to path
+   » #1189 - Backface culling
+   » #1209 - Move fixed point API in COGL
+   » #1210 - Add CoglColor API
+   » #1211 - Drop ClutterFeatureFlags usage from COGL
+   » #1212 - Allow only a single include file for Clutter
+   » #1215 - Move the Pango renderer to the public API
+   » #1219 - Clean up cogl.h
+   » #1231 - Build fails in gles flavour in revision 3442
+   » #1233 - CLUTTER_ALPHA_SINE_INC is broken in trunk
+   » #1251 - Merge the Cairo texture actor in core
+   » #1252 - Merge ClutterBehaviourPath and ClutterBehaviourBspline
+   » #1261 - [patch] Minimize differences between gl/cogl-texture.c and
      gles/cogl-texture.c
-   o #1269 - mingw32 building failed at clutter-media.c
-   o #1270 - Update to mingw-cross-compile.sh
-   o #1271 - mingw compiling failed:  undefined reference to
+   » #1269 - mingw32 building failed at clutter-media.c
+   » #1270 - Update to mingw-cross-compile.sh
+   » #1271 - mingw compiling failed:  undefined reference to
      `_glDrawRangeElements@24'
-   o #1284 - Return something reasonable from clutter_x11_handle_event()
-   o #1300 - clutter_score_remove and clutter_score_remove_all  are different
+   » #1284 - Return something reasonable from clutter_x11_handle_event()
+   » #1300 - clutter_score_remove and clutter_score_remove_all  are different
      in object remove
-   o #1310 - font rendering problem
-   o #1313 - Fix computation of camera distance
-   o #1314 - clutter_sinx() is more inaccurate than it needs to be
-   o #1321 - Get Matrix in float
-   o #1323 - ClutterBehaviorDepth conflicts with other behaviors
-   o #1325 - ClutterPath to cairo_path_t conversion functions
-   o #1330 - We should not queue redraw for non-visible actors
-   o #1334 - Default value for ClutterLabel::text should be "" instead of NULL
-   o #1344 - clutter_actor_transform_stage_point gives invalid coordinates
+   » #1310 - font rendering problem
+   » #1313 - Fix computation of camera distance
+   » #1314 - clutter_sinx() is more inaccurate than it needs to be
+   » #1321 - Get Matrix in float
+   » #1323 - ClutterBehaviorDepth conflicts with other behaviors
+   » #1325 - ClutterPath to cairo_path_t conversion functions
+   » #1330 - We should not queue redraw for non-visible actors
+   » #1334 - Default value for ClutterLabel::text should be "" instead of NULL
+   » #1344 - clutter_actor_transform_stage_point gives invalid coordinates
      for big actors
-   o #1352 - Weird cogl-pango.h includes in clutter-[entry|label].c
-   o #1354 - Floating point exception when set fps>1000 and start timeline
-   o #1361 - Unused ClutterStage::get_resolution() methods
-   o #1365 - ClutterEntry doesn't get the cursor when it should
-   o #1366 - disable-npots fails to build on mac
-   o #1380 - Return booleans from CLUTTER_ACTOR_IS_* macros
-   o #1386 - Wrong clipping dimensions for larger actors
-   o #1387 - Clarify new-frame signal emission with advance()
-   o #1388 - Clarify signal emission for advance_to_marker()
-   o #1395 - behaviour_apply and behaviour_get_nth_actor are opposite on
+   » #1352 - Weird cogl-pango.h includes in clutter-[entry|label].c
+   » #1354 - Floating point exception when set fps>1000 and start timeline
+   » #1361 - Unused ClutterStage::get_resolution() methods
+   » #1365 - ClutterEntry doesn't get the cursor when it should
+   » #1366 - disable-npots fails to build on mac
+   » #1380 - Return booleans from CLUTTER_ACTOR_IS_• macros
+   » #1386 - Wrong clipping dimensions for larger actors
+   » #1387 - Clarify new-frame signal emission with advance()
+   » #1388 - Clarify signal emission for advance_to_marker()
+   » #1395 - behaviour_apply and behaviour_get_nth_actor are opposite on
      actors sequence
-   o #1397 - clutter command line is not localized.
-   o #1402 - Change default tile-waste from 64 to 63
-   o #1403 - ClutterMedia::get_uri() should return allocated string
-   o #1404 - ClutterMedia issues
-   o #1405 - Fix properties that have X11 types to be 'long'
-   o #1409 - Use G_SIGNAL_RUN_LAST with ::queue-redraw signal
-   o #1410 - [patch] Implements a generic ClutterActorClone class without fbos
-   o #1414 - avoid relayout of ClutterTexture if not syncing size
-   o #1415 - short-circuit setting same clip again
+   » #1397 - clutter command line is not localized.
+   » #1402 - Change default tile-waste from 64 to 63
+   » #1403 - ClutterMedia::get_uri() should return allocated string
+   » #1404 - ClutterMedia issues
+   » #1405 - Fix properties that have X11 types to be 'long'
+   » #1409 - Use G_SIGNAL_RUN_LAST with ::queue-redraw signal
+   » #1410 - [patch] Implements a generic ClutterActorClone class without fbos
+   » #1414 - avoid relayout of ClutterTexture if not syncing size
+   » #1415 - short-circuit setting same clip again
 
 Clutter 0.8.2 (25/09/2008)
 ===============================================================================
 
- * List of changes between 0.8.0 and 0.8.2
+ • List of changes between 0.8.0 and 0.8.2
 
-   o Add constructor-only properties for the :container and :actor
+   » Add constructor-only properties for the :container and :actor
      properties of ClutterChildMeta
-   o Resync the Clutter keysyms with X.org ones.
-   o Documentation fixes and improvements
-   o Allow defining ClutterColor as an object or an array inside
+   » Resync the Clutter keysyms with X.org ones.
+   » Documentation fixes and improvements
+   » Allow defining ClutterColor as an object or an array inside
      ClutterScript UI definitions
-   o Added the missing :perspective property to ClutterStage
-   o Fixed the upper and lower boundaries for ClutterUnit and
+   » Added the missing :perspective property to ClutterStage
+   » Fixed the upper and lower boundaries for ClutterUnit and
      ClutterFixed properties
-   o Fix a bug that prevented disabling sorting on ClutterModel
-   o Fix a bug in clutter_timeline_list_markers()
-   o Queue a redraw when the clip is changed
-   o Optimize calls to push and pop the matrix when painting
-   o Add a variable to the pkgconfig file for extracting the
+   » Fix a bug that prevented disabling sorting on ClutterModel
+   » Fix a bug in clutter_timeline_list_markers()
+   » Queue a redraw when the clip is changed
+   » Optimize calls to push and pop the matrix when painting
+   » Add a variable to the pkgconfig file for extracting the
      COGL backend, for configure-time checks
-   o Fix a typo in cogl_path_rel_curve_to()
-   o Fix showing the cursor after it being hidden once
-   o Add a function for obtaining Clutter's option group without
+   » Fix a typo in cogl_path_rel_curve_to()
+   » Fix showing the cursor after it being hidden once
+   » Add a function for obtaining Clutter's option group without
      initializing Clutter
 
- * List of bugs fixed since 0.8.0
+ • List of bugs fixed since 0.8.0
 
-   o #856 - Teardown sequence is borked
-   o #945 - Clipping+fbo cloning bugs
-   o #1010 - ClutterLabel does not update the layout (again)
-   o #1020 - TFP resyncing on MapNotify/ConfigureNotify [Andy Wingo]
-   o #1033 - Manually parsing command line options prevents
+   » #856 - Teardown sequence is borked
+   » #945 - Clipping+fbo cloning bugs
+   » #1010 - ClutterLabel does not update the layout (again)
+   » #1020 - TFP resyncing on MapNotify/ConfigureNotify [Andy Wingo]
+   » #1033 - Manually parsing command line options prevents
      initializing clutter
-   o #1034 - Picking doesn't work on Eee PC
-   o #1038 - Clutter 0.8 won't build due to redefined functions
-   o #1044 - cogl_get_viewport error
-   o #1047 - API documentation from release tarball is not
+   » #1034 - Picking doesn't work on Eee PC
+   » #1038 - Clutter 0.8 won't build due to redefined functions
+   » #1044 - cogl_get_viewport error
+   » #1047 - API documentation from release tarball is not
      installed by "make install" [Mirco Müller]
-   o #1048 - SIGFPE in cogl_texture_set_region() with
+   » #1048 - SIGFPE in cogl_texture_set_region() with
      nvidia [Gwenole Beauchesne]
-   o #1062 - clutter_actor_query_coords() replacement in
+   » #1062 - clutter_actor_query_coords() replacement in
      0.8 [Gwenole Beauchesne]
-   o #1069 - Warnings with ClutterScore
-   o #1071 - clutter_timeline_get_duration doesn't always work
-   o #1075 - Difficult to bind clutter_stage_new
-   o #1080 - clutter_stage_read_pixels has upside-down y coordinate
-   o #1082 - Texture bitmap is destroyed in wrong way
-   o #1085 - Cursor is in wrong position on ClutterEntry if set
+   » #1069 - Warnings with ClutterScore
+   » #1071 - clutter_timeline_get_duration doesn't always work
+   » #1075 - Difficult to bind clutter_stage_new
+   » #1080 - clutter_stage_read_pixels has upside-down y coordinate
+   » #1082 - Texture bitmap is destroyed in wrong way
+   » #1085 - Cursor is in wrong position on ClutterEntry if set
      x-align property
-   o #1090 - Label somtimes returns natural_width < min_width [Johan Bilien]
-   o #1091 - WM_MOUSEWHEEL (scroll-event) not handled
+   » #1090 - Label somtimes returns natural_width < min_width [Johan Bilien]
+   » #1091 - WM_MOUSEWHEEL (scroll-event) not handled
      correctly [Roman Yazmin]
-   o #1099 - No ClutterScript API to get a list of IDs in a given
+   » #1099 - No ClutterScript API to get a list of IDs in a given
      file [Noah Gibbs]
-   o #1100 - WM_SIZE not handled correctly, user_resize and
+   » #1100 - WM_SIZE not handled correctly, user_resize and
      window_style correction
-   o #1103 - Two typos in clutter documentation
-   o #1121 - Setting anchor point doesn't work if set too early
-   o #1124 - Clutter causes an additional size request in each
+   » #1103 - Two typos in clutter documentation
+   » #1121 - Setting anchor point doesn't work if set too early
+   » #1124 - Clutter causes an additional size request in each
      allocation [Johan Bilien]
-   o #1125 - Save an extra pango_layout_get_size in many
+   » #1125 - Save an extra pango_layout_get_size in many
      cases [Johan Bilien]
-   o #1130 - CLUTTER_MOTION is not emitted when time goes
+   » #1130 - CLUTTER_MOTION is not emitted when time goes
      backwards. [Pierce Liu]
-   o #1137 - Setting the anchor point does not trigger a re-paint
-   o #1145 - Flicker on resize the window
-   o #1154 - clutter_timeout_pool_new() documentation doesn't say
+   » #1137 - Setting the anchor point does not trigger a re-paint
+   » #1145 - Flicker on resize the window
+   » #1154 - clutter_timeout_pool_new() documentation doesn't say
      how to free [Murray Cumming]
 
 Clutter 0.8.0 (10/07/2008)
 ===============================================================================
 
- * List of changes between 0.7.6 and 0.8.0
+ • List of changes between 0.7.6 and 0.8.0
 
-   o Assume that non-power-of-two sized textures are always supported
+   » Assume that non-power-of-two sized textures are always supported
      if texture-from-pixmap support is present.
 
-   o Increase documentation coverage.
+   » Increase documentation coverage.
 
-   o Disable the XINPUT support by default.
+   » Disable the XINPUT support by default.
 
-   o Improve the behaviour of clutter_actor_get_transformed_size().
+   » Improve the behaviour of clutter_actor_get_transformed_size().
 
-   o Fix a copy-and-paste bug which broke the vertex shaders.
+   » Fix a copy-and-paste bug which broke the vertex shaders.
 
- * List of bugs fixed since 0.7.6
+ • List of bugs fixed since 0.7.6
 
-   o #983 - cogl-bitmap-fallback.c compiler error/warning due to cast issue
-   o #985 - MSC math.h / M_PI issue
-   o #998 - clutter always captures X input events
-   o #1000 - clutter-x11 should define gtypes for its enumerations
-   o #1004 - Fix "edge-detect" shader
-   o #1007 - Fix TFP fallback mechanism
-   o #1008 - tfp still a bit borked
-   o #1010 - ClutterLabel does not update the layout
-   o #1011 - Fix TFP fallback mechanism (take 2)
-   o #1012 - clutter_stage_read_pixels() has incorrect alpha data
+   » #983 - cogl-bitmap-fallback.c compiler error/warning due to cast issue
+   » #985 - MSC math.h / M_PI issue
+   » #998 - clutter always captures X input events
+   » #1000 - clutter-x11 should define gtypes for its enumerations
+   » #1004 - Fix "edge-detect" shader
+   » #1007 - Fix TFP fallback mechanism
+   » #1008 - tfp still a bit borked
+   » #1010 - ClutterLabel does not update the layout
+   » #1011 - Fix TFP fallback mechanism (take 2)
+   » #1012 - clutter_stage_read_pixels() has incorrect alpha data
              on some (most?) cards"
-   o #1013 - Per device grabs are not obeyed in pointer device propagation.
-   o #1015 - Cloning unparented actors with FBOs doesn't work with new
+   » #1013 - Per device grabs are not obeyed in pointer device propagation.
+   » #1015 - Cloning unparented actors with FBOs doesn't work with new
              layout code
-   o #1016 - Changing window-redirect-automatic property after creating
+   » #1016 - Changing window-redirect-automatic property after creating
              ClutterX11TexturePixmap doesn't work
-   o #1019 - clutter-frame-source.h not included by clutter.h
-   o #1022 - extern inline functions in clutter-fixed.h
-   o #1033 - Manually parsing command line options prevents initializing
+   » #1019 - clutter-frame-source.h not included by clutter.h
+   » #1022 - extern inline functions in clutter-fixed.h
+   » #1033 - Manually parsing command line options prevents initializing
              Clutter
 
 Clutter 0.7.6 (27/06/2008)
 ===============================================================================
 
- * List of changes between 0.7.4 and 0.7.6
+ • List of changes between 0.7.4 and 0.7.6
 
-   o Removed the ClutterBackend::get_display_size() and wrappers.
+   » Removed the ClutterBackend::get_display_size() and wrappers.
 
-   o Verify that the vertex shaders are successfully compiled when binding
+   » Verify that the vertex shaders are successfully compiled when binding
      them.
 
-   o Increase safety of the ClutterGLXTexturePixmap
+   » Increase safety of the ClutterGLXTexturePixmap
 
- * List of bugs fixed since 0.7.4
+ • List of bugs fixed since 0.7.4
 
-   o #993 - Underline colors are sometimes wrong
+   » #993 - Underline colors are sometimes wrong
 
 Clutter 0.7.4 (25/06/2008), "Killer Koi"
 ===============================================================================
 
- * List of changes between 0.7.2 and 0.7.4
+ • List of changes between 0.7.2 and 0.7.4
 
-   o Fix the ClutterEntry actor after the clip API changes in COGL.
+   » Fix the ClutterEntry actor after the clip API changes in COGL.
 
-   o Update the shaders generated for GLES 2.0.
+   » Update the shaders generated for GLES 2.0.
 
-   o Add the ability to add search paths and look up files from
+   » Add the ability to add search paths and look up files from
      ClutterScript. This allows defining directories to store the
      images to be loaded by a ClutterTexture.
 
-   o Fix the GLES 1.1 support.
+   » Fix the GLES 1.1 support.
 
-   o Warn if no usable pointer device are available on X11 backends.
+   » Warn if no usable pointer device are available on X11 backends.
 
-   o Improve the request for the best pixel format on win32.
+   » Improve the request for the best pixel format on win32.
 
-   o Fix a regression when sizing the ClutterStage on backends that
+   » Fix a regression when sizing the ClutterStage on backends that
      only support fixed size stages; now setting any size will result
      in Clutter ignoring the request, like it happened in Clutter 0.6.
 
-   o Add a method to ClutterBackend to retrieve the display size.
+   » Add a method to ClutterBackend to retrieve the display size.
 
-   o Fix clutter_sinx() for angles > CFX_2PI - CFX_ONE.
+   » Fix clutter_sinx() for angles > CFX_2PI - CFX_ONE.
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #833 - ClutterEntry should clip glyphs rather than itself
-   o #858 - Support for multiple devices (using XINPUT)
-   o #879 - sampler2DRect used by test-shader.c doen't work with non-rect textures
-   o #979 - Wrong call convension for SwapIntervalProc in win32 backend
-   o #987 - clutter-event.c c99 variable declaration
-   o #988 - cursor position wrong with multibyte invisible char
-   o #989 - Add a search path for clutter script assets
+   » #833 - ClutterEntry should clip glyphs rather than itself
+   » #858 - Support for multiple devices (using XINPUT)
+   » #879 - sampler2DRect used by test-shader.c doen't work with non-rect textures
+   » #979 - Wrong call convension for SwapIntervalProc in win32 backend
+   » #987 - clutter-event.c c99 variable declaration
+   » #988 - cursor position wrong with multibyte invisible char
+   » #989 - Add a search path for clutter script assets
 
 Clutter 0.7.2 (23/06/2008), "Kedoke"
 ===============================================================================
 
- * List of changes between 0.7.0 and 0.7.2
+ • List of changes between 0.7.0 and 0.7.2
 
-   o ClutterTexture has a new :keep-aspect-ratio property; when it is set
+   » ClutterTexture has a new :keep-aspect-ratio property; when it is set
      to TRUE the texture will return a preferred width maintaining the
      aspect ratio with the given height and a preferred height maintaining
      the aspect ratio with the given width. This allows to set the width or
@@ -1102,36 +1102,36 @@ Clutter 0.7.2 (23/06/2008), "Kedoke"
      width respectively while maintaining the aspect ratio of the original
      image.
 
-   o Added XINPUT support on the X11 backends; this provides an initial
+   » Added XINPUT support on the X11 backends; this provides an initial
      support for multiple input devices. The API is X11-specific, and
      provides support for querying at run-time support for XINPUT, for
      getting a list of input devices and for getting the type of each
      input device. 
  
-   o The 'fruity' backend also features multiple device support.
+   » The 'fruity' backend also features multiple device support.
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #816 - clutter_actor_request_coords() should take a const box.
-   o #836 - Optimize clutter_label_query_coords()
-   o #905 - Paint cursor directly
-   o #918 - Group doesn't clip if it's children are clipped
-   o #953 - Actors are not hidden before unrealized or disposed
-   o #960 - PangoContext creation code should not be duplicated
-   o #970 - clutter_actor_get_paint_area confusion
-   o #971 - Minor ClutterActor cleanups
-   o #972 - Better parenting
-   o #973 - unreffing ClutterScore may segfault
-   o #981 - clutter_stage_read_pixels temprow fix
-   o #982 - __COGL_GET_CONTEXT MS compiler issue
-   o #984 - pango_clutter_render_layout() declared void
+   » #816 - clutter_actor_request_coords() should take a const box.
+   » #836 - Optimize clutter_label_query_coords()
+   » #905 - Paint cursor directly
+   » #918 - Group doesn't clip if it's children are clipped
+   » #953 - Actors are not hidden before unrealized or disposed
+   » #960 - PangoContext creation code should not be duplicated
+   » #970 - clutter_actor_get_paint_area confusion
+   » #971 - Minor ClutterActor cleanups
+   » #972 - Better parenting
+   » #973 - unreffing ClutterScore may segfault
+   » #981 - clutter_stage_read_pixels temprow fix
+   » #982 - __COGL_GET_CONTEXT MS compiler issue
+   » #984 - pango_clutter_render_layout() declared void
 
 Clutter 0.7.0 (13/06/2008), "Booska"
 ===============================================================================
 
- * List of changes between 0.6 and 0.7.0
+ • List of changes between 0.6 and 0.7.0
 
-   o COGL, the underlying GL abstraction layer in Clutter, has been
+   » COGL, the underlying GL abstraction layer in Clutter, has been
      completely rewritten from the ground up. Its no longer a conceptual
      hack but a documented, fully featured library pretty much in its
      own right. COGL abstracts over Open GL, Open GL ES 1.1 and now
@@ -1139,290 +1139,290 @@ Clutter 0.7.0 (13/06/2008), "Booska"
      with various utility features such as texture tiling abstractions,
      paths and primitive rendering, FBO, shaders, etc.
 
-   o Clutter now provides an experimental backend for the Apple(tm)
+   » Clutter now provides an experimental backend for the Apple(tm)
      iPhone and iPod Touch families of products.
 
-   o The Windows platform is now natively supported instead of
+   » The Windows platform is now natively supported instead of
      relying on the SDL libraries. The win32 backend is still
      experimental.
 
-   o The X11 based backends now feature support for Actors that wrap
+   » The X11 based backends now feature support for Actors that wrap
      external X drawables (i.e the texture-from-pixmap extension and
      fallbacks)
 
-   o Clutter now seamlessly supports multiple stages on the backends
+   » Clutter now seamlessly supports multiple stages on the backends
      that allow this feature.
 
-   o The custom Pango renderer has been completely rewritten, now using
+   » The custom Pango renderer has been completely rewritten, now using
      the more modern and maintained PangoCairo (instead of FT2), and avoids
      nasty subclassing hacks, supports smooth fast scaling of text, has
      many edge case issues fixed and it still is very efficient (using
      a texture glyph cache). It is even a little bit faster.
 
-   o Better texture support, timeline improvements, ClutterLabel and
+   » Better texture support, timeline improvements, ClutterLabel and
      ClutterEntry improvements, and container child properties are among
      the new features - too many to fit in the NEWS file.
 
- * List of bug fixes
+ • List of bug fixes
 
-   o #358 - "window resizing doesn't show scaled stage"
-   o #425 - "COGL enhancements"
-   o #439 - "timing related pong lockup due to timeline_rewind somtimes
+   » #358 - "window resizing doesn't show scaled stage"
+   » #425 - "COGL enhancements"
+   » #439 - "timing related pong lockup due to timeline_rewind somtimes
             being ignored by timeline_timeout_func"
-   o #450 - "ClutterScore API enhancements"
-   o #641 - "add markers to timelines"
-   o #666 - "Large font size leads to missing ""W"" and wrong ""J"" character"
-   o #713 - "texture from pixmap"
-   o #791 - "default actors to visible"
-   o #800 - "CLUTTER_ALPHA_EXP_INC overflows"
-   o #804 - "clutter_actor_get_opacity returns composited alpha"
-   o #810 - "100 % CPU load with clutter_main()"
-   o #815 - "Split up request
-   o #816 - "clutter_actor_request_coords() should take a const box."
-   o #822 - "Fix clutter_actor_lower()"
-   o #823 - "Clean-up GLism's in clutter-core (below cogl)"
-   o #824 - "ClutterEntry should handle its own key events"
-   o #825 - "Removes GLisms from clutter-main.c"
-   o #831 - "configure.ac missing osx flavour help"
-   o #834 - "add ability to set anchor in json"
-   o #836 - "Optimize clutter_label_query_coords()"
-   o #839 - "Crash if put cursor over topmost pixel"
-   o #840 - "Implement prepare-paint and finish-paint signals."
-   o #848 - "Events dispatch doesn't work in GLX Xephyr"
-   o #850 - "Impossible to set ClutterRectangle border opacity to a value
+   » #450 - "ClutterScore API enhancements"
+   » #641 - "add markers to timelines"
+   » #666 - "Large font size leads to missing ""W"" and wrong ""J"" character"
+   » #713 - "texture from pixmap"
+   » #791 - "default actors to visible"
+   » #800 - "CLUTTER_ALPHA_EXP_INC overflows"
+   » #804 - "clutter_actor_get_opacity returns composited alpha"
+   » #810 - "100 % CPU load with clutter_main()"
+   » #815 - "Split up request
+   » #816 - "clutter_actor_request_coords() should take a const box."
+   » #822 - "Fix clutter_actor_lower()"
+   » #823 - "Clean-up GLism's in clutter-core (below cogl)"
+   » #824 - "ClutterEntry should handle its own key events"
+   » #825 - "Removes GLisms from clutter-main.c"
+   » #831 - "configure.ac missing osx flavour help"
+   » #834 - "add ability to set anchor in json"
+   » #836 - "Optimize clutter_label_query_coords()"
+   » #839 - "Crash if put cursor over topmost pixel"
+   » #840 - "Implement prepare-paint and finish-paint signals."
+   » #848 - "Events dispatch doesn't work in GLX Xephyr"
+   » #850 - "Impossible to set ClutterRectangle border opacity to a value
             different from the surface opacity"
-   o #857 - "cogl_color doesn't work in PowerVR PC Viewer"
-   o #860 - "ClutterAlpha leaks"
-   o #864 - "Allow instantiating and subclassing of ClutterStage"
-   o #871 - "Two problems with closing stages"
-   o #873 - "clutter_x11/glx_texture_pixmap issues"
-   o #874 - "Clipping on GL ES"
-   o #875 - "Clutter Label Issues"
-   o #881 - "Timelines require precise system timing"
-   o #882 - "Allow child properties for containers implementing the
+   » #857 - "cogl_color doesn't work in PowerVR PC Viewer"
+   » #860 - "ClutterAlpha leaks"
+   » #864 - "Allow instantiating and subclassing of ClutterStage"
+   » #871 - "Two problems with closing stages"
+   » #873 - "clutter_x11/glx_texture_pixmap issues"
+   » #874 - "Clipping on GL ES"
+   » #875 - "Clutter Label Issues"
+   » #881 - "Timelines require precise system timing"
+   » #882 - "Allow child properties for containers implementing the
             ClutterContainer interface"
-   o #884 - "Add clutter_alpha_set_closure"
-   o #889 - "Error when building clutter-ivan with eglx"
-   o #891 - "assertion failed when test-behave exits"
-   o #892 - "Incorrect results using  rotation-[center|angle] properties"
-   o #894 - "Artifacts with the pango renderer"
-   o #900 - "clutter_actor_lower() and friends do not queue redraw"
-   o #906 - "Implement timing of the events"
-   o #908 - "Support transform from G_TYPE_INT to ClutterUnit"
-   o #909 - "OSX: missing NULL pointer handling"
-   o #910 - "OSX: missing memory pool"
-   o #911 - "OSX: add multistage support"
-   o #912 - "Invalid use of int* as parameter for glGetIntegerv"
-   o #913 - "cogl fails to build on OSX"
-   o #914 - "ClutterEntry is confused about characters vs. bytes"
-   o #915 - "clutter_entry_set_max_length(-1) misbehaves"
-   o #916 - "ClutterKeyEvent:unicode_value is ignored"
-   o #919 - "Replacement pango renderer"
-   o #927 - "Created ports for clutter
-   o #928 - "Reparenting a child that itself is a container doesn't work"
-   o #930 - "add support for quartz imagebackend"
-   o #931 - "suspicious size allocation for pixel data"
-   o #933 - ""X Error of failed request" when attempting to call
+   » #884 - "Add clutter_alpha_set_closure"
+   » #889 - "Error when building clutter-ivan with eglx"
+   » #891 - "assertion failed when test-behave exits"
+   » #892 - "Incorrect results using  rotation-[center|angle] properties"
+   » #894 - "Artifacts with the pango renderer"
+   » #900 - "clutter_actor_lower() and friends do not queue redraw"
+   » #906 - "Implement timing of the events"
+   » #908 - "Support transform from G_TYPE_INT to ClutterUnit"
+   » #909 - "OSX: missing NULL pointer handling"
+   » #910 - "OSX: missing memory pool"
+   » #911 - "OSX: add multistage support"
+   » #912 - "Invalid use of int• as parameter for glGetIntegerv"
+   » #913 - "cogl fails to build on OSX"
+   » #914 - "ClutterEntry is confused about characters vs. bytes"
+   » #915 - "clutter_entry_set_max_length(-1) misbehaves"
+   » #916 - "ClutterKeyEvent:unicode_value is ignored"
+   » #919 - "Replacement pango renderer"
+   » #927 - "Created ports for clutter
+   » #928 - "Reparenting a child that itself is a container doesn't work"
+   » #930 - "add support for quartz imagebackend"
+   » #931 - "suspicious size allocation for pixel data"
+   » #933 - ""X Error of failed request" when attempting to call
             clutter_actor_request_coords()"
-   o #934 - "Update clutter-tutorial to build with clutter from svn trunk."
-   o #947 - "Destroying a stage is messy"
-   o #948 - "Remove texture rectangle support"
-   o #950 - "AltGr not handled"
-   o #951 - "Fix clutter_entry_init() in trunk"
-   o #952 - "Fix test-textures in trunk"
-   o #953 - "Actors are not hidden before unrealized or disposed"
-   o #955 - "ClutterLabel is missing fallback resolution handling"
-   o #959 - "Multiple minor improvements"
-   o #960 - "PangoContext creation code should not be duplicated"
-   o #961 - "Fails to build on OSX (query/request_coords is gone)"
-   o #964 - """unrealized"" signal of ClutterActor wrongly named"
+   » #934 - "Update clutter-tutorial to build with clutter from svn trunk."
+   » #947 - "Destroying a stage is messy"
+   » #948 - "Remove texture rectangle support"
+   » #950 - "AltGr not handled"
+   » #951 - "Fix clutter_entry_init() in trunk"
+   » #952 - "Fix test-textures in trunk"
+   » #953 - "Actors are not hidden before unrealized or disposed"
+   » #955 - "ClutterLabel is missing fallback resolution handling"
+   » #959 - "Multiple minor improvements"
+   » #960 - "PangoContext creation code should not be duplicated"
+   » #961 - "Fails to build on OSX (query/request_coords is gone)"
+   » #964 - """unrealized"" signal of ClutterActor wrongly named"
 
 Clutter 0.6.0 (18/02/2008)
 ==========================
 
- * List of changes between 0.5.6 and 0.6.0
+ • List of changes between 0.5.6 and 0.6.0
 
-   o New documentation sections inside the API reference, describing
+   » New documentation sections inside the API reference, describing
      the animation framework.
 
-   o New API in ClutterActor for computing the actor's vertices in
+   » New API in ClutterActor for computing the actor's vertices in
      the plane of a given ancestor and accessors to query whether an
      actor is scaled or rotated
 
- * List of bug fixed
+ • List of bug fixed
 
-   o #613 - Extend point transformation API
-   o #779 - Rounding error in ClutterBehaviourScale [Havoc Pennington]
-   o #787 - tiled textures are broken
-   o #796 - segmentation fault when setting label text
+   » #613 - Extend point transformation API
+   » #779 - Rounding error in ClutterBehaviourScale [Havoc Pennington]
+   » #787 - tiled textures are broken
+   » #796 - segmentation fault when setting label text
 
 Clutter 0.5.6 (11/02/2008)
 ==========================
 
- * List of changes between 0.5.4 and 0.5.6
+ • List of changes between 0.5.4 and 0.5.6
 
-   o Reverted a last minute change in the depth sorting function of
+   » Reverted a last minute change in the depth sorting function of
      ClutterGroup.
 
-   o Added the clutter_actor_move_anchor_point() family of functions,
+   » Added the clutter_actor_move_anchor_point() family of functions,
      which will set the anchor point at the given coordinates while
      adjusting the actor postion so that the relative position of the
      actor toward its parent remains the same.
 
-   o Provide a fallback for finding the Clutter alpha functions inside
+   » Provide a fallback for finding the Clutter alpha functions inside
      a UI definition for ClutterScript in case g_module_open() fails.
 
-   o Add initial Frame Buffer Objects support in ClutterTexture; using
+   » Add initial Frame Buffer Objects support in ClutterTexture; using
      FBOs, where supported by the hardware and drivers, it's possible to
      create a ClutterTexture from any actor.
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #386 - Stage is white unless a timeline is present
-   o #439 - timing related pong lockup due to timeline rewind...
-   o #440 - 1 pixel line flickering
-   o #442 - Shader support
-   o #451 - Improve font rendering quality (Pango)
-   o #452 - Textures are shown with distortion on Solaris/SPARC
-   o #526 - OSX backend
-   o #533 - Clutter stage is not shown under some conditions
-   o #540 - ClutterStage isn't always respecting requests to change size
-   o #549 - Backend offscreen API is broken
-   o #613 - Extend point transformation API
-   o #635 - Fix buffer overflow in clutter_texture_get_pixbuf() [Gwenole
+   » #386 - Stage is white unless a timeline is present
+   » #439 - timing related pong lockup due to timeline rewind...
+   » #440 - 1 pixel line flickering
+   » #442 - Shader support
+   » #451 - Improve font rendering quality (Pango)
+   » #452 - Textures are shown with distortion on Solaris/SPARC
+   » #526 - OSX backend
+   » #533 - Clutter stage is not shown under some conditions
+   » #540 - ClutterStage isn't always respecting requests to change size
+   » #549 - Backend offscreen API is broken
+   » #613 - Extend point transformation API
+   » #635 - Fix buffer overflow in clutter_texture_get_pixbuf() [Gwenole
      Beauchesne]
-   o #643 - Superfluous "filter-quality" setting in texture_upload_data()?
+   » #643 - Superfluous "filter-quality" setting in texture_upload_data()?
      [Gwenole Beauchesne]
-   o #689 - Rotating actor through layers does not handle opacity
+   » #689 - Rotating actor through layers does not handle opacity
      correctly [Josh Stewart]
-   o #710 - Make "box-blur" test shader work in some way [Gwenole Beauchesne]
-   o #719 - X11 backend does not check window field in events [Havoc
+   » #710 - Make "box-blur" test shader work in some way [Gwenole Beauchesne]
+   » #719 - X11 backend does not check window field in events [Havoc
      Pennington]
-   o #724 - ClutterLabel reports wrong height when lines > 1
-   o #749 - "reactive" property does not change
-   o #751 - missing XSync in clutter-event-x11.c:xembed_set_info() [Havoc
+   » #724 - ClutterLabel reports wrong height when lines > 1
+   » #749 - "reactive" property does not change
+   » #751 - missing XSync in clutter-event-x11.c:xembed_set_info() [Havoc
      Pennington]
-   o #756 - clutter_actor_get_abs_size returns bogus values
-   o #769 - OSX backend fails to build
-   o #770 - OSX: passing incompatible pointer type
+   » #756 - clutter_actor_get_abs_size returns bogus values
+   » #769 - OSX backend fails to build
+   » #770 - OSX: passing incompatible pointer type
 
 Clutter 0.5.4 (25/01/2008)
 ==========================
 
- * List of changes between 0.5.2 and 0.5.4
+ • List of changes between 0.5.2 and 0.5.4
 
-   o A clutter-x11-<major>.<minor> pkg-config file is installed along
+   » A clutter-x11-<major>.<minor> pkg-config file is installed along
      with the clutter-<major>.<minor> and clutter-<backend>-<major>.<minor>
      ones, for libraries and applications depending on the X11-based
      backends (GLX and EGLX).
 
-   o Textures are correctly unrealized before changing and freeing the
+   » Textures are correctly unrealized before changing and freeing the
      main GL context.
 
-   o It is now possible to block the automatic call to clutter_main_quit()
+   » It is now possible to block the automatic call to clutter_main_quit()
      when closing the stage window using the frame controls by connecting
      an handler for the ::event signal on the Clutter stage and checking
      for the CLUTTER_DELETE event type and returning TRUE. This allows
      the usage of other main loops with GLib reactors (like Python's twisted)
      with Clutter without triggering assertions by closing the stage window.
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #564 - Add more precise clutter_qdivx() [Gwenole Beauchesne]
-   o #614 - ClutterActor API inconsistencies
-   o #640 - ClutterTexture unrealized with no GL context
-   o #654 - Under heavy load clutter sometimes drops the last frame of
+   » #564 - Add more precise clutter_qdivx() [Gwenole Beauchesne]
+   » #614 - ClutterActor API inconsistencies
+   » #640 - ClutterTexture unrealized with no GL context
+   » #654 - Under heavy load clutter sometimes drops the last frame of
      a timeline [Johan Bilien]
-   o #672 - Event handling in osx backend is broken [Tommi Komulainen]
-   o #684 - Improve test-scale by also using anchor point [Jaap A. Haitsma]
-   o #695 - clutter-shader: Invalid format string for
+   » #672 - Event handling in osx backend is broken [Tommi Komulainen]
+   » #684 - Improve test-scale by also using anchor point [Jaap A. Haitsma]
+   » #695 - clutter-shader: Invalid format string for
      gssize [Tommi Komulainen]
-   o #696 - cogl_get_proc_address requires GLX [Tommi Komulainen]
-   o #709 - clutter_effect_scale inconsistent with clutter_actor_set_scale
-   o #714 - clutter_event_copy for enter/leave event generates
+   » #696 - cogl_get_proc_address requires GLX [Tommi Komulainen]
+   » #709 - clutter_effect_scale inconsistent with clutter_actor_set_scale
+   » #714 - clutter_event_copy for enter/leave event generates
      extra unref [Neil Roberts]
-   o #715 - Type errors in test-shader
-   o #720 - BehaviourScale not working in python after recent
+   » #715 - Type errors in test-shader
+   » #720 - BehaviourScale not working in python after recent
      API change [Josh Stewart]
 
 Clutter 0.5.2 (14/01/2008)
 ==========================
 
- * List of changes between 0.5.0 and 0.5.2
+ • List of changes between 0.5.0 and 0.5.2
 
-   o ClutterModelDefault has been renamed to ClutterListModel
+   » ClutterModelDefault has been renamed to ClutterListModel
 
-   o ClutterModel now has vector-based variants for append, prepend and
+   » ClutterModel now has vector-based variants for append, prepend and
      insert methods; these methods are useful for bindings
 
-   o Add units-based variant for clutter_actor_move_by()
+   » Add units-based variant for clutter_actor_move_by()
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #694 - Handle GLhandleARB on OS X [Tommi Komulainen]
-   o #700 - Fix for clutter_effect_rotate() [Neil Roberts]
+   » #694 - Handle GLhandleARB on OS X [Tommi Komulainen]
+   » #700 - Fix for clutter_effect_rotate() [Neil Roberts]
 
 Clutter 0.5.0 (02/01/2008)
 ==========================
 
- * List of changes between 0.4.2 and 0.5.0
+ • List of changes between 0.4.2 and 0.5.0
 
-   o New event handling system: every actor with the CLUTTER_ACTOR_REACTIVE
+   » New event handling system: every actor with the CLUTTER_ACTOR_REACTIVE
      flag set will receive events from the underlying backend; the event
      propagation chain will be walked in two directions (from the actor to
      the top-level container and back) with the ability to block it in
      both phases.
 
-   o ClutterShader, an abstraction over the programmable OpenGL pipeline.
+   » ClutterShader, an abstraction over the programmable OpenGL pipeline.
 
-   o ClutterScore, an object for controlling timelines; using a score
+   » ClutterScore, an object for controlling timelines; using a score
      instance is possible to start multiple timelines at once, or start
      a timeline after another has emitted the ::complete signal.
 
-   o ClutterScript, an object for parsing a scene from an external file or
+   » ClutterScript, an object for parsing a scene from an external file or
      a buffer; the scene is described using JSON (JavaScript Object Notation):
      every object is defined using its class and properties, and container
      objects can have their children defined as well. It is also possible
      do describe top-level objects such as timelines and behaviours, and to
      automatically connect signal handlers to signal names.
 
-   o ClutterTimelines duration can now be set in milliseconds using the
+   » ClutterTimelines duration can now be set in milliseconds using the
      :duration property; the default framerate will be used to compute the
      actual duration in frames. The default framerate will be set by the
      backend, and can be overridden by the application.
 
-   o ClutterTimelines direction can now be set using the :direction
+   » ClutterTimelines direction can now be set using the :direction
      property; a timeline can be set to proceed forward or backward,
      and the direction can also be change while the timeline is still
      running.
 
-   o New, experimental OSX backend.
+   » New, experimental OSX backend.
 
-   o Build environment for MS VisualStudio 2005.
+   » Build environment for MS VisualStudio 2005.
 
-   o ClutterModel, a generic list-based model object that can be used to
+   » ClutterModel, a generic list-based model object that can be used to
      implement actors following the Model-Viewer-Controller design pattern.
      Clutter provides a default implementation of ClutterModel, called
      ClutterModelDefault and using the GSequence data structure from GLib
      to optimize insertion and look up.
 
-   o Add the ability to grab pointer and keyboard events: if an actor
+   » Add the ability to grab pointer and keyboard events: if an actor
      is set to have a grab it'll be the only one receiving events until
      it releases the grab.
 
-   o Add the ability for an actor to receive the key focus; an actor
+   » Add the ability for an actor to receive the key focus; an actor
      with key focus will always receive the key events, even if it did
      not acquire the keyboard grab.
 
-   o It is now possible to set the GL "fog" (also known as "depth cueing")
+   » It is now possible to set the GL "fog" (also known as "depth cueing")
      effect on the ClutterStage; if the fog is enabled, actors farther
      away from the view point will fade into the stage background color.
 
-   o Each actor now has an "anchor point", a point defined in the actor's
+   » Each actor now has an "anchor point", a point defined in the actor's
      coordinate space that will be used as the origin when scaling and
      rotation transformations.
 
-   o Every pixel-based API has been doubled with a corresponding
+   » Every pixel-based API has been doubled with a corresponding
      ClutterUnits-based function (postfixed with a '-u'), for instance:
 
        clutter_actor_set_position() - clutter_actor_set_positionu()
@@ -1431,168 +1431,168 @@ Clutter 0.5.0 (02/01/2008)
 
      This allows sub-pixel precision and device independence.
 
-   o The ClutterLabel actor now tries very hard to provide a sane
+   » The ClutterLabel actor now tries very hard to provide a sane
      default size, if no bounding box has been requested; this fixes
      the :alignment property and allows the addition of the :justify
      property.
 
-   o The SDL backend can now be compiled under win32 with MingW; this
+   » The SDL backend can now be compiled under win32 with MingW; this
      backend is still marked as experimental.
 
-   o The OSX backend allows the compilation of Clutter under OS X; this
+   » The OSX backend allows the compilation of Clutter under OS X; this
      backend is experimental.
 
- * List of bugs fixed
+ • List of bugs fixed
 
-   o #423 - All actors should emit events rather than just the stage
-   o #424 - Interface definition files
-   o #443 - ClutterModel implementation
-   o #480 - Uninitialized variable in
+   » #423 - All actors should emit events rather than just the stage
+   » #424 - Interface definition files
+   » #443 - ClutterModel implementation
+   » #480 - Uninitialized variable in
      path_alpha_to_position() [Gwenole Beauchesne]
-   o #511 - clutter_stage_get_actor_at_pos problem
-   o #512 - clutter window moves when stage actor is scaled
-   o #518 - XEMBED not supported in eglx backend
-   o #519 - Should have an Atom cache initialized on start up
-   o #520 - Delete after multibyte unicode chars in
+   » #511 - clutter_stage_get_actor_at_pos problem
+   » #512 - clutter window moves when stage actor is scaled
+   » #518 - XEMBED not supported in eglx backend
+   » #519 - Should have an Atom cache initialized on start up
+   » #520 - Delete after multibyte unicode chars in
      ClutterEntry [Tommi Komulainen]
-   o #522 - Array out of bounds indexing [Tommi Komulainen]
-   o #523 - cogl portability fixes [Tommi Komulainen]
-   o #524 - missing config.h includes [Tommi Komulainen]
-   o #525 - Redundant include in cogl/gl [Tommi Komulainen]
-   o #531 - Extraneous "new-frame" signal generated
-   o #532 - clutter_actor_set_scale_with_gravityx()
+   » #522 - Array out of bounds indexing [Tommi Komulainen]
+   » #523 - cogl portability fixes [Tommi Komulainen]
+   » #524 - missing config.h includes [Tommi Komulainen]
+   » #525 - Redundant include in cogl/gl [Tommi Komulainen]
+   » #531 - Extraneous "new-frame" signal generated
+   » #532 - clutter_actor_set_scale_with_gravityx()
      precision [Gwenole Beauchesne]
-   o #544 - clutter_color_to_hlsx is broken [Neil Roberts]
-   o #546 - ClutterStageState doesn't make sense
-   o #550 - Wanted: Set Actor's position based on center or other
+   » #544 - clutter_color_to_hlsx is broken [Neil Roberts]
+   » #546 - ClutterStageState doesn't make sense
+   » #550 - Wanted: Set Actor's position based on center or other
      edges/corners of quadrangle
-   o #557 - ClutterScript should support complex properties for third
+   » #557 - ClutterScript should support complex properties for third
      party classes
-   o #558 - Unmerge UI definitions
-   o #566 - ClutterEntry does not scroll the text to the
+   » #558 - Unmerge UI definitions
+   » #566 - ClutterEntry does not scroll the text to the
      right [Gwenole Beauchesne]
-   o #577 - Inconsistent naming of behaviour properties
-   o #580 - Fix call to cogl_enable() [Gwenole Beauchesne]
-   o #582 - api naming inconsistence between
+   » #577 - Inconsistent naming of behaviour properties
+   » #580 - Fix call to cogl_enable() [Gwenole Beauchesne]
+   » #582 - api naming inconsistence between
             clutter_behaviour_path_append_knots and
             clutter_behaviour_bspline_append
-   o #584 - Typo on clutter_effect_rotate_x documentation page
-   o #592 - Fix build on trunk [Gwenole Beauchesne]
-   o #596 - ClutterTexture tileing logic is a little borked 
-   o #597 - ClutterGroups not pickable
-   o #600 - fix ClutterLabel layout computing when no box has been set
-   o #604 - Color param for Label constructor should be
+   » #584 - Typo on clutter_effect_rotate_x documentation page
+   » #592 - Fix build on trunk [Gwenole Beauchesne]
+   » #596 - ClutterTexture tileing logic is a little borked
+   » #597 - ClutterGroups not pickable
+   » #600 - fix ClutterLabel layout computing when no box has been set
+   » #604 - Color param for Label constructor should be
      const [Jonathon Jongsma]
-   o #606 - enable depth test in GL
-   o #608 - Control motion events frequency
-   o #614 - ClutterActor API inconsistencies
-   o #616 - ClutterTexture doesn't respect width set from clutterscript
-   o #617 - ClutterEffect Improvements
-   o #618 - ClutterScript name/id confusion
-   o #619 - clutter_behavior_rotate angle properties should accept
+   » #606 - enable depth test in GL
+   » #608 - Control motion events frequency
+   » #614 - ClutterActor API inconsistencies
+   » #616 - ClutterTexture doesn't respect width set from clutterscript
+   » #617 - ClutterEffect Improvements
+   » #618 - ClutterScript name/id confusion
+   » #619 - clutter_behavior_rotate angle properties should accept
      negative values
-   o #628 - clutter_actor_rotate_x() is a setter, not a modifier
-   o #629 - There is no clutter_actor_get_position()
-   o #634 - clutter_behaviour_path_new() documentation unclear
-   o #637 - add depth cueing support to the stage
-   o #645 - Fix crash in clutter_label_new_full() [Gwenole Beauchesne]
-   o #647 - Cannot hide the stage
-   o #648 - Hidden fullscreen stage doesn't come back as fullscreen
-   o #652 - reference needed on actor being source of last motion_event
-   o #661 - clutter_actor_set_width() documentation is vague
-   o #662 - clutter_actor_set_opacity() documentation doesn't describe values
-   o #665 - ClutterBehaviourEllipse tilts are broken
-   o #670 - Fix clutter_container_lower_child() [Gwenole Beauchesne]
-   o #673 - ClutterActor "captured-events" signal documentation wrong
-   o #674 - ClutterActor::get_depth() and set_depth() vfuncs not
+   » #628 - clutter_actor_rotate_x() is a setter, not a modifier
+   » #629 - There is no clutter_actor_get_position()
+   » #634 - clutter_behaviour_path_new() documentation unclear
+   » #637 - add depth cueing support to the stage
+   » #645 - Fix crash in clutter_label_new_full() [Gwenole Beauchesne]
+   » #647 - Cannot hide the stage
+   » #648 - Hidden fullscreen stage doesn't come back as fullscreen
+   » #652 - reference needed on actor being source of last motion_event
+   » #661 - clutter_actor_set_width() documentation is vague
+   » #662 - clutter_actor_set_opacity() documentation doesn't describe values
+   » #665 - ClutterBehaviourEllipse tilts are broken
+   » #670 - Fix clutter_container_lower_child() [Gwenole Beauchesne]
+   » #673 - ClutterActor "captured-events" signal documentation wrong
+   » #674 - ClutterActor::get_depth() and set_depth() vfuncs not
      used [Murray Cumming]
-   o #675 - update subregions of cluttertextures
-   o #678 - ClutterLabel size allocation still bogus
+   » #675 - update subregions of cluttertextures
+   » #678 - ClutterLabel size allocation still bogus
 
 Clutter 0.4.0 (07/08/2007)
 ========================
 
- * List of changes between 0.3.1 and 0.4.0
+ • List of changes between 0.3.1 and 0.4.0
 
-   o Many documentation additions and improvements.
+   » Many documentation additions and improvements.
 
-   o Display DPI now honours on backends its can be queried.
+   » Display DPI now honours on backends its can be queried.
 
-   o Various big endian related fixes.
+   » Various big endian related fixes.
 
-   o ClutterBehaviourEllipse and ClutterBehaviourRotate API and
+   » ClutterBehaviourEllipse and ClutterBehaviourRotate API and
    internals improvements.
 
-   o Add basic tslib support to eglnative backend (for touchscreen events)
+   » Add basic tslib support to eglnative backend (for touchscreen events)
 
-   o clutter_stage_get_actor_at_pos should now work on 16bpp displays.
+   » clutter_stage_get_actor_at_pos should now work on 16bpp displays.
 
-   o New ClutterEffect rotation calls.
+   » New ClutterEffect rotation calls.
 
-   o Allowing user resizing of the stage now optional.
+   » Allowing user resizing of the stage now optional.
     (implemented by glx backend only currently)
 
-   o ClutterEntry UTF8 fixes and improved automatic initial sizing.
+   » ClutterEntry UTF8 fixes and improved automatic initial sizing.
 
-   o Make ClutterActor GInitiallyUnowned.
+   » Make ClutterActor GInitiallyUnowned.
 
-   o New ClutterBox API: each box has now a colour and a margin (distance
+   » New ClutterBox API: each box has now a colour and a margin (distance
      between the inner-border and the children); plus, each packed child
      has a padding. Margins and paddings are expressed in ClutterUnits,
      to ease the transition to the device independent units. You can use
      clutter_box_set_default_padding() if you want the same padding for
      each child.
 
- * List of bug fixed
-   o #390 - clutter_stage_get_actor_at_pos broken on 16bpp displays.
-   o #398 - inconsistent type for return value of clutter_event_get_state
-   o #403 - Critical error when removing texture actor
-   o #404 - Solaris build error with OpenGL, missing
+ • List of bug fixed
+   » #390 - clutter_stage_get_actor_at_pos broken on 16bpp displays.
+   » #398 - inconsistent type for return value of clutter_event_get_state
+   » #403 - Critical error when removing texture actor
+   » #404 - Solaris build error with OpenGL, missing
             GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB and GL_TEXTURE_RECTANGLE_ARB
-   o #409 - depth mismatch between visual (32) and window (24)
-   o #407 - metadata-available signal #ifdef'ed out
-   o #413 - Clutter compile error with Sun Studio C compiler
-   o #426 - typo in sdl_backend
-   o #414 - ClutterEntry invisible if size not set
-   o #434 - clutter_color_from_pixel incorrectly interprets alpha value
-   o #435 - clutter_color_subtract does the opposite of its documentation
-   o #436 - clutter-behaviour-depth always perform "from deep to shallow"
+   » #409 - depth mismatch between visual (32) and window (24)
+   » #407 - metadata-available signal #ifdef'ed out
+   » #413 - Clutter compile error with Sun Studio C compiler
+   » #426 - typo in sdl_backend
+   » #414 - ClutterEntry invisible if size not set
+   » #434 - clutter_color_from_pixel incorrectly interprets alpha value
+   » #435 - clutter_color_subtract does the opposite of its documentation
+   » #436 - clutter-behaviour-depth always perform "from deep to shallow"
 
 Clutter 0.3.1 (06/07/2007)
 ========================
 
- * List of changes between 0.3 and 0.3.1
-   o EGL. There are now 2 experimental EGL backends;
+ • List of changes between 0.3 and 0.3.1
+   » EGL. There are now 2 experimental EGL backends;
      - 'eglx', the former EGL on X11 implementation (now renamed)
      - 'eglnative', a new EGL 'native' backend which supporting non
        X11 EGL implementations (i.e framebuffer).
 
-   o ClutterGroup now returns correct size when a child is removed.
+   » ClutterGroup now returns correct size when a child is removed.
 
-   o Missing redhand.png added to distro tarball (fixing tests that require
+   » Missing redhand.png added to distro tarball (fixing tests that require
      it)
 
-   o Fix picking in ClutterBox
+   » Fix picking in ClutterBox
 
-   o Rectangle border creation fixed.
+   » Rectangle border creation fixed.
 
-   o Fix overflow in Exponential Alpha funcs.
+   » Fix overflow in Exponential Alpha funcs.
 
-   o Many API documentation fixes and improvements.
+   » Many API documentation fixes and improvements.
 
-   o ClutterEffect cleanups.
+   » ClutterEffect cleanups.
 
-   o ClutterEntry cleanups.
+   » ClutterEntry cleanups.
 
-   o Check for versioned XFixes library (GLX backend).
+   » Check for versioned XFixes library (GLX backend).
 
-   o More X error traps in GLX backend.
+   » More X error traps in GLX backend.
 
 Clutter 0.3 (29/06/2007)
 ========================
 
- * List of changes between 0.2.3 and 0.3
-   o Clutter now supports both switchable windowing system and GL backends.
+ • List of changes between 0.2.3 and 0.3
+   » Clutter now supports both switchable windowing system and GL backends.
      Window systems supported include GLX, EGL and SDL.
 
      GL support includes OpenGL 1.2+ and OpenGL ES 1.1. This is
@@ -1643,10 +1643,10 @@ Clutter 0.3 (29/06/2007)
 
      dgles: http://developer.hybrid.fi/dgles/index.html
 
-   o New ClutterEffect class provides a simplified (and thus less flexible)
+   » New ClutterEffect class provides a simplified (and thus less flexible)
      API wrapping around behaviours, alphas and timelines.
-   o New Behaviours - bspline, ellipsis, rotation.
-   o New built in Alpha functions;
+   » New Behaviours - bspline, ellipsis, rotation.
+   » New built in Alpha functions;
       CLUTTER_ALPHA_SINE_INC
       CLUTTER_ALPHA_SINE_DEC
       CLUTTER_ALPHA_SINE_HALF
@@ -1655,110 +1655,110 @@ Clutter 0.3 (29/06/2007)
       CLUTTER_ALPHA_SMOOTHSTEP_DEC
       CLUTTER_ALPHA_EXP_INC
       CLUTTER_ALPHA_EXP_DEC
-   o New Actors and interfaces
+   » New Actors and interfaces
      + ClutterLayout, for writing extended layout support in actors
      + ClutterContainer, for generic container actors
      + ClutterBox, ClutterVBox and ClutterHBox layout actors.
      + ClutterEntry, text entry actor
-   o ClutterTexture now handles BGRA, YUV and premultiplied alpha data.
-   o All internal math now fixed point based.
-   o Clutter now has it own internal event queue.
-   o ClutterStage new features;
+   » ClutterTexture now handles BGRA, YUV and premultiplied alpha data.
+   » All internal math now fixed point based.
+   » Clutter now has it own internal event queue.
+   » ClutterStage new features;
      + Title property for naming in window decorations.
      + Perspective setting - The stages perspective can now be modified.
-   o New Clutter_actor *project API calls allow for querying of tranformed
+   » New Clutter_actor •project API calls allow for querying of tranformed
      actor vertices and points.
-   o New Clutter Feature checks.
-   o Initial ClutterUnit implementation for device independant positioning.
- * List of Bugs fixed
-   o Various issues with very poor performance and Intel drivers.
-   o #138 Fix typo in x rotation transform.
+   » New Clutter Feature checks.
+   » Initial ClutterUnit implementation for device independant positioning.
+ • List of Bugs fixed
+   » Various issues with very poor performance and Intel drivers.
+   » #138 Fix typo in x rotation transform.
 
 Clutter 0.2.3 (2007-04-11)
 ==========================
 
- * List of changed between 0.2.2 and 0.2.3
-   o Fixes to tile based textures and again clutter_texture_get_pixbuf(). [Matthew]
-   o Implement Gravity for ClutterScaleBehaviour. [Matthew, Rob]
+ • List of changed between 0.2.2 and 0.2.3
+   » Fixes to tile based textures and again clutter_texture_get_pixbuf(). [Matthew]
+   » Implement Gravity for ClutterScaleBehaviour. [Matthew, Rob]
 
 Clutter 0.2.2 (2007-03-22)
 ==========================
 
- * List of changed between 0.2.1 and 0.2.2
-   o Addition of basic XEMBED support for clutter stage. [Matthew]
-   o Fixes to clutter_texture_get_pixbuf(). [Matthew]
-   o Export clutter_group_remove_all and add associated fixes. [Matthew]
+ • List of changed between 0.2.1 and 0.2.2
+   » Addition of basic XEMBED support for clutter stage. [Matthew]
+   » Fixes to clutter_texture_get_pixbuf(). [Matthew]
+   » Export clutter_group_remove_all and add associated fixes. [Matthew]
 
 Clutter 0.2.1 (2007-02-07)
 ==========================
 
- * List of changed between 0.2.0 and 0.2.1
-   o Add even faster double to integer (and back) conversion
+ • List of changed between 0.2.0 and 0.2.1
+   » Add even faster double to integer (and back) conversion
      functions. [Tomas]
-   o Fix some errors in the fixed point sine waveform
+   » Fix some errors in the fixed point sine waveform
      function. [Tomas]
-   o Use fixed point math in the Pango renderer. [Tomas]
-   o Improve the GL version check. [Matthew]
-   o Add a square waveform function. [Emmanuele]
- * List of bugs fixed
-   o #215 - macro CLUTTER_MARK() not disabled for non-debug builds
+   » Use fixed point math in the Pango renderer. [Tomas]
+   » Improve the GL version check. [Matthew]
+   » Add a square waveform function. [Emmanuele]
+ • List of bugs fixed
+   » #215 - macro CLUTTER_MARK() not disabled for non-debug builds
 
 Clutter 0.2 (18-01-2007)
 ========================
 
- * List of changes between 0.2 and 0.1
-   o Bindings, GStreamer and GTK+ dependencies moved out of tree:
+ • List of changes between 0.2 and 0.1
+   » Bindings, GStreamer and GTK+ dependencies moved out of tree:
      now Clutter strictly depends on Xlibs, OpenGL and GdkPixbuf only.
-   o Actors now have an initial floating reference; this means you
+   » Actors now have an initial floating reference; this means you
      don't have to explicitely unref them: every memory an actor
      allocates will be freed when the group containing the actor will
      be destroyed.
-   o Add basic run-time detection of GL features.
+   » Add basic run-time detection of GL features.
      + Use GL_TEXTURE_RECTANGLE_ARB if available.
      + Attempt to set up sync to vblank (set CLUTTER_VBLANK=none to disable)
-   o Add API for behaviours. A ClutterBehaviour is an object which
+   » Add API for behaviours. A ClutterBehaviour is an object which
      drives a set of actors using one or more properties depending
      on the value of an "alpha" function.
      + Provide simple behaviours: ClutterBehaviourOpacity,
        ClutterBehaviourPath and ClutterBehaviourScale.
      + Provide simple alpha functions for ramps and sine waveforms.
-   o Add fixed point API for embedded platforms with no FPU.
-   o Add support for command line switches to Clutter, like debug
+   » Add fixed point API for embedded platforms with no FPU.
+   » Add support for command line switches to Clutter, like debug
      flags and abort on warnings; also allow application to hook up
      into the initialisation sequence to add their own command line
      switches.
-   o Add Pango GL renderer for Clutter, and use it to render text
+   » Add Pango GL renderer for Clutter, and use it to render text
      inside the ClutterLabel actor; this decrease texture memory
      usage.
-   o Redo Clutter Label widget, using the new Pango renderer.
-   o Clutter Textures do not store local pixbuf copy (of texture).
-   o Redo group and actor scale/sizing API and functionality.
-   o Add memory management API for ClutterColor, and string parsing.
- * List of bug fixed
-   o #199 - Little group handling fix?
-   o #198 - Detect NPOT support on more systems
-   o #197 - Tiled textures are broken
-   o #196 - Rebuild the examples when the library changes
-   o #156 - clutter_actor_set_position not using the absolute size
-   o #155 - Don't test for XInitThreads [Bastien Nocera]
-   o #154 - Key presses not working in super-oh example [Bastien Nocera]
-   o #152 - Misc fixes [Bastien Nocera]
-   o #143 - Faulty ref-counting in clutter_group_remove [Frederic Riss]
-   o #141 - Copy-pasto in clutter_media_set_volume [Frederic Riss]
-   o #101 - No package 'x11' found -- wrong configure [Tomasz Torcz]
-   o  #98 - Enabling trails in super-oh crashes
+   » Redo Clutter Label widget, using the new Pango renderer.
+   » Clutter Textures do not store local pixbuf copy (of texture).
+   » Redo group and actor scale/sizing API and functionality.
+   » Add memory management API for ClutterColor, and string parsing.
+ • List of bug fixed
+   » #199 - Little group handling fix?
+   » #198 - Detect NPOT support on more systems
+   » #197 - Tiled textures are broken
+   » #196 - Rebuild the examples when the library changes
+   » #156 - clutter_actor_set_position not using the absolute size
+   » #155 - Don't test for XInitThreads [Bastien Nocera]
+   » #154 - Key presses not working in super-oh example [Bastien Nocera]
+   » #152 - Misc fixes [Bastien Nocera]
+   » #143 - Faulty ref-counting in clutter_group_remove [Frederic Riss]
+   » #141 - Copy-pasto in clutter_media_set_volume [Frederic Riss]
+   » #101 - No package 'x11' found -- wrong configure [Tomasz Torcz]
+   »  #98 - Enabling trails in super-oh crashes
 
 Clutter 0.1 (22/06/2006)
 ========================
 
- * First 'official' release, expect bugs aplenty.
- * Contains:
-   o Hopefully enough functionality to build things.
-   o Basic gstreamer 0.10 video playback support.
-   o Fairly stable API, though in no way totally stable.
+ • First 'official' release, expect bugs aplenty.
+ • Contains:
+   » Hopefully enough functionality to build things.
+   » Basic gstreamer 0.10 video playback support.
+   » Fairly stable API, though in no way totally stable.
      Expect CHANGES in future versions.
-   o Some simple examples ( also see OPT ).
-   o An experimental GTK-Clutter widget.
-   o Fairly complete Python bindings.
-   o Non complete but hopefully useful API documentation.
- * If you want to help out see the TODO file.
+   » Some simple examples ( also see OPT ).
+   » An experimental GTK-Clutter widget.
+   » Fairly complete Python bindings.
+   » Non complete but hopefully useful API documentation.
+ • If you want to help out see the TODO file.
