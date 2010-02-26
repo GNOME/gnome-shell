@@ -295,9 +295,9 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
       g_object_weak_unref (G_OBJECT (device->cursor_actor),
                            cursor_weak_unref,
                            device);
-
-      device->cursor_actor = NULL;
     }
+
+  device->cursor_actor = NULL;
 }
 
 /*
@@ -367,6 +367,14 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
       cev.crossing.y = device->current_y;
       cev.crossing.device = device;
 
+      CLUTTER_NOTE (EVENT, "Device '%s' entering '%s' at %d, %d",
+                    device->device_name,
+                    clutter_actor_get_name (actor) != NULL
+                      ? clutter_actor_get_name (actor)
+                      : G_OBJECT_TYPE_NAME (actor),
+                    device->current_x,
+                    device->current_y);
+
       /* if there is an actor overlapping the Stage boundary and we
        * don't do this check then we'll emit an ENTER event only on
        * the actor instead of emitting it on the Stage *and* the
@@ -376,6 +384,8 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
         {
           cev.crossing.source = CLUTTER_ACTOR (device->stage);
           cev.crossing.related = NULL;
+
+          CLUTTER_NOTE (EVENT, "Adding Crossing[Enter] event for Stage");
 
           _clutter_process_event (&cev);
 
