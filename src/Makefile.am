@@ -8,7 +8,7 @@ noinst_PROGRAMS =
 
 .AUTOPARALLEL:
 
-bin_SCRIPTS = gnome-shell
+bin_SCRIPTS = gnome-shell gnome-shell-clock-preferences
 
 gnome-shell: gnome-shell.in
 	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
@@ -23,6 +23,13 @@ gnome-shell: gnome-shell.in
 	    $< > $@ && chmod a+x $@
 CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
+
+gnome-shell-clock-preferences: gnome-shell-clock-preferences.in
+	$(AM_V_GEN) sed -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
+	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|" \
+	    $< > $@ && chmod a+x $@
+CLEANFILES += gnome-shell-clock-preferences
+EXTRA_DIST += gnome-shell-clock-preferences.in
 
 include Makefile-gdmuser.am
 include Makefile-st.am

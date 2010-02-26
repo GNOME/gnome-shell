@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ -f "$0.in" ]
+then
+  scriptDir="`dirname $0`"
+  uiDir="$scriptDir/../data"
+  jsDir="$scriptDir/../js"
+else
+  uiDir="@pkgdatadir@"
+  jsDir="@pkgdatadir@/js"
+fi
+
+progName="`basename $0`"
+uiFile="$uiDir/clock-preferences.ui"
+export GJS_PATH="$jsDir"
+
+@GJS_CONSOLE@ -c "const ClockPreferences = imports.prefs.clockPreferences;
+ClockPreferences.main({ progName: '$progName', uiFile: '$uiFile' });"

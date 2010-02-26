@@ -1,16 +1,18 @@
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop
+desktop_DATA = gnome-shell.desktop gnome-shell-clock-preferences.desktop
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
-gnome-shell.desktop.in: gnome-shell.desktop.in.in
+%.desktop.in:%.desktop.in.in
 	$(AM_V_GEN) sed -e "s|@bindir[@]|$(bindir)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    $< > $@ || rm $@
 
 # Placeholder until we add intltool
-gnome-shell.desktop: gnome-shell.desktop.in
+%.desktop:%.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
+
+pkgdata_DATA = clock-preferences.ui
 
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
@@ -50,11 +52,13 @@ schema_DATA = gnome-shell.schemas
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
-EXTRA_DIST =					\
-	gnome-shell.desktop.in.in		\
+EXTRA_DIST =						\
+	gnome-shell.desktop.in.in			\
+	gnome-shell-clock-preferences.desktop.in.in	\
 	$(schema_DATA)
 
-CLEANFILES =					\
-	gnome-shell.desktop.in			\
+CLEANFILES =						\
+	gnome-shell.desktop.in				\
+	gnome-shell-clock-preferences.desktop.in	\
 	$(desktop_DATA)
 

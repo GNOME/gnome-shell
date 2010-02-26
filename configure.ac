@@ -96,8 +96,10 @@ AC_SUBST(MUTTER_PLUGIN_DIR)
 
 GJS_JS_DIR=`$PKG_CONFIG --variable=jsdir gjs-1.0`
 GJS_JS_NATIVE_DIR=`$PKG_CONFIG --variable=jsnativedir gjs-1.0`
+GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
 AC_SUBST(GJS_JS_DIR)
 AC_SUBST(GJS_JS_NATIVE_DIR)
+AC_SUBST(GJS_CONSOLE)
 
 AC_CHECK_FUNCS(fdwalk)
 AC_CHECK_HEADERS([sys/resource.h])
@@ -151,6 +153,7 @@ AC_CONFIG_FILES([
   js/Makefile
   js/misc/Makefile
   js/ui/Makefile
+  js/prefs/Makefile
   src/Makefile
   tests/Makefile
   po/Makefile.in

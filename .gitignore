@@ -18,6 +18,8 @@ config
 configure
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
+data/gnome-shell-clock-preferences.desktop
+data/gnome-shell-clock-preferences.desktop.in
 intltool-extract.in
 intltool-merge.in
 intltool-update.in
@@ -38,6 +40,7 @@ src/Makefile
 src/Makefile.in
 src/gnomeshell-taskpanel
 src/gnome-shell
+src/gnome-shell-clock-preferences
 src/test-recorder
 src/test-recorder.ogg
 src/test-theme
