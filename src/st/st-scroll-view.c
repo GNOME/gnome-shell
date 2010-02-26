@@ -215,32 +215,27 @@ st_scroll_view_dispose (GObject *object)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (object)->priv;
 
-  priv->child = NULL;
-
   if (priv->vscroll)
-    {
-      clutter_actor_destroy (priv->vscroll);
-      priv->vscroll = NULL;
-    }
+    clutter_actor_destroy (priv->vscroll);
 
   if (priv->hscroll)
+    clutter_actor_destroy (priv->hscroll);
+
+  /* since it's impossible to get a handle to these actors, we can
+   * just directly unparent them and not go through destroy/remove */
+  if (priv->top_shadow)
     {
-      clutter_actor_destroy (priv->hscroll);
-      priv->hscroll = NULL;
+      clutter_actor_unparent (priv->top_shadow);
+      priv->top_shadow = NULL;
+    }
+
+  if (priv->bottom_shadow)
+    {
+      clutter_actor_unparent (priv->bottom_shadow);
+      priv->bottom_shadow = NULL;
     }
 
   G_OBJECT_CLASS (st_scroll_view_parent_class)->dispose (object);
-}
-
-static void
-st_scroll_view_finalize (GObject *object)
-{
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (object)->priv;
-
-  g_object_unref (priv->top_shadow);
-  g_object_unref (priv->bottom_shadow);
-
-  G_OBJECT_CLASS (st_scroll_view_parent_class)->finalize (object);
 }
 
 static void
@@ -573,8 +568,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 
   object_class->get_property = st_scroll_view_get_property;
   object_class->set_property = st_scroll_view_set_property;
-  object_class->dispose= st_scroll_view_dispose;
-  object_class->finalize = st_scroll_view_finalize;
+  object_class->dispose = st_scroll_view_dispose;
 
   actor_class->paint = st_scroll_view_paint;
   actor_class->pick = st_scroll_view_pick;
@@ -832,6 +826,17 @@ st_scroll_view_remove (ClutterContainer *container,
 
       g_object_unref (priv->child);
       priv->child = NULL;
+    }
+  else
+    {
+      if (actor == priv->vscroll)
+        priv->vscroll = NULL;
+      else if (actor == priv->hscroll)
+        priv->hscroll = NULL;
+      else
+        g_assert ("Unknown child removed from StScrollView");
+
+      clutter_actor_unparent (actor);
     }
 }
 

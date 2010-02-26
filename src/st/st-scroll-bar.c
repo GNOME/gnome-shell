@@ -188,14 +188,23 @@ st_scroll_bar_dispose (GObject *gobject)
       priv->handle = NULL;
     }
 
-  clutter_actor_unparent (priv->bw_stepper);
-  priv->bw_stepper = NULL;
+  if (priv->bw_stepper)
+    {
+      clutter_actor_unparent (priv->bw_stepper);
+      priv->bw_stepper = NULL;
+    }
 
-  clutter_actor_unparent (priv->fw_stepper);
-  priv->fw_stepper = NULL;
+  if (priv->fw_stepper)
+    {
+      clutter_actor_unparent (priv->fw_stepper);
+      priv->fw_stepper = NULL;
+    }
 
-  clutter_actor_unparent (priv->trough);
-  priv->trough = NULL;
+  if (priv->trough)
+    {
+      clutter_actor_unparent (priv->trough);
+      priv->trough = NULL;
+    }
 
   G_OBJECT_CLASS (st_scroll_bar_parent_class)->dispose (gobject);
 }
