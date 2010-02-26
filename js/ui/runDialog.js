@@ -13,6 +13,7 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
@@ -203,12 +204,13 @@ RunDialog.prototype = {
                                           x: 0, y: 0 });
         global.stage.add_actor(this._group);
 
-        this._box = new St.Bin({ style_class: 'run-dialog-box',
-                                 x_align: St.Align.MIDDLE,
-                                 y_align: St.Align.MIDDLE,
-                                 reactive: true });
+        let lightbox = new Lightbox.Lightbox(this._group, true);
+
+        this._box = new St.Bin({ x_align: St.Align.MIDDLE,
+                                 y_align: St.Align.MIDDLE });
 
         this._group.add_actor(this._box);
+        lightbox.highlight(this._box);
 
         let dialogBox = new St.BoxLayout({ style_class: 'run-dialog', vertical: true });
 

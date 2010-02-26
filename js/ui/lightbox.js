@@ -2,12 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
-
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-
-const SHADE_COLOR = new Clutter.Color();
-SHADE_COLOR.from_pixel(0x00000044);
+const St = imports.gi.St;
 
 /**
  * Lightbox:
@@ -38,11 +33,10 @@ Lightbox.prototype = {
     _init : function(container, inhibitEvents, width, height) {
         this._container = container;
         this._children = container.get_children();
-        this.actor = new Clutter.Rectangle({ color: SHADE_COLOR,
-                                             x: 0,
-                                             y: 0,
-                                             border_width: 0,
-                                             reactive: inhibitEvents });
+        this.actor = new St.Bin({ x: 0,
+                                  y: 0,
+                                  style_class: 'lightbox',
+                                  reactive: inhibitEvents });
 
         container.add_actor(this.actor);
         this.actor.raise_top();
