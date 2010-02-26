@@ -26,6 +26,7 @@ CommandCompleter.prototype = {
     _init : function() {
         this._changedCount = 0;
         this._paths = GLib.getenv('PATH').split(':');
+        this._paths.push(GLib.get_home_dir());
         this._valid = false;
         this._updateInProgress = false;
         this._childs = new Array(this._paths.length);
@@ -300,37 +301,51 @@ RunDialog.prototype = {
         }
     },
 
-    _run : function(command, inTerminal) {
+    _run : function(input, inTerminal) {
+        let command = input;
         this._commandError = false;
         let f;
         if (this._enableInternalCommands)
-            f = this._internalCommands[command];
+            f = this._internalCommands[input];
         else
             f = null;
         if (f) {
             f();
-        } else if (command) {
+        } else if (input) {
             try {
                 if (inTerminal)
-                    command = 'gnome-terminal -x ' + command;
+                    command = 'gnome-terminal -x ' + input;
                 let [ok, len, args] = GLib.shell_parse_argv(command);
                 let p = new Shell.Process({ 'args' : args });
                 p.run();
             } catch (e) {
-                this._commandError = true;
-                /*
-                 * The exception contains an error string like:
-                 * Error invoking Shell.run: Failed to execute child process "foo"
-                 * (No such file or directory)
-                 * We are only interested in the actual error, so parse that out.
-                 */
-                let m = /.+\((.+)\)/.exec(e);
-                let errorStr = _("Execution of '%s' failed:").format(command) + "\n" + m[1];
-                this._errorMessage.set_text(errorStr);
+                // Mmmh, that failed - see if @input matches an existing file
+                let path = null;
+                if (input.charAt(0) == '/') {
+                    path = input;
+                } else {
+                    if (input.charAt(0) == '~')
+                        input = input.slice(1);
+                    path = GLib.get_home_dir() + '/' + input;
+                }
 
-                this._errorBox.show();
-                // preferred_size change. Without this, message will show with delay
-                this._errorBox.get_parent().queue_relayout();
+                if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                    let file = Gio.file_new_for_path(path);
+                    Gio.app_info_launch_default_for_uri(file.get_uri(),
+                                                        global.create_app_launch_context());
+                } else {
+                    this._commandError = true;
+                    // The exception contains an error string like:
+                    // Error invoking Shell.run: Failed to execute child
+                    // process "foo" (No such file or directory)
+                    // We are only interested in the actual error, so parse
+                    //that out.
+                    let m = /.+\((.+)\)/.exec(e);
+                    let errorStr = _("Execution of '%s' failed:").format(command) + "\n" + m[1];
+                    this._errorMessage.set_text(errorStr);
+
+                    this._errorBox.show();
+                }
             }
         }
     },
