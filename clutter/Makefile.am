@@ -43,8 +43,9 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl/pango		\
 	-I$(top_srcdir)/clutter				\
 	$(clutter_json_include)				\
-	-I$(top_builddir)/clutter/cogl			\
+	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
+	-I$(top_builddir)/clutter/cogl			\
 	$(NULL)
 
 AM_CPPFLAGS = \
