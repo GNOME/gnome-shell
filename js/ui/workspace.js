@@ -855,7 +855,7 @@ Workspace.prototype = {
 
     /**
      * _computeWindowMotion:
-     * @metaWindow: A #MetaWindow
+     * @actor: A #WindowClone's #ClutterActor
      * @slot: An element of #POSITIONS
      * @slotGeometry: Layout of @slot
      *
@@ -864,15 +864,15 @@ Workspace.prototype = {
      * Currently this is the square of the distance between the
      * centers.
      */
-    _computeWindowMotion: function (metaWindow, slot) {
-        let rect = new Meta.Rectangle();
-        metaWindow.get_outer_rect(rect);
-
+    _computeWindowMotion: function (actor, slot) {
         let [xCenter, yCenter, fraction] = slot;
         let xDelta, yDelta, distanceSquared;
+        let actorWidth, actorHeight;
 
-        xDelta = rect.x + rect.width / 2.0 - xCenter * global.screen_width;
-        yDelta = rect.y + rect.height / 2.0 - yCenter * global.screen_height;
+        actorWidth = actor.width * actor.scale_x;
+        actorHeight = actor.height * actor.scale_y;
+        xDelta = actor.x + actorWidth / 2.0 - xCenter * global.screen_width;
+        yDelta = actor.y + actorHeight / 2.0 - yCenter * global.screen_height;
         distanceSquared = xDelta * xDelta + yDelta * yDelta;
 
         return distanceSquared;
@@ -891,10 +891,10 @@ Workspace.prototype = {
         this._forEachPermutations(clones, Lang.bind(this, function (permutation) {
             let motion = 0;
             for (let i = 0; i < permutation.length; i++) {
-                let metaWindow = permutation[i].metaWindow;
+                let cloneActor = permutation[i].actor;
                 let slot = slots[i];
 
-                let delta = this._computeWindowMotion(metaWindow, slot);
+                let delta = this._computeWindowMotion(cloneActor, slot);
 
                 motion += delta;
             }
@@ -924,8 +924,8 @@ Workspace.prototype = {
             let minimumMotionIndex = -1;
             let minimumMotion = -1;
             for (let j = 0; j < clonesCopy.length; j++) {
-                let metaWindow = clonesCopy[j].metaWindow;
-                let delta = this._computeWindowMotion(metaWindow, slot);
+                let cloneActor = clonesCopy[j].actor;
+                let delta = this._computeWindowMotion(cloneActor, slot);
                 if (minimumMotionIndex == -1 || delta < minimumMotion) {
                     minimumMotionIndex = j;
                     minimumMotion = delta;
