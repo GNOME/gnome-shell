@@ -57,8 +57,6 @@ print_report (UProfReport *report, UProfContext *context)
   float fps;
   ClutterUProfReportState state;
 
-  g_print ("\n");
-
   /* FIXME: We need to fix the way Clutter initializes the uprof library
    * (we don't currently call uprof_init()) and add a mechanism to know
    * if uprof_init hasn't been called so we can simply bail out of report
@@ -66,23 +64,25 @@ print_report (UProfReport *report, UProfContext *context)
    * Probably we can just have uprof_report_print bail out if uprof wasn't
    * initialized, so we don't have to care here.
    */
-
+  mainloop_timer = uprof_context_get_timer_result (context, "Mainloop");
+  if (!mainloop_timer)
+    return;
   stage_paint_timer = uprof_context_get_timer_result (context, "Redrawing");
-#if 0
   if (!stage_paint_timer)
-    g_critical ("Failed to find \"Redrawing\" timer "
-                "(you need to update print_report code if you rename it)\n");
-#endif
+    return;
+  do_pick_timer = uprof_context_get_timer_result (context, "Do pick");
+  if (!do_pick_timer)
+    return;
+
+  g_print ("\n");
 
   state.n_frames = uprof_timer_result_get_start_count (stage_paint_timer);
   g_print ("Frame count = %lu\n", state.n_frames);
 
-  mainloop_timer = uprof_context_get_timer_result (context, "Mainloop");
   fps = (float)state.n_frames / (uprof_timer_result_get_total_msecs (mainloop_timer)
                                  / 1000.0);
   g_print ("Average fps = %5.2f\n", fps);
 
-  do_pick_timer = uprof_context_get_timer_result (context, "Do pick");
   if (do_pick_timer)
     {
       int n_picks = uprof_timer_result_get_start_count (do_pick_timer);
