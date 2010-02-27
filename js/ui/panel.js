@@ -616,15 +616,22 @@ Panel.prototype = {
             displayDate.setMinutes(displayDate.getMinutes() + 1);
             msecRemaining += 60000;
         }
-	/* If there is no am or pm, time format is 24h */
-	let isTime24h = displayDate.toLocaleFormat("x%p") == "x";
-	if (isTime24h) {
-	  /* Translators: This is the time format used in 24-hour mode. */
-	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %R")));
-	} else {
-	  /* Translators: This is a time format used for AM/PM. */
-	  this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
-	}
+
+        // if the locale representations of 05:00 and 17:00 do not
+        // start with the same 2 digits, it must be a 24h clock
+        let fiveAm = new Date();
+        fiveAm.setHours(5);
+        let fivePm = new Date();
+        fivePm.setHours(17);
+        let isTime24h = fiveAm.toLocaleFormat("%X").substr(0,2) !=
+                        fivePm.toLocaleFormat("%X").substr(0,2);
+        if (isTime24h) {
+            /* Translators: This is the time format used in 24-hour mode. */
+            this._clock.set_text(displayDate.toLocaleFormat(_("%a %R")));
+        } else {
+            /* Translators: This is a time format used for AM/PM. */
+            this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
+        }
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
     },
