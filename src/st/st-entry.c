@@ -184,11 +184,15 @@ st_entry_style_changed (StWidget *self)
   ClutterColor color;
   const PangoFontDescription *font;
   gchar *font_string;
+  gdouble size;
 
   theme_node = st_widget_get_theme_node (self);
  
   st_theme_node_get_foreground_color (theme_node, &color);
   clutter_text_set_color (CLUTTER_TEXT (priv->entry), &color);
+
+  if (st_theme_node_get_length (theme_node, "caret-size", FALSE, &size))
+    clutter_text_set_cursor_size (CLUTTER_TEXT (priv->entry), (int)(.5 + size));
 
   if (st_theme_node_get_color (theme_node, "caret-color", FALSE, &color))
     clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), &color);
