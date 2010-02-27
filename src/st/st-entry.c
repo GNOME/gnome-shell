@@ -707,7 +707,7 @@ st_entry_get_text (StEntry *entry)
 /**
  * st_entry_set_text:
  * @entry: a #StEntry
- * @text: text to set the entry to
+ * @text: (allow-none): text to set the entry to
  *
  * Sets the text displayed on the entry
  */
@@ -762,7 +762,7 @@ st_entry_get_clutter_text (StEntry *entry)
 /**
  * st_entry_set_hint_text:
  * @entry: a #StEntry
- * @text: text to set as the entry hint
+ * @text: (allow-none): text to set as the entry hint
  *
  * Sets the text to display when the entry is empty and unfocused. When the
  * entry is displaying the hint, it has a pseudo class of "indeterminate".
@@ -858,7 +858,7 @@ _st_entry_set_icon_from_file (StEntry       *entry,
 /**
  * st_entry_set_primary_icon_from_file:
  * @entry: a #StEntry
- * @filename: filename of an icon
+ * @filename: (allow-none): filename of an icon
  *
  * Set the primary icon of the entry to the given filename
  */
@@ -879,7 +879,7 @@ st_entry_set_primary_icon_from_file (StEntry     *entry,
 /**
  * st_entry_set_secondary_icon_from_file:
  * @entry: a #StEntry
- * @filename: filename of an icon
+ * @filename: (allow-none): filename of an icon
  *
  * Set the primary icon of the entry to the given filename
  */
