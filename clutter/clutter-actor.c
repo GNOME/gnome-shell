@@ -5477,14 +5477,21 @@ clutter_actor_set_width_internal (ClutterActor *self,
 {
   if (width >= 0)
     {
-      if (!CLUTTER_IS_STAGE (self))
+      /* the Stage will use the :min-width to control the minimum
+       * width to be resized to, so we should not be setting it
+       * along with the :natural-width
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
         clutter_actor_set_min_width (self, width);
+
       clutter_actor_set_natural_width (self, width);
     }
   else
     {
-      if (!CLUTTER_IS_STAGE (self))
+      /* we only unset the :natural-width for the Stage */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
         clutter_actor_set_min_width_set (self, FALSE);
+
       clutter_actor_set_natural_width_set (self, FALSE);
     }
 }
@@ -5498,14 +5505,18 @@ clutter_actor_set_height_internal (ClutterActor *self,
 {
   if (height >= 0)
     {
-      if (!CLUTTER_IS_STAGE (self))
+      /* see the comment above in set_width_internal() */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
         clutter_actor_set_min_height (self, height);
+
       clutter_actor_set_natural_height (self, height);
     }
   else
     {
-      if (!CLUTTER_IS_STAGE (self))
+      /* see the comment above in set_width_internal() */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
         clutter_actor_set_min_height_set (self, FALSE);
+
       clutter_actor_set_natural_height_set (self, FALSE);
     }
 }
