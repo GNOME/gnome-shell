@@ -38,6 +38,10 @@
  *  <listitem>
  *   <para>indeterminate: the widget is showing the hint text</para>
  *  </listitem>
+ *  <listitem>
+ *   <para>hover: the widget is showing the hint text and is underneath the
+ *                pointer</para>
+ *  </listitem>
  * </itemizedlist>
  */
 
@@ -570,6 +574,38 @@ st_entry_key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->entry);
 }
 
+static gboolean
+st_entry_enter_event (ClutterActor         *actor,
+                      ClutterCrossingEvent *event)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+
+  if (priv->hint && priv->hint_visible)
+    {
+      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "hover");
+    }
+
+  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
+}
+
+static gboolean
+st_entry_leave_event (ClutterActor         *actor,
+                      ClutterCrossingEvent *event)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+
+  if (priv->hint && priv->hint_visible)
+    {
+      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
+    }
+  else
+    {
+      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "focus");
+    }
+
+  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
+}
+
 static void
 st_entry_class_init (StEntryClass *klass)
 {
@@ -595,6 +631,8 @@ st_entry_class_init (StEntryClass *klass)
 
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
+  actor_class->enter_event = st_entry_enter_event;
+  actor_class->leave_event = st_entry_leave_event;
 
   widget_class->style_changed = st_entry_style_changed;
 
