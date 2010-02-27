@@ -2375,8 +2375,16 @@ clutter_stage_get_use_alpha (ClutterStage *stage)
  * @width: width, in pixels
  * @height: height, in pixels
  *
- * Sets the minimum size for a stage window. This has no effect if the stage
- * is fullscreen.
+ * Sets the minimum size for a stage window, if the default backend
+ * uses #ClutterStage inside a window
+ *
+ * This is a convenience function, and it is equivalent to setting the
+ * #ClutterActor:min-width and #ClutterActor:min-height on @stage
+ *
+ * If the current size of @stage is smaller than the minimum size, the
+ * @stage will be resized to the new @width and @height
+ *
+ * This function has no effect if @stage is fullscreen
  *
  * Since: 1.2
  */
@@ -2389,20 +2397,25 @@ clutter_stage_set_minimum_size (ClutterStage *stage,
   g_return_if_fail ((width > 0) && (height > 0));
 
   g_object_set (G_OBJECT (stage),
-                "min-width", (gfloat)width,
-                "min-height", (gfloat)height,
+                "min-width", (gfloat) width,
+                "min-height", (gfloat )height,
                 NULL);
 }
 
 /**
  * clutter_stage_get_minimum_size:
  * @stage: a #ClutterStage
- * @width: width, in pixels
- * @height: height, in pixels
+ * @width: (out): return location for the minimum width, in pixels,
+ *   or %NULL
+ * @height: (out): return location for the minimum height, in pixels,
+ *   or %NULL
  *
- * Gets the set minimum size for a stage window. This may not correspond
- * to the actual minimum size and is specific to the back-end
- * implementation.
+ * Retrieves the minimum size for a stage window as set using
+ * clutter_stage_set_minimum_size().
+ *
+ * The returned size may not correspond to the actual minimum size and
+ * it is specific to the #ClutterStage implementation inside the
+ * Clutter backend
  *
  * Since: 1.2
  */
@@ -2423,15 +2436,20 @@ clutter_stage_get_minimum_size (ClutterStage *stage,
                 "min-height-set", &height_set,
                 NULL);
 
+  /* if not width or height have been set, then the Stage
+   * minimum size is defined to be 1x1
+   */
   if (!width_set)
     width = 1;
+
   if (!height_set)
     height = 1;
 
   if (width_p)
-    *width_p = (guint)width;
+    *width_p = (guint) width;
+
   if (height_p)
-    *height_p = (guint)height;
+    *height_p = (guint) height;
 }
 
 /* Returns the number of swap buffers pending completion for the stage */
@@ -2449,4 +2467,3 @@ _clutter_stage_get_pending_swaps (ClutterStage *stage)
 
   return _clutter_stage_window_get_pending_swaps (stage_window);
 }
-
