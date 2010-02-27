@@ -24,31 +24,6 @@ const Search = imports.ui.search;
 const MAX_RENDERED_SEARCH_RESULTS = 25;
 
 const DEFAULT_PADDING = 4;
-const DEFAULT_SPACING = 4;
-
-const BACKGROUND_COLOR = new Clutter.Color();
-BACKGROUND_COLOR.from_pixel(0x000000c0);
-
-const PRELIGHT_COLOR = new Clutter.Color();
-PRELIGHT_COLOR.from_pixel(0x4f6fadaa);
-
-const TEXT_COLOR = new Clutter.Color();
-TEXT_COLOR.from_pixel(0x5f5f5fff);
-const BRIGHTER_TEXT_COLOR = new Clutter.Color();
-BRIGHTER_TEXT_COLOR.from_pixel(0xbbbbbbff);
-const BRIGHT_TEXT_COLOR = new Clutter.Color();
-BRIGHT_TEXT_COLOR.from_pixel(0xffffffff);
-const SEARCH_TEXT_COLOR = new Clutter.Color();
-SEARCH_TEXT_COLOR.from_pixel(0x333333ff);
-
-const SEARCH_CURSOR_COLOR = BRIGHT_TEXT_COLOR;
-const HIGHLIGHTED_SEARCH_CURSOR_COLOR = SEARCH_TEXT_COLOR;
-
-const SEARCH_BORDER_BOTTOM_COLOR = new Clutter.Color();
-SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
-
-const BROWSE_ACTIVATED_BG = new Clutter.Color();
-BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
 
 const DOCS = "docs";
 const PLACES = "places";
@@ -220,76 +195,44 @@ function SearchEntry() {
 
 SearchEntry.prototype = {
     _init : function() {
-        this.actor = new St.BoxLayout({ name: "searchEntry",
-                                        reactive: true });
-        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                y_align: Big.BoxAlignment.CENTER });
-        this.actor.add(box, { expand: true });
-        this.actor.connect('button-press-event', Lang.bind(this, function () {
-            this._resetTextState(true);
-            return false;
-        }));
+        this.actor = new St.Entry({ name: "searchEntry",
+                                    hint_text: _("Find") });
+        this.entry = this.actor.clutter_text;
+
+        this.actor.clutter_text.connect('text-changed', Lang.bind(this,
+            function() {
+                if (this.isActive())
+                    this.actor.set_secondary_icon_from_file(global.imagedir +
+                                                            "close-black.svg");
+                else
+                    this.actor.set_secondary_icon_from_file(null);
+            }));
+        this.actor.connect('secondary-icon-clicked', Lang.bind(this,
+            function() {
+                this.reset();
+            }));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this.pane = null;
 
-        this._defaultText = _("Find...");
+        this._capturedEventId = 0;
+    },
 
-        let textProperties = { font_name: "Sans 16px" };
-        let entryProperties = { editable: true,
-                                activatable: true,
-                                single_line_mode: true,
-                                color: SEARCH_TEXT_COLOR,
-                                cursor_color: SEARCH_CURSOR_COLOR };
-        Lang.copyProperties(textProperties, entryProperties);
-        this.entry = new Clutter.Text(entryProperties);
+    show: function() {
+        if (this._capturedEventId == 0)
+            this._capturedEventId = global.stage.connect('captured-event',
+                                 Lang.bind(this, this._onCapturedEvent));
+        this.entry.set_cursor_visible(true);
+        this.entry.set_selection(0, 0);
+    },
 
-        this.entry.connect('notify::text', Lang.bind(this, function () {
-            this._resetTextState(false);
-        }));
-        box.append(this.entry, Big.BoxPackFlags.EXPAND);
-
-        // Mark as editable just to get a cursor
-        let defaultTextProperties = { ellipsize: Pango.EllipsizeMode.END,
-                                      text: this._defaultText,
-                                      editable: true,
-                                      color: TEXT_COLOR,
-                                      cursor_visible: false,
-                                      single_line_mode: true };
-        Lang.copyProperties(textProperties, defaultTextProperties);
-        this._defaultText = new Clutter.Text(defaultTextProperties);
-        box.add_actor(this._defaultText);
-        this.entry.connect('notify::allocation', Lang.bind(this, function () {
-            this._repositionDefaultText();
-        }));
-
-        this._iconBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER,
-                                      y_align: Big.BoxAlignment.CENTER,
-                                      padding_right: 4 });
-        box.append(this._iconBox, Big.BoxPackFlags.END);
-
-        let magnifierUri = "file://" + global.imagedir + "magnifier.svg";
-        this._magnifierIcon = St.TextureCache.get_default().load_uri_sync(St.TextureCachePolicy.FOREVER,
-                                                                          magnifierUri, 18, 18);
-        let closeUri = "file://" + global.imagedir + "close-black.svg";
-        this._closeIcon = St.TextureCache.get_default().load_uri_sync(St.TextureCachePolicy.FOREVER,
-                                                                      closeUri, 18, 18);
-        this._closeIcon.reactive = true;
-        this._closeIcon.connect('button-press-event', Lang.bind(this, function () {
-            // Resetting this.entry.text will trigger notify::text signal which will
-            // result in this._resetTextState() being called, but we should not rely
-            // on that not short-circuiting if the text was already empty, so we call
-            // this._resetTextState() explicitly in that case.
-            if (this.entry.text == '')
-                this._resetTextState(false);
-            else
-                this.entry.text = '';
-
-            // Return true to stop the signal emission, so that this.actor doesn't get
-            // the button-press-event and re-highlight itself.
-            return true;
-        }));
-        this._repositionDefaultText();
-        this._resetTextState();
+    hide: function() {
+        if (this.isActive())
+            this.reset();
+        if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
     },
 
     setPane: function (pane) {
@@ -298,35 +241,93 @@ SearchEntry.prototype = {
 
     reset: function () {
         this.entry.text = '';
+        global.stage.set_key_focus(null);
+        this.entry.set_cursor_visible(true);
+        this.entry.set_selection(0, 0);
     },
 
     getText: function () {
-        return this.entry.text;
+        return this.entry.get_text().replace(/^\s+/g, '').replace(/\s+$/g, '');
     },
 
-    _resetTextState: function (searchEntryClicked) {
-        let text = this.getText();
-        this._iconBox.remove_all();
-        // We highlight the search box if the user starts typing in it
-        // or just clicks in it to indicate that the search is active.
-        if (text != '' || searchEntryClicked) {
-            if (!searchEntryClicked)
-                this._defaultText.hide();
-            this._iconBox.append(this._closeIcon, Big.BoxPackFlags.NONE);
-            this.actor.set_style_pseudo_class('active');
-            this.entry.cursor_color = HIGHLIGHTED_SEARCH_CURSOR_COLOR;
-        } else {
-            this._defaultText.show();
-            this._iconBox.append(this._magnifierIcon, Big.BoxPackFlags.NONE);
-            this.actor.set_style_pseudo_class(null);
-            this.entry.cursor_color = SEARCH_CURSOR_COLOR;
+    // some search term has been entered
+    isActive: function() {
+        return this.actor.get_text() != '';
+    },
+
+    // the entry does not show the hint
+    _isActivated: function() {
+        return this.entry.text == this.actor.get_text();
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        let source = event.get_source();
+        let panelEvent = false;
+
+        if (source) {
+            let parent = source;
+            do {
+                if (parent == Main.panel.actor)
+                    break;
+            } while ((parent = parent.get_parent()) != null);
+            panelEvent = (parent != null);
+        }
+
+        switch (event.type()) {
+            case Clutter.EventType.BUTTON_PRESS:
+                // the user clicked outside after activating the entry, but
+                // with no search term entered - cancel the search
+                if (source != this.entry && this.entry.text == '') {
+                    this.reset();
+                    // allow only panel events to continue
+                    return !panelEvent;
+                }
+                return false;
+            case Clutter.EventType.KEY_PRESS:
+                // If neither the stage nor our entry have key focus, some
+                // "special" actor grabbed the focus (run dialog, looking
+                // glass); we don't want to interfere with that
+                let focus = global.stage.get_key_focus();
+                if (focus != global.stage && focus != this.entry)
+                    return false;
+
+                let sym = event.get_key_symbol();
+
+                // If we have an active search, Escape cancels it - if we
+                // haven't, the key is ignored
+                if (sym == Clutter.Escape)
+                    if (this._isActivated()) {
+                        this.reset();
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                 // Ignore non-printable keys
+                 if (!Clutter.keysym_to_unicode(sym))
+                     return false;
+
+                // Search started - move the key focus to the entry and
+                // "repeat" the event
+                if (!this._isActivated()) {
+                    global.stage.set_key_focus(this.entry);
+                    this.entry.event(event, false);
+                }
+
+                return false;
+            default:
+                // Suppress all other events outside the panel while the entry
+                // is activated and no search has been entered - any click
+                // outside the entry will cancel the search
+                return (this.entry.text == '' && !panelEvent);
         }
     },
 
-    _repositionDefaultText: function () {
-        // Offset a little to show the cursor
-        this._defaultText.set_position(this.entry.x + 4, this.entry.y);
-        this._defaultText.set_size(this.entry.width, this.entry.height);
+    _onDestroy: function() {
+        if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
     }
 };
 Signals.addSignalMethods(SearchEntry.prototype);
@@ -815,12 +816,11 @@ Dash.prototype = {
         this.actor.add(this.searchResults.actor);
         this.searchResults.actor.hide();
 
+        this._keyPressId = 0;
         this._searchTimeoutId = 0;
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
-            let text = this._searchEntry.getText();
-            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
             let searchPreviouslyActive = this._searchActive;
-            this._searchActive = text != '';
+            this._searchActive = this._searchEntry.isActive();
             this._searchPending = this._searchActive && !searchPreviouslyActive;
             if (this._searchPending) {
                 this.searchResults.startingSearch();
@@ -850,35 +850,6 @@ Dash.prototype = {
             }
             this.searchResults.activateSelected();
             return true;
-        }));
-        this._searchEntry.entry.connect('key-press-event', Lang.bind(this, function (se, e) {
-            let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Escape) {
-                // Escape will keep clearing things back to the desktop.
-                // If we have an active search, we remove it.
-                if (this._searchActive)
-                    this._searchEntry.reset();
-                // Next, if we're in one of the "more" modes or showing the details pane, close them
-                else if (this._activePane != null)
-                    this._activePane.close();
-                // Finally, just close the Overview entirely
-                else
-                    Main.overview.hide();
-                return true;
-            } else if (symbol == Clutter.Up) {
-                if (!this._searchActive)
-                    return true;
-                this.searchResults.selectUp(false);
-
-                return true;
-            } else if (symbol == Clutter.Down) {
-                if (!this._searchActive)
-                    return true;
-
-                this.searchResults.selectDown(false);
-                return true;
-            }
-            return false;
         }));
 
         /***** Applications *****/
@@ -933,6 +904,40 @@ Dash.prototype = {
         this.sectionArea.add(this._docsSection.actor, { expand: true });
     },
 
+    _onKeyPress: function(stage, event) {
+        // If neither the stage nor the search entry have key focus, some
+        // "special" actor grabbed the focus (run dialog, looking glass);
+        // we don't want to interfere with that
+        let focus = stage.get_key_focus();
+        if (focus != stage && focus != this._searchEntry.entry)
+            return false;
+
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.Escape) {
+            // If we're in one of the "more" modes or showing the
+            // details pane, close them
+            if (this._activePane != null)
+                this._activePane.close();
+            // Otherwise, just close the Overview entirely
+            else
+                Main.overview.hide();
+            return true;
+        } else if (symbol == Clutter.Up) {
+            if (!this._searchActive)
+                return true;
+            this.searchResults.selectUp(false);
+
+            return true;
+        } else if (symbol == Clutter.Down) {
+            if (!this._searchActive)
+                return true;
+
+            this.searchResults.selectDown(false);
+            return true;
+        }
+        return false;
+    },
+
     _doSearch: function () {
         this._searchTimeoutId = 0;
         let text = this._searchEntry.getText();
@@ -942,14 +947,21 @@ Dash.prototype = {
     },
 
     show: function() {
-        global.stage.set_key_focus(this._searchEntry.entry);
+        this._searchEntry.show();
+        if (this._keyPressId == 0)
+            this._keyPressId = global.stage.connect('key-press-event',
+                                                    Lang.bind(this, this._onKeyPress));
     },
 
     hide: function() {
         this._firstSelectAfterOverlayShow = true;
-        this._searchEntry.reset();
+        this._searchEntry.hide();
         if (this._activePane != null)
             this._activePane.close();
+        if (this._keyPressId > 0) {
+            global.stage.disconnect(this._keyPressId);
+            this._keyPressId = 0;
+        }
     },
 
     closePanes: function () {

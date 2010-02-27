@@ -271,11 +271,24 @@ StTooltip {
 
 #searchEntry {
     padding: 4px;
-    border-bottom: 1px solid #262626;
+    border-radius: 4px;
+    color: #a8a8a8;
+    border: 1px solid #565656;
+    background-color: #404040;
+    caret-color: #fff;
+    caret-size: 1px;
+    height: 16px;
 }
 
-#searchEntry:active {
-    background-color: #c4c4c4;
+#searchEntry:focus {
+    color: #545454;
+    border: 1px solid #3a3a3a;
+    background-color: #e8e8e8;
+    caret-color: #545454;
+}
+
+#searchEntry:hover {
+    border: 1px solid #767676;
 }
 
 .dash-section {
