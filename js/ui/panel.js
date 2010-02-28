@@ -152,12 +152,13 @@ AppPanelMenu.prototype = {
         this._activeSequence = null;
         this._startupSequences = {};
 
-        this.actor = new St.Bin({ name: 'appMenu', });
+        this.actor = new St.Bin({ name: 'appMenu' });
         this._container = new Shell.GenericContainer();
         this.actor.set_child(this._container);
         this._container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._container.connect('allocate', Lang.bind(this, this._allocate));
+        this._sourceIcon = null;
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
@@ -263,9 +264,21 @@ AppPanelMenu.prototype = {
         } else {
             icon = null;
         }
-        
+
         if (icon != null) {
-            let faded = Shell.fade_app_icon(icon); /* TODO consider caching */
+            if (this._sourceIcon != null)
+                this._sourceIcon.destroy();
+            this._sourceIcon = icon;
+            let faded = Shell.fade_app_icon(icon);
+            // Because loading the texture is async, we may not have it yet.
+            // If we don't, just create an empty one for now.
+            if (faded == null)
+                faded = new Clutter.Texture({ width: AppDisplay.APPICON_SIZE,
+                                              height: AppDisplay.APPICON_SIZE });
+            this._sourceIcon.connect('notify::cogl-texture', Lang.bind(this, function () {
+                faded = Shell.fade_app_icon(icon);
+                this._iconBox.set_child(faded);
+            }));
             this._iconBox.set_child(faded);
             this._iconBox.show();
         }
