@@ -662,6 +662,7 @@ Workspace.prototype = {
                                                           Lang.bind(this, this._windowAdded));
         this._windowRemovedId = this._metaWorkspace.connect('window-removed',
                                                             Lang.bind(this, this._windowRemoved));
+        this._repositionWindowsId = 0;
 
         this._visible = false;
 
@@ -1017,6 +1018,11 @@ Workspace.prototype = {
      *  ANIMATE - Indicates that we need animate changing position.
      */
     positionWindows : function(flags) {
+        if (this._repositionWindowsId > 0) {
+            Mainloop.source_remove(this._repositionWindowsId);
+            this._repositionWindowsId = 0;
+        }
+
         let totalVisible = 0;
 
         let visibleClones = this._getVisibleClones();
@@ -1132,6 +1138,27 @@ Workspace.prototype = {
         }
     },
 
+    _delayedWindowRepositioning: function() {
+        let [child, x, y, mask] =
+            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let wsWidth = this.actor.width * this.scale;
+        let wsHeight = this.actor.height * this.scale;
+
+        let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
+        let inWorkspace = (this.gridX < x && x < this.gridX + wsWidth &&
+                           this.gridY < y && y < this.gridY + wsHeight);
+
+        if (pointerHasMoved && inWorkspace) {
+            // store current cursor position
+            this._cursorX = x;
+            this._cursorY = y;
+            return true;
+        }
+
+        this.positionWindows(WindowPositionFlags.ANIMATE);
+        return false;
+    },
+
     _windowRemoved : function(metaWorkspace, metaWin) {
         let win = metaWin.get_compositor_private();
 
@@ -1163,7 +1190,26 @@ Workspace.prototype = {
         }
         clone.destroy();
 
-        this.positionWindows(WindowPositionFlags.ANIMATE);
+
+        // We need to reposition the windows; to avoid shuffling windows
+        // around while the user is interacting with the workspace, we delay
+        // the positioning until the pointer remains still for at least 750 ms
+        // or is moved outside the workspace
+
+        // remove old handler
+        if (this._repositionWindowsId > 0) {
+            Mainloop.source_remove(this._repositionWindowsId);
+            this._repositionWindowsId = 0;
+        }
+
+        // setup new handler
+        let [child, x, y, mask] =
+            Gdk.Screen.get_default().get_root_window().get_pointer();
+        this._cursorX = x;
+        this._cursorY = y;
+
+        this._repositionWindowsId = Mainloop.timeout_add(750,
+            Lang.bind(this, this._delayedWindowRepositioning));
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -1353,6 +1399,9 @@ Workspace.prototype = {
 
         this._metaWorkspace.disconnect(this._windowAddedId);
         this._metaWorkspace.disconnect(this._windowRemovedId);
+
+        if (this._repositionWindowsId > 0)
+            Mainloop.source_remove(this._repositionWindowsId);
 
         // Usually, the windows will be destroyed automatically with
         // their parent (this.actor), but we might have a zoomed window
