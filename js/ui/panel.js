@@ -152,15 +152,16 @@ AppPanelMenu.prototype = {
         this._activeSequence = null;
         this._startupSequences = {};
 
-        this.actor = new St.BoxLayout({ name: 'appMenu' });
+        this.actor = new St.Bin({ name: 'appMenu', });
+        this._container = new Shell.GenericContainer();
+        this.actor.set_child(this._container);
+        this._container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this._container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this._container.connect('allocate', Lang.bind(this, this._allocate));
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
-        this.actor.add(this._iconBox);
+        this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
-        this.actor.add(this._label.actor, { expand: true, y_fill: true });
-        this.actor.connect('notify::allocation', Lang.bind(this, this._repositionLabel));
-
-        this._startupBox = new St.BoxLayout();
-        this.actor.add(this._startupBox);
+        this._container.add_actor(this._label.actor);
 
         Main.overview.connect('hiding', Lang.bind(this, function () {
             this.actor.opacity = 255;
@@ -181,14 +182,48 @@ AppPanelMenu.prototype = {
         this._sync();
     },
 
-    _repositionLabel: function() {
-        this._label.actor.x = Math.floor(AppDisplay.APPICON_SIZE / 2);
-        let actorAlloc = this.actor.allocation;
-        let actorHeight = actorAlloc.y2 - actorAlloc.y1;
-        let labelAlloc = this._label.actor.allocation;
-        let labelHeight = labelAlloc.y2 - labelAlloc.y1;
-        this._label.actor.y = Math.floor((actorHeight - labelHeight) / 2);
-        this._label.actor.fixed_position_set = true;
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [minSize, naturalSize] = this._iconBox.get_preferred_width(forHeight);
+        alloc.min_size = Math.floor(minSize / 2);
+        alloc.natural_size = Math.floor(naturalSize / 2);
+        [minSize, naturalSize] = this._label.actor.get_preferred_width(forHeight);
+        alloc.min_size += minSize;
+        alloc.natural_size += naturalSize;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [minSize, naturalSize] = this._iconBox.get_preferred_height(forWidth);
+        alloc.min_size = minSize;
+        alloc.natural_size = naturalSize;
+        [minSize, naturalSize] = this._label.actor.get_preferred_height(forWidth);
+        if (minSize > alloc.min_size)
+            alloc.min_size = minSize;
+        if (naturalSize > alloc.natural_size)
+            alloc.natural_size = naturalSize;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let allocWidth = box.x2 - box.x1;
+        let allocHeight = box.y2 - box.y1;
+        let childBox = new Clutter.ActorBox();
+
+        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._iconBox.get_preferred_size();
+
+        let yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
+        childBox.x1 = 0;
+        childBox.y1 = yPadding;
+        childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
+        childBox.y2 = childBox.y1 + Math.min(allocHeight, naturalHeight);
+        this._iconBox.allocate(childBox, flags);
+
+        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._label.actor.get_preferred_size();
+
+        yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
+        childBox.x1 = Math.floor(childBox.x2 / 2);  // Pull in width of iconBox
+        childBox.y1 = yPadding;
+        childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
+        childBox.y2 = childBox.y1 + Math.min(allocHeight, naturalHeight);
+        this._label.actor.allocate(childBox, flags);
     },
 
     _sync: function() {
@@ -234,7 +269,6 @@ AppPanelMenu.prototype = {
             this._iconBox.set_child(faded);
             this._iconBox.show();
         }
-        this._repositionLabel();
 
         this.emit('changed');
     }
