@@ -3067,7 +3067,7 @@ clutter_actor_dispose (GObject *object)
           clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
         }
       else
-        priv->parent_actor = NULL;
+        clutter_actor_unparent (self);
     }
 
   /* parent should be gone */
@@ -7010,7 +7010,7 @@ clutter_actor_reparent (ClutterActor *self,
       else
         clutter_actor_unparent (self);
 
-          /* Note, will call parent() */
+      /* Note, will call parent() */
       if (CLUTTER_IS_CONTAINER (new_parent))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
