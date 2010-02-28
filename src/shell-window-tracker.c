@@ -345,6 +345,19 @@ get_app_for_window (ShellWindowTracker    *monitor,
   MetaGroup *group;
   GSList *iter;
 
+  result = NULL;
+  if (meta_window_get_window_type (window) == META_WINDOW_NORMAL)
+    {
+      result = g_hash_table_lookup (monitor->window_to_app, window);
+      if (result != NULL)
+        {
+          g_object_ref (result);
+          return result;
+        }
+      else
+        return get_app_for_window_direct (window);
+    }
+
   group = meta_window_get_group (window);
   if (group == NULL)
     group_windows = g_slist_prepend (NULL, window);
