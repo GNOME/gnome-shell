@@ -66,6 +66,9 @@ struct _ClutterBackendEGL
   /* event timer */
   GTimer *event_timer;
 
+  /* FB device */
+  gint fb_device_id;
+
   /*< private >*/
 };
 

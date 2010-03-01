@@ -2,13 +2,20 @@
 #include "config.h"
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "clutter-backend-egl.h"
 #include "clutter-stage-egl.h"
+
 #include "../clutter-private.h"
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
 
 static ClutterBackendEGL *backend_singleton = NULL;
+
+static const gchar *clutter_fb_device = NULL;
 
 G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
 
@@ -23,6 +30,12 @@ static gboolean
 clutter_backend_egl_pre_parse (ClutterBackend  *backend,
                                GError         **error)
 {
+  const gchar *env_string;
+
+  env_string = g_getenv ("CLUTTER_FB_DEVICE");
+  if (env_string != NULL && env_string[0] != '\0')
+    clutter_fb_device = g_strdup (env_string);
+
   return TRUE;
 }
 
@@ -130,11 +143,39 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
        backend_egl->egl_context = NULL;
      }
 
-  backend_egl->egl_surface =
-    eglCreateWindowSurface (backend_egl->edpy,
-                            configs[0],
-                            NULL,
-                            NULL);
+  if (clutter_fb_device != NULL)
+    {
+      int fd = open (clutter_fb_device, O_RDWR);
+
+      if (fd < 0)
+        {
+          int errno_save = errno;
+
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Unable to open the framebuffer device '%s': %s",
+                       clutter_fb_device,
+                       g_strerror (errno_save));
+
+          return FALSE;
+        }
+      else
+        backend_egl->fb_device_id = fd;
+
+      backend_egl->egl_surface =
+        eglCreateWindowSurface (backend_egl->edpy,
+                                configs[0],
+                                (NativeWindowType) backend_egl->fb_device_id,
+                                NULL);
+    }
+  else
+    {
+      backend_egl->egl_surface =
+        eglCreateWindowSurface (backend_egl->edpy,
+                                configs[0],
+                                NULL,
+                                NULL);
+    }
 
   if (backend_egl->egl_surface == EGL_NO_SURFACE)
     {
@@ -295,6 +336,12 @@ clutter_backend_egl_dispose (GObject *gobject)
       backend_egl->egl_surface = EGL_NO_SURFACE;
     }
 
+  if (backend_egl->fb_device_id != -1)
+    {
+      close (backend_egl->fb_device_id);
+      backend_egl->fb_device_id = -1;
+    }
+
   if (backend_egl->egl_context != NULL)
     {
       eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
@@ -394,6 +441,8 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
   clutter_backend_set_double_click_distance (backend, 5);
 
   backend_egl->event_timer = g_timer_new ();
+
+  backend_egl->fb_device_id = -1;
 }
 
 GType
