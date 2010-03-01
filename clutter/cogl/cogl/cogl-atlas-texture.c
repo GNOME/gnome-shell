@@ -308,7 +308,7 @@ _cogl_atlas_texture_transform_coords_to_gl (CoglTexture *tex,
   _cogl_texture_transform_coords_to_gl (atlas_tex->sub_texture, s, t);
 }
 
-static gboolean
+static CoglTransformResult
 _cogl_atlas_texture_transform_quad_coords_to_gl (CoglTexture *tex,
                                                  float *coords)
 {

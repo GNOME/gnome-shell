@@ -347,13 +347,22 @@ _cogl_texture_2d_transform_coords_to_gl (CoglTexture *tex,
      anything */
 }
 
-static gboolean
+static CoglTransformResult
 _cogl_texture_2d_transform_quad_coords_to_gl (CoglTexture *tex,
                                               float *coords)
 {
   /* The texture coordinates map directly so we don't need to do
-     anything */
-  return TRUE;
+     anything other than check for repeats */
+
+  gboolean need_repeat = FALSE;
+  int i;
+
+  for (i = 0; i < 4; i++)
+    if (coords[i] < 0.0f || coords[i] > 1.0f)
+      need_repeat = TRUE;
+
+  return (need_repeat ? COGL_TRANSFORM_HARDWARE_REPEAT
+          : COGL_TRANSFORM_NO_REPEAT);
 }
 
 static gboolean

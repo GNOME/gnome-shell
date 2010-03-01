@@ -43,6 +43,18 @@ typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
 typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
                                                   void *user_data);
 
+/* Encodes three possibiloities result of transforming a quad */
+typedef enum {
+  /* quad doesn't cross the boundaries of a texture */
+  COGL_TRANSFORM_NO_REPEAT,
+  /* quad crosses boundaries, hardware wrap mode can handle */
+  COGL_TRANSFORM_HARDWARE_REPEAT,
+  /* quad crosses boundaries, needs software fallback;
+   * for a sliced texture, this might not actually involve
+   * repeating, just a quad crossing multiple slices */
+  COGL_TRANSFORM_SOFTWARE_REPEAT,
+} CoglTransformResult;
+
 struct _CoglTextureVtable
 {
   /* Virtual functions that must be implemented for a texture
@@ -83,8 +95,8 @@ struct _CoglTextureVtable
   void (* transform_coords_to_gl) (CoglTexture *tex,
                                    float *s,
                                    float *t);
-  gboolean (* transform_quad_coords_to_gl) (CoglTexture *tex,
-                                            float *coords);
+  CoglTransformResult (* transform_quad_coords_to_gl) (CoglTexture *tex,
+						       float *coords);
 
   gboolean (* get_gl_texture) (CoglTexture *tex,
                                GLuint *out_gl_handle,
@@ -128,7 +140,7 @@ void
 _cogl_texture_transform_coords_to_gl (CoglHandle handle,
                                       float *s,
                                       float *t);
-gboolean
+CoglTransformResult
 _cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
                                            float *coords);
 

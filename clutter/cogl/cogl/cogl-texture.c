@@ -664,7 +664,7 @@ _cogl_texture_transform_coords_to_gl (CoglHandle handle,
   tex->vtable->transform_coords_to_gl (tex, s, t);
 }
 
-gboolean
+CoglTransformResult
 _cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
                                            float *coords)
 {

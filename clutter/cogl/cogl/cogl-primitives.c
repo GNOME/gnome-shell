@@ -245,14 +245,13 @@ _cogl_multitexture_quad_single_primitive (const float *position,
   layers = cogl_material_get_layers (material);
   for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
-      CoglHandle         layer = (CoglHandle)tmp->data;
-      CoglHandle         tex_handle;
-      const float       *in_tex_coords;
-      float             *out_tex_coords;
-      float              default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
-      gboolean           need_repeat = FALSE;
-      int               coord_num;
-      GLenum             wrap_mode;
+      CoglHandle          layer = (CoglHandle)tmp->data;
+      CoglHandle          tex_handle;
+      const float        *in_tex_coords;
+      float              *out_tex_coords;
+      float               default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
+      CoglTransformResult transform_result;
+      GLenum              wrap_mode;
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -272,22 +271,11 @@ _cogl_multitexture_quad_single_primitive (const float *position,
 
       memcpy (out_tex_coords, in_tex_coords, sizeof (GLfloat) * 4);
 
-      /* Convert the texture coordinates to GL. We also work out
-         whether any of the texture coordinates are outside the range
-         [0.0,1.0]. We need to do this after calling
-         transform_coords_to_gl in case the texture backend is munging
-         the coordinates (such as in the sub texture backend). This
-         should be safe to call because we know that the texture only
-         has one slice. */
-      if (!_cogl_texture_transform_quad_coords_to_gl (tex_handle,
-                                                      out_tex_coords))
-        /* If the backend can't support these coordinates then bail out */
-        return FALSE;
-      for (coord_num = 0; coord_num < 4; coord_num++)
-        if (out_tex_coords[coord_num] < 0.0f ||
-            out_tex_coords[coord_num] > 1.0f)
-          need_repeat = TRUE;
-
+      /* Convert the texture coordinates to GL.
+       */
+      transform_result =
+        _cogl_texture_transform_quad_coords_to_gl (tex_handle,
+                                                   out_tex_coords);
       /* If the texture has waste or we are using GL_TEXTURE_RECT we
        * can't handle texture repeating so we can't use the layer if
        * repeating is required.
@@ -295,7 +283,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
        * NB: We already know that no texture matrix is being used if the
        * texture doesn't support hardware repeat.
        */
-      if (!_cogl_texture_can_hardware_repeat (tex_handle) && need_repeat)
+      if (transform_result == COGL_TRANSFORM_SOFTWARE_REPEAT)
         {
           if (i == 0)
             {
@@ -336,7 +324,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
       /* If we're not repeating then we want to clamp the coords
          to the edge otherwise it can pull in edge pixels from the
          wrong side when scaled */
-      if (need_repeat)
+      if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
         wrap_mode = GL_REPEAT;
       else
         wrap_mode = GL_CLAMP_TO_EDGE;
