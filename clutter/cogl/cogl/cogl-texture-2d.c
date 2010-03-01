@@ -286,6 +286,9 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
 
   g_return_val_if_fail (bmp_handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
 
+  if (!_cogl_texture_2d_can_create (bmp->width, bmp->height, internal_format))
+    return COGL_INVALID_HANDLE;
+
   if (!_cogl_texture_prepare_for_upload (bmp,
                                          internal_format,
                                          &internal_format,
