@@ -7,6 +7,7 @@ EXTRA_DIST =		\
 	.project	\
 	.settings	\
 	autogen.sh	\
+	THIS_DOES_NOT_EXIST \
 	tools/check-for-missing.py
 
 # These are files checked into Git that we don't want to distribute

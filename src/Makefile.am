@@ -53,7 +53,6 @@ CLEANFILES += $(SHELL_STAMP_FILES)
 libgnome_shell_la_SOURCES =			\
 	$(shell_built_sources)			\
 	gnome-shell-plugin.c			\
-	THIS_DOES_NOT_EXIST	\
 	shell-app.c         \
 	shell-app.h         \
 	shell-app-private.h \
