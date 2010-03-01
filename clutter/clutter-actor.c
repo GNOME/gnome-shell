@@ -204,6 +204,7 @@
 #include "clutter-debug.h"
 #include "clutter-units.h"
 #include "clutter-profile.h"
+#include "clutter-stage.h"
 #include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
@@ -5475,12 +5476,21 @@ clutter_actor_set_width_internal (ClutterActor *self,
 {
   if (width >= 0)
     {
-      clutter_actor_set_min_width (self, width);
+      /* the Stage will use the :min-width to control the minimum
+       * width to be resized to, so we should not be setting it
+       * along with the :natural-width
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        clutter_actor_set_min_width (self, width);
+
       clutter_actor_set_natural_width (self, width);
     }
   else
     {
-      clutter_actor_set_min_width_set (self, FALSE);
+      /* we only unset the :natural-width for the Stage */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        clutter_actor_set_min_width_set (self, FALSE);
+
       clutter_actor_set_natural_width_set (self, FALSE);
     }
 }
@@ -5494,12 +5504,18 @@ clutter_actor_set_height_internal (ClutterActor *self,
 {
   if (height >= 0)
     {
-      clutter_actor_set_min_height (self, height);
+      /* see the comment above in set_width_internal() */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        clutter_actor_set_min_height (self, height);
+
       clutter_actor_set_natural_height (self, height);
     }
   else
     {
-      clutter_actor_set_min_height_set (self, FALSE);
+      /* see the comment above in set_width_internal() */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        clutter_actor_set_min_height_set (self, FALSE);
+
       clutter_actor_set_natural_height_set (self, FALSE);
     }
 }
