@@ -23,6 +23,10 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include "clutter-backend-x11.h"
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"

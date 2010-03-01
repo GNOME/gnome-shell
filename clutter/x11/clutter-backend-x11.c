@@ -26,14 +26,15 @@
 #include <glib/gi18n-lib.h>
 
 #include <string.h>
-#include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
-#include <sys/stat.h>
+#include <unistd.h>
+
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include <fcntl.h>
+
 #include <errno.h>
 
 #include "clutter-backend-x11.h"

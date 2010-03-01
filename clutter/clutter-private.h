@@ -23,16 +23,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_PRIVATE_H
-#define _HAVE_CLUTTER_PRIVATE_H
+#ifndef __CLUTTER_PRIVATE_H__
+#define __CLUTTER_PRIVATE_H__
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include <math.h>
 
