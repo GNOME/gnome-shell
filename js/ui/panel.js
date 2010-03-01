@@ -185,11 +185,11 @@ AppPanelMenu.prototype = {
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
         let [minSize, naturalSize] = this._iconBox.get_preferred_width(forHeight);
-        alloc.min_size = Math.floor(minSize / 2);
-        alloc.natural_size = Math.floor(naturalSize / 2);
+        alloc.min_size = minSize;
+        alloc.natural_size = naturalSize;
         [minSize, naturalSize] = this._label.actor.get_preferred_width(forHeight);
-        alloc.min_size += minSize;
-        alloc.natural_size += naturalSize;
+        alloc.min_size = alloc.min_size + Math.max(0, minSize - Math.floor(alloc.min_size / 2));
+        alloc.natural_size = alloc.natural_size + Math.max(0, naturalSize - Math.floor(alloc.natural_size / 2));
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
@@ -210,20 +210,35 @@ AppPanelMenu.prototype = {
 
         let [minWidth, minHeight, naturalWidth, naturalHeight] = this._iconBox.get_preferred_size();
 
+        let direction = this.actor.get_direction();
+
         let yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
-        childBox.x1 = 0;
         childBox.y1 = yPadding;
-        childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
-        childBox.y2 = childBox.y1 + Math.min(allocHeight, naturalHeight);
+        childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
+        if (direction == St.TextDirection.LTR) {
+            childBox.x1 = 0;
+            childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
+        } else {
+            childBox.x1 = Math.max(0, allocWidth - naturalWidth);
+            childBox.x2 = allocWidth;
+        }
         this._iconBox.allocate(childBox, flags);
+
+        let iconWidth = childBox.x2 - childBox.x1;
 
         let [minWidth, minHeight, naturalWidth, naturalHeight] = this._label.actor.get_preferred_size();
 
         yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
-        childBox.x1 = Math.floor(childBox.x2 / 2);  // Pull in width of iconBox
         childBox.y1 = yPadding;
-        childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
-        childBox.y2 = childBox.y1 + Math.min(allocHeight, naturalHeight);
+        childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
+
+        if (direction == St.TextDirection.LTR) {
+            childBox.x1 = Math.floor(iconWidth / 2);
+            childBox.x2 = Math.min(childBox.x1 + naturalWidth, allocWidth);
+        } else {
+            childBox.x2 = allocWidth - Math.floor(iconWidth / 2);
+            childBox.x1 = Math.max(0, childBox.x2 - naturalWidth);
+        }
         this._label.actor.allocate(childBox, flags);
     },
 
@@ -273,9 +288,10 @@ AppPanelMenu.prototype = {
             // Because loading the texture is async, we may not have it yet.
             // If we don't, just create an empty one for now.
             if (faded == null)
-                faded = new Clutter.Texture({ width: AppDisplay.APPICON_SIZE,
-                                              height: AppDisplay.APPICON_SIZE });
+                faded = new Clutter.Texture({ width: this._sourceIcon.width,
+                                              height: this._sourceIcon.height });
             this._sourceIcon.connect('notify::cogl-texture', Lang.bind(this, function () {
+                // TODO should be caching this
                 faded = Shell.fade_app_icon(icon);
                 this._iconBox.set_child(faded);
             }));

@@ -117,12 +117,6 @@ StTooltip {
 }
 
 #appMenu {
-    spacing: 4px;
-}
-
-.app-menu-icon {
-    width: 24px;
-    height: 24px;
 }
 
 .panel-button {
