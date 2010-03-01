@@ -5,7 +5,8 @@
  *
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *
- * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2006, 2007, 2008 OpenedHand Ltd
+ * Copyright (C) 2009, 2010 Intel Corp
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
