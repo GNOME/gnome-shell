@@ -136,11 +136,6 @@ gboolean             clutter_animator_compute_value              (ClutterAnimato
                                                                   gdouble               progress,
                                                                   GValue               *value);
 
-void                 clutter_animator_property_set_interpolation (ClutterAnimator      *animator,
-                                                                  GObject              *object,
-                                                                  const gchar          *property_name,
-                                                                  ClutterInterpolation  interpolation);
-
 ClutterTimeline *    clutter_animator_get_timeline               (ClutterAnimator      *animator);
 void                 clutter_animator_set_timeline               (ClutterAnimator      *animator,
                                                                   ClutterTimeline      *timeline);
