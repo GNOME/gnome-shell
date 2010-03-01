@@ -564,15 +564,6 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
               if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
                 clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
             }
-          else /* no relevant interval */
-            {
-              ClutterAnimatorKey *current_key = key_animator->current->data;
-              clutter_interval_set_initial_value (key_animator->interval,
-                                                  &current_key->value);
-              clutter_interval_set_final_value (key_animator->interval,
-                                                &current_key->value);
-              break;
-            }
         }
     }
 }
