@@ -1290,17 +1290,33 @@ _cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture *tex,
 #endif
 }
 
-static gboolean
+static CoglTransformResult
 _cogl_texture_2d_sliced_transform_quad_coords_to_gl (CoglTexture *tex,
                                                      float *coords)
 {
+  gboolean need_repeat = FALSE;
+  int i;
+
+  /* This is a bit lazy - in the case where the quad lies entirely
+   * within a single slice we could avoid the fallback. But that
+   * could likely lead to visual inconsistency if the fallback involves
+   * dropping layers, so this might be the right thing to do anyways.
+   */
   if (_cogl_texture_2d_sliced_is_sliced (tex))
-    return FALSE;
+    return COGL_TRANSFORM_SOFTWARE_REPEAT;
+
+  for (i = 0; i < 4; i++)
+    if (coords[i] < 0.0f || coords[i] > 1.0f)
+      need_repeat = TRUE;
+
+  if (need_repeat && !_cogl_texture_2d_sliced_can_hardware_repeat (tex))
+    return COGL_TRANSFORM_SOFTWARE_REPEAT;
 
   _cogl_texture_2d_sliced_transform_coords_to_gl (tex, coords + 0, coords + 1);
   _cogl_texture_2d_sliced_transform_coords_to_gl (tex, coords + 2, coords + 3);
 
-  return TRUE;
+  return (need_repeat
+          ? COGL_TRANSFORM_HARDWARE_REPEAT : COGL_TRANSFORM_NO_REPEAT);
 }
 
 static gboolean

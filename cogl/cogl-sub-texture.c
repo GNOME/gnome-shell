@@ -337,7 +337,7 @@ _cogl_sub_texture_transform_coords_to_gl (CoglTexture *tex,
   _cogl_texture_transform_coords_to_gl (sub_tex->full_texture, s, t);
 }
 
-static gboolean
+static CoglTransformResult
 _cogl_sub_texture_transform_quad_coords_to_gl (CoglTexture *tex,
                                                float *coords)
 {
@@ -348,13 +348,12 @@ _cogl_sub_texture_transform_quad_coords_to_gl (CoglTexture *tex,
      cogl-primitives will resort to manual repeating */
   for (i = 0; i < 4; i++)
     if (coords[i] < 0.0f || coords[i] > 1.0f)
-      return FALSE;
+      return COGL_TRANSFORM_SOFTWARE_REPEAT;
 
   _cogl_sub_texture_map_quad (sub_tex, coords);
 
-  _cogl_texture_transform_quad_coords_to_gl (sub_tex->full_texture, coords);
-
-  return TRUE;
+  return _cogl_texture_transform_quad_coords_to_gl (sub_tex->full_texture,
+                                                    coords);
 }
 
 static gboolean
