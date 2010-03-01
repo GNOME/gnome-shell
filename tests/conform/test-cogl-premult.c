@@ -126,7 +126,7 @@ check_texture (TestState *state,
 
   cogl_read_pixels (x_off, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   if (g_test_verbose ())
     {

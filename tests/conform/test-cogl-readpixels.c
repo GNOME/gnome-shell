@@ -25,6 +25,7 @@ on_paint (ClutterActor *actor, void *state)
   CoglHandle tex;
   CoglHandle offscreen;
   guint32 *pixels;
+  guint8 *pixelsc;
 
   /* Save the Clutter viewport/matrices and load identity matrices */
 
@@ -70,7 +71,7 @@ on_paint (ClutterActor *actor, void *state)
   pixels = g_malloc0 (FRAMEBUFFER_WIDTH * 4 * FRAMEBUFFER_HEIGHT);
   cogl_read_pixels (0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     (guchar *)pixels);
 
   g_assert_cmpint (pixels[0], ==, 0xff0000ff);
@@ -91,7 +92,7 @@ on_paint (ClutterActor *actor, void *state)
   pixels = g_malloc0 (FRAMEBUFFER_WIDTH * 4 * FRAMEBUFFER_HEIGHT);
   cogl_read_pixels (0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     (guchar *)pixels);
 
   g_assert_cmpint (pixels[0], ==, 0xff0000ff);
@@ -99,6 +100,27 @@ on_paint (ClutterActor *actor, void *state)
   g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH], ==, 0xffff0000);
   g_assert_cmpint (pixels[(FRAMEBUFFER_HEIGHT - 1) * FRAMEBUFFER_WIDTH + FRAMEBUFFER_WIDTH - 1], ==, 0xffffffff);
   g_free (pixels);
+
+  /* Verify using BGR format */
+
+  cogl_set_source_texture (tex);
+  cogl_rectangle (-1, 1, 1, -1);
+
+  pixelsc = g_malloc0 (FRAMEBUFFER_WIDTH * 3 * FRAMEBUFFER_HEIGHT);
+  cogl_read_pixels (0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_BGR_888,
+                    (guchar *)pixelsc);
+
+  g_assert_cmpint (pixelsc[0], ==, 0x00);
+  g_assert_cmpint (pixelsc[1], ==, 0x00);
+  g_assert_cmpint (pixelsc[2], ==, 0xff);
+
+  g_assert_cmpint (pixelsc[(FRAMEBUFFER_WIDTH - 1) * 3 + 0], ==, 0x00);
+  g_assert_cmpint (pixelsc[(FRAMEBUFFER_WIDTH - 1) * 3 + 1], ==, 0xff);
+  g_assert_cmpint (pixelsc[(FRAMEBUFFER_WIDTH - 1) * 3 + 2], ==, 0x00);
+
+  g_free (pixelsc);
 
   cogl_handle_unref (tex);
 

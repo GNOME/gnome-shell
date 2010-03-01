@@ -82,7 +82,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* Read back the two pixels we rendered */
   cogl_read_pixels (0, 0, 2, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixels);
 
   /* The first pixel should be just one of the colors from the

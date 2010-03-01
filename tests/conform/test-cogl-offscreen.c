@@ -96,28 +96,28 @@ on_paint (ClutterActor *actor, void *state)
   /* red, top right */
   cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, 0, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   g_assert (pixel[RED] == 0xff && pixel[GREEN] == 0x00 && pixel[BLUE] == 0x00);
 
   /* green, top left */
   cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), 0, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0xff && pixel[BLUE] == 0x00);
 
   /* blue, bottom right */
   cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0x00 && pixel[BLUE] == 0xff);
 
   /* white, bottom left */
   cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   g_assert (pixel[RED] == 0xff && pixel[GREEN] == 0xff && pixel[BLUE] == 0xff);
 

@@ -50,7 +50,7 @@ validate_part (int xnum, int ynum, gboolean shown)
                     TEXTURE_RENDER_SIZE - TEST_INSET * 2,
                     TEXTURE_RENDER_SIZE - TEST_INSET * 2,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixels);
 
   /* Make sure every pixels is the appropriate color */

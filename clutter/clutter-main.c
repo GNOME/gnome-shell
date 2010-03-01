@@ -499,15 +499,15 @@ read_pixels_to_file (char *filename_stem,
   data = g_malloc (4 * width * height);
   cogl_read_pixels (x, y, width, height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGB_888,
                     data);
   pixbuf = gdk_pixbuf_new_from_data (data,
                                      GDK_COLORSPACE_RGB,
-                                     TRUE, /* has alpha */
+                                     FALSE, /* has alpha */
                                      8, /* bits per sample */
                                      width, /* width */
                                      height, /* height */
-                                     width * 4, /* rowstride */
+                                     width * 3, /* rowstride */
                                      pixbuf_free, /* callback to free data */
                                      NULL); /* callback data */
   if (pixbuf)
@@ -549,7 +549,7 @@ _clutter_do_pick (ClutterStage   *stage,
 		  ClutterPickMode mode)
 {
   ClutterMainContext *context;
-  guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
+  guchar              pixel[3] = { 0xff, 0xff, 0xff };
   CoglColor           stage_pick_id;
   guint32             id;
   GLboolean           dither_was_on;
@@ -634,7 +634,7 @@ _clutter_do_pick (ClutterStage   *stage,
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
   cogl_read_pixels (x, y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGB_888,
                     pixel);
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 

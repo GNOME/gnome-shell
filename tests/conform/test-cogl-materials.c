@@ -53,7 +53,7 @@ check_pixel (TestState *state, int x, int y, guint32 color)
 
   cogl_read_pixels (x_off, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   if (g_test_verbose ())
     g_print ("  result = %02x, %02x, %02x, %02x\n",

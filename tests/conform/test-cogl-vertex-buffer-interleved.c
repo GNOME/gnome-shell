@@ -47,7 +47,7 @@ validate_result (TestState *state)
   /* Should see a blue pixel */
   cogl_read_pixels (10, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   if (g_test_verbose ())
     g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
