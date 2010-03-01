@@ -936,7 +936,13 @@ typedef enum { /*< prefix=COGL_READ_PIXELS >*/
  *
  * This reads a rectangle of pixels from the current framebuffer where
  * position (0, 0) is the top left. The pixel at (x, y) is the first
- * read, and the data is returned with a rowstride of (width * 4)
+ * read, and the data is returned with a rowstride of (width * 4).
+ *
+ * Currently Cogl assumes that the framebuffer is in a premultiplied
+ * format so if @format is non-premultiplied it will convert it. To
+ * read the pixel values without any conversion you should either
+ * specify a format that doesn't use an alpha channel or use one of
+ * the formats ending in PRE.
  */
 void
 cogl_read_pixels (int x,
