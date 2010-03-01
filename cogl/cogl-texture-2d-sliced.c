@@ -77,8 +77,6 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
   CoglSpanIter iter_x;
   CoglSpanIter iter_y;
 
-  g_assert (tex_2ds->gl_target == GL_TEXTURE_2D);
-
   /* Slice spans are stored in denormalized coordinates, and this is what
    * the _cogl_span_iter_* funcs expect to be given, so we scale the given
    * virtual coordinates by the texture size to denormalize.
@@ -118,9 +116,12 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
       slice_ty1 = y_intersect_start - iter_y.pos;
       slice_ty2 = y_intersect_end - iter_y.pos;
 
-      /* Normalize slice texture coordinates */
-      slice_ty1 /= iter_y.span->size;
-      slice_ty2 /= iter_y.span->size;
+      if (tex_2ds->gl_target == GL_TEXTURE_2D)
+	{
+	  /* Normalize slice texture coordinates */
+	  slice_ty1 /= iter_y.span->size;
+	  slice_ty2 /= iter_y.span->size;
+	}
 
       /* Iterate the x axis of the virtual rectangle */
       for (_cogl_span_iter_begin (&iter_x,
@@ -153,14 +154,17 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
           slice_tx1 = x_intersect_start - iter_x.pos;
           slice_tx2 = x_intersect_end - iter_x.pos;
 
-          /* Normalize slice texture coordinates */
-          slice_tx1 /= iter_x.span->size;
-          slice_tx2 /= iter_x.span->size;
-
 	  /* Pluck out opengl texture object for this slice */
 	  gl_handle = g_array_index (tex_2ds->slice_gl_handles, GLuint,
 				     iter_y.index * iter_x.array->len +
 				     iter_x.index);
+
+	  if (tex_2ds->gl_target == GL_TEXTURE_2D)
+	    {
+	      /* Normalize slice texture coordinates */
+	      slice_tx1 /= iter_x.span->size;
+	      slice_tx2 /= iter_x.span->size;
+	    }
 
           slice_coords[0] = slice_tx1;
           slice_coords[1] = slice_ty1;
