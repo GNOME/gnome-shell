@@ -118,7 +118,7 @@
  *   <title>ClutterModel custom properties for #ClutterScript</title>
  *   <para>#ClutterModel defines a custom property "columns" for #ClutterScript
  *   which allows defining the column names and types.</para>
- *   <example id=ClutterModel-script-column-example">
+ *   <example id="ClutterModel-script-column-example">
  *     <title>Example of the "columns" custom property</title>
  *     <para>The definition below will create a #ClutterListModel with three
  *     columns: the first one with name "Name" and containing strings; the
