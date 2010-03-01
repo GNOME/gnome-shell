@@ -2036,6 +2036,7 @@ clutter_animator_set_key
 clutter_animator_remove_key
 clutter_animator_get_keys
 clutter_animator_run
+clutter_animator_compute_value
 
 <SUBSECTION>
 clutter_animator_set_timeline
