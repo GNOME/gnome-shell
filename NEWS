@@ -1,3 +1,45 @@
+Clutter 1.2.0 (02/03/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.1.14
+
+    » Improve the Animator API for consistency, and the implementation
+      to match the intended behaviour, as documented
+
+    » Add initial (and internal) support for queueing clipped region updates
+      and let the GLX texture-from-pixmap actor take advantage of it
+
+    » Support any pixel format in cogl_read_pixels()
+
+    » Conditionally use G_VALUE_COLLECT_INIT() in functions using variadic
+      arguments lists
+
+    » Consistently use :min-width and :min-height inside the Stage to define
+      the minimum size of the Stage window
+
+    » Implement the Scriptable interface for ClutterModel sub-classes; this
+      allows setting ClutterModel columns (both types and names) in
+      ClutterScript definitions
+
+    » Add support for unsigned integer indices in the VertexBuffer API
+
+    » Documentation fixes for Clutter: the coverage is now 100%
+
+    » Fixes for the EGL native backend
+
+    » Require libtool >= 2.2.6
+
+    » Improve tests coverage
+
+Many thanks to:
+
+  Neil Roberts
+  Øyvind Kolås
+  Robert Bragg
+  Bastian Winkler
+  Chris Lord
+  Owen W. Taylor
+
 Clutter 1.1.14 (24/02/2010)
 ===============================================================================
 
