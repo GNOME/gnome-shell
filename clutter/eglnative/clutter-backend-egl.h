@@ -1,7 +1,10 @@
 /* Clutter.
  * An OpenGL based 'interactive canvas' library.
+ *
  * Authored By Matthew Allum  <mallum@openedhand.com>
- * Copyright (C) 2006-2007 OpenedHand
+ *
+ * Copyright (C) 2006, 2007, 2008 OpenedHand
+ * Copyright (C) 2009, 2010 Intel Corp
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +41,6 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackendEGL       ClutterBackendEGL;
 typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
 
-
 struct _ClutterBackendEGL
 {
   ClutterBackend parent_instance;
@@ -48,17 +50,24 @@ struct _ClutterBackendEGL
   EGLSurface egl_surface;
   EGLContext egl_context;
 
-  gint       egl_version_major;
-  gint       egl_version_minor;
+  /* from the backend */
+  gint surface_width;
+  gint surface_height;
+
+  gint egl_version_major;
+  gint egl_version_minor;
 
   /* main stage singleton */
-  ClutterActor *stage;
+  ClutterStageWindow *stage;
 
   /* event source */
   GSource *event_source;
 
   /* event timer */
   GTimer *event_timer;
+
+  /* FB device */
+  gint fb_device_id;
 
   /*< private >*/
 };
@@ -70,8 +79,8 @@ struct _ClutterBackendEGLClass
 
 GType clutter_backend_egl_get_type (void) G_GNUC_CONST;
 
-void _clutter_events_init (ClutterBackend *backend);
-void _clutter_events_uninit (ClutterBackend *backend);
+void _clutter_events_egl_init (ClutterBackendEGL *backend);
+void _clutter_events_egl_uninit (ClutterBackendEGL *backend);
 
 G_END_DECLS
 

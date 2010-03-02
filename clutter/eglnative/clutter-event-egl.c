@@ -47,8 +47,9 @@ struct _ClutterEventSource
 {
   GSource source;
 
-  ClutterBackend *backend;
-  GPollFD         event_poll_fd;
+  ClutterBackendEGL *backend;
+  GPollFD event_poll_fd;
+
 #ifdef HAVE_TSLIB
   struct tsdev   *ts_device;
 #endif
@@ -71,7 +72,7 @@ static GSourceFuncs event_funcs = {
 };
 
 static GSource *
-clutter_event_source_new (ClutterBackend *backend)
+clutter_event_source_new (ClutterBackendEGL *backend)
 {
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
@@ -92,36 +93,45 @@ get_backend_time (void)
 }
 
 void
-_clutter_events_init (ClutterBackend *backend)
+_clutter_events_egl_init (ClutterBackendEGL *backend_egl)
 {
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  GSource            *source;
   ClutterEventSource *event_source;
+  const char *device_name;
+  GSource *source;
 
   CLUTTER_NOTE (EVENT, "Starting timer");
   g_assert (backend_egl->event_timer != NULL);
   g_timer_start (backend_egl->event_timer);
 
 #ifdef HAVE_TSLIB
-  /* FIXME LEAK on error paths */
-  source = backend_egl->event_source = clutter_event_source_new (backend);
+  source = backend_egl->event_source = clutter_event_source_new (backend_egl);
   event_source = (ClutterEventSource *) source;
 
-  event_source->ts_device = ts_open (g_getenv ("TSLIB_TSDEVICE"), 0);
+  device_name = g_getenv ("TSLIB_TSDEVICE");
+  if (device_name == NULL || device_name[0] == '\0')
+    {
+      g_warning ("No device for TSLib has been defined; please set the "
+                 "TSLIB_TSDEVICE environment variable to define a touch "
+                 "screen device to be used with Clutter.");
+      g_source_unref (source);
+      return;
+    }
 
+  event_source->ts_device = ts_open (device_name, 0);
   if (event_source->ts_device)
     {
-      CLUTTER_NOTE (EVENT, "Opened '%s'", g_getenv ("TSLIB_TSDEVICE"));
+      CLUTTER_NOTE (EVENT, "Opened '%s'", device_name);
 
       if (ts_config (event_source->ts_device))
 	{
-	  g_warning ("ts_config() failed");
+	  g_warning ("Closing device '%s': ts_config() failed", device_name);
 	  ts_close (event_source->ts_device);
+          g_source_unref (source);
 	  return;
 	}
 
       g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
-      event_source->event_poll_fd.fd = ts_fd(event_source->ts_device);
+      event_source->event_poll_fd.fd = ts_fd (event_source->ts_device);
       event_source->event_poll_fd.events = G_IO_IN;
 
       event_sources = g_list_prepend (event_sources, event_source);
@@ -131,24 +141,25 @@ _clutter_events_init (ClutterBackend *backend)
       g_source_attach (source, NULL);
     }
   else
-    g_warning ("ts_open() failed opening %s'",
-	       g_getenv("TSLIB_TSDEVICE") ?
-  	         g_getenv("TSLIB_TSDEVICE") : "None, TSLIB_TSDEVICE not set");
-#endif
+    {
+      g_warning ("Unable to open '%s'", device_name);
+      g_source_unref (source);
+    }
+#endif /* HAVE_TSLIB */
 }
 
 void
-_clutter_events_uninit (ClutterBackend *backend)
+_clutter_events_egl_uninit (ClutterBackend *backend)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 
-  if (backend_egl->event_timer)
+  if (backend_egl->event_timer != NULL)
     {
       CLUTTER_NOTE (EVENT, "Stopping the timer");
       g_timer_stop (backend_egl->event_timer);
     }
 
-  if (backend_egl->event_source)
+  if (backend_egl->event_source != NULL)
     {
       CLUTTER_NOTE (EVENT, "Destroying the event source");
 
@@ -157,9 +168,9 @@ _clutter_events_uninit (ClutterBackend *backend)
 
 #ifdef HAVE_TSLIB
       ts_close (event_source->ts_device);
-      event_sources = g_list_remove (event_sources,
-                                     backend_egl->event_source);
-#endif
+      event_sources = g_list_remove (event_sources, backend_egl->event_source);
+#endif /* HAVE_TSLIB */
+
       g_source_destroy (backend_egl->event_source);
       g_source_unref (backend_egl->event_source);
       backend_egl->event_source = NULL;
@@ -225,7 +236,8 @@ clutter_event_dispatch (GSource     *source,
         (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
       /* Avoid sending too many events which are just pressure changes.
-       * We dont current handle pressure in events (FIXME) and thus
+       *
+       * FIXME - We don't current handle pressure in events and thus
        * event_button_generate gets confused generating lots of double
        * and triple clicks.
       */
@@ -266,7 +278,7 @@ clutter_event_dispatch (GSource     *source,
 
       g_queue_push_head (clutter_context->events_queue, event);
     }
-#endif
+#endif /* HAVE_TSLIB */
 
   /* Pop an event off the queue if any */
   event = clutter_event_get ();

@@ -21,14 +21,10 @@ struct _ClutterStageEGL
 {
   ClutterActor parent_instance;
 
-  /* from the backend */
-  gint         surface_width;
-  gint         surface_height;
-
-  EGLSurface   egl_surface;
-
   /* the stage wrapper */
   ClutterStage      *wrapper;
+
+  /* back pointer to the backend */
   ClutterBackendEGL *backend;
 };
 
