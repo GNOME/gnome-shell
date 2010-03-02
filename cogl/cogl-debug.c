@@ -157,10 +157,12 @@ cogl_arg_no_debug_cb (const char *key,
 #endif /* COGL_ENABLE_DEBUG */
 
 static GOptionEntry cogl_args[] = {
+#ifdef COGL_ENABLE_DEBUG
   { "cogl-debug", 0, 0, G_OPTION_ARG_CALLBACK, cogl_arg_debug_cb,
     N_("COGL debugging flags to set"), "FLAGS" },
   { "cogl-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, cogl_arg_no_debug_cb,
     N_("COGL debugging flags to unset"), "FLAGS" },
+#endif /* COGL_ENABLE_DEBUG */
   { NULL, },
 };
 
