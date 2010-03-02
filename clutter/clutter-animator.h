@@ -128,7 +128,7 @@ void                 clutter_animator_remove_key                 (ClutterAnimato
                                                                   const gchar          *property_name,
                                                                   gdouble               progress);
 
-ClutterTimeline *    clutter_animator_run                        (ClutterAnimator      *animator);
+ClutterTimeline *    clutter_animator_start                      (ClutterAnimator      *animator);
 
 gboolean             clutter_animator_compute_value              (ClutterAnimator      *animator,
                                                                   GObject              *object,

@@ -125,7 +125,7 @@ test_animator_main (gint    argc,
 
   clutter_animator_set_duration (animator, 5000);
 
-  g_signal_connect (clutter_animator_run (animator),
+  g_signal_connect (clutter_animator_start (animator),
                     "completed", G_CALLBACK (reverse_timeline), NULL);
   clutter_main ();
   g_object_unref (animator);

@@ -1063,7 +1063,7 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
 }
 
 /**
- * clutter_animator_run:
+ * clutter_animator_start:
  * @animator: a #ClutterAnimator
  *
  * Start the ClutterAnimator, this is a thin wrapper that rewinds
@@ -1074,7 +1074,7 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
  * Since: 1.2
  */
 ClutterTimeline *
-clutter_animator_run (ClutterAnimator *animator)
+clutter_animator_start (ClutterAnimator *animator)
 {
   ClutterAnimatorPrivate *priv;
 
