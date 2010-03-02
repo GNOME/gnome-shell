@@ -8,6 +8,7 @@ json_files = \
 	test-script-named-object.json		\
 	test-script-object-property.json	\
 	test-script-single.json			\
+	test-script-model.json			\
 	test-animator-1.json			\
 	test-animator-2.json			\
 	test-animator-3.json			\
