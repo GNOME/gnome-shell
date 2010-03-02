@@ -129,7 +129,12 @@ test_script_child (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   container = actor = NULL;
   clutter_script_get_objects (script,
@@ -176,7 +181,12 @@ test_script_single (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_RECTANGLE (actor));
@@ -211,7 +221,12 @@ test_script_implicit_alpha (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   behaviour = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_BEHAVIOUR (behaviour));
@@ -244,7 +259,12 @@ test_script_object_property (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_BOX (actor));
@@ -271,7 +291,12 @@ test_script_named_object (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_BOX (actor));
@@ -298,7 +323,12 @@ test_script_animation (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   animation = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_ANIMATION (animation));

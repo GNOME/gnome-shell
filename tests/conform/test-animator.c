@@ -18,7 +18,12 @@ test_animator_multi_properties (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   foo = clutter_script_get_object (script, "foo");
   g_assert (G_IS_OBJECT (foo));
@@ -116,7 +121,12 @@ test_animator_properties (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   animator = clutter_script_get_object (script, "animator");
   g_assert (CLUTTER_IS_ANIMATOR (animator));
@@ -172,7 +182,12 @@ test_animator_base (TestConformSimpleFixture *fixture,
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
   g_assert (error == NULL);
+#endif
 
   animator = clutter_script_get_object (script, "animator");
   g_assert (CLUTTER_IS_ANIMATOR (animator));
