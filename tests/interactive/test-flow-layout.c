@@ -8,6 +8,7 @@
 static gboolean is_homogeneous = FALSE;
 static gboolean vertical       = FALSE;
 static gboolean random_size    = FALSE;
+static gboolean fit_to_stage   = FALSE;
 
 static gint     n_rects        = N_RECTS;
 static gint     x_spacing      = 0;
@@ -55,6 +56,13 @@ static GOptionEntry entries[] = {
     G_OPTION_ARG_INT,
     &y_spacing,
     "Vertical spacing between elements", "PX"
+  },
+  {
+    "fit-to-stage", 0,
+    0,
+    G_OPTION_ARG_NONE,
+    &fit_to_stage,
+    "Fit to the stage size", NULL
   },
   { NULL }
 };
@@ -118,11 +126,6 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
   clutter_actor_set_position (box, 0, 0);
 
-  if (vertical)
-    clutter_actor_set_height (box, 480);
-  else
-    clutter_actor_set_width (box, 640);
-
   clutter_actor_set_name (box, "box");
 
   for (i = 0; i < n_rects; i++)
@@ -158,9 +161,10 @@ test_flow_layout_main (int argc, char *argv[])
       g_free (name);
     }
 
-  g_signal_connect (stage,
-                    "allocation-changed", G_CALLBACK (on_stage_resize),
-                    box);
+  if (fit_to_stage)
+    g_signal_connect (stage,
+                      "allocation-changed", G_CALLBACK (on_stage_resize),
+                      box);
 
   clutter_actor_show_all (stage);
 

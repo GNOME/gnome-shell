@@ -217,21 +217,18 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
   item_y = 0;
 
   /* clear the line width arrays */
-  if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
-    {
-      if (priv->line_min != NULL)
-        g_array_free (priv->line_min, TRUE);
+  if (priv->line_min != NULL)
+    g_array_free (priv->line_min, TRUE);
 
-      if (priv->line_natural != NULL)
-        g_array_free (priv->line_natural, TRUE);
+  if (priv->line_natural != NULL)
+    g_array_free (priv->line_natural, TRUE);
 
-      priv->line_min = g_array_sized_new (FALSE, FALSE,
+  priv->line_min = g_array_sized_new (FALSE, FALSE,
+                                      sizeof (gfloat),
+                                      16);
+  priv->line_natural = g_array_sized_new (FALSE, FALSE,
                                           sizeof (gfloat),
                                           16);
-      priv->line_natural = g_array_sized_new (FALSE, FALSE,
-                                              sizeof (gfloat),
-                                              16);
-    }
 
   if (children)
     line_count = 1;
@@ -292,6 +289,8 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
           max_min_width = MAX (max_min_width, child_min);
           max_natural_width = MAX (max_natural_width, child_natural);
 
+          total_min_width += max_min_width;
+          total_natural_width += max_natural_width;
           line_count += 1;
         }
     }
@@ -321,6 +320,7 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
         }
 
       priv->line_count = line_count;
+
       if (priv->line_count > 0)
         {
           gfloat total_spacing;
@@ -331,6 +331,30 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
           total_natural_width += total_spacing;
         }
     }
+  else
+    {
+      g_array_append_val (priv->line_min, line_min_width);
+      g_array_append_val (priv->line_natural, line_natural_width);
+
+      priv->line_count = line_count;
+
+      if (priv->line_count > 0)
+        {
+          gfloat total_spacing;
+
+          total_spacing = priv->col_spacing * (priv->line_count - 1);
+
+          total_min_width += total_spacing;
+          total_natural_width += total_spacing;
+        }
+    }
+
+  CLUTTER_NOTE (LAYOUT,
+                "Flow[w]: %d lines (%d per line): w [ %.2f, %.2f ] for h %.2f",
+                n_rows, priv->line_count,
+                total_min_width,
+                total_natural_width,
+                for_height);
 
   if (min_width_p)
     *min_width_p = total_min_width;
@@ -368,21 +392,18 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
   item_x = 0;
 
   /* clear the line height arrays */
-  if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
-    {
-      if (priv->line_min != NULL)
-        g_array_free (priv->line_min, TRUE);
+  if (priv->line_min != NULL)
+    g_array_free (priv->line_min, TRUE);
 
-      if (priv->line_natural != NULL)
-        g_array_free (priv->line_natural, TRUE);
+  if (priv->line_natural != NULL)
+    g_array_free (priv->line_natural, TRUE);
 
-      priv->line_min = g_array_sized_new (FALSE, FALSE,
+  priv->line_min = g_array_sized_new (FALSE, FALSE,
+                                      sizeof (gfloat),
+                                      16);
+  priv->line_natural = g_array_sized_new (FALSE, FALSE,
                                           sizeof (gfloat),
                                           16);
-      priv->line_natural = g_array_sized_new (FALSE, FALSE,
-                                              sizeof (gfloat),
-                                              16);
-    }
 
   if (children)
     line_count = 1;
@@ -443,6 +464,9 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
           max_min_height = MAX (max_min_height, child_min);
           max_natural_height = MAX (max_natural_height, child_natural);
 
+          total_min_height += max_min_height;
+          total_natural_height += max_natural_height;
+
           line_count += 1;
         }
     }
@@ -482,6 +506,30 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
           total_natural_height += total_spacing;
         }
     }
+  else
+    {
+      g_array_append_val (priv->line_min, line_min_height);
+      g_array_append_val (priv->line_natural, line_natural_height);
+
+      priv->line_count = line_count;
+
+      if (priv->line_count > 0)
+        {
+          gfloat total_spacing;
+
+          total_spacing = priv->col_spacing * priv->line_count;
+
+          total_min_height += total_spacing;
+          total_natural_height += total_spacing;
+        }
+    }
+
+  CLUTTER_NOTE (LAYOUT,
+                "Flow[h]: %d lines (%d per line): w [ %.2f, %.2f ] for h %.2f",
+                n_columns, priv->line_count,
+                total_min_height,
+                total_natural_height,
+                for_width);
 
   if (min_height_p)
     *min_height_p = total_min_height;
