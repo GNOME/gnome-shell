@@ -193,7 +193,7 @@ struct _ClutterModelPrivate
 {
   GType                  *column_types;
   gchar                 **column_names;
-  gint                    n_columns; 
+  guint                   n_columns;
 
   ClutterModelFilterFunc  filter_func;
   gpointer                filter_data;
@@ -419,7 +419,7 @@ clutter_model_init (ClutterModel *self)
   
   self->priv = priv = CLUTTER_MODEL_GET_PRIVATE (self);
 
-  priv->n_columns = -1;
+  priv->n_columns = 0;
   priv->column_types = NULL;
   priv->column_names = NULL;
 
