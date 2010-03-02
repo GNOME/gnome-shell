@@ -107,7 +107,9 @@ struct _ClutterGLXTexturePixmapPrivate
 
   gboolean      bound;
   gint          can_mipmap;
-  gint          mipmap_generate_queued;
+  gboolean      mipmap_generate_queued;
+
+  gboolean      bind_tex_image_queued;
 
   gboolean      using_rectangle;
 };
@@ -128,28 +130,93 @@ G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
                clutter_glx_texture_pixmap, \
                CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
 
-static gboolean
-texture_bind (ClutterGLXTexturePixmap *tex)
+static void
+bind_texture (ClutterGLXTexturePixmap *tex)
 {
-  GLuint     handle = 0;
-  GLenum     target = 0;
-  CoglHandle cogl_tex;
-  cogl_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(tex));
+  GLuint handle = 0;
+  GLenum target = 0;
+  CoglHandle cogl_tex =
+    clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (tex));
 
   if (!cogl_texture_get_gl_texture (cogl_tex, &handle, &target))
-      return FALSE;
+    g_warning ("Failed to pluck out GL handle from cogl texture to bind");
 
-  /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
+}
 
-  return TRUE;
+static void
+release_tex_image (ClutterGLXTexturePixmap *texture)
+{
+  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
+  Display *dpy;
+
+  if (!priv->glx_pixmap || !priv->bound)
+    return;
+
+  dpy = clutter_x11_get_default_display ();
+
+  bind_texture (texture);
+
+  clutter_x11_trap_x_errors ();
+
+  (_gl_release_tex_image) (dpy,
+                           priv->glx_pixmap,
+                           GLX_FRONT_LEFT_EXT);
+
+  XSync (dpy, FALSE);
+
+  if (clutter_x11_untrap_x_errors ())
+    CLUTTER_NOTE (TEXTURE, "Failed to release?");
+
+  CLUTTER_NOTE (TEXTURE, "Destroyed pxm: %li", priv->glx_pixmap);
+
+  priv->bound = FALSE;
 }
 
 static void
 on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
                                  gpointer                 user_data)
 {
-  if (texture->priv->mipmap_generate_queued)
+  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
+  gboolean tex_bound = FALSE;
+  Display *dpy = clutter_x11_get_default_display();
+
+  if (priv->bind_tex_image_queued)
+    {
+      CLUTTER_NOTE (TEXTURE, "Really updating via GLX");
+
+      bind_texture (CLUTTER_GLX_TEXTURE_PIXMAP (texture));
+      tex_bound = TRUE;
+
+      clutter_x11_trap_x_errors ();
+
+      (_gl_bind_tex_image) (dpy,
+                            priv->glx_pixmap,
+                            GLX_FRONT_LEFT_EXT,
+                            NULL);
+
+      XSync (dpy, FALSE);
+
+      /* Note above fires X error for non name pixmaps - but
+       * things still seem to work - i.e pixmap updated
+       */
+      if (clutter_x11_untrap_x_errors ())
+        CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
+
+      priv->bound = TRUE;
+
+      if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+          == CLUTTER_TEXTURE_QUALITY_HIGH)
+        {
+          priv->mipmap_generate_queued++;
+        }
+
+      priv->bind_tex_image_queued = FALSE;
+    }
+
+  if (_gl_generate_mipmap &&
+      priv->can_mipmap &&
+      priv->mipmap_generate_queued)
     {
       GLuint     handle = 0;
       GLenum     target = 0;
@@ -157,19 +224,19 @@ on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
       cogl_tex = clutter_texture_get_cogl_texture
         (CLUTTER_TEXTURE(texture));
 
-      texture_bind (texture);
+      bind_texture (texture);
+      tex_bound = TRUE;
 
       cogl_texture_get_gl_texture (cogl_tex, &handle, &target);
 
       _gl_generate_mipmap (target);
-
-      texture->priv->mipmap_generate_queued = 0;
     }
+  priv->mipmap_generate_queued = FALSE;
 
   /* Disable mipmaps if we can't support them */
   if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
       == CLUTTER_TEXTURE_QUALITY_HIGH
-      && !texture->priv->can_mipmap)
+      && !priv->can_mipmap)
     {
       CoglHandle material
         = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
@@ -419,9 +486,8 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 static void
 clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 {
-  ClutterGLXTexturePixmap        *texture = CLUTTER_GLX_TEXTURE_PIXMAP (actor);
-  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
-  Display                        *dpy;
+  ClutterGLXTexturePixmap *texture = CLUTTER_GLX_TEXTURE_PIXMAP (actor);
+  Display                 *dpy;
 
   dpy = clutter_x11_get_default_display();
 
@@ -437,19 +503,7 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
   if (!CLUTTER_ACTOR_IS_REALIZED (actor))
     return;
 
-  if (priv->glx_pixmap && priv->bound)
-    {
-      clutter_x11_trap_x_errors ();
-
-      (_gl_release_tex_image) (dpy,
-                               priv->glx_pixmap,
-                               GLX_FRONT_LEFT_EXT);
-
-      XSync (clutter_x11_get_default_display(), FALSE);
-      clutter_x11_untrap_x_errors ();
-
-      priv->bound = FALSE;
-    }
+  release_tex_image (texture);
 
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
@@ -595,26 +649,7 @@ clutter_glx_texture_pixmap_free_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   dpy = clutter_x11_get_default_display ();
 
-  if (priv->glx_pixmap &&
-      priv->bound)
-    {
-      texture_bind (texture);
-
-      clutter_x11_trap_x_errors ();
-
-      (_gl_release_tex_image) (dpy,
-			       priv->glx_pixmap,
-			       GLX_FRONT_LEFT_EXT);
-
-      XSync (clutter_x11_get_default_display(), FALSE);
-
-      if (clutter_x11_untrap_x_errors ())
-	CLUTTER_NOTE (TEXTURE, "Failed to release?");
-
-      CLUTTER_NOTE (TEXTURE, "Destroyed pxm: %li", priv->glx_pixmap);
-
-      priv->bound = FALSE;
-    }
+  release_tex_image (texture);
 
   clutter_x11_trap_x_errors ();
   if (priv->glx_pixmap)
@@ -729,7 +764,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       goto cleanup;
     }
 
- cleanup:
+cleanup:
 
   if (priv->glx_pixmap)
     clutter_glx_texture_pixmap_free_glx_pixmap (texture);
@@ -746,12 +781,10 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 					      pixmap_width, pixmap_height);
 
       /* Get ready to queue initial mipmap generation */
-      if (_gl_generate_mipmap
-          && priv->can_mipmap
-          &&  clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+      if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
           == CLUTTER_TEXTURE_QUALITY_HIGH)
         {
-          priv->mipmap_generate_queued++;
+          priv->mipmap_generate_queued = TRUE;
         }
 
       return;
@@ -775,11 +808,8 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 {
   ClutterGLXTexturePixmap *texture_glx = CLUTTER_GLX_TEXTURE_PIXMAP (texture);
   ClutterGLXTexturePixmapPrivate  *priv = texture_glx->priv;
-  Display                         *dpy;
 
   CLUTTER_NOTE (TEXTURE, "Updating texture pixmap");
-
-  dpy = clutter_x11_get_default_display();
 
   if (!CLUTTER_ACTOR_IS_REALIZED (texture))
     return;
@@ -798,44 +828,6 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   if (priv->glx_pixmap == None)
     return;
-
-  if (texture_bind (CLUTTER_GLX_TEXTURE_PIXMAP(texture)))
-    {
-      CLUTTER_NOTE (TEXTURE, "Really updating via GLX");
-
-      clutter_x11_trap_x_errors ();
-
-      (_gl_bind_tex_image) (dpy,
-                            priv->glx_pixmap,
-                            GLX_FRONT_LEFT_EXT,
-                            NULL);
-
-      XSync (clutter_x11_get_default_display(), FALSE);
-
-      /* Note above fires X error for non name pixmaps - but
-       * things still seem to work - i.e pixmap updated
-       */
-      if (clutter_x11_untrap_x_errors ())
-        CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
-
-      priv->bound = TRUE;
-
-      if (_gl_generate_mipmap
-          && priv->can_mipmap
-          &&  clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
-              == CLUTTER_TEXTURE_QUALITY_HIGH)
-        {
-          /* FIXME: It may make more sense to set a flag here and only
-           *        generate the mipmap on a pre paint.. compressing need
-           *        to call generate mipmap
-           *        May break clones however..
-          */
-          priv->mipmap_generate_queued++;
-        }
-
-    }
-  else
-    g_warning ("Failed to bind initial tex");
 
   priv->bind_tex_image_queued = TRUE;
 }
