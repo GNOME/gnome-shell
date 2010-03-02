@@ -46,9 +46,21 @@ static void gconf_value_changed (GConfClient *client, const char *key,
 static void
 shell_gconf_init (ShellGConf *gconf)
 {
+  GConfValue *val;
+
   gconf->client = gconf_client_get_default ();
   gconf_client_add_dir (gconf->client, SHELL_GCONF_DIR,
                         GCONF_CLIENT_PRELOAD_RECURSIVE, NULL);
+
+  val = gconf_client_get (gconf->client,
+                          SHELL_GCONF_DIR "/development_tools", NULL);
+  if (!val)
+    {
+      g_error ("GNOME Shell GConf schemas not found.\n"
+               "This generally indicates a building or packaging problem.");
+    }
+  gconf_value_free (val);
+
   g_signal_connect (gconf->client, "value_changed",
                     G_CALLBACK (gconf_value_changed), gconf);
 }
