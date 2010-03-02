@@ -89,8 +89,10 @@ dnl ========================================================================
 
 # Checks for programs.
 AM_PROG_CC_C_O
-AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+
+# require libtool >= 2.2
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
 
 # Disable dolt; we should depend on libtool 2.2
 #DOLT
