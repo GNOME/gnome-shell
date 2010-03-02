@@ -54,15 +54,13 @@ static void
 shell_generic_container_allocation_unref (ShellGenericContainerAllocation *alloc)
 {
   if (--alloc->_refcount == 0)
-    {
-      g_slice_free1 (sizeof (ShellGenericContainerAllocation), alloc);
-    }
+    g_slice_free (ShellGenericContainerAllocation, alloc);
 }
 
 static void
-shell_generic_container_allocate (ClutterActor          *self,
-                                  const ClutterActorBox *box,
-                                  ClutterAllocationFlags flags)
+shell_generic_container_allocate (ClutterActor           *self,
+                                  const ClutterActorBox  *box,
+                                  ClutterAllocationFlags  flags)
 {
   /* chain up to set actor->allocation */
   (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->allocate (self, box, flags);
@@ -73,11 +71,12 @@ shell_generic_container_allocate (ClutterActor          *self,
 
 static void
 shell_generic_container_get_preferred_width (ClutterActor *actor,
-                                             gfloat for_height,
-                                             gfloat *min_width_p,
-                                             gfloat *natural_width_p)
+                                             gfloat        for_height,
+                                             gfloat       *min_width_p,
+                                             gfloat       *natural_width_p)
 {
-  ShellGenericContainerAllocation *alloc = g_slice_alloc0 (sizeof (ShellGenericContainerAllocation));
+  ShellGenericContainerAllocation *alloc = g_slice_new0 (ShellGenericContainerAllocation);
+
   alloc->_refcount = 1;
   g_signal_emit (G_OBJECT (actor), shell_generic_container_signals[GET_PREFERRED_WIDTH], 0,
                  for_height, alloc);
@@ -90,11 +89,12 @@ shell_generic_container_get_preferred_width (ClutterActor *actor,
 
 static void
 shell_generic_container_get_preferred_height (ClutterActor *actor,
-                                              gfloat for_width,
-                                              gfloat *min_height_p,
-                                              gfloat *natural_height_p)
+                                              gfloat        for_width,
+                                              gfloat       *min_height_p,
+                                              gfloat       *natural_height_p)
 {
-  ShellGenericContainerAllocation *alloc = g_slice_alloc0 (sizeof (ShellGenericContainerAllocation));
+  ShellGenericContainerAllocation *alloc = g_slice_new0 (ShellGenericContainerAllocation);
+
   alloc->_refcount = 1;
   g_signal_emit (G_OBJECT (actor), shell_generic_container_signals[GET_PREFERRED_HEIGHT], 0,
                  for_width, alloc);
@@ -244,7 +244,7 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
 
 static void
 shell_generic_container_remove (ClutterContainer *container,
-                                     ClutterActor     *actor)
+                                ClutterActor     *actor)
 {
   ShellGenericContainer *self = SHELL_GENERIC_CONTAINER (container);
 
@@ -269,7 +269,8 @@ shell_generic_container_init (ShellGenericContainer *area)
   area->priv->skip_paint = g_hash_table_new (NULL, NULL);
 }
 
-GType shell_generic_container_allocation_get_type (void)
+GType
+shell_generic_container_allocation_get_type (void)
 {
   static GType gtype = G_TYPE_INVALID;
   if (gtype == G_TYPE_INVALID)
