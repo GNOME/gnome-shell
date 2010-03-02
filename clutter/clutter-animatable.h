@@ -42,6 +42,15 @@ typedef struct _ClutterAnimatable               ClutterAnimatable; /* dummy type
 typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
 
 /**
+ * ClutterAnimatable:
+ *
+ * #ClutterAnimatable is an opaque structure whose members cannot be directly
+ * accessed
+ *
+ * Since: 1.0
+ */
+
+/**
  * ClutterAnimatableIface:
  * @animate_property: virtual function for animating a property
  *

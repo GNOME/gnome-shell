@@ -135,8 +135,46 @@ G_BEGIN_DECLS
  */
 #define CLUTTER_NO_FPU          CLUTTER_NO_FPU_MACRO_WAS_REMOVED
 
+/**
+ * clutter_major_version:
+ *
+ * The major component of the Clutter library version, e.g. 1 if the version
+ * is 1.2.3
+ *
+ * This value can be used for run-time version checks
+ *
+ * For a compile-time check, use %CLUTTER_MAJOR_VERSION
+ *
+ * Since: 1.2
+ */
 extern const guint clutter_major_version;
+
+/**
+ * clutter_minor_version:
+ *
+ * The minor component of the Clutter library version, e.g. 2 if the version
+ * is 1.2.3
+ *
+ * This value can be used for run-time version checks
+ *
+ * For a compile-time check, use %CLUTTER_MINOR_VERSION
+ *
+ * Since: 1.2
+ */
 extern const guint clutter_minor_version;
+
+/**
+ * clutter_micro_version:
+ *
+ * The micro component of the Clutter library version, e.g. 3 if the version
+ * is 1.2.3
+ *
+ * This value can be used for run-time version checks
+ *
+ * For a compile-time check, use %CLUTTER_MICRO_VERSION
+ *
+ * Since: 1.2
+ */
 extern const guint clutter_micro_version;
 
 gboolean clutter_check_version (guint major,

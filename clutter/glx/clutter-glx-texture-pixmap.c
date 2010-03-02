@@ -859,12 +859,17 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
  * clutter_glx_texture_pixmap_using_extension:
  * @texture: A #ClutterGLXTexturePixmap
  *
- * Return value: A boolean indicating if the texture is using the
- * GLX_EXT_texture_from_pixmap OpenGL extension or falling back to
- * slower software mechanism.
+ * Checks whether @texture is using the GLX_EXT_texture_from_pixmap
+ * extension; this extension can be optionally (though it is strongly
+ * encouraged) implemented as a zero-copy between a GLX pixmap and
+ * a GL texture.
+ *
+ * Return value: %TRUE if the texture is using the
+ *   GLX_EXT_texture_from_pixmap OpenGL extension or falling back to the
+ *   slower software mechanism.
  *
  * Since: 0.8
- **/
+ */
 gboolean
 clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 {
@@ -883,55 +888,49 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
  * clutter_glx_texture_pixmap_new_with_pixmap:
  * @pixmap: the X Pixmap to which this texture should be bound
  *
+ * Creates a new #ClutterGLXTexturePixmap for @pixmap
+ *
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X Pixmap
  *
  * Since: 0.8
- **/
-ClutterActor*
+ */
+ClutterActor *
 clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 {
-  ClutterActor *actor;
-
-  actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
-                        "pixmap", pixmap,
-                        NULL);
-
-  return actor;
+  return g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
+                       "pixmap", pixmap,
+                       NULL);
 }
 
 /**
  * clutter_glx_texture_pixmap_new_with_window:
  * @window: the X window to which this texture should be bound
  *
+ * Creates a new #ClutterGLXTexturePixmap for @window
+ *
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X window
  *
  * Since: 0.8
  **/
-ClutterActor*
+ClutterActor *
 clutter_glx_texture_pixmap_new_with_window (Window window)
 {
-  ClutterActor *actor;
-
-  actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
-                        "window", window,
-                        NULL);
-
-  return actor;
+  return g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
+                       "window", window,
+                       NULL);
 }
 
 /**
  * clutter_glx_texture_pixmap_new:
  *
+ * Creates a new, empty #ClutterGLXTexturePixmap
+ *
  * Return value: A new #ClutterGLXTexturePixmap
  *
  * Since: 0.8
- **/
+ */
 ClutterActor *
 clutter_glx_texture_pixmap_new (void)
 {
-  ClutterActor *actor;
-
-  actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP, NULL);
-
-  return actor;
+  return g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP, NULL);
 }

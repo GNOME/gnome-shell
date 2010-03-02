@@ -751,6 +751,14 @@ clutter_x11_has_xinput (void)
 #endif
 }
 
+/**
+ * clutter_x11_has_composite_extension:
+ *
+ * Retrieves whether Clutter is running on an X11 server with the
+ * XComposite extension
+ *
+ * Return value: %TRUE if the XComposite extension is available
+ */
 gboolean
 clutter_x11_has_composite_extension (void)
 {

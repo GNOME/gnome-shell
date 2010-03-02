@@ -244,6 +244,13 @@ _clutter_backend_impl_get_type (void)
   return clutter_backend_egl_get_type ();
 }
 
+/**
+ * clutter_egl_display:
+ *
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter
+ *
+ * Return value: the EGL display
+ */
 EGLDisplay
 clutter_egl_display (void)
 {

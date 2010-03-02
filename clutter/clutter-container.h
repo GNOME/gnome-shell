@@ -45,6 +45,15 @@ G_BEGIN_DECLS
 typedef struct _ClutterContainerIface   ClutterContainerIface;
 
 /**
+ * ClutterContainer:
+ *
+ * #ClutterContainer is an opaque structure whose members cannot be directly
+ * accessed
+ *
+ * Since: 0.4
+ */
+
+/**
  * ClutterContainerIface:
  * @add: virtual function for adding an actor to the container. The
  *   implementation of this virtual function is required.

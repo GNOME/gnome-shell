@@ -44,10 +44,20 @@ typedef struct _ClutterX11TexturePixmap        ClutterX11TexturePixmap;
 typedef struct _ClutterX11TexturePixmapClass   ClutterX11TexturePixmapClass;
 typedef struct _ClutterX11TexturePixmapPrivate ClutterX11TexturePixmapPrivate;
 
+/**
+ * ClutterX11TexturePixmapClass:
+ * @update_area: virtual function for updating the area of the texture
+ *
+ * The #ClutterX11TexturePixmapClass structure contains only private data
+ *
+ * Since: 0.8
+ */
 struct _ClutterX11TexturePixmapClass
 {
+  /*< private >*/
   ClutterTextureClass    parent_class;
 
+  /*< public >*/
   void                  (*update_area)    (ClutterX11TexturePixmap *texture,
                                            gint                     x,
                                            gint                     y,
@@ -55,14 +65,22 @@ struct _ClutterX11TexturePixmapClass
                                            gint                     height);
 };
 
+/**
+ * ClutterX11TexturePixmap:
+ *
+ * The #ClutterX11TexturePixmap structure contains only private data
+ *
+ * Since: 0.8
+ */
 struct _ClutterX11TexturePixmap
 {
+  /*< private >*/
   ClutterTexture                  parent;
 
   ClutterX11TexturePixmapPrivate *priv;
 };
 
-GType clutter_x11_texture_pixmap_get_type (void);
+GType clutter_x11_texture_pixmap_get_type (void) G_GNUC_CONST;
 ClutterActor * clutter_x11_texture_pixmap_new (void);
 
 ClutterActor * clutter_x11_texture_pixmap_new_with_pixmap (Pixmap      pixmap);

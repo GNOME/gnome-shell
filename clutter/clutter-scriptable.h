@@ -44,6 +44,15 @@ typedef struct _ClutterScriptable               ClutterScriptable;
 typedef struct _ClutterScriptableIface          ClutterScriptableIface;
 
 /**
+ * ClutterScriptable:
+ *
+ * #ClutterScriptable is an opaque structure whose members cannot be directly
+ * accessed
+ *
+ * Since: 0.6
+ */
+
+/**
  * ClutterScriptableIface:
  * @set_id: virtual function for setting the id of a scriptable object
  * @get_id: virtual function for getting the id of a scriptable object

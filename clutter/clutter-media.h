@@ -43,6 +43,15 @@ typedef struct _ClutterMedia            ClutterMedia; /* dummy typedef */
 typedef struct _ClutterMediaIface       ClutterMediaIface;
 
 /**
+ * ClutterMedia:
+ *
+ * #ClutterMedia is an opaque structure whose members cannot be directly
+ * accessed
+ *
+ * Since: 0.2
+ */
+
+/**
  * ClutterMediaIface:
  * @eos: handler for the #ClutterMedia::eos signal
  * @error: handler for the #ClutterMedia::error signal

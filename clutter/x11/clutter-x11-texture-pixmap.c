@@ -941,10 +941,13 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 /**
  * clutter_x11_texture_pixmap_new:
  *
+ * Creates a new #ClutterX11TexturePixmap which can be used to display the
+ * contents of an X11 Pixmap inside a Clutter scene graph
+ *
  * Return value: A new #ClutterX11TexturePixmap
  *
  * Since: 0.8
- **/
+ */
 ClutterActor *
 clutter_x11_texture_pixmap_new (void)
 {
@@ -959,10 +962,12 @@ clutter_x11_texture_pixmap_new (void)
  * clutter_x11_texture_pixmap_new_with_pixmap:
  * @pixmap: the X Pixmap to which this texture should be bound
  *
+ * Creates a new #ClutterX11TexturePixmap for @pixmap
+ *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X Pixmap
  *
  * Since: 0.8
- **/
+ */
 ClutterActor *
 clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 {
@@ -978,6 +983,8 @@ clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 /**
  * clutter_x11_texture_pixmap_new_with_window:
  * @window: the X window to which this texture should be bound
+ *
+ * Creates a new #ClutterX11TexturePixmap for @window
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X window.
  *
@@ -1003,7 +1010,7 @@ clutter_x11_texture_pixmap_new_with_window (Window window)
  * Sets the X Pixmap to which the texture should be bound.
  *
  * Since: 0.8
- **/
+ */
 void
 clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                        Pixmap                   pixmap)
@@ -1125,16 +1132,17 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
  * clutter_x11_texture_pixmap_set_window:
  * @texture: the texture to bind
  * @window: the X window to which the texture should be bound
- * @automatic: TRUE is automatic window updates, FALSE for manual.
+ * @automatic: %TRUE for automatic window updates, %FALSE for manual.
  *
  * Sets up a suitable pixmap for the window, using the composite and damage
  * extensions if possible, and then calls
- * clutter_x11_texture_pixmap_set_pixmap(). If you want a window in a texture,
- * you probably want this function, or its older sister,
- * clutter_glx_texture_pixmap_set_window().
+ * clutter_x11_texture_pixmap_set_pixmap().
+ *
+ * If you want to display a window in a #ClutterTexture, you probably want
+ * this function, or its older sister, clutter_glx_texture_pixmap_set_window()
  *
  * Since: 0.8
- **/
+ */
 void
 clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
                                        Window                   window,
@@ -1226,7 +1234,7 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
  * pixmap's invalidation as the window changed size.
  *
  * Since: 0.8
- **/
+ */
 void
 clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
 {
@@ -1363,6 +1371,16 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   g_signal_emit (texture, signals[UPDATE_AREA], 0, x, y, width, height);
 }
 
+/**
+ * clutter_x11_texture_pixmap_set_automatic:
+ * @texture: a #ClutterX11TexturePixmap
+ * @setting: %TRUE to enable automatic updates
+ *
+ * Enables or disables the automatic updates ot @texture in case the backing
+ * pixmap or window is damaged
+ *
+ * Since: 0.8
+ */
 void
 clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
                                           gboolean                 setting)

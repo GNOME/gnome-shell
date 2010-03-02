@@ -65,6 +65,9 @@ typedef enum {
   CLUTTER_X11_FILTER_REMOVE
 } ClutterX11FilterReturn;
 
+/*
+ * This is an internal only enumeration; it should really be private
+ */
 typedef enum {
   CLUTTER_X11_XINPUT_KEY_PRESS_EVENT = 0,
   CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT,
@@ -74,6 +77,9 @@ typedef enum {
   CLUTTER_X11_XINPUT_LAST_EVENT
 } ClutterX11XInputEventTypes;
 
+/*
+ * This is not used any more
+ */
 typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
 
 /**
@@ -122,7 +128,7 @@ gboolean clutter_x11_has_event_retrieval (void);
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
-G_CONST_RETURN GSList* clutter_x11_get_input_devices (void);
+G_CONST_RETURN GSList* clutter_x11_get_input_devices (void) G_GNUC_DEPRECATED;
 #endif
 
 void     clutter_x11_enable_xinput (void);

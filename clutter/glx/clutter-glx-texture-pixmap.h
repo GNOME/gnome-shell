@@ -45,13 +45,29 @@ typedef struct _ClutterGLXTexturePixmap        ClutterGLXTexturePixmap;
 typedef struct _ClutterGLXTexturePixmapClass   ClutterGLXTexturePixmapClass;
 typedef struct _ClutterGLXTexturePixmapPrivate ClutterGLXTexturePixmapPrivate;
 
+/**
+ * ClutterGLXTexturePixmapClass:
+ *
+ * The #ClutterGLXTexturePixmapClass structure contains only private data
+ *
+ * Since: 0.8
+ */
 struct _ClutterGLXTexturePixmapClass
 {
+  /*< private >*/
   ClutterX11TexturePixmapClass   parent_class;
 };
 
+/**
+ * ClutterGLXTexturePixmap:
+ *
+ * The #ClutterGLXTexturePixmap structure contains only private data
+ *
+ * Since: 0.8
+ */
 struct _ClutterGLXTexturePixmap
 {
+  /*< private >*/
   ClutterX11TexturePixmap         parent;
 
   ClutterGLXTexturePixmapPrivate *priv;

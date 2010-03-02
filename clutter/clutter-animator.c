@@ -1351,7 +1351,8 @@ clutter_animator_get_keys (ClutterAnimator *animator,
 }
 
 /**
- * clutter_animator_remove:
+ * clutter_animator_remove_key:
+ * @animator: a #ClutterAnimator
  * @object: (allow-none): a #GObject to search for, or %NULL for all
  * @property_name: (allow-none): a specific property name to query for,
  *   or %NULL for all
@@ -1833,7 +1834,7 @@ clutter_animator_property_set_ease_in (ClutterAnimator *animator,
 
 
 /**
- * clutter_animator_property_set_interpolation:
+ * clutter_animator_property_get_interpolation:
  * @animator: a #ClutterAnimatorKey
  * @object: a #GObject
  * @property_name: the name of a property on object

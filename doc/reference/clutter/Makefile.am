@@ -80,8 +80,6 @@ IGNORE_HFILES=\
 	clutter-script-private.h 	\
 	clutter-stage-window.h 		\
 	clutter-timeout-interval.h 	\
-	stamp-clutter-enum-types.h 	\
-	stamp-clutter-marshal.h 	\
 	cogl 				\
 	eglnative 			\
 	eglx 				\
@@ -90,8 +88,6 @@ IGNORE_HFILES=\
 	osx 				\
 	x11 				\
 	json 				\
-	pango 				\
-	sdl 				\
 	win32
 
 EXTRA_HFILES=\

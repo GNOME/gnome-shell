@@ -46,8 +46,9 @@ typedef struct _ClutterDeviceManagerClass       ClutterDeviceManagerClass;
 /**
  * ClutterDeviceManager:
  *
- * The #ClutterDeviceManager structure contains only
- * private data
+ * The #ClutterDeviceManager structure contains only private data
+ *
+ * Since: 1.2
  */
 struct _ClutterDeviceManager
 {
@@ -57,6 +58,13 @@ struct _ClutterDeviceManager
   ClutterDeviceManagerPrivate *priv;
 };
 
+/**
+ * ClutterDeviceManagerClass:
+ *
+ * The #ClutterDeviceManagerClass structure contains only private data
+ *
+ * Since: 1.2
+ */
 struct _ClutterDeviceManagerClass
 {
   /*< private >*/
@@ -73,6 +81,7 @@ struct _ClutterDeviceManagerClass
   void                (* remove_device)   (ClutterDeviceManager   *manager,
                                            ClutterInputDevice     *device);
 
+  /* padding */
   gpointer _padding[8];
 };
 
