@@ -117,7 +117,10 @@ on_captured_event (ClutterText *text,
 
       g_string_append (str, buf);
 
-      g_debug ("added '%s' to '%s' (len:%d)", buf, str->str, str->len);
+      g_print ("added '%s' to '%s' (len:%d)",
+               buf,
+               str->str,
+               (int) str->len);
 
       attrs = pango_attr_list_new ();
 
