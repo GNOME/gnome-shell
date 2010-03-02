@@ -9802,6 +9802,8 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  cogl_matrix_init_identity (matrix);
+
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
