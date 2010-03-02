@@ -256,13 +256,7 @@ st_box_container_add_actor (ClutterContainer *container,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
 
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
-
-  priv->children = g_list_append (priv->children, actor);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-added", actor);
+  _st_container_add_actor (container, actor, &priv->children);
 }
 
 static void
@@ -271,28 +265,7 @@ st_box_container_remove_actor (ClutterContainer *container,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
 
-  GList *item = NULL;
-
-  item = g_list_find (priv->children, actor);
-
-  if (item == NULL)
-    {
-      g_warning ("Actor of type '%s' is not a child of container of type '%s'",
-                 g_type_name (G_OBJECT_TYPE (actor)),
-                 g_type_name (G_OBJECT_TYPE (container)));
-      return;
-    }
-
-  g_object_ref (actor);
-
-  priv->children = g_list_delete_link (priv->children, item);
-  clutter_actor_unparent (actor);
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
-
-  clutter_actor_queue_relayout ((ClutterActor*) container);
+  _st_container_remove_actor (container, actor, &priv->children);
 }
 
 static void
@@ -302,7 +275,8 @@ st_box_container_foreach (ClutterContainer *container,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
 
-  g_list_foreach (priv->children, (GFunc) callback, callback_data);
+  _st_container_foreach (container, callback, callback_data,
+                         &priv->children);
 }
 
 static void
@@ -312,40 +286,7 @@ st_box_container_lower (ClutterContainer *container,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
 
-  /* copied from clutter/clutter/clutter-group.c */
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  /* Push to bottom */
-  if (!sibling)
-    {
-      GList *last_item;
-
-      last_item = g_list_first (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-
-      priv->children = g_list_prepend (priv->children, actor);
-    }
-  else
-    {
-      gint pos;
-
-      pos = g_list_index (priv->children, sibling);
-
-      priv->children = g_list_insert (priv->children, actor, pos);
-    }
-
-  /* See comment in group_raise for this */
-  if (sibling &&
-      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
-    {
-      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
-    }
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (container))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  _st_container_lower (container, actor, sibling, &priv->children);
 }
 
 static void
@@ -355,52 +296,15 @@ st_box_container_raise (ClutterContainer *container,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
 
-  priv->children = g_list_remove (priv->children, actor);
-
-  /* copied from clutter/clutter/clutter-group.c */
-
-  /* Raise at the top */
-  if (!sibling)
-    {
-      GList *last_item;
-
-      last_item = g_list_last (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-
-      priv->children = g_list_append (priv->children, actor);
-    }
-  else
-    {
-      gint pos;
-
-      pos = g_list_index (priv->children, sibling) + 1;
-
-      priv->children = g_list_insert (priv->children, actor, pos);
-    }
-
-  /* set Z ordering a value below, this will then call sort
-   * as values are equal ordering shouldn't change but Z
-   * values will be correct.
-   *
-   * FIXME: optimise
-   */
-  if (sibling &&
-      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
-    {
-      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
-    }
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (container))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  _st_container_raise (container, actor, sibling, &priv->children);
 }
 
 static void
 st_box_container_sort_depth_order (ClutterContainer *container)
 {
-  /* XXX: not yet implemented */
-  g_warning ("%s() not yet implemented", __FUNCTION__);
+  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
+
+  _st_container_sort_depth_order (container, &priv->children);
 }
 
 static void

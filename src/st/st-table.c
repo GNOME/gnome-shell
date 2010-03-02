@@ -64,7 +64,7 @@ enum
 
 struct _StTablePrivate
 {
-  GSList *children;
+  GList  *children;
 
   gint    col_spacing;
   gint    row_spacing;
@@ -89,11 +89,11 @@ struct _StTablePrivate
   guint   homogeneous : 1;
 };
 
-static void st_container_iface_init (ClutterContainerIface *iface);
+static void st_table_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (StTable, st_table, ST_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                st_container_iface_init));
+                                                st_table_container_iface_init));
 
 
 
@@ -101,95 +101,72 @@ G_DEFINE_TYPE_WITH_CODE (StTable, st_table, ST_TYPE_WIDGET,
  * ClutterContainer Implementation
  */
 static void
-st_container_add_actor (ClutterContainer *container,
-                        ClutterActor     *actor)
+st_table_add_actor (ClutterContainer *container,
+                    ClutterActor     *actor)
 {
   StTablePrivate *priv = ST_TABLE (container)->priv;
 
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
-
-
-  priv->children = g_slist_append (priv->children, actor);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-added", actor);
+  _st_container_add_actor (container, actor, &priv->children);
 }
 
 static void
-st_container_remove_actor (ClutterContainer *container,
-                           ClutterActor     *actor)
+st_table_remove_actor (ClutterContainer *container,
+                       ClutterActor     *actor)
 {
   StTablePrivate *priv = ST_TABLE (container)->priv;
 
-  GSList *item = NULL;
-
-  item = g_slist_find (priv->children, actor);
-
-  if (item == NULL)
-    {
-      g_warning ("Widget of type '%s' is not a child of container of type '%s'",
-                 g_type_name (G_OBJECT_TYPE (actor)),
-                 g_type_name (G_OBJECT_TYPE (container)));
-      return;
-    }
-
-  g_object_ref (actor);
-
-  priv->children = g_slist_delete_link (priv->children, item);
-  clutter_actor_unparent (actor);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
+  _st_container_remove_actor (container, actor, &priv->children);
 }
 
 static void
-st_container_foreach (ClutterContainer *container,
-                      ClutterCallback   callback,
-                      gpointer          callback_data)
+st_table_foreach (ClutterContainer *container,
+                  ClutterCallback   callback,
+                  gpointer          callback_data)
 {
   StTablePrivate *priv = ST_TABLE (container)->priv;
 
-  g_slist_foreach (priv->children, (GFunc) callback, callback_data);
+  _st_container_foreach (container, callback, callback_data,
+                         &priv->children);
 }
 
 static void
-st_container_lower (ClutterContainer *container,
-                    ClutterActor     *actor,
-                    ClutterActor     *sibling)
+st_table_lower (ClutterContainer *container,
+                ClutterActor     *actor,
+                ClutterActor     *sibling)
 {
-  /* XXX: not yet implemented */
-  g_warning ("%s() not yet implemented", __FUNCTION__);
+  StTablePrivate *priv = ST_TABLE (container)->priv;
+
+  _st_container_lower (container, actor, sibling, &priv->children);
 }
 
 static void
-st_container_raise (ClutterContainer *container,
-                    ClutterActor     *actor,
-                    ClutterActor     *sibling)
+st_table_raise (ClutterContainer *container,
+                ClutterActor     *actor,
+                ClutterActor     *sibling)
 {
-  /* XXX: not yet implemented */
-  g_warning ("%s() not yet implemented", __FUNCTION__);
+  StTablePrivate *priv = ST_TABLE (container)->priv;
+
+  _st_container_raise (container, actor, sibling, &priv->children);
 }
 
 static void
-st_container_sort_depth_order (ClutterContainer *container)
+st_table_sort_depth_order (ClutterContainer *container)
 {
-  /* XXX: not yet implemented */
-  g_warning ("%s() not yet implemented", __FUNCTION__);
+  StTablePrivate *priv = ST_TABLE (container)->priv;
+
+  _st_container_sort_depth_order (container, &priv->children);
 }
 
 static void
-st_container_iface_init (ClutterContainerIface *iface)
+st_table_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = st_container_add_actor;
-  iface->remove = st_container_remove_actor;
-  iface->foreach = st_container_foreach;
-  iface->lower = st_container_lower;
-  iface->raise = st_container_raise;
-  iface->sort_depth_order = st_container_sort_depth_order;
+  iface->add = st_table_add_actor;
+  iface->remove = st_table_remove_actor;
+  iface->foreach = st_table_foreach;
+  iface->lower = st_table_lower;
+  iface->raise = st_table_raise;
+  iface->sort_depth_order = st_table_sort_depth_order;
+
   iface->child_meta_type = ST_TYPE_TABLE_CHILD;
 }
 
@@ -283,7 +260,7 @@ st_table_homogeneous_allocate (ClutterActor          *self,
                                const ClutterActorBox *content_box,
                                gboolean               flags)
 {
-  GSList *list;
+  GList *list;
   gfloat col_width, row_height;
   gint row_spacing, col_spacing;
   StTablePrivate *priv = ST_TABLE (self)->priv;
@@ -299,7 +276,7 @@ st_table_homogeneous_allocate (ClutterActor          *self,
                 - (row_spacing * (priv->n_rows - 1)))
                / priv->n_rows;
 
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint row, col, row_span, col_span;
       StTableChild *meta;
@@ -357,7 +334,7 @@ st_table_calculate_col_widths (StTable *table,
   gboolean *is_expand_col;
   gint extra_col_width, n_expanded_cols = 0, expanded_cols = 0;
   gint *pref_widths, *min_widths;
-  GSList *list;
+  GList *list;
 
   g_array_set_size (priv->is_expand_col, 0);
   g_array_set_size (priv->is_expand_col, priv->n_cols);
@@ -371,7 +348,7 @@ st_table_calculate_col_widths (StTable *table,
   g_array_set_size (priv->min_widths, priv->n_cols);
   min_widths = (gint *) priv->min_widths->data;
 
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint row, col;
       gfloat w_min, w_pref;
@@ -459,7 +436,7 @@ st_table_calculate_row_heights (StTable *table,
                                 gint   * col_widths)
 {
   StTablePrivate *priv = ST_TABLE (table)->priv;
-  GSList *list;
+  GList *list;
   gint *is_expand_row, *min_heights, *pref_heights, *row_heights, extra_row_height;
   gint i, total_min_height;
   gint expanded_rows = 0;
@@ -482,7 +459,7 @@ st_table_calculate_row_heights (StTable *table,
   pref_heights = (gboolean *) priv->pref_heights->data;
 
   /* calculate minimum row widths and column heights */
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint row, col, cell_width;
       gfloat h_min, h_pref;
@@ -633,7 +610,7 @@ st_table_preferred_allocate (ClutterActor          *self,
                              const ClutterActorBox *content_box,
                              gboolean               flags)
 {
-  GSList *list;
+  GList *list;
   gint row_spacing, col_spacing;
   gint i;
   gint *col_widths, *row_heights;
@@ -659,7 +636,7 @@ st_table_preferred_allocate (ClutterActor          *self,
   ltr = (st_widget_get_direction (ST_WIDGET (self)) == ST_TEXT_DIRECTION_LTR);
 
 
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint row, col, row_span, col_span;
       gint col_width, row_height;
@@ -803,7 +780,7 @@ st_table_get_preferred_width (ClutterActor *self,
   gfloat total_min_width, total_pref_width;
   StTablePrivate *priv = ST_TABLE (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  GSList *list;
+  GList *list;
   gint i;
 
   if (priv->n_cols < 1)
@@ -825,7 +802,7 @@ st_table_get_preferred_width (ClutterActor *self,
   pref_widths = (gint *) priv->pref_widths->data;
 
   /* calculate minimum row widths */
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint col, col_span;
       gfloat w_min, w_pref;
@@ -878,7 +855,7 @@ st_table_get_preferred_height (ClutterActor *self,
   gfloat total_min_height, total_pref_height;
   StTablePrivate *priv = ST_TABLE (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  GSList *list;
+  GList *list;
   gint i;
   gint *min_widths;
 
@@ -906,7 +883,7 @@ st_table_get_preferred_height (ClutterActor *self,
   pref_heights = (gint *) priv->pref_heights->data;
 
   /* calculate minimum row heights */
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       gint row, col, col_span, cell_width, row_span;
       gfloat min, pref;
@@ -961,12 +938,12 @@ static void
 st_table_paint (ClutterActor *self)
 {
   StTablePrivate *priv = ST_TABLE (self)->priv;
-  GSList *list;
+  GList *list;
 
   /* make sure the background gets painted first */
   CLUTTER_ACTOR_CLASS (st_table_parent_class)->paint (self);
 
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       ClutterActor *child = CLUTTER_ACTOR (list->data);
       if (CLUTTER_ACTOR_IS_VISIBLE (child))
@@ -979,12 +956,12 @@ st_table_pick (ClutterActor       *self,
                const ClutterColor *color)
 {
   StTablePrivate *priv = ST_TABLE (self)->priv;
-  GSList *list;
+  GList *list;
 
   /* Chain up so we get a bounding box painted (if we are reactive) */
   CLUTTER_ACTOR_CLASS (st_table_parent_class)->pick (self, color);
 
-  for (list = priv->children; list; list = g_slist_next (list))
+  for (list = priv->children; list; list = list->next)
     {
       if (CLUTTER_ACTOR_IS_VISIBLE (list->data))
         clutter_actor_paint (CLUTTER_ACTOR (list->data));
@@ -995,7 +972,7 @@ static void
 st_table_show_all (ClutterActor *table)
 {
   StTablePrivate *priv = ST_TABLE (table)->priv;
-  GSList *l;
+  GList *l;
 
   for (l = priv->children; l; l = l->next)
     clutter_actor_show_all (CLUTTER_ACTOR (l->data));
@@ -1007,7 +984,7 @@ static void
 st_table_hide_all (ClutterActor *table)
 {
   StTablePrivate *priv = ST_TABLE (table)->priv;
-  GSList *l;
+  GList *l;
 
   clutter_actor_hide (table);
 

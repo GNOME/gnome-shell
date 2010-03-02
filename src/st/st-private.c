@@ -310,3 +310,231 @@ _st_set_text_from_style (ClutterText *text,
 
   pango_attr_list_unref (attribs);
 }
+
+/**
+ * _st_container_add_actor:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_add_actor().
+ * Mostly copied from clutter_group_real_add().
+ */
+void
+_st_container_add_actor (ClutterContainer  *container,
+                         ClutterActor      *actor,
+                         GList            **children)
+{
+  g_object_ref (actor);
+
+  *children = g_list_append (*children, actor);
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
+
+  /* queue a relayout, to get the correct positioning inside
+   * the ::actor-added signal handlers
+   */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
+  g_signal_emit_by_name (container, "actor-added", actor);
+
+  clutter_container_sort_depth_order (container);
+
+  g_object_unref (actor);
+}
+
+/**
+ * _st_container_remove_actor:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_remove_actor().
+ * Mostly copied from clutter_group_real_remove().
+ */
+void
+_st_container_remove_actor (ClutterContainer  *container,
+                            ClutterActor      *actor,
+                            GList            **children)
+{
+  g_object_ref (actor);
+
+  *children = g_list_remove (*children, actor);
+  clutter_actor_unparent (actor);
+
+  /* queue a relayout, to get the correct positioning inside
+   * the ::actor-removed signal handlers
+   */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
+  /* at this point, the actor passed to the "actor-removed" signal
+   * handlers is not parented anymore to the container but since we
+   * are holding a reference on it, it's still valid
+   */
+  g_signal_emit_by_name (container, "actor-removed", actor);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+
+  g_object_unref (actor);
+}
+
+/**
+ * _st_container_raise:
+ * @container: a #ClutterContainer
+ * @callback: callback
+ * @user_data: data for @callback
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_foreach().
+ * Mostly copied from clutter_group_real_foreach().
+ */
+void
+_st_container_foreach (ClutterContainer  *container,
+                       ClutterCallback    callback,
+                       gpointer           user_data,
+                       GList            **children)
+{
+  GList *l;
+
+  for (l = *children; l; l = l->next)
+    (* callback) (CLUTTER_ACTOR (l->data), user_data);
+}
+
+/**
+ * _st_container_raise:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor to raise
+ * @sibling: the sibling to raise to, or %NULL to put on top
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_raise().
+ * Mostly copied from clutter_group_real_raise().
+ */
+void
+_st_container_raise (ClutterContainer  *container,
+                     ClutterActor      *actor,
+                     ClutterActor      *sibling,
+                     GList            **children)
+{
+  *children = g_list_remove (*children, actor);
+
+  /* Raise at the top */
+  if (!sibling)
+    {
+      GList *last_item;
+
+      last_item = g_list_last (*children);
+
+      if (last_item)
+	sibling = last_item->data;
+
+      *children = g_list_append (*children, actor);
+    }
+  else
+    {
+      gint pos;
+
+      pos = g_list_index (*children, sibling) + 1;
+
+      *children = g_list_insert (*children, actor, pos);
+    }
+
+  /* set Z ordering a value below, this will then call sort
+   * as values are equal ordering shouldn't change but Z
+   * values will be correct.
+   *
+   * FIXME: optimise
+   */
+  if (sibling &&
+      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
+    {
+      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
+
+/**
+ * _st_container_lower:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor to lower
+ * @sibling: the sibling to lower to, or %NULL to put on bottom
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_lower().
+ * Mostly copied from clutter_group_real_lower().
+ */
+void
+_st_container_lower (ClutterContainer  *container,
+                     ClutterActor      *actor,
+                     ClutterActor      *sibling,
+                     GList            **children)
+{
+  *children = g_list_remove (*children, actor);
+
+  /* Push to bottom */
+  if (!sibling)
+    {
+      GList *last_item;
+
+      last_item = g_list_first (*children);
+
+      if (last_item)
+	sibling = last_item->data;
+
+      *children = g_list_prepend (*children, actor);
+    }
+  else
+    {
+      gint pos;
+
+      pos = g_list_index (*children, sibling);
+
+      *children = g_list_insert (*children, actor, pos);
+    }
+
+  /* See comment in _st_container_raise() for this */
+  if (sibling &&
+      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
+    {
+      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
+
+static gint
+sort_z_order (gconstpointer a,
+              gconstpointer b)
+{
+  float depth_a, depth_b;
+
+  depth_a = clutter_actor_get_depth (CLUTTER_ACTOR (a));
+  depth_b = clutter_actor_get_depth (CLUTTER_ACTOR (b));
+
+  if (depth_a < depth_b)
+    return -1;
+  if (depth_a > depth_b)
+    return 1;
+  return 0;
+}
+
+/**
+ * _st_container_sort_depth_order:
+ * @container: a #ClutterContainer
+ * @children: pointer to @container's list of children
+ *
+ * A basic implementation for clutter_container_sort_depth_order().
+ * Mostly copied from clutter_group_real_sort_depth_order().
+ */
+void
+_st_container_sort_depth_order (ClutterContainer  *container,
+                                GList            **children)
+{
+  *children = g_list_sort (*children, sort_z_order);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
