@@ -2,8 +2,7 @@
 #ifndef __SHELL_GENERIC_CONTAINER_H__
 #define __SHELL_GENERIC_CONTAINER_H__
 
-#include <clutter/clutter.h>
-#include <gtk/gtk.h>
+#include "st.h"
 
 #define SHELL_TYPE_GENERIC_CONTAINER                 (shell_generic_container_get_type ())
 #define SHELL_GENERIC_CONTAINER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_GENERIC_CONTAINER, ShellGenericContainer))
@@ -30,22 +29,23 @@ typedef struct _ShellGenericContainerPrivate ShellGenericContainerPrivate;
 
 struct _ShellGenericContainer
 {
-    ClutterGroup parent;
+    StWidget parent;
 
     ShellGenericContainerPrivate *priv;
 };
 
 struct _ShellGenericContainerClass
 {
-    ClutterGroupClass parent_class;
+    StWidgetClass parent_class;
 };
 
 GType shell_generic_container_get_type (void) G_GNUC_CONST;
 
-guint shell_generic_container_get_n_skip_paint (ShellGenericContainer  *container);
+guint shell_generic_container_get_n_skip_paint (ShellGenericContainer *self);
 
-void shell_generic_container_set_skip_paint (ShellGenericContainer  *container,
-                                             ClutterActor           *actor,
-                                             gboolean                skip);
+void  shell_generic_container_set_skip_paint   (ShellGenericContainer *self,
+                                                ClutterActor          *actor,
+                                                gboolean               skip);
+void  shell_generic_container_remove_all       (ShellGenericContainer *self);
 
 #endif /* __SHELL_GENERIC_CONTAINER_H__ */
