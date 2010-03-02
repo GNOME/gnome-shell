@@ -564,6 +564,8 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
               if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
                 clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
             }
+          else
+            break;
         }
     }
 }
