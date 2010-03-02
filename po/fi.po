@@ -1,14 +1,14 @@
 # gnome-shell Finnish translation
-# Copyright (C) 2009 Timo Jyrinki
+# Copyright (C) 2009-2010 Timo Jyrinki
 # This file is distributed under the same license as the gnome-shell package.
-# Timo Jyrinki <timo.jyrinki@iki.fi>, 2009.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2009-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-04 11:16+0200\n"
-"PO-Revision-Date: 2009-11-04 11:16+0200\n"
+"POT-Creation-Date: 2010-03-01 20:24+0200\n"
+"PO-Revision-Date: 2010-03-01 20:27+0200\n"
 "Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -24,87 +24,165 @@ msgstr ""
 msgid "Window management and application launching"
 msgstr "Ikkunanhallinta ja sovelluksien käynnistäminen"
 
-#: ../js/ui/appDisplay.js:332
-msgid "Frequent"
-msgstr "Usein käytetyt"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:180 ../js/ui/dash.js:881
+msgid "APPLICATIONS"
+msgstr "SOVELLUKSET"
 
-#: ../js/ui/appDisplay.js:867
-msgid "Drag here to add favorites"
-msgstr "Raahaa tähän lisätäksesi suosikkeihin"
+#: ../js/ui/appDisplay.js:204
+msgid "PREFERENCES"
+msgstr "ASETUKSET"
 
-#: ../js/ui/appIcon.js:426
+#: ../js/ui/appDisplay.js:582
 msgid "New Window"
 msgstr "Uusi ikkuna"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:586
 msgid "Remove from Favorites"
 msgstr "Poista suosikeista"
 
-#: ../js/ui/appIcon.js:431
+#: ../js/ui/appDisplay.js:587
 msgid "Add to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/appDisplay.js:939
+msgid "Drag here to add favorites"
+msgstr "Raahaa tähän lisätäksesi suosikkeihin"
+
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s on lisätty suosikkeihin."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s on poistettu suosikeista."
+
+#: ../js/ui/dash.js:235
 msgid "Find..."
 msgstr "Etsi..."
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Lisää"
+#: ../js/ui/dash.js:505
+msgid "Searching..."
+msgstr "Haetaan..."
 
-#: ../js/ui/dash.js:543
-msgid "(see all)"
-msgstr "(näytä kaikki)"
-
-#. **** Applications ****
-#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
-msgid "APPLICATIONS"
-msgstr "SOVELLUKSET"
+#: ../js/ui/dash.js:519
+msgid "No matching results."
+msgstr "Ei tuloksia."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:745
-msgid "PLACES"
-msgstr "SIJAINNIT"
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
+msgid "PLACES & DEVICES"
+msgstr "SIJAINNIT JA LAITTEET"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
-msgid "RECENT DOCUMENTS"
-msgstr "VIIMEISIMMÄT ASIAKIRJAT"
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
+msgid "RECENT ITEMS"
+msgstr "VIIMEISIMMÄT"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
-msgid "SEARCH RESULTS"
-msgstr "HAKUTULOKSET"
+#: ../js/ui/lookingGlass.js:363
+msgid "No extensions installed"
+msgstr "Laajennuksia ei asennettu"
 
-#: ../js/ui/dash.js:792
-msgid "PREFERENCES"
-msgstr "ASETUKSET"
+#: ../js/ui/lookingGlass.js:400
+msgid "Enabled"
+msgstr "Käytössä"
+
+#: ../js/ui/lookingGlass.js:402
+msgid "Disabled"
+msgstr "Ei käytössä"
+
+#: ../js/ui/lookingGlass.js:404
+msgid "Error"
+msgstr "Virhe"
+
+#: ../js/ui/lookingGlass.js:406
+msgid "Out of date"
+msgstr "Ei ajan tasalla"
+
+#: ../js/ui/lookingGlass.js:431
+msgid "View Source"
+msgstr "Näytä lähde"
+
+#: ../js/ui/lookingGlass.js:437
+msgid "Web Page"
+msgstr "WWW-sivu"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Kumoa"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:399
 msgid "Activities"
 msgstr "Toiminnot"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:623
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:626
 msgid "%a %l:%M %p"
 msgstr "%a %I.%M"
 
-#: ../js/ui/places.js:178
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Yhdistä..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:220
 msgid "Please enter a command:"
 msgstr "Syötä komento:"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:328
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr ""
+msgstr "”%s” suorittaminen epäonnistui:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Tavoitettavissa"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Kiireinen"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Näkymätön"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Käyttäjätilin tiedot..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Sivupalkki"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Järjestelmän asetukset"
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Lukitse näyttö"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Vaihda käyttäjää"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Kirjaudu ulos..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Sammuta..."
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -119,99 +197,49 @@ msgstr "Sovellukset"
 msgid "Recent Documents"
 msgstr "Viimeisimmät asiakirjat"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Alle minuutti sitten"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuutti sitten"
 msgstr[1] "%d minuuttia sitten"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d tunti sitten"
 msgstr[1] "%d tuntia sitten"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d päivä sitten"
 msgstr[1] "%d päivää sitten"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d viikko sitten"
 msgstr[1] "%d viikkoa sitten"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Tuntematon"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Näyttöä ei voi lukita: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr ""
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Käyttäjätilin tiedot..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Sivupalkki"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Järjestelmän asetukset"
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Lukitse näyttö"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Vaihda käyttäjää"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Kirjaudu ulos..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Sammuta..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Kotikansio"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Tiedostojärjestelmä"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Haku"
 
@@ -220,7 +248,28 @@ msgstr "Haku"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Frequent"
+#~ msgstr "Usein käytetyt"
+
+#~ msgid "More"
+#~ msgstr "Lisää"
+
+#~ msgid "(see all)"
+#~ msgstr "(näytä kaikki)"
+
+#~ msgid "PLACES"
+#~ msgstr "SIJAINNIT"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "HAKUTULOKSET"
+
+#~ msgid "Unknown"
+#~ msgstr "Tuntematon"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "Näyttöä ei voi lukita: %s"
