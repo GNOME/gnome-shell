@@ -10,6 +10,7 @@ json_files = \
 	test-script-single.json			\
 	test-animator-1.json			\
 	test-animator-2.json			\
+	test-animator-3.json			\
 	$(NULL)
 
 png_files = \
