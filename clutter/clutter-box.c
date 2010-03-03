@@ -798,7 +798,7 @@ clutter_box_pack (ClutterBox   *box,
  * clutter_box_pack_after:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
- * @sibling: (allow none): a #ClutterActor or %NULL
+ * @sibling: (allow-none): a #ClutterActor or %NULL
  * @first_property: the name of the first property to set, or %NULL
  * @Varargs: a list of property name and value pairs, terminated by %NULL
  *
@@ -842,7 +842,7 @@ clutter_box_pack_after (ClutterBox   *box,
  * clutter_box_pack_before:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
- * @sibling: (allow none): a #ClutterActor or %NULL
+ * @sibling: (allow-none): a #ClutterActor or %NULL
  * @first_property: the name of the first property to set, or %NULL
  * @Varargs: a list of property name and value pairs, terminated by %NULL
  *
