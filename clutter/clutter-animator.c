@@ -994,6 +994,9 @@ clutter_animator_compute_value (ClutterAnimator *animator,
 
     }
 
+  if (!next)
+    return FALSE;
+
   /* We're at, or past the end, use the last value */
   g_value_copy (&next->value, value);
 
