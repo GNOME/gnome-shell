@@ -44,16 +44,16 @@ StScrollView
 StScrollView > .top-shadow
 {
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(0, 0, 0, 255);
-    background-gradient-end: rgba(0, 0, 0, 0);
+    background-gradient-start: #111111;
+    background-gradient-end: rgba(17, 17, 17, 0);
     height: 30px;
 }
 
 StScrollView > .bottom-shadow
 {
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(0, 0, 0, 0);
-    background-gradient-end: rgba(0, 0, 0, 255);
+    background-gradient-start: rgba(17, 17, 17, 0);
+    background-gradient-end: #111111;
     height: 30px;
 }
 
@@ -413,8 +413,8 @@ StTooltip {
 
 .all-app {
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.95);
-    border: 1px solid #262626;
+    background-color: #111111;
+    border: 2px solid #868686;
     color: #ffffff;
     height: 400px;
 }
