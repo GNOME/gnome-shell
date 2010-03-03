@@ -95,11 +95,18 @@ can be overridden:
      by Clutter. Clutter will call this function during the initialization
      phase. A GL (or GLES) context must always be available after the
      initialization, so that Cogl and Clutter can query it for capabilities.
+     This function might be called multiple times so if a context was
+     successfully created in a previous call, this function should
+     short-circuit early and return TRUE
 
   ClutterBackend::ensure_context
   -- This function is used to ensure that the backend drawing context
      is made current for passed ClutterStage, using the backend-specific
-     API.
+     API. This function is called each time a new stage is going to
+     be painted. If the Stage is inside its destruction sequence this
+     function should either fall back the drawing context to a default
+     drawing surface or should unset the drawing surface from the
+     drawing context.
 
   ClutterBackend::redraw
   -- This function is used to draw the passed ClutterStage; the backend
