@@ -43,7 +43,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gir-repository">
+  <autotools id="gir-repository" autogenargs="--with-skipped-gir-modules=Gst,Poppler,WebKit,GSSDP,Unique,GMenu,Wnck,GooCanvas,Notify,GnomeKeyring">
     <branch repo="git.gnome.org" module="gir-repository"/>
     <dependencies>
         <dep package="gobject-introspection"/>
