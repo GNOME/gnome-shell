@@ -52,7 +52,7 @@ typedef struct _ClutterStageManagerClass        ClutterStageManagerClass;
  */
 
 /**
- * ClutterStageManagerClass;
+ * ClutterStageManagerClass:
  * @stage_added: class handler for the #ClutterStageManager::stage-added
  *   signal
  * @stage_removed: class handler for the #ClutterStageManager::stage-removed
