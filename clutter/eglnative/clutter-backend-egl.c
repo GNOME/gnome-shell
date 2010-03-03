@@ -104,6 +104,9 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
     EGL_NONE
   };
 
+  if (backend_egl->egl_context)
+    return TRUE;
+
   status = eglGetConfigs (backend_egl->edpy,
                           configs,
                           2,
