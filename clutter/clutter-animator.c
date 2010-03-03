@@ -139,6 +139,9 @@
 
 #define CLUTTER_ANIMATOR_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ANIMATOR, ClutterAnimatorPrivate))
 
+/* progress values varying by less than this are considered equal */
+#define PROGRESS_EPSILON  0.00001
+
 struct _ClutterAnimatorPrivate
 {
   ClutterTimeline  *timeline;
@@ -325,7 +328,7 @@ sort_actor_prop_progress_func (gconstpointer a,
       if (pdiff)
         return pdiff;
 
-      if (pa->progress == pb->progress)
+      if (fabs (pa->progress - pb->progress) < PROGRESS_EPSILON)
         return 0;
 
       if (pa->progress > pb->progress)
@@ -1346,7 +1349,7 @@ clutter_animator_get_keys (ClutterAnimator *animator,
 
       if ((object == NULL || (object == key->object)) &&
           (property_name == NULL || ((property_name == key->property_name))) &&
-          (progress < 0          || (progress == key->progress)))
+          (progress < 0  || fabs (progress - key->progress) < PROGRESS_EPSILON))
         {
           keys = g_list_prepend (keys, key);
         }
@@ -1390,7 +1393,7 @@ clutter_animator_remove_key (ClutterAnimator *animator,
 
       if ((object == NULL        || (object == key->object)) &&
           (property_name == NULL || ((property_name == key->property_name))) &&
-          (progress < 0          || (progress == key->progress))
+          (progress < 0  || fabs (progress - key->progress) < PROGRESS_EPSILON)
          )
         {
           key->is_inert = TRUE;
