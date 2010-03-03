@@ -78,7 +78,7 @@ struct _TestCoglboxPrivate
  *--------------------------------------------------*/
 
 static void
-test_coglbox_paint(ClutterActor *self)
+test_coglbox_paint (ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
   gfloat texcoords[4] = { 0, 0, 1, 1 };
@@ -136,11 +136,104 @@ test_coglbox_dispose (GObject *object)
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }
 
+/* A newly created Cogl framebuffer will be initialized with a
+ * viewport covering the size of the viewport i.e. equavalent to:
+ *
+ * calling cogl_framebuffer_set_viewport (
+ *                                fb,
+ *                                0, 0,
+ *                                cogl_framebuffer_get_viewport_width (fb),
+ *                                cogl_framebuffer_get_viewport_width (fb));
+ *
+ * The projection matrix will be an identity matrix.
+ *
+ * The modelview matrix will be an identity matrix, and this will
+ * create a coordinate system - like OpenGL - with the viewport
+ * being mapped to a unit cube with the origin (0, 0, 0) in the
+ * center, x, y and z ranging from -1 to 1 with (-1, -1) being top
+ * left and (1, 1) bottom right.
+ *
+ * This sets up a Clutter like coordinate system for a Cogl
+ * framebuffer
+ */
+void
+setup_viewport (unsigned int width,
+                unsigned int height,
+                float fovy,
+                float aspect,
+                float z_near,
+                float z_far)
+{
+  float z_camera;
+  CoglMatrix projection_matrix;
+  CoglMatrix mv_matrix;
+
+  cogl_set_viewport (0, 0, width, height);
+
+  /* For Ortho projection.
+   * _cogl_matrix_stack_ortho (projection_stack, 0, width, 0,  height, -1, 1);
+   */
+
+  cogl_perspective (fovy, aspect, z_near, z_far);
+
+  /*
+   * In theory, we can compute the camera distance from screen as:
+   *
+   *   0.5 * tan (FOV)
+   *
+   * However, it's better to compute the z_camera from our projection
+   * matrix so that we get a 1:1 mapping at the screen distance. Consider
+   * the upper-left corner of the screen. It has object coordinates
+   * (0,0,0), so by the transform below, ends up with eye coordinate
+   *
+   *   x_eye = x_object / width - 0.5 = - 0.5
+   *   y_eye = (height - y_object) / width - 0.5 = 0.5
+   *   z_eye = z_object / width - z_camera = - z_camera
+   *
+   * From cogl_perspective(), we know that the projection matrix has
+   * the form:
+   *
+   *  (x, 0,  0, 0)
+   *  (0, y,  0, 0)
+   *  (0, 0,  c, d)
+   *  (0, 0, -1, 0)
+   *
+   * Applied to the above, we get clip coordinates of
+   *
+   *  x_clip = x * (- 0.5)
+   *  y_clip = y * 0.5
+   *  w_clip = - 1 * (- z_camera) = z_camera
+   *
+   * Dividing through by w to get normalized device coordinates, we
+   * have, x_nd = x * 0.5 / z_camera, y_nd = - y * 0.5 / z_camera.
+   * The upper left corner of the screen has normalized device coordinates,
+   * (-1, 1), so to have the correct 1:1 mapping, we have to have:
+   *
+   *   z_camera = 0.5 * x = 0.5 * y
+   *
+   * If x != y, then we have a non-uniform aspect ration, and a 1:1 mapping
+   * doesn't make sense.
+   */
+
+  cogl_get_projection_matrix (&projection_matrix);
+  z_camera = 0.5 * projection_matrix.xx;
+
+  cogl_matrix_init_identity (&mv_matrix);
+  cogl_matrix_translate (&mv_matrix, -0.5f, -0.5f, -z_camera);
+  cogl_matrix_scale (&mv_matrix, 1.0f / width, -1.0f / height, 1.0f / width);
+  cogl_matrix_translate (&mv_matrix, 0.0f, -1.0 * height, 0.0f);
+  cogl_set_modelview_matrix (&mv_matrix);
+}
+
 static void
 test_coglbox_init (TestCoglbox *self)
 {
+  ClutterActor *stage;
   TestCoglboxPrivate *priv;
   gchar *file;
+  ClutterPerspective perspective;
+  float stage_width;
+  float stage_height;
 
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
 
@@ -162,6 +255,20 @@ test_coglbox_init (TestCoglbox *self)
 
   printf ("Creating offscreen\n");
   priv->offscreen_id = cogl_offscreen_new_to_texture (priv->texture_id);
+
+  stage = clutter_stage_get_default ();
+  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
+  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
+  cogl_push_framebuffer (priv->offscreen_id);
+
+  setup_viewport (stage_width, stage_height,
+                  perspective.fovy,
+                  perspective.aspect,
+                  perspective.z_near,
+                  perspective.z_far);
+
+  cogl_pop_framebuffer ();
 
   if (priv->offscreen_id == COGL_INVALID_HANDLE)
     printf ("Failed creating offscreen to texture!\n");
