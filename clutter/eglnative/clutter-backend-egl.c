@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <errno.h>
+
 #include "clutter-backend-egl.h"
 #include "clutter-stage-egl.h"
 
@@ -291,7 +293,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   stage_egl->backend = backend_egl;
   stage_egl->wrapper = wrapper;
 
-  backend_egl->stage = CLUTTER_ACTOR (stage_egl);
+  backend_egl->stage = stage;
 
   return stage;
 }

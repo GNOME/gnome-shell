@@ -149,10 +149,8 @@ _clutter_events_egl_init (ClutterBackendEGL *backend_egl)
 }
 
 void
-_clutter_events_egl_uninit (ClutterBackend *backend)
+_clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-
   if (backend_egl->event_timer != NULL)
     {
       CLUTTER_NOTE (EVENT, "Stopping the timer");
@@ -181,7 +179,6 @@ static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)
 {
-  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   gboolean retval;
 
   clutter_threads_enter ();
@@ -198,7 +195,6 @@ static gboolean
 clutter_event_check (GSource *source)
 {
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  ClutterBackend *backend = event_source->backend;
   gboolean retval;
 
   clutter_threads_enter ();
@@ -216,9 +212,8 @@ clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterBackend     *backend = ((ClutterEventSource *) source)->backend;
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  ClutterEvent       *event;
+  ClutterEvent *event;
 #ifdef HAVE_TSLIB
   struct ts_sample    tsevent;
 #endif
@@ -233,7 +228,7 @@ clutter_event_dispatch (GSource     *source,
 #ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */
   if ((!clutter_events_pending()) &&
-        (ts_read(event_source->ts_device, &tsevent, 1) == 1))
+      (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
       /* Avoid sending too many events which are just pressure changes.
        *
