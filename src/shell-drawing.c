@@ -6,7 +6,7 @@
 #include <math.h>
 
 void
-shell_draw_clock (ClutterCairoTexture *texture,
+shell_draw_clock (StDrawingArea       *area,
                   int                  hour,
                   int                  minute)
 {
@@ -15,15 +15,14 @@ shell_draw_clock (ClutterCairoTexture *texture,
   double xc, yc, radius, hour_radius, minute_radius;
   double angle;
 
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  st_drawing_area_get_surface_size (area, &width, &height);
   xc = (double)width / 2;
   yc = (double)height / 2;
   radius = (double)(MIN(width, height)) / 2 - 2;
   minute_radius = radius - 3;
   hour_radius = radius / 2;
 
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
+  cr = st_drawing_area_get_context (area);
   cairo_set_line_width (cr, 1.0);
 
   /* Outline */
@@ -48,8 +47,6 @@ shell_draw_clock (ClutterCairoTexture *texture,
                  xc + minute_radius * cos (angle),
                  yc + minute_radius * sin (angle));
   cairo_stroke (cr);
-
-  cairo_destroy (cr);
 }
 
 /**
@@ -117,7 +114,7 @@ shell_fade_app_icon (ClutterTexture *source)
 }
 
 void
-shell_draw_box_pointer (ClutterCairoTexture   *texture,
+shell_draw_box_pointer (StDrawingArea         *area,
                         ShellPointerDirection  direction,
                         ClutterColor          *border_color,
                         ClutterColor          *background_color)
@@ -125,10 +122,9 @@ shell_draw_box_pointer (ClutterCairoTexture   *texture,
   guint width, height;
   cairo_t *cr;
 
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  st_drawing_area_get_surface_size (area, &width, &height);
 
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
+  cr = st_drawing_area_get_context (area);
 
   cairo_set_line_width (cr, 1.0);
 
@@ -169,8 +165,6 @@ shell_draw_box_pointer (ClutterCairoTexture   *texture,
   clutter_cairo_set_source_color (cr, background_color);
 
   cairo_fill (cr);
-
-  cairo_destroy (cr);
 }
 
 static void

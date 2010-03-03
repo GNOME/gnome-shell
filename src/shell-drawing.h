@@ -4,6 +4,7 @@
 #define __SHELL_DRAWING_H__
 
 #include <clutter/clutter.h>
+#include "st.h"
 
 G_BEGIN_DECLS
 
@@ -14,12 +15,12 @@ typedef enum {
   SHELL_POINTER_RIGHT
 } ShellPointerDirection;
 
-void shell_draw_box_pointer (ClutterCairoTexture   *texture,
+void shell_draw_box_pointer (StDrawingArea         *area,
                              ShellPointerDirection  direction,
                              ClutterColor          *border_color,
                              ClutterColor          *background_color);
 
-void shell_draw_clock (ClutterCairoTexture *texture,
+void shell_draw_clock (StDrawingArea       *area,
 	               int                  hour,
 	               int                  minute);
 

@@ -695,9 +695,9 @@ AppSwitcher.prototype = {
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea();
-        arrow.connect('redraw', Lang.bind(this,
-            function (area, texture) {
-                Shell.draw_box_pointer(texture, Shell.PointerDirection.DOWN,
+        arrow.connect('repaint', Lang.bind(this,
+            function (area) {
+                Shell.draw_box_pointer(area, Shell.PointerDirection.DOWN,
                                        TRANSPARENT_COLOR,
                                        this._curApp == n ? POPUP_ARROW_COLOR : POPUP_UNFOCUSED_ARROW_COLOR);
             }));

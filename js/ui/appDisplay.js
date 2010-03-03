@@ -633,8 +633,8 @@ AppIconMenu.prototype = {
         this._windowContainerBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
         this._arrow = new St.DrawingArea();
-        this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
-            Shell.draw_box_pointer(texture,
+        this._arrow.connect('repaint', Lang.bind(this, function (area) {
+            Shell.draw_box_pointer(area,
                                    Shell.PointerDirection.LEFT,
                                    this._borderColor,
                                    this._backgroundColor);
@@ -884,7 +884,7 @@ AppIconMenu.prototype = {
         if (themeNode.get_border_color(St.Side.LEFT, color)) {
             this._borderColor = color;
         }
-        this._arrow.emit_redraw();
+        this._arrow.queue_repaint();
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);

@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -117,10 +118,9 @@ ClockWidget.prototype = {
                                         // it's the same in both modes
                                         height: COLLAPSED_WIDTH });
 
-        this.collapsedActor = new Clutter.CairoTexture({ width: COLLAPSED_WIDTH,
-                                                         height: COLLAPSED_WIDTH,
-                                                         surface_width: COLLAPSED_WIDTH,
-                                                         surface_height: COLLAPSED_WIDTH });
+        this.collapsedActor = new St.DrawingArea({ width: COLLAPSED_WIDTH,
+                                                   height: COLLAPSED_WIDTH });
+        this.collapsedActor.connect('repaint', Lang.bind(this, this._repaintClock));
 
         this._update();
     },
@@ -139,18 +139,18 @@ ClockWidget.prototype = {
     },
 
     _update: function() {
-        let time = new Date();
-        let msec_remaining = 60000 - (1000 * time.getSeconds() +
-                                      time.getMilliseconds());
+        this.currentTime = new Date();
+        let msec_remaining = 60000 - (1000 * this.currentTime.getSeconds() +
+                                      this.currentTime.getMilliseconds());
         if (msec_remaining < 500) {
-            time.setMinutes(time.getMinutes() + 1);
+            this.currentTime.setMinutes(time.getMinutes() + 1);
             msec_remaining += 60000;
         }
 
         if (this.state == STATE_COLLAPSED || this.state == STATE_COLLAPSING)
-            this._updateCairo(time);
+            this.collapsedActor.queue_repaint();
         else
-            this._updateText(time);
+            this._updateText();
 
         if (this.timer)
             Mainloop.source_remove(this.timer);
@@ -160,13 +160,13 @@ ClockWidget.prototype = {
 
     _updateText: function(time) {
         // Translators: This is a time format.
-        this.actor.set_text(time.toLocaleFormat(_("%H:%M")));
+        this.actor.set_text(this.currentTime.toLocaleFormat(_("%H:%M")));
     },
 
-    _updateCairo: function(time) {
-        Shell.draw_clock(this.collapsedActor,
-                         time.getHours() % 12,
-                         time.getMinutes());
+    _repaintClock: function(area) {
+        Shell.draw_clock(area,
+                         this.currentTime.getHours() % 12,
+                         this.currentTime.getMinutes());
     }
 };
 
