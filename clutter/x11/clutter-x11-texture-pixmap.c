@@ -471,11 +471,6 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
                                    CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
                                    ClutterX11TexturePixmapPrivate);
 
-  g_signal_override_class_handler (
-            "queue-damage-redraw",
-            CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
-            G_CALLBACK (clutter_x11_texture_pixmap_real_queue_damage_redraw));
-
   if (!check_extensions (self))
     {
       /* FIMXE: means display lacks needed extensions for at least auto.
@@ -814,17 +809,21 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * Since: 1.2
    */
   signals[QUEUE_DAMAGE_REDRAW] =
-      g_signal_new ("queue-damage-redraw",
-                    G_TYPE_FROM_CLASS (object_class),
-                    G_SIGNAL_RUN_FIRST,
-                    0,
-                    NULL, NULL,
-                    clutter_marshal_VOID__INT_INT_INT_INT,
-                    G_TYPE_NONE, 4,
-                    G_TYPE_INT,
-                    G_TYPE_INT,
-                    G_TYPE_INT,
-                    G_TYPE_INT);
+    g_signal_new (g_intern_static_string ("queue-damage-redraw"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL,
+                  clutter_marshal_VOID__INT_INT_INT_INT,
+                  G_TYPE_NONE, 4,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
+
+  g_signal_override_class_handler ("queue-damage-redraw",
+                                   CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
+                                   G_CALLBACK (clutter_x11_texture_pixmap_real_queue_damage_redraw));
 
   default_backend = clutter_get_default_backend ();
 
