@@ -87,7 +87,8 @@ AllAppDisplay.prototype = {
             Main.queueDeferredWork(this._workId);
         }));
 
-        let bin = new St.BoxLayout({ style_class: 'all-app-controls-panel' });
+        let bin = new St.BoxLayout({ style_class: 'all-app-controls-panel',
+                                     reactive: true });
         this.actor = new St.BoxLayout({ style_class: 'all-app', vertical: true });
         this.actor.hide();
 

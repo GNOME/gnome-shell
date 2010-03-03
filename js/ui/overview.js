@@ -372,9 +372,8 @@ Overview.prototype = {
             }));
         }
 
-        this._transparentBackground.set_position(this._paneContainer.x, this._paneContainer.y);
-        this._transparentBackground.set_size(primary.width - this._paneContainer.x,
-                                             this._paneContainer.height);
+        this._transparentBackground.set_position(primary.x, primary.y);
+        this._transparentBackground.set_size(primary.width, primary.height);
 
     },
 
@@ -391,10 +390,17 @@ Overview.prototype = {
                 this._transparentBackground.raise_top();
                 this._paneContainer.raise_top();
                 this._paneContainer.show();
+                this._paneReady = false;
                 if (backgroundEventId != null)
                     this._transparentBackground.disconnect(backgroundEventId);
-                backgroundEventId = this._transparentBackground.connect('button-release-event', Lang.bind(this, function () {
-                    this._activeDisplayPane.close();
+                backgroundEventId = this._transparentBackground.connect('captured-event', Lang.bind(this, function (actor, event) {
+                    if (event.get_source() != this._transparentBackground)
+                        return false;
+                    if (event.type() == Clutter.EventType.BUTTON_PRESS)
+                        this._paneReady = true;
+                    if (event.type() == Clutter.EventType.BUTTON_RELEASE
+                        && this._paneReady)
+                        this._activeDisplayPane.close();
                     return true;
                 }));
                 this._workspaces.actor.opacity = 64;
