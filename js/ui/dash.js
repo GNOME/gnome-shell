@@ -432,6 +432,12 @@ OverflowSearchResults.prototype = {
         targetActor._delegate.setSelected(true);
         this.selectionIndex = index;
         return true;
+    },
+
+    activateSelected: function() {
+        let children = this.actor.get_children();
+        let targetActor = children[this.selectionIndex];
+        targetActor._delegate.activate();
     }
 }
 
@@ -597,9 +603,8 @@ SearchResults.prototype = {
             return;
         let meta = this._providerMeta[current];
         let resultDisplay = meta.resultDisplay;
-        let children = resultDisplay.actor.get_children();
-        let targetActor = children[resultDisplay.getSelectionIndex()];
-        targetActor._delegate.activate();
+        resultDisplay.activateSelected();
+        Main.overview.hide();
     }
 }
 

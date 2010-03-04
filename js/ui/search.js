@@ -80,6 +80,13 @@ SearchResultDisplay.prototype = {
      */
     selectIndex: function() {
         throw new Error("not implemented");
+    },
+
+    /**
+     * Activate the currently selected search result.
+     */
+    activateSelected: function() {
+        throw new Error("not implemented");
     }
 };
 

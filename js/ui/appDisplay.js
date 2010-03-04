@@ -251,6 +251,14 @@ AppSearchResultDisplay.prototype = {
         targetActor._delegate.setSelected(true);
         this.selectionIndex = index;
         return true;
+    },
+
+    activateSelected: function() {
+        if (this.selectionIndex < 0)
+            return;
+        let children = this._container.get_children();
+        let targetActor = children[this.selectionIndex];
+        this.provider.activateResult(targetActor._delegate.app.get_id())
     }
 }
 
