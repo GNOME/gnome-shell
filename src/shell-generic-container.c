@@ -287,6 +287,8 @@ shell_generic_container_remove_actor (ClutterContainer *container,
 {
   ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
 
+  g_hash_table_remove (priv->skip_paint, actor);
+
   _st_container_remove_actor (container, actor, &priv->children);
 }
 
