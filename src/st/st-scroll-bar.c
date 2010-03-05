@@ -77,7 +77,15 @@ struct _StScrollBarPrivate
 
   ClutterAnimation *paging_animation;
 
-  gboolean          vertical;
+  guint             vertical : 1;
+
+  /* We want to keep track of whether we have a currently valid
+   * allocation or not. This isn't exported from ClutterActor
+   * so we need to shadow the computations and track it ourselves.
+   *
+   * http://bugzilla.openedhand.com/show_bug.cgi?id=2024
+   */
+  guint             needs_allocation : 1;
 };
 
 enum
@@ -273,18 +281,36 @@ st_scroll_bar_unmap (ClutterActor *actor)
 }
 
 static void
-st_scroll_bar_allocate (ClutterActor          *actor,
-                        const ClutterActorBox *box,
-                        ClutterAllocationFlags flags)
+st_scroll_bar_parent_set (ClutterActor  *actor,
+                          ClutterActor   *old_parent)
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+
+  priv->needs_allocation = TRUE;
+
+  if (CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->parent_set)
+    CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->parent_set (actor, old_parent);
+}
+
+static void
+st_scroll_bar_queue_relayout (ClutterActor *actor)
+{
+  StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
+
+  priv->needs_allocation = TRUE;
+
+  CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->queue_relayout (actor);
+}
+
+static void
+scroll_bar_allocate_children (StScrollBar           *bar,
+                              const ClutterActorBox *box,
+                              ClutterAllocationFlags flags)
+{
+  StScrollBarPrivate *priv = bar->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (bar));
   ClutterActorBox content_box, bw_box, fw_box, trough_box;
   gfloat bw_stepper_size, fw_stepper_size, min_size, natural_size;
-
-  /* Chain up */
-  CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->
-  allocate (actor, box, flags);
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
@@ -361,7 +387,6 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 
   if (priv->adjustment)
     {
-      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
       float handle_size, position, avail_size, stepper_size;
       gdouble value, lower, upper, page_size, increment, min_size, max_size;
       ClutterActorBox handle_box = { 0, };
@@ -427,6 +452,45 @@ st_scroll_bar_allocate (ClutterActor          *actor,
                               &handle_box,
                               flags);
     }
+}
+
+static void
+st_scroll_bar_allocate (ClutterActor          *actor,
+                        const ClutterActorBox *box,
+                        ClutterAllocationFlags flags)
+{
+  StScrollBar *bar = ST_SCROLL_BAR (actor);
+  StScrollBarPrivate *priv = bar->priv;
+  priv->needs_allocation = FALSE;
+
+  /* Chain up */
+  CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->allocate (actor, box, flags);
+
+  scroll_bar_allocate_children (bar, box, flags);
+}
+
+static void
+scroll_bar_update_positions (StScrollBar *bar)
+{
+  StScrollBarPrivate *priv = bar->priv;
+  ClutterActorBox box;
+
+  /* Due to a change in the adjustments, we need to reposition our
+   * children; since adjustments changes can come from allocation
+   * changes in the scrolled area, we can't just queue a new relayout -
+   * we may already be in a relayout cycle. On the other hand, if
+   * a relayout is already queued, we can't just go ahead and allocate
+   * our children, since we don't have a valid allocation, and calling
+   * clutter_actor_get_allocation_box() will trigger an immediate
+   * stage relayout. So what we do is go ahead and immediately
+   * allocate our children if we already have a valid allocation, and
+   * otherwise just wait for the queued relayout.
+   */
+  if (priv->needs_allocation)
+    return;
+
+  clutter_actor_get_allocation_box (CLUTTER_ACTOR (bar), &box);
+  scroll_bar_allocate_children (bar, &box, CLUTTER_ALLOCATION_NONE);
 }
 
 static void
@@ -532,6 +596,8 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   object_class->dispose      = st_scroll_bar_dispose;
   object_class->constructor  = st_scroll_bar_constructor;
 
+  actor_class->parent_set     = st_scroll_bar_parent_set;
+  actor_class->queue_relayout = st_scroll_bar_queue_relayout;
   actor_class->allocate       = st_scroll_bar_allocate;
   actor_class->paint          = st_scroll_bar_paint;
   actor_class->pick           = st_scroll_bar_pick;
@@ -1041,6 +1107,8 @@ st_scroll_bar_init (StScrollBar *self)
 
   g_signal_connect (self, "notify::reactive",
                     G_CALLBACK (st_scroll_bar_notify_reactive), NULL);
+
+  self->priv->needs_allocation = TRUE;
 }
 
 StWidget *
@@ -1049,6 +1117,21 @@ st_scroll_bar_new (StAdjustment *adjustment)
   return g_object_new (ST_TYPE_SCROLL_BAR,
                        "adjustment", adjustment,
                        NULL);
+}
+
+static void
+on_notify_value (GObject     *object,
+                 GParamSpec  *pspec,
+                 StScrollBar *bar)
+{
+  scroll_bar_update_positions (bar);
+}
+
+static void
+on_changed (StAdjustment *adjustment,
+            StScrollBar  *bar)
+{
+  scroll_bar_update_positions (bar);
 }
 
 void
@@ -1063,10 +1146,10 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
   if (priv->adjustment)
     {
       g_signal_handlers_disconnect_by_func (priv->adjustment,
-                                            clutter_actor_queue_relayout,
+                                            on_notify_value,
                                             bar);
       g_signal_handlers_disconnect_by_func (priv->adjustment,
-                                            clutter_actor_queue_relayout,
+                                            on_changed,
                                             bar);
       g_object_unref (priv->adjustment);
       priv->adjustment = NULL;
@@ -1076,12 +1159,12 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
     {
       priv->adjustment = g_object_ref (adjustment);
 
-      g_signal_connect_swapped (priv->adjustment, "notify::value",
-                                G_CALLBACK (clutter_actor_queue_relayout),
-                                bar);
-      g_signal_connect_swapped (priv->adjustment, "changed",
-                                G_CALLBACK (clutter_actor_queue_relayout),
-                                bar);
+      g_signal_connect (priv->adjustment, "notify::value",
+                        G_CALLBACK (on_notify_value),
+                        bar);
+      g_signal_connect (priv->adjustment, "changed",
+                        G_CALLBACK (on_changed),
+                        bar);
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (bar));
     }
