@@ -124,6 +124,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->unrealize = clutter_stage_egl_unrealize;
   iface->get_geometry = clutter_stage_egl_get_geometry;
   iface->resize = clutter_stage_egl_resize;
+  iface->show = clutter_stage_egl_show;
+  iface->hide = clutter_stage_egl_hide;
 }
 
 static void
