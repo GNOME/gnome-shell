@@ -32,6 +32,35 @@
  * allow the user to move around the scrollable area.
  */
 
+/* TODO: The code here currently only deals with height-for-width
+ * allocation; width-for-height allocation would need a second set of
+ * code paths through get_preferred_height()/get_preferred_width()/allocate()
+ * that reverse the roles of the horizontal and vertical scrollbars.
+ *
+ * TODO: The multiple layout passes with and without scrollbars when
+ * using the automatic policy causes considerable inefficiency because
+ * it breaks request caching; we should saved the last size passed
+ * into allocate() and if it's the same as previous size not repeat
+ * the determination of scrollbar visibility. This requires overriding
+ * queue_relayout() so we know when to discard the saved value.
+ *
+ * The size negotiation between the #StScrollView and the child is
+ * described in the documentation for #StScrollable; the significant
+ * part to note there is that reported minimum sizes for a scrolled
+ * child are the minimum sizes when no scrollbar is needed. This allows
+ * us to determine what scrollbars are visible without a need to look
+ * inside the #StAdjustment.
+ *
+ * The second simplification that we make that allows us to implement
+ * a straighforward height-for-width negotiation without multiple
+ * allocate passes is that when the vertical scrollbar policy is
+ * AUTO, we always reserve space for the vertical scrollbar in the
+ * reported minimum and natural size.
+ *
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=611740 for a more
+ * detailed description of the considerations involved.
+ */
+
 #include "st-scroll-view.h"
 #include "st-marshal.h"
 #include "st-scroll-bar.h"
@@ -65,8 +94,11 @@ struct _StScrollViewPrivate
   ClutterActor *hscroll;
   ClutterActor *vscroll;
 
-  GtkPolicyType hscroll_policy;
-  GtkPolicyType vscroll_policy;
+  StAdjustment *hadjustment;
+  StAdjustment *vadjustment;
+
+  GtkPolicyType hscrollbar_policy;
+  GtkPolicyType vscrollbar_policy;
 
   ClutterActor *top_shadow;
   ClutterActor *bottom_shadow;
@@ -78,6 +110,10 @@ struct _StScrollViewPrivate
   gboolean      row_size_set : 1;
   gboolean      column_size_set : 1;
   guint         mouse_scroll : 1;
+  guint         hscrollbar_visible : 1;
+  guint         vscrollbar_visible : 1;
+  guint         top_shadow_visible : 1;
+  guint         bottom_shadow_visible : 1;
 };
 
 enum {
@@ -108,10 +144,10 @@ st_scroll_view_get_property (GObject    *object,
       g_value_set_object (value, priv->vscroll);
       break;
     case PROP_HSCROLLBAR_POLICY:
-      g_value_set_enum (value, priv->hscroll_policy);
+      g_value_set_enum (value, priv->hscrollbar_policy);
       break;
     case PROP_VSCROLLBAR_POLICY:
-      g_value_set_enum (value, priv->vscroll_policy);
+      g_value_set_enum (value, priv->vscrollbar_policy);
       break;
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
@@ -125,26 +161,24 @@ st_scroll_view_get_property (GObject    *object,
 }
 
 static void
-update_shadow_visibility (GObject    *gobject,
-                          GParamSpec *arg1,
-                          gpointer    user_data)
+update_shadow_visibility (StScrollView *scroll)
 {
-  StAdjustment *vadjust = ST_ADJUSTMENT (gobject);
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (user_data)->priv;
+  StScrollViewPrivate *priv = scroll->priv;
 
-  gdouble value, lower, upper, page_size;
+  if (priv->vshadows && priv->vadjustment)
+    {
+      gdouble value, lower, upper, page_size;
 
-  st_adjustment_get_values (vadjust, &value, &lower, &upper, NULL, NULL, &page_size);
+      st_adjustment_get_values (priv->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
 
-  if (fabs (value - lower) > 0.1 && priv->vshadows)
-    clutter_actor_show (priv->top_shadow);
+      priv->top_shadow_visible = fabs (value - lower) > 0.1;
+      priv->bottom_shadow_visible = fabs (upper - value - page_size) > 0.1;
+    }
   else
-    clutter_actor_hide (priv->top_shadow);
-
-  if (fabs (upper - value - page_size) > 0.1 && priv->vshadows)
-    clutter_actor_show (priv->bottom_shadow);
-  else
-    clutter_actor_hide (priv->bottom_shadow);
+    {
+      priv->top_shadow_visible = FALSE;
+      priv->bottom_shadow_visible = FALSE;
+    }
 }
 
 /**
@@ -159,7 +193,6 @@ void
 st_scroll_view_set_vshadows (StScrollView *self,
                              gboolean      vshadows)
 {
-  StAdjustment *vadjust;
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
 
   vshadows = vshadows != FALSE;
@@ -168,12 +201,30 @@ st_scroll_view_set_vshadows (StScrollView *self,
 
   priv->vshadows = vshadows;
 
-  vadjust = st_scroll_bar_get_adjustment (ST_SCROLL_BAR(priv->vscroll));
+  if (vshadows)
+    {
+      if (priv->top_shadow)
+        {
+          clutter_actor_show (priv->top_shadow);
+          clutter_actor_show (priv->bottom_shadow);
+        }
+      else
+        {
+          priv->top_shadow = g_object_new (ST_TYPE_BIN, "style-class", "top-shadow", NULL);
+          priv->bottom_shadow = g_object_new (ST_TYPE_BIN, "style-class", "bottom-shadow", NULL);
 
-  if (!vadjust)
-    return;
+          clutter_actor_set_parent (priv->bottom_shadow, CLUTTER_ACTOR (self));
+          clutter_actor_set_parent (priv->top_shadow, CLUTTER_ACTOR (self));
+        }
+    }
+  else
+    {
+      clutter_actor_hide (priv->top_shadow);
+      clutter_actor_hide (priv->bottom_shadow);
+    }
 
-  update_shadow_visibility (G_OBJECT (vadjust), NULL, self);
+  update_shadow_visibility (self);
+
   g_object_notify (G_OBJECT (self), "vshadows");
 }
 
@@ -198,11 +249,11 @@ st_scroll_view_set_property (GObject      *object,
     case PROP_HSCROLLBAR_POLICY:
       st_scroll_view_set_policy (self,
                                  g_value_get_enum (value),
-                                 priv->vscroll_policy);
+                                 priv->vscrollbar_policy);
       break;
     case PROP_VSCROLLBAR_POLICY:
       st_scroll_view_set_policy (self,
-                                 priv->hscroll_policy,
+                                 priv->hscrollbar_policy,
                                  g_value_get_enum (value));
       break;
     default:
@@ -247,14 +298,14 @@ st_scroll_view_paint (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->paint (actor);
 
   /* paint our custom children */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
+  if (priv->hscrollbar_visible && CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     clutter_actor_paint (priv->hscroll);
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
+  if (priv->vscrollbar_visible && CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     clutter_actor_paint (priv->vscroll);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
+  if (priv->top_shadow_visible)
     clutter_actor_paint (priv->top_shadow);
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
+  if (priv->bottom_shadow_visible)
     clutter_actor_paint (priv->bottom_shadow);
 }
 
@@ -268,37 +319,46 @@ st_scroll_view_pick (ClutterActor       *actor,
   CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->pick (actor, color);
 
   /* paint our custom children */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
+  if (priv->hscrollbar_visible && CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     clutter_actor_paint (priv->hscroll);
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
+  if (priv->vscrollbar_visible && CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     clutter_actor_paint (priv->vscroll);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
-    clutter_actor_paint (priv->top_shadow);
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
-    clutter_actor_paint (priv->bottom_shadow);
 }
 
 static double
-get_scrollbar_width (StScrollView *scroll_view)
+get_scrollbar_width (StScrollView *scroll)
 {
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll_view));
-  double result = DEFAULT_SCROLLBAR_WIDTH;
+  StScrollViewPrivate *priv = scroll->priv;
 
-  st_theme_node_get_length (theme_node, "scrollbar-width", FALSE, &result);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
+    {
+      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll));
+      double result = DEFAULT_SCROLLBAR_WIDTH;
 
-  return result;
+      st_theme_node_get_length (theme_node, "scrollbar-width", FALSE, &result);
+
+      return result;
+    }
+  else
+    return 0;
 }
 
 static double
-get_scrollbar_height (StScrollView *scroll_view)
+get_scrollbar_height (StScrollView *scroll)
 {
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll_view));
-  double result = DEFAULT_SCROLLBAR_WIDTH;
+  StScrollViewPrivate *priv = scroll->priv;
 
-  st_theme_node_get_length (theme_node, "scrollbar-height", FALSE, &result);
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
+    {
+      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll));
+      double result = DEFAULT_SCROLLBAR_WIDTH;
 
-  return result;
+      st_theme_node_get_length (theme_node, "scrollbar-height", FALSE, &result);
+
+      return result;
+    }
+  else
+    return 0;
 }
 
 static void
@@ -309,32 +369,64 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  gboolean account_for_vscrollbar = FALSE;
+  gfloat min_width = 0, natural_width;
+  gfloat child_min_width, child_natural_width;
 
   if (!priv->child)
     return;
 
   st_theme_node_adjust_for_height (theme_node, &for_height);
 
-  /* Our natural width is the natural width of the child */
-  clutter_actor_get_preferred_width (priv->child,
-                                     for_height,
-                                     NULL,
-                                     natural_width_p);
+  clutter_actor_get_preferred_width (priv->child, -1,
+                                     &child_min_width, &child_natural_width);
 
-  /* Add space for the scroll-bar if we can determine it will be necessary */
-  if ((for_height >= 0) && natural_width_p)
+  natural_width = child_natural_width;
+
+  switch (priv->hscrollbar_policy)
     {
-      gfloat natural_height;
+    case GTK_POLICY_NEVER:
+      min_width = child_min_width;
+      break;
+    case GTK_POLICY_ALWAYS:
+    case GTK_POLICY_AUTOMATIC:
+      /* Should theoretically use the min width of the hscrollbar,
+       * but that's not cleanly defined at the moment */
+      min_width = 0;
+      break;
+    }
 
-      clutter_actor_get_preferred_height (priv->child, -1.0,
-                                          NULL,
-                                          &natural_height);
-      if (for_height < natural_height)
-        *natural_width_p += get_scrollbar_width (ST_SCROLL_VIEW (actor));
+  switch (priv->vscrollbar_policy)
+    {
+    case GTK_POLICY_NEVER:
+      account_for_vscrollbar = FALSE;
+      break;
+    case GTK_POLICY_ALWAYS:
+      account_for_vscrollbar = TRUE;
+      break;
+    case GTK_POLICY_AUTOMATIC:
+      /* For automatic scrollbars, we always request space for the vertical
+       * scrollbar; we won't know whether we actually need one until our
+       * height is assigned in allocate().
+       */
+      account_for_vscrollbar = TRUE;
+      break;
+    }
+
+  account_for_vscrollbar = priv->vscrollbar_policy != GTK_POLICY_NEVER;
+  if (account_for_vscrollbar)
+    {
+      float sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+
+      min_width += sb_width;
+      natural_width += sb_width;
     }
 
   if (min_width_p)
-    *min_width_p = 0;
+    *min_width_p = min_width;
+
+  if (natural_width_p)
+    *natural_width_p = natural_width;
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
@@ -347,32 +439,82 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  gboolean account_for_hscrollbar = FALSE;
+  gfloat min_height = 0, natural_height;
+  gfloat child_min_height, child_natural_height;
+  gfloat child_min_width;
+  gfloat sb_width;
 
   if (!priv->child)
     return;
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
 
-  /* Our natural height is the natural height of the child */
-  clutter_actor_get_preferred_height (priv->child,
-                                      for_width,
-                                      NULL,
-                                      natural_height_p);
+  clutter_actor_get_preferred_width (priv->child, -1,
+                                     &child_min_width, NULL);
 
-  /* Add space for the scroll-bar if we can determine it will be necessary */
-  if ((for_width >= 0) && natural_height_p)
-    {
-      gfloat natural_width;
-
-      clutter_actor_get_preferred_width (priv->child, -1.0,
-                                         NULL,
-                                         &natural_width);
-      if (for_width < natural_width)
-        *natural_height_p += get_scrollbar_height (ST_SCROLL_VIEW (actor));
-    }
+  natural_height = child_natural_height;
 
   if (min_height_p)
     *min_height_p = 0;
+
+  sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+
+  switch (priv->vscrollbar_policy)
+    {
+    case GTK_POLICY_NEVER:
+      break;
+    case GTK_POLICY_ALWAYS:
+    case GTK_POLICY_AUTOMATIC:
+      /* We've requested space for the scrollbar, subtract it back out */
+      for_width -= sb_width;
+      break;
+    }
+
+  switch (priv->hscrollbar_policy)
+    {
+    case GTK_POLICY_NEVER:
+      account_for_hscrollbar = FALSE;
+      break;
+    case GTK_POLICY_ALWAYS:
+      account_for_hscrollbar = TRUE;
+      break;
+    case GTK_POLICY_AUTOMATIC:
+      account_for_hscrollbar = for_width < child_min_width;
+      break;
+    }
+
+  clutter_actor_get_preferred_height (priv->child, for_width,
+                                      &child_min_height, &child_natural_height);
+
+  natural_height = child_natural_height;
+
+  switch (priv->vscrollbar_policy)
+    {
+    case GTK_POLICY_NEVER:
+      min_height = child_min_height;
+      break;
+    case GTK_POLICY_ALWAYS:
+    case GTK_POLICY_AUTOMATIC:
+      /* Should theoretically use the min height of the hscrollbar,
+       * but that's not cleanly defined at the moment */
+      min_height = 0;
+      break;
+    }
+
+  if (account_for_hscrollbar)
+    {
+      float sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor));
+
+      min_height += sb_height;
+      natural_height += sb_height;
+    }
+
+  if (min_height_p)
+    *min_height_p = min_height;
+
+  if (natural_height_p)
+    *natural_height_p = natural_height;
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
@@ -385,6 +527,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
   ClutterActorBox content_box, child_box;
   ClutterActorClass *parent_parent_class;
   gfloat avail_width, avail_height, sb_width, sb_height;
+  gboolean hscrollbar_visible, vscrollbar_visible;
 
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
@@ -408,13 +551,73 @@ st_scroll_view_allocate (ClutterActor          *actor,
   avail_height = content_box.y2 - content_box.y1;
 
   sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
-  sb_height = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+  sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor));
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
-    sb_width = 0;
+  /* Determine what scrollbars are visible. The basic idea of the handling
+   * of an automatic scrollbars is that we start off with the assumption
+   * that that we don't need any scrollbars, see if that works, and if
+   * not add horizontal and vertical scrollbars until we are no longer
+   * overflowing.
+   */
+  if (priv->child)
+    {
+      gfloat child_min_width;
+      gfloat child_min_height;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
-    sb_height = 0;
+      clutter_actor_get_preferred_width (priv->child, -1,
+                                         &child_min_width, NULL);
+
+      if (priv->vscrollbar_policy == GTK_POLICY_AUTOMATIC)
+        {
+          if (priv->hscrollbar_policy == GTK_POLICY_AUTOMATIC)
+            {
+              /* Pass one, try without a vertical scrollbar */
+              clutter_actor_get_preferred_height (priv->child, MAX (avail_width, child_min_width),
+                                                  &child_min_height, NULL);
+              vscrollbar_visible = child_min_height > avail_height;
+              hscrollbar_visible = child_min_width > avail_width - (vscrollbar_visible ? sb_width : 0);
+              vscrollbar_visible = child_min_height > avail_height - (hscrollbar_visible ? sb_height : 0);
+
+              /* Pass two - if we needed a vertical scrollbar, get a new preferred height */
+              if (vscrollbar_visible)
+                {
+                  clutter_actor_get_preferred_height (priv->child, MAX (avail_width - sb_width, child_min_width),
+                                                      &child_min_height, NULL);
+                  hscrollbar_visible = child_min_width > avail_width - sb_width;
+                }
+            }
+          else
+            {
+              hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER;
+
+              /* try without a vertical scrollbar */
+              clutter_actor_get_preferred_height (priv->child, MAX (avail_width, child_min_width),
+                                                  &child_min_height, NULL);
+              vscrollbar_visible = child_min_height > avail_height - (hscrollbar_visible ? sb_height : 0);
+            }
+        }
+      else
+        {
+          vscrollbar_visible = priv->vscrollbar_policy != GTK_POLICY_NEVER;
+
+          if (priv->hscrollbar_policy == GTK_POLICY_AUTOMATIC)
+            hscrollbar_visible = child_min_width > avail_height - (vscrollbar_visible ? 0 : sb_width);
+          else
+            hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER;
+        }
+    }
+  else
+    {
+      hscrollbar_visible = FALSE;
+      vscrollbar_visible = FALSE;
+    }
+
+  /* Whether or not we show the scrollbars, if the scrollbars are visible
+   * actors, we need to give them some allocation, so we unconditionally
+   * give them the "right" allocation; that might overlap the child when
+   * the scrollbars are not visible, but it doesn't matter because we
+   * don't include them in pick or paint.
+   */
 
   /* Vertical scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
@@ -438,6 +641,11 @@ st_scroll_view_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
     }
 
+  /* Fold visibility into the scrollbar sizes to simplify the rest of the computations */
+  if (!hscrollbar_visible)
+    sb_height = 0;
+  if (!vscrollbar_visible)
+    sb_width = 0;
 
   /* Child */
   child_box.x1 = content_box.x1;
@@ -449,23 +657,26 @@ st_scroll_view_allocate (ClutterActor          *actor,
     clutter_actor_allocate (priv->child, &child_box, flags);
 
   /*Shadows*/
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
+  if (priv->top_shadow && CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
     {
       child_box.x1 = content_box.x1;
       child_box.y1 = content_box.y1;
       child_box.x2 = MAX (child_box.x1, content_box.x2 - sb_width);
-      child_box.y2 = MAX (child_box.y1, content_box.y1 + clutter_actor_get_height (priv->top_shadow));
+      child_box.y2 = content_box.y1 + clutter_actor_get_height (priv->top_shadow);
       clutter_actor_allocate (priv->top_shadow, &child_box, flags);
     }
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
+  if (priv->bottom_shadow && CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
     {
       child_box.x1 = content_box.x1;
-      child_box.y1 = content_box.y2 - clutter_actor_get_height (priv->bottom_shadow);
-      child_box.x2 = MAX (child_box.x1, content_box.x2 - sb_width);
-      child_box.y2 = content_box.y2 + 1;
+      child_box.y1 = MAX (content_box.y1, content_box.y2 - sb_height - clutter_actor_get_height (priv->bottom_shadow));
+      child_box.x2 = MAX (content_box.x1, content_box.x2 - sb_width);
+      child_box.y2 = MAX (content_box.y1, content_box.y2 - sb_height);
       clutter_actor_allocate (priv->bottom_shadow, &child_box, flags);
     }
+
+  priv->hscrollbar_visible = hscrollbar_visible;
+  priv->vscrollbar_visible = vscrollbar_visible;
 }
 
 static void
@@ -476,8 +687,11 @@ st_scroll_view_style_changed (StWidget *widget)
   st_widget_style_changed (ST_WIDGET (priv->hscroll));
   st_widget_style_changed (ST_WIDGET (priv->vscroll));
 
-  st_widget_style_changed (ST_WIDGET (priv->top_shadow));
-  st_widget_style_changed (ST_WIDGET (priv->bottom_shadow));
+  if (priv->top_shadow)
+    {
+      st_widget_style_changed (ST_WIDGET (priv->top_shadow));
+      st_widget_style_changed (ST_WIDGET (priv->bottom_shadow));
+    }
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
@@ -632,69 +846,66 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 }
 
 static void
-child_adjustment_changed_cb (StAdjustment *adjustment,
-                             ClutterActor *bar)
+disconnect_hadjustment (StScrollView *scroll)
 {
-  StScrollView *scroll;
-  gdouble lower, upper, page_size;
+  StScrollViewPrivate *priv = scroll->priv;
 
-  scroll = ST_SCROLL_VIEW (clutter_actor_get_parent (bar));
-
-  if (bar == scroll->priv->vscroll)
-    update_shadow_visibility (G_OBJECT (adjustment), NULL, scroll);
-
-  /* Determine if this scroll-bar should be visible */
-  st_adjustment_get_values (adjustment, NULL,
-                            &lower, &upper,
-                            NULL, NULL,
-                            &page_size);
-
-  if ((upper - lower) > page_size)
-    clutter_actor_show (bar);
-  else
-    clutter_actor_hide (bar);
-
-  /* Request a resize */
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));
+  priv->hadjustment = NULL;
 }
 
 static void
-child_hadjustment_notify_cb (GObject    *gobject,
-                             GParamSpec *arg1,
-                             gpointer    user_data)
+child_adjustment_changed_cb (StAdjustment *adjustment,
+                             StScrollView *scroll)
 {
-  StAdjustment *hadjust;
+  update_shadow_visibility (scroll);
+}
 
+static void
+child_adjustment_notify_value (GObject      *gobject,
+                               GParamSpec   *pspec,
+                               StScrollView *scroll)
+{
+  update_shadow_visibility (scroll);
+}
+
+static void
+disconnect_vadjustment (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv = scroll->priv;
+
+  if (priv->vadjustment)
+    {
+      g_signal_handlers_disconnect_by_func (priv->vadjustment,
+                                            child_adjustment_notify_value,
+                                            scroll);
+      g_signal_handlers_disconnect_by_func (priv->vadjustment,
+                                            child_adjustment_changed_cb,
+                                            scroll);
+      priv->vadjustment = NULL;
+    }
+}
+
+static void
+child_hadjustment_notify_cb (GObject      *gobject,
+                             GParamSpec   *arg1,
+                             StScrollView *scroll)
+{
   ClutterActor *actor = CLUTTER_ACTOR (gobject);
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (user_data)->priv;
+  StScrollViewPrivate *priv = scroll->priv;
 
-  hadjust = st_scroll_bar_get_adjustment (ST_SCROLL_BAR(priv->hscroll));
-  if (hadjust)
-    g_signal_handlers_disconnect_by_func (hadjust,
-                                          child_adjustment_changed_cb,
-                                          priv->hscroll);
+  disconnect_hadjustment (scroll);
 
-  if (priv->hscroll_policy == GTK_POLICY_NEVER)
-    return;
+  st_scrollable_get_adjustments (ST_SCROLLABLE (actor), &priv->hadjustment, NULL);
+  st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->hscroll), priv->hadjustment);
 
-  st_scrollable_get_adjustments (ST_SCROLLABLE (actor), &hadjust, NULL);
-  if (hadjust)
+  if (priv->hadjustment)
     {
       /* Force scroll step if neede. */
       if (priv->column_size_set)
         {
-          g_object_set (hadjust,
+          g_object_set (priv->hadjustment,
                         "step-increment", priv->column_size,
                         NULL);
-        }
-
-      st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->hscroll), hadjust);
-
-      if (priv->hscroll_policy == GTK_POLICY_AUTOMATIC)
-        {
-          g_signal_connect (hadjust, "changed", G_CALLBACK (
-                           child_adjustment_changed_cb), priv->hscroll);
-          child_adjustment_changed_cb (hadjust, priv->hscroll);
         }
     }
 }
@@ -704,44 +915,29 @@ child_vadjustment_notify_cb (GObject    *gobject,
                              GParamSpec *arg1,
                              gpointer    user_data)
 {
-  StAdjustment *vadjust;
+  StScrollView *scroll = ST_SCROLL_VIEW (user_data);
+  StScrollViewPrivate *priv = scroll->priv;
 
-  ClutterActor *actor = CLUTTER_ACTOR (gobject);
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (user_data)->priv;
+  disconnect_vadjustment (scroll);
 
-  vadjust = st_scroll_bar_get_adjustment (ST_SCROLL_BAR(priv->vscroll));
-  if (vadjust)
-    {
-      g_signal_handlers_disconnect_by_func (vadjust,
-                                            update_shadow_visibility,
-                                            user_data);
-      g_signal_handlers_disconnect_by_func (vadjust,
-                                            child_adjustment_changed_cb,
-                                            priv->vscroll);
-    }
-  if (priv->vscroll_policy == GTK_POLICY_NEVER)
-    return;
-  st_scrollable_get_adjustments (ST_SCROLLABLE(actor), NULL, &vadjust);
-  if (vadjust)
+  st_scrollable_get_adjustments (ST_SCROLLABLE(priv->child), NULL, &priv->vadjustment);
+  st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->vscroll), priv->vadjustment);
+
+  if (priv->vadjustment)
     {
       /* Force scroll step if neede. */
       if (priv->row_size_set)
         {
-          g_object_set (vadjust,
+          g_object_set (priv->vadjustment,
                         "step-increment", priv->row_size,
                         NULL);
         }
 
-      st_scroll_bar_set_adjustment (ST_SCROLL_BAR(priv->vscroll), vadjust);
-      if (priv->vscroll_policy == GTK_POLICY_AUTOMATIC)
-        {
-          g_signal_connect (vadjust, "changed", G_CALLBACK (
-                            child_adjustment_changed_cb), priv->vscroll);
-          g_signal_connect (vadjust, "notify::value", G_CALLBACK (
-                            update_shadow_visibility), user_data);
-          child_adjustment_changed_cb (vadjust, priv->vscroll);
-          update_shadow_visibility (G_OBJECT (vadjust), NULL, user_data);
-        }
+      g_signal_connect (priv->vadjustment, "changed",
+                        G_CALLBACK (child_adjustment_changed_cb), scroll);
+      g_signal_connect (priv->vadjustment, "notify::value",
+                        G_CALLBACK (child_adjustment_notify_value), scroll);
+      update_shadow_visibility (scroll);
     }
 }
 
@@ -750,20 +946,14 @@ st_scroll_view_init (StScrollView *self)
 {
   StScrollViewPrivate *priv = self->priv = SCROLL_VIEW_PRIVATE (self);
 
-  priv->hscroll_policy = GTK_POLICY_AUTOMATIC;
-  priv->vscroll_policy = GTK_POLICY_AUTOMATIC;
+  priv->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
+  priv->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
 
   priv->hscroll = CLUTTER_ACTOR (st_scroll_bar_new (NULL));
   priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR, "vertical", TRUE, NULL);
 
   clutter_actor_set_parent (priv->hscroll, CLUTTER_ACTOR (self));
   clutter_actor_set_parent (priv->vscroll, CLUTTER_ACTOR (self));
-
-  priv->top_shadow = g_object_new (ST_TYPE_BIN, "style-class", "top-shadow", NULL);
-  priv->bottom_shadow = g_object_new (ST_TYPE_BIN, "style-class", "bottom-shadow", NULL);
-
-  clutter_actor_set_parent (priv->bottom_shadow, CLUTTER_ACTOR (self));
-  clutter_actor_set_parent (priv->top_shadow, CLUTTER_ACTOR (self));
 
   /* mouse scroll is enabled by default, so we also need to be reactive */
   priv->mouse_scroll = TRUE;
@@ -791,8 +981,8 @@ st_scroll_view_add (ClutterContainer *container,
       g_signal_connect (actor, "notify::vadjustment",
                         G_CALLBACK (child_vadjustment_notify_cb),
                         container);
-      child_hadjustment_notify_cb (G_OBJECT (actor), NULL, container);
-      child_vadjustment_notify_cb (G_OBJECT (actor), NULL, container);
+      child_hadjustment_notify_cb (G_OBJECT (actor), NULL, self);
+      child_vadjustment_notify_cb (G_OBJECT (actor), NULL, self);
     }
   else
     {
@@ -856,8 +1046,11 @@ st_scroll_view_foreach_with_internals (ClutterContainer *container,
   if (priv->vscroll != NULL)
     callback (priv->vscroll, user_data);
 
-  callback (priv->top_shadow, user_data);
-  callback (priv->bottom_shadow, user_data);
+  if (priv->top_shadow)
+    {
+      callback (priv->top_shadow, user_data);
+      callback (priv->bottom_shadow, user_data);
+    }
 }
 
 static void
@@ -1048,58 +1241,29 @@ st_scroll_view_set_policy (StScrollView   *scroll,
                            GtkPolicyType   vscroll)
 {
   StScrollViewPrivate *priv;
-  StAdjustment *hadjust, *vadjust;
 
   g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
-  g_return_if_fail (hscroll != GTK_POLICY_ALWAYS && vscroll != GTK_POLICY_ALWAYS);
 
   priv = ST_SCROLL_VIEW (scroll)->priv;
 
-  if (priv->hscroll_policy == hscroll && priv->vscroll_policy == vscroll)
+  if (priv->hscrollbar_policy == hscroll && priv->vscrollbar_policy == vscroll)
     return;
 
   g_object_freeze_notify ((GObject *) scroll);
 
-  if (priv->hscroll_policy != hscroll)
+  if (priv->hscrollbar_policy != hscroll)
     {
-      priv->hscroll_policy = hscroll;
+      priv->hscrollbar_policy = hscroll;
       g_object_notify ((GObject *) scroll, "hscrollbar-policy");
     }
-  if (priv->vscroll_policy != vscroll)
+
+  if (priv->vscrollbar_policy != vscroll)
     {
-      priv->vscroll_policy = vscroll;
+      priv->vscrollbar_policy = vscroll;
       g_object_notify ((GObject *) scroll, "vscrollbar-policy");
     }
 
-  st_scrollable_get_adjustments (ST_SCROLLABLE (priv->child), &hadjust, &vadjust);
-
-  if (priv->hscroll_policy == GTK_POLICY_NEVER)
-    {
-      hadjust = NULL;
-      clutter_actor_hide (priv->hscroll);
-    }
-  else if (priv->hscroll_policy == GTK_POLICY_AUTOMATIC)
-    {
-      /* We call this function because we need to set up the adjustment
-       * notification hooks, and the _show will queue a reallocate, from which we'll figure
-       * out if we need to really show or hide the scrollbar.
-       */
-      child_hadjustment_notify_cb (G_OBJECT (priv->child), NULL, scroll);
-      clutter_actor_show (priv->hscroll);
-    }
-
-  if (priv->vscroll_policy == GTK_POLICY_NEVER)
-    {
-      vadjust = NULL;
-      clutter_actor_hide (priv->vscroll);
-    }
-  else
-    {
-      child_vadjustment_notify_cb (G_OBJECT (priv->child), NULL, scroll);
-      clutter_actor_show (priv->vscroll);
-    }
-
-  st_scrollable_set_adjustments (ST_SCROLLABLE (priv->child), hadjust, vadjust);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));
 
   g_object_thaw_notify ((GObject *) scroll);
 }

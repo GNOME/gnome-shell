@@ -569,11 +569,25 @@ st_box_layout_get_preferred_height (ClutterActor *actor,
                                     gfloat       *min_height_p,
                                     gfloat       *natural_height_p)
 {
+  StBoxLayout *self = ST_BOX_LAYOUT (actor);
+  StBoxLayoutPrivate *priv = self->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
 
-  get_content_preferred_height (ST_BOX_LAYOUT (actor), for_width,
+  if (priv->hadjustment)
+    {
+      /* If we're scrolled, the parent calls us with the width that
+       * we'll actually get, which can be smaller than the minimum
+       * width that we give our contents.
+       */
+      gfloat min_width;
+
+      get_content_preferred_width (self, -1, &min_width, NULL);
+      for_width = MAX (for_width, min_width);
+    }
+
+  get_content_preferred_height (self, for_width,
                                 min_height_p, natural_height_p);
 
   st_theme_node_adjust_preferred_height (theme_node,
@@ -743,10 +757,11 @@ st_box_layout_allocate (ClutterActor          *actor,
   avail_width  = content_box.x2 - content_box.x1;
   avail_height = content_box.y2 - content_box.y1;
 
-  get_content_preferred_height (ST_BOX_LAYOUT (actor), avail_width,
-                                &min_height, &natural_height);
   get_content_preferred_width (ST_BOX_LAYOUT (actor), avail_height,
                                &min_width, &natural_width);
+  get_content_preferred_height (ST_BOX_LAYOUT (actor), MAX (avail_width, min_width),
+                                &min_height, &natural_height);
+
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
@@ -755,7 +770,7 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->vadjustment),
                     "lower", 0.0,
-                    "upper", natural_height,
+                    "upper", min_height,
                     "page-size", avail_height,
                     "step-increment", avail_height / 6,
                     "page-increment", avail_height,
@@ -771,7 +786,7 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->hadjustment),
                     "lower", 0.0,
-                    "upper", natural_width,
+                    "upper", min_width,
                     "page-size", avail_width,
                     "step-increment", avail_width / 6,
                     "page-increment", avail_width,
@@ -779,6 +794,18 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       prev_value = st_adjustment_get_value (priv->hadjustment);
       st_adjustment_set_value (priv->hadjustment, prev_value);
+    }
+
+  if (avail_height < min_height)
+    {
+      avail_height = min_height;
+      content_box.y2 = content_box.y1 + avail_height;
+    }
+
+  if (avail_width < min_width)
+    {
+      avail_width = min_width;
+      content_box.x2 = content_box.x1 + avail_width;
     }
 
   if (priv->is_vertical)
@@ -894,10 +921,7 @@ st_box_layout_allocate (ClutterActor          *actor,
           child_box.y1 = (int)(0.5 + position);
           child_box.y2 = (int)(0.5 + next_position);
           child_box.x1 = content_box.x1;
-          if (priv->hadjustment)
-            child_box.x2 = content_box.x1 + MAX (avail_width, natural_width);
-          else
-            child_box.x2 = content_box.x2;
+          child_box.x2 = content_box.x2;
 
           _st_allocate_fill (ST_WIDGET (actor), child, &child_box,
                              xalign, yalign, xfill, yfill);
@@ -918,10 +942,7 @@ st_box_layout_allocate (ClutterActor          *actor,
             }
 
           child_box.y1 = content_box.y1;
-          if (priv->vadjustment)
-            child_box.y2 = content_box.y1 + MAX (avail_height, natural_height);
-          else
-            child_box.y2 = content_box.y2;
+          child_box.y2 = content_box.y2;
 
           _st_allocate_fill (ST_WIDGET (actor), child, &child_box,
                              xalign, yalign, xfill, yfill);

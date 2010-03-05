@@ -25,6 +25,50 @@
 
 #include "st-scrollable.h"
 
+/**
+ * SECTION:st-scrollable
+ * @short_description: A #ClutterActor that can be scrolled
+ *
+ * The #StScrollable interface is exposed by actors that support scrolling.
+ *
+ * The interface contains methods for getting and setting the adjustments
+ * for scrolling; these adjustments will be used to hook the scrolled
+ * position up to scrollbars or other external controls.
+ *
+ * For #StScrollable supporting height-for-width size negotation, size
+ * negotation works as follows:
+ *
+ * In response to get_preferred_width(), the scrollable should report
+ * the minimum width at which horizontal scrolling is needed for the
+ * preferred width, and natural width of the actor when not
+ * horizontally scrolled as the natural width.
+ *
+ * The for_width passed into get_preferred_height() is the width at which
+ * the scrollable will be allocated; this will be smaller than the minimum
+ * width when scrolling horizontally, so the scrollable may want to adjust
+ * it up to the minimum width before computing a preferred height. (Other
+ * scrollables may want to fit as much content into the allocated area
+ * as possible and only scroll what absolutely needs to scroll - consider,
+ * for example, the line-wrapping behavior of a text editor where there
+ * is a long line without any spaces.) As for width, get_preferred_height()
+ * should return the minimum size at which no scrolling is needed for the
+ * minimum height, and the natural size of the actor when not vertically scrolled
+ * as the natural height.
+ *
+ * In allocate() the allocation box passed in will be actual allocated
+ * size of the actor so will be smaller than the reported minimum
+ * width and/or height when scrolling is present. Any scrollable actor
+ * must support being allocated at any size down to 0x0 without
+ * crashing, however if the actor has content around the scrolled area
+ * and has an absolute minimum size that's bigger than 0x0 its
+ * acceptable for it to misdraw between 0x0 and the absolute minimum
+ * size. It's up to the application author to avoid letting the user
+ * resize the scroll view small enough so that the scrolled area
+ * vanishes.
+ *
+ * width-for-height size negotation is similar, with the roles of width
+ * and height reversed.
+ */
 static void
 st_scrollable_base_init (gpointer g_iface)
 {
