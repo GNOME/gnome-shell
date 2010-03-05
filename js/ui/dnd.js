@@ -170,8 +170,8 @@ _Draggable.prototype = {
             }
             this._dragOrigParent = undefined;
 
-            this._dragOffsetX = - this._dragActorSource.width / 2;
-            this._dragOffsetY = - this._dragActorSource.height / 2;
+            this._dragOffsetX = this._dragActor.x - this._dragStartX;
+            this._dragOffsetY = this._dragActor.y - this._dragStartY;
         } else {
             this._dragActor = this.actor;
             this._dragActorSource = undefined;
@@ -181,8 +181,8 @@ _Draggable.prototype = {
             this._dragOrigScale = this._dragActor.scale_x;
 
             let [actorStageX, actorStageY] = this.actor.get_transformed_position();
-            this._dragOffsetX = actorStageX - stageX;
-            this._dragOffsetY = actorStageY - stageY;
+            this._dragOffsetX = actorStageX - this._dragStartX;
+            this._dragOffsetY = actorStageY - this._dragStartY;
 
             // Set the actor's scale such that it will keep the same
             // transformed size when it's reparented to the stage
