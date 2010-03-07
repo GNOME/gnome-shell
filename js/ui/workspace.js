@@ -639,8 +639,13 @@ Workspace.prototype = {
         this._desktop.connect('selected',
                               Lang.bind(this,
                                         function(clone, time) {
-                                            this._metaWorkspace.activate(time);
-                                            Main.overview.hide();
+                                            // Only switch to the workspace when one window is open
+                                            // We check for "2" here because the Desktop does not really count
+                                            // as a window in this context.
+                                            if (this._windows.length <= 2) {
+                                                this._metaWorkspace.activate(time);
+                                                Main.overview.hide();
+                                            }
                                         }));
         this.actor.add_actor(this._desktop.actor);
 
