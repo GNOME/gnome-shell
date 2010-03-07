@@ -358,13 +358,6 @@ json_parse_array (JsonParser *parser,
       JsonNode *node = NULL;
       gboolean negative = FALSE;
 
-      if (token == G_TOKEN_COMMA)
-        {
-          /* swallow the comma */
-          token = g_scanner_get_next_token (scanner);
-          continue;
-        }
-
       /* nested object */
       if (token == G_TOKEN_LEFT_CURLY)
         {
@@ -396,7 +389,18 @@ json_parse_array (JsonParser *parser,
           if (token == G_TOKEN_RIGHT_BRACE)
             break;
 
-          continue;
+          if (token == G_TOKEN_COMMA)
+            {
+              token = g_scanner_get_next_token (scanner);
+              if (token == G_TOKEN_RIGHT_BRACE)
+                return G_TOKEN_SYMBOL;
+
+              continue;
+            }
+
+          json_array_unref (array);
+
+          return G_TOKEN_RIGHT_BRACE;
         }
 
       /* nested array */
@@ -430,7 +434,18 @@ json_parse_array (JsonParser *parser,
           if (token == G_TOKEN_RIGHT_BRACE)
             break;
 
-          continue;
+          if (token == G_TOKEN_COMMA)
+            {
+              token = g_scanner_get_next_token (scanner);
+              if (token == G_TOKEN_RIGHT_BRACE)
+                return G_TOKEN_SYMBOL;
+
+              continue;
+            }
+
+          json_array_unref (array);
+
+          return G_TOKEN_RIGHT_BRACE;
         }
 
       if (token == '-')
@@ -497,6 +512,21 @@ json_parse_array (JsonParser *parser,
         }
 
       token = g_scanner_get_next_token (scanner);
+      if (token == G_TOKEN_RIGHT_BRACE)
+        break;
+
+      if (token == G_TOKEN_COMMA)
+        {
+          token = g_scanner_get_next_token (scanner);
+          if (token == G_TOKEN_RIGHT_BRACE)
+            return G_TOKEN_SYMBOL;
+
+          continue;
+        }
+
+      json_array_unref (array);
+
+      return G_TOKEN_RIGHT_BRACE;
     }
 
   json_node_take_array (priv->current_node, array);
@@ -533,13 +563,6 @@ json_parse_object (JsonParser *parser,
       JsonNode *node = NULL;
       gchar *name = NULL;
       gboolean negative = FALSE;
-
-      if (token == G_TOKEN_COMMA)
-        {
-          /* swallow the comma */
-          token = g_scanner_get_next_token (scanner);
-          continue;
-        }
 
       if (token == G_TOKEN_STRING)
         {
@@ -603,7 +626,18 @@ json_parse_object (JsonParser *parser,
           if (token == G_TOKEN_RIGHT_CURLY)
             break;
 
-          continue;
+          if (token == G_TOKEN_COMMA)
+            {
+              token = g_scanner_get_next_token (scanner);
+              if (token == G_TOKEN_RIGHT_CURLY)
+                return G_TOKEN_SYMBOL;
+
+              continue;
+            }
+
+          json_object_unref (object);
+
+          return G_TOKEN_RIGHT_CURLY;
         }
      
       if (token == G_TOKEN_LEFT_BRACE)
@@ -636,10 +670,21 @@ json_parse_object (JsonParser *parser,
           g_free (name);
 
           token = g_scanner_get_next_token (scanner);
-          if (token == G_TOKEN_RIGHT_BRACE)
+          if (token == G_TOKEN_RIGHT_CURLY)
             break;
 
-          continue;
+          if (token == G_TOKEN_COMMA)
+            {
+              token = g_scanner_get_next_token (scanner);
+              if (token == G_TOKEN_RIGHT_CURLY)
+                return G_TOKEN_SYMBOL;
+
+              continue;
+            }
+
+          json_object_unref (object);
+
+          return G_TOKEN_RIGHT_CURLY;
         }
 
       if (token == '-')
@@ -707,6 +752,21 @@ json_parse_object (JsonParser *parser,
       g_free (name);
 
       token = g_scanner_get_next_token (scanner);
+      if (token == G_TOKEN_RIGHT_CURLY)
+        break;
+
+      if (token == G_TOKEN_COMMA)
+        {
+          token = g_scanner_get_next_token (scanner);
+          if (token == G_TOKEN_RIGHT_CURLY)
+            return G_TOKEN_SYMBOL;
+
+          continue;
+        }
+
+      json_object_unref (object);
+
+      return G_TOKEN_RIGHT_CURLY;
     }
 
   json_node_take_object (priv->current_node, object);
