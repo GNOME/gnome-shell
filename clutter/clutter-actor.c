@@ -1222,7 +1222,11 @@ clutter_actor_hide_all (ClutterActor *self)
 void
 clutter_actor_realize (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
 
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
@@ -1234,8 +1238,8 @@ clutter_actor_realize (ClutterActor *self)
   /* To be realized, our parent actors must be realized first.
    * This will only succeed if we're inside a toplevel.
    */
-  if (self->priv->parent_actor != NULL)
-    clutter_actor_realize (self->priv->parent_actor);
+  if (priv->parent_actor != NULL)
+    clutter_actor_realize (priv->parent_actor);
 
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
@@ -1250,13 +1254,13 @@ clutter_actor_realize (ClutterActor *self)
        * someone can fix it. But for now it's too hard to fix this
        * because e.g. ClutterTexture needs reworking.
        */
-      if (self->priv->parent_actor == NULL ||
-          !CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+      if (priv->parent_actor == NULL ||
+          !CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
         return;
     }
 
   CLUTTER_NOTE (ACTOR, "Realizing actor '%s' [%p]",
-                self->priv->name ? self->priv->name
+                priv->name ? priv->name
                                  : G_OBJECT_TYPE_NAME (self),
                 self);
 
@@ -4657,16 +4661,16 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
  * clutter_actor_queue_redraw_with_clip:
  * @self: A #ClutterActor
  * @flags: A mask of #ClutterRedrawFlags controlling the behaviour of
- *         this queue redraw.
+ *   this queue redraw.
  * @clip: A #ClutterActorBox describing the bounds of what needs to be
- *        redrawn or NULL if you are just using a @flag to state your
- *        desired clipping.
+ *   redrawn or %NULL if you are just using a @flag to state your
+ *   desired clipping.
  *
  * Queues up a clipped redraw of an actor and any children. The redraw
  * occurs once the main loop becomes idle (after the current batch of
  * events has been processed, roughly).
  *
- * If the CLUTTER_REDRAW_CLIPPED_TO_BOX @flag is used, the clip box is
+ * If the %CLUTTER_REDRAW_CLIPPED_TO_BOX @flag is used, the clip box is
  * specified in actor coordinates and tells Clutter that only content
  * within this box has been changed so Clutter can optionally optimize
  * the redraw.
@@ -4677,7 +4681,7 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
  * redrawn. This is not possible to determine for 3D actors since the
  * projection of such actors may escape the clip rectangle.
  *
- * If the CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION @flag is used, @clip
+ * If the %CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION @flag is used, @clip
  * should be NULL and this tells Clutter to use the actors current
  * allocation as a clip box. As above this flag can only be used for
  * 2D actors.
@@ -6249,17 +6253,21 @@ clutter_actor_get_x (ClutterActor *self)
 gfloat
 clutter_actor_get_y (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  if (self->priv->needs_allocation)
+  priv = self->priv;
+
+  if (priv->needs_allocation)
     {
-      if (self->priv->position_set)
-        return self->priv->fixed_y;
+      if (priv->position_set)
+        return priv->fixed_y;
       else
         return 0;
     }
   else
-    return self->priv->allocation.y1;
+    return priv->allocation.y1;
 }
 
 /**
@@ -9827,6 +9835,8 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 gboolean
 clutter_actor_is_in_clone_paint (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   /* XXX - keep in sync with the overrides set by ClutterClone:
@@ -9835,8 +9845,10 @@ clutter_actor_is_in_clone_paint (ClutterActor *self)
    *  - enable_model_view_transform == FALSE
    */
 
-  return self->priv->opacity_parent != NULL &&
-         !self->priv->enable_model_view_transform;
+  priv = self->priv;
+
+  return priv->opacity_parent != NULL &&
+         !priv->enable_model_view_transform;
 }
 
 static void
