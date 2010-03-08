@@ -555,6 +555,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                     root_xwin,
                                     xvisinfo->visual,
                                     AllocNone);
+  attrs.border_pixel = 0;
 
   backend_glx->dummy_xwin = XCreateWindow (xdisplay, root_xwin,
                                            -100, -100, 1, 1,
@@ -562,7 +563,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                            xvisinfo->depth,
                                            CopyFromParent,
                                            xvisinfo->visual,
-                                           CWOverrideRedirect | CWColormap,
+                                           CWOverrideRedirect | CWColormap | CWBorderPixel,
                                            &attrs);
 
   /* Try and create a GLXWindow to use with extensions dependent on
