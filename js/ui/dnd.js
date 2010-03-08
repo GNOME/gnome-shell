@@ -59,7 +59,7 @@ _Draggable.prototype = {
 
         return false;
     },
-    
+
     _grabActor: function() {
         Clutter.grab_pointer(this.actor);
         this._onEventId = this.actor.connect('event',
@@ -220,8 +220,7 @@ _Draggable.prototype = {
             // we have to temporarily hide this._dragActor.
             this._dragActor.hide();
             let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                      stageX + this._dragOffsetX,
-                                                                      stageY + this._dragOffsetY);
+                                                                      stageX, stageY);
             this._dragActor.show();
             while (target) {
                 if (target._delegate && target._delegate.handleDragOver) {
@@ -230,8 +229,8 @@ _Draggable.prototype = {
                     // We can check the return value of the function and break the loop if it's true if we don't want
                     // to continue checking the parents.
                     target._delegate.handleDragOver(this.actor._delegate, this._dragActor,
-                                                    (stageX + this._dragOffsetX - targX) / target.scale_x,
-                                                    (stageY + this._dragOffsetY - targY) / target.scale_y,
+                                                    (stageX - targX) / target.scale_x,
+                                                    (stageY - targY) / target.scale_y,
                                                     event.get_time());
                 }
                 target = target.get_parent();
