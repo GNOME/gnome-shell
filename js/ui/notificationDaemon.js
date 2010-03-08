@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Mainloop = imports.mainloop;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
