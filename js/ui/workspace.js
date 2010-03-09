@@ -22,12 +22,16 @@ const Tweener = imports.ui.tweener;
 
 const FOCUS_ANIMATION_TIME = 0.15;
 
+const WINDOW_DND_SIZE = 256;
+
 const FRAME_COLOR = new Clutter.Color();
 FRAME_COLOR.from_pixel(0xffffffff);
 
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
 const ZOOM_OVERLAY_FADE_TIME = 0.15;
+
+const DRAGGING_WINDOW_OPACITY = 100;
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -131,6 +135,41 @@ WindowClone.prototype = {
 
         this._zooming = false;
         this._selected = false;
+    },
+
+    getDragActorSource: function() {
+        return this.actor;
+    },
+
+    getDragActor: function(x, y) {
+        // We want to shrink the window down to at most THUMBNAIL_SIZE in one direction,
+        // but animate that transition.  The way we do this is to compute our final
+        // width/height, and set that on the Clone.  The clone itself will then scale
+        // the source.  But to animate, we need to compute a scale which will get us
+        // back to the original size, and then animate down to a scale of 1.
+        let scale = Math.min(WINDOW_DND_SIZE / this.realWindow.width, WINDOW_DND_SIZE / this.realWindow.height);
+        let [transformedX, transformedY] = this.actor.get_transformed_position();
+        let [transformedWidth, transformedHeight] = this.actor.get_transformed_size();
+        let xOffset = (x - transformedX) * scale;
+        let yOffset = (y - transformedY) * scale;
+        let targetWidth = this.realWindow.width * scale;
+        let targetHeight = this.realWindow.height * scale;
+        let inverseScale;
+        if (targetWidth < transformedWidth)
+            inverseScale = transformedWidth / targetWidth;
+        else
+            inverseScale = 1;
+        let actor = new Clutter.Clone({ source: this.realWindow,
+                                        width: targetWidth,
+                                        height: targetHeight,
+                                        opacity: DRAGGING_WINDOW_OPACITY });
+        actor.set_scale_full(inverseScale, inverseScale, xOffset, yOffset);
+        Tweener.addTween(actor, { time: Overview.ANIMATION_TIME,
+                                  transition: "easeOutQuad",
+                                  scale_x: 1,
+                                  scale_y: 1 });
+        actor._delegate = this;
+        return actor;
     },
 
     setStackAbove: function (actor) {
@@ -276,12 +315,14 @@ WindowClone.prototype = {
     },
 
     _onDragBegin : function (draggable, time) {
+        this.actor.hide();
         this._inDrag = true;
         this.emit('drag-begin');
     },
 
     _onDragEnd : function (draggable, time, snapback) {
         this._inDrag = false;
+        this.actor.show();
 
         // Most likely, the clone is going to move away from the
         // pointer now. But that won't cause a leave-event, so
