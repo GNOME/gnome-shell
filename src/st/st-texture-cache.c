@@ -946,7 +946,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   GtkIconInfo *info;
 
   gicon_string = g_icon_to_string (icon);
-  key = g_strconcat (CACHE_PREFIX_GICON, gicon_string, NULL);
+  key = g_strdup_printf ("%s%s,size=%d", CACHE_PREFIX_GICON, gicon_string, size);
   g_free (gicon_string);
 
   if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
