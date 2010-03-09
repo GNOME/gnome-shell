@@ -1,17 +1,19 @@
 # French translations for gnome-shell package.
-# Copyright (C) 2009 THE gnome-shell'S COPYRIGHT HOLDER
+# Copyright (C) 2009-2010 Listed translators
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Mathieu Bridon <bochecha@fedoraproject.org>, 2009.
+# Mathieu Bridon <bochecha@fedoraproject.org>, 2009
+# Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>, 2010
+# Claude Paroz <claude@2xlibre.net>, 2010
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-11-13 17:44+0000\n"
-"PO-Revision-Date: 2009-12-05 16:43+0100\n"
-"Last-Translator: Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>\n"
+"POT-Creation-Date: 2010-03-08 23:07+0000\n"
+"PO-Revision-Date: 2010-03-09 22:55+0100\n"
+"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,75 +28,165 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestion des fenêtres et lancement des applications"
 
-#: ../js/ui/appDisplay.js:696
-msgid "Drag here to add favorites"
-msgstr "Glisser ici pour ajouter aux favoris"
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:886
+msgid "APPLICATIONS"
+msgstr "APPLICATIONS"
 
-#: ../js/ui/appIcon.js:425
+#: ../js/ui/appDisplay.js:343
+msgid "PREFERENCES"
+msgstr "PRÉFÉRENCES"
+
+#: ../js/ui/appDisplay.js:728
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
-#: ../js/ui/appIcon.js:429
+#: ../js/ui/appDisplay.js:732
 msgid "Remove from Favorites"
 msgstr "Enlever des favoris"
 
-#: ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:733
 msgid "Add to Favorites"
 msgstr "Ajouter aux favoris"
 
-#: ../js/ui/dash.js:237
+#: ../js/ui/appDisplay.js:1085
+msgid "Drag here to add favorites"
+msgstr "Glisser ici pour ajouter aux favoris"
+
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s a été ajouté à vos favoris."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s a été supprimé de vos favoris."
+
+#: ../js/ui/dash.js:235
 msgid "Find..."
 msgstr "Rechercher..."
 
-#. **** Applications ****
-#: ../js/ui/dash.js:656 ../js/ui/dash.js:718
-msgid "APPLICATIONS"
-msgstr "APPLICATIONS"
+#: ../js/ui/dash.js:511
+msgid "Searching..."
+msgstr "Recherche en cours..."
+
+#: ../js/ui/dash.js:525
+msgid "No matching results."
+msgstr "Aucun résultat correspondant."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:676 ../js/ui/dash.js:733
-msgid "PLACES"
-msgstr "RACCOURCIS"
+#: ../js/ui/dash.js:905 ../js/ui/placeDisplay.js:529
+msgid "PLACES & DEVICES"
+msgstr "RACCOURCIS et PÉRIPHÉRIQUES"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:683 ../js/ui/dash.js:728
-msgid "RECENT DOCUMENTS"
-msgstr "DOCUMENTS RÉCENTS"
+#: ../js/ui/dash.js:912 ../js/ui/docDisplay.js:488
+msgid "RECENT ITEMS"
+msgstr "ÉLÉMENTS RÉCENTS"
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:708 ../js/ui/dash.js:898
-msgid "SEARCH RESULTS"
-msgstr "RÉSULTATS DE LA RECHERCHE"
+#: ../js/ui/lookingGlass.js:363
+msgid "No extensions installed"
+msgstr "Aucune extension installée"
 
-#: ../js/ui/dash.js:723
-msgid "PREFERENCES"
-msgstr "PRÉFÉRENCES"
+#: ../js/ui/lookingGlass.js:400
+msgid "Enabled"
+msgstr "Activé"
+
+#: ../js/ui/lookingGlass.js:402
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: ../js/ui/lookingGlass.js:404
+msgid "Error"
+msgstr "Erreur"
+
+#: ../js/ui/lookingGlass.js:406
+msgid "Out of date"
+msgstr "Périmé"
+
+#: ../js/ui/lookingGlass.js:431
+msgid "View Source"
+msgstr "Afficher la source"
+
+#: ../js/ui/lookingGlass.js:437
+msgid "Web Page"
+msgstr "Page Web"
+
+#: ../js/ui/overview.js:92
+msgid "Undo"
+msgstr "Annuler"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:274
+#: ../js/ui/panel.js:399
 msgid "Activities"
 msgstr "Activités"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:491
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:630
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:633
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/placeDisplay.js:84
+#: ../js/ui/placeDisplay.js:144
 msgid "Connect to..."
 msgstr "Connexion à..."
 
-#: ../js/ui/runDialog.js:96
+#: ../js/ui/runDialog.js:221
 msgid "Please enter a command:"
 msgstr "Veuillez saisir une commande :"
 
-#: ../js/ui/runDialog.js:173
+#: ../js/ui/runDialog.js:344
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Exécution de « %s » impossible :"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Occupé"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Invisible"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Informations personnelles..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Barre latérale"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Préférences du système..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Verrouiller l'écran"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Changer d'utilisateur"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Fermer la session..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Éteindre..."
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -109,100 +201,49 @@ msgstr "Applications"
 msgid "Recent Documents"
 msgstr "Documents récents"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Il y a moins d'une minute"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Il y a %d minute"
 msgstr[1] "Il y a %d minutes"
 
-#: ../src/shell-global.c:827
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Il y a %d heure"
 msgstr[1] "Il y a %d heures"
 
-#: ../src/shell-global.c:830
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Il y a %d jour"
 msgstr[1] "Il y a %d jours"
 
-#: ../src/shell-global.c:833
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Il y a %d semaine"
 msgstr[1] "Il y a %d semaines"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Inconnu"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Impossible de verrouiller l'écran : %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr ""
-"Impossible de régler temporairement l'écran de veille sur un écran vide : %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Impossible de fermer la session : %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Informations personnelles..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Barre latérale"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Préférences du système..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Verrouiller l'écran"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Changer d'utilisateur"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Fermer la session..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Éteindre..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-uri-util.c:89
 msgid "Home Folder"
 msgstr "Dossier personnel"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-uri-util.c:104
 msgid "File System"
 msgstr "Système de fichiers"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-uri-util.c:250
 msgid "Search"
 msgstr "Recherche"
 
@@ -211,10 +252,7 @@ msgstr "Recherche"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-uri-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s : %2$s"
-
-#~ msgid "Browse"
-#~ msgstr "Parcourir"
