@@ -154,10 +154,9 @@ _Draggable.prototype = {
                 // the dragActor over it. Otherwise, center it
                 // around the pointer
                 let [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
-                let [sourceWidth, sourceHeight] = this._dragActorSource.get_transformed_size();
                 let x, y;
-                if (stageX > sourceX && stageX <= sourceX + sourceWidth &&
-                    stageY > sourceY && stageY <= sourceY + sourceHeight) {
+                if (stageX > sourceX && stageX <= sourceX + this._dragActor.width &&
+                    stageY > sourceY && stageY <= sourceY + this._dragActor.height) {
                     x = sourceX;
                     y = sourceY;
                 } else {
