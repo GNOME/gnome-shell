@@ -257,13 +257,15 @@ GenericDisplay.prototype = {
 
         if (disableVScrolling) {
             this.actor = this._list = new Shell.OverflowList({ spacing: 6,
-                                                                 item_height: 50 });
+                                                               item_height: 50 });
         } else {
-            this.actor = new St.ScrollView({ x_fill: true, y_fill: true });
-            this.actor.get_hscroll_bar().hide();
+            this.actor = new St.ScrollView({ x_fill: true,
+                                             y_fill: false,
+                                             vshadows: true });
             this._list = new St.BoxLayout({ style_class: 'generic-display-container',
                                              vertical: true });
             this.actor.add_actor(this._list);
+            this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         }
 
         this._pendingRedisplay = RedisplayFlags.NONE;

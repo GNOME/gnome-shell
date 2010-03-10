@@ -67,13 +67,8 @@ Pane.prototype = {
 
         let chromeTop = new St.BoxLayout();
 
-        let closeIcon = new St.Button({ style_class: "dash-pane-close" });
-        closeIcon.connect('clicked', Lang.bind(this, function (b, e) {
-            this.close();
-        }));
         let dummy = new St.Bin();
         chromeTop.add(dummy, { expand: true });
-        chromeTop.add(closeIcon, { x_align: St.Align.END });
         this.actor.add(chromeTop);
 
         this.content = new St.BoxLayout({ vertical: true });

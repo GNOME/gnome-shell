@@ -373,16 +373,11 @@ StTooltip {
 }
 
 .dash-pane {
-    background-color: rgba(0,0,0,0.95);
-    border: 1px solid #262626;
-    padding: 4px;
-    spacing: 4px;
-}
-
-.dash-pane-close {
-    background-image: url("close.svg");
-    width: 16px;
-    height: 16px;
+    border-radius: 10px;
+    background-color: #111111;
+    border: 2px solid #868686;
+    color: #ffffff;
+    padding: 30px 10px 10px 20px;
 }
 
 .dash-search-section-header {
