@@ -97,7 +97,14 @@ PlaceDeviceInfo.prototype = {
     },
 
     _removeFinish: function(o, res, data) {
-        this._mount.unmount_finish(res);
+        try {
+            this._mount.unmount_finish(res);
+        } catch (e) {
+            let message = _("Failed to unmount '%s'").format(o.get_name());
+            Main.overview.infoBar.setMessage(message,
+                                             Lang.bind(this, this.remove),
+                                             _("Retry"));
+        }
     }
 };
 
