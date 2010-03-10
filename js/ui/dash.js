@@ -142,7 +142,7 @@ function createPaneForDetails(dash, display) {
                     detailPane.destroyContent();
                 }
             }));
-            dash._addPane(detailPane);
+            dash._addPane(detailPane, St.Align.START);
         }
 
         if (index >= 0) {
@@ -857,7 +857,7 @@ Dash.prototype = {
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._allApps == null) {
                 this._allApps = new AppDisplay.AllAppDisplay();
-                this._addPane(this._allApps);
+                this._addPane(this._allApps, St.Align.START);
                 link.setPane(this._allApps);
            }
         }));
@@ -885,7 +885,7 @@ Dash.prototype = {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
                 this._moreDocsPane.packResults(DOCS);
-                this._addPane(this._moreDocsPane);
+                this._addPane(this._moreDocsPane, St.Align.END);
                 link.setPane(this._moreDocsPane);
            }
         }));
@@ -964,7 +964,7 @@ Dash.prototype = {
             this._activePane.close();
     },
 
-    _addPane: function(pane) {
+    _addPane: function(pane, align) {
         pane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
             if (isOpen) {
                 if (pane != this._activePane && this._activePane != null) {
@@ -975,7 +975,7 @@ Dash.prototype = {
                 this._activePane = null;
             }
         }));
-        Main.overview.addPane(pane);
+        Main.overview.addPane(pane, align);
     }
 };
 Signals.addSignalMethods(Dash.prototype);

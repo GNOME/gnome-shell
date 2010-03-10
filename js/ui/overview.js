@@ -357,8 +357,11 @@ Overview.prototype = {
 
     },
 
-    addPane: function (pane) {
-        this._paneContainer.add(pane.actor, { expand: true, y_fill: false, y_align: St.Align.START });
+    addPane: function (pane, align) {
+        pane.actor.height = .9 * this._workspacesHeight;
+        this._paneContainer.add(pane.actor, { expand: true,
+                                              y_fill: false,
+                                              y_align: align });
         // When a pane is displayed, we raise the transparent background to the top
         // and connect to button-release-event on it, then raise the pane above that.
         // The idea here is that clicking anywhere outside the pane should close it.
