@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
@@ -9,6 +13,10 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <glib.h>
+
+#ifdef HAVE_CLUTTER_GLX
+#include "clutter/x11/clutter-x11.h"
+#endif
 
 #define NHANDS  6
 
@@ -194,6 +202,10 @@ test_paint_wrapper_main (int argc, char *argv[])
   ClutterActor *real_hand;
 
   error = NULL;
+
+#ifdef HAVE_CLUTTER_GLX
+  clutter_x11_set_use_argb_visual (TRUE);
+#endif
 
   clutter_init_with_args (&argc, &argv,
                           NULL,
