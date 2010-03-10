@@ -171,6 +171,8 @@ st_entry_dispose (GObject *object)
       clutter_actor_destroy (priv->entry);
       priv->entry = NULL;
     }
+
+  G_OBJECT_CLASS (st_entry_parent_class)->dispose (object);
 }
 
 static void
@@ -180,6 +182,8 @@ st_entry_finalize (GObject *object)
 
   g_free (priv->hint);
   priv->hint = NULL;
+
+  G_OBJECT_CLASS (st_entry_parent_class)->finalize (object);
 }
 
 static void

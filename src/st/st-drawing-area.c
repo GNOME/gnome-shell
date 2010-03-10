@@ -63,6 +63,8 @@ st_drawing_area_dispose (GObject *object)
       cogl_handle_unref (priv->texture);
       priv->texture = COGL_INVALID_HANDLE;
     }
+
+  G_OBJECT_CLASS (st_drawing_area_parent_class)->dispose (object);
 }
 
 static void

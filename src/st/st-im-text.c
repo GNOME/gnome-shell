@@ -93,6 +93,8 @@ st_im_text_dispose (GObject *object)
 
   g_object_unref (priv->im_context);
   priv->im_context = NULL;
+
+  G_OBJECT_CLASS (st_im_text_parent_class)->dispose (object);
 }
 
 static void

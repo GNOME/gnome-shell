@@ -172,9 +172,9 @@ st_label_allocate (ClutterActor          *actor,
 }
 
 static void
-st_label_dispose (GObject   *actor)
+st_label_dispose (GObject   *object)
 {
-  StLabelPrivate *priv = ST_LABEL (actor)->priv;
+  StLabelPrivate *priv = ST_LABEL (object)->priv;
 
   if (priv->label)
     {
@@ -182,7 +182,7 @@ st_label_dispose (GObject   *actor)
       priv->label = NULL;
     }
 
-  G_OBJECT_CLASS (st_label_parent_class)->dispose (G_OBJECT (actor));
+  G_OBJECT_CLASS (st_label_parent_class)->dispose (object);
 }
 
 static void

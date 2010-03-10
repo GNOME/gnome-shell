@@ -360,6 +360,8 @@ shell_app_dispose (GObject *object)
     _shell_app_remove_window (app, app->windows->data);
 
   disconnect_workspace_switch (app);
+
+  G_OBJECT_CLASS(shell_app_parent_class)->dispose (object);
 }
 
 static void

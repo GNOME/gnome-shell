@@ -229,12 +229,24 @@ shell_generic_container_finalize (GObject *object)
 }
 
 static void
+shell_generic_container_dispose (GObject *object)
+{
+  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (object)->priv;
+
+  while (priv->children)
+    clutter_actor_destroy (priv->children->data);
+
+  G_OBJECT_CLASS (shell_generic_container_parent_class)->dispose (object);
+}
+
+static void
 shell_generic_container_class_init (ShellGenericContainerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->finalize = shell_generic_container_finalize;
+  gobject_class->dispose = shell_generic_container_dispose;
 
   actor_class->get_preferred_width = shell_generic_container_get_preferred_width;
   actor_class->get_preferred_height = shell_generic_container_get_preferred_height;
