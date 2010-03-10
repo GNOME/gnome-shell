@@ -33,7 +33,10 @@
  *
  * The interface contains methods for getting and setting the adjustments
  * for scrolling; these adjustments will be used to hook the scrolled
- * position up to scrollbars or other external controls.
+ * position up to scrollbars or other external controls. When a #StScrollable
+ * is added to a parent container, the parent container is responsible
+ * for setting the adjustments. The parent container then sets the adjustments
+ * back to %NULL when the scrollable is removed.
  *
  * For #StScrollable supporting height-for-width size negotation, size
  * negotation works as follows:

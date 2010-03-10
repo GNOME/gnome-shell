@@ -111,6 +111,8 @@ scrollable_set_adjustments (StScrollable *scrollable,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (scrollable)->priv;
 
+  g_object_freeze_notify (G_OBJECT (scrollable));
+
   if (hadjustment != priv->hadjustment)
     {
       if (priv->hadjustment)
@@ -130,6 +132,7 @@ scrollable_set_adjustments (StScrollable *scrollable,
         }
 
       priv->hadjustment = hadjustment;
+      g_object_notify (G_OBJECT (scrollable), "hadjustment");
     }
 
   if (vadjustment != priv->vadjustment)
@@ -151,7 +154,10 @@ scrollable_set_adjustments (StScrollable *scrollable,
         }
 
       priv->vadjustment = vadjustment;
+      g_object_notify (G_OBJECT (scrollable), "vadjustment");
     }
+
+  g_object_thaw_notify (G_OBJECT (scrollable));
 }
 
 static void
@@ -160,82 +166,14 @@ scrollable_get_adjustments (StScrollable  *scrollable,
                             StAdjustment **vadjustment)
 {
   StBoxLayoutPrivate *priv;
-  ClutterActor *actor, *stage;
 
   priv = (ST_BOX_LAYOUT (scrollable))->priv;
 
-  actor = CLUTTER_ACTOR (scrollable);
-  stage = clutter_actor_get_stage (actor);
-
-  if (hadjustment)
-    {
-      if (priv->hadjustment)
-        *hadjustment = priv->hadjustment;
-      else
-        {
-          StAdjustment *adjustment;
-          gdouble width, stage_width, increment;
-
-          if (stage)
-            {
-              width = clutter_actor_get_width (actor);
-              stage_width = clutter_actor_get_width (stage);
-              increment = MAX (1.0, MIN (stage_width, width));
-            }
-          else
-            {
-              width = increment = 1.0;
-            }
-
-          adjustment = st_adjustment_new (0,
-                                          0,
-                                          width,
-                                          1.0,
-                                          increment,
-                                          increment);
-
-          scrollable_set_adjustments (scrollable,
-                                      adjustment,
-                                      priv->vadjustment);
-
-          *hadjustment = adjustment;
-        }
-    }
+  if (priv->hadjustment)
+    *hadjustment = priv->hadjustment;
 
   if (vadjustment)
-    {
-      if (priv->vadjustment)
-        *vadjustment = priv->vadjustment;
-      else
-        {
-          StAdjustment *adjustment;
-          gdouble height, stage_height, increment;
-
-          if (stage)
-            {
-              height = clutter_actor_get_height (actor);
-              stage_height = clutter_actor_get_height (stage);
-              increment = MAX (1.0, MIN (stage_height, height));
-            }
-          else
-            {
-              height = increment = 1.0;
-            }
-
-          adjustment = st_adjustment_new (0,
-                                          0,
-                                          height,
-                                          1.0,
-                                          increment,
-                                          increment);
-
-          scrollable_set_adjustments (scrollable,
-                                      priv->hadjustment,
-                                      adjustment);
-
-          *vadjustment = adjustment;
-        }
-    }
+    *vadjustment = priv->vadjustment;
 }
 
 

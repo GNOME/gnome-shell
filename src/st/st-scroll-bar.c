@@ -1143,6 +1143,10 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
   g_return_if_fail (ST_IS_SCROLL_BAR (bar));
 
   priv = bar->priv;
+
+  if (adjustment == priv->adjustment)
+    return;
+
   if (priv->adjustment)
     {
       g_signal_handlers_disconnect_by_func (priv->adjustment,
@@ -1168,6 +1172,8 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (bar));
     }
+
+  g_object_notify (G_OBJECT (bar), "adjustment");
 }
 
 /**

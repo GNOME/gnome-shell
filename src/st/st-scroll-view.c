@@ -91,11 +91,10 @@ struct _StScrollViewPrivate
    */
   ClutterActor *child;
 
-  ClutterActor *hscroll;
-  ClutterActor *vscroll;
-
   StAdjustment *hadjustment;
+  ClutterActor *hscroll;
   StAdjustment *vadjustment;
+  ClutterActor *vscroll;
 
   GtkPolicyType hscrollbar_policy;
   GtkPolicyType vscrollbar_policy;
@@ -165,7 +164,7 @@ update_shadow_visibility (StScrollView *scroll)
 {
   StScrollViewPrivate *priv = scroll->priv;
 
-  if (priv->vshadows && priv->vadjustment)
+  if (priv->vshadows)
     {
       gdouble value, lower, upper, page_size;
 
@@ -271,6 +270,25 @@ st_scroll_view_dispose (GObject *object)
 
   if (priv->hscroll)
     clutter_actor_destroy (priv->hscroll);
+
+  /* For most reliable freeing of memory, an object with signals
+   * like StAdjustment should be explicitly disposed. Since we own
+   * the adjustments, we take care of that. This also disconnects
+   * the signal handlers that we established on creation.
+   */
+  if (priv->hadjustment)
+    {
+      g_object_run_dispose (G_OBJECT (priv->hadjustment));
+      g_object_unref (priv->hadjustment);
+      priv->hadjustment = NULL;
+    }
+
+  if (priv->vadjustment)
+    {
+      g_object_run_dispose (G_OBJECT (priv->vadjustment));
+      g_object_unref (priv->vadjustment);
+      priv->hadjustment = NULL;
+    }
 
   /* since it's impossible to get a handle to these actors, we can
    * just directly unparent them and not go through destroy/remove */
@@ -712,40 +730,30 @@ st_scroll_view_scroll_event (ClutterActor       *self,
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
   gdouble lower, value, upper, step;
-  StAdjustment *vadjustment, *hadjustment;
 
   /* don't handle scroll events if requested not to */
   if (!priv->mouse_scroll)
     return FALSE;
 
-  hadjustment = st_scroll_bar_get_adjustment (ST_SCROLL_BAR (priv->hscroll));
-  vadjustment = st_scroll_bar_get_adjustment (ST_SCROLL_BAR (priv->vscroll));
-
   switch (event->direction)
     {
     case CLUTTER_SCROLL_UP:
     case CLUTTER_SCROLL_DOWN:
-      if (vadjustment)
-        g_object_get (vadjustment,
-                      "lower", &lower,
-                      "step-increment", &step,
-                      "value", &value,
-                      "upper", &upper,
-                      NULL);
-      else
-        return FALSE;
+      g_object_get (priv->vadjustment,
+                    "lower", &lower,
+                    "step-increment", &step,
+                    "value", &value,
+                    "upper", &upper,
+                    NULL);
       break;
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
-      if (vadjustment)
-        g_object_get (hadjustment,
-                      "lower", &lower,
-                      "step-increment", &step,
-                      "value", &value,
-                      "upper", &upper,
-                      NULL);
-      else
-        return FALSE;
+      g_object_get (priv->hadjustment,
+                    "lower", &lower,
+                    "step-increment", &step,
+                    "value", &value,
+                    "upper", &upper,
+                    NULL);
       break;
     }
 
@@ -755,25 +763,25 @@ st_scroll_view_scroll_event (ClutterActor       *self,
       if (value == lower)
         return FALSE;
       else
-        st_adjustment_set_value (vadjustment, value - step);
+        st_adjustment_set_value (priv->vadjustment, value - step);
       break;
     case CLUTTER_SCROLL_DOWN:
       if (value == upper)
         return FALSE;
       else
-        st_adjustment_set_value (vadjustment, value + step);
+        st_adjustment_set_value (priv->vadjustment, value + step);
       break;
     case CLUTTER_SCROLL_LEFT:
       if (value == lower)
         return FALSE;
       else
-        st_adjustment_set_value (hadjustment, value - step);
+        st_adjustment_set_value (priv->hadjustment, value - step);
       break;
     case CLUTTER_SCROLL_RIGHT:
       if (value == upper)
         return FALSE;
       else
-        st_adjustment_set_value (hadjustment, value + step);
+        st_adjustment_set_value (priv->hadjustment, value + step);
       break;
     }
 
@@ -856,14 +864,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 }
 
 static void
-disconnect_hadjustment (StScrollView *scroll)
-{
-  StScrollViewPrivate *priv = scroll->priv;
-
-  priv->hadjustment = NULL;
-}
-
-static void
 child_adjustment_changed_cb (StAdjustment *adjustment,
                              StScrollView *scroll)
 {
@@ -879,80 +879,6 @@ child_adjustment_notify_value (GObject      *gobject,
 }
 
 static void
-disconnect_vadjustment (StScrollView *scroll)
-{
-  StScrollViewPrivate *priv = scroll->priv;
-
-  if (priv->vadjustment)
-    {
-      g_signal_handlers_disconnect_by_func (priv->vadjustment,
-                                            child_adjustment_notify_value,
-                                            scroll);
-      g_signal_handlers_disconnect_by_func (priv->vadjustment,
-                                            child_adjustment_changed_cb,
-                                            scroll);
-      priv->vadjustment = NULL;
-    }
-}
-
-static void
-child_hadjustment_notify_cb (GObject      *gobject,
-                             GParamSpec   *arg1,
-                             StScrollView *scroll)
-{
-  ClutterActor *actor = CLUTTER_ACTOR (gobject);
-  StScrollViewPrivate *priv = scroll->priv;
-
-  disconnect_hadjustment (scroll);
-
-  st_scrollable_get_adjustments (ST_SCROLLABLE (actor), &priv->hadjustment, NULL);
-  st_scroll_bar_set_adjustment (ST_SCROLL_BAR (priv->hscroll), priv->hadjustment);
-
-  if (priv->hadjustment)
-    {
-      /* Force scroll step if needed. */
-      if (priv->column_size_set)
-        {
-          g_object_set (priv->hadjustment,
-                        "step-increment", priv->column_size,
-                        NULL);
-        }
-    }
-}
-
-static void
-child_vadjustment_notify_cb (GObject    *gobject,
-                             GParamSpec *arg1,
-                             gpointer    user_data)
-{
-  StScrollView *scroll = ST_SCROLL_VIEW (user_data);
-  StScrollViewPrivate *priv = scroll->priv;
-
-  disconnect_vadjustment (scroll);
-
-  st_scrollable_get_adjustments (ST_SCROLLABLE (priv->child), NULL, &priv->vadjustment);
-  st_scroll_bar_set_adjustment (ST_SCROLL_BAR (priv->vscroll), priv->vadjustment);
-
-  if (priv->vadjustment)
-    {
-      /* Force scroll step if needed. */
-      if (priv->row_size_set)
-        {
-          g_object_set (priv->vadjustment,
-                        "step-increment", priv->row_size,
-                        NULL);
-        }
-
-      g_signal_connect (priv->vadjustment, "changed",
-                        G_CALLBACK (child_adjustment_changed_cb), scroll);
-      g_signal_connect (priv->vadjustment, "notify::value",
-                        G_CALLBACK (child_adjustment_notify_value), scroll);
-    }
-
-  update_shadow_visibility (scroll);
-}
-
-static void
 st_scroll_view_init (StScrollView *self)
 {
   StScrollViewPrivate *priv = self->priv = SCROLL_VIEW_PRIVATE (self);
@@ -960,8 +886,21 @@ st_scroll_view_init (StScrollView *self)
   priv->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
   priv->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
 
-  priv->hscroll = CLUTTER_ACTOR (st_scroll_bar_new (NULL));
-  priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR, "vertical", TRUE, NULL);
+  priv->hadjustment = g_object_new (ST_TYPE_ADJUSTMENT, NULL);
+  priv->hscroll = g_object_new (ST_TYPE_SCROLL_BAR,
+                                "adjustment", priv->hadjustment,
+                                "vertical", FALSE,
+                                NULL);
+
+  priv->vadjustment = g_object_new (ST_TYPE_ADJUSTMENT, NULL);
+  g_signal_connect (priv->vadjustment, "changed",
+                    G_CALLBACK (child_adjustment_changed_cb), self);
+  g_signal_connect (priv->vadjustment, "notify::value",
+                    G_CALLBACK (child_adjustment_notify_value), self);
+  priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR,
+                                "adjustment", priv->vadjustment,
+                                "vertical", TRUE,
+                                NULL);
 
   clutter_actor_set_parent (priv->hscroll, CLUTTER_ACTOR (self));
   clutter_actor_set_parent (priv->vscroll, CLUTTER_ACTOR (self));
@@ -985,15 +924,8 @@ st_scroll_view_add (ClutterContainer *container,
       /* chain up to StBin::add() */
       st_scroll_view_parent_iface->add (container, actor);
 
-      /* Get adjustments for scroll-bars */
-      g_signal_connect (actor, "notify::hadjustment",
-                        G_CALLBACK (child_hadjustment_notify_cb),
-                        container);
-      g_signal_connect (actor, "notify::vadjustment",
-                        G_CALLBACK (child_vadjustment_notify_cb),
-                        container);
-      child_hadjustment_notify_cb (G_OBJECT (actor), NULL, self);
-      child_vadjustment_notify_cb (G_OBJECT (actor), NULL, self);
+      st_scrollable_set_adjustments (ST_SCROLLABLE (actor),
+                                     priv->hadjustment, priv->vadjustment);
     }
   else
     {
@@ -1018,15 +950,8 @@ st_scroll_view_remove (ClutterContainer *container,
       /* chain up to StBin::remove() */
       st_scroll_view_parent_iface->remove (container, actor);
 
-      disconnect_hadjustment (self);
-      disconnect_vadjustment (self);
-
-      g_signal_handlers_disconnect_by_func (priv->child,
-                                            child_hadjustment_notify_cb,
-                                            container);
-      g_signal_handlers_disconnect_by_func (priv->child,
-                                            child_vadjustment_notify_cb,
-                                            container);
+      st_scrollable_set_adjustments (ST_SCROLLABLE (priv->child),
+                                     NULL, NULL);
 
       g_object_unref (priv->child);
       priv->child = NULL;
@@ -1122,14 +1047,11 @@ st_scroll_view_get_vscroll_bar (StScrollView *scroll)
 gfloat
 st_scroll_view_get_column_size (StScrollView *scroll)
 {
-  StAdjustment *adjustment;
   gdouble column_size;
 
   g_return_val_if_fail (scroll, 0);
 
-  adjustment = st_scroll_bar_get_adjustment (
-    ST_SCROLL_BAR (scroll->priv->hscroll));
-  g_object_get (adjustment,
+  g_object_get (scroll->priv->hadjustment,
                 "step-increment", &column_size,
                 NULL);
 
@@ -1140,8 +1062,6 @@ void
 st_scroll_view_set_column_size (StScrollView *scroll,
                                 gfloat        column_size)
 {
-  StAdjustment *adjustment;
-
   g_return_if_fail (scroll);
 
   if (column_size < 0)
@@ -1154,27 +1074,20 @@ st_scroll_view_set_column_size (StScrollView *scroll,
       scroll->priv->column_size_set = TRUE;
       scroll->priv->column_size = column_size;
 
-      adjustment = st_scroll_bar_get_adjustment (
-        ST_SCROLL_BAR (scroll->priv->hscroll));
-
-      if (adjustment)
-        g_object_set (adjustment,
-                      "step-increment", (gdouble) scroll->priv->column_size,
-                      NULL);
+      g_object_set (scroll->priv->hadjustment,
+                    "step-increment", (gdouble) scroll->priv->column_size,
+                    NULL);
     }
 }
 
 gfloat
 st_scroll_view_get_row_size (StScrollView *scroll)
 {
-  StAdjustment *adjustment;
   gdouble row_size;
 
   g_return_val_if_fail (scroll, 0);
 
-  adjustment = st_scroll_bar_get_adjustment (
-    ST_SCROLL_BAR (scroll->priv->vscroll));
-  g_object_get (adjustment,
+  g_object_get (scroll->priv->vadjustment,
                 "step-increment", &row_size,
                 NULL);
 
@@ -1185,8 +1098,6 @@ void
 st_scroll_view_set_row_size (StScrollView *scroll,
                              gfloat        row_size)
 {
-  StAdjustment *adjustment;
-
   g_return_if_fail (scroll);
 
   if (row_size < 0)
@@ -1199,13 +1110,9 @@ st_scroll_view_set_row_size (StScrollView *scroll,
       scroll->priv->row_size_set = TRUE;
       scroll->priv->row_size = row_size;
 
-      adjustment = st_scroll_bar_get_adjustment (
-        ST_SCROLL_BAR (scroll->priv->vscroll));
-
-      if (adjustment)
-        g_object_set (adjustment,
-                      "step-increment", (gdouble) scroll->priv->row_size,
-                      NULL);
+      g_object_set (scroll->priv->vadjustment,
+                    "step-increment", (gdouble) scroll->priv->row_size,
+                    NULL);
     }
 }
 
