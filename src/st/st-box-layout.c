@@ -811,12 +811,12 @@ st_box_layout_allocate (ClutterActor          *actor,
   if (priv->is_vertical)
     {
       expand_amount = MAX (0, avail_height - natural_height);
-      shrink_amount = MAX (0, natural_height - MAX (avail_height, min_height));
+      shrink_amount = MAX (0, natural_height - avail_height);
     }
   else
     {
       expand_amount = MAX (0, avail_width - natural_width);
-      shrink_amount = MAX (0, natural_width - MAX (avail_width, min_width));
+      shrink_amount = MAX (0, natural_width - avail_width);
     }
 
   if (expand_amount > 0)
