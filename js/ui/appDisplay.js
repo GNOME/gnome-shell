@@ -23,6 +23,7 @@ const Workspace = imports.ui.workspace;
 
 const APPICON_SIZE = 48;
 const WELL_MAX_COLUMNS = 8;
+const MENU_POPUP_TIMEOUT = 600;
 
 function AllAppView() {
     this._init();
@@ -416,6 +417,7 @@ AppWellIcon.prototype = {
         this.actor.connect('destroy', Lang.bind(this, this._onHideDestroy));
 
         this._appWindowChangedId = 0;
+        this._menuTimeoutId = 0;
     },
 
     _onShow: function() {
@@ -428,6 +430,14 @@ AppWellIcon.prototype = {
     _onHideDestroy: function() {
         if (this._appWindowChangedId > 0)
             this.app.disconnect(this._appWindowChangedId);
+        this._removeMenuTimeout();
+    },
+
+    _removeMenuTimeout: function() {
+        if (this._menuTimeoutId > 0) {
+            Mainloop.source_remove(this._menuTimeoutId);
+            this._menuTimeoutId = 0;
+        }
     },
 
     _updateStyleClass: function() {
@@ -446,6 +456,15 @@ AppWellIcon.prototype = {
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
+
+        let button = event.get_button();
+        if (button == 1) {
+            this._removeMenuTimeout();
+            this._menuTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT,
+                Lang.bind(this, function() {
+                    this.popupMenu(button);
+                }));
+        }
     },
 
     _onHoverChange: function(actor) {
@@ -453,6 +472,7 @@ AppWellIcon.prototype = {
         if (!hover) {
             if (this.actor.held && this._dragStartX != null) {
                 this.actor.fake_release();
+                this._removeMenuTimeout();
                 this._draggable.startDrag(this._dragStartX, this._dragStartY,
                                           global.get_current_time());
             } else {
@@ -463,6 +483,8 @@ AppWellIcon.prototype = {
     },
 
     _onClicked: function(actor, event) {
+        this._removeMenuTimeout();
+
         let button = event.get_button();
         if (button == 1) {
             this._onActivate(event);
@@ -479,6 +501,9 @@ AppWellIcon.prototype = {
     },
 
     popupMenu: function(activatingButton) {
+        this._removeMenuTimeout();
+        this.actor.fake_release();
+
         if (!this._menu) {
             this._menu = new AppIconMenu(this);
             this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
