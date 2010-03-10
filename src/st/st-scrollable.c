@@ -66,8 +66,16 @@
  * resize the scroll view small enough so that the scrolled area
  * vanishes.
  *
- * width-for-height size negotation is similar, with the roles of width
- * and height reversed.
+ * In response to allocate, in addition to normal handling, the
+ * scrollable should also set the limits of the the horizontal and
+ * vertical adjustments that were set on it earlier. The standard
+ * settings are:
+ *
+ *  lower: 0
+ *  page_size: allocated size (width or height)
+ *  upper: MAX (total size of the scrolled area,allocated_size)
+ *  step_increment: natural row/column height or a fixed fraction of the page size
+ *  page_increment: page_size - step_increment
  */
 static void
 st_scrollable_base_init (gpointer g_iface)

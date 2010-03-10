@@ -171,8 +171,8 @@ update_shadow_visibility (StScrollView *scroll)
 
       st_adjustment_get_values (priv->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
 
-      priv->top_shadow_visible = fabs (value - lower) > 0.1;
-      priv->bottom_shadow_visible = fabs (upper - value - page_size) > 0.1;
+      priv->top_shadow_visible = value > lower + 0.1;
+      priv->bottom_shadow_visible = value < upper - page_size - 0.1;
     }
   else
     {

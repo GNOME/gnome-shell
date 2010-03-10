@@ -770,10 +770,10 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->vadjustment),
                     "lower", 0.0,
-                    "upper", min_height,
+                    "upper", MAX (min_height, avail_height),
                     "page-size", avail_height,
                     "step-increment", avail_height / 6,
-                    "page-increment", avail_height,
+                    "page-increment", avail_height - avail_height / 6,
                     NULL);
 
       prev_value = st_adjustment_get_value (priv->vadjustment);
@@ -786,10 +786,10 @@ st_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->hadjustment),
                     "lower", 0.0,
-                    "upper", min_width,
+                    "upper", MAX (min_width, avail_width),
                     "page-size", avail_width,
                     "step-increment", avail_width / 6,
-                    "page-increment", avail_width,
+                    "page-increment", avail_width - avail_width / 6,
                     NULL);
 
       prev_value = st_adjustment_get_value (priv->hadjustment);
