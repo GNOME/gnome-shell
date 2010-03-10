@@ -89,8 +89,7 @@ InfoBar.prototype = {
                                   x_fill: true,
                                   y_fill: false });
         this._label = new St.Label();
-        this._undo = new St.Button({ label: _("Undo"),
-                                     style_class: 'info-bar-link-button' });
+        this._undo = new St.Button({ style_class: 'info-bar-link-button' });
 
         let bin = new St.Bin({ x_fill: false,
                                y_fill: false,
@@ -153,7 +152,7 @@ InfoBar.prototype = {
             this._overviewWasHidden = true;
     },
 
-    setMessage: function(text, undoCallback) {
+    setMessage: function(text, undoCallback, undoLabel) {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
 
@@ -176,6 +175,11 @@ InfoBar.prototype = {
                          });
 
         this._timeoutId = Mainloop.timeout_add_seconds(INFO_BAR_HIDE_TIMEOUT, Lang.bind(this, this._onTimeout));
+
+        if (undoLabel)
+            this._undo.label = undoLabel;
+        else
+            this._undo.label = _("Undo");
 
         this._undoCallback = undoCallback;
         if (undoCallback)
