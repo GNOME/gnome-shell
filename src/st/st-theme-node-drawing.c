@@ -681,10 +681,12 @@ _st_theme_node_free_drawing_state (StThemeNode  *node)
 {
   if (node->background_texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_texture);
-  if (node->shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->shadow_material);
+  if (node->background_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->background_shadow_material);
   if (node->border_texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->border_texture);
+  if (node->border_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_shadow_material);
 
   _st_theme_node_init_drawing_state (node);
 }
@@ -693,9 +695,14 @@ void
 _st_theme_node_init_drawing_state (StThemeNode *node)
 {
   node->background_texture = COGL_INVALID_HANDLE;
-  node->shadow_material = COGL_INVALID_HANDLE;
+  node->background_shadow_material = COGL_INVALID_HANDLE;
+  node->border_shadow_material = COGL_INVALID_HANDLE;
   node->border_texture = COGL_INVALID_HANDLE;
 }
+
+static void st_theme_node_paint_borders (StThemeNode           *node,
+                                         const ClutterActorBox *box,
+                                         guint8                 paint_opacity);
 
 static void
 st_theme_node_render_resources (StThemeNode   *node,
@@ -704,6 +711,7 @@ st_theme_node_render_resources (StThemeNode   *node,
 {
   StTextureCache *texture_cache;
   StBorderImage *border_image;
+  StShadow *shadow_spec;
   const char *background_image;
 
   texture_cache = st_texture_cache_get_default ();
@@ -719,6 +727,8 @@ st_theme_node_render_resources (StThemeNode   *node,
 
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_geometry (node);
+
+  shadow_spec = st_theme_node_get_shadow (node);
 
   /* Load referenced images from disk and draw anything we need with cairo now */
 
@@ -736,17 +746,50 @@ st_theme_node_render_resources (StThemeNode   *node,
       node->border_texture = st_theme_node_render_gradient (node);
     }
 
+  if (shadow_spec)
+    {
+      if (node->border_texture != COGL_INVALID_HANDLE)
+        node->border_shadow_material = create_shadow_material (node, node->border_texture);
+      else if (node->background_color.alpha > 0 ||
+               node->border_width[ST_SIDE_TOP] > 0 ||
+               node->border_width[ST_SIDE_LEFT] > 0 ||
+               node->border_width[ST_SIDE_RIGHT] > 0 ||
+               node->border_width[ST_SIDE_BOTTOM] > 0)
+        {
+          CoglHandle buffer, offscreen;
+
+          buffer = cogl_texture_new_with_size (width,
+                                               height,
+                                               COGL_TEXTURE_NO_SLICING,
+                                               COGL_PIXEL_FORMAT_ANY);
+          offscreen = cogl_offscreen_new_to_texture (buffer);
+
+          if (offscreen != COGL_INVALID_HANDLE)
+            {
+              ClutterActorBox box = { 0, 0, width, height };
+
+              cogl_push_framebuffer (offscreen);
+              cogl_ortho (0, width, height, 0, 0, 1.0);
+              st_theme_node_paint_borders (node, &box, 0xFF);
+              cogl_pop_framebuffer ();
+              cogl_handle_unref (offscreen);
+
+              node->border_shadow_material = create_shadow_material (node,
+                                                                     buffer);
+            }
+          cogl_handle_unref (buffer);
+        }
+    }
+
   background_image = st_theme_node_get_background_image (node);
   if (background_image != NULL)
     {
-      StShadow *shadow_spec;
 
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
 
-      shadow_spec = st_theme_node_get_shadow (node);
       if (shadow_spec)
         {
-          node->shadow_material = create_shadow_material (node, node->background_texture);
+          node->background_shadow_material = create_shadow_material (node, node->background_texture);
         }
     }
 
@@ -1043,6 +1086,30 @@ st_theme_node_paint (StThemeNode           *node,
    * border_image and a single background image above it.
    */
 
+  if (node->border_shadow_material)
+    {
+      StShadow *shadow_spec;
+      ClutterActorBox shadow_box;
+
+      shadow_spec = node->shadow;
+
+      shadow_box.x1 = allocation.x1 + shadow_spec->xoffset
+                      - shadow_spec->blur - shadow_spec->spread;
+      shadow_box.y1 = allocation.y1 + shadow_spec->yoffset
+                      - shadow_spec->blur - shadow_spec->spread;
+      shadow_box.x2 = allocation.x2 + shadow_spec->xoffset
+                      + shadow_spec->blur + shadow_spec->spread;
+      shadow_box.y2 = allocation.y2 + shadow_spec->yoffset
+                      + shadow_spec->blur + shadow_spec->spread;
+
+      cogl_material_set_color4ub (node->border_shadow_material,
+                                  paint_opacity, paint_opacity, paint_opacity, paint_opacity);
+
+      cogl_set_source (node->border_shadow_material);
+      cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1, shadow_box.x2, shadow_box.y2,
+                                          0, 0, 1, 1);
+    }
+
   if (node->border_texture != COGL_INVALID_HANDLE)
     {
       /* Gradients and border images are mutually exclusive at this time */
@@ -1072,7 +1139,7 @@ st_theme_node_paint (StThemeNode           *node,
        * image (we could exend this in the future to take other CSS properties
        * like boder and background color into account).
        */
-      if (node->shadow_material != COGL_INVALID_HANDLE)
+      if (node->background_shadow_material != COGL_INVALID_HANDLE)
         {
           StShadow *shadow_spec;
           ClutterActorBox shadow_box;
@@ -1088,10 +1155,10 @@ st_theme_node_paint (StThemeNode           *node,
           shadow_box.y2 = background_box.y2 + shadow_spec->yoffset
                           + shadow_spec->blur + shadow_spec->spread;
 
-          cogl_material_set_color4ub (node->shadow_material,
+          cogl_material_set_color4ub (node->background_shadow_material,
                                       paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
-          cogl_set_source (node->shadow_material);
+          cogl_set_source (node->background_shadow_material);
           cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1, shadow_box.x2, shadow_box.y2,
                                               0, 0, 1, 1);
         }

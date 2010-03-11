@@ -64,7 +64,8 @@ struct _StThemeNode {
   float alloc_width;
   float alloc_height;
 
-  CoglHandle shadow_material;
+  CoglHandle background_shadow_material;
+  CoglHandle border_shadow_material;
   CoglHandle background_texture;
   CoglHandle border_texture;
   CoglHandle corner_texture;
