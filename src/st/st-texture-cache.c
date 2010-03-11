@@ -865,7 +865,7 @@ st_texture_cache_load (StTextureCache       *cache,
       else
         return COGL_INVALID_HANDLE;
     }
-  cogl_handle_unref (texture);
+  cogl_handle_ref (texture);
   return texture;
 }
 
