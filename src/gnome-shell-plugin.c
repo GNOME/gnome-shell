@@ -32,6 +32,7 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gjs/gjs.h>
@@ -44,6 +45,7 @@
 
 #include "shell-global-private.h"
 #include "shell-wm.h"
+#include "st.h"
 
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
@@ -145,20 +147,18 @@ gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 }
 
 static void
-gnome_shell_plugin_start (MutterPlugin *plugin)
+update_font_options (GtkSettings *settings)
 {
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
-  MetaScreen *screen;
-  MetaDisplay *display;
-  GError *error = NULL;
-  int status;
-  const char *shell_js;
-  char **search_path;
+  StThemeContext *context;
+  ClutterStage *stage;
   ClutterBackend *backend;
-  cairo_font_options_t *font_options;
-
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  gint dpi;
+  gint hinting;
+  gchar *hint_style_str;
+  cairo_hint_style_t hint_style = CAIRO_HINT_STYLE_NONE;
+  gint antialias;
+  cairo_antialias_t antialias_mode = CAIRO_ANTIALIAS_NONE;
+  cairo_font_options_t *options;
 
   /* Disable text mipmapping; it causes problems on pre-GEM Intel
    * drivers and we should just be rendering text at the right
@@ -167,21 +167,100 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
    */
   clutter_set_font_flags (clutter_get_font_flags () & ~CLUTTER_FONT_MIPMAPPING);
 
+  g_object_get (settings,
+                "gtk-xft-dpi", &dpi,
+                "gtk-xft-antialias", &antialias,
+                "gtk-xft-hinting", &hinting,
+                "gtk-xft-hintstyle", &hint_style_str,
+                NULL);
+
+  stage = CLUTTER_STAGE (clutter_stage_get_default ());
+  context = st_theme_context_get_for_stage (stage);
+
+  if (dpi != -1)
+    /* GTK stores resolution as 1024 * dots/inch */
+    st_theme_context_set_resolution (context, dpi / 1024);
+  else
+    st_theme_context_set_default_resolution (context);
+
   /* Clutter (as of 0.9) passes comprehensively wrong font options
    * override whatever set_font_flags() did above.
    *
    * http://bugzilla.openedhand.com/show_bug.cgi?id=1456
    */
   backend = clutter_get_default_backend ();
-  font_options = cairo_font_options_create ();
-  /* Default options for everything is reasonable; except that
-   * we want to turn off subpixel anti-aliasing; since Clutter
+  options = cairo_font_options_create ();
+
+  cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_ON);
+
+  if (hinting >= 0 && !hinting)
+    {
+      hint_style = CAIRO_HINT_STYLE_NONE;
+    }
+  else if (hint_style_str)
+    {
+      if (strcmp (hint_style_str, "hintnone") == 0)
+        hint_style = CAIRO_HINT_STYLE_NONE;
+      else if (strcmp (hint_style_str, "hintslight") == 0)
+        hint_style = CAIRO_HINT_STYLE_SLIGHT;
+      else if (strcmp (hint_style_str, "hintmedium") == 0)
+        hint_style = CAIRO_HINT_STYLE_MEDIUM;
+      else if (strcmp (hint_style_str, "hintfull") == 0)
+        hint_style = CAIRO_HINT_STYLE_FULL;
+    }
+
+  g_free (hint_style_str);
+
+  cairo_font_options_set_hint_style (options, hint_style);
+
+  /* We don't want to turn on subpixel anti-aliasing; since Clutter
    * doesn't currently have the code to support ARGB masks,
    * generating them then squashing them back to A8 is pointless.
    */
-  cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
-  clutter_backend_set_font_options (backend, font_options);
-  cairo_font_options_destroy (font_options);
+  antialias_mode = (antialias < 0 || antialias) ? CAIRO_ANTIALIAS_GRAY
+                                                : CAIRO_ANTIALIAS_NONE;
+
+  cairo_font_options_set_antialias (options, antialias_mode);
+
+  clutter_backend_set_font_options (backend, options);
+  cairo_font_options_destroy (options);
+}
+
+static void
+settings_notify_cb (GtkSettings *settings,
+                    GParamSpec  *pspec,
+                    gpointer     data)
+{
+  update_font_options (settings);
+}
+
+static void
+gnome_shell_plugin_start (MutterPlugin *plugin)
+{
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+  MetaScreen *screen;
+  MetaDisplay *display;
+  GtkSettings *settings;
+  GError *error = NULL;
+  int status;
+  const char *shell_js;
+  char **search_path;
+
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
+  settings = gtk_settings_get_default ();
+  g_object_connect (settings,
+                    "signal::notify::gtk-xft-dpi",
+                    G_CALLBACK (settings_notify_cb), NULL,
+                    "signal::notify::gtk-xft-antialias",
+                    G_CALLBACK (settings_notify_cb), NULL,
+                    "signal::notify::gtk-xft-hinting",
+                    G_CALLBACK (settings_notify_cb), NULL,
+                    "signal::notify::gtk-xft-hintstyle",
+                    G_CALLBACK (settings_notify_cb), NULL,
+                    NULL);
+  update_font_options (settings);
 
   screen = mutter_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);

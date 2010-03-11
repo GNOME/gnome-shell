@@ -207,7 +207,26 @@ st_theme_context_set_resolution (StThemeContext *context,
 }
 
 /**
- * st_theme_context_set_resolution:
+ * st_theme_context_set_default_resolution:
+ * @context: a #StThemeContext
+ *
+ * Sets the resolution of the theme context to the default value of 96.
+ * See st_theme_context_set_resolution().
+ */
+void
+st_theme_context_set_default_resolution (StThemeContext *context)
+{
+  g_return_if_fail (ST_IS_THEME_CONTEXT (context));
+
+  if (context->resolution == DEFAULT_RESOLUTION)
+    return;
+
+  context->resolution = DEFAULT_RESOLUTION;
+  st_theme_context_changed (context);
+}
+
+/**
+ * st_theme_context_get_resolution:
  * @context: a #StThemeContext
  *
  * Gets the current resolution of the theme context.
