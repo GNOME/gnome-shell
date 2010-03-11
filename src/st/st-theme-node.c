@@ -2175,6 +2175,44 @@ st_theme_node_get_border_image (StThemeNode *node)
 }
 
 /**
+ * st_theme_node_get_horizontal_padding:
+ * @node: a #StThemeNode
+ *
+ * Gets the total horizonal padding (left + right padding)
+ *
+ * Return value: the total horizonal padding
+ *   in pixels
+ */
+double
+st_theme_node_get_horizontal_padding (StThemeNode *node)
+{
+  double padding = 0.0;
+  padding += st_theme_node_get_padding (node, ST_SIDE_LEFT);
+  padding += st_theme_node_get_padding (node, ST_SIDE_RIGHT);
+
+  return padding;
+}
+
+/**
+ * st_theme_node_get_vertical_padding:
+ * @node: a #StThemeNode
+ *
+ * Gets the total vertical padding (top + bottom padding)
+ *
+ * Return value: the total vertical padding
+ *   in pixels
+ */
+double
+st_theme_node_get_vertical_padding (StThemeNode *node)
+{
+  double padding = 0.0;
+  padding += st_theme_node_get_padding (node, ST_SIDE_TOP);
+  padding += st_theme_node_get_padding (node, ST_SIDE_BOTTOM);
+
+  return padding;
+}
+
+/**
  * st_theme_node_get_shadow:
  * @node: a #StThemeNode
  *
