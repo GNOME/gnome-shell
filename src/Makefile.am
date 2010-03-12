@@ -191,15 +191,14 @@ Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
 		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
 
-Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
+Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libbig-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Big				\
 		--nsversion=1.0				\
 		--include=Clutter-1.0			\
 		--include=GdkPixbuf-2.0			\
-		--libtool="$(LIBTOOL)"    \
-		--program=mutter			\
-	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
+		--libtool="$(LIBTOOL)"			\
+		--library=libbig-1.0.la			\
 		$(addprefix $(srcdir)/,$(big_source_h))	\
 		$(addprefix $(srcdir)/,$(big_source_c))	\
 		$(srcdir)/big-enum-types.h		\
@@ -211,7 +210,7 @@ Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
 	$(AM_V_GEN) $(G_IR_COMPILER) Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
 
-St-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libst-1.0.la Makefile
+St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)						\
 	        --namespace=St							\
 	        --nsversion=1.0							\
@@ -219,8 +218,8 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libst-1.0.la Makefile
 	        --include=Gtk-2.0						\
 		--add-include-path=$(builddir)     				\
 	        --libtool="$(LIBTOOL)"						\
-	        --program=mutter						\
-		--program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la	\
+	        --library=libst-1.0.la						\
+	        --library=libbig-1.0.la						\
 	        -DST_COMPILATION						\
 	        $(addprefix $(srcdir)/,$(st_source_h))				\
 	        $(addprefix $(srcdir)/,$(st_source_c))				\
