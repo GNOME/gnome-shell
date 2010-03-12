@@ -50,10 +50,14 @@ char *shell_app_info_get_name (ShellAppInfo *info);
 char *shell_app_info_get_description (ShellAppInfo *info);
 char *shell_app_info_get_executable (ShellAppInfo *info);
 char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
+GIcon *shell_app_info_get_icon (ShellAppInfo *info);
 ClutterActor *shell_app_info_create_icon_texture (ShellAppInfo *info, float size);
 GSList *shell_app_info_get_categories (ShellAppInfo *info);
 gboolean shell_app_info_get_is_nodisplay (ShellAppInfo *info);
 gboolean shell_app_info_is_transient (ShellAppInfo *info);
+
+MetaWindow *shell_app_info_get_source_window (ShellAppInfo *info);
+
 gboolean shell_app_info_launch_full (ShellAppInfo *info,
                             guint         timestamp,
                             GList        *uris,

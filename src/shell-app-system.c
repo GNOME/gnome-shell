@@ -1021,7 +1021,16 @@ themed_icon_from_name (const char *iconname)
   return icon;
 }
 
-static GIcon *
+/**
+ * shell_app_info_get_icon:
+ * @info: A #ShellAppInfo
+ *
+ * Get the #GIcon associated with this app; for apps "faked" from a #MetaWindow,
+ * return %NULL.
+ *
+ * Returns: (transfer full): The icon for @info, or %NULL
+ */
+GIcon *
 shell_app_info_get_icon (ShellAppInfo *info)
 {
   char *iconname = NULL;
@@ -1118,6 +1127,21 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
     }
 
   return ret;
+}
+
+/**
+ * shell_app_info_get_source_window:
+ * @info: A #ShellAppInfo
+ *
+ * If @info is tracking a #MetaWindow, return that window.
+ * Otherwise, return %NULL.
+ */
+MetaWindow *
+shell_app_info_get_source_window (ShellAppInfo *info)
+{
+  if (info->type == SHELL_APP_INFO_TYPE_WINDOW)
+    return info->window;
+  return NULL;
 }
 
 /**

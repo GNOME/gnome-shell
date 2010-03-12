@@ -24,8 +24,6 @@ void shell_draw_clock (StDrawingArea       *area,
 	               int                  hour,
 	               int                  minute);
 
-ClutterTexture * shell_fade_app_icon (ClutterTexture *source);
-
 guint shell_add_hook_paint_red_border (ClutterActor *actor);
 
 G_END_DECLS

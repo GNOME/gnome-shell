@@ -4,6 +4,9 @@
 
 #include "shell-app-private.h"
 #include "shell-global.h"
+#include "st.h"
+
+#include <string.h>
 
 /**
  * SECTION:shell-app
@@ -22,6 +25,7 @@ struct _ShellApp
 
   gboolean window_sort_stale;
   GSList *windows;
+
 };
 
 G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT);
@@ -52,6 +56,146 @@ shell_app_create_icon_texture (ShellApp   *app,
                                float size)
 {
   return shell_app_info_create_icon_texture (app->info, size);
+}
+typedef struct {
+  ShellApp *app;
+  int size;
+} CreateFadedIconData;
+
+static CoglHandle
+shell_app_create_faded_icon_cpu (StTextureCache *cache,
+                                 const char     *key,
+                                 void           *datap,
+                                 GError        **error)
+{
+  CreateFadedIconData *data = datap;
+  ShellApp *app;
+  GdkPixbuf *pixbuf;
+  int size;
+  CoglHandle texture;
+  gint width, height, rowstride;
+  guint8 n_channels;
+  gint fade_start;
+  gint fade_range;
+  guint i, j;
+  guint pixbuf_byte_size;
+  guint8 *orig_pixels;
+  guint8 *pixels;
+  GIcon *icon;
+  GtkIconInfo *info;
+
+  app = data->app;
+  size = data->size;
+
+  icon = shell_app_info_get_icon (app->info);
+  if (icon == NULL)
+    return COGL_INVALID_HANDLE;
+
+  info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                         icon, (int) (size + 0.5),
+                                         GTK_ICON_LOOKUP_FORCE_SIZE);
+  g_object_unref (icon);
+  if (info == NULL)
+    return COGL_INVALID_HANDLE;
+
+  pixbuf = gtk_icon_info_load_icon (info, NULL);
+  gtk_icon_info_free (info);
+
+  if (pixbuf == NULL)
+    return COGL_INVALID_HANDLE;
+
+  width = gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+  orig_pixels = gdk_pixbuf_get_pixels (pixbuf);
+
+  pixbuf_byte_size = (height - 1) * rowstride +
+    + width * ((n_channels * gdk_pixbuf_get_bits_per_sample (pixbuf) + 7) / 8);
+
+  pixels = g_malloc0 (rowstride * height);
+  memcpy (pixels, orig_pixels, pixbuf_byte_size);
+
+  fade_start = width / 2;
+  fade_range = width - fade_start;
+  for (i = fade_start; i < width; i++)
+    {
+      for (j = 0; j < height; j++)
+        {
+          guchar *pixel = &pixels[j * rowstride + i * n_channels];
+          float fade = 1.0 - ((float) i - fade_start) / fade_range;
+          pixel[0] = 0.5 + pixel[0] * fade;
+          pixel[1] = 0.5 + pixel[1] * fade;
+          pixel[2] = 0.5 + pixel[2] * fade;
+          pixel[3] = 0.5 + pixel[3] * fade;
+        }
+    }
+
+  texture = cogl_texture_new_from_data (width,
+                                        height,
+                                        COGL_TEXTURE_NONE,
+                                        gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                        COGL_PIXEL_FORMAT_ANY,
+                                        rowstride,
+                                        pixels);
+  g_free (pixels);
+  g_object_unref (pixbuf);
+
+  return texture;
+}
+
+/**
+ * shell_app_get_faded_icon:
+ * @app: A #ShellApp
+ * @size: Size in pixels
+ *
+ * Return an actor with a horizontally faded look.
+ *
+ * Return value: (transfer none): A floating #ClutterActor, or %NULL if no icon
+ */
+ClutterActor *
+shell_app_get_faded_icon (ShellApp *app, float size)
+{
+  MetaWindow *window;
+  CoglHandle texture;
+  ClutterActor *result;
+  char *cache_key;
+  CreateFadedIconData data;
+
+  /* Punt for WINDOW types for now...easier to reuse the property tracking bits,
+   * and this helps us visually distinguish app-tracked from not.
+   */
+  window = shell_app_info_get_source_window (app->info);
+  if (window)
+    {
+      return st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
+                                                    G_OBJECT (window),
+                                                    "icon");
+    }
+
+  cache_key = g_strdup_printf ("faded-icon:%s,size=%f", shell_app_get_id (app), size);
+  data.app = app;
+  data.size = (int) (0.5 + size);
+  texture = st_texture_cache_load (st_texture_cache_get_default (),
+                                   cache_key,
+                                   ST_TEXTURE_CACHE_POLICY_FOREVER,
+                                   shell_app_create_faded_icon_cpu,
+                                   &data,
+                                   NULL);
+  g_free (cache_key);
+
+  if (texture != COGL_INVALID_HANDLE)
+    {
+      result = clutter_texture_new ();
+      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (result), texture);
+    }
+  else
+    {
+      result = clutter_texture_new ();
+      g_object_set (result, "opacity", 0, "width", size, "height", size, NULL);
+
+    }
+  return result;
 }
 
 char *

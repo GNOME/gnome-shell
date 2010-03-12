@@ -158,7 +158,7 @@ AppPanelMenu.prototype = {
         this._container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._container.connect('allocate', Lang.bind(this, this._allocate));
-        this._sourceIcon = null;
+
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
@@ -271,7 +271,7 @@ AppPanelMenu.prototype = {
         this._label.setText('');
         let icon;
         if (this._focusedApp != null) {
-            icon = this._focusedApp.create_icon_texture(AppDisplay.APPICON_SIZE);
+            icon = this._focusedApp.get_faded_icon(AppDisplay.APPICON_SIZE);
             this._label.setText(this._focusedApp.get_name());
         } else if (this._activeSequence != null) {
             icon = this._activeSequence.create_icon(AppDisplay.APPICON_SIZE);
@@ -281,21 +281,7 @@ AppPanelMenu.prototype = {
         }
 
         if (icon != null) {
-            if (this._sourceIcon != null)
-                this._sourceIcon.destroy();
-            this._sourceIcon = icon;
-            let faded = Shell.fade_app_icon(icon);
-            // Because loading the texture is async, we may not have it yet.
-            // If we don't, just create an empty one for now.
-            if (faded == null)
-                faded = new Clutter.Texture({ width: this._sourceIcon.width,
-                                              height: this._sourceIcon.height });
-            this._sourceIcon.connect('notify::cogl-texture', Lang.bind(this, function () {
-                // TODO should be caching this
-                faded = Shell.fade_app_icon(icon);
-                this._iconBox.set_child(faded);
-            }));
-            this._iconBox.set_child(faded);
+            this._iconBox.set_child(icon);
             this._iconBox.show();
         }
 
