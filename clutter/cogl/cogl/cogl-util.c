@@ -78,6 +78,7 @@ cogl_handle_unref (CoglHandle handle)
   CoglHandleObject *obj = (CoglHandleObject *)handle;
 
   g_return_if_fail (handle != COGL_INVALID_HANDLE);
+  g_return_if_fail (obj->ref_count > 0);
 
   if (--obj->ref_count < 1)
     {
