@@ -75,6 +75,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   CoglHandle texture;
   gint width, height, rowstride;
   guint8 n_channels;
+  gboolean have_alpha;
   gint fade_start;
   gint fade_range;
   guint i, j;
@@ -109,6 +110,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   n_channels = gdk_pixbuf_get_n_channels (pixbuf);
   orig_pixels = gdk_pixbuf_get_pixels (pixbuf);
+  have_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
 
   pixbuf_byte_size = (height - 1) * rowstride +
     + width * ((n_channels * gdk_pixbuf_get_bits_per_sample (pixbuf) + 7) / 8);
@@ -127,14 +129,15 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
           pixel[0] = 0.5 + pixel[0] * fade;
           pixel[1] = 0.5 + pixel[1] * fade;
           pixel[2] = 0.5 + pixel[2] * fade;
-          pixel[3] = 0.5 + pixel[3] * fade;
+          if (have_alpha)
+            pixel[3] = 0.5 + pixel[3] * fade;
         }
     }
 
   texture = cogl_texture_new_from_data (width,
                                         height,
                                         COGL_TEXTURE_NONE,
-                                        gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                        have_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
                                         COGL_PIXEL_FORMAT_ANY,
                                         rowstride,
                                         pixels);
