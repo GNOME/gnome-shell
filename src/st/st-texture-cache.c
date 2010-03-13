@@ -946,7 +946,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   GtkIconInfo *info;
 
   gicon_string = g_icon_to_string (icon);
-  key = g_strdup_printf ("%s%s,size=%d", CACHE_PREFIX_GICON, gicon_string, size);
+  key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d", gicon_string, size);
   g_free (gicon_string);
 
   if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
@@ -1229,7 +1229,7 @@ st_texture_cache_load_from_data (StTextureCache    *cache,
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
-  key = g_strconcat (CACHE_PREFIX_COMPRESSED_CHECKSUM, checksum, NULL);
+  key = g_strdup_printf (CACHE_PREFIX_COMPRESSED_CHECKSUM "checksum=%s,size=%d", checksum, size);
   g_free (checksum);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
@@ -1296,7 +1296,7 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
    * pixel data. We ignore that theory.
    */
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
-  key = g_strconcat (CACHE_PREFIX_RAW_CHECKSUM, checksum, NULL);
+  key = g_strdup_printf (CACHE_PREFIX_RAW_CHECKSUM "checksum=%s,size=%d", checksum, size);
   g_free (checksum);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
@@ -1352,7 +1352,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  key = g_strconcat (CACHE_PREFIX_THUMBNAIL_URI, uri, NULL);
+  key = g_strdup_printf (CACHE_PREFIX_THUMBNAIL_URI "uri=%s,size=%d", uri, size);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (!texdata)
@@ -1429,7 +1429,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
   texture = CLUTTER_TEXTURE (clutter_texture_new ());
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  key = g_strconcat (CACHE_PREFIX_THUMBNAIL_URI, uri, NULL);
+  key = g_strdup_printf (CACHE_PREFIX_THUMBNAIL_URI "uri=%s,size=%d", uri, size);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (!texdata)
