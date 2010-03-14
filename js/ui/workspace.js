@@ -1366,6 +1366,10 @@ Workspace.prototype = {
 
         this._hideAllOverlays();
 
+        if (this._repositionWindowsId > 0) {
+            Mainloop.source_remove(this._repositionWindowsId);
+            this._repositionWindowsId = 0;
+        }
         Main.overview.connect('hidden', Lang.bind(this,
                                                   this._doneLeavingOverview));
 
