@@ -726,6 +726,7 @@ StTooltip {
     border: 0px;
     border-radius: 0px;
     padding: 4px;
+    spacing: 4.5px;
 }
 
 .ws-switcher-active-left {
@@ -742,14 +743,6 @@ StTooltip {
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-right.svg");
     border-radius: 4px;
-}
-
-.ws-switcher-spacer {
-    width: 0.5px;
-    height: 96px;
-    border: 0px;
-    background: transparent;
-    padding: 4px;
 }
 
 .ws-switcher-box {

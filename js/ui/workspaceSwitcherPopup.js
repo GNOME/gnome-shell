@@ -60,11 +60,6 @@ WorkspaceSwitcherPopup.prototype = {
            this._list.add(indicator);
            indicator.set_width(Math.round(indicator.get_height() * this._scaleWidth));
 
-           if (i < global.screen.n_workspaces - 1) {
-               let spacer = new St.Bin({ style_class: 'ws-switcher-spacer' });
-               this._list.add(spacer);
-           }
-
         }
     },
 
