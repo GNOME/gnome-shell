@@ -359,7 +359,9 @@ function MessageTray() {
 MessageTray.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ name: 'message-tray',
-                                        reactive: true });
+                                        reactive: true,
+                                        track_hover: true });
+        this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationBin = new St.Bin({ reactive: true,
                                              x_align: St.Align.MIDDLE });
@@ -368,21 +370,14 @@ MessageTray.prototype = {
         this._notificationQueue = [];
         this._notification = null;
 
-        this._summaryBin = new St.BoxLayout();
+        this._summaryBin = new St.Bin({ x_align: St.Align.END });
         this.actor.add(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
-                                           reactive: true });
-        this._summaryBin.add(this._summary, { x_align: St.Align.END,
-                                              x_fill: false,
-                                              expand: true });
-        this._summary.connect('enter-event',
-                              Lang.bind(this, this._onSummaryEntered));
-        this._summary.connect('leave-event',
-                              Lang.bind(this, this._onSummaryLeft));
+                                           reactive: true,
+                                           track_hover: true });
+        this._summary.connect('notify::hover', Lang.bind(this, this._onSummaryHoverChanged));
+        this._summaryBin.child = this._summary;
         this._summaryBin.opacity = 0;
-
-        this.actor.connect('enter-event', Lang.bind(this, this._onTrayEntered));
-        this.actor.connect('leave-event', Lang.bind(this, this._onTrayLeft));
 
         this._trayState = State.HIDDEN;
         this._trayLeftTimeoutId = 0;
@@ -439,7 +434,7 @@ MessageTray.prototype = {
             return;
         }
 
-        let iconBox = new St.Bin({ reactive: true });
+        let iconBox = new St.Clickable({ reactive: true });
         iconBox.child = source.createIcon(ICON_SIZE);
         this._summary.insert_actor(iconBox, 0);
         this._summaryNeedsToBeShown = true;
@@ -448,7 +443,7 @@ MessageTray.prototype = {
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
-        iconBox.connect('button-release-event', Lang.bind(this,
+        iconBox.connect('clicked', Lang.bind(this,
             function () {
                 source.clicked();
             }));
@@ -537,32 +532,27 @@ MessageTray.prototype = {
         this._updateState();
     },
 
-    _onSummaryEntered: function() {
-        this._pointerInSummary = true;
+    _onSummaryHoverChanged: function() {
+        this._pointerInSummary = this._summary.hover;
         this._updateState();
     },
 
-    _onSummaryLeft: function() {
-        this._pointerInSummary = false;
-        this._updateState();
-    },
+    _onTrayHoverChanged: function() {
+        if (this.actor.hover) {
+            if (this._trayLeftTimeoutId) {
+                Mainloop.source_remove(this._trayLeftTimeoutId);
+                this._trayLeftTimeoutId = 0;
+                return;
+            }
 
-    _onTrayEntered: function() {
-        if (this._trayLeftTimeoutId) {
-            Mainloop.source_remove(this._trayLeftTimeoutId);
-            this._trayLeftTimeoutId = 0;
-            return;
+            this._pointerInTray = true;
+            this._updateState();
+        } else {
+            // We wait just a little before hiding the message tray in case the
+            // user quickly moves the mouse back into it.
+            let timeout = MESSAGE_TRAY_TIMEOUT * 1000;
+            this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
         }
-
-        this._pointerInTray = true;
-        this._updateState();
-    },
-
-    _onTrayLeft: function() {
-        // We wait just a little before hiding the message tray in case the
-        // user quickly moves the mouse back into it.
-        let timeout = MESSAGE_TRAY_TIMEOUT * 1000;
-        this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
     },
 
     _onTrayLeftTimeout: function() {
