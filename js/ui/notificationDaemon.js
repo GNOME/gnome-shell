@@ -21,17 +21,17 @@ const BusIface = {
     methods: [{ name: 'GetConnectionUnixProcessID',
                 inSignature: 's',
                 outSignature: 'i' }]
-}
+};
 
 const Bus = function () {
     this._init();
-}
+};
 
 Bus.prototype = {
      _init: function() {
          DBus.session.proxifyObject(this, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
      }
-}
+};
 
 DBus.proxifyPrototype(Bus.prototype, BusIface);
 

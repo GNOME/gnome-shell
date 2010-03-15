@@ -136,7 +136,7 @@ Notebook.prototype = {
         let vAdjust = tabData.scrollView.vscroll.adjustment;
         vAdjust.value = vAdjust.upper - vAdjust.page_size;
     }
-}
+};
 Signals.addSignalMethods(Notebook.prototype);
 
 function Result(command, o, index) {
@@ -164,7 +164,7 @@ Result.prototype = {
         padBin.add_actor(line);
         this.actor.append(padBin, Big.BoxPackFlags.NONE);
     }
-}
+};
 
 function ActorHierarchy() {
     this._init();
@@ -215,7 +215,7 @@ ActorHierarchy.prototype = {
         let link = children[idx];
         this.emit('selection', actor);
     }
-}
+};
 Signals.addSignalMethods(ActorHierarchy.prototype);
 
 function PropertyInspector() {
@@ -249,7 +249,7 @@ PropertyInspector.prototype = {
             this.actor.add_actor(propDisplay);
         }
     }
-}
+};
 
 function Inspector() {
     this._init();
@@ -311,7 +311,7 @@ Inspector.prototype = {
         }));
         Clutter.grab_pointer(eventHandler);
     }
-}
+};
 
 Signals.addSignalMethods(Inspector.prototype);
 
@@ -329,13 +329,13 @@ ErrorLog.prototype = {
     },
 
     _formatTime: function(d){
-        function pad(n) { return n < 10 ? '0' + n : n };
+        function pad(n) { return n < 10 ? '0' + n : n; }
         return d.getUTCFullYear()+'-'
             + pad(d.getUTCMonth()+1)+'-'
             + pad(d.getUTCDate())+'T'
             + pad(d.getUTCHours())+':'
             + pad(d.getUTCMinutes())+':'
-            + pad(d.getUTCSeconds())+'Z'
+            + pad(d.getUTCSeconds())+'Z';
     },
 
     _renderText: function() {
@@ -349,7 +349,7 @@ ErrorLog.prototype = {
         }
         this.text.text = text;
     }
-}
+};
 
 function Extensions() {
     this._init();

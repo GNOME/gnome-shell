@@ -39,7 +39,7 @@ const TRAY_BORDER_WIDTH = 0;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
-const STANDARD_TRAY_ICON_ORDER = ['keyboard', 'volume', 'bluetooth', 'network', 'battery']
+const STANDARD_TRAY_ICON_ORDER = ['keyboard', 'volume', 'bluetooth', 'network', 'battery'];
 const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
     'gnome-volume-control-applet': 'volume',
@@ -130,7 +130,7 @@ TextShadower.prototype = {
             child.allocate(childBox, flags);
         }
     }
-}
+};
 
 /**
  * AppPanelMenu:
@@ -287,7 +287,7 @@ AppPanelMenu.prototype = {
 
         this.emit('changed');
     }
-}
+};
 
 Signals.addSignalMethods(AppPanelMenu.prototype);
 

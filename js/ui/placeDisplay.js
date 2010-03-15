@@ -59,7 +59,7 @@ PlaceInfo.prototype = {
     isRemovable: function() {
         return false;
     }
-}
+};
 
 function PlaceDeviceInfo(mount) {
     this._init(mount);
@@ -99,7 +99,7 @@ PlaceDeviceInfo.prototype = {
     _removeFinish: function(o, res, data) {
         this._mount.unmount_finish(res);
     }
-}
+};
 
 
 function PlacesManager() {
@@ -581,4 +581,4 @@ PlaceSearchProvider.prototype = {
         let places = previousResults.map(function (id) { return Main.placesManager.lookupPlaceById(id); });
         return this._searchPlaces(places, terms);
     }
-}
+};

@@ -240,7 +240,7 @@ Signals.addSignalMethods(GenericDisplayItem.prototype);
 
 const GenericDisplayFlags = {
     DISABLE_VSCROLLING: 1 << 0
-}
+};
 
 /* This is a virtual class that represents a display containing a collection of items
  * that can be filtered with a search string.
@@ -698,7 +698,7 @@ GenericDisplay.prototype = {
 
         this._selectedIndex = index;
         if (index < 0)
-            return
+            return;
 
         // Mark the new item as selected and create its details pane
         let item = this._findDisplayedByIndex(index);

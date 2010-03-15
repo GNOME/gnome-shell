@@ -92,7 +92,7 @@ WorkspaceSwitcherPopup.prototype = {
         Tweener.addTween(this._container, { opacity: 0.0,
                                             time: ANIMATION_TIME,
                                             transition: "easeOutQuad",
-                                            onComplete: function() { this.actor.hide() },
+                                            onComplete: function() { this.actor.hide(); },
                                             onCompleteScope: this
                                            });
     }

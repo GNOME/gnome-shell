@@ -259,9 +259,9 @@ AppSearchResultDisplay.prototype = {
             return;
         let children = this._container.get_children();
         let targetActor = children[this.selectionIndex];
-        this.provider.activateResult(targetActor._delegate.app.get_id())
+        this.provider.activateResult(targetActor._delegate.app.get_id());
     }
-}
+};
 
 function BaseAppSearchProvider() {
     this._init();
@@ -330,7 +330,7 @@ AppSearchProvider.prototype = {
     expandSearch: function(terms) {
         log("TODO expand search");
     }
-}
+};
 
 function PrefsSearchProvider() {
     this._init();
@@ -356,7 +356,7 @@ PrefsSearchProvider.prototype = {
         controlCenter.launch();
         Main.overview.hide();
     }
-}
+};
 
 function AppIcon(app) {
     this._init(app);
@@ -382,7 +382,7 @@ AppIcon.prototype = {
         this._name.clutter_text.line_alignment = Pango.Alignment.CENTER;
         box.add_actor(this._name);
     }
-}
+};
 
 function AppWellIcon(app) {
     this._init(app);
@@ -588,7 +588,7 @@ AppWellIcon.prototype = {
     getDragActorSource: function() {
         return this._icon.icon;
     }
-}
+};
 Signals.addSignalMethods(AppWellIcon.prototype);
 
 function AppIconMenu(source) {
@@ -1013,7 +1013,7 @@ WellGrid.prototype = {
     addItem: function(actor) {
         this._grid.add_actor(actor);
     }
-}
+};
 
 function AppWell() {
     this._init();

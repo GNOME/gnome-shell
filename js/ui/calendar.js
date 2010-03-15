@@ -16,7 +16,7 @@ function _sameDay(dateA, dateB) {
 
 function Calendar() {
     this._init();
-};
+}
 
 Calendar.prototype = {
     _init: function() {

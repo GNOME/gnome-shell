@@ -262,7 +262,7 @@ GenericWorkspacesView.prototype = {
     _addWorkspaceActor: function() {
         throw new Error("Not implemented");
     }
-}
+};
 
 function MosaicView(width, height, x, y, animate) {
     this._init(width, height, x, y, animate);

@@ -77,12 +77,12 @@ WindowAttentionHandler.prototype = {
         window.connect('notify::title', Lang.bind(this, function(win) {
                                                             notification.update(this._getTitle(app, win), this._getBanner(app, win), false);
                                                         }));
-        window.connect('notify::demands-attention', Lang.bind(this, function() { source.destroy() }));
-        window.connect('focus', Lang.bind(this, function() { source.destroy() }));
-        window.connect('unmanaged', Lang.bind(this, function() { source.destroy() }));
+        window.connect('notify::demands-attention', Lang.bind(this, function() { source.destroy(); }));
+        window.connect('focus', Lang.bind(this, function() { source.destroy(); }));
+        window.connect('unmanaged', Lang.bind(this, function() { source.destroy(); }));
 
     }
-}
+};
 
 function Source(sourceId, app, window) {
     this._init(sourceId, app, window);
@@ -106,4 +106,4 @@ Source.prototype = {
         MessageTray.Source.prototype.clicked.call(this);
     }
 
-}
+};

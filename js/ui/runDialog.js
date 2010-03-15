@@ -168,7 +168,7 @@ CommandCompleter.prototype = {
 
 function RunDialog() {
     this._init();
-};
+}
 
 RunDialog.prototype = {
     _init : function() {

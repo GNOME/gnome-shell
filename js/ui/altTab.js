@@ -455,7 +455,7 @@ SwitcherList.prototype = {
     },
 
     addSeparator: function () {
-        let box = new St.Bin({ style_class: 'separator' })
+        let box = new St.Bin({ style_class: 'separator' });
         this._separator = box;
         this._list.add_actor(box);
     },
@@ -599,7 +599,7 @@ AppIcon.prototype = {
         this._label = new St.Label({ text: this.app.get_name() });
         this.actor.add(this._label, { x_fill: false });
     }
-}
+};
 
 function AppSwitcher(apps) {
     this._init(apps);

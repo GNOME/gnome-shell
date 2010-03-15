@@ -207,7 +207,7 @@ SearchProvider.prototype = {
     expandSearch: function(terms) {
         throw new Error("not implemented");
     }
-}
+};
 Signals.addSignalMethods(SearchProvider.prototype);
 
 function SearchSystem() {
@@ -275,5 +275,5 @@ SearchSystem.prototype = {
 
         return results;
     }
-}
+};
 Signals.addSignalMethods(SearchSystem.prototype);

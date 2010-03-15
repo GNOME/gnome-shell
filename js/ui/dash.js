@@ -112,7 +112,7 @@ Pane.prototype = {
         else
             this.open();
     }
-}
+};
 Signals.addSignalMethods(Pane.prototype);
 
 function ResultArea(displayType, flags) {
@@ -131,7 +131,7 @@ ResultArea.prototype = {
         this.resultsContainer.append(this.display.actor, Big.BoxPackFlags.EXPAND);
         this.display.load();
     }
-}
+};
 
 // Utility function shared between ResultPane and the DocDisplay in the main dash.
 // Connects to the detail signal of the display, and on-demand creates a new
@@ -187,7 +187,7 @@ ResultPane.prototype = {
         }));
         return resultArea.display;
     }
-}
+};
 
 function SearchEntry() {
     this._init();
@@ -390,7 +390,7 @@ SearchResult.prototype = {
         else
             this.provider.activateResult(this.metaInfo.id);
     }
-}
+};
 
 function OverflowSearchResults(provider) {
     this._init(provider);
@@ -440,7 +440,7 @@ OverflowSearchResults.prototype = {
         let targetActor = children[this.selectionIndex];
         targetActor._delegate.activate();
     }
-}
+};
 
 function SearchResults(searchSystem) {
     this._init(searchSystem);
@@ -607,7 +607,7 @@ SearchResults.prototype = {
         resultDisplay.activateSelected();
         Main.overview.hide();
     }
-}
+};
 
 function MoreLink() {
     this._init();
@@ -641,7 +641,7 @@ MoreLink.prototype = {
                 this._expander.style_class = 'more-link-expander open';
         }));
     }
-}
+};
 
 Signals.addSignalMethods(MoreLink.prototype);
 
@@ -655,7 +655,7 @@ BackLink.prototype = {
                                       reactive: true });
         this.actor.set_child(new St.Bin({ style_class: "section-header-back-image" }));
     }
-}
+};
 
 function SectionHeader(title, suppressBrowse) {
     this._init(title, suppressBrowse);
@@ -726,7 +726,7 @@ SectionHeader.prototype = {
             this.countText.text = countText;
         }
     }
-}
+};
 
 Signals.addSignalMethods(SectionHeader.prototype);
 
@@ -750,7 +750,7 @@ SearchSectionHeader.prototype = {
 
         this.actor.connect('clicked', onClick);
     }
-}
+};
 
 function Section(titleString, suppressBrowse) {
     this._init(titleString, suppressBrowse);
@@ -766,7 +766,7 @@ Section.prototype = {
                                            vertical: true });
         this.actor.add(this.content);
     }
-}
+};
 
 function Dash() {
     this._init();

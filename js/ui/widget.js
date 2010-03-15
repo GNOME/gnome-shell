@@ -302,7 +302,7 @@ AppsWidgetInfo.prototype = {
     launch : function() {
         this._info.launch();
     }
-}
+};
 
 function AppsWidget() {
     this._init.apply(this, arguments);
