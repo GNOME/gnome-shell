@@ -1,3 +1,32 @@
+Clutter 1.2.2 (15/03/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.2.0
+
+    » Fix introspection annotations for ClutterBox
+
+    » Compilation fixes for the EGL native backend
+
+    » Fix ClutterX11TexturePixmap ::queue-damage-redraw default handler
+      registration to avoid a run-time warning
+
+    » Handle TEXTURE_RECTANGLE_ARB in the 2D sliced textures, and add
+      a test case for that extension to avoid regressions
+
+    » Improve the strictness of the JSON parser in the internal copy
+      of JSON-GLib to which we fall back in the absence of the system
+      one
+
+    » Fix a crasher on NVidia drivers when enabling the ARGB visuals
+      by default on GLX.
+
+Many thanks to:
+
+  José Dapena Paz
+  Neil Roberts
+  Owen W. Taylor
+  Øyvind Kolås
+
 Clutter 1.2.0 (02/03/2010)
 ===============================================================================
 
