@@ -774,6 +774,22 @@ SingleView.prototype = {
     },
 
     acceptDrop: function(source, dropActor, x, y, time) {
+        if (x < this._x || y < this._y || y > this._y + this._height) {
+            this._dropGroup.lower_bottom();
+            dropActor.hide();
+            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+            dropActor.show();
+
+            if (target._delegate && target._delegate != this && target._delegate.acceptDrop) {
+                let [targX, targY] = target.get_transformed_position();
+                return target._delegate.acceptDrop(source, dropActor,
+                                                   (x - targX) / target.scale_x,
+                                                   (y - targY) / target.scale_y,
+                                                   time);
+            }
+            return false;
+        }
+
         for (let i = 0; i < this._workspaces.length; i++) {
             let [dx, dy] = this._workspaces[i].actor.get_transformed_position();
             let [dw, dh] = this._workspaces[i].actor.get_transformed_size();
@@ -784,7 +800,7 @@ SingleView.prototype = {
 
         let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
         let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
-        if (x > dx && x < dx + dw && y > dy && y < dy + dh)
+        if (x > dx && y > dy && y < dy + dh)
             return this._acceptNewWorkspaceDrop(source, dropActor, x, y, time);
 
         return false;
@@ -822,7 +838,7 @@ SingleView.prototype = {
 
         let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
         let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
-        this._newWorkspaceArea.setStyle(x > dx && x < dx + dw && y > dy && y < dy + dh);
+        this._newWorkspaceArea.setStyle(x > dx && y > dy && y < dy + dh);
 
         [dx, dy] = this._leftShadow.get_transformed_position();
         [dw, dh] = this._leftShadow.get_transformed_size();
