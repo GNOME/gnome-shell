@@ -26,6 +26,7 @@
 #include <X11/Xlib.h>
 
 #include "types.h"
+#include "prefs.h"
 #include "common.h"
 
 typedef enum
@@ -117,6 +118,10 @@ void     meta_display_end_grab_op   (MetaDisplay *display,
 
 MetaGrabOp meta_display_get_grab_op (MetaDisplay *display);
 
+MetaKeyBindingAction meta_display_get_keybinding_action (MetaDisplay  *display,
+                                                         unsigned int  keysym,
+                                                         unsigned int  keycode,
+                                                         unsigned long mask);
 
 /* meta_display_set_input_focus_window is like XSetInputFocus, except
  * that (a) it can't detect timestamps later than the current time,
