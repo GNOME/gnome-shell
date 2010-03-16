@@ -33,6 +33,9 @@ const WorkspacesViewType = {
 };
 const WORKSPACES_VIEW_KEY = 'overview/workspaces_view';
 
+const WORKSPACE_DRAGGING_SCALE = 0.85;
+const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
+
 function GenericWorkspacesView(width, height, x, y, animate) {
     this._init(width, height, x, y, animate);
 }
@@ -466,6 +469,33 @@ MosaicView.prototype = {
     }
 };
 
+function NewWorkspaceArea() {
+    this._init();
+}
+
+NewWorkspaceArea.prototype = {
+    _init: function() {
+        let width = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
+        this.actor = new Clutter.Group({ width: width,
+                                         height: global.screen_height,
+                                         x: global.screen_width });
+
+        this._child1 = new St.Bin({ style_class: 'new-workspace-area',
+                                    width: width,
+                                    height: global.screen_height });
+        this._child2 =  new St.Bin({ style_class: 'new-workspace-area-internal',
+                                     width: width,
+                                     height: global.screen_height,
+                                     reactive: true });
+        this.actor.add_actor(this._child1);
+        this.actor.add_actor(this._child2);
+    },
+
+    setStyle: function(isHover) {
+        this._child1.set_style_pseudo_class(isHover ? 'hover' : null);
+    }
+};
+
 function SingleView(width, height, x, y, animate) {
     this._init(width, height, x, y, animate);
 }
@@ -474,7 +504,21 @@ SingleView.prototype = {
     __proto__: GenericWorkspacesView.prototype,
 
     _init: function(width, height, x, y, animate) {
+        this._newWorkspaceArea = new NewWorkspaceArea();
+        this._leftShadow = new St.Bin({ style_class: 'left-workspaces-shadow',
+                                        width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
+                                        height: global.screen_height,
+                                        x: global.screen_width })
+        this._rightShadow = new St.Bin({ style_class: 'right-workspaces-shadow',
+                                         width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
+                                         height: global.screen_height,
+                                         x: global.screen_width })
+
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, animate);
+
+        this._actor.add_actor(this._newWorkspaceArea.actor);
+        this._actor.add_actor(this._leftShadow);
+        this._actor.add_actor(this._rightShadow);
 
         this.actor.style_class = "workspaces single";
         this._actor.set_clip(x, y, width, height);
@@ -486,76 +530,156 @@ SingleView.prototype = {
         this._lostWorkspaces = [];
         this._scrolling = false;
         this._animatingScroll = false;
+
+        let primary = global.get_primary_monitor();
+        this._dropGroup = new Clutter.Group({ x: 0, y: 0,
+                                              width: primary.width,
+                                              height: primary.height });
+        this._dropGroup._delegate = this;
+        global.stage.add_actor(this._dropGroup);
+        this._dropGroup.lower_bottom();
+        this._timeoutId = 0;
     },
 
     _positionWorkspaces: function() {
-        let scale = this._width / global.screen_width;
+        let scale;
+
+        if (this._inDrag)
+            scale = this._width * WORKSPACE_DRAGGING_SCALE / global.screen_width;
+        else
+            scale = this._width / global.screen_width;
         let active = global.screen.get_active_workspace_index();
+        let _width = this._workspaces[0].actor.width * scale;
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
+
+            if (this._inDrag)
+                workspace.opacity = 200;
+            else
+                workspace.opacity = 255;
+            if (active == w)
+                workspace.opacity = 255;
 
             workspace.gridRow = 0;
             workspace.gridCol = 0;
 
             workspace.scale = scale;
-            let _width = workspace.actor.width * scale;
-            workspace.gridX = this._x + (w - active) * (_width + this._spacing);
-            workspace.gridY = this._y;
+            workspace.gridX = this._x + (this._width - _width) / 2 + (w - active) * (_width + this._spacing);
+            workspace.gridY = this._y + (this._height - workspace.actor.height * scale) / 2;
 
             workspace.setSelected(false);
         }
-    },
 
-    _updateWorkspaceActors: function() {
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
+        this._newWorkspaceArea.scale = scale;
+        this._newWorkspaceArea.gridX = this._x + (this._width - _width) / 2 + (this._workspaces.length - active) * (_width + this._spacing);
+        this._newWorkspaceArea.gridY = this._y + (this._height - this._newWorkspaceArea.actor.height * scale) / 2;
 
-            workspace.actor.set_scale(workspace.scale, workspace.scale);
-            workspace.actor.set_position(workspace.gridX, workspace.gridY);
-            workspace.positionWindows(0);
-        }
+        this._leftShadow.scale = scale;
+        this._leftShadow.gridX = this._x + (this._width - _width) / 2 - (this._leftShadow.width * scale + this._spacing);
+        this._leftShadow.gridY = this._y + (this._height - this._leftShadow.height * scale) / 2;
+
+        this._rightShadow.scale = scale;
+        this._rightShadow.gridX = this._x + (this._width - _width) / 2 + (_width + this._spacing);
+        this._rightShadow.gridY = this._y + (this._height - this._rightShadow.height * scale) / 2;
     },
 
     _scrollToActive: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
 
-        this._scrollWorkspacesToIndex(active, showAnimation);
+        this._updateWorkspaceActors(showAnimation);
         this._scrollScrollBarToIndex(active, showAnimation);
     },
 
-    _scrollWorkspacesToIndex: function(index, showAnimation) {
+    _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
-        let targetWorkspaceNewX = this._x;
-        let targetWorkspaceCurrentX = this._workspaces[index].gridX;
-        let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
+
+        this._positionWorkspaces();
+
+        let dx = this._workspaces[0].gridX - this._workspaces[0].actor.x;
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            workspace.gridX += dx;
             workspace.actor.show();
-            workspace._hideAllOverlays();
+            workspace.hideWindowsOverlays();
 
-            let visible = (w == active);
+            let i = w;
             if (showAnimation) {
                 Tweener.addTween(workspace.actor,
                     { x: workspace.gridX,
+                      y: workspace.gridY,
+                      scale_x: workspace.scale,
+                      scale_y: workspace.scale,
                       time: WORKSPACE_SWITCH_TIME,
+                      opacity: workspace.opacity,
                       transition: 'easeOutQuad',
+                      onCompleteScope: this,
                       onComplete: function() {
-                          if (visible)
-                              workspace._fadeInAllOverlays();
-                          else
-                              workspace.actor.hide();
+                          if (i == active) {
+                              if (!this._inDrag)
+                                  workspace.showWindowsOverlays();
+                          } else
+                              workspace.actor.visible = Math.abs(i - active) <= 1;
                     }});
             } else {
-                workspace.actor.x = workspace.gridX;
-                if (visible)
-                    workspace._fadeInAllOverlays();
-                else
-                    workspace.actor.hide();
+                workspace.actor.set_scale(workspace.scale, workspace.scale);
+                workspace.actor.set_position(workspace.gridX, workspace.gridY);
+                workspace.actor.opacity = workspace.opacity;
+                if (i == active) {
+                    if (!this._inDrag)
+                        workspace.showWindowsOverlays();
+                } else
+                    workspace.actor.visible = Math.abs(i - active) <= 1;
             }
+            workspace.positionWindows(0);
+        }
+        if (active)
+            this._leftShadow.show();
+        else
+            this._leftShadow.hide();
+
+        if (active == this._workspaces.length - 1)
+            this._rightShadow.hide();
+        else
+            this._rightShadow.show();
+
+        this._leftShadow.raise_top();
+        this._rightShadow.raise_top();
+
+        if (showAnimation) {
+            Tweener.addTween(this._newWorkspaceArea.actor,
+                { x: this._newWorkspaceArea.gridX,
+                  y: this._newWorkspaceArea.gridY,
+                  scale_x: this._newWorkspaceArea.scale,
+                  scale_y: this._newWorkspaceArea.scale,
+                  time: WORKSPACE_SWITCH_TIME,
+                  transition: 'easeOutQuad'
+                });
+            this._leftShadow.x = this._leftShadow.gridX;
+            Tweener.addTween(this._leftShadow,
+                { y: this._leftShadow.gridY,
+                  scale_x: this._leftShadow.scale,
+                  scale_y: this._leftShadow.scale,
+                  time: WORKSPACE_SWITCH_TIME,
+                  transition: 'easeOutQuad'
+                });
+            this._rightShadow.x = this._rightShadow.gridX;
+            Tweener.addTween(this._rightShadow,
+                { y: this._rightShadow.gridY,
+                  scale_x: this._rightShadow.scale,
+                  scale_y: this._rightShadow.scale,
+                  time: WORKSPACE_SWITCH_TIME,
+                  transition: 'easeOutQuad'
+                });
+        } else {
+            this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale, this._newWorkspaceArea.scale);
+            this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX, this._newWorkspaceArea.gridY);
+
+            this._leftShadow.set_scale(this._leftShadow.scale, this._leftShadow.scale);
+            this._leftShadow.set_position(this._leftShadow.gridX, this._leftShadow.gridY);
+            this._rightShadow.set_scale(this._rightShadow.scale, this._rightShadow.scale);
+            this._rightShadow.set_position(this._rightShadow.gridX, this._rightShadow.gridY);
         }
 
         for (let l = 0; l < this._lostWorkspaces.length; l++) {
@@ -667,9 +791,121 @@ SingleView.prototype = {
         this._scrollToActive(true);
     },
 
+    _onDestroy: function() {
+        GenericWorkspacesView.prototype._onDestroy.call(this);
+        this._dropGroup.destroy();
+        if (this._timeoutId) {
+            Mainloop.source_remove(this._timeoutId);
+            this._timeoutId = 0;
+        }
+    },
+
+    acceptDrop: function(source, dropActor, x, y, time) {
+        for (let i = 0; i < this._workspaces.length; i++) {
+            let [dx, dy] = this._workspaces[i].actor.get_transformed_position();
+            let [dw, dh] = this._workspaces[i].actor.get_transformed_size();
+
+            if (x > dx && x < dx + dw && y > dy && y < dy + dh)
+                return this._workspaces[i].acceptDrop(source, dropActor, x, y, time);
+        }
+
+        let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
+        let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
+        if (x > dx && x < dx + dw && y > dy && y < dy + dh)
+            return this._acceptNewWorkspaceDrop(source, dropActor, x, y, time);
+
+        return false;
+    },
+
+    _onWindowDragBegin: function(w, actor) {
+        if (!this._scroll || this._scroll.adjustment.value - Math.round(this._scroll.adjustment.value) != 0)
+            return;
+
+        this._inDrag = true;
+        this._updateWorkspaceActors(true);
+
+        this._dropGroup.raise_top();
+    },
+
+    handleDragOver: function(self, actor, x, y) {
+        let onPanel = false;
+
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        if (x == 0 && activeWorkspaceIndex > 0 && this._dragOverLastX !== 0) {
+            this._workspaces[activeWorkspaceIndex - 1]._metaWorkspace.activate(global.get_current_time());
+            this._workspaces[activeWorkspaceIndex - 1].setReservedSlot(actor._delegate);
+            this._dragOverLastX = 0;
+            return;
+        }
+        if (x == global.screen_width - 1 && this._workspaces[activeWorkspaceIndex + 1] &&
+            this._dragOverLastX != global.screen_width - 1) {
+            this._workspaces[activeWorkspaceIndex + 1]._metaWorkspace.activate(global.get_current_time());
+            this._workspaces[activeWorkspaceIndex + 1].setReservedSlot(actor._delegate);
+            this._dragOverLastX = global.screen_width - 1;
+            return;
+        }
+
+        this._dragOverLastX = x;
+
+        let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
+        let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
+        this._newWorkspaceArea.setStyle(x > dx && x < dx + dw && y > dy && y < dy + dh);
+
+        [dx, dy] = this._leftShadow.get_transformed_position();
+        [dw, dh] = this._leftShadow.get_transformed_size();
+        if (this._workspaces[activeWorkspaceIndex - 1]) {
+            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
+                onPanel = -1;
+                this._workspaces[activeWorkspaceIndex - 1].actor.opacity = 255;
+            } else
+                this._workspaces[activeWorkspaceIndex - 1].actor.opacity = 200;
+        }
+
+        [dx, dy] = this._rightShadow.get_transformed_position();
+        [dw, dh] = this._rightShadow.get_transformed_size();
+        if (this._workspaces[activeWorkspaceIndex + 1]) {
+            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
+                onPanel = 1;
+                this._workspaces[activeWorkspaceIndex + 1].actor.opacity = 255;
+            } else
+                this._workspaces[activeWorkspaceIndex + 1].actor.opacity = 200;
+        }
+        if (onPanel) {
+            if (!this._timeoutId)
+                this._timeoutId = Mainloop.timeout_add_seconds (1, Lang.bind(this, function() {
+                   let i = global.screen.get_active_workspace_index();
+                   if (this._workspaces[i + onPanel]) {
+                       this._workspaces[i + onPanel]._metaWorkspace.activate(global.get_current_time());
+                       this._workspaces[i + onPanel].setReservedSlot(actor._delegate);
+                   }
+                   return true;
+                }));
+        } else {
+            if (this._timeoutId) {
+                Mainloop.source_remove(this._timeoutId);
+                this._timeoutId = 0;
+            }
+        }
+    },
+
+    _onWindowDragEnd: function(w, actor) {
+        if (this._timeoutId) {
+            Mainloop.source_remove(this._timeoutId);
+            this._timeoutId = 0;
+        }
+        this._dropGroup.lower_bottom();
+        actor.opacity = 255;
+        this._inDrag = false;
+        this._updateWorkspaceActors(true);
+
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setReservedSlot(null);
+    },
+
     _addWorkspaceActor: function(workspaceNum) {
         let workspace  = new Workspace.Workspace(workspaceNum, this._actor);
-
+        workspace.connect('window-drag-begin', Lang.bind(this, this._onWindowDragBegin));
+        workspace.connect('window-drag-end', Lang.bind(this, this._onWindowDragEnd));
         this._actor.add_actor(workspace.actor);
         this._workspaces[workspaceNum] = workspace;
     },
@@ -719,10 +955,7 @@ SingleView.prototype = {
 
         for (let i = 0; i < this._workspaces.length; i++) {
             this._workspaces[i]._hideAllOverlays();
-            if (Math.abs(i - adj.value) <= 1)
-                this._workspaces[i].actor.show();
-            else
-                this._workspaces[i].actor.hide();
+            this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.x += dx;
         }
 

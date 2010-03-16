@@ -168,6 +168,38 @@ StTooltip {
     border: 1px solid #666666;
 }
 
+.new-workspace-area {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    background-color: #111;
+}
+
+.new-workspace-area-internal {
+    background-gradient-direction: horizontal;
+    background-gradient-start: rgba(16, 16, 16, 0);
+    background-gradient-end: rgba(16, 16, 16, 1.0);
+    background-image: url("move-window-on-new.svg");
+}
+
+.new-workspace-area:hover {
+    border: 2px solid rgba(255, 255, 255, 1.0);
+    background-gradient-direction: horizontal;
+    background-gradient-start: rgba(130, 130, 130, 0.9);
+    background-gradient-end: rgba(16, 16, 16, 0.9);
+}
+
+.left-workspaces-shadow {
+    background-gradient-direction: horizontal;
+    background-gradient-start: rgba(16, 16, 16, 1.0);
+    background-gradient-end: rgba(16, 16, 16, 0.0);
+}
+
+.right-workspaces-shadow {
+    background-gradient-direction: horizontal;
+    background-gradient-end: rgba(16, 16, 16, 1.0);
+    background-gradient-start: rgba(16, 16, 16, 0);
+}
+
 .workspaces {
     color: white;
 }

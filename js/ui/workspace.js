@@ -641,6 +641,8 @@ function Workspace(workspaceNum, parentActor) {
 
 Workspace.prototype = {
     _init : function(workspaceNum, parentActor) {
+        // When dragging a window, we use this slot for reserve space.
+        this._reservedSlot = null;
         this.workspaceNum = workspaceNum;
         this._windowOverlaysGroup = new Clutter.Group();
         // Without this the drop area will be overlapped.
@@ -1039,11 +1041,16 @@ Workspace.prototype = {
 
         let rect = new Meta.Rectangle();
         metaWindow.get_outer_rect(rect);
+        let buttonOuterHeight, captionHeight;
+        let buttonOuterWidth = 0;
 
-        let [buttonOuterHeight, captionHeight] = this._windowOverlays[1].chromeHeights();
+        if (this._windowOverlays[1]) {
+            [buttonOuterHeight, captionHeight] = this._windowOverlays[1].chromeHeights();
+            buttonOuterWidth = this._windowOverlays[1].chromeWidth() / this.scale;
+        } else
+            [buttonOuterHeight, captionHeight] = [0, 0];
         buttonOuterHeight /= this.scale;
         captionHeight /= this.scale;
-        let buttonOuterWidth = this._windowOverlays[1].chromeWidth() / this.scale;
 
         let desiredWidth = global.screen_width * fraction;
         let desiredHeight = global.screen_height * fraction;
@@ -1055,6 +1062,19 @@ Workspace.prototype = {
         y = y + height - rect.height * scale - captionHeight;
 
         return [x, y, scale];
+    },
+
+    setReservedSlot: function(clone) {
+        if (clone && this.containsMetaWindow(clone.metaWindow)) {
+            this._reservedSlot = null;
+            this.positionWindows(WindowPositionFlags.ANIMATE);
+            return;
+        }
+        if (clone)
+            this._reservedSlot = clone;
+        else
+            this._reservedSlot = null;
+        this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     /**
@@ -1072,6 +1092,8 @@ Workspace.prototype = {
         let totalVisible = 0;
 
         let visibleClones = this._getVisibleClones();
+        if (this._reservedSlot)
+            visibleClones.push(this._reservedSlot);
 
         let workspaceZooming = flags & WindowPositionFlags.ZOOM;
         let animate = flags & WindowPositionFlags.ANIMATE;
@@ -1089,7 +1111,8 @@ Workspace.prototype = {
 
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
 
-            overlay.hide();
+            if (overlay)
+                overlay.hide();
             if (animate) {
                 if (!metaWindow.showing_on_its_workspace()) {
                     /* Hidden windows should fade in and grow
@@ -1163,8 +1186,10 @@ Workspace.prototype = {
         cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
         cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
 
-        overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
-        overlay.fadeIn();
+        if (overlay) {
+            overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
+            overlay.fadeIn();
+        }
     },
 
     _fadeInAllOverlays: function() {
@@ -1203,6 +1228,15 @@ Workspace.prototype = {
 
         this.positionWindows(WindowPositionFlags.ANIMATE);
         return false;
+    },
+
+    showWindowsOverlays: function() {
+        this._windowOverlaysGroup.show();
+        this._fadeInAllOverlays();
+    },
+
+    hideWindowsOverlays: function() {
+        this._windowOverlaysGroup.hide();
     },
 
     _windowRemoved : function(metaWorkspace, metaWin) {
@@ -1482,11 +1516,13 @@ Workspace.prototype = {
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
         clone.connect('drag-begin',
-                      Lang.bind(this, function() {
+                      Lang.bind(this, function(clone) {
+                          this.emit('window-drag-begin', clone.actor);
                           overlay.hide();
                       }));
         clone.connect('drag-end',
-                      Lang.bind(this, function() {
+                      Lang.bind(this, function(clone) {
+                          this.emit('window-drag-end', clone.actor);
                           overlay.show();
                       }));
 

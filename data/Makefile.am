@@ -27,6 +27,7 @@ dist_theme_DATA =				\
 	theme/gnome-shell.css			\
 	theme/mosaic-view-active.svg          \
 	theme/mosaic-view.svg          \
+	theme/move-window-on-new.svg          \
 	theme/remove-workspace.svg          \
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\
