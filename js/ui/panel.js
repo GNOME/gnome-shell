@@ -226,7 +226,7 @@ AppPanelMenu.prototype = {
 
         let iconWidth = childBox.x2 - childBox.x1;
 
-        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._label.actor.get_preferred_size();
+        [minWidth, minHeight, naturalWidth, naturalHeight] = this._label.actor.get_preferred_size();
 
         yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
         childBox.y1 = yPadding;
