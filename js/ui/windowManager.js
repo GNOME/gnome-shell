@@ -20,8 +20,9 @@ function WindowManager() {
 
 WindowManager.prototype = {
     _init : function() {
-        let shellwm = global.window_manager;
+        this._shellwm =  global.window_manager;
 
+        this._keyBindingHandlers = [];
         this._minimizing = [];
         this._maximizing = [];
         this._unmaximizing = [];
@@ -29,32 +30,35 @@ WindowManager.prototype = {
         this._destroying = [];
 
         this._switchData = null;
-        shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
-        shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
-        shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
-        shellwm.connect('kill-minimize', Lang.bind(this, this._minimizeWindowDone));
-        shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
-        shellwm.connect('kill-maximize', Lang.bind(this, this._maximizeWindowDone));
-        shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
-        shellwm.connect('kill-unmaximize', Lang.bind(this, this._unmaximizeWindowDone));
-        shellwm.connect('map', Lang.bind(this, this._mapWindow));
-        shellwm.connect('kill-map', Lang.bind(this, this._mapWindowDone));
-        shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
-        shellwm.connect('kill-destroy', Lang.bind(this, this._destroyWindowDone));
-
-        shellwm.takeover_keybinding('switch_windows');
-        shellwm.connect('keybinding::switch_windows', Lang.bind(this, this._startAppSwitcher));
+        this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
+        this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
+        this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
+        this._shellwm.connect('kill-minimize', Lang.bind(this, this._minimizeWindowDone));
+        this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
+        this._shellwm.connect('kill-maximize', Lang.bind(this, this._maximizeWindowDone));
+        this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
+        this._shellwm.connect('kill-unmaximize', Lang.bind(this, this._unmaximizeWindowDone));
+        this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
+        this._shellwm.connect('kill-map', Lang.bind(this, this._mapWindowDone));
+        this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
+        this._shellwm.connect('kill-destroy', Lang.bind(this, this._destroyWindowDone));
 
         this._workspaceSwitcherPopup = null;
-        shellwm.takeover_keybinding('switch_to_workspace_left');
-        shellwm.takeover_keybinding('switch_to_workspace_right');
-        shellwm.takeover_keybinding('switch_to_workspace_up');
-        shellwm.takeover_keybinding('switch_to_workspace_down');
-        shellwm.connect('keybinding::switch_to_workspace_left', Lang.bind(this, this._showWorkspaceSwitcher));
-        shellwm.connect('keybinding::switch_to_workspace_right', Lang.bind(this, this._showWorkspaceSwitcher));
-        shellwm.connect('keybinding::switch_to_workspace_up', Lang.bind(this, this._showWorkspaceSwitcher));
-        shellwm.connect('keybinding::switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch_to_workspace_left', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch_to_workspace_right', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch_to_workspace_up', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
+    },
 
+    setKeybindingHandler: function(keybinding, handler){
+        if (this._keyBindingHandlers[keybinding])
+            this._shellwm.disconnect(this._keyBindingHandlers[keybinding]);
+        else
+            this._shellwm.takeover_keybinding(keybinding);
+
+        this._keyBindingHandlers[keybinding] =
+            this._shellwm.connect('keybinding::' + keybinding, handler);
     },
 
     _shouldAnimate : function(actor) {
