@@ -193,6 +193,15 @@ struct _ClutterModelPrivate
 {
   GType                  *column_types;
   gchar                 **column_names;
+
+  /* we use an integer here because we want to be able to use -1 as a
+   * guard value, to allow calling set_names() and set_types() from
+   * sub-classes of ClutterModel. see bug:
+   *
+   *   http://bugzilla.openedhand.com/show_bug.cgi?id=2032
+   *
+   * for a reference.
+   */
   gint                    n_columns; 
 
   ClutterModelFilterFunc  filter_func;
