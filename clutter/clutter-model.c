@@ -244,7 +244,12 @@ clutter_model_real_get_column_name (ClutterModel *model,
 static guint
 clutter_model_real_get_n_columns (ClutterModel *model)
 {
-  return model->priv->n_columns;
+  ClutterModelPrivate *priv = model->priv;
+
+  if (priv->n_columns < 0)
+    return 0;
+
+  return priv->n_columns;
 }
 
 static void 
