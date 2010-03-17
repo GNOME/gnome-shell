@@ -14,6 +14,10 @@ import termios
 import time
 import errno
 
+def show_version(option, opt_str, value, parser):
+    print "GNOME Shell @VERSION@"
+    sys.exit()
+
 def get_running_session_environs():
     wanted_environment = ['DBUS_SESSION_BUS_ADDRESS', 'DISPLAY', 'XDG_DATA_DIRS',
                           'XAUTHORITY', 'XDG_SESSION_COOKIE', 'ORBIT_SOCKETDIR',
@@ -258,6 +262,8 @@ parser.add_option("", "--eval-file", metavar="EVAL_FILE",
                   help="Evaluate the contents of the given JavaScript file")
 parser.add_option("", "--create-extension", action="store_true",
                   help="Create a new GNOME Shell extension")
+parser.add_option("", "--version", action="callback", callback=show_version,
+                  help="Display version and exit")
 
 options, args = parser.parse_args()
 

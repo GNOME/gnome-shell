@@ -18,6 +18,7 @@ gnome-shell: gnome-shell.in
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
+	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|" \
 	    $< > $@ && chmod a+x $@
 CLEANFILES += gnome-shell
