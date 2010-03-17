@@ -424,6 +424,7 @@ ClutterFeatureFlags
 _clutter_backend_get_features (ClutterBackend *backend)
 {
   ClutterBackendClass *klass;
+  GError *error;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
 
@@ -433,8 +434,25 @@ _clutter_backend_get_features (ClutterBackend *backend)
    * GL context first and the ask for features. if the
    * context already exists this should be a no-op
    */
+  error = NULL;
   if (klass->create_context)
-    klass->create_context (backend, NULL);
+    {
+      gboolean res;
+
+      res = klass->create_context (backend, &error);
+      if (!res)
+        {
+          if (error)
+            {
+              g_critical ("Unable to create a context: %s", error->message);
+              g_error_free (error);
+            }
+          else
+            g_critical ("Unable to create a context: unknown error");
+
+          return 0;
+        }
+    }
 
   if (klass->get_features)
     return klass->get_features (backend);

@@ -83,8 +83,8 @@ _clutter_features_from_cogl (guint cogl_flags)
   return clutter_flags;
 }
 
-void
-_clutter_feature_init (void)
+gboolean
+_clutter_feature_init (GError **error)
 {
   ClutterMainContext *context;
 
@@ -98,12 +98,13 @@ _clutter_feature_init (void)
     }
 
   if (__features->features_set)
-    return;
+    return TRUE;
 
   context = _clutter_context_get_default ();
 
   /* makes sure we have a GL context; if we have, this is a no-op */
-  _clutter_backend_create_context (context->backend, NULL);
+  if (!_clutter_backend_create_context (context->backend, error))
+    return FALSE;
 
   __features->flags = (_clutter_features_from_cogl (cogl_get_features ())
                     | _clutter_backend_get_features (context->backend));
@@ -111,6 +112,8 @@ _clutter_feature_init (void)
   __features->features_set = TRUE;
 
   CLUTTER_NOTE (MISC, "features checked");
+
+  return TRUE;
 }
 
 /**

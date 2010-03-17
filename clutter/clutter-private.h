@@ -270,7 +270,7 @@ ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend,
                                                    PangoFontDescription *font_desc);
 
-void          _clutter_feature_init (void);
+gboolean      _clutter_feature_init (GError **error);
 
 /* Reinjecting queued events for processing */
 void _clutter_process_event (ClutterEvent *event);

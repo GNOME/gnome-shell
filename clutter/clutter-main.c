@@ -1534,7 +1534,8 @@ clutter_init_real (GError **error)
   /* this will take care of initializing Cogl's state and
    * query the GL machinery for features
    */
-  _clutter_feature_init ();
+  if (!_clutter_feature_init (error))
+    return CLUTTER_INIT_ERROR_BACKEND;
 
 #ifdef CLUTTER_ENABLE_PROFILE
     {
