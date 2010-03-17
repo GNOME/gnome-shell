@@ -27,6 +27,7 @@
 
 #define INSTRUCTIONS \
         "Press v\t\342\236\236\tSwitch horizontal/vertical\n"           \
+        "Press h\t\342\236\236\tSwitch homogeneous\n"			\
         "Press p\t\342\236\236\tSwitch pack start/end\n"                \
         "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
         "Press a\t\342\236\236\tSwitch animations on/off\n"             \
@@ -178,6 +179,11 @@ key_release_cb (ClutterActor     *actor,
     case CLUTTER_v:
       toggle = clutter_box_layout_get_vertical (layout);
       clutter_box_layout_set_vertical (layout, !toggle);
+      break;
+
+    case CLUTTER_h:
+      toggle = clutter_box_layout_get_homogeneous (layout);
+      clutter_box_layout_set_homogeneous (layout, !toggle);
       break;
 
     case CLUTTER_p:

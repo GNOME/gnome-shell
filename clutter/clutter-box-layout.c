@@ -47,6 +47,9 @@
  *   <listitem><para>if a child is set to expand but not to fill then
  *   it is possible to control the alignment using the X and Y alignment
  *   layout properties.</para></listitem>
+ *   <listitem><para>if the #ClutterBoxLayout:homogeneous boolean property
+ *   is set, then all widgets will get the same size, ignoring expand
+ *   settings and the preferred sizes</para></listitem>
  * </itemizedlist>
  *
  *  <figure id="box-layout">
@@ -101,6 +104,7 @@ struct _ClutterBoxLayoutPrivate
   guint is_pack_start  : 1;
   guint is_animating   : 1;
   guint use_animations : 1;
+  guint is_homogeneous : 1;
 };
 
 struct _ClutterBoxChild
@@ -138,6 +142,7 @@ enum
 
   PROP_SPACING,
   PROP_VERTICAL,
+  PROP_HOMOGENEOUS,
   PROP_PACK_START,
   PROP_USE_ANIMATIONS,
   PROP_EASING_MODE,
@@ -747,7 +752,9 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.y1 = floorf (*position + 0.5);
 
-      if (box_child->expand)
+      if (priv->is_homogeneous)
+        child_box.y2 = floorf (*position + extra_space + 0.5);
+      else if (box_child->expand)
         child_box.y2 = floorf (*position + child_nat + extra_space + 0.5);
       else
         child_box.y2 = floorf (*position + child_nat + 0.5);
@@ -762,7 +769,9 @@ allocate_box_child (ClutterBoxLayout       *self,
 
       child_box.x1 = floorf (*position + 0.5);
 
-      if (box_child->expand)
+      if (priv->is_homogeneous)
+        child_box.x2 = floorf (*position + extra_space + 0.5);
+      else if (box_child->expand)
         child_box.x2 = floorf (*position + child_nat + extra_space + 0.5);
       else
         child_box.x2 = floorf (*position + child_nat + 0.5);
@@ -820,7 +829,9 @@ allocate_box_child (ClutterBoxLayout       *self,
 do_allocate:
   clutter_actor_allocate (child, &child_box, flags);
 
-  if (box_child->expand)
+  if (priv->is_homogeneous)
+    *position += (priv->spacing + extra_space);
+  else if (box_child->expand)
     *position += (child_nat + priv->spacing + extra_space);
   else
     *position += (child_nat + priv->spacing);
@@ -918,8 +929,24 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         n_expand_children++;
     }
 
-  if (n_expand_children == 0)
-    extra_space = 0;
+  if (priv->is_homogeneous)
+    {
+      gint n_children;
+
+      n_children = g_list_length (children);
+      if (priv->is_vertical)
+	{
+	  extra_space = (avail_height - (n_children - 1)*priv->spacing)/n_children;
+	}
+      else
+	{
+	  extra_space = (avail_width - (n_children - 1)*priv->spacing)/n_children;
+	}
+    }
+  else if (n_expand_children == 0)
+    {
+      extra_space = 0;
+    }
   else
     {
       if (priv->is_vertical)
@@ -1021,6 +1048,10 @@ clutter_box_layout_set_property (GObject      *gobject,
       clutter_box_layout_set_vertical (self, g_value_get_boolean (value));
       break;
 
+    case PROP_HOMOGENEOUS:
+      clutter_box_layout_set_homogeneous (self, g_value_get_boolean (value));
+      break;
+
     case PROP_SPACING:
       clutter_box_layout_set_spacing (self, g_value_get_uint (value));
       break;
@@ -1059,6 +1090,10 @@ clutter_box_layout_get_property (GObject    *gobject,
     {
     case PROP_VERTICAL:
       g_value_set_boolean (value, priv->is_vertical);
+      break;
+
+    case PROP_HOMOGENEOUS:
+      g_value_set_boolean (value, priv->is_homogeneous);
       break;
 
     case PROP_SPACING:
@@ -1127,6 +1162,22 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_VERTICAL, pspec);
+
+  /**
+   * ClutterBoxLayout:homogeneous:
+   *
+   * Whether the #ClutterBoxLayout should arrange its children
+   * homogeneously, i.e. all childs get the same size
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_boolean ("homogeneous",
+                                "Homogeneous",
+                                "Whether the layout should be homogeneous, i.e."
+                                "all childs get the same size",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
 
   /**
    * ClutterBoxLayout:pack-start:
@@ -1222,6 +1273,7 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
   layout->priv = priv = CLUTTER_BOX_LAYOUT_GET_PRIVATE (layout);
 
   priv->is_vertical = FALSE;
+  priv->is_homogeneous = FALSE;
   priv->is_pack_start = FALSE;
   priv->spacing = 0;
 
@@ -1362,6 +1414,66 @@ clutter_box_layout_get_vertical (ClutterBoxLayout *layout)
   g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), FALSE);
 
   return layout->priv->is_vertical;
+}
+
+/**
+ * clutter_box_layout_set_homogeneous:
+ * @layout: a #ClutterBoxLayout
+ * @vertical: %TRUE if the layout should be homogeneous
+ *
+ * Sets whether the size of @layout children should be
+ * homogeneous
+ *
+ * Since: 1.4
+ */
+void
+clutter_box_layout_set_homogeneous (ClutterBoxLayout *layout,
+				    gboolean          homogeneous)
+{
+  ClutterBoxLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->is_homogeneous != homogeneous)
+    {
+      ClutterLayoutManager *manager;
+
+      priv->is_homogeneous = !!homogeneous;
+
+      manager = CLUTTER_LAYOUT_MANAGER (layout);
+
+      if (priv->use_animations)
+        {
+          clutter_layout_manager_begin_animation (manager,
+                                                  priv->easing_duration,
+                                                  priv->easing_mode);
+        }
+      else
+        clutter_layout_manager_layout_changed (manager);
+
+      g_object_notify (G_OBJECT (layout), "homogeneous");
+    }
+}
+
+/**
+ * clutter_box_layout_get_homogeneous:
+ * @layout: a #ClutterBoxLayout
+ *
+ * Retrieves if the children sizes are allocated homogeneously.
+ *
+ * Return value: %TRUE if the #ClutterBoxLayout is arranging its children
+ *   homogeneously, and %FALSE otherwise
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_box_layout_get_homogeneous (ClutterBoxLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), FALSE);
+
+  return layout->priv->is_homogeneous;
 }
 
 /**

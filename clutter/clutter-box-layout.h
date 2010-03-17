@@ -105,6 +105,9 @@ guint                 clutter_box_layout_get_spacing         (ClutterBoxLayout  
 void                  clutter_box_layout_set_vertical        (ClutterBoxLayout    *layout,
                                                               gboolean             vertical);
 gboolean              clutter_box_layout_get_vertical        (ClutterBoxLayout    *layout);
+void                  clutter_box_layout_set_homogeneous     (ClutterBoxLayout    *layout,
+                                                              gboolean             homogeneous);
+gboolean              clutter_box_layout_get_homogeneous     (ClutterBoxLayout    *layout);
 void                  clutter_box_layout_set_pack_start      (ClutterBoxLayout    *layout,
                                                               gboolean             pack_start);
 gboolean              clutter_box_layout_get_pack_start      (ClutterBoxLayout    *layout);
