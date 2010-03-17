@@ -37,6 +37,10 @@ _Draggable.prototype = {
         if (!manualMode)
             this.actor.connect('button-press-event',
                                Lang.bind(this, this._onButtonPress));
+
+        this.actor.connect('destroy', Lang.bind(this, function() {
+            this.disconnectAll();
+        }));
         this._onEventId = null;
 
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.

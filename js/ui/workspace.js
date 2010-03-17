@@ -199,8 +199,12 @@ WindowClone.prototype = {
     },
 
     _onDestroy: function() {
+        this.metaWindow._delegate = null;
+        this.actor._delegate = null;
         if (this._zoomLightbox)
             this._zoomLightbox.destroy();
+
+        this.disconnectAll();
     },
 
     _onEnter: function (actor, event) {
@@ -1370,8 +1374,8 @@ Workspace.prototype = {
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
-        Main.overview.connect('hidden', Lang.bind(this,
-                                                  this._doneLeavingOverview));
+        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
+                                                                           this._doneLeavingOverview));
 
         // Position and scale the windows.
         for (let i = 1; i < this._windows.length; i++) {
@@ -1479,6 +1483,10 @@ Workspace.prototype = {
     },
 
     _onDestroy: function(actor) {
+        if (this._overviewHiddenId) {
+            Main.overview.disconnect(this._overviewHiddenId);
+            this._overviewHiddenId = 0;
+        }
         Tweener.removeTweens(actor);
 
         this._metaWorkspace.disconnect(this._windowAddedId);
@@ -1493,6 +1501,7 @@ Workspace.prototype = {
         // the desktop window, which is never reparented
         for (let w = 1; w < this._windows.length; w++)
             this._windows[w].destroy();
+        this._windows = [];
     },
 
     // Sets this.leavingOverview flag to false.
