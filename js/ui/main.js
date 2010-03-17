@@ -279,6 +279,9 @@ function _globalKeyPressHandler(actor, event) {
         }
     } else if (type == Clutter.EventType.KEY_RELEASE) {
         let symbol = event.get_key_symbol();
+        let keyCode = event.get_key_code();
+        let modifierState = Shell.get_event_state(event);
+        // Check the overview key first, this isn't a Meta.KeyBindingAction yet
         if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
             // The super key is the default for triggering the overview, and should
             // get us out of the overview when we are already in it.
@@ -286,8 +289,25 @@ function _globalKeyPressHandler(actor, event) {
                 overview.hide();
 
             return true;
-        } else if (symbol == Clutter.F2 && (Shell.get_event_state(event) & Clutter.ModifierType.MOD1_MASK)) {
-            getRunDialog().open();
+        }
+
+        // Whitelist some of the Metacity actions
+        let display = global.screen.get_display();
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+
+        // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
+        let action = display.get_keybinding_action(symbol, keyCode, modifierState);
+        switch (action) {
+            case Meta.KeyBindingAction.WORKSPACE_LEFT:
+                wm.actionMoveWorkspaceLeft();
+                return true;
+            case Meta.KeyBindingAction.WORKSPACE_RIGHT:
+                wm.actionMoveWorkspaceRight();
+                return true;
+            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
+            case Meta.KeyBindingAction.COMMAND_2:
+                getRunDialog().open();
+                return true;
         }
     }
 

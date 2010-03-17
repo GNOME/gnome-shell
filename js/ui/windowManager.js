@@ -315,27 +315,37 @@ WindowManager.prototype = {
         if (global.screen.n_workspaces == 1)
             return;
 
-        if (this._workspaceSwitcherPopup == null)
+        if (this._workspaceSwitcherPopup == null && Main.overview.visible)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-
         if (binding == "switch_to_workspace_left") {
-            if (activeWorkspaceIndex > 0) {
-                global.screen.get_workspace_by_index(activeWorkspaceIndex - 1).activate(global.get_current_time());
-                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex - 1);
-            }
-            else
-                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex);
+            this.actionMoveWorkspaceLeft();
         }
 
         if (binding == "switch_to_workspace_right") {
-            if (activeWorkspaceIndex <  global.screen.n_workspaces - 1) {
-                global.screen.get_workspace_by_index(activeWorkspaceIndex + 1).activate(global.get_current_time());
+            this.actionMoveWorkspaceRight();
+        }
+    },
+
+    actionMoveWorkspaceLeft: function() {
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        if (activeWorkspaceIndex > 0) {
+            global.screen.get_workspace_by_index(activeWorkspaceIndex - 1).activate(global.get_current_time());
+            if (this._workspaceSwitcherPopup != null)
+                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex - 1);
+        } else if (this._workspaceSwitcherPopup != null){
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex);
+        }
+    },
+
+    actionMoveWorkspaceRight: function() {
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        if (activeWorkspaceIndex <  global.screen.n_workspaces - 1) {
+            global.screen.get_workspace_by_index(activeWorkspaceIndex + 1).activate(global.get_current_time());
+            if (this._workspaceSwitcherPopup != null)
                 this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, activeWorkspaceIndex + 1);
-            }
-            else
-                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, activeWorkspaceIndex);
+        } else if (this._workspaceSwitcherPopup != null) {
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, activeWorkspaceIndex);
         }
     }
 };
