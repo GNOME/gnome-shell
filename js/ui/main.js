@@ -90,12 +90,6 @@ function start() {
     // when we are running inside Xephyr.
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
 
-    // Mutter currently hardcodes putting "Yessir. The compositor is running""
-    // in the Overview. Clear that out.
-    let children = global.overlay_group.get_children();
-    for (let i = 0; i < children.length; i++)
-        children[i].destroy();
-
     let themeContext = St.ThemeContext.get_for_stage (global.stage);
     let stylesheetPath = global.datadir + "/theme/gnome-shell.css";
     let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
