@@ -1402,6 +1402,12 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
       GLenum             gl_target;
       CoglTextureUnit   *unit;
 
+      /* Switch units first so we don't disturb the previous unit if
+       * something needs to bind the texture temporarily */
+      GE (glActiveTexture (GL_TEXTURE0 + i));
+
+      unit = _cogl_get_texture_unit (i);
+
       _cogl_material_layer_ensure_mipmaps (layer_handle);
 
       new_gl_layer_info.layer0_overridden =
@@ -1446,9 +1452,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
             }
           cogl_texture_get_gl_texture (tex_handle, &gl_texture, NULL);
         }
-
-      GE (glActiveTexture (GL_TEXTURE0 + i));
-      unit = _cogl_get_texture_unit (i);
 
       /* FIXME: We could be more clever here and only bind the texture
          if it is different from gl_layer_info->gl_texture to avoid
