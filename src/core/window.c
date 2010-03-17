@@ -8923,8 +8923,8 @@ meta_window_get_description (MetaWindow *window)
 /**
  * meta_window_get_wm_class:
  * @window: a #MetaWindow
- * 
- * Return the current value of the WM_CLASS X property.
+ *
+ * Return the current value of the name part of WM_CLASS X property.
  */
 const char *
 meta_window_get_wm_class (MetaWindow *window)
@@ -8933,6 +8933,21 @@ meta_window_get_wm_class (MetaWindow *window)
     return NULL;
 
   return window->res_class;
+}
+
+/**
+ * meta_window_get_wm_class_instance:
+ * @window: a #MetaWindow
+ *
+ * Return the current value of the instance part of WM_CLASS X property.
+ */
+const char *
+meta_window_get_wm_class_instance (MetaWindow *window)
+{
+  if (!window)
+    return NULL;
+
+  return window->res_name;
 }
 
 /**
