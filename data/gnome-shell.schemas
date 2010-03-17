@@ -46,6 +46,18 @@
       </schema>
 
       <schema>
+        <key>/schemas/desktop/gnome/shell/run_dialog/history</key>
+	<applyto>/desktop/gnome/shell/run_dialog/history</applyto>
+	<owner>gnome-shell</owner>
+	<type>list</type>
+	<list_type>string</list_type>
+	<default>[]</default>
+	<locale name="C">
+	  <short>History for command (Alt-F2) dialog</short>
+	</locale>
+      </schema>
+
+      <schema>
         <key>/schemas/desktop/gnome/shell/sidebar/visible</key>
 	<applyto>/desktop/gnome/shell/sidebar/visible</applyto>
 	<owner>gnome-shell</owner>

@@ -18,6 +18,9 @@ const Main = imports.ui.main;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
+const HISTORY_KEY = 'run_dialog/history';
+const HISTORY_LIMIT = 512;
+
 function CommandCompleter() {
     this._init();
 }
@@ -174,11 +177,19 @@ RunDialog.prototype = {
     _init : function() {
         this._isOpen = false;
 
-        let gconf = Shell.GConf.get_default();
-        gconf.connect('changed::development_tools', Lang.bind(this, function () {
-            this._enableInternalCommands = gconf.get_boolean('development_tools');
+        this._gconf = Shell.GConf.get_default();
+        this._gconf.connect('changed::development_tools', Lang.bind(this, function () {
+            this._enableInternalCommands = this._gconf.get_boolean('development_tools');
         }));
-        this._enableInternalCommands = gconf.get_boolean('development_tools');
+        this._enableInternalCommands = this._gconf.get_boolean('development_tools');
+
+        this._history = this._gconf.get_string_list(HISTORY_KEY);
+        this._historyIndex = -1;
+
+        this._gconf.connect('changed::' + HISTORY_KEY, Lang.bind(this, function() {
+            this._history = this._gconf.get_string_list(HISTORY_KEY);
+            this._historyIndex = this._history.length;
+        }));
 
         this._internalCommands = { 'lg':
                                    Lang.bind(this, function() {
@@ -249,6 +260,14 @@ RunDialog.prototype = {
         this._group.connect('notify::visible', Lang.bind(this._commandCompleter, this._commandCompleter.update));
         this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
+            if (symbol == Clutter.Down) {
+                this._setCommandFromHistory(this._historyIndex++);
+                return true;
+            }
+            if (symbol == Clutter.Up) {
+                this._setCommandFromHistory(this._historyIndex--);
+                return true;
+            }
             if (symbol == Clutter.Return) {
                 if (e.get_state() & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);
@@ -301,8 +320,19 @@ RunDialog.prototype = {
         }
     },
 
+    _saveHistory : function() {
+        if (this._history.length > HISTORY_LIMIT) {
+            this._history.splice(0, this._history.length - HISTORY_LIMIT);
+        }
+        this._gconf.set_string_list(HISTORY_KEY, this._history);
+    },
+
     _run : function(input, inTerminal) {
         let command = input;
+
+        this._history.push(input);
+        this._saveHistory();
+
         this._commandError = false;
         let f;
         if (this._enableInternalCommands)
@@ -350,6 +380,22 @@ RunDialog.prototype = {
         }
     },
 
+    _setCommandFromHistory: function(lastI) {
+        if (this._historyIndex < 0)
+            this._historyIndex = 0;
+        if (this._historyIndex > this._history.length)
+            this._historyIndex = this._history.length;
+
+        let text = this._entryText.get_text();
+        if (text) {
+            this._history[lastI] = text;
+        }
+        if (this._history[this._historyIndex]) {
+            this._entryText.set_text(this._history[this._historyIndex]);
+        } else
+            this._entryText.set_text('');
+    },
+
     open : function() {
         if (this._isOpen) // Already shown
             return;
@@ -359,6 +405,8 @@ RunDialog.prototype = {
 
         // Position the dialog on the current monitor
         let monitor = global.get_focus_monitor();
+
+        this._historyIndex = this._history.length;
 
         this._box.set_position(monitor.x, monitor.y);
         this._box.set_size(monitor.width, monitor.height);
