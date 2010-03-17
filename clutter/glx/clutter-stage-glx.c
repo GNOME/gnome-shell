@@ -127,12 +127,11 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 static gboolean
 clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 {
-  ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (stage_window);
-  ClutterBackend    *backend;
-  ClutterBackendGLX *backend_glx;
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   ClutterBackendX11 *backend_x11;
-  GError            *error;
+  ClutterBackendGLX *backend_glx;
+  ClutterBackend *backend;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_window),
@@ -262,16 +261,6 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                                      stage_x11->xwin_width,
                                      stage_x11->xwin_height);
   clutter_stage_x11_set_wm_protocols (stage_x11);
-
-  /* ask for a context; a no-op, if a context already exists */
-  error = NULL;
-  _clutter_backend_create_context (backend, &error);
-  if (error)
-    {
-      g_critical ("Unable to realize stage: %s", error->message);
-      g_error_free (error);
-      return FALSE;
-    }
 
   CLUTTER_NOTE (BACKEND, "Successfully realized stage");
 
