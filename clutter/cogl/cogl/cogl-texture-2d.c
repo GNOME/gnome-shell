@@ -558,6 +558,9 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
       target_bmp.data = g_malloc (target_bmp.height * target_bmp.rowstride);
     }
 
+  _cogl_texture_driver_prep_gl_for_pixels_download (target_bmp.rowstride,
+                                                    closest_bpp);
+
   GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
   if (!_cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
                                               closest_gl_format,
