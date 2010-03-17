@@ -5405,3 +5405,19 @@ Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom)
 
   return atoms[meta_atom - 1];
 }
+
+/**
+ * meta_display_get_leader_window:
+ * @display: a #MetaDisplay
+ *
+ * Returns the window manager's leader window (as defined by the
+ * _NET_SUPPORTING_WM_CHECK mechanism of EWMH). For use by plugins that wish
+ * to attach additional custom properties to this window.
+ *
+ * Return value: (transfer none): xid of the leader window.
+ **/
+Window
+meta_display_get_leader_window (MetaDisplay *display)
+{
+  return display->leader_window;
+}
