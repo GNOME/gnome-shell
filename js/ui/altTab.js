@@ -23,12 +23,15 @@ TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_LIST_SPACING = 8;
+const POPUP_SCROLL_TIME = 0.10; // seconds
 
 const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
-const THUMBNAIL_SIZE = 256;
+const THUMBNAIL_DEFAULT_SIZE = 256;
 const THUMBNAIL_POPUP_TIME = 500; // milliseconds
 const THUMBNAIL_FADE_TIME = 0.2; // seconds
+
+const iconSizes = [96, 64, 48, 32, 22];
 
 function mod(a, b) {
     return (a + b) % b;
@@ -40,11 +43,11 @@ function AltTabPopup() {
 
 AltTabPopup.prototype = {
     _init : function() {
-        this.actor = new Clutter.Group({ reactive: true,
-                                         x: 0,
-                                         y: 0,
-                                         width: global.screen_width,
-                                         height: global.screen_height });
+        this.actor = new Shell.GenericContainer({ reactive: true });
+
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -60,6 +63,55 @@ AltTabPopup.prototype = {
         this._disableHover();
 
         global.stage.add_actor(this.actor);
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        alloc.min_size = global.screen_width;
+        alloc.natural_size = global.screen_width;
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        alloc.min_size = global.screen_height;
+        alloc.natural_size = global.screen_height;
+    },
+
+    _allocate: function (actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        let focus = global.get_focus_monitor();
+
+        // Allocate the appSwitcher
+        // We select a size based on an icon size that does not overflow the screen
+        let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(focus.width - POPUP_LIST_SPACING * 2);
+        let [childMinWidth, childNaturalWidth] = this._appSwitcher.actor.get_preferred_width(childNaturalHeight);
+        childBox.x1 = Math.max(POPUP_LIST_SPACING, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
+        childBox.x2 = Math.min(childBox.x1 + focus.width - POPUP_LIST_SPACING * 2, childBox.x1 + childNaturalWidth);
+        childBox.y1 = focus.y + Math.floor((focus.height - childNaturalHeight) / 2);
+        childBox.y2 = childBox.y1 + childNaturalHeight;
+        this._appSwitcher.actor.allocate(childBox, flags);
+
+        // Allocate the thumbnails
+        // We try to avoid overflowing the screen so we base the resulting size on
+        // those calculations
+        if (this._thumbnails) {
+            let icon = this._appIcons[this._currentApp].actor;
+            let [posX, posY] = icon.get_transformed_position();
+            let thumbnailCenter = posX + icon.width / 2;
+            let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
+            childBox.x1 = Math.max(POPUP_LIST_SPACING, Math.floor(thumbnailCenter - childNaturalWidth / 2));
+            if (childBox.x1 + childNaturalWidth > focus.width - POPUP_LIST_SPACING * 2) {
+                let offset = childBox.x1 + childNaturalWidth - focus.width + POPUP_LIST_SPACING * 2;
+                childBox.x1 = Math.max(POPUP_LIST_SPACING, childBox.x1 - offset - POPUP_LIST_SPACING * 2);
+            }
+
+            childBox.x2 = childBox.x1 +  childNaturalWidth;
+            if (childBox.x2 > focus.width - POPUP_LIST_SPACING)
+                childBox.x2 = focus.width - POPUP_LIST_SPACING;
+            childBox.y1 = this._appSwitcher.actor.allocation.y2 + POPUP_LIST_SPACING * 2;
+            this._thumbnails.addClones(focus.height - POPUP_LIST_SPACING - childBox.y1);
+            let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
+            childBox.y2 = childBox.y1 + childNaturalHeight;
+            this._thumbnails.actor.allocate(childBox, flags);
+        }
     },
 
     show : function(backward) {
@@ -83,10 +135,6 @@ AltTabPopup.prototype = {
         this.actor.add_actor(this._appSwitcher.actor);
         this._appSwitcher.connect('item-activated', Lang.bind(this, this._appActivated));
         this._appSwitcher.connect('item-entered', Lang.bind(this, this._appEntered));
-
-        let focus = global.get_focus_monitor();
-        this._appSwitcher.actor.x = focus.x + Math.floor((focus.width - this._appSwitcher.actor.width) / 2);
-        this._appSwitcher.actor.y = focus.y + Math.floor((focus.height - this._appSwitcher.actor.height) / 2);
 
         this._appIcons = this._appSwitcher.icons;
 
@@ -289,6 +337,9 @@ AltTabPopup.prototype = {
         if (this._haveModal)
             Main.popModal(this.actor);
 
+        if (this._thumbnails)
+            this._destroyThumbnails();
+
         if (this._keyPressEventId)
             global.stage.disconnect(this._keyPressEventId);
         if (this._keyReleaseEventId)
@@ -375,33 +426,6 @@ AltTabPopup.prototype = {
 
         this.actor.add_actor(this._thumbnails.actor);
 
-        let thumbnailCenter;
-        if (this._thumbnails.actor.width < this._appSwitcher.actor.width) {
-            // Center the thumbnails under the corresponding AppIcon.
-            // If this is being called when the switcher is first
-            // being brought up, then nothing will have been assigned
-            // an allocation yet, and the get_transformed_position()
-            // call will return 0,0.
-            // (http://bugzilla.openedhand.com/show_bug.cgi?id=1115).
-            // Calling clutter_actor_get_allocation_box() would force
-            // it to properly allocate itself, but we can't call that
-            // because it has an out-caller-allocates arg. So we use
-            // clutter_stage_get_actor_at_pos(), which will force a
-            // reallocation as a side effect.
-            global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, 0, 0);
-
-            let icon = this._appIcons[this._currentApp].actor;
-            let [stageX, stageY] = icon.get_transformed_position();
-            thumbnailCenter = stageX + icon.width / 2;
-        } else {
-            // Center the thumbnails on the monitor
-            let focus = global.get_focus_monitor();
-            thumbnailCenter = focus.x + focus.width / 2;
-        }
-
-        this._thumbnails.actor.x = Math.floor(thumbnailCenter - this._thumbnails.actor.width / 2);
-        this._thumbnails.actor.y = this._appSwitcher.actor.y + this._appSwitcher.actor.height + POPUP_LIST_SPACING;
-
         this._thumbnails.actor.opacity = 0;
         Tweener.addTween(this._thumbnails.actor,
                          { opacity: 255,
@@ -417,7 +441,7 @@ function SwitcherList(squareItems) {
 
 SwitcherList.prototype = {
     _init : function(squareItems) {
-        this.actor = new St.Bin({ style_class: 'switcher-list' });
+        this.actor = new St.BoxLayout({ style_class: 'switcher-list' });
 
         // Here we use a GenericContainer so that we can force all the
         // children except the separator to have the same width.
@@ -428,12 +452,36 @@ SwitcherList.prototype = {
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._list.connect('allocate', Lang.bind(this, this._allocate));
 
-        this.actor.add_actor(this._list);
+        this._clipBin = new St.Bin({style_class: 'cbin'});
+        this._clipBin.child = this._list;
+        this.actor.add_actor(this._clipBin);
+
+        this._leftGradient = new St.BoxLayout({style_class: 'thumbnail-scroll-gradient-left', vertical: true});
+        this._rightGradient = new St.BoxLayout({style_class: 'thumbnail-scroll-gradient-right', vertical: true});
+        this.actor.add_actor(this._leftGradient);
+        this.actor.add_actor(this._rightGradient);
+
+        // Those arrows indicate whether scrolling in one direction is possible
+        this._leftArrow = new St.DrawingArea();
+        this._leftArrow.connect('repaint', Lang.bind(this,
+                                            function (area) {
+                                                Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT, TRANSPARENT_COLOR, POPUP_ARROW_COLOR);
+                                            }));
+
+        this._rightArrow = new St.DrawingArea();
+        this._rightArrow.connect('repaint', Lang.bind(this,
+                                            function (area) {
+                                                Shell.draw_box_pointer(area, Shell.PointerDirection.RIGHT, TRANSPARENT_COLOR, POPUP_ARROW_COLOR);
+                                            }));
+
+        this._leftGradient.add_actor(this._leftArrow);
+        this._rightGradient.add_actor(this._rightArrow);
 
         this._items = [];
         this._highlighted = -1;
         this._separator = null;
         this._squareItems = squareItems;
+        this._scrollable = false;
     },
 
     addItem : function(item) {
@@ -472,6 +520,45 @@ SwitcherList.prototype = {
             else
                 this._items[this._highlighted].style_class = 'selected-item-box';
         }
+
+        let monitor = global.get_focus_monitor();
+        let itemSize = this._items[index].allocation.x2 - this._items[index].allocation.x1;
+        let [posX, posY] = this._items[index].get_transformed_position();
+        posX += this.actor.x;
+
+        if (posX + itemSize > monitor.width)
+            this._scrollToRight();
+        else if (posX < 0)
+            this._scrollToLeft();
+
+    },
+
+    _scrollToLeft : function() {
+        let x = this._items[this._highlighted].allocation.x1;
+        this._rightGradient.show();
+        Tweener.addTween(this._list, { anchor_x: x,
+                                        time: POPUP_SCROLL_TIME,
+                                        transition: 'easeOutQuad',
+                                        onComplete: Lang.bind(this, function () {
+                                                                        if (this._highlighted == 0)
+                                                                            this._leftGradient.hide();
+                                                             })
+                        });
+    },
+
+    _scrollToRight : function() {
+        let monitor = global.get_focus_monitor();
+        let padding = this.actor.get_theme_node().get_horizontal_padding();
+        let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + POPUP_LIST_SPACING * 2;
+        this._leftGradient.show();
+        Tweener.addTween(this._list, { anchor_x: x,
+                                        time: POPUP_SCROLL_TIME,
+                                        transition: 'easeOutQuad',
+                                        onComplete: Lang.bind(this, function () {
+                                                                        if (this._highlighted == this._items.length - 1)
+                                                                            this._rightGradient.hide();
+                                                             })
+                        });
     },
 
     _itemActivated: function(n) {
@@ -553,6 +640,15 @@ SwitcherList.prototype = {
         let x = 0;
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
+
+        let focus = global.get_focus_monitor();
+        if (this.actor.allocation.x2 == focus.width - POPUP_LIST_SPACING) {
+            if (this._squareItems)
+                childWidth = childHeight;
+            else
+                childWidth = children[0].get_preferred_width(childHeight)[0];
+        }
+
         for (let i = 0; i < children.length; i++) {
             if (this._items.indexOf(children[i]) != -1) {
                 let [childMin, childNat] = children[i].get_preferred_height(childWidth);
@@ -577,6 +673,44 @@ SwitcherList.prototype = {
                 // we don't allocate it.
             }
         }
+
+        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
+        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
+        let topPadding = this.actor.get_theme_node().get_padding(St.Side.TOP);
+        let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+
+        // Show the arrows and gradients when scrolling is needed
+        if (children[children.length - 1].allocation.x2 > this.actor.width - leftPadding - rightPadding && !this._scrollable) {
+            this._leftGradient.set_height(this.actor.height);
+            this._leftGradient.x = this.actor.x;
+            this._leftGradient.y = this.actor.y;
+
+            this._rightGradient.set_height(this.actor.height);
+            this._rightGradient.x = this.actor.x + (this.actor.allocation.x2 - this.actor.allocation.x1) - this._rightGradient.width;
+            this._rightGradient.y = this.actor.y;
+
+            let arrowWidth = Math.floor(leftPadding / 3);
+            let arrowHeight = arrowWidth * 2;
+            this._leftArrow.set_size(arrowWidth, arrowHeight);
+            this._leftArrow.set_position(POPUP_LIST_SPACING, this.actor.height / 2 - arrowWidth);
+
+            arrowWidth = Math.floor(rightPadding / 3);
+            arrowHeight = arrowWidth * 2;
+            this._rightArrow.set_size(arrowWidth, arrowHeight);
+            this._rightArrow.set_position(this._rightGradient.width - arrowHeight, this.actor.height / 2 - arrowWidth);
+
+            this._scrollable = true;
+
+            this._leftGradient.hide();
+            this._rightGradient.show();
+        }
+        else if (!this._scrollable){
+            this._leftGradient.hide();
+            this._rightGradient.hide();
+        }
+
+        // Clip the area for scrolling
+        this._clipBin.set_clip(0, -topPadding, (this.actor.allocation.x2 - this.actor.allocation.x1) - leftPadding - rightPadding, this.actor.height + bottomPadding);
     }
 };
 
@@ -591,13 +725,18 @@ AppIcon.prototype = {
         this.app = app;
         this.actor = new St.BoxLayout({ style_class: "alt-tab-app",
                                          vertical: true });
-        this._icon = this.app.create_icon_texture(POPUP_APPICON_SIZE);
-        let iconBin = new St.Bin({height: POPUP_APPICON_SIZE, width: POPUP_APPICON_SIZE});
-        iconBin.child = this._icon;
+        this.icon = null;
+        this._iconBin = new St.Bin();
 
-        this.actor.add(iconBin, { x_fill: false, y_fill: false } );
-        this._label = new St.Label({ text: this.app.get_name() });
-        this.actor.add(this._label, { x_fill: false });
+        this.actor.add(this._iconBin, { x_fill: false, y_fill: false } );
+        this.label = new St.Label({ text: this.app.get_name() });
+        this.actor.add(this.label, { x_fill: false });
+    },
+
+    set_size: function(size) {
+        this.icon = this.app.create_icon_texture(size);
+        this._iconBin.set_size(size, size);
+        this._iconBin.child = this.icon;
     }
 };
 
@@ -639,9 +778,50 @@ AppSwitcher.prototype = {
             this._addIcon(otherIcons[i]);
 
         this._curApp = -1;
+        this._iconSize = 0;
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        let j = 0;
+        while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
+                j++;
+        }
+        let iconPadding = this._items[j].get_theme_node().get_horizontal_padding();
+        let [iconMinHeight, iconNaturalHeight] = this.icons[j].label.get_preferred_height(-1);
+        let iconSpacing = iconNaturalHeight + iconPadding;
+        let totalSpacing = this._list.spacing * (this._items.length - 1);
+        if (this._separator)
+           totalSpacing += this._separator.width + this._list.spacing;
+
+        // We just assume the whole screen here due to weirdness happing with the passed width
+        let focus = global.get_focus_monitor();
+        let availWidth = focus.width - POPUP_LIST_SPACING * 2 - this.actor.get_theme_node().get_horizontal_padding();
+        let height = 0;
+
+        for(let i =  0; i < iconSizes.length; i++) {
+                this._iconSize = iconSizes[i];
+                height = iconSizes[i] + iconSpacing;
+                let w = height * this._items.length + totalSpacing;
+                if (w <= availWidth)
+                        break;
+        }
+
+        if (this._items.length == 1) {
+            this._iconSize = iconSizes[0];
+            height = iconSizes[0] + iconSpacing;
+        }
+
+        alloc.min_size = height;
+        alloc.natural_size = height;
     },
 
     _allocate: function (actor, box, flags) {
+        for(let i = 0; i < this.icons.length; i++) {
+            if (this.icons[i].icon != null)
+                break;
+            this.icons[i].set_size(this._iconSize);
+        }
+
         // Allocate the main list items
         SwitcherList.prototype._allocate.call(this, actor, box, flags);
 
@@ -739,39 +919,69 @@ ThumbnailList.prototype = {
         // that case.
         let separatorAdded = windows.length == 0 || windows[0].get_workspace() != activeWorkspace;
 
+        this._labels = new Array();
+        this._thumbnailBins = new Array();
+        this._clones = new Array();
+        this._windows = windows;
+
         for (let i = 0; i < windows.length; i++) {
             if (!separatorAdded && windows[i].get_workspace() != activeWorkspace) {
               this.addSeparator();
               separatorAdded = true;
             }
 
-            let mutterWindow = windows[i].get_compositor_private();
-            let windowTexture = mutterWindow.get_texture ();
-            let [width, height] = windowTexture.get_size();
-            let scale = Math.min(1.0, THUMBNAIL_SIZE / width, THUMBNAIL_SIZE / height);
-
             let box = new St.BoxLayout({ style_class: "thumbnail-box",
                                          vertical: true });
 
             let bin = new St.Bin({ style_class: "thumbnail" });
-            let clone = new Clutter.Clone ({ source: windowTexture,
-                                             reactive: true,
-                                             width: width * scale,
-                                             height: height * scale });
 
-            bin.add_actor(clone);
             box.add_actor(bin);
+            this._thumbnailBins.push(bin);
 
             let title = windows[i].get_title();
             if (title) {
                 let name = new St.Label({ text: title });
                 // St.Label doesn't support text-align so use a Bin
                 let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+                this._labels.push(bin);
                 bin.add_actor(name);
                 box.add_actor(bin);
             }
 
             this.addItem(box);
         }
+    },
+
+    addClones : function (availHeight) {
+        if (!this._thumbnailBins.length)
+            return;
+        let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
+        totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
+        let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
+        let [found, spacing] = this._items[0].child.get_theme_node().get_length('spacing', false);
+        if (!found)
+            spacing = 0;
+
+        availHeight = Math.min(availHeight - labelNaturalHeight - totalPadding - spacing, THUMBNAIL_DEFAULT_SIZE);
+        let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;
+        binHeight = Math.min(THUMBNAIL_DEFAULT_SIZE, binHeight);
+
+        for (let i = 0; i < this._thumbnailBins.length; i++) {
+            let mutterWindow = this._windows[i].get_compositor_private();
+            let windowTexture = mutterWindow.get_texture ();
+            let [width, height] = windowTexture.get_size();
+            let scale = Math.min(1.0, THUMBNAIL_DEFAULT_SIZE / width, availHeight / height);
+            let clone = new Clutter.Clone ({ source: windowTexture,
+                                                reactive: true,
+                                                width: width * scale,
+                                                height: height * scale });
+
+            this._thumbnailBins[i].set_height(binHeight);
+            this._thumbnailBins[i].add_actor(clone);
+            this._clones.push(clone);
+        }
+
+        // Make sure we only do this once
+        this._thumbnailBins = new Array();
     }
 };
