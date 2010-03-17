@@ -242,6 +242,12 @@ st_widget_dispose (GObject *gobject)
       priv->background_image_shadow = NULL;
     }
 
+  if (priv->theme_node)
+    {
+      g_object_unref (priv->theme_node);
+      priv->theme_node = NULL;
+    }
+
   if (priv->tooltip)
     {
       ClutterContainer *parent;
