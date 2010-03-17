@@ -375,8 +375,9 @@ Overview.prototype = {
                     return true;
                 }));
                 if (!this._lightbox)
-                    this._lightbox = new Lightbox.Lightbox(this._group, false);
-                this._lightbox.actor.show();
+                    this._lightbox = new Lightbox.Lightbox(this._group,
+                                                           { fadeTime: PANE_FADE_TIME });
+                this._lightbox.show();
                 this._lightbox.highlight(this._paneContainer);
             } else if (pane == this._activeDisplayPane) {
                 this._activeDisplayPane = null;
@@ -386,7 +387,7 @@ Overview.prototype = {
                 }
                 this._transparentBackground.lower_bottom();
                 this._paneContainer.hide();
-                this._lightbox.actor.hide();
+                this._lightbox.hide();
             }
         }));
     },

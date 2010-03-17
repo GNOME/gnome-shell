@@ -14,11 +14,14 @@ const _ = Gettext.gettext;
 
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 const HISTORY_KEY = 'run_dialog/history';
 const HISTORY_LIMIT = 512;
+
+const DIALOG_FADE_TIME = 0.2;
 
 function CommandCompleter() {
     this._init();
@@ -215,13 +218,14 @@ RunDialog.prototype = {
                                           x: 0, y: 0 });
         Main.uiGroup.add_actor(this._group);
 
-        let lightbox = new Lightbox.Lightbox(this._group, true);
+        this._lightbox = new Lightbox.Lightbox(this._group,
+                                               { inhibitEvents: true });
 
         this._box = new St.Bin({ x_align: St.Align.MIDDLE,
                                  y_align: St.Align.MIDDLE });
 
         this._group.add_actor(this._box);
-        lightbox.highlight(this._box);
+        this._lightbox.highlight(this._box);
 
         let dialogBox = new St.BoxLayout({ style_class: 'run-dialog', vertical: true });
 
@@ -413,7 +417,14 @@ RunDialog.prototype = {
         this._box.set_size(monitor.width, monitor.height);
 
         this._isOpen = true;
+        this._lightbox.show();
+        this._group.opacity = 0;
         this._group.show();
+        Tweener.addTween(this._group,
+                         { opacity: 255,
+                           time: DIALOG_FADE_TIME,
+                           transition: 'easeOutQuad'
+                         });
 
         global.stage.set_key_focus(this._entryText);
     },
@@ -423,14 +434,20 @@ RunDialog.prototype = {
             return;
 
         this._isOpen = false;
-
-        this._errorBox.hide();
         this._commandError = false;
 
-        this._group.hide();
-        this._entryText.set_text('');
-
         Main.popModal(this._group);
+
+        Tweener.addTween(this._group,
+                         { opacity: 0,
+                           time: DIALOG_FADE_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this._errorBox.hide();
+                               this._group.hide();
+                               this._entryText.set_text('');
+                           })
+                         });
     }
 };
 Signals.addSignalMethods(RunDialog.prototype);

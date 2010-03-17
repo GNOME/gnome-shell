@@ -28,7 +28,7 @@ FRAME_COLOR.from_pixel(0xffffffff);
 
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
-const ZOOM_OVERLAY_FADE_TIME = 0.15;
+const LIGHTBOX_FADE_TIME = 0.2;
 
 const DRAGGING_WINDOW_OPACITY = 100;
 
@@ -217,7 +217,10 @@ WindowClone.prototype = {
         this._zooming = true;
         this.emit('zoom-start');
 
-        this._zoomLightbox = new Lightbox.Lightbox(global.stage, false);
+        if (!this._zoomLightbox)
+            this._zoomLightbox = new Lightbox.Lightbox(global.stage,
+                                                       { fadeTime: LIGHTBOX_FADE_TIME });
+        this._zoomLightbox.show();
 
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
         this._zoomGlobalOrig = new ScaledPoint();
@@ -256,7 +259,7 @@ WindowClone.prototype = {
         [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
         [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
 
-        this._zoomLightbox.destroy();
+        this._zoomLightbox.hide();
 
         this._zoomLocalPosition  = undefined;
         this._zoomLocalScale     = undefined;
@@ -264,7 +267,6 @@ WindowClone.prototype = {
         this._zoomGlobalScale    = undefined;
         this._zoomTargetPosition = undefined;
         this._zoomStep           = undefined;
-        this._zoomLightbox       = undefined;
     },
 
     _onButtonRelease : function (actor, event) {
@@ -714,15 +716,17 @@ Workspace.prototype = {
      * This function also resets the highlighted window state.
      */
     setLightboxMode: function (showLightbox) {
-        if (showLightbox) {
-            this._lightbox = new Lightbox.Lightbox(this.actor, false);
-        } else {
-            this._lightbox.destroy();
-            this._lightbox = null;
-        }
-        if (this._frame) {
+        if (!this._lightbox)
+            this._lightbox = new Lightbox.Lightbox(this.actor,
+                                                   { fadeTime: LIGHTBOX_FADE_TIME });
+
+        if (showLightbox)
+            this._lightbox.show();
+        else
+            this._lightbox.hide();
+
+        if (this._frame)
             this._frame.set_opacity(showLightbox ? 150 : 255);
-        }
     },
 
     /**

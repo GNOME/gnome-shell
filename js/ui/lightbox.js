@@ -5,12 +5,17 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 
+const Params = imports.misc.params;
+const Tweener = imports.ui.tweener;
+
 /**
  * Lightbox:
  * @container: parent Clutter.Container
- * @inhibitEvents: whether to inhibit events for @container
- * @width: (optional) shade actor width
- * @height: (optional) shade actor height
+ * @params: (optional) additional parameters:
+ *           - inhibitEvents: whether to inhibit events for @container
+ *           - width: shade actor width
+ *           - height: shade actor height
+ *           - fadeTime: seconds used to fade in/out
  *
  * Lightbox creates a dark translucent "shade" actor to hide the
  * contents of @container, and allows you to specify particular actors
@@ -24,29 +29,37 @@ const St = imports.gi.St;
  *
  * By default, the shade window will have the height and width of
  * @container and will track any changes in its size. You can override
- * this by passing an explicit width and height
+ * this by passing an explicit width and height in @params.
  */
-function Lightbox(container, inhibitEvents, width, height) {
-    this._init(container, inhibitEvents, width, height);
+function Lightbox(container, params) {
+    this._init(container, params);
 }
 
 Lightbox.prototype = {
-    _init : function(container, inhibitEvents, width, height) {
+    _init : function(container, params) {
+        params = Params.parse(params, { inhibitEvents: false,
+                                        width: null,
+                                        height: null,
+                                        fadeTime: null
+                                      });
+
         this._container = container;
         this._children = container.get_children();
+        this._fadeTime = params.fadeTime;
         this.actor = new St.Bin({ x: 0,
                                   y: 0,
                                   style_class: 'lightbox',
-                                  reactive: inhibitEvents });
+                                  reactive: params.inhibitEvents });
 
         container.add_actor(this.actor);
         this.actor.raise_top();
+        this.actor.hide();
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        if (width && height) {
-            this.actor.width = width;
-            this.actor.height = height;
+        if (params.width && params.height) {
+            this.actor.width = params.width;
+            this.actor.height = params.height;
             this._allocationChangedSignalId = 0;
         } else {
             this.actor.width = container.width;
@@ -89,6 +102,35 @@ Lightbox.prototype = {
             let prevChild = this._children.indexOf(children[newChildIndex - 1]);
             if (prevChild != -1) // paranoia
                 this._children.splice(prevChild + 1, 0, newChild);
+        }
+    },
+
+    show: function() {
+        if (this._fadeTime) {
+            this.actor.opacity = 0;
+            Tweener.addTween(this.actor,
+                             { opacity: 255,
+                               time: this._fadeTime,
+                               transition: 'easeOutQuad'
+                             });
+        } else {
+            this.actor.opacity = 255;
+        }
+        this.actor.show();
+    },
+
+    hide: function() {
+        if (this._fadeTime) {
+            Tweener.addTween(this.actor,
+                             { opacity: 0,
+                               time: this._fadeTime,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this, function() {
+                                   this.actor.hide();
+                               })
+                             });
+        } else {
+            this.actor.hide();
         }
     },
 
