@@ -19,8 +19,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
- *
- *
  * Original author:
  *
  *      Emmanuele Bassi <ebassi@linux.intel.com>
@@ -913,15 +911,27 @@ clutter_script_parser_object_end (JsonParser *json_parser,
   const gchar *id;
   GList *members, *l;
 
+  /* if the object definition does not have an 'id' field we'll
+   * fake one for it...
+   */
   if (!json_object_has_member (object, "id"))
     {
       gchar *fake;
 
+      /* ... unless it doesn't even have a type - in which case
+       * it is an internal object definition and we're not
+       * supposed to touch it
+       */
       if (!json_object_has_member (object, "type"))
         return;
 
       fake = _clutter_script_generate_fake_id (script);
       json_object_set_string_member (object, "id", fake);
+
+      CLUTTER_NOTE (SCRIPT,
+                    "Adding fake id '%s' to object of type '%s'",
+                    json_object_get_string_member (object, "id"),
+                    json_object_get_string_member (object, "type"));
 
       g_free (fake);
     }
@@ -937,9 +947,10 @@ clutter_script_parser_object_end (JsonParser *json_parser,
     }
 
   id = json_object_get_string_member (object, "id");
+  CLUTTER_NOTE (SCRIPT, "Getting object info for object '%s'", id);
 
   oinfo = _clutter_script_get_object_info (script, id);
-  if (G_LIKELY (!oinfo))
+  if (oinfo == NULL)
     {
       const gchar *class_name;
 
@@ -957,6 +968,9 @@ clutter_script_parser_object_end (JsonParser *json_parser,
           type_func = json_object_get_string_member (object, "type_func");
           oinfo->type_func = g_strdup (type_func);
 
+          /* remove the type_func member; we don't want it to
+           * pollute the object members
+           */
           json_object_remove_member (object, "type_func");
         }
     }
@@ -1007,12 +1021,21 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       PropertyInfo *pinfo;
       JsonNode *node;
 
+      CLUTTER_NOTE (SCRIPT, "Object '%s' member '%s'",
+                    oinfo->id,
+                    name);
+
       /* we have already parsed these */
       if (strcmp (name, "id") == 0 || strcmp (name, "type") == 0)
         continue;
 
       node = json_object_get_member (object, name);
-      if (node == NULL)
+
+      /* this should not really happen; we're getting a list of
+       * member names, and if one does not map a real member
+       * value then it's likely that something has gone wrong
+       */
+      if (G_UNLIKELY (node == NULL))
         {
           CLUTTER_NOTE (SCRIPT,
                         "Empty node for member '%s' of object '%s' (type: %s)",
