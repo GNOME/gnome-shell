@@ -131,7 +131,10 @@ gboolean
 clutter_feature_available (ClutterFeatureFlags feature)
 {
   if (G_UNLIKELY (!__features))
-    return FALSE;
+    {
+      g_critical ("Unable to check features. Have you initialized Clutter?");
+      return FALSE;
+    }
 
   return (__features->flags & feature);
 }
@@ -148,6 +151,12 @@ clutter_feature_available (ClutterFeatureFlags feature)
 ClutterFeatureFlags
 clutter_feature_get_all (void)
 {
+  if (G_UNLIKELY (!__features))
+    {
+      g_critical ("Unable to check features. Have you initialized Clutter?");
+      return FALSE;
+    }
+
   return __features->flags;
 }
 
