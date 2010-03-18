@@ -98,9 +98,7 @@ StTooltip {
 #panel {
     color: #ffffff;
     font-size: 16px;
-    background-gradient-direction: vertical;
-    background-gradient-start: #161616;
-    background-gradient-end: #000000;
+    background-color: black;
     border-bottom: 1px solid #1f1f1f;
 }
 
