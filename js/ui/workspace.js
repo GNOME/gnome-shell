@@ -204,6 +204,11 @@ WindowClone.prototype = {
         if (this._zoomLightbox)
             this._zoomLightbox.destroy();
 
+        if (this._inDrag) {
+            this.emit('drag-end');
+            this._inDrag = false;
+        }
+
         this.disconnectAll();
     },
 
