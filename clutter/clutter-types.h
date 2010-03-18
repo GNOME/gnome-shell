@@ -182,6 +182,10 @@ struct _ClutterGeometry
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
 
+void  clutter_geometry_union (const ClutterGeometry *geometry_a,
+                              const ClutterGeometry *geometry_b,
+                              ClutterGeometry       *result);
+
 /**
  * ClutterKnot:
  * @x: X coordinate of the knot

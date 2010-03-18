@@ -377,6 +377,10 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
   if (clutter_stage_glx_ignoring_redraw_clips (stage_window))
     return;
 
+  /* Do nothing on an empty clip, to avoid confusing with the flag degenerate clip */
+  if (stage_clip->width == 0)
+    return;
+
   /* A NULL stage clip means a full stage redraw has been queued and
    * we keep track of this by setting a degenerate
    * stage_glx->bounding_redraw_clip */
@@ -393,26 +397,10 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
       stage_glx->bounding_redraw_clip.width = stage_clip->width;
       stage_glx->bounding_redraw_clip.height = stage_clip->height;
     }
-  else
+  else if (stage_glx->bounding_redraw_clip.width > 0)
     {
-      int x2, y2;
-
-      stage_glx->bounding_redraw_clip.x =
-        MIN (stage_clip->x, stage_glx->bounding_redraw_clip.x);
-      stage_glx->bounding_redraw_clip.y =
-        MIN (stage_clip->y, stage_glx->bounding_redraw_clip.y);
-
-      x2 = MAX (stage_clip->x + stage_clip->width,
-                stage_glx->bounding_redraw_clip.x +
-                stage_glx->bounding_redraw_clip.width);
-      y2 = MAX (stage_clip->y + stage_clip->height,
-                stage_glx->bounding_redraw_clip.y +
-                stage_glx->bounding_redraw_clip.height);
-
-      stage_glx->bounding_redraw_clip.width =
-        x2 - stage_glx->bounding_redraw_clip.x;
-      stage_glx->bounding_redraw_clip.height =
-        y2 - stage_glx->bounding_redraw_clip.y;
+      clutter_geometry_union (&stage_glx->bounding_redraw_clip, stage_clip,
+			      &stage_glx->bounding_redraw_clip);
     }
 
   /* FIXME: This threshold was plucked out of thin air! */
