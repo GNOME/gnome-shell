@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-03-11 20:18+0000\n"
-"PO-Revision-Date: 2010-03-14 23:08+0100\n"
+"POT-Creation-Date: 2010-03-18 00:34+0000\n"
+"PO-Revision-Date: 2010-03-18 19:25+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:857
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
@@ -59,28 +59,27 @@ msgstr "Se ha añadido %s a sus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
-#: ../js/ui/dash.js:199
-#| msgid "Find..."
+#: ../js/ui/dash.js:194
 msgid "Find"
 msgstr "Buscar"
 
-#: ../js/ui/dash.js:512
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/dash.js:526
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:876 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:536
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:883 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
@@ -112,27 +111,36 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:182
 msgid "Undo"
 msgstr "Deshacer"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:399
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:630
+#: ../js/ui/panel.js:616
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:633
+#: ../js/ui/panel.js:619
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Falló al desmontar «%s»"
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Reintentar"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Conectar a…"
 
