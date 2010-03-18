@@ -549,11 +549,13 @@ AC_ARG_WITH([json],
             [],
             [with_json=default_json])
 
+experimental_json=no
 AS_CASE([$with_json],
 
         [internal],
         [
           JSON_PREFIX=json
+          experimental_json=yes
           have_json=no
         ],
 
@@ -597,6 +599,7 @@ AS_CASE([$with_json],
                 ],
                 [
                   JSON_PREFIX=json
+                  experimental_json=yes
                   AC_MSG_RESULT([not found, using internal copy])
                 ]
           )
@@ -942,7 +945,7 @@ echo "        Build conformance test suite: ${enable_conformance}"
 if test "x$have_json" = "xyes"; then
 echo "        JSON-GLib: system"
 else
-echo "        JSON-GLib: internal"
+echo "        JSON-GLib: internal (WARNING: Experimental)"
 fi
 
 # COGL flags
@@ -985,7 +988,8 @@ echo ""
 
 # General warning about experimental features
 if test "x$experimental_backend" = "xyes" ||
-   test "x$experimental_image" = "xyes"; then
+   test "x$experimental_image" = "xyes" ||
+   test "x$experimental_json" = "xyes"; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo " *WARNING*"
