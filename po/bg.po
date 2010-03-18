@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 14:29+0200\n"
-"PO-Revision-Date: 2010-02-16 21:13+0200\n"
+"POT-Creation-Date: 2010-03-18 13:09+0200\n"
+"PO-Revision-Date: 2010-03-18 11:30+0200\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,27 +25,27 @@ msgid "Window management and application launching"
 msgstr "Управление на прозорци и стартиране на програми"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:177 ../js/ui/dash.js:881
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:201
+#: ../js/ui/appDisplay.js:343
 msgid "PREFERENCES"
 msgstr "ПРЕДПОЧИТАНИЯ"
 
-#: ../js/ui/appDisplay.js:579
+#: ../js/ui/appDisplay.js:728
 msgid "New Window"
 msgstr "Нов прозорец"
 
-#: ../js/ui/appDisplay.js:583
+#: ../js/ui/appDisplay.js:732
 msgid "Remove from Favorites"
 msgstr "Премахване от „Любими“"
 
-#: ../js/ui/appDisplay.js:584
+#: ../js/ui/appDisplay.js:733
 msgid "Add to Favorites"
 msgstr "Добавяне в „Любими“"
 
-#: ../js/ui/appDisplay.js:936
+#: ../js/ui/appDisplay.js:1085
 msgid "Drag here to add favorites"
 msgstr "Довлачете до тук обектите за да ги добавите към „Любими“"
 
@@ -59,87 +59,96 @@ msgstr "Програмата „%s“ беше добавена в „Любим
 msgid "%s has been removed from your favorites."
 msgstr "Програмата „%s“ беше премахната от „Любими“"
 
-#: ../js/ui/dash.js:235
-msgid "Find..."
-msgstr "Търсене…"
+#: ../js/ui/dash.js:194
+msgid "Find"
+msgstr "Търсене"
 
-#: ../js/ui/dash.js:505
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Търсене…"
 
-#: ../js/ui/dash.js:519
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "Няма съвпадения."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:536
 msgid "PLACES & DEVICES"
 msgstr "МЕСТА И УСТРОЙСТВА"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "СКОРО ОТВАРЯНИ"
 
-#: ../js/ui/lookingGlass.js:356
+#: ../js/ui/lookingGlass.js:363
 msgid "No extensions installed"
 msgstr "Няма инсталирани разширения"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:400
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:402
 msgid "Disabled"
 msgstr "Изключено"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:404
 msgid "Error"
 msgstr "Грешка"
 
-#: ../js/ui/lookingGlass.js:399
+#: ../js/ui/lookingGlass.js:406
 msgid "Out of date"
 msgstr "Остаряло"
 
-#: ../js/ui/lookingGlass.js:424
+#: ../js/ui/lookingGlass.js:431
 msgid "View Source"
 msgstr "Преглед на програмния код"
 
-#: ../js/ui/lookingGlass.js:430
+#: ../js/ui/lookingGlass.js:437
 msgid "Web Page"
 msgstr "Домашна страница"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:182
 msgid "Undo"
 msgstr "Отмяна"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:336
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Дейности"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:616
 msgid "%a %R"
 msgstr "%a, %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:563
+#: ../js/ui/panel.js:619
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Неуспех при демонтиране на „%s“"
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Повторен опит"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Свързване към…"
 
-#: ../js/ui/runDialog.js:245
+#: ../js/ui/runDialog.js:221
 msgid "Please enter a command:"
 msgstr "Въведете команда:"
 
-#: ../js/ui/runDialog.js:361
+#: ../js/ui/runDialog.js:344
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Неуспешно изпълнение на „%s“:"
@@ -197,32 +206,32 @@ msgstr "Програми"
 msgid "Recent Documents"
 msgstr "Скоро отваряни документи"
 
-#: ../src/shell-global.c:960
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Преди по-малко от минута"
 
-#: ../src/shell-global.c:964
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "преди %d минута"
 msgstr[1] "преди %d минути"
 
-#: ../src/shell-global.c:969
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "преди %d час"
 msgstr[1] "преди %d часа"
 
-#: ../src/shell-global.c:974
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "преди %d ден"
 msgstr[1] "преди %d дни"
 
-#: ../src/shell-global.c:979
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
