@@ -1170,8 +1170,7 @@ WorkspacesControls.prototype = {
     _init: function() {
         this.actor = null;
         this._gconf = Shell.GConf.get_default();
-        this._mosaicViewButton = null;
-        this._singleViewButton = null;
+        this._toggleViewButton = null;
         this._addButton = null;
         this._removeButton = null;
 
@@ -1186,13 +1185,18 @@ WorkspacesControls.prototype = {
         this._switchWorkspaceNotifyId = 0;
     },
 
-    _setView: function(view) {
-        this._mosaicViewButton.set_checked(WorkspacesViewType.GRID == view);
-        this._singleViewButton.set_checked(WorkspacesViewType.SINGLE == view);
+    _updateToggleButtonStyle: function() {
+       if (this._currentViewType == WorkspacesViewType.SINGLE)
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
+        else
+            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
+    },
 
+    _setView: function(view) {
         if (this._currentViewType == view)
             return;
         this._currentViewType = view;
+        this._updateToggleButtonStyle();
         this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
         this.emit('view-changed');
     },
@@ -1217,27 +1221,18 @@ WorkspacesControls.prototype = {
         else
             this.actor = new St.BoxLayout({ style_class: 'workspaces-bar' });
 
-        // View switcher buttons
-        this._mosaicViewButton = new St.Button({ style_class: 'workspace-controls switch-mosaic',
-                                                 toggle_mode: true });
-        this._mosaicViewButton.connect('clicked', Lang.bind(this, function() {
-            this._setView(WorkspacesViewType.GRID);
-        }));
-        this.actor.add(this._mosaicViewButton, { y_fill: false,
-                                                 y_align: St.Align.START });
+        // View switcher button
+        this._toggleViewButton = new St.Button();
+        this._updateToggleButtonStyle();
 
-        this._singleViewButton = new St.Button({ style_class: 'workspace-controls switch-single',
-                                                 toggle_mode: true });
-        this._singleViewButton.connect('clicked', Lang.bind(this, function() {
-            this._setView(WorkspacesViewType.SINGLE);
-        }));
-        this.actor.add(this._singleViewButton, { y_fill: false,
-                                                 y_align: St.Align.START });
+        this._toggleViewButton.connect('clicked', Lang.bind(this, function() {
+            if (this._currentViewType == WorkspacesViewType.SINGLE)
+                this._setView(WorkspacesViewType.GRID);
+            else
+                this._setView(WorkspacesViewType.SINGLE);
+         }));
 
-        if (this._currentViewType == WorkspacesViewType.GRID)
-            this._mosaicViewButton.set_checked(true);
-        else
-            this._singleViewButton.set_checked(true);
+        this.actor.add(this._toggleViewButton, { y_fill: false, y_align: St.Align.START });
 
         // View specific controls
         let bar = this._currentView.createControllerBar();
@@ -1316,13 +1311,10 @@ WorkspacesControls.prototype = {
 
         this._updateButtonSensitivity();
 
-        if (global.screen.n_workspaces == 1) {
-            this._mosaicViewButton.hide();
-            this._singleViewButton.hide();
-        } else {
-            this._mosaicViewButton.show();
-            this._singleViewButton.show();
-        }
+        if (global.screen.n_workspaces == 1)
+            this._toggleViewButton.hide();
+        else
+            this._toggleViewButton.show();
     }
 };
 
