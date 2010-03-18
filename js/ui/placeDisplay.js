@@ -460,6 +460,7 @@ DashPlaceDisplayItem.prototype = {
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
+        return false;
     },
 
     _onButtonRelease: function(actor, event) {
@@ -468,6 +469,7 @@ DashPlaceDisplayItem.prototype = {
 
         this._dragStartX = null;
         this._dragStartY = null;
+        return false;
     },
 
     _onHoverChanged: function(button) {
