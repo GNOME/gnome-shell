@@ -517,6 +517,7 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
 {
   MetaKeyBinding *binding;
 
+  mask = mask & 0xff & ~display->ignored_modifier_mask;
   binding = display_get_keybinding (display, keysym, keycode, mask);
 
   if (binding)
