@@ -921,10 +921,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
         return;
 
       fake = _clutter_script_generate_fake_id (script);
-
-      val = json_node_new (JSON_NODE_VALUE);
-      json_node_set_string (val, fake);
-      json_object_set_member (object, "id", val);
+      json_object_set_string_member (object, "id", fake);
 
       g_free (fake);
     }
@@ -1015,6 +1012,15 @@ clutter_script_parser_object_end (JsonParser *json_parser,
         continue;
 
       node = json_object_get_member (object, name);
+      if (node == NULL)
+        {
+          CLUTTER_NOTE (SCRIPT,
+                        "Empty node for member '%s' of object '%s' (type: %s)",
+                        name,
+                        oinfo->id,
+                        oinfo->class_name);
+          continue;
+        }
 
       pinfo = g_slice_new (PropertyInfo);
 
