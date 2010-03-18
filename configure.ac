@@ -502,7 +502,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
 
                 AC_MSG_RESULT([found])
               ],
-              [AC_MSG_RESULT([not found])]
+              [AC_MSG_ERROR([not found])]
         )
 
         # XINPUT (optional)
@@ -530,9 +530,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
                 [],
         )
 
-        # X11-specific tests are enabled conditionally
-        AS_IF([test "x$have_xcomposite" = "xyes"], [x11_tests=yes], [x11_tests=no])
-
+        x11_tests=yes
         BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
       ]
 )
