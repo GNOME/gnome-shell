@@ -56,6 +56,7 @@ clutter_shader_effect_get_type
 clutter_stage_get_type
 clutter_stage_manager_get_type
 clutter_state_get_type
+clutter_table_layout_get_type
 clutter_text_get_type
 clutter_texture_get_type
 clutter_timeline_get_type
