@@ -315,7 +315,7 @@ WindowManager.prototype = {
         if (global.screen.n_workspaces == 1)
             return;
 
-        if (this._workspaceSwitcherPopup == null && Main.overview.visible)
+        if (this._workspaceSwitcherPopup == null && !Main.overview.visible)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
         if (binding == "switch_to_workspace_left") {
