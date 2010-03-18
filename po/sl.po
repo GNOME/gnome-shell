@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-03-11 22:04+0000\n"
-"PO-Revision-Date: 2010-03-12 11:12+0100\n"
+"POT-Creation-Date: 2010-03-18 04:53+0000\n"
+"PO-Revision-Date: 2010-03-18 09:52+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Upravljanje oken in zaganjanje programov"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:311
-#: ../js/ui/dash.js:857
+#: ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "Programi"
 
@@ -65,28 +65,28 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/dash.js:199
+#: ../js/ui/dash.js:194
 msgid "Find"
 msgstr "Najdi"
 
-#: ../js/ui/dash.js:512
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/dash.js:526
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:876
-#: ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:871
+#: ../js/ui/placeDisplay.js:536
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:883
+#: ../js/ui/dash.js:878
 #: ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
@@ -119,27 +119,36 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:182
 msgid "Undo"
 msgstr "Razveljavi"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:399
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:630
+#: ../js/ui/panel.js:616
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:633
+#: ../js/ui/panel.js:619
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Ni mogoče odklopiti '%s'"
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Poskusi znova"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
