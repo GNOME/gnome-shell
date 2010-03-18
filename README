@@ -4,6 +4,9 @@ Clutter - README
 Clutter is an open source software library for creating portable, fast,
 visually rich and animated graphical user interfaces.
 
+REQUIREMENTS
+-------------------------------------------------------------------------------
+
 Clutter currently requires:
 
   • GLib >= 2.16.0
@@ -11,8 +14,19 @@ Clutter currently requires:
   • PangoCairo >= 1.20
   • OpenGL >= 1.3 or 1.2+multitexturing, OpenGL ES 1.1 or OpenGL ES 2.0
   • GLX, SDL, WGL or an EGL Implementation
-  • JSON-GLib >= 0.8 (optional)
-  • GDK-Pixbuf >= 2.0 (optional)
+
+Clutter also has optional dependencies:
+
+  • JSON-GLib >= 0.8 (optional, see --with-json below)
+  • GDK-Pixbuf >= 2.0 (optional, see --with-imagebackend below)
+
+On X11, Clutter depends on the following extensions
+
+  • XComposite
+  • XDamage
+  • XExt
+  • XFixes
+  • XInput 1.x (if --enable-xinput is passed to configure)
 
 When running the OpenGL flavor, Clutter requires at least version 1.3
 or 1.2 with the multitexturing extension. However to build Clutter
@@ -24,11 +38,16 @@ If you are building the API reference you will also need:
 
   • GTK-Doc >= 1.11
 
+If you are building the additional documentation you will also need:
+
+  • xsltproc
+  • jw (optional, for generating PDFs)
+
 If you are building the Introspection data you will also need:
 
   • GObject-Introspection >= 0.6.4
 
-If you want built in support for profiling Clutter you will also need:
+If you want support for profiling Clutter you will also need:
 
   • UProf >= 0.2
 
@@ -36,6 +55,7 @@ UProf is available from:
 
   git://git.moblin.org/uprof.git
 
+RESOURCES
 -------------------------------------------------------------------------------
 
 The official Clutter website is:
@@ -72,7 +92,7 @@ Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
 
 BUILDING AND INSTALLATION
-===============================================================================
+-------------------------------------------------------------------------------
 
 See the INSTALL file.
 
@@ -189,7 +209,7 @@ Clutter has additional command line options for the configure script:
                 Only use the system copy of JSON-GLib and warn if not found
 
 VERSIONING
-===============================================================================
+-------------------------------------------------------------------------------
 
 Clutter uses the common "Linux kernel" versioning system, where
 even-numbered minor versions are stable and odd-numbered minor
@@ -206,7 +226,7 @@ numbers are only used for released archives; odd micro numbers are
 only used on the Git repository.
 
 HACKING
-===============================================================================
+-------------------------------------------------------------------------------
 
 If you want to hack on and improve Clutter, check the contained TODO file for
 pending tasks, the HACKING file for general implementation guidelines, and the
@@ -217,7 +237,7 @@ style guidelines used throughout Clutter. Remember: the coding style is
 mandatory; patches not conforming to it will be rejected.
 
 BUGS
-===============================================================================
+-------------------------------------------------------------------------------
 
 Bugs should be reported to the Clutter Bugzilla at:
 
@@ -242,7 +262,7 @@ If the bug exposes a crash, the exact text printed out and a stack trace
 obtained using gdb are greatly appreciated.
 
 CONTRIBUTING
-===============================================================================
+-------------------------------------------------------------------------------
 
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
@@ -269,7 +289,7 @@ If you do not intend to waive your copyright you should contact the Clutter
 development team to arrange a suitable solution.
 
 RELEASE NOTES
-===============================================================================
+-------------------------------------------------------------------------------
 
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
