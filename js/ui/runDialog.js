@@ -63,7 +63,7 @@ CommandCompleter.prototype = {
 
     _onGetEnumerateComplete : function(obj, res) {
         this._enumerator = obj.enumerate_children_finish(res);
-        this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete), null);
+        this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
     },
 
     _onNextFileComplete : function(obj, res) {
@@ -72,7 +72,7 @@ CommandCompleter.prototype = {
             this._childs[this._i].push(files[i].get_name());
         }
         if (files.length) {
-            this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete), null);
+            this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
         } else {
             this._enumerator.close(null);
             this._enumerator = null;
@@ -99,7 +99,7 @@ CommandCompleter.prototype = {
         }
         let file = Gio.file_new_for_path(this._paths[i]);
         this._childs[this._i] = [];
-        file.enumerate_children_async(Gio.FILE_ATTRIBUTE_STANDARD_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onGetEnumerateComplete), null);
+        file.enumerate_children_async(Gio.FILE_ATTRIBUTE_STANDARD_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onGetEnumerateComplete));
     },
 
     _onChanged : function(m, f, of, type) {

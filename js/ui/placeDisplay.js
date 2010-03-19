@@ -93,7 +93,7 @@ PlaceDeviceInfo.prototype = {
         if (!this.isRemovable())
             return;
 
-        this._mount.unmount(0, null, Lang.bind(this, this._removeFinish), null);
+        this._mount.unmount(0, null, Lang.bind(this, this._removeFinish));
     },
 
     _removeFinish: function(o, res, data) {
