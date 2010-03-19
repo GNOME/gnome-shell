@@ -348,6 +348,17 @@ cogl_rotate (float angle,
              float z);
 
 /**
+ * cogl_multiply_matrix:
+ * @matrix: the matrix to multiply with the current model-view
+ *
+ * Multiplies the current model-view matrix by the given matrix.
+ *
+ * Since: 1.4
+ */
+void
+cogl_multiply_matrix (const CoglMatrix *matrix);
+
+/**
  * cogl_get_modelview_matrix:
  * @matrix: (out): return location for the model-view matrix
  *
