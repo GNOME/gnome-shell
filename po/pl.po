@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-24 18:28+0100\n"
-"PO-Revision-Date: 2010-02-23 07:25+0100\n"
-"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"POT-Creation-Date: 2010-03-19 13:08+0100\n"
+"PO-Revision-Date: 2010-03-19 13:07+0100\n"
+"Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,27 +29,27 @@ msgid "Window management and application launching"
 msgstr "Zarządzanie oknami i uruchamianiem programów"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:180 ../js/ui/dash.js:881
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "Programy"
 
-#: ../js/ui/appDisplay.js:204
+#: ../js/ui/appDisplay.js:343
 msgid "PREFERENCES"
 msgstr "Preferencje"
 
-#: ../js/ui/appDisplay.js:582
+#: ../js/ui/appDisplay.js:728
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:586
+#: ../js/ui/appDisplay.js:732
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: ../js/ui/appDisplay.js:587
+#: ../js/ui/appDisplay.js:733
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
-#: ../js/ui/appDisplay.js:939
+#: ../js/ui/appDisplay.js:1085
 msgid "Drag here to add favorites"
 msgstr "Przeciągnięcie tutaj doda do ulubionych"
 
@@ -63,87 +63,96 @@ msgstr "%s zostało dodane do ulubionych."
 msgid "%s has been removed from your favorites."
 msgstr "%s zostało usunięte z ulubionych."
 
-#: ../js/ui/dash.js:235
-msgid "Find..."
-msgstr "Znajdź..."
+#: ../js/ui/dash.js:194
+msgid "Find"
+msgstr "Znajdź"
 
-#: ../js/ui/dash.js:505
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Wyszukiwanie..."
 
-#: ../js/ui/dash.js:519
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "Brak wyników."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
 msgid "PLACES & DEVICES"
 msgstr "Miejsca i urządzenia"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "Ostatnie dokumenty"
 
-#: ../js/ui/lookingGlass.js:356
+#: ../js/ui/lookingGlass.js:363
 msgid "No extensions installed"
 msgstr "Nie zainstalowano rozszerzeń"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:400
 msgid "Enabled"
 msgstr "Włączone"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:402
 msgid "Disabled"
 msgstr "Wyłączone"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:404
 msgid "Error"
 msgstr "Błąd"
 
-#: ../js/ui/lookingGlass.js:399
+#: ../js/ui/lookingGlass.js:406
 msgid "Out of date"
 msgstr "Przestarzałe"
 
-#: ../js/ui/lookingGlass.js:424
+#: ../js/ui/lookingGlass.js:431
 msgid "View Source"
 msgstr "Wyświetl źródło"
 
-#: ../js/ui/lookingGlass.js:430
+#: ../js/ui/lookingGlass.js:437
 msgid "Web Page"
 msgstr "Strona WWW"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:182
 msgid "Undo"
 msgstr "Cofnij"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:336
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Podgląd"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:616
 msgid "%a %R"
 msgstr "%a, %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:563
+#: ../js/ui/panel.js:619
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Odmontowanie \"%s\" się nie powiodło"
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Ponów"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Połącz z..."
 
-#: ../js/ui/runDialog.js:245
+#: ../js/ui/runDialog.js:232
 msgid "Please enter a command:"
 msgstr "Proszę wprowadzić polecenie:"
 
-#: ../js/ui/runDialog.js:361
+#: ../js/ui/runDialog.js:374
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Wykonanie \"%s\" się nie powiodło:"
