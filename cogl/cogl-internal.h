@@ -133,10 +133,10 @@ int
 _cogl_get_format_bpp (CoglPixelFormat format);
 
 void
-cogl_enable (gulong flags);
+_cogl_enable (unsigned long flags);
 
 unsigned long
-cogl_get_enable (void);
+_cogl_get_enable (void);
 
 typedef struct _CoglTextureUnit
 {

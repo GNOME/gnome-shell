@@ -1694,7 +1694,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 }
 

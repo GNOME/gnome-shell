@@ -92,7 +92,7 @@ _cogl_path_stroke_nodes (void)
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
 
   options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
   /* disable all texture layers */
@@ -171,7 +171,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 
   enable_flags |=
     _cogl_material_get_cogl_enable_flags (ctx->source_material);
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
@@ -207,7 +207,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
            * enable flags */
           _cogl_matrix_stack_flush_to_gl (modelview_stack,
                                           COGL_MATRIX_MODELVIEW);
-          cogl_enable (enable_flags);
+          _cogl_enable (enable_flags);
         }
       GE (glStencilMask (1));
       GE (glStencilFunc (GL_LEQUAL, 0x1, 0x3));
@@ -244,7 +244,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
            * enable flags */
           _cogl_matrix_stack_flush_to_gl (modelview_stack,
                                           COGL_MATRIX_MODELVIEW);
-          cogl_enable (enable_flags);
+          _cogl_enable (enable_flags);
 
           GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
         }
@@ -342,7 +342,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+  _cogl_enable (COGL_ENABLE_VERTEX_ARRAY
                | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
 
   /* clear scanline intersection lists */

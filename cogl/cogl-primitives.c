@@ -969,7 +969,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
                           v + 3 + 2 * n_layers) );
     }
 
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
   GE (glVertexPointer (3, GL_FLOAT, stride_bytes, v));
