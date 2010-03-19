@@ -120,6 +120,14 @@ const gchar*          st_widget_get_tooltip_text          (StWidget        *widg
 void                  st_widget_show_tooltip              (StWidget        *widget);
 void                  st_widget_hide_tooltip              (StWidget        *widget);
 
+void                  st_widget_set_track_hover           (StWidget        *widget,
+                                                           gboolean         track_hover);
+gboolean              st_widget_get_track_hover           (StWidget        *widget);
+void                  st_widget_set_hover                 (StWidget        *widget,
+                                                           gboolean         hover);
+void                  st_widget_sync_hover                (StWidget        *widget);
+gboolean              st_widget_get_hover                 (StWidget        *widget);
+
 void                  st_widget_ensure_style              (StWidget        *widget);
 
 StTextDirection       st_widget_get_default_direction     (void);

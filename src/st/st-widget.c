@@ -76,6 +76,8 @@ struct _StWidgetPrivate
   gboolean      is_style_dirty : 1;
   gboolean      draw_bg_color : 1;
   gboolean      draw_border_internal : 1;
+  gboolean      track_hover : 1;
+  gboolean      hover : 1;
 
   StTooltip    *tooltip;
 
@@ -101,11 +103,11 @@ enum
   PROP_PSEUDO_CLASS,
   PROP_STYLE_CLASS,
   PROP_STYLE,
-
   PROP_STYLABLE,
-
   PROP_HAS_TOOLTIP,
-  PROP_TOOLTIP_TEXT
+  PROP_TOOLTIP_TEXT,
+  PROP_TRACK_HOVER,
+  PROP_HOVER
 };
 
 enum
@@ -167,6 +169,14 @@ st_widget_set_property (GObject      *gobject,
       st_widget_set_tooltip_text (actor, g_value_get_string (value));
       break;
 
+    case PROP_TRACK_HOVER:
+      st_widget_set_track_hover (actor, g_value_get_boolean (value));
+      break;
+
+    case PROP_HOVER:
+      st_widget_set_hover (actor, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -210,6 +220,14 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_TOOLTIP_TEXT:
       g_value_set_string (value, st_widget_get_tooltip_text (actor));
+      break;
+
+    case PROP_TRACK_HOVER:
+      g_value_set_boolean (value, priv->track_hover);
+      break;
+
+    case PROP_HOVER:
+      g_value_set_boolean (value, priv->hover);
       break;
 
     default:
@@ -1126,14 +1144,33 @@ st_widget_get_theme_node (StWidget *widget)
 }
 
 static gboolean
+actor_contains (ClutterActor *widget,
+                ClutterActor *other)
+{
+  while (other != NULL && other != widget)
+    other = clutter_actor_get_parent (other);
+  return other != NULL;
+}
+
+static gboolean
 st_widget_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
-
-  if (priv->has_tooltip)
-    st_widget_show_tooltip ((StWidget*) actor);
+  if (priv->track_hover)
+    {
+      if (actor_contains (actor, event->source))
+        st_widget_set_hover (ST_WIDGET (actor), TRUE);
+      else
+        {
+          /* The widget has a grab and is being told about an
+           * enter-event outside its hierarchy. Hopefully we already
+           * got a leave-event, but if not, handle it now.
+           */
+          st_widget_set_hover (ST_WIDGET (actor), FALSE);
+        }
+    }
 
   if (CLUTTER_ACTOR_CLASS (st_widget_parent_class)->enter_event)
     return CLUTTER_ACTOR_CLASS (st_widget_parent_class)->enter_event (actor, event);
@@ -1147,8 +1184,11 @@ st_widget_leave (ClutterActor         *actor,
 {
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
-  if (priv->has_tooltip)
-    st_tooltip_hide (priv->tooltip);
+  if (priv->track_hover)
+    {
+      if (!actor_contains (actor, event->related))
+        st_widget_set_hover (ST_WIDGET (actor), FALSE);
+    }
 
   if (CLUTTER_ACTOR_CLASS (st_widget_parent_class)->leave_event)
     return CLUTTER_ACTOR_CLASS (st_widget_parent_class)->leave_event (actor, event);
@@ -1267,8 +1307,9 @@ st_widget_class_init (StWidgetClass *klass)
   /**
    * StWidget:has-tooltip:
    *
-   * Determines whether the widget has a tooltip. If set to TRUE, causes the
-   * widget to monitor enter and leave events (i.e. sets the widget reactive).
+   * Determines whether the widget has a tooltip. If set to %TRUE, causes the
+   * widget to monitor hover state (i.e. sets #ClutterActor:reactive and
+   * #StWidget:track-hover).
    */
   pspec = g_param_spec_boolean ("has-tooltip",
                                 "Has Tooltip",
@@ -1291,6 +1332,40 @@ st_widget_class_init (StWidgetClass *klass)
                                "",
                                ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TOOLTIP_TEXT, pspec);
+
+  /**
+   * StWidget:track-hover:
+   *
+   * Determines whether the widget tracks pointer hover state. If
+   * %TRUE (and the widget is visible and reactive), the
+   * #StWidget:hover property and "hover" style pseudo class will be
+   * adjusted automatically as the pointer moves in and out of the
+   * widget.
+   */
+  pspec = g_param_spec_boolean ("track-hover",
+                                "Track hover",
+                                "Determines whether the widget tracks hover state",
+                                FALSE,
+                                ST_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_TRACK_HOVER,
+                                   pspec);
+
+  /**
+   * StWidget:hover:
+   *
+   * Whether or not the pointer is currently hovering over the widget. This is
+   * only tracked automatically if #StWidget:track-hover is %TRUE, but you can
+   * adjust it manually in any case.
+   */
+  pspec = g_param_spec_boolean ("hover",
+                                "Hover",
+                                "Whether the pointer is hovering over the widget",
+                                FALSE,
+                                ST_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_HOVER,
+                                   pspec);
 
   /**
    * StWidget::style-changed:
@@ -1794,10 +1869,10 @@ st_widget_set_direction (StWidget *self, StTextDirection dir)
  *
  * Enables tooltip support on the #StWidget.
  *
- * Note that setting has-tooltip to %TRUE will cause the widget to be set
- * reactive. If you no longer need tooltip support and do not need the widget
- * to be reactive, you need to set ClutterActor::reactive to FALSE.
- *
+ * Note that setting has-tooltip to %TRUE will cause
+ * #ClutterActor:reactive and #StWidget:track-hover to be set %TRUE as
+ * well, but you must clear these flags yourself (if appropriate) when
+ * setting it %FALSE.
  */
 void
 st_widget_set_has_tooltip (StWidget *widget,
@@ -1814,6 +1889,7 @@ st_widget_set_has_tooltip (StWidget *widget,
   if (has_tooltip)
     {
       clutter_actor_set_reactive ((ClutterActor*) widget, TRUE);
+      st_widget_set_track_hover (widget, TRUE);
 
       if (!priv->tooltip)
         {
@@ -1947,4 +2023,144 @@ st_widget_hide_tooltip (StWidget *widget)
 
   if (widget->priv->tooltip)
     st_tooltip_hide (widget->priv->tooltip);
+}
+
+/**
+ * st_widget_set_track_hover:
+ * @widget: A #StWidget
+ * @track_hover: %TRUE if the widget should track the pointer hover state
+ *
+ * Enables hover tracking on the #StWidget.
+ *
+ * If hover tracking is enabled, and the widget is visible and
+ * reactive, then @widget's #StWidget:hover property will be updated
+ * automatically to reflect whether the pointer is in @widget (or one
+ * of its children), and @widget's #StWidget:pseudo-class will have
+ * the "hover" class added and removed from it accordingly.
+ *
+ * Note that currently it is not possible to correctly track the hover
+ * state when another actor has a pointer grab. You can use
+ * st_widget_sync_hover() to update the property manually in this
+ * case.
+ */
+void
+st_widget_set_track_hover (StWidget *widget,
+                           gboolean  track_hover)
+{
+  StWidgetPrivate *priv;
+
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  priv = widget->priv;
+
+  if (priv->track_hover != track_hover)
+    {
+      priv->track_hover = track_hover;
+      g_object_notify (G_OBJECT (widget), "track-hover");
+
+      if (priv->track_hover)
+        st_widget_sync_hover (widget);
+    }
+}
+
+/**
+ * st_widget_get_track_hover:
+ * @widget: A #StWidget
+ *
+ * Returns the current value of the track-hover property. See
+ * st_tooltip_set_track_hover() for more information.
+ *
+ * Returns: current value of track-hover on @widget
+ */
+gboolean
+st_widget_get_track_hover (StWidget *widget)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
+
+  return widget->priv->track_hover;
+}
+
+/**
+ * st_widget_set_hover:
+ * @widget: A #StWidget
+ * @hover: whether the pointer is hovering over the widget
+ *
+ * Sets @widget's hover property and adds or removes "hover" from its
+ * pseudo class accordingly. If #StWidget:has-tooltip is %TRUE, this
+ * will also show or hide the tooltip, as appropriate.
+ *
+ * If you have set #StWidget:track-hover, you should not need to call
+ * this directly. You can call st_widget_sync_hover() if the hover
+ * state might be out of sync due to another actor's pointer grab.
+ */
+void
+st_widget_set_hover (StWidget *widget,
+                     gboolean  hover)
+{
+  StWidgetPrivate *priv;
+
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  priv = widget->priv;
+
+  if (priv->hover != hover)
+    {
+      priv->hover = hover;
+      if (priv->hover)
+        {
+          st_widget_add_style_pseudo_class (widget, "hover");
+          if (priv->has_tooltip)
+            st_widget_show_tooltip (widget);
+        }
+      else
+        {
+          st_widget_remove_style_pseudo_class (widget, "hover");
+          if (priv->has_tooltip)
+            st_widget_hide_tooltip (widget);
+        }
+      g_object_notify (G_OBJECT (widget), "hover");
+    }
+}
+
+/**
+ * st_widget_sync_hover:
+ * @widget: A #StWidget
+ *
+ * Sets @widget's hover state according to the current pointer
+ * position. This can be used to ensure that it is correct after
+ * (or during) a pointer grab.
+ */
+void
+st_widget_sync_hover (StWidget *widget)
+{
+  ClutterDeviceManager *device_manager;
+  ClutterInputDevice *pointer;
+  ClutterActor *actor;
+
+  device_manager = clutter_device_manager_get_default ();
+  pointer = clutter_device_manager_get_core_device (device_manager,
+                                                    CLUTTER_POINTER_DEVICE);
+  actor = clutter_input_device_get_pointer_actor (pointer);
+
+  while (actor && actor != (ClutterActor *)widget)
+    actor = clutter_actor_get_parent (actor);
+
+  st_widget_set_hover (widget, actor == (ClutterActor *)widget);
+}
+
+/**
+ * st_widget_get_hover:
+ * @widget: A #StWidget
+ *
+ * If #StWidget:track-hover is set, this returns whether the pointer
+ * is currently over the widget.
+ *
+ * Returns: current value of hover on @widget
+ */
+gboolean
+st_widget_get_hover (StWidget *widget)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
+
+  return widget->priv->hover;
 }

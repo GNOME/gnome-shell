@@ -536,6 +536,8 @@ AppWellIcon.prototype = {
     },
 
     _onMenuPoppedDown: function() {
+        this.actor.sync_hover();
+
         if (this._didActivateWindow)
             return;
         if (!this._setWindowSelection)

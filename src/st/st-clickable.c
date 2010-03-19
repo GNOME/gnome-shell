@@ -16,7 +16,6 @@ G_DEFINE_TYPE (StClickable, st_clickable, ST_TYPE_BIN);
 struct _StClickablePrivate {
   gboolean active;
   gboolean held;
-  gboolean hover;
   gboolean pressed;
 
   guint initiating_button;
@@ -33,7 +32,6 @@ enum {
   PROP_0,
 
   PROP_ACTIVE,
-  PROP_HOVER,
   PROP_PRESSED,
 };
 
@@ -46,11 +44,6 @@ sync_pseudo_class (StClickable *self)
     st_widget_add_style_pseudo_class (ST_WIDGET (self), "pressed");
   else
     st_widget_remove_style_pseudo_class (ST_WIDGET (self), "pressed");
-
-  if (self->priv->hover)
-    st_widget_add_style_pseudo_class (ST_WIDGET (self), "hover");
-  else
-    st_widget_remove_style_pseudo_class (ST_WIDGET (self), "hover");
 }
 
 static void
@@ -62,17 +55,6 @@ set_active (StClickable  *self,
   self->priv->active = active;
   sync_pseudo_class (self);
   g_object_notify (G_OBJECT (self), "active");
-}
-
-static void
-set_hover (StClickable  *self,
-           gboolean      hover)
-{
-  if (self->priv->hover == hover)
-    return;
-  self->priv->hover = hover;
-  sync_pseudo_class (self);
-  g_object_notify (G_OBJECT (self), "hover");
 }
 
 static void
@@ -102,21 +84,18 @@ st_clickable_enter_event (ClutterActor         *actor,
                           ClutterCrossingEvent *event)
 {
   StClickable *self = ST_CLICKABLE (actor);
-
-  if (st_clickable_contains (self, event->related))
-    return TRUE;
-  if (!st_clickable_contains (self, event->source))
-    return TRUE;
+  gboolean result;
 
   g_object_freeze_notify (G_OBJECT (actor));
 
-  if (self->priv->held)
-    set_pressed (self, TRUE);
-  set_hover (self, TRUE);
+  result = CLUTTER_ACTOR_CLASS (st_clickable_parent_class)->enter_event (actor, event);
+
+  /* We can't just assume get_hover() is TRUE; see st_widget_enter(). */
+  set_pressed (self, self->priv->held && st_widget_get_hover (ST_WIDGET (actor)));
 
   g_object_thaw_notify (G_OBJECT (actor));
 
-  return TRUE;
+  return result;
 }
 
 static gboolean
@@ -124,14 +103,18 @@ st_clickable_leave_event (ClutterActor         *actor,
                               ClutterCrossingEvent *event)
 {
   StClickable *self = ST_CLICKABLE (actor);
+  gboolean result;
 
-  if (st_clickable_contains (self, event->related))
-    return TRUE;
+  g_object_freeze_notify (G_OBJECT (actor));
 
-  set_hover (self, FALSE);
-  set_pressed (self, FALSE);
+  result = CLUTTER_ACTOR_CLASS (st_clickable_parent_class)->leave_event (actor, event);
 
-  return TRUE;
+  /* As above, we can't just assume get_hover() is FALSE. */
+  set_pressed (self, self->priv->held && st_widget_get_hover (ST_WIDGET (actor)));
+
+  g_object_thaw_notify (G_OBJECT (actor));
+
+  return result;
 }
 
 static gboolean
@@ -243,9 +226,6 @@ st_clickable_get_property (GObject         *object,
     case PROP_PRESSED:
       g_value_set_boolean (value, self->priv->pressed);
       break;
-    case PROP_HOVER:
-      g_value_set_boolean (value, self->priv->hover);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -298,20 +278,6 @@ st_clickable_class_init (StClickableClass *klass)
                                                          G_PARAM_READWRITE));
 
   /**
-   * StClickable:hover
-   *
-   * This property tracks whether the mouse is over the button; note this
-   * state is independent of whether the button is pressed.
-   */
-  g_object_class_install_property (gobject_class,
-                                   PROP_HOVER,
-                                   g_param_spec_boolean ("hover",
-                                                         "Hovering state",
-                                                         "Whether the mouse is over the button",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  /**
    * StClickable:pressed
    *
    * This property tracks whether the button should have a "pressed in"
@@ -333,4 +299,5 @@ st_clickable_init (StClickable *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ST_TYPE_CLICKABLE,
                                             StClickablePrivate);
+  st_widget_set_track_hover (ST_WIDGET (self), TRUE);
 }
