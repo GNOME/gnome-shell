@@ -1988,42 +1988,6 @@ _cogl_material_journal_unref (CoglHandle material_handle)
   cogl_handle_unref (material_handle);
 }
 
-/* TODO: Should go in cogl.c, but that implies duplication which is also
- * not ideal. */
-void
-cogl_set_source (CoglHandle material_handle)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_return_if_fail (cogl_is_material (material_handle));
-
-  if (ctx->source_material == material_handle)
-    return;
-
-  cogl_handle_ref (material_handle);
-
-  if (ctx->source_material)
-    cogl_handle_unref (ctx->source_material);
-
-  ctx->source_material = material_handle;
-}
-/* TODO: add cogl_set_front_source (), and cogl_set_back_source () */
-
-void
-cogl_set_source_texture (CoglHandle texture_handle)
-{
-  CoglColor white;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_return_if_fail (texture_handle != COGL_INVALID_HANDLE);
-
-  cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
-  cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
-  cogl_material_set_color (ctx->simple_material, &white);
-  cogl_set_source (ctx->simple_material);
-}
-
 CoglMaterialFilter
 cogl_material_layer_get_min_filter (CoglHandle layer_handle)
 {

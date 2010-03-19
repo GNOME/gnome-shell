@@ -163,30 +163,6 @@ cogl_color_premultiply (CoglColor *color)
   color->blue = (color->blue * color->alpha + 128) / 255;
 }
 
-void
-cogl_set_source_color4ub (guint8 red,
-                          guint8 green,
-                          guint8 blue,
-                          guint8 alpha)
-{
-  CoglColor c = { 0, };
-
-  cogl_color_set_from_4ub (&c, red, green, blue, alpha);
-  cogl_set_source_color (&c);
-}
-
-void
-cogl_set_source_color4f (float red,
-                         float green,
-                         float blue,
-                         float alpha)
-{
-  CoglColor c = { 0, };
-
-  cogl_color_set_from_4f (&c, red, green, blue, alpha);
-  cogl_set_source_color (&c);
-}
-
 gboolean
 cogl_color_equal (gconstpointer v1, gconstpointer v2)
 {
