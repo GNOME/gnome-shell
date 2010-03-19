@@ -128,53 +128,20 @@ WindowClone.prototype = {
                            Lang.bind(this, this._onLeave));
         this._havePointer = false;
 
-        this._draggable = DND.makeDraggable(this.actor);
+        this._draggable = DND.makeDraggable(this.actor,
+                                            { dragActorMaxSize: WINDOW_DND_SIZE,
+                                              dragActorOpacity: DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
-        this._inDrag = false;
+        this.inDrag = false;
 
         this._zooming = false;
         this._selected = false;
     },
 
-    getDragActorSource: function() {
-        return this.actor;
-    },
-
-    getDragActor: function(x, y) {
-        // We want to shrink the window down to at most THUMBNAIL_SIZE in one direction,
-        // but animate that transition.  The way we do this is to compute our final
-        // width/height, and set that on the Clone.  The clone itself will then scale
-        // the source.  But to animate, we need to compute a scale which will get us
-        // back to the original size, and then animate down to a scale of 1.
-        let scale = Math.min(WINDOW_DND_SIZE / this.realWindow.width, WINDOW_DND_SIZE / this.realWindow.height);
-        let [transformedX, transformedY] = this.actor.get_transformed_position();
-        let [transformedWidth, transformedHeight] = this.actor.get_transformed_size();
-        let xOffset = (x - transformedX) * scale;
-        let yOffset = (y - transformedY) * scale;
-        let targetWidth = this.realWindow.width * scale;
-        let targetHeight = this.realWindow.height * scale;
-        let inverseScale;
-        if (targetWidth < transformedWidth)
-            inverseScale = transformedWidth / targetWidth;
-        else
-            inverseScale = 1;
-        let actor = new Clutter.Clone({ source: this.realWindow,
-                                        width: targetWidth,
-                                        height: targetHeight,
-                                        opacity: DRAGGING_WINDOW_OPACITY });
-        actor.set_scale_full(inverseScale, inverseScale, xOffset, yOffset);
-        Tweener.addTween(actor, { time: Overview.ANIMATION_TIME,
-                                  transition: "easeOutQuad",
-                                  scale_x: 1,
-                                  scale_y: 1 });
-        actor._delegate = this;
-        return actor;
-    },
-
     setStackAbove: function (actor) {
         this._stackAbove = actor;
-        if (this._inDrag || this._zooming)
+        if (this.inDrag || this._zooming)
             // We'll fix up the stack after the drag/zooming
             return;
         this.actor.raise(this._stackAbove);
@@ -204,9 +171,9 @@ WindowClone.prototype = {
         if (this._zoomLightbox)
             this._zoomLightbox.destroy();
 
-        if (this._inDrag) {
+        if (this.inDrag) {
             this.emit('drag-end');
-            this._inDrag = false;
+            this.inDrag = false;
         }
 
         this.disconnectAll();
@@ -215,7 +182,7 @@ WindowClone.prototype = {
     _onEnter: function (actor, event) {
         // If the user drags faster than we can follow, he'll end up
         // leaving the window temporarily and then re-entering it
-        if (this._inDrag)
+        if (this.inDrag)
             return;
 
         this._havePointer = true;
@@ -224,7 +191,7 @@ WindowClone.prototype = {
     _onLeave: function (actor, event) {
         // If the user drags faster than we can follow, he'll end up
         // leaving the window temporarily and then re-entering it
-        if (this._inDrag)
+        if (this.inDrag)
             return;
 
         this._havePointer = false;
@@ -324,14 +291,12 @@ WindowClone.prototype = {
     },
 
     _onDragBegin : function (draggable, time) {
-        this.actor.hide();
-        this._inDrag = true;
+        this.inDrag = true;
         this.emit('drag-begin');
     },
 
     _onDragEnd : function (draggable, time, snapback) {
-        this._inDrag = false;
-        this.actor.show();
+        this.inDrag = false;
 
         // Most likely, the clone is going to move away from the
         // pointer now. But that won't cause a leave-event, so
@@ -1134,6 +1099,11 @@ Workspace.prototype = {
             let metaWindow = clone.metaWindow;
             let mainIndex = this._lookupIndex(metaWindow);
             let overlay = this._windowOverlays[mainIndex];
+
+            // Positioning a window currently being dragged must be avoided;
+            // we'll just leave a blank spot in the layout for it.
+            if (clone.inDrag)
+                continue;
 
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
 
