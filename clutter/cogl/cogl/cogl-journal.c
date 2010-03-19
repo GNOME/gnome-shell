@@ -263,7 +263,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                   color_intensity : 0,
                                   0xff);
       _cogl_material_flush_gl_state (outline, NULL);
-      cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
+      _cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
       for (i = 0; i < batch_len; i++)
         GE( glDrawArrays (GL_LINE_LOOP, 4 * i + state->vertex_offset, 4) );
 
@@ -319,7 +319,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
                                  &batch_start->flush_options);
 
   /* FIXME: This api is a bit yukky, ideally it will be removed if we
-   * re-work the cogl_enable mechanism */
+   * re-work the _cogl_enable mechanism */
   enable_flags |= _cogl_material_get_cogl_enable_flags (batch_start->material);
 
   if (ctx->enable_backface_culling)
@@ -327,7 +327,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
 
   enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
   enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
   /* If we haven't transformed the quads in software then we need to also break

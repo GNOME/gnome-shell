@@ -1098,7 +1098,7 @@ cogl_material_remove_layer (CoglHandle material_handle,
   handle_automatic_blend_enable (material);
 }
 
-/* XXX: This API is hopfully just a stop-gap solution. Ideally cogl_enable
+/* XXX: This API is hopfully just a stop-gap solution. Ideally _cogl_enable
  * will be replaced. */
 unsigned long
 _cogl_material_get_cogl_enable_flags (CoglHandle material_handle)

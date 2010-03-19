@@ -144,7 +144,7 @@ cogl_create_context (void)
   _cogl_material_flush_gl_state (_context->source_material, NULL);
   enable_flags =
     _cogl_material_get_cogl_enable_flags (_context->source_material);
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
   _context->atlas = NULL;

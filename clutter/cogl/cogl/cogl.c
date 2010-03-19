@@ -204,11 +204,11 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
   COGL_NOTE (DRAW, "Clear end");
 }
 
-static inline gboolean
-cogl_toggle_flag (CoglContext *ctx,
-		  unsigned long new_flags,
-		  unsigned long flag,
-		  GLenum gl_flag)
+static gboolean
+toggle_flag (CoglContext *ctx,
+	     unsigned long new_flags,
+	     unsigned long flag,
+	     GLenum gl_flag)
 {
   /* Toggles and caches a single enable flag on or off
    * by comparing to current state
@@ -231,11 +231,11 @@ cogl_toggle_flag (CoglContext *ctx,
   return FALSE;
 }
 
-static inline gboolean
-cogl_toggle_client_flag (CoglContext *ctx,
-			 unsigned long new_flags,
-			 unsigned long flag,
-			 GLenum gl_flag)
+static gboolean
+toggle_client_flag (CoglContext *ctx,
+		    unsigned long new_flags,
+		    unsigned long flag,
+		    GLenum gl_flag)
 {
   /* Toggles and caches a single client-side enable flag
    * on or off by comparing to current state
@@ -259,32 +259,32 @@ cogl_toggle_client_flag (CoglContext *ctx,
 }
 
 void
-cogl_enable (unsigned long flags)
+_cogl_enable (unsigned long flags)
 {
   /* This function essentially caches glEnable state() in the
    * hope of lessening number GL traffic.
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_toggle_flag (ctx, flags,
-                    COGL_ENABLE_BLEND,
-                    GL_BLEND);
+  toggle_flag (ctx, flags,
+               COGL_ENABLE_BLEND,
+               GL_BLEND);
 
-  cogl_toggle_flag (ctx, flags,
-                    COGL_ENABLE_BACKFACE_CULLING,
-                    GL_CULL_FACE);
+  toggle_flag (ctx, flags,
+               COGL_ENABLE_BACKFACE_CULLING,
+               GL_CULL_FACE);
 
-  cogl_toggle_client_flag (ctx, flags,
-			   COGL_ENABLE_VERTEX_ARRAY,
-			   GL_VERTEX_ARRAY);
+  toggle_client_flag (ctx, flags,
+		      COGL_ENABLE_VERTEX_ARRAY,
+		      GL_VERTEX_ARRAY);
 
-  cogl_toggle_client_flag (ctx, flags,
-			   COGL_ENABLE_COLOR_ARRAY,
-			   GL_COLOR_ARRAY);
+  toggle_client_flag (ctx, flags,
+		      COGL_ENABLE_COLOR_ARRAY,
+		      GL_COLOR_ARRAY);
 }
 
 unsigned long
-cogl_get_enable ()
+_cogl_get_enable (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -767,13 +767,13 @@ cogl_begin_gl (void)
   _cogl_material_flush_gl_state (ctx->source_material, &options);
 
   /* FIXME: This api is a bit yukky, ideally it will be removed if we
-   * re-work the cogl_enable mechanism */
+   * re-work the _cogl_enable mechanism */
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
-  cogl_enable (enable_flags);
+  _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
   /* Disable all client texture coordinate arrays */
