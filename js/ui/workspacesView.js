@@ -36,8 +36,6 @@ const WORKSPACES_VIEW_KEY = 'overview/workspaces_view';
 const WORKSPACE_DRAGGING_SCALE = 0.85;
 const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
 
-const WORKSPACE_DRAG_THRESHOLD = 0.2;
-
 function GenericWorkspacesView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
 }
