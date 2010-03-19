@@ -3,14 +3,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 # Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009, 2010.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-04 11:40+0200\n"
-"PO-Revision-Date: 2009-09-04 11:56+0200\n"
+"POT-Creation-Date: 2010-03-19 17:23+0100\n"
+"PO-Revision-Date: 2010-03-19 17:27+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,48 +20,53 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Soinuaren gertaera"
+
 #: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Leihoaren informazio eskaera ezezaguna: %d"
 
-#: ../src/core/delete.c:105
+#. Translators: %s is a window title
+#: ../src/core/delete.c:95
 #, c-format
-msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt>(e)k ez du erantzuten.</b></big>\n"
-"\n"
-"<i>Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
-"aplikazioa erabat ixtea.</i>"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt>(e)k ez du erantzuten."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:100
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
+"aplikazioa erabat ixtea."
+
+#: ../src/core/delete.c:109
 msgid "_Wait"
 msgstr "_Itxaron"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:109
 msgid "_Force Quit"
 msgstr "_Behartu ixtera"
 
-#: ../src/core/delete.c:217
+#: ../src/core/delete.c:207
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Huts egin du ostalari-izena hartzean: %s\n"
 
-#: ../src/core/display.c:329
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Konposaketa lantzeko beharrezkoa den %s hedapena falta da"
 
-#: ../src/core/display.c:414
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Huts egin du X Window sistemaren '%s' pantaila irekitzean\n"
 
-#: ../src/core/errors.c:236
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -72,12 +77,12 @@ msgstr ""
 "seguru asko X zerbitzaria itzalita egongo da edo leiho-kudeatzailea \n"
 "hilko/hondatuko zenuen.\n"
 
-#: ../src/core/errors.c:243
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "S/Iko %d (%s) errore konponezina '%s' pantailan.\n"
 
-#: ../src/core/keybindings.c:697
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -89,7 +94,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2392
+#: ../src/core/keybindings.c:2399
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -100,92 +105,96 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2482
+#: ../src/core/keybindings.c:2489
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komandoa ez dago definituta.\n"
 
-#: ../src/core/keybindings.c:3495
+#: ../src/core/keybindings.c:3502
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ez da terminalaren komandoa definitu.\n"
 
-#: ../src/core/main.c:127
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright-a (C) 2001-2008 Havoc Pennington, Red Hat, Inc., eta beste batzuk\n"
+"Copyright-a (C) 2001-%d Havoc Pennington, Red Hat, Inc., eta beste batzuk\n"
 "Hau software librea da; ikus kopiatzeko baldintzak iturburu-kodean.\n"
 "EZ du bermerik; ezta MERKATURATZEKO edo XEDE JAKIN BATERAKO EGOKITASUNAREN "
 "BERMERIK ERE.\n"
 
-#: ../src/core/main.c:257
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Desgaitu saio-kudeatzailearen konexioa"
 
-#: ../src/core/main.c:263
+#: ../src/core/main.c:267
 msgid "Replace the running window manager with Mutter"
 msgstr "Ordeztu exekutatzen dagoen leiho-kudeatzailea Mutter-rekin"
 
-#: ../src/core/main.c:269
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "Zehaztu saio-kudeatzailearen IDa"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "X pantaila erabiltzeko"
 
-#: ../src/core/main.c:280
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "Hasieratu saioa babes-fitxategitik"
 
-#: ../src/core/main.c:286
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Erakutsi bertsioa"
 
-#: ../src/core/main.c:292
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Egin X deiak sinkronoak izatea"
 
-#: ../src/core/main.c:298
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "Aktibatu konposaketa"
 
-#: ../src/core/main.c:304
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "Desaktibatu konposaketa"
 
-#: ../src/core/main.c:310
+#: ../src/core/main.c:314
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "Ez jarri pantaila osoan maximizatuta dauden eta dekoraziorik ez duten leihoak"
+
+#: ../src/core/main.c:320
 msgid "Comma-separated list of compositor plugins"
 msgstr "Konpositoreen pluginen komaz bereiztutako zerrenda"
 
-#: ../src/core/main.c:316
+#: ../src/core/main.c:326
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr "Leihoak begiztan  sartzean laster-leihoak/-markoak erakutsiko diren edo ez."
 
-#: ../src/core/main.c:323
+#: ../src/core/main.c:333
 msgid "Internal argument for GObject introspection"
 msgstr "Barneko argumentua GObject objektua aztertzeko"
 
-#: ../src/core/main.c:668
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
 
-#: ../src/core/main.c:684
+#: ../src/core/main.c:679
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Gai bat ezin izan da aurkitu. Ziurtatu %s badagoela eta ohiko gaiak "
 "dituela.\n"
 
-#: ../src/core/main.c:745
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ezin izan da berrabiarazi: %s\n"
@@ -201,24 +210,24 @@ msgstr "Ezin izan da berrabiarazi: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:522 ../src/core/prefs.c:683
+#: ../src/core/prefs.c:529 ../src/core/prefs.c:690
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "\"%s\" GConf gakoa balio baliogabean ezarrita dago\n"
 
-#: ../src/core/prefs.c:609 ../src/core/prefs.c:852
+#: ../src/core/prefs.c:616 ../src/core/prefs.c:859
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%2$s GConf gakoko %1$d balioa %3$d - %4$d barrutitik kanpo dago\n"
 
-#: ../src/core/prefs.c:653 ../src/core/prefs.c:730 ../src/core/prefs.c:778
-#: ../src/core/prefs.c:842 ../src/core/prefs.c:1142 ../src/core/prefs.c:1158
-#: ../src/core/prefs.c:1175 ../src/core/prefs.c:1191
+#: ../src/core/prefs.c:660 ../src/core/prefs.c:737 ../src/core/prefs.c:785
+#: ../src/core/prefs.c:849 ../src/core/prefs.c:1149 ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1182 ../src/core/prefs.c:1198
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "\"%s\" GConf gakoa mota baliogabean ezarrita dago\n"
 
-#: ../src/core/prefs.c:1282
+#: ../src/core/prefs.c:1289
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -226,12 +235,12 @@ msgstr ""
 "Aplikazio hautsien konponbidea desgaituta. Aplikazio batzuk ez dira behar "
 "den bezala ibiliko.\n"
 
-#: ../src/core/prefs.c:1353
+#: ../src/core/prefs.c:1360
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ezin izan da analizatu \"%s\" letra-tipoaren deskribapena %s GConf gakoan\n"
 
-#: ../src/core/prefs.c:1415
+#: ../src/core/prefs.c:1422
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -240,17 +249,17 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa sagu-"
 "botoiaren aldatzailearentzat\n"
 
-#: ../src/core/prefs.c:1839
+#: ../src/core/prefs.c:1849
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Errorea laneko %d area ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2023 ../src/core/prefs.c:2529
+#: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. laneko area"
 
-#: ../src/core/prefs.c:2056 ../src/core/prefs.c:2234
+#: ../src/core/prefs.c:2061 ../src/core/prefs.c:2239
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -259,37 +268,37 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa \"%s"
 "\" laster-teklarentzat.\n"
 
-#: ../src/core/prefs.c:2610
+#: ../src/core/prefs.c:2612
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errorea %d. laneko areari \"%s\" izena ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2808
+#: ../src/core/prefs.c:2816
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Errorea konposaketaren egoera ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2836
+#: ../src/core/prefs.c:2845
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Errorea 'clutter' pluginen zerrenda ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2879
+#: ../src/core/prefs.c:2889
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Errorea ezkutuko leihoen bizitzen egoera ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2907
+#: ../src/core/prefs.c:2917
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Errorea fitxarik gabeko laster-leihoen egoera ezartzean: %s\n"
 
-#: ../src/core/screen.c:561
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "'%2$s' bistaratzeko %1$d pantaila ez da baliozkoa\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -298,77 +307,71 @@ msgstr ""
 "\"%2$s\" bistaratzeko %1$d pantailak badu leiho-kudeatzailea; leiho-"
 "kudeatzaile hori ordeztu nahi baduzu, saiatu --replace aukerarekin.\n"
 
-#: ../src/core/screen.c:604
+#: ../src/core/screen.c:620
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Ezin izan da eskuratu leiho-kudeatzailearen hautapena \"%2$s\" bistaratzeko %"
 "1$d pantailan\n"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "\"%2$s\" bistaratzeko %1$d pantailak badu leiho-kudeatzailea\n"
 
-#: ../src/core/screen.c:871
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ezin izan da askatu \"%2$s\" bistaratzeko %1$d pantaila\n"
 
-#: ../src/core/session.c:851 ../src/core/session.c:858
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ezin izan da '%s' direktorioa sortu: %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Ezin izan da '%s' saio-fitxategia idazteko ireki: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Errorea '%s' saio-fitxategia idaztean: %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Errorea '%s' saio-fitxategia ixtean: %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1107
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Huts egin du gordetako %s saio-fitxategia irakurtzean: %s\n"
-
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Huts egin du gordetako saio-fitxategia analizatzean: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1198
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "<mutter_session> atributua ikusi da baina dagoeneko badugu saio-IDa"
 
-#: ../src/core/session.c:1208 ../src/core/session.c:1283
-#: ../src/core/session.c:1315 ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "%s atributu ezezaguna <%s> elementuan"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> etiketa habiaratua"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "%s elementu ezezaguna"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1822
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -376,51 +379,51 @@ msgstr ""
 "Leiho hauek ez dute onartzen &quot;gorde uneko konfigurazioa&quot; eta eskuz "
 "berrabiarazi beharko dituzu hurrengo saioa hasten duzunean."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Huts egin du arazketako egunkaria irekitzean: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Huts egin du %s egunkari-fitxategian fdopen() egitean: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "%s egunkari-fitxategia irekita\n"
 
-#: ../src/core/util.c:138 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter modu xehatuaren euskarririk gabe konpilatu da\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Leiho-kudeatzailea: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Akatsa leiho-kudeatzailean: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Leiho-kudeatzailearen abisua: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Leiho-kudeatzailearen errorea: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6086
+#: ../src/core/window.c:6217
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -436,7 +439,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6749
+#: ../src/core/window.c:6880
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -456,7 +459,7 @@ msgstr "Aplikazioak _NET_WM_PID %lu faltsua ezarri du\n"
 msgid "%s (on %s)"
 msgstr "%s (%s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1435
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
@@ -476,12 +479,12 @@ msgstr ""
 "Gehiago ematen du aplikazioaren akatsa leiho-kudeatzailearena baino.\n"
 "Leihoak title=\"%s\" class=\"%s\" name=\"%s\" du\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
@@ -804,7 +807,9 @@ msgstr "Clutter pluginak"
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
-msgstr "Ezkutuko leihoak (adib. ikonotutakoak, beste laneko arekoak) bizirik iraungo diren edo ez zehazten du."
+msgstr ""
+"Ezkutuko leihoak (adib. ikonotutakoak, beste laneko arekoak) bizirik iraungo "
+"diren edo ez zehazten du."
 
 #: ../src/mutter.schemas.in.h:3
 msgid "Live Hidden Windows"
@@ -816,7 +821,9 @@ msgstr "Aldatzailea leihoak kudeatzeko eragiketa hedatuetan erabiltzeko"
 
 #: ../src/mutter.schemas.in.h:5
 msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr "Kargatuko diren puginak Clutter-en oinarritutako konposaketa-kudeatzailearentzako"
+msgstr ""
+"Kargatuko diren puginak Clutter-en oinarritutako konposaketa-"
+"kudeatzailearentzako"
 
 #: ../src/mutter.schemas.in.h:6
 msgid ""
@@ -825,8 +832,8 @@ msgid ""
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
-"Gako honek \"overlay\" (gainjarria) hasieratuko du: hau leihoaren "
-"ikuspegi orokorraren eta aplikazioa abiarazteko sistemaren arteko konbinazioa da. "
+"Gako honek \"overlay\" (gainjarria) hasieratuko du: hau leihoaren ikuspegi "
+"orokorraren eta aplikazioa abiarazteko sistemaren arteko konbinazioa da. "
 "Lehenetsi gisa, PC ordenagailuko \"Windows tekla\" da. Tekla konbinazio hau "
 "lehenetsia izatea edo kate hutz gisa ezartzea da."
 
@@ -1289,7 +1296,7 @@ msgstr "Koordenatuen adierazpenak ez dirudi eragilerik edo eragigairik duenik"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Gaiak errorea ematen duen adierazpen bat dauka: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4203
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1298,23 +1305,23 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> zehaztu behar "
 "da marko-estilo honetan"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Huts egin du \"%s\" gaia kargatzean: %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> ez da ezarri \"%s\" gaian"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:4946
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1323,14 +1330,14 @@ msgstr ""
 "Ez da marko-estilorik ezarri set \"%s\" leiho-motarentzat \"%s\" gaian, "
 "gehitu <window type=\"%s\" style_set=\"whatever\"/> elementu bat"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
 "da maiuskulaz hasten"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" konstantea lehendik definituta dago"
@@ -1449,10 +1456,10 @@ msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "\"%s\" leiho-motak dagoeneko esleituta du estilo-multzoa"
 
 #: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Ez da onartzen <%s> elementua <%s>(r)en azpian jartzea"
@@ -1481,108 +1488,108 @@ msgstr "\"%s\" aspektu-erlazioa ezezaguna da"
 msgid "Border \"%s\" is unknown"
 msgstr "\"%s\" ertza ezezaguna da"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Ez dago \"start_angle\" edo \"from\" atributurik <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Ez dago \"extent_angle\" edo \"to\" atributurik <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Gradiente-motan ez da ulertu \"%s\" balioa"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" betetze-mota <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" egoera <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" itzala <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" gezia <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "\"%s\" kokaleku ezezaguna markoarentzat"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Marko-estiloak badu zati bat %s posizioan"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "\"%s\" funtzioa ezezaguna botoiarentzat"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "\"%s\" botoi-funtzioa ez da existitzen bertsio honetan (%d, %d behar du)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "\"%s\" egoera ezezaguna botoiarentzat"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Marko-estiloak badu botoi bat %s funtzioan %s egoeran"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ez da baliozko balioa foku-atributuarentzat"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ez da baliozko balioa egoera-atributuarentzat"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\" izeneko estiloa ez da definitu"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ez da baliozko balioa tamainaz aldatzeko atributuarentzat"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3047
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1591,24 +1598,24 @@ msgstr ""
 "Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako/"
 "bildutako egoerentzat"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako "
 "egoerentzat"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s tamaina-aldatzean %s fokuan"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s fokuan"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3147
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1616,7 +1623,7 @@ msgstr ""
 "Ezin dira bi draw_ops izan <piece> elementu batean (gaiak draw_ops atributu "
 "bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3185
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1624,7 +1631,7 @@ msgstr ""
 "Ezin dira bi draw_ops izan <button> elementu batean (gaiak draw_ops atributu "
 "bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3223
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1633,76 +1640,63 @@ msgstr ""
 "atributu bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu "
 "zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> elementua ez da onartzen name/author/date/description elementuan"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<%s> elementua ez da onartzen <constant> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> elementua ez da onartzen distance/border/aspect_ratio elementuan"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "<%s> elementua ez da onartzen <%s> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Ez da draw_ops-ik eman marko-zatiarentzat"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Ez da draw_ops-ik eman botoiarentzat"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Ez da testurik onartzen <%s> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<izena> birritan zehaztu da gai honetan"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> birritan zehaztu da gai honetan"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<egilea> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright-a> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<data> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<azalpena> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Huts egin du %s gaiaren fitxategi egokia bilatzean\n"
 
-#: ../src/ui/theme-parser.c:4083
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "%s gai-fitxategiak ez du erroko <metacity_theme> elementurik"
