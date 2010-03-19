@@ -1205,6 +1205,8 @@ mutter_window_new (MetaWindow *window)
   priv = self->priv;
 
   priv->mapped = meta_window_toplevel_is_mapped (priv->window);
+  if (priv->mapped)
+    mutter_window_mark_for_repair (self);
 
   mutter_window_sync_actor_position (self);
 
