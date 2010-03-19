@@ -8037,17 +8037,18 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
                                    const GValue      *value)
 {
 #ifdef CLUTTER_ENABLE_DEBUG
-  {
-    gchar *tmp = g_strdup_value_contents (value);
+  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_SCRIPT))
+    {
+      gchar *tmp = g_strdup_value_contents (value);
 
-    CLUTTER_NOTE (SCRIPT,
-                  "in ClutterActor::set_custom_property('%s') = %s",
-                  name,
-                  tmp);
+      CLUTTER_NOTE (SCRIPT,
+                    "in ClutterActor::set_custom_property('%s') = %s",
+                    name,
+                    tmp);
 
-    g_free (tmp);
-  }
-#endif
+      g_free (tmp);
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   if (strcmp (name, "rotation") == 0)
     {
