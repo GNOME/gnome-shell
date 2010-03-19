@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1057,3 +1057,61 @@ _cogl_driver_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-driver-error-quark");
 }
+
+void
+cogl_set_source (CoglHandle material_handle)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (cogl_is_material (material_handle));
+
+  if (ctx->source_material == material_handle)
+    return;
+
+  cogl_handle_ref (material_handle);
+
+  if (ctx->source_material)
+    cogl_handle_unref (ctx->source_material);
+
+  ctx->source_material = material_handle;
+}
+
+void
+cogl_set_source_texture (CoglHandle texture_handle)
+{
+  CoglColor white;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (texture_handle != COGL_INVALID_HANDLE);
+
+  cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
+  cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
+  cogl_material_set_color (ctx->simple_material, &white);
+  cogl_set_source (ctx->simple_material);
+}
+
+void
+cogl_set_source_color4ub (guint8 red,
+                          guint8 green,
+                          guint8 blue,
+                          guint8 alpha)
+{
+  CoglColor c = { 0, };
+
+  cogl_color_set_from_4ub (&c, red, green, blue, alpha);
+  cogl_set_source_color (&c);
+}
+
+void
+cogl_set_source_color4f (float red,
+                         float green,
+                         float blue,
+                         float alpha)
+{
+  CoglColor c = { 0, };
+
+  cogl_color_set_from_4f (&c, red, green, blue, alpha);
+  cogl_set_source_color (&c);
+}
+
