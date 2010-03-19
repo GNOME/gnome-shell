@@ -377,11 +377,6 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
   if (clutter_stage_glx_ignoring_redraw_clips (stage_window))
     return;
 
-  /* Do nothing on an empty clip, to avoid confusing with the flag degenerate
-   * clip */
-  if (stage_clip != NULL && stage_clip->width == 0)
-    return;
-
   /* A NULL stage clip means a full stage redraw has been queued and
    * we keep track of this by setting a degenerate
    * stage_glx->bounding_redraw_clip */
@@ -390,6 +385,12 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
       stage_glx->bounding_redraw_clip.width = 0;
       return;
     }
+
+  /* Do nothing on an empty clip to avoid confusing with out magic-flag
+   * degenerate clip
+   */
+  if (stage_clip->width == 0 || stage_clip->height == 0)
+    return;
 
   if (!stage_glx->initialized_redraw_clip)
     {
