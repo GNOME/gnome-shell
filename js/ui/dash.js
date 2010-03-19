@@ -359,7 +359,10 @@ SearchResult.prototype = {
     },
 
     setSelected: function(selected) {
-        this._content.set_style_pseudo_class(selected ? 'selected' : null);
+        if (selected)
+            this._content.add_style_pseudo_class('selected');
+        else
+            this._content.remove_style_pseudo_class('selected');
     },
 
     activate: function() {
@@ -630,10 +633,10 @@ MoreLink.prototype = {
     setPane: function (pane) {
         this._pane = pane;
         this._pane.connect('open-state-changed', Lang.bind(this, function(pane, isOpen) {
-            if (!isOpen)
-                this._expander.style_class = 'more-link-expander';
+            if (isOpen)
+                this._expander.add_style_class_name('open');
             else
-                this._expander.style_class = 'more-link-expander open';
+                this._expander.remove_style_class_name('open');
         }));
     }
 };

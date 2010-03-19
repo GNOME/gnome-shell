@@ -84,7 +84,7 @@ Notebook.prototype = {
         if (this._selectedIndex < 0)
             return;
         let tabData = this._tabs[this._selectedIndex];
-        tabData.labelBox.set_style_pseudo_class(null);
+        tabData.labelBox.remove_style_pseudo_class('selected');
         tabData.scrollView.hide();
         this._selectedIndex = -1;
     },
@@ -98,7 +98,7 @@ Notebook.prototype = {
             return;
         }
         let tabData = this._tabs[index];
-        tabData.labelBox.set_style_pseudo_class('selected');
+        tabData.labelBox.add_style_pseudo_class('selected');
         tabData.scrollView.show();
         this._selectedIndex = index;
         this.emit('selection', tabData.child);

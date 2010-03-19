@@ -391,7 +391,8 @@ clutter_text_focus_in_cb (ClutterText  *text,
 
       clutter_text_set_text (text, "");
     }
-  st_widget_set_style_pseudo_class (ST_WIDGET (actor), "focus");
+  st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
+  st_widget_add_style_pseudo_class (ST_WIDGET (actor), "focus");
   clutter_text_set_cursor_visible (text, TRUE);
 }
 
@@ -401,17 +402,15 @@ clutter_text_focus_out_cb (ClutterText  *text,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
+  st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
+
   /* add a hint if the entry is empty */
   if (priv->hint && !strcmp (clutter_text_get_text (text), ""))
     {
       priv->hint_visible = TRUE;
 
       clutter_text_set_text (text, priv->hint);
-      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
-    }
-  else
-    {
-      st_widget_set_style_pseudo_class (ST_WIDGET (actor), NULL);
+      st_widget_add_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
     }
   clutter_text_set_cursor_visible (text, FALSE);
 }
@@ -586,7 +585,7 @@ st_entry_enter_event (ClutterActor         *actor,
 
   if (priv->hint && priv->hint_visible)
     {
-      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "hover");
+      st_widget_add_style_pseudo_class (ST_WIDGET (actor), "hover");
     }
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
@@ -596,16 +595,7 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-
-  if (priv->hint && priv->hint_visible)
-    {
-      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
-    }
-  else
-    {
-      st_widget_set_style_pseudo_class (ST_WIDGET (actor), "focus");
-    }
+  st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "hover");
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
 }
@@ -782,14 +772,11 @@ st_entry_set_text (StEntry     *entry,
     {
       text = priv->hint;
       priv->hint_visible = TRUE;
-      st_widget_set_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
+      st_widget_add_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
     }
   else
     {
-      if (HAS_FOCUS (priv->entry))
-        st_widget_set_style_pseudo_class (ST_WIDGET (entry), "focus");
-      else
-        st_widget_set_style_pseudo_class (ST_WIDGET (entry), NULL);
+      st_widget_remove_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
 
       priv->hint_visible = FALSE;
     }
@@ -845,7 +832,7 @@ st_entry_set_hint_text (StEntry     *entry,
       priv->hint_visible = TRUE;
 
       clutter_text_set_text (CLUTTER_TEXT (priv->entry), priv->hint);
-      st_widget_set_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
+      st_widget_add_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
     }
 }
 

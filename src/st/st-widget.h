@@ -84,11 +84,25 @@ struct _StWidgetClass
 GType st_widget_get_type (void) G_GNUC_CONST;
 
 void                  st_widget_set_style_pseudo_class    (StWidget        *actor,
+                                                           const gchar     *pseudo_class_list);
+void                  st_widget_add_style_pseudo_class    (StWidget        *actor,
+                                                           const gchar     *pseudo_class);
+void                  st_widget_remove_style_pseudo_class (StWidget        *actor,
                                                            const gchar     *pseudo_class);
 G_CONST_RETURN gchar *st_widget_get_style_pseudo_class    (StWidget        *actor);
+gboolean              st_widget_has_style_pseudo_class    (StWidget        *actor,
+                                                           const gchar     *pseudo_class);
+
 void                  st_widget_set_style_class_name      (StWidget        *actor,
+                                                           const gchar     *style_class_list);
+void                  st_widget_add_style_class_name      (StWidget        *actor,
+                                                           const gchar     *style_class);
+void                  st_widget_remove_style_class_name   (StWidget        *actor,
                                                            const gchar     *style_class);
 G_CONST_RETURN gchar *st_widget_get_style_class_name      (StWidget        *actor);
+gboolean              st_widget_has_style_class_name      (StWidget        *actor,
+                                                           const gchar     *style_class);
+
 void                  st_widget_set_style                 (StWidget        *actor,
                                                            const gchar     *style);
 G_CONST_RETURN gchar *st_widget_get_style                 (StWidget        *actor);

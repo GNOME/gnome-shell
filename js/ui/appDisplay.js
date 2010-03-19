@@ -797,12 +797,12 @@ AppIconMenu.prototype = {
 
     _updateHighlight: function (item) {
         if (this._highlightedItem) {
-            this._highlightedItem.set_style_pseudo_class(null);
+            this._highlightedItem.remove_style_pseudo_class('hover');
             this.emit('highlight-window', null);
         }
         this._highlightedItem = item;
         if (this._highlightedItem) {
-            item.set_style_pseudo_class('hover');
+            item.add_style_pseudo_class('hover');
             let window = this._highlightedItem._window;
             if (window)
                 this.emit('highlight-window', window);

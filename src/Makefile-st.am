@@ -161,6 +161,6 @@ libst_1_0_la_LDFLAGS = $(LDADD)
 noinst_PROGRAMS += test-theme
 
 test_theme_CPPFLAGS = $(st_cflags)
-test_theme_LDADD = libst-1.0.la
+test_theme_LDADD = libst-1.0.la libbig-1.0.la
 
 test_theme_SOURCES = st/test-theme.c

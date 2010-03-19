@@ -42,9 +42,15 @@ static guint st_clickable_signals [LAST_SIGNAL] = { 0 };
 static void
 sync_pseudo_class (StClickable *self)
 {
-  st_widget_set_style_pseudo_class (ST_WIDGET (self),
-                                    (self->priv->pressed || self->priv->active) ? "pressed" :
-                                      (self->priv->hover ? "hover" : NULL));
+  if (self->priv->pressed || self->priv->active)
+    st_widget_add_style_pseudo_class (ST_WIDGET (self), "pressed");
+  else
+    st_widget_remove_style_pseudo_class (ST_WIDGET (self), "pressed");
+
+  if (self->priv->hover)
+    st_widget_add_style_pseudo_class (ST_WIDGET (self), "hover");
+  else
+    st_widget_remove_style_pseudo_class (ST_WIDGET (self), "hover");
 }
 
 static void

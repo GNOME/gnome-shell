@@ -3,9 +3,11 @@
 #include <clutter/clutter.h>
 #include "st-theme.h"
 #include "st-theme-context.h"
+#include "st-label.h"
 #include <math.h>
 #include <string.h>
 
+static ClutterActor *stage;
 static StThemeNode *root;
 static StThemeNode *group1;
 static StThemeNode *text1;
@@ -322,12 +324,72 @@ test_font (void)
 static void
 test_pseudo_class (void)
 {
+  StWidget *label;
+  StThemeNode *labelNode;
+
   test = "pseudo_class";
   /* text4 has :visited and :hover pseudo-classes, so should pick up both of these */
   assert_foreground_color (text4,   "text4",  0x888888ff);
   assert_text_decoration  (text4,   "text4",  ST_TEXT_DECORATION_UNDERLINE);
   /* :hover pseudo-class matches, but class doesn't match */
   assert_text_decoration  (group3,  "group3", 0);
+
+  /* Test the StWidget add/remove pseudo_class interfaces */
+  label = st_label_new ("foo");
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (label));
+
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x000000ff);
+  assert_text_decoration  (labelNode, "label", 0);
+  assert_length ("label", "border-width", 0.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_add_style_pseudo_class (label, "visited");
+  g_assert (st_widget_has_style_pseudo_class (label, "visited"));
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x888888ff);
+  assert_text_decoration  (labelNode, "label", 0);
+  assert_length ("label", "border-width", 0.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_add_style_pseudo_class (label, "hover");
+  g_assert (st_widget_has_style_pseudo_class (label, "hover"));
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x888888ff);
+  assert_text_decoration  (labelNode, "label", ST_TEXT_DECORATION_UNDERLINE);
+  assert_length ("label", "border-width", 0.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_remove_style_pseudo_class (label, "visited");
+  g_assert (!st_widget_has_style_pseudo_class (label, "visited"));
+  g_assert (st_widget_has_style_pseudo_class (label, "hover"));
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x000000ff);
+  assert_text_decoration  (labelNode, "label", ST_TEXT_DECORATION_UNDERLINE);
+  assert_length ("label", "border-width", 0.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_add_style_pseudo_class (label, "boxed");
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x000000ff);
+  assert_text_decoration  (labelNode, "label", ST_TEXT_DECORATION_UNDERLINE);
+  assert_length ("label", "border-width", 1.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_remove_style_pseudo_class (label, "hover");
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x000000ff);
+  assert_text_decoration  (labelNode, "label", 0);
+  assert_length ("label", "border-width", 1.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  st_widget_remove_style_pseudo_class (label, "boxed");
+  g_assert (st_widget_get_style_pseudo_class (label) == NULL);
+  labelNode = st_widget_get_theme_node (label);
+  assert_foreground_color (labelNode, "label", 0x000000ff);
+  assert_text_decoration  (labelNode, "label", 0);
+  assert_length ("label", "border-width", 0.,
+                 st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
 }
 
 static void
@@ -351,7 +413,8 @@ main (int argc, char **argv)
   theme = st_theme_new ("st/test-theme.css",
                         NULL, NULL);
 
-  context = st_theme_context_new ();
+  stage = clutter_stage_get_default ();
+  context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   st_theme_context_set_theme (context, theme);
   st_theme_context_set_resolution (context, 96.);
   st_theme_context_set_font (context,

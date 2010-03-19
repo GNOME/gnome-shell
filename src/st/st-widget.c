@@ -1354,34 +1354,165 @@ st_widget_get_theme (StWidget *actor)
   return actor->priv->theme;
 }
 
+static const gchar *
+find_class_name (const gchar *class_list,
+                 const gchar *class_name)
+{
+  gint len = strlen (class_name);
+  const gchar *match;
+
+  if (!class_list)
+    return NULL;
+
+  for (match = strstr (class_list, class_name); match; match = strstr (match + 1, class_name))
+    {
+      if ((match == class_list || g_ascii_isspace (match[-1])) &&
+          (match[len] == '\0' || g_ascii_isspace (match[len])))
+        return match;
+    }
+
+  return NULL;
+}
+
+static gboolean
+set_class_list (gchar       **class_list,
+                const gchar  *new_class_list)
+{
+  if (g_strcmp0 (*class_list, new_class_list) != 0)
+    {
+      g_free (*class_list);
+      *class_list = g_strdup (new_class_list);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
+add_class_name (gchar       **class_list,
+                const gchar  *class_name)
+{
+  gchar *new_class_list;
+
+  if (*class_list)
+    {
+      if (find_class_name (*class_list, class_name))
+        return FALSE;
+
+      new_class_list = g_strdup_printf ("%s %s", *class_list, class_name);
+      g_free (*class_list);
+      *class_list = new_class_list;
+    }
+  else
+    *class_list = g_strdup (class_name);
+
+  return TRUE;
+}
+
+static gboolean
+remove_class_name (gchar       **class_list,
+                   const gchar  *class_name)
+{
+  const gchar *match, *end;
+  gchar *new_class_list;
+
+  if (!*class_list)
+    return FALSE;
+
+  if (strcmp (*class_list, class_name) == 0)
+    {
+      g_free (*class_list);
+      *class_list = NULL;
+      return TRUE;
+    }
+
+  match = find_class_name (*class_list, class_name);
+  if (!match)
+    return FALSE;
+  end = match + strlen (class_name);
+
+  /* Adjust either match or end to include a space as well.
+   * (One or the other must be possible at this point.)
+   */
+  if (match != *class_list)
+    match--;
+  else
+    end++;
+
+  new_class_list = g_strdup_printf ("%.*s%s", match - *class_list,
+                                    *class_list, end);
+  g_free (*class_list);
+  *class_list = new_class_list;
+
+  return TRUE;
+}
+
 /**
  * st_widget_set_style_class_name:
  * @actor: a #StWidget
- * @style_class: a new style class string
+ * @style_class_list: (allow-none): a new style class list string
  *
- * Set the style class name
+ * Set the style class name list. @style_class_list can either be
+ * %NULL, for no classes, or a space-separated list of style class
+ * names. See also st_widget_add_style_class_name() and
+ * st_widget_remove_style_class_name().
  */
 void
 st_widget_set_style_class_name (StWidget    *actor,
-                                const gchar *style_class)
+                                const gchar *style_class_list)
 {
-  StWidgetPrivate *priv = actor->priv;
-
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  priv = actor->priv;
-
-  if (g_strcmp0 (style_class, priv->style_class))
+  if (set_class_list (&actor->priv->style_class, style_class_list))
     {
-      g_free (priv->style_class);
-      priv->style_class = g_strdup (style_class);
-
       st_widget_style_changed (actor);
-
       g_object_notify (G_OBJECT (actor), "style-class");
     }
 }
 
+/**
+ * st_widget_add_style_class_name:
+ * @actor: a #StWidget
+ * @style_class: a style class name string
+ *
+ * Adds @style_class to @actor's style class name list, if it is not
+ * already present.
+ */
+void
+st_widget_add_style_class_name (StWidget    *actor,
+                                const gchar *style_class)
+{
+  g_return_if_fail (ST_IS_WIDGET (actor));
+  g_return_if_fail (style_class != NULL);
+
+  if (add_class_name (&actor->priv->style_class, style_class))
+    {
+      st_widget_style_changed (actor);
+      g_object_notify (G_OBJECT (actor), "style-class");
+    }
+}
+
+/**
+ * st_widget_remove_style_class_name:
+ * @actor: a #StWidget
+ * @style_class: a style class name string
+ *
+ * Removes @style_class from @actor's style class name, if it is
+ * present.
+ */
+void
+st_widget_remove_style_class_name (StWidget    *actor,
+                                   const gchar *style_class)
+{
+  g_return_if_fail (ST_IS_WIDGET (actor));
+  g_return_if_fail (style_class != NULL);
+
+  if (remove_class_name (&actor->priv->style_class, style_class))
+    {
+      st_widget_style_changed (actor);
+      g_object_notify (G_OBJECT (actor), "style-class");
+    }
+}
 
 /**
  * st_widget_get_style_class_name:
@@ -1401,13 +1532,36 @@ st_widget_get_style_class_name (StWidget *actor)
 }
 
 /**
+ * st_widget_has_style_class_name:
+ * @actor: a #StWidget
+ * @style_class: a style class string
+ *
+ * Tests if @actor's style class list includes @style_class.
+ *
+ * Returns: whether or not @actor's style class list includes
+ * @style_class.
+ */
+gboolean
+st_widget_has_style_class_name (StWidget    *actor,
+                                const gchar *style_class)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
+
+  return find_class_name (actor->priv->style_class, style_class) != NULL;
+}
+
+/**
  * st_widget_get_style_pseudo_class:
  * @actor: a #StWidget
  *
- * Get the current style pseudo class
+ * Get the current style pseudo class list.
  *
- * Returns: the pseudo class string. The string is owned by the #StWidget and
- * should not be modified or freed.
+ * Note that an actor can have multiple pseudo classes; if you just
+ * want to test for the presence of a specific pseudo class, use
+ * st_widget_has_style_pseudo_class().
+ *
+ * Returns: the pseudo class list string. The string is owned by the
+ * #StWidget and should not be modified or freed.
  */
 const gchar*
 st_widget_get_style_pseudo_class (StWidget *actor)
@@ -1418,29 +1572,86 @@ st_widget_get_style_pseudo_class (StWidget *actor)
 }
 
 /**
+ * st_widget_has_style_pseudo_class:
+ * @actor: a #StWidget
+ * @pseudo_class: a pseudo class string
+ *
+ * Tests if @actor's pseudo class list includes @pseudo_class.
+ *
+ * Returns: whether or not @actor's pseudo class list includes
+ * @pseudo_class.
+ */
+gboolean
+st_widget_has_style_pseudo_class (StWidget    *actor,
+                                  const gchar *pseudo_class)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
+
+  return find_class_name (actor->priv->pseudo_class, pseudo_class) != NULL;
+}
+
+/**
  * st_widget_set_style_pseudo_class:
  * @actor: a #StWidget
- * @pseudo_class: (allow-none): a new pseudo class string
+ * @pseudo_class_list: (allow-none): a new pseudo class list string
  *
- * Set the style pseudo class
+ * Set the style pseudo class list. @pseudo_class_list can either be
+ * %NULL, for no classes, or a space-separated list of pseudo class
+ * names. See also st_widget_add_style_pseudo_class() and
+ * st_widget_remove_style_pseudo_class().
  */
 void
 st_widget_set_style_pseudo_class (StWidget    *actor,
-                                  const gchar *pseudo_class)
+                                  const gchar *pseudo_class_list)
 {
-  StWidgetPrivate *priv;
-
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  priv = actor->priv;
-
-  if (g_strcmp0 (pseudo_class, priv->pseudo_class))
+  if (set_class_list (&actor->priv->pseudo_class, pseudo_class_list))
     {
-      g_free (priv->pseudo_class);
-      priv->pseudo_class = g_strdup (pseudo_class);
-
       st_widget_style_changed (actor);
+      g_object_notify (G_OBJECT (actor), "pseudo-class");
+    }
+}
 
+/**
+ * st_widget_add_style_pseudo_class:
+ * @actor: a #StWidget
+ * @pseudo_class: a pseudo class string
+ *
+ * Adds @pseudo_class to @actor's pseudo class list, if it is not
+ * already present.
+ */
+void
+st_widget_add_style_pseudo_class (StWidget    *actor,
+                                  const gchar *pseudo_class)
+{
+  g_return_if_fail (ST_IS_WIDGET (actor));
+  g_return_if_fail (pseudo_class != NULL);
+
+  if (add_class_name (&actor->priv->pseudo_class, pseudo_class))
+    {
+      st_widget_style_changed (actor);
+      g_object_notify (G_OBJECT (actor), "pseudo-class");
+    }
+}
+
+/**
+ * st_widget_remove_style_pseudo_class:
+ * @actor: a #StWidget
+ * @pseudo_class: a pseudo class string
+ *
+ * Removes @pseudo_class from @actor's pseudo class, if it is present.
+ */
+void
+st_widget_remove_style_pseudo_class (StWidget    *actor,
+                                     const gchar *pseudo_class)
+{
+  g_return_if_fail (ST_IS_WIDGET (actor));
+  g_return_if_fail (pseudo_class != NULL);
+
+  if (remove_class_name (&actor->priv->pseudo_class, pseudo_class))
+    {
+      st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "pseudo-class");
     }
 }

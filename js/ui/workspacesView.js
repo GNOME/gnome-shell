@@ -484,7 +484,10 @@ NewWorkspaceArea.prototype = {
     },
 
     setStyle: function(isHover) {
-        this._child1.set_style_pseudo_class(isHover ? 'hover' : null);
+        if (isHover)
+            this._child1.add_style_pseudo_class('hover');
+        else
+            this._child1.remove_style_pseudo_class('hover');
     }
 };
 

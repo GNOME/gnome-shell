@@ -133,21 +133,13 @@ st_button_style_changed (StWidget *widget)
 static void
 st_button_real_pressed (StButton *button)
 {
-  st_widget_set_style_pseudo_class ((StWidget*) button, "active");
+  st_widget_add_style_pseudo_class ((StWidget*) button, "active");
 }
 
 static void
 st_button_real_released (StButton *button)
 {
-  StButtonPrivate *priv = button->priv;
-
-  if (priv->is_checked)
-    st_widget_set_style_pseudo_class ((StWidget*) button, "checked");
-  else if (!priv->is_hover)
-    st_widget_set_style_pseudo_class ((StWidget*) button, NULL);
-  else
-    st_widget_set_style_pseudo_class ((StWidget*) button, "hover");
-
+  st_widget_remove_style_pseudo_class ((StWidget*) button, "active");
 }
 
 static gboolean
@@ -212,8 +204,7 @@ st_button_enter (ClutterActor         *actor,
 {
   StButton *button = ST_BUTTON (actor);
 
-  if (!button->priv->is_checked)
-    st_widget_set_style_pseudo_class ((StWidget*) button, "hover");
+  st_widget_add_style_pseudo_class ((StWidget*) button, "hover");
 
   button->priv->is_hover = 1;
 
@@ -240,10 +231,7 @@ st_button_leave (ClutterActor         *actor,
         klass->released (button);
     }
 
-  if (button->priv->is_checked)
-    st_widget_set_style_pseudo_class ((StWidget*) button, "checked");
-  else
-    st_widget_set_style_pseudo_class ((StWidget*) button, NULL);
+  st_widget_remove_style_pseudo_class ((StWidget*) button, "hover");
 
   return CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 }
@@ -558,12 +546,9 @@ st_button_set_checked (StButton *button,
       button->priv->is_checked = checked;
 
       if (checked)
-        st_widget_set_style_pseudo_class ((StWidget*) button, "checked");
+        st_widget_add_style_pseudo_class ((StWidget*) button, "checked");
       else
-      if (button->priv->is_hover)
-        st_widget_set_style_pseudo_class ((StWidget*) button, "hover");
-      else
-        st_widget_set_style_pseudo_class ((StWidget*) button, NULL);
+        st_widget_remove_style_pseudo_class ((StWidget*) button, "checked");
     }
 
   g_object_notify (G_OBJECT (button), "checked");

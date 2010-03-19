@@ -723,7 +723,7 @@ handle_capture_event_cb (ClutterActor *trough,
                                                ((ClutterButtonEvent*) event)->y);
       if (target != bar->priv->handle)
         {
-          st_widget_set_style_pseudo_class ((StWidget*) bar->priv->handle, NULL);
+          st_widget_remove_style_pseudo_class ((StWidget*) bar->priv->handle, "hover");
         }
 
 

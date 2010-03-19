@@ -64,10 +64,14 @@ stage > #text2 {
     border-radius: 10px 10px 0px 0px;
 }
 
-ClutterText:hover {
+ClutterText:hover, StLabel:hover {
     text-decoration: underline;
 }
 
-ClutterText:visited {
+ClutterText:visited, StLabel:visited {
     color: #888888;
+}
+
+StLabel:boxed {
+    border: 1px;
 }
