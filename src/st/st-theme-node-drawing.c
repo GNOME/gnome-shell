@@ -1079,10 +1079,14 @@ st_theme_node_paint (StThemeNode           *node,
 
           shadow_spec = node->shadow;
 
-          shadow_box.x1 = background_box.x1 + shadow_spec->xoffset - shadow_spec->blur;
-          shadow_box.y1 = background_box.y1 + shadow_spec->yoffset - shadow_spec->blur;
-          shadow_box.x2 = background_box.x2 + shadow_spec->xoffset + shadow_spec->blur;
-          shadow_box.y2 = background_box.y2 + shadow_spec->yoffset + shadow_spec->blur;
+          shadow_box.x1 = background_box.x1 + shadow_spec->xoffset
+                          - shadow_spec->blur - shadow_spec->spread;
+          shadow_box.y1 = background_box.y1 + shadow_spec->yoffset
+                          - shadow_spec->blur - shadow_spec->spread;
+          shadow_box.x2 = background_box.x2 + shadow_spec->xoffset
+                          + shadow_spec->blur + shadow_spec->spread;
+          shadow_box.y2 = background_box.y2 + shadow_spec->yoffset
+                          + shadow_spec->blur + shadow_spec->spread;
 
           cogl_material_set_color4ub (node->shadow_material,
                                       paint_opacity, paint_opacity, paint_opacity, paint_opacity);

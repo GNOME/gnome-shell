@@ -19,6 +19,7 @@
  * @xoffset: horizontal offset
  * @yoffset: vertical offset
  * @blur: blur radius
+ * @spread: spread radius
  *
  * Creates a new #StShadow
  *
@@ -28,7 +29,8 @@ StShadow *
 st_shadow_new (ClutterColor *color,
                gdouble       xoffset,
                gdouble       yoffset,
-               gdouble       blur)
+               gdouble       blur,
+               gdouble       spread)
 {
   StShadow *shadow;
 
@@ -38,6 +40,7 @@ st_shadow_new (ClutterColor *color,
   shadow->xoffset = xoffset;
   shadow->yoffset = yoffset;
   shadow->blur    = blur;
+  shadow->spread  = spread;
 
   return shadow;
 }

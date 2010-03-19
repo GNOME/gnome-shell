@@ -2220,6 +2220,7 @@ st_theme_node_get_shadow (StThemeNode *node)
           gdouble xoffset = 0.;
           gdouble yoffset = 0.;
           gdouble blur = 0.;
+          gdouble spread = 0.;
           int n_offsets = 0;
 
           for (term = decl->value; term; term = term->next)
@@ -2248,6 +2249,13 @@ st_theme_node_get_shadow (StThemeNode *node)
                               g_warning ("Negative blur values are "
                                          "not allowed");
                           blur = value;
+                          break;
+                        case 3:
+                          if (multiplier < 0)
+                              g_warning ("Negative spread values are "
+                                         "not allowed");
+                          spread = value;
+                          break;
                         }
                       continue;
                     }
@@ -2259,7 +2267,9 @@ st_theme_node_get_shadow (StThemeNode *node)
                   continue;
                 }
             }
-          node->shadow = st_shadow_new (&color, xoffset, yoffset, blur);
+          node->shadow = st_shadow_new (&color,
+                                        xoffset, yoffset,
+                                        blur, spread);
 
           return node->shadow;
         }
