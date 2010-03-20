@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-12 21:58+0100\n"
-"PO-Revision-Date: 2010-01-12 21:57+0100\n"
+"POT-Creation-Date: 2010-03-20 03:11+0100\n"
+"PO-Revision-Date: 2010-03-20 03:11+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,77 +26,175 @@ msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
-#: ../js/ui/appDisplay.js:276
+#: ../js/ui/appDisplay.js:343
 msgid "PREFERENCES"
 msgstr "PŘEDVOLBY"
 
-#: ../js/ui/appDisplay.js:644
+#: ../js/ui/appDisplay.js:728
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:732
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:649
+#: ../js/ui/appDisplay.js:733
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/appDisplay.js:1001
+#: ../js/ui/appDisplay.js:1085
 msgid "Drag here to add favorites"
 msgstr "Oblíbené přidáte přetažením sem"
 
-#: ../js/ui/dash.js:240
-msgid "Find..."
-msgstr "Najít..."
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s byl přidán mezi oblíbené."
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s byl odstraněn z oblíbených."
+
+#: ../js/ui/dash.js:194
+msgid "Find"
+msgstr "Najít"
+
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Hledá se..."
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "Neodpovídá ani jeden z výsledků."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
 msgid "PLACES & DEVICES"
 msgstr "MÍSTA A ZAŘÍZENÍ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
+#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "NEDÁVNÉ POLOŽKY"
 
+#: ../js/ui/lookingGlass.js:363
+msgid "No extensions installed"
+msgstr "Nejsou nainstalována žádná rozšíření"
+
+#: ../js/ui/lookingGlass.js:400
+msgid "Enabled"
+msgstr "Povoleno"
+
+#: ../js/ui/lookingGlass.js:402
+msgid "Disabled"
+msgstr "Zakázáno"
+
+#: ../js/ui/lookingGlass.js:404
+msgid "Error"
+msgstr "Chyba"
+
+#: ../js/ui/lookingGlass.js:406
+msgid "Out of date"
+msgstr "Neaktuální"
+
+#: ../js/ui/lookingGlass.js:431
+msgid "View Source"
+msgstr "Zobrazit zdroj"
+
+#: ../js/ui/lookingGlass.js:437
+msgid "Web Page"
+msgstr "Webová stránka"
+
+#: ../js/ui/overview.js:182
+msgid "Undo"
+msgstr "Zpět"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:336
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Činnosti"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:549
-msgid "%a %l:%M %p"
-msgstr "%a, %H:%M"
+# Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:616
+msgid "%a %R"
+msgstr "%A, %R"
 
-#: ../js/ui/placeDisplay.js:144
+# Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:619
+msgid "%a %l:%M %p"
+msgstr "%A, %l:%M %p"
+
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Nelze odpojit \"%s\""
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Opakovat"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Připojit se k..."
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:232
 msgid "Please enter a command:"
 msgstr "Zadejte prosím příkaz:"
 
-#: ../js/ui/runDialog.js:351
+#: ../js/ui/runDialog.js:374
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání \"%s\" selhalo:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Přítomen"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Zaneprázdněn"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Neviditelný"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Informace o účtu..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Postranní lišta"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Předvolby systému..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Uzamknout obrazovku"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Přepnout uživatele"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Odhlásit..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Vypnout..."
 
 #. Translators: This is a time format.
 #: ../js/ui/widget.js:163
@@ -111,11 +209,11 @@ msgstr "Aplikace"
 msgid "Recent Documents"
 msgstr "Nedávné dokumenty"
 
-#: ../src/shell-global.c:890
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Před méně než minutou"
 
-#: ../src/shell-global.c:893
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -123,7 +221,7 @@ msgstr[0] "Před %d minutou"
 msgstr[1] "Před %d minutami"
 msgstr[2] "Před %d minutami"
 
-#: ../src/shell-global.c:896
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -131,7 +229,7 @@ msgstr[0] "Před %d hodinou"
 msgstr[1] "Před %d hodinami"
 msgstr[2] "Před %d hodinami"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -139,7 +237,7 @@ msgstr[0] "Před %d dnem"
 msgstr[1] "Před %d dny"
 msgstr[2] "Před %d dny"
 
-#: ../src/shell-global.c:902
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -197,27 +295,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Can't logout: %s"
 #~ msgstr "Nelze se odhlásit: %s"
-
-#~ msgid "Account Information..."
-#~ msgstr "Informace o účtu..."
-
-#~ msgid "Sidebar"
-#~ msgstr "Postranní lišta"
-
-#~ msgid "System Preferences..."
-#~ msgstr "Předvolby systému..."
-
-#~ msgid "Lock Screen"
-#~ msgstr "Uzamknout obrazovku"
-
-#~ msgid "Switch User"
-#~ msgstr "Přepnout uživatele"
-
-#~ msgid "Log Out..."
-#~ msgstr "Odhlásit..."
-
-#~ msgid "Shut Down..."
-#~ msgstr "Vypnout..."
 
 #~ msgid "Browse"
 #~ msgstr "Procházet"
