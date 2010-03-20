@@ -93,12 +93,18 @@ PlaceDeviceInfo.prototype = {
         if (!this.isRemovable())
             return;
 
-        this._mount.unmount(0, null, Lang.bind(this, this._removeFinish));
+        if (this._mount.can_eject())
+            this._mount.eject(0, null, Lang.bind(this, this._removeFinish));
+        else
+            this._mount.unmount(0, null, Lang.bind(this, this._removeFinish));
     },
 
     _removeFinish: function(o, res, data) {
         try {
-            this._mount.unmount_finish(res);
+            if (this._mount.can_eject())
+                this._mount.eject_finish(res);
+            else
+                this._mount.unmount_finish(res);
         } catch (e) {
             let message = _("Failed to unmount '%s'").format(o.get_name());
             Main.overview.infoBar.setMessage(message,
