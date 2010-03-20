@@ -10,6 +10,7 @@ js/ui/placeDisplay.js
 js/ui/runDialog.js
 js/ui/statusMenu.js
 js/ui/widget.js
+js/ui/windowAttentionHandler.js
 src/gdmuser/gdm-user.c
 src/shell-global.c
 src/shell-uri-util.c
