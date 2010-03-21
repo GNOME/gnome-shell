@@ -1360,7 +1360,7 @@ WorkspacesControls.prototype = {
 
         this._addButton = new St.Button({ style_class: 'workspace-controls add' });
         this._addButton.connect('clicked', Lang.bind(this, function() {
-            this._currentView.addWorkspace()
+            this._currentView.addWorkspace();
         }));
         this._addButton._delegate = this._addButton;
         this._addButton._delegate.acceptDrop = Lang.bind(this,
