@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-03-18 04:53+0000\n"
-"PO-Revision-Date: 2010-03-18 09:52+0100\n"
+"POT-Creation-Date: 2010-03-21 15:49+0000\n"
+"PO-Revision-Date: 2010-03-21 21:59+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -81,7 +81,7 @@ msgstr "Ni zadetkov iskanja"
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
 #: ../js/ui/dash.js:871
-#: ../js/ui/placeDisplay.js:536
+#: ../js/ui/placeDisplay.js:579
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
@@ -152,11 +152,11 @@ msgstr "Poskusi znova"
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/runDialog.js:221
+#: ../js/ui/runDialog.js:232
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/runDialog.js:344
+#: ../js/ui/runDialog.js:374
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
@@ -213,6 +213,16 @@ msgstr "Programi"
 #: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Nedavni dokumenti"
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s je končal začenjanje"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' storitev je pripravljena"
 
 #: ../src/shell-global.c:967
 msgid "Less than a minute ago"
