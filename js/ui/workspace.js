@@ -135,6 +135,7 @@ WindowClone.prototype = {
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
 
+        this._windowIsZooming = false;
         this._zooming = false;
         this._selected = false;
     },
@@ -1209,6 +1210,9 @@ Workspace.prototype = {
     },
 
     _delayedWindowRepositioning: function() {
+        if (this._windowIsZooming)
+            return true;
+
         let [child, x, y, mask] =
             Gdk.Screen.get_default().get_root_window().get_pointer();
         let wsWidth = this.actor.width * this.scale;
@@ -1532,6 +1536,14 @@ Workspace.prototype = {
                       Lang.bind(this, function(clone) {
                           this.emit('window-drag-end', clone.actor);
                           overlay.show();
+                      }));
+        clone.connect('zoom-start',
+                      Lang.bind(this, function() {
+                          this._windowIsZooming = true;
+                      }));
+        clone.connect('zoom-end',
+                      Lang.bind(this, function() {
+                          this._windowIsZooming = false;
                       }));
 
         this.actor.add_actor(clone.actor);
