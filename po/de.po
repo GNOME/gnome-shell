@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-03-18 00:34+0000\n"
-"PO-Revision-Date: 2010-03-20 23:28+0100\n"
+"POT-Creation-Date: 2010-03-20 22:48+0000\n"
+"PO-Revision-Date: 2010-03-21 16:27+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,6 @@ msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
 #: ../js/ui/dash.js:194
-#| msgid "Find..."
 msgid "Find"
 msgstr "Suchen"
 
@@ -82,7 +81,7 @@ msgstr "Keine passenden Ergebnisse."
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:536
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
 msgid "PLACES & DEVICES"
 msgstr "ORTE UND GERÄTE"
 
@@ -152,11 +151,11 @@ msgstr "Erneut versuchen"
 msgid "Connect to..."
 msgstr "Verbinden mit …"
 
-#: ../js/ui/runDialog.js:221
+#: ../js/ui/runDialog.js:232
 msgid "Please enter a command:"
 msgstr "Bitte geben Sie einen Befehl ein:"
 
-#: ../js/ui/runDialog.js:344
+#: ../js/ui/runDialog.js:374
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
@@ -213,6 +212,16 @@ msgstr "Anwendungen"
 #: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Zuletzt geöffnete Dokumente"
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "Start von %s ist abgeschlossen"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "»%s« ist bereit"
 
 #: ../src/shell-global.c:967
 msgid "Less than a minute ago"
