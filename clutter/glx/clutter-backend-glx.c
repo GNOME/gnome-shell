@@ -692,6 +692,12 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
                                  drawable,
                                  drawable,
                                  backend_glx->gl_context);
+          /*
+           * In case we are using GLX_SGI_swap_control for vblank syncing we need call
+           * glXSwapIntervalSGI here to make sure that it affects the current drawable.
+           */
+          if (backend_glx->vblank_type == CLUTTER_VBLANK_GLX_SWAP && backend_glx->swap_interval != NULL)
+            backend_glx->swap_interval (1);
         }
 
       if (clutter_x11_untrap_x_errors ())
