@@ -262,6 +262,7 @@ Overview.prototype = {
 
         // Show new workspacesView
         this._group.add_actor(this._workspaces.actor);
+        this._workspacesBar.raise(this._workspaces.actor);
         this._dash.actor.raise(this._workspaces.actor);
     },
 

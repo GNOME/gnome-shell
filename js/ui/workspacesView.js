@@ -259,6 +259,11 @@ GenericWorkspacesView.prototype = {
 
     _activeWorkspaceChanged: function() {
         throw new Error("Not implemented");
+    },
+
+    _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
+        this.addWorkspace();
+        return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
 
@@ -453,11 +458,6 @@ MosaicView.prototype = {
         let metaWorkspace = this._workspaces[removedIndex].metaWorkspace;
         global.screen.remove_workspace(metaWorkspace,
                                        global.get_current_time());
-    },
-
-    _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        this._addNewWorkspace();
-        return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
 
@@ -1306,11 +1306,6 @@ SingleView.prototype = {
         let metaWorkspace = this._workspaces[removedIndex].metaWorkspace;
         global.screen.remove_workspace(metaWorkspace,
                                        global.get_current_time());
-    },
-
-    _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        this.addWorkspace();
-        return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
 
