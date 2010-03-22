@@ -1143,6 +1143,9 @@ Workspace.prototype = {
     },
 
     _fadeInWindowOverlay: function(clone, overlay) {
+        if (clone.inDrag)
+            return;
+
         // This is a little messy and complicated because when we
         // start the fade-in we may not have done the final positioning
         // of the workspaces. (Tweener doesn't necessarily finish

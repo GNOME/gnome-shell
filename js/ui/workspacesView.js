@@ -53,7 +53,7 @@ GenericWorkspacesView.prototype = {
                 let [a, spacing] = node.get_length('spacing', false);
                 this._spacing = spacing;
                 if (Main.overview.animationInProgress)
-                    this._positionWorkspaces();
+                    this._computeWorkspacePositions();
                 else
                     this._transitionWorkspaces();
             }));
@@ -252,7 +252,7 @@ GenericWorkspacesView.prototype = {
         throw new Error("Not implemented");
     },
 
-    _positionWorkspaces: function() {
+    _computeWorkspacePositions: function() {
         throw new Error("Not implemented");
     },
 
@@ -294,7 +294,7 @@ MosaicView.prototype = {
     // first row.)
     //
     // FIXME: need to make the metacity internal layout agree with this!
-    _positionWorkspaces: function() {
+    _computeWorkspacePositions: function() {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
@@ -337,7 +337,7 @@ MosaicView.prototype = {
 
     _transitionWorkspaces: function() {
         // update workspace parameters
-        this._positionWorkspaces();
+        this._computeWorkspacePositions();
 
         let active = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[active];
@@ -394,7 +394,7 @@ MosaicView.prototype = {
                 this._actor.add_actor(this._workspaces[w].actor);
 
         // Figure out the new layout
-        this._positionWorkspaces();
+        this._computeWorkspacePositions();
         let newScale = this._workspaces[0].scale;
         let newGridWidth = Math.ceil(Math.sqrt(newNumWorkspaces));
         let newGridHeight = Math.ceil(newNumWorkspaces / newGridWidth);
@@ -522,10 +522,14 @@ SingleView.prototype = {
         this._actor.set_clip(x, y, width, height);
         this._indicatorsPanel = null;
         this._indicatorsPanelWidth = 0;
+        this._activeWorkspaceX = 0; // x offset of active ws while dragging
+        this._activeWorkspaceY = 0; // y offset of active ws while dragging
         this._scroll = null;
         this._lostWorkspaces = [];
-        this._scrolling = false;
-        this._animatingScroll = false;
+        this._animating = false; // tweening
+        this._scrolling = false; // dragging scroll bar or desktop
+        this._animatingScroll = false; // programatically move the scroll bar
+        this._inDrag = false; // dragging a window
 
         let primary = global.get_primary_monitor();
         this._dropGroup = new Clutter.Group({ x: 0, y: 0,
@@ -539,58 +543,60 @@ SingleView.prototype = {
         this._buttonPressId = 0;
         this._capturedEventId = 0;
         this._timeoutId = 0;
-        this._windowDragBeginId = 0;
-        this._windowDragEndId = 0;
     },
 
-    _positionWorkspaces: function() {
-        let scale;
-
-        if (this._inDrag)
-            scale = this._width * WORKSPACE_DRAGGING_SCALE / global.screen_width;
-        else
-            scale = this._width / global.screen_width;
+    // Compute the position, scale and opacity of the workspaces, but don't
+    // actually change the actors to match
+    _computeWorkspacePositions: function() {
         let active = global.screen.get_active_workspace_index();
-        let _width = this._workspaces[0].actor.width * scale;
+
+        let scale = this._width / global.screen_width;
+        if (this._inDrag)
+            scale *= WORKSPACE_DRAGGING_SCALE;
 
         this._setWorkspaceDraggable(active, true);
+
+        let _width = this._workspaces[0].actor.width * scale;
+        let _height = this._workspaces[0].actor.height * scale;
+
+        this._activeWorkspaceX = (this._width - _width) / 2;
+        this._activeWorkspaceY = (this._height - _height) / 2;
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            if (this._inDrag)
-                workspace.opacity = 200;
-            else
-                workspace.opacity = 255;
-            if (active == w)
-                workspace.opacity = 255;
+            workspace.opacity = (this._inDrag && w != active) ? 200 : 255;
 
             workspace.gridRow = 0;
             workspace.gridCol = 0;
 
             workspace.scale = scale;
-            workspace.gridX = this._x + (this._width - _width) / 2 + (w - active) * (_width + this._spacing);
-            workspace.gridY = this._y + (this._height - workspace.actor.height * scale) / 2;
+            workspace.gridX = this._x + this._activeWorkspaceX
+                              + (w - active) * (_width + this._spacing);
+            workspace.gridY = this._y + this._activeWorkspaceY;
 
             workspace.setSelected(false);
         }
 
         this._newWorkspaceArea.scale = scale;
-        this._newWorkspaceArea.gridX = this._x + (this._width - _width) / 2 + (this._workspaces.length - active) * (_width + this._spacing);
-        this._newWorkspaceArea.gridY = this._y + (this._height - this._newWorkspaceArea.actor.height * scale) / 2;
+        this._newWorkspaceArea.gridX = this._x + this._activeWorkspaceX
+                                       + (this._workspaces.length - active) * (_width + this._spacing);
+        this._newWorkspaceArea.gridY = this._y + this._activeWorkspaceY;
 
         this._leftShadow.scale = scale;
-        this._leftShadow.gridX = this._x + (this._width - _width) / 2 - (this._leftShadow.width * scale + this._spacing);
-        this._leftShadow.gridY = this._y + (this._height - this._leftShadow.height * scale) / 2;
+        this._leftShadow.gridX = this._x + this._activeWorkspaceX
+                                 - (this._leftShadow.width * scale + this._spacing);
+        this._leftShadow.gridY = this._y + this._activeWorkspaceY;
 
         this._rightShadow.scale = scale;
-        this._rightShadow.gridX = this._x + (this._width - _width) / 2 + (_width + this._spacing);
-        this._rightShadow.gridY = this._y + (this._height - this._rightShadow.height * scale) / 2;
+        this._rightShadow.gridX = this._x + this._activeWorkspaceX
+                                  + (_width + this._spacing);
+        this._rightShadow.gridY = this._y + this._activeWorkspaceY;
     },
 
     _transitionWorkspaces: function() {
         // update workspace parameters
-        this._positionWorkspaces();
+        this._computeWorkspacePositions();
 
         let active = global.screen.get_active_workspace_index();
         let activeActor = this._workspaces[active].actor;
@@ -737,115 +743,153 @@ SingleView.prototype = {
         return false;
     },
 
+    // Update workspace actors parameters to the values calculated in
+    // _computeWorkspacePositions()
+    // @showAnimation: iff %true, transition between states
     _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
-
-        this._positionWorkspaces();
-
-        let dx = this._workspaces[0].gridX - this._workspaces[0].actor.x;
+        let targetWorkspaceNewX = this._x + this._activeWorkspaceX;
+        let targetWorkspaceCurrentX = this._workspaces[active].gridX;
+        let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
 
         this._setWorkspaceDraggable(active, true);
+        this._animating = showAnimation;
+
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            workspace.actor.show();
-            workspace.hideWindowsOverlays();
+            Tweener.removeTweens(workspace.actor);
 
-            let i = w;
+            workspace.gridX += dx;
+
             if (showAnimation) {
                 Tweener.addTween(workspace.actor,
                     { x: workspace.gridX,
                       y: workspace.gridY,
                       scale_x: workspace.scale,
                       scale_y: workspace.scale,
-                      time: WORKSPACE_SWITCH_TIME,
                       opacity: workspace.opacity,
-                      transition: 'easeOutQuad',
-                      onCompleteScope: this,
-                      onComplete: function() {
-                          if (i == active) {
-                              if (!this._inDrag)
-                                  workspace.showWindowsOverlays();
-                          } else
-                              workspace.actor.visible = Math.abs(i - active) <= 1;
-                    }});
+                      time: WORKSPACE_SWITCH_TIME,
+                      transition: 'easeOutQuad'
+                    });
             } else {
                 workspace.actor.set_scale(workspace.scale, workspace.scale);
                 workspace.actor.set_position(workspace.gridX, workspace.gridY);
                 workspace.actor.opacity = workspace.opacity;
-                if (i == active) {
-                    if (!this._inDrag)
-                        workspace.showWindowsOverlays();
-                } else
-                    workspace.actor.visible = Math.abs(i - active) <= 1;
             }
-            workspace.positionWindows(0);
-        }
-        if (active)
-            this._leftShadow.show();
-        else
-            this._leftShadow.hide();
-
-        if (active == this._workspaces.length - 1)
-            this._rightShadow.hide();
-        else
-            this._rightShadow.show();
-
-        this._leftShadow.raise_top();
-        this._rightShadow.raise_top();
-
-        if (showAnimation) {
-            Tweener.addTween(this._newWorkspaceArea.actor,
-                { x: this._newWorkspaceArea.gridX,
-                  y: this._newWorkspaceArea.gridY,
-                  scale_x: this._newWorkspaceArea.scale,
-                  scale_y: this._newWorkspaceArea.scale,
-                  time: WORKSPACE_SWITCH_TIME,
-                  transition: 'easeOutQuad'
-                });
-            this._leftShadow.x = this._leftShadow.gridX;
-            Tweener.addTween(this._leftShadow,
-                { y: this._leftShadow.gridY,
-                  scale_x: this._leftShadow.scale,
-                  scale_y: this._leftShadow.scale,
-                  time: WORKSPACE_SWITCH_TIME,
-                  transition: 'easeOutQuad'
-                });
-            this._rightShadow.x = this._rightShadow.gridX;
-            Tweener.addTween(this._rightShadow,
-                { y: this._rightShadow.gridY,
-                  scale_x: this._rightShadow.scale,
-                  scale_y: this._rightShadow.scale,
-                  time: WORKSPACE_SWITCH_TIME,
-                  transition: 'easeOutQuad'
-                });
-        } else {
-            this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale, this._newWorkspaceArea.scale);
-            this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX, this._newWorkspaceArea.gridY);
-
-            this._leftShadow.set_scale(this._leftShadow.scale, this._leftShadow.scale);
-            this._leftShadow.set_position(this._leftShadow.gridX, this._leftShadow.gridY);
-            this._rightShadow.set_scale(this._rightShadow.scale, this._rightShadow.scale);
-            this._rightShadow.set_position(this._rightShadow.gridX, this._rightShadow.gridY);
         }
 
         for (let l = 0; l < this._lostWorkspaces.length; l++) {
             let workspace = this._lostWorkspaces[l];
 
+            Tweener.removeTweens(workspace.actor);
+
             workspace.gridX += dx;
             workspace.actor.show();
-            workspace._hideAllOverlays();
+            workspace.hideWindowsOverlays();
 
             if (showAnimation) {
                 Tweener.addTween(workspace.actor,
-                    { x: workspace.gridX,
-                      time: WORKSPACE_SWITCH_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: Lang.bind(this, this._cleanWorkspaces)
-                    });
+                                 { x: workspace.gridX,
+                                   time: WORKSPACE_SWITCH_TIME,
+                                   transition: 'easeOutQuad',
+                                   onComplete: Lang.bind(this,
+                                                         this._cleanWorkspaces)
+                                 });
             } else {
                 this._cleanWorkspaces();
             }
+        }
+
+        Tweener.removeTweens(this._newWorkspaceArea.actor);
+        Tweener.removeTweens(this._leftShadow);
+        Tweener.removeTweens(this._rightShadow);
+
+        this._newWorkspaceArea.gridX += dx;
+        if (showAnimation) {
+            // we have to call _updateVisibility() once before the
+            // animation and once afterwards - it does not really
+            // matter which tween we use, as long as it's not inside
+            // a loop ...
+            this._updateVisibility();
+            Tweener.addTween(this._newWorkspaceArea.actor,
+                             { x: this._newWorkspaceArea.gridX,
+                               y: this._newWorkspaceArea.gridY,
+                               scale_x: this._newWorkspaceArea.scale,
+                               scale_y: this._newWorkspaceArea.scale,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this, function() {
+                                   this._animating = false;
+                                   this._updateVisibility();
+                               })
+                             });
+            this._leftShadow.x = this._leftShadow.gridX;
+            Tweener.addTween(this._leftShadow,
+                             { y: this._leftShadow.gridY,
+                               scale_x: this._leftShadow.scale,
+                               scale_y: this._leftShadow.scale,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad'
+                             });
+            this._rightShadow.x = this._rightShadow.gridX;
+            Tweener.addTween(this._rightShadow,
+                             { y: this._rightShadow.gridY,
+                               scale_x: this._rightShadow.scale,
+                               scale_y: this._rightShadow.scale,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        } else {
+            this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale,
+                                                   this._newWorkspaceArea.scale);
+            this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX,
+                                                      this._newWorkspaceArea.gridY);
+            this._leftShadow.set_scale(this._leftShadow.scale,
+                                       this._leftShadow.scale);
+            this._leftShadow.set_position(this._leftShadow.gridX,
+                                          this._leftShadow.gridY);
+            this._rightShadow.set_scale(this._rightShadow.scale,
+                                        this._rightShadow.scale);
+            this._rightShadow.set_position(this._rightShadow.gridX,
+                                           this._rightShadow.gridY);
+            this._updateVisibility();
+        }
+    },
+
+    _updateVisibility: function() {
+        let active = global.screen.get_active_workspace_index();
+
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+            if (this._animating || this._scrolling) {
+                workspace.hideWindowsOverlays();
+                workspace.actor.show();
+            } else {
+                workspace.showWindowsOverlays();
+                if (this._inDrag)
+                    workspace.actor.visible = (Math.abs(w - active) <= 1);
+                else
+                    workspace.actor.visible = (w == active);
+            }
+        }
+
+        if (this._inDrag) {
+            this._leftShadow.raise_top();
+            this._rightShadow.raise_top();
+
+            if (active > 0)
+                this._leftShadow.show();
+            else
+                this._leftShadow.hide();
+
+            if (active < this._workspaces.length - 1)
+                this._rightShadow.show();
+            else
+                this._rightShadow.hide();
+        } else {
+            this._leftShadow.hide();
+            this._rightShadow.hide();
         }
     },
 
@@ -857,8 +901,8 @@ SingleView.prototype = {
             this._lostWorkspaces[l].destroy();
         this._lostWorkspaces = [];
 
-        this._positionWorkspaces();
-        this._updateWorkspaceActors();
+        this._computeWorkspacePositions();
+        this._updateWorkspaceActors(false);
     },
 
     _scrollScrollBarToIndex: function(index, showAnimation) {
@@ -901,8 +945,8 @@ SingleView.prototype = {
                                                                                    Lang.bind(this, this._onWindowDragEnd));
             }
 
-            this._positionWorkspaces();
-            this._updateWorkspaceActors();
+            this._computeWorkspacePositions();
+            this._updateWorkspaceActors(false);
             this._scrollScrollBarToIndex(active + 1, false);
         } else {
             this._lostWorkspaces = lostWorkspaces;
@@ -980,6 +1024,7 @@ SingleView.prototype = {
             return;
 
         this._inDrag = true;
+        this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);
 
         this._dropGroup.raise_top();
@@ -1054,6 +1099,7 @@ SingleView.prototype = {
         this._dropGroup.lower_bottom();
         actor.opacity = 255;
         this._inDrag = false;
+        this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);
 
         for (let i = 0; i < this._workspaces.length; i++)
@@ -1112,9 +1158,7 @@ SingleView.prototype = {
         if (!this._scrolling && active == adj.value) {
             // Again, work around the paging in StScrollBar: simulate
             // the effect of scroll-stop
-            this._scrolling = true;
-            this._scrollToActive(false);
-            this._scrolling = false;
+            this._updateWorkspaceActors(false);
         }
     },
 
