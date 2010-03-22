@@ -41,6 +41,11 @@
 #define glActiveTexture _context->drv.pf_glActiveTexture
 #endif
 
+/* This isn't defined in the GLES headers */
+#ifndef GL_POINT_SPRITE
+#define GL_POINT_SPRITE 0x8861
+#endif
+
 extern void
 _cogl_create_context_driver (CoglContext *context);
 extern void
@@ -210,6 +215,15 @@ cogl_create_context (void)
 
   _context->atlas = NULL;
   _context->atlas_texture = COGL_INVALID_HANDLE;
+
+  /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
+     unless GL_COORD_REPLACE is enabled for an individual
+     layer. Therefore it seems like it should be ok to just leave it
+     enabled all the time instead of having to have a set property on
+     each material to track whether any layers have point sprite
+     coords enabled */
+  if (cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+    GE (glEnable (GL_POINT_SPRITE));
 
   return TRUE;
 }

@@ -922,6 +922,50 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
                                  CoglMaterialFilter mag_filter);
 
 /**
+ * cogl_material_set_layer_point_sprite_coords_enabled:
+ * @material: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @enable: whether to enable point sprite coord generation.
+ * @error: A return location for a GError, or NULL to ignore errors.
+ *
+ * When rendering points, if @enable is %TRUE then the texture
+ * coordinates for this layer will be replaced with coordinates that
+ * vary from 0.0 to 1.0 across the primitive. The top left of the
+ * point will have the coordinates 0.0,0.0 and the bottom right will
+ * have 1.0,1.0. If @enable is %FALSE then the coordinates will be
+ * fixed for the entire point.
+ *
+ * This function will only work if %COGL_FEATURE_POINT_SPRITE is
+ * available. If the feature is not available then the function will
+ * return %FALSE and set @error.
+ *
+ * Return value: %TRUE if the function succeeds, %FALSE otherwise.
+ * Since: 1.4
+ */
+gboolean
+cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
+                                                     int           layer_index,
+                                                     gboolean      enable,
+                                                     GError      **error);
+
+/**
+ * cogl_material_get_layer_point_sprite_coords_enabled:
+ * @material: a #CoglHandle to a material.
+ * @layer_index: the layer number to check.
+ *
+ * Gets whether point sprite coordinate generation is enabled for this
+ * texture layer.
+ *
+ * Return value: whether the texture coordinates will be replaced with
+ * point sprite coordinates.
+ *
+ * Since: 1.4
+ */
+gboolean
+cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
+                                                     int           layer_index);
+
+/**
  * cogl_material_set_layer_wrap_mode_s:
  * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.

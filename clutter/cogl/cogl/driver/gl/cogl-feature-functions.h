@@ -380,3 +380,10 @@ COGL_FEATURE_FUNCTION (void, glBlendEquationSeparate,
                        (GLenum                modeRGB,
                         GLenum                modeAlpha))
 COGL_FEATURE_END ()
+
+COGL_FEATURE_BEGIN (point_sprites, 2, 0,
+                    "ARB\0",
+                    "point_sprite\0",
+                    COGL_FEATURE_POINT_SPRITE,
+                    0)
+COGL_FEATURE_END ()

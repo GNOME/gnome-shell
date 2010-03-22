@@ -72,7 +72,13 @@
 #define glUseProgram ctx->drv.pf_glUseProgram
 #endif
 
-/* This isn't defined in the GLES headers */
+/* These aren't defined in the GLES headers */
+#ifndef GL_POINT_SPRITE
+#define GL_POINT_SPRITE 0x8861
+#endif
+#ifndef GL_COORD_REPLACE
+#define GL_COORD_REPLACE 0x8862
+#endif
 #ifndef GL_CLAMP_TO_BORDER
 #define GL_CLAMP_TO_BORDER 0x812d
 #endif
@@ -1549,6 +1555,9 @@ _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
 
   if (differences & COGL_MATERIAL_LAYER_STATE_USER_MATRIX)
     dest->big_state->matrix = src->big_state->matrix;
+
+  if (differences & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS)
+    dest->big_state->point_sprite_coords = src->big_state->point_sprite_coords;
 }
 
 /* NB: This function will allocate a new derived layer if you are
@@ -2466,6 +2475,123 @@ _cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
   *wrap_mode_r = authority->wrap_mode_r;
 }
 
+gboolean
+cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
+                                                     int layer_index,
+                                                     gboolean enable,
+                                                     GError **error)
+{
+  CoglMaterialLayerState       change =
+    COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
+  CoglMaterialLayer           *layer;
+  CoglMaterialLayer           *new;
+  CoglMaterialLayer           *authority;
+
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
+
+  /* Don't allow point sprite coordinates to be enabled if the driver
+     doesn't support it */
+  if (enable && !cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+    {
+      if (error)
+        {
+          g_set_error (error, COGL_ERROR, COGL_ERROR_MISSING_FEATURE,
+                       "Point sprite texture coordinates are enabled "
+                       "for a layer but the GL driver does not support it.");
+        }
+      else
+        {
+          static gboolean warning_seen = FALSE;
+          if (!warning_seen)
+            g_warning ("Point sprite texture coordinates are enabled "
+                       "for a layer but the GL driver does not support it.");
+          warning_seen = TRUE;
+        }
+
+      return FALSE;
+    }
+
+  /* Note: this will ensure that the layer exists, creating one if it
+   * doesn't already.
+   *
+   * Note: If the layer already existed it's possibly owned by another
+   * material. If the layer is created then it will be owned by
+   * material. */
+  layer = _cogl_material_get_layer (material, layer_index);
+
+  /* Now find the ancestor of the layer that is the authority for the
+   * state we want to change */
+  authority = _cogl_material_layer_get_authority (layer, change);
+
+  if (authority->big_state->point_sprite_coords == enable)
+    return TRUE;
+
+  new = _cogl_material_layer_pre_change_notify (material, layer, change);
+  if (new != layer)
+    layer = new;
+  else
+    {
+      /* If the original layer we found is currently the authority on
+       * the state we are changing see if we can revert to one of our
+       * ancestors being the authority. */
+      if (layer == authority && authority->parent != NULL)
+        {
+          CoglMaterialLayer *old_authority =
+            _cogl_material_layer_get_authority (authority->parent, change);
+
+          if (old_authority->big_state->point_sprite_coords == enable)
+            {
+              layer->differences &= ~change;
+
+              g_assert (layer->owner == material);
+              if (layer->differences == 0)
+                _cogl_material_prune_empty_layer_difference (material,
+                                                             layer);
+              return TRUE;
+            }
+        }
+    }
+
+  layer->big_state->point_sprite_coords = enable;
+
+  /* If we weren't previously the authority on this state then we need
+   * to extended our differences mask and so it's possible that some
+   * of our ancestry will now become redundant, so we aim to reparent
+   * ourselves if that's true... */
+  if (layer != authority)
+    {
+      layer->differences |= change;
+      _cogl_material_layer_prune_redundant_ancestry (layer);
+    }
+
+  return TRUE;
+}
+
+gboolean
+cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
+                                                     int layer_index)
+{
+  CoglMaterialLayerState       change =
+    COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
+  CoglMaterialLayer *layer;
+  CoglMaterialLayer *authority;
+
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
+
+  /* Note: this will ensure that the layer exists, creating one if it
+   * doesn't already.
+   *
+   * Note: If the layer already existed it's possibly owned by another
+   * material. If the layer is created then it will be owned by
+   * material. */
+  layer = _cogl_material_get_layer (material, layer_index);
+  /* FIXME: we shouldn't ever construct a layer in a getter function */
+
+  authority = _cogl_material_layer_get_authority (layer, change);
+
+  return authority->big_state->point_sprite_coords;
+}
+
 typedef struct
 {
   CoglMaterial *material;
@@ -2793,6 +2919,16 @@ _cogl_material_layer_user_matrix_equal (CoglMaterialLayer *authority0,
   return TRUE;
 }
 
+static gboolean
+_cogl_material_layer_point_sprite_coords_equal (CoglMaterialLayer *authority0,
+                                                CoglMaterialLayer *authority1)
+{
+  CoglMaterialLayerBigState *big_state0 = authority0->big_state;
+  CoglMaterialLayerBigState *big_state1 = authority1->big_state;
+
+  return big_state0->point_sprite_coords == big_state1->point_sprite_coords;
+}
+
 typedef gboolean
 (*CoglMaterialLayerStateComparitor) (CoglMaterialLayer *authority0,
                                      CoglMaterialLayer *authority1);
@@ -2857,6 +2993,12 @@ _cogl_material_layer_equal (CoglMaterialLayer *layer0,
       !layer_state_equal (COGL_MATERIAL_LAYER_STATE_USER_MATRIX,
                           layer0, layer1,
                           _cogl_material_layer_user_matrix_equal))
+    return FALSE;
+
+  if (layers_difference & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS &&
+      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS,
+                          layer0, layer1,
+                          _cogl_material_layer_point_sprite_coords_equal))
     return FALSE;
 
   return TRUE;
@@ -4357,6 +4499,8 @@ _cogl_material_init_default_layers (void)
   big_state->texture_combine_alpha_op[0] = GL_SRC_ALPHA;
   big_state->texture_combine_alpha_op[1] = GL_SRC_ALPHA;
 
+  big_state->point_sprite_coords = FALSE;
+
   cogl_matrix_init_identity (&big_state->matrix);
 
   ctx->default_layer_0 = _cogl_material_layer_object_new (layer);
@@ -5575,9 +5719,23 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
     }
 
-  cogl_object_ref (layer);
-  if (unit->layer != NULL)
-    cogl_object_unref (unit->layer);
+  if (layers_difference & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS)
+    {
+      CoglMaterialState change = COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
+      CoglMaterialLayer *authority =
+        _cogl_material_layer_get_authority (layer, change);
+      CoglMaterialLayerBigState *big_state = authority->big_state;
+
+      _cogl_set_active_texture_unit (unit_index);
+
+      GE (glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
+                     big_state->point_sprite_coords));
+    }
+
+  cogl_handle_ref (layer);
+  if (unit->layer != COGL_INVALID_HANDLE)
+    cogl_handle_unref (unit->layer);
+
   unit->layer = layer;
   unit->layer_changes_since_flush = 0;
 

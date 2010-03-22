@@ -117,15 +117,17 @@ struct _CoglGles2WrapperUniforms
 
 struct _CoglGles2WrapperTexEnv
 {
-  GLenum texture_combine_rgb_func;
-  GLenum texture_combine_rgb_src[3];
-  GLenum texture_combine_rgb_op[3];
+  GLenum    texture_combine_rgb_func;
+  GLenum    texture_combine_rgb_src[3];
+  GLenum    texture_combine_rgb_op[3];
 
-  GLenum texture_combine_alpha_func;
-  GLenum texture_combine_alpha_src[3];
-  GLenum texture_combine_alpha_op[3];
+  GLenum    texture_combine_alpha_func;
+  GLenum    texture_combine_alpha_src[3];
+  GLenum    texture_combine_alpha_op[3];
 
-  GLfloat texture_combine_constant[4];
+  GLfloat   texture_combine_constant[4];
+
+  GLboolean point_sprite_coords;
 };
 
 /* NB: We get a copy of this for each fragment/vertex
@@ -318,6 +320,9 @@ struct _CoglGles2WrapperShader
 #define GL_SHININESS           0x1601
 
 #define GL_MAX_TEXTURE_UNITS   0x84e2
+
+#define GL_POINT_SPRITE        0x8861
+#define GL_COORD_REPLACE       0x8862
 
 #endif /* GL_MODELVIEW */
 
