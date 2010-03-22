@@ -8,6 +8,9 @@ const Tweener = imports.ui.tweener;
 
 const Params = imports.misc.params;
 
+// Time to scale down to maxDragActorSize
+const SCALE_ANIMATION_TIME = 0.25;
+// Time to animate to original position on cancel
 const SNAP_BACK_ANIMATION_TIME = 0.25;
 
 let eventHandlerActor = null;
@@ -35,7 +38,9 @@ function _Draggable(actor, params) {
 
 _Draggable.prototype = {
     _init : function(actor, params) {
-        params = Params.parse(params, { manualMode: false });
+        params = Params.parse(params, { manualMode: false,
+                                        dragActorMaxSize: undefined,
+                                        dragActorOpacity: undefined });
 
         this.actor = actor;
         if (!params.manualMode)
@@ -46,6 +51,9 @@ _Draggable.prototype = {
             this.disconnectAll();
         }));
         this._onEventId = null;
+
+        this._dragActorMaxSize = params.dragActorMaxSize;
+        this._dragActorOpacity = params.dragActorOpacity;
 
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
@@ -148,8 +156,8 @@ _Draggable.prototype = {
             this._ungrabActor();
         this._grabEvents();
 
-        this._dragStartX = stageX;
-        this._dragStartY = stageY;
+        this._dragX = this._dragStartX = stageX;
+        this._dragY = this._dragStartY = stageY;
 
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
             this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
@@ -200,6 +208,45 @@ _Draggable.prototype = {
 
         this._dragActor.reparent(this.actor.get_stage());
         this._dragActor.raise_top();
+
+        this._dragOrigOpacity = this._dragActor.opacity;
+        if (this._dragActorOpacity != undefined)
+            this._dragActor.opacity = this._dragActorOpacity;
+
+        this._snapBackX = this._dragStartX + this._dragOffsetX;
+        this._snapBackY = this._dragStartY + this._dragOffsetY;
+        this._snapBackScale = this._dragActor.scale_x;
+
+        if (this._dragActorMaxSize != undefined) {
+            let [scaledWidth, scaledHeight] = this._dragActor.get_transformed_size();
+            let currentSize = Math.max(scaledWidth, scaledHeight);
+            if (currentSize > this._dragActorMaxSize) {
+                let scale = this._dragActorMaxSize / currentSize;
+                let origScale =  this._dragActor.scale_x;
+                let origDragOffsetX = this._dragOffsetX;
+                let origDragOffsetY = this._dragOffsetY;
+
+                // The position of the actor changes as we scale
+                // around the drag position, but we can't just tween
+                // to the final position because that tween would
+                // fight with updates as the user continues dragging
+                // the mouse; instead we do the position computations in
+                // an onUpdate() function.
+                Tweener.addTween(this._dragActor,
+                                 { scale_x: scale * origScale,
+                                   scale_y: scale * origScale,
+                                   time: SCALE_ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onUpdate: function() {
+                                       let currentScale = this._dragActor.scale_x / origScale;
+                                       this._dragOffsetX = currentScale * origDragOffsetX;
+                                       this._dragOffsetY = currentScale * origDragOffsetY;
+                                       this._dragActor.set_position(this._dragX + this._dragOffsetX,
+                                                                    this._dragY + this._dragOffsetY);
+                                   },
+                                   onUpdateScope: this });
+            }
+        }
     },
 
     _maybeStartDrag:  function(event) {
@@ -218,6 +265,8 @@ _Draggable.prototype = {
 
     _updateDragPosition : function (event) {
         let [stageX, stageY] = event.get_coords();
+        this._dragX = stageX;
+        this._dragY = stageY;
 
         // If we are dragging, update the position
         if (this._dragActor) {
@@ -286,8 +335,8 @@ _Draggable.prototype = {
         // Snap back to the actor source if the source is still around, snap back 
         // to the original location if the actor itself was being dragged or the
         // source is no longer around.
-        let snapBackX = this._dragStartX + this._dragOffsetX;
-        let snapBackY = this._dragStartY + this._dragOffsetY;
+        let snapBackX = this._snapBackX;
+        let snapBackY = this._snapBackY;
         if (this._dragActorSource && this._dragActorSource.visible) {
             [snapBackX, snapBackY] = this._dragActorSource.get_transformed_position();
         }
@@ -297,6 +346,9 @@ _Draggable.prototype = {
         Tweener.addTween(this._dragActor,
                          { x: snapBackX,
                            y: snapBackY,
+                           scale_x: this._snapBackScale,
+                           scale_y: this._snapBackScale,
+                           opacity: this._dragOrigOpacity,
                            time: SNAP_BACK_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._onSnapBackComplete,
@@ -338,6 +390,17 @@ Signals.addSignalMethods(_Draggable.prototype);
  *
  * If %manualMode is %true in @params, do not automatically start
  * drag and drop on click
+ *
+ * If %dragActorMaxSize is present in @params, the drag actor will
+ * be scaled down to be no larger than that size in pixels.
+ *
+ * If %dragActorOpacity is present in @params, the drag actor will
+ * will be set to have that opacity during the drag.
+ *
+ * Note that when the drag actor is the source actor and the drop
+ * succeeds, the actor scale and opacity aren't reset; if the drop
+ * target wants to reuse the actor, it's up to the drop target to
+ * reset these values.
  */
 function makeDraggable(actor, params) {
     return new _Draggable(actor, params);
