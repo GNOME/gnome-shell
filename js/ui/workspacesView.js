@@ -508,6 +508,13 @@ SingleView.prototype = {
 
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
+        for (let i = 0; i < this._workspaces.length; i++) {
+            this._workspaces[i]._windowDragBeginId = this._workspaces[i].connect('window-drag-begin',
+                                                                                 Lang.bind(this, this._onWindowDragBegin));
+            this._workspaces[i]._windowDragEndId = this._workspaces[i].connect('window-drag-end',
+                                                                               Lang.bind(this, this._onWindowDragEnd));
+        }
+
         this._actor.add_actor(this._newWorkspaceArea.actor);
         this._actor.add_actor(this._leftShadow);
         this._actor.add_actor(this._rightShadow);
@@ -655,10 +662,6 @@ SingleView.prototype = {
             this._dragIndex = index;
             this._buttonPressId = dragActor.connect('button-press-event',
                                       Lang.bind(this, this._onButtonPress));
-            this._windowDragBeginId = this._workspaces[index].connect('window-drag-begin',
-                                       Lang.bind(this, this._onWindowDragBegin));
-            this._windowDragEndId = this._workspaces[index].connect('window-drag-end',
-                                       Lang.bind(this, this._onWindowDragEnd));
         } else {
             this._dragIndex = -1;
 
@@ -671,16 +674,6 @@ SingleView.prototype = {
             if (this._capturedEventId > 0) {
                 global.stage.disconnect(this._capturedEventId);
                 this._capturedEventId = 0;
-            }
-
-            if (this._windowDragBeginId > 0) {
-                this._workspaces[index].disconnect(this._windowDragBeginId);
-                this._windowDragBeginId = 0;
-            }
-
-            if (this._windowDragEndId > 0) {
-                this._workspaces[index].disconnect(this._windowDragEndId);
-                this._windowDragEndId = 0;
             }
         }
     },
@@ -894,12 +887,20 @@ SingleView.prototype = {
     updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces, lostWorkspaces) {
 	let active = global.screen.get_active_workspace_index();
 
+        for (let l = 0; l < lostWorkspaces.length; l++)
+            lostWorkspaces[l].disconnectAll();
+
         if (this._scroll != null)
             this._scroll.adjustment.upper = newNumWorkspaces;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 this._actor.add_actor(this._workspaces[w].actor);
+                this._workspaces[w]._windowDragBeginId = this._workspaces[w].connect('window-drag-begin',
+                                                                                     Lang.bind(this, this._onWindowDragBegin));
+                this._workspaces[w]._windowDragEndId = this._workspaces[w].connect('window-drag-end',
+                                                                                   Lang.bind(this, this._onWindowDragEnd));
+            }
 
             this._positionWorkspaces();
             this._updateWorkspaceActors();
@@ -929,6 +930,16 @@ SingleView.prototype = {
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
+        }
+        for (let w = 0; w < this._workspaces.length; w++) {
+            if (this._workspaces[w]._windowDragBeginId) {
+                this._workspaces[w].disconnect(this._workspaces[w]._windowDragBeginId);
+                this._workspaces[w]._windowDragBeginId = 0;
+            }
+            if (this._workspaces[w]._windowDragEndId) {
+                this._workspaces[w].disconnect(this._workspaces[w]._windowDragEndId);
+                this._workspaces[w]._windowDragEndId = 0;
+            }
         }
     },
 
@@ -1507,7 +1518,6 @@ WorkspacesManager.prototype = {
                                          this._workspaces);
                 break;
         }
-
         if (this.workspacesView)
             this.workspacesView.destroy();
         this.workspacesView = newView;
@@ -1574,8 +1584,10 @@ WorkspacesManager.prototype = {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         if (this._viewChangedId > 0)
             Shell.GConf.get_default().disconnect(this._viewChangedId);
-        for (let w = 0; w < this._workspaces.length; w++)
+        for (let w = 0; w < this._workspaces.length; w++) {
+            this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();
+        }
     }
 };
 Signals.addSignalMethods(WorkspacesManager.prototype);
