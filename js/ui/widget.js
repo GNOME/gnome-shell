@@ -143,7 +143,7 @@ ClockWidget.prototype = {
         let msec_remaining = 60000 - (1000 * this.currentTime.getSeconds() +
                                       this.currentTime.getMilliseconds());
         if (msec_remaining < 500) {
-            this.currentTime.setMinutes(time.getMinutes() + 1);
+            this.currentTime.setMinutes(this.currentTime.getMinutes() + 1);
             msec_remaining += 60000;
         }
 
