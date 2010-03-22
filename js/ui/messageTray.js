@@ -403,19 +403,19 @@ function MessageTray() {
 
 MessageTray.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ name: 'message-tray',
-                                        reactive: true,
-                                        track_hover: true });
+        this.actor = new St.Group({ name: 'message-tray',
+                                    reactive: true,
+                                    track_hover: true });
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationBin = new St.Bin();
-        this.actor.add(this._notificationBin);
+        this.actor.add_actor(this._notificationBin);
         this._notificationBin.hide();
         this._notificationQueue = [];
         this._notification = null;
 
         this._summaryBin = new St.Bin({ anchor_gravity: Clutter.Gravity.NORTH_EAST });
-        this.actor.add(this._summaryBin);
+        this.actor.add_actor(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
                                            track_hover: true });
@@ -427,7 +427,7 @@ MessageTray.prototype = {
                                                     anchor_gravity: Clutter.Gravity.NORTH_EAST,
                                                     reactive: true,
                                                     track_hover: true });
-        this.actor.add(this._summaryNotificationBin);
+        this.actor.add_actor(this._summaryNotificationBin);
         this._summaryNotificationBin.lower_bottom();
         this._summaryNotificationBin.hide();
         this._summaryNotificationBin.connect('notify::hover', Lang.bind(this, this._onSummaryNotificationHoverChanged));

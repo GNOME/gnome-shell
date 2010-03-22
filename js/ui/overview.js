@@ -174,7 +174,7 @@ function Overview() {
 
 Overview.prototype = {
     _init : function() {
-        this._group = new St.BoxLayout({ style_class: 'overview' });
+        this._group = new St.Group({ style_class: 'overview' });
         this._group._delegate = this;
 
         this.infoBar = new InfoBar();
@@ -268,6 +268,7 @@ Overview.prototype = {
         this._recalculateGridSizes();
 
         this._group.set_position(primary.x, primary.y);
+        this._group.set_size(primary.width, primary.height);
 
         let contentY = Panel.PANEL_HEIGHT;
         let contentHeight = primary.height - contentY;

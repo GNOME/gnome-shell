@@ -43,12 +43,10 @@ function GenericWorkspacesView(width, height, x, y, workspaces) {
 
 GenericWorkspacesView.prototype = {
     _init: function(width, height, x, y, workspaces) {
-        this.actor = new St.Bin({ style_class: 'workspaces' });
-        this._actor = new Clutter.Group();
+        this.actor = new St.Group({ style_class: 'workspaces' });
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this.actor.add_actor(this._actor);
         this.actor.connect('style-changed', Lang.bind(this,
             function() {
                 let node = this.actor.get_theme_node();
@@ -74,7 +72,7 @@ GenericWorkspacesView.prototype = {
 
         // Add workspace actors
         for (let w = 0; w < global.screen.n_workspaces; w++)
-            this._workspaces[w].actor.reparent(this._actor);
+            this._workspaces[w].actor.reparent(this.actor);
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
         // Position/scale the desktop windows and their children after the
@@ -297,10 +295,10 @@ MosaicView.prototype = {
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
         this.actor.add_style_class_name('mosaic');
-        this._actor.set_clip(x - Workspace.FRAME_SIZE,
-                             y - Workspace.FRAME_SIZE,
-                             width + 2 * Workspace.FRAME_SIZE,
-                             height + 2 * Workspace.FRAME_SIZE);
+        this.actor.set_clip(x - Workspace.FRAME_SIZE,
+                            y - Workspace.FRAME_SIZE,
+                            width + 2 * Workspace.FRAME_SIZE,
+                            height + 2 * Workspace.FRAME_SIZE);
         this._workspaces[global.screen.get_active_workspace_index()].setSelected(true);
     },
 
@@ -411,7 +409,7 @@ MosaicView.prototype = {
         // Add actors
         if (newNumWorkspaces > oldNumWorkspaces)
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-                this._actor.add_actor(this._workspaces[w].actor);
+                this.actor.add_actor(this._workspaces[w].actor);
 
         // Figure out the new layout
         this._computeWorkspacePositions();
@@ -648,12 +646,12 @@ SingleView.prototype = {
                                                                                Lang.bind(this, this._onWindowDragEnd));
         }
 
-        this._actor.add_actor(this._newWorkspaceArea.actor);
-        this._actor.add_actor(this._leftShadow);
-        this._actor.add_actor(this._rightShadow);
+        this.actor.add_actor(this._newWorkspaceArea.actor);
+        this.actor.add_actor(this._leftShadow);
+        this.actor.add_actor(this._rightShadow);
 
         this.actor.add_style_class_name('single');
-        this._actor.set_clip(x, y, width, height);
+        this.actor.set_clip(x, y, width, height);
         this._activeWorkspaceX = 0; // x offset of active ws while dragging
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
         this._scroll = null;
@@ -1085,7 +1083,7 @@ SingleView.prototype = {
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._actor.add_actor(this._workspaces[w].actor);
+                this.actor.add_actor(this._workspaces[w].actor);
                 this._workspaces[w]._windowDragBeginId = this._workspaces[w].connect('window-drag-begin',
                                                                                      Lang.bind(this, this._onWindowDragBegin));
                 this._workspaces[w]._windowDragEndId = this._workspaces[w].connect('window-drag-end',
