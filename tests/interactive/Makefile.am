@@ -54,7 +54,8 @@ UNIT_TESTS = \
 	test-drag.c \
 	test-constraints.c \
 	test-scrolling.c \
-	test-bind.c
+	test-bind.c \
+	test-cogl-point-sprites.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
