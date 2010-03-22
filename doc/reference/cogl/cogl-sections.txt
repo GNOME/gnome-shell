@@ -484,6 +484,8 @@ COGL_BLEND_STRING_ERROR
 CoglBlendStringError
 cogl_material_set_blend
 cogl_material_set_blend_constant
+cogl_material_set_point_size
+cogl_material_get_point_size
 cogl_material_set_layer
 cogl_material_remove_layer
 cogl_material_set_layer_combine

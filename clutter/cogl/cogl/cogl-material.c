@@ -388,6 +388,8 @@ _cogl_material_init_default_material (void)
   depth_state->depth_range_near = 0;
   depth_state->depth_range_far = 1;
 
+  big_state->point_size = 1.0f;
+
   ctx->default_material = _cogl_material_object_new (material);
 }
 
@@ -1017,6 +1019,9 @@ _cogl_material_copy_differences (CoglMaterial *dest,
               &src->big_state->depth_state,
               sizeof (CoglMaterialDepthState));
     }
+
+  if (differences & COGL_MATERIAL_STATE_POINT_SIZE)
+    big_state->point_size = src->big_state->point_size;
 
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize material state
@@ -2968,6 +2973,13 @@ _cogl_material_fog_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
+_cogl_material_point_size_equal (CoglMaterial *authority0,
+                                 CoglMaterial *authority1)
+{
+  return authority0->big_state->point_size == authority1->big_state->point_size;
+}
+
+static gboolean
 _cogl_material_layers_equal (CoglMaterial *authority0,
                              CoglMaterial *authority1)
 {
@@ -3188,6 +3200,12 @@ _cogl_material_equal (CoglMaterial *material0,
                               materials_difference,
                               COGL_MATERIAL_STATE_FOG,
                               _cogl_material_fog_state_equal))
+    return FALSE;
+
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_POINT_SIZE,
+                              _cogl_material_point_size_equal))
     return FALSE;
 
   if (!simple_property_equal (material0, material1,
@@ -4987,6 +5005,48 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
     }
 }
 
+float
+cogl_material_get_point_size (CoglHandle  handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterial *authority;
+
+  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_POINT_SIZE);
+
+  return authority->big_state->point_size;
+}
+
+void
+cogl_material_set_point_size (CoglHandle handle,
+                              float      point_size)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterialState state = COGL_MATERIAL_STATE_POINT_SIZE;
+  CoglMaterial *authority;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  authority = _cogl_material_get_authority (material, state);
+
+  if (authority->big_state->point_size == point_size)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->point_size = point_size;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_point_size_equal);
+}
+
 static void
 disable_texture_unit (int unit_index)
 {
@@ -5337,6 +5397,18 @@ _cogl_material_flush_color_blend_alpha_depth_state (
         {
           GE (glDisable (GL_DEPTH_TEST));
           ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
+        }
+    }
+
+  if (materials_difference & COGL_MATERIAL_STATE_POINT_SIZE)
+    {
+      CoglMaterial *authority =
+        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_POINT_SIZE);
+
+      if (ctx->point_size_cache != authority->big_state->point_size)
+        {
+          GE( glPointSize (authority->big_state->point_size) );
+          ctx->point_size_cache = authority->big_state->point_size;
         }
     }
 

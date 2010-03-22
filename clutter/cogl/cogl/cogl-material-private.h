@@ -333,8 +333,9 @@ typedef enum _CoglMaterialState
   COGL_MATERIAL_STATE_USER_SHADER       = 1L<<6,
   COGL_MATERIAL_STATE_DEPTH             = 1L<<7,
   COGL_MATERIAL_STATE_FOG               = 1L<<8,
+  COGL_MATERIAL_STATE_POINT_SIZE        = 1L<<9,
 
-  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<9,
+  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<10,
 
   COGL_MATERIAL_STATE_ALL_SPARSE =
     COGL_MATERIAL_STATE_COLOR |
@@ -345,7 +346,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_BLEND |
     COGL_MATERIAL_STATE_USER_SHADER |
     COGL_MATERIAL_STATE_DEPTH |
-    COGL_MATERIAL_STATE_FOG,
+    COGL_MATERIAL_STATE_FOG |
+    COGL_MATERIAL_STATE_POINT_SIZE,
 
   COGL_MATERIAL_STATE_AFFECTS_BLENDING =
     COGL_MATERIAL_STATE_COLOR |
@@ -361,7 +363,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_BLEND |
     COGL_MATERIAL_STATE_USER_SHADER |
     COGL_MATERIAL_STATE_DEPTH |
-    COGL_MATERIAL_STATE_FOG
+    COGL_MATERIAL_STATE_FOG |
+    COGL_MATERIAL_STATE_POINT_SIZE
 
 } CoglMaterialState;
 
@@ -441,6 +444,7 @@ typedef struct
   CoglHandle user_program;
   CoglMaterialDepthState depth_state;
   CoglMaterialFogState fog_state;
+  float point_size;
 } CoglMaterialBigState;
 
 typedef enum

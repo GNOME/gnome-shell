@@ -23,6 +23,9 @@ uniform float      fog_density;
 uniform float      fog_start;
 uniform float      fog_end;
 
+/* Point options */
+uniform float      point_size;
+
 /*** _cogl_fixed_vertex_shader_main_start ***/
 
 void
@@ -32,6 +35,9 @@ main (void)
 
   /* Calculate the transformed position */
   gl_Position = mvp_matrix * vertex_attrib;
+
+  /* Copy across the point size from the uniform */
+  gl_PointSize = point_size;
 
   /* Calculate the transformed texture coordinate */
 
