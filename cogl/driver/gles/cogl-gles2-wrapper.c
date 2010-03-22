@@ -155,6 +155,9 @@ initialize_texture_units (CoglGles2Wrapper *w)
                                 GL_SRC_COLOR) );
       GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
                                 GL_SRC_COLOR) );
+
+      GE( _cogl_wrap_glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
+                                GL_FALSE) );
     }
 
   GE( _cogl_wrap_glMatrixMode ((GLenum) prev_mode));
@@ -256,6 +259,10 @@ cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
           int arg, n_args;
           GLenum func;
 
+          if (tex_env_a->point_sprite_coords !=
+              tex_env_b->point_sprite_coords)
+            return FALSE;
+
           func = tex_env_a->texture_combine_rgb_func;
 
           if (func != tex_env_b->texture_combine_rgb_func)
@@ -329,7 +336,8 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   g_string_append (shader_source, _cogl_fixed_vertex_shader_main_start);
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
-    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i) &&
+        !settings->tex_env[i].point_sprite_coords)
       {
         g_string_append_printf (shader_source,
                                 "transformed_tex_coord = "
@@ -387,6 +395,26 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
 }
 
 static void
+cogl_gles2_add_texture_lookup (int unit,
+                               const char *swizzle,
+                               GString *shader_source)
+{
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  g_string_append_printf (shader_source, "texture2D (texture_unit[%d], ", unit);
+
+  /* If point sprite coord generation is being used then divert to the
+     built-in varying var for that instead of the texture
+     coordinates */
+  if (w->settings.tex_env[unit].point_sprite_coords)
+    g_string_append (shader_source, "gl_PointCoord");
+  else
+    g_string_append_printf (shader_source, "tex_coord[%d]", unit);
+
+  g_string_append_printf (shader_source, ").%s", swizzle);
+}
+
+static void
 cogl_gles2_add_arg (int unit,
                     GLenum src,
                     GLenum operand,
@@ -413,9 +441,7 @@ cogl_gles2_add_arg (int unit,
   switch (src)
     {
     case GL_TEXTURE:
-      g_string_append_printf (shader_source,
-                              "texture2D (texture_unit[%d], tex_coord[%d]).%s",
-                              unit, unit, swizzle);
+      cogl_gles2_add_texture_lookup (unit, swizzle, shader_source);
       break;
 
     case GL_CONSTANT:
@@ -437,12 +463,8 @@ cogl_gles2_add_arg (int unit,
     default:
       if (src >= GL_TEXTURE0 &&
           src < GL_TEXTURE0 + COGL_GLES2_MAX_TEXTURE_UNITS)
-        g_string_append_printf (shader_source,
-                                "texture2D (texture_unit[%d], "
-                                "tex_coord[%d]).%s",
-                                src - GL_TEXTURE0,
-                                src - GL_TEXTURE0,
-                                swizzle);
+        cogl_gles2_add_texture_lookup (src - GL_TEXTURE0,
+                                       swizzle, shader_source);
       break;
     }
 
@@ -1350,14 +1372,14 @@ _cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
 void
 _cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
+  CoglGles2WrapperTexEnv *tex_env;
+
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  tex_env = w->settings.tex_env + w->active_texture_unit;
+
   if (target == GL_TEXTURE_ENV)
     {
-      CoglGles2WrapperTexEnv *tex_env;
-
-      _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
-
-      tex_env = w->settings.tex_env + w->active_texture_unit;
-
       switch (pname)
         {
         case GL_COMBINE_RGB:
@@ -1385,6 +1407,17 @@ _cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
         case GL_OPERAND1_ALPHA:
         case GL_OPERAND2_ALPHA:
           tex_env->texture_combine_alpha_op[pname - GL_OPERAND0_ALPHA] = param;
+          break;
+        }
+
+      w->settings_dirty = TRUE;
+    }
+  else if (target == GL_POINT_SPRITE)
+    {
+      switch (pname)
+        {
+        case GL_COORD_REPLACE:
+          tex_env->point_sprite_coords = param;
           break;
         }
 

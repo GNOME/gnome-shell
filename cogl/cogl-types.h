@@ -248,6 +248,8 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  * @COGL_FEATURE_TEXTURE_NPOT_REPEAT: Repeat modes other than
  *     %COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE are supported by the
  *     hardware.
+ * @COGL_FEATURE_POINT_SPRITE: Whether
+ *     cogl_material_set_layer_point_sprite_coords_enabled() is supported.
  *
  * Flags for the supported features.
  *
@@ -271,7 +273,8 @@ typedef enum
   COGL_FEATURE_DEPTH_RANGE            = (1 << 14),
   COGL_FEATURE_TEXTURE_NPOT_BASIC     = (1 << 15),
   COGL_FEATURE_TEXTURE_NPOT_MIPMAP    = (1 << 16),
-  COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 << 17)
+  COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 << 17),
+  COGL_FEATURE_POINT_SPRITE           = (1 << 18)
 } CoglFeatureFlags;
 
 /**

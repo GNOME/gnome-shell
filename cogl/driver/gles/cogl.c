@@ -107,6 +107,9 @@ _cogl_features_init (void)
 
   flags |= COGL_FEATURE_VBOS;
 
+  /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
+  flags |= COGL_FEATURE_POINT_SPRITE;
+
   /* Cache features */
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;
