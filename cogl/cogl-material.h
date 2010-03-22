@@ -601,6 +601,39 @@ cogl_material_set_blend_constant (CoglMaterial *material,
                                   const CoglColor *constant_color);
 
 /**
+ * cogl_material_set_point_size:
+ * @material: a #CoglHandle to a material.
+ * @size: the new point size.
+ *
+ * Changes the size of points drawn when %COGL_VERTICES_MODE_POINTS is
+ * used with the vertex buffer API. Note that typically the GPU will
+ * only support a limited minimum and maximum range of point sizes. If
+ * the chosen point size is outside that range then the nearest value
+ * within that range will be used instead. The size of a point is in
+ * screen space so it will be the same regardless of any
+ * transformations. The default point size is 1.0.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_point_size (CoglHandle material,
+                              float      point_size);
+
+/**
+ * cogl_material_get_point_size:
+ * @material: a #CoglHandle to a material.
+ *
+ * Get the size of points drawn when %COGL_VERTICES_MODE_POINTS is
+ * used with the vertex buffer API.
+ *
+ * Return value: the point size of the material.
+ *
+ * Since: 1.4
+ */
+float
+cogl_material_get_point_size (CoglHandle  material);
+
+/**
  * cogl_material_set_layer:
  * @material: A #CoglMaterial object
  * @layer_index: the index of the layer

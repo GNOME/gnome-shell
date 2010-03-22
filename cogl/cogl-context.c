@@ -148,6 +148,8 @@ cogl_create_context (void)
   _context->depth_range_near_cache = 0;
   _context->depth_range_far_cache = 1;
 
+  _context->point_size_cache = 1.0f;
+
   _context->legacy_depth_test_enabled = FALSE;
 
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)

@@ -194,6 +194,9 @@ _cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   _cogl_wrap_glDisable (GL_ALPHA_TEST);
   _cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
 
+  /* Initialize the point size */
+  _cogl_wrap_glPointSize (1.0f);
+
   initialize_texture_units (wrapper);
 }
 
@@ -772,6 +775,9 @@ cogl_gles2_wrapper_get_locations (GLuint program,
 
   uniforms->alpha_test_ref_uniform
     = glGetUniformLocation (program, "alpha_test_ref");
+
+  uniforms->point_size_uniform
+    = glGetUniformLocation (program, "point_size");
 }
 
 static void
@@ -1235,6 +1241,10 @@ _cogl_wrap_prepare_for_draw (void)
             }
         }
 
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_POINT_SIZE))
+        glUniform1f (program->uniforms.point_size_uniform,
+                     w->point_size);
+
       w->dirty_uniforms = 0;
     }
 
@@ -1686,6 +1696,15 @@ _cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params)
 {
   /* FIXME: the GLES 2 backend doesn't yet support lighting so this
      function can't do anything */
+}
+
+void
+_cogl_wrap_glPointSize (GLfloat size)
+{
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  w->point_size = size;
+  w->dirty_uniforms |= COGL_GLES2_DIRTY_POINT_SIZE;
 }
 
 void

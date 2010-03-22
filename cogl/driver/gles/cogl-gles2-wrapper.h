@@ -74,8 +74,9 @@ enum
     COGL_GLES2_DIRTY_FOG_COLOR        = 1 << 6,
     COGL_GLES2_DIRTY_ALPHA_TEST_REF   = 1 << 7,
     COGL_GLES2_DIRTY_TEXTURE_UNITS    = 1 << 8,
+    COGL_GLES2_DIRTY_POINT_SIZE       = 1 << 9,
 
-    COGL_GLES2_DIRTY_ALL              = (1 << 9) - 1
+    COGL_GLES2_DIRTY_ALL              = (1 << 10) - 1
   };
 
 /* Dirty flags for shader vertex attribute pointers */
@@ -110,6 +111,8 @@ struct _CoglGles2WrapperUniforms
   GLint      alpha_test_ref_uniform;
 
   GLint      texture_unit_uniform;
+
+  GLint      point_size_uniform;
 };
 
 struct _CoglGles2WrapperTexEnv
@@ -204,6 +207,7 @@ struct _CoglGles2Wrapper
   GLfloat fog_start;
   GLfloat fog_end;
   GLfloat fog_color[4];
+  GLfloat point_size;
   CoglBoxedValue custom_uniforms[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
 };
 
@@ -377,6 +381,8 @@ void _cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 
 void _cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params);
 
+void _cogl_wrap_glPointSize (GLfloat point_size);
+
 /* This function is only available on GLES 2 */
 #define _cogl_wrap_glGenerateMipmap glGenerateMipmap
 
@@ -419,6 +425,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #define glFogfv                      _cogl_wrap_glFogfv
 #define glTexParameteri              _cogl_wrap_glTexParameteri
 #define glMaterialfv                 _cogl_wrap_glMaterialfv
+#define glPointSize                  _cogl_wrap_glPointSize
 #endif /* COGL_GLES2_WRAPPER_NO_REMAP */
 
 #else /* HAVE_COGL_GLES2 */

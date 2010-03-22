@@ -119,6 +119,8 @@ typedef struct
 
   gboolean              legacy_depth_test_enabled;
 
+  float             point_size_cache;
+
   CoglBuffer       *current_buffer[COGL_BUFFER_BIND_TARGET_COUNT];
 
   /* Framebuffers */
