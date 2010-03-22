@@ -6,6 +6,8 @@ const Lang = imports.lang;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
 
+const Params = imports.misc.params;
+
 const SNAP_BACK_ANIMATION_TIME = 0.25;
 
 let eventHandlerActor = null;
@@ -27,14 +29,16 @@ function _getEventHandlerActor() {
     return eventHandlerActor;
 }
 
-function _Draggable(actor, manualMode) {
-    this._init(actor, manualMode);
+function _Draggable(actor, params) {
+    this._init(actor, params);
 }
 
 _Draggable.prototype = {
-    _init : function(actor, manualMode) {
+    _init : function(actor, params) {
+        params = Params.parse(params, { manualMode: false });
+
         this.actor = actor;
-        if (!manualMode)
+        if (!params.manualMode)
             this.actor.connect('button-press-event',
                                Lang.bind(this, this._onButtonPress));
 
@@ -328,10 +332,13 @@ Signals.addSignalMethods(_Draggable.prototype);
 /**
  * makeDraggable:
  * @actor: Source actor
- * @manualMode: If given, do not automatically start drag and drop on click
+ * @params: (optional) Additional parameters
  *
  * Create an object which controls drag and drop for the given actor.
+ *
+ * If %manualMode is %true in @params, do not automatically start
+ * drag and drop on click
  */
-function makeDraggable(actor, manualMode) {
-    return new _Draggable(actor, manualMode);
+function makeDraggable(actor, params) {
+    return new _Draggable(actor, params);
 }

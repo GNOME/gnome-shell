@@ -445,7 +445,8 @@ DashPlaceDisplayItem.prototype = {
         this.actor._delegate = this;
         this._dragStartX = null;
         this._dragStartY = null;
-        this._draggable = DND.makeDraggable(this.actor, true);
+        this._draggable = DND.makeDraggable(this.actor,
+                                            { manualMode: true });
     },
 
     _onClicked: function(b) {

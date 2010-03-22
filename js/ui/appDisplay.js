@@ -404,7 +404,8 @@ AppWellIcon.prototype = {
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this._menu = null;
 
-        this._draggable = DND.makeDraggable(this.actor, true);
+        this._draggable = DND.makeDraggable(this.actor,
+                                            { manualMode: true });
         this._dragStartX = null;
         this._dragStartY = null;
 
