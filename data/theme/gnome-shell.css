@@ -104,6 +104,7 @@ StTooltip {
 
 #panelLeft, #panelCenter, #panelRight {
     spacing: 4px;
+    font-weight: bold;
 }
 
 #panelLeft {
@@ -123,6 +124,7 @@ StTooltip {
     border-radius-bottomleft: 0px;
     border-radius-bottomright: 0px;
     font: 16px sans-serif;
+    font-weight: bold;
 }
 
 .panel-button:active, .panel-button:checked, .panel-button:pressed {
