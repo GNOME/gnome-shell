@@ -1579,11 +1579,11 @@ st_widget_set_direction (StWidget *self, StTextDirection dir)
 /**
  * st_widget_set_has_tooltip:
  * @widget: A #StWidget
- * @has_tooltip: #TRUE if the widget should display a tooltip
+ * @has_tooltip: %TRUE if the widget should display a tooltip
  *
  * Enables tooltip support on the #StWidget.
  *
- * Note that setting has-tooltip to #TRUE will cause the widget to be set
+ * Note that setting has-tooltip to %TRUE will cause the widget to be set
  * reactive. If you no longer need tooltip support and do not need the widget
  * to be reactive, you need to set ClutterActor::reactive to FALSE.
  *
@@ -1644,7 +1644,7 @@ st_widget_get_has_tooltip (StWidget *widget)
  * @text: text to set as the tooltip
  *
  * Set the tooltip text of the widget. This will set StWidget::has-tooltip to
- * #TRUE. A value of #NULL will unset the tooltip and set has-tooltip to #FALSE.
+ * %TRUE. A value of %NULL will unset the tooltip and set has-tooltip to %FALSE.
  *
  */
 void

@@ -1172,7 +1172,7 @@ st_box_layout_new (void)
 /**
  * st_box_layout_set_vertical:
  * @box: A #StBoxLayout
- * @vertical: #TRUE if the layout should be vertical
+ * @vertical: %TRUE if the layout should be vertical
  *
  * Set the value of the #StBoxLayout::vertical property
  *
@@ -1198,7 +1198,7 @@ st_box_layout_set_vertical (StBoxLayout *box,
  *
  * Get the value of the #StBoxLayout::vertical property.
  *
- * Returns: #TRUE if the layout is vertical
+ * Returns: %TRUE if the layout is vertical
  */
 gboolean
 st_box_layout_get_vertical (StBoxLayout *box)
@@ -1211,7 +1211,7 @@ st_box_layout_get_vertical (StBoxLayout *box)
 /**
  * st_box_layout_set_pack_start:
  * @box: A #StBoxLayout
- * @pack_start: #TRUE if the layout should use pack-start
+ * @pack_start: %TRUE if the layout should use pack-start
  *
  * Set the value of the #StBoxLayout::pack-start property.
  *
@@ -1237,7 +1237,7 @@ st_box_layout_set_pack_start (StBoxLayout *box,
  *
  * Get the value of the #StBoxLayout::pack-start property.
  *
- * Returns: #TRUE if pack-start is enabled
+ * Returns: %TRUE if pack-start is enabled
  */
 gboolean
 st_box_layout_get_pack_start (StBoxLayout *box)

@@ -422,7 +422,7 @@ st_table_child_set_row_span (StTable      *table,
  *
  * Get the x-fill state of the child
  *
- * Returns: #TRUE if the child is set to x-fill
+ * Returns: %TRUE if the child is set to x-fill
  */
 gboolean
 st_table_child_get_x_fill (StTable      *table,
@@ -473,7 +473,7 @@ st_table_child_set_x_fill (StTable      *table,
  *
  * Get the y-fill state of the child
  *
- * Returns: #TRUE if the child is set to y-fill
+ * Returns: %TRUE if the child is set to y-fill
  */
 gboolean
 st_table_child_get_y_fill (StTable      *table,
@@ -523,7 +523,7 @@ st_table_child_set_y_fill (StTable      *table,
  *
  * Get the x-expand property of the child
  *
- * Returns: #TRUE if the child is set to x-expand
+ * Returns: %TRUE if the child is set to x-expand
  */
 gboolean
 st_table_child_get_x_expand (StTable      *table,
@@ -602,7 +602,7 @@ st_table_child_set_y_expand (StTable      *table,
  *
  * Get the y-expand property of the child.
  *
- * Returns: #TRUE if the child is set to y-expand
+ * Returns: %TRUE if the child is set to y-expand
  */
 gboolean
 st_table_child_get_y_expand (StTable      *table,
@@ -721,7 +721,7 @@ st_table_child_set_y_align (StTable      *table,
  * st_table_child_set_allocate_hidden:
  * @table: A #StTable
  * @child: A #ClutterActor
- * @value: #TRUE if the actor should be allocated when hidden
+ * @value: %TRUE if the actor should be allocated when hidden
  *
  * Set whether the child should be allocate even if it is hidden
  */
@@ -754,7 +754,7 @@ st_table_child_set_allocate_hidden (StTable      *table,
  *
  * Determine if the child is allocated even if it is hidden
  *
- * Returns: #TRUE if the actor is allocated when hidden
+ * Returns: %TRUE if the actor is allocated when hidden
  */
 gboolean
 st_table_child_get_allocate_hidden (StTable      *table,

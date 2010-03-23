@@ -494,7 +494,7 @@ st_button_set_label (StButton    *button,
  *
  * Get the toggle mode status of the button.
  *
- * Returns: #TRUE if toggle mode is set, otherwise #FALSE
+ * Returns: %TRUE if toggle mode is set, otherwise %FALSE
  */
 gboolean
 st_button_get_toggle_mode (StButton *button)
@@ -507,7 +507,7 @@ st_button_get_toggle_mode (StButton *button)
 /**
  * st_button_set_toggle_mode:
  * @button: a #Stbutton
- * @toggle: #TRUE or #FALSE
+ * @toggle: %TRUE or %FALSE
  *
  * Enables or disables toggle mode for the button. In toggle mode, the active
  * state will be "toggled" when the user clicks the button.
@@ -529,7 +529,7 @@ st_button_set_toggle_mode (StButton *button,
  *
  * Get the state of the button that is in toggle mode.
  *
- * Returns: #TRUE if the button is checked, or #FALSE if not
+ * Returns: %TRUE if the button is checked, or %FALSE if not
  */
 gboolean
 st_button_get_checked (StButton *button)
@@ -542,10 +542,10 @@ st_button_get_checked (StButton *button)
 /**
  * st_button_set_checked:
  * @button: a #Stbutton
- * @checked: #TRUE or #FALSE
+ * @checked: %TRUE or %FALSE
  *
  * Sets the pressed state of the button. This is only really useful if the
- * button has #toggle-mode mode set to #TRUE.
+ * button has #toggle-mode mode set to %TRUE.
  */
 void
 st_button_set_checked (StButton *button,

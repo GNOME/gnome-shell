@@ -504,7 +504,7 @@ st_overflow_box_init (StOverflowBox *self)
  *
  * Get the value of the #StOverflowBox::pack-start property.
  *
- * Returns: #TRUE if pack-start is enabled
+ * Returns: %TRUE if pack-start is enabled
  */
 gboolean
 st_overflow_box_get_min_children (StOverflowBox *box)
