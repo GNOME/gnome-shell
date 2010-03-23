@@ -9,6 +9,7 @@ TEST_JS =					\
 	interactive/entry.js			\
 	interactive/inline-style.js		\
 	interactive/scrolling.js		\
+	interactive/scroll-view-sizing.js	\
 	interactive/table.js			\
 	testcommon/border-image.png		\
 	testcommon/ui.js                        \
