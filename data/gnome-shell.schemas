@@ -166,7 +166,7 @@
         <applyto>/desktop/gnome/shell/recorder/file_extension</applyto>
         <owner>gnome-shell</owner>
         <type>string</type>
-        <default>ogg</default>
+        <default>ogv</default>
         <locale name="C">
           <short>File extension used for storing the screencast</short>
           <long>
