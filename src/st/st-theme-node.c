@@ -2489,7 +2489,7 @@ st_theme_node_get_content_box (StThemeNode           *node,
 /**
  * st_theme_node_geometry_equal:
  * @node: a #StThemeNode
- * @node: a different #StThemeNode
+ * @other: a different #StThemeNode
  *
  * Tests if two theme nodes have the same borders and padding; this can be
  * used to optimize having to relayout when the style applied to a Clutter
