@@ -56,15 +56,20 @@ fi
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
 CLUTTER_MIN_VERSION=1.2.0
+GOBJECT_INTROSPECTION_MIN_VERSION=0.6.9
+GJS_MIN_VERSION=0.6
+MUTTER_MIN_VERSION=2.29.1
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins >= 2.29.0
-                                 gjs-gi-1.0 libgnome-menu $recorder_modules gconf-2.0
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1
+                                 mutter-plugins >= $MUTTER_MIN_VERSION
+                                 gjs-gi-1.0 >= $GJS_MIN_VERSION
+				 libgnome-menu $recorder_modules gconf-2.0
                                  gdk-x11-2.0
 				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                  libstartup-notification-1.0
-                                 gobject-introspection-1.0 >= 0.6.5)
+                                 gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION)
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-2.0 libcroco-0.6 gnome-desktop-2.0 >= 2.26)
 PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)
