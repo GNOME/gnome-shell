@@ -8310,16 +8310,16 @@ clutter_geometry_union (const ClutterGeometry *geometry_a,
 {
   /* We don't try to handle rectangles that can't be represented
    * as a signed integer box */
-  gint x1 = MIN (geometry_a->x, geometry_b->x);
-  gint y1 = MIN (geometry_a->y, geometry_b->y);
-  gint x2 = MAX (geometry_a->x + (gint)geometry_a->width,
-                 geometry_b->x + (gint)geometry_b->width);
-  gint y2 = MAX (geometry_a->y + (gint)geometry_a->height,
-                 geometry_b->y + (gint)geometry_b->height);
-  result->x = x1;
-  result->y = y1;
-  result->width = x2 - x1;
-  result->height = y2 - y1;
+  gint x_1 = MIN (geometry_a->x, geometry_b->x);
+  gint y_1 = MIN (geometry_a->y, geometry_b->y);
+  gint x_2 = MAX (geometry_a->x + (gint)geometry_a->width,
+                  geometry_b->x + (gint)geometry_b->width);
+  gint y_2 = MAX (geometry_a->y + (gint)geometry_a->height,
+                  geometry_b->y + (gint)geometry_b->height);
+  result->x = x_1;
+  result->y = y_1;
+  result->width = x_2 - x_1;
+  result->height = y_2 - y_1;
 }
 
 /*
