@@ -1514,7 +1514,7 @@ remove_class_name (gchar       **class_list,
   else
     end++;
 
-  new_class_list = g_strdup_printf ("%.*s%s", match - *class_list,
+  new_class_list = g_strdup_printf ("%.*s%s", (int)(match - *class_list),
                                     *class_list, end);
   g_free (*class_list);
   *class_list = new_class_list;
