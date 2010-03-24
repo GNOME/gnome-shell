@@ -269,7 +269,7 @@ RunDialog.prototype = {
                 return true;
             }
             if (symbol == Clutter.Return) {
-                if (e.get_state() & Clutter.ModifierType.CONTROL_MASK)
+                if (Shell.get_event_state(e) & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);
                 else
                     this._run(o.get_text(), false);
