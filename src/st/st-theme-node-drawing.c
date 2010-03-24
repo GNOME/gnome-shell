@@ -658,7 +658,7 @@ st_theme_node_render_gradient (StThemeNode *node)
   texture = cogl_texture_new_from_data (node->alloc_width, node->alloc_height,
                                         COGL_TEXTURE_NONE,
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                        COGL_PIXEL_FORMAT_BGRA_8888_PRE,
 #elif G_BYTE_ORDER == G_BIG_ENDIAN
                                         COGL_PIXEL_FORMAT_ARGB_8888_PRE,
 #else
