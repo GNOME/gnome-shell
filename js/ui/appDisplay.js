@@ -451,7 +451,7 @@ AppWellIcon.prototype = {
     _onHoverChange: function(actor) {
         let hover = this.actor.hover;
         if (!hover) {
-            if (this.actor.pressed && this._dragStartX != null) {
+            if (this.actor.held && this._dragStartX != null) {
                 this.actor.fake_release();
                 this._draggable.startDrag(this._dragStartX, this._dragStartY,
                                           global.get_current_time());

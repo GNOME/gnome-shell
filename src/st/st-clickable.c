@@ -32,7 +32,8 @@ enum {
   PROP_0,
 
   PROP_ACTIVE,
-  PROP_PRESSED,
+  PROP_HELD,
+  PROP_PRESSED
 };
 
 static guint st_clickable_signals [LAST_SIGNAL] = { 0 };
@@ -223,6 +224,9 @@ st_clickable_get_property (GObject         *object,
     case PROP_ACTIVE:
       g_value_set_boolean (value, self->priv->active);
       break;
+    case PROP_HELD:
+      g_value_set_boolean (value, self->priv->held);
+      break;
     case PROP_PRESSED:
       g_value_set_boolean (value, self->priv->pressed);
       break;
@@ -276,6 +280,20 @@ st_clickable_class_init (StClickableClass *klass)
                                                          "Whether the button persistently active",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
+
+  /**
+   * StClickable:held
+   *
+   * This property tracks whether the button has the pointer grabbed,
+   * whether or not the pointer is currently hovering over the button.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_HELD,
+                                   g_param_spec_boolean ("held",
+                                                         "Held state",
+                                                         "Whether the mouse button is currently pressed",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
   /**
    * StClickable:pressed

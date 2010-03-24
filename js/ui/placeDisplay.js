@@ -476,7 +476,7 @@ DashPlaceDisplayItem.prototype = {
     _onHoverChanged: function(button) {
         let hover = button.hover;
         if (!hover) {
-            if (button.pressed && this._dragStartX != null) {
+            if (button.held && this._dragStartX != null) {
                 button.fake_release();
                 this._draggable.startDrag(this._dragStartX, this._dragStartY,
                                           global.get_current_time());
