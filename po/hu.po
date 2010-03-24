@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-16 10:04+0100\n"
-"PO-Revision-Date: 2010-02-16 10:10+0100\n"
+"POT-Creation-Date: 2010-03-24 14:25+0100\n"
+"PO-Revision-Date: 2010-03-24 14:26+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -26,27 +26,27 @@ msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:880
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
-#: ../js/ui/appDisplay.js:276
+#: ../js/ui/appDisplay.js:343
 msgid "PREFERENCES"
 msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/appDisplay.js:649
+#: ../js/ui/appDisplay.js:729
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:733
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:654
+#: ../js/ui/appDisplay.js:734
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
-#: ../js/ui/appDisplay.js:1006
+#: ../js/ui/appDisplay.js:1086
 msgid "Drag here to add favorites"
 msgstr "Ide húzással kedvenceket vehet fel"
 
@@ -60,87 +60,96 @@ msgstr "%s felvéve a Kedvencek közé."
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
-#: ../js/ui/dash.js:241
-msgid "Find..."
-msgstr "Keresés…"
+#: ../js/ui/dash.js:194
+msgid "Find"
+msgstr "Keresés"
 
-#: ../js/ui/dash.js:508
+#: ../js/ui/dash.js:507
 msgid "Searching..."
 msgstr "Keresés…"
 
-#: ../js/ui/dash.js:522
+#: ../js/ui/dash.js:521
 msgid "No matching results."
 msgstr "Nincs találat."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:580
 msgid "PLACES & DEVICES"
 msgstr "HELYEK ÉS ESZKÖZÖK"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "LEGUTÓBBI ELEMEK"
 
-#: ../js/ui/lookingGlass.js:356
+#: ../js/ui/lookingGlass.js:363
 msgid "No extensions installed"
 msgstr "Nincsenek kiterjesztések telepítve"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:400
 msgid "Enabled"
 msgstr "Engedélyezve"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:402
 msgid "Disabled"
 msgstr "Tiltva"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:404
 msgid "Error"
 msgstr "Hiba"
 
-#: ../js/ui/lookingGlass.js:399
+#: ../js/ui/lookingGlass.js:406
 msgid "Out of date"
 msgstr "Elavult"
 
-#: ../js/ui/lookingGlass.js:424
+#: ../js/ui/lookingGlass.js:431
 msgid "View Source"
 msgstr "Forrás megtekintése"
 
-#: ../js/ui/lookingGlass.js:430
+#: ../js/ui/lookingGlass.js:437
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:182
 msgid "Undo"
 msgstr "Visszavonás"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:336
+#: ../js/ui/panel.js:385
 msgid "Activities"
 msgstr "Tevékenységek"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:616
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:563
+#: ../js/ui/panel.js:619
 msgid "%a %l:%M %p"
 msgstr "%a, %p %l.%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:103
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "„%s” leválasztása meghiúsult"
+
+#: ../js/ui/placeDisplay.js:106
+msgid "Retry"
+msgstr "Újra"
+
+#: ../js/ui/placeDisplay.js:151
 msgid "Connect to..."
 msgstr "Kapcsolódás…"
 
-#: ../js/ui/runDialog.js:245
+#: ../js/ui/runDialog.js:232
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../js/ui/runDialog.js:361
+#: ../js/ui/runDialog.js:376
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
@@ -198,32 +207,42 @@ msgstr "Alkalmazások"
 msgid "Recent Documents"
 msgstr "Legutóbbi dokumentumok"
 
-#: ../src/shell-global.c:976
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s indítása befejeződött"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "„%s” kész"
+
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:980
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:985
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:990
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:995
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
