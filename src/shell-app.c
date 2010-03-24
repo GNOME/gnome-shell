@@ -7,6 +7,8 @@
 #include "shell-global.h"
 #include "shell-enum-types.h"
 #include "display.h"
+#include "st.h"
+#include "shell-window-tracker.h"
 
 #include <string.h>
 
@@ -731,6 +733,37 @@ _shell_app_set_starting (ShellApp        *app,
     shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
   else if (!starting && app->state == SHELL_APP_STATE_STARTING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+}
+
+/**
+ * shell_app_request_quit:
+ * @app: A #ShellApp
+ *
+ * Initiate an asynchronous request to quit this application.
+ * The application may interact with the user, and the user
+ * might cancel the quit request from the application UI.
+ *
+ * This operation may not be supported for all applications.
+ *
+ * Returns: %TRUE if a quit request is supported for this application
+ */
+gboolean
+shell_app_request_quit (ShellApp   *app)
+{
+  GSList *iter;
+
+  /* TODO - check for an XSMP connection; we could probably use that */
+
+  for (iter = app->windows; iter; iter = iter->next)
+    {
+      MetaWindow *win = iter->data;
+
+      if (!shell_window_tracker_is_window_interesting (win))
+        continue;
+
+      meta_window_delete (win, shell_global_get_current_time (shell_global_get ()));
+    }
+  return TRUE;
 }
 
 static void

@@ -3,6 +3,7 @@
 #define __SHELL_APP_H__
 
 #include <clutter/clutter.h>
+#include <gio/gio.h>
 
 #include "window.h"
 
@@ -48,6 +49,8 @@ void shell_app_activate (ShellApp *app);
 void shell_app_open_new_window (ShellApp *app);
 
 ShellAppState shell_app_get_state (ShellApp *app);
+
+gboolean shell_app_request_quit (ShellApp *app);
 
 guint shell_app_get_n_windows (ShellApp *app);
 
