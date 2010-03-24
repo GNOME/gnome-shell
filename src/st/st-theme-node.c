@@ -204,7 +204,7 @@ st_theme_node_get_pseudo_class (StThemeNode *node)
   return node->pseudo_class;
 }
 
-void
+static void
 ensure_properties (StThemeNode *node)
 {
   if (!node->properties_computed)
