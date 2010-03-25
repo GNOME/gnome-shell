@@ -277,7 +277,7 @@ MosaicView.prototype = {
     _init: function(width, height, x, y, workspaces) {
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
-        this.actor.style_class = "workspaces mosaic";
+        this.actor.add_style_class_name('mosaic');
         this._actor.set_clip(x - Workspace.FRAME_SIZE,
                              y - Workspace.FRAME_SIZE,
                              width + 2 * Workspace.FRAME_SIZE,
@@ -519,7 +519,7 @@ SingleView.prototype = {
         this._actor.add_actor(this._leftShadow);
         this._actor.add_actor(this._rightShadow);
 
-        this.actor.style_class = "workspaces single";
+        this.actor.add_style_class_name('single');
         this._actor.set_clip(x, y, width, height);
         this._indicatorsPanel = null;
         this._indicatorsPanelWidth = 0;
