@@ -24,6 +24,10 @@
 #ifndef __COGL_PRIMITIVES_H
 #define __COGL_PRIMITIVES_H
 
+#include <glib.h>
+
+G_BEGIN_DECLS
+
 /**
  * SECTION:cogl-primitives
  * @short_description: Functions that draw various primitive 3D shapes
@@ -180,5 +184,7 @@ void
 cogl_polygon (const CoglTextureVertex  *vertices,
               unsigned int              n_vertices,
               gboolean                  use_color);
+
+G_END_DECLS
 
 #endif /* __COGL_PRIMITIVES_H */
