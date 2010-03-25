@@ -653,7 +653,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
       child_box.x1 = content_box.x2 - sb_width;
       child_box.y1 = content_box.y1;
       child_box.x2 = content_box.x2;
-      child_box.y2 = content_box.y2 - sb_height;
+      child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
 
       clutter_actor_allocate (priv->vscroll, &child_box, flags);
     }
@@ -663,13 +663,15 @@ st_scroll_view_allocate (ClutterActor          *actor,
     {
       child_box.x1 = content_box.x1;
       child_box.y1 = content_box.y2 - sb_height;
-      child_box.x2 = content_box.x2 - sb_width;
+      child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
       child_box.y2 = content_box.y2;
 
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
     }
 
-  /* Fold visibility into the scrollbar sizes to simplify the rest of the computations */
+  /* Now fold visibility into the scrollbar sizes to simplify the rest
+   * of the computations.
+   */
   if (!hscrollbar_visible)
     sb_height = 0;
   if (!vscrollbar_visible)
