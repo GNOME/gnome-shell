@@ -157,7 +157,10 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side */
   /* FIXME: wrap modes should be part of the material! */
-  _cogl_texture_set_wrap_mode_parameter (tex_handle, GL_CLAMP_TO_EDGE);
+  _cogl_texture_set_wrap_mode_parameters (tex_handle,
+                                          GL_CLAMP_TO_EDGE,
+                                          GL_CLAMP_TO_EDGE,
+                                          GL_CLAMP_TO_EDGE);
 
   state.material = material;
 
@@ -329,7 +332,10 @@ _cogl_multitexture_quad_single_primitive (const float *position,
       else
         wrap_mode = GL_CLAMP_TO_EDGE;
 
-      _cogl_texture_set_wrap_mode_parameter (tex_handle, wrap_mode);
+      _cogl_texture_set_wrap_mode_parameters (tex_handle,
+                                              wrap_mode,
+                                              wrap_mode,
+                                              wrap_mode);
     }
 
   _cogl_journal_log_quad (position,
@@ -920,8 +926,10 @@ cogl_polygon (const CoglTextureVertex *vertices,
              * a transparent border
              * XXX: it's doesn't look like we save/restore this, like
              * the comment implies? */
-            _cogl_texture_set_wrap_mode_parameter (tex_handle,
-                                                   GL_CLAMP_TO_BORDER);
+            _cogl_texture_set_wrap_mode_parameters (tex_handle,
+                                                    GL_CLAMP_TO_BORDER,
+                                                    GL_CLAMP_TO_BORDER,
+                                                    GL_CLAMP_TO_BORDER);
           }
 #endif
           break;
