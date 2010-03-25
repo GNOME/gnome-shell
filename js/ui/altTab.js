@@ -83,7 +83,7 @@ AltTabPopup.prototype = {
         // We select a size based on an icon size that does not overflow the screen
         let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(focus.width - POPUP_LIST_SPACING * 2);
         let [childMinWidth, childNaturalWidth] = this._appSwitcher.actor.get_preferred_width(childNaturalHeight);
-        childBox.x1 = Math.max(POPUP_LIST_SPACING, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
+        childBox.x1 = Math.max(focus.x + POPUP_LIST_SPACING, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
         childBox.x2 = Math.min(childBox.x1 + focus.width - POPUP_LIST_SPACING * 2, childBox.x1 + childNaturalWidth);
         childBox.y1 = focus.y + Math.floor((focus.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
@@ -97,15 +97,15 @@ AltTabPopup.prototype = {
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
             let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
-            childBox.x1 = Math.max(POPUP_LIST_SPACING, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > focus.width - POPUP_LIST_SPACING * 2) {
+            childBox.x1 = Math.max(focus.x + POPUP_LIST_SPACING, Math.floor(thumbnailCenter - childNaturalWidth / 2));
+            if (childBox.x1 + childNaturalWidth > focus.x + focus.width - POPUP_LIST_SPACING * 2) {
                 let offset = childBox.x1 + childNaturalWidth - focus.width + POPUP_LIST_SPACING * 2;
                 childBox.x1 = Math.max(POPUP_LIST_SPACING, childBox.x1 - offset - POPUP_LIST_SPACING * 2);
             }
 
             childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > focus.width - POPUP_LIST_SPACING)
-                childBox.x2 = focus.width - POPUP_LIST_SPACING;
+            if (childBox.x2 > focus.x + focus.width - POPUP_LIST_SPACING)
+                childBox.x2 = focus.x + focus.width - POPUP_LIST_SPACING;
             childBox.y1 = this._appSwitcher.actor.allocation.y2 + POPUP_LIST_SPACING * 2;
             this._thumbnails.addClones(focus.height - POPUP_LIST_SPACING - childBox.y1);
             let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
@@ -525,8 +525,7 @@ SwitcherList.prototype = {
         let itemSize = this._items[index].allocation.x2 - this._items[index].allocation.x1;
         let [posX, posY] = this._items[index].get_transformed_position();
         posX += this.actor.x;
-
-        if (posX + itemSize > monitor.width)
+        if (posX + itemSize > monitor.width + monitor.x)
             this._scrollToRight();
         else if (posX < 0)
             this._scrollToLeft();
