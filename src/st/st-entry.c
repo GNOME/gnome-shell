@@ -585,7 +585,7 @@ st_entry_enter_event (ClutterActor         *actor,
 
   if (priv->hint && priv->hint_visible)
     {
-      st_widget_add_style_pseudo_class (ST_WIDGET (actor), "hover");
+      st_widget_set_hover (ST_WIDGET (actor), TRUE);
     }
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
@@ -595,7 +595,7 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "hover");
+  st_widget_set_hover (ST_WIDGET (actor), FALSE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
 }
