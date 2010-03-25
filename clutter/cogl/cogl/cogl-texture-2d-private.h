@@ -47,7 +47,8 @@ struct _CoglTexture2D
   int             height;
   GLenum          min_filter;
   GLenum          mag_filter;
-  GLint           wrap_mode;
+  GLint           wrap_mode_s;
+  GLint           wrap_mode_t;
   gboolean        auto_mipmap;
   gboolean        mipmaps_dirty;
 };

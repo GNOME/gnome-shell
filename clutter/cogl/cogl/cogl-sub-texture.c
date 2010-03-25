@@ -224,12 +224,17 @@ _cogl_sub_texture_foreach_sub_texture_in_region (
 }
 
 static void
-_cogl_sub_texture_set_wrap_mode_parameter (CoglTexture *tex,
-                                           GLenum wrap_mode)
+_cogl_sub_texture_set_wrap_mode_parameters (CoglTexture *tex,
+                                            GLenum wrap_mode_s,
+                                            GLenum wrap_mode_t,
+                                            GLenum wrap_mode_r)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  _cogl_texture_set_wrap_mode_parameter (sub_tex->full_texture, wrap_mode);
+  _cogl_texture_set_wrap_mode_parameters (sub_tex->full_texture,
+                                          wrap_mode_s,
+                                          wrap_mode_t,
+                                          wrap_mode_r);
 }
 
 static void
@@ -547,7 +552,7 @@ cogl_sub_texture_vtable =
     _cogl_sub_texture_set_filters,
     _cogl_sub_texture_ensure_mipmaps,
     _cogl_sub_texture_ensure_non_quad_rendering,
-    _cogl_sub_texture_set_wrap_mode_parameter,
+    _cogl_sub_texture_set_wrap_mode_parameters,
     _cogl_sub_texture_get_format,
     _cogl_sub_texture_get_gl_format,
     _cogl_sub_texture_get_width,

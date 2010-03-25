@@ -229,13 +229,18 @@ _cogl_atlas_texture_foreach_sub_texture_in_region (
 }
 
 static void
-_cogl_atlas_texture_set_wrap_mode_parameter (CoglTexture *tex,
-                                             GLenum wrap_mode)
+_cogl_atlas_texture_set_wrap_mode_parameters (CoglTexture *tex,
+                                              GLenum wrap_mode_s,
+                                              GLenum wrap_mode_t,
+                                              GLenum wrap_mode_r)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_set_wrap_mode_parameter (atlas_tex->sub_texture, wrap_mode);
+  _cogl_texture_set_wrap_mode_parameters (atlas_tex->sub_texture,
+                                          wrap_mode_s,
+                                          wrap_mode_t,
+                                          wrap_mode_r);
 }
 
 static void
@@ -1068,7 +1073,7 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_set_filters,
     _cogl_atlas_texture_ensure_mipmaps,
     _cogl_atlas_texture_ensure_non_quad_rendering,
-    _cogl_atlas_texture_set_wrap_mode_parameter,
+    _cogl_atlas_texture_set_wrap_mode_parameters,
     _cogl_atlas_texture_get_format,
     _cogl_atlas_texture_get_gl_format,
     _cogl_atlas_texture_get_width,

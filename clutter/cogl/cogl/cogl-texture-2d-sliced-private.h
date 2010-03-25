@@ -65,7 +65,8 @@ struct _CoglTexture2DSliced
   GLenum            min_filter;
   GLenum            mag_filter;
   gboolean          is_foreign;
-  GLint             wrap_mode;
+  GLenum            wrap_mode_s;
+  GLenum            wrap_mode_t;
   gboolean          auto_mipmap;
   gboolean          mipmaps_dirty;
 

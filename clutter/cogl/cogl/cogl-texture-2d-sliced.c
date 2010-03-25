@@ -661,14 +661,18 @@ _cogl_pot_slices_for_size (int    size_to_fill,
 }
 
 static void
-_cogl_texture_2d_sliced_set_wrap_mode_parameter (CoglTexture *tex,
-                                                 GLenum wrap_mode)
+_cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
+                                                  GLenum wrap_mode_s,
+                                                  GLenum wrap_mode_t,
+                                                  GLenum wrap_mode_r)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 
-  /* Only set the wrap mode if it's different from the current
-     value to avoid too many GL calls */
-  if (tex_2ds->wrap_mode != wrap_mode)
+  /* Only set the wrap mode if it's different from the current value
+     to avoid too many GL calls. Texture 2D doesn't make use of the r
+     coordinate so we can ignore its wrap mode */
+  if (tex_2ds->wrap_mode_s != wrap_mode_s ||
+      tex_2ds->wrap_mode_t != wrap_mode_t)
     {
       int i;
 
@@ -681,11 +685,14 @@ _cogl_texture_2d_sliced_set_wrap_mode_parameter (CoglTexture *tex,
           GLuint texnum = g_array_index (tex_2ds->slice_gl_handles, GLuint, i);
 
           GE( glBindTexture (tex_2ds->gl_target, texnum) );
-          GE( glTexParameteri (tex_2ds->gl_target, GL_TEXTURE_WRAP_S, wrap_mode) );
-          GE( glTexParameteri (tex_2ds->gl_target, GL_TEXTURE_WRAP_T, wrap_mode) );
+          GE( glTexParameteri (tex_2ds->gl_target,
+                               GL_TEXTURE_WRAP_S, wrap_mode_s) );
+          GE( glTexParameteri (tex_2ds->gl_target,
+                               GL_TEXTURE_WRAP_T, wrap_mode_t) );
         }
 
-      tex_2ds->wrap_mode = wrap_mode;
+      tex_2ds->wrap_mode_s = wrap_mode_s;
+      tex_2ds->wrap_mode_t = wrap_mode_t;
     }
 }
 
@@ -827,7 +834,8 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
     tex_2ds->first_pixels = g_new (CoglTexturePixel, n_slices);
 
   /* Wrap mode not yet set */
-  tex_2ds->wrap_mode = GL_FALSE;
+  tex_2ds->wrap_mode_s = GL_FALSE;
+  tex_2ds->wrap_mode_t = GL_FALSE;
 
   /* Generate a "working set" of GL texture objects
    * (some implementations might supported faster
@@ -1188,7 +1196,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   tex_2ds->max_waste = 0;
 
   /* Wrap mode not yet set */
-  tex_2ds->wrap_mode = GL_FALSE;
+  tex_2ds->wrap_mode_s = GL_FALSE;
+  tex_2ds->wrap_mode_t = GL_FALSE;
 
   /* Create slice arrays */
   tex_2ds->slice_x_spans =
@@ -1728,7 +1737,7 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_set_filters,
     _cogl_texture_2d_sliced_ensure_mipmaps,
     _cogl_texture_2d_sliced_ensure_non_quad_rendering,
-    _cogl_texture_2d_sliced_set_wrap_mode_parameter,
+    _cogl_texture_2d_sliced_set_wrap_mode_parameters,
     _cogl_texture_2d_sliced_get_format,
     _cogl_texture_2d_sliced_get_gl_format,
     _cogl_texture_2d_sliced_get_width,

@@ -109,8 +109,10 @@ struct _CoglTextureVtable
   void (* ensure_mipmaps) (CoglTexture *tex);
   void (* ensure_non_quad_rendering) (CoglTexture *tex);
 
-  void (* set_wrap_mode_parameter) (CoglTexture *tex,
-                                    GLenum wrap_mode);
+  void (* set_wrap_mode_parameters) (CoglTexture *tex,
+                                     GLenum wrap_mode_s,
+                                     GLenum wrap_mode_t,
+                                     GLenum wrap_mode_r);
 
   CoglPixelFormat (* get_format) (CoglTexture *tex);
   GLenum (* get_gl_format) (CoglTexture *tex);
@@ -148,8 +150,11 @@ GLenum
 _cogl_texture_get_gl_format (CoglHandle handle);
 
 void
-_cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
-                                       GLenum wrap_mode);
+_cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
+                                        GLenum wrap_mode_s,
+                                        GLenum wrap_mode_t,
+                                        GLenum wrap_mode_r);
+
 
 void
 _cogl_texture_set_filters (CoglHandle handle,

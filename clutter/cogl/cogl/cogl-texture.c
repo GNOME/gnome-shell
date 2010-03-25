@@ -212,12 +212,17 @@ _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride)
 
 /* FIXME: wrap modes should be set on materials not textures */
 void
-_cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
-                                       GLenum wrap_mode)
+_cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
+                                        GLenum wrap_mode_s,
+                                        GLenum wrap_mode_t,
+                                        GLenum wrap_mode_r)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
-  tex->vtable->set_wrap_mode_parameter (tex, wrap_mode);
+  tex->vtable->set_wrap_mode_parameters (tex,
+                                         wrap_mode_s,
+                                         wrap_mode_t,
+                                         wrap_mode_r);
 }
 
 /* This is like CoglSpanIter except it deals with floats and it

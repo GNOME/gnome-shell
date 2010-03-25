@@ -124,24 +124,29 @@ _cogl_texture_2d_foreach_sub_texture_in_region (
 }
 
 static void
-_cogl_texture_2d_set_wrap_mode_parameter (CoglTexture *tex,
-                                          GLenum wrap_mode)
+_cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
+                                           GLenum wrap_mode_s,
+                                           GLenum wrap_mode_t,
+                                           GLenum wrap_mode_r)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
-  /* Only set the wrap mode if it's different from the current
-     value to avoid too many GL calls */
-  if (tex_2d->wrap_mode != wrap_mode)
+  /* Only set the wrap mode if it's different from the current value
+     to avoid too many GL calls. Texture 2D doesn't make use of the r
+     coordinate so we can ignore its wrap mode */
+  if (tex_2d->wrap_mode_s != wrap_mode_s ||
+      tex_2d->wrap_mode_t != wrap_mode_t)
     {
       /* Any queued texture rectangles may be depending on the
        * previous wrap mode... */
       _cogl_journal_flush ();
 
       GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
-      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode) );
-      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode) );
+      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
+      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
 
-      tex_2d->wrap_mode = wrap_mode;
+      tex_2d->wrap_mode_s = wrap_mode_s;
+      tex_2d->wrap_mode_t = wrap_mode_t;
     }
 }
 
@@ -231,7 +236,8 @@ _cogl_texture_2d_create_base (unsigned int     width,
   tex_2d->mag_filter = GL_LINEAR;
 
   /* Wrap mode not yet set */
-  tex_2d->wrap_mode = GL_FALSE;
+  tex_2d->wrap_mode_s = GL_FALSE;
+  tex_2d->wrap_mode_t = GL_FALSE;
 
   tex_2d->format = internal_format;
 
@@ -643,7 +649,7 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_set_filters,
     _cogl_texture_2d_ensure_mipmaps,
     _cogl_texture_2d_ensure_non_quad_rendering,
-    _cogl_texture_2d_set_wrap_mode_parameter,
+    _cogl_texture_2d_set_wrap_mode_parameters,
     _cogl_texture_2d_get_format,
     _cogl_texture_2d_get_gl_format,
     _cogl_texture_2d_get_width,
