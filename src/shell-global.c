@@ -1144,7 +1144,7 @@ shell_global_get_focus_monitor (ShellGlobal  *global)
         {
           meta_screen_get_monitor_geometry (screen, i, &rect);
 
-          if (rect.x < wrect.x && rect.y < wrect.y &&
+          if (rect.x <= wrect.x && rect.y <= wrect.y &&
               rect.x + rect.width > wrect.x &&
               rect.y + rect.height > wrect.y)
             return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
