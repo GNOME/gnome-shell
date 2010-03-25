@@ -485,6 +485,49 @@ shell_app_system_get_app (ShellAppSystem   *self,
 }
 
 /**
+ * shell_app_system_get_app_for_path:
+ * @system: a #ShellAppSystem
+ * @desktop_path: (utf8): UTF-8 encoded absolute file name
+ *
+ * Find or create a #ShellApp corresponding to a given absolute
+ * file name which must be in the standard paths (XDG_DATA_DIRS).
+ * For files outside the datadirs, this function returns %NULL.
+ *
+ * If already cached elsewhere in memory, return that instance.
+ * Otherwise, create a new one.
+ *
+ * Return value: (transfer full): The #ShellApp for id, or %NULL if none
+ */
+ShellApp *
+shell_app_system_get_app_for_path (ShellAppSystem   *system,
+                                   const char       *desktop_path)
+{
+  const char *basename;
+  ShellAppInfo *info;
+
+  basename = g_strrstr (desktop_path, "/");
+  if (basename)
+    basename += 1;
+  else
+    basename = desktop_path;
+
+  info = g_hash_table_lookup (system->priv->app_id_to_info, basename);
+  if (!info)
+    return NULL;
+
+  if (info->type == SHELL_APP_INFO_TYPE_ENTRY)
+    {
+      const char *full_path = gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*) info->entry);
+      if (strcmp (desktop_path, full_path) != 0)
+        return NULL;
+    }
+  else
+    return NULL;
+
+  return shell_app_system_get_app (system, basename);
+}
+
+/**
  * shell_app_system_get_app_for_window:
  * @self: A #ShellAppSystem
  * @window: A #MetaWindow
