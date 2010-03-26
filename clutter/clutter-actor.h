@@ -562,6 +562,8 @@ ClutterTextDirection clutter_actor_get_text_direction (ClutterActor         *sel
 void                 clutter_actor_push_internal      (ClutterActor         *self);
 void                 clutter_actor_pop_internal       (ClutterActor         *self);
 
+gboolean             clutter_actor_has_allocation     (ClutterActor         *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */

@@ -10112,3 +10112,35 @@ _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
   self->priv->oob_queue_redraw_clip = clip;
 }
 
+/**
+ * clutter_actor_has_allocation:
+ * @self: a #ClutterActor
+ *
+ * Checks if the actor has an up-to-date allocation assigned to
+ * it. This means that the actor should have an allocation: it's
+ * visible and has a parent. It also means that there is no
+ * outstanding relayout request in progress for the actor or its
+ * children (There might be other outstanding layout requests in
+ * progress that will cause the actor to get a new allocation
+ * when the stage is laid out, however).
+ *
+ * If this function returns %FALSE, then the actor will normally
+ * be allocated before it is next drawn on the screen.
+ *
+ * Return value: %TRUE if the actor has an up-to-date allocation
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_actor_has_allocation (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  priv = self->priv;
+
+  return priv->parent_actor != NULL &&
+         CLUTTER_ACTOR_IS_VISIBLE (self) &&
+         !priv->needs_allocation;
+}

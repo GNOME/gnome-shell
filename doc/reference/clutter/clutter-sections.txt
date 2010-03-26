@@ -314,6 +314,7 @@ clutter_actor_set_fixed_position_set
 clutter_actor_get_fixed_position_set
 clutter_actor_set_request_mode
 clutter_actor_get_request_mode
+clutter_actor_has_allocation
 
 <SUBSECTION>
 clutter_actor_set_geometry
