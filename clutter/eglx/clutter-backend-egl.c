@@ -32,7 +32,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       EGLBoolean status;
 
       backend_egl->edpy =
-        eglGetDisplay ((NativeDisplayType) backend_x11->xdpy);
+        eglGetDisplay ((EGLNativeDisplayType) backend_x11->xdpy);
 
       status = eglInitialize (backend_egl->edpy,
 			      &backend_egl->egl_version_major,
@@ -57,13 +57,120 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+static gboolean
+clutter_backend_egl_create_context (ClutterBackend  *backend,
+                                    GError         **error)
+{
+  ClutterBackendEGL *backend_egl;
+  ClutterBackendX11 *backend_x11;
+  EGLConfig          config;
+  EGLint             config_count = 0;
+  EGLBoolean         status;
+  EGLint             cfg_attribs[] = {
+    /* NB: This must be the first attribute, since we may
+     * try and fallback to no stencil buffer */
+    EGL_STENCIL_SIZE,   8,
+
+    EGL_RED_SIZE,       5,
+    EGL_GREEN_SIZE,     6,
+    EGL_BLUE_SIZE,      5,
+
+    EGL_BUFFER_SIZE,    EGL_DONT_CARE,
+
+#ifdef HAVE_COGL_GLES2
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+#else /* HAVE_COGL_GLES2 */
+    EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+#endif /* HAVE_COGL_GLES2 */
+
+    EGL_NONE
+  };
+  EGLDisplay edpy;
+  gint retry_cookie = 0;
+
+  backend     = clutter_get_default_backend ();
+  backend_egl = CLUTTER_BACKEND_EGL (backend);
+
+  if (backend_egl->egl_context != EGL_NO_CONTEXT)
+    return TRUE;
+
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  edpy = clutter_eglx_display ();
+
+retry:
+  /* Here we can change the attributes depending on the fallback count... */
+
+  /* Some GLES hardware can't support a stencil buffer: */
+  if (retry_cookie == 1)
+    {
+      g_warning ("Trying with stencil buffer disabled...");
+      cfg_attribs[1 /* EGL_STENCIL_SIZE */] = 0;
+    }
+
+  /* XXX: at this point we only have one fallback */
+
+  status = eglChooseConfig (edpy,
+                            cfg_attribs,
+                            &config, 1,
+                            &config_count);
+  if (status != EGL_TRUE || config_count == 0)
+    {
+      g_warning ("eglChooseConfig failed");
+      goto fail;
+    }
+
+  if (G_UNLIKELY (backend_egl->egl_context == EGL_NO_CONTEXT))
+    {
+#ifdef HAVE_COGL_GLES2
+      static const EGLint attribs[3]
+        = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+
+      backend_egl->egl_context = eglCreateContext (edpy,
+                                                   config,
+                                                   EGL_NO_CONTEXT,
+                                                   attribs);
+#else
+      /* Seems some GLES implementations 1.x do not like attribs... */
+      backend_egl->egl_context = eglCreateContext (edpy,
+                                                   config,
+                                                   EGL_NO_CONTEXT,
+                                                   NULL);
+#endif
+      if (backend_egl->egl_context == EGL_NO_CONTEXT)
+        {
+          g_warning ("Unable to create a suitable EGL context");
+          goto fail;
+        }
+
+      backend_egl->egl_config = config;
+      CLUTTER_NOTE (GL, "Created EGL Context");
+    }
+
+  return TRUE;
+
+fail:
+
+  /* NB: We currently only support a single fallback option */
+  if (retry_cookie == 0)
+    {
+      retry_cookie = 1;
+      goto retry;
+    }
+
+  return FALSE;
+}
+
 static void
 clutter_backend_egl_ensure_context (ClutterBackend *backend,
                                     ClutterStage   *stage)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterStageWindow *impl;
 
-  if (stage == NULL)
+  if (stage == NULL ||
+      (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
+      ((impl = _clutter_stage_get_window (stage)) == NULL))
     {
       CLUTTER_NOTE (BACKEND, "Clearing EGL context");
       eglMakeCurrent (backend_egl->edpy,
@@ -73,11 +180,9 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
     }
   else
     {
-      ClutterStageWindow *impl;
       ClutterStageEGL    *stage_egl;
       ClutterStageX11    *stage_x11;
 
-      impl = _clutter_stage_get_window (stage);
       g_assert (impl != NULL);
 
       CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
@@ -87,7 +192,7 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
       stage_egl = CLUTTER_STAGE_EGL (impl);
       stage_x11 = CLUTTER_STAGE_X11 (impl);
 
-      if (!backend_egl->egl_context)
+      if (backend_egl->egl_context == EGL_NO_CONTEXT)
         return;
 
       clutter_x11_trap_x_errors ();
@@ -107,10 +212,13 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
                           EGL_NO_CONTEXT);
         }
       else
-        eglMakeCurrent (backend_egl->edpy,
-                        stage_egl->egl_surface,
-                        stage_egl->egl_surface,
-                        backend_egl->egl_context);
+        {
+          CLUTTER_NOTE (MULTISTAGE, "Setting real surface current");
+          eglMakeCurrent (backend_egl->edpy,
+                          stage_egl->egl_surface,
+                          stage_egl->egl_surface,
+                          backend_egl->egl_context);
+        }
 
       if (clutter_x11_untrap_x_errors ())
         g_critical ("Unable to make the stage window 0x%x the current "
@@ -123,9 +231,6 @@ static void
 clutter_backend_egl_redraw (ClutterBackend *backend,
                             ClutterStage   *stage)
 {
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterStageEGL    *stage_egl;
-  ClutterStageX11    *stage_x11;
   ClutterStageWindow *impl;
 
   impl = _clutter_stage_get_window (stage);
@@ -134,26 +239,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
 
   g_assert (CLUTTER_IS_STAGE_EGL (impl));
 
-  stage_x11 = CLUTTER_STAGE_X11 (impl);
-  stage_egl = CLUTTER_STAGE_EGL (impl);
-
-  /* this will cause the stage implementation to be painted as well */
-  clutter_actor_paint (CLUTTER_ACTOR (stage));
-  cogl_flush ();
-
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  if (stage_x11->xwin)
-    {
-      /* clutter_feature_wait_for_vblank (); */
-      eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
-    }
-  else
-    {
-      eglWaitGL ();
-      CLUTTER_GLERR ();
-    }
+  clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
 }
 
 static void
@@ -213,6 +299,10 @@ static ClutterFeatureFlags
 clutter_backend_egl_get_features (ClutterBackend *backend)
 {
   ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterFeatureFlags flags;
+
+  flags = clutter_backend_x11_get_features (backend);
+  flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
                 "GL_VENDOR: %s\n"
@@ -228,8 +318,7 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
                 eglQueryString (backend_egl->edpy, EGL_VERSION),
                 eglQueryString (backend_egl->edpy, EGL_EXTENSIONS));
 
-  /* We can actually resize too */
-  return CLUTTER_FEATURE_STAGE_CURSOR|CLUTTER_FEATURE_STAGE_MULTIPLE;
+  return flags;
 }
 
 static ClutterStageWindow *
@@ -244,7 +333,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));
   
-  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
+  stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
   
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);
@@ -266,6 +355,9 @@ clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
   XVisualInfo visinfo_template;
   XVisualInfo *visinfo = None;
   int visinfos_count;
+
+  if (!clutter_backend_egl_create_context (CLUTTER_BACKEND (backend_x11), NULL))
+    return NULL;
 
   eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
                       EGL_NATIVE_VISUAL_ID, &visualid);
@@ -298,17 +390,14 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->get_features   = clutter_backend_egl_get_features;
   backend_class->create_stage   = clutter_backend_egl_create_stage;
   backend_class->ensure_context = clutter_backend_egl_ensure_context;
+  backend_class->create_context = clutter_backend_egl_create_context;
   backendx11_class->get_visual_info = clutter_backend_egl_get_visual_info;
 }
 
 static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
-
-  clutter_backend_set_resolution (backend, 96.0);
-  clutter_backend_set_double_click_time (backend, 250);
-  clutter_backend_set_double_click_distance (backend, 5);
+  backend_egl->egl_context = EGL_NO_CONTEXT;
 }
 
 GType

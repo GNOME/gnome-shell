@@ -49,7 +49,7 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
   else
     stage_x11->xwin = None;
 
-  if (stage_egl->egl_surface)
+  if (stage_egl->egl_surface != EGL_NO_SURFACE)
     {
       eglDestroySurface (clutter_eglx_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
@@ -61,50 +61,16 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 }
 
 static gboolean
-_clutter_stage_egl_try_realize (ClutterStageWindow *stage_window, int *retry_cookie)
+clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageEGL   *stage_egl = CLUTTER_STAGE_EGL (stage_window);
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackend    *backend;
   ClutterBackendEGL *backend_egl;
   ClutterBackendX11 *backend_x11;
-  EGLConfig          config;
-  EGLint             config_count;
-  EGLBoolean         status;
-  int                i;
-  int                num_configs;
-  EGLConfig         *all_configs;
-  EGLint             cfg_attribs[] = {
-    /* NB: This must be the first attribute, since we may
-     * try and fallback to no stencil buffer */
-    EGL_STENCIL_SIZE,   8,
+  EGLDisplay         edpy;
 
-    EGL_RED_SIZE,       5,
-    EGL_GREEN_SIZE,     6,
-    EGL_BLUE_SIZE,      5,
-
-    EGL_BUFFER_SIZE,    EGL_DONT_CARE,
-
-#ifdef HAVE_COGL_GLES2
-    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-#else /* HAVE_COGL_GLES2 */
-    EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
-#endif /* HAVE_COGL_GLES2 */
-
-    EGL_NONE
-  };
-  EGLDisplay edpy;
-
-  /* Here we can change the attributes depending on the fallback count... */
-
-  /* Some GLES hardware can't support a stencil buffer: */
-  if (*retry_cookie == 1)
-    {
-      g_warning ("Trying with stencil buffer disabled...");
-      cfg_attribs[1 /* EGL_STENCIL_SIZE */] = 0;
-    }
-
-  /* XXX: at this point we only have one fallback */
+  CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
   backend     = clutter_get_default_backend ();
   backend_egl = CLUTTER_BACKEND_EGL (backend);
@@ -112,59 +78,74 @@ _clutter_stage_egl_try_realize (ClutterStageWindow *stage_window, int *retry_coo
 
   edpy = clutter_eglx_display ();
 
-  eglGetConfigs (edpy, NULL, 0, &num_configs);
-
-  all_configs = g_malloc (num_configs * sizeof (EGLConfig));
-  eglGetConfigs (clutter_eglx_display (),
-                 all_configs,
-                 num_configs,
-                 &num_configs);
-
-  for (i = 0; i < num_configs; ++i)
-    {
-      EGLint red = -1, green = -1, blue = -1, alpha = -1, stencil = -1;
-
-      eglGetConfigAttrib (edpy,
-                          all_configs[i],
-                          EGL_RED_SIZE, &red);
-      eglGetConfigAttrib (edpy,
-                          all_configs[i],
-                          EGL_GREEN_SIZE, &green);
-      eglGetConfigAttrib (edpy,
-                          all_configs[i],
-                          EGL_BLUE_SIZE, &blue);
-      eglGetConfigAttrib (edpy,
-                          all_configs[i],
-                          EGL_ALPHA_SIZE, &alpha);
-      eglGetConfigAttrib (edpy,
-                          all_configs[i],
-                          EGL_STENCIL_SIZE, &stencil);
-      CLUTTER_NOTE (BACKEND, "EGLConfig == R:%d G:%d B:%d A:%d S:%d \n",
-                    red, green, blue, alpha, stencil);
-    }
-
-  g_free (all_configs);
-
-  status = eglChooseConfig (edpy,
-                            cfg_attribs,
-                            &config, 1,
-                            &config_count);
-  if (status != EGL_TRUE)
-    {
-      g_warning ("eglChooseConfig failed");
-      goto fail;
-    }
-
   if (stage_x11->xwin == None)
-    stage_x11->xwin =
-      XCreateSimpleWindow (backend_x11->xdpy,
-                           backend_x11->xwin_root,
-                           0, 0,
-                           stage_x11->xwin_width,
-                           stage_x11->xwin_height,
-                           0, 0,
-                           WhitePixel (backend_x11->xdpy,
-                                       backend_x11->xscreen_num));
+    {
+      XSetWindowAttributes xattr;
+      unsigned long mask;
+      XVisualInfo *xvisinfo;
+      gfloat width, height;
+
+      CLUTTER_NOTE (MISC, "Creating stage X window");
+
+      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+      if (xvisinfo == NULL)
+        {
+          g_critical ("Unable to find suitable GL visual.");
+          return FALSE;
+        }
+
+      /* window attributes */
+      xattr.background_pixel = WhitePixel (backend_x11->xdpy,
+                                           backend_x11->xscreen_num);
+      xattr.border_pixel = 0;
+      xattr.colormap = XCreateColormap (backend_x11->xdpy,
+                                        backend_x11->xwin_root,
+                                        xvisinfo->visual,
+                                        AllocNone);
+      mask = CWBorderPixel | CWColormap;
+
+      /* Call get_size - this will either get the geometry size (which
+       * before we create the window is set to 640x480), or if a size
+       * is set, it will get that. This lets you set a size on the
+       * stage before it's realized.
+       */
+      clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper),
+                              &width,
+                              &height);
+      stage_x11->xwin_width = (gint)width;
+      stage_x11->xwin_height = (gint)height;
+
+      stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
+                                       backend_x11->xwin_root,
+                                       0, 0,
+                                       stage_x11->xwin_width,
+                                       stage_x11->xwin_height,
+                                       0,
+                                       xvisinfo->depth,
+                                       InputOutput,
+                                       xvisinfo->visual,
+                                       mask, &xattr);
+
+      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x, size: %dx%d",
+                    stage_window,
+                    (unsigned int) stage_x11->xwin,
+                    stage_x11->xwin_width,
+                    stage_x11->xwin_height);
+
+      XFree (xvisinfo);
+    }
+
+  if (stage_egl->egl_surface == EGL_NO_SURFACE)
+    {
+      stage_egl->egl_surface =
+        eglCreateWindowSurface (edpy,
+                                backend_egl->egl_config,
+                                (EGLNativeWindowType) stage_x11->xwin,
+                                NULL);
+    }
+
+  if (stage_egl->egl_surface == EGL_NO_SURFACE)
+    g_warning ("Unable to create an EGL surface");
 
   if (clutter_x11_has_event_retrieval ())
     {
@@ -192,107 +173,13 @@ _clutter_stage_egl_try_realize (ClutterStageWindow *stage_window, int *retry_coo
                       PropertyChangeMask);
     }
 
-  clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
+  /* no user resize... */
+  clutter_stage_x11_fix_window_size (stage_x11,
+                                     stage_x11->xwin_width,
+                                     stage_x11->xwin_height);
   clutter_stage_x11_set_wm_protocols (stage_x11);
 
-  if (stage_egl->egl_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (edpy, stage_egl->egl_surface);
-      stage_egl->egl_surface = EGL_NO_SURFACE;
-    }
-
-  stage_egl->egl_surface =
-    eglCreateWindowSurface (edpy,
-                            config,
-                            (NativeWindowType) stage_x11->xwin,
-                            NULL);
-
-  if (stage_egl->egl_surface == EGL_NO_SURFACE)
-    {
-      g_warning ("Unable to create an EGL surface");
-      goto fail;
-    }
-
-  if (G_UNLIKELY (backend_egl->egl_context == None))
-    {
-#ifdef HAVE_COGL_GLES2
-      static const EGLint attribs[3]
-        = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-
-      backend_egl->egl_context = eglCreateContext (edpy,
-                                                   config,
-                                                   EGL_NO_CONTEXT,
-                                                   attribs);
-#else
-      /* Seems some GLES implementations 1.x do not like attribs... */
-      backend_egl->egl_context = eglCreateContext (edpy,
-                                                   config,
-                                                   EGL_NO_CONTEXT,
-                                                   NULL);
-#endif
-      if (backend_egl->egl_context == EGL_NO_CONTEXT)
-        {
-          g_warning ("Unable to create a suitable EGL context");
-          goto fail;
-        }
-
-      backend_egl->egl_config = config;
-      CLUTTER_NOTE (GL, "Created EGL Context");
-    }
-
-  *retry_cookie = 0;
-  return TRUE;
-
-fail:
-
-  if (stage_egl->egl_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (backend_egl->edpy, stage_egl->egl_surface);
-      stage_egl->egl_surface = EGL_NO_SURFACE;
-    }
-  if (stage_x11->xwin != None)
-    {
-      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
-      stage_x11->xwin = None;
-    }
-
-  /* NB: We currently only support a single fallback option */
-  if (*retry_cookie == 0)
-    *retry_cookie = 1; /* tell the caller to try again */
-  else
-    *retry_cookie = 0; /* tell caller not to try again! */
-
-  return FALSE;
-}
-
-static gboolean
-clutter_stage_egl_realize (ClutterStageWindow *stage_window)
-{
-  int retry_cookie = 0;
-
-  CLUTTER_NOTE (BACKEND, "Realizing main stage");
-
-  while (1)
-    {
-      /* _clutter_stage_egl_try_realize supports fallbacks, and the number of
-       * fallbacks already tried is tracked in the retry_cookie, so what we are
-       * doing here is re-trying until we get told there are no more fallback
-       * options... */
-      if (_clutter_stage_egl_try_realize (stage_window, &retry_cookie))
-        {
-          gboolean ret = clutter_stage_egl_parent_iface->realize (stage_window);
-          if (G_LIKELY (ret))
-            CLUTTER_NOTE (BACKEND, "Successfully realized stage");
-
-          return ret;
-        }
-      if (retry_cookie == 0)
-        return FALSE; /* we've been told not to try again! */
-
-      g_warning ("%s: Trying fallback", G_STRFUNC);
-    }
-
-  g_return_val_if_reached (FALSE);
+  return clutter_stage_egl_parent_iface->realize (stage_window);
 }
 
 static void
@@ -323,4 +210,29 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 static void
 clutter_stage_egl_init (ClutterStageEGL *stage)
 {
+  stage->egl_surface = EGL_NO_SURFACE;
+}
+
+void
+clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
+                          ClutterStage    *stage)
+{
+  ClutterBackend     *backend = clutter_get_default_backend ();
+  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterStageX11    *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
+  ClutterStageWindow *impl;
+
+  impl = _clutter_stage_get_window (stage);
+  if (impl == NULL)
+    return;
+
+  g_assert (CLUTTER_IS_STAGE_EGL (impl));
+  stage_egl = CLUTTER_STAGE_EGL (impl);
+
+  eglWaitNative (EGL_CORE_NATIVE_ENGINE);
+  clutter_actor_paint (CLUTTER_ACTOR (stage_x11->wrapper));
+  cogl_flush ();
+
+  eglWaitGL ();
+  eglSwapBuffers (backend_egl->edpy, stage_egl->egl_surface);
 }

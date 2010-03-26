@@ -51,9 +51,8 @@ struct _ClutterBackendEGL
 
   /* EGL Specific */
   EGLDisplay edpy;
-  EGLSurface egl_surface;
   EGLContext egl_context;
-  EGLConfig   egl_config;
+  EGLConfig  egl_config;
 
   gint egl_version_major;
   gint egl_version_minor;
