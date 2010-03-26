@@ -562,7 +562,8 @@ compute_shrinks (StBoxLayout *self,
   StBoxLayoutPrivate *priv = self->priv;
   int n_children = g_list_length (priv->children);
   BoxChildShrink *shrinks = g_new0 (BoxChildShrink, n_children);
-  gfloat shrink_so_far, base_shrink;
+  gfloat shrink_so_far;
+  gfloat base_shrink = 0; /* the "= 0" is just to make gcc happy */
   int n_shrink_children;
   GList *l;
   int i;
