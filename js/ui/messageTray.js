@@ -377,13 +377,13 @@ MessageTray.prototype = {
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationBin = new St.Bin({ reactive: true,
-                                             x_align: St.Align.MIDDLE });
+                                             anchor_gravity: Clutter.Gravity.NORTH });
         this.actor.add(this._notificationBin);
         this._notificationBin.hide();
         this._notificationQueue = [];
         this._notification = null;
 
-        this._summaryBin = new St.Bin({ x_align: St.Align.END });
+        this._summaryBin = new St.Bin({ anchor_gravity: Clutter.Gravity.NORTH_EAST });
         this.actor.add(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
@@ -393,7 +393,7 @@ MessageTray.prototype = {
         this._summaryBin.opacity = 0;
 
         this._summaryNotificationBin = new St.Bin({ name: 'summary-notification-bin',
-                                                    x_align: St.Align.END,
+                                                    anchor_gravity: Clutter.Gravity.NORTH_EAST,
                                                     reactive: true,
                                                     track_hover: true });
         this.actor.add(this._summaryNotificationBin);
@@ -446,8 +446,10 @@ MessageTray.prototype = {
         this.actor.y = primary.y + primary.height - 1;
         this.actor.width = primary.width;
 
-        this._notificationBin.x = this._summaryBin.x = this._summaryNotificationBin.x = 0;
-        this._notificationBin.width = this._summaryBin.width = this._summaryNotificationBin.width = primary.width;
+        // These work because of their anchor_gravity
+        this._notificationBin.x = primary.width / 2;
+        this._summaryBin.x = primary.width;
+        this._summaryNotificationBin.x = primary.width;
     },
 
     contains: function(source) {
