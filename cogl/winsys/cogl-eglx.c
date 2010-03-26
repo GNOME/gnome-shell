@@ -27,9 +27,11 @@
 
 #include "cogl.h"
 
+#include <EGL/egl.h>
+
 CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
 {
-  return NULL;
+  return (CoglFuncPtr) eglGetProcAddress (name);
 }
 
