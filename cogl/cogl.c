@@ -685,18 +685,67 @@ cogl_read_pixels (int x,
       bmp.format |= COGL_PREMULT_BIT;
     }
 
-  /* Setup the pixel store parameters that may have been changed by
-     Cogl */
-  _cogl_texture_driver_prep_gl_for_pixels_download (bmp.rowstride, bpp);
-
   _cogl_pixel_format_to_gl (format, &gl_intformat, &gl_format, &gl_type);
 
-  GE (glReadPixels (x, y, width, height, gl_format, gl_type, pixels));
+  /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
+     implementation specific format under
+     GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES and
+     GL_IMPLEMENTATION_COLOR_READ_TYPE_OES is supported. We could try
+     to be more clever and check if the requested type matches that
+     but we would need some reliable functions to convert from GL
+     types to Cogl types. For now, lets just always read in
+     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary */
+#ifndef COGL_HAS_GL
+  if (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE)
+    {
+      CoglBitmap tmp_bmp, dst_bmp;
 
-  /* Convert to the premult format specified by the caller
-     in-place. This will do nothing if the premult status is already
-     correct. */
-  _cogl_bitmap_convert_premult_status (&bmp, format);
+      tmp_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
+      tmp_bmp.data = g_malloc (width * height * 4);
+      tmp_bmp.width = width;
+      tmp_bmp.height = height;
+      tmp_bmp.rowstride = 4 * width;
+
+      _cogl_texture_driver_prep_gl_for_pixels_download (tmp_bmp.rowstride, 4);
+
+      GE( glReadPixels (x, y, width, height,
+                        GL_RGBA, GL_UNSIGNED_BYTE,
+                        tmp_bmp.data) );
+
+      /* CoglBitmap doesn't currently have a way to convert without
+         allocating its own buffer so we have to copy the data
+         again */
+      if (_cogl_bitmap_convert_format_and_premult (&tmp_bmp,
+                                                   &dst_bmp,
+                                                   bmp.format))
+        {
+          _cogl_bitmap_copy_subregion (&dst_bmp,
+                                       &bmp,
+                                       0, 0,
+                                       0, 0,
+                                       bmp.width, bmp.height);
+          g_free (dst_bmp.data);
+        }
+      else
+        {
+          /* FIXME: there's no way to report an error here so we'll
+             just have to leave the data initialised */
+        }
+
+      g_free (tmp_bmp.data);
+    }
+  else
+#endif
+    {
+      _cogl_texture_driver_prep_gl_for_pixels_download (bmp.rowstride, bpp);
+
+      GE( glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
+
+      /* Convert to the premult format specified by the caller
+         in-place. This will do nothing if the premult status is already
+         correct. */
+      _cogl_bitmap_convert_premult_status (&bmp, format);
+    }
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
