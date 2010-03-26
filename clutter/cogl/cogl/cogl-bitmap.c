@@ -107,7 +107,15 @@ _cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
       dst_bmp->data = g_memdup (bmp->data, bmp->rowstride * bmp->height);
     }
 
-  if (!_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
+  /* We only need to do a premult conversion if both formats have an
+     alpha channel. If we're converting from RGB to RGBA then the
+     alpha will have been filled with 255 so the premult won't do
+     anything or if we are converting from RGBA to RGB we're losing
+     information so either converting or not will be wrong for
+     transparent pixels */
+  if ((dst_bmp->format & COGL_A_BIT) == COGL_A_BIT &&
+      (dst_format & COGL_A_BIT) == COGL_A_BIT &&
+      !_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
     {
       g_free (dst_bmp->data);
       return FALSE;
