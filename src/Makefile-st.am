@@ -144,7 +144,7 @@ st_source_c =					\
 
 noinst_LTLIBRARIES += libst-1.0.la
 
-libst_1_0_la_LIBADD = $(ST_LIBS)
+libst_1_0_la_LIBADD = -lm $(ST_LIBS)
 libst_1_0_la_SOURCES =				\
     $(st_source_c)				\
     $(st_source_private_h)			\

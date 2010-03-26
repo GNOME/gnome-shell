@@ -51,7 +51,7 @@ big-enum-types.c: stamp-big-enum-types.h big/big-enum-types.c.in
 
 noinst_LTLIBRARIES += libbig-1.0.la
 
-libbig_1_0_la_LIBADD = $(BIG_LIBS)
+libbig_1_0_la_LIBADD = -lm $(BIG_LIBS)
 libbig_1_0_la_SOURCES = \
 	$(big_source_c) \
 	$(big_source_h) \

@@ -151,7 +151,7 @@ shell-marshal.c: Makefile shell-marshal.list
 	rm -f xgen-smc
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
-libgnome_shell_la_LIBADD =	\
+libgnome_shell_la_LIBADD =-lm \
 	$(MUTTER_PLUGIN_LIBS)	\
         $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
