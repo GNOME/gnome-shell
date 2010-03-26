@@ -940,7 +940,6 @@ st_box_layout_paint (ClutterActor *actor)
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l;
   gdouble x, y;
-  ClutterActorBox child_box;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
 
@@ -993,18 +992,8 @@ st_box_layout_paint (ClutterActor *actor)
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
-
-      clutter_actor_get_allocation_box (child, &child_box);
-
-      if ((child_box.x1 < content_box.x2) &&
-          (child_box.x2 > content_box.x1) &&
-          (child_box.y1 < content_box.y2) &&
-          (child_box.y2 > content_box.y1))
-        {
-          clutter_actor_paint (child);
-        }
+      if (CLUTTER_ACTOR_IS_VISIBLE (child))
+        clutter_actor_paint (child);
     }
 
   if (priv->hadjustment || priv->vadjustment)
@@ -1019,7 +1008,6 @@ st_box_layout_pick (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l;
   gdouble x, y;
-  ClutterActorBox child_box;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
 
@@ -1067,18 +1055,8 @@ st_box_layout_pick (ClutterActor       *actor,
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
-
-      clutter_actor_get_allocation_box (child, &child_box);
-
-      if ((child_box.x1 < content_box.x2) &&
-          (child_box.x2 > content_box.x1) &&
-          (child_box.y1 < content_box.y2) &&
-          (child_box.y2 > content_box.y1))
-        {
-          clutter_actor_paint (child);
-        }
+      if (CLUTTER_ACTOR_IS_VISIBLE (child))
+        clutter_actor_paint (child);
     }
 
   if (priv->hadjustment || priv->vadjustment)
