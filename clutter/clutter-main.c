@@ -551,7 +551,7 @@ _clutter_do_pick (ClutterStage   *stage,
 		  ClutterPickMode mode)
 {
   ClutterMainContext *context;
-  guchar              pixel[3] = { 0xff, 0xff, 0xff };
+  guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   CoglColor           stage_pick_id;
   guint32             id;
   GLboolean           dither_was_on;
@@ -632,11 +632,17 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
   cogl_flush ();
 
-  /* Read the color of the screen co-ords pixel */
+  /* Read the color of the screen co-ords pixel. RGBA_8888_PRE is used
+     even though we don't care about the alpha component because under
+     GLES this is the only format that is guaranteed to work so Cogl
+     will end up having to do a conversion if any other format is
+     used. The format is requested as pre-multiplied because Cogl
+     assumes that all pixels in the framebuffer are premultiplied so
+     it avoids a conversion. */
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
   cogl_read_pixels (x, y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGB_888,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
