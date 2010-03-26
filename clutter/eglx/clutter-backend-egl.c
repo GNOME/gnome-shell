@@ -422,25 +422,48 @@ static XVisualInfo *
 clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend_x11);
-  EGLint visualid;
   XVisualInfo visinfo_template;
-  XVisualInfo *visinfo = None;
+  int template_mask = 0;
+  XVisualInfo *visinfo = NULL;
   int visinfos_count;
+  EGLint visualid, red_size, green_size, blue_size, alpha_size;
 
   if (!clutter_backend_egl_create_context (CLUTTER_BACKEND (backend_x11), NULL))
     return NULL;
 
+  visinfo_template.screen = backend_x11->xscreen_num;
+  template_mask |= VisualScreenMask;
+
   eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
                       EGL_NATIVE_VISUAL_ID, &visualid);
 
-  visinfo_template.screen = backend_x11->xscreen_num;
-  visinfo_template.visualid = visualid;
+  if (visualid != 0)
+    {
+      visinfo_template.visualid = visualid;
+      template_mask |= VisualIDMask;
+    }
+  else
+    {
+      /* some EGL drivers don't implement the EGL_NATIVE_VISUAL_ID
+       * attribute, so attempt to find the closest match. */
+
+      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                          EGL_RED_SIZE, &red_size);
+      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                          EGL_GREEN_SIZE, &green_size);
+      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                          EGL_BLUE_SIZE, &blue_size);
+      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                          EGL_ALPHA_SIZE, &alpha_size);
+
+      visinfo_template.depth = red_size + green_size + blue_size + alpha_size;
+      template_mask |= VisualDepthMask;
+    }
+
   visinfo = XGetVisualInfo (backend_x11->xdpy,
-                            VisualScreenMask | VisualIDMask,
+                            template_mask,
                             &visinfo_template,
                             &visinfos_count);
-  if (!visinfo)
-    return None;
 
   return visinfo;
 }
