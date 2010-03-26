@@ -435,14 +435,18 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
    * actor coordinates...
    */
 
-  /* XXX: we don't care if we get an out of date allocation here because
-   * clutter_actor_queue_clipped_redraw knows to ignore the clip if the
-   * actor's allocation is invalid.
-   *
-   * This is noted because clutter_actor_get_allocation_box does some
-   * unnecessary work to support buggy code with a comment suggesting that
-   * it could be changed later which would be good for this use case!
+  /* Calling clutter_actor_get_allocation_box() is enormously expensive
+   * if the actor has an out-of-date allocation, since it triggers
+   * a full redraw. clutter_actor_queue_clipped_redraw() would redraw
+   * the whole stage anyways in that case, so just go ahead and do
+   * it here.
    */
+  if (!clutter_actor_has_allocation (self))
+    {
+      clutter_actor_queue_redraw (self);
+      return;
+    }
+
   clutter_actor_get_allocation_box (self, &allocation);
 
   g_object_get (self,
