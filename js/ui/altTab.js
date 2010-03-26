@@ -22,7 +22,6 @@ const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 const POPUP_APPICON_SIZE = 96;
-const POPUP_LIST_SPACING = 8;
 const POPUP_SCROLL_TIME = 0.10; // seconds
 
 const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
@@ -43,7 +42,8 @@ function AltTabPopup() {
 
 AltTabPopup.prototype = {
     _init : function() {
-        this.actor = new Shell.GenericContainer({ reactive: true });
+        this.actor = new Shell.GenericContainer({ name: 'altTabPopup',
+                                                    reactive: true });
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -79,12 +79,18 @@ AltTabPopup.prototype = {
         let childBox = new Clutter.ActorBox();
         let focus = global.get_focus_monitor();
 
+        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
+        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
+        let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+        let vPadding = this.actor.get_theme_node().get_vertical_padding();
+        let hPadding = leftPadding + rightPadding;
+
         // Allocate the appSwitcher
         // We select a size based on an icon size that does not overflow the screen
-        let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(focus.width - POPUP_LIST_SPACING * 2);
+        let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(focus.width - hPadding);
         let [childMinWidth, childNaturalWidth] = this._appSwitcher.actor.get_preferred_width(childNaturalHeight);
-        childBox.x1 = Math.max(focus.x + POPUP_LIST_SPACING, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
-        childBox.x2 = Math.min(childBox.x1 + focus.width - POPUP_LIST_SPACING * 2, childBox.x1 + childNaturalWidth);
+        childBox.x1 = Math.max(focus.x + leftPadding, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
+        childBox.x2 = Math.min(childBox.x1 + focus.width - hPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = focus.y + Math.floor((focus.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
         this._appSwitcher.actor.allocate(childBox, flags);
@@ -97,17 +103,21 @@ AltTabPopup.prototype = {
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
             let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
-            childBox.x1 = Math.max(focus.x + POPUP_LIST_SPACING, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > focus.x + focus.width - POPUP_LIST_SPACING * 2) {
-                let offset = childBox.x1 + childNaturalWidth - focus.width + POPUP_LIST_SPACING * 2;
-                childBox.x1 = Math.max(POPUP_LIST_SPACING, childBox.x1 - offset - POPUP_LIST_SPACING * 2);
+            childBox.x1 = Math.max(focus.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
+            if (childBox.x1 + childNaturalWidth > focus.x + focus.width - hPadding) {
+                let offset = childBox.x1 + childNaturalWidth - focus.width + hPadding;
+                childBox.x1 = Math.max(focus.x + leftPadding, childBox.x1 - offset - hPadding);
             }
 
+            let [found, spacing] = this.actor.get_theme_node().get_length('spacing', false);
+            if (!found)
+                spacing = 0;
+
             childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > focus.x + focus.width - POPUP_LIST_SPACING)
-                childBox.x2 = focus.x + focus.width - POPUP_LIST_SPACING;
-            childBox.y1 = this._appSwitcher.actor.allocation.y2 + POPUP_LIST_SPACING * 2;
-            this._thumbnails.addClones(focus.height - POPUP_LIST_SPACING - childBox.y1);
+            if (childBox.x2 > focus.x + focus.width - rightPadding)
+                childBox.x2 = focus.x + focus.width - rightPadding;
+            childBox.y1 = this._appSwitcher.actor.allocation.y2 + spacing;
+            this._thumbnails.addClones(focus.height - bottomPadding - childBox.y1);
             let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.actor.allocate(childBox, flags);
@@ -445,8 +455,12 @@ SwitcherList.prototype = {
 
         // Here we use a GenericContainer so that we can force all the
         // children except the separator to have the same width.
-        this._list = new Shell.GenericContainer();
-        this._list.spacing = POPUP_LIST_SPACING;
+        this._list = new Shell.GenericContainer({ style_class: 'switcher-list-item-container' });
+        this._list.spacing = 0;
+        this._list.connect('style-changed', Lang.bind(this, function() {
+                                                        let [found, spacing] = this._list.get_theme_node().get_length('spacing', false);
+                                                        this._list.spacing = (found) ? spacing : 0;
+                                                     }));
 
         this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -548,7 +562,8 @@ SwitcherList.prototype = {
     _scrollToRight : function() {
         let monitor = global.get_focus_monitor();
         let padding = this.actor.get_theme_node().get_horizontal_padding();
-        let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + POPUP_LIST_SPACING * 2;
+        let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
+        let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + parentPadding;
         this._leftGradient.show();
         Tweener.addTween(this._list, { anchor_x: x,
                                         time: POPUP_SCROLL_TIME,
@@ -641,11 +656,14 @@ SwitcherList.prototype = {
         let childBox = new Clutter.ActorBox();
 
         let focus = global.get_focus_monitor();
-        if (this.actor.allocation.x2 == focus.width - POPUP_LIST_SPACING) {
+        let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
+        if (this.actor.allocation.x2 == focus.x + focus.width - parentRightPadding) {
             if (this._squareItems)
                 childWidth = childHeight;
-            else
-                childWidth = children[0].get_preferred_width(childHeight)[0];
+            else {
+                let [childMin, childNat] = children[0].get_preferred_width(childHeight);
+                childWidth = childMin;
+            }
         }
 
         for (let i = 0; i < children.length; i++) {
@@ -691,7 +709,7 @@ SwitcherList.prototype = {
             let arrowWidth = Math.floor(leftPadding / 3);
             let arrowHeight = arrowWidth * 2;
             this._leftArrow.set_size(arrowWidth, arrowHeight);
-            this._leftArrow.set_position(POPUP_LIST_SPACING, this.actor.height / 2 - arrowWidth);
+            this._leftArrow.set_position(leftPadding / 2, this.actor.height / 2 - arrowWidth);
 
             arrowWidth = Math.floor(rightPadding / 3);
             arrowHeight = arrowWidth * 2;
@@ -794,7 +812,8 @@ AppSwitcher.prototype = {
 
         // We just assume the whole screen here due to weirdness happing with the passed width
         let focus = global.get_focus_monitor();
-        let availWidth = focus.width - POPUP_LIST_SPACING * 2 - this.actor.get_theme_node().get_horizontal_padding();
+        let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
+        let availWidth = focus.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
         let height = 0;
 
         for(let i =  0; i < iconSizes.length; i++) {

@@ -727,6 +727,11 @@ StTooltip {
 }
 
 /* App Switcher */
+#altTabPopup {
+    padding: 8px;
+    spacing: 16px;
+}
+
 .switcher-list {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);
@@ -735,6 +740,10 @@ StTooltip {
 
     font: 12px sans-serif;
     color: white;
+}
+
+.switcher-list-item-container {
+    spacing: 8px;
 }
 
 .thumbnail-scroll-gradient-left {
