@@ -96,6 +96,11 @@ guint32 shell_global_get_current_time (ShellGlobal *global);
 
 GAppLaunchContext *shell_global_create_app_launch_context (ShellGlobal *global);
 
+gboolean shell_global_set_property_mutable (ShellGlobal *global,
+                                            const char  *object,
+                                            const char  *property,
+                                            gboolean     mutable);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
