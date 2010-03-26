@@ -359,8 +359,12 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
   /* Initialize destination bitmap */
   *dst_bmp = *bmp;
   dst_bmp->rowstride = sizeof(guint8) * dst_bpp * dst_bmp->width;
-  dst_bmp->format = ((bmp->format & COGL_PREMULT_BIT) |
-		     (dst_format & COGL_UNPREMULT_MASK));
+  /* Copy the premult bit if the new format has an alpha channel */
+  if ((dst_format & COGL_A_BIT))
+    dst_bmp->format = ((bmp->format & COGL_PREMULT_BIT) |
+                       (dst_format & COGL_UNPREMULT_MASK));
+  else
+    dst_bmp->format = dst_format;
 
   /* Allocate a new buffer to hold converted data */
   dst_bmp->data = g_malloc (sizeof(guint8)
