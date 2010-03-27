@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const St = imports.gi.St;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
@@ -61,19 +62,35 @@ _Draggable.prototype = {
     },
 
     _onButtonPress : function (actor, event) {
-        // FIXME: we should make sure it's button 1, but we can't currently
-        // check that from JavaScript
+        if (event.get_button() != 1)
+            return false;
+
         if (Tweener.getTweenCount(actor))
             return false;
 
         this._buttonDown = true;
-        this._grabActor();
+        // special case St.Clickable: grabbing the pointer would mess up the
+        // internal state, so we start the drag manually on hover change
+        if (this.actor instanceof St.Clickable)
+            this.actor.connect('notify::hover',
+                               Lang.bind(this, this._onClickableHoverChanged));
+        else
+            this._grabActor();
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
 
         return false;
+    },
+
+    _onClickableHoverChanged: function(button) {
+        if (button.hover || !button.held)
+            return;
+
+        button.fake_release();
+        this.startDrag(this._dragStartX, this._dragStartY,
+                       global.get_current_time());
     },
 
     _grabActor: function() {
