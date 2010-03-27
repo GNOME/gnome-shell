@@ -5,13 +5,14 @@
 #
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Žygimantas Beručka <zygis@gnome.org>, 2004-2007.
-# Gintautas Miliauskas <gintautas@miliauskas.lt>, 2007-2009.
+# Gintautas Miliauskas <gintautas@miliauskas.lt>, 2007-2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-14 23:03+0200\n"
-"PO-Revision-Date: 2009-03-14 23:03+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&component=general\n"
+"POT-Creation-Date: 2010-03-20 01:54+0000\n"
+"PO-Revision-Date: 2010-03-27 12:06+0200\n"
 "Last-Translator: Gintautas Miliauskas <gintautas@miliauskas.lt>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "MIME-Version: 1.0\n"
@@ -20,66 +21,51 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
 "100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Darbastalis"
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Skambučio įvykis"
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Langų valdymas"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Nežinoma langų informacijos užklausa: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:95
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Nepavyko apdoroti „%s“ kaip sveiko skaičiaus"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> neatsiliepia į komandas."
 
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Nesuprantami simbolių seką „%2$s“ užbaigiantys simboliai „%1$s“"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Nepavyko apdoroti dialogo proceso pranešimo „%s“\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Įvyko klaida skaitant duomenis iš dialogo išvedimo proceso: %s\n"
-
-#: ../src/core/delete.c:336
-#, c-format
+#: ../src/core/delete.c:100
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
-"Įvyko klaida paleidžiant metacity-dialog, klausiantį apie programos veikimo "
-"sustabdymą: %s\n"
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
 
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:109
+msgid "_Wait"
+msgstr "_Laukti"
+
+#: ../src/core/delete.c:109
+msgid "_Force Quit"
+msgstr "_Priverstinai išeiti"
+
+#: ../src/core/delete.c:207
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepavyko gauti kompiuterio vardo: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūksta %s priedo, reikalingo komponavimui"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -90,12 +76,12 @@ msgstr ""
 "greičiausiai X serveris buvo išjungtas arba jūs priverstinai\n"
 "išjungėte langų valdyklę.\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritinė IO klaida %d (%s) ekrane „%s“.\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -107,7 +93,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2399
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -118,75 +104,93 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2489
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komanda %d neaprašyta.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3502
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Terminalo komanda nebuvo nurodyta.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"Autorinės teisės (C) priklauso 2001-2008 Havoc Pennington, Red Hat, Inc.\n"
+"mutter %s\n"
+"Autorinės teisės (C) priklauso 2001-%d Havoc Pennington, Red Hat, Inc.\n"
 "ir kitiems.\n"
 "Tai yra laisva programinė įranga; platinimo sąlygos yra aprašytos \n"
 "programos pradiniuose tekstuose.\n"
 "Nėra JOKIOS garantijos; net dėl PREKIAVIMO ar TAM TIKRO PANAUDOJIMO TIKSLO "
 "ATITIKIMO.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos valdykle"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "Pakeisti veikiančią langų valdyklę su Metacity"
+#: ../src/core/main.c:267
+msgid "Replace the running window manager with Mutter"
+msgstr "Pakeisti veikiančią langų valdyklę į Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos valdymo ID"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Parodyti versiją"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "Įjungti komponavimą"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "Išjungti komponavimą"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:314
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Nepaversti langų per visą ekraną, jei jie išdidinti ir neturi dekoracijų"
+
+#: ../src/core/main.c:320
+msgid "Comma-separated list of compositor plugins"
+msgstr "Kableliais skiriami komponuotojo įskiepiai"
+
+#: ../src/core/main.c:326
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr "Ar lango iškilimas/rėmelis turi būti rodomas sukant langus ratu."
+
+#: ../src/core/main.c:333
+msgid "Internal argument for GObject introspection"
+msgstr "Vidinis argumentas GObject introspekcijai"
+
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepavyko nuskanuoti temų aplanko: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:679
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -194,7 +198,7 @@ msgstr ""
 "Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir kad ten yra "
 "įprastos temos.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepavyko perleisti: %s\n"
@@ -210,24 +214,24 @@ msgstr "Nepavyko perleisti: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:529 ../src/core/prefs.c:690
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf rakte „%s“ nurodyta netinkama reikšmė\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:616 ../src/core/prefs.c:859
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d reikšmė, saugoma GConf rakte %s, netelpa tarp %d ir %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:660 ../src/core/prefs.c:737 ../src/core/prefs.c:785
+#: ../src/core/prefs.c:849 ../src/core/prefs.c:1149 ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1182 ../src/core/prefs.c:1198
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf raktui „%s“ nustatytas neteisingas tipas\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1289
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -235,12 +239,12 @@ msgstr ""
 "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti "
 "keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1360
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepavyko apdoroti šrifto aprašymo „%s“ saugomo GConf rakte %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1422
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -249,17 +253,17 @@ msgstr ""
 "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko "
 "keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1849
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Įvyko klaida nustatant darbalaukų skaičių į %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2061 ../src/core/prefs.c:2239
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -268,22 +272,37 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2612
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Įvyko klaida pervadinant darbalaukį %d į „%s“: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2816
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Įvyko klaida nustatant komponavimo posistemės būseną: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:2845
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "Įvyko klaida nustatant clutter įskiepių sąrašą: %s\n"
+
+#: ../src/core/prefs.c:2889
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Įvyko klaida nustatant „gyvo“ paslėpto lango būsenos būseną: %s\n"
+
+#: ../src/core/prefs.c:2917
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "Įvyko klaida nustatant iššokimo be kortelių būseną: %s\n"
+
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -292,173 +311,123 @@ msgstr ""
 "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę; pabandykite "
 "pasinaudoti parinktimi --replace, jei norite pakeisti esamą langų valdyklę.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:620
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nepavyko aptikti langų valdyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
-"\n"
-"Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias "
-"bei mažąsias raides ir naudoti tokius sutrumpinimus kaip „<Ctl>“ ir "
-"„<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo veiksmu nebus "
-"susieta jokia klavišų kombinacija."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
-"\n"
-"Sistema, apdorojanti aprašymą, yra gana laisva ir leidžia maišyti didžiąsias "
-"bei mažąsias raides ir naudoti tokius sutrumpinimus kaip „<Ctl>“ ir "
-"„<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo veiksmu nebus "
-"susieta jokia klavišų kombinacija.\n"
-"\n"
-"Šis klavišų susiejimas gali būti apsuktas nuspaudus „Shift“ klavišą, taigi "
-"jame negalima naudoti „Shift“."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nepavyko sukurti aplanko „%s“: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nepavyko rašymui atverti seanso failo „%s“: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Klaida rašant į seanso failą „%s“: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Klaida uždarant seanso failą „%s“: %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Nepavyko perskaityti išsaugoto seanso failo %s: %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nepavyko apdoroti išsaugoto seanso failo: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1198
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
-"Aptiktas <metacity_session> požymis, bet sistema jau nustatė sesijos ID"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "Aptiktas <mutter_session> požymis, bet sistema jau nustatė sesijos ID"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Nežinomas požymis %s <%s> elemente"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "įterpta <window> žyma"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Nežinomas elementas %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1822
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Įvyko klaida paleidžiant langų valdyklės dialogo langą, perspėjantį apie "
-"programas, kurios nepalaiko sesijos valdymo: %s\n"
+"Šie langai nepalaiko &quot;išsaugoti esamus nustatymus&quot; komandos ir "
+"turi būti paleisti rankiniu būdu, kai prisijungsite kitą kartą."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nepavyko atverti derinimo žurnalo: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Funkcija fdopen() su žurnalo failu %s nesėkminga: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Atvertas žurnalo failas %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity buvo sukompiliuota be išsamaus veikimo veiksenos\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter buvo sukompiliuota be išsamaus veikimo veiksenos\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Langų valdyklė:"
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Klaida langų valdyklėje:"
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Langų valdyklės perspėjimas:"
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Langų valdyklės klaida:"
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6217
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -474,7 +443,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:6880
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -484,17 +453,17 @@ msgstr ""
 "tuo pat metu nustatė ir leistinas mažiausio dydžio %d x %d bei didžiausio "
 "dydžio %d x %d reikšmes; tai yra beprasmiška.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (kompiuteryje %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1435
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nekorektiškas WM_TRANSIENT_FOR langas 0x%lx nurodytas %s.\n"
@@ -514,12 +483,12 @@ msgstr ""
 "Greičiausiai tai yra programos, o ne langų valdyklės klaida.\n"
 "Langas turi požymius title=\"%s\" class=\"%s\" name=\"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Požymis %s lange 0x%lx saugo nepriimtinus UTF-8 simbolius\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
@@ -639,670 +608,241 @@ msgstr "Greitai judėti tarp skydelių ir darbastalio"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Greitas judėjimas atgal tarp skydelių ir darbastalio"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Paslėpti visus langus ir suaktyvinti darbastalį"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Rodyti skydelio pagrindinį meniu"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Rodyti skydelio programų paleidimo langą"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Pradėti arba baigti sesijos įrašymą"
+
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Padaryti lango nuotrauką"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Paleisti terminalą"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Parodyti lango meniu"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Perjungti viso ekrano veikseną"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Perjungti lango išdidinimo veikseną"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Nurodyti, ar langas visada matomas virš kitų langų"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Išdidinti langą"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Atkurti lango dydį"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Perjungti lango sutraukimo būseną"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Sumažinti langą"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Užverti langą"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Perkelti langą"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Keisti lango dydį"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Keisti lango matomumą visuose darbalaukiuose"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Perkelti langą į darbalaukį Nr.1"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Perkelti langą į darbalaukį Nr.2"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Perkelti langą į darbalaukį Nr.3"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Perkelti langą į darbalaukį Nr.4"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Perkelti langą į darbalaukį Nr.5"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Perkelti langą į darbalaukį Nr.6"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Perkelti langą į darbalaukį Nr.7"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Perkelti langą į darbalaukį Nr.8"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Perkelti langą į darbalaukį Nr.9"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Perkelti langą į darbalaukį Nr.10"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Perkelti langą į darbalaukį Nr.11"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Perkelti langą į darbalaukį Nr.12"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Perkelti langą į kairiau esantį darbalaukį"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Perkelti langą į dešiniau esantį darbalaukį"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Perkelti langą į aukščiau esantį darbalaukį"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Perkelti langą į žemiau esantį darbalaukį"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr ""
 "Iškelti neaktyvų langą, jei jis uždengtas kito lango, kitu atveju – paslėpti "
 "jį"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Iškelti langą virš kitų langų"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Nuleisti langą žemiau kitų langų"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Išdidinti langą vertikaliai"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Išdidinti langą horizontaliai"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Perkelti langą į ekrano viršutinį kairįjį kampą"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Perkelti langą į ekrano viršutinį dešinįjį kampą"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Perkelti langą į ekrano apatinį kairįjį kampą"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Perkelti langą į ekrano apatinį dešinįjį kampą"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Perkelti langą į viršutinę ekrano dalį"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Perkelti langą į apatinę ekrano pusę"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Perkelti langą į dešinę ekrano pusę"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Perkelti langą į kairę ekrano pusę"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Perkelti langą į ekrano vidurį"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-"(Neįgyvendinta) Persijungimas galimas tarp programų, o ne tarp programos "
-"langų"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Clutter įskiepiai"
 
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"Šrifto aprašymo seka, nurodanti šriftą, naudojamą langų antraštėms. Šrifto "
-"dydis, esantis aprašyme, naudojamas tik tuo atveju, jei titlebar_font_size "
-"požymis yra lygus 0. Be to, šis požymis atjungiamas, jei "
-"titlebar_uses_desktop_font požymis yra teigiamas true."
+"Nusako, ar paslėpti langai (pvz. sumažinti langai ir langai kituose "
+"darbalaukiuose) turėtų būti laikomi „gyvi“."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Veiksmas du kartus spustelėjus antraštės juostą"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "„Gyvi“ paslėpti langai"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Veiksmas spustelėjus antraštės juostą viduriniuoju pelės mygtuku"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "Klavišas, naudojamas kartu su specialiais lango valdymo veiksmais"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Veiksmas spustelėjus antraštės juostą dešiniuoju pelės mygtuku"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr "Pakraunami įskiepiai clutter pagrindo komponavimo valdyklei."
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Mygtukų išdėstymas antraštėje"
-
-#: ../src/metacity.schemas.in.in.h:7
+#: ../src/mutter.schemas.in.h:6
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"Mygtukų išdėstymas antraštės juostoje. Požymio reikšmė turi būti simbolių "
-"seka, pvz., „menu:minimize,maximize,close“; dvitaškis skiria kairįjį lango "
-"kampą nuo dešiniojo, o mygtukų vardai atskiriami kableliais. Mygtukų vardai "
-"neturi pasikartoti. Nežinomi mygtukai yra ignoruojami, jei juos kada nors "
-"panaudotų būsimos metacity laidos. Speciali tarpo žymė palieka šiek tiek "
-"vietos tarp gretimų mygtukų."
+"Šis klavišas inicijuos „padengimą“, kuris yra langų apžvalgos ir programų "
+"paleidimo sistemos kombinacija. Numatytasis nustatymas – „Windows "
+"klavišas“. Tikimasi, kad šis susiejimas bus arba numatytasis, "
+"arba nustatytas į tuščią."
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Automatiškai iškelia suaktyvintą langą"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Spustelėjus ant lango, kai yra paspaustas šis specialusis klavišas, langas "
-"bus perkeltas (kairysis spustelėjimas), keičiamas jo dydį (vidurinis "
-"spustelėjimas), arba rodomas lango meniu (dešinysis spustelėjimas). Kairiojo "
-"ir dešiniojo mygtuko operacijos gali būti sukeistos naudojantis "
-"„mouse_button_resize“ nustatymu. Specialus klavišas gali būti nustatytas "
-"kaip, pavyzdžiui, \"&lt;Alt&gt;\" arba \"&lt;Super&gt;\"."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr ""
-"Komandos, kurios turi būti paleistos, suveikus nustatytoms klavišų "
-"kombinacijoms"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Kompozicijos valdyklė"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Nustatyti, kada nauji langai suaktyvinami"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Esama tema"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
-"Uždelsimas milisekundėmis prieš suveikiant automatinio lango iškėlimui."
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Nurodo ar Metacity yra komponuojanti valdyklė."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Nustato, ar programos arba sistema gali generuoti garsinius „pyptelėjimus“; "
-"gali būti naudojamas kartu su „vaizdiniu audio signalu“ norint generuoti "
-"tylius „pyptelėjimus“."
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Atjungti savybes, kurias gali naudoti senos arba sugadintos programos"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Įjungti vaizdinį signalą"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Jei reikšmė teigiama ir aktyvinimo veiksena yra „sloppy“ arba „mouse“, tada "
-"suaktyvintas langas po rakte „auto_raise_delay“ nurodyto laiko tarpo bus "
-"automatiškai iškeltas. Tai nesusiję su lango spustelėjimu norint jį pakelti "
-"arba užvedimo ant lango objekto vilkimo metu."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Jei reikšmė teigiama, nepaisyti titlebar_font parinkties ir langų antraštėms "
-"naudoti standartinį programų šriftą."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Jei reikšmė teigiama, metacity, naudodama langų rėmelius, vengdama animacijų "
-"ar kitų efektų, pateiks naudotojui mažiau reakcijų ir bus mažiau jaučiama "
-"„tiesioginė manipuliacija“. Tai smarkiai suprastina sąsajos išraiškingumą, "
-"bet leidžia normaliai veikti senesnėms programoms bei terminalų serveriams. "
-"Kai įjungtos prieinamumo funkcijos, rėmelių naudojimas išjungiamas."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Esant teigiamai reikšmei, langų valdyklės darbas yra artimesnis darbui su "
-"programomis nei su langais. Sąvoka gana neapibrėžta, bet apskritai programų "
-"veiksena yra artimesnė Macintosh operacinei sistemai nei Windows. Kai "
-"suaktyvinate langą programų veiksenoje, visi programos langai bus iškelti. "
-"Be to, programų veiksenoje langų aktyvinimo spustelėjimai neveikia langų, "
-"priklausančių kitoms programoms. Kol kas programų veiksenos realizacija dar "
-"ankstyvoje stadijoje."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Jei reikšmė teigiama, atsisakyti dalies galimybių vardan efektyvesnio "
-"resursų panaudojimo"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr ""
-"Klavišas, naudojamas kartu su specialiais sprangtelėjimo ant lango veiksmais"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Darbalaukio vardas"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Darbalaukų kiekis"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"Darbalaukių kiekis. Turi būti didesnis už nulį. Be to, nustatyta maksimali "
-"reikšmė, kad netyčia nesunaikintumėte savo darbo aplinkos įvedę labai "
-"didelio skaičių."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Paleisti nurodytą komandą"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Nustatykite į teisingą, jei norite keisti dydį dešiniuoju mygtuku ir rodyti "
-"meniu viduriniuoju mygtuku nuspaudus klavišą, nurodytą "
-"„mouse_button_modifier“; nustatykite į klaidingą, jei norite, kad veiktų "
-"priešingai."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Nustačius šią parinktį į neigiamą reikšmę, programa gali veikti "
-"nekorektiškai, todėl labai rekomenduojama nekeisti jos numatytosios "
-"teigiamos reikšmės. Daugelio veiksmų (pvz., spustelėjimo kliento srityje, "
-"lango perkėlimo arba dydžio keitimo) pašalinis efektas paprastai bus lango "
-"iškėlimas. Nustatykite šią parinktį į neigiamą, kad atskirtumėte iškėlimą "
-"nuo kitų naudotojo veiksmų. Žr. http://bugzilla.gnome.org/show_bug.cgi?"
-"id=445447#c6. Netgi jeigu ši parinktis neigiama, langus vis tiek galima "
-"iškelti laikant Alt ir spustelėjus kairiuoju mygtuku bet kurią lango vietą, "
-"paprastai spustelėjus lango dekoracijas, arba specialiais pranešimais, pvz., "
-"aktyvavimo užklausomis iš užduočių sąrašo įtaisų. Šiuo metu ši parinktis yra "
-"išjungta aktyvinimo spustelint veiksenoje. Atminkite, kad tarp langų "
-"iškėlimo būdų, kai raise_on_click reikšmė yra neigiama, nėra programinių "
-"užklausų iškelti langą iš programų; tokių užklausų bus nepaisoma, nepaisant "
-"jų priežasties. Jeigu esate programos kūrėjas ir jūsų naudotojai skundžiasi, "
-"kad jūsų programa neveikia, kai šis parametras išjungtas, pasakykite jiems, "
-"kad tai _jų_ kaltė, kad sugadino savo langų valdyklę ir, kad jie turi "
-"atkurti šią parinktį atgal į teigiamą arba ir toliau gyventi su klaida, dėl "
-"kurios skundžiasi."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Kai kurios programos nevykdo nurodymų specifikacijose, todėl kyla smulkių "
-"nesklandumų. Ši parinktis įjungia griežtą veikseną, kuri padaro aplinką "
-"vienalytiškesnę, jei nenaudojate nekorektiškų programų."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "Sisteminis signalas yra garsinis"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Nustato kaip langų valdyklė vykdo vaizdinį signalą suveikus sisteminiam "
-"pyptelėjimui arba kokios nors programos pyptelėjimo signalui. Šiuo metu "
-"galimos dvi reikšmės - „fullscreen“, kuris sukuria viso ekrano vaizdo juodai "
-"baltą blykstelėjimą, bei „frame_flash“, kuris sukuria programos, "
-"pasiuntusios signalą, antraštės mirgėjimą. Jei programa pasiuntusi signalą "
-"yra nežinoma (paprastai tai būna kai suveikia standartinis sisteminis "
-"pyptelėjimas), mirga tuo momentu naudojamo lango antraštė."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"/apps/metacity/global_keybindings/run_command_N raktai nustato specialias "
-"klavišų kombinacijas, kurios atitinka nurodytas komanda. Paspaudus klavišo "
-"kombinaciją priskirtą run_command_N bus įvykdyta komanda command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"/apps/metacity/global_keybindings/run_command_screenshot raktas nustato "
-"klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"/apps/metacity/global_keybindings/run_command_window_screenshot raktas "
-"nustato klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Klavišų kombinacija, kuri paleidžia atitinkamą sunumeruotą komandą iš /apps/"
-"metacity/keybinding_commands raktų. Klavišų kombinacijos formatas gali būti "
-"panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema "
-"apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei "
-"mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir "
-"\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
-"nebus susieta jokia klavišų kombinacija."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "Darbalaukio vardas"
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "Ekrano fotografavimo komanda"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr "Tema nurodo langų rėmelių, antraščių ir kitų elementų išvaizdą."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"Uždelsimo laikas prieš pakeliant langą, jei auto_raise požymis yra "
-"teigiamas. Laikas nurodomas tūkstantosiomis sekundės dalimis."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"Lango aktyvinimo veiksena nustato kaip bus aktyvuojami langai. Yra trys "
-"galimos reikšmės; \"click\" reiškia, kad reikia spustelėti ant lango norint "
-"jį aktyvuoti, \"sloppy\" aktyvuoja langus kai ant jų užvedamas pelės "
-"kursorius, o \"mouse\" reiškia, kad langai bus aktyvuojami kai ant jų bus "
-"užvestas kursorius ir aktyvacija bus atšaukta kursoriui pasitraukus."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "Langų fotografavimo komanda"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ši parinktis nurodo dvigubo antraštės spustelėjimo veiksmą. Galimos "
-"reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, „toggle_maximize“ – "
-"išdidinti / sumažinti langą, „toggle_maximize_horizontally“ ir "
-"„toggle_maximize_vertically“ – išdidinti langą nurodyta kryptimi, „minimize“ "
-"– paslėpti langą, „shade“ – suvynioti langą, „menu“ – parodyti lango meniu, "
-"„lower“ – nukelti langą už kitų langų ir „none“ – nedaryti nieko."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ši parinktis nurodo antraštės spustelėjimo viduriniuoju mygtuku veiksmą. "
-"Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
-"„toggle_maximize“ – išdidinti / sumažinti langą, "
-"„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – išdidinti "
-"langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – suvynioti "
-"langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą už kitų langų "
-"ir „none“ – nedaryti nieko."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ši parinktis nurodo antraštės spustelėjimo dešiniuoju mygtuku veiksmą. "
-"Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
-"„toggle_maximize“ – išdidinti / sumažinti langą, "
-"„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – išdidinti "
-"langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – suvynioti "
-"langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą už kitų langų "
-"ir „none“ – nedaryti nieko."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Ši parinktis leidžia tiksliau valdyti naujų langų aktyvinimą. Leidžiamos dvi "
-"reikšmės: „smart“ įjungia normalią veikseną, o „strict“ neaktyvina langų, "
-"paleistų iš terminalo."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Įjungia vaizdinius indikatorius, kai programa arba sistema perduoda "
-"standartinius garsinius perspėjimo signalus; naudinga esant klausos "
-"sutrikimams, triukšmingoje aplinkoje arba kai garsinis signalas yra "
-"išjungtas."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "Langų antraštėse naudoti standartinį sistemos šriftą"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Vaizdinio signalo tipas"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Ar pakėlimas turėtų būti pašalinis kitų naudotojo veiksmų efektas"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Ar keisti dydį dešiniuoju mygtuku"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Langų aktyvinimo veiksena"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Lango antraštės šriftas"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Naudojimas: %s\n"
@@ -1542,50 +1082,6 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "„%s“ neatsiliepia į komandas."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Laukti"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Priverstinai išeiti"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Antraštė"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasė"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Šie langai nepalaiko „išsaugoti esamus nustatymus“ komandos ir turi būti "
-"paleisti rankiniu būdu, kai prisijungsite kitą kartą."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Įvyko klaida bandant paleisti „%s“:\n"
-"%s."
-
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
@@ -1817,7 +1313,7 @@ msgstr "Koordinačių išraiška neturi jokių operatorių ar operandų"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Temoje esanti išraiška sukėlė klaidą: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4203
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1826,25 +1322,25 @@ msgstr ""
 "Šiam rėmelio stiliui turi būti nurodytas <button function=\"%s\" state=\"%s"
 "\" draw_ops=\"kažkokswhatever\"/> požymis"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Trūksta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"kažkoks\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nepavyko paleisti temos \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Temoje \"%2$s\" trūksta <%1$s> nustatymų"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:4946
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1853,7 +1349,7 @@ msgstr ""
 "Rėmelio stilius nenurodytas lango tipui \"%s\" temoje \"%s\", pridėkite "
 "<window type=\"%s\" style_set=\"kažkoks\"/> elementą"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1861,7 +1357,7 @@ msgstr ""
 "Naudotojo nustatytos konstantos turi prasidėti didžiąja raide; „%s“ nėra "
 "didžioji"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta „%s“ jau aprašyta"
@@ -1888,6 +1384,16 @@ msgstr "Požymis „%s“ pasikartoja tame pačiame <%s> elemente"
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Šiame kontekste požymis „%s“ yra netinkamas elemente <%s>"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Nepavyko apdoroti „%s“ kaip sveiko skaičiaus"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Nesuprantami simbolių seką „%2$s“ užbaigiantys simboliai „%1$s“"
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -1976,10 +1482,10 @@ msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Lango type \"%s\" požymis jau turi nurodytą stiliaus aprašymą"
 
 #: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elementas <%s> neleistinas žemiau <%s>"
@@ -2008,110 +1514,110 @@ msgstr "Dydžio santykis \"%s\" yra nežinomas"
 msgid "Border \"%s\" is unknown"
 msgstr "Paraštė \"%s\" nežinoma"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Elemente <%s> trūksta \"start_angle\" ar \"from\" požymio"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Elemente <%s> trūksta \"extent_angle\" ar \"to\" požymio"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Nesuprantama reikšmė \"%s\" persiliejančio elemento tipo aprašyme"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Nežinoma fill type požymio reikšmė \"%s\" elemente <%s>"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Nežinoma state požymio reikšmė \"%s\" elemente <%s>"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Nežinoma shadow požymio reikšmė \"%s\" elemente <%s>"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Nežinoma arrow požymio reikšmė \"%s\" elemente <%s>"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Neaprašyti jokie <draw_ops> požymiai pavadinti \"%s\""
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Čia įvesdami draw_ops \"%s\" požymius jūs sukuriate žiedinį aprašymą"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Nežinoma rėmelio elemento padėtis \"%s\""
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Rėmelio stiliaus aprašyme padėtis %s jau aprašyta"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Vardui \"%s\" nenurodyti jokie <draw_ops> požymiai"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Mygtukui priskirta nežinoma funkcija \"%s\""
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Mygtuko funkcija \"%s\" neegzistuoja šioje versijoje (%d, reikia %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Mygtukui priskirta nežinoma būsena \"%s\""
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr ""
 "Rėmelio stiliaus aprašyme jau yra nurodytas mygtukas aprašantis funkcijos %s "
 "būseną %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "Reikšmė „%s“ nepriimtina aktyvinimo požymyje"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "Reikšmė „%s“ nepriimtina būsenos požymyje"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Stilius pavadinimu „%s“ neaprašytas"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "Reikšmė „%s“ nepriimtina dydžio keitimo požymyje"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3047
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -2120,7 +1626,7 @@ msgstr ""
 "Negalima naudoti \"resize\" požymio elemente <%s>, skirtame išplėtimo/"
 "šešėlių būsenų aprašymui"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -2128,17 +1634,17 @@ msgstr ""
 "Negalima naudoti \"resize\" požymio elemente <%s>, skirtame išplėtimo būsenų "
 "aprašymui"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "state %s resize %s focus %s požymiai jau turi stiliaus aprašymą"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Aktyvinimo %2$s būsena %1$s jau turi stiliaus aprašymą"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3147
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2146,7 +1652,7 @@ msgstr ""
 "Negalima naudoti dviejų draw_ops požymių <piece> elemente (tema nustatė "
 "draw_ops požymį ir <draw_ops> elementą, arba nurodė du elementus)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3185
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2154,7 +1660,7 @@ msgstr ""
 "Negalima naudoti dviejų draw_ops požymių <button> elemente (tema nustatė "
 "draw_ops požymį ir <draw_ops> elementą, arba nurodė du elementus)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3223
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2162,78 +1668,65 @@ msgstr ""
 "Negalima naudoti dviejų draw_ops požymių <menu_icon> elemente (tema nustatė "
 "draw_ops požymį ir <draw_ops> elementą, arba nurodė du elementus)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Pradinis temos elementas turi būti <metacity_theme>, o ne <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Elementas <%s> nepriimtinas tarp name/author/date/description elementų"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Elementas <%s> nepriimtinas tarp <constant> elemento"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Elementas <%s> nepriimtinas tarp distance/border/aspect_ratio elementų"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Elementas <%s> piešimo operacijos elemente neleidžiamas"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Elementas <%s> elemente <%s> yra neleidžiamas"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Rėmelio elementui nepriskirta draw_ops funkcija"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Mygtukui nepriskirta draw_ops funkcija"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Elemente <%s> tekstas negalimas"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<name> elementas temos aprašyme nurodytas du kartus"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> elementas temos aprašyme nurodytas du kartus"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<author> elementas temos aprašyme nurodytas du kartus"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> elementas temos aprašyme nurodytas du kartus"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<date> elementas temos aprašyme nurodytas du kartus"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<description> elementas temos aprašyme nurodytas du kartus"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nepavyko rasti tinkamo temos %s failo\n"
 
-#: ../src/ui/theme-parser.c:4083
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temos faile %s trūksta pagrindinio <metacity_theme> elemento"
@@ -2286,109 +1779,109 @@ msgstr "/Langai/Visi dok_ai"
 msgid "/Windows/Des_ktop"
 msgstr "/Langai/_Darbastalis"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Atverti dar vieną tokį langą"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "Tai yra bandomasis mygtukas su „atverti“ piktograma"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Tai yra bandomasis mygtukas su „uždaryti“ piktograma"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Tai yra pavydžio pranešimas pavyzdžio dialoge"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Netikras meniu punktas %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Tik rėmelį turintis langas"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Juosta"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Normalus programos langas"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Dialogo langas"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Modalinis dialogo langas"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Įrankių paletė"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Atkabinamas meniu"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Paraštė"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Mygtukų išdėstymo testas %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "vienam lango kadrui išvesti yra skirta %g milisekundžių"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Panaudojimas: metacity-theme-viewer [TEMOS PAVADINIMAS]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Klaida įkeliant temą: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Tema „%s“ įkelta per %g sekundžių\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Normalus antraštės šriftas"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Smulkus antraštės šriftas"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Didelis antraštės šriftas"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Mygtukų išdėstymai"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Greičio testas"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Čia rodomo lango antraštė"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2399,47 +1892,561 @@ msgstr ""
 "ir per %g bendrinio laiko sekundes įskaitant X serverio resursus (%g "
 "milisekundžių kadrui)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "padėties išraiškos testas grąžino teigiamą reikšmę, bet kartu nustatė "
 "klaidos pranešimą"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "padėties išraiškos testas grąžino neigiamą reikšmę, bet nenustatė klaidos "
 "pranešimo"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "Tikėtasi sulaukti klaidos pranešimo, tačiau nieko nesulaukta"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Tikėtasi klaidos %d, tačiau gauta %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Klaidos nesitikėta, tačiau grąžinta klaida: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x reikšmė buvo %d, tikėtasi %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y reikšmė buvo %d, tikėtasi %d"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "Koordinačių %d išraiška apdorota per %g sekundžių (%g sekundžių vidurkis)\n"
+
+#~ msgid "Desktop"
+#~ msgstr "Darbastalis"
+
+#~ msgid "Window Management"
+#~ msgstr "Langų valdymas"
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "Nepavyko apdoroti dialogo proceso pranešimo „%s“\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "Įvyko klaida skaitant duomenis iš dialogo išvedimo proceso: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr ""
+#~ "Įvyko klaida paleidžiant metacity-dialog, klausiantį apie programos "
+#~ "veikimo sustabdymą: %s\n"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
+#~ "\n"
+#~ "Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
+#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip "
+#~ "„<Ctl>“ ir „<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo "
+#~ "veiksmu nebus susieta jokia klavišų kombinacija."
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
+#~ "\n"
+#~ "Sistema, apdorojanti aprašymą, yra gana laisva ir leidžia maišyti "
+#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip "
+#~ "„<Ctl>“ ir „<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo "
+#~ "veiksmu nebus susieta jokia klavišų kombinacija.\n"
+#~ "\n"
+#~ "Šis klavišų susiejimas gali būti apsuktas nuspaudus „Shift“ klavišą, "
+#~ "taigi jame negalima naudoti „Shift“."
+
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "Nepavyko perskaityti išsaugoto seanso failo %s: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "Įvyko klaida paleidžiant langų valdyklės dialogo langą, perspėjantį apie "
+#~ "programas, kurios nepalaiko sesijos valdymo: %s\n"
+
+#~ msgid "Metacity"
+#~ msgstr "Metacity"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr ""
+#~ "(Neįgyvendinta) Persijungimas galimas tarp programų, o ne tarp programos "
+#~ "langų"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "Šrifto aprašymo seka, nurodanti šriftą, naudojamą langų antraštėms. "
+#~ "Šrifto dydis, esantis aprašyme, naudojamas tik tuo atveju, jei "
+#~ "titlebar_font_size požymis yra lygus 0. Be to, šis požymis atjungiamas, "
+#~ "jei titlebar_uses_desktop_font požymis yra teigiamas true."
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "Veiksmas du kartus spustelėjus antraštės juostą"
+
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "Veiksmas spustelėjus antraštės juostą viduriniuoju pelės mygtuku"
+
+#~ msgid "Action on title bar right-click"
+#~ msgstr "Veiksmas spustelėjus antraštės juostą dešiniuoju pelės mygtuku"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Mygtukų išdėstymas antraštėje"
+
+#~ msgid ""
+#~ "Arrangement of buttons on the titlebar. The value should be a string, "
+#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
+#~ "left corner of the window from the right corner, and the button names are "
+#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~ "are silently ignored so that buttons can be added in future metacity "
+#~ "versions without breaking older versions. A special spacer tag can be "
+#~ "used to insert some space between two adjacent buttons."
+#~ msgstr ""
+#~ "Mygtukų išdėstymas antraštės juostoje. Požymio reikšmė turi būti simbolių "
+#~ "seka, pvz., „menu:minimize,maximize,close“; dvitaškis skiria kairįjį "
+#~ "lango kampą nuo dešiniojo, o mygtukų vardai atskiriami kableliais. "
+#~ "Mygtukų vardai neturi pasikartoti. Nežinomi mygtukai yra ignoruojami, jei "
+#~ "juos kada nors panaudotų būsimos metacity laidos. Speciali tarpo žymė "
+#~ "palieka šiek tiek vietos tarp gretimų mygtukų."
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "Automatiškai iškelia suaktyvintą langą"
+
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+#~ msgstr ""
+#~ "Spustelėjus ant lango, kai yra paspaustas šis specialusis klavišas, "
+#~ "langas bus perkeltas (kairysis spustelėjimas), keičiamas jo dydį "
+#~ "(vidurinis spustelėjimas), arba rodomas lango meniu (dešinysis "
+#~ "spustelėjimas). Kairiojo ir dešiniojo mygtuko operacijos gali būti "
+#~ "sukeistos naudojantis „mouse_button_resize“ nustatymu. Specialus klavišas "
+#~ "gali būti nustatytas kaip, pavyzdžiui, \"&lt;Alt&gt;\" arba \"&lt;"
+#~ "Super&gt;\"."
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr ""
+#~ "Komandos, kurios turi būti paleistos, suveikus nustatytoms klavišų "
+#~ "kombinacijoms"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "Kompozicijos valdyklė"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "Nustatyti, kada nauji langai suaktyvinami"
+
+#~ msgid "Current theme"
+#~ msgstr "Esama tema"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr ""
+#~ "Uždelsimas milisekundėmis prieš suveikiant automatinio lango iškėlimui."
+
+#~ msgid "Determines whether Metacity is a compositing manager."
+#~ msgstr "Nurodo ar Metacity yra komponuojanti valdyklė."
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "Nustato, ar programos arba sistema gali generuoti garsinius "
+#~ "„pyptelėjimus“; gali būti naudojamas kartu su „vaizdiniu audio signalu“ "
+#~ "norint generuoti tylius „pyptelėjimus“."
+
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr ""
+#~ "Atjungti savybes, kurias gali naudoti senos arba sugadintos programos"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "Įjungti vaizdinį signalą"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "Jei reikšmė teigiama ir aktyvinimo veiksena yra „sloppy“ arba „mouse“, "
+#~ "tada suaktyvintas langas po rakte „auto_raise_delay“ nurodyto laiko tarpo "
+#~ "bus automatiškai iškeltas. Tai nesusiję su lango spustelėjimu norint jį "
+#~ "pakelti arba užvedimo ant lango objekto vilkimo metu."
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "Jei reikšmė teigiama, nepaisyti titlebar_font parinkties ir langų "
+#~ "antraštėms naudoti standartinį programų šriftą."
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback by using wireframes, "
+#~ "avoiding animations, or other means. This is a significant reduction in "
+#~ "usability for many users, but may allow legacy applications to continue "
+#~ "working, and may also be a useful tradeoff for terminal servers. However, "
+#~ "the wireframe feature is disabled when accessibility is on."
+#~ msgstr ""
+#~ "Jei reikšmė teigiama, metacity, naudodama langų rėmelius, vengdama "
+#~ "animacijų ar kitų efektų, pateiks naudotojui mažiau reakcijų ir bus "
+#~ "mažiau jaučiama „tiesioginė manipuliacija“. Tai smarkiai suprastina "
+#~ "sąsajos išraiškingumą, bet leidžia normaliai veikti senesnėms programoms "
+#~ "bei terminalų serveriams. Kai įjungtos prieinamumo funkcijos, rėmelių "
+#~ "naudojimas išjungiamas."
+
+#~ msgid ""
+#~ "If true, then Metacity works in terms of applications rather than "
+#~ "windows. The concept is a bit abstract, but in general an application-"
+#~ "based setup is more like the Mac and less like Windows. When you focus a "
+#~ "window in application-based mode, all the windows in the application will "
+#~ "be raised. Also, in application-based mode, focus clicks are not passed "
+#~ "through to windows in other applications. Application-based mode is, "
+#~ "however, largely unimplemented at the moment."
+#~ msgstr ""
+#~ "Esant teigiamai reikšmei, langų valdyklės darbas yra artimesnis darbui su "
+#~ "programomis nei su langais. Sąvoka gana neapibrėžta, bet apskritai "
+#~ "programų veiksena yra artimesnė Macintosh operacinei sistemai nei "
+#~ "Windows. Kai suaktyvinate langą programų veiksenoje, visi programos "
+#~ "langai bus iškelti. Be to, programų veiksenoje langų aktyvinimo "
+#~ "spustelėjimai neveikia langų, priklausančių kitoms programoms. Kol kas "
+#~ "programų veiksenos realizacija dar ankstyvoje stadijoje."
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr ""
+#~ "Jei reikšmė teigiama, atsisakyti dalies galimybių vardan efektyvesnio "
+#~ "resursų panaudojimo"
+
+#~ msgid "Name of workspace"
+#~ msgstr "Darbalaukio vardas"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "Darbalaukų kiekis"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "Darbalaukių kiekis. Turi būti didesnis už nulį. Be to, nustatyta "
+#~ "maksimali reikšmė, kad netyčia nesunaikintumėte savo darbo aplinkos įvedę "
+#~ "labai didelio skaičių."
+
+#~ msgid "Run a defined command"
+#~ msgstr "Paleisti nurodytą komandą"
+
+#~ msgid ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+#~ msgstr ""
+#~ "Nustatykite į teisingą, jei norite keisti dydį dešiniuoju mygtuku ir "
+#~ "rodyti meniu viduriniuoju mygtuku nuspaudus klavišą, nurodytą "
+#~ "„mouse_button_modifier“; nustatykite į klaidingą, jei norite, kad veiktų "
+#~ "priešingai."
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "Nustačius šią parinktį į neigiamą reikšmę, programa gali veikti "
+#~ "nekorektiškai, todėl labai rekomenduojama nekeisti jos numatytosios "
+#~ "teigiamos reikšmės. Daugelio veiksmų (pvz., spustelėjimo kliento srityje, "
+#~ "lango perkėlimo arba dydžio keitimo) pašalinis efektas paprastai bus "
+#~ "lango iškėlimas. Nustatykite šią parinktį į neigiamą, kad atskirtumėte "
+#~ "iškėlimą nuo kitų naudotojo veiksmų. Žr. http://bugzilla.gnome.org/"
+#~ "show_bug.cgi?id=445447#c6. Netgi jeigu ši parinktis neigiama, langus vis "
+#~ "tiek galima iškelti laikant Alt ir spustelėjus kairiuoju mygtuku bet "
+#~ "kurią lango vietą, paprastai spustelėjus lango dekoracijas, arba "
+#~ "specialiais pranešimais, pvz., aktyvavimo užklausomis iš užduočių sąrašo "
+#~ "įtaisų. Šiuo metu ši parinktis yra išjungta aktyvinimo spustelint "
+#~ "veiksenoje. Atminkite, kad tarp langų iškėlimo būdų, kai raise_on_click "
+#~ "reikšmė yra neigiama, nėra programinių užklausų iškelti langą iš "
+#~ "programų; tokių užklausų bus nepaisoma, nepaisant jų priežasties. Jeigu "
+#~ "esate programos kūrėjas ir jūsų naudotojai skundžiasi, kad jūsų programa "
+#~ "neveikia, kai šis parametras išjungtas, pasakykite jiems, kad tai _jų_ "
+#~ "kaltė, kad sugadino savo langų valdyklę ir, kad jie turi atkurti šią "
+#~ "parinktį atgal į teigiamą arba ir toliau gyventi su klaida, dėl kurios "
+#~ "skundžiasi."
+
+#~ msgid ""
+#~ "Some applications disregard specifications in ways that result in window "
+#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
+#~ "mode, which gives a more consistent user interface, provided one does not "
+#~ "need to run any misbehaving applications."
+#~ msgstr ""
+#~ "Kai kurios programos nevykdo nurodymų specifikacijose, todėl kyla smulkių "
+#~ "nesklandumų. Ši parinktis įjungia griežtą veikseną, kuri padaro aplinką "
+#~ "vienalytiškesnę, jei nenaudojate nekorektiškų programų."
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "Sisteminis signalas yra garsinis"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ msgstr ""
+#~ "Nustato kaip langų valdyklė vykdo vaizdinį signalą suveikus sisteminiam "
+#~ "pyptelėjimui arba kokios nors programos pyptelėjimo signalui. Šiuo metu "
+#~ "galimos dvi reikšmės - „fullscreen“, kuris sukuria viso ekrano vaizdo "
+#~ "juodai baltą blykstelėjimą, bei „frame_flash“, kuris sukuria programos, "
+#~ "pasiuntusios signalą, antraštės mirgėjimą. Jei programa pasiuntusi "
+#~ "signalą yra nežinoma (paprastai tai būna kai suveikia standartinis "
+#~ "sisteminis pyptelėjimas), mirga tuo momentu naudojamo lango antraštė."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
+#~ "keybindings that correspond to these commands. Pressing the keybinding "
+#~ "for run_command_N will execute command_N."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_N raktai nustato specialias "
+#~ "klavišų kombinacijas, kurios atitinka nurodytas komanda. Paspaudus "
+#~ "klavišo kombinaciją priskirtą run_command_N bus įvykdyta komanda "
+#~ "command_N."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
+#~ "a keybinding which causes the command specified by this setting to be "
+#~ "invoked."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_screenshot raktas nustato "
+#~ "klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+#~ "defines a keybinding which causes the command specified by this setting "
+#~ "to be invoked."
+#~ msgstr ""
+#~ "/apps/metacity/global_keybindings/run_command_window_screenshot raktas "
+#~ "nustato klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą "
+#~ "komandą."
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Klavišų kombinacija, kuri paleidžia atitinkamą sunumeruotą komandą iš /"
+#~ "apps/metacity/keybinding_commands raktų. Klavišų kombinacijos formatas "
+#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
+#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
+#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
+#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
+
+#~ msgid "The name of a workspace."
+#~ msgstr "Darbalaukio vardas"
+
+#~ msgid "The screenshot command"
+#~ msgstr "Ekrano fotografavimo komanda"
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr "Tema nurodo langų rėmelių, antraščių ir kitų elementų išvaizdą."
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "Uždelsimo laikas prieš pakeliant langą, jei auto_raise požymis yra "
+#~ "teigiamas. Laikas nurodomas tūkstantosiomis sekundės dalimis."
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "Lango aktyvinimo veiksena nustato kaip bus aktyvuojami langai. Yra trys "
+#~ "galimos reikšmės; \"click\" reiškia, kad reikia spustelėti ant lango "
+#~ "norint jį aktyvuoti, \"sloppy\" aktyvuoja langus kai ant jų užvedamas "
+#~ "pelės kursorius, o \"mouse\" reiškia, kad langai bus aktyvuojami kai ant "
+#~ "jų bus užvestas kursorius ir aktyvacija bus atšaukta kursoriui "
+#~ "pasitraukus."
+
+#~ msgid "The window screenshot command"
+#~ msgstr "Langų fotografavimo komanda"
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Ši parinktis nurodo dvigubo antraštės spustelėjimo veiksmą. Galimos "
+#~ "reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, „toggle_maximize“ "
+#~ "– išdidinti / sumažinti langą, „toggle_maximize_horizontally“ ir "
+#~ "„toggle_maximize_vertically“ – išdidinti langą nurodyta "
+#~ "kryptimi, „minimize“ – paslėpti langą, „shade“ – suvynioti langą, „menu“ "
+#~ "– parodyti lango meniu, „lower“ – nukelti langą už kitų langų ir „none“ – "
+#~ "nedaryti nieko."
+
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Ši parinktis nurodo antraštės spustelėjimo viduriniuoju mygtuku veiksmą. "
+#~ "Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
+#~ "„toggle_maximize“ – išdidinti / sumažinti langą, "
+#~ "„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – "
+#~ "išdidinti langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – "
+#~ "suvynioti langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą "
+#~ "už kitų langų ir „none“ – nedaryti nieko."
+
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Ši parinktis nurodo antraštės spustelėjimo dešiniuoju mygtuku veiksmą. "
+#~ "Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
+#~ "„toggle_maximize“ – išdidinti / sumažinti langą, "
+#~ "„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – "
+#~ "išdidinti langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – "
+#~ "suvynioti langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą "
+#~ "už kitų langų ir „none“ – nedaryti nieko."
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "Ši parinktis leidžia tiksliau valdyti naujų langų aktyvinimą. Leidžiamos "
+#~ "dvi reikšmės: „smart“ įjungia normalią veikseną, o „strict“ neaktyvina "
+#~ "langų, paleistų iš terminalo."
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "Įjungia vaizdinius indikatorius, kai programa arba sistema perduoda "
+#~ "standartinius garsinius perspėjimo signalus; naudinga esant klausos "
+#~ "sutrikimams, triukšmingoje aplinkoje arba kai garsinis signalas yra "
+#~ "išjungtas."
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr "Langų antraštėse naudoti standartinį sistemos šriftą"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "Vaizdinio signalo tipas"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr "Ar pakėlimas turėtų būti pašalinis kitų naudotojo veiksmų efektas"
+
+#~ msgid "Whether to resize with the right button"
+#~ msgstr "Ar keisti dydį dešiniuoju mygtuku"
+
+#~ msgid "Window focus mode"
+#~ msgstr "Langų aktyvinimo veiksena"
+
+#~ msgid "Window title font"
+#~ msgstr "Lango antraštės šriftas"
+
+#~ msgid "Title"
+#~ msgstr "Antraštė"
+
+#~ msgid "Class"
+#~ msgstr "Klasė"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Įvyko klaida bandant paleisti „%s“:\n"
+#~ "%s."
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<author> elementas temos aprašyme nurodytas du kartus"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "<copyright> elementas temos aprašyme nurodytas du kartus"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<date> elementas temos aprašyme nurodytas du kartus"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "<description> elementas temos aprašyme nurodytas du kartus"
 
 #~ msgid ""
 #~ "Error launching metacity-dialog to print an error about a command: %s\n"
