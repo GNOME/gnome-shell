@@ -405,13 +405,13 @@ AppWellIcon.prototype = {
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this._menu = null;
 
-        this._draggable = DND.makeDraggable(this.actor,
-                                            { manualMode: true });
-        this._dragStartX = null;
-        this._dragStartY = null;
+        this._draggable = DND.makeDraggable(this.actor);
+        this._draggable.connect('drag-begin', Lang.bind(this,
+            function () {
+                this._removeMenuTimeout();
+            }));
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChange));
         this.actor.connect('show', Lang.bind(this, this._onShow));
         this.actor.connect('hide', Lang.bind(this, this._onHideDestroy));
         this.actor.connect('destroy', Lang.bind(this, this._onHideDestroy));
@@ -453,10 +453,6 @@ AppWellIcon.prototype = {
     },
 
     _onButtonPress: function(actor, event) {
-        let [stageX, stageY] = event.get_coords();
-        this._dragStartX = stageX;
-        this._dragStartY = stageY;
-
         let button = event.get_button();
         if (button == 1) {
             this._removeMenuTimeout();
@@ -464,21 +460,6 @@ AppWellIcon.prototype = {
                 Lang.bind(this, function() {
                     this.popupMenu(button);
                 }));
-        }
-    },
-
-    _onHoverChange: function(actor) {
-        let hover = this.actor.hover;
-        if (!hover) {
-            if (this.actor.held && this._dragStartX != null) {
-                this.actor.fake_release();
-                this._removeMenuTimeout();
-                this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                          global.get_current_time());
-            } else {
-                this._dragStartX = null;
-                this._dragStartY = null;
-            }
         }
     },
 
@@ -629,9 +610,6 @@ AppIconMenu.prototype = {
 
         this._arrowSize = 4; // CSS default
         this._spacing = 0; // CSS default
-
-        this._dragStartX = 0;
-        this._dragStartY = 0;
 
         this.actor = new Shell.GenericContainer({ reactive: true });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));

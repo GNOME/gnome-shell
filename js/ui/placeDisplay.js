@@ -440,53 +440,14 @@ DashPlaceDisplayItem.prototype = {
         }
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-        this.actor.connect('notify::hover',
-                           Lang.bind(this, this._onHoverChanged));
-        this.actor.connect('button-press-event',
-                           Lang.bind(this, this._onButtonPress));
-        this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onButtonRelease));
 
         this.actor._delegate = this;
-        this._dragStartX = null;
-        this._dragStartY = null;
-        this._draggable = DND.makeDraggable(this.actor,
-                                            { manualMode: true });
+        this._draggable = DND.makeDraggable(this.actor);
     },
 
     _onClicked: function(b) {
         this._info.launch();
         Main.overview.hide();
-    },
-
-    _onButtonPress: function(actor, event) {
-        if (event.get_button() != 1)
-            return false;
-
-        let [stageX, stageY] = event.get_coords();
-        this._dragStartX = stageX;
-        this._dragStartY = stageY;
-        return false;
-    },
-
-    _onButtonRelease: function(actor, event) {
-        if (event.get_button() != 1)
-            return false;
-
-        this._dragStartX = null;
-        this._dragStartY = null;
-        return false;
-    },
-
-    _onHoverChanged: function(button) {
-        let hover = button.hover;
-        if (!hover) {
-            if (button.held && this._dragStartX != null) {
-                button.fake_release();
-                this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                          global.get_current_time());
-            }
-        }
     },
 
     getDragActorSource: function() {
