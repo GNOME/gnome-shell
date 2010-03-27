@@ -29,14 +29,14 @@ typedef struct _ShellGenericContainerPrivate ShellGenericContainerPrivate;
 
 struct _ShellGenericContainer
 {
-    StWidget parent;
+    StContainer parent;
 
     ShellGenericContainerPrivate *priv;
 };
 
 struct _ShellGenericContainerClass
 {
-    StWidgetClass parent_class;
+    StContainerClass parent_class;
 };
 
 GType    shell_generic_container_get_type         (void) G_GNUC_CONST;
@@ -48,6 +48,5 @@ gboolean shell_generic_container_get_skip_paint   (ShellGenericContainer *self,
 void     shell_generic_container_set_skip_paint   (ShellGenericContainer *self,
                                                    ClutterActor          *actor,
                                                    gboolean               skip);
-void     shell_generic_container_remove_all       (ShellGenericContainer *self);
 
 #endif /* __SHELL_GENERIC_CONTAINER_H__ */

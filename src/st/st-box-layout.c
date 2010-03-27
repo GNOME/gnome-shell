@@ -57,11 +57,10 @@
 #include "st-box-layout-child.h"
 
 
-
 static void st_box_container_iface_init (ClutterContainerIface *iface);
 static void st_box_scrollable_interface_init (StScrollableInterface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (StBoxLayout, st_box_layout, ST_TYPE_WIDGET,
+G_DEFINE_TYPE_WITH_CODE (StBoxLayout, st_box_layout, ST_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 st_box_container_iface_init)
                          G_IMPLEMENT_INTERFACE (ST_TYPE_SCROLLABLE,
@@ -82,8 +81,6 @@ enum {
 
 struct _StBoxLayoutPrivate
 {
-  GList        *children;
-
   guint         spacing;
 
   guint         is_vertical : 1;
@@ -92,6 +89,17 @@ struct _StBoxLayoutPrivate
   StAdjustment *hadjustment;
   StAdjustment *vadjustment;
 };
+
+/*
+ * ClutterContainer Interface Implementation
+ */
+static void
+st_box_sort_depth_order (ClutterContainer *container)
+{
+  /* The parent class' implementation would mess up the
+   * left-to-right order of the children - do nothing instead
+   */
+}
 
 /*
  * StScrollable Interface Implementation
@@ -185,76 +193,10 @@ st_box_scrollable_interface_init (StScrollableInterface *iface)
   iface->get_adjustments = scrollable_get_adjustments;
 }
 
-/*
- * ClutterContainer Implementation
- */
-static void
-st_box_container_add_actor (ClutterContainer *container,
-                            ClutterActor     *actor)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_add_actor (container, actor, &priv->children);
-}
-
-static void
-st_box_container_remove_actor (ClutterContainer *container,
-                               ClutterActor     *actor)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_remove_actor (container, actor, &priv->children);
-}
-
-static void
-st_box_container_foreach (ClutterContainer *container,
-                          ClutterCallback   callback,
-                          gpointer          callback_data)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_foreach (container, callback, callback_data,
-                         &priv->children);
-}
-
-static void
-st_box_container_lower (ClutterContainer *container,
-                        ClutterActor     *actor,
-                        ClutterActor     *sibling)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_lower (container, actor, sibling, &priv->children);
-}
-
-static void
-st_box_container_raise (ClutterContainer *container,
-                        ClutterActor     *actor,
-                        ClutterActor     *sibling)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_raise (container, actor, sibling, &priv->children);
-}
-
-static void
-st_box_container_sort_depth_order (ClutterContainer *container)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (container)->priv;
-
-  _st_container_sort_depth_order (container, &priv->children);
-}
-
 static void
 st_box_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = st_box_container_add_actor;
-  iface->remove = st_box_container_remove_actor;
-  iface->foreach = st_box_container_foreach;
-  iface->lower = st_box_container_lower;
-  iface->raise = st_box_container_raise;
-  iface->sort_depth_order = st_box_container_sort_depth_order;
-
+  iface->sort_depth_order = st_box_sort_depth_order;
   iface->child_meta_type = ST_TYPE_BOX_LAYOUT_CHILD;
 }
 
@@ -333,9 +275,6 @@ st_box_layout_dispose (GObject *object)
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (object)->priv;
 
-  while (priv->children)
-    clutter_actor_destroy (priv->children->data);
-
   if (priv->hadjustment)
     {
       g_object_unref (priv->hadjustment);
@@ -361,12 +300,14 @@ get_content_preferred_width (StBoxLayout *self,
   gint n_children = 0;
   gint n_fixed = 0;
   gfloat min_width, natural_width;
-  GList *l;
+  GList *l, *children;
 
   min_width = 0;
   natural_width = 0;
 
-  for (l = priv->children; l; l = g_list_next (l))
+  children = st_container_get_children_list (ST_CONTAINER (self));
+
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
@@ -392,7 +333,7 @@ get_content_preferred_width (StBoxLayout *self,
         }
       else
         {
-          clutter_container_child_get ((ClutterContainer*) self, child,
+          clutter_container_child_get (CLUTTER_CONTAINER (self), child,
                                        "y-fill", &child_fill,
                                        NULL);
           _st_actor_get_preferred_width (child, for_height, child_fill,
@@ -442,12 +383,14 @@ get_content_preferred_height (StBoxLayout *self,
   gint n_children = 0;
   gint n_fixed = 0;
   gfloat min_height, natural_height;
-  GList *l;
+  GList *l, *children;
 
   min_height = 0;
   natural_height = 0;
 
-  for (l = priv->children; l; l = g_list_next (l))
+  children = st_container_get_children_list (ST_CONTAINER (self));
+
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
@@ -560,7 +503,8 @@ compute_shrinks (StBoxLayout *self,
                  gfloat       total_shrink)
 {
   StBoxLayoutPrivate *priv = self->priv;
-  int n_children = g_list_length (priv->children);
+  GList *children = st_container_get_children_list (ST_CONTAINER (self));
+  int n_children = g_list_length (children);
   BoxChildShrink *shrinks = g_new0 (BoxChildShrink, n_children);
   gfloat shrink_so_far;
   gfloat base_shrink = 0; /* the "= 0" is just to make gcc happy */
@@ -577,7 +521,7 @@ compute_shrinks (StBoxLayout *self,
 
   /* Find the amount of possible shrink for each child */
   int n_possible_shrink_children = 0;
-  for (l = priv->children, i = 0; l; l = l->next, i++)
+  for (l = children, i = 0; l; l = l->next, i++)
     {
       ClutterActor *child = l->data;
       gfloat child_min, child_nat;
@@ -678,7 +622,7 @@ st_box_layout_allocate (ClutterActor          *actor,
   ClutterActorBox content_box;
   gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
   gfloat position, next_position;
-  GList *l;
+  GList *l, *children;
   gint n_expand_children = 0, i;
   gfloat expand_amount, shrink_amount;
   BoxChildShrink *shrinks = NULL;
@@ -688,7 +632,8 @@ st_box_layout_allocate (ClutterActor          *actor,
   CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box,
                                                               flags);
 
-  if (priv->children == NULL)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+  if (children == NULL)
     return;
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
@@ -762,7 +707,7 @@ st_box_layout_allocate (ClutterActor          *actor,
     {
       /* count the number of children with expand set to TRUE */
       n_expand_children = 0;
-      for (l = priv->children; l; l = l->next)
+      for (l = children; l; l = l->next)
         {
           ClutterActor *child = l->data;
           gboolean expand;
@@ -798,12 +743,12 @@ st_box_layout_allocate (ClutterActor          *actor,
 
   if (priv->is_pack_start)
     {
-      l = g_list_last (priv->children);
-      i = g_list_length (priv->children);
+      l = g_list_last (children);
+      i = g_list_length (children);
     }
   else
     {
-      l = priv->children;
+      l = children;
       i = 0;
     }
 
@@ -938,7 +883,7 @@ st_box_layout_paint (ClutterActor *actor)
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  GList *l;
+  GList *l, *children;
   gdouble x, y;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
@@ -968,7 +913,9 @@ st_box_layout_paint (ClutterActor *actor)
       cogl_pop_matrix ();
     }
 
-  if (priv->children == NULL)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+
+  if (children == NULL)
     return;
 
   clutter_actor_get_allocation_box (actor, &allocation_box);
@@ -988,7 +935,7 @@ st_box_layout_paint (ClutterActor *actor)
                               (int)content_box.x2,
                               (int)content_box.y2);
 
-  for (l = priv->children; l; l = g_list_next (l))
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
@@ -1006,7 +953,7 @@ st_box_layout_pick (ClutterActor       *actor,
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  GList *l;
+  GList *l, *children;
   gdouble x, y;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
@@ -1034,7 +981,9 @@ st_box_layout_pick (ClutterActor       *actor,
       cogl_pop_matrix ();
     }
 
-  if (priv->children == NULL)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+
+  if (children == NULL)
     return;
 
   clutter_actor_get_allocation_box (actor, &allocation_box);
@@ -1051,7 +1000,7 @@ st_box_layout_pick (ClutterActor       *actor,
                               (int)content_box.x2,
                               (int)content_box.y2);
 
-  for (l = priv->children; l; l = g_list_next (l))
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
@@ -1226,94 +1175,11 @@ st_box_layout_get_pack_start (StBoxLayout *box)
   return box->priv->is_pack_start;
 }
 
-static void
-st_box_layout_internal_remove_all (StBoxLayout *self,
-                                   gboolean     destroy)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
-  ClutterActor *child;
-
-  while (priv->children)
-    {
-      child = priv->children->data;
-
-      g_object_ref (child);
-      priv->children = g_list_delete_link (priv->children, priv->children);
-      clutter_actor_unparent (child);
-      g_signal_emit_by_name (self, "actor-removed", child);
-      if (destroy)
-        clutter_actor_destroy (child);
-      g_object_unref (child);
-    }
-
-  clutter_actor_queue_relayout ((ClutterActor*) self);
-}
-
-/**
- * st_box_layout_remove_all:
- * @self:
- *
- * Efficiently unparent all children currently in this box.
- */
-void
-st_box_layout_remove_all (StBoxLayout *self)
-{
-  st_box_layout_internal_remove_all (self, FALSE);
-}
-
-/**
- * st_box_layout_destroy_children:
- * @self:
- *
- * Efficiently unparent and destroy all children currently in this box.
- */
-void
-st_box_layout_destroy_children (StBoxLayout *self)
-{
-  st_box_layout_internal_remove_all (self, TRUE);
-}
-
-/**
- * st_box_layout_get_n_children:
- * @self: a #StBoxLayout
- *
- * Returns the number of children in this box.
- */
-guint
-st_box_layout_get_n_children  (StBoxLayout *self)
-{
-  return g_list_length (self->priv->children);
-}
-
-void
-st_box_layout_move_child (StBoxLayout  *self,
-                          ClutterActor *actor,
-                          int           pos)
-{
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
-
-  GList *item = NULL;
-
-  item = g_list_find (priv->children, actor);
-
-  if (item == NULL)
-    {
-      g_warning ("Actor of type '%s' is not a child of the StBoxLayout container",
-                 g_type_name (G_OBJECT_TYPE (actor)));
-      return;
-    }
-
-  priv->children = g_list_delete_link (priv->children, item);
-  priv->children = g_list_insert (priv->children, actor, pos);
-  clutter_actor_queue_relayout ((ClutterActor*) self);
-}
-
 void
 st_box_layout_insert_actor (StBoxLayout  *self,
                             ClutterActor *actor,
                             int           pos)
 {
   clutter_container_add_actor((ClutterContainer*) self, actor);
-  st_box_layout_move_child(self, actor, pos);
+  st_container_move_child (ST_CONTAINER (self), actor, pos);
 }
-

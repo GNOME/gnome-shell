@@ -41,11 +41,7 @@
 #include "st-private.h"
 #include "st-box-layout-child.h"
 
-static void st_overflow_box_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (StOverflowBox, st_overflow_box, ST_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                st_overflow_box_container_iface_init));
+G_DEFINE_TYPE (StOverflowBox, st_overflow_box, ST_TYPE_CONTAINER)
 
 #define OVERFLOW_BOX_LAYOUT_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ST_TYPE_OVERFLOW_BOX, StOverflowBoxPrivate))
@@ -58,83 +54,11 @@ enum {
 
 struct _StOverflowBoxPrivate
 {
-  GList        *children;
   guint         min_children;
   guint         n_visible;
 
   guint         spacing;
 };
-
-/*
- * ClutterContainer Implementation
- */
-static void
-st_overflow_box_add_actor (ClutterContainer *container,
-                           ClutterActor     *actor)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_add_actor (container, actor, &priv->children);
-}
-
-static void
-st_overflow_box_remove_actor (ClutterContainer *container,
-                              ClutterActor     *actor)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_remove_actor (container, actor, &priv->children);
-}
-
-static void
-st_overflow_box_foreach (ClutterContainer *container,
-                         ClutterCallback   callback,
-                         gpointer          callback_data)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_foreach (container, callback, callback_data,
-                         &priv->children);
-}
-
-static void
-st_overflow_box_lower (ClutterContainer *container,
-                       ClutterActor     *actor,
-                       ClutterActor     *sibling)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_lower (container, actor, sibling, &priv->children);
-}
-
-static void
-st_overflow_box_raise (ClutterContainer *container,
-                       ClutterActor     *actor,
-                       ClutterActor     *sibling)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_raise (container, actor, sibling, &priv->children);
-}
-
-static void
-st_overflow_box_sort_depth_order (ClutterContainer *container)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (container)->priv;
-
-  _st_container_sort_depth_order (container, &priv->children);
-}
-
-static void
-st_overflow_box_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = st_overflow_box_add_actor;
-  iface->remove = st_overflow_box_remove_actor;
-  iface->foreach = st_overflow_box_foreach;
-  iface->lower = st_overflow_box_lower;
-  iface->raise = st_overflow_box_raise;
-  iface->sort_depth_order = st_overflow_box_sort_depth_order;
-}
 
 
 static void
@@ -176,17 +100,6 @@ st_overflow_box_set_property (GObject      *object,
 }
 
 static void
-st_overflow_box_dispose (GObject *object)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (object)->priv;
-
-  while (priv->children)
-    clutter_actor_destroy (priv->children->data);
-
-  G_OBJECT_CLASS (st_overflow_box_parent_class)->dispose (object);
-}
-
-static void
 get_content_preferred_width (StOverflowBox *self,
                              gfloat         for_height,
                              gfloat        *min_width_p,
@@ -196,12 +109,13 @@ get_content_preferred_width (StOverflowBox *self,
   gint n_children = 0;
   gint n_fixed = 0;
   gfloat min_width, natural_width;
-  GList *l;
+  GList *l, *children;
 
   min_width = 0;
   natural_width = 0;
 
-  for (l = priv->children; l; l = g_list_next (l))
+  children = st_container_get_children_list (ST_CONTAINER (self));
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
@@ -267,12 +181,13 @@ get_content_preferred_height (StOverflowBox *self,
   gint n_children = 0;
   gint n_fixed = 0;
   gfloat min_height, natural_height;
-  GList *l;
+  GList *l, *children;
 
   min_height = 0;
   natural_height = 0;
 
-  for (l = priv->children; l; l = g_list_next (l))
+  children = st_container_get_children_list (ST_CONTAINER (self));
+  for (l = children; l; l = g_list_next (l))
     {
       ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
@@ -338,14 +253,15 @@ st_overflow_box_allocate (ClutterActor          *actor,
   ClutterActorBox content_box;
   gfloat position;
   float avail_width, avail_height;
-  GList *l;
+  GList *l, *children;
   int i;
   gboolean done_non_fixed;
 
   CLUTTER_ACTOR_CLASS (st_overflow_box_parent_class)->allocate (actor, box,
                                                                 flags);
 
-  if (priv->children == NULL)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+  if (children == NULL)
     return;
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
@@ -357,7 +273,7 @@ st_overflow_box_allocate (ClutterActor          *actor,
   priv->n_visible = 0;
 
   done_non_fixed = FALSE;
-  for (l = priv->children, i = 0; l; l = l->next, i++)
+  for (l = children, i = 0; l; l = l->next, i++)
     {
       ClutterActor *child = (ClutterActor*) l->data;
       ClutterActorBox child_box;
@@ -401,11 +317,12 @@ static void
 st_overflow_box_internal_paint (StOverflowBox *box)
 {
   StOverflowBoxPrivate *priv = box->priv;
-  GList *l;
+  GList *l, *children;
   int i;
 
   i = 0;
-  for (l = priv->children; i < priv->n_visible && l; l = l->next)
+  children = st_container_get_children_list (ST_CONTAINER (box));
+  for (l = children; i < priv->n_visible && l; l = l->next)
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
@@ -474,7 +391,6 @@ st_overflow_box_class_init (StOverflowBoxClass *klass)
 
   object_class->get_property = st_overflow_box_get_property;
   object_class->set_property = st_overflow_box_set_property;
-  object_class->dispose = st_overflow_box_dispose;
 
   actor_class->allocate = st_overflow_box_allocate;
   actor_class->get_preferred_width = st_overflow_box_get_preferred_width;
@@ -536,54 +452,6 @@ st_overflow_box_set_min_children (StOverflowBox *box,
     }
 }
 
-
-static void
-st_overflow_box_internal_remove_all (StOverflowBox *self,
-                                     gboolean       destroy)
-{
-  StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (self)->priv;
-  ClutterActor *child;
-
-  while (priv->children)
-    {
-      child = priv->children->data;
-
-      g_object_ref (child);
-      priv->children = g_list_delete_link (priv->children, priv->children);
-      clutter_actor_unparent (child);
-      g_signal_emit_by_name (self, "actor-removed", child);
-      if (destroy)
-        clutter_actor_destroy (child);
-      g_object_unref (child);
-    }
-
-  clutter_actor_queue_relayout ((ClutterActor*) self);
-}
-
-/**
- * st_overflow_box_remove_all:
- * @self:
- *
- * Efficiently unparent all children currently in this box.
- */
-void
-st_overflow_box_remove_all (StOverflowBox *self)
-{
-  st_overflow_box_internal_remove_all (self, FALSE);
-}
-
-/**
- * st_overflow_box_destroy_children:
- * @self:
- *
- * Efficiently unparent and destroy all children currently in this box.
- */
-void
-st_overflow_box_destroy_children (StOverflowBox *self)
-{
-  st_overflow_box_internal_remove_all (self, TRUE);
-}
-
 /**
  * st_overflow_box_get_n_children:
  * @self: a #StOverflowBox
@@ -593,7 +461,8 @@ st_overflow_box_destroy_children (StOverflowBox *self)
 guint
 st_overflow_box_get_n_children  (StOverflowBox *self)
 {
-  return g_list_length (self->priv->children);
+  GList *children = st_container_get_children_list (ST_CONTAINER (self));
+  return g_list_length (children);
 }
 
 /**

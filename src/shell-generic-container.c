@@ -25,12 +25,11 @@ static void shell_generic_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE(ShellGenericContainer,
                         shell_generic_container,
-                        ST_TYPE_WIDGET,
+                        ST_TYPE_CONTAINER,
                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                shell_generic_container_iface_init));
 
 struct _ShellGenericContainerPrivate {
-  GList *children;
   GHashTable *skip_paint;
 };
 
@@ -126,11 +125,12 @@ static void
 shell_generic_container_paint (ClutterActor  *actor)
 {
   ShellGenericContainer *self = (ShellGenericContainer*) actor;
-  GList *iter;
+  GList *iter, *children;
 
   CLUTTER_ACTOR_CLASS (shell_generic_container_parent_class)->paint (actor);
 
-  for (iter = self->priv->children; iter; iter = iter->next)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+  for (iter = children; iter; iter = iter->next)
     {
       ClutterActor *child = iter->data;
 
@@ -146,11 +146,12 @@ shell_generic_container_pick (ClutterActor        *actor,
                               const ClutterColor  *color)
 {
   ShellGenericContainer *self = (ShellGenericContainer*) actor;
-  GList *iter;
+  GList *iter, *children;
 
   CLUTTER_ACTOR_CLASS (shell_generic_container_parent_class)->pick (actor, color);
 
-  for (iter = self->priv->children; iter; iter = iter->next)
+  children = st_container_get_children_list (ST_CONTAINER (actor));
+  for (iter = children; iter; iter = iter->next)
     {
       ClutterActor *child = iter->data;
 
@@ -215,29 +216,6 @@ shell_generic_container_set_skip_paint (ShellGenericContainer  *self,
     g_hash_table_insert (self->priv->skip_paint, child, child);
 }
 
-/**
- * shell_generic_container_remove_all:
- * @self: A #ShellGenericContainer
- *
- * Removes all child actors from @self.
- */
-void
-shell_generic_container_remove_all (ShellGenericContainer *self)
-{
-  /* copied from clutter_group_remove_all() */
-
-  GList *children;
-
-  children = self->priv->children;
-  while (children)
-    {
-      ClutterActor *child = children->data;
-      children = children->next;
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (self), child);
-    }
-}
-
 static void
 shell_generic_container_finalize (GObject *object)
 {
@@ -249,24 +227,12 @@ shell_generic_container_finalize (GObject *object)
 }
 
 static void
-shell_generic_container_dispose (GObject *object)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (object)->priv;
-
-  while (priv->children)
-    clutter_actor_destroy (priv->children->data);
-
-  G_OBJECT_CLASS (shell_generic_container_parent_class)->dispose (object);
-}
-
-static void
 shell_generic_container_class_init (ShellGenericContainerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->finalize = shell_generic_container_finalize;
-  gobject_class->dispose = shell_generic_container_dispose;
 
   actor_class->get_preferred_width = shell_generic_container_get_preferred_width;
   actor_class->get_preferred_height = shell_generic_container_get_preferred_height;
@@ -305,73 +271,18 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
 }
 
 static void
-shell_generic_container_add_actor (ClutterContainer *container,
-                                   ClutterActor     *actor)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
-
-  _st_container_add_actor (container, actor, &priv->children);
-}
-
-static void
-shell_generic_container_remove_actor (ClutterContainer *container,
-                                      ClutterActor     *actor)
+shell_generic_container_actor_removed (ClutterContainer *container,
+                                       ClutterActor     *actor)
 {
   ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
 
   g_hash_table_remove (priv->skip_paint, actor);
-
-  _st_container_remove_actor (container, actor, &priv->children);
-}
-
-static void
-shell_generic_container_foreach (ClutterContainer *container,
-                                 ClutterCallback   callback,
-                                 gpointer          callback_data)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
-
-  _st_container_foreach (container, callback, callback_data,
-                         &priv->children);
-}
-
-static void
-shell_generic_container_lower (ClutterContainer *container,
-                               ClutterActor     *actor,
-                               ClutterActor     *sibling)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
-
-  _st_container_lower (container, actor, sibling, &priv->children);
-}
-
-static void
-shell_generic_container_raise (ClutterContainer *container,
-                        ClutterActor     *actor,
-                        ClutterActor     *sibling)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
-
-  _st_container_raise (container, actor, sibling, &priv->children);
-}
-
-static void
-shell_generic_container_sort_depth_order (ClutterContainer *container)
-{
-  ShellGenericContainerPrivate *priv = SHELL_GENERIC_CONTAINER (container)->priv;
-
-  _st_container_sort_depth_order (container, &priv->children);
 }
 
 static void
 shell_generic_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = shell_generic_container_add_actor;
-  iface->remove = shell_generic_container_remove_actor;
-  iface->foreach = shell_generic_container_foreach;
-  iface->lower = shell_generic_container_lower;
-  iface->raise = shell_generic_container_raise;
-  iface->sort_depth_order = shell_generic_container_sort_depth_order;
+  iface->actor_removed = shell_generic_container_actor_removed;
 }
 
 static void

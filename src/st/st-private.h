@@ -72,25 +72,4 @@ void _st_allocate_fill (StWidget        *parent,
 void _st_set_text_from_style (ClutterText *text,
                               StThemeNode *theme_node);
 
-void _st_container_add_actor        (ClutterContainer  *container,
-                                     ClutterActor      *actor,
-                                     GList            **children);
-void _st_container_remove_actor     (ClutterContainer  *container,
-                                     ClutterActor      *actor,
-                                     GList            **children);
-void _st_container_foreach          (ClutterContainer  *container,
-                                     ClutterCallback    callback,
-                                     gpointer           user_data,
-                                     GList            **children);
-void _st_container_raise            (ClutterContainer  *container,
-                                     ClutterActor      *actor,
-                                     ClutterActor      *sibling,
-                                     GList            **children);
-void _st_container_lower            (ClutterContainer  *container,
-                                     ClutterActor      *actor,
-                                     ClutterActor      *sibling,
-                                     GList            **children);
-void _st_container_sort_depth_order (ClutterContainer  *container,
-                                     GList            **children);
-
 #endif /* __ST_PRIVATE_H__ */

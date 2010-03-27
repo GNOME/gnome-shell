@@ -51,21 +51,19 @@ typedef struct _StOverflowBoxPrivate StOverflowBoxPrivate;
 struct _StOverflowBox
 {
   /*< private >*/
-  StWidget parent;
+  StContainer parent;
 
   StOverflowBoxPrivate *priv;
 };
 
 struct _StOverflowBoxClass
 {
-  StWidgetClass parent_class;
+  StContainerClass parent_class;
 };
 
 GType    st_overflow_box_get_type         (void);
 
 void     st_overflow_box_set_min_children (StOverflowBox *self,  guint min_children);
-void     st_overflow_box_remove_all       (StOverflowBox *box);
-void     st_overflow_box_destroy_children (StOverflowBox *box);
 guint    st_overflow_box_get_n_children   (StOverflowBox *box);
 guint    st_overflow_box_get_n_visible    (StOverflowBox *box);
 gboolean st_overflow_box_get_min_children (StOverflowBox *box);
