@@ -520,6 +520,7 @@ StTooltip {
 
 .places-section {
     spacing-columns: 4px;
+    spacing-rows: 8px;
 }
 
 .places-item-box {
