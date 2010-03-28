@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-20 03:11+0100\n"
-"PO-Revision-Date: 2010-03-20 03:11+0100\n"
+"POT-Creation-Date: 2010-03-29 00:49+0200\n"
+"PO-Revision-Date: 2010-03-29 00:49+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,27 +26,27 @@ msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:312 ../js/ui/dash.js:855
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:344
 msgid "PREFERENCES"
 msgstr "PŘEDVOLBY"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:756
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:760
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:761
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1113
 msgid "Drag here to add favorites"
 msgstr "Oblíbené přidáte přetažením sem"
 
@@ -64,23 +64,23 @@ msgstr "%s byl odstraněn z oblíbených."
 msgid "Find"
 msgstr "Najít"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:510
 msgid "Searching..."
 msgstr "Hledá se..."
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:524
 msgid "No matching results."
 msgstr "Neodpovídá ani jeden z výsledků."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
+#: ../js/ui/dash.js:874 ../js/ui/placeDisplay.js:582
 msgid "PLACES & DEVICES"
 msgstr "MÍSTA A ZAŘÍZENÍ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:881 ../js/ui/docDisplay.js:488
 msgid "RECENT ITEMS"
 msgstr "NEDÁVNÉ POLOŽKY"
 
@@ -134,16 +134,16 @@ msgstr "%A, %R"
 msgid "%a %l:%M %p"
 msgstr "%A, %l:%M %p"
 
-#: ../js/ui/placeDisplay.js:103
+#: ../js/ui/placeDisplay.js:108
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Nelze odpojit \"%s\""
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:111
 msgid "Retry"
 msgstr "Opakovat"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "Připojit se k..."
 
@@ -151,7 +151,7 @@ msgstr "Připojit se k..."
 msgid "Please enter a command:"
 msgstr "Zadejte prosím příkaz:"
 
-#: ../js/ui/runDialog.js:374
+#: ../js/ui/runDialog.js:376
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání \"%s\" selhalo:"
@@ -208,6 +208,16 @@ msgstr "Aplikace"
 #: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Nedávné dokumenty"
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "Spouštění %s dokončeno"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "Připraveno \"%s\""
 
 #: ../src/shell-global.c:967
 msgid "Less than a minute ago"
