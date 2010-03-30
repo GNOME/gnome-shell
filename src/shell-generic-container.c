@@ -95,6 +95,8 @@ shell_generic_container_get_preferred_width (ClutterActor *actor,
   if (natural_width_p)
     *natural_width_p = alloc->natural_size;
   shell_generic_container_allocation_unref (alloc);
+
+  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -116,6 +118,8 @@ shell_generic_container_get_preferred_height (ClutterActor *actor,
   if (natural_height_p)
     *natural_height_p = alloc->natural_size;
   shell_generic_container_allocation_unref (alloc);
+
+  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
