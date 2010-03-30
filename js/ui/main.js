@@ -24,7 +24,6 @@ const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const ShellDBus = imports.ui.shellDBus;
-const Sidebar = imports.ui.sidebar;
 const WindowManager = imports.ui.windowManager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
@@ -32,7 +31,6 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let chrome = null;
 let panel = null;
-let sidebar = null;
 let placesManager = null;
 let overview = null;
 let runDialog = null;
@@ -109,7 +107,6 @@ function start() {
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
-    sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();

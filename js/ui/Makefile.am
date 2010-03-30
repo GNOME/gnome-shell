@@ -24,11 +24,8 @@ dist_jsui_DATA =		\
 	runDialog.js		\
 	search.js           \
 	shellDBus.js		\
-	sidebar.js		\
 	statusMenu.js		\
 	tweener.js		\
-	widget.js		\
-	widgetBox.js		\
 	windowAttentionHandler.js      \
 	windowManager.js	\
 	workspacesView.js	\

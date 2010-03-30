@@ -18,8 +18,6 @@ const Panel = imports.ui.panel;
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-const SIDEBAR_VISIBLE_KEY = 'sidebar/visible';
-
 function StatusMenu() {
     this._init();
 }
@@ -127,17 +125,6 @@ StatusMenu.prototype = {
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
         this._menu.append(item);
         item.show();
-
-        let gconf = Shell.GConf.get_default();
-        item = new Gtk.CheckMenuItem({ label: _("Sidebar"),
-                                       active: gconf.get_boolean(SIDEBAR_VISIBLE_KEY) });
-        item.connect('activate', Lang.bind(this,
-            function() {
-                gconf.set_boolean(SIDEBAR_VISIBLE_KEY, this._sidebarItem.active);
-            }));
-        this._menu.append(item);
-        item.show();
-        this._sidebarItem = item;
 
         item = this._createImageMenuItem(_("System Preferences..."), 'preferences-desktop');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
