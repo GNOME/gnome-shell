@@ -873,7 +873,7 @@ AppIconMenu.prototype = {
 
     _onStyleChanged: function() {
         let themeNode = this._windowContainerBox.get_theme_node();
-        let [success, len] = themeNode.get_length('-shell-arrow-size', false);
+        let [success, len] = themeNode.get_length('-shell-arrow-width', false);
         if (success) {
             this._arrowSize = len;
             this.actor.queue_relayout();
@@ -882,14 +882,15 @@ AppIconMenu.prototype = {
         if (success) {
             this._windowContainer.spacing = len;
         }
+
         let color = new Clutter.Color();
-        if (themeNode.get_background_color(color)) {
-            this._backgroundColor = color;
-            color = new Clutter.Color();
-        }
-        if (themeNode.get_border_color(St.Side.LEFT, color)) {
-            this._borderColor = color;
-        }
+        themeNode.get_background_color(color);
+        this._backgroundColor = color;
+
+        color = new Clutter.Color();
+        themeNode.get_border_color(St.Side.LEFT, color);
+        this._borderColor = color;
+
         this._arrow.queue_repaint();
     }
 };
