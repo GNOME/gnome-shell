@@ -24,7 +24,6 @@ gnome-shell: gnome-shell.in
 CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
 
-include Makefile-big.am
 include Makefile-gdmuser.am
 include Makefile-st.am
 include Makefile-tray.am
@@ -154,16 +153,15 @@ libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =-lm \
 	$(MUTTER_PLUGIN_LIBS)	\
         $(LIBGNOMEUI_LIBS)      \
-	libbig-1.0.la		\
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib Big-1.0.typelib St-1.0.typelib Gdm-1.0.typelib
+typelib_DATA = Shell-0.1.typelib St-1.0.typelib Gdm-1.0.typelib
 
-Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir St-1.0.gir libgnome-shell.la Makefile
+Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Shell			\
 		--nsversion=0.1				\
@@ -172,7 +170,6 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir St-1.0.gir libgnome-shell.l
 		--include=Meta-2.29			\
 		--libtool="$(LIBTOOL)"    \
 		--add-include-path=$(builddir)     \
-		--include=Big-1.0     \
 		--include=St-1.0     \
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
@@ -184,32 +181,13 @@ CLEANFILES += Shell-0.1.gir
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
-Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
+Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
 	$(AM_V_GEN) \
 		$(G_IR_COMPILER)						\
 			--includedir=.						\
 			--includedir=$(MUTTER_LIB_DIR)/mutter/			\
 		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
-
-Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libbig-1.0.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)			\
-		--namespace=Big				\
-		--nsversion=1.0				\
-		--include=Clutter-1.0			\
-		--include=GdkPixbuf-2.0			\
-		--libtool="$(LIBTOOL)"			\
-		--library=libbig-1.0.la			\
-		$(addprefix $(srcdir)/,$(big_source_h))	\
-		$(addprefix $(srcdir)/,$(big_source_c))	\
-		$(srcdir)/big-enum-types.h		\
-		$(big_cflags)				\
-		-o $@
-CLEANFILES += Big-1.0.gir
-
-Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
-	$(AM_V_GEN) $(G_IR_COMPILER) Big-1.0.gir -o $@
-CLEANFILES += Big-1.0.typelib
 
 St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)						\
@@ -248,7 +226,7 @@ Gdm-1.0.gir: $(mutter) $(G_IR_SCANNER) libgdmuser-1.0.la Makefile
 		-o $@
 CLEANFILES += Gdm-1.0.gir
 
-Gdm-1.0.typelib: libbig-1.0.la Gdm-1.0.gir
+Gdm-1.0.typelib: Gdm-1.0.gir
 	$(AM_V_GEN) $(G_IR_COMPILER) Gdm-1.0.gir -o $@
 CLEANFILES += Gdm-1.0.typelib
 

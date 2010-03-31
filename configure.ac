@@ -83,7 +83,6 @@ LIBS=$saved_LIBS
 
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-2.0 libcroco-0.6 gnome-desktop-2.0 >= 2.26)
-PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
 PKG_CHECK_MODULES(TRAY, gtk+-2.0)
 
