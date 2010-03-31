@@ -52,6 +52,7 @@ typedef enum
 
 typedef enum
 {
+  META_MENU_OP_NONE        = 0,
   META_MENU_OP_DELETE      = 1 << 0,
   META_MENU_OP_MINIMIZE    = 1 << 1,
   META_MENU_OP_UNMAXIMIZE  = 1 << 2,
