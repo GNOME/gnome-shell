@@ -1,0 +1,301 @@
+<?xml version="1.0"?><!--*- mode: nxml; indent-tabs-mode: nil -*-->
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<!-- vim:set ts=2 expandtab: -->
+<moduleset>
+  <repository type="git" name="git.freedesktop.org"
+      href="git://anongit.freedesktop.org/git/"/>
+  <repository type="git" name="git.gnome.org"
+      href="git://git.gnome.org/"/>
+  <repository type="git" name="git.clutter-project.org"
+      href="git://git.clutter-project.org/"/>
+  <repository type="git" name="git.moblin.org"
+      href="git://git.moblin.org/"/>
+
+  <!-- tarballs -->
+  <repository type="tarball" name="cairo.org"
+    href="http://cairographics.org/"/>
+
+  <tarball id="expat" version="1.95.8">
+    <source href="http://downloads.sourceforge.net/project/expat/expat/1.95.8/expat-1.95.8.tar.gz"
+            hash="sha256:c6aaa0b427e775a0fd5a956a75ae41e5110f22760723d9bda316100010e891ca"
+            md5sum="aff487543845a82fe262e6e2922b4c8e" size="318349"/>
+  </tarball>
+
+  <tarball id="fontconfig" version="2.7.1">
+    <source href="http://www.fontconfig.org/release/fontconfig-2.7.1.tar.gz"
+            hash="sha256:08502404aa451ddc5f9ca4bf45cc3b3f1e86e3f0779ff273c72e1c48e0c25b94"
+            md5sum="41024d11765acdd7520d1f5458e751db" size="1539165"/>
+    <dependencies>
+      <dep package="expat"/>
+    </dependencies>
+  </tarball>
+
+  <autotools id="pixman" autogenargs="--disable-gtk">
+    <branch module="releases/pixman-0.14.0.tar.gz" version="0.14.0"
+            repo="cairo.org"
+            hash="sha256:f0c28f4d512b6c199838dc558746e751763d3e298785af098554a8dcafc53bb4"
+            md5sum="da330524bbd975271974378b1c5e7b5d" size="468269">
+    </branch>
+  </autotools>
+
+  <autotools id="cairo">
+    <branch module="releases/cairo-1.8.6.tar.gz" version="1.8.6"
+            repo="cairo.org"
+            hash="sha256:93a347af0cecf258be8fb54265b16a0fb16317df4a32896141d2987c30773535"
+            md5sum="4e64139ef6f668df24450f3b81dd0771" size="6616544">
+    </branch>
+    <dependencies>
+      <dep package="fontconfig"/>
+      <dep package="gtk-doc"/>
+      <dep package="pixman"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libXft" supports-non-srcdir-builds="no">
+    <branch repo="git.freedesktop.org"
+            module="xorg/lib/libXft" checkoutdir="libXft" />
+    <dependencies>
+      <dep package="fontconfig"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk-doc">
+    <branch repo="git.gnome.org"
+            module="gtk-doc"
+            revision="master"/>
+  </autotools>
+
+  <autotools id="glib">
+    <branch repo="git.gnome.org"
+            module="glib"
+            revision="master"/>
+    <dependencies>
+      <dep package="gtk-doc"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libccss" autogenargs="--without-rsvg --without-soup --disable-ccss-cairo --disable-ccss-gtk --disable-examples">
+    <branch repo="git.freedesktop.org"
+            module="ccss"
+            tag="libccss-0.3.1" />
+  </autotools>
+
+  <autotools id="gobject-introspection">
+    <branch repo="git.gnome.org"
+            module="gobject-introspection"
+            revision="master"/>
+  </autotools>
+
+  <autotools id="pango">
+    <branch repo="git.gnome.org"
+            module="pango"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+    </dependencies>
+    <suggests>
+      <dep package="gobject-introspection"/>
+    </suggests>
+    <after>
+      <dep package="libXft"/>
+    </after>
+  </autotools>
+
+  <autotools id="atk">
+    <branch repo="git.gnome.org"
+            module="atk"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk+">
+    <branch repo="git.gnome.org"
+            module="gtk+"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="atk"/>
+      <dep package="cairo"/>
+      <dep package="pango"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gir-repository">
+    <branch repo="git.gnome.org"
+            module="gir-repository"
+            revision="master"/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="json-glib">
+    <branch repo="git.gnome.org"
+            module="json-glib"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter">
+    <branch repo="git.clutter-project.org"
+            module="clutter"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="pango"/>
+      <dep package="gtk+"/>
+      <dep package="gobject-introspection"/>
+      <dep package="gir-repository"/>
+      <dep package="json-glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter-gst">
+    <branch repo="git.clutter-project.org"
+            module="clutter-gst"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter-gtk">
+    <branch repo="git.clutter-project.org"
+            module="clutter-gtk"
+            revision="master"/>
+    <dependencies>
+      <dep package="gtk+"/>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter-box2d">
+    <branch repo="git.clutter-project.org"
+            module="clutter-box2d"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="mx" autogenargs="--without-clutter-imcontext --without-clutter-gesture">
+    <branch repo="git.moblin.org"
+            module="mx"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+      <dep package="gtk+"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="cally">
+    <branch repo="git.clutter-project.org"
+            module="cally"
+            revision="master"/>
+    <dependencies>
+      <dep package="atk"/>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pygobject">
+    <branch repo="git.gnome.org"
+            module="pygobject"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pycairo">
+    <branch module="releases/pycairo-1.8.2.tar.gz" version="1.8.2"
+            repo="cairo.org"
+            hash="sha256:77a8cbe388fd66825056744f2fc5c58b3afc247748bc2c777751cc0c2eb30a2f"
+            md5sum="bbfc0c2fef08dfb0c5b8baa5f0b67a87" size="519064">
+    </branch>
+    <dependencies>
+      <dep package="cairo"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pygtk">
+    <branch repo="git.gnome.org"
+            module="pygtk"
+            revision="master"/>
+    <dependencies>
+      <dep package="pygobject"/>
+      <dep package="gtk+"/>
+      <dep package="pycairo"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pyclutter">
+    <branch repo="git.clutter-project.org"
+            module="bindings/pyclutter"
+            revision="master"/>
+    <dependencies>
+      <dep package="pygobject"/>
+      <dep package="pycairo"/>
+      <dep package="pygtk"/>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pyclutter-gst">
+    <branch repo="git.clutter-project.org"
+            module="bindings/pyclutter-gst"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+      <dep package="clutter-gst"/>
+      <dep package="pyclutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="pyclutter-gtk">
+    <branch repo="git.clutter-project.org"
+            module="bindings/pyclutter-gtk"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+      <dep package="clutter-gtk"/>
+      <dep package="pyclutter"/>
+      <dep package="pygtk"/>
+    </dependencies>
+  </autotools>
+
+  <metamodule id="meta-clutter">
+    <dependencies>
+      <dep package="clutter"/>
+      <dep package="clutter-gst"/>
+      <dep package="clutter-gtk"/>
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-clutter-extra">
+    <dependencies>
+      <dep package="meta-clutter"/>
+      <dep package="clutter-box2d"/>
+      <dep package="cally"/>
+      <dep package="mx"/>
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-pyclutter">
+    <dependencies>
+      <dep package="meta-clutter"/>
+      <dep package="pyclutter"/>
+      <dep package="pyclutter-gst"/>
+      <dep package="pyclutter-gtk"/>
+    </dependencies>
+  </metamodule>
+
+</moduleset>
