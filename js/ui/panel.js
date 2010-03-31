@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -23,19 +22,6 @@ const PANEL_HEIGHT = 26;
 const DEFAULT_PADDING = 4;
 
 const PANEL_ICON_SIZE = 24;
-
-// See comments around _recomputeTraySize
-const TRAY_SPACING = 14;
-const TRAY_SPACING_MIN = 8;
-
-// Used for the tray icon container with gtk pre-2.16, which doesn't
-// fully support tray icon transparency
-const TRAY_BACKGROUND_COLOR = new Clutter.Color();
-TRAY_BACKGROUND_COLOR.from_pixel(0x0b0b0bff);
-const TRAY_BORDER_COLOR = new Clutter.Color();
-TRAY_BORDER_COLOR.from_pixel(0x00000033);
-const TRAY_CORNER_RADIUS = 5;
-const TRAY_BORDER_WIDTH = 0;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
@@ -458,28 +444,15 @@ Panel.prototype = {
 
         // The tray icons live in trayBox within trayContainer.
         // The trayBox is hidden when there are no tray icons.
-        let trayContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          y_align: Big.BoxAlignment.CENTER });
+        let trayContainer = new St.Bin({ y_align: St.Align.MIDDLE });
         this._rightBox.add(trayContainer);
-        let trayBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                    height: PANEL_ICON_SIZE,
-                                    spacing: TRAY_SPACING });
+        let trayBox = new St.BoxLayout({ name: 'statusTray' });
         this._trayBox = trayBox;
 
-        // gtk+ < 2.16 doesn't have fully-working icon transparency,
-        // so we want trayBox to be opaque in that case (the icons
-        // will at least pick up its background color).
-        if (Gtk.MAJOR_VERSION == 2 && Gtk.MINOR_VERSION < 16) {
-            trayBox.background_color = TRAY_BACKGROUND_COLOR;
-            trayBox.corner_radius = TRAY_CORNER_RADIUS;
-            trayBox.border = TRAY_BORDER_WIDTH;
-            trayBox.border_color = TRAY_BORDER_COLOR;
-        }
-
         trayBox.hide();
-        trayContainer.append(trayBox, Big.BoxPackFlags.NONE);
+        trayContainer.add_actor(trayBox);
 
-        this._traymanager = new Shell.TrayManager({ bg_color: TRAY_BACKGROUND_COLOR });
+        this._traymanager = new Shell.TrayManager();
         this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
         this._traymanager.connect('tray-icon-removed',
             Lang.bind(this, function(o, icon) {
@@ -555,10 +528,12 @@ Panel.prototype = {
     },
 
     _onTrayIconAdded: function(o, icon, wmClass) {
+        icon.height = PANEL_ICON_SIZE;
+
         let role = STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass];
         if (!role) {
             // Unknown icons go first in undefined order
-            this._trayBox.prepend(icon, Big.BoxPackFlags.NONE);
+            this._trayBox.insert_actor(icon, 0);
         } else {
             icon._role = role;
             // Figure out the index in our well-known order for this icon
@@ -571,13 +546,13 @@ Panel.prototype = {
             for (i = children.length - 1; i >= 0; i--) {
                 let rolePosition = children[i]._rolePosition;
                 if (!rolePosition || position > rolePosition) {
-                    this._trayBox.insert_after(icon, children[i], Big.BoxPackFlags.NONE);
+                    this._trayBox.insert_actor(icon, i + 1);
                     break;
                 }
             }
             if (i == -1) {
                 // If we didn't find a position, we must be first
-                this._trayBox.prepend(icon, Big.BoxPackFlags.NONE);
+                this._trayBox.insert_actor(icon, 0);
             }
         }
 
@@ -592,9 +567,9 @@ Panel.prototype = {
     // http://bugzilla.gnome.org/show_bug.cgi?id=590495
     _recomputeTraySize: function () {
         if (this._trayBox.get_children().length > 6)
-            this._trayBox.spacing = TRAY_SPACING_MIN;
+            this._trayBox.add_style_pseudo_class('compact');
         else
-            this._trayBox.spacing = TRAY_SPACING;
+            this._trayBox.remove_style_pseudo_class('compact');
     },
 
     _updateClock: function() {

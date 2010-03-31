@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
 const GLib = imports.gi.GLib;
@@ -1000,14 +999,11 @@ AppWell.prototype = {
 
         this._favorites = [];
 
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   x_align: Big.BoxAlignment.CENTER });
+        this._grid = new WellGrid();
+        this.actor = this._grid.actor;
         this.actor._delegate = this;
 
         this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
-
-        this._grid = new WellGrid();
-        this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
 
         this._tracker = Shell.WindowTracker.get_default();
         this._appSystem = Shell.AppSystem.get_default();

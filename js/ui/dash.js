@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
@@ -22,8 +21,6 @@ const Search = imports.ui.search;
 
 // 25 search results (per result type) should be enough for everyone
 const MAX_RENDERED_SEARCH_RESULTS = 25;
-
-const DEFAULT_PADDING = 4;
 
 const DOCS = "docs";
 const PLACES = "places";
@@ -116,14 +113,12 @@ function ResultArea(displayType, flags) {
 
 ResultArea.prototype = {
     _init : function(displayType, flags) {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.resultsContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                              spacing: DEFAULT_PADDING
-                                            });
-        this.actor.append(this.resultsContainer, Big.BoxPackFlags.EXPAND);
+        this.actor = new St.BoxLayout({ vertical: true });
+        this.resultsContainer = new St.BoxLayout({ style_class: 'dash-results-container' });
+        this.actor.add(this.resultsContainer, { expand: true });
 
         this.display = _createDisplay(displayType, flags);
-        this.resultsContainer.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+        this.resultsContainer.add(this.display.actor, { expand: true });
         this.display.load();
     }
 };

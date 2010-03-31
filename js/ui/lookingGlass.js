@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Pango = imports.gi.Pango;
@@ -148,21 +147,21 @@ Result.prototype = {
         this.index = index;
         this.o = o;
 
-        this.actor = new Big.Box();
+        this.actor = new St.BoxLayout({ vertical: true });
 
         let cmdTxt = new St.Label({ text: command });
         cmdTxt.ellipsize = Pango.EllipsizeMode.END;
 
-        this.actor.append(cmdTxt, Big.BoxPackFlags.NONE);
+        this.actor.add(cmdTxt);
         let resultTxt = new St.Label({ text: "r(" + index + ") = " + o });
         resultTxt.ellipsize = Pango.EllipsizeMode.END;
 
-        this.actor.append(resultTxt, Big.BoxPackFlags.NONE);
+        this.actor.add(resultTxt);
         let line = new Clutter.Rectangle({ name: "Separator",
                                            height: 1 });
         let padBin = new St.Bin({ name: "Separator", x_fill: true, y_fill: true });
         padBin.add_actor(line);
-        this.actor.append(padBin, Big.BoxPackFlags.NONE);
+        this.actor.add(padBin);
     }
 };
 
@@ -514,15 +513,14 @@ LookingGlass.prototype = {
         this._evalBox = new St.BoxLayout({ name: "EvalBox", vertical: true });
         notebook.appendPage('Evaluator', this._evalBox);
 
-        this._resultsArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          spacing: 4 });
+        this._resultsArea = new St.BoxLayout({ name: "ResultsArea", vertical: true });
         this._evalBox.add(this._resultsArea, { expand: true });
 
-        let entryArea = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
+        let entryArea = new St.BoxLayout({ name: "EntryArea" });
         this._evalBox.add_actor(entryArea);
 
         let label = new St.Label({ text: 'js>>> ' });
-        entryArea.append(label, Big.BoxPackFlags.NONE);
+        entryArea.add(label);
 
         this._entry = new St.Entry();
         /* unmapping the edit box will un-focus it, undo that */
@@ -530,7 +528,7 @@ LookingGlass.prototype = {
             if (child == this._evalBox)
                 global.stage.set_key_focus(this._entry);
         }));
-        entryArea.append(this._entry, Big.BoxPackFlags.EXPAND);
+        entryArea.add(this._entry, { expand: true });
 
         this._hierarchy = new ActorHierarchy();
         notebook.appendPage('Hierarchy', this._hierarchy.actor);
@@ -628,7 +626,7 @@ LookingGlass.prototype = {
         let index = this._results.length + this._offset;
         let result = new Result('>>> ' + command, obj, index);
         this._results.push(result);
-        this._resultsArea.append(result.actor, Big.BoxPackFlags.NONE);
+        this._resultsArea.add(result.actor);
         this._propInspector.setTarget(obj);
         if (this._borderPaintTarget != null) {
             this._borderPaintTarget.disconnect(this._borderPaintId);

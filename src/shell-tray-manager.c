@@ -51,8 +51,7 @@ G_DEFINE_TYPE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
 
 static guint shell_tray_manager_signals [LAST_SIGNAL] = { 0 };
 
-/* Sea Green - obnoxious to force people to set the background color */
-static const ClutterColor default_color = { 0xbb, 0xff, 0xaa };
+static const ClutterColor default_color = { 0x00, 0x00, 0x00, 0xff };
 
 static void na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
 static void na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);

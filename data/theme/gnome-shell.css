@@ -145,6 +145,14 @@ StTooltip {
     spacing: 4px;
 }
 
+#statusTray {
+    spacing: 14px;
+}
+
+#statusTray:compact {
+    spacing: 8px;
+}
+
 /* Overview */
 
 .overview {
@@ -404,6 +412,10 @@ StTooltip {
     background-color: #1e1e1e;
 }
 
+.dash-results-container {
+    spacing: 4px;
+}
+
 /* GenericDisplay */
 
 .generic-display-container {
@@ -603,6 +615,11 @@ StTooltip {
 #LookingGlassDialog StBoxLayout#EvalBox
 {
   padding: 4px;
+  spacing: 4px;
+}
+
+#LookingGlassDialog StBoxLayout#ResultsArea
+{
   spacing: 4px;
 }
 

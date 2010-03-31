@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gdk = imports.gi.Gdk;
@@ -21,25 +20,9 @@ const RedisplayFlags = { NONE: 0,
                          SUBSEARCH: 1 << 2,
                          IMMEDIATE: 1 << 3 };
 
-const ITEM_DISPLAY_DESCRIPTION_COLOR = new Clutter.Color();
-ITEM_DISPLAY_DESCRIPTION_COLOR.from_pixel(0xffffffbb);
-const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
-DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
-const PREVIEW_BOX_BACKGROUND_COLOR = new Clutter.Color();
-PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
-
-const DEFAULT_PADDING = 4;
-
+// Used by subclasses
 const ITEM_DISPLAY_ICON_SIZE = 48;
-const DEFAULT_COLUMN_GAP = 6;
-
 const PREVIEW_ICON_SIZE = 96;
-const PREVIEW_BOX_PADDING = 6;
-const PREVIEW_BOX_SPACING = DEFAULT_PADDING;
-const PREVIEW_BOX_CORNER_RADIUS = 10;
-// how far relative to the full item width the preview box should be placed
-const PREVIEW_PLACING = 3/4;
-const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents
@@ -117,11 +100,10 @@ GenericDisplayItem.prototype = {
      */
     createDetailsActor: function() {
 
-        let details = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                    spacing: PREVIEW_BOX_SPACING });
+        let details = new St.BoxLayout({ style_class: 'generic-display-container',
+                                         vertical: true });
 
-        let mainDetails = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                        spacing: PREVIEW_BOX_SPACING });
+        let mainDetails = new St.BoxLayout({ style_class: 'generic-display-container' });
 
         // Inner box with name and description
         let textDetails = new St.BoxLayout({ style_class: 'generic-display-details',
@@ -135,21 +117,19 @@ GenericDisplayItem.prototype = {
 
         this._detailsDescriptions.push(detailsDescription);
 
-        mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
+        mainDetails.add(textDetails, { expand: true });
 
         let previewIcon = this._createPreviewIcon();
         let largePreviewIcon = this._createLargePreviewIcon();
 
         if (previewIcon != null && largePreviewIcon == null) {
-            mainDetails.prepend(previewIcon, Big.BoxPackFlags.NONE);
+            mainDetails.insert_actor(previewIcon, 0);
         }
 
-        details.append(mainDetails, Big.BoxPackFlags.NONE);
+        details.add(mainDetails);
 
         if (largePreviewIcon != null) {
-            let largePreview = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
-            largePreview.append(largePreviewIcon, Big.BoxPackFlags.NONE);
-            details.append(largePreview, Big.BoxPackFlags.NONE);
+            details.add(largePreviewIcon);
         }
    
         return details;
