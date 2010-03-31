@@ -268,7 +268,7 @@ RunDialog.prototype = {
                 this._setCommandFromHistory(this._historyIndex--);
                 return true;
             }
-            if (symbol == Clutter.Return) {
+            if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 if (Shell.get_event_state(e) & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);
                 else
