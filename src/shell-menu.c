@@ -4,15 +4,15 @@
  * SECTION:shell-menu
  * @short_description: A box which acts like a popup menu
  *
- * A #BigBox subclass which adds methods and signals useful for implementing
- * popup-menu like actors.
+ * A #StBoxLayout subclass which adds methods and signals useful for
+ * implementing popup-menu like actors.
  */
 
 #include "config.h"
 
 #include "shell-menu.h"
 
-G_DEFINE_TYPE(ShellMenu, shell_menu, BIG_TYPE_BOX);
+G_DEFINE_TYPE (ShellMenu, shell_menu, ST_TYPE_BOX_LAYOUT);
 
 struct _ShellMenuPrivate {
   gboolean popped_up;
@@ -41,7 +41,9 @@ static gboolean
 container_contains (ClutterContainer *container,
                     ClutterActor     *actor)
 {
-  while (actor != NULL && actor != (ClutterActor*)container)
+  ClutterActor *container_actor = CLUTTER_ACTOR (container);
+
+  while (actor != NULL && actor != container_actor)
     {
       actor = clutter_actor_get_parent (actor);
     }
@@ -49,37 +51,42 @@ container_contains (ClutterContainer *container,
 }
 
 static void
-shell_menu_popdown_nosignal (ShellMenu *box)
+shell_menu_popdown_nosignal (ShellMenu *menu)
 {
-  box->priv->popped_up = FALSE;
-  if (box->priv->have_grab)
+  menu->priv->popped_up = FALSE;
+  if (menu->priv->have_grab)
     clutter_ungrab_pointer ();
-  clutter_actor_hide (CLUTTER_ACTOR (box));
+  clutter_actor_hide (CLUTTER_ACTOR (menu));
 }
 
 static void
 on_selected_destroy (ClutterActor  *actor,
-                     ShellMenu     *box)
+                     ShellMenu     *menu)
 {
-  box->priv->selected = NULL;
+  menu->priv->selected = NULL;
 }
 
 static void
-set_selected (ShellMenu      *box,
+set_selected (ShellMenu      *menu,
               ClutterActor   *actor)
 {
-  if (actor == box->priv->selected)
+  if (actor == menu->priv->selected)
     return;
-  if (box->priv->selected)
+  if (menu->priv->selected)
     {
-      g_signal_handlers_disconnect_by_func (box->priv->selected, G_CALLBACK(on_selected_destroy), box);
-      g_signal_emit (G_OBJECT (box), shell_menu_signals[UNSELECTED], 0, box->priv->selected);
+      g_signal_handlers_disconnect_by_func (menu->priv->selected,
+                                            G_CALLBACK (on_selected_destroy),
+                                            menu);
+      g_signal_emit (G_OBJECT (menu), shell_menu_signals[UNSELECTED], 0,
+                     menu->priv->selected);
     }
-  box->priv->selected = actor;
-  if (box->priv->selected)
+  menu->priv->selected = actor;
+  if (menu->priv->selected)
     {
-      g_signal_connect (box->priv->selected, "destroy", G_CALLBACK(on_selected_destroy), box);
-      g_signal_emit (G_OBJECT (box), shell_menu_signals[SELECTED], 0, box->priv->selected);
+      g_signal_connect (menu->priv->selected, "destroy",
+                        G_CALLBACK (on_selected_destroy), menu);
+      g_signal_emit (G_OBJECT (menu), shell_menu_signals[SELECTED], 0,
+                     menu->priv->selected);
     }
 }
 
@@ -87,113 +94,108 @@ static gboolean
 shell_menu_enter_event (ClutterActor         *actor,
                         ClutterCrossingEvent *event)
 {
-  ShellMenu *box = SHELL_MENU (actor);
+  ShellMenu *menu = SHELL_MENU (actor);
 
-  if (!container_contains (CLUTTER_CONTAINER (box), event->source))
-    return TRUE;
+  if (container_contains (CLUTTER_CONTAINER (menu), event->source) &&
+      event->source != CLUTTER_ACTOR (menu))
+    set_selected (menu, event->source);
 
-  if (event->source == (ClutterActor*)box)
-    return TRUE;
-
-  if (g_object_get_data (G_OBJECT (event->source), "shell-is-separator"))
-    return TRUE;
-
-  set_selected (box, event->source);
-
-  return TRUE;
+  return CLUTTER_ACTOR_CLASS (shell_menu_parent_class)->enter_event (actor, event);
 }
 
 static gboolean
 shell_menu_leave_event (ClutterActor         *actor,
                         ClutterCrossingEvent *event)
 {
-  ShellMenu *box = SHELL_MENU (actor);
+  ShellMenu *menu = SHELL_MENU (actor);
 
-  set_selected (box, NULL);
+  set_selected (menu, NULL);
 
-  return TRUE;
+  return CLUTTER_ACTOR_CLASS (shell_menu_parent_class)->leave_event (actor, event);
 }
 
 static gboolean
 shell_menu_button_release_event (ClutterActor       *actor,
                                  ClutterButtonEvent *event)
 {
-  ShellMenu *box = SHELL_MENU (actor);
+  ShellMenu *menu = SHELL_MENU (actor);
 
   /* Until the user releases the button that brought up the menu, we just
    * ignore other button press/releass.
    * See https://bugzilla.gnome.org/show_bug.cgi?id=596371
    */
-  if (box->priv->activating_button > 0 && box->priv->activating_button != event->button)
+  if (menu->priv->activating_button > 0 &&
+      menu->priv->activating_button != event->button)
     return FALSE;
 
-  box->priv->activating_button = 0;
+  menu->priv->activating_button = 0;
 
-  if (box->priv->source_actor && !box->priv->released_on_source)
+  if (menu->priv->source_actor && !menu->priv->released_on_source)
     {
-      if (box->priv->source_actor == event->source ||
-          (CLUTTER_IS_CONTAINER (box->priv->source_actor) &&
-           container_contains (CLUTTER_CONTAINER (box->priv->source_actor), event->source)))
+      if (menu->priv->source_actor == event->source ||
+          (CLUTTER_IS_CONTAINER (menu->priv->source_actor) &&
+           container_contains (CLUTTER_CONTAINER (menu->priv->source_actor), event->source)))
         {
           /* On the next release, we want to pop down the menu regardless */
-          box->priv->released_on_source = TRUE;
+          menu->priv->released_on_source = TRUE;
           return TRUE;
         }
     }
 
-  shell_menu_popdown_nosignal (box);
+  shell_menu_popdown_nosignal (menu);
 
-  if (!container_contains (CLUTTER_CONTAINER (box), event->source) ||
-      box->priv->selected == NULL)
+  if (!container_contains (CLUTTER_CONTAINER (menu), event->source) ||
+      menu->priv->selected == NULL)
     {
-      g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
+      g_signal_emit (G_OBJECT (menu), shell_menu_signals[CANCELLED], 0);
       return FALSE;
     }
 
-  g_signal_emit (G_OBJECT (box), shell_menu_signals[ACTIVATE], 0, box->priv->selected);
+  g_signal_emit (G_OBJECT (menu), shell_menu_signals[ACTIVATE], 0,
+                 menu->priv->selected); 
 
   return TRUE;
 }
 
 void
-shell_menu_popup (ShellMenu         *box,
+shell_menu_popup (ShellMenu         *menu,
                   guint              button,
                   guint32            activate_time)
 {
-  if (box->priv->popped_up)
+  if (menu->priv->popped_up)
     return;
-  box->priv->activating_button = button;
-  box->priv->popped_up = TRUE;
-  box->priv->have_grab = TRUE;
-  box->priv->released_on_source = FALSE;
-  clutter_grab_pointer (CLUTTER_ACTOR (box));
+  menu->priv->activating_button = button;
+  menu->priv->popped_up = TRUE;
+  menu->priv->have_grab = TRUE;
+  menu->priv->released_on_source = FALSE;
+  clutter_grab_pointer (CLUTTER_ACTOR (menu));
 }
 
 /**
  * shell_menu_popdown:
- * @box:
+ * @menu:
  *
  * If the menu is currently active, hide it, emitting the 'cancelled' signal.
  */
 void
-shell_menu_popdown (ShellMenu *box)
+shell_menu_popdown (ShellMenu *menu)
 {
-  if (!box->priv->popped_up)
+  if (!menu->priv->popped_up)
     return;
-  shell_menu_popdown_nosignal (box);
-  g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
+  shell_menu_popdown_nosignal (menu);
+  g_signal_emit (G_OBJECT (menu), shell_menu_signals[CANCELLED], 0);
 }
 
 static void
 on_source_destroyed (ClutterActor *actor,
-                     ShellMenu    *box)
+                     ShellMenu    *menu)
 {
-  box->priv->source_actor = NULL;
+  menu->priv->source_actor = NULL;
 }
 
 /**
  * shell_menu_set_persistent_source:
- * @box:
+ * @menu:
  * @source: Actor to use as menu origin
  *
  * This function changes the menu behavior on button release.  Normally
@@ -204,43 +206,23 @@ on_source_destroyed (ClutterActor *actor,
  * The given @source actor must be reactive for this function to work.
  */
 void
-shell_menu_set_persistent_source (ShellMenu    *box,
+shell_menu_set_persistent_source (ShellMenu    *menu,
                                   ClutterActor *source)
 {
-  if (box->priv->source_actor)
+  if (menu->priv->source_actor)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT (box->priv->source_actor),
+      g_signal_handlers_disconnect_by_func (G_OBJECT (menu->priv->source_actor),
                                             G_CALLBACK (on_source_destroyed),
-                                            box);
+                                            menu);
     }
-  box->priv->source_actor = source;
-  if (box->priv->source_actor)
+  menu->priv->source_actor = source;
+  if (menu->priv->source_actor)
     {
-      g_signal_connect (G_OBJECT (box->priv->source_actor),
+      g_signal_connect (G_OBJECT (menu->priv->source_actor),
                         "destroy",
                         G_CALLBACK (on_source_destroyed),
-                        box);
+                        menu);
     }
-}
-
-/**
- * shell_menu_append_separator:
- * @box:
- * @separator: An actor which functions as a menu separator
- * @flags: Packing flags
- *
- * Actors added to the menu with default functions are treated like
- * menu items; this function will add an actor that should instead
- * be treated like a menu separator.  The current practical effect
- * is that the separators will not be selectable.
- */
-void
-shell_menu_append_separator (ShellMenu         *box,
-                             ClutterActor      *separator,
-                             BigBoxPackFlags    flags)
-{
-  g_object_set_data (G_OBJECT (separator), "shell-is-separator", GUINT_TO_POINTER(TRUE));
-  big_box_append (BIG_BOX (box), separator, flags);
 }
 
 static void
@@ -267,7 +249,7 @@ shell_menu_class_init (ShellMenuClass *klass)
 
   /**
    * ShellMenu::unselected
-   * @box: The #ShellMenu
+   * @menu: The #ShellMenu
    * @actor: The previously hovered-over menu item
    *
    * This signal is emitted when a menu item transitions to
@@ -284,7 +266,7 @@ shell_menu_class_init (ShellMenuClass *klass)
 
   /**
    * ShellMenu::selected
-   * @box: The #ShellMenu
+   * @menu: The #ShellMenu
    * @actor: The hovered-over menu item
    *
    * This signal is emitted when a menu item is in a selected state.
@@ -300,7 +282,7 @@ shell_menu_class_init (ShellMenuClass *klass)
 
   /**
    * ShellMenu::activate
-   * @box: The #ShellMenu
+   * @menu: The #ShellMenu
    * @actor: The clicked menu item
    *
    * This signal is emitted when a menu item is selected.
@@ -316,7 +298,7 @@ shell_menu_class_init (ShellMenuClass *klass)
 
   /**
    * ShellMenu::cancelled
-   * @box: The #ShellMenu
+   * @menu: The #ShellMenu
    *
    * This signal is emitted when the menu is closed without an option selected.
    */

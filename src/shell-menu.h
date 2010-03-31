@@ -3,7 +3,7 @@
 #define __SHELL_MENU_H__
 
 #include <clutter/clutter.h>
-#include "big/box.h"
+#include "st.h"
 
 #define SHELL_TYPE_MENU                 (shell_menu_get_type ())
 #define SHELL_MENU(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_MENU, ShellMenu))
@@ -19,24 +19,24 @@ typedef struct _ShellMenuPrivate ShellMenuPrivate;
 
 struct _ShellMenu
 {
-    BigBox parent;
+  StBoxLayout parent;
 
-    ShellMenuPrivate *priv;
+  ShellMenuPrivate *priv;
 };
 
 struct _ShellMenuClass
 {
-    BigBoxClass parent_class;
+  StBoxLayoutClass parent_class;
 };
 
-GType shell_menu_get_type (void) G_GNUC_CONST;
+GType shell_menu_get_type              (void) G_GNUC_CONST;
 
-void shell_menu_popup (ShellMenu *behavior, guint button, guint32 activate_time);
+void  shell_menu_popup                 (ShellMenu       *menu,
+                                        guint            button,
+                                        guint32          activate_time);
+void  shell_menu_popdown               (ShellMenu       *menu);
 
-void shell_menu_set_persistent_source (ShellMenu *behavior, ClutterActor *source);
-
-void shell_menu_append_separator (ShellMenu *behavior, ClutterActor *separator, BigBoxPackFlags flags);
-
-void shell_menu_popdown (ShellMenu *behavior);
+void  shell_menu_set_persistent_source (ShellMenu       *menu,
+                                        ClutterActor    *source);
 
 #endif /* __SHELL_MENU_H__ */

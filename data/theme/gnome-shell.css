@@ -502,7 +502,7 @@ StTooltip {
     padding: 4px;
     background-color: rgba(0,0,0,0.9);
     color: #ffffff;
-    -shell-menu-spacing: 4px;
+    spacing: 4px;
 }
 
 .app-well-menu-arrow {

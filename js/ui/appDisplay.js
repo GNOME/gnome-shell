@@ -613,15 +613,14 @@ AppIconMenu.prototype = {
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
-        this._windowContainerBox = new St.Bin({ style_class: 'app-well-menu' });
-        this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
-                                                  width: Main.overview._dash.actor.width });
-        this._windowContainerBox.set_child(this._windowContainer);
+        this._windowContainer = new Shell.Menu({ style_class: 'app-well-menu',
+                                                 vertical: true,
+                                                 width: Main.overview._dash.actor.width });
         this._windowContainer.connect('unselected', Lang.bind(this, this._onItemUnselected));
         this._windowContainer.connect('selected', Lang.bind(this, this._onItemSelected));
         this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
         this._windowContainer.connect('activate', Lang.bind(this, this._onItemActivate));
-        this.actor.add_actor(this._windowContainerBox);
+        this.actor.add_actor(this._windowContainer);
 
         // Stay popped up on release over application icon
         this._windowContainer.set_persistent_source(this._source.actor);
@@ -630,8 +629,6 @@ AppIconMenu.prototype = {
         this._windowContainer.connect('enter-event', Lang.bind(this, this._onMenuEnter));
         this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
         this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
-
-        this._windowContainerBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
         this._arrow = new St.DrawingArea({ style_class: 'app-well-menu-arrow' });
         this._arrow.connect('repaint', Lang.bind(this, function (area) {
@@ -650,21 +647,21 @@ AppIconMenu.prototype = {
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [menuMin, menuNatural] = this._windowContainerBox.get_preferred_width(forHeight);
+        let [menuMin, menuNatural] = this._windowContainer.get_preferred_width(forHeight);
         let [arrowMin, arrowNatural] = this._arrow.get_preferred_width(forHeight);
         alloc.min_size = menuMin + arrowMin;
         alloc.natural_size = menuNatural + arrowNatural;
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [min, natural] = this._windowContainerBox.get_preferred_height(forWidth);
+        let [min, natural] = this._windowContainer.get_preferred_height(forWidth);
         alloc.min_size = min;
         alloc.natural_size = natural;
     },
 
     _allocate: function(actor, box, flags) {
         let childBox = new Clutter.ActorBox();
-        let themeNode = this._windowContainerBox.get_theme_node();
+        let themeNode = this._windowContainer.get_theme_node();
 
         let width = box.x2 - box.x1;
         let height = box.y2 - box.y1;
@@ -683,7 +680,7 @@ AppIconMenu.prototype = {
         childBox.x2 = width;
         childBox.y1 = 0;
         childBox.y2 = height;
-        this._windowContainerBox.allocate(childBox, flags);
+        this._windowContainer.allocate(childBox, flags);
     },
 
     _redisplay: function() {
@@ -736,7 +733,7 @@ AppIconMenu.prototype = {
 
     _appendSeparator: function () {
         let bin = new St.Bin({ style_class: "app-well-menu-separator" });
-        this._windowContainer.append_separator(bin, Big.BoxPackFlags.NONE);
+        this._windowContainer.add_actor(bin);
     },
 
     _appendMenuItem: function(labelText) {
@@ -744,7 +741,7 @@ AppIconMenu.prototype = {
                                       reactive: true });
         let label = new St.Label({ text: labelText });
         box.add(label);
-        this._windowContainer.append(box, Big.BoxPackFlags.NONE);
+        this._windowContainer.add_actor(box);
         return box;
     },
 
@@ -862,14 +859,6 @@ AppIconMenu.prototype = {
     _onWindowSelectionCancelled: function () {
         this.emit('highlight-window', null);
         this.popdown();
-    },
-
-    _onStyleChanged: function() {
-        let themeNode = this._windowContainerBox.get_theme_node();
-        [success, len] = themeNode.get_length('-shell-menu-spacing', false)
-        if (success) {
-            this._windowContainer.spacing = len;
-        }
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
