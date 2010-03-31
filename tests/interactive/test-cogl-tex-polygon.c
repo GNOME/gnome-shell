@@ -79,8 +79,7 @@ struct _TestCoglboxPrivate
  *--------------------------------------------------*/
 
 static void
-test_coglbox_fade_texture (CoglHandle tex_id,
-			   gfloat     x1,
+test_coglbox_fade_texture (gfloat     x1,
 			   gfloat     y1,
 			   gfloat     x2,
 			   gfloat     y2,
@@ -123,26 +122,22 @@ test_coglbox_fade_texture (CoglHandle tex_id,
       cogl_color_premultiply (&(vertices[i].color));
     }
 
-  cogl_set_source_texture (tex_id);
   cogl_polygon (vertices, 4, TRUE);
-
-  cogl_set_source_color4ub (255, 255, 255, 255);
 }
 
 static void
-test_coglbox_triangle_texture (CoglHandle tex_id,
-			       gfloat     x,
-			       gfloat     y,
-			       gfloat     tx1,
-			       gfloat     ty1,
-			       gfloat     tx2,
-			       gfloat     ty2,
-			       gfloat     tx3,
-			       gfloat     ty3)
+test_coglbox_triangle_texture (int    tex_width,
+                               int    tex_height,
+                               gfloat x,
+			       gfloat y,
+			       gfloat tx1,
+			       gfloat ty1,
+			       gfloat tx2,
+			       gfloat ty2,
+			       gfloat tx3,
+			       gfloat ty3)
 {
   CoglTextureVertex vertices[3];
-  int tex_width = cogl_texture_get_width (tex_id);
-  int tex_height = cogl_texture_get_height (tex_id);
 
   vertices[0].x = x + tx1 * tex_width;
   vertices[0].y = y + ty1 * tex_height;
@@ -162,7 +157,6 @@ test_coglbox_triangle_texture (CoglHandle tex_id,
   vertices[2].tx = tx3;
   vertices[2].ty = ty3;
 
-  cogl_set_source_texture (tex_id);
   cogl_polygon (vertices, 3, FALSE);
 }
 
@@ -195,8 +189,7 @@ test_coglbox_paint (ClutterActor *self)
   cogl_set_source (material);
   cogl_rectangle_with_texture_coords (0, 0, tex_width, tex_height,
                                       0, 0, 1, 1);
-  test_coglbox_fade_texture (tex_handle,
-			     0, tex_height,
+  test_coglbox_fade_texture (0, tex_height,
 			     tex_width, (tex_height * 3 / 2),
 			     0.0, 1.0,
 			     1.0, 0.5);
@@ -209,12 +202,12 @@ test_coglbox_paint (ClutterActor *self)
   cogl_translate (-tex_width / 2 - 10, 0, 0);
 
   /* Draw the texture split into two triangles */
-  test_coglbox_triangle_texture (tex_handle,
+  test_coglbox_triangle_texture (tex_width, tex_height,
 				 0, 0,
 				 0, 0,
 				 0, 1,
 				 1, 1);
-  test_coglbox_triangle_texture (tex_handle,
+  test_coglbox_triangle_texture (tex_width, tex_height,
 				 20, 0,
 				 0, 0,
 				 1, 0,
