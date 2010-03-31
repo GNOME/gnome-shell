@@ -479,22 +479,9 @@ DashPlaceDisplay.prototype = {
         this.actor = new St.Table({ style_class: 'places-section',
                                     homogeneous: true });
 
-        this._actionsBox = new St.BoxLayout({ style_class: 'places-actions',
-                                              vertical: true });
-
-        this._devBox = new St.BoxLayout({ style_class: 'places-actions',
-                                          name: 'placesDevices',
-                                          vertical: true });
-
-        this._dirsBox = new St.BoxLayout({ style_class: 'places-actions',
-                                           vertical: true });
-
-        // Subdivide left into actions and devices
-        this.actor.add(this._actionsBox, { row: 0, col: 0 });
-        this.actor.add(this._devBox, { row: 1, col: 0 });
-
-        // Bookmarks span the entire right
-        this.actor.add(this._dirsBox, { row: 0, col: 1, row_span: 2 });
+        this._defaultsList = [];
+        this._bookmarksList = [];
+        this._mountsList = [];
 
         Main.placesManager.connect('defaults-updated', Lang.bind(this, this._updateDefaults));
         Main.placesManager.connect('bookmarks-updated', Lang.bind(this, this._updateBookmarks));
@@ -506,27 +493,40 @@ DashPlaceDisplay.prototype = {
     },
 
     _updateDefaults: function() {
-        this._actionsBox.destroy_children();
+        for (let i = 0; i < this._defaultsList.length; i++)
+            this._defaultsList[i].destroy();
 
+        this._defaultsList = [];
         let places = Main.placesManager.getDefaultPlaces();
-        for (let i = 0; i < places.length; i++)
-            this._actionsBox.add(new DashPlaceDisplayItem(places[i]).actor);
+        for (let i = 0; i < places.length; i++) {
+            this._defaultsList[i] = new DashPlaceDisplayItem(places[i]).actor;
+            this.actor.add(this._defaultsList[i], {row: i, col: 0});
+        }
+        this._updateMounts();
     },
 
     _updateMounts: function() {
-        this._devBox.destroy_children();
+        for (let i = 0; i < this._mountsList.length; i++)
+            this._mountsList[i].destroy();
 
+        this._mountsList = [];
         let places = Main.placesManager.getMounts();
-        for (let i = 0; i < places.length; i++)
-            this._devBox.add(new DashPlaceDisplayItem(places[i]).actor);
+        for (let i = 0; i < places.length; i++) {
+             this._mountsList[i] = new DashPlaceDisplayItem(places[i]).actor;
+             this.actor.add(this._mountsList[i], {row: this._defaultsList.length + i, col: 0});
+        }
     },
 
     _updateBookmarks: function() {
-        this._dirsBox.destroy_children();
+        for (let i = 0; i < this._bookmarksList.length; i++)
+            this._bookmarksList[i].destroy();
 
+        this._bookmarksList = [];
         let places = Main.placesManager.getBookmarks();
-        for (let i = 0; i < places.length; i ++)
-            this._dirsBox.add(new DashPlaceDisplayItem(places[i]).actor);
+        for (let i = 0; i < places.length; i ++) {
+            this._bookmarksList[i] = new DashPlaceDisplayItem(places[i]).actor;
+            this.actor.add(this._bookmarksList[i], {row: i, col: 1});
+        }
     }
 };
 

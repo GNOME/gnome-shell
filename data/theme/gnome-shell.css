@@ -520,7 +520,7 @@ StTooltip {
 
 .places-section {
     spacing-columns: 4px;
-    spacing-rows: 8px;
+    spacing-rows: 4px;
 }
 
 .places-item-box {
@@ -535,14 +535,6 @@ StTooltip {
 
 .places-item:hover {
     border: 1px solid #666666;
-}
-
-.places-actions {
-    spacing: 2px;
-}
-
-#placesDevices {
-    padding-top: 4px;
 }
 
 /* Recent items */
