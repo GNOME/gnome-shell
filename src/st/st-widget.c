@@ -42,8 +42,6 @@
 #include "st-theme-context.h"
 #include "st-tooltip.h"
 
-#include <big/rectangle.h>
-
 /*
  * Forward declaration for sake of StWidgetChild
  */
