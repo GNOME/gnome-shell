@@ -209,8 +209,8 @@ Chrome.prototype = {
         for (let i = windows.length - 1; i > -1; i--) {
             let layer = windows[i].get_meta_window().get_layer();
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                if (windows[i].x >= primary.x && windows[i].x <= primary.x + primary.width &&
-                    windows[i].y >= primary.y && windows[i].y <= primary.y + primary.height) {
+                if (windows[i].x >= primary.x && windows[i].x < primary.x + primary.width &&
+                    windows[i].y >= primary.y && windows[i].y < primary.y + primary.height) {
                         this._obscuredByFullscreen = true;
                         break;
                 }
