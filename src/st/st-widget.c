@@ -287,6 +287,48 @@ st_widget_finalize (GObject *gobject)
 
 
 static void
+st_widget_get_preferred_width (ClutterActor *self,
+                               gfloat        for_height,
+                               gfloat       *min_width_p,
+                               gfloat       *natural_width_p)
+{
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+
+  /* Most subclasses will override this and not chain down. However,
+   * if they do not, then we need to override ClutterActor's default
+   * behavior (request 0x0) to take CSS-specified minimums into
+   * account (which st_theme_node_adjust_preferred_width() will do.)
+   */
+
+  if (min_width_p)
+    *min_width_p = 0;
+
+  if (natural_width_p)
+    *natural_width_p = 0;
+
+  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
+}
+
+static void
+st_widget_get_preferred_height (ClutterActor *self,
+                                gfloat        for_width,
+                                gfloat       *min_height_p,
+                                gfloat       *natural_height_p)
+{
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+
+  /* See st_widget_get_preferred_width() */
+
+  if (min_height_p)
+    *min_height_p = 0;
+
+  if (natural_height_p)
+    *natural_height_p = 0;
+
+  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
+}
+
+static void
 st_widget_allocate (ClutterActor          *actor,
                     const ClutterActorBox *box,
                     ClutterAllocationFlags flags)
@@ -604,6 +646,8 @@ st_widget_class_init (StWidgetClass *klass)
   gobject_class->dispose = st_widget_dispose;
   gobject_class->finalize = st_widget_finalize;
 
+  actor_class->get_preferred_width = st_widget_get_preferred_width;
+  actor_class->get_preferred_height = st_widget_get_preferred_height;
   actor_class->allocate = st_widget_allocate;
   actor_class->paint = st_widget_paint;
   actor_class->parent_set = st_widget_parent_set;
