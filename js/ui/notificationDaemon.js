@@ -190,7 +190,8 @@ NotificationDaemon.prototype = {
             let busProxy = new Bus();
             busProxy.GetConnectionUnixProcessIDRemote(sender, function (result, excp) {
                 let app = Shell.WindowTracker.get_default().get_app_from_pid(result);
-                source.setApp(app);
+                if (app)
+                    source.setApp(app);
             });
         } else {
             source.update(icon, hints);
