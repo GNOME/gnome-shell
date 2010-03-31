@@ -51,12 +51,16 @@ shell_draw_clock (StDrawingArea       *area,
 
 void
 shell_draw_box_pointer (StDrawingArea         *area,
-                        ShellPointerDirection  direction,
-                        ClutterColor          *border_color,
-                        ClutterColor          *background_color)
+                        ShellPointerDirection  direction)
 {
+  StThemeNode *theme_node;
+  ClutterColor border_color, body_color;
   guint width, height;
   cairo_t *cr;
+
+  theme_node = st_widget_get_theme_node (ST_WIDGET (area));
+  st_theme_node_get_border_color (theme_node, (StSide)direction, &border_color);
+  st_theme_node_get_foreground_color (theme_node, &body_color);
 
   st_drawing_area_get_surface_size (area, &width, &height);
 
@@ -64,7 +68,7 @@ shell_draw_box_pointer (StDrawingArea         *area,
 
   cairo_set_line_width (cr, 1.0);
 
-  clutter_cairo_set_source_color (cr, border_color);
+  clutter_cairo_set_source_color (cr, &border_color);
 
   switch (direction)
     {
@@ -98,7 +102,7 @@ shell_draw_box_pointer (StDrawingArea         *area,
 
   cairo_stroke_preserve (cr);
 
-  clutter_cairo_set_source_color (cr, background_color);
+  clutter_cairo_set_source_color (cr, &body_color);
 
   cairo_fill (cr);
 }

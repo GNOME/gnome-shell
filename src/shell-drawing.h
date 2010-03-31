@@ -8,17 +8,16 @@
 
 G_BEGIN_DECLS
 
+/* Note that these correspond to StSide */
 typedef enum {
   SHELL_POINTER_UP,
+  SHELL_POINTER_RIGHT,
   SHELL_POINTER_DOWN,
-  SHELL_POINTER_LEFT,
-  SHELL_POINTER_RIGHT
+  SHELL_POINTER_LEFT
 } ShellPointerDirection;
 
 void shell_draw_box_pointer (StDrawingArea         *area,
-                             ShellPointerDirection  direction,
-                             ClutterColor          *border_color,
-                             ClutterColor          *background_color);
+                             ShellPointerDirection  direction);
 
 void shell_draw_clock (StDrawingArea       *area,
 	               int                  hour,

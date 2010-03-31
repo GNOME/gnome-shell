@@ -13,13 +13,6 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const POPUP_ARROW_COLOR = new Clutter.Color();
-POPUP_ARROW_COLOR.from_pixel(0xffffffff);
-const POPUP_UNFOCUSED_ARROW_COLOR = new Clutter.Color();
-POPUP_UNFOCUSED_ARROW_COLOR.from_pixel(0x808080ff);
-const TRANSPARENT_COLOR = new Clutter.Color();
-TRANSPARENT_COLOR.from_pixel(0x00000000);
-
 const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
 
@@ -477,16 +470,18 @@ SwitcherList.prototype = {
         this.actor.add_actor(this._rightGradient);
 
         // Those arrows indicate whether scrolling in one direction is possible
-        this._leftArrow = new St.DrawingArea();
+        this._leftArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
+                                               pseudo_class: 'highlighted' });
         this._leftArrow.connect('repaint', Lang.bind(this,
                                             function (area) {
-                                                Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT, TRANSPARENT_COLOR, POPUP_ARROW_COLOR);
+                                                Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT);
                                             }));
 
-        this._rightArrow = new St.DrawingArea();
+        this._rightArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
+                                                pseudo_class: 'highlighted' });
         this._rightArrow.connect('repaint', Lang.bind(this,
                                             function (area) {
-                                                Shell.draw_box_pointer(area, Shell.PointerDirection.RIGHT, TRANSPARENT_COLOR, POPUP_ARROW_COLOR);
+                                                Shell.draw_box_pointer(area, Shell.PointerDirection.RIGHT);
                                             }));
 
         this._leftGradient.add_actor(this._leftArrow);
@@ -865,16 +860,13 @@ AppSwitcher.prototype = {
     // thumbnails are visible (ie, when the app icon is supposed to be
     // in justOutline mode). Apps with multiple windows will normally
     // show a dim arrow, but show a bright arrow when they are
-    // highlighted; their redraw handler will use the right color
-    // based on this._curApp; we just need to do a queue_relayout() to
-    // force it to redraw. (queue_redraw() doesn't work because
-    // ShellDrawingArea only redraws on allocate.)
+    // highlighted.
     highlight : function(n, justOutline) {
         if (this._curApp != -1) {
             if (this.icons[this._curApp].cachedWindows.length == 1)
                 this._arrows[this._curApp].hide();
             else
-                this._arrows[this._curApp].queue_relayout();
+                this._arrows[this._curApp].remove_style_pseudo_class('highlighted');
         }
 
         SwitcherList.prototype.highlight.call(this, n, justOutline);
@@ -884,7 +876,7 @@ AppSwitcher.prototype = {
             if (justOutline && this.icons[this._curApp].cachedWindows.length == 1)
                 this._arrows[this._curApp].show();
             else
-                this._arrows[this._curApp].queue_relayout();
+                this._arrows[this._curApp].add_style_pseudo_class('highlighted');
         }
     },
 
@@ -893,12 +885,10 @@ AppSwitcher.prototype = {
         this.addItem(appIcon.actor);
 
         let n = this._arrows.length;
-        let arrow = new St.DrawingArea();
+        let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', Lang.bind(this,
             function (area) {
-                Shell.draw_box_pointer(area, Shell.PointerDirection.DOWN,
-                                       TRANSPARENT_COLOR,
-                                       this._curApp == n ? POPUP_ARROW_COLOR : POPUP_UNFOCUSED_ARROW_COLOR);
+                Shell.draw_box_pointer(area, Shell.PointerDirection.DOWN);
             }));
         this._list.add_actor(arrow);
         this._arrows.push(arrow);

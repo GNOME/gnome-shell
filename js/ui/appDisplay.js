@@ -608,9 +608,6 @@ AppIconMenu.prototype = {
     _init: function(source) {
         this._source = source;
 
-        this._arrowSize = 4; // CSS default
-        this._spacing = 0; // CSS default
-
         this.actor = new Shell.GenericContainer({ reactive: true });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -634,16 +631,11 @@ AppIconMenu.prototype = {
         this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
         this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
 
-        this._borderColor = new Clutter.Color();
-        this._backgroundColor = new Clutter.Color();
         this._windowContainerBox.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
-        this._arrow = new St.DrawingArea();
+        this._arrow = new St.DrawingArea({ style_class: 'app-well-menu-arrow' });
         this._arrow.connect('repaint', Lang.bind(this, function (area) {
-            Shell.draw_box_pointer(area,
-                                   Shell.PointerDirection.LEFT,
-                                   this._borderColor,
-                                   this._backgroundColor);
+            Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT);
         }));
         this.actor.add_actor(this._arrow);
 
@@ -658,11 +650,10 @@ AppIconMenu.prototype = {
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [min, natural] = this._windowContainerBox.get_preferred_width(forHeight);
-        min += this._arrowSize;
-        natural += this._arrowSize;
-        alloc.min_size = min;
-        alloc.natural_size = natural;
+        let [menuMin, menuNatural] = this._windowContainerBox.get_preferred_width(forHeight);
+        let [arrowMin, arrowNatural] = this._arrow.get_preferred_width(forHeight);
+        alloc.min_size = menuMin + arrowMin;
+        alloc.natural_size = menuNatural + arrowNatural;
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
@@ -678,15 +669,17 @@ AppIconMenu.prototype = {
         let width = box.x2 - box.x1;
         let height = box.y2 - box.y1;
 
+        let [arrowMinWidth, arrowWidth] = this._arrow.get_preferred_width(height);
+
         childBox.x1 = 0;
-        childBox.x2 = this._arrowSize;
-        childBox.y1 = Math.floor((height / 2) - (this._arrowSize / 2));
-        childBox.y2 = childBox.y1 + this._arrowSize;
+        childBox.x2 = arrowWidth;
+        childBox.y1 = Math.floor((height / 2) - (arrowWidth / 2));
+        childBox.y2 = childBox.y1 + arrowWidth;
         this._arrow.allocate(childBox, flags);
 
         // Ensure the arrow is above the border area
         let border = themeNode.get_border_width(St.Side.LEFT);
-        childBox.x1 = this._arrowSize - border;
+        childBox.x1 = arrowWidth - border;
         childBox.x2 = width;
         childBox.y1 = 0;
         childBox.y2 = height;
@@ -873,25 +866,10 @@ AppIconMenu.prototype = {
 
     _onStyleChanged: function() {
         let themeNode = this._windowContainerBox.get_theme_node();
-        let [success, len] = themeNode.get_length('-shell-arrow-width', false);
-        if (success) {
-            this._arrowSize = len;
-            this.actor.queue_relayout();
-        }
         [success, len] = themeNode.get_length('-shell-menu-spacing', false)
         if (success) {
             this._windowContainer.spacing = len;
         }
-
-        let color = new Clutter.Color();
-        themeNode.get_background_color(color);
-        this._backgroundColor = color;
-
-        color = new Clutter.Color();
-        themeNode.get_border_color(St.Side.LEFT, color);
-        this._borderColor = color;
-
-        this._arrow.queue_repaint();
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
