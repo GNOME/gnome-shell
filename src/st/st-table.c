@@ -114,6 +114,39 @@ st_table_remove_actor (ClutterContainer *container,
                        ClutterActor     *actor)
 {
   StTablePrivate *priv = ST_TABLE (container)->priv;
+  GList *list;
+  gint n_rows = 0;
+  gint n_cols = 0;
+
+  /* Calculate and update the number of rows / columns */
+  for (list = priv->children; list; list = list->next)
+    {
+      ClutterActor *child = CLUTTER_ACTOR (list->data);
+      StTableChild *meta;
+
+      if (child == actor)
+          continue;
+
+      meta = (StTableChild *) clutter_container_get_child_meta (container, child);
+      n_rows = MAX (n_rows, meta->row + 1);
+      n_cols = MAX (n_cols, meta->col + 1);
+    }
+
+  g_object_freeze_notify (G_OBJECT (container));
+
+  if (priv->n_rows != n_rows)
+    {
+      priv->n_rows = n_rows;
+      g_object_notify (G_OBJECT (container), "row-count");
+    }
+
+  if (priv->n_cols != n_cols)
+    {
+      priv->n_cols = n_cols;
+      g_object_notify (G_OBJECT (container), "column-count");
+    }
+
+  g_object_thaw_notify (G_OBJECT (container));
 
   _st_container_remove_actor (container, actor, &priv->children);
 }
