@@ -80,6 +80,40 @@ typedef enum {
 } CoglMaterialFilter;
 
 /**
+ * CoglMaterialWrapMode:
+ * @COGL_MATERIAL_WRAP_MODE_REPEAT: The texture will be repeated. This
+ *   is useful for example to draw a tiled background.
+ * @COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE: The coordinates outside the
+ *   range 0→1 will sample copies of the edge pixels of the
+ *   texture. This is useful to avoid artifacts if only one copy of
+ *   the texture is being rendered.
+ * @COGL_MATERIAL_WRAP_MODE_AUTOMATIC: Cogl will try to automatically
+ *   decide which of the above two to use. For cogl_rectangle(), it
+ *   will use repeat mode if any of the texture coordinates are
+ *   outside the range 0→1, otherwise it will use clamp to edge. For
+ *   cogl_polygon() and cogl_vertex_buffer_draw() it will always use
+ *   repeat mode. This is the default value.
+ *
+ * The wrap mode specifies what happens when texture coordinates
+ * outside the range 0→1 are used. Note that if the filter mode is
+ * anything but %COGL_MATERIAL_FILTER_NEAREST then texels outside the
+ * range 0→1 might be used even when the coordinate is exactly 0 or 1
+ * because OpenGL will try to sample neighbouring pixels. For example
+ * if you are trying to render the full texture then you may get
+ * artifacts around the edges when the pixels from the other side are
+ * merged in if the wrap mode is set to repeat.
+ *
+ * Since: 1.4
+ */
+/* GL_ALWAYS is just used here as a value that is known not to clash
+   with any valid GL wrap modes */
+typedef enum {
+  COGL_MATERIAL_WRAP_MODE_REPEAT = GL_REPEAT,
+  COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
+  COGL_MATERIAL_WRAP_MODE_AUTOMATIC = GL_ALWAYS
+} CoglMaterialWrapMode;
+
+/**
  * cogl_material_new:
  *
  * Allocates and initializes a blank white material
@@ -835,6 +869,76 @@ cogl_material_set_layer_filters (CoglHandle         material,
                                  int                layer_index,
                                  CoglMaterialFilter min_filter,
                                  CoglMaterialFilter mag_filter);
+
+/**
+ * cogl_material_set_layer_wrap_mode_s:
+ * @material: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @mode: the new wrap mode
+ *
+ * Sets the wrap mode for the 's' coordinate of texture lookups on this layer.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_layer_wrap_mode_s (CoglHandle           material,
+                                     int                  layer_index,
+                                     CoglMaterialWrapMode mode);
+
+/**
+ * cogl_material_set_layer_wrap_mode_t:
+ * @material: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @mode: the new wrap mode
+ *
+ * Sets the wrap mode for the 't' coordinate of texture lookups on this layer.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_layer_wrap_mode_t (CoglHandle           material,
+                                     int                  layer_index,
+                                     CoglMaterialWrapMode mode);
+
+/**
+ * cogl_material_set_layer_wrap_mode:
+ * @material: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @mode: the new wrap mode
+ *
+ * Sets the wrap mode for both coordinates of texture lookups on this
+ * layer. This is equivalent to calling
+ * cogl_material_set_layer_wrap_mode_s() and
+ * cogl_material_set_layer_wrap_mode_t() separately.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_layer_wrap_mode (CoglHandle           material,
+                                   int                  layer_index,
+                                   CoglMaterialWrapMode mode);
+
+/**
+ * cogl_material_layer_get_wrap_mode_s:
+ * @layer: a #CoglHandle to a material mayer.
+ *
+ * Gets the wrap mode for the 's' coordinate of texture lookups on this layer.
+ *
+ * Since: 1.4
+ */
+CoglMaterialWrapMode
+cogl_material_layer_get_wrap_mode_s (CoglHandle layer);
+
+/**
+ * cogl_material_layer_get_wrap_mode_t:
+ * @layer: a #CoglHandle to a material mayer.
+ *
+ * Gets the wrap mode for the 't' coordinate of texture lookups on this layer.
+ *
+ * Since: 1.4
+ */
+CoglMaterialWrapMode
+cogl_material_layer_get_wrap_mode_t (CoglHandle layer);
 
 G_END_DECLS
 

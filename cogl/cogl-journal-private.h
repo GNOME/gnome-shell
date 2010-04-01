@@ -46,6 +46,8 @@ _cogl_journal_log_quad (const float  *position,
                         int           n_layers,
                         guint32       fallback_layers,
                         GLuint        layer0_override_texture,
+                        const CoglMaterialWrapModeOverrides *
+                                      wrap_mode_overrides,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len);
 

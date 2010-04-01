@@ -57,6 +57,7 @@ typedef struct _TextureSlicedQuadState
   float quad_len_y;
   gboolean flipped_x;
   gboolean flipped_y;
+  CoglMaterialWrapModeOverrides wrap_mode_overrides;
 } TextureSlicedQuadState;
 
 typedef struct _TextureSlicedPolygonState
@@ -65,7 +66,6 @@ typedef struct _TextureSlicedPolygonState
   int n_vertices;
   int stride;
 } TextureSlicedPolygonState;
-
 
 static void
 log_quad_sub_textures_cb (CoglHandle texture_handle,
@@ -117,6 +117,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
                           gl_handle, /* replace the layer0 texture */
+                          &state->wrap_mode_overrides, /* use CLAMP_TO_EDGE */
                           subtexture_coords,
                           4);
 }
@@ -138,6 +139,8 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
 static void
 _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                                         CoglHandle   material,
+                                        gboolean     clamp_s,
+                                        gboolean     clamp_t,
                                         const float *position,
                                         float        tx_1,
                                         float        ty_1,
@@ -152,15 +155,112 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
+  /* If the wrap mode is clamp to edge then we'll recursively draw the
+     stretched part and replace the coordinates */
+  if (clamp_s && tx_1 != tx_2)
+    {
+      float *replacement_position = g_newa (float, 4);
+      float old_tx_1 = tx_1, old_tx_2 = tx_2;
+
+      memcpy (replacement_position, position, sizeof (float) * 4);
+
+      tx_1 = CLAMP (tx_1, 0.0f, 1.0f);
+      tx_2 = CLAMP (tx_2, 0.0f, 1.0f);
+
+      if (old_tx_1 != tx_1)
+        {
+          /* Draw the left part of the quad as a stretched copy of tx_1 */
+          float tmp_position[] =
+            { position[0], position[1],
+              (position[0] +
+               (position[2] - position[0]) *
+               (tx_1 - old_tx_1) / (old_tx_2 - old_tx_1)),
+              position[3] };
+          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+                                                  FALSE, clamp_t,
+                                                  tmp_position,
+                                                  tx_1, ty_1, tx_1, ty_2);
+          replacement_position[0] = tmp_position[2];
+        }
+
+      if (old_tx_2 != tx_2)
+        {
+          /* Draw the right part of the quad as a stretched copy of tx_2 */
+          float tmp_position[] =
+            { (position[0] +
+               (position[2] - position[0]) *
+               (tx_2 - old_tx_1) / (old_tx_2 - old_tx_1)),
+              position[1], position[2], position[3] };
+          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+                                                  FALSE, clamp_t,
+                                                  tmp_position,
+                                                  tx_2, ty_1, tx_2, ty_2);
+          replacement_position[2] = tmp_position[0];
+        }
+
+      /* If there's no main part left then we don't need to continue */
+      if (tx_1 == tx_2)
+        return;
+
+      position = replacement_position;
+    }
+
+  if (clamp_t && ty_1 != ty_2)
+    {
+      float *replacement_position = g_newa (float, 4);
+      float old_ty_1 = ty_1, old_ty_2 = ty_2;
+
+      memcpy (replacement_position, position, sizeof (float) * 4);
+
+      ty_1 = CLAMP (ty_1, 0.0f, 1.0f);
+      ty_2 = CLAMP (ty_2, 0.0f, 1.0f);
+
+      if (old_ty_1 != ty_1)
+        {
+          /* Draw the top part of the quad as a stretched copy of ty_1 */
+          float tmp_position[] =
+            { position[0], position[1], position[2],
+              (position[1] +
+               (position[3] - position[1]) *
+               (ty_1 - old_ty_1) / (old_ty_2 - old_ty_1)) };
+          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+                                                  clamp_s, FALSE,
+                                                  tmp_position,
+                                                  tx_1, ty_1, tx_2, ty_1);
+          replacement_position[1] = tmp_position[3];
+        }
+
+      if (old_ty_2 != ty_2)
+        {
+          /* Draw the bottom part of the quad as a stretched copy of ty_2 */
+          float tmp_position[] =
+            { position[0],
+              (position[1] +
+               (position[3] - position[1]) *
+               (ty_2 - old_ty_1) / (old_ty_2 - old_ty_1)),
+              position[2], position[3] };
+          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+                                                  clamp_s, FALSE,
+                                                  tmp_position,
+                                                  tx_1, ty_2, tx_2, ty_2);
+          replacement_position[3] = tmp_position[1];
+        }
+
+      /* If there's no main part left then we don't need to continue */
+      if (ty_1 == ty_2)
+        return;
+
+      position = replacement_position;
+    }
+
+  memset (&state.wrap_mode_overrides, 0, sizeof (state.wrap_mode_overrides));
 
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side */
-  /* FIXME: wrap modes should be part of the material! */
-  _cogl_texture_set_wrap_mode_parameters (tex_handle,
-                                          GL_CLAMP_TO_EDGE,
-                                          GL_CLAMP_TO_EDGE,
-                                          GL_CLAMP_TO_EDGE);
+  state.wrap_mode_overrides.values[0].s =
+    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+  state.wrap_mode_overrides.values[0].t =
+    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
 
   state.material = material;
 
@@ -239,8 +339,11 @@ _cogl_multitexture_quad_single_primitive (const float *position,
   const GList *layers;
   GList       *tmp;
   int          i;
+  CoglMaterialWrapModeOverrides wrap_mode_overrides;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
+
+  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
 
   /*
    * Validate the texture coordinates for this rectangle.
@@ -254,7 +357,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
       float              *out_tex_coords;
       float               default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       CoglTransformResult transform_result;
-      GLenum              wrap_mode;
+      unsigned long       auto_wrap_mode;
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -328,14 +431,16 @@ _cogl_multitexture_quad_single_primitive (const float *position,
          to the edge otherwise it can pull in edge pixels from the
          wrong side when scaled */
       if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
-        wrap_mode = GL_REPEAT;
+        auto_wrap_mode = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
       else
-        wrap_mode = GL_CLAMP_TO_EDGE;
+        auto_wrap_mode = COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
 
-      _cogl_texture_set_wrap_mode_parameters (tex_handle,
-                                              wrap_mode,
-                                              wrap_mode,
-                                              wrap_mode);
+      if (cogl_material_layer_get_wrap_mode_s (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        wrap_mode_overrides.values[i].s = auto_wrap_mode;
+      if (cogl_material_layer_get_wrap_mode_t (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        wrap_mode_overrides.values[i].t = auto_wrap_mode;
     }
 
   _cogl_journal_log_quad (position,
@@ -343,6 +448,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
                           n_layers,
                           fallback_layers,
                           0, /* don't replace the layer0 texture */
+                          &wrap_mode_overrides,
                           final_tex_coords,
                           n_layers * 4);
 
@@ -480,6 +586,7 @@ _cogl_rectangles_with_multitexture_coords (
       CoglHandle   first_layer, tex_handle;
       const float  default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       const float *tex_coords;
+      gboolean     clamp_s, clamp_t;
 
       if (!all_use_sliced_quad_fallback)
         {
@@ -509,8 +616,16 @@ _cogl_rectangles_with_multitexture_coords (
       else
         tex_coords = default_tex_coords;
 
+      clamp_s = (cogl_material_layer_get_wrap_mode_s (first_layer) ==
+                 COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+      clamp_t = (cogl_material_layer_get_wrap_mode_t (first_layer) ==
+                 COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+
+      COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
+
       _cogl_texture_quad_multiple_primitives (tex_handle,
                                               material,
+                                              clamp_s, clamp_t,
                                               rects[i].position,
                                               tex_coords[0],
                                               tex_coords[1],
@@ -691,10 +806,25 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
 
   options.flags =
     COGL_MATERIAL_FLUSH_DISABLE_MASK |
-    COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
+    COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE |
+    COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
   /* disable all except the first layer */
   options.disable_layers = (guint32)~1;
   options.layer0_override_texture = gl_handle;
+
+  /* Override the wrapping mode on all of the slices to use a
+     transparent border so that we can draw the full polygon for
+     each slice. Coordinates outside the texture will be transparent
+     so only the part of the polygon that intersects the slice will
+     be visible. This is a fairly hacky fallback and it relies on
+     the blending function working correctly */
+
+  memset (&options.wrap_mode_overrides, 0,
+          sizeof (options.wrap_mode_overrides));
+  options.wrap_mode_overrides.values[0].s =
+    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
+  options.wrap_mode_overrides.values[0].t =
+    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
 
   _cogl_material_flush_gl_state (ctx->source_material, &options);
 
@@ -920,18 +1050,6 @@ cogl_polygon (const CoglTextureVertex *vertices,
               return;
             }
 
-#ifdef HAVE_COGL_GL
-          {
-            /* Temporarily change the wrapping mode on all of the slices to use
-             * a transparent border
-             * XXX: it's doesn't look like we save/restore this, like
-             * the comment implies? */
-            _cogl_texture_set_wrap_mode_parameters (tex_handle,
-                                                    GL_CLAMP_TO_BORDER,
-                                                    GL_CLAMP_TO_BORDER,
-                                                    GL_CLAMP_TO_BORDER);
-          }
-#endif
           break;
         }
 

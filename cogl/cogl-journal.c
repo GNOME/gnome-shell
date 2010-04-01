@@ -663,6 +663,8 @@ _cogl_journal_log_quad (const float  *position,
                         int           n_layers,
                         guint32       fallback_layers,
                         GLuint        layer0_override_texture,
+                        const CoglMaterialWrapModeOverrides *
+                                      wrap_mode_overrides,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
@@ -803,6 +805,11 @@ _cogl_journal_log_quad (const float  *position,
     COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
   entry->flush_options.fallback_layers = fallback_layers;
   entry->flush_options.disable_layers = disable_layers;
+  if (wrap_mode_overrides)
+    {
+      entry->flush_options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+      entry->flush_options.wrap_mode_overrides = *wrap_mode_overrides;
+    }
   if (layer0_override_texture)
     {
       entry->flush_options.flags |= COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
