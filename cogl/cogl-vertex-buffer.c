@@ -1530,6 +1530,12 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   if (buffer->new_attributes)
     cogl_vertex_buffer_submit_real (buffer);
 
+  options.flags =
+    COGL_MATERIAL_FLUSH_FALLBACK_MASK |
+    COGL_MATERIAL_FLUSH_DISABLE_MASK;
+  memset (&options.wrap_mode_overrides, 0,
+          sizeof (options.wrap_mode_overrides));
+
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
       CoglVertexBufferVBO *cogl_vbo = tmp->data;
@@ -1668,6 +1674,32 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
            */
           fallback_layers |= (1 << i);
         }
+
+      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+         GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
+         compatibility with older versions of Cogl so we'll override
+         it */
+      if (cogl_material_layer_get_wrap_mode_s (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          options.wrap_mode_overrides.values[i].s =
+            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+        }
+      if (cogl_material_layer_get_wrap_mode_t (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          options.wrap_mode_overrides.values[i].t =
+            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+        }
+      if (_cogl_material_layer_get_wrap_mode_r (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          options.wrap_mode_overrides.values[i].r =
+            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+        }
     }
 
   for (i = max_texcoord_attrib_unit + 1; i < ctx->n_texcoord_arrays_enabled; i++)
@@ -1682,9 +1714,6 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
-  options.flags =
-    COGL_MATERIAL_FLUSH_FALLBACK_MASK |
-    COGL_MATERIAL_FLUSH_DISABLE_MASK;
   options.fallback_layers = fallback_layers;
   options.disable_layers = disable_layers;
 
