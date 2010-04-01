@@ -32,6 +32,16 @@
 
 G_BEGIN_DECLS
 
+/* Some structures are meant to be opaque but they have public
+   definitions because we want the size to be public so they can be
+   allocated on the stack. This macro is used to ensure that users
+   don't accidentally access private members */
+#ifdef CLUTTER_COMPILATION
+#define COGL_PRIVATE(x) x
+#else
+#define COGL_PRIVATE(x) private_member_ ## x
+#endif
+
 /**
  * CoglHandle:
  *
@@ -251,17 +261,17 @@ typedef enum
 struct _CoglColor
 {
   /*< private >*/
-  guint8 red;
-  guint8 green;
-  guint8 blue;
+  guint8 COGL_PRIVATE (red);
+  guint8 COGL_PRIVATE (green);
+  guint8 COGL_PRIVATE (blue);
 
-  guint8 alpha;
+  guint8 COGL_PRIVATE (alpha);
 
   /* padding in case we want to change to floats at
    * some point */
-  guint32 padding0;
-  guint32 padding1;
-  guint32 padding2;
+  guint32 COGL_PRIVATE (padding0);
+  guint32 COGL_PRIVATE (padding1);
+  guint32 COGL_PRIVATE (padding2);
 };
 
 /**

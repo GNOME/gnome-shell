@@ -28,6 +28,7 @@
 #define __COGL_MATRIX_H
 
 #include <glib.h>
+#include "cogl-types.h"
 
 G_BEGIN_DECLS
 
@@ -100,10 +101,10 @@ struct _CoglMatrix
 
   /* Note: we may want to extend this later with private flags
    * and a cache of the inverse transform matrix. */
-  float   inv[16];
-  unsigned long  type;
-  unsigned long  flags;
-  unsigned long  _padding3;
+  float          COGL_PRIVATE (inv)[16];
+  unsigned long  COGL_PRIVATE (type);
+  unsigned long  COGL_PRIVATE (flags);
+  unsigned long  COGL_PRIVATE (_padding3);
 };
 
 /**
