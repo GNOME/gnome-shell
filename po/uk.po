@@ -1,0 +1,280 @@
+# Ukrainian translation for gnome-shell.
+# Copyright (C) 2010 Free Software Foundation
+# This file is distributed under the same license as the gnome-shell package.
+# Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2010-03-31 13:32+0000\n"
+"PO-Revision-Date: 2010-03-31 13:32+0000\n"
+"Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Керування вікнами та запуск програм"
+
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:312 ../js/ui/dash.js:855
+msgid "APPLICATIONS"
+msgstr "ПРОГРАМИ"
+
+#: ../js/ui/appDisplay.js:344
+msgid "PREFERENCES"
+msgstr "ПАРАМЕТРИ"
+
+#: ../js/ui/appDisplay.js:734
+msgid "New Window"
+msgstr "Нове вікно"
+
+#: ../js/ui/appDisplay.js:738
+msgid "Remove from Favorites"
+msgstr "Видалити з улюбленого"
+
+#: ../js/ui/appDisplay.js:739
+msgid "Add to Favorites"
+msgstr "Додати до улюбленого"
+
+#: ../js/ui/appDisplay.js:1091
+msgid "Drag here to add favorites"
+msgstr "Перетягніть сюди для додавання до улюбленого"
+
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s додано до улюбленого."
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s видалено з улюбленого."
+
+#: ../js/ui/dash.js:194
+msgid "Find"
+msgstr "Знайти"
+
+#: ../js/ui/dash.js:510
+msgid "Searching..."
+msgstr "Пошук..."
+
+#: ../js/ui/dash.js:524
+msgid "No matching results."
+msgstr "Немає відповідностей."
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:874 ../js/ui/placeDisplay.js:543
+msgid "PLACES & DEVICES"
+msgstr "МІСЦЯ ТА ПРИСТРОЇ"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:881 ../js/ui/docDisplay.js:489
+msgid "RECENT ITEMS"
+msgstr "ОСТАННІ ДОКУМЕНТИ"
+
+#: ../js/ui/lookingGlass.js:363
+msgid "No extensions installed"
+msgstr "Не встановлено розширення"
+
+#: ../js/ui/lookingGlass.js:400
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#: ../js/ui/lookingGlass.js:402
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#: ../js/ui/lookingGlass.js:404
+msgid "Error"
+msgstr "Помилка"
+
+#: ../js/ui/lookingGlass.js:406
+msgid "Out of date"
+msgstr "Застаріло"
+
+#: ../js/ui/lookingGlass.js:431
+msgid "View Source"
+msgstr "Переглянути джерело"
+
+#: ../js/ui/lookingGlass.js:437
+msgid "Web Page"
+msgstr "Веб-сторінка"
+
+#: ../js/ui/overview.js:182
+msgid "Undo"
+msgstr "Вернути"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:388
+msgid "Activities"
+msgstr "Дії"
+
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:619
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:622
+msgid "%a %l:%M %p"
+msgstr "%a, %H:%M"
+
+#: ../js/ui/placeDisplay.js:108
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Помилка при відключенні '%s'"
+
+#: ../js/ui/placeDisplay.js:111
+msgid "Retry"
+msgstr "Повторити"
+
+#: ../js/ui/placeDisplay.js:156
+msgid "Connect to..."
+msgstr "З'єднатися з..."
+
+#: ../js/ui/runDialog.js:232
+msgid "Please enter a command:"
+msgstr "Введіть команду:"
+
+#: ../js/ui/runDialog.js:376
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Не вдається виконати «%s»:"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Available"
+msgstr "Доступний"
+
+#: ../js/ui/statusMenu.js:112
+msgid "Busy"
+msgstr "Зайнятий"
+
+#: ../js/ui/statusMenu.js:117
+msgid "Invisible"
+msgstr "Невидимий"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Account Information..."
+msgstr "Інформація про користувача..."
+
+#: ../js/ui/statusMenu.js:132
+msgid "Sidebar"
+msgstr "Бічна панель"
+
+#: ../js/ui/statusMenu.js:142
+msgid "System Preferences..."
+msgstr "Параметри системи..."
+
+#: ../js/ui/statusMenu.js:151
+msgid "Lock Screen"
+msgstr "Блокувати екран"
+
+#: ../js/ui/statusMenu.js:156
+msgid "Switch User"
+msgstr "Змінити користувача"
+
+#: ../js/ui/statusMenu.js:162
+msgid "Log Out..."
+msgstr "Завершити сеанс..."
+
+#: ../js/ui/statusMenu.js:167
+msgid "Shut Down..."
+msgstr "Вимкнути..."
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Програми"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Недавні документи"
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s завершив запуск"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' готовий"
+
+#: ../src/shell-global.c:967
+msgid "Less than a minute ago"
+msgstr "Менше хвилини тому"
+
+#: ../src/shell-global.c:971
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d хвилина тому"
+msgstr[1] "%d хвилини тому"
+msgstr[2] "%d хвилин тому"
+
+#: ../src/shell-global.c:976
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d година тому"
+msgstr[1] "%d години тому"
+msgstr[2] "%d годин тому"
+
+#: ../src/shell-global.c:981
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d день тому"
+msgstr[1] "%d дні тому"
+msgstr[2] "%d днів тому"
+
+#: ../src/shell-global.c:986
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d тиждень тому"
+msgstr[1] "%d тижні тому"
+msgstr[2] "%d тижнів тому"
+
+#: ../src/shell-uri-util.c:89
+msgid "Home Folder"
+msgstr "Домашня тека"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:104
+msgid "File System"
+msgstr "Файлова система"
+
+#: ../src/shell-uri-util.c:250
+msgid "Search"
+msgstr "Пошук"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+
