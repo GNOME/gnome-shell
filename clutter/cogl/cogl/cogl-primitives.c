@@ -57,7 +57,7 @@ typedef struct _TextureSlicedQuadState
   float quad_len_y;
   gboolean flipped_x;
   gboolean flipped_y;
-  CoglMaterialWrapModeOverrides wrap_mode_overrides;
+  CoglMaterialWrapModeOverrides *wrap_mode_overrides;
 } TextureSlicedQuadState;
 
 typedef struct _TextureSlicedPolygonState
@@ -117,7 +117,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
                           gl_handle, /* replace the layer0 texture */
-                          &state->wrap_mode_overrides, /* use CLAMP_TO_EDGE */
+                          state->wrap_mode_overrides, /* use GL_CLAMP_TO_EDGE */
                           subtexture_coords,
                           4);
 }
@@ -148,10 +148,12 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                                         float        ty_2)
 {
   TextureSlicedQuadState state;
+  CoglMaterialWrapModeOverrides wrap_mode_overrides;
   gboolean tex_virtual_flipped_x;
   gboolean tex_virtual_flipped_y;
   gboolean quad_flipped_x;
   gboolean quad_flipped_y;
+  CoglHandle first_layer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -253,14 +255,28 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
       position = replacement_position;
     }
 
+  state.wrap_mode_overrides = NULL;
   memset (&state.wrap_mode_overrides, 0, sizeof (state.wrap_mode_overrides));
 
   /* We can't use hardware repeat so we need to set clamp to edge
-     otherwise it might pull in edge pixels from the other side */
-  state.wrap_mode_overrides.values[0].s =
-    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
-  state.wrap_mode_overrides.values[0].t =
-    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+     otherwise it might pull in edge pixels from the other side. By
+     default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
+     to override if the wrap mode is repeat */
+  first_layer = cogl_material_get_layers (material)->data;
+  if (cogl_material_layer_get_wrap_mode_s (first_layer) ==
+      COGL_MATERIAL_WRAP_MODE_REPEAT)
+    {
+      state.wrap_mode_overrides = &wrap_mode_overrides;
+      wrap_mode_overrides.values[0].s =
+        COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+    }
+  if (cogl_material_layer_get_wrap_mode_t (first_layer) ==
+      COGL_MATERIAL_WRAP_MODE_REPEAT)
+    {
+      state.wrap_mode_overrides = &wrap_mode_overrides;
+      wrap_mode_overrides.values[0].t =
+        COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+    }
 
   state.material = material;
 
@@ -340,6 +356,9 @@ _cogl_multitexture_quad_single_primitive (const float *position,
   GList       *tmp;
   int          i;
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
+  /* This will be set to point to wrap_mode_overrides when an override
+     is needed */
+  CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -357,7 +376,6 @@ _cogl_multitexture_quad_single_primitive (const float *position,
       float              *out_tex_coords;
       float               default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       CoglTransformResult transform_result;
-      unsigned long       auto_wrap_mode;
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -427,20 +445,28 @@ _cogl_multitexture_quad_single_primitive (const float *position,
             }
         }
 
-      /* If we're not repeating then we want to clamp the coords
-         to the edge otherwise it can pull in edge pixels from the
-         wrong side when scaled */
+      /* By default WRAP_MODE_AUTOMATIC becomes to CLAMP_TO_EDGE. If
+         the texture coordinates need repeating then we'll override
+         this to GL_REPEAT. Otherwise we'll leave it at CLAMP_TO_EDGE
+         so that it won't blend in pixels from the opposite side when
+         the full texture is drawn with GL_LINEAR filter mode */
       if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
-        auto_wrap_mode = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-      else
-        auto_wrap_mode = COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
-
-      if (cogl_material_layer_get_wrap_mode_s (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        wrap_mode_overrides.values[i].s = auto_wrap_mode;
-      if (cogl_material_layer_get_wrap_mode_t (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        wrap_mode_overrides.values[i].t = auto_wrap_mode;
+        {
+          if (cogl_material_layer_get_wrap_mode_s (layer) ==
+              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+            {
+              wrap_mode_overrides.values[i].s
+                = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+              wrap_mode_overrides_p = &wrap_mode_overrides;
+            }
+          if (cogl_material_layer_get_wrap_mode_t (layer) ==
+              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+            {
+              wrap_mode_overrides.values[i].t
+                = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+              wrap_mode_overrides_p = &wrap_mode_overrides;
+            }
+        }
     }
 
   _cogl_journal_log_quad (position,
@@ -448,7 +474,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
                           n_layers,
                           fallback_layers,
                           0, /* don't replace the layer0 texture */
-                          &wrap_mode_overrides,
+                          wrap_mode_overrides_p,
                           final_tex_coords,
                           n_layers * 4);
 
@@ -891,7 +917,9 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
                                              unsigned int n_layers,
                                              unsigned int stride,
                                              gboolean use_color,
-                                             guint32 fallback_layers)
+                                             guint32 fallback_layers,
+                                             CoglMaterialWrapModeOverrides *
+                                               wrap_mode_overrides)
 {
   CoglHandle           material;
   const GList         *layers;
@@ -959,6 +987,11 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
   if (use_color)
     options.flags |= COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
   options.fallback_layers = fallback_layers;
+  if (wrap_mode_overrides)
+    {
+      options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+      options.wrap_mode_overrides = *wrap_mode_overrides;
+    }
   _cogl_material_flush_gl_state (ctx->source_material, &options);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
@@ -980,6 +1013,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
   gsize                stride_bytes;
   GLfloat             *v;
   int                  prev_n_texcoord_arrays_enabled;
+  CoglMaterialWrapModeOverrides wrap_mode_overrides;
+  CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -993,6 +1028,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
   material = ctx->source_material;
   layers = cogl_material_get_layers (ctx->source_material);
   n_layers = g_list_length ((GList *)layers);
+
+  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
 
   for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
@@ -1066,6 +1103,24 @@ cogl_polygon (const CoglTextureVertex *vertices,
           fallback_layers |= (1 << i);
           continue;
         }
+
+      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+         GL_CLAMP_TO_EDGE but we want the polygon API to use GL_REPEAT
+         to maintain compatibility with previous releases */
+      if (cogl_material_layer_get_wrap_mode_s (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          wrap_mode_overrides.values[i].s =
+            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+          wrap_mode_overrides_p = &wrap_mode_overrides;
+        }
+      if (cogl_material_layer_get_wrap_mode_t (layer) ==
+          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          wrap_mode_overrides.values[i].t =
+            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+          wrap_mode_overrides_p = &wrap_mode_overrides;
+        }
     }
 
   /* Our data is arranged like:
@@ -1130,7 +1185,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
                                                  n_layers,
                                                  stride,
                                                  use_color,
-                                                 fallback_layers);
+                                                 fallback_layers,
+                                                 wrap_mode_overrides_p);
 
   /* Reset the size of the logged vertex array because rendering
      rectangles expects it to start at 0 */

@@ -1372,7 +1372,7 @@ _cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
                    GL_CLAMP_TO_EDGE :
                    GL_CLAMP_TO_BORDER);
   else if (layer->wrap_mode_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_s = GL_REPEAT;
+    wrap_mode_s = GL_CLAMP_TO_EDGE;
   else
     wrap_mode_s = layer->wrap_mode_s;
 
@@ -1385,7 +1385,7 @@ _cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
                    GL_CLAMP_TO_EDGE :
                    GL_CLAMP_TO_BORDER);
   else if (layer->wrap_mode_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_t = GL_REPEAT;
+    wrap_mode_t = GL_CLAMP_TO_EDGE;
   else
     wrap_mode_t = layer->wrap_mode_t;
 
@@ -1398,7 +1398,7 @@ _cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
                    GL_CLAMP_TO_EDGE :
                    GL_CLAMP_TO_BORDER);
   else if (layer->wrap_mode_r == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_r = GL_REPEAT;
+    wrap_mode_r = GL_CLAMP_TO_EDGE;
   else
     wrap_mode_r = layer->wrap_mode_r;
 
