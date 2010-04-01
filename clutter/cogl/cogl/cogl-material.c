@@ -58,6 +58,11 @@
 #define glBlendEquationSeparate ctx->drv.pf_glBlendEquationSeparate
 #endif
 
+/* This isn't defined in the GLES headers */
+#ifndef GL_CLAMP_TO_BORDER
+#define GL_CLAMP_TO_BORDER 0x812d
+#endif
+
 static CoglHandle _cogl_material_layer_copy (CoglHandle layer_handle);
 
 static void _cogl_material_free (CoglMaterial *tex);
@@ -776,6 +781,9 @@ _cogl_material_get_layer (CoglMaterial *material,
   layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
   layer->mag_filter = COGL_MATERIAL_FILTER_LINEAR;
   layer->min_filter = COGL_MATERIAL_FILTER_LINEAR;
+  layer->wrap_mode_s = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_t = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_r = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
   layer->texture = COGL_INVALID_HANDLE;
 
   /* Choose the same default combine mode as OpenGL:
@@ -1334,6 +1342,72 @@ _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
     _cogl_texture_ensure_mipmaps (layer->texture);
 }
 
+
+static void
+_cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
+                                         int layer_num,
+                                         CoglHandle tex_handle,
+                                         const CoglMaterialWrapModeOverrides *
+                                         wrap_mode_overrides)
+{
+  GLenum wrap_mode_s, wrap_mode_t, wrap_mode_r;
+
+  /* Update the wrap mode on the texture object. The texture backend
+     should cache the value so that it will be a no-op if the object
+     already has the same wrap mode set. The backend is best placed to
+     do this because it knows how many of the coordinates will
+     actually be used (ie, a 1D texture only cares about the 's'
+     coordinate but a 3D texture would use all three). GL uses the
+     wrap mode as part of the texture object state but we are
+     pretending it's part of the per-layer environment state. This
+     will break if the application tries to use different modes in
+     different layers using the same texture. */
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].s)
+    wrap_mode_s = (wrap_mode_overrides->values[layer_num].s ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[layer_num].s ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_s = GL_REPEAT;
+  else
+    wrap_mode_s = layer->wrap_mode_s;
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].t)
+    wrap_mode_t = (wrap_mode_overrides->values[layer_num].t ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[layer_num].t ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_t = GL_REPEAT;
+  else
+    wrap_mode_t = layer->wrap_mode_t;
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].r)
+    wrap_mode_r = (wrap_mode_overrides->values[layer_num].r ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[layer_num].r ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_r == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_r = GL_REPEAT;
+  else
+    wrap_mode_r = layer->wrap_mode_r;
+
+  _cogl_texture_set_wrap_mode_parameters (tex_handle,
+                                          wrap_mode_s,
+                                          wrap_mode_t,
+                                          wrap_mode_r);
+}
+
 /*
  * _cogl_material_flush_layers_gl_state:
  * @fallback_mask: is a bitmask of the material layers that need to be
@@ -1367,6 +1441,9 @@ _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
  *    The code will can iterate each of the slices and re-flush the material
  *    forcing the GL texture of each slice in turn.
  *
+ * @wrap_mode_overrides: overrides the wrap modes set on each
+ *    layer. This is used to implement the automatic wrap mode.
+ *
  * XXX: It might also help if we could specify a texture matrix for code
  *    dealing with slicing that would be multiplied with the users own matrix.
  *
@@ -1383,7 +1460,9 @@ static void
 _cogl_material_flush_layers_gl_state (CoglMaterial *material,
                                       guint32       fallback_mask,
                                       guint32       disable_mask,
-                                      GLuint        layer0_override_texture)
+                                      GLuint        layer0_override_texture,
+                                      const CoglMaterialWrapModeOverrides *
+                                                    wrap_mode_overrides)
 {
   GList *tmp;
   int    i;
@@ -1420,9 +1499,13 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
       tex_handle = layer->texture;
       if (tex_handle != COGL_INVALID_HANDLE)
         {
+
           _cogl_texture_set_filters (tex_handle,
                                      layer->min_filter,
                                      layer->mag_filter);
+
+          _cogl_material_set_wrap_modes_for_layer (layer, i, tex_handle,
+                                                   wrap_mode_overrides);
 
           cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
         }
@@ -1653,11 +1736,12 @@ void
 _cogl_material_flush_gl_state (CoglHandle handle,
                                CoglMaterialFlushOptions *options)
 {
-  CoglMaterial  *material;
-  guint32        fallback_layers = 0;
-  guint32        disable_layers = 0;
-  GLuint         layer0_override_texture = 0;
-  gboolean       skip_gl_color = FALSE;
+  CoglMaterial                        *material;
+  guint32                              fallback_layers         = 0;
+  guint32                              disable_layers          = 0;
+  GLuint                               layer0_override_texture = 0;
+  gboolean                             skip_gl_color           = FALSE;
+  const CoglMaterialWrapModeOverrides *wrap_mode_overrides     = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1673,6 +1757,8 @@ _cogl_material_flush_gl_state (CoglHandle handle,
         layer0_override_texture = options->layer0_override_texture;
       if (options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
         skip_gl_color = TRUE;
+      if (options->flags & COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES)
+        wrap_mode_overrides = &options->wrap_mode_overrides;
     }
 
   _cogl_material_flush_base_gl_state (material,
@@ -1681,7 +1767,8 @@ _cogl_material_flush_gl_state (CoglHandle handle,
   _cogl_material_flush_layers_gl_state (material,
                                         fallback_layers,
                                         disable_layers,
-                                        layer0_override_texture);
+                                        layer0_override_texture,
+                                        wrap_mode_overrides);
 
   /* NB: we have to take a reference so that next time
    * cogl_material_flush_gl_state is called, we can compare the incomming
@@ -1747,6 +1834,11 @@ _cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
   if (material0_layer->mag_filter != material1_layer->mag_filter)
     return FALSE;
   if (material0_layer->min_filter != material1_layer->min_filter)
+    return FALSE;
+
+  if (material0_layer->wrap_mode_s != material1_layer->wrap_mode_s ||
+      material0_layer->wrap_mode_t != material1_layer->wrap_mode_t ||
+      material0_layer->wrap_mode_r != material1_layer->wrap_mode_r)
     return FALSE;
 
   return TRUE;
@@ -1820,6 +1912,17 @@ _cogl_material_equal (CoglHandle material0_handle,
   if ((flush_flags0 & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE) &&
       material0_flush_options->layer0_override_texture !=
       material1_flush_options->layer0_override_texture)
+    return FALSE;
+
+  /* If one has wrap mode overrides and the other doesn't then the
+     materials are different */
+  if (((flush_flags0 ^ flush_flags1) & COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES))
+    return FALSE;
+  /* If they both have overrides then we need to compare them */
+  if ((flush_flags0 & COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES) &&
+      memcmp (&material0_flush_options->wrap_mode_overrides,
+              &material1_flush_options->wrap_mode_overrides,
+              sizeof (CoglMaterialWrapModeOverrides)))
     return FALSE;
 
   /* Since we know the flush options match at this point, if the material
@@ -2031,4 +2134,108 @@ cogl_material_set_layer_filters (CoglHandle         handle,
 
   layer->min_filter = min_filter;
   layer->mag_filter = mag_filter;
+}
+
+void
+cogl_material_set_layer_wrap_mode_s (CoglHandle handle,
+                                     int layer_index,
+                                     CoglMaterialWrapMode mode)
+{
+  CoglMaterial *material;
+  CoglMaterialLayer *layer;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  if (layer->wrap_mode_s != mode)
+    {
+      /* possibly flush primitives referencing the current state... */
+      _cogl_material_pre_change_notify (material, FALSE, NULL);
+
+      layer->wrap_mode_s = mode;
+    }
+}
+
+void
+cogl_material_set_layer_wrap_mode_t (CoglHandle           handle,
+                                     int                  layer_index,
+                                     CoglMaterialWrapMode mode)
+{
+  CoglMaterial *material;
+  CoglMaterialLayer *layer;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  if (layer->wrap_mode_t != mode)
+    {
+      /* possibly flush primitives referencing the current state... */
+      _cogl_material_pre_change_notify (material, FALSE, NULL);
+
+      layer->wrap_mode_t = mode;
+    }
+}
+
+/* TODO: this should be made public once we add support for 3D
+   textures in Cogl */
+void
+_cogl_material_set_layer_wrap_mode_r (CoglHandle           handle,
+                                      int                  layer_index,
+                                      CoglMaterialWrapMode mode)
+{
+  CoglMaterial *material;
+  CoglMaterialLayer *layer;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  if (layer->wrap_mode_r != mode)
+    {
+      /* possibly flush primitives referencing the current state... */
+      _cogl_material_pre_change_notify (material, FALSE, NULL);
+
+      layer->wrap_mode_r = mode;
+    }
+}
+
+void
+cogl_material_set_layer_wrap_mode (CoglHandle           material,
+                                   int                  layer_index,
+                                   CoglMaterialWrapMode mode)
+{
+  cogl_material_set_layer_wrap_mode_s (material, layer_index, mode);
+  cogl_material_set_layer_wrap_mode_t (material, layer_index, mode);
+  _cogl_material_set_layer_wrap_mode_r (material, layer_index, mode);
+}
+
+CoglMaterialWrapMode
+cogl_material_layer_get_wrap_mode_s (CoglHandle handle)
+{
+  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+
+  return _cogl_material_layer_pointer_from_handle (handle)->wrap_mode_s;
+}
+
+CoglMaterialWrapMode
+cogl_material_layer_get_wrap_mode_t (CoglHandle handle)
+{
+  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+
+  return _cogl_material_layer_pointer_from_handle (handle)->wrap_mode_t;
+}
+
+/* TODO: this should be made public once we add support for 3D
+   textures in Cogl */
+CoglMaterialWrapMode
+_cogl_material_layer_get_wrap_mode_r (CoglHandle handle)
+{
+  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+
+  return _cogl_material_layer_pointer_from_handle (handle)->wrap_mode_r;
 }

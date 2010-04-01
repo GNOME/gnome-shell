@@ -81,6 +81,10 @@ struct _CoglMaterialLayer
   CoglMaterialFilter mag_filter;
   CoglMaterialFilter min_filter;
 
+  CoglMaterialWrapMode wrap_mode_s;
+  CoglMaterialWrapMode wrap_mode_t;
+  CoglMaterialWrapMode wrap_mode_r;
+
   /* Determines how the color of individual texture fragments
    * are calculated. */
   GLint texture_combine_rgb_func;
@@ -230,14 +234,38 @@ _cogl_material_layer_ensure_mipmaps (CoglHandle layer_handler);
  *      not passing the option at all.
  * @COGL_MATERIAL_FLUSH_SKIP_GL_COLOR: When flushing the GL state for the
  *      material don't call glColor.
+ * @COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES: Specifies that a bitmask
+ *      of overrides for the wrap modes for some or all layers is
+ *      given.
  */
 typedef enum _CoglMaterialFlushFlag
 {
-  COGL_MATERIAL_FLUSH_FALLBACK_MASK     = 1L<<0,
-  COGL_MATERIAL_FLUSH_DISABLE_MASK      = 1L<<1,
-  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE   = 1L<<2,
-  COGL_MATERIAL_FLUSH_SKIP_GL_COLOR     = 1L<<3
+  COGL_MATERIAL_FLUSH_FALLBACK_MASK       = 1L<<0,
+  COGL_MATERIAL_FLUSH_DISABLE_MASK        = 1L<<1,
+  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE     = 1L<<2,
+  COGL_MATERIAL_FLUSH_SKIP_GL_COLOR       = 1L<<3,
+  COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES = 1L<<4
 } CoglMaterialFlushFlag;
+
+/* These constants are used to fill in wrap_mode_overrides */
+#define COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE            0 /* no override */
+#define COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT          1
+#define COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE   2
+#define COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER 3
+
+/* There can't be more than 32 layers because we need to fit a bitmask
+   of the layers into a guint32 */
+#define COGL_MATERIAL_MAX_LAYERS 32
+
+typedef struct _CoglMaterialWrapModeOverrides
+{
+  struct
+  {
+    unsigned long s : 2;
+    unsigned long t : 2;
+    unsigned long r : 2;
+  } values[COGL_MATERIAL_MAX_LAYERS];
+} CoglMaterialWrapModeOverrides;
 
 /*
  * CoglMaterialFlushOptions:
@@ -245,14 +273,13 @@ typedef enum _CoglMaterialFlushFlag
  */
 typedef struct _CoglMaterialFlushOptions
 {
-  CoglMaterialFlushFlag flags;
+  CoglMaterialFlushFlag         flags;
 
-  guint32               fallback_layers;
-  guint32               disable_layers;
-  GLuint                layer0_override_texture;
+  guint32                       fallback_layers;
+  guint32                       disable_layers;
+  GLuint                        layer0_override_texture;
+  CoglMaterialWrapModeOverrides wrap_mode_overrides;
 } CoglMaterialFlushOptions;
-
-
 
 void
 _cogl_material_get_colorubv (CoglHandle  handle,
@@ -274,6 +301,15 @@ _cogl_material_journal_ref (CoglHandle material_handle);
 void
 _cogl_material_journal_unref (CoglHandle material_handle);
 
+/* TODO: These should be made public once we add support for 3D
+   textures in Cogl */
+void
+_cogl_material_set_layer_wrap_mode_r (CoglHandle material,
+                                      int layer_index,
+                                      CoglMaterialWrapMode mode);
+
+CoglMaterialWrapMode
+_cogl_material_layer_get_wrap_mode_r (CoglHandle layer);
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 

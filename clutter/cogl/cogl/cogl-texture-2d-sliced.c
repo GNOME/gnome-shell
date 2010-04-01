@@ -676,10 +676,6 @@ _cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
     {
       int i;
 
-      /* Any queued texture rectangles may be depending on the previous
-       * wrap mode... */
-      _cogl_journal_flush ();
-
       for (i = 0; i < tex_2ds->slice_gl_handles->len; i++)
         {
           GLuint texnum = g_array_index (tex_2ds->slice_gl_handles, GLuint, i);

@@ -137,10 +137,6 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
   if (tex_2d->wrap_mode_s != wrap_mode_s ||
       tex_2d->wrap_mode_t != wrap_mode_t)
     {
-      /* Any queued texture rectangles may be depending on the
-       * previous wrap mode... */
-      _cogl_journal_flush ();
-
       GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
