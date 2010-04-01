@@ -838,12 +838,11 @@ cogl_clip_stack_restore (void) G_GNUC_DEPRECATED;
 /**
  * cogl_set_framebuffer:
  * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
- *    offscreen.
+ *          offscreen.
  *
- * This redirects all subsequent drawing to the specified framebuffer. This
- * can either be an offscreen buffer created with
- * cogl_offscreen_new_to_texture () or you can revert to your original
- * onscreen window buffer.
+ * This redirects all subsequent drawing to the specified framebuffer. This can
+ * either be an offscreen buffer created with cogl_offscreen_new_to_texture ()
+ * or in the future it may be an onscreen framebuffers too.
  *
  * Since: 1.2
  */
@@ -853,12 +852,78 @@ cogl_set_framebuffer (CoglHandle buffer);
 /**
  * cogl_push_framebuffer:
  * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
- *    offscreen.
+ *          offscreen.
  *
- * Redirects all subsequent drawing to the specified framebuffer. This
- * can either be an offscreen buffer created with
- * cogl_offscreen_new_to_texture () or you can revert to your original
- * onscreen window buffer.
+ * Redirects all subsequent drawing to the specified framebuffer. This can
+ * either be an offscreen buffer created with cogl_offscreen_new_to_texture ()
+ * or in the future it may be an onscreen framebuffer too.
+ *
+ * You should understand that a framebuffer owns the following state:
+ * <itemizedlist>
+ *  <li>The projection matrix</li>
+ *  <li>The modelview matrix stack</li>
+ *  <li>The viewport</li>
+ *  <li>The clip stack</li>
+ * </itemizedlist>
+ * So these items will automatically be saved and restored when you
+ * push and pop between different framebuffers.
+ *
+ * Also remember a newly allocated framebuffer will have an identity matrix for
+ * the projection and modelview matrices which gives you a coordinate space
+ * like OpenGL with (-1, -1) corresponding to the top left of the viewport,
+ * (1, 1) corresponding to the bottom right and +z coming out towards the
+ * viewer.
+ *
+ * If you want to set up a coordinate space like Clutter does with (0, 0)
+ * corresponding to the top left and (framebuffer_width, framebuffer_height)
+ * corresponding to the bottom right you can do so like this:
+ *
+ * |[
+ * static void
+ * setup_viewport (unsigned int width,
+ *                 unsigned int height,
+ *                 float fovy,
+ *                 float aspect,
+ *                 float z_near,
+ *                 float z_far)
+ * {
+ *   float z_camera;
+ *   CoglMatrix projection_matrix;
+ *   CoglMatrix mv_matrix;
+ *
+ *   cogl_set_viewport (0, 0, width, height);
+ *   cogl_perspective (fovy, aspect, z_near, z_far);
+ *
+ *   cogl_get_projection_matrix (&projection_matrix);
+ *   z_camera = 0.5 * projection_matrix.xx;
+ *
+ *   cogl_matrix_init_identity (&mv_matrix);
+ *   cogl_matrix_translate (&mv_matrix, -0.5f, -0.5f, -z_camera);
+ *   cogl_matrix_scale (&mv_matrix, 1.0f / width, -1.0f / height, 1.0f / width);
+ *   cogl_matrix_translate (&mv_matrix, 0.0f, -1.0 * height, 0.0f);
+ *   cogl_set_modelview_matrix (&mv_matrix);
+ * }
+ *
+ * static void
+ * my_init_framebuffer (CoglHandle framebuffer,
+ *                      unsigned int framebuffer_width,
+ *                      unsigned int framebuffer_height)
+ * {
+ *   ClutterActor *stage = clutter_stage_get_default ();
+ *   ClutterPerspective perspective;
+ *
+ *   clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
+ *
+ *   cogl_push_framebuffer (framebuffer);
+ *   setup_viewport (framebuffer_width,
+ *                   framebuffer_height,
+ *                   perspective->fovy,
+ *                   perspective.aspect,
+ *                   perspective.z_near,
+ *                   perspective.z_far);
+ *   cogl_pop_framebuffer ();
+ * }
+ * ]|
  *
  * The previous framebuffer can be restored by calling cogl_pop_framebuffer()
  *
