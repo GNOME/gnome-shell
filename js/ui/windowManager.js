@@ -152,11 +152,10 @@ WindowManager.prototype = {
             return;
         }
 
-        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
         actor.opacity = 0;
         actor.show();
-        
-        /* scale window up from 0x0 to normal size */
+
+        /* Fade window in */
         this._mapping.push(actor);
         Tweener.addTween(actor,
                          { opacity: 255,
@@ -174,8 +173,7 @@ WindowManager.prototype = {
     _mapWindowDone : function(shellwm, actor) {
         if (this._removeEffect(this._mapping, actor)) {
             Tweener.removeTweens(actor);
-            actor.set_scale(1.0, 1.0);
-            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
+            actor.opacity = 255;
             shellwm.completed_map(actor);
         }
     },
