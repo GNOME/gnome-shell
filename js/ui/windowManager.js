@@ -153,14 +153,13 @@ WindowManager.prototype = {
         }
 
         actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
-        actor.set_scale(0.0, 0.0);
+        actor.opacity = 0;
         actor.show();
         
         /* scale window up from 0x0 to normal size */
         this._mapping.push(actor);
         Tweener.addTween(actor,
-                         { scale_x: 1.0,
-                           scale_y: 1.0,
+                         { opacity: 255,
                            time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._mapWindowDone,
