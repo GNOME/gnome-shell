@@ -9,6 +9,7 @@
 
 static void st_theme_node_init               (StThemeNode          *node);
 static void st_theme_node_class_init         (StThemeNodeClass     *klass);
+static void st_theme_node_dispose           (GObject                 *object);
 static void st_theme_node_finalize           (GObject                 *object);
 
 static const ClutterColor BLACK_COLOR = { 0, 0, 0, 0xff };
@@ -27,7 +28,41 @@ st_theme_node_class_init (StThemeNodeClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->dispose = st_theme_node_dispose;
   object_class->finalize = st_theme_node_finalize;
+}
+
+
+static void
+st_theme_node_dispose (GObject *gobject)
+{
+  StThemeNode *node = ST_THEME_NODE (gobject);
+
+  if (node->context)
+    {
+      g_object_unref (node->context);
+      node->context = NULL;
+    }
+
+  if (node->theme)
+    {
+      g_object_unref (node->theme);
+      node->theme = NULL;
+    }
+
+  if (node->parent_node)
+    {
+      g_object_unref (node->parent_node);
+      node->parent_node = NULL;
+    }
+
+  if (node->border_image)
+    {
+      g_object_unref (node->border_image);
+      node->border_image = NULL;
+    }
+
+  G_OBJECT_CLASS (st_theme_node_parent_class)->dispose (gobject);
 }
 
 static void
@@ -57,12 +92,6 @@ st_theme_node_finalize (GObject *object)
     {
       pango_font_description_free (node->font_desc);
       node->font_desc = NULL;
-    }
-
-  if (node->border_image)
-    {
-      g_object_unref (node->border_image);
-      node->border_image = NULL;
     }
 
   if (node->shadow)
