@@ -42,7 +42,9 @@ plugin_LTLIBRARIES = libgnome-shell.la
 
 shell_built_sources = \
 	shell-marshal.h \
-	shell-marshal.c
+	shell-marshal.c \
+	shell-enum-types.h \
+	shell-enum-types.c
 
 BUILT_SOURCES += $(shell_built_sources)
 EXTRA_DIST += shell-marshal.list
@@ -50,52 +52,56 @@ EXTRA_DIST += shell-marshal.list
 SHELL_STAMP_FILES = stamp-shell-marshal.h
 CLEANFILES += $(SHELL_STAMP_FILES)
 
-libgnome_shell_la_SOURCES =			\
-	$(shell_built_sources)			\
-	gnome-shell-plugin.c			\
-	shell-app.c         \
-	shell-app.h         \
-	shell-app-private.h \
-	shell-app-system.c			\
-	shell-app-system.h			\
-	shell-app-usage.c			\
-	shell-app-usage.h			\
-	shell-arrow.c			\
+shell_public_headers_h =		\
+	shell-app.h			\
+	shell-app-system.h		\
+	shell-app-usage.h		\
 	shell-arrow.h			\
-	shell-doc-system.c			\
-	shell-doc-system.h			\
-	shell-drawing.c            \
-	shell-drawing.h            \
-	shell-embedded-window.c			\
-	shell-embedded-window.h			\
-	shell-embedded-window-private.h		\
-	shell-gconf.c				\
-	shell-gconf.h				\
-	shell-generic-container.c           \
-	shell-generic-container.h           \
-	shell-gtk-embed.c			\
-	shell-gtk-embed.h			\
-	shell-menu.c       \
-	shell-menu.h       \
-	shell-overflow-list.c		\
+	shell-doc-system.h		\
+	shell-drawing.h			\
+	shell-embedded-window.h		\
+	shell-gconf.h			\
+	shell-generic-container.h	\
+	shell-gtk-embed.h		\
+	shell-menu.h			\
 	shell-overflow-list.h		\
-	shell-process.c				\
-	shell-process.h				\
-	shell-global.c				\
-	shell-global.h				\
-	shell-global-private.h			\
-	shell-slicer.c              \
-	shell-slicer.h              \
-	shell-stack.c				\
-	shell-stack.h				\
-	shell-tray-manager.c			\
-	shell-tray-manager.h			\
-	shell-uri-util.c           \
-	shell-uri-util.h           \
-	shell-window-tracker.c		\
-	shell-window-tracker.h  \
-	shell-wm.c				\
+	shell-process.h			\
+	shell-global.h			\
+	shell-slicer.h			\
+	shell-stack.h			\
+	shell-tray-manager.h		\
+	shell-uri-util.h		\
+	shell-window-tracker.h		\
 	shell-wm.h
+
+libgnome_shell_la_SOURCES =		\
+	$(shell_built_sources)		\
+	$(shell_public_headers_h)	\
+	gnome-shell-plugin.c		\
+	shell-app.c			\
+	shell-app-private.h		\
+	shell-app-system.c		\
+	shell-app-usage.c		\
+	shell-arrow.c			\
+	shell-doc-system.c		\
+	shell-drawing.c			\
+	shell-embedded-window.c		\
+	shell-embedded-window-private.h	\
+	shell-gconf.c			\
+	shell-generic-container.c	\
+	shell-gtk-embed.c		\
+	shell-menu.c			\
+	shell-overflow-list.c		\
+	shell-process.c			\
+	shell-global.c			\
+	shell-global-private.h		\
+	shell-slicer.c			\
+	shell-stack.c			\
+	shell-tray-manager.c		\
+	shell-uri-util.c		\
+	shell-window-tracker.c		\
+	shell-wm.c
+
 
 non_gir_sources =				\
 	shell-embedded-window-private.h		\
@@ -148,6 +154,26 @@ shell-marshal.c: Makefile shell-marshal.list
 	 $(srcdir)/shell-marshal.list ) > xgen-smc && \
 	cp -f xgen-smc shell-marshal.c && \
 	rm -f xgen-smc
+
+
+shell-enum-types.h: stamp-shell-enum-types.h Makefile
+	@true
+stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers_h)
+	$(AM_V_GEN) ( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $< \
+	  $(shell_public_headers_h) ) > $@.tmp && \
+	(cmp -s $@.tmp shell-enum-types.h || mv $@.tmp shell-enum-types.h) && \
+	rm -f $@.tmp && \
+	echo timestamp > $(@F)
+
+shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
+	$(AM_V_GEN) ( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $< \
+	  $(shell_public_headers_h) ) > $@.tmp && \
+	mv $@.tmp $@ && \
+	rm -f $@.tmp
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =-lm \
