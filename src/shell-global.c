@@ -841,6 +841,22 @@ shell_global_gc (ShellGlobal *global)
   JS_GC (context);
 }
 
+/**
+ * shell_global_maybe_gc:
+ * @global: A #ShellGlobal
+ *
+ * Start a garbage collection process when it would free up enough memory
+ * to be worth the amount of time it would take
+ * https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_MaybeGC
+ */
+void
+shell_global_maybe_gc (ShellGlobal *global)
+{
+  JSContext *context = gjs_context_get_native_context (global->js_context);
+
+  JS_MaybeGC (context);
+}
+
 void
 shell_global_grab_dbus_service (ShellGlobal *global)
 {
