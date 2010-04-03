@@ -13,6 +13,8 @@ ShellApp* _shell_app_new_for_window (MetaWindow *window);
 
 ShellApp* _shell_app_new (ShellAppInfo *appinfo);
 
+void _shell_app_set_starting (ShellApp *app, gboolean starting);
+
 void _shell_app_add_window (ShellApp *app, MetaWindow *window);
 
 void _shell_app_remove_window (ShellApp *app, MetaWindow *window);

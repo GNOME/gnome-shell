@@ -25,6 +25,12 @@ struct _ShellAppClass
 
 };
 
+typedef enum {
+  SHELL_APP_STATE_STOPPED,
+  SHELL_APP_STATE_STARTING,
+  SHELL_APP_STATE_RUNNING
+} ShellAppState;
+
 GType shell_app_get_type (void) G_GNUC_CONST;
 
 const char *shell_app_get_id (ShellApp *app);
@@ -34,7 +40,12 @@ ClutterActor *shell_app_get_faded_icon (ShellApp *app, float size);
 char *shell_app_get_name (ShellApp *app);
 char *shell_app_get_description (ShellApp *app);
 gboolean shell_app_is_transient (ShellApp *app);
-gboolean shell_app_launch (ShellApp *info, GError   **error);
+
+void shell_app_activate (ShellApp *app);
+
+void shell_app_open_new_window (ShellApp *app);
+
+ShellAppState shell_app_get_state (ShellApp *app);
 
 guint shell_app_get_n_windows (ShellApp *app);
 

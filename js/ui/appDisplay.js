@@ -286,17 +286,12 @@ BaseAppSearchProvider.prototype = {
 
     activateResult: function(id) {
         let app = this._appSys.get_app(id);
-        let windows = app.get_windows();
-
-        if (windows.length > 0)
-            Main.activateWindow(windows[0]);
-        else
-            app.launch();
+        app.activate();
     },
 
     dragActivateResult: function(id) {
         let app = this._appSys.get_app(id);
-        app.launch();
+        app.open_new_window();
     }
 };
 
@@ -391,7 +386,6 @@ function AppWellIcon(app) {
 AppWellIcon.prototype = {
     _init : function(app) {
         this.app = app;
-        this._running = false;
         this.actor = new St.Clickable({ style_class: 'app-well-app',
                                          reactive: true,
                                          x_fill: true,
@@ -415,20 +409,20 @@ AppWellIcon.prototype = {
         this.actor.connect('hide', Lang.bind(this, this._onHideDestroy));
         this.actor.connect('destroy', Lang.bind(this, this._onHideDestroy));
 
-        this._appWindowChangedId = 0;
+        this._stateChangedId = 0;
         this._menuTimeoutId = 0;
     },
 
     _onShow: function() {
-        this._appWindowChangedId = this.app.connect('windows-changed',
-                                                    Lang.bind(this,
-                                                              this._updateStyleClass));
-        this._updateStyleClass();
+        this._stateChangedId = this.app.connect('notify::state',
+                                                Lang.bind(this,
+                                                          this._onStateChanged));
+        this._onStateChanged();
     },
 
     _onHideDestroy: function() {
-        if (this._appWindowChangedId > 0)
-            this.app.disconnect(this._appWindowChangedId);
+        if (this._stateChangedId > 0)
+            this.app.disconnect(this._stateChangedId);
         this._removeMenuTimeout();
     },
 
@@ -439,16 +433,11 @@ AppWellIcon.prototype = {
         }
     },
 
-    _updateStyleClass: function() {
-        let windows = this.app.get_windows();
-        let running = windows.length > 0;
-        this._running = running;
-        let style = "app-well-app";
-        if (this._running)
-            style += " running";
-        if (this._selected)
-            style += " selected";
-        this.actor.style_class = style;
+    _onStateChanged: function() {
+        if (this.app.state != Shell.AppState.STOPPED)
+            this.actor.add_style_class_name('running');
+        else
+            this.actor.remove_style_class_name('running');
     },
 
     _onButtonPress: function(actor, event) {
@@ -506,11 +495,6 @@ AppWellIcon.prototype = {
         return false;
     },
 
-    activateMostRecentWindow: function () {
-        let mostRecentWindow = this.app.get_windows()[0];
-        Main.activateWindow(mostRecentWindow);
-    },
-
     highlightWindow: function(metaWindow) {
         if (this._didActivateWindow)
             return;
@@ -523,13 +507,17 @@ AppWellIcon.prototype = {
         if (metaWindow) {
             this._didActivateWindow = true;
             Main.activateWindow(metaWindow);
-        } else
+        } else {
             Main.overview.hide();
+        }
     },
 
     setSelected: function (isSelected) {
         this._selected = isSelected;
-        this._updateStyleClass();
+        if (this._selected)
+            this.actor.add_style_class_name('selected');
+        else
+            this.actor.remove_style_class_name('selected');
     },
 
     _onMenuPoppedUp: function() {
@@ -553,38 +541,24 @@ AppWellIcon.prototype = {
     },
 
     _getRunning: function() {
-        return this.app.get_windows().length > 0;
+        return this.app.state != Shell.AppState.STOPPED;
     },
 
     _onActivate: function (event) {
-        let running = this._getRunning();
         this.emit('launching');
+        let modifiers = Shell.get_event_state(event);
 
-        if (!running) {
-            this.app.launch();
-            Main.overview.hide();
+        if (modifiers & Clutter.ModifierType.CONTROL_MASK
+            && this.app.state == Shell.AppState.RUNNING) {
+            this.app.open_new_window();
         } else {
-            let modifiers = Shell.get_event_state(event);
-
-            if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-                this.app.launch();
-                Main.overview.hide();
-            } else {
-                this.activateMostRecentWindow();
-            }
+            this.app.activate();
         }
+        Main.overview.hide();
     },
 
     shellWorkspaceLaunch : function() {
-        // Here we just always launch the application again, even if we know
-        // it was already running.  For most applications this
-        // should have the effect of creating a new window, whether that's
-        // a second process (in the case of Calculator) or IPC to existing
-        // instance (Firefox).  There are a few less-sensical cases such
-        // as say Pidgin, but ideally what we do there is have the app
-        // express to us that it doesn't do relaunch=new-window in the
-        // .desktop file.
-        this.app.launch();
+        this.app.open_new_window();
     },
 
     getDragActor: function() {
@@ -842,7 +816,7 @@ AppIconMenu.prototype = {
             let metaWindow = child._window;
             this.emit('activate-window', metaWindow);
         } else if (child == this._newWindowMenuItem) {
-            this._source.app.launch();
+            this._source.app.open_new_window();
             this.emit('activate-window', null);
         } else if (child == this._toggleFavoriteMenuItem) {
             let favs = AppFavorites.getAppFavorites();

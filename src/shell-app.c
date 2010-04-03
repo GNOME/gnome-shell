@@ -2,9 +2,10 @@
 
 #include "config.h"
 
+#include "st.h"
 #include "shell-app-private.h"
 #include "shell-global.h"
-#include "st.h"
+#include "shell-enum-types.h"
 
 #include <string.h>
 
@@ -23,12 +24,18 @@ struct _ShellApp
 
   guint workspace_switch_id;
 
-  gboolean window_sort_stale;
   GSList *windows;
 
+  ShellAppState state;
+  gboolean window_sort_stale : 1;
 };
 
 G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT);
+
+enum {
+  PROP_0,
+  PROP_STATE
+};
 
 enum {
   WINDOWS_CHANGED,
@@ -36,6 +43,25 @@ enum {
 };
 
 static guint shell_app_signals[LAST_SIGNAL] = { 0 };
+
+static void
+shell_app_get_property (GObject    *gobject,
+                        guint       prop_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+  ShellApp *app = SHELL_APP (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_STATE:
+      g_value_set_enum (value, app->state);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
 
 const char *
 shell_app_get_id (ShellApp *app)
@@ -219,11 +245,77 @@ shell_app_is_transient (ShellApp *app)
   return shell_app_info_is_transient (app->info);
 }
 
-gboolean
-shell_app_launch (ShellApp  *self,
-                  GError   **error)
+/**
+ * shell_app_activate:
+ * @app: a #ShellApp
+ *
+ * Perform an appropriate default action for operating on this application,
+ * dependent on its current state.  For example, if the application is not
+ * currently running, launch it.  If it is running, activate the most recently
+ * used window.
+ */
+void
+shell_app_activate (ShellApp  *app)
 {
-  return shell_app_info_launch (self->info, error);
+  switch (app->state)
+    {
+      case SHELL_APP_STATE_STOPPED:
+        /* TODO sensibly handle this error */
+        shell_app_info_launch (app->info, NULL);
+        break;
+      case SHELL_APP_STATE_STARTING:
+        break;
+      case SHELL_APP_STATE_RUNNING:
+        {
+          GSList *windows = shell_app_get_windows (app);
+          if (windows)
+            {
+              ShellGlobal *global = shell_global_get ();
+              MetaScreen *screen = shell_global_get_screen (global);
+              MetaWorkspace *active = meta_screen_get_active_workspace (screen);
+              MetaWindow *window = windows->data;
+              MetaWorkspace *workspace = meta_window_get_workspace (window);
+
+              if (active != workspace)
+                meta_workspace_activate_with_focus (workspace, window, shell_global_get_current_time (global));
+              else
+                meta_window_activate (window, shell_global_get_current_time (global));
+            }
+        }
+        break;
+    }
+}
+
+/**
+ * shell_app_open_new_window:
+ * @app: a #ShellApp
+ *
+ * Request that the application create a new window.
+ */
+void
+shell_app_open_new_window (ShellApp *app)
+{
+  /* Here we just always launch the application again, even if we know
+   * it was already running.  For most applications this
+   * should have the effect of creating a new window, whether that's
+   * a second process (in the case of Calculator) or IPC to existing
+   * instance (Firefox).  There are a few less-sensical cases such
+   * as say Pidgin.  Ideally, we have the application express to us
+   * that it supports an explicit new-window action.
+   */
+  shell_app_info_launch (app->info, NULL);
+}
+
+/**
+ * shell_app_get_state:
+ * @app: a #ShellApp
+ *
+ * Returns: State of the application
+ */
+ShellAppState
+shell_app_get_state (ShellApp *app)
+{
+  return app->state;
 }
 
 /**
@@ -400,6 +492,18 @@ _shell_app_new (ShellAppInfo    *info)
 }
 
 static void
+shell_app_state_transition (ShellApp      *app,
+                            ShellAppState  state)
+{
+  if (app->state == state)
+    return;
+  g_return_if_fail (!(app->state == SHELL_APP_STATE_RUNNING &&
+                      state == SHELL_APP_STATE_STARTING));
+  app->state = state;
+  g_object_notify (G_OBJECT (app), "state");
+}
+
+static void
 shell_app_on_unmanaged (MetaWindow      *window,
                         ShellApp *app)
 {
@@ -445,6 +549,9 @@ _shell_app_add_window (ShellApp        *app,
   g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
   app->window_sort_stale = TRUE;
 
+  if (app->state != SHELL_APP_STATE_RUNNING)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 
   if (app->workspace_switch_id == 0)
@@ -484,12 +591,27 @@ _shell_app_remove_window (ShellApp   *app,
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 
   if (app->windows == NULL)
-    disconnect_workspace_switch (app);
+    {
+      disconnect_workspace_switch (app);
+
+      shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+    }
+}
+
+void
+_shell_app_set_starting (ShellApp        *app,
+                         gboolean         starting)
+{
+  if (starting && app->state == SHELL_APP_STATE_STOPPED)
+    shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
+  else if (!starting && app->state == SHELL_APP_STATE_STARTING)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 }
 
 static void
 shell_app_init (ShellApp *self)
 {
+  self->state = SHELL_APP_STATE_STOPPED;
 }
 
 static void
@@ -516,6 +638,7 @@ shell_app_class_init(ShellAppClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->get_property = shell_app_get_property;
   gobject_class->dispose = shell_app_dispose;
 
   shell_app_signals[WINDOWS_CHANGED] = g_signal_new ("windows-changed",
@@ -525,4 +648,19 @@ shell_app_class_init(ShellAppClass *klass)
                                      NULL, NULL,
                                      g_cclosure_marshal_VOID__VOID,
                                      G_TYPE_NONE, 0);
+
+  /**
+   * ShellApp:state:
+   *
+   * The high-level state of the application, effectively whether it's
+   * running or not, or transitioning between those states.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_STATE,
+                                   g_param_spec_enum ("state",
+                                                      "State",
+                                                      "Application state",
+                                                      SHELL_TYPE_APP_STATE,
+                                                      SHELL_APP_STATE_STOPPED,
+                                                      G_PARAM_READABLE));
 }

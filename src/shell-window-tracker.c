@@ -91,7 +91,8 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 static void shell_window_tracker_finalize (GObject *object);
-
+static void set_focus_app (ShellWindowTracker  *tracker,
+                           ShellApp            *new_focus_app);
 static void on_focus_window_changed (MetaDisplay *display, GParamSpec *spec, ShellWindowTracker *tracker);
 
 static void track_window (ShellWindowTracker *monitor, MetaWindow *window);
@@ -634,6 +635,33 @@ on_startup_sequence_changed (MetaScreen            *screen,
                              SnStartupSequence     *sequence,
                              ShellWindowTracker    *self)
 {
+  ShellApp *app;
+
+  app = shell_startup_sequence_get_app ((ShellStartupSequence*)sequence);
+  if (app)
+    {
+      gboolean starting = !sn_startup_sequence_get_completed (sequence);
+
+      /* The Shell design calls for on application launch, the app title
+       * appears at top, and no X window is focused.  So when we get
+       * a startup-notification for this app, transition it to STARTING
+       * if it's currently stopped, set it as our application focus,
+       * but focus the no_focus window.
+       */
+      if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
+        {
+          MetaScreen *screen = shell_global_get_screen (shell_global_get ());
+          MetaDisplay *display = meta_screen_get_display (screen);
+          long tv_sec, tv_usec;
+
+          sn_startup_sequence_get_initiated_time (sequence, &tv_sec, &tv_usec);
+
+          _shell_app_set_starting (app, starting);
+          set_focus_app (self, app);
+          meta_display_focus_the_no_focus_window (display, screen, tv_sec);
+        }
+    }
+
   g_signal_emit (G_OBJECT (self), signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
 }
 
@@ -770,6 +798,24 @@ shell_window_tracker_get_running_apps (ShellWindowTracker *monitor,
 }
 
 static void
+set_focus_app (ShellWindowTracker  *tracker,
+               ShellApp            *new_focus_app)
+{
+  if (new_focus_app == tracker->focus_app)
+    return;
+
+  if (tracker->focus_app != NULL)
+    g_object_unref (tracker->focus_app);
+
+  tracker->focus_app = new_focus_app;
+
+  if (tracker->focus_app != NULL)
+    g_object_ref (tracker->focus_app);
+
+  g_object_notify (G_OBJECT (tracker), "focus-app");
+}
+
+static void
 on_focus_window_changed (MetaDisplay        *display,
                          GParamSpec         *spec,
                          ShellWindowTracker *tracker)
@@ -783,19 +829,7 @@ on_focus_window_changed (MetaDisplay        *display,
   new_focus_win = meta_display_get_focus_window (display);
   new_focus_app = new_focus_win ? g_hash_table_lookup (tracker->window_to_app, new_focus_win) : NULL;
 
-  if (new_focus_app == tracker->focus_app)
-    return;
-
-  if (tracker->focus_app != NULL)
-    g_object_unref (tracker->focus_app);
-
-  if (tracker->focus_app != NULL
-      && (!new_focus_win || !new_focus_app))
-    tracker->focus_app = NULL;
-  else
-    tracker->focus_app = g_object_ref (new_focus_app);
-
-  g_object_notify (G_OBJECT (tracker), "focus-app");
+  set_focus_app (tracker, new_focus_app);
 }
 
 /**

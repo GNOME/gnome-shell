@@ -1248,11 +1248,6 @@ shell_app_info_launch_full (ShellAppInfo *info,
   if (timestamp == 0)
     timestamp = clutter_get_current_event_time ();
 
-  /* Shell design calls for on application launch, no window is focused,
-   * and we have startup notification displayed.
-   */
-  meta_display_focus_the_no_focus_window (display, screen, timestamp);
-
   if (workspace < 0)
     workspace = meta_screen_get_active_workspace_index (screen);
 
