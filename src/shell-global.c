@@ -1103,16 +1103,29 @@ shell_global_get_monitors (ShellGlobal *global)
 GdkRectangle *
 shell_global_get_primary_monitor (ShellGlobal  *global)
 {
-  MetaScreen *screen = shell_global_get_screen (global);
-  MetaRectangle rect;
+  GdkScreen *screen = gdk_screen_get_default ();
+  GdkRectangle rect;
+  gint i, primary = 0;
+  gchar *output_name = NULL;
 
-  g_assert (sizeof (MetaRectangle) == sizeof (GdkRectangle) &&
-            G_STRUCT_OFFSET (MetaRectangle, x) == G_STRUCT_OFFSET (GdkRectangle, x) &&
-            G_STRUCT_OFFSET (MetaRectangle, y) == G_STRUCT_OFFSET (GdkRectangle, y) &&
-            G_STRUCT_OFFSET (MetaRectangle, width) == G_STRUCT_OFFSET (GdkRectangle, width) &&
-            G_STRUCT_OFFSET (MetaRectangle, height) == G_STRUCT_OFFSET (GdkRectangle, height));
+  for (i = 0; i < gdk_screen_get_n_monitors (screen); i++)
+    {
+      /* Prefer the laptop's internal screen if present */
+      output_name = gdk_screen_get_monitor_plug_name (screen, i);
+      if (output_name && g_ascii_strncasecmp (output_name, "LVDS", 4) == 0)
+        {
+          primary = i;
+          break;
+        }
+      if (output_name)
+       g_free (output_name);
+    }
 
-  meta_screen_get_monitor_geometry (screen, 0, &rect);
+  if (output_name)
+    g_free (output_name);
+
+  gdk_screen_get_monitor_geometry (screen, primary, &rect);
+
   return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
 }
 
