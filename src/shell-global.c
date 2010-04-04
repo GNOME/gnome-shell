@@ -1107,8 +1107,9 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
   GdkRectangle rect;
   gint i, primary = 0;
   gchar *output_name = NULL;
+  gint num_monitors = gdk_screen_get_n_monitors (screen);
 
-  for (i = 0; i < gdk_screen_get_n_monitors (screen); i++)
+  for (i = 0; i < num_monitors; i++)
     {
       /* Prefer the laptop's internal screen if present */
       output_name = gdk_screen_get_monitor_plug_name (screen, i);
