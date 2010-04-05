@@ -1113,17 +1113,17 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
     {
       /* Prefer the laptop's internal screen if present */
       output_name = gdk_screen_get_monitor_plug_name (screen, i);
-      if (output_name && g_ascii_strncasecmp (output_name, "LVDS", 4) == 0)
-        {
-          primary = i;
-          break;
-        }
       if (output_name)
-       g_free (output_name);
+        {
+          gboolean is_lvds = g_ascii_strncasecmp (output_name, "LVDS", 4) == 0;
+          g_free (output_name);
+          if (is_lvds)
+            {
+              primary = i;
+              break;
+            }
+        }
     }
-
-  if (output_name)
-    g_free (output_name);
 
   gdk_screen_get_monitor_geometry (screen, primary, &rect);
 
