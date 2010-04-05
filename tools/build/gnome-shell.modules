@@ -60,9 +60,20 @@
     </after>
   </autotools>
 
+  <autotools id="json-glib">
+    <branch repo="git.gnome.org" module="json-glib"/>
+    <dependencies>
+        <dep package="gobject-introspection"/>
+    </dependencies>
+    <after>
+      <dep package="gir-repository"/>
+    </after>
+  </autotools>
+
   <autotools id="clutter">
     <branch repo="git.clutter-project.org" module="clutter" revision="clutter-1.2"/>
     <dependencies>
+        <dep package="json-glib"/>
         <dep package="gobject-introspection"/>
     </dependencies>
     <after>
