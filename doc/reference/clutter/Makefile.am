@@ -69,6 +69,7 @@ IGNORE_HFILES=\
 	clutter-actor-private.h		\
 	clutter-backend-private.h	\
         clutter-bezier.h 		\
+	clutter-color-static.h		\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\
 	clutter-device-manager-private.h	\

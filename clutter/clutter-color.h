@@ -152,6 +152,113 @@ GParamSpec *clutter_param_spec_color     (const gchar        *name,
                                           const ClutterColor *default_value,
                                           GParamFlags         flags);
 
+/**
+ * ClutterStaticColor:
+ * @CLUTTER_COLOR_WHITE: White color (#ffffffff)
+ * @CLUTTER_COLOR_BLACK: Black color (#000000ff)
+ * @CLUTTER_COLOR_RED: Red color (#ff0000ff)
+ * @CLUTTER_COLOR_DARK_RED: Dark red color (#800000ff)
+ * @CLUTTER_COLOR_GREEN: Green color (#00ff00ff)
+ * @CLUTTER_COLOR_DARK_GREEN: Dark green color (#008000ff)
+ * @CLUTTER_COLOR_BLUE: Blue color (#0000ffff)
+ * @CLUTTER_COLOR_DARK_BLUE: Dark blue color (#000080ff)
+ * @CLUTTER_COLOR_CYAN: Cyan color (#00ffffff)
+ * @CLUTTER_COLOR_DARK_CYAN: Dark cyan color (#008080ff)
+ * @CLUTTER_COLOR_MAGENTA: Magenta color (#ff00ffff)
+ * @CLUTTER_COLOR_DARK_MAGENTA: Dark magenta color (#800080ff)
+ * @CLUTTER_COLOR_YELLOW: Yellow color (#ffff00ff)
+ * @CLUTTER_COLOR_DARK_YELLOW: Dark yellow color (#808000ff)
+ * @CLUTTER_COLOR_GRAY: Gray color (#a0a0a4ff)
+ * @CLUTTER_COLOR_DARK_GRAY: Dark Gray color (#808080ff)
+ * @CLUTTER_COLOR_LIGHT_GRAY: Light gray color (#c0c0c0ff)
+ * @CLUTTER_COLOR_BUTTER: Butter color (#edd400)
+ * @CLUTTER_COLOR_BUTTER_LIGHT: Light butter color (#fce94f)
+ * @CLUTTER_COLOR_BUTTER_DARK: Dark butter color (#c4a000)
+ * @CLUTTER_COLOR_ORANGE: Orange color (#f57900)
+ * @CLUTTER_COLOR_ORANGE_LIGHT: Light orange color (#fcaf3f)
+ * @CLUTTER_COLOR_ORANGE_DARK: Dark orange color (#ce5c00)
+ * @CLUTTER_COLOR_CHOCOLATE: Chocolate color (#c17d11)
+ * @CLUTTER_COLOR_CHOCOLATE_LIGHT: Light chocolate color (#e9b96e)
+ * @CLUTTER_COLOR_CHOCOLATE_DARK: Dark chocolate color (#8f5902)
+ * @CLUTTER_COLOR_CHAMELEON: Chameleon color (#73d216)
+ * @CLUTTER_COLOR_CHAMELEON_LIGHT: Light chameleon color (#8ae234)
+ * @CLUTTER_COLOR_CHAMELEON_DARK: Dark chameleon color (#4e9a06)
+ * @CLUTTER_COLOR_SKY_BLUE: Sky color (#3465a4)
+ * @CLUTTER_COLOR_SKY_BLUE_LIGHT: Light sky color (#729fcf)
+ * @CLUTTER_COLOR_SKY_BLUE_DARK: Dark sky color (#204a87)
+ * @CLUTTER_COLOR_PLUM: Plum color (#75507b)
+ * @CLUTTER_COLOR_PLUM_LIGHT: Light plum color (#ad7fa8)
+ * @CLUTTER_COLOR_PLUM_DARK: Dark plum color (#5c3566)
+ * @CLUTTER_COLOR_SCARLET_RED: Scarlet red color (#cc0000)
+ * @CLUTTER_COLOR_SCARLET_RED_LIGHT: Light scarlet red color (#ef2929)
+ * @CLUTTER_COLOR_SCARLET_RED_DARK: Dark scarlet red color (#a40000)
+ * @CLUTTER_COLOR_ALUMINIUM_1: Aluminium, first variant (#eeeeec)
+ * @CLUTTER_COLOR_ALUMINIUM_2: Aluminium, second variant (#d3d7cf)
+ * @CLUTTER_COLOR_ALUMINIUM_3: Aluminium, third variant (#babdb6)
+ * @CLUTTER_COLOR_ALUMINIUM_4: Aluminium, fourth variant (#888a85)
+ * @CLUTTER_COLOR_ALUMINIUM_5: Aluminium, fifth variant (#555753)
+ * @CLUTTER_COLOR_ALUMINIUM_6: Aluminium, sixth variant (#2e3436)
+ * @CLUTTER_COLOR_TRANSPARENT: Transparent color (#00000000)
+ *
+ * Named colors, for accessing global colors defined by Clutter
+ *
+ * Since: 1.4
+ */
+typedef enum { /*< prefix=CLUTTER_COLOR >*/
+  /* CGA/EGA-like palette */
+  CLUTTER_COLOR_WHITE           = 0,
+  CLUTTER_COLOR_BLACK,
+  CLUTTER_COLOR_RED,
+  CLUTTER_COLOR_DARK_RED,
+  CLUTTER_COLOR_GREEN,
+  CLUTTER_COLOR_DARK_GREEN,
+  CLUTTER_COLOR_BLUE,
+  CLUTTER_COLOR_DARK_BLUE,
+  CLUTTER_COLOR_CYAN,
+  CLUTTER_COLOR_DARK_CYAN,
+  CLUTTER_COLOR_MAGENTA,
+  CLUTTER_COLOR_DARK_MAGENTA,
+  CLUTTER_COLOR_YELLOW,
+  CLUTTER_COLOR_DARK_YELLOW,
+  CLUTTER_COLOR_GRAY,
+  CLUTTER_COLOR_DARK_GRAY,
+  CLUTTER_COLOR_LIGHT_GRAY,
+
+  /* Tango icon palette */
+  CLUTTER_COLOR_BUTTER,
+  CLUTTER_COLOR_BUTTER_LIGHT,
+  CLUTTER_COLOR_BUTTER_DARK,
+  CLUTTER_COLOR_ORANGE,
+  CLUTTER_COLOR_ORANGE_LIGHT,
+  CLUTTER_COLOR_ORANGE_DARK,
+  CLUTTER_COLOR_CHOCOLATE,
+  CLUTTER_COLOR_CHOCOLATE_LIGHT,
+  CLUTTER_COLOR_CHOCOLATE_DARK,
+  CLUTTER_COLOR_CHAMELEON,
+  CLUTTER_COLOR_CHAMELEON_LIGHT,
+  CLUTTER_COLOR_CHAMELEON_DARK,
+  CLUTTER_COLOR_SKY_BLUE,
+  CLUTTER_COLOR_SKY_BLUE_LIGHT,
+  CLUTTER_COLOR_SKY_BLUE_DARK,
+  CLUTTER_COLOR_PLUM,
+  CLUTTER_COLOR_PLUM_LIGHT,
+  CLUTTER_COLOR_PLUM_DARK,
+  CLUTTER_COLOR_SCARLET_RED,
+  CLUTTER_COLOR_SCARLET_RED_LIGHT,
+  CLUTTER_COLOR_SCARLET_RED_DARK,
+  CLUTTER_COLOR_ALUMINIUM_1,
+  CLUTTER_COLOR_ALUMINIUM_2,
+  CLUTTER_COLOR_ALUMINIUM_3,
+  CLUTTER_COLOR_ALUMINIUM_4,
+  CLUTTER_COLOR_ALUMINIUM_5,
+  CLUTTER_COLOR_ALUMINIUM_6,
+
+  /* Fully transparent black */
+  CLUTTER_COLOR_TRANSPARENT
+} ClutterStaticColor;
+
+G_CONST_RETURN ClutterColor *clutter_color_get_static (ClutterStaticColor color);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_COLOR_H__ */
