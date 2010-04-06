@@ -33,59 +33,6 @@ composite_at_least_version (MetaDisplay *display, int maj, int min)
   return (major > maj || (major == maj && minor >= min));
 }
 
-static MutterWindow*
-find_window_for_screen (MetaScreen *screen, Window xwindow)
-{
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (info == NULL)
-    return NULL;
-
-  return g_hash_table_lookup (info->windows_by_xid,
-                              (gpointer) xwindow);
-}
-
-static MutterWindow *
-find_window_in_display (MetaDisplay *display, Window xwindow)
-{
-  GSList *index;
-  MetaWindow *window = meta_display_lookup_x_window (display, xwindow);
-
-  if (window)
-    {
-      void *priv = meta_window_get_compositor_private (window);
-      if (priv)
-	return priv;
-    }
-
-  for (index = meta_display_get_screens (display);
-       index;
-       index = index->next)
-    {
-      MutterWindow *cw = find_window_for_screen (index->data, xwindow);
-
-      if (cw != NULL)
-        return cw;
-    }
-
-  return NULL;
-}
-
-static MutterWindow *
-find_window_for_child_window_in_display (MetaDisplay *display, Window xwindow)
-{
-  Window ignored1, *ignored2, parent;
-  guint  ignored_children;
-
-  XQueryTree (meta_display_get_xdisplay (display), xwindow, &ignored1,
-              &parent, &ignored2, &ignored_children);
-
-  if (parent != None)
-    return find_window_in_display (display, parent);
-
-  return NULL;
-}
-
 static void sync_actor_stacking (GList *windows);
 
 static void
@@ -144,9 +91,15 @@ add_win (MetaWindow *window)
 
 static void
 process_damage (MetaCompositor     *compositor,
-                XDamageNotifyEvent *event)
+                XDamageNotifyEvent *event,
+                MetaWindow         *window)
 {
-  MutterWindow *cw = find_window_in_display (compositor->display, event->drawable);
+  MutterWindow *cw;
+
+  if (window == NULL)
+    return;
+
+  cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   if (cw == NULL)
     return;
 
@@ -156,10 +109,15 @@ process_damage (MetaCompositor     *compositor,
 #ifdef HAVE_SHAPE
 static void
 process_shape (MetaCompositor *compositor,
-               XShapeEvent    *event)
+               XShapeEvent    *event,
+               MetaWindow     *window)
 {
-  MutterWindow *cw = find_window_in_display (compositor->display,
-                                             event->window);
+  MutterWindow *cw;
+
+  if (window == NULL)
+    return;
+
+  cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   if (cw == NULL)
     return;
 
@@ -172,43 +130,29 @@ process_shape (MetaCompositor *compositor,
 
 static void
 process_property_notify (MetaCompositor	*compositor,
-                         XPropertyEvent *event)
+                         XPropertyEvent *event,
+                         MetaWindow     *window)
 {
   MetaDisplay *display = compositor->display;
+  MutterWindow *cw;
+
+  if (window == NULL)
+    return;
+
+  cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
+  if (cw == NULL)
+    return;
 
   /* Check for the opacity changing */
   if (event->atom == compositor->atom_net_wm_window_opacity)
     {
-      MutterWindow *cw = find_window_in_display (display, event->window);
-
-      if (!cw)
-        {
-          /* Applications can set this for their toplevel windows, so
-           * this must be propagated to the window managed by the compositor
-           */
-          cw = find_window_for_child_window_in_display (display,
-                                                        event->window);
-        }
-
-      if (!cw)
-	{
-	  DEBUG_TRACE ("process_property_notify: opacity, early exit\n");
-	  return;
-	}
-
       mutter_window_update_opacity (cw);
+      DEBUG_TRACE ("process_property_notify: net_wm_window_opacity\n");
+      return;
     }
   else if (event->atom == meta_display_get_atom (display,
 					       META_ATOM__NET_WM_WINDOW_TYPE))
     {
-      MutterWindow *cw = find_window_in_display (display, event->window);
-
-      if (!cw)
-	{
-	  DEBUG_TRACE ("process_property_notify: net_wm_type, early exit\n");
-	  return;
-	}
-
       mutter_window_update_window_type (cw);
       DEBUG_TRACE ("process_property_notify: net_wm_type\n");
       return;
@@ -505,7 +449,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   info->output = None;
   info->windows = NULL;
-  info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   meta_screen_set_cm_selection (screen);
 
@@ -699,20 +642,29 @@ meta_compositor_process_event (MetaCompositor *compositor,
   switch (event->type)
     {
     case PropertyNotify:
-      process_property_notify (compositor, (XPropertyEvent *) event);
+      process_property_notify (compositor, (XPropertyEvent *) event, window);
       break;
 
     default:
       if (event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
         {
+          /* Core code doesn't handle damage events, so we need to extract the MetaWindow
+           * ourselves
+           */
+          if (window == NULL)
+            {
+              Window xwin = ((XDamageNotifyEvent *) event)->drawable;
+              window = meta_display_lookup_x_window (compositor->display, xwin);
+            }
+
 	  DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
-          process_damage (compositor, (XDamageNotifyEvent *) event);
+          process_damage (compositor, (XDamageNotifyEvent *) event, window);
         }
 #ifdef HAVE_SHAPE
       else if (event->type == meta_display_get_shape_event_base (compositor->display) + ShapeNotify)
 	{
 	  DEBUG_TRACE ("meta_compositor_process_event (process_shape)\n");
-	  process_shape (compositor, (XShapeEvent *) event);
+	  process_shape (compositor, (XShapeEvent *) event, window);
 	}
 #endif /* HAVE_SHAPE */
       break;

@@ -272,9 +272,6 @@ mutter_meta_window_decorated_notify (MetaWindow *mw,
       priv->damage = None;
     }
 
-  g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
-  g_hash_table_insert (info->windows_by_xid, (gpointer) new_xwindow, self);
-
   g_free (priv->desc);
   priv->desc = NULL;
 
@@ -421,7 +418,6 @@ mutter_window_dispose (GObject *object)
     }
 
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
-  g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
 
   /*
    * Release the extra reference we took on the actor.
@@ -976,7 +972,6 @@ mutter_window_destroy (MutterWindow *self)
    */
   info = meta_screen_get_compositor_data (priv->screen);
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
-  g_hash_table_remove (info->windows_by_xid, (gpointer)priv->xwindow);
 
   if (priv->type == META_COMP_WINDOW_DROPDOWN_MENU ||
       priv->type == META_COMP_WINDOW_POPUP_MENU ||
@@ -1224,7 +1219,6 @@ mutter_window_new (MetaWindow *window)
    * before we first paint.
    */
   info->windows = g_list_append (info->windows, self);
-  g_hash_table_insert (info->windows_by_xid, (gpointer) top_window, self);
 
   return self;
 }
