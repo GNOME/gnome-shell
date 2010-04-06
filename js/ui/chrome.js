@@ -208,9 +208,18 @@ Chrome.prototype = {
         this._obscuredByFullscreen = false;
         for (let i = windows.length - 1; i > -1; i--) {
             let layer = windows[i].get_meta_window().get_layer();
+
+            // There are 3 cases we check here for:
+            // 1.) Monitor sized window
+            // 2.) Window with a position somewhere on the primary screen having the _NET_WM_FULLSCREEN flag set
+            // 3.) Window that is partly off screen (tries to hide its decorations) which might have negative coords
+            // We check for 1.) and 2.) by checking if the upper right corner is on the primary monitor, but avoid the case
+            // where it overlaps with the secondary screen (like window.x + window.width == primary.x + primary.width)
+            // For 3.) we just ignore negative values as they don't really make sense
+
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                if (windows[i].x >= primary.x && windows[i].x < primary.x + primary.width &&
-                    windows[i].y >= primary.y && windows[i].y < primary.y + primary.height) {
+                if (Math.max(windows[i].x, 0) >= primary.x && Math.max(windows[i].x, 0) < primary.x + primary.width &&
+                    Math.max(windows[i].y, 0) >= primary.y && Math.max(windows[i].y, 0) < primary.y + primary.height) {
                         this._obscuredByFullscreen = true;
                         break;
                 }
