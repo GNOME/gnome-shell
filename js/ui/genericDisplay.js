@@ -105,7 +105,7 @@ GenericDisplayItem.prototype = {
     // Highlights the item by setting a different background color than the default 
     // if isSelected is true, removes the highlighting otherwise.
     markSelected: function(isSelected) {
-        if (iSelected)
+        if (isSelected)
             this.actor.add_style_pseudo_class('selected');
         else
             this.actor.remove_style_pseudo_class('selected');
