@@ -1659,6 +1659,37 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
 
+      if (!cogl_material_get_layer_point_sprite_coords_enabled (source, i))
+        {
+          /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+             GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
+             compatibility with older versions of Cogl so we'll
+             override it. We don't want to do this for point sprites
+             because in that case the whole texture is drawn so you
+             would usually want clamp-to-edge. */
+          if (cogl_material_layer_get_wrap_mode_s (layer) ==
+              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+            {
+              options.wrap_mode_overrides.values[i].s =
+                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+            }
+          if (cogl_material_layer_get_wrap_mode_t (layer) ==
+              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+            {
+              options.wrap_mode_overrides.values[i].t =
+                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+            }
+          if (_cogl_material_layer_get_wrap_mode_r (layer) ==
+              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+            {
+              options.wrap_mode_overrides.values[i].r =
+                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+            }
+        }
+
       /* Give the texture a chance to know that we're rendering
          non-quad shaped primitives. If the texture is in an atlas it
          will be migrated */
@@ -1690,32 +1721,6 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
            * matrix.
            */
           fallback_layers |= (1 << i);
-        }
-
-      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
-         GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
-         compatibility with older versions of Cogl so we'll override
-         it */
-      if (cogl_material_layer_get_wrap_mode_s (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        {
-          options.wrap_mode_overrides.values[i].s =
-            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-        }
-      if (cogl_material_layer_get_wrap_mode_t (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        {
-          options.wrap_mode_overrides.values[i].t =
-            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-        }
-      if (_cogl_material_layer_get_wrap_mode_r (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        {
-          options.wrap_mode_overrides.values[i].r =
-            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-          options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
         }
     }
 
