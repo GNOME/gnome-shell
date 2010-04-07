@@ -626,20 +626,34 @@ static void
 clutter_value_transform_color_string (const GValue *src,
                                       GValue       *dest)
 {
-  gchar *string = clutter_color_to_string (src->data[0].v_pointer);
+  const ClutterColor *color = g_value_get_boxed (src);
 
-  g_value_take_string (dest, string);
+  if (color)
+    {
+      gchar *string = clutter_color_to_string (color);
+
+      g_value_take_string (dest, string);
+    }
+  else
+    g_value_set_string (dest, NULL);
 }
 
 static void
 clutter_value_transform_string_color (const GValue *src,
                                       GValue       *dest)
 {
-  ClutterColor color = { 0, };
+  const char *str = g_value_get_string (src);
 
-  clutter_color_from_string (&color, g_value_get_string (src));
+  if (str)
+    {
+      ClutterColor color = { 0, };
 
-  clutter_value_set_color (dest, &color);
+      clutter_color_from_string (&color, str);
+
+      clutter_value_set_color (dest, &color);
+    }
+  else
+    clutter_value_set_color (dest, NULL);
 }
 
 GType
@@ -678,7 +692,7 @@ clutter_value_set_color (GValue             *value,
 {
   g_return_if_fail (CLUTTER_VALUE_HOLDS_COLOR (value));
 
-  value->data[0].v_pointer = clutter_color_copy (color);
+  g_value_set_boxed (value, color);
 }
 
 /**
@@ -696,7 +710,7 @@ clutter_value_get_color (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_COLOR (value), NULL);
 
-  return value->data[0].v_pointer;
+  return g_value_get_boxed (value);
 }
 
 static void
@@ -717,10 +731,11 @@ param_color_finalize (GParamSpec *pspec)
 
 static void
 param_color_set_default (GParamSpec *pspec,
-                        GValue     *value)
+                         GValue     *value)
 {
-  value->data[0].v_pointer = CLUTTER_PARAM_SPEC_COLOR (pspec)->default_value;
-  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
+  const ClutterColor *default_value =
+    CLUTTER_PARAM_SPEC_COLOR (pspec)->default_value;
+  clutter_value_set_color (value, default_value);
 }
 
 static gint
@@ -728,14 +743,19 @@ param_color_values_cmp (GParamSpec   *pspec,
                         const GValue *value1,
                         const GValue *value2)
 {
-  guint32 color1, color2;
+  const ClutterColor *color1 = g_value_get_boxed (value1);
+  const ClutterColor *color2 = g_value_get_boxed (value2);
+  int pixel1, pixel2;
 
-  color1 = clutter_color_to_pixel (value1->data[0].v_pointer);
-  color2 = clutter_color_to_pixel (value2->data[0].v_pointer);
+  if (color1 == NULL)
+    return color2 == NULL ? 0 : -1;
 
-  if (color1 < color2)
+  pixel1 = clutter_color_to_pixel (color1);
+  pixel2 = clutter_color_to_pixel (color2);
+
+  if (pixel1 < pixel2)
     return -1;
-  else if (color1 == color2)
+  else if (pixel1 == pixel2)
     return 0;
   else
     return 1;
