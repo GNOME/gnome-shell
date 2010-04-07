@@ -696,14 +696,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
 	}
     }
 
-  /*
-   * This trap is so that none of the compositor functions cause
-   * X errors. This is really a hack, but I'm afraid I don't understand
-   * enough about Metacity/X to know how else you are supposed to do it
-   */
-
-
-  meta_error_trap_push (compositor->display);
   switch (event->type)
     {
     case PropertyNotify:
@@ -725,8 +717,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
 #endif /* HAVE_SHAPE */
       break;
     }
-
-  meta_error_trap_pop (compositor->display, FALSE);
 
   /* Clutter needs to know about MapNotify events otherwise it will
      think the stage is invisible */
