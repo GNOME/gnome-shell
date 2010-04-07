@@ -96,8 +96,10 @@ typedef enum {
  *   decide which of the above two to use. For cogl_rectangle(), it
  *   will use repeat mode if any of the texture coordinates are
  *   outside the range 0→1, otherwise it will use clamp to edge. For
- *   cogl_polygon() and cogl_vertex_buffer_draw() it will always use
- *   repeat mode. This is the default value.
+ *   cogl_polygon() it will always use repeat mode. For
+ *   cogl_vertex_buffer_draw() it will use repeat mode except for
+ *   layers that have point sprite coordinate generation enabled. This
+ *   is the default value.
  *
  * The wrap mode specifies what happens when texture coordinates
  * outside the range 0→1 are used. Note that if the filter mode is
