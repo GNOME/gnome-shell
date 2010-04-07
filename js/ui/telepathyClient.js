@@ -82,7 +82,18 @@ Client.prototype = {
 
     get ApproverChannelFilter() {
         return [
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME }
+            // We only care about single-user text-based chats
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
+
+            // Some protocols only support "multi-user" chats, and
+            // single-user chats are just treated as multi-user chats
+            // with only one other participant. Telepathy uses
+            // HandleType.NONE for all chats in these protocols;
+            // there's no good way for us to tell if the channel is
+            // single- or multi-user.
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
         ];
     },
 
@@ -94,8 +105,12 @@ Client.prototype = {
     },
 
     get HandlerChannelFilter() {
+        // See ApproverChannelFilter
         return [
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME }
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
         ];
     },
 
@@ -106,8 +121,12 @@ Client.prototype = {
     },
 
     get ObserverChannelFilter() {
+        // See ApproverChannelFilter
         return [
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME }
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
+            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
         ];
     },
 
@@ -123,12 +142,20 @@ Client.prototype = {
             if (this._channels[channelPath])
                 continue;
 
+            // If this is being called from the startup code then it
+            // won't have passed through our filters, so we need to
+            // check the channel/targetHandle type ourselves.
+
             let channelType = props[Telepathy.CHANNEL_NAME + '.ChannelType'];
             if (channelType != Telepathy.CHANNEL_TEXT_NAME)
                 continue;
 
-            let targetHandle = props[Telepathy.CHANNEL_NAME + '.TargetHandle'];
             let targetHandleType = props[Telepathy.CHANNEL_NAME + '.TargetHandleType'];
+            if (targetHandleType != Telepathy.HandleType.CONTACT &&
+                targetHandleType != Telepathy.HandleType.NONE)
+                continue;
+
+            let targetHandle = props[Telepathy.CHANNEL_NAME + '.TargetHandle'];
             let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
 
             let source = new Source(connPath, channelPath,
