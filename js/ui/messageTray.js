@@ -908,6 +908,17 @@ MessageTray.prototype = {
                       time: ANIMATION_TIME,
                       transition: "easeOutQuad"
                     });
+
+        if (!this._reExpandSummaryNotificationId)
+            this._reExpandSummaryNotificationId = this._summaryNotificationBin.connect('notify::height', Lang.bind(this, this._reExpandSummaryNotification));
+    },
+
+    _reExpandSummaryNotification: function() {
+        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.SHOWN,
+                    { y: this.actor.height - this._summaryNotificationBin.height,
+                      time: ANIMATION_TIME,
+                      transition: "easeOutQuad"
+                    });
     },
 
     _hideSummaryNotification: function() {
@@ -921,6 +932,11 @@ MessageTray.prototype = {
                       onComplete: this._hideSummaryNotificationCompleted,
                       onCompleteScope: this
                     });
+
+        if (this._reExpandSummaryNotificationId) {
+            this._summaryNotificationBin.disconnect(this._reExpandSummaryNotificationId);
+            this._reExpandSummaryNotificationId = 0;
+        }
     },
 
     _hideSummaryNotificationCompleted: function() {
