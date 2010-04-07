@@ -246,7 +246,8 @@ NotificationDaemon.prototype = {
 
     _onFocusAppChanged: function() {
         let tracker = Shell.WindowTracker.get_default();
-        Main.messageTray.removeSourceByApp(tracker.focus_app);
+        if (tracker.focus_app)
+            Main.messageTray.removeSourceByApp(tracker.focus_app);
     },
 
     _actionInvoked: function(notification, action, source, id) {
