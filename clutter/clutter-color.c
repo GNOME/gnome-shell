@@ -40,7 +40,6 @@
 #include <math.h>
 
 #include <pango/pango-attributes.h>
-#include <gobject/gvaluecollector.h>
 
 #include "clutter-main.h"
 #include "clutter-color.h"
@@ -664,82 +663,6 @@ clutter_color_get_type (void)
   return _clutter_color_type;
 }
 
-static void
-clutter_value_init_color (GValue *value)
-{
-  value->data[0].v_pointer = NULL;
-}
-
-static void
-clutter_value_free_color (GValue *value)
-{
-  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
-    clutter_color_free (value->data[0].v_pointer);
-}
-
-static void
-clutter_value_copy_color (const GValue *src,
-                          GValue       *dest)
-{
-  dest->data[0].v_pointer = clutter_color_copy (src->data[0].v_pointer);
-}
-
-static gpointer
-clutter_value_peek_color (const GValue *value)
-{
-  return value->data[0].v_pointer;
-}
-
-static gchar *
-clutter_value_collect_color (GValue      *value,
-                             guint        n_collect_values,
-                             GTypeCValue *collect_values,
-                             guint        collect_flags)
-{
-  if (!collect_values[0].v_pointer)
-      value->data[0].v_pointer = NULL;
-  else
-    {
-      if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
-        {
-          value->data[0].v_pointer = collect_values[0].v_pointer;
-          value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
-        }
-      else
-        {
-          value->data[0].v_pointer =
-            clutter_color_copy (collect_values[0].v_pointer);
-        }
-    }
-
-  return NULL;
-}
-
-static gchar *
-clutter_value_lcopy_color (const GValue *value,
-                           guint         n_collect_values,
-                           GTypeCValue  *collect_values,
-                           guint         collect_flags)
-{
-  ClutterColor **color_p = collect_values[0].v_pointer;
-
-  if (!color_p)
-    return g_strdup_printf ("value location for '%s' passed as NULL",
-                            G_VALUE_TYPE_NAME (value));
-
-  if (!value->data[0].v_pointer)
-    *color_p = NULL;
-  else
-    {
-      if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
-        *color_p = value->data[0].v_pointer;
-      else
-        *color_p = clutter_color_copy (value->data[0].v_pointer);
-    }
-
-  return NULL;
-}
-
 /**
  * clutter_value_set_color:
  * @value: a #GValue initialized to #CLUTTER_TYPE_COLOR
@@ -817,17 +740,6 @@ param_color_values_cmp (GParamSpec   *pspec,
   else
     return 1;
 }
-
-static const GTypeValueTable _clutter_color_value_table = {
-  clutter_value_init_color,
-  clutter_value_free_color,
-  clutter_value_copy_color,
-  clutter_value_peek_color,
-  "p",
-  clutter_value_collect_color,
-  "p",
-  clutter_value_lcopy_color
-};
 
 GType
 clutter_param_color_get_type (void)
