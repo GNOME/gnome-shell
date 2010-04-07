@@ -596,6 +596,9 @@ MessageTray.prototype = {
     },
 
     _onNotify: function(source, notification) {
+        if (notification == this._summaryNotification)
+            return;
+
         if (this._getNotification(notification.id, source) == null) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
