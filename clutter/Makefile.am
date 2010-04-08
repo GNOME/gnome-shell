@@ -84,6 +84,7 @@ source_h =					\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
+	$(srcdir)/clutter-blur-effect.h		\
 	$(srcdir)/clutter-box.h			\
 	$(srcdir)/clutter-box-layout.h		\
 	$(srcdir)/clutter-cairo-texture.h	\
@@ -169,6 +170,7 @@ source_c = \
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
 	$(srcdir)/clutter-bin-layout.c		\
+	$(srcdir)/clutter-blur-effect.c		\
 	$(srcdir)/clutter-box.c			\
 	$(srcdir)/clutter-box-layout.c		\
 	$(srcdir)/clutter-cairo-texture.c       \
