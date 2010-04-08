@@ -28,6 +28,7 @@ test_conformance_SOURCES = 		\
 	test-cogl-texture-mipmaps.c     \
 	test-cogl-texture-rectangle.c   \
 	test-cogl-pixel-buffer.c	\
+	test-cogl-path.c		\
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\
