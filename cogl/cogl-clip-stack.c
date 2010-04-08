@@ -38,13 +38,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
-
-void _cogl_add_path_to_stencil_buffer (floatVec2    nodes_min,
-                                       floatVec2    nodes_max,
-                                       unsigned int path_size,
-                                       CoglPathNode *path,
-                                       gboolean      merge,
-                                       gboolean      need_clear);
+#include "cogl-path-private.h"
 
 typedef struct _CoglClipStack CoglClipStack;
 
@@ -96,11 +90,7 @@ struct _CoglClipStackEntryPath
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;
 
-  floatVec2              path_nodes_min;
-  floatVec2              path_nodes_max;
-
-  unsigned int           path_size;
-  CoglPathNode           path[1];
+  CoglHandle             path;
 };
 
 static void
@@ -567,15 +557,10 @@ cogl_clip_push_from_path_preserve (void)
 
   stack = clip_state->stacks->data;
 
-  entry = g_malloc (sizeof (CoglClipStackEntryPath)
-                    + sizeof (CoglPathNode) * (ctx->path_nodes->len - 1));
+  entry = g_slice_new (CoglClipStackEntryPath);
 
   entry->type = COGL_CLIP_STACK_PATH;
-  entry->path_nodes_min = ctx->path_nodes_min;
-  entry->path_nodes_max = ctx->path_nodes_max;
-  entry->path_size = ctx->path_nodes->len;
-  memcpy (entry->path, ctx->path_nodes->data,
-          sizeof (CoglPathNode) * ctx->path_nodes->len);
+  entry->path = cogl_path_copy (cogl_path_get ());
 
   cogl_get_modelview_matrix (&entry->matrix);
 
@@ -617,7 +602,10 @@ _cogl_clip_pop_real (CoglClipStackState *clip_state)
   else if (type == COGL_CLIP_STACK_WINDOW_RECT)
     g_slice_free (CoglClipStackEntryWindowRect, entry);
   else
-    g_free (entry);
+    {
+      cogl_handle_unref (((CoglClipStackEntryPath *) entry)->path);
+      g_slice_free (CoglClipStackEntryPath, entry);
+    }
 
   stack->stack_top = g_list_delete_link (stack->stack_top,
                                          stack->stack_top);
@@ -693,15 +681,12 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
 
       if (type == COGL_CLIP_STACK_PATH)
         {
-          CoglClipStackEntryPath *path = (CoglClipStackEntryPath *) entry;
+          CoglClipStackEntryPath *path_entry = (CoglClipStackEntryPath *) entry;
 
           _cogl_matrix_stack_push (modelview_stack);
-          _cogl_matrix_stack_set (modelview_stack, &path->matrix);
+          _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
 
-          _cogl_add_path_to_stencil_buffer (path->path_nodes_min,
-                                            path->path_nodes_max,
-                                            path->path_size,
-                                            path->path,
+          _cogl_add_path_to_stencil_buffer (path_entry->path,
                                             using_stencil_buffer,
                                             TRUE);
 

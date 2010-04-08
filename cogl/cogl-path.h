@@ -341,6 +341,52 @@ cogl_path_round_rectangle (float x_1,
                            float radius,
                            float arc_step);
 
+/**
+ * cogl_path_get:
+ *
+ * Gets a handle to the current path. The path can later be used again
+ * by calling cogl_path_set(). Note that the path isn't copied so if
+ * you later call any functions to add to the path it will affect the
+ * returned handle too. No reference is taken on the path so if you
+ * want to retain it you should take your own reference with
+ * cogl_handle_ref().
+ *
+ * Return value: a handle to the current path.
+ *
+ * Since: 1.4
+ */
+CoglHandle
+cogl_path_get (void);
+
+/**
+ * cogl_path_set:
+ * @handle: A %CoglHandle to a path
+ *
+ * Replaces the current path with @handle. A reference is taken on the
+ * handle so if you no longer need the path you should unref with
+ * cogl_handle_unref().
+ *
+ * Since: 1.4
+ */
+void
+cogl_path_set (CoglHandle handle);
+
+/**
+ * cogl_path_copy:
+ * @handle: A %CoglHandle to a path
+ *
+ * Returns a new copy of the path in @handle. The new path has a
+ * reference count of 1 so you should unref it with
+ * cogl_handle_unref() if you no longer need it.
+ *
+ * Internally the path will share the data until one of the paths is
+ * modified so copying paths should be relatively cheap.
+ *
+ * Return value: a copy of the path in @handle.
+ */
+CoglHandle
+cogl_path_copy (CoglHandle handle);
+
 G_END_DECLS
 
 #endif /* __COGL_PATH_H__ */

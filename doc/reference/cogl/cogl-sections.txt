@@ -155,6 +155,9 @@ cogl_polygon
 
 <SUBSECTION>
 cogl_path_new
+cogl_path_get
+cogl_path_set
+cogl_path_copy
 cogl_path_move_to
 cogl_path_close
 cogl_path_line_to

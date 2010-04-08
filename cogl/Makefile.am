@@ -97,6 +97,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-bitmap-fallback.c 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
+	$(srcdir)/cogl-path-private.h                   \
 	$(srcdir)/cogl-path.h 				\
 	$(srcdir)/cogl-path.c 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\

@@ -33,6 +33,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-path-private.h"
 
 #include <string.h>
 
@@ -108,8 +109,7 @@ cogl_create_context (void)
   _context->dirty_bound_framebuffer = TRUE;
   _context->dirty_gl_viewport = TRUE;
 
-  _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
-  _context->last_path = 0;
+  _context->current_path = _cogl_path_new ();
   _context->stencil_material = cogl_material_new ();
 
   _context->in_begin_gl_block = FALSE;
@@ -168,8 +168,8 @@ _cogl_destroy_context ()
 
   _cogl_free_framebuffer_stack (_context->framebuffer_stack);
 
-  if (_context->path_nodes)
-    g_array_free (_context->path_nodes, TRUE);
+  if (_context->current_path)
+    cogl_handle_unref (_context->current_path);
 
   if (_context->default_gl_texture_2d_tex)
     cogl_handle_unref (_context->default_gl_texture_2d_tex);
