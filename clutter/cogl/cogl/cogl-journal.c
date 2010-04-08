@@ -318,10 +318,6 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
   _cogl_material_flush_gl_state (batch_start->material,
                                  &batch_start->flush_options);
 
-  /* FIXME: This api is a bit yukky, ideally it will be removed if we
-   * re-work the _cogl_enable mechanism */
-  enable_flags |= _cogl_material_get_cogl_enable_flags (batch_start->material);
-
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
@@ -356,7 +352,8 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   if (_cogl_material_equal (entry0->material,
                             &entry0->flush_options,
                             entry1->material,
-                            &entry1->flush_options))
+                            &entry1->flush_options,
+                            TRUE))
     return TRUE;
   else
     return FALSE;

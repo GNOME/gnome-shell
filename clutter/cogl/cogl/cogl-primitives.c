@@ -1073,6 +1073,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
   GLfloat             *v;
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
   CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
+  CoglHandle           original_source_material;
+  gboolean             overrode_material = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1206,18 +1208,31 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   /* Prepare GL state */
   enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
   if (use_color)
     {
-      enable_flags |= COGL_ENABLE_COLOR_ARRAY | COGL_ENABLE_BLEND;
+      CoglHandle override;
+      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
       GE( glColorPointer (4, GL_UNSIGNED_BYTE,
                           stride_bytes,
                           /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
                           v + 3 + 2 * n_layers) );
+
+      if (!_cogl_material_get_real_blend_enabled (ctx->source_material))
+        {
+          CoglMaterialBlendEnable blend_enabled =
+            COGL_MATERIAL_BLEND_ENABLE_ENABLED;
+          original_source_material = ctx->source_material;
+          override = cogl_material_copy (original_source_material);
+          _cogl_material_set_blend_enabled (override, blend_enabled);
+
+          /* XXX: cogl_push_source () */
+          overrode_material = TRUE;
+          ctx->source_material = override;
+        }
     }
 
   _cogl_enable (enable_flags);
@@ -1252,6 +1267,16 @@ cogl_polygon (const CoglTextureVertex *vertices,
                                                  use_color,
                                                  fallback_layers,
                                                  wrap_mode_overrides_p);
+
+  /* XXX: cogl_pop_source () */
+  if (overrode_material)
+    {
+      cogl_handle_unref (ctx->source_material);
+      ctx->source_material = original_source_material;
+      /* XXX: when we have weak materials then any override material
+       * should get associated with the original material so we don't
+       * create lots of one-shot materials! */
+    }
 
   /* Reset the size of the logged vertex array because rendering
      rectangles expects it to start at 0 */

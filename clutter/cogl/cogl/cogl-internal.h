@@ -97,11 +97,10 @@ cogl_gl_error_to_string (GLenum error_code);
 
 #endif /* COGL_GL_DEBUG */
 
-#define COGL_ENABLE_BLEND             (1<<1)
-#define COGL_ENABLE_ALPHA_TEST        (1<<2)
-#define COGL_ENABLE_VERTEX_ARRAY      (1<<3)
-#define COGL_ENABLE_COLOR_ARRAY       (1<<4)
-#define COGL_ENABLE_BACKFACE_CULLING  (1<<5)
+#define COGL_ENABLE_ALPHA_TEST        (1<<1)
+#define COGL_ENABLE_VERTEX_ARRAY      (1<<2)
+#define COGL_ENABLE_COLOR_ARRAY       (1<<3)
+#define COGL_ENABLE_BACKFACE_CULLING  (1<<4)
 
 void
 _cogl_features_init (void);

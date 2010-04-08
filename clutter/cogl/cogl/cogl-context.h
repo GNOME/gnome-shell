@@ -49,10 +49,12 @@ typedef struct
   gboolean                features_cached;
 
   CoglHandle        default_material;
+  CoglHandle        default_layer_0;
+  CoglHandle        default_layer_n;
+  CoglHandle        dummy_layer_dependant;
 
   /* Enable cache */
   unsigned long     enable_flags;
-  guint8            color_alpha;
   gboolean          fog_enabled;
 
   gboolean          enable_backface_culling;
@@ -91,11 +93,12 @@ typedef struct
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
-  unsigned long     current_material_flags;
-  gboolean          current_material_fallback_layers;
-  gboolean          current_material_disable_layers;
-  GLuint            current_material_layer0_override;
+  unsigned long     current_material_changes_since_flush;
   gboolean          current_material_skip_gl_color;
+
+  GArray           *material0_nodes;
+  GArray           *material1_nodes;
+
   /* Bitmask of texture coordinates arrays that are enabled */
   CoglBitmask       texcoord_arrays_enabled;
   /* These are temporary bitmasks that are used when disabling
@@ -103,6 +106,8 @@ typedef struct
      each time */
   CoglBitmask       texcoord_arrays_to_disable;
   CoglBitmask       temp_bitmask;
+
+  gboolean          gl_blend_enable_cache;
 
   /* PBOs */
   /* This can be used to check if a pbo is bound */
@@ -143,9 +148,11 @@ typedef struct
   GLint             max_texture_image_units;
   GLint             max_activateable_texture_units;
 
-  CoglHandle        current_program;
+  /* Fragment processing programs */
+  CoglHandle              current_program;
+
   CoglMaterialProgramType current_use_program_type;
-  GLuint            current_gl_program;
+  GLuint                  current_gl_program;
 
   CoglContextDriver drv;
 } CoglContext;

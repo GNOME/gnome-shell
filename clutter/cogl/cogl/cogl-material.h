@@ -106,7 +106,11 @@ typedef enum {
  * Since: 1.4
  */
 /* GL_ALWAYS is just used here as a value that is known not to clash
-   with any valid GL wrap modes */
+ * with any valid GL wrap modes
+ *
+ * XXX: keep the values in sync with the CoglMaterialWrapModeInternal
+ * enum so no conversion is actually needed.
+ */
 typedef enum {
   COGL_MATERIAL_WRAP_MODE_REPEAT = GL_REPEAT,
   COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
