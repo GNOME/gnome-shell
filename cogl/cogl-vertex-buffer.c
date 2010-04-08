@@ -1525,6 +1525,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
+  source = ctx->source_material;
+
   if (buffer->new_attributes)
     cogl_vertex_buffer_submit_real (buffer);
 
@@ -1572,13 +1574,21 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	  switch (type)
 	    {
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
-	      enable_flags |= COGL_ENABLE_COLOR_ARRAY | COGL_ENABLE_BLEND;
+	      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
 	      /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
 	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 	      GE (glColorPointer (attribute->n_components,
 				  gl_type,
 				  attribute->stride,
 				  pointer));
+
+              if (!_cogl_material_get_real_blend_enabled (ctx->source_material))
+                {
+                  CoglMaterialBlendEnable blend_enable =
+                    COGL_MATERIAL_BLEND_ENABLE_ENABLED;
+                  source = cogl_material_copy (ctx->source_material);
+                  _cogl_material_set_blend_enabled (source, blend_enable);
+                }
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
 	      /* FIXME: go through cogl cache to enable normal array */
@@ -1634,7 +1644,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	}
     }
 
-  layers = cogl_material_get_layers (ctx->source_material);
+  layers = cogl_material_get_layers (source);
   for (tmp = (GList *)layers, i = 0;
        tmp != NULL;
        tmp = tmp->next, i++)
@@ -1719,14 +1729,13 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      source = cogl_material_copy (ctx->source_material);
+      /* If we haven't already created a derived material... */
+      if (source == ctx->source_material)
+        source = cogl_material_copy (ctx->source_material);
       _cogl_material_apply_legacy_state (source);
     }
-  else
-    source = ctx->source_material;
 
   _cogl_material_flush_gl_state (source, &options);
-  enable_flags |= _cogl_material_get_cogl_enable_flags (source);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

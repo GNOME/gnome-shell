@@ -67,9 +67,9 @@ cogl_create_context (void)
   _cogl_features_init ();
 
   _cogl_material_init_default_material ();
+  _cogl_material_init_default_layers ();
 
   _context->enable_flags = 0;
-  _context->color_alpha = 0;
   _context->fog_enabled = FALSE;
 
   _context->enable_backface_culling = FALSE;
@@ -104,11 +104,13 @@ cogl_create_context (void)
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
 
   _context->current_material = NULL;
-  _context->current_material_flags = COGL_MATERIAL_FLAGS_INIT;
-  _context->current_material_fallback_layers = 0;
-  _context->current_material_disable_layers = 0;
-  _context->current_material_layer0_override = 0;
+  _context->current_material_changes_since_flush = 0;
   _context->current_material_skip_gl_color = FALSE;
+
+  _context->material0_nodes =
+    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
+  _context->material1_nodes =
+    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
 
   _cogl_bitmask_init (&_context->texcoord_arrays_enabled);
   _cogl_bitmask_init (&_context->temp_bitmask);
@@ -122,6 +124,8 @@ cogl_create_context (void)
 
   _context->current_use_program_type = COGL_MATERIAL_PROGRAM_TYPE_FIXED;
   _context->current_gl_program = 0;
+
+  _context->gl_blend_enable_cache = FALSE;
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
@@ -173,8 +177,6 @@ cogl_create_context (void)
 
   cogl_set_source (_context->simple_material);
   _cogl_material_flush_gl_state (_context->source_material, NULL);
-  enable_flags =
-    _cogl_material_get_cogl_enable_flags (_context->source_material);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
@@ -220,6 +222,13 @@ _cogl_destroy_context (void)
 
   if (_context->default_material)
     cogl_handle_unref (_context->default_material);
+
+  if (_context->dummy_layer_dependant)
+    cogl_handle_unref (_context->dummy_layer_dependant);
+  if (_context->default_layer_n)
+    cogl_handle_unref (_context->default_layer_n);
+  if (_context->default_layer_0)
+    cogl_handle_unref (_context->default_layer_0);
 
   if (_context->atlas)
     _cogl_atlas_free (_context->atlas);

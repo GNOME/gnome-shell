@@ -374,6 +374,11 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
        */
       _cogl_journal_flush ();
 
+      /* Notify cogl-material.c that the texture's underlying GL texture
+       * storage is changing so it knows it may need to bind a new texture
+       * if the CoglTexture is reused with the same texture unit. */
+      _cogl_material_texture_storage_change_notify (atlas_tex);
+
       cogl_handle_unref (atlas_tex->sub_texture);
 
       /* Create a new texture at the right size, not including the
@@ -686,6 +691,11 @@ _cogl_atlas_texture_migrate (unsigned int                    n_textures,
 
   for (i = 0; i < n_textures; i++)
     {
+      /* Notify cogl-material.c that the texture's underlying GL texture
+       * storage is changing so it knows it may need to bind a new texture
+       * if the CoglTexture is reused with the same texture unit. */
+      _cogl_material_texture_storage_change_notify (textures[i].texture);
+
       /* Skip the texture that is being added because it doesn't contain
          any data yet */
       if (textures[i].texture != skip_texture)

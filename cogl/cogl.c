@@ -267,10 +267,6 @@ _cogl_enable (unsigned long flags)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   toggle_flag (ctx, flags,
-               COGL_ENABLE_BLEND,
-               GL_BLEND);
-
-  toggle_flag (ctx, flags,
                COGL_ENABLE_BACKFACE_CULLING,
                GL_CULL_FACE);
 
@@ -857,10 +853,6 @@ cogl_begin_gl (void)
    */
   options.flags = 0;
   _cogl_material_flush_gl_state (ctx->source_material, &options);
-
-  /* FIXME: This api is a bit yukky, ideally it will be removed if we
-   * re-work the _cogl_enable mechanism */
-  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

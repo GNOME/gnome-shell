@@ -145,7 +145,6 @@ _cogl_path_stroke_nodes (void)
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
-  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   _cogl_enable (enable_flags);
 
   options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
@@ -234,8 +233,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
-  enable_flags |=
-    _cogl_material_get_cogl_enable_flags (ctx->source_material);
   _cogl_enable (enable_flags);
 
   GE( glEnable (GL_STENCIL_TEST) );
@@ -394,8 +391,8 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
-  _cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
+  _cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
+
 
   /* clear scanline intersection lists */
   for (i = 0; i < bounds_h; i++)

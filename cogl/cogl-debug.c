@@ -66,7 +66,8 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS },
   { "disable-texturing", COGL_DEBUG_DISABLE_TEXTURING},
   { "disable-arbfp", COGL_DEBUG_DISABLE_ARBFP},
-  { "disable-glsl", COGL_DEBUG_DISABLE_GLSL}
+  { "disable-glsl", COGL_DEBUG_DISABLE_GLSL},
+  { "disable-blending", COGL_DEBUG_DISABLE_BLENDING}
 };
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
@@ -123,6 +124,7 @@ _cogl_parse_debug_string (const char *value,
       OPT ("disable-texturing:", "disable texturing primitives");
       OPT ("disable-arbfp:", "disable use of ARBfp");
       OPT ("disable-glsl:", "disable use of GLSL");
+      OPT ("disable-blending:", "disable use of blending");
       OPT ("show-source:", "show generated ARBfp/GLSL");
       OPT ("opengl:", "traces some select OpenGL calls");
       OPT ("offscreen:", "debug offscreen support");
