@@ -27,6 +27,7 @@ cogl_pop_matrix
 cogl_scale
 cogl_translate
 cogl_rotate
+cogl_transform
 cogl_frustum
 cogl_perspective
 cogl_ortho
