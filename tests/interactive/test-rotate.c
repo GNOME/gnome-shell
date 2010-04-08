@@ -44,8 +44,8 @@ test_rotate_main (int argc, char *argv[])
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_CENTER);
   clutter_actor_set_position (label, 150, 150);
   clutter_actor_set_size (label, 500, 100);
-  clutter_actor_show (label);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+
+  clutter_container_add (CLUTTER_CONTAINER (stage), hand, label, NULL);
   
   /* Make a timeline */
   timeline = clutter_timeline_new (7692); /* num frames, fps */

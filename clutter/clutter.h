@@ -60,6 +60,7 @@
 #include "clutter-container.h"
 #include "clutter-device-manager.h"
 #include "clutter-drag-action.h"
+#include "clutter-effect.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"

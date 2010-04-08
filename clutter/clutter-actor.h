@@ -31,12 +31,13 @@
 
 /* clutter-actor.h */
 
-#include <glib-object.h>
 #include <pango/pango.h>
 #include <atk/atk.h>
 
-#include <clutter/clutter-color.h>
 #include <clutter/clutter-types.h>
+
+#include <clutter/clutter-color.h>
+#include <clutter/clutter-effect.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-shader.h>
 

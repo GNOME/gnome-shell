@@ -38,6 +38,7 @@
 
 #include "clutter-backend.h"
 #include "clutter-device-manager.h"
+#include "clutter-effect.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
@@ -330,6 +331,9 @@ void _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
 void _clutter_run_repaint_functions (void);
 
 gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
+
+gboolean _clutter_effect_pre_paint  (ClutterEffect *effect);
+void     _clutter_effect_post_paint (ClutterEffect *effect);
 
 G_END_DECLS
 

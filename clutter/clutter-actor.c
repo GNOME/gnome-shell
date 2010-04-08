@@ -284,6 +284,8 @@
 #include "config.h"
 #endif
 
+#include "cogl/cogl.h"
+
 #include "clutter-actor.h"
 
 #include "clutter-action.h"
@@ -292,6 +294,7 @@
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
+#include "clutter-effect.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
@@ -301,8 +304,6 @@
 #include "clutter-script.h"
 #include "clutter-stage.h"
 #include "clutter-units.h"
-
-#include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
 typedef struct _AnchorCoord AnchorCoord;
@@ -459,6 +460,7 @@ struct _ClutterActorPrivate
 
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
+  ClutterMetaGroup *effects;
 };
 
 enum
@@ -542,7 +544,8 @@ enum
   PROP_HAS_POINTER,
 
   PROP_ACTIONS,
-  PROP_CONSTRAINTS
+  PROP_CONSTRAINTS,
+  PROP_EFFECT
 };
 
 enum
@@ -1803,10 +1806,11 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
     {
       ClutterActor *stage = clutter_actor_get_stage_internal (self);
 
-      if (stage != NULL&&
+      if (stage != NULL &&
           _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
         return;
     }
+
   self->priv->propagated_one_redraw = TRUE;
 
   /* notify parents, if they are all visible eventually we'll
@@ -1887,8 +1891,8 @@ full_vertex_transform (const CoglMatrix *matrix,
 /* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
-#define MTX_GL_SCALE_X(x,w,v1,v2)       ((((((x) / (w)) + 1.0) / 2) * (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2)       ((v1) - (((((y) / (w)) + 1.0) / 2) * (v1)) + (v2))
+#define MTX_GL_SCALE_X(x,w,v1,v2)       ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2)       ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2)       (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /* scales a fixed @vertex using @matrix and @viewport, and
@@ -1905,11 +1909,7 @@ full_vertex_scale (const CoglMatrix    *matrix,
 
   tmp = *vertex;
 
-  cogl_matrix_transform_point (matrix,
-                               &tmp.x,
-                               &tmp.y,
-                               &tmp.z,
-                               &tmp.w);
+  cogl_matrix_transform_point (matrix, &tmp.x, &tmp.y, &tmp.z, &tmp.w);
 
   v_x      = viewport[0];
   v_y      = viewport[1];
@@ -2222,7 +2222,7 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
 
   if (ancestor == NULL)
     {
-      stage = clutter_actor_get_stage (self);
+      stage = clutter_actor_get_stage_internal (self);
 
       clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
       cogl_perspective (perspective.fovy,
@@ -2256,6 +2256,7 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
           cogl_matrix_init_identity (&identity);
           initialized_identity = TRUE;
         }
+
       cogl_set_modelview_matrix (&identity);
     }
 
@@ -2273,8 +2274,8 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
  */
 void
 _clutter_actor_get_projection_and_viewport (ClutterActor *self,
-                                            CoglMatrix *matrix,
-                                            float *viewport)
+                                            CoglMatrix   *matrix,
+                                            float        *viewport)
 {
   _clutter_actor_ensure_stage_current (self);
 
@@ -2428,8 +2429,8 @@ void
 clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
                                            ClutterVertex  verts[])
 {
-  ClutterActorPrivate   *priv;
-  ClutterActorBox        actor_space_allocation;
+  ClutterActorPrivate *priv;
+  ClutterActorBox actor_space_allocation;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -2456,10 +2457,8 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
    * own coordinate space... */
   actor_space_allocation.x1 = 0;
   actor_space_allocation.y1 = 0;
-  actor_space_allocation.x2 =
-    self->priv->allocation.x2 - self->priv->allocation.x1;
-  actor_space_allocation.y2 =
-    self->priv->allocation.y2 - self->priv->allocation.y1;
+  actor_space_allocation.x2 = priv->allocation.x2 - priv->allocation.x1;
+  actor_space_allocation.y2 = priv->allocation.y2 - priv->allocation.y1;
   _clutter_actor_transform_and_project_box (self,
 					    &actor_space_allocation,
 					    verts);
@@ -2549,6 +2548,40 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
   cogl_matrix_multiply (&new, &cur, &matrix);
 
   cogl_set_modelview_matrix (&new);
+}
+
+static gboolean
+_clutter_actor_effects_pre_paint (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const GList *effects, *l;
+  gboolean was_pre_painted = FALSE;
+
+  effects = _clutter_meta_group_peek_metas (priv->effects);
+  for (l = effects; l != NULL; l = l->next)
+    {
+      ClutterEffect *effect = l->data;
+
+      was_pre_painted |= _clutter_effect_pre_paint (effect);
+    }
+
+  return was_pre_painted;
+}
+
+static void
+_clutter_actor_effects_post_paint (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const GList *effects, *l;
+
+  /* we walk the list backwards, to unwind the post-paint order */
+  effects = _clutter_meta_group_peek_metas (priv->effects);
+  for (l = g_list_last ((GList *) effects); l != NULL; l = l->prev)
+    {
+      ClutterEffect *effect = l->data;
+
+      _clutter_effect_post_paint (effect);
+    }
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -2669,14 +2702,22 @@ clutter_actor_paint (ClutterActor *self)
 
   if (context->pick_mode == CLUTTER_PICK_NONE)
     {
+      gboolean effect_painted = FALSE;
+
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
-      clutter_actor_shader_pre_paint (self, FALSE);
+      if (priv->effects != NULL)
+        effect_painted = _clutter_actor_effects_pre_paint (self);
+      else if (priv->shader_data != NULL)
+        clutter_actor_shader_pre_paint (self, FALSE);
 
-      self->priv->propagated_one_redraw = FALSE;
+      priv->propagated_one_redraw = FALSE;
       g_signal_emit (self, actor_signals[PAINT], 0);
 
-      clutter_actor_shader_post_paint (self);
+      if (effect_painted)
+        _clutter_actor_effects_post_paint (self);
+      else if (priv->shader_data != NULL)
+        clutter_actor_shader_post_paint (self);
     }
   else
     {
@@ -3016,6 +3057,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_add_constraint (actor, g_value_get_object (value));
       break;
 
+    case PROP_EFFECT:
+      clutter_actor_add_effect (actor, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3323,7 +3368,7 @@ clutter_actor_dispose (GObject *object)
 
   destroy_shader_data (self);
 
-  if (priv->pango_context != NULL)
+  if (priv->pango_context)
     {
       g_object_unref (priv->pango_context);
       priv->pango_context = NULL;
@@ -3333,6 +3378,12 @@ clutter_actor_dispose (GObject *object)
     {
       g_object_unref (priv->actions);
       priv->actions = NULL;
+    }
+
+  if (priv->effects != NULL)
+    {
+      g_object_unref (priv->effects);
+      priv->effects = NULL;
     }
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
@@ -4208,6 +4259,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                CLUTTER_TYPE_CONSTRAINT,
                                CLUTTER_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_CONSTRAINTS, pspec);
+
+  /**
+   * ClutterActor:effect:
+   *
+   * Adds #ClutterEffect to the list of effects be applied on a #ClutterActor
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_object ("effect",
+                               "Effect",
+                               "Add an effect to be applied on the actor",
+                               CLUTTER_TYPE_EFFECT,
+                               CLUTTER_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_EFFECT, pspec);
 
   /**
    * ClutterActor::destroy:
@@ -10995,4 +11060,213 @@ clutter_actor_get_clip_to_allocation (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   return self->priv->clip_to_allocation;
+}
+
+/**
+ * clutter_actor_add_effect:
+ * @self: a #ClutterActor
+ * @effect: a #ClutterEffect
+ *
+ * Adds @effect to the list of #ClutterEffect<!-- -->s applied to @self
+ *
+ * The #ClutterActor will hold a reference on the @effect until either
+ * clutter_actor_remove_effect() or clutter_actor_clear_effects() is
+ * called.
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_effect (ClutterActor  *self,
+                          ClutterEffect *effect)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_EFFECT (effect));
+
+  priv = self->priv;
+
+  if (priv->effects == NULL)
+    {
+      priv->effects = g_object_new (CLUTTER_TYPE_META_GROUP, NULL);
+      priv->effects->actor = self;
+    }
+
+  _clutter_meta_group_add_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify (G_OBJECT (self), "effect");
+}
+
+/**
+ * clutter_actor_add_effect_with_name:
+ * @self: a #ClutterActor
+ * @name: the name to set on the effect
+ * @effect: a #ClutterEffect
+ *
+ * A convenience function for setting the name of a #ClutterEffect
+ * while adding it to the list of effectss applied to @self
+ *
+ * This function is the logical equivalent of:
+ *
+ * |[
+ *   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (effect), name);
+ *   clutter_actor_add_effect (self, effect);
+ * ]|
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_effect_with_name (ClutterActor  *self,
+                                    const gchar   *name,
+                                    ClutterEffect *effect)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (CLUTTER_IS_EFFECT (effect));
+
+  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (effect), name);
+  clutter_actor_add_effect (self, effect);
+}
+
+/**
+ * clutter_actor_remove_effect:
+ * @self: a #ClutterActor
+ * @effect: a #ClutterEffect
+ *
+ * Removes @effect from the list of effects applied to @self
+ *
+ * The reference held by @self on the #ClutterEffect will be released
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_effect (ClutterActor  *self,
+                             ClutterEffect *effect)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_EFFECT (effect));
+
+  priv = self->priv;
+
+  if (priv->effects == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify (G_OBJECT (self), "effect");
+}
+
+/**
+ * clutter_actor_remove_effect_by_name:
+ * @self: a #ClutterActor
+ * @name: the name of the effect to remove
+ *
+ * Removes the #ClutterEffect with the given name from the list
+ * of effects applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_effect_by_name (ClutterActor *self,
+                                     const gchar  *name)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorMeta *meta;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+
+  priv = self->priv;
+
+  if (priv->effects == NULL)
+    return;
+
+  meta = _clutter_meta_group_get_meta (priv->effects, name);
+  if (meta == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->effects, meta);
+}
+
+/**
+ * clutter_actor_get_effects:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the #ClutterEffect<!-- -->s applied on @self, if any
+ *
+ * Return value: (transfer container) (element-type ClutterEffect): a list
+ *   of #ClutterEffect<!-- -->s, or %NULL. The elements of the returned
+ *   list are owned by Clutter and they should not be freed. You should
+ *   free the returned list using g_list_free() when done
+ *
+ * Since: 1.4
+ */
+GList *
+clutter_actor_get_effects (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+  const GList *effects;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  priv = self->priv;
+
+  if (priv->effects == NULL)
+    return NULL;
+
+  effects = _clutter_meta_group_peek_metas (priv->effects);
+
+  return g_list_copy ((GList *) effects);
+}
+
+/**
+ * clutter_actor_get_effect:
+ * @self: a #ClutterActor
+ * @name: the name of the effect to retrieve
+ *
+ * Retrieves the #ClutterEffect with the given name in the list
+ * of effects applied to @self
+ *
+ * Return value: (transfer none): a #ClutterEffect for the given
+ *   name, or %NULL. The returned #ClutterEffect is owned by the
+ *   actor and it should not be unreferenced directly
+ *
+ * Since: 1.4
+ */
+ClutterEffect *
+clutter_actor_get_effect (ClutterActor *self,
+                          const gchar  *name)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  if (self->priv->effects == NULL)
+    return NULL;
+
+  return CLUTTER_EFFECT (_clutter_meta_group_get_meta (self->priv->effects, name));
+}
+
+/**
+ * clutter_actor_clear_effects:
+ * @self: a #ClutterActor
+ *
+ * Clears the list of effects applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_clear_effects (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->effects == NULL)
+    return;
+
+  _clutter_meta_group_clear_metas (self->priv->effects);
 }

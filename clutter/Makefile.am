@@ -96,6 +96,7 @@ source_h =					\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-device-manager.h	\
 	$(srcdir)/clutter-drag-action.h		\
+	$(srcdir)/clutter-effect.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -177,6 +178,7 @@ source_c = \
 	$(srcdir)/clutter-container.c		\
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
+	$(srcdir)/clutter-effect.c		\
 	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
@@ -225,14 +227,14 @@ source_h_priv = \
 	$(srcdir)/clutter-actor-meta-private.h	\
 	$(srcdir)/clutter-bezier.h		\
 	$(srcdir)/clutter-debug.h 		\
+	$(srcdir)/clutter-id-pool.h 		\
 	$(srcdir)/clutter-keysyms-table.h	\
 	$(srcdir)/clutter-master-clock.h	\
 	$(srcdir)/clutter-model-private.h	\
 	$(srcdir)/clutter-private.h 		\
-	$(srcdir)/clutter-id-pool.h 		\
+	$(srcdir)/clutter-profile.h		\
 	$(srcdir)/clutter-script-private.h	\
 	$(srcdir)/clutter-timeout-interval.h    \
-	$(srcdir)/clutter-profile.h		\
 	$(NULL)
 
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
