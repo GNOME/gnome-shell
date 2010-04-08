@@ -394,8 +394,7 @@ MessageTray.prototype = {
                                         track_hover: true });
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
-        this._notificationBin = new St.Bin({ reactive: true,
-                                             anchor_gravity: Clutter.Gravity.NORTH });
+        this._notificationBin = new St.Bin();
         this.actor.add(this._notificationBin);
         this._notificationBin.hide();
         this._notificationQueue = [];
@@ -463,9 +462,10 @@ MessageTray.prototype = {
         this.actor.x = primary.x;
         this.actor.y = primary.y + primary.height - 1;
         this.actor.width = primary.width;
+        this._notificationBin.x = 0;
+        this._notificationBin.width = primary.width;
 
         // These work because of their anchor_gravity
-        this._notificationBin.x = primary.width / 2;
         this._summaryBin.x = primary.width;
         this._summaryNotificationBin.x = primary.width;
     },
