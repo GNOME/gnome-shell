@@ -938,7 +938,7 @@ cogl_rotate (float angle, float x, float y, float z)
 }
 
 void
-cogl_multiply_matrix (const CoglMatrix *matrix)
+cogl_transform (const CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
