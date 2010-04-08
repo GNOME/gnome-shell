@@ -121,11 +121,8 @@ WindowClone.prototype = {
                            Lang.bind(this, this._onScroll));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('enter-event',
-                           Lang.bind(this, this._onEnter));
         this.actor.connect('leave-event',
                            Lang.bind(this, this._onLeave));
-        this._havePointer = false;
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { dragActorMaxSize: WINDOW_DND_SIZE,
@@ -179,23 +176,7 @@ WindowClone.prototype = {
         this.disconnectAll();
     },
 
-    _onEnter: function (actor, event) {
-        // If the user drags faster than we can follow, he'll end up
-        // leaving the window temporarily and then re-entering it
-        if (this.inDrag)
-            return;
-
-        this._havePointer = true;
-    },
-
     _onLeave: function (actor, event) {
-        // If the user drags faster than we can follow, he'll end up
-        // leaving the window temporarily and then re-entering it
-        if (this.inDrag)
-            return;
-
-        this._havePointer = false;
-
         if (this._zoomStep)
             this._zoomEnd();
     },
@@ -297,14 +278,6 @@ WindowClone.prototype = {
 
     _onDragEnd : function (draggable, time, snapback) {
         this.inDrag = false;
-
-        // Most likely, the clone is going to move away from the
-        // pointer now. But that won't cause a leave-event, so
-        // do this by hand. Of course, if the window only snaps
-        // back a short distance, this might be wrong, but it's
-        // better to have the label mysteriously missing than
-        // mysteriously present
-        this._havePointer = false;
 
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
