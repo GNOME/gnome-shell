@@ -99,12 +99,7 @@ typedef struct
   gboolean          dirty_gl_viewport;
 
   /* Primitives */
-  floatVec2         path_start;
-  floatVec2         path_pen;
-  GArray           *path_nodes;
-  unsigned int      last_path;
-  floatVec2         path_nodes_min;
-  floatVec2         path_nodes_max;
+  CoglHandle        current_path;
   CoglHandle        stencil_material;
 
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
