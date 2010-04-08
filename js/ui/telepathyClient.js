@@ -12,6 +12,7 @@ const MessageTray = imports.ui.messageTray;
 const Telepathy = imports.misc.telepathy;
 
 let avatarManager;
+let channelDispatcher;
 
 // See Notification.appendMessage
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
@@ -19,11 +20,9 @@ const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
 
 // This is GNOME Shell's implementation of the Telepathy "Client"
-// interface. Specifically, the shell is a Telepathy "Approver", which
-// lets us control the routing of incoming messages, a "Handler",
-// which lets us receive and respond to messages, and an "Observer",
-// which lets us see messages even if they belong to another app (eg,
-// a conversation started from within Empathy).
+// interface. Specifically, the shell is a Telepathy "Observer", which
+// lets us see messages even if they belong to another app (eg,
+// Empathy).
 
 function Client() {
     this._init();
@@ -40,6 +39,10 @@ Client.prototype = {
         this._channels = {};
 
         avatarManager = new AvatarManager();
+
+        channelDispatcher = new Telepathy.ChannelDispatcher(DBus.session,
+                                                            Telepathy.CHANNEL_DISPATCHER_NAME,
+                                                            Telepathy.nameToPath(Telepathy.CHANNEL_DISPATCHER_NAME));
 
         // Acquire existing connections. (Needed to make things work
         // through a restart.)
@@ -69,19 +72,17 @@ Client.prototype = {
                         function(channels, err) {
                             if (!channels)
                                 return;
-                            this._addChannels(connPath, channels);
+                            this._addChannels(account.getPath(), connPath, channels);
                         }));
                 }));
         }
     },
 
     get Interfaces() {
-        return [ Telepathy.CLIENT_APPROVER_NAME,
-                 Telepathy.CLIENT_HANDLER_NAME,
-                 Telepathy.CLIENT_OBSERVER_NAME ];
+        return [ Telepathy.CLIENT_OBSERVER_NAME ];
     },
 
-    get ApproverChannelFilter() {
+    get ObserverChannelFilter() {
         return [
             // We only care about single-user text-based chats
             { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
@@ -98,46 +99,13 @@ Client.prototype = {
         ];
     },
 
-    AddDispatchOperation: function(channels, dispatchOperationPath, properties) {
-        let sender = DBus.getCurrentMessageContext().sender;
-        let op = new Telepathy.ChannelDispatchOperation(DBus.session, sender,
-                                                        dispatchOperationPath);
-        op.ClaimRemote();
-    },
-
-    get HandlerChannelFilter() {
-        // See ApproverChannelFilter
-        return [
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
-        ];
-    },
-
-    HandleChannels: function(account, connPath, channels,
-                             requestsSatisfied, userActionTime,
-                             handlerInfo) {
-        this._addChannels(connPath, channels);
-    },
-
-    get ObserverChannelFilter() {
-        // See ApproverChannelFilter
-        return [
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
-        ];
-    },
-
-    ObserveChannels: function(account, connPath, channels,
+    ObserveChannels: function(accountPath, connPath, channels,
                               dispatchOperation, requestsSatisfied,
                               observerInfo) {
-        this._addChannels(connPath, channels);
+        this._addChannels(accountPath, connPath, channels);
     },
 
-    _addChannels: function(connPath, channelDetailsList) {
+    _addChannels: function(accountPath, connPath, channelDetailsList) {
         for (let i = 0; i < channelDetailsList.length; i++) {
             let [channelPath, props] = channelDetailsList[i];
             if (this._channels[channelPath])
@@ -159,7 +127,7 @@ Client.prototype = {
             let targetHandle = props[Telepathy.CHANNEL_NAME + '.TargetHandle'];
             let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
 
-            let source = new Source(connPath, channelPath,
+            let source = new Source(accountPath, connPath, channelPath,
                                     targetHandle, targetHandleType, targetId);
             this._channels[channelPath] = source;
             source.connect('destroy', Lang.bind(this,
@@ -170,8 +138,6 @@ Client.prototype = {
     }
 };
 DBus.conformExport(Client.prototype, Telepathy.ClientIface);
-DBus.conformExport(Client.prototype, Telepathy.ClientApproverIface);
-DBus.conformExport(Client.prototype, Telepathy.ClientHandlerIface);
 DBus.conformExport(Client.prototype, Telepathy.ClientObserverIface);
 
 
@@ -350,15 +316,17 @@ AvatarManager.prototype = {
 };
 
 
-function Source(connPath, channelPath, targetHandle, targetHandleType, targetId) {
-    this._init(connPath, channelPath, targetHandle, targetHandleType, targetId);
+function Source(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
+    this._init(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(connPath, channelPath, targetHandle, targetHandleType, targetId) {
+    _init: function(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
         MessageTray.Source.prototype._init.call(this, targetId);
+
+        this._accountPath = accountPath;
 
         let connName = Telepathy.pathToName(connPath);
         this._conn = new Telepathy.Connection(DBus.session, connName, connPath);
@@ -366,6 +334,7 @@ Source.prototype = {
         this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
 
         this._targetHandle = targetHandle;
+        this._targetHandleType = targetHandleType;
         this._targetId = targetId;
 
         this.name = this._targetId;
@@ -386,6 +355,28 @@ Source.prototype = {
 
     createIcon: function(size) {
         return avatarManager.createAvatar(this._conn, this._targetHandle, size);
+    },
+
+    clicked: function() {
+        channelDispatcher.EnsureChannelRemote(this._accountPath,
+                                              { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
+                                                'org.freedesktop.Telepathy.Channel.TargetHandle': this._targetHandle,
+                                                'org.freedesktop.Telepathy.Channel.TargetHandleType': this._targetHandleType },
+                                              global.get_current_time(),
+                                              '',
+                                              Lang.bind(this, this._gotChannelRequest));
+
+        MessageTray.Source.prototype.clicked.call(this);
+    },
+
+    _gotChannelRequest: function (chanReqPath, ex) {
+        if (ex) {
+            log ('EnsureChannelRemote failed? ' + ex);
+            return;
+        }
+
+        let chanReq = new Telepathy.ChannelRequest(DBus.session, Telepathy.CHANNEL_DISPATCHER_NAME, chanReqPath);
+        chanReq.ProceedRemote();
     },
 
     _gotPendingMessages: function(msgs, err) {
@@ -411,8 +402,6 @@ Source.prototype = {
             this._notification = new Notification(this._targetId, this);
         this._notification.appendMessage(text);
         this.notify(this._notification);
-
-        this._channelText.AcknowledgePendingMessagesRemote([id]);
     },
 
     respond: function(text) {

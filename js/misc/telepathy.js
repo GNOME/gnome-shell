@@ -276,3 +276,31 @@ const AccountIface = {
     ]
 };
 let Account = makeProxyClass(AccountIface);
+
+const CHANNEL_DISPATCHER_NAME = TELEPATHY + '.ChannelDispatcher';
+const ChannelDispatcherIface = {
+    name: CHANNEL_DISPATCHER_NAME,
+    methods: [
+        { name: 'EnsureChannel',
+          inSignature: 'oa{sv}xs',
+          outSignature: 'o' }
+    ]
+};
+let ChannelDispatcher = makeProxyClass(ChannelDispatcherIface);
+
+const CHANNEL_REQUEST_NAME = TELEPATHY + '.ChannelRequest';
+const ChannelRequestIface = {
+    name: CHANNEL_REQUEST_NAME,
+    methods: [
+        { name: 'Proceed',
+          inSignature: '',
+          outSignature: '' }
+    ],
+    signals: [
+        { name: 'Failed',
+          signature: 'ss' },
+        { name: 'Succeeded',
+          signature: '' }
+    ]
+};
+let ChannelRequest = makeProxyClass(ChannelRequestIface);
