@@ -1170,23 +1170,27 @@ shell_global_get_focus_monitor (ShellGlobal  *global)
 }
 
 /**
- * shell_global_get_modifier_keys:
+ * shell_global_get_pointer:
  * @global: the #ShellGlobal
+ * @x: (out): the X coordinate of the pointer, in global coordinates
+ * @y: (out): the Y coordinate of the pointer, in global coordinates
+ * @mods: (out): the current set of modifier keys that are pressed down
  *
- * Gets the current set of modifier keys that are pressed down;
- * this is a wrapper around gdk_display_get_pointer() that strips
+ * Gets the pointer coordinates and current modifier key state.
+ * This is a wrapper around gdk_display_get_pointer() that strips
  * out any un-declared modifier flags, to make gjs happy; see
  * https://bugzilla.gnome.org/show_bug.cgi?id=597292.
- *
- * Return value: the current modifiers
  */
-GdkModifierType
-shell_global_get_modifier_keys (ShellGlobal *global)
+void
+shell_global_get_pointer (ShellGlobal         *global,
+                          int                 *x,
+                          int                 *y,
+                          ClutterModifierType *mods)
 {
-  GdkModifierType mods;
+  GdkModifierType raw_mods;
 
-  gdk_display_get_pointer (gdk_display_get_default (), NULL, NULL, NULL, &mods);
-  return mods & GDK_MODIFIER_MASK;
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, x, y, &raw_mods);
+  *mods = raw_mods & GDK_MODIFIER_MASK;
 }
 
 /**

@@ -423,7 +423,7 @@ WindowOverlay.prototype = {
     },
 
     show: function() {
-        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [x, y, mask] = global.get_pointer();
         let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
                                                   x, y);
         if (actor == this._windowClone.actor) {
@@ -533,7 +533,7 @@ WindowOverlay.prototype = {
 
     _idleToggleCloseButton: function() {
         this._idleToggleCloseId = 0;
-        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [x, y, mask] = global.get_pointer();
         let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
                                                   x, y);
         if (actor != this._windowClone.actor && actor != this.closeButton) {
@@ -1185,8 +1185,7 @@ Workspace.prototype = {
         if (this._windowIsZooming)
             return true;
 
-        let [child, x, y, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [x, y, mask] = global.get_pointer();
         let wsWidth = this.actor.width * this.scale;
         let wsHeight = this.actor.height * this.scale;
 
@@ -1258,8 +1257,7 @@ Workspace.prototype = {
         }
 
         // setup new handler
-        let [child, x, y, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [x, y, mask] = global.get_pointer();
         this._cursorX = x;
         this._cursorY = y;
 

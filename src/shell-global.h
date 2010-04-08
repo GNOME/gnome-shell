@@ -82,7 +82,10 @@ GSList       *shell_global_get_monitors        (ShellGlobal  *global);
 GdkRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
 GdkRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
-GdkModifierType shell_global_get_modifier_keys (ShellGlobal *global);
+void shell_global_get_pointer (ShellGlobal         *global,
+                               int                 *x,
+                               int                 *y,
+                               ClutterModifierType *mods);
 
 ClutterModifierType shell_get_event_state (ClutterEvent *event);
 
