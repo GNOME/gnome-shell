@@ -1,17 +1,17 @@
 # Galician translation for gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Fran Diéguez <fran.dieguez@mabishu.com>, 2009.
 # Anton Meixome <certima@certima.net>, 2009.
 # Antón Méixome <meixome@certima.net>, 2009.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-28 17:07+0100\n"
-"PO-Revision-Date: 2009-12-28 08:11+0100\n"
-"Last-Translator: Antón Méixome <meixome@certima.net>\n"
-"Language-Team: Galician Proxecto Trasno <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2010-04-09 19:17+0200\n"
+"PO-Revision-Date: 2010-04-09 19:40+0200\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Galician <gnome@g11n.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,116 +25,209 @@ msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "Xestor de xanelas e lanzamento de aplicativos"
+msgstr "Xestor de xanelas e inicio de aplicativos"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:858
+#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:850
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:276
+#: ../js/ui/appDisplay.js:343
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:707 ../js/ui/appIcon.js:425
+#: ../js/ui/appDisplay.js:723
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:711 ../js/ui/appIcon.js:429
+#: ../js/ui/appDisplay.js:727
 msgid "Remove from Favorites"
-msgstr "Eliminar de Favoritos"
+msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:712 ../js/ui/appIcon.js:430
+#: ../js/ui/appDisplay.js:728
 msgid "Add to Favorites"
-msgstr "Engadir a Favoritos"
+msgstr "Engadir aos favoritos"
 
-#: ../js/ui/appDisplay.js:1064
+#: ../js/ui/appDisplay.js:1055
 msgid "Drag here to add favorites"
-msgstr "Arrastra aquí para engadir favoritos"
+msgstr "Arrastre aquí para engadir aos favoritos"
 
-#: ../js/ui/dash.js:240
-msgid "Find..."
-msgstr "Buscar..."
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s foi engadido aos seus favoritos."
 
-#: ../js/ui/dash.js:437
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s foi eliminado dos seus favoritos."
+
+#: ../js/ui/dash.js:189
+msgid "Find"
+msgstr "Buscar"
+
+#: ../js/ui/dash.js:505
 msgid "Searching..."
 msgstr "Buscando..."
+
+#: ../js/ui/dash.js:519
+msgid "No matching results."
+msgstr "Non hai resultados que coincidan."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:878 ../js/ui/placeDisplay.js:519
-msgid "PLACES"
-msgstr "LUGARES"
+#: ../js/ui/dash.js:869 ../js/ui/placeDisplay.js:543
+msgid "PLACES & DEVICES"
+msgstr "LUGARES e DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:885
-msgid "RECENT DOCUMENTS"
-msgstr "DOCUMENTOS RECENTES"
+#: ../js/ui/dash.js:876 ../js/ui/docDisplay.js:489
+msgid "RECENT ITEMS"
+msgstr "ELEMENTOS RECENTES"
+
+#: ../js/ui/lookingGlass.js:362
+msgid "No extensions installed"
+msgstr "Non hai ningunha extensión instalada"
+
+#: ../js/ui/lookingGlass.js:399
+msgid "Enabled"
+msgstr "Activado"
+
+#: ../js/ui/lookingGlass.js:401
+msgid "Disabled"
+msgstr "Desactivado"
+
+#: ../js/ui/lookingGlass.js:403
+msgid "Error"
+msgstr "Erro"
+
+#: ../js/ui/lookingGlass.js:405
+msgid "Out of date"
+msgstr "Desactualizado"
+
+#: ../js/ui/lookingGlass.js:430
+msgid "View Source"
+msgstr "Ver fonte"
+
+#: ../js/ui/lookingGlass.js:436
+msgid "Web Page"
+msgstr "Páxina web"
+
+#: ../js/ui/overview.js:181
+msgid "Undo"
+msgstr "Desfacer"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:227
+#: ../js/ui/panel.js:374
 msgid "Activities"
 msgstr "Actividades"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:440
+#. Translators: This is the time format used in 24-hour mode.
+#: ../js/ui/panel.js:594
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format used for AM/PM.
+#: ../js/ui/panel.js:597
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:108
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Produciuse un fallo ao montar '%s'"
+
+#: ../js/ui/placeDisplay.js:111
+msgid "Retry"
+msgstr "Reintentar"
+
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "Conectar con..."
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:231
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/runDialog.js:351
+#: ../js/ui/runDialog.js:375
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr "Fallou a execución de %s"
+msgstr "Produciuse un fallo na execución de %s"
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../js/ui/statusMenu.js:105
+msgid "Available"
+msgstr "Dispoñíbel"
 
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Aplicativos"
+#: ../js/ui/statusMenu.js:110
+msgid "Busy"
+msgstr "Ocupado"
 
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Documentos recentes"
+#: ../js/ui/statusMenu.js:115
+msgid "Invisible"
+msgstr "Invisíbel"
 
-#: ../src/shell-global.c:890
+#: ../js/ui/statusMenu.js:124
+msgid "Account Information..."
+msgstr "Información da conta..."
+
+#: ../js/ui/statusMenu.js:129
+msgid "System Preferences..."
+msgstr "Preferencias do sistema..."
+
+#: ../js/ui/statusMenu.js:138
+msgid "Lock Screen"
+msgstr "Bloquear pantalla"
+
+#: ../js/ui/statusMenu.js:143
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+#: ../js/ui/statusMenu.js:149
+msgid "Log Out..."
+msgstr "Saír da sesión..."
+
+#: ../js/ui/statusMenu.js:154
+msgid "Shut Down..."
+msgstr "Apagar..."
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s rematou de iniarse"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' está preparado"
+
+#: ../src/shell-global.c:967
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:893
+#: ../src/shell-global.c:971
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:896
+#: ../src/shell-global.c:976
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:981
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:902
+#: ../src/shell-global.c:986
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -165,6 +258,21 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Sidebar"
+#~ msgstr "Barra lateral"
+
+#~ msgid "%H:%M"
+#~ msgstr "%M:%H"
+
+#~ msgid "Applications"
+#~ msgstr "Aplicativos"
+
+#~ msgid "Recent Documents"
+#~ msgstr "Documentos recentes"
+
+#~ msgid "PLACES"
+#~ msgstr "LUGARES"
+
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "RESULTADOS DA BUSCA"
 
@@ -181,27 +289,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Can't logout: %s"
 #~ msgstr "Non foi posíbel pechar a sesión: %s"
-
-#~ msgid "Account Information..."
-#~ msgstr "Información da conta..."
-
-#~ msgid "Sidebar"
-#~ msgstr "Barra lateral"
-
-#~ msgid "System Preferences..."
-#~ msgstr "Preferencias do sistema..."
-
-#~ msgid "Lock Screen"
-#~ msgstr "Bloquear pantalla"
-
-#~ msgid "Switch User"
-#~ msgstr "Cambiar de usuario"
-
-#~ msgid "Log Out..."
-#~ msgstr "Saír da sesión..."
-
-#~ msgid "Shut Down..."
-#~ msgstr "Apagar..."
 
 #~ msgid "Browse"
 #~ msgstr "Explorar"
