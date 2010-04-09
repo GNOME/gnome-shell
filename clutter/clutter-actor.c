@@ -2515,7 +2515,18 @@ clutter_actor_paint (ClutterActor *self)
       clip_set = TRUE;
     }
 
-  if (G_UNLIKELY (context->pick_mode != CLUTTER_PICK_NONE))
+  if (context->pick_mode == CLUTTER_PICK_NONE)
+    {
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
+
+      clutter_actor_shader_pre_paint (self, FALSE);
+
+      self->priv->propagated_one_redraw = FALSE;
+      g_signal_emit (self, actor_signals[PAINT], 0);
+
+      clutter_actor_shader_post_paint (self);
+    }
+  else
     {
       ClutterColor col = { 0, };
 
@@ -2528,17 +2539,6 @@ clutter_actor_paint (ClutterActor *self)
        * picking is enabled.
        */
       g_signal_emit (self, actor_signals[PICK], 0, &col);
-    }
-  else
-    {
-      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
-
-      clutter_actor_shader_pre_paint (self, FALSE);
-
-      self->priv->propagated_one_redraw = FALSE;
-      g_signal_emit (self, actor_signals[PAINT], 0);
-
-      clutter_actor_shader_post_paint (self);
     }
 
   if (clip_set)
