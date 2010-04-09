@@ -253,6 +253,7 @@ TAGS
 /tests/conform/test-animator-properties
 /tests/conform/test-animator-multi-properties
 /tests/conform/test-cogl-texture-rectangle
+/tests/conform/test-cogl-path
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
