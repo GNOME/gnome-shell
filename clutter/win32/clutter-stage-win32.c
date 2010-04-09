@@ -222,7 +222,7 @@ _clutter_stage_win32_update_cursor (ClutterStageWin32 *stage_win32)
   HCURSOR cursor;
 
   if (stage_win32->is_cursor_visible)
-    cursor = (HCURSOR) GetClassLongPtrW (stage_win32->hwnd, GCL_HCURSOR);
+    cursor = (HCURSOR) GetClassLongPtrW (stage_win32->hwnd, GCLP_HCURSOR);
   else
     {
       ClutterBackend *backend = clutter_get_default_backend ();
