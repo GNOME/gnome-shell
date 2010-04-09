@@ -59,6 +59,7 @@
 #include "clutter-color.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
+#include "clutter-desaturate-effect.h"
 #include "clutter-device-manager.h"
 #include "clutter-drag-action.h"
 #include "clutter-effect.h"

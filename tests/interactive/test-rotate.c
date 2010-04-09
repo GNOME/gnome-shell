@@ -35,7 +35,7 @@ test_rotate_main (int argc, char *argv[])
 
   clutter_actor_set_position (hand, 240, 140);
   clutter_actor_show (hand);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
+  clutter_actor_add_effect (hand, clutter_desaturate_effect_new (0.75));
 
   label = clutter_text_new_with_text ("Mono 16",
                                       "The Wonder\n"
