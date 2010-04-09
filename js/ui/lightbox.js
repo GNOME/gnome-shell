@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 
 /**
@@ -60,8 +61,13 @@ Lightbox.prototype = {
     },
 
     _allocationChanged : function(container, box, flags) {
-        this.actor.width = this._container.width;
-        this.actor.height = this._container.height;
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            this.actor.width = this.width;
+            this.actor.height = this.height;
+            return false;
+        }));
+        this.width = this._container.width;
+        this.height = this._container.height;
     },
 
     _actorAdded : function(container, newChild) {
