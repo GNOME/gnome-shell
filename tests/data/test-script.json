@@ -55,7 +55,7 @@
         "source" : "red-hand",
         "x" : 250,
         "y" : 150,
-        "opacity" : 100,
+        "opacity" : 100
       },
       {
         "id" : "label",
