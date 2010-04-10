@@ -4494,7 +4494,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   clutter_marshal_VOID__BOXED,
                   G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_COLOR);
+                  CLUTTER_TYPE_COLOR | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * ClutterActor::allocation-changed:
