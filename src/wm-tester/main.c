@@ -120,11 +120,11 @@ evil_timeout (gpointer data)
       
       w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-      gtk_widget_set_uposition (w,
-                                g_random_int_range (0,
-                                                    gdk_screen_width ()),
-                                g_random_int_range (0,
-                                                    gdk_screen_height ()));
+      gtk_window_move (GTK_WINDOW (w)
+                       g_random_int_range (0,
+                                           gdk_screen_width ()),
+                       g_random_int_range (0,
+                                           gdk_screen_height ()));
 
       parent = NULL;
       
