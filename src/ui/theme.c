@@ -1360,9 +1360,13 @@ meta_color_spec_render (MetaColorSpec *spec,
                         GtkWidget     *widget,
                         GdkColor      *color)
 {
+  GtkStyle *style;
+
+  style = gtk_widget_get_style (widget);
+
   g_return_if_fail (spec != NULL);
   g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (widget->style != NULL);
+  g_return_if_fail (style != NULL);
 
   switch (spec->type)
     {
@@ -1374,28 +1378,28 @@ meta_color_spec_render (MetaColorSpec *spec,
       switch (spec->data.gtk.component)
         {
         case META_GTK_COLOR_BG:
-          *color = widget->style->bg[spec->data.gtk.state];
+          *color = style->bg[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_FG:
-          *color = widget->style->fg[spec->data.gtk.state];
+          *color = style->fg[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_BASE:
-          *color = widget->style->base[spec->data.gtk.state];
+          *color = style->base[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_TEXT:
-          *color = widget->style->text[spec->data.gtk.state];
+          *color = style->text[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_LIGHT:
-          *color = widget->style->light[spec->data.gtk.state];
+          *color = style->light[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_DARK:
-          *color = widget->style->dark[spec->data.gtk.state];
+          *color = style->dark[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_MID:
-          *color = widget->style->mid[spec->data.gtk.state];
+          *color = style->mid[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_TEXT_AA:
-          *color = widget->style->text_aa[spec->data.gtk.state];
+          *color = style->text_aa[spec->data.gtk.state];
           break;
         case META_GTK_COLOR_LAST:
           g_assert_not_reached ();
@@ -3907,7 +3911,7 @@ meta_draw_op_draw (const MetaDrawOp    *op,
                    const MetaDrawInfo  *info,
                    MetaRectangle        logical_region)
 {
-  meta_draw_op_draw_with_style (op, widget->style, widget,
+  meta_draw_op_draw_with_style (op, gtk_widget_get_style (widget), widget,
                                 drawable, clip, info, logical_region);
 }
 
@@ -4037,7 +4041,7 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                          MetaRectangle         rect)
 
 {
-  meta_draw_op_list_draw_with_style (op_list, widget->style, widget,
+  meta_draw_op_list_draw_with_style (op_list, gtk_widget_get_style (widget), widget,
                                      drawable, clip, info, rect);
 }
 
@@ -4609,7 +4613,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                        GdkPixbuf               *mini_icon,
                        GdkPixbuf               *icon)
 {
-  meta_frame_style_draw_with_style (style, widget->style, widget,
+  meta_frame_style_draw_with_style (style, gtk_widget_get_style (widget), widget,
                                     drawable, x_offset, y_offset,
                                     clip, fgeom, client_width, client_height,
                                     title_layout, text_height,
@@ -5234,7 +5238,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        GdkPixbuf              *mini_icon,
                        GdkPixbuf              *icon)
 {
-  meta_theme_draw_frame_with_style (theme, widget->style, widget,
+  meta_theme_draw_frame_with_style (theme, gtk_widget_get_style (widget), widget,
                                     drawable, clip, x_offset, y_offset, type,flags,
                                     client_width, client_height,
                                     title_layout, text_height,
@@ -5628,9 +5632,9 @@ meta_gtk_widget_get_font_desc (GtkWidget *widget,
 {
   PangoFontDescription *font_desc;
   
-  g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), NULL);
+  g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
 
-  font_desc = pango_font_description_copy (widget->style->font_desc);
+  font_desc = pango_font_description_copy (gtk_widget_get_style (widget)->font_desc);
 
   if (override)
     pango_font_description_merge (font_desc, override, TRUE);

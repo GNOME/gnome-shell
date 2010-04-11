@@ -77,7 +77,9 @@ outline_window_expose (GtkWidget      *widget,
                        gpointer        data)
 {
   MetaTabPopup *popup;
-  TabEntry *te;  
+  TabEntry *te;
+  GtkStyle *style;
+  GdkWindow *window;
   
   popup = data;
 
@@ -85,16 +87,18 @@ outline_window_expose (GtkWidget      *widget,
     return FALSE;
 
   te = popup->current_selected_entry;
+  window = gtk_widget_get_window (widget);
+  style = gtk_widget_get_style (widget);
   
-  gdk_draw_rectangle (widget->window,
-                      widget->style->white_gc,
+  gdk_draw_rectangle (window,
+                      style->white_gc,
                       FALSE,
                       0, 0,
                       te->rect.width - 1,
                       te->rect.height - 1);
 
-  gdk_draw_rectangle (widget->window,
-                      widget->style->white_gc,
+  gdk_draw_rectangle (window,
+                      style->white_gc,
                       FALSE,
                       te->inner_rect.x - 1, te->inner_rect.y - 1,
                       te->inner_rect.width + 1,
@@ -439,7 +443,7 @@ meta_ui_tab_popup_set_showing (MetaTabPopup *popup,
     }
   else
     {
-      if (GTK_WIDGET_VISIBLE (popup->window))
+      if (gtk_widget_get_visible (popup->window))
         {
           meta_verbose ("Hiding tab popup window\n");
           gtk_widget_hide (popup->window);
@@ -455,6 +459,7 @@ display_entry (MetaTabPopup *popup,
   GdkRectangle rect;
   GdkRegion *region;
   GdkRegion *inner_region;
+  GdkWindow *window;
 
   
   if (popup->current_selected_entry)
@@ -474,27 +479,29 @@ display_entry (MetaTabPopup *popup,
 
   if (popup->outline)
     {
+      window = gtk_widget_get_window (popup->outline_window);
+
       /* Do stuff behind gtk's back */
-      gdk_window_hide (popup->outline_window->window);
+      gdk_window_hide (window);
       meta_core_increment_event_serial (gdk_display);
   
       rect = te->rect;
       rect.x = 0;
       rect.y = 0;
 
-      gdk_window_move_resize (popup->outline_window->window,
+      gdk_window_move_resize (window,
                               te->rect.x, te->rect.y,
                               te->rect.width, te->rect.height);
   
-      gdk_window_set_background (popup->outline_window->window,
-                                 &popup->outline_window->style->black);
+      gdk_window_set_background (window,
+                                 &gtk_widget_get_style (popup->outline_window)->black);
   
       region = gdk_region_rectangle (&rect);
       inner_region = gdk_region_rectangle (&te->inner_rect);
       gdk_region_subtract (region, inner_region);
       gdk_region_destroy (inner_region);
   
-      gdk_window_shape_combine_region (popup->outline_window->window,
+      gdk_window_shape_combine_region (window,
                                        region,
                                        0, 0);
 
@@ -505,8 +512,8 @@ display_entry (MetaTabPopup *popup,
        * we manually set the window as mapped and then manually map it
        * with gdk functions.
        */
-      GTK_WIDGET_SET_FLAGS (popup->outline_window, GTK_MAPPED);
-      gdk_window_show_unraised (popup->outline_window->window);
+      gtk_widget_set_mapped (popup->outline_window, TRUE);
+      gdk_window_show_unraised (window);
     }
 
   /* Must be before we handle an expose for the outline window */
@@ -691,32 +698,46 @@ meta_select_image_expose_event (GtkWidget      *widget,
 {
   if (META_SELECT_IMAGE (widget)->selected)
     {
-      int x, y, w, h;
+      GtkAllocation allocation;
       GtkMisc *misc;
+      GtkRequisition requisition;
+      GtkStyle *style;
+      GtkStateType state;
+      GdkWindow *window;
+      int x, y, w, h;
+      gint xpad, ypad;
+      gfloat xalign, yalign;
 
       misc = GTK_MISC (widget);
+
+      gtk_widget_get_allocation (widget, &allocation);
+      gtk_widget_get_requisition (widget, &requisition);
+      gtk_misc_get_alignment (misc, &xalign, &yalign);
+      gtk_misc_get_padding (misc, &xpad, &ypad);
       
-      x = (widget->allocation.x * (1.0 - misc->xalign) +
-           (widget->allocation.x + widget->allocation.width
-            - (widget->requisition.width - misc->xpad * 2)) *
-           misc->xalign) + 0.5;
-      y = (widget->allocation.y * (1.0 - misc->yalign) +
-           (widget->allocation.y + widget->allocation.height
-            - (widget->requisition.height - misc->ypad * 2)) *
-           misc->yalign) + 0.5;
+      x = (allocation.x * (1.0 - xalign) +
+           (allocation.x + allocation.width
+            - (requisition.width - xpad * 2)) * xalign) + 0.5;
+      y = (allocation.y * (1.0 - yalign) +
+           (allocation.y + allocation.height
+            - (requisition.height - ypad * 2)) * yalign) + 0.5;
 
       x -= INSIDE_SELECT_RECT + 1;
       y -= INSIDE_SELECT_RECT + 1;      
       
-      w = widget->requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
-      h = widget->requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
+      w = requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
+      h = requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
 
-      gdk_draw_rectangle (widget->window,
-                          widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+      window = gtk_widget_get_window (widget);
+      style = gtk_widget_get_style (widget);
+      state = gtk_widget_get_state (widget);
+
+      gdk_draw_rectangle (window,
+                          style->fg_gc[state],
                           FALSE,
                           x, y, w, h);
-      gdk_draw_rectangle (widget->window,
-                          widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+      gdk_draw_rectangle (window,
+                          style->fg_gc[state],
                           FALSE,
                           x - 1, y - 1, w + 2, h + 2);
       
@@ -879,6 +900,9 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
 {
   MetaWorkspace *workspace;
   WnckWindowDisplayInfo *windows;
+  GtkAllocation allocation;
+  GtkStyle *style;
+  GdkWindow *window;
   int i, n_windows;
   GList *tmp, *list;
 
@@ -917,12 +941,15 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
 
   g_list_free (list);
 
+  window = gtk_widget_get_window (widget);
+  gtk_widget_get_allocation (widget, &allocation);
+
   wnck_draw_workspace (widget,
-                       widget->window,
+                       window,
                        SELECT_OUTLINE_WIDTH,
                        SELECT_OUTLINE_WIDTH,
-                       widget->allocation.width - SELECT_OUTLINE_WIDTH * 2,
-                       widget->allocation.height - SELECT_OUTLINE_WIDTH * 2,
+                       allocation.width - SELECT_OUTLINE_WIDTH * 2,
+                       allocation.height - SELECT_OUTLINE_WIDTH * 2,
                        workspace->screen->rect.width,
                        workspace->screen->rect.height,
                        NULL,
@@ -934,16 +961,18 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   
   if (META_SELECT_WORKSPACE (widget)->selected)
     {
+      style = gtk_widget_get_style (widget);
       i = SELECT_OUTLINE_WIDTH - 1;
+
       while (i >= 0)
         {
-          gdk_draw_rectangle (widget->window,
-                              widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+          gdk_draw_rectangle (window,
+                              style->fg_gc[gtk_widget_get_state (widget)],
                               FALSE,
                               i, 
                               i,
-                              widget->allocation.width - i * 2 - 1,
-                              widget->allocation.height - i * 2 - 1);
+                              allocation.width - i * 2 - 1,
+                              allocation.height - i * 2 - 1);
 
           --i;
         }

@@ -267,11 +267,16 @@ expose_callback (GtkWidget *widget,
                  gpointer data)
 {
   RenderGradientFunc func = data;
+  GtkAllocation allocation;
+  GtkStyle *style;
 
-  (* func) (widget->window,
-            widget->style->fg_gc[widget->state],
-            widget->allocation.width,
-            widget->allocation.height);
+  style = gtk_widget_get_style (widget);
+  gtk_widget_get_allocation (widget, &allocation);
+
+  (* func) (gtk_widget_get_window (widget),
+            style->fg_gc[gtk_widget_get_state (widget)],
+            allocation.width,
+            allocation.height);
 
   return TRUE;
 }

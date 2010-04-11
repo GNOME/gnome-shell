@@ -379,7 +379,7 @@ meta_image_window_new (Display *xdisplay,
   gtk_window_set_screen (GTK_WINDOW (iw->window), gscreen);
  
   gtk_widget_realize (iw->window);
-  iw->pixmap = gdk_pixmap_new (iw->window->window,
+  iw->pixmap = gdk_pixmap_new (gtk_widget_get_window (iw->window),
                                max_width, max_height,
                                -1);
   
@@ -417,13 +417,15 @@ meta_image_window_set (MetaImageWindow *iw,
                        int              x,
                        int              y)
 {
+  GdkWindow *window;
+
   /* We use a back pixmap to avoid having to handle exposes, because
    * it's really too slow for large clients being minimized, etc.
    * and this way flicker is genuinely zero.
    */
 
   gdk_draw_pixbuf (iw->pixmap,
-                   iw->window->style->black_gc,
+                   gtk_widget_get_style (iw->window)->black_gc,
 		   pixbuf,
                    0, 0,
                    0, 0,
@@ -432,16 +434,18 @@ meta_image_window_set (MetaImageWindow *iw,
                    GDK_RGB_DITHER_NORMAL,
                    0, 0);
 
-  gdk_window_set_back_pixmap (iw->window->window,
+  window = gtk_widget_get_window (iw->window);
+
+  gdk_window_set_back_pixmap (window,
                               iw->pixmap,
                               FALSE);
   
-  gdk_window_move_resize (iw->window->window,
+  gdk_window_move_resize (window,
                           x, y,
                           gdk_pixbuf_get_width (pixbuf),
                           gdk_pixbuf_get_height (pixbuf));
 
-  gdk_window_clear (iw->window->window);
+  gdk_window_clear (window);
 }
 
 static GdkColormap*

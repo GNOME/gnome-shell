@@ -62,19 +62,22 @@ static void
 on_realize_set_struts (GtkWindow *window,
                        gpointer   data)
 {
+  GtkWidget *widget;
   int left;
   int right;
   int top;
   int bottom;
 
-  g_return_if_fail (GTK_WIDGET_REALIZED (window));
+  widget = GTK_WIDGET (window);
+
+  g_return_if_fail (gtk_widget_get_realized (widget));
 
   left = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (window), "meta-strut-left"));
   right = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (window), "meta-strut-right"));
   top = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (window), "meta-strut-top"));
   bottom = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (window), "meta-strut-bottom"));
   
-  set_gdk_window_struts (GTK_WIDGET (window)->window,
+  set_gdk_window_struts (gtk_widget_get_window (widget),
                          left, right, top, bottom);
 }
 
@@ -85,6 +88,10 @@ set_gtk_window_struts (GtkWidget  *window,
                        int         top,
                        int         bottom)
 {
+  GtkWidget *widget;
+
+  widget = GTK_WIDGET (window);
+
   g_object_set_data (G_OBJECT (window), "meta-strut-left",
                      GINT_TO_POINTER (left));
   g_object_set_data (G_OBJECT (window), "meta-strut-right",
@@ -93,18 +100,18 @@ set_gtk_window_struts (GtkWidget  *window,
                      GINT_TO_POINTER (top));
   g_object_set_data (G_OBJECT (window), "meta-strut-bottom",
                      GINT_TO_POINTER (bottom));
-  
+
   g_signal_handlers_disconnect_by_func (G_OBJECT (window),
                                         on_realize_set_struts,
                                         NULL);
-                                
+
   g_signal_connect_after (G_OBJECT (window),
                           "realize",
                           G_CALLBACK (on_realize_set_struts),
                           NULL);
 
-  if (GTK_WIDGET_REALIZED (window))
-    set_gdk_window_struts (GTK_WIDGET (window)->window,
+  if (gtk_widget_get_realized (widget))
+    set_gdk_window_struts (gtk_widget_get_window (widget),
                            left, right, top, bottom);
 }
 
@@ -129,15 +136,18 @@ static void
 on_realize_set_type (GtkWindow *window,
                      gpointer   data)
 {
+  GtkWidget *widget;
   const char *type;
 
-  g_return_if_fail (GTK_WIDGET_REALIZED (window));
+  widget =  GTK_WIDGET (window);
+
+  g_return_if_fail (gtk_widget_get_realized (widget));
 
   type = g_object_get_data (G_OBJECT (window), "meta-window-type");
 
   g_return_if_fail (type != NULL);
   
-  set_gdk_window_type (GTK_WIDGET (window)->window,
+  set_gdk_window_type (gtk_widget_get_window (widget),
                        type);
 }
 
@@ -145,6 +155,10 @@ static void
 set_gtk_window_type (GtkWindow  *window,
                      const char *type)
 {
+  GtkWidget *widget;
+
+  widget = GTK_WIDGET (window);
+
   g_object_set_data (G_OBJECT (window), "meta-window-type", (char*) type);
 
   g_signal_handlers_disconnect_by_func (G_OBJECT (window),
@@ -156,8 +170,8 @@ set_gtk_window_type (GtkWindow  *window,
                           G_CALLBACK (on_realize_set_type),
                           NULL);
 
-  if (GTK_WIDGET_REALIZED (window))
-    set_gdk_window_type (GTK_WIDGET (window)->window,
+  if (gtk_widget_get_realized (widget))
+    set_gdk_window_type (gtk_widget_get_window (widget),
                          type);
 }
 
@@ -171,14 +185,22 @@ static void
 on_realize_set_border_only (GtkWindow *window,
                             gpointer   data)
 {
-  g_return_if_fail (GTK_WIDGET_REALIZED (window));
+  GtkWidget *widget;
+
+  widget = GTK_WIDGET (window);
+
+  g_return_if_fail (gtk_widget_get_realized (widget));
   
-  set_gdk_window_border_only (GTK_WIDGET (window)->window);
+  set_gdk_window_border_only (gtk_widget_get_window (widget));
 }
 
 static void
 set_gtk_window_border_only (GtkWindow  *window)
 {
+  GtkWidget *widget;
+
+  widget = GTK_WIDGET (window);
+
   g_signal_handlers_disconnect_by_func (G_OBJECT (window),
                                         on_realize_set_border_only,
                                         NULL);
@@ -188,8 +210,8 @@ set_gtk_window_border_only (GtkWindow  *window)
                           G_CALLBACK (on_realize_set_border_only),
                           NULL);
 
-  if (GTK_WIDGET_REALIZED (window))
-    set_gdk_window_border_only (GTK_WIDGET (window)->window);
+  if (gtk_widget_get_realized (widget))
+    set_gdk_window_border_only (gtk_widget_get_window (widget));
 }
 
 int

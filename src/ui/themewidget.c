@@ -80,7 +80,7 @@ meta_area_class_init (MetaAreaClass *class)
 static void
 meta_area_init (MetaArea *area)
 {
-  GTK_WIDGET_SET_FLAGS (area, GTK_NO_WINDOW);
+  gtk_widget_set_has_window (GTK_WIDGET (area), FALSE);
 }
 
 GtkWidget*
@@ -111,28 +111,34 @@ meta_area_expose (GtkWidget      *widget,
                   GdkEventExpose *event)
 {
   MetaArea *area;
+  GtkAllocation allocation;
   GtkMisc *misc;
+  GtkRequisition requisition;
+  gfloat xalign, yalign;
   gint x, y;
-  gfloat xalign;
+  gint xpad, ypad;
 
   g_return_val_if_fail (META_IS_AREA (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
       area = META_AREA (widget);
       misc = GTK_MISC (widget);
 
-      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
-	xalign = misc->xalign;
-      else
-	xalign = 1.0 - misc->xalign;
+      gtk_widget_get_allocation (widget, &allocation);
+      gtk_widget_get_requisition (widget, &requisition);
+      gtk_misc_get_alignment (misc, &xalign, &yalign);
+      gtk_misc_get_padding (misc, &xpad, &ypad);
+
+      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+        xalign = 1.0 - xalign;
   
-      x = floor (widget->allocation.x + misc->xpad
-		 + ((widget->allocation.width - widget->requisition.width) * xalign)
+      x = floor (allocation.x + xpad
+		 + ((allocation.width - requisition.width) * xalign)
 		 + 0.5);
-      y = floor (widget->allocation.y + misc->ypad 
-		 + ((widget->allocation.height - widget->requisition.height) * misc->yalign)
+      y = floor (allocation.y + ypad
+		 + ((allocation.height - requisition.height) * yalign)
 		 + 0.5);
       
       if (area->expose_func)

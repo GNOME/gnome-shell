@@ -262,52 +262,61 @@ meta_accel_label_expose_event (GtkWidget      *widget,
   GtkMisc *misc = GTK_MISC (accel_label);
   PangoLayout *layout;
 
-  if (GTK_WIDGET_DRAWABLE (accel_label))
+  if (gtk_widget_is_drawable (GTK_WIDGET (accel_label)))
     {
+      GtkAllocation allocation;
+      GtkRequisition requisition;
       int ac_width;
 
+      gtk_widget_get_allocation (widget, &allocation);
+      gtk_widget_get_requisition (widget, &requisition);
       ac_width = meta_accel_label_get_accel_width (accel_label);
 
-      if (widget->allocation.width >= widget->requisition.width + ac_width)
+      if (allocation.width >= requisition.width + ac_width)
 	{
           GtkTextDirection direction = gtk_widget_get_direction (widget);
-	  gint x;
-	  gint y;
+          gfloat xalign, yalign;
+          gint x, y;
+          gint xpad, ypad;
+
+          gtk_misc_get_padding (misc, &xpad, &ypad);
+          gtk_misc_get_alignment (misc, &xalign, &yalign);
 
           if (direction == GTK_TEXT_DIR_RTL)
             {
-              widget->allocation.x += ac_width;
+              allocation.x += ac_width;
             }
-	  widget->allocation.width -= ac_width;
+          allocation.width -= ac_width;
+          gtk_widget_set_allocation (widget, &allocation);
 
 	  if (GTK_WIDGET_CLASS (parent_class)->expose_event)
 	    GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 
           if (direction == GTK_TEXT_DIR_RTL)
             {
-              widget->allocation.x -= ac_width;
+              allocation.x -= ac_width;
             }
-          widget->allocation.width += ac_width;
+          allocation.width += ac_width;
+          gtk_widget_set_allocation (widget, &allocation);
 
           if (direction == GTK_TEXT_DIR_RTL)
             {
-              x = widget->allocation.x + misc->xpad;
+              x = allocation.x + xpad;
             }
           else
             {
-              x = widget->allocation.x + widget->allocation.width - misc->xpad - ac_width;
+              x = allocation.x + allocation.width - xpad - ac_width;
             }
 
-	  y = (widget->allocation.y * (1.0 - misc->yalign) +
-	       (widget->allocation.y + widget->allocation.height -
-		(widget->requisition.height - misc->ypad * 2)) *
-	       misc->yalign) + 1.5;
+	  y = (allocation.y * (1.0 - yalign) +
+	       (allocation.y + allocation.height -
+		(requisition.height - ypad * 2)) * yalign) + 1.5;
 
 	  layout = gtk_widget_create_pango_layout (widget, accel_label->accel_string);
 
-          gtk_paint_layout (widget->style,
-                            widget->window,
-                            GTK_WIDGET_STATE (widget),
+          gtk_paint_layout (gtk_widget_get_style (widget),
+                            gtk_widget_get_window (widget),
+                            gtk_widget_get_state (widget),
 			    FALSE,
                             &event->area,
                             widget,

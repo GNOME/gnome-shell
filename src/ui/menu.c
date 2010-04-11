@@ -386,6 +386,7 @@ meta_window_menu_new   (MetaFrames         *frames,
                   Display *display;
                   Window xroot;
                   GdkScreen *screen;
+                  GdkWindow *window;
                   GtkWidget *submenu;
                   int j;
 
@@ -398,9 +399,10 @@ meta_window_menu_new   (MetaFrames         *frames,
                   meta_verbose ("Creating %d-workspace menu current space %lu\n",
                       n_workspaces, active_workspace);
 
-                  display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
+                  window = gtk_widget_get_window (GTK_WIDGET (frames));
+                  display = gdk_x11_drawable_get_xdisplay (window);
 
-                  screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
+                  screen = gdk_drawable_get_screen (window);
                   xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
 
                   submenu = gtk_menu_new ();
