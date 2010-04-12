@@ -485,7 +485,7 @@ function _queueBeforeRedraw(workId) {
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function () {
             _runBeforeRedrawQueue();
             return false;
-        }, null);
+        });
     }
 }
 
