@@ -3314,6 +3314,50 @@ clutter_actor_finalize (GObject *object)
   G_OBJECT_CLASS (clutter_actor_parent_class)->finalize (object);
 }
 
+
+/**
+ * clutter_actor_get_accessible:
+ * @actor: a #ClutterActor
+ *
+ * Returns the accessible object that describes the actor to an
+ * assistive technology.
+ *
+ * If no class-specific #AtkObject implementation is available for the
+ * actor instance in question, it will inherit an #AtkObject
+ * implementation from the first ancestor class for which such an
+ * implementation is defined.
+ *
+ * The documentation of the <ulink
+ * url="http://developer.gnome.org/doc/API/2.0/atk/index.html">ATK</ulink>
+ * library contains more information about accessible objects and
+ * their uses.
+ *
+ * Returns: (transfer none): the #AtkObject associated with @actor
+ */
+AtkObject*
+clutter_actor_get_accessible (ClutterActor *actor)
+{
+  ClutterActorClass *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+
+  klass = CLUTTER_ACTOR_GET_CLASS (actor);
+
+  g_return_val_if_fail (klass->get_accessible != NULL, NULL);
+
+  return klass->get_accessible (actor);
+}
+
+static AtkObject*
+clutter_actor_real_get_accessible (ClutterActor *actor)
+{
+  AtkObject* accessible;
+
+  accessible = atk_gobject_accessible_for_object (G_OBJECT (actor));
+
+  return accessible;
+}
+
 static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
@@ -4685,6 +4729,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->queue_redraw = clutter_actor_real_queue_redraw;
   klass->queue_relayout = clutter_actor_real_queue_relayout;
   klass->apply_transform = clutter_actor_real_apply_transform;
+  klass->get_accessible = clutter_actor_real_get_accessible;
 }
 
 static void

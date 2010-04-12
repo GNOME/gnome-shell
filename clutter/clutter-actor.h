@@ -33,6 +33,7 @@
 
 #include <glib-object.h>
 #include <pango/pango.h>
+#include <atk/atk.h>
 
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-types.h>
@@ -208,6 +209,8 @@ struct _ClutterActor
  * @apply_transform: virtual function, used when applying the transformations
  *   to an actor before painting it or when transforming coordinates or
  *   the allocation; it must chain up to the parent's implementation
+ * @get_accessible: virtual function, returns the accessible object that
+ *   describes the actor to an assistive technology.
  * @parent_set: signal class handler for the #ClutterActor::parent-set
  * @destroy: signal class handler for #ClutterActor::destroy
  * @pick: virtual function, used to draw an outline of the actor with
@@ -273,6 +276,9 @@ struct _ClutterActorClass
   void (* apply_transform)      (ClutterActor           *actor,
                                  CoglMatrix             *matrix);
 
+  /* accessibility support */
+  AtkObject* (*get_accessible)  (ClutterActor *actor);
+
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
                                      ClutterEvent         *event);
@@ -301,7 +307,7 @@ struct _ClutterActorClass
 
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[31];
+  gpointer _padding_dummy[30];
 };
 
 GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
@@ -563,6 +569,8 @@ void                 clutter_actor_push_internal      (ClutterActor         *sel
 void                 clutter_actor_pop_internal       (ClutterActor         *self);
 
 gboolean             clutter_actor_has_allocation     (ClutterActor         *self);
+
+AtkObject*           clutter_actor_get_accessible     (ClutterActor *actor);
 
 G_END_DECLS
 
