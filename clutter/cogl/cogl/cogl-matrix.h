@@ -72,8 +72,6 @@ typedef struct _CoglMatrix      CoglMatrix;
  */
 struct _CoglMatrix
 {
-  /*< private >*/
-
   /* column 0 */
   float xx;
   float yx;
@@ -97,6 +95,8 @@ struct _CoglMatrix
   float yw;
   float zw;
   float ww;
+
+  /*< private >*/
 
   /* Note: we may want to extend this later with private flags
    * and a cache of the inverse transform matrix. */
