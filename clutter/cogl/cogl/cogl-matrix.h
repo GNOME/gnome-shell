@@ -72,38 +72,38 @@ typedef struct _CoglMatrix      CoglMatrix;
  */
 struct _CoglMatrix
 {
-    /*< private >*/
+  /*< private >*/
 
-    /* column 0 */
-    float xx;
-    float yx;
-    float zx;
-    float wx;
+  /* column 0 */
+  float xx;
+  float yx;
+  float zx;
+  float wx;
 
-    /* column 1 */
-    float xy;
-    float yy;
-    float zy;
-    float wy;
+  /* column 1 */
+  float xy;
+  float yy;
+  float zy;
+  float wy;
 
-    /* column 2 */
-    float xz;
-    float yz;
-    float zz;
-    float wz;
+  /* column 2 */
+  float xz;
+  float yz;
+  float zz;
+  float wz;
 
-    /* column 3 */
-    float xw;
-    float yw;
-    float zw;
-    float ww;
+  /* column 3 */
+  float xw;
+  float yw;
+  float zw;
+  float ww;
 
-    /* Note: we may want to extend this later with private flags
-     * and a cache of the inverse transform matrix. */
-    float   inv[16];
-    unsigned long  type;
-    unsigned long  flags;
-    unsigned long  _padding3;
+  /* Note: we may want to extend this later with private flags
+   * and a cache of the inverse transform matrix. */
+  float   inv[16];
+  unsigned long  type;
+  unsigned long  flags;
+  unsigned long  _padding3;
 };
 
 /**
