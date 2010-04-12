@@ -139,6 +139,9 @@ static void
 gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 {
   _shell_global_set_plugin (shell_global_get(), MUTTER_PLUGIN(shell_plugin));
+
+  meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
+                                           "/desktop/gnome/shell/windows/button_layout");
 }
 
 static void

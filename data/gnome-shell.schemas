@@ -134,6 +134,32 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/windows/button_layout</key>
+        <applyto>/desktop/gnome/shell/windows/button_layout</applyto>
+        <owner>gnome-shell</owner>
+        <type>string</type>
+        <default>:minimize,maximize,close</default>
+        <locale name="C">
+           <short>Arrangement of buttons on the titlebar</short>
+           <long>
+             Arrangement of buttons on the titlebar. The
+             value should be a string, such as
+             "menu:minimize,maximize,spacer,close"; the colon separates the
+             left corner of the window from the right corner, and
+             the button names are comma-separated. Duplicate buttons
+             are not allowed. Unknown button names are silently ignored
+             so that buttons can be added in future gnome-shell versions
+             without breaking older versions.
+             A special spacer tag can be used to insert some space between
+             two adjacent buttons.
+
+             This key overrides /apps/metacity/general/button_layout when
+             running GNOME Shell.
+           </long>
+        </locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>
