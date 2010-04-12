@@ -45,10 +45,10 @@
 #include "shell-global-private.h"
 #include "shell-wm.h"
 
-static void gnome_shell_plugin_constructed (GObject *object);
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
 
+static void     gnome_shell_plugin_start            (MutterPlugin         *plugin);
 static void     gnome_shell_plugin_minimize         (MutterPlugin         *plugin,
                                                      MutterWindow         *actor);
 static void     gnome_shell_plugin_maximize         (MutterPlugin         *plugin,
@@ -118,10 +118,10 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
 
-  gobject_class->constructed     = gnome_shell_plugin_constructed;
   gobject_class->dispose         = gnome_shell_plugin_dispose;
   gobject_class->finalize        = gnome_shell_plugin_finalize;
 
+  plugin_class->start            = gnome_shell_plugin_start;
   plugin_class->map              = gnome_shell_plugin_map;
   plugin_class->minimize         = gnome_shell_plugin_minimize;
   plugin_class->maximize         = gnome_shell_plugin_maximize;
@@ -142,10 +142,9 @@ gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 }
 
 static void
-gnome_shell_plugin_constructed (GObject *object)
+gnome_shell_plugin_start (MutterPlugin *plugin)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (object);
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (object);
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
   MetaScreen *screen;
   MetaDisplay *display;
   GError *error = NULL;
