@@ -74,6 +74,10 @@ void meta_prefs_remove_listener (MetaPrefsChangedFunc func,
                                  gpointer             data);
 
 void meta_prefs_init (void);
+
+void meta_prefs_override_preference_location (const char *original_key,
+                                              const char *new_key);
+
 const char* meta_preference_to_string (MetaPreference pref);
 
 MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);

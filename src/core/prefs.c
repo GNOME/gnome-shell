@@ -146,6 +146,8 @@ static gboolean update_command            (const char  *name,
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
 
+static void notify_new_value (const char *key,
+                              GConfValue *value);
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
                            GConfEntry     *entry,
@@ -228,7 +230,18 @@ static GConfEnumStringPair symtab_titlebar_action[] =
     { 0, NULL },
   };
 
-/**
+/*
+ * This structure represents the common parts at the front of all
+ * the preferences structures; there are some additional places
+ * it could be used in addition to where it is currently.
+ */
+typedef struct
+{
+  gchar *key;
+  MetaPreference pref;
+} MetaGenericPreference;
+
+/*
  * The details of one preference which is constrained to be
  * one of a small number of string values-- in other words,
  * an enumeration.
@@ -241,21 +254,6 @@ static GConfEnumStringPair symtab_titlebar_action[] =
  * been outweighed by the bugs caused when the ordering of the enum
  * strings got out of sync with the actual enum statement.  Also,
  * there is existing library code to use this kind of symbol tables.
- *
- * Other things we might consider doing to clean this up in the
- * future include:
- *
- *   - most of the keys begin with the same prefix, and perhaps we
- *     could assume it if they don't start with a slash
- *
- *   - there are several cases where a single identifier could be used
- *     to generate an entire entry, and perhaps this could be done
- *     with a macro.  (This would reduce clarity, however, and is
- *     probably a bad thing.)
- *
- *   - these types all begin with a gchar* (and contain a MetaPreference)
- *     and we can factor out the repeated code in the handlers by taking
- *     advantage of this using some kind of union arrangement.
  */
 typedef struct
 {
@@ -495,6 +493,20 @@ static MetaIntPreference preferences_int[] =
     },
     { NULL, 0, NULL, 0, 0, 0, },
   };
+
+/*
+ * This is used to keep track of preferences that have been
+ * repointed to a different GConf key location; we modify the
+ * preferences arrays directly, but we also need to remember
+ * what we have done to handle subsequent overrides correctly.
+ */
+typedef struct
+{
+  gchar *original_key;
+  gchar *new_key;
+} MetaPrefsOverriddenKey;
+
+static GSList *overridden_keys;
 
 static void
 handle_preference_init_enum (void)
@@ -1094,6 +1106,150 @@ meta_prefs_init (void)
   init_workspace_names ();
 }
 
+static gboolean
+key_is_used (MetaGenericPreference *prefs,
+             size_t                 pref_size,
+             const char            *new_key)
+{
+  MetaGenericPreference *p;
+
+  for (p = prefs;
+       p->key != NULL;
+       p = (MetaGenericPreference *)((guchar *)p + pref_size))
+    {
+      if (strcmp (p->key, new_key) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+do_override (MetaGenericPreference *prefs,
+             size_t                 pref_size,
+             const char            *search_key,
+             char                  *new_key)
+{
+  MetaGenericPreference *p;
+
+  for (p = prefs;
+       p->key != NULL;
+       p = (MetaGenericPreference *)((guchar *)p + pref_size))
+    {
+      if (strcmp (p->key, search_key) == 0)
+        {
+          p->key = new_key;
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/**
+ * meta_prefs_override_preference_location
+ * @original_key: the normal Metacity preference location
+ * @new_key: the Metacity preference location to use instead.
+ *
+ * Substitute a different location to use instead of a standard Metacity
+ * GConf key location. This might be used if a plugin expected a different
+ * value for some preference than the Metacity default. While this function
+ * can be called at any point, this function should generally be called
+ * in a plugin's constructor, rather than in its start() method so the
+ * preference isn't first loaded with one value then changed to another
+ * value.
+ */
+void
+meta_prefs_override_preference_location (const char *original_key,
+                                         const char *new_key)
+{
+  const char *search_key;
+  char *new_key_copy;
+  gboolean found;
+  MetaPrefsOverriddenKey *overridden;
+  GSList *tmp;
+
+  /* Merge identical overrides, this isn't an error */
+  for (tmp = overridden_keys; tmp; tmp = tmp->next)
+    {
+      MetaPrefsOverriddenKey *tmp_overridden = tmp->data;
+      if (strcmp (tmp_overridden->original_key, original_key) == 0 &&
+          strcmp (tmp_overridden->new_key, new_key) == 0)
+        return;
+    }
+
+  /* We depend on a unique mapping from GConf key to preference, so
+   * enforce this */
+
+  if (key_is_used ((MetaGenericPreference *)preferences_enum, sizeof(MetaEnumPreference), new_key) ||
+      key_is_used ((MetaGenericPreference *)preferences_bool, sizeof(MetaBoolPreference), new_key) ||
+      key_is_used ((MetaGenericPreference *)preferences_string, sizeof(MetaStringPreference), new_key) ||
+      key_is_used ((MetaGenericPreference *)preferences_int, sizeof(MetaIntPreference), new_key))
+    {
+      meta_warning (_("GConf key %s is already in use and can't be used to override %s\n"),
+                    new_key, original_key);
+
+    }
+
+  new_key_copy = g_strdup (new_key);
+
+  search_key = original_key;
+  overridden = NULL;
+
+  for (tmp = overridden_keys; tmp; tmp = tmp->next)
+    {
+      MetaPrefsOverriddenKey *tmp_overridden = tmp->data;
+      if (strcmp (overridden->original_key, original_key) == 0)
+        {
+          overridden = tmp_overridden;
+          search_key = tmp_overridden->new_key;
+        }
+    }
+
+  found =
+    do_override ((MetaGenericPreference *)preferences_enum, sizeof(MetaEnumPreference), search_key, new_key_copy) ||
+    do_override ((MetaGenericPreference *)preferences_bool, sizeof(MetaBoolPreference), search_key, new_key_copy) ||
+    do_override ((MetaGenericPreference *)preferences_string, sizeof(MetaStringPreference), search_key, new_key_copy) ||
+    do_override ((MetaGenericPreference *)preferences_int, sizeof(MetaIntPreference), search_key, new_key_copy);
+  if (found)
+    {
+      if (overridden)
+        {
+          g_free (overridden->new_key);
+          overridden->new_key = new_key_copy;
+        }
+      else
+        {
+          overridden = g_slice_new (MetaPrefsOverriddenKey);
+          overridden->original_key = g_strdup (original_key);
+          overridden->new_key = new_key_copy;
+        }
+
+#ifdef HAVE_GCONF
+      if (default_client != NULL)
+        {
+          /* We're already initialized, so notify of a change */
+
+          GConfValue *value;
+          GError *err = NULL;
+
+          value = gconf_client_get (default_client, new_key, &err);
+          cleanup_error (&err);
+
+          notify_new_value (new_key, value);
+
+          if (value)
+            gconf_value_free (value);
+        }
+#endif /* HAVE_GCONF */
+    }
+  else
+    {
+      meta_warning (_("Can't override GConf key, %s not found\n"), original_key);
+      g_free (new_key_copy);
+    }
+}
+
 
 /****************************************************************************/
 /* Updates.                                                                 */
@@ -1110,6 +1266,23 @@ gboolean (*preference_update_handler[]) (const gchar*, GConfValue*) = {
 };
 
 static void
+notify_new_value (const char *key,
+                  GConfValue *value)
+{
+  int i = 0;
+
+  /* FIXME: Use MetaGenericPreference and save a bit of code duplication */
+
+  while (preference_update_handler[i] != NULL)
+    {
+      if (preference_update_handler[i] (key, value))
+        return;
+
+      i++;
+    }
+}
+
+static void
 change_notify (GConfClient    *client,
                guint           cnxn_id,
                GConfEntry     *entry,
@@ -1117,25 +1290,13 @@ change_notify (GConfClient    *client,
 {
   const char *key;
   GConfValue *value;
-  gint i=0;
   
   key = gconf_entry_get_key (entry);
   value = gconf_entry_get_value (entry);
 
   /* First, search for a handler that might know what to do. */
 
-  /* FIXME: When this is all working, since the first item in every
-   * array is the gchar* of the key, there's no reason we can't
-   * find the correct record for that key here and save code duplication.
-   */
-
-  while (preference_update_handler[i]!=NULL)
-    {
-      if (preference_update_handler[i] (key, value))
-        goto out; /* Get rid of this eventually */
-
-      i++;
-    }
+  notify_new_value (key, value);
   
   if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX) ||
       g_str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
