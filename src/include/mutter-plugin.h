@@ -69,6 +69,8 @@ struct _MutterPluginClass
 {
   GObjectClass parent_class;
 
+  void (*start)            (MutterPlugin       *plugin);
+
   void (*minimize)         (MutterPlugin       *plugin,
                             MutterWindow       *actor);
 

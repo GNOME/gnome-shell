@@ -238,8 +238,7 @@ mutter_plugin_class_init (MutterPluginClass *klass)
                                                         "MetaScreen",
                                                         "MetaScreen",
                                                         META_TYPE_SCREEN,
-                                                        G_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
 				   PROP_PARAMS,

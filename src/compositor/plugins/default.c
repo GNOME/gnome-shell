@@ -175,10 +175,9 @@ mutter_default_plugin_get_property (GObject    *object,
 }
 
 static void
-mutter_default_plugin_constructed (GObject *object)
+start (MutterPlugin *plugin)
 {
-  MutterPlugin               *plugin = MUTTER_PLUGIN (object);
-  MutterDefaultPluginPrivate *priv   = MUTTER_DEFAULT_PLUGIN (object)->priv;
+  MutterDefaultPluginPrivate *priv   = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
 
   guint destroy_timeout  = DESTROY_TIMEOUT;
   guint minimize_timeout = MINIMIZE_TIMEOUT;
@@ -201,7 +200,6 @@ mutter_default_plugin_constructed (GObject *object)
       map_timeout      *= 2;
       switch_timeout   *= 2;
     }
-
 }
 
 static void
@@ -212,10 +210,10 @@ mutter_default_plugin_class_init (MutterDefaultPluginClass *klass)
 
   gobject_class->finalize        = mutter_default_plugin_finalize;
   gobject_class->dispose         = mutter_default_plugin_dispose;
-  gobject_class->constructed     = mutter_default_plugin_constructed;
   gobject_class->set_property    = mutter_default_plugin_set_property;
   gobject_class->get_property    = mutter_default_plugin_get_property;
 
+  plugin_class->start            = start;
   plugin_class->map              = map;
   plugin_class->minimize         = minimize;
   plugin_class->maximize         = maximize;
