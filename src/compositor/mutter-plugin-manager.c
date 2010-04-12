@@ -39,6 +39,15 @@
  */
 static GHashTable *plugin_modules = NULL;
 
+/*
+ * We have one "default plugin manager" that acts for the first screen,
+ * but also can be used before we open any screens, and additional
+ * plugin managers for each screen. (This is ugly. Probably we should
+ * have one plugin manager and only make the plugins per-screen.)
+ */
+
+static MutterPluginManager *default_plugin_manager;
+
 static gboolean mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr);
 
 struct MutterPluginManager
@@ -334,7 +343,7 @@ mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr)
   return mutter_plugin_manager_load (plugin_mgr);
 }
 
-MutterPluginManager *
+static MutterPluginManager *
 mutter_plugin_manager_new (MetaScreen *screen)
 {
   MutterPluginManager *plugin_mgr;
@@ -349,7 +358,47 @@ mutter_plugin_manager_new (MetaScreen *screen)
 
   plugin_mgr->screen        = screen;
 
+  if (screen)
+    g_object_set_data (G_OBJECT (screen), "mutter-plugin-manager", plugin_mgr);
+
   return plugin_mgr;
+}
+
+MutterPluginManager *
+mutter_plugin_manager_get_default (void)
+{
+  if (!default_plugin_manager)
+    {
+      default_plugin_manager = mutter_plugin_manager_new (NULL);
+    }
+
+  return default_plugin_manager;
+}
+
+MutterPluginManager *
+mutter_plugin_manager_get (MetaScreen *screen)
+{
+  MutterPluginManager *plugin_mgr;
+
+  plugin_mgr = g_object_get_data (G_OBJECT (screen), "mutter-plugin-manager");
+  if (plugin_mgr)
+    return plugin_mgr;
+
+  if (!default_plugin_manager)
+    mutter_plugin_manager_get_default ();
+
+  if (!default_plugin_manager->screen)
+    {
+      /* The default plugin manager is so far unused, we can recycle it */
+      default_plugin_manager->screen = screen;
+      g_object_set_data (G_OBJECT (screen), "mutter-plugin-manager", default_plugin_manager);
+
+      return default_plugin_manager;
+    }
+  else
+    {
+      return mutter_plugin_manager_new (screen);
+    }
 }
 
 static void

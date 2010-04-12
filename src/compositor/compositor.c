@@ -488,9 +488,17 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   clutter_actor_hide (info->hidden_group);
 
   info->plugin_mgr =
-    mutter_plugin_manager_new (screen);
-  if (!mutter_plugin_manager_load (info->plugin_mgr))
-    g_critical ("failed to load plugins");
+    mutter_plugin_manager_get (screen);
+
+  if (info->plugin_mgr != mutter_plugin_manager_get_default ())
+    {
+      /* The default plugin manager has been initialized during
+       * global preferences load.
+       */
+      if (!mutter_plugin_manager_load (info->plugin_mgr))
+        g_critical ("failed to load plugins");
+    }
+
   if (!mutter_plugin_manager_initialize (info->plugin_mgr))
     g_critical ("failed to initialize plugins");
 

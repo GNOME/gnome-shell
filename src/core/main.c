@@ -586,7 +586,7 @@ main (int argc, char **argv)
            * is initialized at this point, and we don't plan to run any real
            * plugin code.
            */
-          MutterPluginManager *mgr = mutter_plugin_manager_new (NULL);
+          MutterPluginManager *mgr = mutter_plugin_manager_get_default ();
           if (!mutter_plugin_manager_load (mgr))
             g_critical ("failed to load plugins");
         }

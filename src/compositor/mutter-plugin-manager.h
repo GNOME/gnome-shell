@@ -33,7 +33,9 @@
 
 typedef struct MutterPluginManager MutterPluginManager;
 
-MutterPluginManager * mutter_plugin_manager_new (MetaScreen *screen);
+MutterPluginManager * mutter_plugin_manager_get         (MetaScreen *screen);
+MutterPluginManager * mutter_plugin_manager_get_default (void);
+
 gboolean mutter_plugin_manager_load (MutterPluginManager *mgr);
 gboolean mutter_plugin_manager_initialize (MutterPluginManager *plugin_mgr);
 gboolean mutter_plugin_manager_event_simple (MutterPluginManager *mgr,

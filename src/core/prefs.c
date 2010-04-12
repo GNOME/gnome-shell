@@ -27,6 +27,7 @@
 #include "prefs.h"
 #include "ui.h"
 #include "util.h"
+#include "compositor/mutter-plugin-manager.h"
 #ifdef HAVE_GCONF
 #include <gconf/gconf-client.h>
 #endif
@@ -1043,6 +1044,7 @@ meta_prefs_init (void)
 #ifdef HAVE_GCONF
   GError *err = NULL;
   gchar **gconf_dir_cursor;
+  MutterPluginManager *plugin_manager;
   
   if (default_client != NULL)
     return;
@@ -1061,18 +1063,25 @@ meta_prefs_init (void)
       cleanup_error (&err);
     }
 
-  /* Pick up initial values. */
-
-  handle_preference_init_enum ();
-  handle_preference_init_bool ();
-  handle_preference_init_string ();
-  handle_preference_init_int ();
+  /* The plugin list is special and needs to be handled first */
 
   if (!clutter_plugins_overridden)
     clutter_plugins = gconf_client_get_list (default_client, KEY_CLUTTER_PLUGINS,
                                              GCONF_VALUE_STRING, &err);
 
   cleanup_error (&err);
+
+  /* We now initialize plugins so that they can override any preference locations */
+
+  plugin_manager = mutter_plugin_manager_get_default ();
+  mutter_plugin_manager_load (plugin_manager);
+
+  /* Pick up initial values. */
+
+  handle_preference_init_enum ();
+  handle_preference_init_bool ();
+  handle_preference_init_string ();
+  handle_preference_init_int ();
 
   /* @@@ Is there any reason we don't do the add_dir here? */
   for (gconf_dir_cursor=gconf_dirs_we_are_interested_in;
