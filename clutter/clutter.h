@@ -83,6 +83,7 @@
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
 #include "clutter-shader.h"
+#include "clutter-shader-effect.h"
 #include "clutter-shader-types.h"
 #include "clutter-stage.h"
 #include "clutter-stage-manager.h"
