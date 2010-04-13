@@ -166,6 +166,7 @@ stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers
 	(cmp -s $@.tmp shell-enum-types.h || mv $@.tmp shell-enum-types.h) && \
 	rm -f $@.tmp && \
 	echo timestamp > $(@F)
+EXTRA_DIST += shell-enum-types.h.in
 
 shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 	$(AM_V_GEN) ( cd $(srcdir) && \
@@ -174,6 +175,7 @@ shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 	  $(shell_public_headers_h) ) > $@.tmp && \
 	mv $@.tmp $@ && \
 	rm -f $@.tmp
+EXTRA_DIST += shell-enum-types.c.in
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =-lm \
