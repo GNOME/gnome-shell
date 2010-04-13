@@ -232,15 +232,9 @@ static GConfEnumStringPair symtab_titlebar_action[] =
   };
 
 /*
- * This structure represents the common parts at the front of all
- * the preferences structures; there are some additional places
- * it could be used in addition to where it is currently.
+ * Note that 'gchar *key' is the first element of all these structures;
+ * we count on that below in key_is_used and do_override.
  */
-typedef struct
-{
-  gchar *key;
-  MetaPreference pref;
-} MetaGenericPreference;
 
 /*
  * The details of one preference which is constrained to be
@@ -1115,41 +1109,51 @@ meta_prefs_init (void)
   init_workspace_names ();
 }
 
+/* This count on the key being the first element of the
+ * preference structure */
 static gboolean
-key_is_used (MetaGenericPreference *prefs,
-             size_t                 pref_size,
-             const char            *new_key)
+key_is_used (void       *prefs,
+             size_t      pref_size,
+             const char *new_key)
 {
-  MetaGenericPreference *p;
+  void *p = prefs;
 
-  for (p = prefs;
-       p->key != NULL;
-       p = (MetaGenericPreference *)((guchar *)p + pref_size))
+  while (TRUE)
     {
-      if (strcmp (p->key, new_key) == 0)
+      char **key = p;
+      if (*key == NULL)
+        break;
+
+      if (strcmp (*key, new_key) == 0)
         return TRUE;
+
+      p = (guchar *)p + pref_size;
     }
 
   return FALSE;
 }
 
 static gboolean
-do_override (MetaGenericPreference *prefs,
-             size_t                 pref_size,
-             const char            *search_key,
-             char                  *new_key)
+do_override (void       *prefs,
+             size_t      pref_size,
+             const char *search_key,
+             char       *new_key)
 {
-  MetaGenericPreference *p;
+  void *p = prefs;
 
-  for (p = prefs;
-       p->key != NULL;
-       p = (MetaGenericPreference *)((guchar *)p + pref_size))
+  while (TRUE)
     {
-      if (strcmp (p->key, search_key) == 0)
+      char **key = p;
+      if (*key == NULL)
+        break;
+
+      if (strcmp (*key, search_key) == 0)
         {
-          p->key = new_key;
+          *key = new_key;
           return TRUE;
         }
+
+      p = (guchar *)p + pref_size;
     }
 
   return FALSE;
@@ -1190,10 +1194,10 @@ meta_prefs_override_preference_location (const char *original_key,
   /* We depend on a unique mapping from GConf key to preference, so
    * enforce this */
 
-  if (key_is_used ((MetaGenericPreference *)preferences_enum, sizeof(MetaEnumPreference), new_key) ||
-      key_is_used ((MetaGenericPreference *)preferences_bool, sizeof(MetaBoolPreference), new_key) ||
-      key_is_used ((MetaGenericPreference *)preferences_string, sizeof(MetaStringPreference), new_key) ||
-      key_is_used ((MetaGenericPreference *)preferences_int, sizeof(MetaIntPreference), new_key))
+  if (key_is_used (preferences_enum, sizeof(MetaEnumPreference), new_key) ||
+      key_is_used (preferences_bool, sizeof(MetaBoolPreference), new_key) ||
+      key_is_used (preferences_string, sizeof(MetaStringPreference), new_key) ||
+      key_is_used (preferences_int, sizeof(MetaIntPreference), new_key))
     {
       meta_warning (_("GConf key %s is already in use and can't be used to override %s\n"),
                     new_key, original_key);
@@ -1216,10 +1220,10 @@ meta_prefs_override_preference_location (const char *original_key,
     }
 
   found =
-    do_override ((MetaGenericPreference *)preferences_enum, sizeof(MetaEnumPreference), search_key, new_key_copy) ||
-    do_override ((MetaGenericPreference *)preferences_bool, sizeof(MetaBoolPreference), search_key, new_key_copy) ||
-    do_override ((MetaGenericPreference *)preferences_string, sizeof(MetaStringPreference), search_key, new_key_copy) ||
-    do_override ((MetaGenericPreference *)preferences_int, sizeof(MetaIntPreference), search_key, new_key_copy);
+    do_override (preferences_enum, sizeof(MetaEnumPreference), search_key, new_key_copy) ||
+    do_override (preferences_bool, sizeof(MetaBoolPreference), search_key, new_key_copy) ||
+    do_override (preferences_string, sizeof(MetaStringPreference), search_key, new_key_copy) ||
+    do_override (preferences_int, sizeof(MetaIntPreference), search_key, new_key_copy);
   if (found)
     {
       if (overridden)
