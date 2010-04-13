@@ -578,6 +578,7 @@ static guint actor_signals[LAST_SIGNAL] = { 0, };
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
+static void atk_implementor_iface_init    (AtkImplementorIface    *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
 
@@ -645,7 +646,9 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                          clutter_scriptable_iface_init)
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
-                                                         clutter_animatable_iface_init));
+                                                         clutter_animatable_iface_init)
+                                  G_IMPLEMENT_INTERFACE (ATK_TYPE_IMPLEMENTOR,
+                                                         atk_implementor_iface_init));
 
 static const gchar *
 get_actor_debug_name (ClutterActor *actor)
@@ -3356,6 +3359,23 @@ clutter_actor_real_get_accessible (ClutterActor *actor)
   accessible = atk_gobject_accessible_for_object (G_OBJECT (actor));
 
   return accessible;
+}
+
+static AtkObject*
+_clutter_actor_ref_accessible (AtkImplementor *implementor)
+{
+  AtkObject *accessible;
+
+  accessible = clutter_actor_get_accessible (CLUTTER_ACTOR (implementor));
+  if (accessible)
+    g_object_ref (accessible);
+  return accessible;
+}
+
+static void
+atk_implementor_iface_init (AtkImplementorIface *iface)
+{
+  iface->ref_accessible = _clutter_actor_ref_accessible;
 }
 
 static void

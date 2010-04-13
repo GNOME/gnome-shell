@@ -313,6 +313,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--c-include='clutter/clutter.h' \
 		--include=GL-1.0 \
 		--include=GObject-2.0 \
+		--include=Atk-1.0 \
 		--include=Pango-1.0 \
 		--include=PangoCairo-1.0 \
 		--include=Cogl-@CLUTTER_API_VERSION@ \
