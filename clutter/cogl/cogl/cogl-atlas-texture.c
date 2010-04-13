@@ -273,6 +273,8 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
   _cogl_atlas_texture_remove_from_atlas (atlas_tex);
 
   cogl_handle_unref (atlas_tex->sub_texture);
+
+  g_free (atlas_tex);
 }
 
 static int
