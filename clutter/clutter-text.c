@@ -553,10 +553,59 @@ clutter_text_create_layout (ClutterText *text,
 
 	  return priv->cached_layouts[i].layout;
 	}
-      else if (!found_free_cache &&
-               (priv->cached_layouts[i].age < oldest_cache->age))
+      else
         {
-	  oldest_cache = priv->cached_layouts + i;
+          PangoRectangle logical_rect;
+          gint logical_height;
+          gfloat layout_height;
+          gint logical_width;
+          gfloat layout_width;
+
+          pango_layout_get_extents (priv->cached_layouts[i].layout, NULL, &logical_rect);
+
+          /* These calculations are taken from the _get_preferred_width and
+           * _get_preferred_height calls
+           */
+          logical_height = logical_rect.y + logical_rect.height;
+          layout_height = ceilf ((gfloat) logical_height / 1024.0f + 0.5);
+
+          logical_width = logical_rect.x + logical_rect.width;
+
+          layout_width = logical_width > 0
+            ? (logical_width / 1024.0f)
+            : 1;
+
+          if (allocation_height == -1 &&
+              allocation_width == layout_width)
+          {
+            /* We've been asked for our height for the width we gave as a result
+             * of a _get_preferred_width call
+             */
+            CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f " \
+                          "(matches width of extents)",
+                          text,
+                          allocation_width,
+                          allocation_height);
+
+            return priv->cached_layouts[i].layout;
+          }
+        else if (allocation_width == layout_width &&
+                 allocation_height == layout_height)
+          {
+            /* We've been asked for width and height we gave before */
+            CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f " \
+                          "(matches size of extents)",
+                          text,
+                          allocation_width,
+                          allocation_height);
+
+            return priv->cached_layouts[i].layout;
+          }
+        else if (!found_free_cache &&
+                 (priv->cached_layouts[i].age < oldest_cache->age))
+          {
+            oldest_cache = priv->cached_layouts + i;
+          }
         }
     }
 
