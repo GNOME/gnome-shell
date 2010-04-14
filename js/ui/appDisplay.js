@@ -457,6 +457,11 @@ AppWellIcon.prototype = {
         let button = event.get_button();
         if (button == 1) {
             this._onActivate(event);
+        } else if (button == 2) {
+            Main.overview.workspaces.addWorkspace();
+            this.emit('launching');
+            this.app.open_new_window();
+            Main.overview.hide();
         } else if (button == 3) {
             // Don't bind to the right click here; we want left click outside the
             // area to deactivate as well.

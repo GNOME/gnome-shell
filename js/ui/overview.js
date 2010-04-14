@@ -250,19 +250,19 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
-        this._workspaces = null;
+        this.workspaces = null;
     },
 
     _onViewChanged: function() {
         if (!this.visible)
             return;
 
-        this._workspaces = this._workspacesManager.workspacesView;
+        this.workspaces = this._workspacesManager.workspacesView;
 
         // Show new workspacesView
-        this._group.add_actor(this._workspaces.actor);
-        this._workspacesBar.raise(this._workspaces.actor);
-        this._dash.actor.raise(this._workspaces.actor);
+        this._group.add_actor(this.workspaces.actor);
+        this._workspacesBar.raise(this.workspaces.actor);
+        this._dash.actor.raise(this.workspaces.actor);
     },
 
     _recalculateGridSizes: function () {
@@ -381,7 +381,7 @@ Overview.prototype = {
                         this._activeDisplayPane.close();
                     return true;
                 }));
-                this._workspaces.actor.opacity = 64;
+                this.workspaces.actor.opacity = 64;
             } else if (pane == this._activeDisplayPane) {
                 this._activeDisplayPane = null;
                 if (backgroundEventId != null) {
@@ -390,7 +390,7 @@ Overview.prototype = {
                 }
                 this._transparentBackground.lower_bottom();
                 this._paneContainer.hide();
-                this._workspaces.actor.opacity = 255;
+                this.workspaces.actor.opacity = 255;
             }
         }));
     },
@@ -416,13 +416,13 @@ Overview.prototype = {
     // Returns the scale the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.
     getZoomedInScale : function() {
-        return 1 / this._workspaces.getScale();
+        return 1 / this.workspaces.getScale();
     },
 
     // Returns the position the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.
     getZoomedInPosition : function() {
-        let [posX, posY] = this._workspaces.getActiveWorkspacePosition();
+        let [posX, posY] = this.workspaces.getActiveWorkspacePosition();
         let scale = this.getZoomedInScale();
 
         return [- posX * scale, - posY * scale];
@@ -457,13 +457,13 @@ Overview.prototype = {
                                                  this._workspacesY);
         this._workspacesManager.connect('view-changed',
                                         Lang.bind(this, this._onViewChanged));
-        this._workspaces = this._workspacesManager.workspacesView;
-        this._group.add_actor(this._workspaces.actor);
+        this.workspaces = this._workspacesManager.workspacesView;
+        this._group.add_actor(this.workspaces.actor);
 
         // The workspaces actor is as big as the screen, so we have to raise the dash above it
         // for drag and drop to work.  In the future we should fix the workspaces to not
         // be as big as the screen.
-        this._dash.actor.raise(this._workspaces.actor);
+        this._dash.actor.raise(this.workspaces.actor);
 
         this._workspacesBar = this._workspacesManager.controlsBar.actor;
         this._workspacesBar.set_position(this._workspacesBarX,
@@ -471,7 +471,7 @@ Overview.prototype = {
         this._workspacesBar.width = this._workspacesBarWidth;
 
         this._group.add_actor(this._workspacesBar);
-        this._workspacesBar.raise(this._workspaces.actor);
+        this._workspacesBar.raise(this.workspaces.actor);
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
@@ -521,7 +521,7 @@ Overview.prototype = {
         this._hideInProgress = true;
         if (this._activeDisplayPane != null)
             this._activeDisplayPane.close();
-        this._workspaces.hide();
+        this.workspaces.hide();
 
         // Create a zoom in effect by transforming the Overview group so that
         // the active workspace fills up the whole screen. The opposite
@@ -566,7 +566,7 @@ Overview.prototype = {
      * and will return %null.
      */
     getWorkspacesForWindow: function(metaWindow) {
-        return this._workspaces;
+        return this.workspaces;
     },
 
     //// Private methods ////
@@ -584,8 +584,8 @@ Overview.prototype = {
     _hideDone: function() {
         global.window_group.show();
 
-        this._workspaces.destroy();
-        this._workspaces = null;
+        this.workspaces.destroy();
+        this.workspaces = null;
 
         this._workspacesBar.destroy();
         this._workspacesBar = null;
