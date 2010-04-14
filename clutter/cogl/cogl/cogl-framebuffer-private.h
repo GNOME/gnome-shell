@@ -26,7 +26,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-matrix-stack.h"
-#include "cogl-clip-stack.h"
+#include "cogl-clip-state.h"
 
 typedef enum _CoglFramebufferType {
   COGL_FRAMEBUFFER_TYPE_ONSCREEN,
@@ -47,7 +47,7 @@ typedef struct
   int                 viewport_width;
   int                 viewport_height;
 
-  CoglClipStackState  clip_state;
+  CoglClipState       clip_state;
 } CoglFramebuffer;
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
@@ -75,7 +75,7 @@ int
 _cogl_framebuffer_get_width (CoglHandle handle);
 int
 _cogl_framebuffer_get_height (CoglHandle handle);
-CoglClipStackState *
+CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglHandle handle);
 void
 _cogl_framebuffer_set_viewport (CoglHandle handle,

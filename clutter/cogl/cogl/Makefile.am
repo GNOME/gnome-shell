@@ -103,6 +103,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
+	$(srcdir)/cogl-clip-state.h                     \
+	$(srcdir)/cogl-clip-state.c                     \
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\

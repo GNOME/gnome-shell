@@ -563,7 +563,7 @@ _cogl_path_fill_nodes (void)
       cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
       CoglHandle framebuffer;
-      CoglClipStackState *clip_state;
+      CoglClipState *clip_state;
 
       _cogl_journal_flush ();
 
@@ -586,7 +586,7 @@ _cogl_path_fill_nodes (void)
        * we call cogl_flush() to emtpy the journal.
        */
       cogl_flush ();
-      _cogl_clip_stack_state_dirty (clip_state);
+      _cogl_clip_state_dirty (clip_state);
     }
   else
     {

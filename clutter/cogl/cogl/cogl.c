@@ -1043,7 +1043,7 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
-CoglClipStackState *
+CoglClipState *
 _cogl_get_clip_state (void)
 {
   CoglHandle framebuffer;
