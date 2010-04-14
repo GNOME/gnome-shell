@@ -129,10 +129,10 @@ struct _CoglClipStackEntryWindowRect
   CoglClipStackEntry     _parent_data;
 
   /* The window space rectangle for this clip */
-  float                  x0;
-  float                  y0;
-  float                  x1;
-  float                  y1;
+  int                    x0;
+  int                    y0;
+  int                    x1;
+  int                    y1;
 };
 
 struct _CoglClipStackEntryPath
