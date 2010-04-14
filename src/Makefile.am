@@ -49,9 +49,6 @@ shell_built_sources = \
 BUILT_SOURCES += $(shell_built_sources)
 EXTRA_DIST += shell-marshal.list
 
-SHELL_STAMP_FILES = stamp-shell-marshal.h
-CLEANFILES += $(SHELL_STAMP_FILES)
-
 shell_public_headers_h =		\
 	shell-app.h			\
 	shell-app-system.h		\
@@ -145,6 +142,7 @@ stamp-shell-marshal.h: Makefile shell-marshal.list
 	(cmp -s xgen-smh shell-marshal.h || cp -f xgen-smh shell-marshal.h) && \
 	rm -f xgen-smh && \
 	echo timestamp > $(@F)
+CLEANFILES += stamp-shell-marshal.h
 
 shell-marshal.c: Makefile shell-marshal.list
 	$(AM_V_GEN) (echo "#include \"shell-marshal.h\"" ; \
@@ -167,6 +165,7 @@ stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers
 	rm -f $@.tmp && \
 	echo timestamp > $(@F)
 EXTRA_DIST += shell-enum-types.h.in
+CLEANFILES += stamp-shell-enum-types.h
 
 shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 	$(AM_V_GEN) ( cd $(srcdir) && \
