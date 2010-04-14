@@ -4800,7 +4800,7 @@ clutter_text_delete_chars (ClutterText *self,
  * @end_pos: end of text, in characters
  *
  * Retrieves the contents of the #ClutterText actor between
- * @start_pos and @end_pos.
+ * @start_pos and @end_pos, but not including @end_pos.
  *
  * The positions are specified in characters, not in bytes.
  *
