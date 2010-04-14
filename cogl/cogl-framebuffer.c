@@ -131,13 +131,13 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->projection_stack = _cogl_matrix_stack_new ();
 
   /* Initialise the clip stack */
-  _cogl_clip_stack_state_init (&framebuffer->clip_state);
+  _cogl_clip_state_init (&framebuffer->clip_state);
 }
 
 void
 _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
-  _cogl_clip_stack_state_destroy (&framebuffer->clip_state);
+  _cogl_clip_state_destroy (&framebuffer->clip_state);
 
   _cogl_matrix_stack_destroy (framebuffer->modelview_stack);
   framebuffer->modelview_stack = NULL;
@@ -160,7 +160,7 @@ _cogl_framebuffer_get_height (CoglHandle handle)
   return framebuffer->height;
 }
 
-CoglClipStackState *
+CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglHandle handle)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
@@ -551,7 +551,7 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
    * we flush */
   _cogl_matrix_stack_dirty (framebuffer->modelview_stack);
   _cogl_matrix_stack_dirty (framebuffer->projection_stack);
-  _cogl_clip_stack_state_dirty (&framebuffer->clip_state);
+  _cogl_clip_state_dirty (&framebuffer->clip_state);
 }
 
 void
@@ -697,7 +697,7 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
   /* XXX: Flushing clip state may trash the modelview and projection
    * matrices so we must do it before flushing the matrices...
    */
-  _cogl_flush_clip_state (&framebuffer->clip_state);
+  _cogl_clip_state_flush (&framebuffer->clip_state);
 
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW))
     _cogl_matrix_stack_flush_to_gl (framebuffer->modelview_stack,
