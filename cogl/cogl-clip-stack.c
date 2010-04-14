@@ -128,7 +128,8 @@ struct _CoglClipStackEntryWindowRect
 {
   CoglClipStackEntry     _parent_data;
 
-  /* The window space rectangle for this clip */
+  /* The window space rectangle for this clip. This is stored in
+     Cogl's coordinate space (ie, 0,0 is the top left) */
   int                    x0;
   int                    y0;
   int                    x1;
@@ -409,7 +410,6 @@ cogl_clip_push_window_rectangle (int x_offset,
   CoglHandle framebuffer;
   CoglClipStackState *clip_state;
   CoglClipStack *stack;
-  int framebuffer_height;
   CoglClipStackEntryWindowRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -423,31 +423,14 @@ cogl_clip_push_window_rectangle (int x_offset,
 
   stack = clip_state->stacks->data;
 
-  framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
-
   entry = _cogl_clip_stack_push_entry (stack,
                                        sizeof (CoglClipStackEntryWindowRect),
                                        COGL_CLIP_STACK_WINDOW_RECT);
 
-  /* We store the entry coordinates in OpenGL window coordinate space and so
-   * because Cogl defines the window origin to be top left but OpenGL defines
-   * it as bottom left we may need to convert the incoming coordinates.
-   *
-   * NB: Cogl forces all offscreen rendering to be done upside down so in this
-   * case no conversion is needed.
-   */
   entry->x0 = x_offset;
   entry->x1 = x_offset + width;
-  if (cogl_is_offscreen (framebuffer))
-    {
-      entry->y0 = y_offset;
-      entry->y1 = y_offset + height;
-    }
-  else
-    {
-      entry->y0 = framebuffer_height - y_offset - height;
-      entry->y1 = framebuffer_height - y_offset;
-    }
+  entry->y0 = y_offset;
+  entry->y1 = y_offset + height;
 
   clip_state->stack_dirty = TRUE;
 }
@@ -835,14 +818,38 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   if (using_clip_planes)
     enable_clip_planes ();
 
-  if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
-    scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = 0;
-
   if (!(scissor_x0 == 0 && scissor_y0 == 0 &&
         scissor_x1 == G_MAXINT && scissor_y1 == G_MAXINT))
     {
+      int scissor_y_start;
+
+      if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
+        scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
+      else
+        {
+          CoglHandle framebuffer = _cogl_get_framebuffer ();
+
+          /* We store the entry coordinates in Cogl coordinate space
+           * but OpenGL requires the window origin to be the bottom
+           * left so we may need to convert the incoming coordinates.
+           *
+           * NB: Cogl forces all offscreen rendering to be done upside
+           * down so in this case no conversion is needed.
+           */
+
+          if (cogl_is_offscreen (framebuffer))
+            scissor_y_start = scissor_y0;
+          else
+            {
+              int framebuffer_height =
+                _cogl_framebuffer_get_height (framebuffer);
+
+              scissor_y_start = framebuffer_height - scissor_y1;
+            }
+        }
+
       GE (glEnable (GL_SCISSOR_TEST));
-      GE (glScissor (scissor_x0, scissor_y0,
+      GE (glScissor (scissor_x0, scissor_y_start,
                      scissor_x1 - scissor_x0,
                      scissor_y1 - scissor_y0));
     }
