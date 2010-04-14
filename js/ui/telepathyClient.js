@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -181,20 +182,32 @@ function AvatarManager() {
 AvatarManager.prototype = {
     _init: function() {
         this._connections = {};
+        // Note that if we changed this to '/telepathy/avatars' then
+        // we would share cache files with empathy. But since this is
+        // not documented/guaranteed, it seems a little sketchy
+        this._cacheDir = GLib.get_user_cache_dir() + '/gnome-shell/avatars';
     },
 
     _addConnection: function(conn) {
-        if (this._connections[conn.getPath()])
-            return this._connections[conn.getPath()];
-
         let info = {};
 
-        // avatarData[handle] describes the icon for @handle:
-        // either the string 'default', meaning to use the default
-        // avatar, or an array of bytes containing, eg, PNG data.
-        info.avatarData = {};
+        // Figure out the cache subdirectory for this connection by
+        // parsing the connection manager name (eg, 'gabble') and
+        // protocol name (eg, 'jabber') from the Connection's path.
+        // Telepathy requires the D-Bus path for a connection to have
+        // a specific form, and explicitly says that clients are
+        // allowed to parse it.
+        let match = conn.getPath().match(/\/org\/freedesktop\/Telepathy\/Connection\/([^\/]*\/[^\/]*)\/.*/);
+        if (!match)
+            throw new Error('Could not parse connection path ' + conn.getPath());
 
-        // icons[handle] is an array of the icon actors currently
+        info.cacheDir = this._cacheDir + '/' + match[1];
+        GLib.mkdir_with_parents(info.cacheDir, 0700);
+
+        // info.token[handle] is the token for @handle's avatar
+        info.token = {};
+
+        // info.icons[handle] is an array of the icon actors currently
         // being displayed for @handle. These will be updated
         // automatically if @handle's avatar changes.
         info.icons = {};
@@ -229,39 +242,57 @@ AvatarManager.prototype = {
         delete this._connections[conn.getPath()];
     },
 
+    _getFileForToken: function(info, token) {
+        return info.cacheDir + '/' + Telepathy.escapeAsIdentifier(token);
+    },
+
+    _setIcon: function(iconBox, info, handle) {
+        let textureCache = St.TextureCache.get_default();
+        let token = info.token[handle];
+        let file;
+
+        if (token) {
+            file = this._getFileForToken(info, token);
+            if (!GLib.file_test(file, GLib.FileTest.EXISTS))
+                file = null;
+        }
+
+        if (file) {
+            let uri = GLib.filename_to_uri(file, null);
+            iconBox.child = textureCache.load_uri_async(uri, iconBox._size, iconBox._size);
+        } else {
+            iconBox.child = textureCache.load_icon_name('stock_person', iconBox._size);
+        }
+    },
+
+    _updateIcons: function(info, handle) {
+        if (!info.icons[handle])
+            return;
+
+        for (let i = 0; i < info.icons[handle].length; i++) {
+            let iconBox = info.icons[handle][i];
+            this._setIcon(iconBox, info, handle);
+        }
+    },
+
     _avatarUpdated: function(conn, handle, token) {
         let info = this._connections[conn.getPath()];
         if (!info)
             return;
 
-        if (!info.avatarData[handle]) {
-            // This would only happen if either (a) the initial
-            // RequestAvatars() call hasn't returned yet, or (b)
-            // Telepathy is informing us about avatars we didn't ask
-            // about. Either way, we don't have to do anything here.
+        if (info.token[handle] == token)
             return;
+
+        info.token[handle] = token;
+        if (token != '') {
+            let file = this._getFileForToken(info, token);
+            if (!GLib.file_test(file, GLib.FileTest.EXISTS)) {
+                info.connectionAvatars.RequestAvatarsRemote([handle]);
+                return;
+            }
         }
 
-        if (token == '') {
-            // Invoke the next async callback in the chain, telling
-            // it to use the default image.
-            this._avatarRetrieved(conn, handle, token, 'default', null);
-        } else {
-            // In this case, @token is some sort of UUID. Telepathy
-            // expects us to cache avatar images to disk and use the
-            // tokens to figure out when we already have the right
-            // images cached. But we don't do that, we just
-            // ignore @token and request the image unconditionally.
-            info.connectionAvatars.RequestAvatarsRemote([handle]);
-        }
-    },
-
-    _createIcon: function(iconData, size) {
-        let textureCache = St.TextureCache.get_default();
-        if (iconData == 'default')
-            return textureCache.load_icon_name('stock_person', size);
-        else
-            return textureCache.load_from_data(iconData, iconData.length, size);
+        this._updateIcons(info, handle);
     },
 
     _avatarRetrieved: function(conn, handle, token, avatarData, mimeType) {
@@ -269,19 +300,21 @@ AvatarManager.prototype = {
         if (!info)
             return;
 
-        info.avatarData[handle] = avatarData;
-        if (!info.icons[handle])
-            return;
-
-        for (let i = 0; i < info.icons[handle].length; i++) {
-            let iconBox = info.icons[handle][i];
-            let size = iconBox.child.height;
-            iconBox.child = this._createIcon(avatarData, size);
+        let file = this._getFileForToken(info, token);
+        let success = false;
+        try {
+            success = GLib.file_set_contents(file, avatarData, avatarData.length);
+        } catch (e) {
+            logError(e, 'Error caching avatar data');
         }
+
+        if (success)
+            this._updateIcons(info, handle);
     },
 
     createAvatar: function(conn, handle, size) {
         let iconBox = new St.Bin({ style_class: 'avatar-box' });
+        iconBox._size = size;
 
         let info = this._connections[conn.getPath()];
         if (!info)
@@ -298,22 +331,19 @@ AvatarManager.prototype = {
                     info.icons[handle].splice(i, 1);
             }));
 
-        let avatarData = info.avatarData[handle];
-        if (avatarData) {
-            iconBox.child = this._createIcon(avatarData, size);
-            return iconBox;
-        }
+        // If we already have the icon cached and know its token, this
+        // will fill it in. Otherwise it will fill in the default
+        // icon.
+        this._setIcon(iconBox, info, handle);
 
-        // Fill in the default icon and then asynchronously load
-        // the real avatar.
-        iconBox.child = this._createIcon('default', size);
-        info.connectionAvatars.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
-            function (tokens, err) {
-                if (tokens && tokens[handle])
-                    info.connectionAvatars.RequestAvatarsRemote([handle]);
-                else
-                    info.avatarData[handle] = 'default';
-            }));
+        // Asynchronously load the real avatar if we don't have it yet.
+        if (info.token[handle] == null) {
+            info.connectionAvatars.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
+                function (tokens, err) {
+                    let token = tokens && tokens[handle] ? tokens[handle] : '';
+                    this._avatarUpdated(conn, handle, token);
+                }));
+        }
 
         return iconBox;
     }

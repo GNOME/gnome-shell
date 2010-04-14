@@ -26,6 +26,25 @@ function pathToName(path) {
     return path.substr(1).replace('/', '.', 'g');
 };
 
+// This is tp_escape_as_identifier() from telepathy-glib
+function escapeAsIdentifier(name) {
+    if (!name)
+        return '_';
+
+    // first char is replaced with _XX if it's non-alpha,
+    // later chars are replaced with _XX if they're non-alphanumeric
+    if (name.length == 1) {
+        return name.replace(/[^a-zA-Z]/, _hexEscape);
+    } else {
+        return (name[0].replace(/[^a-zA-Z]/, _hexEscape) +
+                name.substring(1).replace(/[^a-zA-Z0-9]/g, _hexEscape));
+    }
+}
+
+function _hexEscape(ch) {
+    return '_' + ch.charCodeAt(0).toString(16);
+}
+
 // Telepathy D-Bus interface definitions. Note that most of these are
 // incomplete, and only cover the methods/properties/signals that
 // we're currently using.
