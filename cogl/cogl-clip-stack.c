@@ -42,6 +42,7 @@
 
 typedef struct _CoglClipStack CoglClipStack;
 
+typedef struct _CoglClipStackEntry CoglClipStackEntry;
 typedef struct _CoglClipStackEntryRect CoglClipStackEntryRect;
 typedef struct _CoglClipStackEntryWindowRect CoglClipStackEntryWindowRect;
 typedef struct _CoglClipStackEntryPath CoglClipStackEntryPath;
@@ -53,14 +54,65 @@ typedef enum
     COGL_CLIP_STACK_PATH
   } CoglClipStackEntryType;
 
+/* A clip stack consists a list of entries. Each entry has a reference
+ * count and a link to its parent node. The child takes a reference on
+ * the parent and the CoglClipStack holds a reference to the top of
+ * the stack. There are no links back from the parent to the
+ * children. This allows stacks that have common ancestry to share the
+ * entries.
+ *
+ * For example, the following sequence of operations would generate
+ * the tree below:
+ *
+ * CoglHandle stack_a = _cogl_clip_stack_new ();
+ * _cogl_set_clip_stack (stack_a);
+ * cogl_clip_stack_push_rectangle (...);
+ * cogl_clip_stack_push_rectangle (...);
+ * CoglHandle stack_b = _cogl_clip_stack_copy (stack_a);
+ * cogl_clip_stack_push_from_path ();
+ * cogl_set_clip_stack (stack_b);
+ * cogl_clip_stack_push_window_rectangle (...);
+ *
+ *  stack_a
+ *         \ holds a ref to
+ *          +-----------+
+ *          | path node |
+ *          |ref count 1|
+ *          +-----------+
+ *                       \
+ *                        +-----------+  +-----------+
+ *       both tops hold   | rect node |  | rect node |
+ *       a ref to the     |ref count 2|--|ref count 1|
+ *       same rect node   +-----------+  +-----------+
+ *                       /
+ *          +-----------+
+ *          | win. rect |
+ *          |ref count 1|
+ *          +-----------+
+ *         / holds a ref to
+ *  stack_b
+ *
+ */
+
 struct _CoglClipStack
 {
-  GList *stack_top;
+  CoglClipStackEntry *stack_top;
+};
+
+struct _CoglClipStackEntry
+{
+  CoglClipStackEntryType  type;
+
+  /* This will be null if there is no parent. If it is not null then
+     this node must be holding a reference to the parent */
+  CoglClipStackEntry     *parent;
+
+  unsigned int            ref_count;
 };
 
 struct _CoglClipStackEntryRect
 {
-  CoglClipStackEntryType type;
+  CoglClipStackEntry     _parent_data;
 
   /* The rectangle for this clip */
   float                  x0;
@@ -74,7 +126,7 @@ struct _CoglClipStackEntryRect
 
 struct _CoglClipStackEntryWindowRect
 {
-  CoglClipStackEntryType type;
+  CoglClipStackEntry     _parent_data;
 
   /* The window space rectangle for this clip */
   float                  x0;
@@ -85,7 +137,7 @@ struct _CoglClipStackEntryWindowRect
 
 struct _CoglClipStackEntryPath
 {
-  CoglClipStackEntryType type;
+  CoglClipStackEntry     _parent_data;
 
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;
@@ -327,6 +379,27 @@ disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE0) );
 }
 
+static gpointer
+_cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
+                             size_t size,
+                             CoglClipStackEntryType type)
+{
+  CoglClipStackEntry *entry = g_slice_alloc (size);
+
+  /* The new entry starts with a ref count of 1 because the stack
+     holds a reference to it as it is the top entry */
+  entry->ref_count = 1;
+  entry->type = type;
+  entry->parent = clip_stack->stack_top;
+  clip_stack->stack_top = entry;
+
+  /* We don't need to take a reference to the parent from the entry
+     because the clip_stack would have had to reference the top of
+     the stack and we can just steal that */
+
+  return entry;
+}
+
 void
 cogl_clip_push_window_rectangle (int x_offset,
 	                         int y_offset,
@@ -352,7 +425,9 @@ cogl_clip_push_window_rectangle (int x_offset,
 
   framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
 
-  entry = g_slice_new (CoglClipStackEntryWindowRect);
+  entry = _cogl_clip_stack_push_entry (stack,
+                                       sizeof (CoglClipStackEntryWindowRect),
+                                       COGL_CLIP_STACK_WINDOW_RECT);
 
   /* We store the entry coordinates in OpenGL window coordinate space and so
    * because Cogl defines the window origin to be top left but OpenGL defines
@@ -361,7 +436,6 @@ cogl_clip_push_window_rectangle (int x_offset,
    * NB: Cogl forces all offscreen rendering to be done upside down so in this
    * case no conversion is needed.
    */
-  entry->type = COGL_CLIP_STACK_WINDOW_RECT;
   entry->x0 = x_offset;
   entry->x1 = x_offset + width;
   if (cogl_is_offscreen (framebuffer))
@@ -374,9 +448,6 @@ cogl_clip_push_window_rectangle (int x_offset,
       entry->y0 = framebuffer_height - y_offset - height;
       entry->y1 = framebuffer_height - y_offset;
     }
-
-  /* Store it in the stack */
-  stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
   clip_state->stack_dirty = TRUE;
 }
@@ -508,19 +579,17 @@ cogl_clip_push_rectangle (float x_1,
 
   stack = clip_state->stacks->data;
 
-  entry = g_slice_new (CoglClipStackEntryRect);
-
   /* Make a new entry */
-  entry->type = COGL_CLIP_STACK_RECT;
+  entry = _cogl_clip_stack_push_entry (stack,
+                                       sizeof (CoglClipStackEntryRect),
+                                       COGL_CLIP_STACK_RECT);
+
   entry->x0 = x_1;
   entry->y0 = y_1;
   entry->x1 = x_2;
   entry->y1 = y_2;
 
   cogl_get_modelview_matrix (&entry->matrix);
-
-  /* Store it in the stack */
-  stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
   clip_state->stack_dirty = TRUE;
 }
@@ -557,15 +626,13 @@ cogl_clip_push_from_path_preserve (void)
 
   stack = clip_state->stacks->data;
 
-  entry = g_slice_new (CoglClipStackEntryPath);
+  entry = _cogl_clip_stack_push_entry (stack,
+                                       sizeof (CoglClipStackEntryPath),
+                                       COGL_CLIP_STACK_PATH);
 
-  entry->type = COGL_CLIP_STACK_PATH;
   entry->path = cogl_path_copy (cogl_path_get ());
 
   cogl_get_modelview_matrix (&entry->matrix);
-
-  /* Store it in the stack */
-  stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
   clip_state->stack_dirty = TRUE;
 }
@@ -579,11 +646,42 @@ cogl_clip_push_from_path (void)
 }
 
 static void
+_cogl_clip_stack_entry_unref (CoglClipStackEntry *entry)
+{
+  /* Unref all of the entries until we hit the root of the list or the
+     entry still has a remaining reference */
+  while (entry && --entry->ref_count <= 0)
+    {
+      CoglClipStackEntry *parent = entry->parent;
+
+      switch (entry->type)
+        {
+        case COGL_CLIP_STACK_RECT:
+          g_slice_free1 (sizeof (CoglClipStackEntryRect), entry);
+          break;
+
+        case COGL_CLIP_STACK_WINDOW_RECT:
+          g_slice_free1 (sizeof (CoglClipStackEntryWindowRect), entry);
+          break;
+
+        case COGL_CLIP_STACK_PATH:
+          cogl_handle_unref (((CoglClipStackEntryPath *) entry)->path);
+          g_slice_free1 (sizeof (CoglClipStackEntryPath), entry);
+          break;
+
+        default:
+          g_assert_not_reached ();
+        }
+
+      entry = parent;
+    }
+}
+
+static void
 _cogl_clip_pop_real (CoglClipStackState *clip_state)
 {
   CoglClipStack *stack;
-  gpointer entry;
-  CoglClipStackEntryType type;
+  CoglClipStackEntry *entry;
 
   /* We don't log clip stack changes in the journal so we must flush
    * it before making modifications */
@@ -593,22 +691,19 @@ _cogl_clip_pop_real (CoglClipStackState *clip_state)
 
   g_return_if_fail (stack->stack_top != NULL);
 
-  entry = stack->stack_top->data;
-  type = *(CoglClipStackEntryType *) entry;
-
-  /* Remove the top entry from the stack */
-  if (type == COGL_CLIP_STACK_RECT)
-    g_slice_free (CoglClipStackEntryRect, entry);
-  else if (type == COGL_CLIP_STACK_WINDOW_RECT)
-    g_slice_free (CoglClipStackEntryWindowRect, entry);
-  else
-    {
-      cogl_handle_unref (((CoglClipStackEntryPath *) entry)->path);
-      g_slice_free (CoglClipStackEntryPath, entry);
-    }
-
-  stack->stack_top = g_list_delete_link (stack->stack_top,
-                                         stack->stack_top);
+  /* To pop we are moving the top of the stack to the old top's parent
+     node. The stack always needs to have a reference to the top entry
+     so we must take a reference to the new top. The stack would have
+     previously had a reference to the old top so we need to decrease
+     the ref count on that. We need to ref the new head first in case
+     this stack was the only thing referencing the old top. In that
+     case the call to _cogl_clip_stack_entry_unref will unref the
+     parent. */
+  entry = stack->stack_top;
+  stack->stack_top = entry->parent;
+  if (stack->stack_top)
+    stack->stack_top->ref_count++;
+  _cogl_clip_stack_entry_unref (entry);
 
   clip_state->stack_dirty = TRUE;
 }
@@ -634,13 +729,13 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
-  GList *node;
   int scissor_x0 = 0;
   int scissor_y0 = 0;
   int scissor_x1 = G_MAXINT;
   int scissor_y1 = G_MAXINT;
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+  CoglClipStackEntry *entry;
 
   if (!clip_state->stack_dirty)
     return;
@@ -670,16 +765,13 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   if (stack->stack_top == NULL)
     return;
 
-  /* Find the bottom of the stack */
-  for (node = stack->stack_top; node->next; node = node->next);
-
-  /* Re-add every entry from the bottom of the stack up */
-  for (; node; node = node->prev)
+  /* Add all of the entries. This will end up adding them in the
+     reverse order that they were specified but as all of the clips
+     are intersecting it should work out the same regardless of the
+     order */
+  for (entry = stack->stack_top; entry; entry = entry->parent)
     {
-      gpointer entry = node->data;
-      CoglClipStackEntryType type = *(CoglClipStackEntryType *) entry;
-
-      if (type == COGL_CLIP_STACK_PATH)
+      if (entry->type == COGL_CLIP_STACK_PATH)
         {
           CoglClipStackEntryPath *path_entry = (CoglClipStackEntryPath *) entry;
 
@@ -693,19 +785,16 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
           _cogl_matrix_stack_pop (modelview_stack);
 
           using_stencil_buffer = TRUE;
-
-          /* We can't use clip planes any more */
-          has_clip_planes = FALSE;
         }
-      else if (type == COGL_CLIP_STACK_RECT)
+      else if (entry->type == COGL_CLIP_STACK_RECT)
         {
           CoglClipStackEntryRect *rect = (CoglClipStackEntryRect *) entry;
 
           _cogl_matrix_stack_push (modelview_stack);
           _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
 
-          /* If this is the first entry and we support clip planes then use
-             that instead */
+          /* If we support clip planes and we haven't already used
+             them then use that instead */
           if (has_clip_planes)
             {
               set_clip_planes (rect->x0,
@@ -732,7 +821,8 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
         {
           /* Get the intersection of all window space rectangles in the clip
            * stack */
-          CoglClipStackEntryWindowRect *window_rect = entry;
+          CoglClipStackEntryWindowRect *window_rect =
+            (CoglClipStackEntryWindowRect *) entry;
           scissor_x0 = MAX (scissor_x0, window_rect->x0);
           scissor_y0 = MAX (scissor_y0, window_rect->y0);
           scissor_x1 = MIN (scissor_x1, window_rect->x1);
@@ -813,9 +903,10 @@ _cogl_clip_stack_restore_real (CoglClipStackState *clip_state)
 
   stack = clip_state->stacks->data;
 
-  /* Empty the current stack */
-  while (stack->stack_top)
-    _cogl_clip_pop_real (clip_state);
+  /* Free the stack. We only need to unref the top node and this
+     should end up freeing all of the parents if need be */
+  if (stack->stack_top)
+    _cogl_clip_stack_entry_unref (stack->stack_top);
 
   /* Revert to an old stack */
   g_slice_free (CoglClipStack, stack);
