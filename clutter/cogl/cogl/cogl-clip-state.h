@@ -47,4 +47,32 @@ _cogl_clip_state_dirty (CoglClipState *state);
 void
 _cogl_clip_state_flush (CoglClipState *clip_state);
 
+/* TODO: we may want to make these two functions public because they
+ * can be used to implement a better API than cogl_clip_stack_save()
+ * and cogl_clip_stack_restore().
+ */
+/*
+ * _cogl_get_clip_stack:
+ *
+ * Gets a handle to the current clip stack. This can be used to later
+ * return to the same clip stack state with _cogl_set_clip_stack(). A
+ * reference is not taken on the stack so if you want to keep it you
+ * should call cogl_handle_ref() or _cogl_clip_stack_copy().
+ *
+ * Return value: a handle to the current clip stack.
+ */
+CoglHandle
+_cogl_get_clip_stack (void);
+
+/*
+ * _cogl_set_clip_stack:
+ * @handle: a handle to the replacement clip stack
+ *
+ * Replaces the current clip stack with @handle.
+ *
+ * Return value: a handle to the current clip stack.
+ */
+void
+_cogl_set_clip_stack (CoglHandle handle);
+
 #endif /* __COGL_CLIP_STATE_H */

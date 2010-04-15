@@ -403,3 +403,37 @@ _cogl_clip_state_dirty (CoglClipState *clip_state)
 {
   clip_state->stack_dirty = TRUE;
 }
+
+CoglHandle
+_cogl_get_clip_stack (void)
+{
+  CoglHandle framebuffer;
+  CoglClipState *clip_state;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  return clip_state->stacks->data;
+}
+
+void
+_cogl_set_clip_stack (CoglHandle handle)
+{
+  CoglHandle framebuffer;
+  CoglClipState *clip_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (handle == COGL_INVALID_HANDLE)
+    return;
+
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  /* Replace the top of the stack of stacks */
+  cogl_handle_ref (handle);
+  cogl_handle_unref (clip_state->stacks->data);
+  clip_state->stacks->data = handle;
+}

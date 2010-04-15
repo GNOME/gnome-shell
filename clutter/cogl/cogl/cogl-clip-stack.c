@@ -682,3 +682,29 @@ _cogl_clip_stack_free (CoglClipStack *stack)
 
   g_slice_free (CoglClipStack, stack);
 }
+
+CoglHandle
+_cogl_clip_stack_copy (CoglHandle handle)
+{
+  CoglHandle new_handle;
+  CoglClipStack *new_stack, *old_stack;
+
+  if (!cogl_is_clip_stack (handle))
+    return COGL_INVALID_HANDLE;
+
+  old_stack = COGL_CLIP_STACK (handle);
+
+  new_handle = _cogl_clip_stack_new ();
+  new_stack = COGL_CLIP_STACK (new_handle);
+
+  /* We can copy the stack by just referencing the other stack's
+     data. There's no need to implement copy-on-write because the
+     entries of the stack can't be modified. If the other stack pops
+     some entries off they will still be kept alive because this stack
+     holds a reference. */
+  new_stack->stack_top = old_stack->stack_top;
+  if (new_stack->stack_top)
+    new_stack->stack_top->ref_count++;
+
+  return new_handle;
+}

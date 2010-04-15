@@ -53,4 +53,23 @@ void
 _cogl_clip_stack_flush (CoglHandle handle,
                         gboolean *stencil_used_p);
 
+
+/* TODO: we may want to make this function public because it can be
+ * used to implement a better API than cogl_clip_stack_save() and
+ * cogl_clip_stack_restore().
+ */
+/*
+ * _cogl_clip_stack_copy:
+ * @handle: A handle to a clip stack
+ *
+ * Creates a copy of the given clip stack and returns a new handle to
+ * it. The data from the original stack is shared with the new stack
+ * so making copies is relatively cheap. Modifying the original stack
+ * does not affect the new stack.
+ *
+ * Return value: a new clip stack with the same data as @handle
+ */
+CoglHandle
+_cogl_clip_stack_copy (CoglHandle handle);
+
 #endif /* __COGL_CLIP_STACK_H */
