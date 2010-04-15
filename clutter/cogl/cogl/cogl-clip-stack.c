@@ -40,6 +40,7 @@
 #include "cogl-util.h"
 #include "cogl-path-private.h"
 
+typedef struct _CoglClipStack CoglClipStack;
 typedef struct _CoglClipStackEntry CoglClipStackEntry;
 typedef struct _CoglClipStackEntryRect CoglClipStackEntryRect;
 typedef struct _CoglClipStackEntryWindowRect CoglClipStackEntryWindowRect;
@@ -94,6 +95,8 @@ typedef enum
 
 struct _CoglClipStack
 {
+  CoglHandleObject _parent;
+
   CoglClipStackEntry *stack_top;
 };
 
@@ -143,6 +146,12 @@ struct _CoglClipStackEntryPath
 
   CoglHandle             path;
 };
+
+static void _cogl_clip_stack_free (CoglClipStack *stack);
+
+COGL_HANDLE_DEFINE (ClipStack, clip_stack);
+
+#define COGL_CLIP_STACK(stack) ((CoglClipStack *) (stack))
 
 static void
 project_vertex (const CoglMatrix *modelview_matrix,
@@ -400,12 +409,13 @@ _cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
 }
 
 void
-_cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
+_cogl_clip_stack_push_window_rectangle (CoglHandle handle,
                                         int x_offset,
                                         int y_offset,
                                         int width,
                                         int height)
 {
+  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryWindowRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -421,13 +431,14 @@ _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
 }
 
 void
-_cogl_clip_stack_push_rectangle (CoglClipStack *stack,
+_cogl_clip_stack_push_rectangle (CoglHandle handle,
                                  float x_1,
                                  float y_1,
                                  float x_2,
                                  float y_2,
                                  const CoglMatrix *modelview_matrix)
 {
+  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryRect *entry;
 
   /* Make a new entry */
@@ -444,10 +455,11 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
 }
 
 void
-_cogl_clip_stack_push_from_path (CoglClipStack *stack,
+_cogl_clip_stack_push_from_path (CoglHandle handle,
                                  CoglHandle path,
                                  const CoglMatrix *modelview_matrix)
 {
+  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryPath *entry;
 
   entry = _cogl_clip_stack_push_entry (stack,
@@ -492,8 +504,9 @@ _cogl_clip_stack_entry_unref (CoglClipStackEntry *entry)
 }
 
 void
-_cogl_clip_stack_pop (CoglClipStack *stack)
+_cogl_clip_stack_pop (CoglHandle handle)
 {
+  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntry *entry;
 
   g_return_if_fail (stack->stack_top != NULL);
@@ -514,9 +527,10 @@ _cogl_clip_stack_pop (CoglClipStack *stack)
 }
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack,
+_cogl_clip_stack_flush (CoglHandle handle,
                         gboolean *stencil_used_p)
 {
+  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
@@ -647,7 +661,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   *stencil_used_p = using_stencil_buffer;
 }
 
-CoglClipStack *
+CoglHandle
 _cogl_clip_stack_new (void)
 {
   CoglClipStack *stack;
@@ -655,7 +669,7 @@ _cogl_clip_stack_new (void)
   stack = g_slice_new (CoglClipStack);
   stack->stack_top = NULL;
 
-  return stack;
+  return _cogl_clip_stack_handle_new (stack);
 }
 
 void

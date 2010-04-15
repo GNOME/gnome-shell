@@ -24,23 +24,18 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
-typedef struct _CoglClipStack CoglClipStack;
-
-CoglClipStack *
+CoglHandle
 _cogl_clip_stack_new (void);
 
 void
-_cogl_clip_stack_free (CoglClipStack *stack);
-
-void
-_cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
+_cogl_clip_stack_push_window_rectangle (CoglHandle handle,
                                         int x_offset,
                                         int y_offset,
                                         int width,
                                         int height);
 
 void
-_cogl_clip_stack_push_rectangle (CoglClipStack *stack,
+_cogl_clip_stack_push_rectangle (CoglHandle handle,
                                  float x_1,
                                  float y_1,
                                  float x_2,
@@ -48,14 +43,14 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  const CoglMatrix *modelview_matrix);
 
 void
-_cogl_clip_stack_push_from_path (CoglClipStack *stack,
+_cogl_clip_stack_push_from_path (CoglHandle handle,
                                  CoglHandle path,
                                  const CoglMatrix *modelview_matrix);
 void
-_cogl_clip_stack_pop (CoglClipStack *stack);
+_cogl_clip_stack_pop (CoglHandle handle);
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack,
+_cogl_clip_stack_flush (CoglHandle handle,
                         gboolean *stencil_used_p);
 
 #endif /* __COGL_CLIP_STACK_H */
