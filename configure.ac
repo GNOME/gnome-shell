@@ -1024,6 +1024,7 @@ AC_CONFIG_FILES([
         clutter/cogl/cogl/driver/Makefile
         clutter/cogl/cogl/driver/gl/Makefile
         clutter/cogl/cogl/driver/gles/Makefile
+        clutter/cogl/cogl/tesselator/Makefile
         clutter/cogl/pango/Makefile
         clutter/json/Makefile
         tests/Makefile
