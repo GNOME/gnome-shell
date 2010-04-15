@@ -47,7 +47,7 @@ cogl_clip_push_window_rectangle (int x_offset,
 {
   CoglHandle framebuffer;
   CoglClipState *clip_state;
-  CoglClipStack *stack;
+  CoglHandle stack;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -174,7 +174,7 @@ cogl_clip_push_rectangle (float x_1,
 {
   CoglHandle framebuffer;
   CoglClipState *clip_state;
-  CoglClipStack *stack;
+  CoglHandle stack;
   CoglMatrix modelview_matrix;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -219,7 +219,7 @@ cogl_clip_push_from_path_preserve (void)
 {
   CoglHandle framebuffer;
   CoglClipState *clip_state;
-  CoglClipStack *stack;
+  CoglHandle stack;
   CoglMatrix modelview_matrix;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -252,7 +252,7 @@ cogl_clip_push_from_path (void)
 static void
 _cogl_clip_pop_real (CoglClipState *clip_state)
 {
-  CoglClipStack *stack;
+  CoglHandle stack;
 
   /* We don't log clip stack changes in the journal so we must flush
    * it before making modifications */
@@ -282,7 +282,7 @@ cogl_clip_pop (void)
 void
 _cogl_clip_state_flush (CoglClipState *clip_state)
 {
-  CoglClipStack *stack;
+  CoglHandle stack;
 
   if (!clip_state->stack_dirty)
     return;
@@ -316,7 +316,7 @@ cogl_clip_ensure (void)
 static void
 _cogl_clip_stack_save_real (CoglClipState *clip_state)
 {
-  CoglClipStack *stack;
+  CoglHandle stack;
 
   /* We don't log clip stack changes in the journal so we must flush
    * it before making modifications */
@@ -345,7 +345,7 @@ cogl_clip_stack_save (void)
 static void
 _cogl_clip_stack_restore_real (CoglClipState *clip_state)
 {
-  CoglClipStack *stack;
+  CoglHandle stack;
 
   g_return_if_fail (clip_state->stacks != NULL);
 
@@ -355,7 +355,7 @@ _cogl_clip_stack_restore_real (CoglClipState *clip_state)
 
   stack = clip_state->stacks->data;
 
-  _cogl_clip_stack_free (stack);
+  cogl_handle_unref (stack);
 
   /* Revert to an old stack */
   clip_state->stacks = g_slist_delete_link (clip_state->stacks,
