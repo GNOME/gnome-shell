@@ -282,13 +282,14 @@ clutter_texture_realize (ClutterActor *actor)
       return;
     }
 
-  /* If the texture is not a FBO, then realization is a no-op but
-   * we still want to be in REALIZED state to maintain invariants.
-   * We may have already created the texture if someone set some
-   * data earlier, or we may create it later if someone sets some
-   * data later. The fact that we may have created it earlier is
-   * really a bug, since it means ClutterTexture can have GL
-   * resources without being realized.
+  /* If the texture is not a FBO, then realization is a no-op but we
+   * still want to be in REALIZED state to maintain invariants.
+   * ClutterTexture doesn't need to be realized to have a Cogl texture
+   * because Clutter assumes that a GL context is always current so
+   * there is no need to wait to realization time to create the
+   * texture. Although this is slightly odd it would be wasteful to
+   * redundantly store a copy of the texture data in local memory just
+   * so that we can make a texture during realize.
    */
 
   CLUTTER_NOTE (TEXTURE, "Texture realized");
@@ -1210,12 +1211,6 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  * @cogl_tex. A reference to the texture is taken so if the handle is
  * no longer needed it should be deref'd with cogl_handle_unref.
  *
- * This should not be called on an unrealizable texture (one that
- * isn't inside a stage). (Currently the ClutterTexture
- * implementation relies on being able to have a GL texture while
- * unrealized, which means you can get away with it, but it's
- * not correct and may change in the future.)
- *
  * Since: 0.8
  */
 void
@@ -1229,11 +1224,10 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
   g_return_if_fail (cogl_is_texture (cogl_tex));
 
-  /* FIXME this implementation should realize the actor if it's in a
-   * stage, and warn and return if not in a stage yet. However, right
-   * now everything would break if we did that, so we just fudge it
-   * and we're broken: we can have a texture without being realized.
-   */
+  /* This function can set the texture without the actor being
+     realized. This is ok because Clutter requires that the GL context
+     always be current so there is no point in waiting to realization
+     to set the texture. */
 
   priv = texture->priv;
 

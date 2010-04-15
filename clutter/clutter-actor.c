@@ -180,14 +180,18 @@
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REALIZED flag is set.
  *
- * Whether GL resources such as textures are allocated;
- * if an actor is mapped it must also be realized, but an actor
- * can be realized and unmapped (this is so hiding an actor temporarily
- * doesn't do an expensive unrealize/realize).
+ * The realized state has an actor-dependant interpretation. If an
+ * actor wants to delay allocating resources until it is attached to a
+ * stage, it may use the realize state to do so. However it is
+ * perfectly acceptable for an actor to allocate Cogl resources before
+ * being realized because there is only one GL context used by Clutter
+ * so any resources will work on any stage.  If an actor is mapped it
+ * must also be realized, but an actor can be realized and unmapped
+ * (this is so hiding an actor temporarily doesn't do an expensive
+ * unrealize/realize).
  *
  * To be realized an actor must be inside a stage, and all its parents
- * must be realized. The stage is required so the actor knows the
- * correct GL context and window system resources to use.
+ * must be realized.
  *
  * Since: 0.2
  */
@@ -1232,11 +1236,12 @@ clutter_actor_hide_all (ClutterActor *self)
  * clutter_actor_realize:
  * @self: A #ClutterActor
  *
- * Creates any underlying graphics resources needed by the actor to be
- * displayed.
- *
- * Realization means the actor is now tied to a specific rendering context
- * (that is, a specific toplevel stage).
+ * Realization informs the actor that it is attached to a stage. It
+ * can use this to allocate resources if it wanted to delay allocation
+ * until it would be rendered. However it is perfectly acceptable for
+ * an actor to create resources before being realized because Clutter
+ * only ever has a single rendering context so that actor is free to
+ * be moved from one stage to another.
  *
  * This function does nothing if the actor is already realized.
  *
@@ -1321,11 +1326,12 @@ clutter_actor_real_unrealize (ClutterActor *self)
  * clutter_actor_unrealize:
  * @self: A #ClutterActor
  *
- * Frees up any underlying graphics resources needed by the actor to
- * be displayed.
- *
- * Unrealization means the actor is now independent of any specific
- * rendering context (is not attached to a specific toplevel stage).
+ * Unrealization informs the actor that it may be being destroyed or
+ * moved to another stage. The actor may want to destroy any
+ * underlying graphics resources at this point. However it is
+ * perfectly acceptable for it to retain the resources until the actor
+ * is destroyed because Clutter only ever uses a single rendering
+ * context and all of the graphics resources are valid on any stage.
  *
  * Because mapped actors must be realized, actors may not be
  * unrealized if they are mapped. This function hides the actor to be
@@ -1368,11 +1374,12 @@ clutter_actor_unrealize (ClutterActor *self)
  * clutter_actor_unrealize_not_hiding:
  * @self: A #ClutterActor
  *
- * Frees up any underlying graphics resources needed by the actor to
- * be displayed.
- *
- * Unrealization means the actor is now independent of any specific
- * rendering context (is not attached to a specific toplevel stage).
+ * Unrealization informs the actor that it may be being destroyed or
+ * moved to another stage. The actor may want to destroy any
+ * underlying graphics resources at this point. However it is
+ * perfectly acceptable for it to retain the resources until the actor
+ * is destroyed because Clutter only ever uses a single rendering
+ * context and all of the graphics resources are valid on any stage.
  *
  * Because mapped actors must be realized, actors may not be
  * unrealized if they are mapped. You must hide the actor or one of

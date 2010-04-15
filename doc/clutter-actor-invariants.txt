@@ -29,7 +29,10 @@ ClutterActor.
 
 CLUTTER_ACTOR_REALIZED
         Means: the actor has GPU resources associated to its paint
-        cycle.
+        cycle. Note however that an actor is allowed to allocate Cogl
+        resources before being realized because Clutter only ever uses
+        one rendering context which is always current. An actor is
+        free to create resources at any time.
 
         Set by clutter_actor_realize(), unset by
         clutter_actor_unrealize(). Generally set implicitly when the
