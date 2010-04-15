@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = driver
+SUBDIRS = driver tesselator
 
 BUILT_SOURCES =
 EXTRA_DIST =
@@ -159,7 +159,10 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 noinst_LTLIBRARIES = libclutter-cogl.la
 
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
+libclutter_cogl_la_LIBADD = \
+	-lm $(CLUTTER_LIBS) \
+	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la \
+	$(top_builddir)/clutter/cogl/cogl/tesselator/libtesselator.la
 
 libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
 
