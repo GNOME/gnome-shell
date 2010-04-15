@@ -76,6 +76,11 @@ struct _CoglPathData
   unsigned int      last_path;
   floatVec2         path_nodes_min;
   floatVec2         path_nodes_max;
+
+  CoglHandle        vbo;
+  unsigned int      vbo_n_vertices;
+  CoglHandle        vbo_indices;
+  unsigned int      vbo_n_indices;
 };
 
 /* This is an internal version of cogl_path_new that doesn't affect

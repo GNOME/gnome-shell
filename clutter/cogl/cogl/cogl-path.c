@@ -33,6 +33,8 @@
 #include "cogl-material-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-path-private.h"
+#include "cogl-texture-private.h"
+#include "tesselator/tesselator.h"
 
 #include <string.h>
 #include <math.h>
@@ -45,6 +47,8 @@
 
 static void _cogl_path_free (CoglPath *path);
 
+static void _cogl_path_build_vbo (CoglPath *path);
+
 COGL_OBJECT_DEFINE (Path, path);
 
 static void
@@ -53,6 +57,12 @@ _cogl_path_data_unref (CoglPathData *data)
   if (--data->ref_count <= 0)
     {
       g_array_free (data->path_nodes, TRUE);
+
+      if (data->vbo)
+        {
+          cogl_handle_unref (data->vbo);
+          cogl_handle_unref (data->vbo_indices);
+        }
 
       g_slice_free (CoglPathData, data);
     }
@@ -77,9 +87,19 @@ _cogl_path_modify (CoglPath *path)
                            old_data->path_nodes->data,
                            old_data->path_nodes->len);
 
+      path->data->vbo = COGL_INVALID_HANDLE;
+      path->data->vbo_indices = COGL_INVALID_HANDLE;
       path->data->ref_count = 1;
 
       _cogl_path_data_unref (old_data);
+    }
+  /* The path is altered so the vbo will now be invalid */
+  else if (path->data->vbo)
+    {
+      cogl_handle_unref (path->data->vbo);
+      cogl_handle_unref (path->data->vbo_indices);
+      path->data->vbo = COGL_INVALID_HANDLE;
+      path->data->vbo_indices = COGL_INVALID_HANDLE;
     }
 }
 
@@ -213,13 +233,94 @@ _cogl_path_get_bounds (CoglPath *path,
     }
 }
 
+static void
+_cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
+{
+  CoglFramebuffer *framebuffer;
+  CoglClipState *clip_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_journal_flush ();
+
+  framebuffer = _cogl_get_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  _cogl_add_path_to_stencil_buffer (path,
+                                    clip_state->stencil_used,
+                                    FALSE);
+
+  cogl_rectangle (path->data->path_nodes_min.x,
+                  path->data->path_nodes_min.y,
+                  path->data->path_nodes_max.x,
+                  path->data->path_nodes_max.y);
+
+  /* The stencil buffer now contains garbage so the clip area needs to
+   * be rebuilt.
+   *
+   * NB: We only ever try and update the clip state during
+   * _cogl_journal_init (when we flush the framebuffer state) which is
+   * only called when the journal first gets something logged in it; so
+   * we call cogl_flush() to emtpy the journal.
+   */
+  cogl_flush ();
+  _cogl_clip_state_dirty (clip_state);
+}
+
+static void
+_cogl_path_fill_nodes (CoglPath *path)
+{
+  const GList *l;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If any of the layers of the current material contain sliced
+     textures or textures with waste then it won't work to draw the
+     path directly. Instead we can use draw the texture as a quad
+     clipped to the stencil buffer. */
+  for (l = cogl_material_get_layers (ctx->source_material); l; l = l->next)
+    {
+      CoglHandle layer = l->data;
+      CoglHandle texture = cogl_material_layer_get_texture (layer);
+
+      if (texture != COGL_INVALID_HANDLE &&
+          (cogl_texture_is_sliced (texture) ||
+           !_cogl_texture_can_hardware_repeat (texture)))
+        {
+          if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+            _cogl_path_fill_nodes_with_stencil_buffer (path);
+          else
+            {
+              static gboolean seen_warning = FALSE;
+
+              if (!seen_warning)
+                {
+                  g_warning ("Paths can not be filled using materials with "
+                             "sliced textures unless there is a stencil "
+                             "buffer");
+                  seen_warning = TRUE;
+                }
+            }
+
+          return;
+        }
+    }
+
+  _cogl_path_build_vbo (path);
+
+  cogl_vertex_buffer_draw_elements (path->data->vbo,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    path->data->vbo_indices,
+                                    0, path->data->vbo_n_vertices - 1,
+                                    0, path->data->vbo_n_indices);
+}
+
 void
 _cogl_add_path_to_stencil_buffer (CoglPath  *path,
                                   gboolean   merge,
                                   gboolean   need_clear)
 {
   CoglPathData    *data = path->data;
-  unsigned int     path_start = 0;
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle       prev_source;
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
@@ -292,20 +393,8 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
 
   GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
-  /* Disable all client texture coordinate arrays */
-  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
-  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
-
-  while (path_start < data->path_nodes->len)
-    {
-      CoglPathNode *node =
-        &g_array_index (data->path_nodes, CoglPathNode, path_start);
-
-      GE (glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode), &node->x));
-      GE (glDrawArrays (GL_TRIANGLE_FAN, 0, node->path_size));
-
-      path_start += node->path_size;
-    }
+  if (path->data->path_nodes->len > 0)
+    _cogl_path_fill_nodes (path);
 
   if (merge)
     {
@@ -349,268 +438,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   cogl_object_unref (prev_source);
 }
 
-static int
-compare_ints (gconstpointer a,
-              gconstpointer b)
-{
-  return GPOINTER_TO_INT(a)-GPOINTER_TO_INT(b);
-}
-
-static void
-_cogl_path_fill_nodes_scanlines (CoglPathNode *path,
-                                 unsigned int  path_size,
-                                 int           bounds_x,
-                                 int           bounds_y,
-                                 unsigned int  bounds_w,
-                                 unsigned int  bounds_h)
-{
-  CoglHandle source;
-
-  /* This is our edge list it stores intersections between our
-   * curve and scanlines, it should probably be implemented with a
-   * data structure that has smaller overhead for inserting the
-   * curve/scanline intersections.
-   */
-  GSList **scanlines = g_alloca (bounds_h * sizeof (GSList *));
-
-  int i;
-  int prev_x;
-  int prev_y;
-  int first_x;
-  int first_y;
-  int lastdir = -2; /* last direction we vere moving */
-  int lastline = -1; /* the previous scanline we added to */
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* We are going to use GL to draw directly so make sure any
-   * previously batched geometry gets to GL before we start...
-   */
-  _cogl_journal_flush ();
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
-
-  if (G_UNLIKELY (ctx->legacy_state_set))
-    {
-      source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
-    }
-  else
-    source = ctx->source_material;
-
-  _cogl_material_flush_gl_state (source, FALSE);
-
-  _cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
-
-
-  /* clear scanline intersection lists */
-  for (i = 0; i < bounds_h; i++)
-    scanlines[i]=NULL;
-
-  first_x = prev_x = path->x;
-  first_y = prev_y = path->y;
-
-  /* create scanline intersection list */
-  for (i=1; i < path_size; i++)
-    {
-      int dest_x = path[i].x;
-      int dest_y = path[i].y;
-      int ydir;
-      int dx;
-      int dy;
-      int y;
-
-    fill_close:
-      dx = dest_x - prev_x;
-      dy = dest_y - prev_y;
-
-      if (dy < 0)
-        ydir = -1;
-      else if (dy > 0)
-        ydir = 1;
-      else
-        ydir = 0;
-
-      /* do linear interpolation between vertices */
-      for (y = prev_y; y != dest_y; y += ydir)
-        {
-
-          /* only add a point if the scanline has changed and we're
-           * within bounds.
-           */
-          if (y - bounds_y >= 0 &&
-              y - bounds_y < bounds_h &&
-              lastline != y)
-            {
-              int x = prev_x + (dx * (y-prev_y)) / dy;
-
-              scanlines[ y - bounds_y ]=
-                g_slist_insert_sorted (scanlines[ y - bounds_y],
-                                       GINT_TO_POINTER(x),
-                                       compare_ints);
-
-              if (ydir != lastdir &&  /* add a double entry when changing */
-                  lastdir != -2)        /* vertical direction */
-                scanlines[ y - bounds_y ]=
-                  g_slist_insert_sorted (scanlines[ y - bounds_y],
-                                         GINT_TO_POINTER(x),
-                                         compare_ints);
-              lastdir = ydir;
-              lastline = y;
-            }
-        }
-
-      prev_x = dest_x;
-      prev_y = dest_y;
-
-      /* if we're on the last knot, fake the first vertex being a
-         next one */
-      if (path_size == i+1)
-        {
-          dest_x = first_x;
-          dest_y = first_y;
-          i++; /* to make the loop finally end */
-          goto fill_close;
-        }
-    }
-
-  {
-    int spans = 0;
-    int span_no;
-    GLfloat *coords;
-
-    /* count number of spans */
-    for (i = 0; i < bounds_h; i++)
-      {
-        GSList *iter = scanlines[i];
-        while (iter)
-          {
-            GSList *next = iter->next;
-            if (!next)
-              {
-                break;
-              }
-            /* draw the segments that should be visible */
-            spans ++;
-            iter = next->next;
-          }
-      }
-    coords = g_malloc0 (spans * sizeof (GLfloat) * 3 * 2 * 2);
-
-    span_no = 0;
-    /* build list of triangles */
-    for (i = 0; i < bounds_h; i++)
-      {
-        GSList *iter = scanlines[i];
-        while (iter)
-          {
-            GSList *next = iter->next;
-            GLfloat x_0, x_1;
-            GLfloat y_0, y_1;
-            if (!next)
-              break;
-
-            x_0 = GPOINTER_TO_INT (iter->data);
-            x_1 = GPOINTER_TO_INT (next->data);
-            y_0 = bounds_y + i;
-            y_1 = bounds_y + i + 1.0625f;
-            /* render scanlines 1.0625 high to avoid gaps when
-               transformed */
-
-            coords[span_no * 12 + 0] = x_0;
-            coords[span_no * 12 + 1] = y_0;
-            coords[span_no * 12 + 2] = x_1;
-            coords[span_no * 12 + 3] = y_0;
-            coords[span_no * 12 + 4] = x_1;
-            coords[span_no * 12 + 5] = y_1;
-            coords[span_no * 12 + 6] = x_0;
-            coords[span_no * 12 + 7] = y_0;
-            coords[span_no * 12 + 8] = x_0;
-            coords[span_no * 12 + 9] = y_1;
-            coords[span_no * 12 + 10] = x_1;
-            coords[span_no * 12 + 11] = y_1;
-            span_no ++;
-            iter = next->next;
-          }
-      }
-    for (i = 0; i < bounds_h; i++)
-      g_slist_free (scanlines[i]);
-
-    /* render triangles */
-    GE (glVertexPointer (2, GL_FLOAT, 0, coords ));
-    GE (glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
-    g_free (coords);
-  }
-
-  if (G_UNLIKELY (source != ctx->source_material))
-    cogl_handle_unref (source);
-}
-
-static void
-_cogl_path_fill_nodes (void)
-{
-  CoglPathData *data;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  data = COGL_PATH (ctx->current_path)->data;
-
-  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
-      cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
-    {
-      CoglFramebuffer *framebuffer;
-      CoglClipState *clip_state;
-
-      _cogl_journal_flush ();
-
-      framebuffer = _cogl_get_framebuffer ();
-      clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-      _cogl_add_path_to_stencil_buffer (ctx->current_path,
-                                        clip_state->stencil_used,
-                                        FALSE);
-
-      cogl_rectangle (data->path_nodes_min.x,
-                      data->path_nodes_min.y,
-                      data->path_nodes_max.x,
-                      data->path_nodes_max.y);
-
-      /* The stencil buffer now contains garbage so the clip area needs to
-       * be rebuilt.
-       *
-       * NB: We only ever try and update the clip state during
-       * _cogl_journal_init (when we flush the framebuffer state) which is
-       * only called when the journal first gets something logged in it; so
-       * we call cogl_flush() to emtpy the journal.
-       */
-      cogl_flush ();
-      _cogl_clip_state_dirty (clip_state);
-    }
-  else
-    {
-      unsigned int path_start = 0;
-
-      while (path_start < data->path_nodes->len)
-        {
-          CoglPathNode *node = &g_array_index (data->path_nodes, CoglPathNode,
-                                               path_start);
-
-          _cogl_path_fill_nodes_scanlines (node, node->path_size,
-                                           data->path_nodes_min.x,
-                                           data->path_nodes_min.y,
-                                           data->path_nodes_max.x -
-                                           data->path_nodes_min.x,
-                                           data->path_nodes_max.y -
-                                           data->path_nodes_min.y);
-
-          path_start += node->path_size;
-        }
-    }
-}
-
 void
 cogl_path_fill (void)
 {
@@ -622,12 +449,16 @@ cogl_path_fill (void)
 void
 cogl_path_fill_preserve (void)
 {
+  CoglPath *path;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (COGL_PATH (ctx->current_path)->data->path_nodes->len == 0)
+  path = COGL_PATH (ctx->current_path);
+
+  if (path->data->path_nodes->len == 0)
     return;
 
-  _cogl_path_fill_nodes ();
+  _cogl_path_fill_nodes (path);
 }
 
 void
@@ -1116,6 +947,8 @@ _cogl_path_new (void)
   data->ref_count = 1;
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
+  data->vbo = COGL_INVALID_HANDLE;
+  data->vbo_indices = COGL_INVALID_HANDLE;
 
   return _cogl_path_object_new (path);
 }
@@ -1286,3 +1119,349 @@ cogl_set_path (CoglPath *path)
   ctx->current_path = path;
 }
 
+typedef struct _CoglPathTesselator CoglPathTesselator;
+typedef struct _CoglPathTesselatorVertex CoglPathTesselatorVertex;
+
+struct _CoglPathTesselator
+{
+  GLUtesselator *glu_tess;
+  GLenum primitive_type;
+  int vertex_number;
+  /* Array of CoglPathTesselatorVertex. This needs to grow when the
+     combine callback is called */
+  GArray *vertices;
+  /* Array of integers for the indices into the vertices array. Each
+     element will either be guint8, guint16 or guint32 depending on
+     the number of vertices */
+  GArray *indices;
+  CoglIndicesType indices_type;
+  /* Indices used to split fans and strips */
+  int index_a, index_b;
+};
+
+struct _CoglPathTesselatorVertex
+{
+  float x, y, s, t;
+};
+
+static void
+_cogl_path_tesselator_begin (GLenum type,
+                             CoglPathTesselator *tess)
+{
+  g_assert (type == GL_TRIANGLES ||
+            type == GL_TRIANGLE_FAN ||
+            type == GL_TRIANGLE_STRIP);
+
+  tess->primitive_type = type;
+  tess->vertex_number = 0;
+}
+
+static CoglIndicesType
+_cogl_path_tesselator_get_indices_type_for_size (int n_vertices)
+{
+  if (n_vertices <= 256)
+    return COGL_INDICES_TYPE_UNSIGNED_BYTE;
+  else if (n_vertices <= 65536)
+    return COGL_INDICES_TYPE_UNSIGNED_SHORT;
+  else
+    return COGL_INDICES_TYPE_UNSIGNED_INT;
+}
+
+static void
+_cogl_path_tesselator_allocate_indices_array (CoglPathTesselator *tess)
+{
+  switch (tess->indices_type)
+    {
+    case COGL_INDICES_TYPE_UNSIGNED_BYTE:
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint8));
+      break;
+
+    case COGL_INDICES_TYPE_UNSIGNED_SHORT:
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint16));
+      break;
+
+    case COGL_INDICES_TYPE_UNSIGNED_INT:
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint32));
+      break;
+    }
+}
+
+static void
+_cogl_path_tesselator_add_index (CoglPathTesselator *tess, int vertex_index)
+{
+  switch (tess->indices_type)
+    {
+    case COGL_INDICES_TYPE_UNSIGNED_BYTE:
+      {
+        guint8 val = vertex_index;
+        g_array_append_val (tess->indices, val);
+      }
+      break;
+
+    case COGL_INDICES_TYPE_UNSIGNED_SHORT:
+      {
+        guint16 val = vertex_index;
+        g_array_append_val (tess->indices, val);
+      }
+      break;
+
+    case COGL_INDICES_TYPE_UNSIGNED_INT:
+      {
+        guint32 val = vertex_index;
+        g_array_append_val (tess->indices, val);
+      }
+      break;
+    }
+}
+
+static void
+_cogl_path_tesselator_vertex (gpointer vertex_data,
+                              CoglPathTesselator *tess)
+{
+  int vertex_index;
+
+  vertex_index = GPOINTER_TO_INT (vertex_data);
+
+  /* This tries to convert all of the primitives into GL_TRIANGLES
+     with indices to share vertices */
+  switch (tess->primitive_type)
+    {
+    case GL_TRIANGLES:
+      /* Directly use the vertex */
+      _cogl_path_tesselator_add_index (tess, vertex_index);
+      break;
+
+    case GL_TRIANGLE_FAN:
+      if (tess->vertex_number == 0)
+        tess->index_a = vertex_index;
+      else if (tess->vertex_number == 1)
+        tess->index_b = vertex_index;
+      else
+        {
+          /* Create a triangle with the first vertex, the previous
+             vertex and this vertex */
+          _cogl_path_tesselator_add_index (tess, tess->index_a);
+          _cogl_path_tesselator_add_index (tess, tess->index_b);
+          _cogl_path_tesselator_add_index (tess, vertex_index);
+          /* Next time we will use this vertex as the previous
+             vertex */
+          tess->index_b = vertex_index;
+        }
+      break;
+
+    case GL_TRIANGLE_STRIP:
+      if (tess->vertex_number == 0)
+        tess->index_a = vertex_index;
+      else if (tess->vertex_number == 1)
+        tess->index_b = vertex_index;
+      else
+        {
+          _cogl_path_tesselator_add_index (tess, tess->index_a);
+          _cogl_path_tesselator_add_index (tess, tess->index_b);
+          _cogl_path_tesselator_add_index (tess, vertex_index);
+          if (tess->vertex_number & 1)
+            tess->index_b = vertex_index;
+          else
+            tess->index_a = vertex_index;
+        }
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  tess->vertex_number++;
+}
+
+static void
+_cogl_path_tesselator_end (CoglPathTesselator *tess)
+{
+  tess->primitive_type = GL_FALSE;
+}
+
+static void
+_cogl_path_tesselator_combine (GLdouble coords[3],
+                               void *vertex_data[4],
+                               GLfloat weight[4],
+                               void **out_data,
+                               CoglPathTesselator *tess)
+{
+  CoglPathTesselatorVertex *vertex;
+  CoglIndicesType new_indices_type;
+  int i;
+
+  /* Add a new vertex to the array */
+  g_array_set_size (tess->vertices, tess->vertices->len + 1);
+  vertex = &g_array_index (tess->vertices,
+                           CoglPathTesselatorVertex,
+                           tess->vertices->len - 1);
+  /* The data is just the index to the vertex */
+  *out_data = GINT_TO_POINTER (tess->vertices->len - 1);
+  /* Set the coordinates of the new vertex */
+  vertex->x = coords[0];
+  vertex->y = coords[1];
+  /* Generate the texture coordinates as the weighted average of the
+     four incoming coordinates */
+  vertex->s = 0.0f;
+  vertex->t = 0.0f;
+  for (i = 0; i < 4; i++)
+    {
+      CoglPathTesselatorVertex *old_vertex =
+        &g_array_index (tess->vertices, CoglPathTesselatorVertex,
+                        GPOINTER_TO_INT (vertex_data[i]));
+      vertex->s += old_vertex->s * weight[i];
+      vertex->t += old_vertex->t * weight[i];
+    }
+
+  /* Check if we've reached the limit for the data type of our indices */
+  new_indices_type =
+    _cogl_path_tesselator_get_indices_type_for_size (tess->vertices->len);
+  if (new_indices_type != tess->indices_type)
+    {
+      CoglIndicesType old_indices_type = new_indices_type;
+      GArray *old_vertices = tess->indices;
+
+      /* Copy the indices to an array of the new type */
+      tess->indices_type = new_indices_type;
+      _cogl_path_tesselator_allocate_indices_array (tess);
+
+      switch (old_indices_type)
+        {
+        case COGL_INDICES_TYPE_UNSIGNED_BYTE:
+          for (i = 0; i < old_vertices->len; i++)
+            _cogl_path_tesselator_add_index (tess,
+                                             g_array_index (old_vertices,
+                                                            guint8, i));
+          break;
+
+        case COGL_INDICES_TYPE_UNSIGNED_SHORT:
+          for (i = 0; i < old_vertices->len; i++)
+            _cogl_path_tesselator_add_index (tess,
+                                             g_array_index (old_vertices,
+                                                            guint16, i));
+          break;
+
+        case COGL_INDICES_TYPE_UNSIGNED_INT:
+          for (i = 0; i < old_vertices->len; i++)
+            _cogl_path_tesselator_add_index (tess,
+                                             g_array_index (old_vertices,
+                                                            guint32, i));
+          break;
+        }
+
+      g_array_free (old_vertices, TRUE);
+    }
+}
+
+static void
+_cogl_path_build_vbo (CoglPath *path)
+{
+  CoglPathTesselator tess;
+  unsigned int path_start = 0;
+  CoglPathData *data = path->data;
+  int i;
+
+  /* If we've already got a vbo then we don't need to do anything */
+  if (data->vbo)
+    return;
+
+  tess.primitive_type = GL_FALSE;
+
+  /* Generate a vertex for each point on the path */
+  tess.vertices = g_array_new (FALSE, FALSE, sizeof (CoglPathTesselatorVertex));
+  g_array_set_size (tess.vertices, data->path_nodes->len);
+  for (i = 0; i < data->path_nodes->len; i++)
+    {
+      CoglPathNode *node =
+        &g_array_index (data->path_nodes, CoglPathNode, i);
+      CoglPathTesselatorVertex *vertex =
+        &g_array_index (tess.vertices, CoglPathTesselatorVertex, i);
+
+      vertex->x = node->x;
+      vertex->y = node->y;
+
+      /* Add texture coordinates so that a texture would be drawn to
+         fit the bounding box of the path and then cropped by the
+         path */
+      if (data->path_nodes_min.x == data->path_nodes_max.x)
+        vertex->s = 0.0f;
+      else
+        vertex->s = ((node->x - data->path_nodes_min.x)
+                     / (data->path_nodes_max.x - data->path_nodes_min.x));
+      if (data->path_nodes_min.y == data->path_nodes_max.y)
+        vertex->t = 0.0f;
+      else
+        vertex->t = ((node->y - data->path_nodes_min.y)
+                     / (data->path_nodes_max.y - data->path_nodes_min.y));
+    }
+
+  tess.indices_type =
+    _cogl_path_tesselator_get_indices_type_for_size (data->path_nodes->len);
+  _cogl_path_tesselator_allocate_indices_array (&tess);
+
+  tess.glu_tess = gluNewTess ();
+  /* All vertices are on the xy-plane */
+  gluTessNormal (tess.glu_tess, 0.0, 0.0, 1.0);
+
+  gluTessCallback (tess.glu_tess, GLU_TESS_BEGIN_DATA,
+                   _cogl_path_tesselator_begin);
+  gluTessCallback (tess.glu_tess, GLU_TESS_VERTEX_DATA,
+                   _cogl_path_tesselator_vertex);
+  gluTessCallback (tess.glu_tess, GLU_TESS_END_DATA,
+                   _cogl_path_tesselator_end);
+  gluTessCallback (tess.glu_tess, GLU_TESS_COMBINE_DATA,
+                   _cogl_path_tesselator_combine);
+
+  gluTessBeginPolygon (tess.glu_tess, &tess);
+
+  while (path_start < data->path_nodes->len)
+    {
+      CoglPathNode *node =
+        &g_array_index (data->path_nodes, CoglPathNode, path_start);
+
+      gluTessBeginContour (tess.glu_tess);
+
+      for (i = 0; i < node->path_size; i++)
+        {
+          GLdouble vertex[3] = { node[i].x, node[i].y, 0.0 };
+          gluTessVertex (tess.glu_tess, vertex,
+                         GINT_TO_POINTER (i + path_start));
+        }
+
+      gluTessEndContour (tess.glu_tess);
+
+      path_start += node->path_size;
+    }
+
+  gluTessEndPolygon (tess.glu_tess);
+
+  gluDeleteTess (tess.glu_tess);
+
+  data->vbo = cogl_vertex_buffer_new (tess.vertices->len);
+  cogl_vertex_buffer_add (data->vbo,
+                          "gl_Vertex",
+                          2, COGL_ATTRIBUTE_TYPE_FLOAT,
+                          FALSE,
+                          sizeof (CoglPathTesselatorVertex),
+                          &g_array_index (tess.vertices,
+                                          CoglPathTesselatorVertex,
+                                          0).x);
+  cogl_vertex_buffer_add (data->vbo,
+                          "gl_MultiTexCoord0",
+                          2, COGL_ATTRIBUTE_TYPE_FLOAT,
+                          FALSE,
+                          sizeof (CoglPathTesselatorVertex),
+                          &g_array_index (tess.vertices,
+                                          CoglPathTesselatorVertex,
+                                          0).s);
+  cogl_vertex_buffer_submit (data->vbo);
+  data->vbo_n_vertices = tess.vertices->len;
+  data->vbo_indices =
+    cogl_vertex_buffer_indices_new (tess.indices_type,
+                                    tess.indices->data,
+                                    tess.indices->len);
+  data->vbo_n_indices = tess.indices->len;
+
+  g_array_free (tess.vertices, TRUE);
+  g_array_free (tess.indices, TRUE);
+}
