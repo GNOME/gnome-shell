@@ -625,10 +625,11 @@ Workspace.prototype = {
         this._desktop.connect('selected',
                               Lang.bind(this,
                                         function(clone, time) {
-                                            // Only switch to the workspace when one window is open
-                                            // We check for "2" here because the Desktop does not really count
-                                            // as a window in this context.
-                                            if (this._windows.length <= 2) {
+                                            // Only switch to the workspace when there's no application windows
+                                            // open (we always have one window for the desktop).  The problem
+                                            // is that it's too easy to miss an app window and get the wrong
+                                            // one focused.
+                                            if (this._windows.length == 1) {
                                                 this.metaWorkspace.activate(time);
                                                 Main.overview.hide();
                                             }
