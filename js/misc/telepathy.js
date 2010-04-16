@@ -176,6 +176,18 @@ const ConnectionAvatarsIface = {
 };
 let ConnectionAvatars = makeProxyClass(ConnectionAvatarsIface);
 
+const CONNECTION_CONTACTS_NAME = CONNECTION_NAME + '.Interface.Contacts';
+const ConnectionContactsIface = {
+    name: CONNECTION_CONTACTS_NAME,
+    methods: [
+        { name: 'GetContactAttributes',
+          inSignature: 'auasb',
+          outSignature: 'a{ua{sv}}'
+        }
+    ]
+};
+let ConnectionContacts = makeProxyClass(ConnectionContactsIface);
+
 const CONNECTION_REQUESTS_NAME = CONNECTION_NAME + '.Interface.Requests';
 const ConnectionRequestsIface = {
     name: CONNECTION_REQUESTS_NAME,
@@ -204,6 +216,37 @@ const ConnectionRequestsIface = {
     ]
 };
 let ConnectionRequests = makeProxyClass(ConnectionRequestsIface);
+
+const CONNECTION_SIMPLE_PRESENCE_NAME = CONNECTION_NAME + '.Interface.SimplePresence';
+const ConnectionSimplePresenceIface = {
+    name: CONNECTION_SIMPLE_PRESENCE_NAME,
+    methods: [
+        { name: 'SetPresence',
+          inSignature: 'ss'
+        },
+        { name: 'GetPresences',
+          inSignature: 'au',
+          outSignature: 'a{u(uss)}'
+        }
+    ],
+    signals: [
+        { name: 'PresencesChanged',
+          inSignature: 'a{u(uss)}' }
+    ]
+};
+let ConnectionSimplePresence = makeProxyClass(ConnectionSimplePresenceIface);
+
+const ConnectionPresenceType = {
+    UNSET:         0,
+    OFFLINE:       1,
+    AVAILABLE:     2,
+    AWAY:          3,
+    EXTENDED_AWAY: 4,
+    HIDDEN:        5,
+    BUSY:          6,
+    UNKNOWN:       7,
+    ERROR:         8
+};
 
 const HandleType = {
     NONE:    0,
@@ -254,6 +297,25 @@ const ChannelTextMessageType = {
     AUTO_REPLY: 3,
     DELIVERY_REPORT: 4
 };
+
+const CHANNEL_CONTACT_LIST_NAME = CHANNEL_NAME + '.Type.ContactList';
+// There is no interface associated with ContactList; it's just a
+// special kind of Channel.Interface.Group
+
+const CHANNEL_GROUP_NAME = CHANNEL_NAME + '.Interface.Group';
+const ChannelGroupIface = {
+    name: CHANNEL_GROUP_NAME,
+    properties: [
+        { name: 'Members',
+          signature: 'au',
+          access: 'read' }
+    ],
+    signals: [
+        { name: 'MembersChanged',
+          inSignature: 'sauauauauuu' }
+    ]
+};
+let ChannelGroup = makeProxyClass(ChannelGroupIface);
 
 const ACCOUNT_MANAGER_NAME = TELEPATHY + '.AccountManager';
 const AccountManagerIface = {
