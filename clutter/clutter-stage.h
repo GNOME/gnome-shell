@@ -254,6 +254,10 @@ void                  clutter_stage_get_minimum_size (ClutterStage *stage,
                                                       guint        *width,
                                                       guint        *height);
 
+void                  clutter_stage_set_no_clear_hint (ClutterStage *stage,
+                                                       gboolean      no_clear);
+gboolean              clutter_stage_get_no_clear_hint (ClutterStage *stage);
+
 /* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \

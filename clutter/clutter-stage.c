@@ -53,8 +53,9 @@
 #include "config.h"
 #endif
 
-#include "clutter-backend.h"
 #include "clutter-stage.h"
+
+#include "clutter-backend.h"
 #include "clutter-main.h"
 #include "clutter-color.h"
 #include "clutter-util.h"
@@ -78,6 +79,25 @@ G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
 
+/* <private>
+ * ClutterStageHint:
+ * @CLUTTER_STAGE_NONE: No hint set
+ * @CLUTTER_STAGE_NO_CLEAR_ON_PAINT: When this hint is set, the stage
+ *   should not clear the viewport; this flag is useful when painting
+ *   fully opaque actors covering the whole visible area of the stage,
+ *   i.e. when no blending with the stage color happens over the whole
+ *   stage viewport
+ *
+ * A series of hints that enable or disable behaviours on the stage
+ */
+typedef enum { /*< prefix=CLUTTER_STAGE >*/
+  CLUTTER_STAGE_HINT_NONE = 0,
+
+  CLUTTER_STAGE_NO_CLEAR_ON_PAINT = 1 << 0
+} ClutterStageHint;
+
+#define STAGE_NO_CLEAR_ON_PAINT(s)      ((((ClutterStage *) (s))->priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0)
+
 struct _ClutterStagePrivate
 {
   /* the stage implementation */
@@ -91,6 +111,8 @@ struct _ClutterStagePrivate
   ClutterActor       *key_focused_actor;
 
   GQueue             *event_queue;
+
+  ClutterStageHint    stage_hints;
 
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -116,7 +138,8 @@ enum
   PROP_USE_FOG,
   PROP_FOG,
   PROP_USE_ALPHA,
-  PROP_KEY_FOCUS
+  PROP_KEY_FOCUS,
+  PROP_NO_CLEAR_HINT
 };
 
 enum
@@ -274,6 +297,7 @@ static void
 clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  CoglBufferBit clear_flags;
   CoglColor stage_color;
   guint8 real_alpha;
   CLUTTER_STATIC_TIMER (stage_clear_timer,
@@ -300,10 +324,14 @@ clutter_stage_paint (ClutterActor *self)
                                            : 255);
   cogl_color_premultiply (&stage_color);
 
+  clear_flags = COGL_BUFFER_BIT_DEPTH;
+  if (!STAGE_NO_CLEAR_ON_PAINT (self))
+    clear_flags |= COGL_BUFFER_BIT_COLOR;
+
   CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
-  cogl_clear (&stage_color,
-	      COGL_BUFFER_BIT_COLOR |
-	      COGL_BUFFER_BIT_DEPTH);
+
+  cogl_clear (&stage_color, clear_flags);
+
   CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
 
   if (priv->use_fog)
@@ -817,6 +845,10 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_key_focus (stage, g_value_get_object (value));
       break;
 
+    case PROP_NO_CLEAR_HINT:
+      clutter_stage_set_no_clear_hint (stage, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -875,6 +907,15 @@ clutter_stage_get_property (GObject    *gobject,
 
     case PROP_KEY_FOCUS:
       g_value_set_object (value, priv->key_focused_actor);
+      break;
+
+    case PROP_NO_CLEAR_HINT:
+      {
+        gboolean hint =
+          (priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0;
+
+        g_value_set_boolean (value, hint);
+      }
       break;
 
     default:
@@ -1137,6 +1178,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_KEY_FOCUS, pspec);
+
+  /**
+   * ClutterStage:no-clear-hint:
+   *
+   * Whether or not the #ClutterStage should clear its contents
+   * before each paint cycle.
+   *
+   * See clutter_stage_set_no_clear_hint() for further information.
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_boolean ("no-clear-hint",
+                                "No Clear Hint",
+                                "Whether the stage should clear its contents",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_NO_CLEAR_HINT, pspec);
 
   /**
    * ClutterStage::fullscreen
@@ -2530,4 +2588,70 @@ _clutter_stage_get_pending_swaps (ClutterStage *stage)
     return 0;
 
   return _clutter_stage_window_get_pending_swaps (stage_window);
+}
+
+/**
+ * clutter_stage_set_no_clear_hint:
+ * @stage: a #ClutterStage
+ * @no_clear: %TRUE if the @stage should not clear itself on every
+ *   repaint cycle
+ *
+ * Sets whether the @stage should clear itself at the beginning
+ * of each paint cycle or not.
+ *
+ * Clearing the #ClutterStage can be a costly operation, especially
+ * if the stage is always covered - for instance, in a full-screen
+ * video player or in a game with a background texture.
+ *
+ * <note><para>This setting is a hint; Clutter might discard this
+ * hint depending on its internal state.</para></note>
+ *
+ * <warning><para>If parts of the stage are visible and you disable
+ * clearing you might end up with visual artifacts while painting the
+ * contents of the stage.</para></warning>
+ *
+ * Since: 1.4
+ */
+void
+clutter_stage_set_no_clear_hint (ClutterStage *stage,
+                                 gboolean      no_clear)
+{
+  ClutterStagePrivate *priv;
+  ClutterStageHint new_hints;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+  new_hints = priv->stage_hints;
+
+  if (no_clear)
+    new_hints |= CLUTTER_STAGE_NO_CLEAR_ON_PAINT;
+  else
+    new_hints &= ~CLUTTER_STAGE_NO_CLEAR_ON_PAINT;
+
+  if (priv->stage_hints == new_hints)
+    return;
+
+  priv->stage_hints = new_hints;
+
+  g_object_notify (G_OBJECT (stage), "no-clear-hint");
+}
+
+/**
+ * clutter_stage_get_no_clear_hint:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the hint set with clutter_stage_set_no_clear_hint()
+ *
+ * Return value: %TRUE if the stage should not clear itself on every paint
+ *   cycle, and %FALSE otherwise
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_stage_get_no_clear_hint (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return (stage->priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0;
 }
