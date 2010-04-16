@@ -66,8 +66,11 @@
  * the preferred width to get the preferred height and then it might
  * be regenerated at a different width to get the height for the
  * actual allocated width
+ *
+ * since we might get multiple queries from layout managers doing a
+ * double-pass allocations, like tabular ones, we should use 6 slots
  */
-#define N_CACHED_LAYOUTS        3
+#define N_CACHED_LAYOUTS        6
 
 #define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
 
