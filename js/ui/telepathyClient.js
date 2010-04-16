@@ -19,6 +19,22 @@ const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
 
+// A 'Qualified_Property_Value_Map' that represents a single-user
+// text-based chat.
+let singleUserTextChannel = {};
+singleUserTextChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.CHANNEL_TEXT_NAME;
+singleUserTextChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.CONTACT;
+
+// Some protocols only support 'multi-user' chats, and single-user
+// chats are just treated as multi-user chats with only one other
+// participant. Telepathy uses HandleType.NONE for all chats in these
+// protocols; there's no good way for us to tell if the channel is
+// single- or multi-user.
+let oneOrMoreUserTextChannel = {};
+oneOrMoreUserTextChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.CHANNEL_TEXT_NAME;
+oneOrMoreUserTextChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.NONE;
+
+
 // This is GNOME Shell's implementation of the Telepathy 'Client'
 // interface. Specifically, the shell is a Telepathy 'Observer', which
 // lets us see messages even if they belong to another app (eg,
@@ -83,20 +99,7 @@ Client.prototype = {
     },
 
     get ObserverChannelFilter() {
-        return [
-            // We only care about single-user text-based chats
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.CONTACT },
-
-            // Some protocols only support "multi-user" chats, and
-            // single-user chats are just treated as multi-user chats
-            // with only one other participant. Telepathy uses
-            // HandleType.NONE for all chats in these protocols;
-            // there's no good way for us to tell if the channel is
-            // single- or multi-user.
-            { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-              'org.freedesktop.Telepathy.Channel.TargetHandleType': Telepathy.HandleType.NONE }
-        ];
+        return [ singleUserTextChannel, oneOrMoreUserTextChannel ];
     },
 
     ObserveChannels: function(accountPath, connPath, channels,
