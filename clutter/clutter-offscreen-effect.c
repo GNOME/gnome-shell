@@ -18,8 +18,9 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
- * Author:
+ * Authors:
  *   Emmanuele Bassi <ebassi@linux.intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 /**
@@ -48,6 +49,13 @@
  *   #ClutterOffscreenEffect also provides a <function>paint_target()</function>
  *   function, which encapsulates the effective painting of the texture that
  *   contains the result of the offscreen redirection.</para>
+ *   <para>The size of the target material is defined to be as big as the
+ *   transformed size of the #ClutterActor using the offscreen effect.
+ *   Sub-classes of #ClutterOffscreenEffect can change the texture creation
+ *   code to provide bigger textures by overriding the
+ *   <function>create_target()</function> virtual function; no chain up
+ *   to the #ClutterOffscreenEffect implementation is required in this
+ *   case.</para>
  * </refsect2>
  *
  * #ClutterOffscreenEffect is available since Clutter 1.4
@@ -70,6 +78,13 @@ struct _ClutterOffscreenEffectPrivate
   CoglHandle target;
 
   ClutterActor *actor;
+  ClutterActor *stage;
+
+  gfloat x_offset;
+  gfloat y_offset;
+
+  gfloat target_width;
+  gfloat target_height;
 };
 
 G_DEFINE_ABSTRACT_TYPE (ClutterOffscreenEffect,
@@ -83,13 +98,6 @@ clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (meta);
   ClutterOffscreenEffectPrivate *priv = self->priv;
   ClutterActorMetaClass *meta_class;
-  ClutterPerspective perspective;
-  gfloat width, height, z_camera;
-  ClutterActorBox allocation;
-  gfloat fb_width, fb_height;
-  ClutterActor *stage;
-  CoglHandle texture;
-  CoglMatrix matrix;
 
   meta_class = CLUTTER_ACTOR_META_CLASS (clutter_offscreen_effect_parent_class);
   meta_class->set_actor (meta, actor);
@@ -109,78 +117,120 @@ clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
 
   /* we keep a back pointer here, to avoid going through the ActorMeta */
   priv->actor = clutter_actor_meta_get_actor (meta);
-  if (priv->actor == NULL)
-    return;
+}
 
-  stage = clutter_actor_get_stage (priv->actor);
-  if (stage == NULL)
+static CoglHandle
+clutter_offscreen_effect_real_create_target (ClutterOffscreenEffect *effect,
+                                             gfloat                  width,
+                                             gfloat                  height)
+{
+  return cogl_texture_new_with_size (MAX (width, 1), MAX (height, 1),
+                                     COGL_TEXTURE_NO_SLICING,
+                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+}
+
+static gboolean
+update_fbo (ClutterEffect *effect)
+{
+  ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
+  ClutterOffscreenEffectPrivate *priv = self->priv;
+  gfloat width, height;
+  CoglHandle texture;
+
+  priv->stage = clutter_actor_get_stage (priv->actor);
+  if (priv->stage == NULL)
     {
       CLUTTER_NOTE (MISC, "The actor '%s' is not part of a stage",
-                    clutter_actor_get_name (actor) == NULL
-                      ? G_OBJECT_TYPE_NAME (actor)
-                      : clutter_actor_get_name (actor));
-
-      /* we forcibly disable the effect here */
-      clutter_actor_meta_set_enabled (meta, FALSE);
-      return;
+                    clutter_actor_get_name (priv->actor) == NULL
+                      ? G_OBJECT_TYPE_NAME (priv->actor)
+                      : clutter_actor_get_name (priv->actor));
+      return FALSE;
     }
 
-  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
-  clutter_actor_get_allocation_box (stage, &allocation);
-  clutter_actor_box_get_size (&allocation, &fb_width, &fb_height);
+  /* the target should at least be big enough to contain the
+   * transformed allocation of the actor
+   *
+   * FIXME - this is actually not enough: we need the paint area
+   * to make this work reliably
+   */
+  clutter_actor_get_transformed_size (priv->actor, &width, &height);
+  if (fabsf (priv->target_width - width) < 0.00001f &&
+      fabsf (priv->target_height - height) < 0.0001f)
+    return TRUE;
 
-  clutter_actor_get_allocation_box (priv->actor, &allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
+  if (priv->target != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->target);
+      cogl_handle_unref (priv->offscreen);
+    }
 
   priv->target = cogl_material_new ();
 
-  texture = cogl_texture_new_with_size (MAX (width, 1), MAX (height, 1),
-                                        COGL_TEXTURE_NO_SLICING,
-                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+  texture = clutter_offscreen_effect_create_target (self, width, height);
+  if (texture == COGL_INVALID_HANDLE)
+     return FALSE;
+
   cogl_material_set_layer (priv->target, 0, texture);
   cogl_handle_unref (texture);
 
-  cogl_material_set_layer_filters (priv->target, 0,
-                                   COGL_MATERIAL_FILTER_LINEAR,
-                                   COGL_MATERIAL_FILTER_LINEAR);
+  /* we need to use the size of the texture target and not the minimum
+   * size we passed to the create_target() vfunc, as any sub-class might
+   * give use a bigger texture
+   */
+  priv->target_width = cogl_texture_get_width (texture);
+  priv->target_height = cogl_texture_get_height (texture);
 
   priv->offscreen = cogl_offscreen_new_to_texture (texture);
-
   if (priv->offscreen == COGL_INVALID_HANDLE)
     {
       g_warning ("%s: Unable to create an Offscreen buffer", G_STRLOC);
 
-      /* we forcibly disable the effect here */
-      clutter_actor_meta_set_enabled (meta, FALSE);
-      return;
+      cogl_handle_unref (priv->target);
+      priv->target = COGL_INVALID_HANDLE;
+
+      priv->target_width = 0;
+      priv->target_height = 0;
+
+      return FALSE;
     }
 
-  cogl_push_framebuffer (priv->offscreen);
+  return TRUE;
+}
 
-  width = cogl_texture_get_width (texture);
-  height = cogl_texture_get_height (texture);
-  fb_width /= fb_width / width;
-  fb_height /= fb_height / height;
+static void
+get_screen_offsets (ClutterActor *actor,
+                    gfloat       *x_offset,
+                    gfloat       *y_offset)
+{
+  ClutterVertex verts[4];
+  gfloat x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
+  gint i;
 
-  cogl_set_viewport (0, 0, width, height);
-  cogl_perspective (perspective.fovy,
-                    perspective.aspect,
-                    perspective.z_near,
-                    perspective.z_far);
+  /* Get the actors allocation transformed into screen coordinates.
+   *
+   * XXX: Note: this may not be a bounding box for the actor, since an
+   * actor with depth may escape the box due to its perspective
+   * projection. */
+  clutter_actor_get_abs_allocation_vertices (actor, verts);
 
-  cogl_get_projection_matrix (&matrix);
-  z_camera = 0.5 * matrix.xx;
+  for (i = 0; i < G_N_ELEMENTS (verts); ++i)
+    {
+      if (verts[i].x < x_min)
+        x_min = verts[i].x;
 
-  cogl_matrix_init_identity (&matrix);
-  cogl_matrix_translate (&matrix, -0.5f, -0.5f, -z_camera);
-  cogl_matrix_scale (&matrix,
-                      1.0f / fb_width,
-                     -1.0f / fb_height,
-                      1.0f / fb_width);
-  cogl_matrix_translate (&matrix, 0.0f, -1.0f * fb_height, 0.0f);
-  cogl_set_modelview_matrix (&matrix);
+      if (verts[i].y < y_min)
+        y_min = verts[i].y;
+    }
 
-  cogl_pop_framebuffer ();
+  /* XXX: It's not good enough to round by simply truncating the fraction here
+   * via a cast, as it results in offscreen rendering being offset by 1 pixel
+   * in many cases... */
+#define ROUND(x) ((x) >= 0 ? (long)((x) + 0.5) : (long)((x) - 0.5))
+
+  *x_offset = ROUND (x_min);
+  *y_offset = ROUND (y_min);
+
+#undef ROUND
 }
 
 static gboolean
@@ -188,41 +238,62 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
+  ClutterPerspective perspective;
+  CoglColor transparent;
+  CoglMatrix modelview;
+  gfloat width, height;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
     return FALSE;
 
-  if (priv->offscreen != COGL_INVALID_HANDLE)
-    {
-      CoglColor transparent;
+  if (priv->actor == NULL)
+    return FALSE;
 
-      cogl_push_framebuffer (priv->offscreen);
-      cogl_push_matrix ();
+  if (!update_fbo (effect))
+    return FALSE;
 
-      cogl_color_set_from_4ub (&transparent, 0, 0, 0, 0);
-      cogl_clear (&transparent,
-                  COGL_BUFFER_BIT_COLOR |
-                  COGL_BUFFER_BIT_STENCIL |
-                  COGL_BUFFER_BIT_DEPTH);
+  /* get the current modelview matrix so that we can copy it
+   * on the new framebuffer
+   */
+  cogl_get_modelview_matrix (&modelview);
 
-      return TRUE;
-    }
+  clutter_stage_get_perspective (CLUTTER_STAGE (priv->stage), &perspective);
+  clutter_actor_get_size (priv->stage, &width, &height);
 
-  return FALSE;
+  get_screen_offsets (priv->actor, &priv->x_offset, &priv->y_offset);
+
+  /* let's draw offscreen */
+  cogl_push_framebuffer (priv->offscreen);
+
+  /* set up the viewport so that it has the same size of the stage,
+   * and it has its origin at the same position of the stage's; also
+   * set up the perspective to be the same as the stage's
+   */
+  cogl_set_viewport (-priv->x_offset, -priv->y_offset, width, height);
+  cogl_perspective (perspective.fovy,
+                    perspective.aspect,
+                    perspective.z_near,
+                    perspective.z_far);
+
+  cogl_color_set_from_4ub (&transparent, 0, 0, 0, 0);
+  cogl_clear (&transparent,
+              COGL_BUFFER_BIT_COLOR |
+              COGL_BUFFER_BIT_DEPTH);
+
+  cogl_push_matrix ();
+
+  cogl_set_modelview_matrix (&modelview);
+
+  return TRUE;
 }
 
 static void
 clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterOffscreenEffectPrivate *priv = effect->priv;
-  ClutterActorBox allocation;
-  gfloat width, height;
   guint8 paint_opacity;
 
   paint_opacity = clutter_actor_get_paint_opacity (priv->actor);
-
-  clutter_actor_get_allocation_box (priv->actor, &allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
 
   cogl_material_set_color4ub (priv->target,
                               paint_opacity,
@@ -230,7 +301,15 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
                               paint_opacity,
                               paint_opacity);
   cogl_set_source (priv->target);
-  cogl_rectangle_with_texture_coords (0, 0, width, height,
+
+  /* paint the texture at the same position as the actor would be,
+   * in Stage coordinates, since we set up the modelview matrix to
+   * be exactly as the stage sets it up
+   */
+  cogl_rectangle_with_texture_coords (priv->x_offset,
+                                      priv->y_offset,
+                                      priv->x_offset + priv->target_width,
+                                      priv->y_offset + priv->target_height,
                                       0.0, 0.0,
                                       1.0, 1.0);
 }
@@ -240,19 +319,48 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
+  ClutterPerspective perspective;
+  CoglMatrix modelview, matrix;
+  gfloat width, height;
+  gfloat z_camera;
 
-  if (priv->offscreen != COGL_INVALID_HANDLE &&
-      priv->target != COGL_INVALID_HANDLE &&
-      priv->actor != NULL)
-    {
-      cogl_pop_matrix ();
-      cogl_pop_framebuffer ();
+  if (priv->offscreen == COGL_INVALID_HANDLE ||
+      priv->target == COGL_INVALID_HANDLE ||
+      priv->actor == NULL)
+    return;
 
-      /* paint the target material; this is virtualized for
-       * sub-classes that require special hand-holding
-       */
-      clutter_offscreen_effect_paint_target (self);
-    }
+  cogl_pop_matrix ();
+  cogl_pop_framebuffer ();
+
+  clutter_stage_get_perspective (CLUTTER_STAGE (priv->stage), &perspective);
+  clutter_actor_get_size (priv->stage, &width, &height);
+
+  cogl_get_modelview_matrix (&modelview);
+  cogl_get_projection_matrix (&matrix);
+  z_camera = 0.5f * matrix.xx;
+
+  /* obliterate the current modelview matrix and reset it to be
+   * the same as the stage's at the beginning of a paint run; this
+   * is done to paint the target material in screen coordinates at
+   * the same place as the actor would have been
+   */
+  cogl_matrix_init_identity (&matrix);
+  cogl_matrix_translate (&matrix, -0.5f, -0.5f, -z_camera);
+  cogl_matrix_scale (&matrix, 1.0f / width, -1.0f / height, 1.0f / width);
+  cogl_matrix_translate (&matrix, 0.0f, -1.0f * height, 0.0f);
+  cogl_set_modelview_matrix (&matrix);
+
+  cogl_push_matrix ();
+
+  /* paint the target material; this is virtualized for
+   * sub-classes that require special hand-holding
+   */
+  clutter_offscreen_effect_paint_target (self);
+
+  cogl_pop_matrix ();
+
+  /* reset the modelview matrix */
+  cogl_set_modelview_matrix (&modelview);
 }
 
 static void
@@ -279,6 +387,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterOffscreenEffectPrivate));
 
+  klass->create_target = clutter_offscreen_effect_real_create_target;
   klass->paint_target = clutter_offscreen_effect_real_paint_target;
 
   meta_class->set_actor = clutter_offscreen_effect_set_actor;
@@ -333,4 +442,29 @@ clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect)
   g_return_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect));
 
   CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->paint_target (effect);
+}
+
+/**
+ * clutter_offscreen_effect_create_target:
+ * @effect: a #ClutterOffscreenEffect
+ * @width: the minimum width of the target texture
+ * @height: the minimum height of the target texture
+ *
+ * Calls the create_target() virtual function of the @effect
+ *
+ * Return value: a handle to the target texture
+ *
+ * Since: 1.4
+ */
+CoglHandle
+clutter_offscreen_effect_create_target (ClutterOffscreenEffect *effect,
+                                        gfloat                  width,
+                                        gfloat                  height)
+{
+  g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
+                        COGL_INVALID_HANDLE);
+
+  return CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->create_target (effect,
+                                                                     width,
+                                                                     height);
 }

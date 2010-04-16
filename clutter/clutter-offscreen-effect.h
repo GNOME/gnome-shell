@@ -62,6 +62,7 @@ struct _ClutterOffscreenEffect
 
 /**
  * ClutterOffscreenEffectClass:
+ * @create_target: virtual function
  * @paint_target: virtual function
  *
  * The #ClutterOffscreenEffectClass structure contains only private data
@@ -74,7 +75,10 @@ struct _ClutterOffscreenEffectClass
   ClutterEffectClass parent_class;
 
   /*< public >*/
-  void (* paint_target) (ClutterOffscreenEffect *effect);
+  CoglHandle (* create_target) (ClutterOffscreenEffect *effect,
+                                gfloat                  min_width,
+                                gfloat                  min_height);
+  void       (* paint_target)  (ClutterOffscreenEffect *effect);
 
   /*< private >*/
   void (* _clutter_offscreen1) (void);
@@ -88,8 +92,12 @@ struct _ClutterOffscreenEffectClass
 
 GType clutter_offscreen_effect_get_type (void) G_GNUC_CONST;
 
-CoglHandle clutter_offscreen_effect_get_target   (ClutterOffscreenEffect *effect);
-void       clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect);
+CoglHandle    clutter_offscreen_effect_get_target    (ClutterOffscreenEffect *effect);
+
+void          clutter_offscreen_effect_paint_target  (ClutterOffscreenEffect *effect);
+CoglHandle    clutter_offscreen_effect_create_target (ClutterOffscreenEffect *effect,
+                                                      gfloat                  width,
+                                                      gfloat                  height);
 
 G_END_DECLS
 
