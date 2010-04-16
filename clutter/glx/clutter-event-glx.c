@@ -82,8 +82,14 @@ clutter_backend_glx_handle_event (ClutterBackendX11 *backend_x11,
 
       if (stage_x11->xwin == swap_complete_event->drawable)
         {
-          g_assert (stage_glx->pending_swaps);
-          stage_glx->pending_swaps--;
+          if (G_UNLIKELY (stage_glx->pending_swaps == 0))
+            {
+              g_warning ("Spurious GLX_BufferSwapComplete event received for "
+                         "stage drawable = 0x%08lx",
+                         swap_complete_event->drawable);
+            }
+          else
+            stage_glx->pending_swaps--;
           return TRUE;
         }
     }
