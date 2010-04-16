@@ -1378,12 +1378,17 @@ WorkspacesControls.prototype = {
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this.updateControlsSensitivity));
 
         this._workspacesChanged();
     },
 
     updateControls: function(view) {
         this._currentView = view;
+
+        this.updateControlsSensitivity();
 
         let newControls = this._currentView.createControllerBar();
         if (newControls) {
@@ -1425,18 +1430,14 @@ WorkspacesControls.prototype = {
         this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
     },
 
-    setCanRemove: function(canRemove) {
-        this._setButtonSensitivity(this._removeButton, canRemove);
-    },
-
-    setCanAdd: function(canAdd) {
-        this._setButtonSensitivity(this._addButton, canAdd);
-    },
-
     _onDestroy: function() {
         if (this._nWorkspacesNotifyId > 0) {
             global.screen.disconnect(this._nWorkspacesNotifyId);
             this._nWorkspacesNotifyId = 0;
+        }
+        if (this._switchWorkspaceNotifyId > 0) {
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+            this._switchWorkspaceNotifyId = 0;
         }
     },
 
@@ -1447,11 +1448,19 @@ WorkspacesControls.prototype = {
         button.opacity = sensitive ? 255 : 85;
     },
 
+    updateControlsSensitivity: function() {
+        if (this._currentView) {
+            this._setButtonSensitivity(this._removeButton, this._currentView.canRemoveWorkspace());
+            this._setButtonSensitivity(this._addButton, this._currentView.canAddWorkspace());
+        }
+    },
+
     _workspacesChanged: function() {
         if (global.screen.n_workspaces == 1)
             this._toggleViewButton.hide();
         else
             this._toggleViewButton.show();
+        this.updateControlsSensitivity();
     }
 };
 Signals.addSignalMethods(WorkspacesControls.prototype);
@@ -1485,10 +1494,6 @@ WorkspacesManager.prototype = {
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._updateControlsSensitivity));
-
     },
 
     _updateView: function() {
@@ -1566,21 +1571,11 @@ WorkspacesManager.prototype = {
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
-
-        this.controlsBar.setCanAdd(this.workspacesView.canAddWorkspace());
-        this.controlsBar.setCanRemove(this.workspacesView.canRemoveWorkspace());
-    },
-
-    _updateControlsSensitivity: function() {
-        this.controlsBar.setCanAdd(this.workspacesView.canAddWorkspace());
-        this.controlsBar.setCanRemove(this.workspacesView.canRemoveWorkspace());
     },
 
     _onDestroy: function() {
         if (this._nWorkspacesNotifyId > 0)
             global.screen.disconnect(this._nWorkspacesNotifyId);
-        if (this._switchWorkspaceNotifyId > 0)
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         if (this._viewChangedId > 0)
             Shell.GConf.get_default().disconnect(this._viewChangedId);
         for (let w = 0; w < this._workspaces.length; w++) {
