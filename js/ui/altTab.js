@@ -288,8 +288,10 @@ AltTabPopup.prototype = {
         // selected window; otherwise (eg, they click on an app while
         // !mouseActive) activate the first window of the clicked-on
         // app.
-        let window = (n == this._currentApp) ? this._currentWindow : 0;
-        Main.activateWindow(this._appIcons[n].cachedWindows[window]);
+        let appIcon = this._appIcons[n];
+        let windowIndex = (n == this._currentApp) ? this._currentWindow : 0;
+        let window = appIcon.cachedWindows[windowIndex];
+        appIcon.app.focus_window(window, global.get_current_time());
         this.destroy();
     },
 
@@ -301,7 +303,8 @@ AltTabPopup.prototype = {
     },
 
     _windowActivated : function(thumbnailList, n) {
-        Main.activateWindow(this._appIcons[this._currentApp].cachedWindows[n]);
+        let appIcon = this._appIcons[this._currentApp];
+        appIcon.app.focus_window(appIcon.cachedWindows[n]);
         this.destroy();
     },
 
@@ -327,9 +330,9 @@ AltTabPopup.prototype = {
     },
 
     _finish : function() {
-        let app = this._appIcons[this._currentApp];
-        let window = app.cachedWindows[this._currentWindow];
-        Main.activateWindow(window);
+        let appIcon = this._appIcons[this._currentApp];
+        let window = appIcon.cachedWindows[this._currentWindow];
+        appIcon.app.focus_window(window, global.get_current_time());
         this.destroy();
     },
 
