@@ -303,22 +303,15 @@ struct _MetaDisplayClass
   GObjectClass parent_class;
 };
 
-/* Xserver time can wraparound, thus comparing two timestamps needs to take
- * this into account.  Here's a little macro to help out.  If no wraparound
- * has occurred, this is equivalent to
- *   time1 < time2
- * Of course, the rest of the ugliness of this macro comes from accounting
- * for the fact that wraparound can occur and the fact that a timestamp of
- * 0 must be special-cased since it means older than anything else. 
- *
- * Note that this is NOT an equivalent for time1 <= time2; if that's what
- * you need then you'll need to swap the order of the arguments and negate
- * the result.
- */
 #define XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) \
   ( (( (time1) < (time2) ) && ( (time2) - (time1) < ((guint32)-1)/2 )) ||     \
     (( (time1) > (time2) ) && ( (time1) - (time2) > ((guint32)-1)/2 ))        \
   )
+/**
+ * XSERVER_TIME_IS_BEFORE:
+ *
+ * See the docs for meta_display_xserver_time_is_before().
+ */
 #define XSERVER_TIME_IS_BEFORE(time1, time2)                          \
   ( (time1) == 0 ||                                                     \
     (XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) && \

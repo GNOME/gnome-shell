@@ -1320,6 +1320,43 @@ meta_grab_op_is_moving (MetaGrabOp op)
     }
 }
 
+/**
+ * meta_display_xserver_time_is_before:
+ * @display: a #MetaDisplay
+ * @time1: An event timestamp
+ * @time2: An event timestamp
+ *
+ * Xserver time can wraparound, thus comparing two timestamps needs to take
+ * this into account. If no wraparound has occurred, this is equivalent to
+ *   time1 < time2
+ * Otherwise, we need to account for the fact that wraparound can occur
+ * and the fact that a timestamp of 0 must be special-cased since it
+ * means "older than anything else".
+ *
+ * Note that this is NOT an equivalent for time1 <= time2; if that's what
+ * you need then you'll need to swap the order of the arguments and negate
+ * the result.
+ */
+gboolean
+meta_display_xserver_time_is_before (MetaDisplay   *display,
+                                     guint32        time1,
+                                     guint32        time2)
+{
+  return XSERVER_TIME_IS_BEFORE(time1, time2);
+}
+
+/**
+ * meta_display_get_last_user_time:
+ * @display: a #MetaDisplay
+ *
+ * Returns: Timestamp of the last user interaction event with a window
+ */
+guint32
+meta_display_get_last_user_time (MetaDisplay *display)
+{
+  return display->last_user_time;
+}
+
 /* Get time of current event, or CurrentTime if none. */
 guint32
 meta_display_get_current_time (MetaDisplay *display)
