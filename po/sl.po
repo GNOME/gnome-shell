@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
-"POT-Creation-Date: 2010-02-11 18:07+0000\n"
-"PO-Revision-Date: 2010-02-11 20:58+0100\n"
+"POT-Creation-Date: 2010-04-15 02:19+0000\n"
+"PO-Revision-Date: 2010-04-17 19:38+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -32,24 +32,24 @@ msgid "Unknown window information request: %d"
 msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
 
 #. Translators: %s is a window title
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:95
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> se ne odziva."
 
-#: ../src/core/delete.c:99
+#: ../src/core/delete.c:100
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Lahko še malo počakate, če se program morda zbudi, ali pa vsilite končanje delovanja."
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:109
 msgid "_Wait"
 msgstr "_Počakaj"
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:109
 msgid "_Force Quit"
-msgstr "_Vsili izhod"
+msgstr "_Vsili konec"
 
-#: ../src/core/delete.c:206
+#: ../src/core/delete.c:207
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ni mogoče dobiti gostitelja z imenom: %s\n"
@@ -81,7 +81,7 @@ msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Usodna napaka IO %d (%s) na zaslonu '%s'.\n"
 
 # G:1 K:0 O:0
-#: ../src/core/keybindings.c:697
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
@@ -89,7 +89,7 @@ msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2388
+#: ../src/core/keybindings.c:2399
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -100,12 +100,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2478
+#: ../src/core/keybindings.c:2489
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ukaz %d ni bil naveden.\n"
 
-#: ../src/core/keybindings.c:3491
+#: ../src/core/keybindings.c:3502
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ni bilo navedenih ukazov terminala.\n"
@@ -175,17 +175,17 @@ msgstr "Ali naj bo prikazan okvir okna med kroženjem oken."
 msgid "Internal argument for GObject introspection"
 msgstr "Notranji argument za GObject"
 
-#: ../src/core/main.c:662
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Ni mogoče preiskati mape tem: %s\n"
 
-#: ../src/core/main.c:678
+#: ../src/core/main.c:679
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajne teme.\n"
 
-#: ../src/core/main.c:742
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ni mogoče znova pognati: %s\n"
@@ -201,84 +201,94 @@ msgstr "Ni mogoče znova pognati: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:525
-#: ../src/core/prefs.c:686
+#: ../src/core/prefs.c:536
+#: ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ključ GConf '%s' je nastavljen na neveljavno vrednost\n"
 
-#: ../src/core/prefs.c:612
-#: ../src/core/prefs.c:855
+#: ../src/core/prefs.c:623
+#: ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d shranjen v GConf ključu %s je izven meja med %d in %d\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:656
-#: ../src/core/prefs.c:733
-#: ../src/core/prefs.c:781
-#: ../src/core/prefs.c:845
-#: ../src/core/prefs.c:1145
-#: ../src/core/prefs.c:1161
-#: ../src/core/prefs.c:1178
-#: ../src/core/prefs.c:1194
+#: ../src/core/prefs.c:667
+#: ../src/core/prefs.c:744
+#: ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856
+#: ../src/core/prefs.c:1323
+#: ../src/core/prefs.c:1339
+#: ../src/core/prefs.c:1356
+#: ../src/core/prefs.c:1372
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ključ GConf \"%s\" je nastavljen na neveljavno vrsto\n"
 
-#: ../src/core/prefs.c:1285
+#: ../src/core/prefs.c:1202
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr "Ključ GConf %s je že v uporabi in ga ni mogoče uporabiti za prepis %s\n"
+
+#: ../src/core/prefs.c:1261
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "Ni mogoče prepisati ključa GConf, saj %s ni mogoče najti.\n"
+
+#: ../src/core/prefs.c:1463
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obhodi za pokvarjene programe so izključeni. Nekateri programi se morda ne bodo pravilno obnašali.\n"
 
-#: ../src/core/prefs.c:1356
+#: ../src/core/prefs.c:1534
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ni mogoče razčleniti opisa \"%s\" iz ključa GConf %s\n"
 
-#: ../src/core/prefs.c:1418
+#: ../src/core/prefs.c:1596
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\", ki je bil najden v podatkovni zbirki nastavitev ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/core/prefs.c:1845
+#: ../src/core/prefs.c:2023
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Napaka ob nastavljanju števila delovnih površin na %d: %s\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:2005
-#: ../src/core/prefs.c:2511
+#: ../src/core/prefs.c:2205
+#: ../src/core/prefs.c:2707
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
 
-#: ../src/core/prefs.c:2038
-#: ../src/core/prefs.c:2216
+#: ../src/core/prefs.c:2237
+#: ../src/core/prefs.c:2415
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za tipkovno vez \"%s\"\n"
 
-#: ../src/core/prefs.c:2592
+#: ../src/core/prefs.c:2788
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Napaka ob nastavljanju imena delovne površine %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2796
+#: ../src/core/prefs.c:2992
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Napaka pri nastavljanju stanja skladanja: %s\n"
 
-#: ../src/core/prefs.c:2824
+#: ../src/core/prefs.c:3021
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Napaka pri nastavljanju seznama vstavkov clutter: %s\n"
 
-#: ../src/core/prefs.c:2867
+#: ../src/core/prefs.c:3065
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Napaka pri nastavljanju stanja skritih oken: %s\n"
 
-#: ../src/core/prefs.c:2895
+#: ../src/core/prefs.c:3093
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Napaka pri nastavljanju stanja pojavnih oken: %s\n"
@@ -411,7 +421,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6183
+#: ../src/core/window.c:6217
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -423,7 +433,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6846
+#: ../src/core/window.c:6880
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
@@ -810,51 +820,51 @@ msgstr "Ta vrednost začne \"prevleko\", ki združuje predogled okna in zaganjal
 msgid "Usage: %s\n"
 msgstr "Uporaba: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1119
 msgid "Close Window"
 msgstr "Zapri okno"
 
 # G:1 K:1 O:0
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1122
 msgid "Window Menu"
 msgstr "Meni okna"
 
 # G:0 K:1 O:0
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1125
 msgid "Minimize Window"
 msgstr "Skrči okno"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1128
 msgid "Maximize Window"
 msgstr "Razpri okno"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1131
 msgid "Restore Window"
 msgstr "Obnovi okno"
 
 # G:2 K:0 O:0
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1134
 msgid "Roll Up Window"
 msgstr "Zavij okno"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1137
 msgid "Unroll Window"
 msgstr "Odvij okno"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1140
 msgid "Keep Window On Top"
 msgstr "Ohrani okno na vrhu"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1143
 msgid "Remove Window From Top"
 msgstr "Odstrani okno z vrha"
 
 # G:1 K:0 O:0
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1146
 msgid "Always On Visible Workspace"
 msgstr "Vedno na vidni delovni površini"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1149
 msgid "Put Window On Only One Workspace"
 msgstr "Postavi okno na samo eno delovno površino"
 
@@ -1233,79 +1243,79 @@ msgstr "Izraz koordinat se konča z operatorjem namesto z operandom"
 msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
 msgstr "Izraz koordinat vsebuje operator \"%c\", ki sledi operatorju \"%c\", brez vmesnega operanda"
 
-#: ../src/ui/theme.c:2195
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2199
+#: ../src/ui/theme.c:2244
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Izraz koordinat vsebuje neznano spremenljivko ali konstanto \"%s\""
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2298
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Razčlenjevalnik izrazov koordinat je preplavil medpomnilnik."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2327
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Izraz koordinat vsebuje zaklepaj, a ne oklepaja"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2391
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Izraz koordinat vsebuje uklepaj, vendar je brez zaklepaja"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2402
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Videti je, da izraz koordinat ne vsebuje operatorjev ali operandov"
 
-#: ../src/ui/theme.c:2596
-#: ../src/ui/theme.c:2616
-#: ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2604
+#: ../src/ui/theme.c:2624
+#: ../src/ui/theme.c:2644
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Tema vsebuje izraz, ki je povzročil napako: %s\n"
 
-#: ../src/ui/theme.c:4203
+#: ../src/ui/theme.c:4255
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "za ta slog okvirja mora biti naveden <button function=\"%s\" state=\"%s\" draw_ops=\"karkoli\"/>"
 
-#: ../src/ui/theme.c:4711
-#: ../src/ui/theme.c:4736
+#: ../src/ui/theme.c:4763
+#: ../src/ui/theme.c:4788
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Manjka <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"karkoli\"/>"
 
-#: ../src/ui/theme.c:4780
+#: ../src/ui/theme.c:4832
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nalaganje teme \"%s\" ni uspelo: %s\n"
 
-#: ../src/ui/theme.c:4910
-#: ../src/ui/theme.c:4917
-#: ../src/ui/theme.c:4924
-#: ../src/ui/theme.c:4931
-#: ../src/ui/theme.c:4938
+#: ../src/ui/theme.c:4964
+#: ../src/ui/theme.c:4971
+#: ../src/ui/theme.c:4978
+#: ../src/ui/theme.c:4985
+#: ../src/ui/theme.c:4992
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Ni nastavljen <%s> za temo \"%s\""
 
-#: ../src/ui/theme.c:4946
+#: ../src/ui/theme.c:5000
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Slog okvirja za okno vrste \"%s\" v temi \"%s\" ni nastavljen, dodajte element <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5389
-#: ../src/ui/theme.c:5451
-#: ../src/ui/theme.c:5514
+#: ../src/ui/theme.c:5443
+#: ../src/ui/theme.c:5505
+#: ../src/ui/theme.c:5568
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Uporabniško določene konstante se morajo začeti z veliko črko; \"%s\" se ne"
 
-#: ../src/ui/theme.c:5397
-#: ../src/ui/theme.c:5459
-#: ../src/ui/theme.c:5522
+#: ../src/ui/theme.c:5451
+#: ../src/ui/theme.c:5513
+#: ../src/ui/theme.c:5576
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" je bila že določena"
@@ -1313,361 +1323,370 @@ msgstr "Konstanta \"%s\" je bila že določena"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Ni atributa \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:231
-#: ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265
+#: ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Vrstica %d, znak %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atribut \"%s\" je bil v enakem elementu <%s> ponovljen dvakrat"
 
-#: ../src/ui/theme-parser.c:437
-#: ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503
+#: ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribut \"%s\" je v tem kontekstu v elementu <%s> neveljaven"
 
-#: ../src/ui/theme-parser.c:522
+#: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Ni mogoče razčleniti \"%s\" kot celoštevilčne vrednosti"
 
-#: ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:603
+#: ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Ni mogoče razumeti končnih znakov \"%s\" v nizu \"%s\""
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Celoštevilska vrednost %ld mora biti pozitivna"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Celoštevilska vrednost %ld je prevelika, trenutna omejitev je %d"
 
-#: ../src/ui/theme-parser.c:577
-#: ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649
+#: ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Ni mogoče razčleniti \"%s\" kot števila s plavajočo vejico"
 
-#: ../src/ui/theme-parser.c:608
-#: ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680
+#: ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Logične vrednosti morajo biti \"prav\" ali \"napak\" in ne \"%s\""
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Kot mora biti med 0.0 in 360.0, bil pa je %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "Alfa mora biti med 0.0 (nevidno) in 1.0 (popolnoma vidno), bilo je %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 msgstr "Neveljavna velikost naziva \"%s\" (mora biti eno od xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936
-#: ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033
-#: ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1008
+#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1105
+#: ../src/ui/theme-parser.c:1208
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "ime <%s> \"%s\" je uporabljeno drugič"
 
-#: ../src/ui/theme-parser.c:948
-#: ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1020
+#: ../src/ui/theme-parser.c:1117
+#: ../src/ui/theme-parser.c:1220
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "nadrejeni predmet <%s> \"%s\" ni bil naveden"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1130
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "geometrija <%s> \"%s\" ni bila navedena"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> mora navesti ali geometrijo ali nadrejeni predmet, ki ima geometrijo"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1185
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Določiti morate ozadje, v kolikor želite, da ima alfa vrednost pomen."
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1252
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Neznana vrsta \"%s\" v elementu <%s>"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1263
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Neznan style_set \"%s\" v elementu <%s>"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1271
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Vrsti okna \"%s\" je bil nabor sloga že določen"
 
-#: ../src/ui/theme-parser.c:1229
-#: ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519
-#: ../src/ui/theme-parser.c:2740
-#: ../src/ui/theme-parser.c:2786
-#: ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3126
-#: ../src/ui/theme-parser.c:3164
-#: ../src/ui/theme-parser.c:3202
-#: ../src/ui/theme-parser.c:3240
+#: ../src/ui/theme-parser.c:1301
+#: ../src/ui/theme-parser.c:1365
+#: ../src/ui/theme-parser.c:1591
+#: ../src/ui/theme-parser.c:2826
+#: ../src/ui/theme-parser.c:2872
+#: ../src/ui/theme-parser.c:3020
+#: ../src/ui/theme-parser.c:3212
+#: ../src/ui/theme-parser.c:3250
+#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3326
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> ni dovoljen pod <%s>"
 
-#: ../src/ui/theme-parser.c:1343
-#: ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1415
+#: ../src/ui/theme-parser.c:1429
+#: ../src/ui/theme-parser.c:1474
 msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
 msgstr "Ni mogoče navesti obojega \"button_width\"/\"button_height\" in razmerja\"aspect_ratio\" gumba"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1438
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Razdalja \"%s\" ni znana"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1483
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Razmerje \"%s\" ni znano"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1545
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Rob \"%s\" ni znane vrste"
 
-#: ../src/ui/theme-parser.c:1784
+#: ../src/ui/theme-parser.c:1856
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"start_angle\" ali \"from\""
 
-#: ../src/ui/theme-parser.c:1791
+#: ../src/ui/theme-parser.c:1863
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"extent_angle\" ali \"to\""
 
-#: ../src/ui/theme-parser.c:2031
+#: ../src/ui/theme-parser.c:2103
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Ni mogoče razumeti vrednost za vrsto preliva \"%s\""
 
-#: ../src/ui/theme-parser.c:2109
-#: ../src/ui/theme-parser.c:2484
+#: ../src/ui/theme-parser.c:2181
+#: ../src/ui/theme-parser.c:2556
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Nerazpoznavna vrsta polnjenja \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2276
-#: ../src/ui/theme-parser.c:2359
-#: ../src/ui/theme-parser.c:2422
+#: ../src/ui/theme-parser.c:2348
+#: ../src/ui/theme-parser.c:2431
+#: ../src/ui/theme-parser.c:2494
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti stanja \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2286
-#: ../src/ui/theme-parser.c:2369
+#: ../src/ui/theme-parser.c:2358
+#: ../src/ui/theme-parser.c:2441
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti senčenja \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2296
+#: ../src/ui/theme-parser.c:2368
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti puščice \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2596
-#: ../src/ui/theme-parser.c:2692
+#: ../src/ui/theme-parser.c:2682
+#: ../src/ui/theme-parser.c:2778
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "<draw_ops> imenovan \"%s\" ni bil naveden"
 
-#: ../src/ui/theme-parser.c:2608
-#: ../src/ui/theme-parser.c:2704
+#: ../src/ui/theme-parser.c:2694
+#: ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Vključevanje draw_ops \"%s\" tu, bi ustvarilo krožno nanašanje"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2905
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Neznan položaj \"%s\" za del okvirja"
 
-#: ../src/ui/theme-parser.c:2827
+#: ../src/ui/theme-parser.c:2913
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Slog okvirja že ima del na položaju %s"
 
-#: ../src/ui/theme-parser.c:2844
-#: ../src/ui/theme-parser.c:2919
+#: ../src/ui/theme-parser.c:2930
+#: ../src/ui/theme-parser.c:3005
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Za ime \"%s\" ni bilo navedenega <draw_ops>"
 
-#: ../src/ui/theme-parser.c:2873
+#: ../src/ui/theme-parser.c:2959
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Neznana funkcija \"%s\" za gumb"
 
-#: ../src/ui/theme-parser.c:2882
+#: ../src/ui/theme-parser.c:2968
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Funkcija gumba \"%s\" ne obstaja v tej različici (%d, zahtevana %d)"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Neznano stanje \"%s\" za gumb"
 
-#: ../src/ui/theme-parser.c:2902
+#: ../src/ui/theme-parser.c:2988
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Slog okvirja že ima gumb za funkcijo %s stanje %s"
 
-#: ../src/ui/theme-parser.c:2973
+#: ../src/ui/theme-parser.c:3059
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"focus\""
 
-#: ../src/ui/theme-parser.c:2982
+#: ../src/ui/theme-parser.c:3068
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"state\""
 
-#: ../src/ui/theme-parser.c:2992
+#: ../src/ui/theme-parser.c:3078
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Slog imenovan \"%s\" ni bil določen"
 
-#: ../src/ui/theme-parser.c:3013
-#: ../src/ui/theme-parser.c:3036
+#: ../src/ui/theme-parser.c:3099
+#: ../src/ui/theme-parser.c:3122
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"resize\""
 
-#: ../src/ui/theme-parser.c:3047
+#: ../src/ui/theme-parser.c:3133
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
 msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta/senčena stanja"
 
-#: ../src/ui/theme-parser.c:3061
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta stanja"
 
-#: ../src/ui/theme-parser.c:3075
-#: ../src/ui/theme-parser.c:3097
+#: ../src/ui/theme-parser.c:3161
+#: ../src/ui/theme-parser.c:3183
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Slog za stanje %s resize %s fokus %s je bil že naveden"
 
-#: ../src/ui/theme-parser.c:3086
-#: ../src/ui/theme-parser.c:3108
+#: ../src/ui/theme-parser.c:3172
+#: ../src/ui/theme-parser.c:3194
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Slog za stanje %s fokus %s je bil že naveden"
 
-#: ../src/ui/theme-parser.c:3147
+#: ../src/ui/theme-parser.c:3233
 msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <piece> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/ui/theme-parser.c:3185
+#: ../src/ui/theme-parser.c:3271
 msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <button> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/ui/theme-parser.c:3223
+#: ../src/ui/theme-parser.c:3309
 msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <menu_icon> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/ui/theme-parser.c:3271
+#: ../src/ui/theme-parser.c:3373
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "Slabo določilo različice '%s'"
+
+#: ../src/ui/theme-parser.c:3446
+msgid "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-theme-2.xml"
+msgstr "atributa \"version\" ni mogoče uporabiti v temi metacity-theme-1.xml oziroma metacity-theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3469
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr "Tema zahteva različico %s, zadnja podprta različica teme pa je %d.%d"
+
+#: ../src/ui/theme-parser.c:3501
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Najbolj zunanji element teme mora biti <metacity_theme> in ne <%s>"
 
-#: ../src/ui/theme-parser.c:3291
+#: ../src/ui/theme-parser.c:3521
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Element <%s> ni dovoljen znotraj elementov name, author, date ali description"
 
-#: ../src/ui/theme-parser.c:3296
+#: ../src/ui/theme-parser.c:3526
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> ni dovoljen znotraj elementa <constant>"
 
-#: ../src/ui/theme-parser.c:3308
+#: ../src/ui/theme-parser.c:3538
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Element <%s> ni dovoljen znotraj elementov distance/border/aspect_ration"
 
-#: ../src/ui/theme-parser.c:3330
+#: ../src/ui/theme-parser.c:3560
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> ni dovoljen znotraj elementa operacije draw"
 
-#: ../src/ui/theme-parser.c:3340
-#: ../src/ui/theme-parser.c:3370
-#: ../src/ui/theme-parser.c:3375
-#: ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:3570
+#: ../src/ui/theme-parser.c:3600
+#: ../src/ui/theme-parser.c:3605
+#: ../src/ui/theme-parser.c:3610
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> ni dovoljen znotraj elementa <%s>"
 
-#: ../src/ui/theme-parser.c:3602
+#: ../src/ui/theme-parser.c:3838
 msgid "No draw_ops provided for frame piece"
 msgstr "Za del okvirja ni naveden draw_ops"
 
-#: ../src/ui/theme-parser.c:3617
+#: ../src/ui/theme-parser.c:3853
 msgid "No draw_ops provided for button"
 msgstr "Za gumb ni naveden draw_ops"
 
-#: ../src/ui/theme-parser.c:3669
+#: ../src/ui/theme-parser.c:3907
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Znotraj elementa <%s> besedilo ni dovoljeno"
 
-#: ../src/ui/theme-parser.c:3724
-#: ../src/ui/theme-parser.c:3736
-#: ../src/ui/theme-parser.c:3748
-#: ../src/ui/theme-parser.c:3760
-#: ../src/ui/theme-parser.c:3772
+#: ../src/ui/theme-parser.c:3965
+#: ../src/ui/theme-parser.c:3977
+#: ../src/ui/theme-parser.c:3989
+#: ../src/ui/theme-parser.c:4001
+#: ../src/ui/theme-parser.c:4013
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> je za to temo naveden dvakrat"
 
-#: ../src/ui/theme-parser.c:4040
+#: ../src/ui/theme-parser.c:4283
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Ni mogoče najti veljavne datoteke za temo %s\n"
-
-#: ../src/ui/theme-parser.c:4096
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Datoteka teme %s ne vsebuje korenskega elementa <metacity_theme>"
 
 #: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
@@ -1839,12 +1858,12 @@ msgstr "Pričakovana je napaka, vendar odziva ni bilo"
 #: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr "Pričakovana je napaka %d, vrnjena pa je bilo %d"
+msgstr "Pričakovana je napaka %d, vrnjena pa je bila %d"
 
 #: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Napaka ni pričakovana, vendar je vrnjena: %s"
+msgstr "Napaka ni pričakovana, vendar je vrnjen odziv: %s"
 
 #: ../src/ui/theme-viewer.c:1265
 #, c-format
@@ -1854,13 +1873,15 @@ msgstr "vrednost x je %d, pričakovana pa je %d"
 #: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr "vrednost z je %d, pričakovana pa je %d"
+msgstr "vrednost y je %d, pričakovana pa je %d"
 
 #: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
 
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr "Datoteka teme %s ne vsebuje korenskega elementa <metacity_theme>"
 #~ msgid "Failed to read saved session file %s: %s\n"
 #~ msgstr "Ni mogoče prebrati datoteke shranjene seje %s: %s\n"
 #~ msgid "<author> specified twice for this theme"
