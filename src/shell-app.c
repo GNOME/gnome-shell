@@ -6,6 +6,7 @@
 #include "shell-app-private.h"
 #include "shell-global.h"
 #include "shell-enum-types.h"
+#include "display.h"
 
 #include <string.h>
 
@@ -245,14 +246,153 @@ shell_app_is_transient (ShellApp *app)
   return shell_app_info_is_transient (app->info);
 }
 
+typedef struct {
+  MetaWorkspace *workspace;
+  GSList **transients;
+} CollectTransientsData;
+
+static gboolean
+collect_transients_on_workspace (MetaWindow *window,
+                                 gpointer    datap)
+{
+  CollectTransientsData *data = datap;
+
+  if (data->workspace && meta_window_get_workspace (window) != data->workspace)
+    return TRUE;
+
+  *data->transients = g_slist_prepend (*data->transients, window);
+  return TRUE;
+}
+
+/* The basic idea here is that when we're targeting a window,
+ * if it has transients we want to pick the most recent one
+ * the user interacted with.
+ * This function makes raising GEdit with the file chooser
+ * open work correctly.
+ */
+static MetaWindow *
+find_most_recent_transient_on_same_workspace (MetaDisplay *display,
+                                              MetaWindow  *reference)
+{
+  GSList *transients, *transients_sorted, *iter;
+  MetaWindow *result;
+  CollectTransientsData data;
+
+  transients = NULL;
+  data.workspace = meta_window_get_workspace (reference);
+  data.transients = &transients;
+
+  meta_window_foreach_transient (reference, collect_transients_on_workspace, &data);
+
+  transients_sorted = meta_display_sort_windows_by_stacking (display, transients);
+  /* Reverse this so we're top-to-bottom (yes, we should probably change the order
+   * returned from the sort_windows_by_stacking function)
+   */
+  transients_sorted = g_slist_reverse (transients_sorted);
+  g_slist_free (transients);
+  transients = NULL;
+
+  result = NULL;
+  for (iter = transients_sorted; iter; iter = iter->next)
+    {
+      MetaWindow *window = iter->data;
+      MetaWindowType wintype = meta_window_get_window_type (window);
+
+      /* Don't want to focus UTILITY types, like the Gimp toolbars */
+      if (wintype == META_WINDOW_NORMAL ||
+          wintype == META_WINDOW_DIALOG)
+        {
+          result = window;
+          break;
+        }
+    }
+  g_slist_free (transients_sorted);
+  return result;
+}
+
+/**
+ * shell_app_activate_window:
+ * @app: a #ShellApp
+ * @window: (allow-none): Window to be focused
+ * @timestamp: Event timestamp
+ *
+ * Bring all windows for the given app to the foreground,
+ * but ensure that @window is on top.  If @window is %NULL,
+ * the window with the most recent user time for the app
+ * will be used.
+ *
+ * This function has no effect if @app is not currently running.
+ */
+void
+shell_app_activate_window (ShellApp     *app,
+                           MetaWindow   *window,
+                           guint32       timestamp)
+{
+  GSList *windows;
+
+  if (shell_app_get_state (app) != SHELL_APP_STATE_RUNNING)
+    return;
+
+  windows = shell_app_get_windows (app);
+  if (window == NULL && windows)
+    window = windows->data;
+
+  if (!g_slist_find (windows, window))
+    return;
+  else
+    {
+      GSList *iter;
+      ShellGlobal *global = shell_global_get ();
+      MetaScreen *screen = shell_global_get_screen (global);
+      MetaDisplay *display = meta_screen_get_display (screen);
+      MetaWorkspace *active = meta_screen_get_active_workspace (screen);
+      MetaWorkspace *workspace = meta_window_get_workspace (window);
+      guint32 last_user_timestamp = meta_display_get_last_user_time (display);
+      MetaWindow *most_recent_transient;
+
+      if (meta_display_xserver_time_is_before (display, timestamp, last_user_timestamp))
+        {
+          meta_window_set_demands_attention (window);
+          return;
+        }
+
+      /* Now raise all the other windows for the app that are on
+       * the same workspace, in reverse order to preserve the stacking.
+       */
+      for (iter = windows; iter; iter = iter->next)
+        {
+          MetaWindow *other_window = iter->data;
+
+          if (other_window != window)
+            meta_window_raise (other_window);
+        }
+
+      /* If we have a transient that the user's interacted with more recently than
+       * the window, pick that.
+       */
+      most_recent_transient = find_most_recent_transient_on_same_workspace (display, window);
+      if (most_recent_transient
+          && meta_display_xserver_time_is_before (display,
+                                                  meta_window_get_user_time (window),
+                                                  meta_window_get_user_time (most_recent_transient)))
+        window = most_recent_transient;
+
+      if (active != workspace)
+        meta_workspace_activate_with_focus (workspace, window, timestamp);
+      else
+        meta_window_activate (window, timestamp);
+    }
+}
+
 /**
  * shell_app_activate:
  * @app: a #ShellApp
  *
  * Perform an appropriate default action for operating on this application,
  * dependent on its current state.  For example, if the application is not
- * currently running, launch it.  If it is running, activate the most recently
- * used window.
+ * currently running, launch it.  If it is running, activate the most
+ * recently used NORMAL window (or if that window has a transient, the most
+ * recently used transient for that window).
  */
 void
 shell_app_activate (ShellApp  *app)
@@ -266,22 +406,7 @@ shell_app_activate (ShellApp  *app)
       case SHELL_APP_STATE_STARTING:
         break;
       case SHELL_APP_STATE_RUNNING:
-        {
-          GSList *windows = shell_app_get_windows (app);
-          if (windows)
-            {
-              ShellGlobal *global = shell_global_get ();
-              MetaScreen *screen = shell_global_get_screen (global);
-              MetaWorkspace *active = meta_screen_get_active_workspace (screen);
-              MetaWindow *window = windows->data;
-              MetaWorkspace *workspace = meta_window_get_workspace (window);
-
-              if (active != workspace)
-                meta_workspace_activate_with_focus (workspace, window, shell_global_get_current_time (global));
-              else
-                meta_window_activate (window, shell_global_get_current_time (global));
-            }
-        }
+        shell_app_activate_window (app, NULL, shell_global_get_current_time (shell_global_get ()));
         break;
     }
 }

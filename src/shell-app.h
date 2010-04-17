@@ -41,6 +41,8 @@ char *shell_app_get_name (ShellApp *app);
 char *shell_app_get_description (ShellApp *app);
 gboolean shell_app_is_transient (ShellApp *app);
 
+void shell_app_activate_window (ShellApp *app, MetaWindow *window, guint32 timestamp);
+
 void shell_app_activate (ShellApp *app);
 
 void shell_app_open_new_window (ShellApp *app);
