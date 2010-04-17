@@ -92,6 +92,9 @@ const char * meta_window_get_wm_class_instance (MetaWindow *window);
 /* Return whether the window would be showing if we were on its workspace */
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
+void meta_window_set_demands_attention (MetaWindow *window);
+void meta_window_unset_demands_attention (MetaWindow *window);
+
 const char* meta_window_get_startup_id (MetaWindow *window);
 void meta_window_change_workspace_by_index (MetaWindow *window,
                                             gint        space_index,

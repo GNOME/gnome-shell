@@ -610,10 +610,6 @@ void meta_window_stack_just_below (MetaWindow *window,
 void meta_window_set_user_time (MetaWindow *window,
                                 guint32     timestamp);
 
-void meta_window_set_demands_attention (MetaWindow *window);
-
-void meta_window_unset_demands_attention (MetaWindow *window);
-
 void meta_window_update_icon_now (MetaWindow *window);
 
 void meta_window_update_role (MetaWindow *window);
