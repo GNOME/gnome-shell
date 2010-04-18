@@ -798,7 +798,7 @@ clutter_container_create_child_meta (ClutterContainer *container,
   ClutterContainerIface *iface;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
 
