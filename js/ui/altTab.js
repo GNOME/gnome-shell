@@ -445,7 +445,10 @@ function SwitcherList(squareItems) {
 
 SwitcherList.prototype = {
     _init : function(squareItems) {
-        this.actor = new St.BoxLayout({ style_class: 'switcher-list' });
+        this.actor = new Shell.GenericContainer({ style_class: 'switcher-list' });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocateTop));
 
         // Here we use a GenericContainer so that we can force all the
         // children except the separator to have the same width.
@@ -484,14 +487,58 @@ SwitcherList.prototype = {
                                                 Shell.draw_box_pointer(area, Shell.PointerDirection.RIGHT);
                                             }));
 
-        this._leftGradient.add_actor(this._leftArrow);
-        this._rightGradient.add_actor(this._rightArrow);
+        this.actor.add_actor(this._leftArrow);
+        this.actor.add_actor(this._rightArrow);
 
         this._items = [];
         this._highlighted = -1;
         this._separator = null;
         this._squareItems = squareItems;
-        this._scrollable = false;
+        this._minSize = 0;
+        this._scrollableRight = true;
+        this._scrollableLeft = false;
+    },
+
+    _allocateTop: function(actor, box, flags) {
+        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
+        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
+
+        let childBox = new Clutter.ActorBox();
+        let scrollable = this._minSize > box.x2 - box.x1;
+
+        this._clipBin.allocate(box, flags);
+
+        childBox.x1 = 0;
+        childBox.y1 = 0;
+        childBox.x2 = this._leftGradient.width;
+        childBox.y2 = this.actor.height;
+        this._leftGradient.allocate(childBox, flags);
+        this._leftGradient.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
+
+        childBox.x1 = (this.actor.allocation.x2 - this.actor.allocation.x1) - this._rightGradient.width;
+        childBox.y1 = 0;
+        childBox.x2 = childBox.x1 + this._rightGradient.width;
+        childBox.y2 = this.actor.height;
+        this._rightGradient.allocate(childBox, flags);
+        this._rightGradient.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
+
+        let arrowWidth = Math.floor(leftPadding / 3);
+        let arrowHeight = arrowWidth * 2;
+        childBox.x1 = leftPadding / 2;
+        childBox.y1 = this.actor.height / 2 - arrowWidth;
+        childBox.x2 = childBox.x1 + arrowWidth;
+        childBox.y2 = childBox.y1 + arrowHeight;
+        this._leftArrow.allocate(childBox, flags);
+        this._leftArrow.opacity = this._leftGradient.opacity;
+
+        arrowWidth = Math.floor(rightPadding / 3);
+        arrowHeight = arrowWidth * 2;
+        childBox.x1 = this.actor.width - arrowWidth - rightPadding / 2;
+        childBox.y1 = this.actor.height / 2 - arrowWidth;
+        childBox.x2 = childBox.x1 + arrowWidth;
+        childBox.y2 = childBox.y1 + arrowHeight;
+        this._rightArrow.allocate(childBox, flags);
+        this._rightArrow.opacity = this._rightGradient.opacity;
     },
 
     addItem : function(item) {
@@ -544,29 +591,33 @@ SwitcherList.prototype = {
 
     _scrollToLeft : function() {
         let x = this._items[this._highlighted].allocation.x1;
-        this._rightGradient.show();
+        this._scrollableRight = true;
         Tweener.addTween(this._list, { anchor_x: x,
                                         time: POPUP_SCROLL_TIME,
                                         transition: 'easeOutQuad',
                                         onComplete: Lang.bind(this, function () {
-                                                                        if (this._highlighted == 0)
-                                                                            this._leftGradient.hide();
+                                                                        if (this._highlighted == 0) {
+                                                                            this._scrollableLeft = false;
+                                                                            this.actor.queue_relayout();
+                                                                        }
                                                              })
                         });
     },
 
     _scrollToRight : function() {
+        this._scrollableLeft = true;
         let monitor = global.get_focus_monitor();
         let padding = this.actor.get_theme_node().get_horizontal_padding();
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + parentPadding;
-        this._leftGradient.show();
         Tweener.addTween(this._list, { anchor_x: x,
                                         time: POPUP_SCROLL_TIME,
                                         transition: 'easeOutQuad',
                                         onComplete: Lang.bind(this, function () {
-                                                                        if (this._highlighted == this._items.length - 1)
-                                                                            this._rightGradient.hide();
+                                                                        if (this._highlighted == this._items.length - 1) {
+                                                                            this._scrollableRight = false;
+                                                                            this.actor.queue_relayout();
+                                                                        }
                                                              })
                         });
     },
@@ -610,6 +661,7 @@ SwitcherList.prototype = {
         let totalSpacing = this._list.spacing * (this._items.length - 1);
         alloc.min_size = this._items.length * maxChildMin + separatorWidth + totalSpacing;
         alloc.natural_size = alloc.min_size;
+        this._minSize = alloc.min_size;
     },
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
@@ -691,36 +743,6 @@ SwitcherList.prototype = {
         let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
         let topPadding = this.actor.get_theme_node().get_padding(St.Side.TOP);
         let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
-
-        // Show the arrows and gradients when scrolling is needed
-        if (children[children.length - 1].allocation.x2 > this.actor.width - leftPadding - rightPadding && !this._scrollable) {
-            this._leftGradient.set_height(this.actor.height);
-            this._leftGradient.x = this.actor.x;
-            this._leftGradient.y = this.actor.y;
-
-            this._rightGradient.set_height(this.actor.height);
-            this._rightGradient.x = this.actor.x + (this.actor.allocation.x2 - this.actor.allocation.x1) - this._rightGradient.width;
-            this._rightGradient.y = this.actor.y;
-
-            let arrowWidth = Math.floor(leftPadding / 3);
-            let arrowHeight = arrowWidth * 2;
-            this._leftArrow.set_size(arrowWidth, arrowHeight);
-            this._leftArrow.set_position(leftPadding / 2, this.actor.height / 2 - arrowWidth);
-
-            arrowWidth = Math.floor(rightPadding / 3);
-            arrowHeight = arrowWidth * 2;
-            this._rightArrow.set_size(arrowWidth, arrowHeight);
-            this._rightArrow.set_position(this._rightGradient.width - arrowHeight, this.actor.height / 2 - arrowWidth);
-
-            this._scrollable = true;
-
-            this._leftGradient.hide();
-            this._rightGradient.show();
-        }
-        else if (!this._scrollable){
-            this._leftGradient.hide();
-            this._rightGradient.hide();
-        }
 
         // Clip the area for scrolling
         this._clipBin.set_clip(0, -topPadding, (this.actor.allocation.x2 - this.actor.allocation.x1) - leftPadding - rightPadding, this.actor.height + bottomPadding);
@@ -825,17 +847,17 @@ AppSwitcher.prototype = {
             height = iconSizes[0] + iconSpacing;
         }
 
-        alloc.min_size = height;
-        alloc.natural_size = height;
-    },
-
-    _allocate: function (actor, box, flags) {
         for(let i = 0; i < this.icons.length; i++) {
             if (this.icons[i].icon != null)
                 break;
             this.icons[i].set_size(this._iconSize);
         }
 
+        alloc.min_size = height;
+        alloc.natural_size = height;
+    },
+
+    _allocate: function (actor, box, flags) {
         // Allocate the main list items
         SwitcherList.prototype._allocate.call(this, actor, box, flags);
 
