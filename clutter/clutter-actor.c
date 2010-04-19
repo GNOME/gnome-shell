@@ -2210,11 +2210,54 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
                                        ClutterActor *ancestor,
                                        CoglMatrix *matrix)
 {
+  ClutterActor *stage;
+  gfloat width, height;
+  CoglMatrix tmp_matrix;
+  gfloat z_camera;
+  ClutterPerspective perspective;
+
   _clutter_actor_ensure_stage_current (self);
 
-  /* FIXME: init_identity instead of assuming we have an empty stack! */
-
   cogl_push_matrix ();
+
+  if (ancestor == NULL)
+    {
+      stage = clutter_actor_get_stage (self);
+
+      clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
+      cogl_perspective (perspective.fovy,
+                        perspective.aspect,
+                        perspective.z_near,
+                        perspective.z_far);
+
+      cogl_get_projection_matrix (&tmp_matrix);
+      z_camera = 0.5f * tmp_matrix.xx;
+
+      clutter_actor_get_size (stage, &width, &height);
+
+      /* obliterate the current modelview matrix and reset it to be
+       * the same as the stage's at the beginning of a paint run; this
+       * is done to paint the target material in screen coordinates at
+       * the same place as the actor would have been
+       */
+      cogl_matrix_init_identity (&tmp_matrix);
+      cogl_matrix_translate (&tmp_matrix, -0.5f, -0.5f, -z_camera);
+      cogl_matrix_scale (&tmp_matrix, 1.0f / width, -1.0f / height, 1.0f / width);
+      cogl_matrix_translate (&tmp_matrix, 0.0f, -1.0f * height, 0.0f);
+      cogl_set_modelview_matrix (&tmp_matrix);
+    }
+  else
+    {
+      static CoglMatrix identity;
+      static gboolean initialized_identity = FALSE;
+
+       if (!initialized_identity)
+        {
+          cogl_matrix_init_identity (&identity);
+          initialized_identity = TRUE;
+        }
+      cogl_set_modelview_matrix (&identity);
+    }
 
   _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
 
