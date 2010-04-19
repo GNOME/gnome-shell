@@ -62,7 +62,6 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-batching", COGL_DEBUG_DISABLE_BATCHING },
   { "disable-vbos", COGL_DEBUG_DISABLE_VBOS },
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
-  { "force-scanline-paths", COGL_DEBUG_FORCE_SCANLINE_PATHS },
   { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE },
   { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS },
   { "disable-texturing", COGL_DEBUG_DISABLE_TEXTURING},
@@ -120,7 +119,6 @@ _cogl_parse_debug_string (const char *value,
       OPT ("disable-vbos:", "disable use of OpenGL vertex buffer objects");
       OPT ("disable-software-transform",
            "use the GPU to transform rectangular geometry");
-      OPT ("force-scanline-paths:", "use a scanline based path rasterizer");
       OPT ("dump-atlas-image:", "dump atlas changes to an image file");
       OPT ("disable-atlas:", "disable texture atlasing");
       OPT ("disable-texturing:", "disable texturing primitives");
