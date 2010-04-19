@@ -189,7 +189,6 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
                                   gboolean   need_clear)
 {
   unsigned int     path_start = 0;
-  unsigned int     sub_path_num = 0;
   float            bounds_x;
   float            bounds_y;
   float            bounds_w;
@@ -288,30 +287,7 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
       GE (glDrawArrays (GL_TRIANGLE_FAN, 0,
                         MIN (node->path_size, path->path_size - path_start)));
 
-      if (sub_path_num > 0)
-        {
-          /* Union the two stencil buffers bits into the least
-             significant bit */
-          GE (glStencilMask (merge ? 6 : 3));
-          GE (glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE));
-          cogl_rectangle (bounds_x, bounds_y,
-                          bounds_x + bounds_w, bounds_y + bounds_h);
-          /* Make sure the rectangle hits the stencil buffer before
-           * directly changing other GL state. */
-          _cogl_journal_flush ();
-          /* NB: The journal flushing may trash the modelview state and
-           * enable flags */
-          _cogl_matrix_stack_flush_to_gl (modelview_stack,
-                                          COGL_MATRIX_MODELVIEW);
-          _cogl_enable (enable_flags);
-
-          GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
-        }
-
-      GE (glStencilMask (merge ? 4 : 2));
-
       path_start += node->path_size;
-      sub_path_num++;
     }
 
   if (merge)
