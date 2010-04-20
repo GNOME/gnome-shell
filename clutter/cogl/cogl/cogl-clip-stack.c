@@ -243,6 +243,7 @@ set_clip_planes (float x_1,
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglMatrix projection_matrix;
+  float signed_area;
 
   float vertex_tl[4] = { x_1, y_1, 0, 1.0 };
   float vertex_tr[4] = { x_2, y_1, 0, 1.0 };
@@ -257,27 +258,31 @@ set_clip_planes (float x_1,
   project_vertex (&modelview_matrix, &projection_matrix, vertex_bl);
   project_vertex (&modelview_matrix, &projection_matrix, vertex_br);
 
-  /* If the order of the top and bottom lines is different from the
-     order of the left and right lines then the clip rect must have
-     been transformed so that the back is visible. We therefore need
-     to swap one pair of vertices otherwise all of the planes will be
-     the wrong way around */
-  if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
-      != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
-    {
-      float temp[4];
-      memcpy (temp, vertex_tl, sizeof (temp));
-      memcpy (vertex_tl, vertex_tr, sizeof (temp));
-      memcpy (vertex_tr, temp, sizeof (temp));
-      memcpy (temp, vertex_bl, sizeof (temp));
-      memcpy (vertex_bl, vertex_br, sizeof (temp));
-      memcpy (vertex_br, temp, sizeof (temp));
-    }
+  /* Calculate the signed area of the polygon formed by the four
+     vertices so that we can know its orientation */
+  signed_area = (vertex_tl[0] * (vertex_tr[1] - vertex_bl[1])
+                 + vertex_tr[0] * (vertex_br[1] - vertex_tl[1])
+                 + vertex_br[0] * (vertex_bl[1] - vertex_tr[1])
+                 + vertex_bl[0] * (vertex_tl[1] - vertex_br[1]));
 
-  set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
-  set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
-  set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
-  set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+  /* Set the clip planes to form lines between all of the vertices
+     using the same orientation as we calculated */
+  if (signed_area > 0.0f)
+    {
+      /* counter-clockwise */
+      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_bl);
+      set_clip_plane (GL_CLIP_PLANE1, vertex_bl, vertex_br);
+      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_tr);
+      set_clip_plane (GL_CLIP_PLANE3, vertex_tr, vertex_tl);
+    }
+  else
+    {
+      /* clockwise */
+      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+      set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
+      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
+      set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+    }
 }
 
 void
