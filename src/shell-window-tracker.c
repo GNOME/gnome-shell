@@ -84,6 +84,7 @@ enum {
 enum {
   APP_RUNNING_CHANGED,
   STARTUP_SEQUENCE_CHANGED,
+  TRACKED_WINDOWS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -149,6 +150,13 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                    NULL, NULL,
                                    g_cclosure_marshal_VOID__BOXED,
                                    G_TYPE_NONE, 1, SHELL_TYPE_STARTUP_SEQUENCE);
+  signals[TRACKED_WINDOWS_CHANGED] = g_signal_new ("tracked-windows-changed",
+                                                   SHELL_TYPE_WINDOW_TRACKER,
+                                                   G_SIGNAL_RUN_LAST,
+                                                   0,
+                                                   NULL, NULL,
+                                                   g_cclosure_marshal_VOID__VOID,
+                                                   G_TYPE_NONE, 0);
 }
 
 /**
@@ -514,6 +522,8 @@ track_window (ShellWindowTracker *self,
                            app);
       g_signal_emit (self, signals[APP_RUNNING_CHANGED], 0, app);
     }
+
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 }
 
 static void
@@ -548,6 +558,8 @@ disassociate_window (ShellWindowTracker   *self,
        g_hash_table_remove (self->running_apps, id);
        g_signal_emit (self, signals[APP_RUNNING_CHANGED], 0, app);
     }
+
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 
   g_object_unref (app);
 }
