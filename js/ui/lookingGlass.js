@@ -165,57 +165,49 @@ Result.prototype = {
     }
 };
 
-function ActorHierarchy() {
+function WindowList() {
     this._init();
 }
 
-ActorHierarchy.prototype = {
+WindowList.prototype = {
     _init : function () {
-        this._previousTarget = null;
-        this._target = null;
-
-        this._parentList = [];
-
-        this.actor = new St.BoxLayout({ name: "ActorHierarchy", vertical: true });
+        this.actor = new St.BoxLayout({ name: "Windows", vertical: true, style: "spacing: 8px" });
+        let display = global.screen.get_display();
+        let tracker = Shell.WindowTracker.get_default();
+        this._updateId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._updateWindowList));
+        display.connect('window-created', Lang.bind(this, this._updateWindowList));
+        tracker.connect('tracked-windows-changed', Lang.bind(this, this._updateWindowList));
     },
 
-    setTarget: function(actor) {
-        this._previousTarget = this._target;
-        this.target = actor;
-
-        this.actor.get_children().forEach(function (child) { child.destroy(); });
-
-        if (!(actor instanceof Clutter.Actor))
-            return;
-
-        if (this.target == null)
-            return;
-
-        this._parentList = [];
-        let parent = actor;
-        while ((parent = parent.get_parent()) != null) {
-            this._parentList.push(parent);
-
-            let link = new St.Label({ reactive: true,
-                                      text: "" + parent });
-            this.actor.add_actor(link);
-            let parentTarget = parent;
-            link.connect('button-press-event', Lang.bind(this, function () {
-                this._selectByActor(parentTarget);
-                return true;
-            }));
+    _updateWindowList: function() {
+        this.actor.get_children().forEach(function (actor) { actor.destroy(); });
+        let windows = global.get_windows();
+        let tracker = Shell.WindowTracker.get_default();
+        for (let i = 0; i < windows.length; i++) {
+            let metaWindow = windows[i].metaWindow;
+            metaWindow.connect('unmanaged', Lang.bind(this, this._updateWindowList));
+            let box = new St.BoxLayout({ vertical: true });
+            this.actor.add(box);
+            let label = new Link.Link({ label: metaWindow.title, x_align: St.Align.START });
+            label.actor.connect('clicked', Lang.bind(this, function () { this.emit('selected', metaWindow); }));
+            box.add(label.actor);
+            let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
+            box.add(propsBox);
+            propsBox.add(new St.Label({ text: "wmclass: " + metaWindow.get_wm_class() }));
+            let app = tracker.get_window_app(metaWindow);
+            if (app != null && !app.is_transient()) {
+                let icon = app.create_icon_texture(22);
+                let propBox = new St.BoxLayout({ style: 'spacing: 6px; ' });
+                propsBox.add(propBox);
+                propBox.add(new St.Label({ text: "app: " + app.get_id() }), { y_align: St.Align.MIDDLE });
+                propBox.add(icon, { y_align: St.Align.MIDDLE });
+            } else {
+                propsBox.add(new St.Label({ text: "<untracked>" }));
+            }
         }
-        this.emit('selection', actor);
-    },
-
-    _selectByActor: function(actor) {
-        let idx = this._parentList.indexOf(actor);
-        let children = this.actor.get_children();
-        let link = children[idx];
-        this.emit('selection', actor);
     }
 };
-Signals.addSignalMethods(ActorHierarchy.prototype);
+Signals.addSignalMethods(WindowList.prototype);
 
 function PropertyInspector() {
     this._init();
@@ -492,7 +484,6 @@ LookingGlass.prototype = {
             inspector.connect('target', Lang.bind(this, function(i, target, stageX, stageY) {
                 this._pushResult('<inspect x:' + stageX + ' y:' + stageY + '>',
                                  target);
-                this._hierarchy.setTarget(target);
             }));
             inspector.connect('closed', Lang.bind(this, function() {
                 this.actor.show();
@@ -530,15 +521,15 @@ LookingGlass.prototype = {
         }));
         entryArea.add(this._entry, { expand: true });
 
-        this._hierarchy = new ActorHierarchy();
-        notebook.appendPage('Hierarchy', this._hierarchy.actor);
-
         this._propInspector = new PropertyInspector();
         notebook.appendPage('Properties', this._propInspector.actor);
-        this._hierarchy.connect('selection', Lang.bind(this, function (h, actor) {
-            this._pushResult('<parent selection>', actor);
+
+        this._windowList = new WindowList();
+        this._windowList.connect('selected', Lang.bind(this, function(list, window) {
             notebook.selectIndex(0);
+            this._pushResult('<window selection>', window);
         }));
+        notebook.appendPage('Windows', this._windowList.actor);
 
         this._errorLog = new ErrorLog();
         notebook.appendPage('Errors', this._errorLog.actor);
@@ -666,7 +657,6 @@ LookingGlass.prototype = {
         }
 
         this._pushResult(command, resultObj);
-        this._hierarchy.setTarget(null);
         this._entry.text = '';
     },
 
