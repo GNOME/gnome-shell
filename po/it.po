@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
 "POT-Creation-Date: 2010-03-18 22:43+0000\n"
-"PO-Revision-Date: 2010-04-06 22:44+0200\n"
+"PO-Revision-Date: 2010-04-21 14:08+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Richiesta informazioni finestra sconosciuta: %d"
 #: ../src/core/delete.c:95
 #, c-format
 msgid "<tt>%s</tt> is not responding."
-msgstr "Nessuna risposta da<tt>%s</tt>."
+msgstr "Nessuna risposta da <tt>%s</tt>."
 
 #: ../src/core/delete.c:100
 msgid ""
