@@ -77,7 +77,7 @@ _cogl_path_modify (CoglPath *path)
          the total path size */
       new_nodes = &g_array_index (path->path_nodes, CoglPathNode, 0);
       for (i = 0; i < path->path_size; i += new_nodes[i].path_size)
-        if (new_nodes[i].path_size >= path->path_size)
+        if (i + new_nodes[i].path_size >= path->path_size)
           new_nodes[i].path_size = path->path_size - i;
 
       cogl_handle_unref (path->parent_path);
