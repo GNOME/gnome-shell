@@ -179,6 +179,18 @@
       <xi:include href="xml/clutter-model-iter.xml"/>
       <xi:include href="xml/clutter-list-model.xml"/>
     </chapter>
+
+    <chapter>
+      <title>Actor Effects</title>
+
+      <xi:include href="xml/clutter-effect.xml"/>
+      <xi:include href="xml/clutter-offscreen-effect.xml"/>
+      <xi:include href="xml/clutter-shader-effect.xml"/>
+
+      <xi:include href="xml/clutter-blur-effect.xml"/>
+      <xi:include href="xml/clutter-colorize-effect.xml"/>
+      <xi:include href="xml/clutter-desaturate-effect.xml"/>
+    </chapter>
   </part>
 
   <part id="clutterbackends">

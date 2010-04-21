@@ -399,6 +399,8 @@ clutter_actor_get_shader
 clutter_actor_set_shader_param
 clutter_actor_set_shader_param_float
 clutter_actor_set_shader_param_int
+clutter_actor_get_effect
+clutter_actor_set_effect
 
 <SUBSECTION>
 clutter_actor_grab_key_focus
@@ -2291,4 +2293,107 @@ clutter_click_action_get_type
 
 <SUBSECTION Private>
 ClutterClickActionPrivate
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterEffect</TITLE>
+<FILE>clutter-effect</FILE>
+ClutterEffect
+ClutterEffectClass
+<SUBSECTION Standard>
+CLUTTER_TYPE_EFFECT
+CLUTTER_EFFECT
+CLUTTER_EFFECT_CLASS
+CLUTTER_IS_EFFECT
+CLUTTER_IS_EFFECT_CLASS
+CLUTTER_EFFECT_GET_CLASS
+<SUBSECTION Private>
+clutter_effect_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterOffscreenEffect</TITLE>
+<FILE>clutter-offscreen-effect</FILE>
+ClutterOffscreenEffect
+ClutterOffscreenEffectClass
+clutter_offscreen_effect_get_actor
+clutter_offscreen_effect_get_target
+<SUBSECTION>
+clutter_offscreen_effect_create_target
+clutter_offscreen_effect_paint_target
+<SUBSECTION Standard>
+CLUTTER_TYPE_OFFSCREEN_EFFECT
+CLUTTER_OFFSCREEN_EFFECT
+CLUTTER_OFFSCREEN_EFFECT_CLASS
+CLUTTER_IS_OFFSCREEN_EFFECT
+CLUTTER_IS_OFFSCREEN_EFFECT_CLASS
+CLUTTER_OFFSCREEN_EFFECT_GET_CLASS
+<SUBSECTION Private>
+ClutterOffscreenEffectPrivate
+clutter_offscreen_effect_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterShaderEffect</TITLE>
+<FILE>clutter-shader-effect</FILE>
+ClutterShaderEffect
+ClutterShaderEffectClass
+clutter_shader_effect_set_uniform
+clutter_shader_effect_set_uniform_value
+<SUBSECTION>
+clutter_shader_effect_get_program
+clutter_shader_effect_get_shader
+<SUBSECTION Standard>
+CLUTTER_TYPE_SHADER_EFFECT
+CLUTTER_SHADER_EFFECT
+CLUTTER_SHADER_EFFECT_CLASS
+CLUTTER_IS_SHADER_EFFECT
+CLUTTER_IS_SHADER_EFFECT_CLASS
+CLUTTER_SHADER_EFFECT_GET_CLASS
+<SUBSECTION Private>
+ClutterShaderEffectPrivate
+clutter_shader_effect_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterBlurEffect</TITLE>
+<FILE>clutter-blur-effect</FILE>
+ClutterBlurEffect
+clutter_blur_effect_new
+<SUBSECTION Standard>
+CLUTTER_TYPE_BLUR_EFFECT
+CLUTTER_BLUR_EFFECT
+CLUTTER_IS_BLUR_EFFECT
+<SUBSECTION Private>
+clutter_blur_effect_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterColorizeEffect</TITLE>
+<FILE>clutter-colorize-effect</FILE>
+ClutterColorizeEffect
+clutter_colorize_effect_new
+clutter_colorize_effect_set_tint
+clutter_colorize_effect_get_tint
+<SUBSECTION Standard>
+CLUTTER_TYPE_COLORIZE_EFFECT
+CLUTTER_COLORIZE_EFFECT
+CLUTTER_IS_COLORIZE_EFFECT
+<SUBSECTION Private>
+clutter_colorize_effect_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterDesaturateEffect</TITLE>
+<FILE>clutter-desaturate-effect</FILE>
+ClutterDesaturateEffect
+clutter_desaturate_effect_new
+clutter_desaturate_effect_set_factor
+clutter_desaturate_effect_get_factor
+<SUBSECTION Standard>
+CLUTTER_TYPE_DESATURATE_EFFECT
+CLUTTER_DESATURATE_EFFECT
+CLUTTER_IS_DESATURATE_EFFECT
+<SUBSECTION Private>
+clutter_desaturate_effect_get_type
 </SECTION>
