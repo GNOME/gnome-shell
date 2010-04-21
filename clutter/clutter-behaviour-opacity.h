@@ -79,7 +79,7 @@ struct _ClutterBehaviourOpacity
 /**
  * ClutterBehaviourOpacityClass:
  *
- * The #ClutterBehaviourOpacityClas structure contains only private data
+ * The #ClutterBehaviourOpacityClass structure contains only private data
  *
  * Since: 0.2
  */

@@ -51,9 +51,9 @@
  *
  * The actors position between the path's end points directly correlates
  * to the #ClutterAlpha's current alpha value driving the behaviour. With
- * the #ClutterAlpha's function set to %CLUTTER_ALPHA_RAMP_INC the actor
+ * the #ClutterAlpha's function set to a linear ramp the actor
  * will follow the path at a constant velocity, but when changing to
- * %CLUTTER_ALPHA_SINE_INC the actor initially accelerates before quickly
+ * a sine wave the actor initially accelerates before quickly
  * decelerating.
  *
  * In order to implement a new behaviour you should subclass #ClutterBehaviour
