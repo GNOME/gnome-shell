@@ -54,9 +54,25 @@ G_BEGIN_DECLS
 /**
  * cogl_path_fill:
  *
- * Fills the constructed shape using the current drawing color. The
- * current path is then cleared. To use the path again, call
- * cogl_path_fill_preserve() instead.
+ * Fills the interior of the constructed shape using the current
+ * drawing color. The current path is then cleared. To use the path
+ * again, call cogl_path_fill_preserve() instead.
+ *
+ * The interior of the shape is determined using the 'even-odd'
+ * rule. Any open sub-paths are treated as if there is an extra line
+ * joining the last point and first point. You can work out whether
+ * any point in the stage will be filled if you imagine drawing an
+ * infinitely long line in any direction from that point and then
+ * counting the number times it crosses a line in the path. If the
+ * number is odd it will be filled, otherwise it will not.
+ *
+ * See <xref linkend="fill-rule"/> for a demonstration of the fill
+ * rule.
+ *
+ * <figure id="fill-rule">
+ *   <title>Example of filling various paths</title>
+ *   <graphic fileref="fill-rule.png" format="PNG"/>
+ * </figure>
  **/
 void
 cogl_path_fill (void);
@@ -64,8 +80,10 @@ cogl_path_fill (void);
 /**
  * cogl_path_fill_preserve:
  *
- * Fills the constructed shape using the current drawing color and
- * preserves the path to be used again.
+ * Fills the interior of the constructed shape using the current
+ * drawing color and preserves the path to be used again. See
+ * cogl_path_fill() for a description what is considered the interior
+ * of the shape.
  *
  * Since: 1.0
  **/
