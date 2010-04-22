@@ -838,14 +838,14 @@ cogl_path_arc (float center_x,
 }
 
 
-void
-cogl_path_arc_rel (float center_x,
-		   float center_y,
-		   float radius_x,
-		   float radius_y,
-		   float angle_1,
-		   float angle_2,
-		   float angle_step)
+static void
+_cogl_path_rel_arc (float center_x,
+                    float center_y,
+                    float radius_x,
+                    float radius_y,
+                    float angle_1,
+                    float angle_2,
+                    float angle_step)
 {
   CoglPath *path;
 
@@ -896,36 +896,36 @@ cogl_path_round_rectangle (float x_1,
   path = COGL_PATH (ctx->current_path);
 
   cogl_path_move_to (x_1, y_1 + radius);
-  cogl_path_arc_rel (radius, 0,
-		     radius, radius,
-		     180,
-		     270,
-		     arc_step);
+  _cogl_path_rel_arc (radius, 0,
+                      radius, radius,
+                      180,
+                      270,
+                      arc_step);
 
   cogl_path_line_to       (path->path_pen.x + inner_width,
                            path->path_pen.y);
-  cogl_path_arc_rel       (0, radius,
-			   radius, radius,
-			   -90,
-			   0,
-			   arc_step);
+  _cogl_path_rel_arc      (0, radius,
+                           radius, radius,
+                           -90,
+                           0,
+                           arc_step);
 
   cogl_path_line_to       (path->path_pen.x,
                            path->path_pen.y + inner_height);
 
-  cogl_path_arc_rel       (-radius, 0,
-			   radius, radius,
-			   0,
-			   90,
-			   arc_step);
+  _cogl_path_rel_arc      (-radius, 0,
+                           radius, radius,
+                           0,
+                           90,
+                           arc_step);
 
   cogl_path_line_to       (path->path_pen.x - inner_width,
                            path->path_pen.y);
-  cogl_path_arc_rel       (0, -radius,
-			   radius, radius,
-			   90,
-			   180,
-			   arc_step);
+  _cogl_path_rel_arc      (0, -radius,
+                           radius, radius,
+                           90,
+                           180,
+                           arc_step);
 
   cogl_path_close ();
 }
