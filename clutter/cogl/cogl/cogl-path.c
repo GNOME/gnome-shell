@@ -254,6 +254,10 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
          don't need to clear the whole stencil buffer, just the area
          that will be drawn */
       if (need_clear)
+        /* If this is being called from the clip stack code then it
+           will have set up a scissor for the minimum bounding box of
+           all of the clips. That box will likely mean that this
+           cogl_clear won't need to clear the entire buffer */
         cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
       else
         {
