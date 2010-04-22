@@ -53,9 +53,10 @@
 #include "clutter-enum-types.h"
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
-#include "clutter-private.h"    /* includes pango/cogl-pango.h */
-#include "clutter-units.h"
 #include "clutter-marshal.h"
+#include "clutter-private.h"    /* includes pango/cogl-pango.h */
+#include "clutter-profile.h"
+#include "clutter-units.h"
 
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
@@ -358,6 +359,14 @@ clutter_text_create_layout_no_cache (ClutterText *text,
   gchar *contents;
   gsize contents_len;
 
+  CLUTTER_STATIC_TIMER (text_layout_timer,
+                        "Mainloop",
+                        "Text Layout",
+                        "Layout creation",
+                        0);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, text_layout_timer);
+
   layout = clutter_actor_create_pango_layout (CLUTTER_ACTOR (text), NULL);
   pango_layout_set_font_description (layout, priv->font_desc);
 
@@ -476,6 +485,8 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
   g_free (contents);
 
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, text_layout_timer);
+
   return layout;
 }
 
@@ -532,6 +543,15 @@ clutter_text_create_layout (ClutterText *text,
   gboolean found_free_cache = FALSE;
   int i;
 
+  CLUTTER_STATIC_COUNTER (text_cache_hit_counter,
+                          "Text layout cache hit counter",
+                          "Increments for each layout cache hit",
+                          0);
+  CLUTTER_STATIC_COUNTER (text_cache_miss_counter,
+                          "Text layout cache miss counter",
+                          "Increments for each layout cache miss",
+                          0);
+
   /* Search for a cached layout with the same width and keep
    * track of the oldest one
    */
@@ -553,6 +573,8 @@ clutter_text_create_layout (ClutterText *text,
 			text,
                         allocation_width,
                         allocation_height);
+
+          CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
 
 	  return priv->cached_layouts[i].layout;
 	}
@@ -580,15 +602,18 @@ clutter_text_create_layout (ClutterText *text,
 
           if (allocation_height == -1 &&
               allocation_width == layout_width)
-          {
-            /* We've been asked for our height for the width we gave as a result
-             * of a _get_preferred_width call
-             */
-            CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f " \
+            {
+              /* We've been asked for our height for the width we gave
+               * as a result of a _get_preferred_width call
+               */
+            CLUTTER_NOTE (ACTOR,
+                          "ClutterText: %p: cache hit for size %.2fx%.2f "
                           "(matches width of extents)",
                           text,
                           allocation_width,
                           allocation_height);
+
+            CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
 
             return priv->cached_layouts[i].layout;
           }
@@ -596,11 +621,14 @@ clutter_text_create_layout (ClutterText *text,
                  allocation_height == layout_height)
           {
             /* We've been asked for width and height we gave before */
-            CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f " \
+            CLUTTER_NOTE (ACTOR,
+                          "ClutterText: %p: cache hit for size %.2fx%.2f "
                           "(matches size of extents)",
                           text,
                           allocation_width,
                           allocation_height);
+
+            CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
 
             return priv->cached_layouts[i].layout;
           }
@@ -616,6 +644,8 @@ clutter_text_create_layout (ClutterText *text,
 		text,
                 allocation_width,
                 allocation_height);
+
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_miss_counter);
 
   /* If we make it here then we didn't have a cached version so we
      need to recreate the layout */
