@@ -38,6 +38,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
+#include "cogl-matrix-private.h"
 
 void
 cogl_clip_push_window_rectangle (int x_offset,
@@ -76,46 +77,6 @@ cogl_clip_push_window_rect (float x_offset,
   cogl_clip_push_window_rectangle (x_offset, y_offset, width, height);
 }
 
-/* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
- * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with
- * (0,0) being top left. */
-#define VIEWPORT_TRANSFORM_X(x, vp_origin_x, vp_width) \
-    (  ( ((x) + 1.0) * ((vp_width) / 2.0) ) + (vp_origin_x)  )
-/* Note: for Y we first flip all coordinates around the X axis while in
- * normalized device coodinates */
-#define VIEWPORT_TRANSFORM_Y(y, vp_origin_y, vp_height) \
-    (  ( ((-(y)) + 1.0) * ((vp_height) / 2.0) ) + (vp_origin_y)  )
-
-/* Transform a homogeneous vertex position from model space to Cogl
- * window coordinates (with 0,0 being top left) */
-static void
-transform_point (CoglMatrix *matrix_mv,
-                 CoglMatrix *matrix_p,
-                 float *viewport,
-                 float *x,
-                 float *y)
-{
-  float z = 0;
-  float w = 1;
-
-  /* Apply the modelview matrix transform */
-  cogl_matrix_transform_point (matrix_mv, x, y, &z, &w);
-
-  /* Apply the projection matrix transform */
-  cogl_matrix_transform_point (matrix_p, x, y, &z, &w);
-
-  /* Perform perspective division */
-  *x /= w;
-  *y /= w;
-
-  /* Apply viewport transform */
-  *x = VIEWPORT_TRANSFORM_X (*x, viewport[0], viewport[2]);
-  *y = VIEWPORT_TRANSFORM_Y (*y, viewport[1], viewport[3]);
-}
-
-#undef VIEWPORT_SCALE_X
-#undef VIEWPORT_SCALE_Y
-
 /* Try to push a rectangle given in object coordinates as a rectangle in window
  * coordinates instead of object coordinates */
 static gboolean
@@ -147,8 +108,8 @@ try_pushing_rect_as_window_rect (float x_1,
   cogl_get_projection_matrix (&matrix_p);
   cogl_get_viewport (v);
 
-  transform_point (&matrix, &matrix_p, v, &x_1, &y_1);
-  transform_point (&matrix, &matrix_p, v, &x_2, &y_2);
+  _cogl_transform_point (&matrix, &matrix_p, v, &x_1, &y_1);
+  _cogl_transform_point (&matrix, &matrix_p, v, &x_2, &y_2);
 
   /* Consider that the modelview matrix may flip the rectangle
    * along the x or y axis... */
