@@ -75,6 +75,12 @@
     </dependencies>
   </autotools>
 
+  <autotools id="uprof">
+    <branch repo="git.moblin.org"
+            module="uprof"
+            revision="master"/>
+  </autotools>
+
   <autotools id="libccss" autogenargs="--without-rsvg --without-soup --disable-ccss-cairo --disable-ccss-gtk --disable-examples">
     <branch repo="git.freedesktop.org"
             module="ccss"
