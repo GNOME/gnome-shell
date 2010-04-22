@@ -39,6 +39,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
 #include "cogl-path-private.h"
+#include "cogl-matrix-private.h"
 
 typedef struct _CoglClipStackEntry CoglClipStackEntry;
 typedef struct _CoglClipStackEntryRect CoglClipStackEntryRect;
@@ -107,6 +108,16 @@ struct _CoglClipStackEntry
      this node must be holding a reference to the parent */
   CoglClipStackEntry     *parent;
 
+  /* All clip entries have a window-space bounding box which we can
+     use to calculate a scissor. The scissor limits the clip so that
+     we don't need to do a full stencil clear if the stencil buffer is
+     needed. This is stored in Cogl's coordinate space (ie, 0,0 is the
+     top left) */
+  int                     bounds_x0;
+  int                     bounds_y0;
+  int                     bounds_x1;
+  int                     bounds_y1;
+
   unsigned int            ref_count;
 };
 
@@ -128,12 +139,8 @@ struct _CoglClipStackEntryWindowRect
 {
   CoglClipStackEntry     _parent_data;
 
-  /* The window space rectangle for this clip. This is stored in
-     Cogl's coordinate space (ie, 0,0 is the top left) */
-  int                    x0;
-  int                    y0;
-  int                    x1;
-  int                    y1;
+  /* The window rect clip doesn't need any specific data because it
+     just adds to the scissor clip */
 };
 
 struct _CoglClipStackEntryPath
@@ -412,6 +419,49 @@ _cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
   return entry;
 }
 
+/* Sets the window-space bounds of the entry based on the projected
+   coordinates of the given rectangle */
+static void
+_cogl_clip_stack_entry_set_bounds (CoglClipStackEntry *entry,
+                                   float x_1,
+                                   float y_1,
+                                   float x_2,
+                                   float y_2,
+                                   const CoglMatrix *modelview)
+{
+  CoglMatrix projection;
+  float viewport[4];
+  float verts[4 * 2] = { x_1, y_1, x_2, y_1, x_2, y_2, x_1, y_2 };
+  float min_x = G_MAXFLOAT, min_y = G_MAXFLOAT;
+  float max_x = -G_MAXFLOAT, max_y = -G_MAXFLOAT;
+  int i;
+
+  cogl_get_projection_matrix (&projection);
+  cogl_get_viewport (viewport);
+
+  for (i = 0; i < 4; i++)
+    {
+      float *v = verts + i * 2;
+
+      /* Project the coordinates to window space coordinates */
+      _cogl_transform_point (modelview, &projection, viewport, v, v + 1);
+
+      if (v[0] > max_x)
+        max_x = v[0];
+      if (v[0] < min_x)
+        min_x = v[0];
+      if (v[1] > max_y)
+        max_y = v[1];
+      if (v[1] < min_y)
+        min_y = v[1];
+    }
+
+  entry->bounds_x0 = floorf (min_x);
+  entry->bounds_x1 = ceilf (max_x);
+  entry->bounds_y0 = floorf (min_y);
+  entry->bounds_y1 = ceilf (max_y);
+}
+
 void
 _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int x_offset,
@@ -419,7 +469,7 @@ _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int width,
                                         int height)
 {
-  CoglClipStackEntryWindowRect *entry;
+  CoglClipStackEntry *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -427,10 +477,10 @@ _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                        sizeof (CoglClipStackEntryWindowRect),
                                        COGL_CLIP_STACK_WINDOW_RECT);
 
-  entry->x0 = x_offset;
-  entry->x1 = x_offset + width;
-  entry->y0 = y_offset;
-  entry->y1 = y_offset + height;
+  entry->bounds_x0 = x_offset;
+  entry->bounds_x1 = x_offset + width;
+  entry->bounds_y0 = y_offset;
+  entry->bounds_y1 = y_offset + height;
 }
 
 void
@@ -454,6 +504,9 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
   entry->y1 = y_2;
 
   entry->matrix = *modelview_matrix;
+
+  _cogl_clip_stack_entry_set_bounds ((CoglClipStackEntry *) entry,
+                                     x_1, y_1, x_2, y_2, modelview_matrix);
 }
 
 void
@@ -462,6 +515,7 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  const CoglMatrix *modelview_matrix)
 {
   CoglClipStackEntryPath *entry;
+  float x_1, y_1, x_2, y_2;
 
   entry = _cogl_clip_stack_push_entry (stack,
                                        sizeof (CoglClipStackEntryPath),
@@ -470,6 +524,11 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
   entry->path = cogl_path_copy (path);
 
   entry->matrix = *modelview_matrix;
+
+  _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
+
+  _cogl_clip_stack_entry_set_bounds ((CoglClipStackEntry *) entry,
+                                     x_1, y_1, x_2, y_2, modelview_matrix);
 }
 
 static void
@@ -540,19 +599,65 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
   CoglClipStackEntry *entry;
+  int scissor_y_start;
 
   has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
 
   disable_clip_planes ();
   disable_stencil_buffer ();
-  GE (glDisable (GL_SCISSOR_TEST));
 
   /* If the stack is empty then there's nothing else to do */
   if (stack->stack_top == NULL)
     {
       *stencil_used_p = FALSE;
+      GE (glDisable (GL_SCISSOR_TEST));
       return;
     }
+
+  /* Calculate the scissor rect first so that if we eventually have to
+     clear the stencil buffer then the clear will be clipped to the
+     intersection of all of the bounding boxes. This saves having to
+     clear the whole stencil buffer */
+  for (entry = stack->stack_top; entry; entry = entry->parent)
+    {
+      /* Get the intersection of the current scissor and the bounding
+         box of this clip */
+      scissor_x0 = MAX (scissor_x0, entry->bounds_x0);
+      scissor_y0 = MAX (scissor_y0, entry->bounds_y0);
+      scissor_x1 = MIN (scissor_x1, entry->bounds_x1);
+      scissor_y1 = MIN (scissor_y1, entry->bounds_y1);
+    }
+
+  /* Enable scissoring as soon as possible */
+  if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
+    scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
+  else
+    {
+      CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+
+      /* We store the entry coordinates in Cogl coordinate space
+       * but OpenGL requires the window origin to be the bottom
+       * left so we may need to convert the incoming coordinates.
+       *
+       * NB: Cogl forces all offscreen rendering to be done upside
+       * down so in this case no conversion is needed.
+       */
+
+      if (cogl_is_offscreen (framebuffer))
+        scissor_y_start = scissor_y0;
+      else
+        {
+          int framebuffer_height =
+            _cogl_framebuffer_get_height (framebuffer);
+
+          scissor_y_start = framebuffer_height - scissor_y1;
+        }
+    }
+
+  GE (glEnable (GL_SCISSOR_TEST));
+  GE (glScissor (scissor_x0, scissor_y_start,
+                 scissor_x1 - scissor_x0,
+                 scissor_y1 - scissor_y0));
 
   /* Add all of the entries. This will end up adding them in the
      reverse order that they were specified but as all of the clips
@@ -606,59 +711,15 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
           _cogl_matrix_stack_pop (modelview_stack);
         }
-      else
-        {
-          /* Get the intersection of all window space rectangles in the clip
-           * stack */
-          CoglClipStackEntryWindowRect *window_rect =
-            (CoglClipStackEntryWindowRect *) entry;
-          scissor_x0 = MAX (scissor_x0, window_rect->x0);
-          scissor_y0 = MAX (scissor_y0, window_rect->y0);
-          scissor_x1 = MIN (scissor_x1, window_rect->x1);
-          scissor_y1 = MIN (scissor_y1, window_rect->y1);
-        }
+      /* We don't need to do anything for window space rectangles
+         because their functionality is entirely implemented by the
+         entry bounding box */
     }
 
   /* Enabling clip planes is delayed to now so that they won't affect
      setting up the stencil buffer */
   if (using_clip_planes)
     enable_clip_planes ();
-
-  if (!(scissor_x0 == 0 && scissor_y0 == 0 &&
-        scissor_x1 == G_MAXINT && scissor_y1 == G_MAXINT))
-    {
-      int scissor_y_start;
-
-      if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
-        scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
-      else
-        {
-          CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
-
-          /* We store the entry coordinates in Cogl coordinate space
-           * but OpenGL requires the window origin to be the bottom
-           * left so we may need to convert the incoming coordinates.
-           *
-           * NB: Cogl forces all offscreen rendering to be done upside
-           * down so in this case no conversion is needed.
-           */
-
-          if (cogl_is_offscreen (framebuffer))
-            scissor_y_start = scissor_y0;
-          else
-            {
-              int framebuffer_height =
-                _cogl_framebuffer_get_height (framebuffer);
-
-              scissor_y_start = framebuffer_height - scissor_y1;
-            }
-        }
-
-      GE (glEnable (GL_SCISSOR_TEST));
-      GE (glScissor (scissor_x0, scissor_y_start,
-                     scissor_x1 - scissor_x0,
-                     scissor_y1 - scissor_y0));
-    }
 
   *stencil_used_p = using_stencil_buffer;
 }
