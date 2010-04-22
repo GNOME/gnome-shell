@@ -47,41 +47,38 @@ static void _cogl_path_free (CoglPath *path);
 COGL_HANDLE_DEFINE (Path, path);
 
 static void
+_cogl_path_data_unref (CoglPathData *data)
+{
+  if (--data->ref_count <= 0)
+    {
+      g_array_free (data->path_nodes, TRUE);
+
+      g_slice_free (CoglPathData, data);
+    }
+}
+
+static void
 _cogl_path_modify (CoglPath *path)
 {
   /* This needs to be called whenever the path is about to be modified
-     to implement copy-on-write semantics. Note that the current
-     mechanism assumes that a path will only ever be appended to (ie,
-     the path won't be cleared or have nodes in the middle
-     changed). This means that we don't need to keep track of how many
-     copies a node has because the copies can just keep track of the
-     number of nodes they should draw */
+     to implement copy-on-write semantics */
 
-  /* If this path is a copy then we need to actually copy the data so
-     we can modify it */
-  if (path->parent_path)
+  /* If there is more than one path using the data then we need to
+     copy the data instead */
+  if (path->data->ref_count != 1)
     {
-      CoglPath *old_path = COGL_PATH (path->parent_path);
-      CoglPathNode *old_nodes = &g_array_index (old_path->path_nodes,
-                                                CoglPathNode, 0);
-      CoglPathNode *new_nodes;
-      int i;
+      CoglPathData *old_data = path->data;
 
-      path->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
-      /* The parent path may have extra nodes added after the copy was
-         made so we need to truncate it */
-      g_array_set_size (path->path_nodes, path->path_size);
-      memcpy (path->path_nodes->data, old_nodes,
-              sizeof (CoglPathNode) * path->path_size);
-      /* We need to make sure the last path size doesn't extend past
-         the total path size */
-      new_nodes = &g_array_index (path->path_nodes, CoglPathNode, 0);
-      for (i = 0; i < path->path_size; i += new_nodes[i].path_size)
-        if (i + new_nodes[i].path_size >= path->path_size)
-          new_nodes[i].path_size = path->path_size - i;
+      path->data = g_slice_dup (CoglPathData, old_data);
+      path->data->path_nodes = g_array_new (FALSE, FALSE,
+                                            sizeof (CoglPathNode));
+      g_array_append_vals (path->data->path_nodes,
+                           old_data->path_nodes->data,
+                           old_data->path_nodes->len);
 
-      cogl_handle_unref (path->parent_path);
-      path->parent_path = COGL_INVALID_HANDLE;
+      path->data->ref_count = 1;
+
+      _cogl_path_data_unref (old_data);
     }
 }
 
@@ -92,6 +89,7 @@ _cogl_path_add_node (gboolean new_sub_path,
 {
   CoglPathNode new_node;
   CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -99,29 +97,30 @@ _cogl_path_add_node (gboolean new_sub_path,
 
   _cogl_path_modify (path);
 
+  data = path->data;
+
   new_node.x = x;
   new_node.y = y;
   new_node.path_size = 0;
 
-  if (new_sub_path || path->path_size == 0)
-    path->last_path = path->path_size;
+  if (new_sub_path || data->path_nodes->len == 0)
+    data->last_path = data->path_nodes->len;
 
-  g_array_append_val (path->path_nodes, new_node);
-  path->path_size++;
+  g_array_append_val (data->path_nodes, new_node);
 
-  g_array_index (path->path_nodes, CoglPathNode, path->last_path).path_size++;
+  g_array_index (data->path_nodes, CoglPathNode, data->last_path).path_size++;
 
-  if (path->path_size == 1)
+  if (data->path_nodes->len == 1)
     {
-      path->path_nodes_min.x = path->path_nodes_max.x = x;
-      path->path_nodes_min.y = path->path_nodes_max.y = y;
+      data->path_nodes_min.x = data->path_nodes_max.x = x;
+      data->path_nodes_min.y = data->path_nodes_max.y = y;
     }
   else
     {
-      if (x < path->path_nodes_min.x) path->path_nodes_min.x = x;
-      if (x > path->path_nodes_max.x) path->path_nodes_max.x = x;
-      if (y < path->path_nodes_min.y) path->path_nodes_min.y = y;
-      if (y > path->path_nodes_max.y) path->path_nodes_max.y = y;
+      if (x < data->path_nodes_min.x) data->path_nodes_min.x = x;
+      if (x > data->path_nodes_max.x) data->path_nodes_max.x = x;
+      if (y < data->path_nodes_min.y) data->path_nodes_min.y = y;
+      if (y > data->path_nodes_max.y) data->path_nodes_max.y = y;
     }
 }
 
@@ -130,12 +129,12 @@ _cogl_path_stroke_nodes (void)
 {
   unsigned int   path_start = 0;
   unsigned long  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-  CoglPath      *path;
+  CoglPathData  *data;
   CoglMaterialFlushOptions options;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
   _cogl_journal_flush ();
 
@@ -153,17 +152,13 @@ _cogl_path_stroke_nodes (void)
 
   _cogl_material_flush_gl_state (ctx->source_material, &options);
 
-  while (path_start < path->path_size)
+  while (path_start < data->path_nodes->len)
     {
-      CoglPathNode *node = &g_array_index (path->path_nodes, CoglPathNode,
+      CoglPathNode *node = &g_array_index (data->path_nodes, CoglPathNode,
                                            path_start);
 
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode), &node->x) );
-      /* We need to limit the size of the sub path to the size of our
-         path in case this path is a copy and the parent path has
-         grown */
-      GE( glDrawArrays (GL_LINE_STRIP, 0,
-                        MIN (node->path_size, path->path_size - path_start)) );
+      GE( glDrawArrays (GL_LINE_STRIP, 0, node->path_size) );
 
       path_start += node->path_size;
     }
@@ -226,7 +221,7 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
     _cogl_material_get_cogl_enable_flags (ctx->source_material);
   _cogl_enable (enable_flags);
 
-  _cogl_path_get_bounds (path->path_nodes_min, path->path_nodes_max,
+  _cogl_path_get_bounds (path->data->path_nodes_min, path->data->path_nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
   GE( glEnable (GL_STENCIL_TEST) );
@@ -275,17 +270,13 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
     }
   ctx->n_texcoord_arrays_enabled = 0;
 
-  while (path_start < path->path_size)
+  while (path_start < path->data->path_nodes->len)
     {
       CoglPathNode *node =
-        &g_array_index (path->path_nodes, CoglPathNode, path_start);
+        &g_array_index (path->data->path_nodes, CoglPathNode, path_start);
 
       GE (glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode), &node->x));
-      /* We need to limit the size of the sub path to the size of our
-         path in case this path is a copy and the parent path has
-         grown */
-      GE (glDrawArrays (GL_TRIANGLE_FAN, 0,
-                        MIN (node->path_size, path->path_size - path_start)));
+      GE (glDrawArrays (GL_TRIANGLE_FAN, 0, node->path_size));
 
       path_start += node->path_size;
     }
@@ -522,7 +513,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
 static void
 _cogl_path_fill_nodes (void)
 {
-  CoglPath *path;
+  CoglPathData *data;
   float bounds_x;
   float bounds_y;
   float bounds_w;
@@ -530,9 +521,9 @@ _cogl_path_fill_nodes (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  _cogl_path_get_bounds (path->path_nodes_min, path->path_nodes_max,
+  _cogl_path_get_bounds (data->path_nodes_min, data->path_nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
   if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
@@ -568,17 +559,12 @@ _cogl_path_fill_nodes (void)
     {
       unsigned int path_start = 0;
 
-      while (path_start < path->path_size)
+      while (path_start < data->path_nodes->len)
         {
-          CoglPathNode *node = &g_array_index (path->path_nodes, CoglPathNode,
+          CoglPathNode *node = &g_array_index (data->path_nodes, CoglPathNode,
                                                path_start);
 
-          /* We need to limit the size of the sub path to the size of
-             our path in case this path is a copy and the parent path
-             has grown */
-          _cogl_path_fill_nodes_scanlines (node,
-                                           MIN (node->path_size,
-                                                path->path_size - path_start),
+          _cogl_path_fill_nodes_scanlines (node, node->path_size,
                                            bounds_x, bounds_y,
                                            bounds_w, bounds_h);
 
@@ -600,7 +586,7 @@ cogl_path_fill_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (COGL_PATH (ctx->current_path)->path_size == 0)
+  if (COGL_PATH (ctx->current_path)->data->path_nodes->len == 0)
     return;
 
   _cogl_path_fill_nodes ();
@@ -619,7 +605,7 @@ cogl_path_stroke_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (COGL_PATH (ctx->current_path)->path_size == 0)
+  if (COGL_PATH (ctx->current_path)->data->path_nodes->len == 0)
     return;
 
   _cogl_path_stroke_nodes ();
@@ -629,62 +615,62 @@ void
 cogl_path_move_to (float x,
                    float y)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_path_add_node (TRUE, x, y);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  path->path_start.x = x;
-  path->path_start.y = y;
+  data->path_start.x = x;
+  data->path_start.y = y;
 
-  path->path_pen = path->path_start;
+  data->path_pen = data->path_start;
 }
 
 void
 cogl_path_rel_move_to (float x,
                        float y)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  cogl_path_move_to (path->path_pen.x + x,
-                     path->path_pen.y + y);
+  cogl_path_move_to (data->path_pen.x + x,
+                     data->path_pen.y + y);
 }
 
 void
 cogl_path_line_to (float x,
                    float y)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_path_add_node (FALSE, x, y);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  path->path_pen.x = x;
-  path->path_pen.y = y;
+  data->path_pen.x = x;
+  data->path_pen.y = y;
 }
 
 void
 cogl_path_rel_line_to (float x,
                        float y)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  cogl_path_line_to (path->path_pen.x + x,
-                     path->path_pen.y + y);
+  cogl_path_line_to (data->path_pen.x + x,
+                     data->path_pen.y + y);
 }
 
 void
@@ -696,10 +682,10 @@ cogl_path_close (void)
 
   path = COGL_PATH (ctx->current_path);
 
-  _cogl_path_add_node (FALSE, path->path_start.x,
-                       path->path_start.y);
+  _cogl_path_add_node (FALSE, path->data->path_start.x,
+                       path->data->path_start.y);
 
-  path->path_pen = path->path_start;
+  path->data->path_pen = path->data->path_start;
 }
 
 void
@@ -847,14 +833,14 @@ _cogl_path_rel_arc (float center_x,
                     float angle_2,
                     float angle_step)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  _cogl_path_arc (path->path_pen.x + center_x,
-	          path->path_pen.y + center_y,
+  _cogl_path_arc (data->path_pen.x + center_x,
+	          data->path_pen.y + center_y,
 	          radius_x,   radius_y,
 	          angle_1,    angle_2,
 	          angle_step, 0 /* no move */);
@@ -902,16 +888,16 @@ cogl_path_round_rectangle (float x_1,
                       270,
                       arc_step);
 
-  cogl_path_line_to       (path->path_pen.x + inner_width,
-                           path->path_pen.y);
+  cogl_path_line_to       (path->data->path_pen.x + inner_width,
+                           path->data->path_pen.y);
   _cogl_path_rel_arc      (0, radius,
                            radius, radius,
                            -90,
                            0,
                            arc_step);
 
-  cogl_path_line_to       (path->path_pen.x,
-                           path->path_pen.y + inner_height);
+  cogl_path_line_to       (path->data->path_pen.x,
+                           path->data->path_pen.y + inner_height);
 
   _cogl_path_rel_arc      (-radius, 0,
                            radius, radius,
@@ -919,8 +905,8 @@ cogl_path_round_rectangle (float x_1,
                            90,
                            arc_step);
 
-  cogl_path_line_to       (path->path_pen.x - inner_width,
-                           path->path_pen.y);
+  cogl_path_line_to       (path->data->path_pen.x - inner_width,
+                           path->data->path_pen.y);
   _cogl_path_rel_arc      (0, -radius,
                            radius, radius,
                            90,
@@ -1042,7 +1028,7 @@ cogl_path_curve_to (float x_1,
   path = COGL_PATH (ctx->current_path);
 
   /* Prepare cubic curve */
-  cubic.p1 = path->path_pen;
+  cubic.p1 = path->data->path_pen;
   cubic.p2.x = x_1;
   cubic.p2.y = y_1;
   cubic.p3.x = x_2;
@@ -1055,7 +1041,7 @@ cogl_path_curve_to (float x_1,
 
   /* Add last point */
   _cogl_path_add_node (FALSE, cubic.p4.x, cubic.p4.y);
-  path->path_pen = cubic.p4;
+  path->data->path_pen = cubic.p4;
 }
 
 void
@@ -1066,18 +1052,18 @@ cogl_path_rel_curve_to (float x_1,
                         float x_3,
                         float y_3)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  cogl_path_curve_to (path->path_pen.x + x_1,
-                      path->path_pen.y + y_1,
-                      path->path_pen.x + x_2,
-                      path->path_pen.y + y_2,
-                      path->path_pen.x + x_3,
-                      path->path_pen.y + y_3);
+  cogl_path_curve_to (data->path_pen.x + x_1,
+                      data->path_pen.y + y_1,
+                      data->path_pen.x + x_2,
+                      data->path_pen.y + y_2,
+                      data->path_pen.x + x_3,
+                      data->path_pen.y + y_3);
 }
 
 CoglHandle
@@ -1107,12 +1093,14 @@ CoglHandle
 _cogl_path_new (void)
 {
   CoglPath *path;
+  CoglPathData *data;
 
   path = g_slice_new (CoglPath);
-  path->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
-  path->last_path = 0;
-  path->parent_path = COGL_INVALID_HANDLE;
-  path->path_size = 0;
+  data = path->data = g_slice_new (CoglPathData);
+
+  data->ref_count = 1;
+  data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
+  data->last_path = 0;
 
   return _cogl_path_handle_new (path);
 }
@@ -1129,8 +1117,9 @@ cogl_path_copy (CoglHandle handle)
 
   old_path = COGL_PATH (handle);
 
-  new_path = g_slice_dup (CoglPath, old_path);
-  new_path->parent_path = cogl_handle_ref (handle);
+  new_path = g_slice_new (CoglPath);
+  new_path->data = old_path->data;
+  new_path->data->ref_count++;
 
   return _cogl_path_handle_new (new_path);
 }
@@ -1138,11 +1127,7 @@ cogl_path_copy (CoglHandle handle)
 static void
 _cogl_path_free (CoglPath *path)
 {
-  if (path->parent_path)
-    cogl_handle_unref (path->parent_path);
-  else
-    g_array_free (path->path_nodes, TRUE);
-
+  _cogl_path_data_unref (path->data);
   g_slice_free (CoglPath, path);
 }
 
@@ -1231,7 +1216,7 @@ cogl_path_curve2_to (float x_1,
   path = COGL_PATH (ctx->current_path);
 
   /* Prepare quadratic curve */
-  quad.p1 = ctx->path_pen;
+  quad.p1 = path->data->path_pen;
   quad.p2.x = x_1;
   quad.p2.y = y_1;
   quad.p3.x = x_2;
@@ -1242,7 +1227,7 @@ cogl_path_curve2_to (float x_1,
 
   /* Add last point */
   _cogl_path_add_node (FALSE, quad.p3.x, quad.p3.y);
-  path->path_pen = quad.p3;
+  path->data->path_pen = quad.p3;
 }
 
 void
@@ -1251,16 +1236,16 @@ cogl_rel_curve2_to (float x_1,
                     float x_2,
                     float y_2)
 {
-  CoglPath *path;
+  CoglPathData *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  path = COGL_PATH (ctx->current_path);
+  data = COGL_PATH (ctx->current_path)->data;
 
-  cogl_path_curve2_to (path->path_pen.x + x_1,
-                       path->path_pen.y + y_1,
-                       path->path_pen.x + x_2,
-                       path->path_pen.y + y_2);
+  cogl_path_curve2_to (data->path_pen.x + x_1,
+                       data->path_pen.y + y_1,
+                       data->path_pen.x + x_2,
+                       data->path_pen.y + y_2);
 }
 
 #endif
