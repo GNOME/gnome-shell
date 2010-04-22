@@ -88,4 +88,11 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
                                   gboolean   merge,
                                   gboolean   need_clear);
 
+void
+_cogl_path_get_bounds (CoglPath *path,
+                       float *min_x,
+                       float *min_y,
+                       float *max_x,
+                       float *max_y);
+
 #endif /* __COGL_PATH_PRIVATE_H */
