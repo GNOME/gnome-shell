@@ -179,13 +179,19 @@ cogl_path_rel_line_to (float x,
  * @center_y: Y coordinate of the elliptical arc center
  * @radius_x: X radius of the elliptical arc
  * @radius_y: Y radius of the elliptical arc
- * @angle_1: Angle in the unit-circle at which the arc begin
- * @angle_2: Angle in the unit-circle at which the arc ends
+ * @angle_1: Angle in degrees at which the arc begin
+ * @angle_2: Angle in degrees at which the arc ends
  *
  * Adds an elliptical arc segment to the current path. A straight line
  * segment will link the current pen location with the first vertex
  * of the arc. If you perform a move_to to the arcs start just before
  * drawing it you create a free standing arc.
+ *
+ * The angles are measured in degrees where 0° is in the direction of
+ * the positive X axis and 90° is in the direction of the positive Y
+ * axis. The angle of the arc begins at @angle_1 and heads towards
+ * @angle_2 (so if @angle_2 is less than @angle_1 it will decrease,
+ * otherwise it will increase).
  **/
 void
 cogl_path_arc (float center_x,
