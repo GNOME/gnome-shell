@@ -27,7 +27,8 @@
  */
 static const char*const known_vendor_prefixes[] = { "gnome",
                                                     "fedora",
-                                                    "mozilla" };
+                                                    "mozilla",
+                                                    NULL };
 
 enum {
    PROP_0,
