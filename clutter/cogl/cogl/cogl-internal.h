@@ -124,6 +124,13 @@ _cogl_flush_face_winding (void);
 void
 _cogl_disable_other_texcoord_arrays (const CoglBitmask *mask);
 
+void
+_cogl_transform_point (const CoglMatrix *matrix_mv,
+                       const CoglMatrix *matrix_p,
+                       const float *viewport,
+                       float *x,
+                       float *y);
+
 #ifdef COGL_HAS_XLIB_SUPPORT
 
 /*
