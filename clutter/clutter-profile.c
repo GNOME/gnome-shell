@@ -65,27 +65,27 @@ print_report (UProfReport *report, UProfContext *context)
    * initialized, so we don't have to care here.
    */
   mainloop_timer = uprof_context_get_timer_result (context, "Mainloop");
-  if (!mainloop_timer)
-    return;
   stage_paint_timer = uprof_context_get_timer_result (context, "Redrawing");
-  if (!stage_paint_timer)
-    return;
   do_pick_timer = uprof_context_get_timer_result (context, "Do pick");
-  if (!do_pick_timer)
-    return;
 
-  g_print ("\n");
+  if (stage_paint_timer)
+    {
+      g_print ("\n");
 
-  state.n_frames = uprof_timer_result_get_start_count (stage_paint_timer);
-  g_print ("Frame count = %lu\n", state.n_frames);
+      state.n_frames = uprof_timer_result_get_start_count (stage_paint_timer);
+      g_print ("Frame count = %lu\n", state.n_frames);
 
-  fps = (float)state.n_frames / (uprof_timer_result_get_total_msecs (mainloop_timer)
+      fps = (float) state.n_frames
+          / (uprof_timer_result_get_total_msecs (mainloop_timer)
                                  / 1000.0);
-  g_print ("Average fps = %5.2f\n", fps);
+      g_print ("Average fps = %5.2f\n", fps);
+    }
 
   if (do_pick_timer)
     {
       int n_picks = uprof_timer_result_get_start_count (do_pick_timer);
+
+      g_print ("\n");
 
       g_print ("Pick Stats:\n");
       g_print ("Pick count = %d\n", n_picks);
@@ -94,9 +94,13 @@ print_report (UProfReport *report, UProfContext *context)
       g_print ("Average Msecs per pick = %3.2f\n",
                (float)uprof_timer_result_get_total_msecs (do_pick_timer)
                / (float)n_picks);
-
-      g_print ("\n");
     }
+
+  root_timers = uprof_context_get_root_timer_results (context);
+  if (!root_timers)
+    return;
+
+  g_print ("\n");
 
   /* XXX: UProfs default reporting code now supports dynamic sizing for the Name
    * column, the only thing it's missing is support for adding custom columns but
@@ -111,7 +115,6 @@ print_report (UProfReport *report, UProfContext *context)
 
   g_print ("\n");
   g_print ("Timers:\n");
-  root_timers = uprof_context_get_root_timer_results (context);
   for (l = root_timers; l != NULL; l = l->next)
     uprof_timer_result_print_and_children ((UProfTimerResult *)l->data,
                                            print_timer_fields,
