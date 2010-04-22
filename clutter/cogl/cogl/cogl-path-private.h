@@ -57,24 +57,20 @@ typedef struct _CoglBezCubic
 } CoglBezCubic;
 
 typedef struct _CoglPath CoglPath;
+typedef struct _CoglPathData CoglPathData;
 
 struct _CoglPath
 {
   CoglHandleObject  _parent;
 
-  /* If this path was created with cogl_path_copy then parent_path
-     will point to the copied path. Otherwise it will be
-     COGL_INVALID_HANDLE to indicate that we own path_nodes. */
-  CoglHandle        parent_path;
-  /* Pointer to the path nodes array. This will point directly into
-     the parent path if this path is a copy */
+  CoglPathData     *data;
+};
+
+struct _CoglPathData
+{
+  unsigned int      ref_count;
+
   GArray           *path_nodes;
-  /* Number of nodes to render from the data. This may be different
-     from path_nodes->len if this is a copied path and the parent path
-     was appended to. If that is the case then we need to be careful
-     to check that the size of a sub path doesn't extend past
-     path_size */
-  unsigned int      path_size;
 
   floatVec2         path_start;
   floatVec2         path_pen;
