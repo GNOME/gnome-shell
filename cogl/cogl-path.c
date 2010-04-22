@@ -177,18 +177,29 @@ _cogl_path_stroke_nodes (void)
     cogl_handle_unref (source);
 }
 
-static void
-_cogl_path_get_bounds (floatVec2 nodes_min,
-                       floatVec2 nodes_max,
-                       float *bounds_x,
-                       float *bounds_y,
-                       float *bounds_w,
-                       float *bounds_h)
+void
+_cogl_path_get_bounds (CoglPath *path,
+                       float *min_x,
+                       float *min_y,
+                       float *max_x,
+                       float *max_y)
 {
-  *bounds_x = nodes_min.x;
-  *bounds_y = nodes_min.y;
-  *bounds_w = nodes_max.x - *bounds_x;
-  *bounds_h = nodes_max.y - *bounds_y;
+  CoglPathData *data = path->data;
+
+  if (data->path_nodes->len == 0)
+    {
+      *min_x = 0.0f;
+      *min_y = 0.0f;
+      *max_x = 0.0f;
+      *max_y = 0.0f;
+    }
+  else
+    {
+      *min_x = data->path_nodes_min.x;
+      *min_y = data->path_nodes_min.y;
+      *max_x = data->path_nodes_max.x;
+      *max_y = data->path_nodes_max.y;
+    }
 }
 
 void
@@ -196,11 +207,8 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
                                   gboolean   merge,
                                   gboolean   need_clear)
 {
+  CoglPathData    *data = path->data;
   unsigned int     path_start = 0;
-  float            bounds_x;
-  float            bounds_y;
-  float            bounds_w;
-  float            bounds_h;
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle       prev_source;
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
@@ -230,9 +238,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
     _cogl_material_get_cogl_enable_flags (ctx->source_material);
   _cogl_enable (enable_flags);
 
-  _cogl_path_get_bounds (path->data->path_nodes_min, path->data->path_nodes_max,
-                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
-
   GE( glEnable (GL_STENCIL_TEST) );
 
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
@@ -255,8 +260,10 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
           /* Just clear the bounding box */
           GE( glStencilMask (~(GLuint) 0) );
           GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-          cogl_rectangle (bounds_x, bounds_y,
-                          bounds_x + bounds_w, bounds_y + bounds_h);
+          cogl_rectangle (data->path_nodes_min.x,
+                          data->path_nodes_min.y,
+                          data->path_nodes_max.x,
+                          data->path_nodes_max.y);
           /* Make sure the rectangle hits the stencil buffer before
            * directly changing other GL state. */
           _cogl_journal_flush ();
@@ -276,10 +283,10 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
   _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
-  while (path_start < path->data->path_nodes->len)
+  while (path_start < data->path_nodes->len)
     {
       CoglPathNode *node =
-        &g_array_index (path->data->path_nodes, CoglPathNode, path_start);
+        &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
       GE (glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode), &node->x));
       GE (glDrawArrays (GL_TRIANGLE_FAN, 0, node->path_size));
@@ -533,17 +540,10 @@ static void
 _cogl_path_fill_nodes (void)
 {
   CoglPathData *data;
-  float bounds_x;
-  float bounds_y;
-  float bounds_w;
-  float bounds_h;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   data = COGL_PATH (ctx->current_path)->data;
-
-  _cogl_path_get_bounds (data->path_nodes_min, data->path_nodes_max,
-                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
   if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
       cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
@@ -560,8 +560,10 @@ _cogl_path_fill_nodes (void)
                                         clip_state->stencil_used,
                                         FALSE);
 
-      cogl_rectangle (bounds_x, bounds_y,
-                      bounds_x + bounds_w, bounds_y + bounds_h);
+      cogl_rectangle (data->path_nodes_min.x,
+                      data->path_nodes_min.y,
+                      data->path_nodes_max.x,
+                      data->path_nodes_max.y);
 
       /* The stencil buffer now contains garbage so the clip area needs to
        * be rebuilt.
@@ -584,8 +586,12 @@ _cogl_path_fill_nodes (void)
                                                path_start);
 
           _cogl_path_fill_nodes_scanlines (node, node->path_size,
-                                           bounds_x, bounds_y,
-                                           bounds_w, bounds_h);
+                                           data->path_nodes_min.x,
+                                           data->path_nodes_min.y,
+                                           data->path_nodes_max.x -
+                                           data->path_nodes_min.x,
+                                           data->path_nodes_max.y -
+                                           data->path_nodes_min.y);
 
           path_start += node->path_size;
         }
