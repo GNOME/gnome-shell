@@ -554,6 +554,8 @@ static ClutterGravity clutter_anchor_coord_get_gravity (AnchorCoord    *coord);
 static void           clutter_anchor_coord_set_gravity (AnchorCoord    *coord,
                                                         ClutterGravity  gravity);
 
+static ClutterActor *clutter_actor_get_stage_internal (ClutterActor *actor);
+
 static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
 /* Helper macro which translates by the anchor coord, applies the
@@ -1003,9 +1005,9 @@ clutter_actor_real_unmap (ClutterActor *self)
     {
       ClutterActor *stage;
 
-      stage = clutter_actor_get_stage (self);
+      stage = clutter_actor_get_stage_internal (self);
 
-      if (stage &&
+      if (stage != NULL &&
           clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self)
         {
           clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
@@ -1728,8 +1730,9 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    */
   if (self->priv->propagated_one_redraw)
     {
-      ClutterActor *stage = clutter_actor_get_stage (self);
-      if (stage &&
+      ClutterActor *stage = clutter_actor_get_stage_internal (self);
+
+      if (stage != NULL&&
           _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
         return;
     }
@@ -2103,7 +2106,7 @@ _clutter_actor_ensure_stage_current (ClutterActor *self)
    * Simply duping code for now in wait for Cogl cleanup that can hopefully
    * address this in a nicer way.
   */
-  stage = clutter_actor_get_stage (self);
+  stage = clutter_actor_get_stage_internal (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
    * return default - ideally the func should fail
@@ -2243,7 +2246,7 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
    * Simply duping code for now in wait for Cogl cleanup that can hopefully
    * address this in a nicer way.
    */
-  stage = clutter_actor_get_stage (self);
+  stage = clutter_actor_get_stage_internal (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
    * return default - idealy the func should fail
@@ -2324,7 +2327,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
    */
   if (priv->needs_allocation)
     {
-      ClutterActor *stage = clutter_actor_get_stage (self);
+      ClutterActor *stage = clutter_actor_get_stage_internal (self);
 
       /* FIXME: if were not yet added to a stage, its probably unsafe to
        * return default - idealy the func should fail
@@ -2457,7 +2460,7 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   if (self == ancestor)
     return;
 
-  stage = clutter_actor_get_stage (self);
+  stage = clutter_actor_get_stage_internal (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
    * return default - idealy the func should fail
@@ -5163,7 +5166,7 @@ clutter_actor_get_allocation_box (ClutterActor    *self,
   /* this implements 2) */
   if (G_UNLIKELY (self->priv->needs_allocation))
     {
-      ClutterActor *stage = clutter_actor_get_stage (self);
+      ClutterActor *stage = clutter_actor_get_stage_internal (self);
 
       /* do not queue a relayout on an unparented actor */
       if (stage)
@@ -9197,6 +9200,15 @@ clutter_actor_is_scaled (ClutterActor *self)
   return FALSE;
 }
 
+static ClutterActor *
+clutter_actor_get_stage_internal (ClutterActor *actor)
+{
+  while (actor && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL))
+    actor = actor->priv->parent_actor;
+
+  return actor;
+}
+
 /**
  * clutter_actor_get_stage:
  * @actor: a #ClutterActor
@@ -9212,10 +9224,7 @@ clutter_actor_get_stage (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
-  while (actor && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL))
-    actor = clutter_actor_get_parent (actor);
-
-  return actor;
+  return clutter_actor_get_stage_internal (actor);
 }
 
 /**
@@ -9389,17 +9398,13 @@ clutter_actor_allocate_preferred_size (ClutterActor           *self,
 void
 clutter_actor_grab_key_focus (ClutterActor *self)
 {
-  ClutterActor *parent;
+  ClutterActor *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  parent = clutter_actor_get_parent (self);
-  if (!parent)
-    return;
-
-  parent = clutter_actor_get_stage (self);
-  if (parent && CLUTTER_IS_STAGE (parent))
-    clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
+  stage = clutter_actor_get_stage_internal (self);
+  if (stage != NULL)
+    clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);
 }
 
 /**
