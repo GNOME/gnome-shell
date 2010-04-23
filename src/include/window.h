@@ -118,6 +118,8 @@ void meta_window_unmaximize (MetaWindow        *window,
                              MetaMaximizeFlags  directions);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
+void        meta_window_raise              (MetaWindow  *window);
+void        meta_window_lower              (MetaWindow  *window);
 const char *meta_window_get_title (MetaWindow *window);
 MetaWindow *meta_window_get_transient_for (MetaWindow *window);
 Window      meta_window_get_transient_for_as_xid (MetaWindow *window);

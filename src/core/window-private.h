@@ -506,8 +506,6 @@ void        meta_window_get_geometry         (MetaWindow  *window,
 void        meta_window_kill               (MetaWindow  *window);
 void        meta_window_focus              (MetaWindow  *window,
                                             guint32      timestamp);
-void        meta_window_raise              (MetaWindow  *window);
-void        meta_window_lower              (MetaWindow  *window);
 
 void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 
