@@ -37,10 +37,15 @@ def get_running_session_environs():
         if not stat.st_uid == myuid:
             continue
         try:
-            exe = os.readlink(piddir + '/exe')
-        except OSError, e:
+            f = open(piddir + "/cmdline")
+            command = f.read()
+            f.close()
+        except IOError, e:
             continue
-        if os.path.basename(exe) != 'gnome-session':
+        # /proc/cmdline is separated and terminated by NULs
+        command = command.split("\x00")[0]
+        command = os.path.basename(command)
+        if command != 'gnome-session':
             continue
         try:
             f = open(os.path.join(piddir, 'environ'))
