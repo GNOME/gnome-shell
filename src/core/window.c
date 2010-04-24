@@ -8247,10 +8247,22 @@ meta_window_refresh_resize_popup (MetaWindow *window)
     }
 }
 
+/**
+ * meta_window_foreach_transient:
+ * @window: a #MetaWindow
+ * @func: (scope call): Called for each window which is a transient of @window (transitively)
+ * @user_data: (closure): User data
+ *
+ * Call @func for every window which is either transient for @window, or is
+ * a transient of a window which is in turn transient for @window.
+ * The order of window enumeration is not defined.
+ *
+ * Iteration will stop if @func at any point returns %FALSE.
+ */
 void
 meta_window_foreach_transient (MetaWindow            *window,
                                MetaWindowForeachFunc  func,
-                               void                  *data)
+                               void                  *user_data)
 {
   GSList *windows;
   GSList *tmp;
@@ -8264,7 +8276,7 @@ meta_window_foreach_transient (MetaWindow            *window,
 
       if (meta_window_is_ancestor_of_transient (window, transient))
         {
-          if (!(* func) (transient, data))
+          if (!(* func) (transient, user_data))
             break;
         }
 
@@ -8274,10 +8286,19 @@ meta_window_foreach_transient (MetaWindow            *window,
   g_slist_free (windows);
 }
 
+/**
+ * meta_window_foreach_ancestor:
+ * @window: a #MetaWindow
+ * @func: (scope call): Called for each window which is a transient parent of @window
+ * @user_data: (closure): User data
+ *
+ * If @window is transient, call @func with the window for which it's transient,
+ * repeatedly until either we find a non-transient window, or @func returns %FALSE.
+ */
 void
 meta_window_foreach_ancestor (MetaWindow            *window,
                               MetaWindowForeachFunc  func,
-                              void                  *data)
+                              void                  *user_data)
 {
   MetaWindow *w;
   MetaWindow *tortoise;
@@ -8295,7 +8316,7 @@ meta_window_foreach_ancestor (MetaWindow            *window,
       if (w == NULL || w == tortoise)
         break;
 
-      if (!(* func) (w, data))
+      if (!(* func) (w, user_data))
         break;
 
       if (w->xtransient_for == None ||
@@ -8307,7 +8328,7 @@ meta_window_foreach_ancestor (MetaWindow            *window,
       if (w == NULL || w == tortoise)
         break;
 
-      if (!(* func) (w, data))
+      if (!(* func) (w, user_data))
         break;
 
       tortoise = meta_display_lookup_x_window (tortoise->display,

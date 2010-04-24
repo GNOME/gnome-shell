@@ -108,6 +108,17 @@ MetaStackLayer meta_window_get_layer (MetaWindow *window);
 MetaWindow* meta_window_find_root_ancestor    (MetaWindow *window);
 gboolean meta_window_is_ancestor_of_transient (MetaWindow            *window,
                                                MetaWindow            *transient);
+
+typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
+                                           void       *data);
+
+void     meta_window_foreach_transient        (MetaWindow            *window,
+                                               MetaWindowForeachFunc  func,
+                                               void                  *user_data);
+void     meta_window_foreach_ancestor         (MetaWindow            *window,
+                                               MetaWindowForeachFunc  func,
+                                               void                  *user_data);
+
 gboolean meta_window_is_mapped (MetaWindow  *window);
 gboolean meta_window_toplevel_is_mapped (MetaWindow  *window);
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,

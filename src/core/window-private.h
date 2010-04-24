@@ -46,9 +46,6 @@
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
 
-typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
-                                           void       *data);
-
 typedef enum {
   META_CLIENT_TYPE_UNKNOWN = 0,
   META_CLIENT_TYPE_APPLICATION = 1,
@@ -580,12 +577,6 @@ void meta_window_refresh_resize_popup (MetaWindow *window);
 
 void meta_window_free_delete_dialog (MetaWindow *window);
 
-void     meta_window_foreach_transient        (MetaWindow            *window,
-                                               MetaWindowForeachFunc  func,
-                                               void                  *data);
-void     meta_window_foreach_ancestor         (MetaWindow            *window,
-                                               MetaWindowForeachFunc  func,
-                                               void                  *data);
 
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
