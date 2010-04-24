@@ -151,4 +151,7 @@ void meta_display_focus_the_no_focus_window (MetaDisplay *display,
                                              MetaScreen  *screen,
                                              guint32      timestamp);
 
+GSList *meta_display_sort_windows_by_stacking (MetaDisplay *display,
+                                               GSList      *windows);
+
 #endif

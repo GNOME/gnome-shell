@@ -5011,6 +5011,34 @@ meta_display_stack_cmp (const void *a,
     return 0; /* not reached in theory, if windows on same display */
 }
 
+/**
+ * meta_display_sort_windows_by_stacking:
+ * @display: a #MetaDisplay
+ * @windows: (element-type MetaWindow): Set of windows
+ *
+ * Sorts a set of windows according to their current stacking order. If windows
+ * from multiple screens are present in the set of input windows, then all the
+ * windows on screen 0 are sorted below all the windows on screen 1, and so forth.
+ * Since the stacking order of override-redirect windows isn't controlled by
+ * Metacity, if override-redirect windows are in the input, the result may not
+ * correspond to the actual stacking order in the X server.
+ *
+ * An example of using this would be to sort the list of transient dialogs for a
+ * window into their current stacking order.
+ *
+ * Returns: (transfer container): Input windows sorted by stacking order, from lowest to highest
+ */
+GSList *
+meta_display_sort_windows_by_stacking (MetaDisplay *display,
+                                       GSList      *windows)
+{
+  GSList *copy = g_slist_copy (windows);
+
+  copy = g_slist_sort (copy, meta_display_stack_cmp);
+
+  return copy;
+}
+
 void
 meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                      MetaVirtualModifier modifiers,
