@@ -8,39 +8,28 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.20/glib{-dev,}_2.20.4-1_win32.zip \
-    gtk+/2.16/gtk+{-dev,}_2.16.4-1_win32.zip \
-    pango/1.22/pango{-dev,}_1.22.0-1_win32.zip \
-    atk/1.26/atk{-dev,}_1.26.0-1_win32.zip );
+    glib/2.24/glib{-dev,}_2.24.0-2_win32.zip \
+    gtk+/2.16/gtk+{-dev,}_2.16.6-2_win32.zip \
+    pango/1.28/pango{-dev,}_1.28.0-1_win32.zip \
+    atk/1.30/atk{-dev,}_1.30.0-1_win32.zip );
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
 TOR_DEPS=( \
-    cairo{-dev,}_1.8.6-1_win32.zip \
+    cairo{-dev,}_1.8.10-3_win32.zip \
     gettext-runtime-{dev-,}0.17-1.zip \
-    fontconfig{-dev,}_2.6.0-2_win32.zip \
-    freetype{-dev,}_2.3.8-1_win32.zip \
-    expat_2.0.1-1_win32.zip );
+    fontconfig{-dev,}_2.8.0-2_win32.zip \
+    freetype{-dev,}_2.3.12-1_win32.zip \
+    expat_2.0.1-1_win32.zip \
+    libpng{-dev,}_1.4.0-1_win32.zip \
+    zlib{-dev,}_1.2.4-2_win32.zip );
 
-#SF_URL="http://kent.dl.sourceforge.net/sourceforge";
-#SF_URL="http://surfnet.dl.sourceforge.net/sourceforge";
+GL_HEADER_URLS=( \
+    http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
+    http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/mesa_wgl.h \
+    http://www.opengl.org/registry/api/glext.h );
 
-MESA_VER=7.5
-
-SF_URL="http://mesh.dl.sourceforge.net/sourceforge";
-
-OTHER_DEPS=( \
-    "http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip" \
-    "${SF_URL}/libpng/zlib123-dll.zip" \
-    "http://www.libsdl.org/release/SDL-devel-1.2.13-mingw32.tar.gz" \
-    "${SF_URL}/mesa3d/MesaLib-${MESA_VER}.tar.bz2" );
-
-GNUWIN32_URL="${SF_URL}/gnuwin32";
-
-GNUWIN32_DEPS=( \
-    libpng-1.2.33-{bin,lib}.zip \
-    jpeg-6b-4-{bin,lib}.zip \
-    tiff-3.8.2-1-{bin,lib}.zip );
+GL_HEADERS=( gl.h mesa_wgl.h glext.h );
 
 CLUTTER_GIT="git://git.clutter-project.org"
 
@@ -234,8 +223,9 @@ for dep in "${OTHER_DEPS[@]}"; do
     download_file "$dep" "$bn";
 done;
 
-for dep in "${GNUWIN32_DEPS[@]}"; do
-    download_file "$GNUWIN32_URL/$dep" "$dep";
+for dep in "${GL_HEADER_URLS[@]}"; do
+    bn="${dep##*/}";
+    download_file "$dep" "$bn";
 done;
 
 ##
@@ -253,49 +243,12 @@ for dep in "${TOR_DEPS[@]}"; do
     do_unzip "$DOWNLOAD_DIR/$dep";
 done;
 
-for dep in "${GNUWIN32_DEPS[@]}"; do
-    echo "Extracting $dep...";
-    do_unzip "$DOWNLOAD_DIR/$dep";
-done;
-
-echo "Extracting libiconv...";
-do_unzip "$DOWNLOAD_DIR/libiconv-1.9.1.bin.woe32.zip";
-echo "Extracting zlib...";
-do_unzip "$DOWNLOAD_DIR/zlib123-dll.zip" "zlib1.dll";
-
-if ! mv "$ROOT_DIR/zlib1.dll" "$ROOT_DIR/bin/"; then
-    echo "Failed to mv zlib1.dll";
-    exit 1;
-fi;
-
-echo "Extracting SDL...";
-if ! tar -C "$ROOT_DIR" \
-    -zxf "$DOWNLOAD_DIR/SDL-devel-1.2.13-mingw32.tar.gz"; then
-    echo "Failed to extract SDL";
-    exit 1;
-fi;
-for x in bin docs include lib man share; do
-    if ! cp -pR "$ROOT_DIR/SDL-1.2.13/$x" "$ROOT_DIR/"; then
-	echo "Failed to copy SDL files";
-	exit 1;
-    fi;
-done;
-rm -fr "$ROOT_DIR/SDL-1.2.13";
-export SDL_CONFIG="$ROOT_DIR/bin/sdl-config";
-
-echo "Fixing SDL libtool files...";
-sed "s/^libdir=.*\$/libdir='${quoted_root_dir}\/lib'/" \
-    < "$ROOT_DIR/lib/libSDL.la" > "$ROOT_DIR/lib/libSDL.la.tmp";
-mv "$ROOT_DIR/lib/libSDL.la.tmp" "$ROOT_DIR/lib/libSDL.la";
-
 echo "Fixing pkgconfig files...";
-for x in "$ROOT_DIR/lib/pkgconfig/"*.pc "$ROOT_DIR/bin/sdl-config"; do
+for x in "$ROOT_DIR/lib/pkgconfig/"*.pc; do
     sed "s/^prefix=.*\$/prefix=${quoted_root_dir}/" \
 	< "$x" > "$x.tmp";
     mv "$x.tmp" "$x";
 done;
-
-chmod +x "$ROOT_DIR/bin/sdl-config";
 
 # The Pango FT pc file hardcodes the include path for freetype, so it
 # needs to be fixed separately
@@ -305,14 +258,18 @@ sed -e 's/^Cflags:.*$/Cflags: -I${includedir}\/pango-1.0 -I${includedir}\/freety
     > "$ROOT_DIR/lib/pkgconfig/pangoft2.pc.tmp";
 mv "$ROOT_DIR/lib/pkgconfig/pangoft2.pc"{.tmp,};
 
-echo "Extracting Mesa headers...";
-if ! tar -C "$DOWNLOAD_DIR" \
-    -jxf "$DOWNLOAD_DIR/MesaLib-${MESA_VER}.tar.bz2" \
-    Mesa-${MESA_VER}/include; then
-    echo "Failed to extract Mesa headers";
+echo "Copying GL headers...";
+if ! ( test -d "$ROOT_DIR/include/GL" || \
+    mkdir "$ROOT_DIR/include/GL" ); then
+    echo "Failed to create GL header directory";
     exit 1;
 fi;
-cp -R "$DOWNLOAD_DIR/Mesa-${MESA_VER}/include/"* "$ROOT_DIR/include";
+for header in "${GL_HEADERS[@]}"; do
+    if ! cp "$DOWNLOAD_DIR/$header" "$ROOT_DIR/include/GL/"; then
+        echo "Failed to copy $header";
+        exit 1;
+    fi;
+done;
 
 ##
 # Build
