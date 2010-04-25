@@ -113,6 +113,11 @@ function do_unzip_d ()
     fi;
 }
 
+function add_env ()
+{
+    echo "export $1=\"$2\"" >> $env_file;
+}
+
 function find_compiler ()
 {
     local gccbin fullpath;
@@ -147,26 +152,27 @@ function find_compiler ()
 	fi;
     fi;
 
-    export ADDR2LINE="${MINGW_TOOL_PREFIX}addr2line"
-    export AS="${MINGW_TOOL_PREFIX}as"
-    export CC="${MINGW_TOOL_PREFIX}gcc"
-    export CPP="${MINGW_TOOL_PREFIX}cpp"
-    export CPPFILT="${MINGW_TOOL_PREFIX}c++filt"
-    export CXX="${MINGW_TOOL_PREFIX}g++"
-    export DLLTOOL="${MINGW_TOOL_PREFIX}dlltool"
-    export DLLWRAP="${MINGW_TOOL_PREFIX}dllwrap"
-    export GCOV="${MINGW_TOOL_PREFIX}gcov"
-    export LD="${MINGW_TOOL_PREFIX}ld"
-    export NM="${MINGW_TOOL_PREFIX}nm"
-    export OBJCOPY="${MINGW_TOOL_PREFIX}objcopy"
-    export OBJDUMP="${MINGW_TOOL_PREFIX}objdump"
-    export READELF="${MINGW_TOOL_PREFIX}readelf"
-    export SIZE="${MINGW_TOOL_PREFIX}size"
-    export STRINGS="${MINGW_TOOL_PREFIX}strings"
-    export WINDRES="${MINGW_TOOL_PREFIX}windres"
-    export AR="${MINGW_TOOL_PREFIX}ar"
-    export RANLIB="${MINGW_TOOL_PREFIX}ranlib"
-    export STRIP="${MINGW_TOOL_PREFIX}strip"
+    CC="${MINGW_TOOL_PREFIX}gcc";
+    add_env ADDR2LINE "${MINGW_TOOL_PREFIX}addr2line"
+    add_env AS "${MINGW_TOOL_PREFIX}as"
+    add_env CC "${CC}"
+    add_env CPP "${MINGW_TOOL_PREFIX}cpp"
+    add_env CPPFILT "${MINGW_TOOL_PREFIX}c++filt"
+    add_env CXX "${MINGW_TOOL_PREFIX}g++"
+    add_env DLLTOOL "${MINGW_TOOL_PREFIX}dlltool"
+    add_env DLLWRAP "${MINGW_TOOL_PREFIX}dllwrap"
+    add_env GCOV "${MINGW_TOOL_PREFIX}gcov"
+    add_env LD "${MINGW_TOOL_PREFIX}ld"
+    add_env NM "${MINGW_TOOL_PREFIX}nm"
+    add_env OBJCOPY "${MINGW_TOOL_PREFIX}objcopy"
+    add_env OBJDUMP "${MINGW_TOOL_PREFIX}objdump"
+    add_env READELF "${MINGW_TOOL_PREFIX}readelf"
+    add_env SIZE "${MINGW_TOOL_PREFIX}size"
+    add_env STRINGS "${MINGW_TOOL_PREFIX}strings"
+    add_env WINDRES "${MINGW_TOOL_PREFIX}windres"
+    add_env AR "${MINGW_TOOL_PREFIX}ar"
+    add_env RANLIB "${MINGW_TOOL_PREFIX}ranlib"
+    add_env STRIP "${MINGW_TOOL_PREFIX}strip"
 
     TARGET="${MINGW_TOOL_PREFIX##*/}";
     TARGET="${TARGET%%-}";
@@ -275,15 +281,42 @@ done;
 # Build
 ##
 
-export PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig:$PKG_CONFIG_PATH";
+env_file="$ROOT_DIR/share/env.sh";
+echo "Writing build environment script to $env_file";
+echo "#!/bin/bash" > "$env_file";
 
-export LDFLAGS="-L$ROOT_DIR/lib -mno-cygwin $LDFLAGS"
-export CPPFLAGS="-I$ROOT_DIR/include $CPPFLAGS"
-export CFLAGS="-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 ${CFLAGS:-"-g"}"
-export CXXFLAGS="-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 ${CFLAGS:-"-g"}"
+find_compiler;
+
+add_env PKG_CONFIG_PATH "$ROOT_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH";
+
+add_env LDFLAGS "-L$ROOT_DIR/lib -mno-cygwin \$LDFLAGS"
+add_env CPPFLAGS "-I$ROOT_DIR/include \$CPPFLAGS"
+add_env CFLAGS "-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 \${CFLAGS:-"-g"}"
+add_env CXXFLAGS "-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 \${CFLAGS:-"-g"}"
+
+cat >> "$env_file" <<EOF
+ROOT_DIR="$ROOT_DIR";
+TARGET="$TARGET";
+
+function do_autogen()
+{
+  ./autogen.sh --prefix="\$ROOT_DIR" --host="\$TARGET" --target="\$TARGET" \\
+    --with-flavour=win32;
+}
+
+# If any arguments are given then execute it as a program with the
+# environment we set up
+
+if test "\$#" -ge 1; then
+    exec "\$@";
+fi;
+
+EOF
+
+chmod a+x "$env_file";
 
 if y_or_n "Do you want to checkout and build Clutter?"; then
-    find_compiler;
+    source "$env_file";
 
     guess_dir CLUTTER_BUILD_DIR "clutter" \
 	"the build directory for clutter" "Build dir";
@@ -292,8 +325,7 @@ if y_or_n "Do you want to checkout and build Clutter?"; then
 	echo "git failed";
 	exit 1;
     fi;
-    ( cd "$CLUTTER_BUILD_DIR" && ./autogen.sh --prefix="$ROOT_DIR" \
-	--host="$TARGET" --target="$TARGET" --with-flavour=win32 );
+    ( cd "$CLUTTER_BUILD_DIR" && do_autogen );
     if [ "$?" -ne 0 ]; then
 	echo "autogen failed";
 	exit 1;
