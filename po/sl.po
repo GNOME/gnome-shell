@@ -163,7 +163,7 @@ msgstr "Izvajanje '%s' je spodletelo:"
 
 #: ../js/ui/statusMenu.js:107
 msgid "Available"
-msgstr "Razpoložljivo"
+msgstr "Na voljo"
 
 #: ../js/ui/statusMenu.js:112
 msgid "Busy"
@@ -297,8 +297,7 @@ msgstr "%1$s: %2$s"
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
-#~ msgstr ""
-#~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
+#~ msgstr "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
 #~ msgid "Frequent"
@@ -309,4 +308,3 @@ msgstr "%1$s: %2$s"
 #~ msgstr "(poglej vse)"
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
-
