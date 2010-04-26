@@ -17,6 +17,11 @@ create_source_rect (void)
 #ifdef GL_TEXTURE_RECTANGLE_ARB
 
   int x, y;
+  GLint prev_unpack_row_length;
+  GLint prev_unpack_alignment;
+  GLint prev_unpack_skip_rows;
+  GLint prev_unpack_skip_pixles;
+  GLint prev_rectangle_binding;
   guint8 *data = g_malloc (256 * 256 * 4), *p = data;
   CoglHandle tex;
   GLuint gl_tex;
@@ -30,6 +35,17 @@ create_source_rect (void)
         *(p++) = 255;
       }
 
+  /* We are about to use OpenGL directly to create a TEXTURE_RECTANGLE
+   * texture so we need to save the state that we modify so we can
+   * restore it afterwards and be sure not to interfere with any state
+   * caching that Cogl may do internally.
+   */
+  glGetIntegerv (GL_UNPACK_ROW_LENGTH, &prev_unpack_row_length);
+  glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
+  glGetIntegerv (GL_UNPACK_SKIP_ROWS, &prev_unpack_skip_rows);
+  glGetIntegerv (GL_UNPACK_SKIP_PIXELS, &prev_unpack_skip_pixles);
+  glGetIntegerv (GL_TEXTURE_BINDING_RECTANGLE_ARB, &prev_rectangle_binding);
+
   glPixelStorei (GL_UNPACK_ROW_LENGTH, 256);
   glPixelStorei (GL_UNPACK_ALIGNMENT, 8);
   glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
@@ -42,6 +58,13 @@ create_source_rect (void)
                 GL_RGBA,
                 GL_UNSIGNED_BYTE,
                 data);
+
+  /* Now restore the original GL state as Cogl had left it */
+  glPixelStorei (GL_UNPACK_ROW_LENGTH, prev_unpack_row_length);
+  glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
+  glPixelStorei (GL_UNPACK_SKIP_ROWS, prev_unpack_skip_rows);
+  glPixelStorei (GL_UNPACK_SKIP_PIXELS, prev_unpack_skip_pixles);
+  glBindTexture (GL_TEXTURE_RECTANGLE_ARB, prev_rectangle_binding);
 
   g_assert (glGetError () == GL_NO_ERROR);
 
