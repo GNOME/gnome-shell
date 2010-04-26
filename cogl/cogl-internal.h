@@ -115,21 +115,6 @@ _cogl_enable (unsigned long flags);
 unsigned long
 _cogl_get_enable (void);
 
-typedef struct _CoglTextureUnit
-{
-  int              index;
-  CoglMatrixStack *matrix_stack;
-} CoglTextureUnit;
-
-CoglTextureUnit *
-_cogl_get_texture_unit (int index_);
-
-void
-_cogl_destroy_texture_units (void);
-
-unsigned int
-_cogl_get_max_texture_image_units (void);
-
 void
 _cogl_flush_face_winding (void);
 

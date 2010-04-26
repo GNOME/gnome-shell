@@ -115,11 +115,22 @@ cogl_program_use (CoglHandle handle)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
-    return;
+  g_return_if_fail (handle == COGL_INVALID_HANDLE ||
+                    cogl_is_program (handle));
+
+  if (ctx->current_program == 0 && handle != 0)
+    ctx->legacy_state_set++;
+  else if (handle == 0 && ctx->current_program != 0)
+    ctx->legacy_state_set--;
 
   ctx->drv.gles2.settings.user_program = handle;
   ctx->drv.gles2.settings_dirty = TRUE;
+
+  if (handle != COGL_INVALID_HANDLE)
+    cogl_handle_ref (handle);
+  if (ctx->current_program != COGL_INVALID_HANDLE)
+    cogl_handle_unref (ctx->current_program);
+  ctx->current_program = handle;
 }
 
 int

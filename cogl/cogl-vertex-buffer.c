@@ -159,7 +159,6 @@
 #define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
 #define glMapBuffer ctx->drv.pf_glMapBuffer
 #define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
-#define glActiveTexture ctx->drv.pf_glActiveTexture
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
@@ -1509,7 +1508,7 @@ get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
     }
 }
 
-static void
+static CoglHandle
 enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 {
   GList       *tmp;
@@ -1522,8 +1521,9 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   guint32      fallback_layers = 0;
   int          i;
   CoglMaterialFlushOptions options;
+  CoglHandle   source;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   if (buffer->new_attributes)
     cogl_vertex_buffer_submit_real (buffer);
@@ -1717,18 +1717,29 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   options.fallback_layers = fallback_layers;
 
-  _cogl_material_flush_gl_state (ctx->source_material, &options);
-  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
+
+  _cogl_material_flush_gl_state (source, &options);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (source);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
+
+  return source;
 }
 
 static void
-disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
+disable_state_for_drawing_buffer (CoglVertexBuffer *buffer,
+                                  CoglHandle source)
 {
   GList *tmp;
   GLenum gl_type;
@@ -1737,6 +1748,9 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 #endif
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (G_UNLIKELY (source != ctx->source_material))
+    cogl_handle_unref (source);
 
   /* Disable all the client state that cogl doesn't currently know
    * about:
@@ -1798,6 +1812,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 		         int              count)
 {
   CoglVertexBuffer *buffer;
+  CoglHandle source;
 
   if (!cogl_is_vertex_buffer (handle))
     return;
@@ -1806,11 +1821,11 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  enable_state_for_drawing_buffer (buffer);
+  source = enable_state_for_drawing_buffer (buffer);
 
   GE (glDrawArrays (mode, first, count));
 
-  disable_state_for_drawing_buffer (buffer);
+  disable_state_for_drawing_buffer (buffer, source);
 }
 
 static int
@@ -1934,6 +1949,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
   gsize byte_offset;
   CoglVertexBufferIndices *indices = NULL;
+  CoglHandle source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1949,7 +1965,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
 
   indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
-  enable_state_for_drawing_buffer (buffer);
+  source = enable_state_for_drawing_buffer (buffer);
 
   byte_offset = indices_offset * get_indices_type_size (indices->type);
   if (fallback)
@@ -1961,7 +1977,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
   GE (glDrawRangeElements (mode, min_index, max_index,
                            count, indices->type, (void *)byte_offset));
 
-  disable_state_for_drawing_buffer (buffer);
+  disable_state_for_drawing_buffer (buffer, source);
 
   GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
 }

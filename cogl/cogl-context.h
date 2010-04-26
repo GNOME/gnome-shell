@@ -53,6 +53,7 @@ typedef struct
   /* Enable cache */
   unsigned long     enable_flags;
   guint8            color_alpha;
+  gboolean          fog_enabled;
 
   gboolean          enable_backface_culling;
   CoglFrontWinding  flushed_front_winding;
@@ -65,11 +66,16 @@ typedef struct
 
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    flushed_matrix_mode;
-  GList            *texture_units;
+
+  GArray           *texture_units;
+  int               active_texture_unit;
 
   /* Materials */
   CoglHandle        simple_material;
   CoglHandle	    source_material;
+  GString          *arbfp_source_buffer;
+
+  int               legacy_state_set;
 
   /* Textures */
   CoglHandle        default_gl_texture_2d_tex;
@@ -86,8 +92,10 @@ typedef struct
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
   unsigned long     current_material_flags;
-  CoglMaterialFlushOptions current_material_flush_options;
-  GArray           *current_layers;
+  gboolean          current_material_fallback_layers;
+  gboolean          current_material_disable_layers;
+  GLuint            current_material_layer0_override;
+  gboolean          current_material_skip_gl_color;
   /* Bitmask of texture coordinates arrays that are enabled */
   CoglBitmask       texcoord_arrays_enabled;
   /* These are temporary bitmasks that are used when disabling
@@ -129,9 +137,15 @@ typedef struct
      chances of getting the same colour during an animation */
   guint8            journal_rectangles_color;
 
-  /* Cached value for GL_MAX_TEXTURE_UNITS to avoid calling
+  /* Cached values for GL_MAX_TEXTURE_[IMAGE_]UNITS to avoid calling
      glGetInteger too often */
   GLint             max_texture_units;
+  GLint             max_texture_image_units;
+  GLint             max_activateable_texture_units;
+
+  CoglHandle        current_program;
+  CoglMaterialProgramType current_use_program_type;
+  GLuint            current_gl_program;
 
   CoglContextDriver drv;
 } CoglContext;

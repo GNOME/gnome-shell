@@ -31,7 +31,7 @@ typedef struct _CoglProgram CoglProgram;
 struct _CoglProgram
 {
   CoglHandleObject   _parent;
-  GLhandleARB        gl_handle;
+  GLuint             gl_handle;
 };
 
 CoglProgram *_cogl_program_pointer_from_handle (CoglHandle handle);

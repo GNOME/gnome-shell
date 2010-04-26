@@ -132,6 +132,7 @@ _cogl_path_stroke_nodes (void)
   unsigned long  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglPathData  *data;
   CoglMaterialFlushOptions options;
+  CoglHandle     source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -151,7 +152,15 @@ _cogl_path_stroke_nodes (void)
   /* disable all texture layers */
   options.disable_layers = (guint32)~0;
 
-  _cogl_material_flush_gl_state (ctx->source_material, &options);
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
+
+  _cogl_material_flush_gl_state (source, &options);
 
   while (path_start < data->path_nodes->len)
     {
@@ -163,6 +172,9 @@ _cogl_path_stroke_nodes (void)
 
       path_start += node->path_size;
     }
+
+  if (G_UNLIKELY (source != ctx->source_material))
+    cogl_handle_unref (source);
 }
 
 static void
@@ -332,6 +344,8 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
                                  unsigned int  bounds_w,
                                  unsigned int  bounds_h)
 {
+  CoglHandle source;
+
   /* This is our edge list it stores intersections between our
    * curve and scanlines, it should probably be implemented with a
    * data structure that has smaller overhead for inserting the
@@ -358,6 +372,14 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
    * as the material state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
@@ -502,6 +524,9 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
     GE (glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
     g_free (coords);
   }
+
+  if (G_UNLIKELY (source != ctx->source_material))
+    cogl_handle_unref (source);
 }
 
 static void

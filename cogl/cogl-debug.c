@@ -50,6 +50,7 @@ static const GDebugKey cogl_log_debug_keys[] = {
   { "draw", COGL_DEBUG_DRAW },
   { "opengl", COGL_DEBUG_OPENGL },
   { "pango", COGL_DEBUG_PANGO },
+  { "show-source", COGL_DEBUG_SHOW_SOURCE}
 };
 static const int n_cogl_log_debug_keys =
   G_N_ELEMENTS (cogl_log_debug_keys);
@@ -61,7 +62,10 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
   { "force-scanline-paths", COGL_DEBUG_FORCE_SCANLINE_PATHS },
   { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE },
-  { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS }
+  { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS },
+  { "disable-texturing", COGL_DEBUG_DISABLE_TEXTURING},
+  { "disable-arbfp", COGL_DEBUG_DISABLE_ARBFP},
+  { "disable-glsl", COGL_DEBUG_DISABLE_GLSL}
 };
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
@@ -115,6 +119,10 @@ _cogl_parse_debug_string (const char *value,
       OPT ("force-scanline-paths:", "use a scanline based path rasterizer");
       OPT ("dump-atlas-image:", "dump atlas changes to an image file");
       OPT ("disable-atlas:", "disable texture atlasing");
+      OPT ("disable-texturing:", "disable texturing primitives");
+      OPT ("disable-arbfp:", "disable use of ARBfp");
+      OPT ("disable-glsl:", "disable use of GLSL");
+      OPT ("show-source:", "show generated ARBfp/GLSL");
       OPT ("opengl:", "traces some select OpenGL calls");
       g_printerr ("\n%28s\n", "Special debug values:");
       OPT ("all:", "Enables all non-behavioural debug options");

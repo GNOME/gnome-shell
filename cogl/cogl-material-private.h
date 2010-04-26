@@ -29,12 +29,99 @@
 
 #include "cogl-material.h"
 #include "cogl-matrix.h"
+#include "cogl-matrix-stack.h"
 #include "cogl-handle.h"
 
 #include <glib.h>
 
 typedef struct _CoglMaterial	      CoglMaterial;
 typedef struct _CoglMaterialLayer     CoglMaterialLayer;
+
+
+/*
+ * cogl-material.c owns the GPU's texture unit state so we have some
+ * private structures for describing the current state of a texture
+ * unit that we track in a per context array (ctx->texture_units) that
+ * grows according to the largest texture unit used so far...
+ *
+ * Roughly speaking the members in this structure are of two kinds:
+ * either they are a low level reflection of the state we send to
+ * OpenGL or they are for high level meta data assoicated with the
+ * texture unit when flushing CoglMaterialLayers that is typically
+ * used to optimize subsequent re-flushing of the same layer.
+ *
+ * The low level members are at the top, and the high level members
+ * start with the .layer member.
+ */
+typedef struct _CoglTextureUnit
+{
+  /* The base 0 texture unit index which can be used with
+   * glActiveTexture () */
+  int                index;
+
+  /* Whether or not the corresponding gl_target has been glEnabled */
+  gboolean           enabled;
+
+  /* The GL target currently glEnabled or 0 if .enabled == FALSE */
+  GLenum             enabled_gl_target;
+
+  /* The raw GL texture object name for which we called glBindTexture when
+   * we flushed the last layer. (NB: The CoglTexture associated
+   * with a layer may represent more than one GL texture) */
+  GLuint             gl_texture;
+
+  /* A matrix stack giving us the means to associate a texture
+   * transform matrix with the texture unit. */
+  CoglMatrixStack   *matrix_stack;
+
+  /*
+   * Higher level layer state associated with the unit...
+   */
+
+  /* The CoglMaterialLayer whos state was flushed to update this
+   * texture unit last.
+   *
+   * This will be set to NULL if the layer is modified or freed which
+   * means when we come to flush a layer; if this pointer is still
+   * valid and == to the layer being flushed we don't need to update
+   * any texture unit state. */
+  CoglMaterialLayer *layer;
+
+  /* To help minimize the state changes required we track the
+   * difference flags associated with the layer whos state was last
+   * flushed to update this texture unit.
+   *
+   * Note: we track this explicitly because .layer may get invalidated
+   * if that layer is modified or deleted. Even if the layer is
+   * invalidated though these flags can be used to optimize the state
+   * flush of the next layer
+   */
+  unsigned long      layer_differences;
+
+  /* The options that may have affected how the layer state updated
+   * this texture unit. */
+  gboolean           fallback;
+  gboolean           layer0_overridden;
+
+  /* When flushing a layers state, fallback options may mean that a
+   * different CoglTexture is used than layer->texture.
+   *
+   * Once a layers state has been flushed we have to keep track of
+   * changes to that layer so if we are asked to re-flush the same
+   * layer later we will know what work is required. This also means
+   * we need to keep track of changes to the CoglTexture of that layer
+   * so we need to explicitly keep a reference to the final texture
+   * chosen.
+   */
+  CoglHandle         texture;
+
+} CoglTextureUnit;
+
+CoglTextureUnit *
+_cogl_get_texture_unit (int index_);
+
+void
+_cogl_destroy_texture_units (void);
 
 typedef enum _CoglMaterialEqualFlags
 {
@@ -46,35 +133,41 @@ typedef enum _CoglMaterialEqualFlags
 
 } CoglMaterialEqualFlags;
 
-/* XXX: I don't think gtk-doc supports having private enums so these aren't
- * bundled in with CoglMaterialLayerFlags */
-typedef enum _CoglMaterialLayerPrivFlags
+typedef enum _CoglMaterialLayerDifferenceFlags
 {
-  /* Ref: CoglMaterialLayerFlags
-  COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX  = 1L<<0
-  */
-  COGL_MATERIAL_LAYER_FLAG_DIRTY            = 1L<<1,
-  COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE  = 1L<<2
-} CoglMaterialLayerPrivFlags;
+  COGL_MATERIAL_LAYER_DIFFERENCE_TEXTURE          = 1L<<0,
+  COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE          = 1L<<1,
+  COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE_CONSTANT = 1L<<2,
+  COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX      = 1L<<3,
+  COGL_MATERIAL_LAYER_DIFFERENCE_FILTERS          = 1L<<4
+} CoglMaterialLayerDifferenceFlags;
 
-/* For tracking the state of a layer that's been flushed to OpenGL */
-typedef struct _CoglLayerInfo
+typedef enum _CoglMaterialLayerChangeFlags
 {
-  CoglHandle    handle;
-  unsigned long flags;
-  GLenum        gl_target;
-  GLuint        gl_texture;
-  gboolean      fallback;
-  gboolean      disabled;
-  gboolean      layer0_overridden;
-} CoglLayerInfo;
+  COGL_MATERIAL_LAYER_CHANGE_TEXTURE          = 1L<<0,
+  COGL_MATERIAL_LAYER_CHANGE_COMBINE          = 1L<<1,
+  COGL_MATERIAL_LAYER_CHANGE_COMBINE_CONSTANT = 1L<<2,
+  COGL_MATERIAL_LAYER_CHANGE_USER_MATRIX      = 1L<<3,
+  COGL_MATERIAL_LAYER_CHANGE_FILTERS          = 1L<<4,
+
+  COGL_MATERIAL_LAYER_CHANGE_TEXTURE_INTERN   = 1L<<5,
+  COGL_MATERIAL_LAYER_CHANGE_UNIT             = 1L<<6
+} CoglMaterialLayerChangeFlags;
 
 struct _CoglMaterialLayer
 {
   CoglHandleObject _parent;
+
+  /* Parent material */
+  CoglMaterial    *material;
+
   unsigned int	   index;   /*!< lowest index is blended first then others on
                               top */
-  unsigned long    flags;
+
+  int              unit_index;
+
+  unsigned long    differences;
+
   CoglHandle       texture; /*!< The texture for this layer, or
                               COGL_INVALID_HANDLE for an empty layer */
 
@@ -100,32 +193,47 @@ struct _CoglMaterialLayer
   /* TODO: Support purely GLSL based material layers */
 
   CoglMatrix matrix;
+
+  /* Different material backends (GLSL/ARBfp/Fixed Function) may
+   * want to associate private data with a layer... */
+  void *backend_priv;
 };
 
 typedef enum _CoglMaterialFlags
 {
-  COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING  = 1L<<0,
-
   COGL_MATERIAL_FLAG_DEFAULT_COLOR          = 1L<<1,
   COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL    = 1L<<2,
   COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC     = 1L<<3,
   COGL_MATERIAL_FLAG_ENABLE_BLEND	    = 1L<<4,
-  COGL_MATERIAL_FLAG_DEFAULT_BLEND          = 1L<<5
+  COGL_MATERIAL_FLAG_DEFAULT_BLEND          = 1L<<5,
+  COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER    = 1L<<6,
+  COGL_MATERIAL_FLAG_DEFAULT_LAYERS         = 1L<<7
 } CoglMaterialFlags;
 
-/* ARBfp1.0 program (Fog + ARB_texture_env_combine) */
-typedef struct _CoglMaterialProgram
-{
-  GString *source;
-  GLuint gl_program;
+/* This defines the initialization state for
+ * ctx->current_material_flags which should result in the first
+ * material flush explicitly initializing everything
+ */
+#define COGL_MATERIAL_FLAGS_INIT \
+  COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER
 
-  gboolean *sampled;
-} CoglMaterialProgram;
+typedef enum _CoglMaterialChangeFlag
+{
+  COGL_MATERIAL_CHANGE_COLOR          = 1L<<1,
+  COGL_MATERIAL_CHANGE_GL_MATERIAL    = 1L<<2,
+  COGL_MATERIAL_CHANGE_ALPHA_FUNC     = 1L<<3,
+  COGL_MATERIAL_CHANGE_ENABLE_BLEND   = 1L<<4,
+  COGL_MATERIAL_CHANGE_BLEND          = 1L<<5,
+  COGL_MATERIAL_CHANGE_USER_SHADER    = 1L<<6,
+  COGL_MATERIAL_CHANGE_LAYERS         = 1L<<7
+} CoglMaterialChangeFlag;
 
 struct _CoglMaterial
 {
   CoglHandleObject _parent;
   unsigned long    journal_ref_count;
+
+  int              backend;
 
   unsigned long    flags;
 
@@ -154,11 +262,38 @@ struct _CoglMaterial
   GLint blend_src_factor_rgb;
   GLint blend_dst_factor_rgb;
 
-  CoglMaterialProgram program;
+  CoglHandle user_program;
 
   GList	       *layers;
   unsigned int  n_layers;
+
+  void *backend_priv;
 };
+
+typedef struct _CoglMaterialBackend
+{
+  int (*get_max_texture_units) (void);
+
+  gboolean (*start) (CoglMaterial *material);
+  gboolean (*add_layer) (CoglMaterialLayer *layer);
+  gboolean (*passthrough) (CoglMaterial *material);
+  gboolean (*end) (CoglMaterial *material);
+
+  void (*material_change_notify) (CoglMaterial *material,
+                                  unsigned long changes,
+                                  GLubyte *new_color);
+  void (*layer_change_notify) (CoglMaterialLayer *layer,
+                               unsigned long changes);
+
+  void (*free_priv) (CoglMaterial *material);
+} CoglMaterialBackend;
+
+typedef enum
+{
+  COGL_MATERIAL_PROGRAM_TYPE_GLSL = 1,
+  COGL_MATERIAL_PROGRAM_TYPE_ARBFP,
+  COGL_MATERIAL_PROGRAM_TYPE_FIXED
+} CoglMaterialProgramType;
 
 /*
  * SECTION:cogl-material-internals
@@ -197,29 +332,8 @@ _cogl_material_init_default_material (void);
 unsigned long
 _cogl_material_get_cogl_enable_flags (CoglHandle handle);
 
-/*
- * CoglMaterialLayerFlags:
- * @COGL_MATERIAL_LAYER_FLAG_USER_MATRIX: Means the user has supplied a
- *                                        custom texture matrix.
- */
-typedef enum _CoglMaterialLayerFlags
-{
-  COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX	= 1L<<0
-} CoglMaterialLayerFlags;
-/* XXX: NB: if you add flags here you will need to update
- * CoglMaterialLayerPrivFlags!!! */
-
-/*
- * cogl_material_layer_get_flags:
- * @layer_handle: A CoglMaterialLayer layer handle
- *
- * This lets you get a number of flag attributes about the layer.  Normally
- * you shouldn't need to use this function directly since Cogl will do this
- * internally, but if you are developing custom primitives directly with
- * OpenGL you may need this.
- */
-unsigned long
-_cogl_material_layer_get_flags (CoglHandle layer_handle);
+gboolean
+_cogl_material_layer_has_user_matrix (CoglHandle layer_handle);
 
 /*
  * Ensures the mipmaps are available for the texture in the layer if
@@ -321,6 +435,16 @@ _cogl_material_set_layer_wrap_mode_r (CoglHandle material,
 
 CoglMaterialWrapMode
 _cogl_material_layer_get_wrap_mode_r (CoglHandle layer);
+
+void
+_cogl_material_set_user_program (CoglHandle handle,
+                                 CoglHandle program);
+
+void
+_cogl_material_apply_legacy_state (CoglHandle handle);
+
+void
+_cogl_gl_use_program_wrapper (GLuint program);
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 

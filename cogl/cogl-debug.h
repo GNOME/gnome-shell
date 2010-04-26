@@ -46,7 +46,11 @@ typedef enum {
   COGL_DEBUG_ATLAS            = 1 << 15,
   COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 16,
   COGL_DEBUG_DISABLE_ATLAS    = 1 << 17,
-  COGL_DEBUG_OPENGL           = 1 << 18
+  COGL_DEBUG_OPENGL           = 1 << 18,
+  COGL_DEBUG_DISABLE_TEXTURING = 1 << 19,
+  COGL_DEBUG_DISABLE_ARBFP    = 1 << 20,
+  COGL_DEBUG_DISABLE_GLSL     = 1 << 21,
+  COGL_DEBUG_SHOW_SOURCE      = 1 << 22
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG

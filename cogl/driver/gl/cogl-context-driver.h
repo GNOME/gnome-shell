@@ -41,6 +41,8 @@ typedef struct _CoglContextDriver
 {
   /* This defines a list of function pointers */
 #include "cogl-feature-functions.h"
+
+  GLint gl_max_program_temoraries_arb;
 } CoglContextDriver;
 
 #undef COGL_FEATURE_BEGIN
