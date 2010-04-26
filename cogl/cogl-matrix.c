@@ -303,6 +303,51 @@ cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
+gboolean
+cogl_matrix_equal (gconstpointer v1, gconstpointer v2)
+{
+  const CoglMatrix *a = v1;
+  const CoglMatrix *b = v2;
+
+  g_return_val_if_fail (v1 != NULL, FALSE);
+  g_return_val_if_fail (v2 != NULL, FALSE);
+
+  /* We want to avoid having a fuzzy _equal() function (e.g. that uses
+   * an arbitrary epsilon value) since this function noteably conforms
+   * to the prototype suitable for use with g_hash_table_new() and a
+   * fuzzy hash function isn't really appropriate for comparing hash
+   * table keys since it's possible that you could end up fetching
+   * different values if you end up with multiple similar keys in use
+   * at the same time. If you consider that fuzzyness allows cases
+   * such as A == B == C but A != C then you could also end up loosing
+   * values in a hash table.
+   *
+   * We do at least use the == operator to compare values though so
+   * that -0 is considered equal to 0.
+   */
+
+  /* XXX: We don't compare the flags, inverse matrix or padding */
+  if (a->xx == b->xx &&
+      a->xy == b->xy &&
+      a->xz == b->xz &&
+      a->xw == b->xw &&
+      a->yx == b->yx &&
+      a->yy == b->yy &&
+      a->yz == b->yz &&
+      a->yw == b->yw &&
+      a->zx == b->zx &&
+      a->zy == b->zy &&
+      a->zz == b->zz &&
+      a->zw == b->zw &&
+      a->wx == b->wx &&
+      a->wy == b->wy &&
+      a->wz == b->wz &&
+      a->ww == b->ww)
+    return TRUE;
+  else
+    return FALSE;
+}
+
 const float *
 cogl_matrix_get_array (const CoglMatrix *matrix)
 {

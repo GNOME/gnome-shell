@@ -278,6 +278,21 @@ G_CONST_RETURN float *
 cogl_matrix_get_array (const CoglMatrix *matrix);
 
 /**
+ * cogl_matrix_equal:
+ * @v1: A 4x4 transformation matrix
+ * @v2: A 4x4 transformation matrix
+ *
+ * Compares two matrices to see if they represent the same
+ * transformation. Although internally the matrices may have different
+ * annotations associated with them and may potentially have a cached
+ * inverse matrix these are not considered in the comparison.
+ *
+ * Since: 1.4
+ */
+gboolean
+cogl_matrix_equal (gconstpointer v1, gconstpointer v2);
+
+/**
  * cogl_matrix_get_inverse:
  * @matrix: A 4x4 transformation matrix
  * @inverse: (out): The destination for a 4x4 inverse transformation matrix
