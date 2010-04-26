@@ -67,6 +67,7 @@
 #include "../clutter-private.h"
 
 #include "cogl/cogl.h"
+#include "cogl/cogl-material-private.h"
 
 typedef void    (*BindTexImage) (Display     *display,
                                  GLXDrawable  drawable,
@@ -141,7 +142,10 @@ bind_texture (ClutterGLXTexturePixmap *tex)
   if (!cogl_texture_get_gl_texture (cogl_tex, &handle, &target))
     g_warning ("Failed to pluck out GL handle from cogl texture to bind");
 
-  glBindTexture (target, handle);
+  if (tex->priv->using_rectangle)
+    _cogl_bind_gl_texture_transient (target, handle, TRUE);
+  else
+    _cogl_bind_gl_texture_transient (target, handle, FALSE);
 }
 
 static void
@@ -426,7 +430,7 @@ create_cogl_texture (ClutterTexture *texture,
       using_rectangle = TRUE;
 
       glGenTextures (1, &tex);
-      glBindTexture (GL_TEXTURE_RECTANGLE_ARB, tex);
+      _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB, tex, TRUE);
       glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
                     gl_format, width, height,
                     0, GL_RGB, GL_UNSIGNED_BYTE, NULL);

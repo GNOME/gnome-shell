@@ -42,6 +42,7 @@
 #include "cogl-handle.h"
 #include "cogl-spans.h"
 #include "cogl-journal-private.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -253,6 +254,7 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
           _cogl_texture_driver_upload_subregion_to_gl (
                                      tex_2ds->gl_target,
                                      gl_handle,
+                                     tex_2ds->is_foreign,
                                      x_span->start, /* src x */
                                      y_span->start, /* src y */
                                      0, /* dst x */
@@ -441,6 +443,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
 
           _cogl_texture_driver_upload_subregion_to_gl (tex_2ds->gl_target,
                                                        gl_handle,
+                                                       tex_2ds->is_foreign,
                                                        source_x,
                                                        source_y,
                                                        local_x, /* dst x */
@@ -680,7 +683,9 @@ _cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
         {
           GLuint texnum = g_array_index (tex_2ds->slice_gl_handles, GLuint, i);
 
-          GE( glBindTexture (tex_2ds->gl_target, texnum) );
+          _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                           texnum,
+                                           tex_2ds->is_foreign);
           GE( glTexParameteri (tex_2ds->gl_target,
                                GL_TEXTURE_WRAP_S, wrap_mode_s) );
           GE( glTexParameteri (tex_2ds->gl_target,
@@ -855,8 +860,9 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
                      y_span->size - y_span->waste);
 
           /* Setup texture parameters */
-          GE( glBindTexture (tex_2ds->gl_target,
-                             gl_handles[y * n_x_slices + x] ) );
+          _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                           gl_handles[y * n_x_slices + x],
+                                           FALSE);
 
           _cogl_texture_driver_try_setting_gl_border_color (tex_2ds->gl_target,
                                                             transparent_color);
@@ -882,11 +888,14 @@ _cogl_texture_2d_sliced_slices_free (CoglTexture2DSliced *tex_2ds)
 
   if (tex_2ds->slice_gl_handles != NULL)
     {
+      int i;
       if (tex_2ds->is_foreign == FALSE)
-        {
-          GE( glDeleteTextures (tex_2ds->slice_gl_handles->len,
-                                (GLuint*) tex_2ds->slice_gl_handles->data) );
-        }
+        for (i = 0; i < tex_2ds->slice_gl_handles->len; i++)
+          {
+            GLuint texture =
+              g_array_index (tex_2ds->slice_gl_handles, GLuint, i);
+            _cogl_delete_gl_texture (texture);
+          }
 
       g_array_free (tex_2ds->slice_gl_handles, TRUE);
     }
@@ -899,7 +908,9 @@ static void
 _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds)
 {
   _cogl_texture_2d_sliced_slices_free (tex_2ds);
-  g_free (tex_2ds);
+
+  /* Chain up */
+  _cogl_texture_free (COGL_TEXTURE (tex_2ds));
 }
 
 static gboolean
@@ -1121,7 +1132,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   /* Make sure binding succeeds */
   while ((gl_error = glGetError ()) != GL_NO_ERROR)
     ;
-  glBindTexture (gl_target, gl_handle);
+
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, TRUE);
   if (glGetError () != GL_NO_ERROR)
     return COGL_INVALID_HANDLE;
 
@@ -1224,6 +1236,12 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   tex_2ds->first_pixels = NULL;
 
   return _cogl_texture_2d_sliced_handle_new (tex_2ds);
+}
+
+static gboolean
+_cogl_texture_2d_sliced_is_foreign (CoglTexture *tex)
+{
+  return COGL_TEXTURE_2D_SLICED (tex)->is_foreign;
 }
 
 static int
@@ -1371,7 +1389,9 @@ _cogl_texture_2d_sliced_set_filters (CoglTexture *tex,
   for (i=0; i<tex_2ds->slice_gl_handles->len; ++i)
     {
       gl_handle = g_array_index (tex_2ds->slice_gl_handles, GLuint, i);
-      GE( glBindTexture (tex_2ds->gl_target, gl_handle) );
+      _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                       gl_handle,
+                                       tex_2ds->is_foreign);
       GE( glTexParameteri (tex_2ds->gl_target, GL_TEXTURE_MAG_FILTER,
                            tex_2ds->mag_filter) );
       GE( glTexParameteri (tex_2ds->gl_target, GL_TEXTURE_MIN_FILTER,
@@ -1399,7 +1419,9 @@ _cogl_texture_2d_sliced_ensure_mipmaps (CoglTexture *tex)
   for (i = 0; i < tex_2ds->slice_gl_handles->len; i++)
     {
       GLuint gl_handle = g_array_index (tex_2ds->slice_gl_handles, GLuint, i);
-      GE( glBindTexture (tex_2ds->gl_target, gl_handle) );
+      _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                       gl_handle,
+                                       tex_2ds->is_foreign);
 
       /* glGenerateMipmap is defined in the FBO extension */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
@@ -1544,7 +1566,9 @@ _cogl_texture_2d_sliced_download_from_gl (
                                                           bpp);
 
 	      /* Download slice image data into temp bmp */
-	      GE( glBindTexture (tex_2ds->gl_target, gl_handle) );
+              _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                               gl_handle,
+                                               tex_2ds->is_foreign);
 
               if (!_cogl_texture_driver_gl_get_tex_image (tex_2ds->gl_target,
                                                           target_gl_format,
@@ -1578,7 +1602,9 @@ _cogl_texture_2d_sliced_download_from_gl (
                                                         bpp);
 
 	      /* Download slice image data */
-	      GE( glBindTexture (tex_2ds->gl_target, gl_handle) );
+              _cogl_bind_gl_texture_transient (tex_2ds->gl_target,
+                                               gl_handle,
+                                               tex_2ds->is_foreign);
 
               if (!_cogl_texture_driver_gl_get_tex_image (tex_2ds->gl_target,
                                                           target_gl_format,
@@ -1737,5 +1763,6 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_get_format,
     _cogl_texture_2d_sliced_get_gl_format,
     _cogl_texture_2d_sliced_get_width,
-    _cogl_texture_2d_sliced_get_height
+    _cogl_texture_2d_sliced_get_height,
+    _cogl_texture_2d_sliced_is_foreign
   };

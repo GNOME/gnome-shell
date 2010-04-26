@@ -118,6 +118,8 @@ struct _CoglTextureVtable
   GLenum (* get_gl_format) (CoglTexture *tex);
   int (* get_width) (CoglTexture *tex);
   int (* get_height) (CoglTexture *tex);
+
+  gboolean (* is_foreign) (CoglTexture *tex);
 };
 
 struct _CoglTexture
@@ -125,6 +127,20 @@ struct _CoglTexture
   CoglHandleObject         _parent;
   const CoglTextureVtable *vtable;
 };
+
+typedef enum _CoglTextureChangeFlags
+{
+  /* Whenever the internals of a texture are changed such that the
+   * underlying GL textures that represent the CoglTexture change then
+   * we notify cogl-material.c via
+   * _cogl_material_texture_pre_change_notify
+   */
+  COGL_TEXTURE_CHANGE_GL_TEXTURES
+
+} CoglTextureChangeFlags;
+
+void
+_cogl_texture_free (CoglTexture *texture);
 
 void
 _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
@@ -214,5 +230,8 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);
+
+gboolean
+_cogl_texture_is_foreign (CoglHandle handle);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

@@ -40,6 +40,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-primitives.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -58,7 +59,9 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 
   for (i = 0; i < n; i++)
     {
-      GE (glBindTexture (gl_target, textures[i]));
+      _cogl_bind_gl_texture_transient (gl_target,
+                                       textures[i],
+                                       FALSE);
 
       switch (gl_target)
         {
@@ -123,6 +126,7 @@ _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
 void
 _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                              GLuint       gl_handle,
+                                             gboolean     is_foreign,
                                              int          src_x,
                                              int          src_y,
                                              int          dst_x,
@@ -141,7 +145,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                   src_y,
                                   bpp);
 
-  GE( glBindTexture (gl_target, gl_handle) );
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   GE( glTexSubImage2D (gl_target, 0,
                        dst_x, dst_y,
@@ -154,6 +158,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 void
 _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       gl_handle,
+                                   gboolean     is_foreign,
                                    CoglBitmap  *source_bmp,
                                    GLint        internal_gl_format,
                                    GLuint       source_gl_format,
@@ -164,7 +169,7 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, bpp);
 
-  GE( glBindTexture (gl_target, gl_handle) );
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   GE( glTexImage2D (gl_target, 0,
                     internal_gl_format,

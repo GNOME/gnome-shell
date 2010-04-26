@@ -243,7 +243,8 @@ _cogl_sub_texture_free (CoglSubTexture *sub_tex)
   cogl_handle_unref (sub_tex->next_texture);
   cogl_handle_unref (sub_tex->full_texture);
 
-  g_free (sub_tex);
+  /* Chain up */
+  _cogl_texture_free (COGL_TEXTURE (sub_tex));
 }
 
 CoglHandle
@@ -556,5 +557,6 @@ cogl_sub_texture_vtable =
     _cogl_sub_texture_get_format,
     _cogl_sub_texture_get_gl_format,
     _cogl_sub_texture_get_width,
-    _cogl_sub_texture_get_height
+    _cogl_sub_texture_get_height,
+    NULL /* is_foreign */
   };

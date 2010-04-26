@@ -37,6 +37,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-journal-private.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -137,7 +138,9 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
   if (tex_2d->wrap_mode_s != wrap_mode_s ||
       tex_2d->wrap_mode_t != wrap_mode_t)
     {
-      GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
+      _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                       tex_2d->gl_texture,
+                                       FALSE);
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
 
@@ -149,8 +152,10 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
 static void
 _cogl_texture_2d_free (CoglTexture2D *tex_2d)
 {
-  GE( glDeleteTextures (1, &tex_2d->gl_texture) );
-  g_free (tex_2d);
+  _cogl_delete_gl_texture (tex_2d->gl_texture);
+
+  /* Chain up */
+  _cogl_texture_free (COGL_TEXTURE (tex_2d));
 }
 
 static gboolean
@@ -253,7 +258,9 @@ _cogl_texture_2d_new_with_size (unsigned int     width,
   tex_2d = _cogl_texture_2d_create_base (width, height, flags, internal_format);
 
   _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
-  GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   FALSE);
   GE( glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                     width, height, 0, gl_format, gl_type, NULL) );
 
@@ -299,6 +306,7 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
   _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_texture_driver_upload_to_gl (GL_TEXTURE_2D,
                                      tex_2d->gl_texture,
+                                     FALSE,
                                      &dst_bmp,
                                      gl_intformat,
                                      gl_format,
@@ -389,7 +397,9 @@ _cogl_texture_2d_set_filters (CoglTexture *tex,
   tex_2d->mag_filter = mag_filter;
 
   /* Apply new filters to the texture */
-  GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   FALSE);
   GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter) );
   GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter) );
 }
@@ -405,7 +415,9 @@ _cogl_texture_2d_ensure_mipmaps (CoglTexture *tex)
   if (!tex_2d->auto_mipmap || !tex_2d->mipmaps_dirty)
     return;
 
-  GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   FALSE);
   /* glGenerateMipmap is defined in the FBO extension. We only allow
      CoglTexture2D instances to be created if this feature is
      available so we don't need to check for the extension */
@@ -474,6 +486,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   /* Send data to GL */
   _cogl_texture_driver_upload_subregion_to_gl (GL_TEXTURE_2D,
                                                tex_2d->gl_texture,
+                                               FALSE,
                                                src_x, src_y,
                                                dst_x, dst_y,
                                                dst_width, dst_height,
@@ -552,7 +565,9 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
   _cogl_texture_driver_prep_gl_for_pixels_download (target_bmp.rowstride,
                                                     closest_bpp);
 
-  GE( glBindTexture (GL_TEXTURE_2D, tex_2d->gl_texture) );
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   FALSE);
   if (!_cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
                                               closest_gl_format,
                                               closest_gl_type,
@@ -638,5 +653,6 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_get_format,
     _cogl_texture_2d_get_gl_format,
     _cogl_texture_2d_get_width,
-    _cogl_texture_2d_get_height
+    _cogl_texture_2d_get_height,
+    NULL /* is_foreign */
   };
