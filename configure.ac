@@ -1030,6 +1030,7 @@ AC_CONFIG_FILES([
         clutter/cogl/pango/Makefile
         clutter/json/Makefile
         tests/Makefile
+        tests/accessibility/Makefile
         tests/conform/Makefile
         tests/data/Makefile
         tests/interactive/Makefile

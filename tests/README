@@ -20,6 +20,9 @@ covers most of the original Clutter tests. Ideally some of these tests will be
 migrated into the conformance/ directory so they can be used in automated
 nightly tests.
 
+The accessibility/ tests are tests created to test the accessibility support of
+clutter, testing some of the atk interfaces.
+
 The data/ directory contains optional data (like images and ClutterScript
 definitions) that can be referenced by a test.
 
