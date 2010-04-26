@@ -148,6 +148,16 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
   *copied_bitmap = FALSE;
   *dst_bmp = *src_bmp;
 
+  /* OpenGL supports specifying a different format for the internal
+     format when uploading texture data. We should use this to convert
+     formats because it is likely to be faster and support more types
+     than the Cogl bitmap code. However under GLES the internal format
+     must be the same as the bitmap format and it only supports a
+     limited number of formats so we must convert using the Cogl
+     bitmap code instead */
+
+#ifdef HAVE_COGL_GL
+
   /* If the source format does not have the same premult flag as the
      dst format then we need to copy and convert it */
   if (_cogl_texture_needs_premult_conversion (src_bmp->format,
@@ -177,6 +187,28 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                             out_glintformat,
                             NULL,
                             NULL);
+
+#else /* HAVE_COGL_GL */
+  {
+    CoglPixelFormat closest_format;
+
+    closest_format = _cogl_pixel_format_to_gl (dst_bmp->format,
+                                               out_glintformat,
+                                               out_glformat,
+                                               out_gltype);
+
+
+    if (closest_format != src_bmp->format)
+      {
+        if (!_cogl_bitmap_convert_format_and_premult (src_bmp,
+                                                      dst_bmp,
+                                                      closest_format))
+          return FALSE;
+
+        *copied_bitmap = TRUE;
+      }
+  }
+#endif /* HAVE_COGL_GL */
 
   if (dst_format_out)
     *dst_format_out = dst_format;
