@@ -493,6 +493,9 @@ cogl_get_features (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
+    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+
   return ctx->feature_flags;
 }
 
@@ -514,6 +517,9 @@ _cogl_features_available_private (CoglFeatureFlagsPrivate features)
 
   if (!ctx->features_cached)
     _cogl_features_init ();
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
+    ctx->feature_flags_private &= ~COGL_FEATURE_PRIVATE_ARB_FP;
 
   return (ctx->feature_flags_private & features) == features;
 }
@@ -571,6 +577,8 @@ cogl_set_fog (const CoglColor *fog_color,
   GLfloat fogColor[4];
   GLenum gl_mode = GL_LINEAR;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* The cogl journal doesn't currently track fog state changes */
   _cogl_journal_flush ();
 
@@ -606,15 +614,20 @@ cogl_set_fog (const CoglColor *fog_color,
   glFogf (GL_FOG_DENSITY, (GLfloat) density);
   glFogf (GL_FOG_START, (GLfloat) z_near);
   glFogf (GL_FOG_END, (GLfloat) z_far);
+
+  ctx->fog_enabled = TRUE;
 }
 
 void
 cogl_disable_fog (void)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* Currently the journal can't track changes to fog state... */
   _cogl_journal_flush ();
 
   glDisable (GL_FOG);
+  ctx->fog_enabled = FALSE;
 }
 
 void
@@ -874,102 +887,6 @@ cogl_end_gl (void)
       return;
     }
   ctx->in_begin_gl_block = FALSE;
-}
-
-static CoglTextureUnit *
-_cogl_texture_unit_new (int index_)
-{
-  CoglTextureUnit *unit = g_new0 (CoglTextureUnit, 1);
-  unit->matrix_stack = _cogl_matrix_stack_new ();
-  unit->index = index_;
-  return unit;
-}
-
-static void
-_cogl_texture_unit_free (CoglTextureUnit *unit)
-{
-  _cogl_matrix_stack_destroy (unit->matrix_stack);
-  g_free (unit);
-}
-
-CoglTextureUnit *
-_cogl_get_texture_unit (int index_)
-{
-  GList *l;
-  CoglTextureUnit *unit;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  for (l = ctx->texture_units; l; l = l->next)
-    {
-      unit = l->data;
-
-      if (unit->index == index_)
-        return unit;
-
-      /* The units are always sorted, so at this point we know this unit
-       * doesn't exist */
-      if (unit->index > index_)
-        break;
-    }
-  /* NB: if we now insert a new layer before l, that will maintain order.
-   */
-
-  unit = _cogl_texture_unit_new (index_);
-
-  /* Note: see comment after for() loop above */
-  ctx->texture_units =
-    g_list_insert_before (ctx->texture_units, l, unit);
-
-  return unit;
-}
-
-void
-_cogl_destroy_texture_units (void)
-{
-  GList *l;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  for (l = ctx->texture_units; l; l = l->next)
-    _cogl_texture_unit_free (l->data);
-  g_list_free (ctx->texture_units);
-}
-
-/*
- * This is more complicated than that, another pass needs to be done when
- * cogl have a neat way of saying if we are using the fixed function pipeline
- * or not (for the GL case):
- * MAX_TEXTURE_UNITS: fixed function pipeline, a texture unit has both a
- *                    sampler and a set of texture coordinates
- * MAX_TEXTURE_IMAGE_UNITS: number of samplers one can use from a fragment
- *                          program/shader (ARBfp1.0 asm/GLSL)
- * MAX_VERTEX_TEXTURE_UNITS: number of samplers one can use from a vertex
- *                           program/shader (can be 0)
- * MAX_COMBINED_TEXTURE_IMAGE_UNITS: Maximum samplers one can use, counting both
- *                                   the vertex and fragment shaders
- *
- * If both the vertex shader and the fragment processing stage access the same
- * texture image unit, then that counts as using two texture image units
- * against the latter limit: http://www.opengl.org/sdk/docs/man/xhtml/glGet.xml
- *
- * Note that, for now, we use GL_MAX_TEXTURE_UNITS as we are exposing the
- * fixed function pipeline.
- */
-unsigned int
-_cogl_get_max_texture_image_units (void)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  /* This function is called quite often so we cache the value to
-     avoid too many GL calls */
-  if (ctx->max_texture_units == -1)
-    {
-      ctx->max_texture_units = 1;
-      GE( glGetIntegerv (GL_MAX_TEXTURE_UNITS, &ctx->max_texture_units) );
-    }
-
-  return ctx->max_texture_units;
 }
 
 void

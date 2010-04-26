@@ -516,7 +516,6 @@ _cogl_rectangles_with_multitexture_coords (
     {
       CoglHandle     layer = tmp->data;
       CoglHandle     tex_handle;
-      unsigned long  flags;
 
       if (cogl_material_layer_get_type (layer)
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
@@ -619,8 +618,7 @@ _cogl_rectangles_with_multitexture_coords (
        * waste or if using GL_TEXTURE_RECTANGLE_ARB) then we don't support
        * multi texturing since we don't know if the result will end up trying
        * to texture from the waste area. */
-      flags = _cogl_material_layer_get_flags (layer);
-      if (flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX
+      if (_cogl_material_layer_has_user_matrix (layer)
           && !_cogl_texture_can_hardware_repeat (tex_handle))
         {
           static gboolean warning_seen = FALSE;
@@ -838,6 +836,7 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
   float virtual_origin_y;
   float v_to_s_scale_x;
   float v_to_s_scale_y;
+  CoglHandle source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -888,9 +887,20 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
   options.wrap_mode_overrides.values[0].t =
     COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
 
-  _cogl_material_flush_gl_state (ctx->source_material, &options);
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
+
+  _cogl_material_flush_gl_state (source, &options);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, state->n_vertices));
+
+  if (G_UNLIKELY (source != ctx->source_material))
+    cogl_handle_unref (source);
 }
 
 /* handles 2d-sliced textures with > 1 slice */
@@ -963,6 +973,7 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
   GList               *tmp;
   GLfloat             *v;
   CoglMaterialFlushOptions options;
+  CoglHandle           source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1028,9 +1039,21 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
       options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
       options.wrap_mode_overrides = *wrap_mode_overrides;
     }
-  _cogl_material_flush_gl_state (ctx->source_material, &options);
+
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
+
+  _cogl_material_flush_gl_state (source, &options);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
+
+  if (G_UNLIKELY (source != ctx->source_material))
+    cogl_handle_unref (source);
 }
 
 void

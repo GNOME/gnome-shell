@@ -59,8 +59,6 @@
 #define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
 #define glMapBuffer ctx->drv.pf_glMapBuffer
 #define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
-#define glActiveTexture ctx->drv.pf_glActiveTexture
-#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 
 #ifndef GL_PIXEL_UNPACK_BUFFER
 #define GL_PIXEL_UNPACK_BUFFER GL_PIXEL_UNPACK_BUFFER_ARB

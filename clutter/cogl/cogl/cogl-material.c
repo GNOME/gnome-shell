@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,9 @@
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-journal-private.h"
+#ifndef HAVE_COGL_GLES
+#include "cogl-program.h"
+#endif
 
 #include <glib.h>
 #include <glib/gprintf.h>
@@ -60,8 +63,10 @@
 
 #define glProgramString ctx->drv.pf_glProgramString
 #define glBindProgram ctx->drv.pf_glBindProgram
-#define glDeleteProgram ctx->drv.pf_glDeletePrograms
+#define glDeletePrograms ctx->drv.pf_glDeletePrograms
 #define glGenPrograms ctx->drv.pf_glGenPrograms
+#define glProgramLocalParameter4fv ctx->drv.pf_glProgramLocalParameter4fv
+#define glUseProgram ctx->drv.pf_glUseProgram
 #endif
 
 /* This isn't defined in the GLES headers */
@@ -69,10 +74,63 @@
 #define GL_CLAMP_TO_BORDER 0x812d
 #endif
 
+typedef struct _CoglMaterialBackendARBfpPrivate
+{
+  GString *source;
+  GLuint gl_program;
+  gboolean *sampled;
+  int next_constant_id;
+} CoglMaterialBackendARBfpPrivate;
+
 static CoglHandle _cogl_material_layer_copy (CoglHandle layer_handle);
 
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
+
+#if defined (HAVE_COGL_GL)
+
+static const CoglMaterialBackend _cogl_material_glsl_backend;
+static const CoglMaterialBackend _cogl_material_arbfp_backend;
+static const CoglMaterialBackend _cogl_material_fixed_backend;
+static const CoglMaterialBackend *backends[] =
+{
+  /* The fragment processing backends in order of precedence... */
+  &_cogl_material_glsl_backend,
+  &_cogl_material_arbfp_backend,
+  &_cogl_material_fixed_backend
+};
+#define COGL_MATERIAL_BACKEND_GLSL       0
+#define COGL_MATERIAL_BACKEND_ARBFP      1
+#define COGL_MATERIAL_BACKEND_FIXED      2
+
+#elif defined (HAVE_COGL_GLES2)
+
+static const CoglMaterialBackend _cogl_material_glsl_backend;
+static const CoglMaterialBackend _cogl_material_fixed_backend;
+static const CoglMaterialBackend *backends[] =
+{
+  /* The fragment processing backends in order of precedence... */
+  &_cogl_material_glsl_backend,
+  &_cogl_material_fixed_backend
+};
+#define COGL_MATERIAL_BACKEND_GLSL       0
+#define COGL_MATERIAL_BACKEND_FIXED      1
+
+#else /* HAVE_COGL_GLES */
+
+static const CoglMaterialBackend _cogl_material_fixed_backend;
+static const CoglMaterialBackend *backends[] =
+{
+  /* The fragment processing backends in order of precedence... */
+  &_cogl_material_fixed_backend
+};
+
+#define COGL_MATERIAL_BACKEND_FIXED      0
+
+#endif
+
+#define COGL_MATERIAL_BACKEND_DEFAULT    0
+#define COGL_MATERIAL_BACKEND_UNDEFINED -1
 
 COGL_HANDLE_DEFINE (Material, material);
 COGL_HANDLE_DEFINE (MaterialLayer, material_layer);
@@ -97,6 +155,8 @@ _cogl_material_init_default_material (void)
   GLfloat *emission = material->emission;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  material->backend = COGL_MATERIAL_BACKEND_UNDEFINED;
 
   /* Use the same defaults as the GL spec... */
   unlit[0] = 0xff; unlit[1] = 0xff; unlit[2] = 0xff; unlit[3] = 0xff;
@@ -129,11 +189,12 @@ _cogl_material_init_default_material (void)
   material->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND;
 
-  material->program.source = NULL;
-  material->program.gl_program = -1;
+  material->user_program = COGL_INVALID_HANDLE;
+  material->flags |= COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER;
 
   material->layers = NULL;
   material->n_layers = 0;
+  material->flags |= COGL_MATERIAL_FLAG_DEFAULT_LAYERS;
 
   ctx->default_material = _cogl_material_handle_new (material);
 }
@@ -164,10 +225,27 @@ cogl_material_new (void)
 }
 
 static void
+_cogl_material_backend_free_priv (CoglMaterial *material)
+{
+  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
+      backends[material->backend]->free_priv)
+    backends[material->backend]->free_priv (material);
+}
+
+static void
 _cogl_material_free (CoglMaterial *material)
 {
-  /* Frees material resources but its handle is not
-     released! Do that separately before this! */
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_material_backend_free_priv (material);
+
+  /* Invalidate the ->current_material reference to this material since
+   * it will no longer represent the current state.
+   *
+   * NB: we would also invalidate this if the material we being
+   * modified.
+   */
+  ctx->current_material = COGL_INVALID_HANDLE;
 
   g_list_foreach (material->layers,
 		  (GFunc)cogl_handle_unref, NULL);
@@ -214,12 +292,12 @@ _cogl_material_needs_blending_enabled (CoglMaterial *material,
 }
 
 static void
-handle_automatic_blend_enable (CoglMaterial *material)
+_cogl_material_set_backend (CoglMaterial *material, int backend)
 {
-  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
-
-  if (_cogl_material_needs_blending_enabled (material, NULL))
-    material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
+      backends[material->backend]->free_priv)
+    backends[material->backend]->free_priv (material);
+  material->backend = backend;
 }
 
 /* If primitives have been logged in the journal referencing the current
@@ -227,24 +305,102 @@ handle_automatic_blend_enable (CoglMaterial *material)
  * modify it... */
 static void
 _cogl_material_pre_change_notify (CoglMaterial *material,
-                                  gboolean      only_color_change,
+                                  unsigned long changes,
                                   GLubyte      *new_color)
 {
-  /* XXX: We don't usually need to flush the journal just due to color changes
-   * since material colors are logged in the journals vertex buffer. The
-   * exception is when the change in color enables or disables the need for
-   * blending. */
-  if (only_color_change)
-    {
-      gboolean will_need_blending =
-        _cogl_material_needs_blending_enabled (material, new_color);
-      if (will_need_blending ==
-          (material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) ? TRUE : FALSE)
-        return;
-    }
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (material->journal_ref_count)
-    _cogl_journal_flush ();
+    {
+      /* XXX: We don't usually need to flush the journal just due to
+       * color changes since material colors are logged in the
+       * journals vertex buffer. The exception is when the change in
+       * color enables or disables the need for blending. */
+      if (changes == COGL_MATERIAL_CHANGE_COLOR)
+        {
+          gboolean will_need_blending =
+            _cogl_material_needs_blending_enabled (material, new_color);
+          if (will_need_blending !=
+              ((material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) ?
+               TRUE : FALSE))
+            _cogl_journal_flush ();
+        }
+      else
+        _cogl_journal_flush ();
+    }
+
+  /* The fixed function backend has no private state and can't
+   * do anything special to handle small material changes so we may as
+   * well try to find a better backend whenever the material changes.
+   *
+   * The programmable backends may be able to cache a lot of the code
+   * they generate and only need to update a small section of that
+   * code in response to a material change therefore we don't want to
+   * try searching for another backend when the material changes.
+   */
+  if (material->backend == COGL_MATERIAL_BACKEND_FIXED)
+    _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_UNDEFINED);
+
+  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
+      backends[material->backend]->material_change_notify)
+    backends[material->backend]->material_change_notify (material,
+                                                         changes,
+                                                         new_color);
+
+  /* Invalidate any ->current_material reference to this material since
+   * it will no longer represent the current state.
+   *
+   * NB: we also invalidate this if the material is freed
+   */
+  if (ctx->current_material == material)
+    ctx->current_material = COGL_INVALID_HANDLE;
+}
+
+static void
+handle_automatic_blend_enable (CoglMaterial *material)
+{
+  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
+
+  if (_cogl_material_needs_blending_enabled (material, NULL))
+    {
+      _cogl_material_pre_change_notify (material,
+                                        COGL_MATERIAL_CHANGE_ENABLE_BLEND,
+                                        NULL);
+      material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+    }
+}
+
+static void
+_cogl_material_backend_layer_change_notify (CoglMaterialLayer *layer,
+                                            unsigned long changes)
+{
+  int backend = layer->material->backend;
+  if (backend == COGL_MATERIAL_BACKEND_UNDEFINED)
+    return;
+
+  if (backends[backend]->layer_change_notify)
+    backends[backend]->layer_change_notify (layer, changes);
+}
+
+static void
+_cogl_material_layer_pre_change_notify (CoglMaterialLayer *layer,
+                                        CoglMaterialLayerChangeFlags changes)
+{
+  CoglTextureUnit *unit = _cogl_get_texture_unit (layer->unit_index);
+
+  /* Look at the texture unit corresponding to this layer, if it
+   * currently has a back reference to this layer then invalidate it
+   * so that next time we come to flush this layer we'll see that the
+   * texture unit no longer corresponds to this layer's state.
+   */
+  if (unit->layer == layer)
+    unit->layer = NULL;
+
+  _cogl_material_backend_layer_change_notify (layer, changes);
+
+  _cogl_material_pre_change_notify (layer->material,
+                                    COGL_MATERIAL_CHANGE_LAYERS,
+                                    NULL);
 }
 
 void
@@ -292,7 +448,8 @@ cogl_material_set_color (CoglHandle       handle,
     return;
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, TRUE, unlit);
+  _cogl_material_pre_change_notify (material, COGL_MATERIAL_CHANGE_COLOR,
+                                    unlit);
 
   memcpy (material->unlit, unlit, sizeof (unlit));
 
@@ -359,7 +516,9 @@ cogl_material_set_ambient (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_GL_MATERIAL,
+                                    NULL);
 
   ambient = material->ambient;
   ambient[0] = cogl_color_get_red_float (ambient_color);
@@ -401,7 +560,9 @@ cogl_material_set_diffuse (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_GL_MATERIAL,
+                                    NULL);
 
   diffuse = material->diffuse;
   diffuse[0] = cogl_color_get_red_float (diffuse_color);
@@ -451,7 +612,9 @@ cogl_material_set_specular (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_GL_MATERIAL,
+                                    NULL);
 
   specular = material->specular;
   specular[0] = cogl_color_get_red_float (specular_color);
@@ -491,7 +654,9 @@ cogl_material_set_shininess (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_GL_MATERIAL,
+                                    NULL);
 
   material->shininess = (GLfloat)shininess * 128.0;
 
@@ -527,7 +692,9 @@ cogl_material_set_emission (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_GL_MATERIAL,
+                                    NULL);
 
   emission = material->emission;
   emission[0] = cogl_color_get_red_float (emission_color);
@@ -552,7 +719,9 @@ cogl_material_set_alpha_test_function (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_ALPHA_FUNC,
+                                    NULL);
 
   material->alpha_func = alpha_func;
   material->alpha_func_reference = (GLfloat)alpha_reference;
@@ -696,7 +865,9 @@ cogl_material_set_blend (CoglHandle handle,
     }
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_BLEND,
+                                    NULL);
 
 #ifndef HAVE_COGL_GLES
   setup_blend_state (rgb,
@@ -732,7 +903,9 @@ cogl_material_set_blend_constant (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_BLEND,
+                                    NULL);
 
   constant = material->blend_constant;
   constant[0] = cogl_color_get_red_float (constant_color);
@@ -744,6 +917,116 @@ cogl_material_set_blend_constant (CoglHandle handle,
 #endif
 }
 
+/* XXX: for now we don't mind if the program has vertex shaders
+ * attached but if we ever make a similar API public we should only
+ * allow attaching of programs containing fragment shaders. Eventually
+ * we will have a CoglPipeline abstraction to also cover vertex
+ * processing.
+ */
+void
+_cogl_material_set_user_program (CoglHandle handle,
+                                 CoglHandle program)
+{
+  CoglMaterial *material;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+
+  if (material->user_program == program)
+    return;
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_USER_SHADER,
+                                    NULL);
+
+  _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_DEFAULT);
+
+  if (program != COGL_INVALID_HANDLE)
+    cogl_handle_ref (program);
+  if (material->user_program != COGL_INVALID_HANDLE)
+    cogl_handle_unref (material->user_program);
+  material->user_program = program;
+
+  if (program == COGL_INVALID_HANDLE)
+    material->flags |= COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER;
+  else
+    material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER;
+}
+
+static void
+texture_unit_init (CoglTextureUnit *unit, int index_)
+{
+  unit->index = index_;
+  unit->enabled = FALSE;
+  unit->enabled_gl_target = 0;
+  unit->gl_texture = 0;
+  unit->matrix_stack = _cogl_matrix_stack_new ();
+
+  unit->layer = NULL;
+  unit->layer_differences = COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE;
+  unit->fallback = FALSE;
+  unit->layer0_overridden = FALSE;
+  unit->texture = COGL_INVALID_HANDLE;
+}
+
+static void
+texture_unit_free (CoglTextureUnit *unit)
+{
+  _cogl_matrix_stack_destroy (unit->matrix_stack);
+}
+
+CoglTextureUnit *
+_cogl_get_texture_unit (int index_)
+{
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  if (ctx->texture_units->len < (index_ + 1))
+    {
+      int i;
+      int prev_len = ctx->texture_units->len;
+      ctx->texture_units = g_array_set_size (ctx->texture_units, index_ + 1);
+      for (i = prev_len; i <= index_; i++)
+        {
+          CoglTextureUnit *unit =
+            &g_array_index (ctx->texture_units, CoglTextureUnit, i);
+
+          texture_unit_init (unit, i);
+        }
+    }
+
+  return &g_array_index (ctx->texture_units, CoglTextureUnit, index_);
+}
+
+void
+_cogl_destroy_texture_units (void)
+{
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  for (i = 0; i < ctx->texture_units->len; i++)
+    {
+      CoglTextureUnit *unit =
+        &g_array_index (ctx->texture_units, CoglTextureUnit, i);
+      texture_unit_free (unit);
+    }
+  g_array_free (ctx->texture_units, TRUE);
+}
+
+static void
+set_active_texture_unit (int unit_index)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->active_texture_unit != unit_index)
+    {
+      GE (glActiveTexture (GL_TEXTURE0 + unit_index));
+      ctx->active_texture_unit = unit_index;
+    }
+}
+
 /* Asserts that a layer corresponding to the given index exists. If no
  * match is found, then a new empty layer is added.
  */
@@ -753,13 +1036,13 @@ _cogl_material_get_layer (CoglMaterial *material,
 			  gboolean      create_if_not_found)
 {
   CoglMaterialLayer *layer;
-  GList		    *tmp;
+  GList		    *l;
   CoglHandle	     layer_handle;
+  int                i;
 
-  for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
+  for (l = material->layers, i = 0; l != NULL; l = l->next, i++)
     {
-      layer =
-	_cogl_material_layer_pointer_from_handle ((CoglHandle)tmp->data);
+      layer = l->data;
       if (layer->index == index_)
 	return layer;
 
@@ -768,26 +1051,31 @@ _cogl_material_get_layer (CoglMaterial *material,
       if (layer->index > index_)
 	break;
     }
-  /* NB: if we now insert a new layer before tmp, that will maintain order.
+  /* NB: if we now insert a new layer before l, that will maintain order.
    */
 
   if (!create_if_not_found)
     return NULL;
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_LAYERS,
+                                    NULL);
 
   layer = g_slice_new0 (CoglMaterialLayer);
 
   layer_handle = _cogl_material_layer_handle_new (layer);
+  layer->material = material;
   layer->index = index_;
-  layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  layer->differences = 0;
   layer->mag_filter = COGL_MATERIAL_FILTER_LINEAR;
   layer->min_filter = COGL_MATERIAL_FILTER_LINEAR;
   layer->wrap_mode_s = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
   layer->wrap_mode_t = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
   layer->wrap_mode_r = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
   layer->texture = COGL_INVALID_HANDLE;
+
+  layer->unit_index = i;
 
   /* Choose the same default combine mode as OpenGL:
    * MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
@@ -806,7 +1094,9 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   /* Note: see comment after for() loop above */
   material->layers =
-    g_list_insert_before (material->layers, tmp, layer_handle);
+    g_list_insert_before (material->layers, l, layer_handle);
+
+  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_LAYERS;
 
   material->n_layers++;
 
@@ -833,22 +1123,9 @@ cogl_material_set_layer (CoglHandle material_handle,
     return;
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
-
-  if (material->n_layers > _cogl_get_max_texture_image_units ())
-    {
-      if (!(material->flags & COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING))
-	{
-	  g_warning ("Your hardware does not have enough texture samplers "
-		     "to handle this many texture layers");
-	  material->flags |= COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING;
-	}
-      /* Note: We always make a best effort attempt to display as many
-       * layers as possible, so this isn't an _error_ */
-      /* Note: in the future we may support enabling/disabling layers
-       * too, so it may become valid to add more than
-       * MAX_COMBINED_TEXTURE_IMAGE_UNITS layers. */
-    }
+  _cogl_material_pre_change_notify (material,
+                                    COGL_MATERIAL_CHANGE_LAYERS,
+                                    NULL);
 
   if (texture_handle)
     cogl_handle_ref (texture_handle);
@@ -859,7 +1136,8 @@ cogl_material_set_layer (CoglHandle material_handle,
   layer->texture = texture_handle;
 
   handle_automatic_blend_enable (material);
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
+
+  layer->differences |= COGL_MATERIAL_LAYER_DIFFERENCE_TEXTURE;
 }
 
 static void
@@ -997,7 +1275,9 @@ cogl_material_set_layer_combine (CoglHandle handle,
     }
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_layer_pre_change_notify (
+                                        layer,
+                                        COGL_MATERIAL_LAYER_CHANGE_COMBINE);
 
   setup_texture_combine_state (rgb,
                                &layer->texture_combine_rgb_func,
@@ -1010,8 +1290,7 @@ cogl_material_set_layer_combine (CoglHandle handle,
                                layer->texture_combine_alpha_op);
 
 
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  layer->differences |= COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE;
   return TRUE;
 }
 
@@ -1030,7 +1309,9 @@ cogl_material_set_layer_combine_constant (CoglHandle handle,
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_layer_pre_change_notify (
+                              layer,
+                              COGL_MATERIAL_LAYER_CHANGE_COMBINE_CONSTANT);
 
   constant = layer->texture_combine_constant;
   constant[0] = cogl_color_get_red_float (constant_color);
@@ -1038,8 +1319,7 @@ cogl_material_set_layer_combine_constant (CoglHandle handle,
   constant[2] = cogl_color_get_blue_float (constant_color);
   constant[3] = cogl_color_get_alpha_float (constant_color);
 
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  layer->differences |= COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE_CONSTANT;
 }
 
 void
@@ -1050,24 +1330,42 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
   CoglMaterial *material;
   CoglMaterialLayer *layer;
 
+  static gboolean initialized_identity_matrix = FALSE;
+  static CoglMatrix identity_matrix;
+
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
-  /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  if (cogl_matrix_equal (matrix, &layer->matrix))
+    return;
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_layer_pre_change_notify (
+                              layer,
+                              COGL_MATERIAL_LAYER_CHANGE_USER_MATRIX);
   layer->matrix = *matrix;
 
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  if (G_UNLIKELY (!initialized_identity_matrix))
+    cogl_matrix_init_identity (&identity_matrix);
+
+  if (cogl_matrix_equal (matrix, &identity_matrix))
+    layer->differences &= ~COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX;
+  else
+    layer->differences |= COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX;
 }
 
 static void
 _cogl_material_layer_free (CoglMaterialLayer *layer)
 {
+  CoglTextureUnit *unit = _cogl_get_texture_unit (layer->unit_index);
+
+  /* Since we're freeing the layer make sure the texture unit no
+   * longer keeps a back reference to it */
+  if (unit->layer == layer)
+    unit->layer = NULL;
+
   if (layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
   g_slice_free (CoglMaterialLayer, layer);
@@ -1079,32 +1377,51 @@ cogl_material_remove_layer (CoglHandle material_handle,
 {
   CoglMaterial	     *material;
   CoglMaterialLayer  *layer;
-  GList		     *tmp;
-  gboolean            notified_change = FALSE;
+  GList		     *l;
+  GList		     *l2;
+  gboolean            found = FALSE;
+  int                 i;
 
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
 
-  for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
+  for (l = material->layers, i = 0; l != NULL; l = l2, i++)
     {
-      layer = tmp->data;
+      /* were going to be modifying the list and continuing to iterate
+       * it so we get the pointer to the next link now... */
+      l2 = l->next;
+
+      layer = l->data;
       if (layer->index == layer_index)
 	{
 	  CoglHandle handle = (CoglHandle) layer;
 
+          found = TRUE;
+
           /* possibly flush primitives referencing the current state... */
-          if (!notified_change)
-            {
-              _cogl_material_pre_change_notify (material, FALSE, NULL);
-              notified_change = TRUE;
-            }
+          _cogl_material_pre_change_notify (material,
+                                            COGL_MATERIAL_CHANGE_LAYERS,
+                                            NULL);
 
 	  cogl_handle_unref (handle);
-	  material->layers = g_list_remove (material->layers, layer);
+	  material->layers = g_list_delete_link (material->layers, l);
           material->n_layers--;
-	  break;
+
+          /* We need to iterate through the rest of the layers
+           * updating the texture unit that they reference. */
+	  continue;
 	}
+
+      /* All layers following a removed layer need to have their
+       * associated texture unit updated... */
+      if (found)
+        {
+          _cogl_material_layer_pre_change_notify (
+                                        layer,
+                                        COGL_MATERIAL_LAYER_CHANGE_UNIT);
+          layer->unit_index = i;
+        }
     }
 
   handle_automatic_blend_enable (material);
@@ -1182,16 +1499,13 @@ cogl_material_layer_get_texture (CoglHandle layer_handle)
   return layer->texture;
 }
 
-unsigned long
-_cogl_material_layer_get_flags (CoglHandle layer_handle)
+gboolean
+_cogl_material_layer_has_user_matrix (CoglHandle layer_handle)
 {
-  CoglMaterialLayer *layer;
-
-  g_return_val_if_fail (cogl_is_material_layer (layer_handle), 0);
-
-  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
-
-  return layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX;
+  CoglMaterialLayer *layer =
+    _cogl_material_layer_pointer_from_handle (layer_handle);
+  return layer->differences & COGL_MATERIAL_LAYER_CHANGE_USER_MATRIX ?
+    TRUE : FALSE;
 }
 
 static CoglHandle
@@ -1207,6 +1521,74 @@ _cogl_material_layer_copy (CoglHandle layer_handle)
     cogl_handle_ref (layer_copy->texture);
 
   return _cogl_material_layer_handle_new (layer_copy);
+}
+
+static gboolean
+is_mipmap_filter (CoglMaterialFilter filter)
+{
+  return (filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
+}
+
+#ifndef HAVE_COGL_GLES
+static int
+get_max_texture_image_units (void)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  /* This function is called quite often so we cache the value to
+     avoid too many GL calls */
+  if (G_UNLIKELY (ctx->max_texture_image_units == -1))
+    {
+      ctx->max_texture_image_units = 1;
+      GE (glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS,
+                         &ctx->max_texture_image_units));
+    }
+
+  return ctx->max_texture_image_units;
+}
+#endif
+
+static void
+disable_texture_unit (int unit_index)
+{
+  CoglTextureUnit *unit;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  unit = &g_array_index (ctx->texture_units, CoglTextureUnit, unit_index);
+
+#ifndef DISABLE_MATERIAL_CACHE
+  if (unit->enabled)
+#endif
+    {
+      set_active_texture_unit (unit_index);
+      GE (glDisable (unit->enabled_gl_target));
+      unit->enabled_gl_target = 0;
+      unit->enabled = FALSE;
+
+      /* XXX: This implies that a lot of unneeded work will happen
+       * if a given layer somehow simply gets disabled and enabled
+       * without changing. Currently the public CoglMaterial API
+       * doesn't give a way to disable layers but one day we may
+       * want to avoid doing this if that changes... */
+      unit->layer = NULL;
+    }
+}
+
+void
+_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  if (layer->texture &&
+      (is_mipmap_filter (layer->min_filter) ||
+       is_mipmap_filter (layer->mag_filter)))
+    _cogl_texture_ensure_mipmaps (layer->texture);
 }
 
 static unsigned int
@@ -1229,31 +1611,928 @@ get_n_args_for_combine_func (GLint func)
   return 0;
 }
 
-static gboolean
-is_mipmap_filter (CoglMaterialFilter filter)
+void
+_cogl_gl_use_program_wrapper (GLuint program)
 {
-  return (filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
-          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
-          || filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
-          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
+#ifdef COGL_MATERIAL_BACKEND_GLSL
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_gl_program == program)
+    return;
+
+  if (program)
+    {
+      GLenum gl_error;
+
+      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+        ;
+      glUseProgram (program);
+      if (glGetError () != GL_NO_ERROR)
+        {
+          GE (glUseProgram (0));
+          ctx->current_gl_program = 0;
+          return;
+        }
+    }
+  else
+    GE (glUseProgram (0));
+
+  ctx->current_gl_program = program;
+#endif
 }
 
-/* FIXME: All direct manipulation of GL texture unit state should be dealt with
- * by extending the CoglTextureUnit abstraction */
 static void
-_cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
-                                             CoglTextureUnit    *unit,
-                                             CoglLayerInfo      *gl_layer_info)
+disable_glsl (void)
 {
-  int n_rgb_func_args;
-  int n_alpha_func_args;
+#ifdef COGL_MATERIAL_BACKEND_GLSL
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_GLSL)
+    _cogl_gl_use_program_wrapper (0);
+#endif
+}
+
+static void
+disable_arbfp (void)
+{
+#ifdef COGL_MATERIAL_BACKEND_ARBFP
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
+    GE (glDisable (GL_FRAGMENT_PROGRAM_ARB));
+#endif
+}
+
+static void
+use_program (CoglHandle program_handle, CoglMaterialProgramType type)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  switch (type)
+    {
+#ifdef COGL_MATERIAL_BACKEND_GLSL
+    case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+      {
+        /* The GLES2 backend currently manages its own codegen for
+         * fixed function API fallbacks and manages its own shader
+         * state.  */
+#ifndef HAVE_COGL_GLES2
+        CoglProgram *program =
+          _cogl_program_pointer_from_handle (program_handle);
+
+        _cogl_gl_use_program_wrapper (program->gl_handle);
+        disable_arbfp ();
+#endif
+
+        ctx->current_use_program_type = type;
+        break;
+      }
+#else
+    case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+      g_warning ("Unexpected use of GLSL backend!");
+      break;
+#endif
+#ifdef COGL_MATERIAL_BACKEND_ARBFP
+    case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+
+      /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
+       * so we can't bailout without making sure we glUseProgram (0)
+       * first. */
+      disable_glsl ();
+
+      if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
+        break;
+
+      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
+
+      ctx->current_use_program_type = type;
+      break;
+#else
+    case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+      g_warning ("Unexpected use of GLSL backend!");
+      break;
+#endif
+#ifdef COGL_MATERIAL_BACKEND_FIXED
+    case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
+
+      /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
+       * so we can't bailout without making sure we glUseProgram (0)
+       * first. */
+      disable_glsl ();
+
+      if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_FIXED)
+        break;
+
+      disable_arbfp ();
+
+      ctx->current_use_program_type = type;
+#endif
+    }
+}
+
+#ifdef COGL_MATERIAL_BACKEND_GLSL
+
+static int
+_cogl_material_backend_glsl_get_max_texture_units (void)
+{
+  return get_max_texture_image_units ();
+}
+
+static gboolean
+_cogl_material_backend_glsl_start (CoglMaterial *material)
+{
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
+    return FALSE;
+
+  /* FIXME: This will likely conflict with the GLES 2 backends use of
+   * glUseProgram.
+   */
+  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER
+        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_USER_SHADER))
+    {
+      CoglHandle program = material->user_program;
+      if (program == COGL_INVALID_HANDLE)
+        return FALSE; /* XXX: change me when we support code generation here */
+
+      use_program (program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
+      return TRUE;
+    }
+
+  /* TODO: also support code generation */
+
+  return FALSE;
+}
+
+gboolean
+_cogl_material_backend_glsl_add_layer (CoglMaterialLayer *layer)
+{
+  return TRUE;
+}
+
+gboolean
+_cogl_material_backend_glsl_passthrough (CoglMaterial *material)
+{
+  return TRUE;
+}
+
+gboolean
+_cogl_material_backend_glsl_end (CoglMaterial *material)
+{
+  return TRUE;
+}
+
+static const CoglMaterialBackend _cogl_material_glsl_backend =
+{
+  _cogl_material_backend_glsl_get_max_texture_units,
+  _cogl_material_backend_glsl_start,
+  _cogl_material_backend_glsl_add_layer,
+  _cogl_material_backend_glsl_passthrough,
+  _cogl_material_backend_glsl_end,
+  NULL, /* material_state_change_notify */
+  NULL, /* layer_state_change_notify */
+  NULL, /* free_priv */
+};
+
+#endif /* COGL_MATERIAL_BACKEND_GLSL */
+
+#ifdef COGL_MATERIAL_BACKEND_ARBFP
+
+static int
+_cogl_material_backend_arbfp_get_max_texture_units (void)
+{
+  return get_max_texture_image_units ();
+}
+
+static gboolean
+_cogl_material_backend_arbfp_start (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!_cogl_features_available_private (COGL_FEATURE_PRIVATE_ARB_FP))
+    return FALSE;
+
+  /* TODO: support fog */
+  if (ctx->fog_enabled)
+    return FALSE;
+
+  if (!material->backend_priv)
+    material->backend_priv = g_slice_new0 (CoglMaterialBackendARBfpPrivate);
+  priv = material->backend_priv;
+
+  if (priv->gl_program == 0)
+    {
+      /* Se reuse a single grow-only GString for ARBfp code-gen */
+      g_string_set_size (ctx->arbfp_source_buffer, 0);
+      priv->source = ctx->arbfp_source_buffer;
+      g_string_append (priv->source,
+                       "!!ARBfp1.0\n"
+                       "TEMP output;\n"
+                       "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
+                       "PARAM half = {.5, .5, .5, .5};\n"
+                       "PARAM one = {1, 1, 1, 1};\n"
+                       "PARAM two = {2, 2, 2, 2};\n"
+                       "PARAM minus_one = {-1, -1, -1, -1};\n");
+      priv->sampled = g_new0 (gboolean, material->n_layers);
+    }
+
+  return TRUE;
+}
+
+/* Determines if we need to handle the RGB and A texture combining
+ * separately or is the same function used for both channel masks and
+ * with the same arguments...
+ */
+static gboolean
+need_texture_combine_separate (CoglMaterialLayer *layer)
+{
+  int n_args;
+  int i;
+
+  if (layer->texture_combine_rgb_func != layer->texture_combine_alpha_func)
+    return TRUE;
+
+  n_args = get_n_args_for_combine_func (layer->texture_combine_rgb_func);
+
+  for (i = 0; i < n_args; i++)
+    {
+      if (layer->texture_combine_rgb_src[i] !=
+          layer->texture_combine_alpha_src[i])
+        return TRUE;
+
+      /*
+       * We can allow some variation of the source operands without
+       * needing a separation...
+       *
+       * "A = REPLACE (CONSTANT[A])" + either of the following...
+       * "RGB = REPLACE (CONSTANT[RGB])"
+       * "RGB = REPLACE (CONSTANT[A])"
+       *
+       * can be combined as:
+       * "RGBA = REPLACE (CONSTANT)" or
+       * "RGBA = REPLACE (CONSTANT[A])" or
+       *
+       * And "A = REPLACE (1-CONSTANT[A])" + either of the following...
+       * "RGB = REPLACE (1-CONSTANT)" or
+       * "RGB = REPLACE (1-CONSTANT[A])"
+       *
+       * can be combined as:
+       * "RGBA = REPLACE (1-CONSTANT)" or
+       * "RGBA = REPLACE (1-CONSTANT[A])"
+       */
+      switch (layer->texture_combine_alpha_op[i])
+        {
+        case GL_SRC_ALPHA:
+          switch (layer->texture_combine_rgb_op[i])
+            {
+            case GL_SRC_COLOR:
+            case GL_SRC_ALPHA:
+              break;
+            default:
+              return FALSE;
+            }
+          break;
+        case GL_ONE_MINUS_SRC_ALPHA:
+          switch (layer->texture_combine_rgb_op[i])
+            {
+            case GL_ONE_MINUS_SRC_COLOR:
+            case GL_ONE_MINUS_SRC_ALPHA:
+              break;
+            default:
+              return FALSE;
+            }
+          break;
+        default:
+          return FALSE;	/* impossible */
+        }
+    }
+
+   return FALSE;
+}
+
+static const char *
+gl_target_to_arbfp_string (GLenum gl_target)
+{
+#ifndef HAVE_COGL_GLES2
+  if (gl_target == GL_TEXTURE_1D)
+    return "1D";
+  else
+#endif
+    if (gl_target == GL_TEXTURE_2D)
+    return "2D";
+#ifdef ARB_texture_rectangle
+  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    return "RECT";
+#endif
+  else
+    return "2D";
+}
+
+static void
+setup_texture_source (CoglMaterialBackendARBfpPrivate *priv,
+                      int unit_index,
+                      GLenum gl_target)
+{
+  if (!priv->sampled[unit_index])
+    {
+      g_string_append_printf (priv->source,
+                              "TEMP texel%d;\n"
+                              "TEX texel%d,fragment.texcoord[%d],"
+                              "texture[%d],%s;\n",
+                              unit_index,
+                              unit_index,
+                              unit_index,
+                              unit_index,
+                              gl_target_to_arbfp_string (gl_target));
+      priv->sampled[unit_index] = TRUE;
+    }
+}
+
+typedef enum _CoglMaterialBackendARBfpArgType
+{
+  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE,
+  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT,
+  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE
+} CoglMaterialBackendARBfpArgType;
+
+typedef struct _CoglMaterialBackendARBfpArg
+{
+  const char *name;
+
+  CoglMaterialBackendARBfpArgType type;
+
+  /* for type = TEXTURE */
+  int texture_unit;
+  GLenum texture_target;
+
+  /* for type = CONSTANT */
+  int constant_id;
+
+  const char *swizzle;
+
+} CoglMaterialBackendARBfpArg;
+
+static void
+append_arg (GString *source, const CoglMaterialBackendARBfpArg *arg)
+{
+  switch (arg->type)
+    {
+    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE:
+      g_string_append_printf (source, "texel%d%s",
+                              arg->texture_unit, arg->swizzle);
+      break;
+    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT:
+      g_string_append_printf (source, "constant%d%s",
+                              arg->constant_id, arg->swizzle);
+      break;
+    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE:
+      g_string_append_printf (source, "%s%s",
+                              arg->name, arg->swizzle);
+      break;
+    }
+}
+
+/* Note: we are trying to avoid duplicating strings during codegen
+ * which is why we have the slightly awkward
+ * CoglMaterialBackendARBfpArg mechanism. */
+static void
+setup_arg (CoglMaterial *material,
+           CoglMaterialLayer *layer,
+           CoglBlendStringChannelMask mask,
+           int arg_index,
+           GLint src,
+           GLint op,
+           CoglMaterialBackendARBfpArg *arg)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
+  GLenum gl_target;
+
+  switch (src)
+    {
+    case GL_TEXTURE:
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->name = "texel%d";
+      arg->texture_unit = layer->unit_index;
+      cogl_texture_get_gl_texture (layer->texture, NULL, &gl_target);
+      setup_texture_source (priv, arg->texture_unit, gl_target);
+      break;
+    case GL_CONSTANT:
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
+      arg->name = "constant%d";
+      arg->constant_id = priv->next_constant_id++;
+      g_string_append_printf (priv->source,
+                              "PARAM constant%d = "
+                              "  {%f, %f, %f, %f};\n",
+                              arg->constant_id,
+                              layer->texture_combine_constant[0],
+                              layer->texture_combine_constant[1],
+                              layer->texture_combine_constant[2],
+                              layer->texture_combine_constant[3]);
+      break;
+    case GL_PRIMARY_COLOR:
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->name = "fragment.color.primary";
+      break;
+    case GL_PREVIOUS:
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      if (layer->unit_index == 0)
+        arg->name = "fragment.color.primary";
+      else
+        arg->name = "output";
+      break;
+    default: /* GL_TEXTURE0..N */
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->name = "texture[%d]";
+      arg->texture_unit = src - GL_TEXTURE0;
+      cogl_texture_get_gl_texture (layer->texture, NULL, &gl_target);
+      setup_texture_source (priv, arg->texture_unit, gl_target);
+    }
+
+  arg->swizzle = "";
+
+  switch (op)
+    {
+    case GL_SRC_COLOR:
+      break;
+    case GL_ONE_MINUS_SRC_COLOR:
+      g_string_append_printf (priv->source,
+                              "SUB tmp%d, one, ",
+                              arg_index);
+      append_arg (priv->source, arg);
+      g_string_append_printf (priv->source, ";\n");
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->name = tmp_name[arg_index];
+      arg->swizzle = "";
+      break;
+    case GL_SRC_ALPHA:
+      /* avoid a swizzle if we know RGB are going to be masked
+       * in the end anyway */
+      if (mask != COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
+        arg->swizzle = ".a";
+      break;
+    case GL_ONE_MINUS_SRC_ALPHA:
+      g_string_append_printf (priv->source,
+                              "SUB tmp%d, one, ",
+                              arg_index);
+      append_arg (priv->source, arg);
+      /* avoid a swizzle if we know RGB are going to be masked
+       * in the end anyway */
+      if (mask != COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
+        g_string_append_printf (priv->source, ".a;\n");
+      else
+        g_string_append_printf (priv->source, ";\n");
+      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->name = tmp_name[arg_index];
+      break;
+    default:
+      g_error ("Unknown texture combine operator %d", op);
+      break;
+    }
+}
+
+static gboolean
+backend_arbfp_args_equal (CoglMaterialBackendARBfpArg *arg0,
+                          CoglMaterialBackendARBfpArg *arg1)
+{
+  if (arg0->type != arg1->type)
+    return FALSE;
+
+  if (arg0->name != arg1->name &&
+      strcmp (arg0->name, arg1->name) != 0)
+    return FALSE;
+
+  if (arg0->type == COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE &&
+      arg0->texture_unit != arg1->texture_unit)
+    return FALSE;
+  /* Note we don't have to check the target; a texture unit can only
+   * have one target enabled at a time. */
+
+  if (arg0->type == COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT &&
+      arg0->constant_id != arg0->constant_id)
+    return FALSE;
+
+  if (arg0->swizzle != arg1->swizzle &&
+      strcmp (arg0->swizzle, arg1->swizzle) != 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static void
+append_function (CoglMaterial *material,
+                 CoglMaterialLayer *layer,
+                 CoglBlendStringChannelMask mask,
+                 GLint function,
+                 CoglMaterialBackendARBfpArg *args,
+                 int n_args)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  const char *mask_name;
+
+  switch (mask)
+    {
+    case COGL_BLEND_STRING_CHANNEL_MASK_RGB:
+      mask_name = ".rgb";
+      break;
+    case COGL_BLEND_STRING_CHANNEL_MASK_ALPHA:
+      mask_name = ".a";
+      break;
+    case COGL_BLEND_STRING_CHANNEL_MASK_RGBA:
+      mask_name = "";
+      break;
+    default:
+      g_error ("Unknown channel mask %d", mask);
+      mask_name = "";
+    }
+
+  switch (function)
+    {
+    case GL_ADD:
+      g_string_append_printf (priv->source, "ADD_SAT output%s, ",
+                              mask_name);
+      break;
+    case GL_MODULATE:
+      /* Note: no need to saturate since we can assume operands
+       * have values in the range [0,1] */
+      g_string_append_printf (priv->source, "MUL output%s, ",
+                              mask_name);
+      break;
+    case GL_REPLACE:
+      /* Note: no need to saturate since we can assume operand
+       * has a value in the range [0,1] */
+      g_string_append_printf (priv->source, "MOV output%s, ",
+                              mask_name);
+      break;
+    case GL_SUBTRACT:
+      g_string_append_printf (priv->source, "SUB_SAT output%s, ",
+                              mask_name);
+      break;
+    case GL_ADD_SIGNED:
+      g_string_append_printf (priv->source, "ADD tmp3%s, ",
+                              mask_name);
+      append_arg (priv->source, &args[0]);
+      g_string_append (priv->source, ", ");
+      append_arg (priv->source, &args[1]);
+      g_string_append (priv->source, ";\n");
+      g_string_append_printf (priv->source, "SUB_SAT output%s, tmp3, half",
+                              mask_name);
+      n_args = 0;
+      break;
+    case GL_DOT3_RGB:
+    /* These functions are the same except that GL_DOT3_RGB never
+     * updates the alpha channel.
+     *
+     * NB: GL_DOT3_RGBA is a bit special because it effectively forces
+     * an RGBA mask and we end up ignoring any separate alpha channel
+     * function.
+     */
+    case GL_DOT3_RGBA:
+      {
+        const char *tmp4 = "tmp4";
+
+        /* The maths for this was taken from Mesa;
+         * apparently:
+         *
+         * tmp3 = 2*src0 - 1
+         * tmp4 = 2*src1 - 1
+         * output = DP3 (tmp3, tmp4)
+         *
+         * is the same as:
+         *
+         * output = 4 * DP3 (src0 - 0.5, src1 - 0.5)
+         */
+
+        g_string_append (priv->source, "MAD tmp3, two, ");
+        append_arg (priv->source, &args[0]);
+        g_string_append (priv->source, ", minus_one;\n");
+
+        if (!backend_arbfp_args_equal (&args[0], &args[1]))
+          {
+            g_string_append (priv->source, "MAD tmp4, two, ");
+            append_arg (priv->source, &args[1]);
+            g_string_append (priv->source, ", minus_one;\n");
+          }
+        else
+          tmp4 = "tmp3";
+
+        g_string_append_printf (priv->source,
+                                "DP3_SAT output%s, tmp3, %s",
+                                mask_name, tmp4);
+        n_args = 0;
+      }
+      break;
+    case GL_INTERPOLATE:
+      /* Note: no need to saturate since we can assume operands
+       * have values in the range [0,1] */
+
+      /* NB: GL_INTERPOLATE = arg0*arg2 + arg1*(1-arg2)
+       * but LRP dst, a, b, c = b*a + c*(1-a) */
+      g_string_append_printf (priv->source, "LRP output%s, ",
+                              mask_name);
+      append_arg (priv->source, &args[2]);
+      g_string_append (priv->source, ", ");
+      append_arg (priv->source, &args[0]);
+      g_string_append (priv->source, ", ");
+      append_arg (priv->source, &args[1]);
+      n_args = 0;
+      break;
+    default:
+      g_error ("Unknown texture combine function %d", function);
+      g_string_append_printf (priv->source, "MUL_SAT output%s, ",
+                              mask_name);
+      n_args = 2;
+      break;
+    }
+
+  if (n_args > 0)
+    append_arg (priv->source, &args[0]);
+  if (n_args > 1)
+    {
+      g_string_append (priv->source, ", ");
+      append_arg (priv->source, &args[1]);
+    }
+  g_string_append (priv->source, ";\n");
+}
+
+static void
+append_masked_combine (CoglMaterial *material,
+                       CoglMaterialLayer *layer,
+                       CoglBlendStringChannelMask mask,
+                       GLint function,
+                       GLint *src,
+                       GLint *op)
+{
+  int i;
+  int n_args;
+  CoglMaterialBackendARBfpArg args[3];
+
+  n_args = get_n_args_for_combine_func (function);
+
+  for (i = 0; i < n_args; i++)
+    {
+      setup_arg (material,
+                 layer,
+                 mask,
+                 i,
+                 src[i],
+                 op[i],
+                 &args[i]);
+    }
+
+  append_function (material,
+                   layer,
+                   mask,
+                   function,
+                   args,
+                   n_args);
+}
+
+static gboolean
+_cogl_material_backend_arbfp_add_layer (CoglMaterialLayer *layer)
+{
+  CoglMaterial *material = layer->material;
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+
+  /* Notes...
+   *
+   * We are ignoring the issue of texture indirection limits until
+   * someone complains (Ref Section 3.11.6 in the ARB_fragment_program
+   * spec)
+   *
+   * There always five TEMPs named tmp0, tmp1 and tmp2, tmp3 and tmp4
+   * available and these constants: 'one' = {1, 1, 1, 1}, 'half'
+   * {.5, .5, .5, .5}, 'two' = {2, 2, 2, 2}, 'minus_one' = {-1, -1,
+   * -1, -1}
+   *
+   * tmp0-2 are intended for dealing with some of the texture combine
+   * operands (e.g. GL_ONE_MINUS_SRC_COLOR) tmp3/4 are for dealing
+   * with the GL_ADD_SIGNED texture combine and the GL_DOT3_RGB[A]
+   * functions.
+   *
+   * Each layer outputs to the TEMP called "output", and reads from
+   * output if it needs to refer to GL_PREVIOUS. (we detect if we are
+   * layer0 so we will read fragment.color for GL_PREVIOUS in that
+   * case)
+   *
+   * We aim to do all the channels together if the same function is
+   * used for RGB as for A.
+   *
+   * We aim to avoid string duplication / allocations during codegen.
+   *
+   * We are careful to only saturate when writing to output.
+   */
+
+  if (!priv->source)
+    return TRUE;
+
+  if (!need_texture_combine_separate (layer))
+    {
+      append_masked_combine (material,
+                             layer,
+                             COGL_BLEND_STRING_CHANNEL_MASK_RGBA,
+                             layer->texture_combine_rgb_func,
+                             layer->texture_combine_rgb_src,
+                             layer->texture_combine_rgb_op);
+    }
+  else if (layer->texture_combine_rgb_func == GL_DOT3_RGBA)
+    {
+      /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
+       * since if you use it, it overrides your ALPHA function...
+       */
+      append_masked_combine (material,
+                             layer,
+                             COGL_BLEND_STRING_CHANNEL_MASK_RGBA,
+                             layer->texture_combine_rgb_func,
+                             layer->texture_combine_rgb_src,
+                             layer->texture_combine_rgb_op);
+    }
+  else
+    {
+      append_masked_combine (material,
+                             layer,
+                             COGL_BLEND_STRING_CHANNEL_MASK_RGB,
+                             layer->texture_combine_rgb_func,
+                             layer->texture_combine_rgb_src,
+                             layer->texture_combine_rgb_op);
+      append_masked_combine (material,
+                             layer,
+                             COGL_BLEND_STRING_CHANNEL_MASK_ALPHA,
+                             layer->texture_combine_alpha_func,
+                             layer->texture_combine_alpha_src,
+                             layer->texture_combine_alpha_op);
+    }
+
+  return TRUE;
+}
+
+gboolean
+_cogl_material_backend_arbfp_passthrough (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+
+  if (!priv->source)
+    return TRUE;
+
+  g_string_append (priv->source, "MOV output, fragment.color.primary;\n");
+  return TRUE;
+}
+
+static gboolean
+_cogl_material_backend_arbfp_end (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (priv->source)
+    {
+      GLenum gl_error;
+
+      g_string_append (priv->source, "MOV result.color,output;\n");
+      g_string_append (priv->source, "END\n");
+
+      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+        g_message ("material program:\n%s", priv->source->str);
+
+      GE (glGenPrograms (1, &priv->gl_program));
+
+      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, priv->gl_program));
+
+      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+        ;
+      glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                       GL_PROGRAM_FORMAT_ASCII_ARB,
+                       priv->source->len,
+                       priv->source->str);
+      if (glGetError () != GL_NO_ERROR)
+        {
+          g_warning ("\n%s\n%s",
+                     priv->source->str,
+                     glGetString (GL_PROGRAM_ERROR_STRING_ARB));
+        }
+
+      priv->source = NULL;
+
+      g_free (priv->sampled);
+      priv->sampled = NULL;
+    }
+  else
+    GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, priv->gl_program));
+
+  use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
+
+  return TRUE;
+}
+
+static void
+_cogl_material_backend_arbfp_material_change_notify (CoglMaterial *material,
+                                                     unsigned long changes,
+                                                     GLubyte *new_color)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  static const unsigned long fragment_op_changes =
+    COGL_MATERIAL_CHANGE_LAYERS;
+    /* TODO: COGL_MATERIAL_CHANGE_FOG */
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  if (priv &&
+      priv->gl_program &&
+      changes & fragment_op_changes)
+    {
+      GE (glDeletePrograms (1, &priv->gl_program));
+      priv->gl_program = 0;
+    }
+}
+
+static void
+_cogl_material_backend_arbfp_layer_change_notify (CoglMaterialLayer *layer,
+                                                  unsigned long changes)
+{
+  /* TODO: we could be saving snippets of texture combine code along
+   * with each layer and then when a layer changes we would just free
+   * the snippet. */
+  return;
+}
+
+static void
+_cogl_material_backend_arbfp_free_priv (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (priv)
+    {
+      glDeletePrograms (1, &priv->gl_program);
+      if (priv->sampled)
+        g_free (priv->sampled);
+      g_slice_free (CoglMaterialBackendARBfpPrivate, material->backend_priv);
+    }
+}
+
+static const CoglMaterialBackend _cogl_material_arbfp_backend =
+{
+  _cogl_material_backend_arbfp_get_max_texture_units,
+  _cogl_material_backend_arbfp_start,
+  _cogl_material_backend_arbfp_add_layer,
+  _cogl_material_backend_arbfp_passthrough,
+  _cogl_material_backend_arbfp_end,
+  _cogl_material_backend_arbfp_material_change_notify,
+  _cogl_material_backend_arbfp_layer_change_notify,
+  _cogl_material_backend_arbfp_free_priv
+};
+
+#endif /* COGL_MATERIAL_BACKEND_ARBFP */
+
+static int
+_cogl_material_backend_fixed_get_max_texture_units (void)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  /* This function is called quite often so we cache the value to
+     avoid too many GL calls */
+  if (ctx->max_texture_units == -1)
+    {
+      ctx->max_texture_units = 1;
+      GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
+                         &ctx->max_texture_units));
+    }
+
+  return ctx->max_texture_units;
+}
+
+static gboolean
+_cogl_material_backend_fixed_start (CoglMaterial *material)
+{
+  use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_FIXED);
+  return TRUE;
+}
+
+static gboolean
+_cogl_material_backend_fixed_add_layer (CoglMaterialLayer *layer)
+{
+  CoglTextureUnit *unit = _cogl_get_texture_unit (layer->unit_index);
+  int n_rgb_func_args;
+  int n_alpha_func_args;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  /* XXX: Beware that since we are changing the active texture unit we
+   * must make sure we don't call into other Cogl components that may
+   * temporarily bind texture objects to query/modify parameters until
+   * we restore texture unit 1 as the active unit. For more details
+   * about this see the end of _cogl_material_flush_gl_state
+   */
+  set_active_texture_unit (unit->index);
+
 #ifndef DISABLE_MATERIAL_CACHE
-  if (!(gl_layer_info &&
-        gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&
-       (layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE)))
+  if (unit->layer_differences & COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE ||
+      layer->differences & COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE)
 #endif
     {
       GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
@@ -1320,669 +2599,87 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
                       layer->texture_combine_constant));
     }
 
-  if ((gl_layer_info &&
-       gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX) ||
-      (layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
-    _cogl_matrix_stack_set (unit->matrix_stack, &layer->matrix);
-  else
-    _cogl_matrix_stack_load_identity (unit->matrix_stack);
-
-  /* TODO: Eventually we should just have something like
-   * _cogl_flush_texture_units() that we can call in
-   * _cogl_material_flush_layers_gl_state */
-  _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
-}
-
-void
-_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handle)
-{
-  CoglMaterialLayer *layer;
-
-  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
-
-  if (layer->texture &&
-      (is_mipmap_filter (layer->min_filter) ||
-       is_mipmap_filter (layer->mag_filter)))
-    _cogl_texture_ensure_mipmaps (layer->texture);
-}
-
-static void
-_cogl_material_set_wrap_modes_for_layer (CoglMaterialLayer *layer,
-                                         int layer_num,
-                                         CoglHandle tex_handle,
-                                         const CoglMaterialWrapModeOverrides *
-                                         wrap_mode_overrides)
-{
-  GLenum wrap_mode_s, wrap_mode_t, wrap_mode_r;
-
-  /* Update the wrap mode on the texture object. The texture backend
-     should cache the value so that it will be a no-op if the object
-     already has the same wrap mode set. The backend is best placed to
-     do this because it knows how many of the coordinates will
-     actually be used (ie, a 1D texture only cares about the 's'
-     coordinate but a 3D texture would use all three). GL uses the
-     wrap mode as part of the texture object state but we are
-     pretending it's part of the per-layer environment state. This
-     will break if the application tries to use different modes in
-     different layers using the same texture. */
-
-  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].s)
-    wrap_mode_s = (wrap_mode_overrides->values[layer_num].s ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
-                   GL_REPEAT :
-                   wrap_mode_overrides->values[layer_num].s ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
-                   GL_CLAMP_TO_EDGE :
-                   GL_CLAMP_TO_BORDER);
-  else if (layer->wrap_mode_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_s = GL_CLAMP_TO_EDGE;
-  else
-    wrap_mode_s = layer->wrap_mode_s;
-
-  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].t)
-    wrap_mode_t = (wrap_mode_overrides->values[layer_num].t ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
-                   GL_REPEAT :
-                   wrap_mode_overrides->values[layer_num].t ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
-                   GL_CLAMP_TO_EDGE :
-                   GL_CLAMP_TO_BORDER);
-  else if (layer->wrap_mode_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_t = GL_CLAMP_TO_EDGE;
-  else
-    wrap_mode_t = layer->wrap_mode_t;
-
-  if (wrap_mode_overrides && wrap_mode_overrides->values[layer_num].r)
-    wrap_mode_r = (wrap_mode_overrides->values[layer_num].r ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
-                   GL_REPEAT :
-                   wrap_mode_overrides->values[layer_num].r ==
-                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
-                   GL_CLAMP_TO_EDGE :
-                   GL_CLAMP_TO_BORDER);
-  else if (layer->wrap_mode_r == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-    wrap_mode_r = GL_CLAMP_TO_EDGE;
-  else
-    wrap_mode_r = layer->wrap_mode_r;
-
-  _cogl_texture_set_wrap_mode_parameters (tex_handle,
-                                          wrap_mode_s,
-                                          wrap_mode_t,
-                                          wrap_mode_r);
+  return TRUE;
 }
 
 static gboolean
-cogl_material_program_is_used (void)
+_cogl_material_backend_fixed_end (CoglMaterial *material)
 {
-  static gint use_arbfp = -1;
-
-  if (G_UNLIKELY (use_arbfp == -1))
-    {
-      const gchar *env_var = g_getenv ("COGL_PIPELINE");
-      use_arbfp = FALSE;
-
-      if (g_strcmp0 (env_var, "arbfp") == 0)
-        {
-          if (_cogl_features_available_private (COGL_FEATURE_PRIVATE_ARB_FP))
-            {
-              g_message ("Using an ARBfp pipeline");
-              use_arbfp = TRUE;
-            }
-          else
-            {
-              g_warning ("ARB_fragment_program is not available for your "
-                         "platform");
-            }
-        }
-    }
-
-  return use_arbfp;
+  /* There is a convention to always leave texture unit 1 active and
+   * since we modify the active unit in
+   * _cogl_material_backend_fixed_add_layer we need to restore it
+   * here...
+   *
+   * (See the end of _cogl_material_flush_gl_state for more
+   *  details) */
+  set_active_texture_unit (1);
+  return TRUE;
 }
 
-static gboolean
-cogl_material_program_show_source (void)
+static const CoglMaterialBackend _cogl_material_fixed_backend =
 {
-  static gint show_source = -1;
+  _cogl_material_backend_fixed_get_max_texture_units,
+  _cogl_material_backend_fixed_start,
+  _cogl_material_backend_fixed_add_layer,
+  NULL,
+  _cogl_material_backend_fixed_end,
+  NULL, /* material_change_notify */
+  NULL, /* layer_change_notify */
+  NULL /* free_priv */
+};
 
-  if (G_UNLIKELY (show_source == -1))
-    {
-      const gchar *env_var = g_getenv ("COGL_SHOW_FP_SOURCE");
-
-      if (env_var != NULL && env_var[0] != '\0')
-        show_source = TRUE;
-      else
-        show_source = FALSE;
-    }
-
-  return show_source;
-}
-
-static const char *
-combine_func_to_arbfp_instruction (GLint op)
-{
-  switch (op)
-    {
-    case GL_ADD:
-      return "ADD_SAT";
-    case GL_MODULATE:
-      return "MUL";
-    case GL_REPLACE:
-      return "MOV";
-    case GL_SUBTRACT:
-      return "SUB_SAT";
-    case GL_ADD_SIGNED:
-    case GL_DOT3_RGB:
-    case GL_DOT3_RGBA:
-    case GL_INTERPOLATE:
-    default:
-      /* get away with it now */
-      g_message ("*** oops got %d", op);
-      return "MUL";
-    }
-}
-
-static const char *
-gl_target_to_arbfp_string (GLenum gl_target)
-{
-  if (gl_target == GL_TEXTURE_1D)
-    return "1D";
-  else if (gl_target == GL_TEXTURE_2D)
-    return "2D";
-  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    return "RECT";
-  else
-    return "2D";
-}
-
-static gboolean
-cogl_material_program_is_unit_sampled (CoglMaterialProgram *program,
-                                       unsigned int         sampler_nb)
-{
-  return program->sampled[sampler_nb];
-}
-
-static char *
-cogl_material_layer_get_arbfp_arg (CoglMaterialLayer          *layer,
-                                   CoglTextureUnit            *unit,
-                                   CoglBlendStringChannelMask  mask,
-                                   int                         arg,
-                                   gboolean                   *need_sampler,
-                                   unsigned int               *sampler_nb)
-{
-  char buffer[32];
-  unsigned int texture_unit;
-  GLint *src;
-
-  if (mask == COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
-    src = layer->texture_combine_alpha_src;
-  else
-    src = layer->texture_combine_rgb_src;
-
-  if (src[arg] == GL_PRIMARY_COLOR)
-    {
-      g_sprintf (buffer, "fragment.color.primary");
-      *need_sampler = FALSE;
-    }
-  else if (src[arg] == GL_PREVIOUS)
-    {
-      int unit_nb = unit->index - 1;
-
-      if (unit_nb >= 0)
-        {
-          *need_sampler = TRUE;
-          *sampler_nb = unit->index - 1;
-          g_sprintf (buffer, "texture[%d]", *sampler_nb);
-        }
-      else
-        {
-          g_sprintf (buffer, "fragment.color.primary");
-          *need_sampler = FALSE;
-        }
-    }
-  else if (src[arg] == GL_TEXTURE)
-    {
-      *need_sampler = TRUE;
-      *sampler_nb = unit->index;
-      g_sprintf (buffer, "texture[%d]", *sampler_nb);
-    }
-  else
-    {
-      texture_unit = src[arg] - GL_TEXTURE0;
-      if (texture_unit < _cogl_get_max_texture_image_units ())
-        {
-          *need_sampler = TRUE;
-          *sampler_nb = texture_unit;
-          g_sprintf (buffer, "texture[%d]", *sampler_nb);
-        }
-      else
-        {
-          /* Note that this should not happend */
-          g_warning ("Cannot figure out ARBfp1.0 argument defaulting to "
-                     "primary color");
-          g_sprintf (buffer, "fragment.color.primary");
-          *need_sampler = FALSE;
-        }
-    }
-
-  return g_strdup (buffer);
-}
-
-static void
-cogl_material_program_gen (CoglMaterialProgram        *program,
-                           CoglMaterialLayer          *layer,
-                           CoglTextureUnit            *unit,
-                           CoglBlendStringChannelMask  mask,
-                           GLenum                      gl_target)
-{
-  gboolean need_sampler;
-  unsigned int sampler_nb;
-  GLint func;
-  unsigned int nb_args, i;
-  char *arg[3];
-  const gchar *swizzle[2][3] =
-    {
-      /* RGB  ALPHA RGBA*/
-      { ".xyz", ".a", "" },
-      {   ""  , ".a", "" }
-    };
-
-  if (mask == COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
-    {
-      func = layer->texture_combine_alpha_func;
-    }
-  else
-    func = layer->texture_combine_rgb_func;
-
-  nb_args = get_n_args_for_combine_func (func);
-
-  for (i = 0; i < nb_args; i++)
-    {
-      arg[i] = cogl_material_layer_get_arbfp_arg (layer,
-                                                  unit,
-                                                  mask,
-                                                  i,
-                                                  &need_sampler,
-                                                  &sampler_nb);
-      if (need_sampler)
-        {
-          if (!cogl_material_program_is_unit_sampled (program, sampler_nb))
-            {
-              g_string_append_printf (program->source,
-                                      "TEMP texel%d;\n",
-                                      sampler_nb);
-              g_string_append_printf (program->source,
-                                      "TEX texel%d,fragment.texcoord[%d],"
-                                                  "%s,%s;\n",
-                                      sampler_nb,
-                                      unit->index,
-                                      arg[i],
-                                      gl_target_to_arbfp_string (gl_target));
-              program->sampled[sampler_nb] = TRUE;
-            }
-          arg[i] = g_strdup_printf ("texel%d", sampler_nb);
-        }
-    }
-
-  if (nb_args == 1)
-    {
-      g_string_append_printf (program->source,
-                              "%s output%s,%s%s;\n",
-                              combine_func_to_arbfp_instruction (func),
-                              swizzle[0][mask],
-                              arg[0], swizzle[1][mask]);
-    }
-  else if (nb_args == 2)
-    {
-      g_string_append_printf (program->source,
-                              "%s output%s,%s%s,%s%s;\n",
-                              combine_func_to_arbfp_instruction (func),
-                              swizzle[0][mask],
-                              arg[0], swizzle[1][mask],
-                              arg[1], swizzle[1][mask]);
-    }
-
-  for (i = 0; i < nb_args; i++)
-        g_free (arg[i]);
-
-}
-
-static void
-cogl_material_program_update (CoglMaterialProgram *program,
-                              CoglMaterialLayer   *layer,
-                              CoglTextureUnit     *unit,
-                              CoglLayerInfo       *gl_layer_info,
-                              GLenum               gl_target)
-{
-  CoglBlendStringChannelMask mask;
-
-  if (!(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY))
-    return;
-
-#ifndef DISABLE_MATERIAL_CACHE
-  if (!(gl_layer_info &&
-        gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&
-       (layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE)))
-#endif
-    {
-      if (program->source == NULL)
-        {
-          program->source = g_string_new ("!!ARBfp1.0\n");
-          g_string_append (program->source, "TEMP output;\n");
-          program->sampled = g_new0 (gboolean,
-                                     _cogl_get_max_texture_image_units ());
-        }
-
-      if (layer->texture_combine_rgb_func == layer->texture_combine_alpha_func)
-        {
-          mask = COGL_BLEND_STRING_CHANNEL_MASK_RGBA;
-
-          cogl_material_program_gen (program,
-                                           layer,
-                                           unit,
-                                           mask,
-                                           gl_target);
-        }
-      else
-        {
-          mask = COGL_BLEND_STRING_CHANNEL_MASK_RGB;
-          cogl_material_program_gen (program,
-                                           layer,
-                                           unit,
-                                           mask,
-                                           gl_target);
-          mask = COGL_BLEND_STRING_CHANNEL_MASK_ALPHA;
-          cogl_material_program_gen (program,
-                                           layer,
-                                           unit,
-                                           mask,
-                                           gl_target);
-        }
-    }
-}
-
-static void
-cogl_material_program_flush (CoglMaterialProgram *program)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (program->source)
-    {
-      g_string_append (program->source, "MOV result.color,output;\n");
-      g_string_append (program->source, "END\n");
-
-      if (cogl_material_program_show_source ())
-        g_message ("material program:\n%s", program->source->str);
-
-      GE (glGenPrograms (1, &program->gl_program));
-
-      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, program->gl_program));
-      GE (glProgramString (GL_FRAGMENT_PROGRAM_ARB,
-                           GL_PROGRAM_FORMAT_ASCII_ARB,
-                           program->source->len,
-                           program->source->str));
-      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
-
-      g_string_free (program->source, TRUE);
-      program->source = NULL;
-      g_free (program->sampled);
-      program->sampled = NULL;
-    }
-  else if (program->gl_program != -1)
-    {
-      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
-    }
-}
-
-/*
- * _cogl_material_flush_layers_gl_state:
- * @fallback_mask: is a bitmask of the material layers that need to be
- *    replaced with the default, fallback textures. The fallback textures are
- *    fully transparent textures so they hopefully wont contribute to the
- *    texture combining.
- *
- *    The intention of fallbacks is to try and preserve
- *    the number of layers the user is expecting so that texture coordinates
- *    they gave will mostly still correspond to the textures they intended, and
- *    have a fighting chance of looking close to their originally intended
- *    result.
- *
- * @disable_mask: is a bitmask of the material layers that will simply have
- *    texturing disabled. It's only really intended for disabling all layers
- *    > X; i.e. we'd expect to see a contiguous run of 0 starting from the LSB
- *    and at some point the remaining bits flip to 1. It might work to disable
- *    arbitrary layers; though I'm not sure a.t.m how OpenGL would take to
- *    that.
- *
- *    The intention of the disable_mask is for emitting geometry when the user
- *    hasn't supplied enough texture coordinates for all the layers and it's
- *    not possible to auto generate default texture coordinates for those
- *    layers.
- *
- * @layer0_override_texture: forcibly tells us to bind this GL texture name for
- *    layer 0 instead of plucking the gl_texture from the CoglTexture of layer
- *    0.
- *
- *    The intention of this is for any geometry that supports sliced textures.
- *    The code will can iterate each of the slices and re-flush the material
- *    forcing the GL texture of each slice in turn.
- *
- * @wrap_mode_overrides: overrides the wrap modes set on each
- *    layer. This is used to implement the automatic wrap mode.
- *
- * XXX: It might also help if we could specify a texture matrix for code
- *    dealing with slicing that would be multiplied with the users own matrix.
- *
- *    Normaly texture coords in the range [0, 1] refer to the extents of the
- *    texture, but when your GL texture represents a slice of the real texture
- *    (from the users POV) then a texture matrix would be a neat way of
- *    transforming the mapping for each slice.
- *
- *    Currently for textured rectangles we manually calculate the texture
- *    coords for each slice based on the users given coords, but this solution
- *    isn't ideal, and can't be used with CoglVertexBuffers.
+/* Here we resolve what low level GL texture we are *actually* going
+ * to use. This can either be a layer0 override texture, it can be a
+ * fallback texture or we can query the CoglTexture for the GL
+ * texture.
  */
 static void
-_cogl_material_flush_layers_gl_state (CoglMaterial *material,
-                                      guint32       fallback_mask,
-                                      guint32       disable_mask,
-                                      GLuint        layer0_override_texture,
-                                      const CoglMaterialWrapModeOverrides *
-                                                    wrap_mode_overrides)
+_cogl_material_layer_get_texture_info (CoglMaterialLayer *layer,
+                                       GLuint layer0_override_texture,
+                                       gboolean fallback,
+                                       CoglHandle *texture,
+                                       GLuint *gl_texture,
+                                       GLuint *gl_target)
 {
-  GList *tmp;
-  int    i;
+  gboolean layer0_overridden = layer0_override_texture ? TRUE : FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (cogl_material_program_is_used ())
-    glDisable (GL_FRAGMENT_PROGRAM_ARB);
-
-  for (tmp = material->layers, i = 0;
-       tmp != NULL && i < _cogl_get_max_texture_image_units ();
-       tmp = tmp->next, i++)
-   {
-      CoglHandle         layer_handle = (CoglHandle)tmp->data;
-      CoglMaterialLayer *layer =
-        _cogl_material_layer_pointer_from_handle (layer_handle);
-      CoglLayerInfo     *gl_layer_info = NULL;
-      CoglLayerInfo      new_gl_layer_info;
-      CoglHandle         tex_handle;
-      GLuint             gl_texture;
-      GLenum             gl_target;
-      CoglTextureUnit   *unit;
-
-      /* Switch units first so we don't disturb the previous unit if
-       * something needs to bind the texture temporarily */
-      GE (glActiveTexture (GL_TEXTURE0 + i));
-
-      unit = _cogl_get_texture_unit (i);
-
-      new_gl_layer_info.layer0_overridden =
-        layer0_override_texture ? TRUE : FALSE;
-      new_gl_layer_info.fallback =
-        (fallback_mask & (1<<i)) ? TRUE : FALSE;
-      new_gl_layer_info.disabled =
-        (disable_mask & (1<<i)) ? TRUE : FALSE;
-
-      tex_handle = layer->texture;
-      if (tex_handle != COGL_INVALID_HANDLE)
-        {
-
-          _cogl_texture_set_filters (tex_handle,
-                                     layer->min_filter,
-                                     layer->mag_filter);
-
-          _cogl_material_set_wrap_modes_for_layer (layer, i, tex_handle,
-                                                   wrap_mode_overrides);
-
-          cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
-        }
-      else
-        {
-          new_gl_layer_info.fallback = TRUE;
-          gl_target = GL_TEXTURE_2D;
-        }
-
-      if (new_gl_layer_info.layer0_overridden)
-        gl_texture = layer0_override_texture;
-      else if (new_gl_layer_info.fallback)
-        {
-          if (gl_target == GL_TEXTURE_2D)
-            tex_handle = ctx->default_gl_texture_2d_tex;
-#ifdef HAVE_COGL_GL
-          else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-            tex_handle = ctx->default_gl_texture_rect_tex;
-#endif
-          else
-            {
-              g_warning ("We don't have a default texture we can use to fill "
-                         "in for an invalid material layer, since it was "
-                         "using an unsupported texture target ");
-              /* might get away with this... */
-              tex_handle = ctx->default_gl_texture_2d_tex;
-            }
-          cogl_texture_get_gl_texture (tex_handle, &gl_texture, NULL);
-        }
-
-      /* FIXME: We could be more clever here and only bind the texture
-         if it is different from gl_layer_info->gl_texture to avoid
-         redundant GL calls. However a few other places in Cogl and
-         Clutter call glBindTexture such as ClutterGLXTexturePixmap so
-         we'd need to ensure they affect the cache. Also deleting a
-         texture should clear it from the cache in case a new texture
-         is generated with the same number */
-      GE (glBindTexture (gl_target, gl_texture));
-
-      /* XXX: Once we add caching for glBindTexture state, these
-       * checks should be moved back up to the top of the loop!
-       */
-      if (i < ctx->current_layers->len)
-        {
-          gl_layer_info =
-            &g_array_index (ctx->current_layers, CoglLayerInfo, i);
-
-#ifndef DISABLE_MATERIAL_CACHE
-          if (gl_layer_info->handle == layer_handle &&
-              !(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY) &&
-              !(gl_layer_info->layer0_overridden ||
-                new_gl_layer_info.layer0_overridden) &&
-              (gl_layer_info->fallback
-               == new_gl_layer_info.fallback) &&
-              (gl_layer_info->disabled
-               == new_gl_layer_info.disabled))
-            {
-              continue;
-            }
-#endif
-        }
-
-      /* Disable the previous target if it was different */
-#ifndef DISABLE_MATERIAL_CACHE
-      if (gl_layer_info &&
-          gl_layer_info->gl_target != gl_target &&
-          !gl_layer_info->disabled)
-        {
-          GE (glDisable (gl_layer_info->gl_target));
-        }
-#else
-      if (gl_layer_info)
-        GE (glDisable (gl_layer_info->gl_target));
-#endif
-
-      /* Enable/Disable the new target */
-      if (!new_gl_layer_info.disabled)
-        {
-#ifndef DISABLE_MATERIAL_CACHE
-          if (!(gl_layer_info &&
-                gl_layer_info->gl_target == gl_target &&
-                !gl_layer_info->disabled))
-#endif
-            {
-  /* XXX: Debug: Comment this out to disable all texturing: */
-#if 1
-              GE (glEnable (gl_target));
-#endif
-            }
-        }
-      else
-        {
-#ifndef DISABLE_MATERIAL_CACHE
-          if (!(gl_layer_info &&
-                gl_layer_info->gl_target == gl_target &&
-                gl_layer_info->disabled))
-#endif
-            {
-              GE (glDisable (gl_target));
-            }
-        }
-
-      if (cogl_material_program_is_used ())
-        {
-          cogl_material_program_update (&material->program,
-                                        layer,
-                                        unit,
-                                        gl_layer_info,
-                                        gl_target);
-        }
-      else
-        {
-          _cogl_material_layer_flush_gl_sampler_state (layer,
-                                                       unit,
-                                                       gl_layer_info);
-        }
-
-      new_gl_layer_info.handle = layer_handle;
-      new_gl_layer_info.flags = layer->flags;
-      new_gl_layer_info.gl_target = gl_target;
-      new_gl_layer_info.gl_texture = gl_texture;
-
-      if (i < ctx->current_layers->len)
-        *gl_layer_info = new_gl_layer_info;
-      else
-        g_array_append_val (ctx->current_layers, new_gl_layer_info);
-
-      layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DIRTY;
-    }
-
-  /* Disable additional texture units that may have previously been in use.. */
-  for (; i < ctx->current_layers->len; i++)
+  *texture = layer->texture;
+  if (G_LIKELY (*texture != COGL_INVALID_HANDLE))
+    cogl_texture_get_gl_texture (*texture, gl_texture, gl_target);
+  else
     {
-      CoglLayerInfo *gl_layer_info =
-        &g_array_index (ctx->current_layers, CoglLayerInfo, i);
-
-#ifndef DISABLE_MATERIAL_CACHE
-      if (!gl_layer_info->disabled)
-#endif
-        {
-          GE (glActiveTexture (GL_TEXTURE0 + i));
-          GE (glDisable (gl_layer_info->gl_target));
-          gl_layer_info->disabled = TRUE;
-        }
+      fallback = TRUE;
+      *gl_target = GL_TEXTURE_2D;
     }
 
-  if (cogl_material_program_is_used ())
-    cogl_material_program_flush (&material->program);
-
+  if (layer0_overridden && layer->unit_index == 0)
+    {
+      /* We assume that layer0 overrides are only used for sliced
+       * textures where the GL texture is actually a sub component
+       * of the layer->texture... */
+      *texture = layer->texture;
+      *gl_texture = layer0_override_texture;
+    }
+  else if (fallback)
+    {
+      if (*gl_target == GL_TEXTURE_2D)
+        *texture = ctx->default_gl_texture_2d_tex;
+#ifdef HAVE_COGL_GL
+      else if (*gl_target == GL_TEXTURE_RECTANGLE_ARB)
+        *texture = ctx->default_gl_texture_rect_tex;
+#endif
+      else
+        {
+          g_warning ("We don't have a default texture we can use to fill "
+                     "in for an invalid material layer, since it was "
+                     "using an unsupported texture target ");
+          /* might get away with this... */
+          *texture = ctx->default_gl_texture_2d_tex;
+        }
+      cogl_texture_get_gl_texture (*texture, gl_texture, NULL);
+    }
 }
 
 #ifndef HAVE_COGL_GLES
@@ -1999,24 +2696,18 @@ blend_factor_uses_constant (GLenum blend_factor)
 #endif
 
 static void
-_cogl_material_flush_base_gl_state (CoglMaterial *material,
-                                    gboolean skip_gl_color)
+_cogl_material_flush_color_blend_alpha_state (CoglMaterial *material,
+                                              gboolean skip_gl_color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* XXX:
-   * Currently we only don't update state when the flags indicate that the
-   * current material uses the defaults, and the new material also uses the
-   * defaults, but we could do deeper comparisons of state. */
-
   if (!skip_gl_color)
     {
-      if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
-            && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) ||
+      if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) ||
+          !(material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) ||
           /* Assume if we were previously told to skip the color, then
            * the current color needs updating... */
-          ctx->current_material_flush_options.flags &
-          COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
+          ctx->current_material_skip_gl_color)
         {
           GE (glColor4ub (material->unlit[0],
                           material->unlit[1],
@@ -2025,26 +2716,27 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
         }
     }
 
-  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL
-        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
+  /* XXX:
+   * Currently we only don't update state when the flags indicate that the
+   * current material uses the defaults, and the new material also uses the
+   * defaults, but we could do deeper comparisons of state.
+   */
+
+  if (!(ctx->current_material_flags &
+        COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL) ||
+      !(material->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
     {
       /* FIXME - we only need to set these if lighting is enabled... */
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material->diffuse));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, material->specular));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, material->emission));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, &material->shininess));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                        &material->shininess));
     }
 
-  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC
-        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
-    {
-      /* NB: Currently the Cogl defines are compatible with the GL ones: */
-      GE (glAlphaFunc (material->alpha_func, material->alpha_func_reference));
-    }
-
-  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND
-        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
+  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND) ||
+      !(material->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
     {
 #if defined (HAVE_COGL_GLES2)
       gboolean have_blend_equation_seperate = TRUE;
@@ -2088,6 +2780,309 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
         GE (glBlendFunc (material->blend_src_factor_rgb,
                          material->blend_dst_factor_rgb));
     }
+
+  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC) ||
+      !(material->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
+    {
+      /* NB: Currently the Cogl defines are compatible with the GL ones: */
+      GE (glAlphaFunc (material->alpha_func, material->alpha_func_reference));
+    }
+}
+
+static int
+get_max_activateable_texture_units (void)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  if (G_UNLIKELY (ctx->max_activateable_texture_units == -1))
+    {
+#ifdef HAVE_COGL_GL
+      GLint max_tex_coords;
+      GLint max_combined_tex_units;
+      GE (glGetIntegerv (GL_MAX_TEXTURE_COORDS, &max_tex_coords));
+      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                         &max_combined_tex_units));
+      ctx->max_activateable_texture_units =
+        MAX (max_tex_coords - 1, max_combined_tex_units);
+#else
+      GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
+                         &ctx->max_activateable_texture_units));
+#endif
+    }
+
+  return ctx->max_activateable_texture_units;
+}
+
+/*
+ * _cogl_material_flush_common_gl_state:
+ * @fallback_mask: is a bitmask of the material layers that need to be
+ *    replaced with the default, fallback textures. The fallback textures are
+ *    fully transparent textures so they hopefully wont contribute to the
+ *    texture combining.
+ *
+ *    The intention of fallbacks is to try and preserve
+ *    the number of layers the user is expecting so that texture coordinates
+ *    they gave will mostly still correspond to the textures they intended, and
+ *    have a fighting chance of looking close to their originally intended
+ *    result.
+ *
+ * @disable_mask: is a bitmask of the material layers that will simply have
+ *    texturing disabled. It's only really intended for disabling all layers
+ *    > X; i.e. we'd expect to see a contiguous run of 0 starting from the LSB
+ *    and at some point the remaining bits flip to 1. It might work to disable
+ *    arbitrary layers; though I'm not sure a.t.m how OpenGL would take to
+ *    that.
+ *
+ *    The intention of the disable_mask is for emitting geometry when the user
+ *    hasn't supplied enough texture coordinates for all the layers and it's
+ *    not possible to auto generate default texture coordinates for those
+ *    layers.
+ *
+ * @layer0_override_texture: forcibly tells us to bind this GL texture name for
+ *    layer 0 instead of plucking the gl_texture from the CoglTexture of layer
+ *    0.
+ *
+ *    The intention of this is for any primitives that supports sliced textures.
+ *    The code will can iterate each of the slices and re-flush the material
+ *    forcing the GL texture of each slice in turn.
+ *
+ * @wrap_mode_overrides: overrides the wrap modes set on each
+ *    layer. This is used to implement the automatic wrap mode.
+ *
+ * XXX: It might also help if we could specify a texture matrix for code
+ *    dealing with slicing that would be multiplied with the users own matrix.
+ *
+ *    Normaly texture coords in the range [0, 1] refer to the extents of the
+ *    texture, but when your GL texture represents a slice of the real texture
+ *    (from the users POV) then a texture matrix would be a neat way of
+ *    transforming the mapping for each slice.
+ *
+ *    Currently for textured rectangles we manually calculate the texture
+ *    coords for each slice based on the users given coords, but this solution
+ *    isn't ideal, and can't be used with CoglVertexBuffers.
+ */
+static void
+_cogl_material_flush_common_gl_state (CoglMaterial *material,
+                                      gboolean      skip_gl_color,
+                                      guint32       fallback_mask,
+                                      guint32       disable_mask,
+                                      GLuint        layer0_override_texture,
+                                      const CoglMaterialWrapModeOverrides *
+                                                    wrap_mode_overrides)
+{
+  GList *l;
+  int    i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_material_flush_color_blend_alpha_state (material, skip_gl_color);
+
+  for (l = material->layers, i = 0; l != NULL; l = l->next, i++)
+    {
+      CoglMaterialLayer *layer = l->data;
+      CoglTextureUnit   *unit;
+      gboolean           fallback;
+      CoglHandle         texture;
+      GLuint             gl_texture;
+      GLenum             gl_target;
+
+      unit = _cogl_get_texture_unit (layer->unit_index);
+
+      /* There may not be enough texture units so we can bail out if
+       * that's the case...
+       */
+      if (G_UNLIKELY (unit->index >= get_max_activateable_texture_units ()))
+        {
+          static gboolean shown_warning = FALSE;
+
+          if (!shown_warning)
+            {
+              g_warning ("Your hardware does not have enough texture units"
+                         "to handle this many texture layers");
+              shown_warning = TRUE;
+            }
+          break;
+        }
+
+      /* Bail out as soon as we hit a bit set in the disable mask */
+      if (G_UNLIKELY (disable_mask & (1<<unit->index)))
+        break;
+
+      fallback = (fallback_mask & (1<<i)) ? TRUE : FALSE;
+
+      /* Switch units first so we don't disturb the previous unit if
+       * something needs to bind the texture temporarily */
+      set_active_texture_unit (unit->index);
+
+      _cogl_material_layer_get_texture_info (layer,
+                                             layer0_override_texture,
+                                             fallback,
+                                             &texture,
+                                             &gl_texture,
+                                             &gl_target);
+
+      /* NB: Due to fallbacks texture may not == layer->texture */
+      unit->texture = texture;
+      unit->layer0_overridden = layer0_override_texture ? TRUE : FALSE;
+      unit->fallback = fallback;
+
+      /* FIXME: We could be more clever here and only bind the texture
+         if it is different from gl_layer_info->gl_texture to avoid
+         redundant GL calls. However a few other places in Cogl and
+         Clutter call glBindTexture such as ClutterGLXTexturePixmap so
+         we'd need to ensure they affect the cache. Also deleting a
+         texture should clear it from the cache in case a new texture
+         is generated with the same number */
+      GE (glBindTexture (gl_target, gl_texture));
+
+      /* Disable the previous target if it was different and it's
+       * still enabled */
+      if (unit->enabled
+#ifndef DISABLE_MATERIAL_CACHE
+          && unit->enabled_gl_target != gl_target
+#endif
+         )
+        GE (glDisable (unit->enabled_gl_target));
+
+      if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING)
+#ifndef DISABLE_MATERIAL_CACHE
+          && !(unit->enabled && unit->enabled_gl_target == gl_target)
+#endif
+         )
+        {
+          GE (glEnable (gl_target));
+          unit->enabled = TRUE;
+          unit->enabled_gl_target = gl_target;
+        }
+
+      if (unit->layer_differences & COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX ||
+          layer->differences & COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX)
+        {
+          if (layer->differences & COGL_MATERIAL_LAYER_DIFFERENCE_USER_MATRIX)
+            _cogl_matrix_stack_set (unit->matrix_stack, &layer->matrix);
+          else
+            _cogl_matrix_stack_load_identity (unit->matrix_stack);
+
+          _cogl_matrix_stack_flush_to_gl (unit->matrix_stack,
+                                          COGL_MATRIX_TEXTURE);
+        }
+    }
+
+  /* Disable additional texture units that may have previously been in use.. */
+  for (; i < ctx->texture_units->len; i++)
+    disable_texture_unit (i);
+
+  /* There is a convention to always leave texture unit 1 active..
+   * (See the end of _cogl_material_flush_gl_state for more
+   *  details) */
+  set_active_texture_unit (1);
+}
+
+/* Re-assert the layer's wrap modes on the given CoglTexture.
+ *
+ * Note: we don't simply forward the wrap modes to layer->texture
+ * since the actual texture being used may have been overridden.
+ */
+static void
+_cogl_material_layer_forward_wrap_modes (
+                       CoglMaterialLayer *layer,
+                       const CoglMaterialWrapModeOverrides *wrap_mode_overrides,
+                       CoglHandle texture)
+{
+  GLenum wrap_mode_s, wrap_mode_t, wrap_mode_r;
+  int unit_index = layer->unit_index;
+
+  /* Update the wrap mode on the texture object. The texture backend
+     should cache the value so that it will be a no-op if the object
+     already has the same wrap mode set. The backend is best placed to
+     do this because it knows how many of the coordinates will
+     actually be used (ie, a 1D texture only cares about the 's'
+     coordinate but a 3D texture would use all three). GL uses the
+     wrap mode as part of the texture object state but we are
+     pretending it's part of the per-layer environment state. This
+     will break if the application tries to use different modes in
+     different layers using the same texture. */
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[unit_index].s)
+    wrap_mode_s = (wrap_mode_overrides->values[unit_index].s ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[unit_index].s ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_s = GL_CLAMP_TO_EDGE;
+  else
+    wrap_mode_s = layer->wrap_mode_s;
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[unit_index].t)
+    wrap_mode_t = (wrap_mode_overrides->values[unit_index].t ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[unit_index].t ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_t = GL_CLAMP_TO_EDGE;
+  else
+    wrap_mode_t = layer->wrap_mode_t;
+
+  if (wrap_mode_overrides && wrap_mode_overrides->values[unit_index].r)
+    wrap_mode_r = (wrap_mode_overrides->values[unit_index].r ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT ?
+                   GL_REPEAT :
+                   wrap_mode_overrides->values[unit_index].r ==
+                   COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE ?
+                   GL_CLAMP_TO_EDGE :
+                   GL_CLAMP_TO_BORDER);
+  else if (layer->wrap_mode_r == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    wrap_mode_r = GL_CLAMP_TO_EDGE;
+  else
+    wrap_mode_r = layer->wrap_mode_r;
+
+  _cogl_texture_set_wrap_mode_parameters (texture,
+                                          wrap_mode_s,
+                                          wrap_mode_t,
+                                          wrap_mode_r);
+}
+
+/* OpenGL associates the min/mag filters and repeat modes with the
+ * texture object not the texture unit so we always have to re-assert
+ * the filter and repeat modes whenever we use a texture since it may
+ * be referenced by multiple materials with different modes.
+ *
+ * XXX: GL_ARB_sampler_objects fixes this in OpenGL so we should
+ * eventually look at using this extension when available.
+ */
+static void
+foreach_texture_unit_update_filter_and_wrap_modes (
+                      const CoglMaterialWrapModeOverrides *wrap_mode_overrides)
+{
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  for (i = 0; i < ctx->texture_units->len; i++)
+    {
+      CoglTextureUnit *unit =
+        &g_array_index (ctx->texture_units, CoglTextureUnit, i);
+
+      if (unit->enabled)
+        {
+          /* NB: we can't just look at unit->layer->texture because
+           * _cogl_material_flush_gl_state may have chosen to flush a
+           * different texture due to fallbacks. */
+          _cogl_texture_set_filters (unit->texture,
+                                     unit->layer->min_filter,
+                                     unit->layer->mag_filter);
+
+          _cogl_material_layer_forward_wrap_modes (unit->layer,
+                                                   wrap_mode_overrides,
+                                                   unit->texture);
+        }
+    }
 }
 
 void
@@ -2095,11 +3090,14 @@ _cogl_material_flush_gl_state (CoglHandle handle,
                                CoglMaterialFlushOptions *options)
 {
   CoglMaterial                        *material;
-  guint32                              fallback_layers         = 0;
-  guint32                              disable_layers          = 0;
+  guint32                              fallback_layers = 0;
+  guint32                              disable_layers = 0;
   GLuint                               layer0_override_texture = 0;
-  gboolean                             skip_gl_color           = FALSE;
-  const CoglMaterialWrapModeOverrides *wrap_mode_overrides     = NULL;
+  gboolean                             skip_gl_color = FALSE;
+  const CoglMaterialWrapModeOverrides *wrap_mode_overrides = NULL;
+  int                                  i;
+  CoglTextureUnit                     *unit1;
+  GList                               *tmp;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2119,30 +3117,182 @@ _cogl_material_flush_gl_state (CoglHandle handle,
         wrap_mode_overrides = &options->wrap_mode_overrides;
     }
 
-  _cogl_material_flush_base_gl_state (material,
-                                      skip_gl_color);
+  /* If the material we are flushing and the override options are the
+   * same then try to bail out as quickly as possible.
+   *
+   * XXX: the more overrides we add the slower "quickly" will get; I
+   * think we need to move towards cheap copy-on-write materials so
+   * that exceptional fallbacks/overrides can be implemented simply by
+   * copying a material and modifying it before flushing.
+   */
+  if (ctx->current_material == material &&
+      ctx->current_material_fallback_layers == fallback_layers &&
+      ctx->current_material_disable_layers == disable_layers &&
+      ctx->current_material_layer0_override == layer0_override_texture &&
+      ctx->current_material_skip_gl_color == skip_gl_color)
+    goto done;
 
-  _cogl_material_flush_layers_gl_state (material,
+  /* First flush everything that's the same regardless of which
+   * material backend is being used...
+   *
+   * 1) top level state:
+   *  glColor (or skip if a vertex attribute is being used for color)
+   *  blend state
+   *  alpha test state (except for GLES 2.0)
+   *
+   * 2) then foreach layer:
+   *  determine gl_target/gl_texture
+   *  bind texture
+   *  enable/disable target
+   *  flush user matrix
+   *
+   *  Note: After _cogl_material_flush_common_gl_state you can expect
+   *  all state of the layers corresponding texture unit to be
+   *  updated.
+   */
+  _cogl_material_flush_common_gl_state (material,
+                                        skip_gl_color,
                                         fallback_layers,
                                         disable_layers,
                                         layer0_override_texture,
                                         wrap_mode_overrides);
 
-  /* NB: we have to take a reference so that next time
-   * cogl_material_flush_gl_state is called, we can compare the incomming
-   * material pointer with ctx->current_material
+  /* Now flush the fragment processing state according to the current
+   * fragment processing backend.
+   *
+   * Note: Some of the backends may not support the current material
+   * configuration and in that case it will report an error and we
+   * will fallback to a different backend.
+   *
+   * NB: if material->backend != COGL_MATERIAL_BACKEND_UNDEFINED then
+   * we have previously managed to successfully flush this material
+   * with the given backend so we will simply use that to avoid
+   * fallback code paths.
    */
-  cogl_handle_ref (handle);
-  if (ctx->current_material)
-    cogl_handle_unref (ctx->current_material);
 
+  if (material->backend == COGL_MATERIAL_BACKEND_UNDEFINED)
+    _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_DEFAULT);
+
+  for (i = material->backend;
+       i < G_N_ELEMENTS (backends);
+       i++, _cogl_material_set_backend (material, i))
+    {
+      const GList *l;
+      const CoglMaterialBackend *backend = backends[i];
+      gboolean added_layer = FALSE;
+      gboolean error_adding_layer = FALSE;
+
+      /* E.g. For backends generating code they can setup their
+       * scratch buffers here... */
+      if (G_UNLIKELY (!backend->start (material)))
+        continue;
+
+      for (l = cogl_material_get_layers (material); l; l = l->next)
+        {
+          CoglMaterialLayer *layer = l->data;
+          CoglTextureUnit *unit = _cogl_get_texture_unit (layer->unit_index);
+
+          /* NB: We don't support the random disabling of texture
+           * units, so as soon as we hit a disabled unit we know all
+           * subsequent units are also disabled */
+          if (!unit->enabled)
+            break;
+
+          if (G_UNLIKELY (layer->unit_index >=
+                          backend->get_max_texture_units ()))
+            {
+              int j;
+              for (j = layer->unit_index; j < ctx->texture_units->len; j++)
+                disable_texture_unit (j);
+              /* TODO: although this isn't considered an error that
+               * warrants falling back to a different backend we
+               * should print a warning here. */
+              break;
+            }
+
+          /* Either generate per layer code snippets or setup the
+           * fixed function glTexEnv for each layer... */
+          if (G_LIKELY (backend->add_layer (layer)))
+            added_layer = TRUE;
+          else
+            {
+              error_adding_layer = TRUE;
+              break;
+            }
+        }
+
+      if (G_UNLIKELY (error_adding_layer))
+        continue;
+
+      if (!added_layer &&
+          backend->passthrough &&
+          G_UNLIKELY (!backend->passthrough (material)))
+        continue;
+
+      /* For backends generating code they may compile and link their
+       * programs here, update any uniforms and tell OpenGL to use
+       * that program.
+       */
+      if (G_UNLIKELY (!backend->end (material)))
+        continue;
+
+      break;
+    }
+
+  for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
+    {
+      CoglMaterialLayer *layer = tmp->data;
+      CoglTextureUnit   *unit = _cogl_get_texture_unit (layer->unit_index);
+
+      unit->layer = layer;
+      unit->layer_differences = layer->differences;
+    }
+
+  /* NB: _cogl_material_pre_change_notify and _cogl_material_free will
+   * invalidate ctx->current_material (set it to COGL_INVALID_HANDLE)
+   * if the material is changed/freed.
+   */
   ctx->current_material = handle;
   ctx->current_material_flags = material->flags;
-  if (options)
-    ctx->current_material_flush_options = *options;
-  else
-    memset (&ctx->current_material_flush_options,
-            0, sizeof (CoglMaterialFlushOptions));
+  ctx->current_material_fallback_layers = fallback_layers;
+  ctx->current_material_disable_layers = disable_layers;
+  ctx->current_material_layer0_override = layer0_override_texture;
+  ctx->current_material_skip_gl_color = skip_gl_color;
+
+done: /* well, almost... */
+
+  /* Handle the fact that OpenGL associates texture filter and wrap
+   * modes with the texture objects not the texture units... */
+  foreach_texture_unit_update_filter_and_wrap_modes (wrap_mode_overrides);
+
+  /* If this material has more than one layer then we always need
+   * to make sure we rebind the texture for unit 1.
+   *
+   * NB: various components of Cogl may temporarily bind arbitrary
+   * textures to the current texture unit so they can query and modify
+   * texture object parameters. cogl-material.c will always leave
+   * texture unit 1 active so we can ignore these temporary binds
+   * unless multitexturing is being used.
+   */
+  unit1 = _cogl_get_texture_unit (1);
+  if (unit1->enabled)
+    {
+      set_active_texture_unit (1);
+      GE (glBindTexture (unit1->enabled_gl_target, unit1->gl_texture));
+    }
+
+  /* Since there are several places where Cogl will temporarily bind a
+   * GL texture so that it can query or modify texture objects we want
+   * to make sure we know which texture unit state is being changed by
+   * such code.
+   *
+   * We choose to always end up with texture unit 1 active so that in
+   * the common case where multitexturing isn't used we can simply
+   * ignore the state of this texture unit. Notably we didn't use a
+   * large texture unit (.e.g. (GL_MAX_TEXTURE_UNITS - 1) in case the
+   * driver doesn't have a sparse data structure for texture units.
+   */
+  set_active_texture_unit (1);
 }
 
 static gboolean
@@ -2177,15 +3327,17 @@ _cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
                                      material1_layer_texture))
     return FALSE;
 
-  if ((material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
-      (material1_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+  if ((material0_layer->differences &
+       COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE) !=
+      (material1_layer->differences &
+       COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE))
     return FALSE;
 
 #if 0 /* TODO */
   if (!_deep_are_layer_combines_equal ())
     return FALSE;
 #else
-  if (!(material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+  if (!(material0_layer->differences & COGL_MATERIAL_LAYER_DIFFERENCE_COMBINE))
     return FALSE;
 #endif
 
@@ -2488,10 +3640,16 @@ cogl_material_set_layer_filters (CoglHandle         handle,
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
   /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
+  _cogl_material_layer_pre_change_notify (
+                                      layer,
+                                      COGL_MATERIAL_LAYER_CHANGE_FILTERS);
 
   layer->min_filter = min_filter;
   layer->mag_filter = mag_filter;
+
+  /* Note we don't have a layer->difference flag for the min/mag
+   * filters since in GL terms this state is owned by the texture
+   * object so they are dealt with slightly differently. */
 }
 
 void
@@ -2597,3 +3755,21 @@ _cogl_material_layer_get_wrap_mode_r (CoglHandle handle)
 
   return _cogl_material_layer_pointer_from_handle (handle)->wrap_mode_r;
 }
+
+void
+_cogl_material_apply_legacy_state (CoglHandle handle)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_program)
+    {
+      /* It was a mistake that we ever copied the OpenGL style API for
+       * making a program current (cogl_program_use) on the context.
+       * Until cogl_program_use is removed we will transparently set
+       * the program on the material because the cogl-material code is
+       * in the best position to juggle the corresponding GL state. */
+      _cogl_material_set_user_program (handle,
+                                       ctx->current_program);
+    }
+}
+

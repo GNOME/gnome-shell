@@ -70,6 +70,7 @@ cogl_create_context (void)
 
   _context->enable_flags = 0;
   _context->color_alpha = 0;
+  _context->fog_enabled = FALSE;
 
   _context->enable_backface_culling = FALSE;
   _context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
@@ -81,10 +82,20 @@ cogl_create_context (void)
   cogl_matrix_scale (&_context->y_flip_matrix, 1, -1, 1);
 
   _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
-  _context->texture_units = NULL;
+
+  _context->texture_units =
+    g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
+
+  /* See cogl-material.c for more details about why we leave texture unit 1
+   * active by default... */
+  _context->active_texture_unit = 1;
+  GE (glActiveTexture (GL_TEXTURE1));
 
   _context->simple_material = cogl_material_new ();
   _context->source_material = NULL;
+  _context->arbfp_source_buffer = g_string_new ("");
+
+  _context->legacy_state_set = 0;
 
   _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
   _context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
@@ -93,14 +104,24 @@ cogl_create_context (void)
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
 
   _context->current_material = NULL;
-  _context->current_material_flags = 0;
-  memset (&_context->current_material_flush_options,
-          0, sizeof (CoglMaterialFlushOptions));
-  _context->current_layers = g_array_new (FALSE, FALSE,
-                                          sizeof (CoglLayerInfo));
+  _context->current_material_flags = COGL_MATERIAL_FLAGS_INIT;
+  _context->current_material_fallback_layers = 0;
+  _context->current_material_disable_layers = 0;
+  _context->current_material_layer0_override = 0;
+  _context->current_material_skip_gl_color = FALSE;
+
   _cogl_bitmask_init (&_context->texcoord_arrays_enabled);
   _cogl_bitmask_init (&_context->temp_bitmask);
   _cogl_bitmask_init (&_context->texcoord_arrays_to_disable);
+
+  _context->max_texture_units = -1;
+  _context->max_texture_image_units = -1;
+  _context->max_activateable_texture_units = -1;
+
+  _context->current_program = COGL_INVALID_HANDLE;
+
+  _context->current_use_program_type = COGL_MATERIAL_PROGRAM_TYPE_FIXED;
+  _context->current_gl_program = 0;
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
@@ -162,8 +183,6 @@ cogl_create_context (void)
 
   _context->current_pbo = NULL;
 
-  _context->max_texture_units = -1;
-
   return TRUE;
 }
 
@@ -193,9 +212,6 @@ _cogl_destroy_context (void)
     g_array_free (_context->journal, TRUE);
   if (_context->logged_vertices)
     g_array_free (_context->logged_vertices, TRUE);
-
-  if (_context->current_layers)
-    g_array_free (_context->current_layers, TRUE);
 
   if (_context->quad_indices_byte)
     cogl_handle_unref (_context->quad_indices_byte);

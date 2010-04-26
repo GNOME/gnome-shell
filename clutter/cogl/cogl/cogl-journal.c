@@ -792,7 +792,16 @@ _cogl_journal_log_quad (const float  *position,
   disable_layers = (1 << n_layers) - 1;
   disable_layers = ~disable_layers;
 
-  entry->material = _cogl_material_journal_ref (material);
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      material = cogl_material_copy (material);
+      _cogl_material_apply_legacy_state (material);
+      entry->material = _cogl_material_journal_ref (material);
+      cogl_handle_unref (material);
+    }
+  else
+    entry->material = _cogl_material_journal_ref (material);
+
   entry->n_layers = n_layers;
   entry->flush_options.flags =
     COGL_MATERIAL_FLUSH_FALLBACK_MASK |

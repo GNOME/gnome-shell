@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,9 +35,9 @@
 
 #include <glib.h>
 
-#define glCreateProgramObject        ctx->drv.pf_glCreateProgramObject
-#define glAttachObject               ctx->drv.pf_glAttachObject
-#define glUseProgramObject           ctx->drv.pf_glUseProgramObject
+#define glCreateProgram              ctx->drv.pf_glCreateProgram
+#define glAttachShader               ctx->drv.pf_glAttachShader
+#define glUseProgram                 ctx->drv.pf_glUseProgram
 #define glLinkProgram                ctx->drv.pf_glLinkProgram
 #define glGetUniformLocation         ctx->drv.pf_glGetUniformLocation
 #define glUniform1f                  ctx->drv.pf_glUniform1f
@@ -59,7 +59,7 @@
 #define glUniformMatrix2fv           ctx->drv.pf_glUniformMatrix2fv
 #define glUniformMatrix3fv           ctx->drv.pf_glUniformMatrix3fv
 #define glUniformMatrix4fv           ctx->drv.pf_glUniformMatrix4fv
-#define glDeleteObject               ctx->drv.pf_glDeleteObject
+#define glDeleteProgram              ctx->drv.pf_glDeleteProgram
 
 static void _cogl_program_free (CoglProgram *program);
 
@@ -71,7 +71,7 @@ _cogl_program_free (CoglProgram *program)
   /* Frees program resources but its handle is not
      released! Do that separately before this! */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glDeleteObject (program->gl_handle);
+  GE (glDeleteProgram (program->gl_handle));
 }
 
 CoglHandle
@@ -81,7 +81,7 @@ cogl_create_program (void)
   _COGL_GET_CONTEXT (ctx, NULL);
 
   program = g_slice_new (CoglProgram);
-  program->gl_handle = glCreateProgramObject ();
+  program->gl_handle = glCreateProgram ();
 
   return _cogl_program_handle_new (program);
 }
@@ -101,7 +101,7 @@ cogl_program_attach_shader (CoglHandle program_handle,
   program = _cogl_program_pointer_from_handle (program_handle);
   shader = _cogl_shader_pointer_from_handle (shader_handle);
 
-  glAttachObject (program->gl_handle, shader->gl_handle);
+  GE (glAttachShader (program->gl_handle, shader->gl_handle));
 }
 
 void
@@ -115,33 +115,27 @@ cogl_program_link (CoglHandle handle)
 
   program = _cogl_program_pointer_from_handle (handle);
 
-  glLinkProgram (program->gl_handle);
+  GE (glLinkProgram (program->gl_handle));
 }
 
 void
 cogl_program_use (CoglHandle handle)
 {
-  CoglProgram *program;
-  GLhandleARB gl_handle;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
-    return;
+  g_return_if_fail (handle == COGL_INVALID_HANDLE ||
+                    cogl_is_program (handle));
 
-  /* The Cogl journal doesn't currently cope with the use of
-   * shaders so we have to flush all priitives whenever the
-   * current shader changes... */
-  _cogl_journal_flush ();
+  if (ctx->current_program == 0 && handle != 0)
+    ctx->legacy_state_set++;
+  else if (handle == 0 && ctx->current_program != 0)
+    ctx->legacy_state_set--;
 
-  if (handle == COGL_INVALID_HANDLE)
-    gl_handle = 0;
-  else
-    {
-      program = _cogl_program_pointer_from_handle (handle);
-      gl_handle = program->gl_handle;
-    }
-
-  glUseProgramObject (gl_handle);
+  if (handle != COGL_INVALID_HANDLE)
+    cogl_handle_ref (handle);
+  if (ctx->current_program != COGL_INVALID_HANDLE)
+    cogl_handle_unref (ctx->current_program);
+  ctx->current_program = handle;
 }
 
 int
@@ -163,16 +157,34 @@ void
 cogl_program_uniform_1f (int uniform_no,
                          float  value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glUniform1f (uniform_no, value);
+
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  _cogl_gl_use_program_wrapper (program->gl_handle);
+
+  GE (glUniform1f (uniform_no, value));
 }
 
 void
 cogl_program_uniform_1i (int uniform_no,
                          int    value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  glUniform1i (uniform_no, value);
+
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  _cogl_gl_use_program_wrapper (program->gl_handle);
+
+  GE (glUniform1i (uniform_no, value));
 }
 
 void
@@ -181,21 +193,29 @@ cogl_program_uniform_float (int  uniform_no,
                             int     count,
                             const GLfloat *value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  _cogl_gl_use_program_wrapper (program->gl_handle);
 
   switch (size)
     {
     case 1:
-      glUniform1fv (uniform_no, count, value);
+      GE (glUniform1fv (uniform_no, count, value));
       break;
     case 2:
-      glUniform2fv (uniform_no, count, value);
+      GE (glUniform2fv (uniform_no, count, value));
       break;
     case 3:
-      glUniform3fv (uniform_no, count, value);
+      GE (glUniform3fv (uniform_no, count, value));
       break;
     case 4:
-      glUniform4fv (uniform_no, count, value);
+      GE (glUniform4fv (uniform_no, count, value));
       break;
     default:
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
@@ -208,7 +228,15 @@ cogl_program_uniform_int (int  uniform_no,
                           int     count,
                           const int *value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  _cogl_gl_use_program_wrapper (program->gl_handle);
 
   switch (size)
     {
@@ -236,18 +264,26 @@ cogl_program_uniform_matrix (int   uniform_no,
                              gboolean  transpose,
                              const GLfloat  *value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  _cogl_gl_use_program_wrapper (program->gl_handle);
 
   switch (size)
     {
     case 2 :
-      glUniformMatrix2fv (uniform_no, count, transpose, value);
+      GE (glUniformMatrix2fv (uniform_no, count, transpose, value));
       break;
     case 3 :
-      glUniformMatrix3fv (uniform_no, count, transpose, value);
+      GE (glUniformMatrix3fv (uniform_no, count, transpose, value));
       break;
     case 4 :
-      glUniformMatrix4fv (uniform_no, count, transpose, value);
+      GE (glUniformMatrix4fv (uniform_no, count, transpose, value));
       break;
     default :
       g_warning ("%s called with invalid size parameter", G_STRFUNC);

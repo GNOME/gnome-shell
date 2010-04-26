@@ -119,6 +119,9 @@ COGL_FEATURE_BEGIN (arbfp, 255, 255,
 COGL_FEATURE_FUNCTION (void, glGenPrograms,
                        (GLsizei               n,
                         GLuint               *programs))
+COGL_FEATURE_FUNCTION (void, glDeletePrograms,
+                       (GLsizei               n,
+                        GLuint               *programs))
 COGL_FEATURE_FUNCTION (void, glBindProgram,
                        (GLenum                target,
                         GLuint                program))
@@ -127,47 +130,51 @@ COGL_FEATURE_FUNCTION (void, glProgramString,
                         GLenum                format,
                         GLsizei               len,
                         const void           *program))
+COGL_FEATURE_FUNCTION (void, glProgramLocalParameter4fv,
+                       (GLenum                target,
+                        GLuint                index,
+                        GLfloat              *params))
 COGL_FEATURE_END ()
 
 /* The function names in OpenGL 2.0 are different so we can't easily
    just check for GL 2.0 */
-COGL_FEATURE_BEGIN (shaders_glsl, 255, 255,
-                    "ARB\0",
-                    "shader_objects\0"
-                    "vertex_shader\0"
-                    "fragment_shader\0",
+COGL_FEATURE_BEGIN (shaders_glsl, 2, 0,
+                    "\0",
+                    "\0",
                     COGL_FEATURE_SHADERS_GLSL,
                     0)
-COGL_FEATURE_FUNCTION (GLhandleARB, glCreateProgramObject,
+COGL_FEATURE_FUNCTION (GLuint, glCreateProgram,
                        (void))
-COGL_FEATURE_FUNCTION (GLhandleARB, glCreateShaderObject,
+COGL_FEATURE_FUNCTION (GLuint, glCreateShader,
                        (GLenum                shaderType))
 COGL_FEATURE_FUNCTION (void, glShaderSource,
-                       (GLhandleARB           shaderObj,
+                       (GLuint                shader,
                         GLsizei               count,
-                        const GLcharARB*     *string,
+                        const GLchar        **string,
                         const GLint          *length))
 COGL_FEATURE_FUNCTION (void, glCompileShader,
-                       (GLhandleARB           shaderObj))
-COGL_FEATURE_FUNCTION (void, glAttachObject,
-                       (GLhandleARB           containerObj,
-                        GLhandleARB           obj))
+                       (GLuint                shader))
+COGL_FEATURE_FUNCTION (void, glDeleteShader,
+                       (GLuint                shader))
+COGL_FEATURE_FUNCTION (void, glAttachShader,
+                       (GLuint                program,
+                        GLuint                shader))
 COGL_FEATURE_FUNCTION (void, glLinkProgram,
-                       (GLhandleARB           programObj))
-COGL_FEATURE_FUNCTION (void, glUseProgramObject,
-                       (GLhandleARB           programObj))
+                       (GLuint                program))
+COGL_FEATURE_FUNCTION (void, glUseProgram,
+                       (GLuint                program))
 COGL_FEATURE_FUNCTION (GLint, glGetUniformLocation,
-                       (GLhandleARB           programObj,
-                        const GLcharARB      *name))
-COGL_FEATURE_FUNCTION (void, glDeleteObject,
-                       (GLhandleARB           obj))
-COGL_FEATURE_FUNCTION (void, glGetInfoLog,
-                       (GLhandleARB           obj,
+                       (GLuint                program,
+                        const GLchar         *name))
+COGL_FEATURE_FUNCTION (void, glDeleteProgram,
+                       (GLuint                program))
+COGL_FEATURE_FUNCTION (void, glGetShaderInfoLog,
+                       (GLuint                shader,
                         GLsizei               maxLength,
                         GLsizei              *length,
-                        GLcharARB            *infoLog))
-COGL_FEATURE_FUNCTION (void, glGetObjectParameteriv,
-                       (GLhandleARB           obj,
+                        GLchar               *infoLog))
+COGL_FEATURE_FUNCTION (void, glGetShaderiv,
+                       (GLuint                shader,
                         GLenum                pname,
                         GLint                *params))
 
