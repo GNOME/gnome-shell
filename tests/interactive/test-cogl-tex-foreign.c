@@ -122,6 +122,8 @@ test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
   guchar              data[12];
+  GLint prev_unpack_alignment;
+  GLint prev_2d_texture_binding;
   
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
   
@@ -131,13 +133,25 @@ test_coglbox_init (TestCoglbox *self)
   data[3] =   0; data[4]  = 255; data[5]  =   0;
   data[6] =   0; data[7]  =   0; data[8]  = 255;
   data[9] =   0; data[10] =   0; data[11] =   0;
-  
+
+  /* We are about to use OpenGL directly to create a TEXTURE_2D
+   * texture so we need to save the state that we modify so we can
+   * restore it afterwards and be sure not to interfere with any state
+   * caching that Cogl may do internally.
+   */
+  glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
+  glGetIntegerv (GL_TEXTURE_BINDING_2D, &prev_2d_texture_binding);
+
   glGenTextures (1, &priv->gl_handle);
   glBindTexture (GL_TEXTURE_2D, priv->gl_handle);
   
   glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
   glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB,
 		2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+  /* Now restore the original GL state as Cogl had left it */
+  glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
+  glBindTexture (GL_TEXTURE_2D, prev_2d_texture_binding);
   
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
