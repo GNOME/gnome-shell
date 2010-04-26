@@ -146,7 +146,9 @@ _cogl_atlas_texture_blit_begin (CoglAtlasTextureBlitData *data,
           data->fbo = 0;
         }
 
-      GE( glBindTexture (data->dst_gl_target, dst_gl_texture) );
+      _cogl_bind_gl_texture_transient (data->dst_gl_target,
+                                       dst_gl_texture,
+                                       FALSE);
     }
 
   if (data->fbo)
@@ -274,7 +276,8 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
 
   cogl_handle_unref (atlas_tex->sub_texture);
 
-  g_free (atlas_tex);
+  /* Chain up */
+  _cogl_texture_free (COGL_TEXTURE (atlas_tex));
 }
 
 static int
@@ -1074,5 +1077,6 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_get_format,
     _cogl_atlas_texture_get_gl_format,
     _cogl_atlas_texture_get_width,
-    _cogl_atlas_texture_get_height
+    _cogl_atlas_texture_get_height,
+    NULL /* is_foreign */
   };

@@ -962,6 +962,8 @@ texture_unit_init (CoglTextureUnit *unit, int index_)
   unit->enabled = FALSE;
   unit->enabled_gl_target = 0;
   unit->gl_texture = 0;
+  unit->is_foreign = FALSE;
+  unit->dirty_gl_texture = FALSE;
   unit->matrix_stack = _cogl_matrix_stack_new ();
 
   unit->layer = NULL;
@@ -1024,6 +1026,71 @@ set_active_texture_unit (int unit_index)
     {
       GE (glActiveTexture (GL_TEXTURE0 + unit_index));
       ctx->active_texture_unit = unit_index;
+    }
+}
+
+/* Note: this conceptually has slightly different semantics to
+ * OpenGL's glBindTexture because Cogl never cares about tracking
+ * multiple textures bound to different targets on the same texture
+ * unit.
+ *
+ * glBindTexture lets you bind multiple textures to a single texture
+ * unit if they are bound to different targets. So it does something
+ * like:
+ *   unit->current_texture[target] = texture;
+ *
+ * Cogl only lets you associate one texture with the currently active
+ * texture unit, so the target is basically a redundant parameter
+ * that's implicitly set on that texture.
+ *
+ * Technically this is just a thin wrapper around glBindTexture so
+ * actually it does have the GL semantics but it seems worth
+ * mentioning the conceptual difference in case anyone wonders why we
+ * don't associate the gl_texture with a gl_target in the
+ * CoglTextureUnit.
+ */
+void
+_cogl_bind_gl_texture_transient (GLenum gl_target,
+                                 GLuint gl_texture,
+                                 gboolean is_foreign)
+{
+  CoglTextureUnit *unit;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  unit = _cogl_get_texture_unit (ctx->active_texture_unit);
+
+  /* NB: If we have previously bound a foreign texture to this texture
+   * unit we don't know if that texture has since been deleted and we
+   * are seeing the texture name recycled */
+  if (unit->gl_texture == gl_texture &&
+      !unit->dirty_gl_texture &&
+      !unit->is_foreign)
+    return;
+
+  GE (glBindTexture (gl_target, gl_texture));
+
+  unit->dirty_gl_texture = TRUE;
+  unit->is_foreign = is_foreign;
+}
+
+void
+_cogl_delete_gl_texture (GLuint gl_texture)
+{
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  for (i = 0; i < ctx->texture_units->len; i++)
+    {
+      CoglTextureUnit *unit =
+        &g_array_index (ctx->texture_units, CoglTextureUnit, i);
+
+      if (unit->gl_texture == gl_texture)
+        {
+          unit->gl_texture = 0;
+          unit->dirty_gl_texture = FALSE;
+        }
     }
 }
 
@@ -2926,14 +2993,42 @@ _cogl_material_flush_common_gl_state (CoglMaterial *material,
       unit->layer0_overridden = layer0_override_texture ? TRUE : FALSE;
       unit->fallback = fallback;
 
-      /* FIXME: We could be more clever here and only bind the texture
-         if it is different from gl_layer_info->gl_texture to avoid
-         redundant GL calls. However a few other places in Cogl and
-         Clutter call glBindTexture such as ClutterGLXTexturePixmap so
-         we'd need to ensure they affect the cache. Also deleting a
-         texture should clear it from the cache in case a new texture
-         is generated with the same number */
+      /* NB: There are several Cogl components and some code in
+       * Clutter that will temporarily bind arbitrary GL textures to
+       * query and modify texture object parameters. If you look at
+       * the end of _cogl_material_flush_gl_state() you can see we
+       * make sure that such code always binds to texture unit 1 by
+       * always leaving texture unit 1 active. This means we can't
+       * rely on the unit->gl_texture state if unit->index == 1.
+       * Because texture unit 1 is a bit special we actually defer any
+       * necessary glBindTexture for it until the end of
+       * _cogl_material_flush_gl_state().
+       *
+       * NB: we get notified whenever glDeleteTextures is used (see
+       * _cogl_delete_gl_texture()) where we invalidate
+       * unit->gl_texture references to deleted textures so it's safe
+       * to compare unit->gl_texture with gl_texture.  (Without the
+       * hook it would be possible to delete a GL texture and create a
+       * new one with the same name and comparing unit->gl_texture and
+       * gl_texture wouldn't detect that.)
+       *
+       * NB: for foreign textures we don't know how the deletion of
+       * the GL texture objects correspond to the deletion of the
+       * CoglTextures so if there was previously a foreign texture
+       * associated with the texture unit then we can't assume that we
+       * aren't seeing a recycled texture name so we have to bind.
+       */
+#ifndef DISABLE_MATERIAL_CACHE
+      if (unit->gl_texture != gl_texture || unit->is_foreign)
+        {
+          if (unit->index != 1)
+            GE (glBindTexture (gl_target, gl_texture));
+          unit->gl_texture = gl_texture;
+        }
+#else
       GE (glBindTexture (gl_target, gl_texture));
+#endif
+      unit->is_foreign = _cogl_texture_is_foreign (texture);
 
       /* Disable the previous target if it was different and it's
        * still enabled */
@@ -3275,10 +3370,11 @@ done: /* well, almost... */
    * unless multitexturing is being used.
    */
   unit1 = _cogl_get_texture_unit (1);
-  if (unit1->enabled)
+  if (unit1->enabled && unit1->dirty_gl_texture)
     {
       set_active_texture_unit (1);
       GE (glBindTexture (unit1->enabled_gl_target, unit1->gl_texture));
+      unit1->dirty_gl_texture = FALSE;
     }
 
   /* Since there are several places where Cogl will temporarily bind a

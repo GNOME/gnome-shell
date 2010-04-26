@@ -70,6 +70,26 @@ typedef struct _CoglTextureUnit
    * with a layer may represent more than one GL texture) */
   GLuint             gl_texture;
 
+  /* Foreign textures are those not created or deleted by Cogl. If we ever
+   * call glBindTexture for a foreign texture then the next time we are
+   * asked to glBindTexture we can't try and optimize a redundant state
+   * change because we don't know if the original texture name was deleted
+   * and now we are being asked to bind a recycled name. */
+  gboolean           is_foreign;
+
+  /* We have many components in Cogl that need to temporarily bind arbitrary
+   * textures e.g. to query texture object parameters and since we don't
+   * want that to result in too much redundant reflushing of layer state
+   * when all that's needed is to re-bind the layers gl_texture we use this
+   * to track when the .layer_gl_texture state is invalid.
+   *
+   * XXX: as a further optimization cogl-material.c uses a convention
+   * of always leaving texture unit 1 active when not dealing with the
+   * flushing of layer state, so we can assume this is only ever TRUE
+   * for unit 1.
+   */
+  gboolean           dirty_gl_texture;
+
   /* A matrix stack giving us the means to associate a texture
    * transform matrix with the texture unit. */
   CoglMatrixStack   *matrix_stack;
@@ -122,6 +142,11 @@ _cogl_get_texture_unit (int index_);
 
 void
 _cogl_destroy_texture_units (void);
+
+void
+_cogl_bind_gl_texture_transient (GLenum gl_target,
+                                 GLuint gl_texture,
+                                 gboolean is_foreign);
 
 typedef enum _CoglMaterialEqualFlags
 {
@@ -439,6 +464,9 @@ _cogl_material_layer_get_wrap_mode_r (CoglHandle layer);
 void
 _cogl_material_set_user_program (CoglHandle handle,
                                  CoglHandle program);
+
+void
+_cogl_delete_gl_texture (GLuint gl_texture);
 
 void
 _cogl_material_apply_legacy_state (CoglHandle handle);

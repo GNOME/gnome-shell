@@ -102,6 +102,12 @@ cogl_texture_unref (CoglHandle handle)
   cogl_handle_unref (handle);
 }
 
+void
+_cogl_texture_free (CoglTexture *texture)
+{
+  g_free (texture);
+}
+
 static gboolean
 _cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
                                         CoglPixelFormat dst_format)
@@ -471,6 +477,8 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 			       GLuint           y_pot_waste,
 			       CoglPixelFormat  format)
 {
+  /* FIXME: only create a sliced texture if x or y waste was specified
+   */
   return _cogl_texture_2d_sliced_new_from_foreign (gl_handle,
                                                    gl_target,
                                                    width,
@@ -478,6 +486,21 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                    x_pot_waste,
                                                    y_pot_waste,
                                                    format);
+}
+
+gboolean
+_cogl_texture_is_foreign (CoglHandle handle)
+{
+  CoglTexture *tex;
+
+  g_return_val_if_fail (cogl_is_texture (handle), FALSE);
+
+  tex = COGL_TEXTURE (handle);
+
+  if (tex->vtable->is_foreign)
+    return tex->vtable->is_foreign (tex);
+  else
+    return FALSE;
 }
 
 CoglHandle
