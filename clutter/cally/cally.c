@@ -22,11 +22,18 @@
 
 #include "cally.h"
 
+#include "cally-actor.h"
+#include "cally-group.h"
+#include "cally-stage.h"
+#include "cally-text.h"
+#include "cally-texture.h"
+#include "cally-rectangle.h"
+#include "cally-clone.h"
+
 #include "cally-factory.h"
 #include "cally-util.h"
 
-extern void gnome_accessibility_module_init     (void);
-extern void gnome_accessibility_module_shutdown (void);
+#include "clutter-debug.h"
 
 static int cally_initialized = FALSE;
 
@@ -39,11 +46,21 @@ CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_TEXTURE, cally_texture, cally_texture_new)
 CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_RECTANGLE, cally_rectangle, cally_rectangle_new)
 CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_CLONE, cally_clone, cally_clone_new)
 
-void
-cally_accessibility_module_init(void)
+/**
+ * cally_acccessibility_init:
+ *
+ * Initializes the accessibility support.
+ *
+ * Return value: %TRUE if accessibility support has been correctly
+ * initialized.
+ *
+ * Since: 1.4
+ */
+gboolean
+cally_accessibility_init (void)
 {
   if (cally_initialized)
-    return;
+    return TRUE;
 
   cally_initialized = TRUE;
 
@@ -59,35 +76,22 @@ cally_accessibility_module_init(void)
   /* Initialize the CallyUtility class */
   g_type_class_unref (g_type_class_ref (CALLY_TYPE_UTIL));
 
-  g_message ("Clutter Accessibility Module initialized");
-}
+  CLUTTER_NOTE (MISC, "Clutter Accessibility initialized");
 
-
-/**
- * gnome_accessibility_module_shutdown:
- * @void:
- *
- * Common gnome hook to be used in order to activate the module
- **/
-void
-gnome_accessibility_module_init                 (void)
-{
-  cally_accessibility_module_init ();
+  return cally_initialized;
 }
 
 /**
- * gnome_accessibility_module_shutdown:
- * @void:
+ * cally_get_cally_initialized:
  *
- * Common gnome hook to be used in order to de-activate the module
- **/
-void
-gnome_accessibility_module_shutdown             (void)
+ * Returns if the accessibility support using cally is enabled.
+ *
+ * Return value: %TRUE if accessibility support has been correctly
+ * initialized.
+ *
+ * Since: 1.4
+ */
+gboolean cally_get_cally_initialized (void)
 {
-  if (!cally_initialized)
-    return;
-
-  cally_initialized = FALSE;
-
-  g_message ("Clutter Accessibility Module shutdown");
+  return cally_initialized;
 }

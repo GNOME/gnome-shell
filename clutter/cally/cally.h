@@ -23,17 +23,12 @@
 #ifndef __CALLY_H
 #define __CALLY_H
 
-#include "cally-actor.h"
-#include "cally-group.h"
-#include "cally-stage.h"
-#include "cally-text.h"
-#include "cally-texture.h"
-#include "cally-rectangle.h"
-#include "cally-clone.h"
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
-void cally_accessibility_module_init(void);
+gboolean cally_get_cally_initialized (void);
+gboolean cally_accessibility_init (void);
 
 G_END_DECLS
 
