@@ -48,6 +48,12 @@ typedef struct
   int                 viewport_height;
 
   CoglClipState       clip_state;
+
+  gboolean            dirty_bitmasks;
+  int                 red_bits;
+  int                 blue_bits;
+  int                 green_bits;
+  int                 alpha_bits;
 } CoglFramebuffer;
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
@@ -71,12 +77,16 @@ typedef struct _CoglOnscreen
 
 void
 _cogl_framebuffer_state_init (void);
+
 int
 _cogl_framebuffer_get_width (CoglHandle handle);
+
 int
 _cogl_framebuffer_get_height (CoglHandle handle);
+
 CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglHandle handle);
+
 void
 _cogl_framebuffer_set_viewport (CoglHandle handle,
                                 int x,
@@ -85,16 +95,22 @@ _cogl_framebuffer_set_viewport (CoglHandle handle,
                                 int height);
 int
 _cogl_framebuffer_get_viewport_x (CoglHandle handle);
+
 int
 _cogl_framebuffer_get_viewport_y (CoglHandle handle);
+
 int
 _cogl_framebuffer_get_viewport_width (CoglHandle handle);
+
 int
 _cogl_framebuffer_get_viewport_height (CoglHandle handle);
+
 void
 _cogl_framebuffer_get_viewport4fv (CoglHandle handle, int *viewport);
+
 CoglMatrixStack *
 _cogl_framebuffer_get_modelview_stack (CoglHandle handle);
+
 CoglMatrixStack *
 _cogl_framebuffer_get_projection_stack (CoglHandle handle);
 
@@ -116,8 +132,10 @@ _cogl_onscreen_new (void);
 
 CoglHandle
 _cogl_get_framebuffer (void);
+
 GSList *
 _cogl_create_framebuffer_stack (void);
+
 void
 _cogl_free_framebuffer_stack (GSList *stack);
 
