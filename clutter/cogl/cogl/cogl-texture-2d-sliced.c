@@ -945,8 +945,8 @@ _cogl_texture_2d_sliced_upload_from_data
 
       /* Create slices for the given format and size */
       if (!_cogl_texture_2d_sliced_slices_create (tex_2ds,
-                                                  bmp->width,
-                                                  bmp->height,
+                                                  dst_bmp.width,
+                                                  dst_bmp.height,
                                                   gl_intformat,
                                                   gl_format,
                                                   gl_type))
@@ -958,7 +958,7 @@ _cogl_texture_2d_sliced_upload_from_data
         }
 
       if (!_cogl_texture_2d_sliced_upload_to_gl (tex_2ds,
-                                                 bmp,
+                                                 &dst_bmp,
                                                  gl_intformat,
                                                  gl_format,
                                                  gl_type))
