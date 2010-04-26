@@ -71,25 +71,24 @@ typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
 struct _ClutterTexturePrivate
 {
-  gint                         image_width;
-  gint                         image_height;
+  gint image_width;
+  gint image_height;
 
-  CoglHandle                   material;
-  gboolean                     no_slice;
+  CoglHandle material;
 
-  ClutterActor                *fbo_source;
-  CoglHandle                   fbo_handle;
+  ClutterActor *fbo_source;
+  CoglHandle fbo_handle;
 
-  guint                        sync_actor_size : 1;
-  guint                        repeat_x : 1;
-  guint                        repeat_y : 1;
-  guint                        keep_aspect_ratio : 1;
-  guint                        load_size_async : 1;
-  guint                        load_data_async : 1;
-  guint                        load_async_set : 1;  /* used to make load_async
-                                                       possible */
+  ClutterTextureAsyncData *async_data;
 
-  ClutterTextureAsyncData     *async_data;
+  guint no_slice : 1;
+  guint sync_actor_size : 1;
+  guint repeat_x : 1;
+  guint repeat_y : 1;
+  guint keep_aspect_ratio : 1;
+  guint load_size_async : 1;
+  guint load_data_async : 1;
+  guint load_async_set : 1;  /* used to make load_async possible */
 };
 
 struct _ClutterTextureAsyncData
