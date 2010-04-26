@@ -130,6 +130,8 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->modelview_stack  = _cogl_matrix_stack_new ();
   framebuffer->projection_stack = _cogl_matrix_stack_new ();
 
+  framebuffer->dirty_bitmasks   = TRUE;
+
   /* Initialise the clip stack */
   _cogl_clip_state_init (&framebuffer->clip_state);
 }
@@ -246,6 +248,20 @@ _cogl_framebuffer_get_projection_stack (CoglHandle handle)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->projection_stack;
+}
+
+static inline void
+_cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
+{
+  if (G_LIKELY (!framebuffer->dirty_bitmasks))
+    return;
+
+  GE( glGetIntegerv (GL_RED_BITS,   &framebuffer->red_bits)   );
+  GE( glGetIntegerv (GL_GREEN_BITS, &framebuffer->green_bits) );
+  GE( glGetIntegerv (GL_BLUE_BITS,  &framebuffer->blue_bits)  );
+  GE( glGetIntegerv (GL_ALPHA_BITS, &framebuffer->alpha_bits) );
+
+  framebuffer->dirty_bitmasks = FALSE;
 }
 
 static gboolean
@@ -552,6 +568,8 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
   _cogl_matrix_stack_dirty (framebuffer->modelview_stack);
   _cogl_matrix_stack_dirty (framebuffer->projection_stack);
   _cogl_clip_state_dirty (&framebuffer->clip_state);
+
+  _cogl_framebuffer_init_bits (framebuffer);
 }
 
 void
@@ -707,3 +725,42 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
                                   COGL_MATRIX_PROJECTION);
 }
 
+int
+cogl_framebuffer_get_red_bits (CoglHandle framebuffer)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+
+  _cogl_framebuffer_init_bits (fb);
+
+  return fb->red_bits;
+}
+
+int
+cogl_framebuffer_get_green_bits (CoglHandle framebuffer)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+
+  _cogl_framebuffer_init_bits (fb);
+
+  return fb->green_bits;
+}
+
+int
+cogl_framebuffer_get_blue_bits (CoglHandle framebuffer)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+
+  _cogl_framebuffer_init_bits (fb);
+
+  return fb->blue_bits;
+}
+
+int
+cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+
+  _cogl_framebuffer_init_bits (fb);
+
+  return fb->alpha_bits;
+}

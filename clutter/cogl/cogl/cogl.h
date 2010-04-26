@@ -160,6 +160,58 @@ cogl_get_bitmasks (int *red,
                    int *alpha);
 
 /**
+ * cogl_framebuffer_get_red_bits:
+ * @framebuffer: a handle for a framebuffer
+ *
+ * Retrieves the number of red bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.4
+ */
+int
+cogl_framebuffer_get_red_bits (CoglHandle framebuffer);
+
+/**
+ * cogl_framebuffer_get_green_bits:
+ * @framebuffer: a handle for a framebuffer
+ *
+ * Retrieves the number of green bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.4
+ */
+int
+cogl_framebuffer_get_green_bits (CoglHandle framebuffer);
+
+/**
+ * cogl_framebuffer_get_blue_bits:
+ * @framebuffer: a handle for a framebuffer
+ *
+ * Retrieves the number of blue bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.4
+ */
+int
+cogl_framebuffer_get_blue_bits (CoglHandle framebuffer);
+
+/**
+ * cogl_framebuffer_get_alpha_bits:
+ * @framebuffer: a handle for a framebuffer
+ *
+ * Retrieves the number of alpha bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.4
+ */
+int
+cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer);
+
+/**
  * cogl_perspective:
  * @fovy: Vertical of view angle in degrees.
  * @aspect: Aspect ratio of diesplay

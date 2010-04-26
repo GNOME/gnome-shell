@@ -533,31 +533,21 @@ cogl_get_bitmasks (int *red,
                    int *blue,
                    int *alpha)
 {
-  GLint value;
+  CoglHandle framebuffer;
+
+  framebuffer = _cogl_get_framebuffer ();
 
   if (red)
-    {
-      GE( glGetIntegerv(GL_RED_BITS, &value) );
-      *red = value;
-    }
+    *red = cogl_framebuffer_get_red_bits (framebuffer);
 
   if (green)
-    {
-      GE( glGetIntegerv(GL_GREEN_BITS, &value) );
-      *green = value;
-    }
+    *green = cogl_framebuffer_get_green_bits (framebuffer);
 
   if (blue)
-    {
-      GE( glGetIntegerv(GL_BLUE_BITS, &value) );
-      *blue = value;
-    }
+    *blue = cogl_framebuffer_get_blue_bits (framebuffer);
 
   if (alpha)
-    {
-      GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );
-      *alpha = value;
-    }
+    *alpha = cogl_framebuffer_get_alpha_bits (framebuffer);
 }
 
 void
