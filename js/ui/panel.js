@@ -348,7 +348,6 @@ Panel.prototype = {
                                           style_class: 'panel-button',
                                           reactive: true });
         this.button.set_child(label);
-        this.button.height = PANEL_HEIGHT;
 
         this._leftBox.add(this.button);
 
@@ -439,9 +438,9 @@ Panel.prototype = {
         let statusmenu = this._statusmenu = new StatusMenu.StatusMenu();
         let statusbutton = new St.Clickable({ name: 'panelStatus',
                                                style_class: 'panel-button',
-                                               reactive: true });
+                                               reactive: true,
+                                               y_fill: true });
         statusbutton.set_child(statusmenu.actor);
-        statusbutton.height = PANEL_HEIGHT;
         statusbutton.connect('clicked', function (b, event) {
             statusmenu.toggle(event);
             // The statusmenu might not pop up if it couldn't get a pointer grab
