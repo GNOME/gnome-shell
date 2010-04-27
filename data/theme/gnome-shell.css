@@ -99,7 +99,6 @@ StTooltip {
     color: #ffffff;
     font-size: 16px;
     background-color: black;
-    border-bottom: 1px solid #1f1f1f;
 }
 
 #panelLeft, #panelCenter, #panelRight {
