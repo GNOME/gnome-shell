@@ -831,11 +831,11 @@ cogl_material_set_layer (CoglHandle material_handle,
   _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   material->n_layers = g_list_length (material->layers);
-  if (material->n_layers >= _cogl_get_max_texture_image_units ())
+  if (material->n_layers > _cogl_get_max_texture_image_units ())
     {
       if (!(material->flags & COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING))
 	{
-	  g_warning ("Your hardware does not have enough texture samplers"
+	  g_warning ("Your hardware does not have enough texture samplers "
 		     "to handle this many texture layers");
 	  material->flags |= COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING;
 	}
