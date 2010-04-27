@@ -32,7 +32,7 @@ StatusMenu.prototype = {
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
-        this.actor.add(this._iconBox, { y_align: St.Align.MIDDLE });
+        this.actor.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
         // FIXME: these icons are all wrong (likewise in createSubMenu)
@@ -45,7 +45,7 @@ StatusMenu.prototype = {
         this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
 
         this._name = new St.Label({ text: this._user.get_real_name() });
-        this.actor.add(this._name, { expand: true, y_align: St.Align.MIDDLE });
+        this.actor.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
         this._userNameChangedId = this._user.connect('notify::display-name', Lang.bind(this, this._updateUserName));
 
         this._createSubMenu();

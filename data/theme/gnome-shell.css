@@ -119,7 +119,7 @@ StTooltip {
 }
 
 .panel-button {
-    padding: 4px 12px 3px;
+    padding: 0px 12px;
     border-radius: 5px;
     border-radius-bottomleft: 0px;
     border-radius-bottomright: 0px;
