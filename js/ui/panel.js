@@ -310,34 +310,34 @@ Panel.prototype = {
 
             let x;
             let childBox = new Clutter.ActorBox();
-            childBox.x1 = box.x1;
-            childBox.y1 = box.y1;
+            childBox.x1 = 0;
+            childBox.y1 = 0;
             childBox.x2 = x = childBox.x1 + leftWidth;
-            childBox.y2 = box.y2;
+            childBox.y2 = allocHeight;
             this._leftBox.allocate(childBox, flags);
 
-            let centerNaturalX = Math.floor((box.x2 - box.x1) / 2 - (centerWidth / 2));
+            let centerNaturalX = Math.floor(allocWidth / 2 - (centerWidth / 2));
             /* Check left side */
             if (x < centerNaturalX) {
                 /* We didn't overflow the left, use the natural. */
                 x = centerNaturalX;
             }
             /* Check right side */
-            if (x + centerWidth > (box.x2 - rightWidth)) {
-                x = box.x2 - rightWidth - centerWidth;
+            if (x + centerWidth > (allocWidth - rightWidth)) {
+                x = allocWidth - rightWidth - centerWidth;
             }
             childBox = new Clutter.ActorBox();
             childBox.x1 = x;
-            childBox.y1 = box.y1;
+            childBox.y1 = 0;
             childBox.x2 = x = childBox.x1 + centerWidth;
-            childBox.y2 = box.y2;
+            childBox.y2 = allocHeight;
             this._centerBox.allocate(childBox, flags);
 
             childBox = new Clutter.ActorBox();
-            childBox.x1 = box.x2 - rightWidth;
-            childBox.y1 = box.y1;
-            childBox.x2 = box.x2;
-            childBox.y2 = box.y2;
+            childBox.x1 = allocWidth - rightWidth;
+            childBox.y1 = 0;
+            childBox.x2 = allocWidth;
+            childBox.y2 = allocHeight;
             this._rightBox.allocate(childBox, flags);
         }));
 
