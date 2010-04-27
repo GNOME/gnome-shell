@@ -1469,8 +1469,10 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  for (tmp = material->layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
-    {
+  for (tmp = material->layers, i = 0;
+       tmp != NULL && i < _cogl_get_max_texture_image_units ();
+       tmp = tmp->next, i++)
+   {
       CoglHandle         layer_handle = (CoglHandle)tmp->data;
       CoglMaterialLayer *layer =
         _cogl_material_layer_pointer_from_handle (layer_handle);
@@ -1621,9 +1623,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         g_array_append_val (ctx->current_layers, new_gl_layer_info);
 
       layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DIRTY;
-
-      if ((i+1) >= _cogl_get_max_texture_image_units ())
-	break;
     }
 
   /* Disable additional texture units that may have previously been in use.. */
