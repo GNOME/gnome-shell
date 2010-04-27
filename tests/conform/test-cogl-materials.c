@@ -126,6 +126,65 @@ test_invalid_texture_layers (TestState *state, int x, int y)
 }
 
 static void
+test_using_all_layers (TestState *state, int x, int y)
+{
+  CoglHandle material = cogl_material_new ();
+  guint8 white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
+  guint8 red_pixel[] = { 0xff, 0x00, 0x00, 0xff };
+  CoglHandle white_texture;
+  CoglHandle red_texture;
+  GLint n_layers;
+  int i;
+
+  cogl_push_matrix ();
+
+  cogl_translate (x * QUAD_WIDTH, y * QUAD_WIDTH, 0);
+
+  /* Create a material that uses the maximum number of layers. All but
+     the last layer will use a solid white texture. The last layer
+     will use a red texture. The layers will all be modulated together
+     so the final fragment should be red. */
+
+  white_texture = cogl_texture_new_from_data (1, 1, COGL_TEXTURE_NONE,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                              COGL_PIXEL_FORMAT_ANY,
+                                              4, white_pixel);
+  red_texture = cogl_texture_new_from_data (1, 1, COGL_TEXTURE_NONE,
+                                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            4, red_pixel);
+
+  /* FIXME: Cogl doesn't provide a way to query the maximum number of
+     texture layers so for now we'll just ask GL directly. */
+  glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
+  /* Cogl currently can't cope with more than 32 layers so we'll also
+     limit the maximum to that. */
+  if (n_layers > 32)
+    n_layers = 32;
+
+  for (i = 0; i < n_layers; i++)
+    {
+      cogl_material_set_layer_filters (material, i,
+                                       COGL_MATERIAL_FILTER_NEAREST,
+                                       COGL_MATERIAL_FILTER_NEAREST);
+      cogl_material_set_layer (material, i,
+                               i == n_layers - 1 ? red_texture : white_texture);
+    }
+
+  cogl_set_source (material);
+  cogl_rectangle (0, 0, QUAD_WIDTH, QUAD_WIDTH);
+
+  cogl_pop_matrix ();
+
+  cogl_handle_unref (material);
+  cogl_handle_unref (white_texture);
+  cogl_handle_unref (red_texture);
+
+  /* We expect the final fragment to be red */
+  check_pixel (state, x, y, 0xff0000ff);
+}
+
+static void
 on_paint (ClutterActor *actor, TestState *state)
 {
   int frame_num;
@@ -133,6 +192,9 @@ on_paint (ClutterActor *actor, TestState *state)
   test_invalid_texture_layers (state,
                                0, 0 /* position */
                                );
+  test_using_all_layers (state,
+                         1, 0 /* position */
+                         );
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
