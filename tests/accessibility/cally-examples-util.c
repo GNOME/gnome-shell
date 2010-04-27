@@ -37,74 +37,6 @@
  */
 #define ATK_BRIDGE_DEFAULT_MODULE_DIRECTORY PREFIXDIR"/gtk-2.0/modules"
 
-/* Convenient default directory (debug purposes) */
-#define CALLY_DEFAULT_MODULE_DIRECTORY "../cally/.libs"
-
-
-static gchar **
-_get_clutter_module_paths (void)
-{
-  gchar **retval;
-  GPtrArray *paths;
-  const gchar *modules_dir;
-
-  paths = g_ptr_array_new ();
-
-/* CLUTTER_[API/ABI]_VERSION_S not provided by clutter */
-/*   g_ptr_array_add (paths, */
-/*                    g_build_filename (g_get_home_dir (), */
-/*                                      ".clutter-" CLUTTER_API_VERSION_S, */
-/*                                      CLUTTER_ABI_VERSION_S, */
-/*                                      "modules", */
-/*                                      NULL)); */
-/*   g_ptr_array_add (paths, */
-/*                    g_build_filename (CLUTTER_LIBDIR, */
-/*                                      "clutter-" CLUTTER_API_VERSION_S, */
-/*                                      CLUTTER_ABI_VERSION_S, */
-/*                                      "modules", */
-/*                                      NULL)); */
-
-  g_ptr_array_add (paths, g_strdup (CALLY_DEFAULT_MODULE_DIRECTORY));
-
-  modules_dir = g_getenv ("CLUTTER_MODULES_PATH");
-  if (modules_dir)
-    g_ptr_array_add (paths, g_strdup (modules_dir));
-
-  g_ptr_array_add (paths, NULL);
-
-  retval = (gchar **) paths->pdata;
-  g_ptr_array_free (paths, FALSE);
-
-  return retval;
-}
-
-static gchar *
-_search_for_clutter_module (const gchar *module_name)
-{
-  gchar **paths, **path;
-  gchar *module_path = NULL;
-
-  paths = _get_clutter_module_paths ();
-
-  for (path = paths; *path; path++)
-    {
-      gchar *tmp_name;
-
-      tmp_name = g_module_build_path (*path, module_name);
-      if (g_file_test (tmp_name, G_FILE_TEST_EXISTS))
-        {
-          module_path = tmp_name;
-          break;
-        }
-
-      g_free (tmp_name);
-    }
-
-  g_strfreev (paths);
-
-  return module_path;
-}
-
 static gchar *
 _search_for_bridge_module (const gchar *module_name)
 {
@@ -188,15 +120,12 @@ void
 cally_util_a11y_init (int *argc, char ***argv)
 {
   gchar *bridge_dir = NULL;
-  gchar *cally_path = NULL;
   gchar *bridge_path = NULL;
 
-  cally_path = _search_for_clutter_module ("cally-1.0");
-
-  if (cally_path == NULL)
+  if (clutter_get_accessibility_enabled () == FALSE)
     {
-      g_warning ("Accessibility: failed to find module 'cally-1.0' "
-                 "which is needed to make this application accessible");
+      g_warning ("Accessibility: clutter has no accessibility enabled"
+                 " skipping the atk-bridge load");
       return;
     }
 
@@ -206,11 +135,8 @@ cally_util_a11y_init (int *argc, char ***argv)
 
   bridge_path = g_module_build_path (bridge_dir, "libatk-bridge");
 
-
-  _a11y_invoke_module (cally_path, TRUE);
   _a11y_invoke_module (bridge_path, TRUE);
 
   g_free (bridge_dir);
   g_free (bridge_path);
-  g_free (cally_path);
 }
