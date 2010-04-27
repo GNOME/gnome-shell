@@ -402,7 +402,7 @@ Panel.prototype = {
                                           toggle_mode: true,
                                           x_fill: true,
                                           y_fill: true });
-        this._centerBox.add(clockButton, { y_fill: false });
+        this._centerBox.add(clockButton, { y_fill: true });
         clockButton.connect('clicked', Lang.bind(this, this._toggleCalendar));
 
         this._clock = new St.Label();
