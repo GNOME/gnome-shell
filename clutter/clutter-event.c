@@ -145,8 +145,12 @@ clutter_event_get_coords (ClutterEvent *event,
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+      break;
+
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
+      event_x = event->crossing.x;
+      event_y = event->crossing.y;
       break;
 
     case CLUTTER_BUTTON_PRESS:
