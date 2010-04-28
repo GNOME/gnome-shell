@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -13,8 +14,15 @@ const Params = imports.misc.params;
 // normal mode (ie, outside the Overview), that surrounds the main
 // workspace content.
 
+const Visibility = {
+    FULL:       1,
+    FULLSCREEN: 2,
+    OVERVIEW:   3
+};
+
 const defaultParams = {
     visibleInOverview: false,
+    visibleInFullscreen: false,
     affectsStruts: true,
     affectsInputRegion: true
 };
@@ -30,7 +38,9 @@ Chrome.prototype = {
         global.stage.add_actor(this.actor);
         this.actor.connect('allocate', Lang.bind(this, this._allocated));
 
-        this._obscuredByFullscreen = false;
+        this._inFullscreen = false;
+        this._inOverview = false;
+        this.visibility = Visibility.FULL;
 
         this._trackedActors = [];
 
@@ -78,8 +88,12 @@ Chrome.prototype = {
     //
     // If %visibleInOverview is %true in @params, @actor will remain
     // visible when the overview is brought up. Otherwise it will
-    // automatically be hidden. If %affectsStruts or %affectsInputRegion
-    // is %false, the actor will not have the indicated effect.
+    // automatically be hidden. Likewise, if %visibleInFullscreen is
+    // %true, the actor will be visible even when a fullscreen window
+    // should be covering it.
+    //
+    // If %affectsStruts or %affectsInputRegion is %false, the actor
+    // will not have the indicated effect.
     addActor: function(actor, params) {
         this.actor.add_actor(actor);
         this._trackActor(actor, params);
@@ -185,20 +199,40 @@ Chrome.prototype = {
             this._untrackActor(actor);
     },
 
-    _overviewShowing: function() {
-        this.actor.show();
+    _updateVisibility: function() {
         for (let i = 0; i < this._trackedActors.length; i++) {
-            if (!this._trackedActors[i].visibleInOverview)
-                this.actor.set_skip_paint(this._trackedActors[i].actor, true);
+            let actorData = this._trackedActors[i];
+            if (this._inOverview && !actorData.visibleInOverview)
+                this.actor.set_skip_paint(actorData.actor, true);
+            else if (this._inFullscreen && !actorData.visibleInFullscreen)
+                this.actor.set_skip_paint(actorData.actor, true);
+            else
+                this.actor.set_skip_paint(actorData.actor, false);
         }
+
+        let newVisibility;
+        if (this._inOverview)
+            newVisibility = Visibility.OVERVIEW;
+        else if (this._inFullscreen)
+            newVisibility = Visibility.FULLSCREEN;
+        else
+            newVisibility = Visibility.FULL;
+
+        if (newVisibility != this.visibility) {
+            this.visibility = newVisibility;
+            this.emit('visibility-changed', this.visibility);
+        }
+    },
+
+    _overviewShowing: function() {
+        this._inOverview = true;
+        this._updateVisibility();
         this._queueUpdateRegions();
     },
 
     _overviewHidden: function() {
-        if (this._obscuredByFullscreen)
-            this.actor.hide();
-        for (let i = 0; i < this._trackedActors.length; i++)
-            this.actor.set_skip_paint(this._trackedActors[i].actor, false);
+        this._inOverview = false;
+        this._updateVisibility();
         this._queueUpdateRegions();
     },
 
@@ -224,7 +258,8 @@ Chrome.prototype = {
 
         // @windows is sorted bottom to top.
 
-        this._obscuredByFullscreen = false;
+        let wasInFullscreen = this._inFullscreen;
+        this._inFullscreen = false;
         for (let i = windows.length - 1; i > -1; i--) {
             let layer = windows[i].get_meta_window().get_layer();
 
@@ -239,7 +274,7 @@ Chrome.prototype = {
             if (layer == Meta.StackLayer.FULLSCREEN) {
                 if (Math.max(windows[i].x, 0) >= primary.x && Math.max(windows[i].x, 0) < primary.x + primary.width &&
                     Math.max(windows[i].y, 0) >= primary.y && Math.max(windows[i].y, 0) < primary.y + primary.height) {
-                        this._obscuredByFullscreen = true;
+                        this._inFullscreen = true;
                         break;
                 }
             }
@@ -248,16 +283,15 @@ Chrome.prototype = {
                     windows[i].x + windows[i].width >= primary.x + primary.width &&
                     windows[i].y <= primary.y &&
                     windows[i].y + windows[i].height >= primary.y + primary.height) {
-                    this._obscuredByFullscreen = true;
+                    this._inFullscreen = true;
                     break;
                 }
             } else
                 break;
         }
 
-        let shouldBeVisible = !this._obscuredByFullscreen || Main.overview.visible;
-        if (this.actor.visible != shouldBeVisible) {
-            this.actor.visible = shouldBeVisible;
+        if (this._inFullscreen != wasInFullscreen) {
+            this._updateVisibility();
             this._queueUpdateRegions();
         }
     },
@@ -337,3 +371,4 @@ Chrome.prototype = {
         return false;
     }
 };
+Signals.addSignalMethods(Chrome.prototype);
