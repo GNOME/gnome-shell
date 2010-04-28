@@ -70,6 +70,7 @@ Notification.prototype = {
         this.id = id;
         this.source = source;
         this._bannerBody = bannerBody;
+        this.urgent = false;
 
         source.connect('clicked', Lang.bind(this,
             function() {
@@ -263,6 +264,10 @@ Notification.prototype = {
                                      label: label });
         this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
+    },
+
+    setUrgent: function(urgent) {
+        this.urgent = urgent;
     },
 
     _styleChanged: function() {
@@ -611,7 +616,11 @@ MessageTray.prototype = {
         if (this._getNotification(notification.id, source) == null) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
-            this._notificationQueue.push(notification);
+
+            if (notification.urgent)
+                this._notificationQueue.unshift(notification);
+            else
+                this._notificationQueue.push(notification);
         }
 
         this._updateState();
@@ -805,6 +814,12 @@ MessageTray.prototype = {
                       onComplete: this._showNotificationCompleted,
                       onCompleteScope: this
                     });
+
+        if (this._notification.urgent) {
+            // This will overwrite the y tween, but leave the opacity
+            // tween, and so the onComplete will remain as well.
+            this._expandNotification();
+        }
     },
 
     _showNotificationCompleted: function() {

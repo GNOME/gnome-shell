@@ -151,8 +151,11 @@ NotificationDaemon.prototype = {
             return id;
         }
 
-        // Source may be null if we have never received a notification from
-        // this app or if all notifications from this app have been acknowledged.
+        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+
+        // Source may be null if we have never received a notification
+        // from this app or if all notifications from this app have
+        // been acknowledged.
         if (source == null) {
             source = new Source(this._sourceId(appName), icon, hints);
             Main.messageTray.add(source);
@@ -210,6 +213,8 @@ NotificationDaemon.prototype = {
                 notification.addButton(actions[i], actions[i + 1]);
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         }
+
+        notification.setUrgent(hints.urgency == Urgency.CRITICAL);
 
         source.notify(notification);
         return id;
@@ -290,8 +295,6 @@ Source.prototype = {
     },
 
     update: function(icon, hints) {
-        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
-
         this._icon = icon;
         this._iconData = hints.icon_data;
         this._urgency = hints.urgency;
