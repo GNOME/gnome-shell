@@ -13,6 +13,12 @@ const Params = imports.misc.params;
 // normal mode (ie, outside the Overview), that surrounds the main
 // workspace content.
 
+const defaultParams = {
+    visibleInOverview: false,
+    affectsStruts: true,
+    affectsInputRegion: true
+};
+
 function Chrome() {
     this._init();
 }
@@ -20,10 +26,9 @@ function Chrome() {
 Chrome.prototype = {
     _init: function() {
         // The group itself has zero size so it doesn't interfere with DND
-        this.actor = new Clutter.Group({ width: 0, height: 0 });
+        this.actor = new Shell.GenericContainer({ width: 0, height: 0 });
         global.stage.add_actor(this.actor);
-        this.nonOverviewActor = new Clutter.Group();
-        this.actor.add_actor(this.nonOverviewActor);
+        this.actor.connect('allocate', Lang.bind(this, this._allocated));
 
         this._obscuredByFullscreen = false;
 
@@ -42,6 +47,12 @@ Chrome.prototype = {
                              Lang.bind(this, this._overviewHidden));
 
         this._queueUpdateRegions();
+    },
+
+    _allocated: function(actor, box, flags) {
+        let children = this.actor.get_children();
+        for (let i = 0; i < children.length; i++)
+            children[i].allocate_preferred_size(flags);
     },
 
     _verifyAncestry: function(actor, ancestor) {
@@ -70,16 +81,8 @@ Chrome.prototype = {
     // automatically be hidden. If %affectsStruts or %affectsInputRegion
     // is %false, the actor will not have the indicated effect.
     addActor: function(actor, params) {
-        params = Params.parse(params, { visibleInOverview: false,
-                                        affectsStruts: true,
-                                        affectsInputRegion: true });
-
-        if (params.visibleInOverview)
-            this.actor.add_actor(actor);
-        else
-            this.nonOverviewActor.add_actor(actor);
-
-        this._trackActor(actor, params.affectsInputRegion, params.affectsStruts);
+        this.actor.add_actor(actor);
+        this._trackActor(actor, params);
     },
 
     // trackActor:
@@ -89,13 +92,32 @@ Chrome.prototype = {
     // Tells the chrome to track @actor, which must be a descendant
     // of an actor added via addActor(). This can be used to extend the
     // struts or input region to cover specific children.
+    //
+    // @params can have any of the same values as in addActor(), though
+    // some possibilities don't make sense (eg, trying to have a
+    // %visibleInOverview child of a non-%visibleInOverview parent).
+    // By default, @actor has the same params as its chrome ancestor.
     trackActor: function(actor, params) {
-        if (!this._verifyAncestry(actor, this.actor))
+        let ancestor = actor.get_parent();
+        let index = this._findActor(ancestor);
+        while (ancestor && index == -1) {
+            ancestor = ancestor.get_parent();
+            index = this._findActor(ancestor);
+        }
+        if (!ancestor)
             throw new Error('actor is not a descendent of the chrome layer');
 
-        params = Params.parse(params, { affectsStruts: true,
-                                        affectsInputRegion: true });
-        this._trackActor(actor, params.affectsInputRegion, params.affectsStruts);
+        let ancestorData = this._trackedActors[index];
+        if (!params)
+            params = {};
+        // We can't use Params.parse here because we want to drop
+        // the extra values like ancestorData.actor
+        for (let prop in defaultParams) {
+            if (!params[prop])
+                params[prop] = ancestorData[prop];
+        }
+
+        this._trackActor(actor, params);
     },
 
     // untrackActor:
@@ -111,10 +133,7 @@ Chrome.prototype = {
     //
     // Removes @actor from the chrome layer
     removeActor: function(actor) {
-        if (actor.get_parent() == this.nonOverviewActor)
-            this.nonOverviewActor.remove_actor(actor);
-        else
-            this.actor.remove_actor(actor);
+        this.actor.remove_actor(actor);
         this._untrackActor(actor);
     },
 
@@ -127,16 +146,12 @@ Chrome.prototype = {
         return -1;
     },
 
-    _trackActor: function(actor, inputRegion, strut) {
-        let actorData;
-
+    _trackActor: function(actor, params) {
         if (this._findActor(actor) != -1)
             throw new Error('trying to re-track existing chrome actor');
 
-        actorData = { actor: actor,
-                      inputRegion: inputRegion,
-                      strut: strut };
-
+        let actorData = Params.parse(params, defaultParams);
+        actorData.actor = actor;
         actorData.visibleId = actor.connect('notify::visible',
                                             Lang.bind(this, this._queueUpdateRegions));
         actorData.allocationId = actor.connect('notify::allocation',
@@ -172,14 +187,18 @@ Chrome.prototype = {
 
     _overviewShowing: function() {
         this.actor.show();
-        this.nonOverviewActor.hide();
+        for (let i = 0; i < this._trackedActors.length; i++) {
+            if (!this._trackedActors[i].visibleInOverview)
+                this.actor.set_skip_paint(this._trackedActors[i].actor, true);
+        }
         this._queueUpdateRegions();
     },
 
     _overviewHidden: function() {
         if (this._obscuredByFullscreen)
             this.actor.hide();
-        this.nonOverviewActor.show();
+        for (let i = 0; i < this._trackedActors.length; i++)
+            this.actor.set_skip_paint(this._trackedActors[i].actor, false);
         this._queueUpdateRegions();
     },
 
@@ -250,7 +269,7 @@ Chrome.prototype = {
 
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
-            if (!actorData.inputRegion && !actorData.strut)
+            if (!actorData.affectsInputRegion && !actorData.affectsStruts)
                 continue;
 
             let [x, y] = actorData.actor.get_transformed_position();
@@ -261,10 +280,12 @@ Chrome.prototype = {
             h = Math.round(h);
             let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
 
-            if (actorData.inputRegion && actorData.actor.get_paint_visibility())
+            if (actorData.affectsInputRegion &&
+                actorData.actor.get_paint_visibility() &&
+                !this.actor.get_skip_paint(actorData.actor))
                 rects.push(rect);
 
-            if (!actorData.strut)
+            if (!actorData.affectsStruts)
                 continue;
 
             // Metacity wants to know what side of the screen the

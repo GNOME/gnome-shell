@@ -449,8 +449,8 @@ MessageTray.prototype = {
 
         Main.chrome.addActor(this.actor, { affectsStruts: false,
                                            visibleInOverview: true });
-        Main.chrome.trackActor(this._notificationBin, { affectsStruts: false });
-        Main.chrome.trackActor(this._summaryNotificationBin, { affectsStruts: false });
+        Main.chrome.trackActor(this._notificationBin);
+        Main.chrome.trackActor(this._summaryNotificationBin);
 
         global.connect('screen-size-changed',
                        Lang.bind(this, this._setSizePosition));
