@@ -174,10 +174,26 @@ shell_generic_container_get_n_skip_paint (ShellGenericContainer  *self)
 }
 
 /**
+ * shell_generic_container_get_skip_paint:
+ * @container: A #ShellGenericContainer
+ * @child: Child #ClutterActor
+ *
+ * Gets whether or not @actor is skipped when painting.
+ *
+ * Return value: %TRUE or %FALSE
+ */
+gboolean
+shell_generic_container_get_skip_paint (ShellGenericContainer  *self,
+                                        ClutterActor           *child)
+{
+  return g_hash_table_lookup (self->priv->skip_paint, child) != NULL;
+}
+
+/**
  * shell_generic_container_set_skip_paint:
  * @container: A #ShellGenericContainer
  * @child: Child #ClutterActor
- * @skip %TRUE if we should skip painting
+ * @skip: %TRUE if we should skip painting
  *
  * Set whether or not we should skip painting @actor.  Workaround for
  * lack of gjs ability to override _paint vfunc.
