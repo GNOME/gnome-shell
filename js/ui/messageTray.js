@@ -820,6 +820,9 @@ MessageTray.prototype = {
             // tween, and so the onComplete will remain as well.
             this._expandNotification();
         }
+
+        let [x, y, mods] = global.get_pointer();
+        this._lastSeenMouseY = y;
     },
 
     _showNotificationCompleted: function() {
@@ -829,8 +832,21 @@ MessageTray.prototype = {
     },
 
     _notificationTimeout: function() {
-        this._notificationTimeoutId = 0;
-        this._updateState();
+        let [x, y, mods] = global.get_pointer();
+        if (y > this._lastSeenMouseY + 10 && y < this.actor.y) {
+            // The mouse is moving towards the notification, so don't
+            // hide it yet. (We just create a new timeout (and destroy
+            // the old one) each time because the bookkeeping is
+            // simpler.)
+            this._lastSeenMouseY = y;
+            this._notificationTimeoutId =
+                Mainloop.timeout_add(1000,
+                                     Lang.bind(this, this._notificationTimeout));
+        } else {
+            this._notificationTimeoutId = 0;
+            this._updateState();
+        }
+
         return false;
     },
 
