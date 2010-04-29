@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const DBus = imports.dbus;
 const Gdm = imports.gi.Gdm;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -11,6 +10,7 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const GnomeSession = imports.misc.gnomeSession;
 const Panel = imports.ui.panel;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
@@ -26,7 +26,7 @@ StatusMenu.prototype = {
     _init: function() {
         this._gdm = Gdm.UserManager.ref_default();
         this._user = this._gdm.get_user(GLib.get_user_name());
-        this._presence = new GnomeSessionPresence();
+        this._presence = new GnomeSession.Presence();
 
         this.actor = new St.BoxLayout({ name: 'statusMenu' });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -71,11 +71,11 @@ StatusMenu.prototype = {
     },
 
     _updatePresenceIcon: function(presence, status) {
-        if (status == GnomeSessionPresenceStatus.AVAILABLE)
+        if (status == GnomeSession.PresenceStatus.AVAILABLE)
             this._iconBox.child = this._availableIcon;
-        else if (status == GnomeSessionPresenceStatus.BUSY)
+        else if (status == GnomeSession.PresenceStatus.BUSY)
             this._iconBox.child = this._busyIcon;
-        else if (status == GnomeSessionPresenceStatus.INVISIBLE)
+        else if (status == GnomeSession.PresenceStatus.INVISIBLE)
             this._iconBox.child = this._invisibleIcon;
         else
             this._iconBox.child = this._idleIcon;
@@ -103,17 +103,17 @@ StatusMenu.prototype = {
         let item;
 
         item = this._createImageMenuItem(_("Available"), 'gtk-yes', true);
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.AVAILABLE));
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this._menu.append(item);
         item.show();
 
         item = this._createImageMenuItem(_("Busy"), 'gtk-no', true);
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.BUSY));
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this._menu.append(item);
         item.show();
 
         item = this._createImageMenuItem(_("Invisible"), 'gtk-close', true);
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.INVISIBLE));
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this._menu.append(item);
         item.show();
 
@@ -243,47 +243,3 @@ StatusMenu.prototype = {
     }
 };
 Signals.addSignalMethods(StatusMenu.prototype);
-
-
-const GnomeSessionPresenceIface = {
-    name: 'org.gnome.SessionManager.Presence',
-    methods: [{ name: 'SetStatus',
-                inSignature: 'u' }],
-    properties: [{ name: 'status',
-                   signature: 'u',
-                   access: 'readwrite' }],
-    signals: [{ name: 'StatusChanged',
-                inSignature: 'u' }]
-};
-
-const GnomeSessionPresenceStatus = {
-    AVAILABLE: 0,
-    INVISIBLE: 1,
-    BUSY: 2,
-    IDLE: 3
-};
-
-function GnomeSessionPresence() {
-    this._init();
-}
-
-GnomeSessionPresence.prototype = {
-    _init: function() {
-        DBus.session.proxifyObject(this, 'org.gnome.SessionManager', '/org/gnome/SessionManager/Presence', this);
-        this.connect('StatusChanged', Lang.bind(this, function (proxy, status) { this.status = status; }));
-    },
-
-    getStatus: function(callback) {
-        this.GetRemote('status', Lang.bind(this,
-            function(status, ex) {
-                if (!ex)
-                    callback(this, status);
-            }));
-    },
-
-    setStatus: function(status) {
-        this.SetStatusRemote(status);
-    }
-};
-DBus.proxifyPrototype(GnomeSessionPresence.prototype, GnomeSessionPresenceIface);
-
