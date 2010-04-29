@@ -356,6 +356,11 @@ function main() {
     subprocess.Popen(['gnome-open', extensionjs_path])
     sys.exit(0)
 
+# Handle ssh logins
+if 'DISPLAY' not in os.environ:
+    running_env = get_running_session_environs()
+    os.environ.update(running_env)
+
 if options.eval_file:
     import dbus
 
@@ -394,10 +399,6 @@ if options.verbose:
     print "Starting shell"
 
 
-# Handle ssh logins
-if 'DISPLAY' not in os.environ:
-    running_env = get_running_session_environs()
-    os.environ.update(running_env)
 
 if options.debug:
     # Record initial terminal state so we can reset it to that
