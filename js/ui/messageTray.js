@@ -78,6 +78,7 @@ Notification.prototype = {
 
         this.actor = new St.Table({ name: 'notification',
                                     reactive: true });
+        this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.update(title, banner, true);
     },
 
@@ -146,6 +147,10 @@ Notification.prototype = {
         banner = banner ? _cleanMarkup(banner.replace(/\n/g, '  ')) : '';
         this._bannerLabel.clutter_text.set_markup(banner);
         this._bannerBox.add_actor(this._bannerLabel);
+
+        // Add the bannerBody now if we know for sure we'll need it
+        if (this._bannerBodyText && this._bannerBodyText.indexOf('\n') > -1)
+            this._addBannerBody();
     },
 
     // addActor:
@@ -260,13 +265,29 @@ Notification.prototype = {
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
     },
 
+    _styleChanged: function() {
+        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
+        this._spacing = has_spacing ? spacing : 0;
+
+        // Figure out now (before allocation starts) whether or not we
+        // need to be expandable, and add the expansion row if so
+        if (this._bannerBodyText) {
+            let [minBannerWidth, natBannerWidth] =
+                this._bannerBox.get_preferred_width(-1);
+            let [minNotificationWidth, natNotificationWidth] =
+                this.actor.get_preferred_width(-1);
+
+            if (natBannerWidth > natNotificationWidth)
+                this._addBannerBody();
+        }
+    },
+
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
         let [titleMin, titleNat] = this._titleLabel.get_preferred_width(forHeight);
         let [bannerMin, bannerNat] = this._bannerLabel.get_preferred_width(forHeight);
-        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
 
         alloc.min_size = titleMin;
-        alloc.natural_size = titleNat + (has_spacing ? spacing : 0) + bannerNat;
+        alloc.natural_size = titleNat + this._spacing + bannerNat;
     },
 
     _bannerBoxGetPreferredHeight: function(actor, forWidth, alloc) {
@@ -278,9 +299,6 @@ Notification.prototype = {
         let [titleMinW, titleNatW] = this._titleLabel.get_preferred_width(-1);
         let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(-1);
         let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(-1);
-        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
-        if (!has_spacing)
-            spacing = 0;
         let availWidth = box.x2 - box.x1;
 
         let titleBox = new Clutter.ActorBox();
@@ -289,26 +307,17 @@ Notification.prototype = {
         titleBox.y2 = titleNatH;
         this._titleLabel.allocate(titleBox, flags);
 
-        let overflow = false;
-        if (titleBox.x2 + spacing > availWidth) {
+        if (titleBox.x2 + this._spacing > availWidth) {
             this._bannerLabel.hide();
-            overflow = true;
         } else {
             let bannerBox = new Clutter.ActorBox();
-            bannerBox.x1 = titleBox.x2 + spacing;
+            bannerBox.x1 = titleBox.x2 + this._spacing;
             bannerBox.y1 = 0;
             bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
             bannerBox.y2 = titleNatH;
             this._bannerLabel.show();
             this._bannerLabel.allocate(bannerBox, flags);
-
-            if (bannerBox.x2 < bannerBox.x1 + bannerNatW)
-                overflow = true;
         }
-
-        if (this._bannerBodyText &&
-            (overflow || this._bannerBodyText.indexOf('\n') > -1))
-            this._addBannerBody();
     },
 
     popOut: function() {
