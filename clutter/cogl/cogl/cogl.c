@@ -189,7 +189,7 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
       return;
     }
 
-  glClear (gl_buffers);
+  GE (glClear (gl_buffers));
 
   /* This is a debugging variable used to visually display the quad
      batches from the journal. It is reset here to increase the
