@@ -82,14 +82,15 @@ clutter_backend_glx_handle_event (ClutterBackendX11 *backend_x11,
 
       if (stage_x11->xwin == swap_complete_event->drawable)
         {
-          if (G_UNLIKELY (stage_glx->pending_swaps == 0))
-            {
-              g_warning ("Spurious GLX_BufferSwapComplete event received for "
-                         "stage drawable = 0x%08lx",
-                         swap_complete_event->drawable);
-            }
-          else
+	  /* Early versions of the swap_event implementation in Mesa
+	   * deliver BufferSwapComplete event when not selected for,
+	   * so if we get a swap event we aren't expecting, just ignore it.
+	   *
+	   * https://bugs.freedesktop.org/show_bug.cgi?id=27962
+	   */
+          if (stage_glx->pending_swaps > 0)
             stage_glx->pending_swaps--;
+
           return TRUE;
         }
     }
