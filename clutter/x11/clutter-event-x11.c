@@ -1048,13 +1048,14 @@ ClutterX11FilterReturn
 clutter_x11_handle_event (XEvent *xevent)
 {
   ClutterBackend      *backend;
+  ClutterBackendX11Class *backend_x11_class;
   ClutterEvent        *event;
   ClutterMainContext  *clutter_context;
   ClutterX11FilterReturn result;
   gint                 spin = 1;
 
   /* The return values here are someone approximate; we return
-   * CLUTTER_X11_FILTER_REMOVE if and only if a clutter event is
+   * CLUTTER_X11_FILTER_REMOVE if a clutter event is
    * generated for the event. This mostly, but not entirely,
    * corresponds to whether other event processing should be
    * excluded. As long as the stage window is not shared with another
@@ -1068,6 +1069,13 @@ clutter_x11_handle_event (XEvent *xevent)
 
   clutter_context = _clutter_context_get_default ();
   backend = clutter_context->backend;
+  backend_x11_class = CLUTTER_BACKEND_X11_GET_CLASS (backend);
+
+  /* If the backend just observed the event and didn't want it
+   * removed it could return FALSE, so assume that a TRUE return
+   * means that our caller should also do no further processing. */
+  if (backend_x11_class->handle_event (CLUTTER_BACKEND_X11(backend), xevent))
+    return CLUTTER_X11_FILTER_REMOVE;
 
   event = clutter_event_new (CLUTTER_NOTHING);
 
