@@ -532,19 +532,17 @@ void
 meta_display_process_mapping_event (MetaDisplay *display,
                                     XEvent      *event)
 { 
+  gboolean keymap_changed = FALSE;
+  gboolean modmap_changed = FALSE;
+
 #ifdef HAVE_XKB
   if (event->type == display->xkb_base_event_type)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "XKB mapping changed, will redo keybindings\n");
 
-      reload_keymap (display);
-      reload_modmap (display);
-
-      reload_keycodes (display);
-      reload_modifiers (display);
-
-      regrab_key_bindings (display);
+      keymap_changed = TRUE;
+      modmap_changed = TRUE;
     }
   else
 #endif
@@ -553,21 +551,32 @@ meta_display_process_mapping_event (MetaDisplay *display,
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Received MappingModifier event, will reload modmap and redo keybindings\n");
 
-      reload_modmap (display);
-
-      reload_modifiers (display);
-      
-      regrab_key_bindings (display);
+      modmap_changed = TRUE;
     }
   else if (event->xmapping.request == MappingKeyboard)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Received MappingKeyboard event, will reload keycodes and redo keybindings\n");
 
-      reload_keymap (display);
+      keymap_changed = TRUE;
+    }
+
+  /* Now to do the work itself */
+
+  if (keymap_changed || modmap_changed)
+    {
+      if (keymap_changed)
+        reload_keymap (display);
+
+      /* Deciphering the modmap depends on the loaded keysyms to find out
+       * what modifiers is Super and so forth, so we need to reload it
+       * even when only the keymap changes */
       reload_modmap (display);
-      
-      reload_keycodes (display);
+
+      if (keymap_changed)
+        reload_keycodes (display);
+
+      reload_modifiers (display);
 
       regrab_key_bindings (display);
     }
