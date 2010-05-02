@@ -2642,6 +2642,10 @@ event_callback (XEvent   *event,
                   meta_bell_notify (display, xkb_ev);
                 }
 	      break;
+            case XkbNewKeyboardNotify:
+            case XkbMapNotify:
+              meta_display_process_mapping_event (display, event);
+              break;
 	    }
 	}
 #endif

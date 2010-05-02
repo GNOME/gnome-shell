@@ -248,9 +248,11 @@ reload_keycodes (MetaDisplay *display)
       i = 0;
       while (i < display->n_key_bindings)
         {
-          if (display->key_bindings[i].keycode == 0)
+          if (display->key_bindings[i].keysym != 0)
+            {
               display->key_bindings[i].keycode = XKeysymToKeycode (
                       display->xdisplay, display->key_bindings[i].keysym);
+            }
           
           ++i;
         }
@@ -530,6 +532,22 @@ void
 meta_display_process_mapping_event (MetaDisplay *display,
                                     XEvent      *event)
 { 
+#ifdef HAVE_XKB
+  if (event->type == display->xkb_base_event_type)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "XKB mapping changed, will redo keybindings\n");
+
+      reload_keymap (display);
+      reload_modmap (display);
+
+      reload_keycodes (display);
+      reload_modifiers (display);
+
+      regrab_key_bindings (display);
+    }
+  else
+#endif
   if (event->xmapping.request == MappingModifier)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
@@ -617,6 +635,14 @@ meta_display_init_keys (MetaDisplay *display)
   /* Keys are actually grabbed in meta_screen_grab_keys() */
   
   meta_prefs_add_listener (bindings_changed_callback, display);
+
+#ifdef HAVE_XKB
+  /* meta_display_init_keys() should have already called XkbQueryExtension() */
+  if (display->xkb_base_event_type != -1)
+    XkbSelectEvents (display->xdisplay, XkbUseCoreKbd,
+                     XkbNewKeyboardNotifyMask | XkbMapNotifyMask,
+                     XkbNewKeyboardNotifyMask | XkbMapNotifyMask);
+#endif
 }
 
 void
