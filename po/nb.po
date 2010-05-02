@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.28.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-09 17:45+0100\n"
-"PO-Revision-Date: 2010-03-09 17:47+0100\n"
+"POT-Creation-Date: 2010-05-02 19:32+0200\n"
+"PO-Revision-Date: 2010-05-02 19:33+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -25,27 +25,27 @@ msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:886
+#: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:850
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:338
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:697
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:701
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:702
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1029
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
@@ -59,143 +59,145 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
-#: ../js/ui/dash.js:235
-msgid "Find..."
-msgstr "Finn..."
+#: ../js/ui/dash.js:189
+msgid "Find"
+msgstr "Finn"
 
-#: ../js/ui/dash.js:511
+#: ../js/ui/dash.js:505
 msgid "Searching..."
 msgstr "Søker..."
 
-#: ../js/ui/dash.js:525
+#: ../js/ui/dash.js:519
 msgid "No matching results."
 msgstr "Ingen treff."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:905 ../js/ui/placeDisplay.js:529
+#: ../js/ui/dash.js:869 ../js/ui/placeDisplay.js:543
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:912 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:876 ../js/ui/docDisplay.js:489
 msgid "RECENT ITEMS"
 msgstr "SISTE OPPFØRINGER"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:354
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:391
 msgid "Enabled"
 msgstr "Aktivert"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:393
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:395
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:397
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:422
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:428
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overview.js:181
 msgid "Undo"
 msgstr "Angre"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:399
+#: ../js/ui/panel.js:346
 msgid "Activities"
 msgstr "Aktiviteter"
 
 #. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:630
+#: ../js/ui/panel.js:565
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:633
+#: ../js/ui/panel.js:568
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:108
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Klarte ikke å avmontere «%s»"
+
+#: ../js/ui/placeDisplay.js:111
+msgid "Retry"
+msgstr "Prøv igjen"
+
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "Koble til..."
 
-#: ../js/ui/runDialog.js:221
+#: ../js/ui/runDialog.js:231
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
-#: ../js/ui/runDialog.js:344
+#: ../js/ui/runDialog.js:375
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:105
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:110
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:115
 msgid "Invisible"
 msgstr "Usynlig"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:124
 msgid "Account Information..."
 msgstr "Kontoinformasjon..."
 
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "Sidelinje"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:129
 msgid "System Preferences..."
 msgstr "Brukervalg for systemet..."
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:138
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:143
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:149
 msgid "Log Out..."
 msgstr "Logg ut..."
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "Avslutt..."
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s er ferdig startet"
 
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Programmer"
-
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Siste dokumenter"
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "«%s» er klar"
 
 #: ../src/shell-global.c:967
 msgid "Less than a minute ago"
