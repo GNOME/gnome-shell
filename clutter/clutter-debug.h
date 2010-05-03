@@ -39,39 +39,39 @@ typedef enum {
 #ifdef CLUTTER_ENABLE_DEBUG
 
 #ifdef __GNUC__
-#define CLUTTER_NOTE(type,x,a...)               G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
-          { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }  \
-                                                } G_STMT_END
+#define CLUTTER_NOTE(type,x,a...)                     G_STMT_START { \
+        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
+          { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }       \
+                                                      } G_STMT_END
 
-#define CLUTTER_TIMESTAMP(type,x,a...)             G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_##type)            \
-          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "        \
-                       x, clutter_get_timestamp(), ##a); }         \
-                                                   } G_STMT_END
+#define CLUTTER_TIMESTAMP(type,x,a...)                G_STMT_START { \
+        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
+          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "          \
+                       x, clutter_get_timestamp(), ##a); }           \
+                                                      } G_STMT_END
 #else
 /* Try the C99 version; unfortunately, this does not allow us to pass
  * empty arguments to the macro, which means we have to
  * do an intemediate printf.
  */
-#define CLUTTER_NOTE(type,...)               G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_##type)      \
-	{                                                    \
-	  gchar * _fmt = g_strdup_printf (__VA_ARGS__);      \
-          g_message ("[" #type "] " G_STRLOC ": %s",_fmt);   \
-          g_free (_fmt);                                     \
-	}                                                    \
-                                                } G_STMT_END
+#define CLUTTER_NOTE(type,...)                        G_STMT_START { \
+        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
+          {                                                          \
+            gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
+            g_message ("[" #type "] " G_STRLOC ": %s",_fmt);         \
+            g_free (_fmt);                                           \
+          }                                                          \
+                                                      } G_STMT_END
 
-#define CLUTTER_TIMESTAMP(type,...)             G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
-	{                                                       \
-	  gchar * _fmt = g_strdup_printf (__VA_ARGS__);         \
-          g_message ("[" #type "]" " %li:"  G_STRLOC ": %s",    \
-                       clutter_get_timestamp(), _fmt);          \
-          g_free (_fmt);                                        \
-	}                                                       \
-                                                   } G_STMT_END
+#define CLUTTER_TIMESTAMP(type,...)                   G_STMT_START { \
+        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
+          {                                                          \
+            gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
+            g_message ("[" #type "]" " %li:"  G_STRLOC ": %s",       \
+                       clutter_get_timestamp(), _fmt);               \
+            g_free (_fmt);                                           \
+          }                                                          \
+                                                      } G_STMT_END
 #endif
 
 #define CLUTTER_MARK()      CLUTTER_NOTE(MISC, "== mark ==")

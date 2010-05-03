@@ -52,18 +52,18 @@ typedef enum {
 #ifdef COGL_ENABLE_DEBUG
 
 #ifdef __GNUC__
-#define COGL_NOTE(type,x,a...)                  G_STMT_START {  \
-        if (cogl_debug_flags & COGL_DEBUG_##type) {             \
-          g_message ("[" #type "] " G_STRLOC ": " x, ##a);      \
-        }                                       } G_STMT_END
+#define COGL_NOTE(type,x,a...)                      G_STMT_START { \
+        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {   \
+          g_message ("[" #type "] " G_STRLOC ": " x, ##a);         \
+        }                                           } G_STMT_END
 
 #else
-#define COGL_NOTE(type,...)                     G_STMT_START {  \
-        if (cogl_debug_flags & COGL_DEBUG_##type) {             \
-          char *_fmt = g_strdup_printf (__VA_ARGS__);          \
-          g_message ("[" #type "] " G_STRLOC ": %s", _fmt);     \
-          g_free (_fmt);                                        \
-        }                                       } G_STMT_END
+#define COGL_NOTE(type,...)                         G_STMT_START { \
+        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {   \
+          char *_fmt = g_strdup_printf (__VA_ARGS__);              \
+          g_message ("[" #type "] " G_STRLOC ": %s", _fmt);        \
+          g_free (_fmt);                                           \
+        }                                           } G_STMT_END
 
 #endif /* __GNUC__ */
 
