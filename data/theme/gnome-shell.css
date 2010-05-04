@@ -500,6 +500,9 @@ StTooltip {
 
 .app-well-app:hover {
     border: 1px solid #666666;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(61,61,61,0.8);
+    background-gradient-end: rgba(24,24,24,0.2);
 }
 
 .app-well-app:active {
@@ -540,33 +543,43 @@ StTooltip {
 }
 
 .places-item-box {
-    spacing: 4px;
+    spacing: 2px;
 }
 
 .places-item {
     border-radius: 4px;
     padding: 2px;
     border: 1px solid #181818;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .places-item:hover {
     border: 1px solid #666666;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(61,61,61,0.8);
+    background-gradient-end: rgba(24,24,24,0.2);
 }
 
 /* Recent items */
 
 .recent-docs-item-box {
-    spacing: 4px;
+    spacing: 2px;
 }
 
 .recent-docs-item {
     border-radius: 4px;
     padding: 2px;
     border: 1px solid #181818;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .recent-docs-item:hover {
     border: 1px solid #666666;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(61,61,61,0.8);
+    background-gradient-end: rgba(24,24,24,0.2);
 }
 
 /* LookingGlass */
