@@ -301,7 +301,7 @@ use an extension title clicktofocus@janedoe.example.com.'''
     if uuid == '':
         uuid = sample_uuid
 
-    extension_path = os.path.join(os.path.expanduser('~/.config'), 'gnome-shell', 'extensions', uuid)
+    extension_path = os.path.join(os.path.expanduser('~/.local'), 'share', 'gnome-shell', 'extensions', uuid)
     if os.path.exists(extension_path):
         print "Extension path %r already exists" % (extension_path, )
         sys.exit(0)

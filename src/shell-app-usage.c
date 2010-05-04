@@ -381,7 +381,7 @@ on_session_status_changed (DBusGProxy      *proxy,
 static void
 shell_app_usage_init (ShellAppUsage *self)
 {
-  char *shell_config_dir, *path;
+  char *shell_userdata_dir, *path;
   DBusGConnection *session_bus;
   ShellWindowTracker *tracker;
 
@@ -404,9 +404,9 @@ shell_app_usage_init (ShellAppUsage *self)
   self->currently_idle = FALSE;
   self->enable_monitoring = FALSE;
 
-  g_object_get (shell_global_get(), "configdir", &shell_config_dir, NULL),
-  path = g_build_filename (shell_config_dir, DATA_FILENAME, NULL);
-  g_free (shell_config_dir);
+  g_object_get (shell_global_get(), "userdatadir", &shell_userdata_dir, NULL),
+  path = g_build_filename (shell_userdata_dir, DATA_FILENAME, NULL);
+  g_free (shell_userdata_dir);
   self->configfile = g_file_new_for_path (path);
   g_free (path);
   restore_from_file (self);

@@ -442,7 +442,7 @@ function LookingGlass() {
 LookingGlass.prototype = {
     _init : function() {
         this._idleHistorySaveId = 0;
-        let historyPath = global.configdir + "/lookingglass-history.txt";
+        let historyPath = global.userdatadir + "/lookingglass-history.txt";
         this._historyFile = Gio.file_new_for_path(historyPath);
         this._savedText = null;
         this._historyNavIndex = -1;

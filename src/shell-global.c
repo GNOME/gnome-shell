@@ -50,7 +50,7 @@ struct _ShellGlobal {
   ShellWM *wm;
   const char *datadir;
   const char *imagedir;
-  const char *configdir;
+  const char *userdatadir;
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
   ClutterActor *root_pixmap;
@@ -70,7 +70,7 @@ enum {
   PROP_WINDOW_MANAGER,
   PROP_DATADIR,
   PROP_IMAGEDIR,
-  PROP_CONFIGDIR,
+  PROP_USERDATADIR,
 };
 
 /* Signals */
@@ -145,8 +145,8 @@ shell_global_get_property(GObject         *object,
     case PROP_IMAGEDIR:
       g_value_set_string (value, global->imagedir);
       break;
-    case PROP_CONFIGDIR:
-      g_value_set_string (value, global->configdir);
+    case PROP_USERDATADIR:
+      g_value_set_string (value, global->userdatadir);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -159,7 +159,7 @@ shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
   char *imagedir;
-  GFile *conf_dir;
+  GFile *userdata_dir;
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
@@ -179,10 +179,10 @@ shell_global_init (ShellGlobal *global)
     }
 
   /* Ensure config dir exists for later use */
-  global->configdir = g_build_filename (g_get_home_dir (), ".gnome2", "shell", NULL);
-  conf_dir = g_file_new_for_path (global->configdir);
-  g_file_make_directory (conf_dir, NULL, NULL);
-  g_object_unref (conf_dir);
+  global->userdatadir = g_build_filename (g_get_user_data_dir (), "gnome-shell", NULL);
+  userdata_dir = g_file_new_for_path (global->userdatadir);
+  g_file_make_directory (userdata_dir, NULL, NULL);
+  g_object_unref (userdata_dir);
   
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
@@ -278,10 +278,10 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         NULL,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
-                                   PROP_CONFIGDIR,
-                                   g_param_spec_string ("configdir",
-                                                        "Configuration directory",
-                                                        "Directory containing gnome-shell configuration files",
+                                   PROP_USERDATADIR,
+                                   g_param_spec_string ("userdatadir",
+                                                        "User data directory",
+                                                        "Directory containing gnome-shell user data",
                                                         NULL,
                                                         G_PARAM_READABLE));
 }

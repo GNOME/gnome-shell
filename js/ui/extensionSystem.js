@@ -119,8 +119,7 @@ function loadExtension(dir, enabled, type) {
 }
 
 function init() {
-    let userConfigPath = GLib.get_user_config_dir();
-    let userExtensionsPath = GLib.build_filenamev([userConfigPath, 'gnome-shell', 'extensions']);
+    let userExtensionsPath = GLib.build_filenamev([global.userdatadir, 'extensions']);
     userExtensionsDir = Gio.file_new_for_path(userExtensionsPath);
     try {
         userExtensionsDir.make_directory_with_parents(null);
