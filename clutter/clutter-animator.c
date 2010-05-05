@@ -354,12 +354,19 @@ sort_actor_prop_func (gconstpointer a,
   return pa->object - pb->object;
 }
 
+static void
+clutter_animator_remove_key_internal (ClutterAnimator *animator,
+                                      GObject         *object,
+                                      const gchar     *property_name,
+                                      gdouble          progress,
+                                      gboolean         is_inert);
 
 static void
 object_disappeared (gpointer  data,
                     GObject  *where_the_object_was)
 {
-  clutter_animator_remove_key (data, where_the_object_was, NULL, -1.0);
+  clutter_animator_remove_key_internal (data, where_the_object_was, NULL, -1.0,
+                                        TRUE);
 }
 
 static ClutterAnimatorKey *
@@ -1380,24 +1387,12 @@ clutter_animator_get_keys (ClutterAnimator *animator,
   return g_list_reverse (keys);
 }
 
-/**
- * clutter_animator_remove_key:
- * @animator: a #ClutterAnimator
- * @object: (allow-none): a #GObject to search for, or %NULL for all
- * @property_name: (allow-none): a specific property name to query for,
- *   or %NULL for all
- * @progress: a specific progress to search for or a negative value
- *   for all
- *
- * Removes all keys matching the conditions specificed in the arguments.
- *
- * Since: 1.2
- */
-void
-clutter_animator_remove_key (ClutterAnimator *animator,
-                             GObject         *object,
-                             const gchar     *property_name,
-                             gdouble          progress)
+static void
+clutter_animator_remove_key_internal (ClutterAnimator *animator,
+                                      GObject         *object,
+                                      const gchar     *property_name,
+                                      gdouble          progress,
+                                      gboolean         is_inert)
 {
   ClutterAnimatorPrivate *priv;
   GList *k;
@@ -1419,7 +1414,7 @@ clutter_animator_remove_key (ClutterAnimator *animator,
          )
         {
           ClutterAnimatorKey *prev_key = NULL;
-          key->is_inert = TRUE;
+          key->is_inert = is_inert;
 
           clutter_animator_key_free (key);
 
@@ -1463,6 +1458,29 @@ again:
             }
         }
     }
+}
+
+/**
+ * clutter_animator_remove_key:
+ * @animator: a #ClutterAnimator
+ * @object: (allow-none): a #GObject to search for, or %NULL for all
+ * @property_name: (allow-none): a specific property name to query for,
+ *   or %NULL for all
+ * @progress: a specific progress to search for or a negative value
+ *   for all
+ *
+ * Removes all keys matching the conditions specificed in the arguments.
+ *
+ * Since: 1.2
+ */
+void
+clutter_animator_remove_key (ClutterAnimator *animator,
+                             GObject         *object,
+                             const gchar     *property_name,
+                             gdouble          progress)
+{
+  clutter_animator_remove_key_internal (animator, object, property_name, 
+                                        progress, FALSE);
 }
 
 
