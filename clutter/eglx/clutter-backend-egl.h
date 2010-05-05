@@ -53,6 +53,8 @@ struct _ClutterBackendEGL
   EGLDisplay edpy;
   EGLContext egl_context;
   EGLConfig  egl_config;
+  Window     dummy_xwin;
+  EGLSurface dummy_surface;
 
   gint egl_version_major;
   gint egl_version_minor;

@@ -87,6 +87,8 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
   };
   EGLDisplay edpy;
   gint retry_cookie = 0;
+  XVisualInfo *xvisinfo;
+  XSetWindowAttributes attrs;
 
   backend     = clutter_get_default_backend ();
   backend_egl = CLUTTER_BACKEND_EGL (backend);
@@ -147,6 +149,56 @@ retry:
       CLUTTER_NOTE (GL, "Created EGL Context");
     }
 
+  /* COGL assumes that there is always a GL context selected; in order
+   * to make sure that an EGL context exists and is made current, we use
+   * a dummy, offscreen override-redirect window to which we can always
+   * fall back if no stage is available */
+
+  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  if (xvisinfo == NULL)
+    {
+      g_critical ("Unable to find suitable GL visual.");
+      return FALSE;
+    }
+
+  attrs.override_redirect = True;
+  attrs.colormap = XCreateColormap (backend_x11->xdpy,
+                                    backend_x11->xwin_root,
+                                    xvisinfo->visual,
+                                    AllocNone);
+  attrs.border_pixel = 0;
+
+  backend_egl->dummy_xwin = XCreateWindow (backend_x11->xdpy,
+                                           backend_x11->xwin_root,
+                                           -100, -100, 1, 1,
+                                           0,
+                                           xvisinfo->depth,
+                                           CopyFromParent,
+                                           xvisinfo->visual,
+                                           CWOverrideRedirect |
+                                           CWColormap |
+                                           CWBorderPixel,
+                                           &attrs);
+
+  XFree (xvisinfo);
+
+  backend_egl->dummy_surface =
+    eglCreateWindowSurface (edpy,
+                            backend_egl->egl_config,
+                            (EGLNativeWindowType) backend_egl->dummy_xwin,
+                            NULL);
+
+  if (backend_egl->dummy_surface == EGL_NO_SURFACE)
+    {
+      g_critical ("Unable to create an EGL surface");
+      return FALSE;
+    }
+
+  eglMakeCurrent (edpy,
+                  backend_egl->dummy_surface,
+                  backend_egl->dummy_surface,
+                  backend_egl->egl_context);
+
   return TRUE;
 
 fail:
@@ -206,10 +258,16 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
           CLUTTER_NOTE (MULTISTAGE,
                         "Received a stale stage, clearing all context");
 
-          eglMakeCurrent (backend_egl->edpy,
-                          EGL_NO_SURFACE,
-                          EGL_NO_SURFACE,
-                          EGL_NO_CONTEXT);
+          if (backend_egl->dummy_surface == EGL_NO_SURFACE)
+            eglMakeCurrent (backend_egl->edpy,
+                            EGL_NO_SURFACE,
+                            EGL_NO_SURFACE,
+                            EGL_NO_CONTEXT);
+          else
+            eglMakeCurrent (backend_egl->edpy,
+                            backend_egl->dummy_surface,
+                            backend_egl->dummy_surface,
+                            backend_egl->egl_context);
         }
       else
         {
@@ -255,6 +313,19 @@ static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
+
+  if (backend_egl->dummy_surface != EGL_NO_SURFACE)
+    {
+      eglDestroySurface (backend_egl->edpy, backend_egl->dummy_surface);
+      backend_egl->dummy_surface = EGL_NO_SURFACE;
+    }
+
+  if (backend_egl->dummy_xwin)
+    {
+      XDestroyWindow (backend_x11->xdpy, backend_egl->dummy_xwin);
+      backend_egl->dummy_xwin = None;
+    }
 
   if (backend_egl->egl_context)
     {
@@ -398,6 +469,7 @@ static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
   backend_egl->egl_context = EGL_NO_CONTEXT;
+  backend_egl->dummy_surface = EGL_NO_SURFACE;
 }
 
 GType
