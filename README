@@ -36,7 +36,7 @@ you will need the latest GL headers which can be obtained from:
 
 If you are building the API reference you will also need:
 
-  • GTK-Doc >= 1.11
+  • GTK-Doc >= 1.13
 
 If you are building the additional documentation you will also need:
 
@@ -45,7 +45,7 @@ If you are building the additional documentation you will also need:
 
 If you are building the Introspection data you will also need:
 
-  • GObject-Introspection >= 0.6.4
+  • GObject-Introspection >= 0.6.7
 
 If you want support for profiling Clutter you will also need:
 
