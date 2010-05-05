@@ -515,7 +515,7 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
                 {
                   next_key = initial_key;
 
-                  property_iter->end = 1.0;
+                  property_iter->end = property_iter->start;
                 }
 
               clutter_interval_set_final_value (property_iter->interval,
@@ -923,7 +923,7 @@ clutter_animator_compute_value (ClutterAnimator *animator,
             g_value_copy (&previous->value, value);
             return TRUE;
          }
-       if (next->progress >= progress)
+       if (next && next->progress >= progress)
          {
             ClutterInterval *interval;
             ClutterAlpha    *alpha;
