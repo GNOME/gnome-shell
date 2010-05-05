@@ -114,7 +114,53 @@ StTooltip {
     padding-left: 4px;
 }
 
+.panel-button:pressed {
+    background-color: rgba(50,76,111,0.98);
+    border-radius: 4px;
+}
+
+.panel-menu-boxpointer {
+    -arrow-border-radius: 9px;
+    -arrow-background-color: rgba(0,0,0,0.9);
+    -arrow-border-width: 2px;
+    -arrow-border-color: #5f5f5f;
+    -arrow-base: 30px;
+    -arrow-rise: 15px;
+}
+
+.panel-menu {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.panel-menu-content {
+    padding: 20px 0px;
+}
+
+.panel-menu-item {
+    padding: 6px 30px;
+}
+
+.panel-menu-item:hover {
+    background-color: #4c4c4c;
+}
+
+.panel-image-menu-item {
+    spacing: 6px;
+}
+
+.panel-separator-menu-item {
+    background: #4c4c4c;
+    height: 1px;
+}
+
 #appMenu {
+    spacing: 4px;
+}
+
+.app-menu-icon {
+    width: 24px;
+    height: 24px;
 }
 
 .panel-button {

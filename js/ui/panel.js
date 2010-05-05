@@ -16,6 +16,7 @@ const AppDisplay = imports.ui.appDisplay;
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 const StatusMenu = imports.ui.statusMenu;
+const BoxPointer = imports.ui.boxpointer;
 
 const PANEL_HEIGHT = 26;
 
@@ -123,35 +124,378 @@ TextShadower.prototype = {
     }
 };
 
+function PanelMenuItem(text) {
+    this._init(text);
+}
+
+PanelMenuItem.prototype = {
+    _init: function (text) {
+        this.actor = new St.Bin({ style_class: 'panel-menu-item',
+                                  reactive: true,
+                                  track_hover: true,
+                                  x_fill: true,
+                                  y_fill: true,
+                                  x_align: St.Align.START });
+        this.actor.set_child(new St.Label({ text: text }));
+        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+            this.emit('activate', event);
+        }));
+    }
+}
+Signals.addSignalMethods(PanelMenuItem.prototype);
+
+function PanelSeparatorMenuItem(text) {
+    this._init(text);
+}
+
+PanelSeparatorMenuItem.prototype = {
+    _init: function (text) {
+        this.actor = new St.Bin({ x_fill: true, y_fill: true });
+        this.actor.set_child(new St.Bin({ style_class: 'panel-separator-menu-item' }));
+    }
+}
+Signals.addSignalMethods(PanelSeparatorMenuItem.prototype);
+
+function PanelImageMenuItem(text, iconName) {
+    this._init(text, iconName);
+}
+
+PanelImageMenuItem.prototype = {
+    _init: function (text, iconName) {
+        this.actor = new St.BoxLayout({ style_class: 'panel-menu-item panel-image-menu-item',
+                                        reactive: true,
+                                        track_hover: true });
+        this.actor.add(St.TextureCache.get_default().load_icon_name(iconName, 16), { y_fill: false });
+        this.actor.add(new St.Label({ text: text }), { expand: true });
+        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+            this.emit('activate', event);
+        }));
+    }
+}
+
+Signals.addSignalMethods(PanelImageMenuItem.prototype);
+
+function PanelMenu(sourceButton) {
+    this._init(sourceButton);
+}
+
+PanelMenu.prototype = {
+    _init: function(sourceButton) {
+        this._sourceButton = sourceButton;
+        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP, this._sourceButton,
+                                                     { x_fill: true, y_fill: true, x_align: St.Align.START });
+        this.actor = this._boxPointer.actor;
+        this.actor.style_class = 'panel-menu-boxpointer';
+        this._box = new St.BoxLayout({ style_class: 'panel-menu-content',
+                                       vertical: true });
+        this._boxPointer.bin.set_child(this._box);
+        this.actor.add_style_class_name('panel-menu');
+    },
+
+    addAction: function(title, callback) {
+        var menuItem = new PanelMenuItem(title);
+        this.addMenuItem(menuItem);
+        menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
+            callback(event);
+        }));
+    },
+
+    addMenuItem: function(menuItem) {
+        this._box.add(menuItem.actor);
+        menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
+            this.emit('activate');
+        }));
+    },
+
+    addActor: function(actor) {
+        this._box.add(actor);
+    },
+
+    setArrowOrigin: function(origin) {
+        this._boxPointer.setArrowOrigin(origin);
+    }
+}
+
+Signals.addSignalMethods(PanelMenu.prototype);
+
+function PanelMenuButton(menuAlignment) {
+    this._init(menuAlignment);
+}
+
+PanelMenuButton.prototype = {
+    State: {
+        OPEN: 0,
+        TRANSITIONING: 1,
+        CLOSED: 2
+    },
+
+    _init: function(menuAlignment) {
+        this._menuAlignment = menuAlignment;
+        this.actor = new St.Bin({ style_class: 'panel-button',
+                                  reactive: true,
+                                  x_fill: true,
+                                  y_fill: true,
+                                  track_hover: true });
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        // FIXME - this will trigger a warning about a queued allocation from inside
+        // allocate; hard to solve without a way to express a high level positioning
+        // constraint between actors
+        this.actor.connect('notify::allocation', Lang.bind(this, this._repositionMenu));
+        this._state = this.State.CLOSED;
+        this.menu = new PanelMenu(this.actor);
+        this.menu.connect('activate', Lang.bind(this, this._onActivated));
+        this.menu.actor.connect('notify::allocation', Lang.bind(this, this._repositionMenuArrow));
+        Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
+                                                affectsStruts: false });
+        this.menu.actor.hide();
+    },
+
+    open: function() {
+        if (this._state != this.State.CLOSED)
+            return;
+        this._state = this.State.OPEN;
+
+        let panelActor = Main.panel.actor;
+        this.menu.actor.lower(panelActor);
+        this.menu.actor.show();
+        this._repositionMenu();
+
+        this.actor.add_style_pseudo_class('pressed');
+        this.emit('open-state-changed', true);
+    },
+
+    _onActivated: function(button) {
+        this.emit('activate');
+        this.close();
+    },
+
+    _onButtonPress: function(actor, event) {
+        this.toggle();
+    },
+
+    _repositionMenu: function() {
+        let primary = global.get_primary_monitor();
+
+        // Positioning for the source button
+        let [buttonX, buttonY] = this.actor.get_transformed_position();
+        let [buttonWidth, buttonHeight] = this.actor.get_transformed_size();
+
+        // We need to reset the size here; otherwise get_preferred_size will
+        // just return what we set below
+        this.menu.actor.set_size(-1, -1);
+        let [minWidth, minHeight, natWidth, natHeight] = this.menu.actor.get_preferred_size();
+
+        // Adjust X position for alignment
+        let stageX = buttonX;
+        switch (this._menuAlignment) {
+            case St.Align.END:
+                stageX -= (natWidth - buttonWidth);
+                break;
+            case St.Align.MIDDLE:
+                stageX -= Math.floor((natWidth - buttonWidth) / 2);
+                break;
+        }
+
+        // Ensure we fit on the x position
+        stageX = Math.min(stageX, primary.x + primary.width - natWidth);
+        stageX = Math.max(stageX, primary.x);
+
+        // Actually set the position
+        let panelActor = Main.panel.actor;
+        this.menu.actor.x = stageX;
+        this.menu.actor.width = natWidth;
+        this.menu.actor.y = Math.floor(panelActor.y + panelActor.height);
+        // TODO - we could scroll here
+        this.menu.actor.height = natHeight;
+    },
+
+    _repositionMenuArrow: function() {
+        let [buttonX, buttonY] = this.actor.get_transformed_position();
+        let [buttonWidth, buttonHeight] = this.actor.get_transformed_size();
+        let [menuX, menuY] = this.menu.actor.get_transformed_position();
+        this.menu.setArrowOrigin((buttonX - menuX) + Math.floor(buttonWidth / 2));
+    },
+
+    close: function() {
+        if (this._state != this.State.OPEN)
+            return;
+        this._state = this.State.CLOSED;
+        this.menu.actor.hide();
+        this.actor.remove_style_pseudo_class('pressed');
+        this.emit('open-state-changed', false);
+    },
+
+    toggle: function() {
+        if (this._state == this.State.OPEN)
+            this.close();
+        else
+            this.open();
+    }
+}
+
+Signals.addSignalMethods(PanelMenuButton.prototype);
+
+
+/* Basic implementation of a menu container.
+ * Call _addMenu to add menu buttons.
+ */
+function PanelMenuBar() {
+    this._init();
+}
+
+PanelMenuBar.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout({ style_class: 'menu-bar',
+                                        reactive: true });
+        this.isMenuOpen = false;
+
+        // these are more "private"
+        this._eventCaptureId = 0;
+        this._activeMenuButton = null;
+        this._menus = [];
+    },
+
+    _addMenu: function(button) {
+        this._menus.push(button);
+        button.actor.connect('enter-event', Lang.bind(this, this._onMenuEnter, button));
+        button.actor.connect('leave-event', Lang.bind(this, this._onMenuLeave, button));
+        button.actor.connect('button-press-event', Lang.bind(this, this._onMenuPress, button));
+        button.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState));
+        button.connect('activate', Lang.bind(this, this._onMenuActivated));
+    },
+
+    _onMenuOpenState: function(button, isOpen) {
+        if (!isOpen && button == this._activeMenuButton) {
+            this._activeMenuButton = null;
+        } else if (isOpen) {
+            this._activeMenuButton = button;
+        }
+    },
+
+    _onMenuEnter: function(actor, event, button) {
+        if (!this.isMenuOpen || button == this._activeMenuButton)
+            return false;
+
+        if (this._activeMenuButton != null)
+            this._activeMenuButton.close();
+        button.open();
+        return false;
+    },
+
+    _onMenuLeave: function(actor, event, button) {
+        return false;
+    },
+
+    _onMenuPress: function(actor, event, button) {
+        if (this.isMenuOpen)
+            return false;
+        Main.pushModal(this.actor);
+        this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
+        this.isMenuOpen = true;
+        return false;
+    },
+
+    _onMenuActivated: function(button) {
+        if (this.isMenuOpen)
+            this._closeMenu();
+    },
+
+    _containsActor: function(container, actor) {
+        let parent = actor;
+        while (parent != null) {
+            if (parent == container)
+                return true;
+            parent = parent.get_parent();
+        }
+        return false;
+    },
+
+    _eventIsOnActiveMenu: function(event) {
+        let src = event.get_source();
+        return this._activeMenuButton != null
+                && (this._containsActor(this._activeMenuButton.actor, src) ||
+                    this._containsActor(this._activeMenuButton.menu.actor, src));
+    },
+
+    _eventIsOnAnyMenuButton: function(event) {
+        let src = event.get_source();
+        for (let i = 0; i < this._menus.length; i++) {
+            let actor = this._menus[i].actor;
+            if (this._containsActor(actor, src))
+                return true;
+        }
+        return false;
+    },
+
+    _onEventCapture: function(actor, event) {
+        if (!this.isMenuOpen)
+            return false;
+        let activeMenuContains = this._eventIsOnActiveMenu(event);
+        let eventType = event.type();
+        if (eventType == Clutter.EventType.BUTTON_RELEASE) {
+            if (activeMenuContains) {
+                return false;
+            } else {
+                if (this._activeMenuButton != null)
+                    this._activeMenuButton.close();
+                this._closeMenu();
+                return true;
+            }
+        } else if ((eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains)
+                   || (eventType == Clutter.EventType.KEY_PRESS && event.get_key_symbol() == Clutter.Escape)) {
+            if (this._activeMenuButton != null)
+                this._activeMenuButton.close();
+            this._closeMenu();
+            return true;
+        } else if (activeMenuContains || this._eventIsOnAnyMenuButton(event)) {
+            return false;
+        }
+        return true;
+    },
+
+    _closeMenu: function() {
+        global.stage.disconnect(this._eventCaptureId);
+        this._eventCaptureId = 0;
+        Main.popModal(this.actor);
+        this.isMenuOpen = false;
+    }
+}
+
 /**
- * AppPanelMenu:
+ * AppMenuButton:
  *
  * This class manages the "application menu" component.  It tracks the
  * currently focused application.  However, when an app is launched,
  * this menu also handles startup notification for it.  So when we
  * have an active startup notification, we switch modes to display that.
  */
-function AppPanelMenu() {
+function AppMenuButton() {
     this._init();
 }
 
-AppPanelMenu.prototype = {
+AppMenuButton.prototype = {
+    __proto__: PanelMenuButton.prototype,
+
     _init: function() {
+        PanelMenuButton.prototype._init.call(this, St.Align.START);
         this._metaDisplay = global.screen.get_display();
 
         this._focusedApp = null;
 
-        this.actor = new St.Bin({ name: 'appMenu' });
+        let bin = new St.Bin({ name: 'appMenu' });
+        this.actor.set_child(bin);
         this._container = new Shell.GenericContainer();
-        this.actor.set_child(this._container);
-        this._container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._container.connect('allocate', Lang.bind(this, this._allocate));
+        bin.set_child(this._container);
+        this._container.connect('get-preferred-width', Lang.bind(this, this._getContentPreferredWidth));
+        this._container.connect('get-preferred-height', Lang.bind(this, this._getContentPreferredHeight));
+        this._container.connect('allocate', Lang.bind(this, this._contentAllocate));
 
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
         this._container.add_actor(this._label.actor);
+
+        this.menu.addAction(_("Quit"), Lang.bind(this, this._onQuit));
 
         Main.overview.connect('hiding', Lang.bind(this, function () {
             this.actor.opacity = 255;
@@ -171,7 +515,7 @@ AppPanelMenu.prototype = {
         this._sync();
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _getContentPreferredWidth: function(actor, forHeight, alloc) {
         let [minSize, naturalSize] = this._iconBox.get_preferred_width(forHeight);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
@@ -180,18 +524,18 @@ AppPanelMenu.prototype = {
         alloc.natural_size = alloc.natural_size + Math.max(0, naturalSize - Math.floor(alloc.natural_size / 2));
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _getContentPreferredHeight: function(actor, forWidth, alloc) {
         let [minSize, naturalSize] = this._iconBox.get_preferred_height(forWidth);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
-        [minSize, naturalSize] = this._label.actor.get_preferred_height(forWidth);
+        [minSizfe, naturalSize] = this._label.actor.get_preferred_height(forWidth);
         if (minSize > alloc.min_size)
             alloc.min_size = minSize;
         if (naturalSize > alloc.natural_size)
             alloc.natural_size = naturalSize;
     },
 
-    _allocate: function(actor, box, flags) {
+    _contentAllocate: function(actor, box, flags) {
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
         let childBox = new Clutter.ActorBox();
@@ -230,6 +574,12 @@ AppPanelMenu.prototype = {
         this._label.actor.allocate(childBox, flags);
     },
 
+    _onQuit: function() {
+        if (this._focusedApp == null)
+            return;
+        this._focusedApp.request_quit();
+    },
+
     _sync: function() {
         let tracker = Shell.WindowTracker.get_default();
 
@@ -255,16 +605,18 @@ AppPanelMenu.prototype = {
     }
 };
 
-Signals.addSignalMethods(AppPanelMenu.prototype);
+Signals.addSignalMethods(AppMenuButton.prototype);
 
 function Panel() {
     this._init();
 }
 
 Panel.prototype = {
-    _init : function() {
+    __proto__: PanelMenuBar.prototype,
 
-        this.actor = new St.BoxLayout({ name: 'panel' });
+    _init : function() {
+        PanelMenuBar.prototype._init.call(this);
+        this.actor.name = 'panel';
         this.actor._delegate = this;
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -398,8 +750,10 @@ Panel.prototype = {
         this._leftBox.add(this._hotCornerEnvirons);
         this._leftBox.add(this._hotCorner);
 
-        let appMenu = new AppPanelMenu();
-        this._leftBox.add(appMenu.actor);
+        let appMenuButton = new AppMenuButton();
+        this._leftBox.add(appMenuButton.actor);
+
+        this._addMenu(appMenuButton);
 
         /* center */
 
@@ -656,6 +1010,8 @@ Panel.prototype = {
     },
 
     _onHotCornerEntered : function() {
+        if (this.isMenuOpen)
+            return false;
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
             if (!Main.overview.animationInProgress) {
@@ -676,6 +1032,8 @@ Panel.prototype = {
     },
 
     _onHotCornerClicked : function() {
+        if (this.isMenuOpen)
+            return false;
          if (!Main.overview.animationInProgress) {
              this._maybeToggleOverviewOnClick();
          }
