@@ -25,10 +25,7 @@
    these macros */
 
 COGL_FEATURE_BEGIN (offscreen, 255, 255,
-                    /* for some reason the ARB version of this
-                       extension doesn't have an ARB suffix for the
-                       functions */
-                    "OES:\0",
+                    "OES\0",
                     "framebuffer_object\0",
                     COGL_FEATURE_OFFSCREEN)
 COGL_FEATURE_FUNCTION (void, glGenRenderbuffers,
