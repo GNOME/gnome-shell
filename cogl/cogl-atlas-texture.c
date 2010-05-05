@@ -903,6 +903,20 @@ _cogl_atlas_texture_reserve_space (CoglAtlasTexture    *new_sub_tex,
   return ret;
 }
 
+static gboolean
+_cogl_atlas_texture_can_use_format (CoglPixelFormat format)
+{
+  /* We don't care about the ordering or the premult status and we can
+     accept RGBA or RGB textures. Although we could also accept
+     luminance and alpha only textures or 16-bit formats it seems that
+     if the application is explicitly using these formats then they've
+     got a reason to want the lower memory requirements so putting
+     them in the atlas might not be a good idea */
+  format &= ~(COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT);
+  return (format == COGL_PIXEL_FORMAT_RGB_888 ||
+          format == COGL_PIXEL_FORMAT_RGBA_8888);
+}
+
 CoglHandle
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,
@@ -954,9 +968,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
 
-  /* If the texture is in a strange format then we can't use it */
-  if (internal_format != COGL_PIXEL_FORMAT_RGB_888 &&
-      (internal_format & ~COGL_PREMULT_BIT) != COGL_PIXEL_FORMAT_RGBA_8888)
+  /* If the texture is in a strange format then we won't use it */
+  if (!_cogl_atlas_texture_can_use_format (internal_format))
     {
       COGL_NOTE (ATLAS, "Texture can not be added because the "
                  "format is unsupported");
