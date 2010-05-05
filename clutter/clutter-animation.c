@@ -1272,7 +1272,7 @@ clutter_animation_get_mode (ClutterAnimation *animation)
  */
 void
 clutter_animation_set_duration (ClutterAnimation *animation,
-                                gint              msecs)
+                                guint             msecs)
 {
   ClutterTimeline *timeline;
 

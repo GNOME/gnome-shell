@@ -106,7 +106,7 @@ void                 clutter_animation_set_mode        (ClutterAnimation     *an
                                                         gulong                mode);
 gulong               clutter_animation_get_mode        (ClutterAnimation     *animation);
 void                 clutter_animation_set_duration    (ClutterAnimation     *animation,
-                                                        gint                  msecs);
+                                                        guint                 msecs);
 guint                clutter_animation_get_duration    (ClutterAnimation     *animation);
 void                 clutter_animation_set_loop        (ClutterAnimation     *animation,
                                                         gboolean              loop);
