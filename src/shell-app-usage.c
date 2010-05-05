@@ -9,9 +9,8 @@
 #include <X11/Xatom.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <glib.h>
 #include <gio/gio.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 #include <dbus/dbus-glib.h>
 
 #include "shell-app-usage.h"
@@ -43,8 +42,7 @@
  * minutes to signify idle.
  */
 
-#define APP_MONITOR_GCONF_DIR SHELL_GCONF_DIR"/app_monitor"
-#define ENABLE_MONITORING_KEY APP_MONITOR_GCONF_DIR"/enable_monitoring"
+#define ENABLE_MONITORING_KEY "enable-app-monitoring"
 
 #define FOCUS_TIME_MIN_SECONDS 7 /* Need 7 continuous seconds of focus */
 
@@ -87,11 +85,10 @@ struct _ShellAppUsage
   GFile *configfile;
   DBusGProxy *session_proxy;
   GdkDisplay *display;
-  GConfClient *gconf_client;
   gulong last_idle;
   guint idle_focus_change_id;
   guint save_id;
-  guint gconf_notify;
+  guint settings_notify;
   gboolean currently_idle;
   gboolean enable_monitoring;
 
@@ -133,10 +130,9 @@ static void restore_from_file (ShellAppUsage *self);
 
 static void update_enable_monitoring (ShellAppUsage *self);
 
-static void on_enable_monitoring_key_changed (GConfClient *client,
-                                              guint        connexion_id,
-                                              GConfEntry  *entry,
-                                              gpointer     self);
+static void on_enable_monitoring_key_changed (GSettings     *settings,
+                                              const gchar   *key,
+                                              ShellAppUsage *self);
 
 static long
 get_time (void)
@@ -381,9 +377,12 @@ on_session_status_changed (DBusGProxy      *proxy,
 static void
 shell_app_usage_init (ShellAppUsage *self)
 {
+  ShellGlobal *global;
   char *shell_userdata_dir, *path;
   DBusGConnection *session_bus;
   ShellWindowTracker *tracker;
+
+  global = shell_global_get ();
 
   self->app_usages_for_context = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_destroy);
 
@@ -411,24 +410,26 @@ shell_app_usage_init (ShellAppUsage *self)
   g_free (path);
   restore_from_file (self);
 
-  self->gconf_client = gconf_client_get_default ();
-  gconf_client_add_dir (self->gconf_client, APP_MONITOR_GCONF_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE, NULL);
-  self->gconf_notify =
-    gconf_client_notify_add (self->gconf_client, ENABLE_MONITORING_KEY,
-                             on_enable_monitoring_key_changed, self, NULL, NULL);
+
+  self->settings_notify = g_signal_connect (shell_global_get_settings (global),
+                                            "changed::" ENABLE_MONITORING_KEY,
+                                            G_CALLBACK (on_enable_monitoring_key_changed),
+                                            self);
   update_enable_monitoring (self);
 }
 
 static void
 shell_app_usage_finalize (GObject *object)
 {
+  ShellGlobal *global;
   ShellAppUsage *self = SHELL_APP_USAGE (object);
 
   if (self->save_id > 0)
     g_source_remove (self->save_id);
-  gconf_client_notify_remove (self->gconf_client, self->gconf_notify);
-  g_object_unref (self->gconf_client);
+
+  global = shell_global_get ();
+  g_signal_handler_disconnect (shell_global_get_settings (global),
+                               self->settings_notify);
 
   g_object_unref (self->configfile);
 
@@ -896,17 +897,12 @@ out:
 static void
 update_enable_monitoring (ShellAppUsage *self)
 {
-  GConfValue *value;
+  ShellGlobal *global;
   gboolean enable;
 
-  value = gconf_client_get (self->gconf_client, ENABLE_MONITORING_KEY, NULL);
-  if (value)
-    {
-      enable = gconf_value_get_bool (value);
-      gconf_value_free (value);
-    }
-  else /* Schema is not present, set default value by hand to avoid getting FALSE */
-    enable = TRUE;
+  global = shell_global_get ();
+  enable = g_settings_get_boolean (shell_global_get_settings (global),
+                                   ENABLE_MONITORING_KEY);
 
   /* Be sure not to start the timers if they were already set */
   if (enable && !self->enable_monitoring)
@@ -931,12 +927,11 @@ update_enable_monitoring (ShellAppUsage *self)
 
 /* Called when the ENABLE_MONITORING_KEY boolean has changed */
 static void
-on_enable_monitoring_key_changed (GConfClient *client,
-                                  guint        connexion_id,
-                                  GConfEntry  *entry,
-                                  gpointer     self)
+on_enable_monitoring_key_changed (GSettings     *settings,
+                                  const gchar   *key,
+                                  ShellAppUsage *self)
 {
-  update_enable_monitoring ((ShellAppUsage *) self);
+  update_enable_monitoring (self);
 }
 
 /**

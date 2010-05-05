@@ -13,12 +13,11 @@ function AppFavorites() {
 }
 
 AppFavorites.prototype = {
-    FAVORITE_APPS_KEY: 'favorite_apps',
+    FAVORITE_APPS_KEY: 'favorite-apps',
 
     _init: function() {
         this._favorites = {};
-        this._gconf = Shell.GConf.get_default();
-        this._gconf.connect('changed::' + this.FAVORITE_APPS_KEY, Lang.bind(this, this._onFavsChanged));
+        global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, Lang.bind(this, this._onFavsChanged));
         this._reload();
     },
 
@@ -28,7 +27,7 @@ AppFavorites.prototype = {
     },
 
     _reload: function() {
-        let ids = Shell.GConf.get_default().get_string_list('favorite_apps');
+        let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
         let appSys = Shell.AppSystem.get_default();
         let apps = ids.map(function (id) {
                 return appSys.get_app(id);
@@ -75,7 +74,7 @@ AppFavorites.prototype = {
 
         let ids = this._getIds();
         ids.push(appId);
-        this._gconf.set_string_list(this.FAVORITE_APPS_KEY, ids);
+        global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         this._favorites[appId] = app;
         return true;
     },
@@ -96,7 +95,7 @@ AppFavorites.prototype = {
             return false;
 
         let ids = this._getIds().filter(function (id) { return id != appId; });
-        this._gconf.set_string_list(this.FAVORITE_APPS_KEY, ids);
+        global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
     },
 

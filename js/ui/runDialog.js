@@ -18,7 +18,7 @@ const Tweener = imports.ui.tweener;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
-const HISTORY_KEY = 'run_dialog/history';
+const HISTORY_KEY = 'command-history';
 const HISTORY_LIMIT = 512;
 
 const DIALOG_FADE_TIME = 0.1;
@@ -179,17 +179,16 @@ RunDialog.prototype = {
     _init : function() {
         this._isOpen = false;
 
-        this._gconf = Shell.GConf.get_default();
-        this._gconf.connect('changed::development_tools', Lang.bind(this, function () {
-            this._enableInternalCommands = this._gconf.get_boolean('development_tools');
+        global.settings.connect('changed::development-tools', Lang.bind(this, function () {
+            this._enableInternalCommands = global.settings.get_boolean('development-tools');
         }));
-        this._enableInternalCommands = this._gconf.get_boolean('development_tools');
+        this._enableInternalCommands = global.settings.get_boolean('development-tools');
 
-        this._history = this._gconf.get_string_list(HISTORY_KEY);
+        this._history = global.settings.get_strv(HISTORY_KEY);
         this._historyIndex = -1;
 
-        this._gconf.connect('changed::' + HISTORY_KEY, Lang.bind(this, function() {
-            this._history = this._gconf.get_string_list(HISTORY_KEY);
+        global.settings.connect('changed::' + HISTORY_KEY, Lang.bind(this, function() {
+            this._history = global.settings.get_strv(HISTORY_KEY);
             this._historyIndex = this._history.length;
         }));
 
@@ -327,7 +326,7 @@ RunDialog.prototype = {
         if (this._history.length > HISTORY_LIMIT) {
             this._history.splice(0, this._history.length - HISTORY_LIMIT);
         }
-        this._gconf.set_string_list(HISTORY_KEY, this._history);
+        global.settings.set_strv(HISTORY_KEY, this._history);
     },
 
     _run : function(input, inTerminal) {

@@ -12,6 +12,7 @@ bin_SCRIPTS = gnome-shell gnome-shell-clock-preferences
 
 gnome-shell: gnome-shell.in
 	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
+	    -e "s|@datadir[@]|$(datadir)|" \
 	    -e "s|@GJS_JS_DIR[@]|$(GJS_JS_DIR)|" \
 	    -e "s|@GJS_JS_NATIVE_DIR[@]|$(GJS_JS_NATIVE_DIR)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
@@ -25,7 +26,8 @@ CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
 
 gnome-shell-clock-preferences: gnome-shell-clock-preferences.in
-	$(AM_V_GEN) sed -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
+	$(AM_V_GEN) sed -e "s|@datadir[@]|$(datadir)|" \
+	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
 	    -e "s|@localedir[@]|$(datadir)/locale|" \
 	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|" \
 	    $< > $@ && chmod a+x $@
@@ -65,7 +67,6 @@ shell_public_headers_h =		\
 	shell-doc-system.h		\
 	shell-drawing.h			\
 	shell-embedded-window.h		\
-	shell-gconf.h			\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
 	shell-process.h			\
@@ -99,7 +100,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-doc-system.c		\
 	shell-drawing.c			\
 	shell-embedded-window.c		\
-	shell-gconf.c			\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-process.c			\

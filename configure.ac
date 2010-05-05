@@ -33,6 +33,8 @@ PKG_PROG_PKG_CONFIG([0.22])
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 AM_GCONF_SOURCE_2
 
+GLIB_GSETTINGS
+
 # Get a value to substitute into gnome-shell.in
 AM_PATH_PYTHON([2.5])
 AC_SUBST(PYTHON)
@@ -60,9 +62,11 @@ GOBJECT_INTROSPECTION_MIN_VERSION=0.6.11
 GJS_MIN_VERSION=0.7
 MUTTER_MIN_VERSION=2.31.2
 GTK_MIN_VERSION=2.18.0
+GIO_MIN_VERSION=2.25.9
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 dbus-glib-1
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
+                                 gio-unix-2.0 dbus-glib-1
                                  gtk+-2.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
                                  gjs-gi-1.0 >= $GJS_MIN_VERSION

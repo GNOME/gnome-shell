@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Pango = imports.gi.Pango;
@@ -582,10 +583,10 @@ LookingGlass.prototype = {
                                         vertical: true,
                                         visible: false });
 
-        let gconf = Shell.GConf.get_default();
-        gconf.watch_directory('/desktop/gnome/interface');
-        gconf.connect('changed::/desktop/gnome/interface/monospace_font_name',
-                      Lang.bind(this, this._updateFont));
+        let gconf = GConf.Client.get_default();
+        gconf.add_dir('/desktop/gnome/interface', GConf.ClientPreloadType.PRELOAD_NONE);
+        gconf.notify_add('/desktop/gnome/interface/monospace_font_name',
+                         Lang.bind(this, this._updateFont));
         this._updateFont();
 
         Main.uiGroup.add_actor(this.actor);
@@ -696,7 +697,7 @@ LookingGlass.prototype = {
     },
 
     _updateFont: function() {
-        let gconf = Shell.GConf.get_default();
+        let gconf = GConf.Client.get_default();
         let fontName = gconf.get_string('/desktop/gnome/interface/monospace_font_name');
         // This is mishandled by the scanner - should by Pango.FontDescription_from_string(fontName);
         // https://bugzilla.gnome.org/show_bug.cgi?id=595889

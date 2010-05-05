@@ -46,9 +46,21 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-left.svg		\
 	theme/ws-switch-arrow-right.svg
 
+gsettings_SCHEMAS = org.gnome.shell.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
 
-schemadir  = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = gnome-shell.schemas
+# We need to compile schemas at make time
+# to run from source tree
+gschemas.compiled: org.gnome.shell.gschema.xml
+        $(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --targetdir=. .
+
+all-local: gschemas.compiled
+
+
+# GConf schemas: provide defaults for keys from Metacity we are overriding
+gconfschemadir  = @GCONF_SCHEMA_FILE_DIR@
+gconfschema_DATA = gnome-shell.schemas
 
 menudir = $(sysconfdir)/xdg/menus
 
@@ -56,16 +68,21 @@ menu_DATA = \
 	gs-applications.menu
 
 install-data-local:
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(gconfschema_DATA)
+
+
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
 	gnome-shell-clock-preferences.desktop.in.in	\
 	$(menu_DATA)					\
-	$(schema_DATA)
+	$(gconfschema_DATA)				\
+	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
 	gnome-shell-clock-preferences.desktop.in	\
-	$(desktop_DATA)
+	$(desktop_DATA)					\
+	$(gsettings_SCHEMAS)				\
+	gschemas.compiled
 

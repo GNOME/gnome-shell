@@ -11,6 +11,7 @@ const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GConf = imports.gi.GConf;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -133,7 +134,9 @@ function start() {
 
     _startDate = new Date();
 
-    global.screen.connect('toggle-recording', function() {
+    let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
+
+    global.screen.connect('toggle-recording', function(recorderSettings) {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
         }
@@ -141,11 +144,11 @@ function start() {
         if (recorder.is_recording()) {
             recorder.pause();
         } else {
-            //read the parameters from GConf always in case they have changed
-            let gconf = Shell.GConf.get_default();
-            recorder.set_framerate(gconf.get_int('recorder/framerate'));
-            recorder.set_filename('shell-%d%u-%c.' + gconf.get_string('recorder/file_extension'));
-            let pipeline = gconf.get_string('recorder/pipeline');
+            // read the parameters from GSettings always in case they have changed
+            recorder.set_framerate(recorderSettings.get_int('framerate'));
+            recorder.set_filename('shell-%d%u-%c.' + recorderSettings.get_string('file-extension'));
+            let pipeline = recorderSettings.get_string('pipeline');
+
             if (!pipeline.match(/^\s*$/))
                 recorder.set_pipeline(pipeline);
             else
@@ -296,7 +299,7 @@ function _globalKeyPressHandler(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Print) {
             // We want to be able to take screenshots of the shell at all times
-            let gconf = Shell.GConf.get_default();
+            let gconf = GConf.Client.get_default();
             let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
             if (command != null && command != '') {
                 let [ok, len, args] = GLib.shell_parse_argv(command);

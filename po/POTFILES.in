@@ -1,5 +1,6 @@
 data/gnome-shell.desktop.in.in
 data/gnome-shell-clock-preferences.desktop.in.in
+data/org.gnome.shell.gschema.xml.in
 [type: gettext/glade]data/clock-preferences.ui
 js/ui/appDisplay.js
 js/ui/appFavorites.js

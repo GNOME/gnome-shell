@@ -8,8 +8,6 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 #include <clutter/clutter.h>
 
 #include "shell-app-private.h"
@@ -19,8 +17,6 @@
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
-
-#define SHELL_APP_FAVORITES_KEY "/desktop/gnome/shell/favorite_apps"
 
 /* Vendor prefixes are something that can be preprended to a .desktop
  * file name.  Undo this.
@@ -197,7 +193,6 @@ static void
 shell_app_system_init (ShellAppSystem *self)
 {
   ShellAppSystemPrivate *priv;
-  GConfClient *client;
 
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                                    SHELL_TYPE_APP_SYSTEM,
@@ -223,8 +218,6 @@ shell_app_system_init (ShellAppSystem *self)
   gmenu_tree_add_monitor (priv->settings_tree, on_tree_changed_cb, self);
 
   reread_menus (self);
-
-  client = gconf_client_get_default ();
 }
 
 static void

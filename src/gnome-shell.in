@@ -155,13 +155,17 @@ def start_shell(perf_output=None):
     # Set up environment
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
+                'GSETTINGS_BACKEND'   : 'gconf',
                 'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', ''),
                 'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + (os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'),
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
     if running_from_source_tree:
-        env.update({'GNOME_SHELL_DATADIR' : data_dir,
-                    'GI_TYPELIB_PATH'     : typelib_dir})
+        env.update({'GNOME_SHELL_DATADIR'  : data_dir,
+                    'GI_TYPELIB_PATH'      : typelib_dir,
+                    'GSETTINGS_SCHEMA_DIR' : data_dir })
+    else:
+        env.update({'GSETTINGS_SCHEMA_DIR' : os.path.join('@datadir@', 'glib-2.0', 'schemas')})
 
     jhbuild_gconf_source = os.path.join('@sysconfdir@', 'gconf/2/path.jhbuild')
     if os.path.exists(jhbuild_gconf_source):

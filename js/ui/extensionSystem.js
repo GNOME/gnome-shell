@@ -127,7 +127,7 @@ function init() {
         global.logError('' + e);
     }
 
-    disabledExtensions = Shell.GConf.get_default().get_string_list('disabled_extensions');
+    disabledExtensions = global.settings.get_strv('disabled-extensions', -1);
 }
 
 function _loadExtensionsIn(dir, type) {

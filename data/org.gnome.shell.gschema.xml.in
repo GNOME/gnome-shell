@@ -1,0 +1,158 @@
+<schemalist>
+  <schema id="org.gnome.shell" path="/apps/gnome-shell/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="development-tools" type="b">
+      <default>true</default>
+      <_summary>
+        Enable internal tools useful for developers and testers from Alt-F2
+      </_summary>
+      <_description>
+        Allows access to internal debugging and monitoring tools
+        using the Alt-F2 dialog.
+      </_description>
+    </key>
+    <key name="disabled-extensions" type="as">
+      <default>[]</default>
+      <_summary>Uuids of extensions to disable</_summary>
+      <_description>
+        GNOME Shell extensions have a uuid property;
+        this key lists extensions which should not be loaded.
+      </_description>
+    </key>
+    <key name="enable-app-monitoring" type="b">
+      <default>true</default>
+      <_summary>Whether to collect stats about applications usage</_summary>
+      <_description>
+        The shell normally monitors active applications in order to present
+        the most used ones (e.g. in launchers). While this data will be
+        kept private, you may want to disable this for privacy reasons.
+        Please note that doing so won't remove already saved data.
+      </_description>
+    </key>
+    <key name="favorite-apps" type="as">
+      <default>[ 'mozilla-firefox.desktop', 'evolution.desktop', 'openoffice.org-writer.desktop' ]</default>
+      <_summary>List of desktop file IDs for favorite applications</_summary>
+      <_description>
+        The applications corresponding to these identifiers
+        will be displayed in the favorites area.
+      </_description>
+    </key>
+    <key name="command-history" type="as">
+      <default>[]</default>
+      <_summary>History for command (Alt-F2) dialog</_summary>
+    </key>
+    <key name="workspaces-view" type="s">
+      <default>'single'</default>
+      <_summary>Overview workspace view mode</_summary>
+      <_description>
+        The selected workspace view mode in the overview.
+        Supported values are "single" and "grid".
+      </_description>
+      <choices>
+        <choice value="single"/>
+        <choice value="grid"/>
+      </choices>
+    </key>
+    <child name="clock" schema="org.gnome.shell.clock"/>
+    <child name="calendar" schema="org.gnome.shell.calendar"/>
+    <child name="recorder" schema="org.gnome.shell.recorder"/>
+  </schema>
+
+  <schema id="org.gnome.shell.calendar" path="/apps/gnome-shell/calendar/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="show-weekdate" type="b">
+      <default>false</default>
+      <_summary>Show the week date in the calendar</_summary>
+      <_description>
+        If true, display the ISO week date in the calendar.
+      </_description>
+      </key>
+  </schema>
+
+  <schema id="org.gnome.shell.clock" path="/apps/gnome-shell/clock/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="format" type="s">
+      <default l10n="messages" context="hour_format">
+      <!-- TRANSLATORS: This is the default hour format, choose ONLY '12-hour' or '24-hour'. -->
+        "12-hour"
+      </default>
+      <_summary>Hour format</_summary>
+      <_description>
+        This key specifies the hour format used by the panel clock.
+        Possible values are "12-hour", "24-hour", "unix" and "custom". If set
+        to "unix", the clock will display time in seconds since Epoch,
+        i.e. 1970-01-01. If set to "custom", the clock will display time
+        according to the format specified in the custom_format key. Note that
+        if set to either "unix" or "custom", the show_date and show_seconds
+        keys are ignored.
+      </_description>
+      <choices>
+        <choice value="12-hour"/>
+        <choice value="24-hour"/>
+        <choice value="unix"/>
+        <choice value="custom"/>
+      </choices>
+    </key>
+    <key name="custom-format" type="s">
+      <default>''</default>
+      <_summary>Custom format of the clock</_summary>
+      <_description>
+        This key specifies the format used by the panel clock when the format
+        key is set to "custom". You can use conversion specifiers understood
+        by strftime() to obtain a specific format. See the strftime() manual
+        for more information.
+      </_description>
+    </key>
+    <key name="show-seconds" type="b">
+      <default>false</default>
+      <_summary>Show time with seconds</_summary>
+      <_description>
+        If true and format is either "12-hour" or "24-hour", display seconds in time.
+      </_description>
+    </key>
+    <key name="show-date" type="b">
+      <default>false</default>
+      <_summary>Show date in clock</_summary>
+      <_description>
+        If true and format is either "12-hour" or "24-hour",
+        display date in the clock, in addition to time.
+      </_description>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.shell.recorder" path="/apps/gnome-shell/recorder/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="framerate" type="i">
+      <default>15</default>
+      <_summary>Framerate used for recording screencasts.</_summary>
+      <_description>
+        The framerate of the resulting screencast recordered
+        by GNOME Shell's screencast recorder in frames-per-second.
+      </_description>
+    </key>
+    <key name="pipeline" type="s">
+      <default>''</default>
+      <_summary>The gstreamer pipeline used to encode the screencast</_summary>
+      <_description>
+        Sets the GStreamer pipeline used to encode recordings.
+        It follows the syntax used for gst-launch. The pipeline should have
+        an unconnected sink pad where the recorded video is recorded. It will
+        normally have a unconnected source pad; output from that pad
+        will be written into the output file. However the pipeline can also
+        take care of its own output - this might be used to send the output
+        to an icecast server via shout2send or similar. When unset or set
+        to an empty value, the default pipeline will be used. This is currently
+        'videorate ! theoraenc ! oggmux' and records to Ogg Theora.
+      </_description>
+    </key>
+    <key name="file-extension" type="s">
+      <default>'ogv'</default>
+      <_summary>File extension used for storing the screencast</_summary>
+      <_description>
+        The filename for recorded screencasts will be a unique filename
+        based on the current date, and use this extension. It should be
+        changed when recording to a different container format.
+      </_description>
+    </key>
+  </schema>
+</schemalist>

@@ -12,6 +12,9 @@
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
   </autotools>
 
   <autotools id="glib">
@@ -83,6 +86,9 @@
 
   <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch repo="git.gnome.org" module="gconf"/>
+    <dependencies>
+      <dep package="gtk+"/>
+    </dependencies>
   </autotools>
 
   <autotools id="mutter" autogenargs="--with-clutter">
@@ -103,6 +109,7 @@
         <dep package="mutter"/>
         <dep package="gjs"/>
         <dep package="gconf"/>
+        <dep package="glib"/>
     </dependencies>
   </autotools>
 

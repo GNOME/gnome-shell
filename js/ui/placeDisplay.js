@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
+const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Shell = imports.gi.Shell;
@@ -120,13 +121,13 @@ function PlacesManager() {
 
 PlacesManager.prototype = {
     _init: function() {
-        let gconf = Shell.GConf.get_default();
-        gconf.watch_directory(NAUTILUS_PREFS_DIR);
+        let gconf = GConf.Client.get_default();
+        gconf.add_dir(NAUTILUS_PREFS_DIR, GConf.ClientPreloadType.PRELOAD_NONE);
 
         this._defaultPlaces = [];
         this._mounts = [];
         this._bookmarks = [];
-        this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
+        this._isDesktopHome = gconf.get_bool(DESKTOP_IS_HOME_KEY);
 
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
@@ -225,7 +226,7 @@ PlacesManager.prototype = {
 
         this._reloadBookmarks();
 
-        gconf.connect('changed::' + DESKTOP_IS_HOME_KEY, Lang.bind(this, this._updateDesktopMenuVisibility));
+        gconf.notify_add(DESKTOP_IS_HOME_KEY, Lang.bind(this, this._updateDesktopMenuVisibility));
 
     },
 
@@ -336,7 +337,7 @@ PlacesManager.prototype = {
     },
 
     _updateDesktopMenuVisibility: function() {
-        let gconf = Shell.GConf.get_default();
+        let gconf = GConf.Client.get_default();
         this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
 
         if (this._isDesktopHome)

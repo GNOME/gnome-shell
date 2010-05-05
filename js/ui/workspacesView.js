@@ -26,13 +26,13 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
-// The values here are also used for gconf, and the key and value
+// The values here are also used for GSettings, and the key and value
 // names must match
 const WorkspacesViewType = {
     SINGLE: 'single',
     GRID:   'grid'
 };
-const WORKSPACES_VIEW_KEY = 'overview/workspaces_view';
+const WORKSPACES_VIEW_KEY = 'workspaces-view';
 
 const WORKSPACE_DRAGGING_SCALE = 0.85;
 const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
@@ -1429,9 +1429,7 @@ WorkspacesControls.prototype = {
         this.actor = new St.BoxLayout({ style_class: 'workspaces-bar' });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._gconf = Shell.GConf.get_default();
-
-        let view = this._gconf.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
+        let view = global.settings.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
         if (view in WorkspacesViewType)
             this._currentViewType = WorkspacesViewType[view];
         else
@@ -1528,7 +1526,7 @@ WorkspacesControls.prototype = {
             this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
 
         this._currentViewType = view;
-        this._gconf.set_string(WORKSPACES_VIEW_KEY, view);
+        global.settings.set_string(WORKSPACES_VIEW_KEY, view);
     },
 
     _onDestroy: function() {
@@ -1590,8 +1588,8 @@ WorkspacesManager.prototype = {
         this.controlsBar.actor.connect('destroy',
                                        Lang.bind(this, this._onDestroy));
         this._viewChangedId =
-            Shell.GConf.get_default().connect('changed::' + WORKSPACES_VIEW_KEY,
-                                              Lang.bind(this, this._updateView));
+            global.settings.connect('changed::' + WORKSPACES_VIEW_KEY,
+                                    Lang.bind(this, this._updateView));
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
@@ -1600,7 +1598,7 @@ WorkspacesManager.prototype = {
     _updateView: function() {
         let viewType, newView;
 
-        let view = Shell.GConf.get_default().get_string(WORKSPACES_VIEW_KEY).toUpperCase();
+        let view = global.settings.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
         if (view in WorkspacesViewType)
             viewType = WorkspacesViewType[view];
         else
@@ -1678,7 +1676,7 @@ WorkspacesManager.prototype = {
         if (this._nWorkspacesNotifyId > 0)
             global.screen.disconnect(this._nWorkspacesNotifyId);
         if (this._viewChangedId > 0)
-            Shell.GConf.get_default().disconnect(this._viewChangedId);
+            global.settings.disconnect(this._viewChangedId);
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();

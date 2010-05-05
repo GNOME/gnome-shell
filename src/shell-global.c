@@ -50,6 +50,7 @@ struct _ShellGlobal {
   GjsContext *js_context;
   MutterPlugin *plugin;
   ShellWM *wm;
+  GSettings *settings;
   const char *datadir;
   const char *imagedir;
   const char *userdatadir;
@@ -75,6 +76,7 @@ enum {
   PROP_STAGE,
   PROP_WINDOW_GROUP,
   PROP_WINDOW_MANAGER,
+  PROP_SETTINGS,
   PROP_DATADIR,
   PROP_IMAGEDIR,
   PROP_USERDATADIR,
@@ -140,6 +142,9 @@ shell_global_get_property(GObject         *object,
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
       break;
+    case PROP_SETTINGS:
+      g_value_set_object (value, global->settings);
+      break;
     case PROP_DATADIR:
       g_value_set_string (value, global->datadir);
       break;
@@ -181,6 +186,8 @@ shell_global_init (ShellGlobal *global)
   /* Ensure config dir exists for later use */
   global->userdatadir = g_build_filename (g_get_user_data_dir (), "gnome-shell", NULL);
   g_mkdir_with_parents (global->userdatadir, 0700);
+
+  global->settings = g_settings_new ("org.gnome.shell");
   
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
@@ -260,6 +267,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Window Manager",
                                                         "Window management interface",
                                                         SHELL_TYPE_WM,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_SETTINGS,
+                                   g_param_spec_object ("settings",
+                                                        "Settings",
+                                                        "GSettings instance for gnome-shell configuration",
+                                                        G_TYPE_SETTINGS,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
                                    PROP_DATADIR,
@@ -1282,6 +1296,20 @@ shell_get_event_state (ClutterEvent *event)
 {
   ClutterModifierType state = clutter_event_get_state (event);
   return state & CLUTTER_MODIFIER_MASK;
+}
+
+/**
+ * shell_global_get_settings:
+ * @global: A #ShellGlobal
+ *
+ * Get the global GSettings instance.
+ *
+ * Return value: (transfer none) The GSettings object (transfer none).
+ */
+GSettings *
+shell_global_get_settings (ShellGlobal *global)
+{
+  return global->settings;
 }
 
 static void

@@ -2,6 +2,8 @@
 
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
+const GConf = imports.gi.GConf;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -40,10 +42,10 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'gnome-power-manager': 'battery'
 };
 
-const CLOCK_FORMAT_KEY        = 'clock/format';
-const CLOCK_CUSTOM_FORMAT_KEY = 'clock/custom_format';
-const CLOCK_SHOW_DATE_KEY     = 'clock/show_date';
-const CLOCK_SHOW_SECONDS_KEY  = 'clock/show_seconds';
+const CLOCK_FORMAT_KEY        = 'format';
+const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
+const CLOCK_SHOW_DATE_KEY     = 'show-date';
+const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
 function AnimatedIcon(name, size) {
     this._init(name, size);
@@ -521,8 +523,8 @@ ClockButton.prototype = {
 
         this._calendarPopup = null;
 
-        let gconf = Shell.GConf.get_default();
-        gconf.connect('changed', Lang.bind(this, this._updateClock));
+        this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
+        this._clockSettings.connect('changed', Lang.bind(this, this._updateClock));
 
         // Start the clock
         this._updateClock();
@@ -580,10 +582,9 @@ ClockButton.prototype = {
     },
 
     _updateClock: function() {
-        let gconf = Shell.GConf.get_default();
-        let format = gconf.get_string(CLOCK_FORMAT_KEY);
-        let showDate = gconf.get_boolean(CLOCK_SHOW_DATE_KEY);
-        let showSeconds = gconf.get_boolean(CLOCK_SHOW_SECONDS_KEY);
+        let format = this._clockSettings.get_string(CLOCK_FORMAT_KEY);
+        let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
+        let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
 
         let clockFormat;
         switch (format) {
@@ -595,7 +596,7 @@ ClockButton.prototype = {
             case 'custom':
                 // force updates every second
                 showSeconds = true;
-                clockFormat = gconf.get_string(CLOCK_CUSTOM_FORMAT_KEY);
+                clockFormat = this._clockSettings.get_string(CLOCK_CUSTOM_FORMAT_KEY);
                 break;
             case '24-hour':
                 if (showDate)

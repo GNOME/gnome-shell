@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
@@ -10,7 +11,7 @@ const Gettext_gtk20 = imports.gettext.domain('gtk20');
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const MSECS_IN_WEEK = MSECS_IN_DAY * 7;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
-const SHOW_WEEKDATE_KEY = 'calendar/show_weekdate';
+const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
 function _sameDay(dateA, dateB) {
     return (dateA.getDate() == dateB.getDate() &&
@@ -48,10 +49,10 @@ Calendar.prototype = {
         this._weekStart = NaN;
         this._weekdate = NaN;
         this._digitWidth = NaN;
-        this._gconf = Shell.GConf.get_default();
+        this._settings = new Gio.Settings({ schema: 'org.gnome.shell.calendar' });
 
-        this._gconf.connect('changed', Lang.bind(this, this._onSettingsChange));
-        this._useWeekdate = this._gconf.get_boolean(SHOW_WEEKDATE_KEY);
+        this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
+        this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
         let weekStartString = Gettext_gtk20.gettext('calendar:week_start:0');
         if (weekStartString.indexOf('calendar:week_start:') == 0) {
@@ -201,7 +202,7 @@ Calendar.prototype = {
     },
 
     _onSettingsChange: function() {
-        this._useWeekdate = this._gconf.get_boolean(SHOW_WEEKDATE_KEY);
+        this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
         this._update();
     },

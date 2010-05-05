@@ -89,6 +89,8 @@ void shell_global_get_pointer (ShellGlobal         *global,
                                int                 *y,
                                ClutterModifierType *mods);
 
+GSettings *shell_global_get_settings (ShellGlobal *global);
+
 ClutterModifierType shell_get_event_state (ClutterEvent *event);
 
 void shell_popup_menu (GtkMenu *menu, int button, guint32 time,
