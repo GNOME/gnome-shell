@@ -1259,6 +1259,10 @@ clutter_animator_set_key_internal (ClutterAnimator    *animator,
 
   priv->score = g_list_insert_sorted (priv->score, key,
                                       sort_actor_prop_progress_func);
+
+  /* if the animator is already running reinitialize internal iterators */
+  if (clutter_timeline_is_playing (priv->timeline))
+    animation_animator_started (priv->timeline, animator);
 }
 
 /**
