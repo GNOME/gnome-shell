@@ -219,7 +219,8 @@ typedef struct _PropObjectKey {
   gdouble       progress;
 } PropObjectKey;
 
-typedef struct _KeyAnimator {
+/* Iterator that walks the keys of a property*/
+typedef struct _PropertyIter {
   PropObjectKey       *key;
   ClutterInterval     *interval;
   ClutterAlpha        *alpha;
@@ -231,7 +232,7 @@ typedef struct _KeyAnimator {
   ClutterInterpolation interpolation;
 
   guint                ease_in : 1;
-} KeyAnimator;
+} PropertyIter;
 
 static PropObjectKey *
 prop_actor_key_new (GObject     *object,
@@ -253,25 +254,25 @@ prop_actor_key_free (gpointer key)
 }
 
 static void
-key_animator_free (gpointer key)
+property_iter_free (gpointer key)
 {
   if (key != NULL)
     {
-      KeyAnimator *key_animator = key;
+      PropertyIter *property_iter = key;
 
-      g_object_unref (key_animator->interval);
-      g_object_unref (key_animator->alpha);
+      g_object_unref (property_iter->interval);
+      g_object_unref (property_iter->alpha);
 
-      g_slice_free (KeyAnimator, key_animator);
+      g_slice_free (PropertyIter, property_iter);
     }
 }
 
-static KeyAnimator *
-key_animator_new (ClutterAnimator *animator,
-                  PropObjectKey   *key,
-                  GType            type)
+static PropertyIter *
+property_iter_new (ClutterAnimator *animator,
+                   PropObjectKey   *key,
+                   GType            type)
 {
-  KeyAnimator *key_animator = g_slice_new (KeyAnimator);
+  PropertyIter *property_iter = g_slice_new (PropertyIter);
   ClutterInterval *interval = g_object_new (CLUTTER_TYPE_INTERVAL,
                                             "value-type", type,
                                             NULL);
@@ -279,16 +280,16 @@ key_animator_new (ClutterAnimator *animator,
   /* we own this interval */
   g_object_ref_sink (interval);
 
-  key_animator->interval = interval;
-  key_animator->key = key;
-  key_animator->alpha = clutter_alpha_new ();
-  clutter_alpha_set_timeline (key_animator->alpha,
+  property_iter->interval = interval;
+  property_iter->key = key;
+  property_iter->alpha = clutter_alpha_new ();
+  clutter_alpha_set_timeline (property_iter->alpha,
                               animator->priv->slave_timeline);
 
   /* as well as the alpha */
-  g_object_ref_sink (key_animator->alpha);
+  g_object_ref_sink (property_iter->alpha);
 
-  return key_animator;
+  return property_iter;
 }
 
 static guint
@@ -469,19 +470,19 @@ list_find_custom_reverse (GList         *list,
  */
 static void
 animation_animator_ensure_animator (ClutterAnimator *animator,
-                                    KeyAnimator     *key_animator,
+                                    PropertyIter    *property_iter,
                                     PropObjectKey   *key,
                                     gdouble          progress)
 {
 
-  if (progress > key_animator->end)
+  if (progress > property_iter->end)
     {
-      while (progress > key_animator->end)
+      while (progress > property_iter->end)
         {
           ClutterAnimatorKey *initial_key, *next_key;
           GList *initial, *next;
 
-          initial = g_list_find_custom (key_animator->current->next,
+          initial = g_list_find_custom (property_iter->current->next,
                                         key,
                                         sort_actor_prop_func);
 
@@ -489,10 +490,10 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
             {
               initial_key = initial->data;
 
-              clutter_interval_set_initial_value (key_animator->interval,
+              clutter_interval_set_initial_value (property_iter->interval,
                                                   &initial_key->value);
-              key_animator->current = initial;
-              key_animator->start = initial_key->progress;
+              property_iter->current = initial;
+              property_iter->start = initial_key->progress;
 
               next = g_list_find_custom (initial->next,
                                          key,
@@ -501,41 +502,41 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
                 {
                   next_key = next->data;
 
-                  key_animator->end = next_key->progress;
+                  property_iter->end = next_key->progress;
                 }
               else
                 {
                   next_key = initial_key;
 
-                  key_animator->end = 1.0;
+                  property_iter->end = 1.0;
                 }
 
-              clutter_interval_set_final_value (key_animator->interval,
+              clutter_interval_set_final_value (property_iter->interval,
                                                 &next_key->value);
 
-              if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
-                clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+              if ((clutter_alpha_get_mode (property_iter->alpha) != next_key->mode))
+                clutter_alpha_set_mode (property_iter->alpha, next_key->mode);
             }
           else /* no relevant interval */
             {
-              ClutterAnimatorKey *current_key = key_animator->current->data;
-              clutter_interval_set_initial_value (key_animator->interval,
+              ClutterAnimatorKey *current_key = property_iter->current->data;
+              clutter_interval_set_initial_value (property_iter->interval,
                                                   &current_key->value);
-              clutter_interval_set_final_value (key_animator->interval,
+              clutter_interval_set_final_value (property_iter->interval,
                                                 &current_key->value);
               break;
             }
         }
     }
-  else if (progress < key_animator->start)
+  else if (progress < property_iter->start)
     {
-      while (progress < key_animator->start)
+      while (progress < property_iter->start)
         {
           ClutterAnimatorKey *initial_key, *next_key;
           GList *initial;
-          GList *old = key_animator->current;
+          GList *old = property_iter->current;
 
-          initial = list_find_custom_reverse (key_animator->current->prev,
+          initial = list_find_custom_reverse (property_iter->current->prev,
                                               key,
                                               sort_actor_prop_func);
 
@@ -543,29 +544,29 @@ animation_animator_ensure_animator (ClutterAnimator *animator,
             {
               initial_key = initial->data;
 
-              clutter_interval_set_initial_value (key_animator->interval,
+              clutter_interval_set_initial_value (property_iter->interval,
                                                   &initial_key->value);
-              key_animator->current = initial;
-              key_animator->end = key_animator->start;
-              key_animator->start = initial_key->progress;
+              property_iter->current = initial;
+              property_iter->end = property_iter->start;
+              property_iter->start = initial_key->progress;
 
               if (old)
                 {
                   next_key = old->data;
 
-                  key_animator->end = next_key->progress;
+                  property_iter->end = next_key->progress;
                 }
               else
                 {
                   next_key = initial_key;
 
-                  key_animator->end = 1.0;
+                  property_iter->end = 1.0;
                 }
 
-              clutter_interval_set_final_value (key_animator->interval,
+              clutter_interval_set_final_value (property_iter->interval,
                                                 &next_key->value);
-              if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
-                clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+              if ((clutter_alpha_get_mode (property_iter->alpha) != next_key->mode))
+                clutter_alpha_set_mode (property_iter->alpha, next_key->mode);
             }
           else
             break;
@@ -648,17 +649,17 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       PropObjectKey      *prop_actor_key = key;
-      KeyAnimator        *key_animator   = value;
+      PropertyIter       *property_iter   = value;
       ClutterAnimatorKey *start_key;
       gdouble             sub_progress;
 
-      animation_animator_ensure_animator (animator, key_animator,
+      animation_animator_ensure_animator (animator, property_iter,
                                           key,
                                           progress);
-      start_key = key_animator->current->data;
+      start_key = property_iter->current->data;
 
-      sub_progress = (progress - key_animator->start)
-                   / (key_animator->end - key_animator->start);
+      sub_progress = (progress - property_iter->start)
+                   / (property_iter->end - property_iter->start);
 
       /* do not change values if we're not active yet (delay) */
       if (sub_progress >= 0.0 && sub_progress <= 1.0)
@@ -671,41 +672,41 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
           clutter_timeline_advance (animator->priv->slave_timeline,
                                     sub_progress * 10000);
 
-          sub_progress = clutter_alpha_get_alpha (key_animator->alpha);
-          int_type = clutter_interval_get_value_type (key_animator->interval);
+          sub_progress = clutter_alpha_get_alpha (property_iter->alpha);
+          int_type = clutter_interval_get_value_type (property_iter->interval);
 
-          if (key_animator->interpolation == CLUTTER_INTERPOLATION_CUBIC &&
+          if (property_iter->interpolation == CLUTTER_INTERPOLATION_CUBIC &&
               int_type == G_TYPE_FLOAT)
             {
               gdouble prev, current, next, nextnext;
               gdouble res;
 
-              if ((key_animator->ease_in == FALSE ||
-                  (key_animator->ease_in &&
-                   list_find_custom_reverse (key_animator->current->prev,
-                                             key_animator->current->data,
+              if ((property_iter->ease_in == FALSE ||
+                  (property_iter->ease_in &&
+                   list_find_custom_reverse (property_iter->current->prev,
+                                             property_iter->current->data,
                                              sort_actor_prop_func))))
                 {
                   current = g_value_get_float (&start_key->value);
-                  prev = list_try_get_rel (key_animator->current, -1);
+                  prev = list_try_get_rel (property_iter->current, -1);
                 }
               else
                 {
                   /* interpolated and easing in */
-                  clutter_interval_get_initial_value (key_animator->interval,
+                  clutter_interval_get_initial_value (property_iter->interval,
                                                       &tmp_value);
                   prev = current = g_value_get_float (&tmp_value);
                 }
 
-               next = list_try_get_rel (key_animator->current, 1);
-               nextnext = list_try_get_rel (key_animator->current, 2);
+               next = list_try_get_rel (property_iter->current, 1);
+               nextnext = list_try_get_rel (property_iter->current, 2);
                res = cubic_interpolation (sub_progress, prev, current, next,
                                           nextnext);
 
                g_value_set_float (&tmp_value, res);
             }
           else
-            clutter_interval_compute_value (key_animator->interval,
+            clutter_interval_compute_value (property_iter->interval,
                                             sub_progress,
                                             &tmp_value);
 
@@ -728,13 +729,13 @@ animation_animator_started (ClutterTimeline *timeline,
   for (k = animator->priv->score; k != NULL; k = k->next)
     {
       ClutterAnimatorKey *key = k->data;
-      KeyAnimator        *key_animator;
+      PropertyIter       *property_iter;
       PropObjectKey      *prop_actor_key;
 
       prop_actor_key = prop_actor_key_new (key->object, key->property_name);
-      key_animator = g_hash_table_lookup (animator->priv->properties,
+      property_iter = g_hash_table_lookup (animator->priv->properties,
                                           prop_actor_key);
-      if (key_animator)
+      if (property_iter)
         {
           prop_actor_key_free (prop_actor_key);
         }
@@ -745,11 +746,11 @@ animation_animator_started (ClutterTimeline *timeline,
 
           pspec = g_object_class_find_property (klass, key->property_name);
 
-          key_animator = key_animator_new (animator, prop_actor_key,
+          property_iter = property_iter_new (animator, prop_actor_key,
                                            G_PARAM_SPEC_VALUE_TYPE (pspec));
           g_hash_table_insert (animator->priv->properties,
                                prop_actor_key,
-                               key_animator);
+                               property_iter);
         }
     }
 
@@ -761,7 +762,7 @@ animation_animator_started (ClutterTimeline *timeline,
     g_hash_table_iter_init (&iter, animator->priv->properties);
     while (g_hash_table_iter_next (&iter, &key, &value))
       {
-        KeyAnimator *key_animator = value;
+        PropertyIter *property_iter = value;
         ClutterAnimatorKey *initial_key, *next_key;
         GList *initial;
         GList *next;
@@ -771,27 +772,27 @@ animation_animator_started (ClutterTimeline *timeline,
                                       sort_actor_prop_func);
         g_assert (initial != NULL);
         initial_key = initial->data;
-        clutter_interval_set_initial_value (key_animator->interval,
+        clutter_interval_set_initial_value (property_iter->interval,
                                             &initial_key->value);
 
-        key_animator->current       = initial;
-        key_animator->start         = initial_key->progress;
-        key_animator->ease_in       = initial_key->ease_in;
-        key_animator->interpolation = initial_key->interpolation;
+        property_iter->current       = initial;
+        property_iter->start         = initial_key->progress;
+        property_iter->ease_in       = initial_key->ease_in;
+        property_iter->interpolation = initial_key->interpolation;
 
-        if (key_animator->ease_in)
+        if (property_iter->ease_in)
           {
             GValue tmp_value = { 0, };
             GType int_type;
 
-            int_type = clutter_interval_get_value_type (key_animator->interval);
+            int_type = clutter_interval_get_value_type (property_iter->interval);
             g_value_init (&tmp_value, int_type);
 
             g_object_get_property (initial_key->object,
                                    initial_key->property_name,
                                    &tmp_value);
 
-            clutter_interval_set_initial_value (key_animator->interval,
+            clutter_interval_set_initial_value (property_iter->interval,
                                                 &tmp_value);
 
             g_value_unset (&tmp_value);
@@ -801,18 +802,18 @@ animation_animator_started (ClutterTimeline *timeline,
         if (next)
           {
             next_key = next->data;
-            key_animator->end = next_key->progress;
+            property_iter->end = next_key->progress;
           }
         else
           {
             next_key = initial_key;
-            key_animator->end = 1.0;
+            property_iter->end = 1.0;
           }
 
-        clutter_interval_set_final_value (key_animator->interval,
+        clutter_interval_set_final_value (property_iter->interval,
                                           &next_key->value);
-        if ((clutter_alpha_get_mode (key_animator->alpha) != next_key->mode))
-          clutter_alpha_set_mode (key_animator->alpha, next_key->mode);
+        if ((clutter_alpha_get_mode (property_iter->alpha) != next_key->mode))
+          clutter_alpha_set_mode (property_iter->alpha, next_key->mode);
       }
   }
 }
@@ -1793,7 +1794,7 @@ clutter_animator_init (ClutterAnimator *animator)
   priv->properties = g_hash_table_new_full (prop_actor_hash,
                                             prop_actor_equal,
                                             prop_actor_key_free,
-                                            key_animator_free);
+                                            property_iter_free);
 
   clutter_animator_set_timeline (animator, clutter_timeline_new (2000));
 
