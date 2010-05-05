@@ -45,18 +45,22 @@ m4_define([clutter_api_version], [1.0])
 m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
-AC_PREREQ([2.59])
+AC_PREREQ([2.63])
 
 AC_INIT([clutter],
         [clutter_version],
-        [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
+        [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter],
+        [clutter],
+        [http://www.clutter-project.org])
 
 AC_CONFIG_SRCDIR([clutter/clutter.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
-AM_INIT_AUTOMAKE([1.10 foreign -Wno-portability no-define dist-bzip2 check-news])
+AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define dist-bzip2 check-news])
+
+AM_SILENT_RULES([yes])
 
 CLUTTER_MAJOR_VERSION=clutter_major_version
 CLUTTER_MINOR_VERSION=clutter_minor_version
@@ -94,17 +98,11 @@ AM_PROG_CC_C_O
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
-# Disable dolt; we should depend on libtool 2.2
-#DOLT
-
 # Checks for header files.
 AC_HEADER_STDC
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
-AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
-
-PKG_PROG_PKG_CONFIG
+AM_PATH_GLIB_2_0
 
 dnl ========================================================================
 
@@ -776,11 +774,11 @@ AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
-GOBJECT_INTROSPECTION_CHECK([0.6.4])
+GOBJECT_INTROSPECTION_CHECK([0.6.7])
 
 dnl === GTK Doc check =========================================================
 
-GTK_DOC_CHECK([1.11])
+GTK_DOC_CHECK([1.13])
 
 # we don't want to build the documentation from a Git clone unless we
 # explicitly tell configure to do so; this allows avoiding to recurse into
@@ -842,22 +840,6 @@ AM_GLIB_GNU_GETTEXT
 GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
 dnl ===========================================================================
-
-m4_ifdef([AM_SILENT_RULES],
-         [
-           AM_SILENT_RULES([yes])
-           use_shave=no
-         ],
-         [
-           SHAVE_INIT([build/autotools], [enable])
-           AC_CONFIG_FILES([
-                build/autotools/shave
-                build/autotools/shave-libtool
-           ])
-           use_shave=yes
-         ])
-
-AM_CONDITIONAL([USE_SHAVE], [test "x$use_shave" = "xyes"])
 
 AC_CONFIG_FILES([
         Makefile
