@@ -1007,8 +1007,12 @@ SingleView.prototype = {
             let [dx, dy] = this._workspaces[i].actor.get_transformed_position();
             let [dw, dh] = this._workspaces[i].actor.get_transformed_size();
 
-            if (x > dx && x < dx + dw && y > dy && y < dy + dh)
-                return this._workspaces[i].acceptDrop(source, dropActor, x, y, time);
+            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
+                let accept = this._workspaces[i].acceptDrop(source, dropActor, x, y, time);
+                if (accept)
+                    this._workspaces[i].metaWorkspace.activate(time);
+                return accept;
+            }
         }
 
         let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
