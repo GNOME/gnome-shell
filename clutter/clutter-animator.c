@@ -1242,7 +1242,24 @@ clutter_animator_set_key_internal (ClutterAnimator    *animator,
                                    ClutterAnimatorKey *key)
 {
   ClutterAnimatorPrivate *priv = animator->priv;
-  GList *old_item;
+  GList                  *old_item;
+  GList                  *initial_item;
+  ClutterAnimatorKey     *initial_key = NULL;
+
+  if ((initial_item = g_list_find_custom (animator->priv->score, key,
+                                          sort_actor_prop_func)))
+    initial_key = initial_item->data;
+
+  /* The first key for a property specifies ease-in and interpolation,
+   * if we are replacing; or becoming a new first key we should
+   * inherit the old flags.
+   */
+  if (initial_key &&
+      initial_key->progress >= key->progress)
+    {
+      key->interpolation = initial_key->interpolation;
+      key->ease_in = initial_key->ease_in;
+    }
 
   old_item = g_list_find_custom (priv->score, key,
                                  sort_actor_prop_progress_func);
@@ -1400,11 +1417,30 @@ clutter_animator_remove_key (ClutterAnimator *animator,
           (progress < 0  || fabs (progress - key->progress) < PROGRESS_EPSILON)
          )
         {
+          ClutterAnimatorKey *prev_key = NULL;
           key->is_inert = TRUE;
 
           clutter_animator_key_free (key);
 
           /* FIXME: non performant since we reiterate the list many times */
+
+          prev_key = k->prev ? k->prev->data : NULL;
+
+          if (!prev_key || prev_key->object   != key->object ||
+                           prev_key->property_name != key->property_name)
+            { /* We are removing the first key for a property ... */
+              ClutterAnimatorKey *next_key = k->next ? k->next->data : NULL;
+              if (next_key && next_key->object == key->object &&
+                              next_key->property_name == key->property_name)
+                {
+                  /* ... and there is a key of our own type following us,
+                   * copy interpolation/ease_in flags to the new first key
+                   */
+                  next_key->interpolation = key->interpolation;
+                  next_key->ease_in = key->ease_in;
+                }
+            }
+
           k = priv->score = g_list_remove (priv->score, key);
         }
     }
