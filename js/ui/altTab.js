@@ -46,7 +46,7 @@ AltTabPopup.prototype = {
         this._haveModal = false;
 
         this._currentApp = 0;
-        this._currentWindow = 0;
+        this._currentWindow = -1;
         this._thumbnailTimeoutId = 0;
         this._motionTimeoutId = 0;
 
@@ -164,8 +164,9 @@ AltTabPopup.prototype = {
                     this._select(0, 1, true);
                 else
                     this._select(1);
-            } else
+            } else {
                 this._select(1);
+            }
         }
 
         // There's a race condition; if the user released Alt before
@@ -190,10 +191,16 @@ AltTabPopup.prototype = {
     },
 
     _nextWindow : function() {
+        // We actually want the second window if we're in the unset state
+        if (this._currentWindow == -1)
+            this._currentWindow = 0;
         return mod(this._currentWindow + 1,
                    this._appIcons[this._currentApp].cachedWindows.length);
     },
     _previousWindow : function() {
+        // Also assume second window here
+        if (this._currentWindow == -1)
+            this._currentWindow = 1;
         return mod(this._currentWindow - 1,
                    this._appIcons[this._currentApp].cachedWindows.length);
     },
@@ -213,7 +220,7 @@ AltTabPopup.prototype = {
             this.destroy();
         else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Tab) {
-                if (shift && this._currentWindow == 0)
+                if (shift && (this._currentWindow == 0 || this._currentWindow == -1))
                     this._select(this._previousApp());
                 else if (!shift && this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
                     this._select(this._nextApp());
@@ -233,7 +240,7 @@ AltTabPopup.prototype = {
             else if (keysym == Clutter.Right || keysym == Clutter.d)
                 this._select(this._nextApp());
             else if (keysym == Clutter.Down || keysym == Clutter.s)
-                this._select(this._currentApp, this._currentWindow);
+                this._select(this._currentApp, 0);
         }
 
         return true;
@@ -252,7 +259,7 @@ AltTabPopup.prototype = {
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP) {
             if (this._thumbnailsFocused) {
-                if (this._currentWindow == 0)
+                if (this._currentWindow == 0 || this._currentWindow == -1)
                     this._select(this._previousApp());
                 else
                     this._select(this._currentApp, this._previousWindow());
@@ -286,12 +293,17 @@ AltTabPopup.prototype = {
     _appActivated : function(appSwitcher, n) {
         // If the user clicks on the selected app, activate the
         // selected window; otherwise (eg, they click on an app while
-        // !mouseActive) activate the first window of the clicked-on
-        // app.
-        let appIcon = this._appIcons[n];
-        let windowIndex = (n == this._currentApp) ? this._currentWindow : 0;
-        let window = appIcon.cachedWindows[windowIndex];
-        appIcon.app.activate_window(window, global.get_current_time());
+        // !mouseActive) activate the the clicked-on app.
+        if (n == this._currentApp) {
+            let window;
+            if (this._currentWindow >= 0)
+                window = this._appIcons[this._currentApp].cachedWindows[this._currentWindow];
+            else
+                window = null;
+            this._appIcons[this._currentApp].app.activate_window(window, global.get_current_time());
+        } else {
+            this._appIcons[n].app.activate_window(null, global.get_current_time());
+        }
         this.destroy();
     },
 
@@ -304,7 +316,7 @@ AltTabPopup.prototype = {
 
     _windowActivated : function(thumbnailList, n) {
         let appIcon = this._appIcons[this._currentApp];
-        appIcon.app.activate_window(appIcon.cachedWindows[n]);
+        Main.activateWindow(appIcon.cachedWindows[n]);
         this.destroy();
     },
 
@@ -330,9 +342,12 @@ AltTabPopup.prototype = {
     },
 
     _finish : function() {
-        let appIcon = this._appIcons[this._currentApp];
-        let window = appIcon.cachedWindows[this._currentWindow];
-        appIcon.app.activate_window(window, global.get_current_time());
+        let app = this._appIcons[this._currentApp];
+        if (this._currentWindow >= 0) {
+            Main.activateWindow(app.cachedWindows[this._currentWindow]);
+        } else {
+            app.app.activate_window(null, global.get_current_time());
+        }
         this.destroy();
     },
 
@@ -397,7 +412,7 @@ AltTabPopup.prototype = {
         this._thumbnailsFocused = (window != null) && !forceAppFocus;
 
         this._currentApp = app;
-        this._currentWindow = window ? window : 0;
+        this._currentWindow = window ? window : -1;
         this._appSwitcher.highlight(app, this._thumbnailsFocused);
 
         if (window != null) {
@@ -409,11 +424,16 @@ AltTabPopup.prototype = {
                    !forceAppFocus) {
             this._thumbnailTimeoutId = Mainloop.timeout_add (
                 THUMBNAIL_POPUP_TIME,
-                Lang.bind(this, function () {
-                              this._select(this._currentApp, 0, true);
-                              return false;
-                          }));
+                Lang.bind(this, this._timeoutPopupThumbnails));
         }
+    },
+
+    _timeoutPopupThumbnails: function() {
+        if (!this._thumbnails)
+            this._createThumbnails();
+        this._thumbnailTimeoutId = 0;
+        this._thumbnailsFocused = false;
+        return false;
     },
 
     _destroyThumbnails : function() {
