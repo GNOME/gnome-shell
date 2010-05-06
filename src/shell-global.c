@@ -159,7 +159,6 @@ shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
   char *imagedir;
-  GFile *userdata_dir;
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
@@ -180,9 +179,7 @@ shell_global_init (ShellGlobal *global)
 
   /* Ensure config dir exists for later use */
   global->userdatadir = g_build_filename (g_get_user_data_dir (), "gnome-shell", NULL);
-  userdata_dir = g_file_new_for_path (global->userdatadir);
-  g_file_make_directory (userdata_dir, NULL, NULL);
-  g_object_unref (userdata_dir);
+  g_mkdir_with_parents (global->userdatadir, 0700);
   
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
