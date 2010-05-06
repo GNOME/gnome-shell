@@ -124,6 +124,13 @@ on_paint (ClutterActor *actor, void *state)
 
   cogl_handle_unref (tex);
 
+  /* Restore the viewport and matrices state */
+  cogl_set_viewport (saved_viewport[0],
+                     saved_viewport[1],
+                     saved_viewport[2],
+                     saved_viewport[3]);
+  cogl_set_projection_matrix (&saved_projection);
+  cogl_pop_matrix ();
 
   /* Comment this out if you want visual feedback of what this test
    * paints.
