@@ -1,6 +1,7 @@
 #!/bin/sh
 
 UNIT_TEST_PATH=$1
+shift
 
 test -z ${UNIT_TEST_PATH} && {
         echo "Usage: $0 /path/to/unit_test"
@@ -9,9 +10,9 @@ test -z ${UNIT_TEST_PATH} && {
 
 UNIT_TEST=`basename ${UNIT_TEST_PATH}`
 
-echo "Running: gtester -p ${UNIT_TEST_PATH} ./test-conformance"
+echo "Running: ./test-conformance -p ${UNIT_TEST_PATH} $@"
 echo ""
-gtester -p ${UNIT_TEST_PATH} -m slow --verbose ./test-conformance
+./test-conformance -p ${UNIT_TEST_PATH} "$@"
 
 echo ""
 echo "NOTE: For debugging purposes, you can run this single test as follows:"

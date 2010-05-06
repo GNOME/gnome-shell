@@ -60,12 +60,15 @@ UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
 wrappers: stamp-test-conformance
 	@true
 stamp-test-conformance: test-conformance$(EXEEXT)
+	@mkdir -p wrappers
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
-		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i'" ) > $$unit$(EXEEXT) ; \
+		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(EXEEXT) ; \
+		( echo "#!/bin/sh" ; echo "exec ./test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
+		chmod +x wrappers/$$unit$(EXEEXT); \
 	done \
 	&& echo timestamp > $(@F)
 
@@ -75,6 +78,7 @@ clean-wrappers:
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  RM     $$unit"; \
 		rm -f $$unit$(EXEEXT) ; \
+		rm -f wrappers/$$unit$(EXEEXT) ; \
 	done \
 	&& rm -f stamp-test-conformance
 
@@ -107,22 +111,26 @@ test_conformance_LDFLAGS = -rdynamic
 .PHONY: full-report full-report-normal full-report-disable-npots
 .PHONY: full-report-generate
 
-test:
-	@gtester -o=test-conformance-results.xml ./test-conformance
+test: wrappers
+	@$(top_srcdir)/tests/conform/run-tests.sh \
+	  ./test-conformance$(EXEEXT) test-conformance-results.xml
 
-test-verbose:
-	@gtester --verbose -o=test-conformance-result.xml ./test-conformance
+test-verbose: wrappers
+	@$(top_srcdir)/tests/conform/run-tests.sh \
+	  ./test-conformance$(EXEEXT) test-conformance-results.xml --verbose
 
-test-report-normal:
-	@gtester -o=test-conformance-results.xml -k ./test-conformance \
+test-report-normal: wrappers
+	@$(top_srcdir)/tests/conform/run-tests.sh \
+	  ./test-conformance$(EXEEXT) test-conformance-results.xml -k \
 	  && ( gtester-report test-conformance-results.xml \
 	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
 	      > test-conformance-results.html ) \
 	  && gnome-open ./test-conformance-results.html
 
-test-report-disable-npots:
+test-report-disable-npots: wrappers
 	@../tools/disable-npots.sh \
-	  gtester -o=test-conformance-results-dn.xml -k ./test-conformance \
+	  $(top_srcdir)/tests/conform/run-tests.sh \
+	    ./test-conformance$(EXEEXT) test-conformance-results-dn.xml -k \
 	  && ( gtester-report test-conformance-results-dn.xml \
 	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
 	      > test-conformance-results-dn.html ) \
@@ -130,15 +138,17 @@ test-report-disable-npots:
 
 test-report: test-report-normal
 
-full-report-normal:
-	@gtester -o=test-conformance-results.xml -k -m=slow ./test-conformance \
+full-report-normal: wrappers
+	@$(top_srcdir)/tests/conform/run-tests.sh \
+	  ./test-conformance$(EXEEXT) test-conformance-results.xml -k -m=slow \
 	  && ( gtester-report test-conformance-results.xml \
 	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
 	      > test-conformance-results.html )
 
-full-report-disable-npots:
+full-report-disable-npots: wrappers
 	@../tools/disable-npots.sh \
-	  gtester -o=test-conformance-results-dn.xml -k -m=slow ./test-conformance \
+	  $(top_srcdir)/tests/conform/run-tests.sh \
+	    ./test-conformance$(EXEEXT) test-conformance-results-dn.xml -k -m=slow \
 	  && ( gtester-report test-conformance-results-dn.xml \
 	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
 	      > test-conformance-results-dn.html )
@@ -161,7 +171,7 @@ full-report: full-report-generate
 		gnome-open "$$x"; \
 	done
 
-EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
+EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh run-tests.sh
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
