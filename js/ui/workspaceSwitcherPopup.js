@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Main = imports.ui.main;
 
 const Tweener = imports.ui.tweener;
 
@@ -25,7 +26,7 @@ WorkspaceSwitcherPopup.prototype = {
                                          y: 0,
                                          width: global.screen_width,
                                          height: global.screen_height });
-        global.stage.add_actor(this.actor);
+        Main.uiGroup.add_actor(this.actor);
 
         this._scaleWidth = global.screen_width / global.screen_height;
 

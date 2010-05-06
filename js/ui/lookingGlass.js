@@ -257,7 +257,7 @@ Inspector.prototype = {
         eventHandler.connect('notify::allocation', Lang.bind(this, function () {
             eventHandler.x = primary.x + Math.floor((primary.width - eventHandler.width) / 2);
         }));
-        global.stage.add_actor(eventHandler);
+        Main.uiGroup.add_actor(eventHandler);
         let displayText = new St.Label();
         eventHandler.add(displayText, { expand: true });
 
@@ -471,7 +471,7 @@ LookingGlass.prototype = {
                       Lang.bind(this, this._updateFont));
         this._updateFont();
 
-        global.stage.add_actor(this.actor);
+        Main.uiGroup.add_actor(this.actor);
 
         let toolbar = new St.BoxLayout({ name: "Toolbar" });
         this.actor.add_actor(toolbar);

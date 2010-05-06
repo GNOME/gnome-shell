@@ -54,7 +54,7 @@ AltTabPopup.prototype = {
         // the switcher appears underneath the current pointer location
         this._disableHover();
 
-        global.stage.add_actor(this.actor);
+        Main.uiGroup.add_actor(this.actor);
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {

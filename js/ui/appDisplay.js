@@ -616,7 +616,7 @@ AppIconMenu.prototype = {
         }));
         source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
 
-        global.stage.add_actor(this.actor);
+        Main.uiGroup.add_actor(this.actor);
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {

@@ -605,7 +605,7 @@ Panel.prototype = {
                                    transition: 'linear',
                                    onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
                                    onComplete: function() { ripple.destroy(); } });
-        global.stage.add_actor(ripple);
+        Main.uiGroup.add_actor(ripple);
     },
 
     _onHotCornerEntered : function() {

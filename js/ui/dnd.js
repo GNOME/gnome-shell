@@ -6,6 +6,7 @@ const St = imports.gi.St;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
+const Main = imports.ui.main;
 
 const Params = imports.misc.params;
 
@@ -22,7 +23,7 @@ function _getEventHandlerActor() {
         eventHandlerActor = new Clutter.Rectangle();
         eventHandlerActor.width = 0;
         eventHandlerActor.height = 0;
-        global.stage.add_actor(eventHandlerActor);
+        Main.uiGroup.add_actor(eventHandlerActor);
         // We connect to 'event' rather than 'captured-event' because the capturing phase doesn't happen
         // when you've grabbed the pointer.
         eventHandlerActor.connect('event',

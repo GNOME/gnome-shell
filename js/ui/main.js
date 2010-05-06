@@ -45,6 +45,7 @@ let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
+let uiGroup = null;
 let _errorLogStack = [];
 let _startDate;
 
@@ -104,6 +105,12 @@ function start() {
     shellwm.connect("keybinding::panel_run_dialog", function () {
        getRunDialog().open();
     });
+
+    // Set up stage hierarchy to group all UI actors under one container.
+    uiGroup = new Clutter.Group();
+    global.window_group.reparent(uiGroup);
+    global.overlay_group.reparent(uiGroup);
+    global.stage.add_actor(uiGroup);
 
     placesManager = new PlaceDisplay.PlacesManager();
     overview = new Overview.Overview();

@@ -213,7 +213,7 @@ RunDialog.prototype = {
         // hidden then show it in show()
         this._group = new Clutter.Group({ visible: false,
                                           x: 0, y: 0 });
-        global.stage.add_actor(this._group);
+        Main.uiGroup.add_actor(this._group);
 
         let lightbox = new Lightbox.Lightbox(this._group, true);
 

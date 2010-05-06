@@ -35,7 +35,7 @@ Chrome.prototype = {
     _init: function() {
         // The group itself has zero size so it doesn't interfere with DND
         this.actor = new Shell.GenericContainer({ width: 0, height: 0 });
-        global.stage.add_actor(this.actor);
+        Main.uiGroup.add_actor(this.actor);
         this.actor.connect('allocate', Lang.bind(this, this._allocated));
 
         this._inFullscreen = false;
