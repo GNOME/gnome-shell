@@ -180,6 +180,7 @@ test_cogl_path (TestConformSimpleFixture *fixture,
   unsigned int idle_source;
   unsigned int paint_handler;
 
+  state.frame = 0;
   state.stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
 
