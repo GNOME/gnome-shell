@@ -555,7 +555,10 @@ _cogl_clip_stack_flush (CoglHandle handle,
 
   /* If the stack is empty then there's nothing else to do */
   if (stack->stack_top == NULL)
-    return;
+    {
+      *stencil_used_p = FALSE;
+      return;
+    }
 
   /* Add all of the entries. This will end up adding them in the
      reverse order that they were specified but as all of the clips
