@@ -487,6 +487,131 @@ NewWorkspaceArea.prototype = {
     }
 };
 
+function WorkspaceIndicator(activateWorkspace, workspaceAcceptDrop, scrollEventCb) {
+    this._init(activateWorkspace, workspaceAcceptDrop, scrollEventCb);
+}
+
+WorkspaceIndicator.prototype = {
+    _init: function(activateWorkspace, workspaceAcceptDrop, scrollEventCb) {
+        this._activateWorkspace = activateWorkspace;
+        this._workspaceAcceptDrop = workspaceAcceptDrop;
+        this._scrollEventCb = scrollEventCb;
+        let actor = new St.Bin({ style_class: 'panel-button' });
+
+        this._indicatorsPanel = new Shell.GenericContainer();
+        this._indicatorsPanel.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this._indicatorsPanel.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this._indicatorsPanel.connect('allocate', Lang.bind(this, this._allocate));
+        this._indicatorsPanel.clip_to_allocation = true;
+
+        actor.set_child(this._indicatorsPanel);
+        actor.set_alignment(St.Align.MIDDLE, St.Align.MIDDLE);
+        this._indicatorsPanel.hide();
+        actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
+        let workId = Main.initializeDeferredWork(actor, Lang.bind(this, this._workspacesChanged));
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces', function() {
+                Main.queueDeferredWork(workId);
+            });
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace', function() {
+                Main.queueDeferredWork(workId);
+            });
+
+        this.actor = actor;
+    },
+
+    _workspacesChanged: function() {
+        let active = global.screen.get_active_workspace_index();
+        let n = global.screen.n_workspaces;
+        if (n > 1)
+            this._indicatorsPanel.show();
+        else
+            this._indicatorsPanel.hide();
+        this._fillPositionalIndicator();
+    },
+
+    _onDestroy: function() {
+        if (this._nWorkspacesNotifyId > 0)
+            global.screen.disconnect(this._nWorkspacesNotifyId);
+        this._nWorkspacesNotifyId = 0;
+        if (this._switchWorkspaceNotifyId > 0)
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        this._switchWorkspaceNotifyId = 0;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let children = actor.get_children();
+        let childBox = new Clutter.ActorBox();
+        for (let i = 0; i < children.length; i++) {
+            childBox.x1 = children[i].x;
+            childBox.y1 = 0;
+            childBox.x2 = children[i].x + children[i].width;
+            childBox.y2 = children[i].height;
+            children[i].allocate(childBox, flags);
+        }
+    },
+
+    _getPreferredWidth: function(actor, fh, alloc) {
+        let children = actor.get_children();
+        let width = 0;
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].x + children[i].width <= width)
+                continue;
+            width = children[i].x + children[i].width;
+        }
+        alloc.min_size = 0;
+        alloc.natural_size = width;
+    },
+
+    _getPreferredHeight: function(actor, fw, alloc) {
+            let children = actor.get_children();
+            let height = 0;
+            if (children.length)
+                height = children[0].height;
+            alloc.min_size = height;
+            alloc.natural_size = height;
+    },
+
+    _addIndicatorClone: function(i, active) {
+        let actor = new St.Button({ style_class: 'workspace-indicator' });
+        if (active) {
+            actor.style_class = 'workspace-indicator active';
+        }
+        actor.connect('clicked', Lang.bind(this, function() {
+            this._activateWorkspace(i);
+        }));
+
+        actor._delegate = {};
+        actor._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
+            if (this._workspaceAcceptDrop(i, source, actor, x, y, time)) {
+                this._activateWorkspace(i);
+                return true;
+            }
+            else
+                return false;
+        });
+
+        actor.connect('scroll-event', this._scrollEventCb);
+
+        this._indicatorsPanel.add_actor(actor);
+
+        let [a, spacing] = actor.get_theme_node().get_length('border-spacing', false);
+        actor.x = spacing * i + actor.width * i;
+    },
+
+    _fillPositionalIndicator: function() {
+        this._indicatorsPanel.remove_all();
+
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let n = global.screen.n_workspaces;
+        for (let i = 0; i < n; i++) {
+            this._addIndicatorClone(i, i == activeWorkspaceIndex);
+        }
+    }
+};
+
 function SingleView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
 }
@@ -520,8 +645,6 @@ SingleView.prototype = {
 
         this.actor.add_style_class_name('single');
         this._actor.set_clip(x, y, width, height);
-        this._indicatorsPanel = null;
-        this._indicatorsPanelWidth = 0;
         this._activeWorkspaceX = 0; // x offset of active ws while dragging
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
         this._scroll = null;
@@ -1221,9 +1344,16 @@ SingleView.prototype = {
                 this._scrollToActive(true);
             }));
 
-        actor.add(this._createPositionalIndicator(), { expand: true,
-                                                       x_fill: true,
-                                                       y_fill: true });
+        let indicator = new WorkspaceIndicator(Lang.bind(this, function(i) {
+            if (this._workspaces[i] != undefined)
+                this._workspaces[i].metaWorkspace.activate(global.get_current_time());
+        }), Lang.bind(this, function(i, source, actor, x, y, time) {
+            if (this._workspaces[i] != undefined)
+                return this._workspaces[i].acceptDrop(source, actor, x, y, time);
+            return false;
+        }), Lang.bind(this, this._onScrollEvent));
+
+        actor.add(indicator.actor, { expand: true, x_fill: true, y_fill: true });
         actor.add(this._scroll, { expand: true,
                                   x_fill: true,
                                   y_fill: false,
@@ -1231,104 +1361,6 @@ SingleView.prototype = {
 
         this._updatePanelVisibility();
 
-        return actor;
-    },
-
-    _addIndicatorClone: function(i, active) {
-        let actor = new St.Button({ style_class: 'workspace-indicator' });
-        if (active) {
-            actor.style_class = 'workspace-indicator active';
-        }
-        actor.connect('clicked', Lang.bind(this, function() {
-            if (this._workspaces[i] != undefined)
-                this._workspaces[i].metaWorkspace.activate(global.get_current_time());
-        }));
-
-        actor._delegate = {};
-        actor._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
-            if (this._workspaces[i].acceptDrop(source, actor, x, y, time)) {
-                this._workspaces[i].metaWorkspace.activate(global.get_current_time());
-                return true;
-            }
-            else
-                return false;
-        });
-
-        actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-
-        this._indicatorsPanel.add_actor(actor);
-
-        let [a, spacing] = actor.get_theme_node().get_length('border-spacing', false);
-        if (this._indicatorsPanelWidth < spacing * (i + 1) + actor.width * (i + 1))
-            actor.hide();
-        actor.x = spacing * i + actor.width * i;
-    },
-
-    _fillPositionalIndicator: function() {
-        if (this._indicatorsPanel == null || this._indicatorsPanelWidth == 0)
-            return;
-        let width = this._indicatorsPanelWidth;
-        this._indicatorsPanel.remove_all();
-
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._addIndicatorClone(i, i == activeWorkspaceIndex);
-        }
-        this._indicatorsPanel.x = (this._indicatorsPanelWidth - this._indicatorsPanel.width) / 2;
-    },
-
-    _createPositionalIndicator: function() {
-        let actor = new St.Bin({ style_class: 'panel-button' });
-        let group = new Clutter.Group();
-
-        this._indicatorsPanel = new Shell.GenericContainer();
-        this._indicatorsPanel.connect('get-preferred-width', Lang.bind(this, function (actor, fh, alloc) {
-            let children = actor.get_children();
-            let width = 0;
-            for (let i = 0; i < children.length; i++) {
-                if (!children[i].visible)
-                    continue;
-                if (children[i].x + children[i].width <= width)
-                    continue;
-                width = children[i].x + children[i].width;
-            }
-            alloc.min_size = width;
-            alloc.natural_size = width;
-        }));
-        this._indicatorsPanel.connect('get-preferred-height', Lang.bind(this, function (actor, fw, alloc) {
-            let children = actor.get_children();
-            let height = 0;
-            if (children.length)
-                height = children[0].height;
-            alloc.min_size = height;
-            alloc.natural_size = height;
-        }));
-        this._indicatorsPanel.connect('allocate', Lang.bind(this, function (actor, box, flags) {
-            let children = actor.get_children();
-            for (let i = 0; i < children.length; i++) {
-                if (!children[i].visible)
-                    continue;
-                let childBox = new Clutter.ActorBox();
-                childBox.x1 = children[i].x;
-                childBox.y1 = 0;
-                childBox.x2 = children[i].x + children[i].width;
-                childBox.y2 = children[i].height;
-                children[i].allocate(childBox, flags);
-            }
-        }));
-
-        group.add_actor(this._indicatorsPanel);
-        actor.set_child(group);
-        actor.set_alignment(St.Align.START, St.Align.START);
-        actor.set_fill(true, true);
-        this._indicatorsPanel.hide();
-        actor.connect('notify::width', Lang.bind(this, function(actor) {
-            this._indicatorsPanelWidth = actor.width;
-            this._updatePanelVisibility();
-        }));
-        actor.connect('destroy', Lang.bind(this, function() {
-            this._indicatorsPanel = null;
-        }));
         return actor;
     },
 
@@ -1344,13 +1376,6 @@ SingleView.prototype = {
             else
                 this._scroll.hide();
         }
-        if (this._indicatorsPanel != null) {
-            if (showSwitches)
-                this._indicatorsPanel.show();
-            else
-                this._indicatorsPanel.hide();
-        }
-        this._fillPositionalIndicator();
     },
 
     addWorkspace: function() {
