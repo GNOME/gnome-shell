@@ -15,6 +15,9 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
   ClutterActor *stage = clutter_stage_get_default ();
   GList *actors = clutter_container_get_children (CLUTTER_CONTAINER (stage));
   GList *tmp;
+  guint paint_handler;
+  guint paint_signal;
+  guint n_paint_handlers = 0;
 
   /* To help reduce leakage between unit tests, we destroy all children of the stage */
   for (tmp = actors; tmp != NULL; tmp = tmp->next)
@@ -25,6 +28,24 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 	g_print ("Freeing leaked actor %p\n", leaked_actor);
       clutter_actor_destroy (leaked_actor);
     }
+
+  /* Some of the tests leave the paint signal connected to the default
+     stage which causes problems for subsequent tests. This forcibly
+     disconnects all paint handlers. We can't use
+     g_signal_handlers_disconnect_matched because for some reason that
+     doesn't let you pass just G_SIGNAL_MATCH_ID. */
+  paint_signal = g_signal_lookup ("paint", CLUTTER_TYPE_ACTOR);
+  while ((paint_handler = g_signal_handler_find (stage,
+                                                 G_SIGNAL_MATCH_ID,
+                                                 paint_signal,
+                                                 0, NULL, NULL, NULL)))
+    {
+      g_signal_handler_disconnect (stage, paint_handler);
+      n_paint_handlers++;
+    }
+  if (g_test_verbose () && n_paint_handlers > 0)
+    g_print ("Disconnecting %i leaked paint handler%s\n",
+             n_paint_handlers, n_paint_handlers == 1 ? "" : "s");
 }
 
 
