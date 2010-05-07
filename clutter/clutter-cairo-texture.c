@@ -526,11 +526,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   /* Destroy the existing texture so that the GL driver won't have to
      copy it when we map the PBO */
   if ((material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (self))))
-    {
-      const GList *layers = cogl_material_get_layers (material);
-      if (layers)
-        cogl_material_set_layer (layers->data, 0, COGL_INVALID_HANDLE);
-    }
+    cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
 
   /* Create a surface to render directly to the PBO */
   surface =
