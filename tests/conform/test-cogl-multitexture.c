@@ -132,8 +132,17 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_material_set_layer (material, 0, tex0);
   cogl_material_set_layer_combine (material, 0,
                                    "RGBA = REPLACE (TEXTURE)", NULL);
+  /* We'll use nearest filtering mode on the textures, otherwise the
+     edge of the quad can pull in texels from the neighbouring
+     quarters of the texture due to imprecision */
+  cogl_material_set_layer_filters (material, 0,
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   COGL_MATERIAL_FILTER_NEAREST);
 
   cogl_material_set_layer (material, 1, tex1);
+  cogl_material_set_layer_filters (material, 1,
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   COGL_MATERIAL_FILTER_NEAREST);
   status = cogl_material_set_layer_combine (material, 1,
                                             "RGBA = ADD (PREVIOUS, TEXTURE)",
                                             &error);
