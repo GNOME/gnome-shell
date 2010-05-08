@@ -417,7 +417,7 @@ PanelMenuButton.prototype = {
         this.actor = new St.Bin({ style_class: 'panel-button',
                                   reactive: true,
                                   x_fill: true,
-                                  y_fill: true,
+                                  y_fill: false,
                                   track_hover: true });
         this.actor._delegate = this;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
@@ -826,6 +826,168 @@ AppMenuButton.prototype = {
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
+function ClockButton() {
+    this._init();
+}
+
+ClockButton.prototype = {
+    __proto__: PanelMenuButton.prototype,
+
+    _init: function() {
+        PanelMenuButton.prototype._init.call(this, St.Align.START);
+        this.menu.addAction("Preferences", Lang.bind(this, this._onPrefs));
+
+        this._clock = new St.Label();
+        this.actor.set_child(this._clock);
+
+        this._calendarState = this.State.CLOSED;
+        this._calendarPopup = null;
+
+        let gconf = Shell.GConf.get_default();
+        gconf.connect('changed', Lang.bind(this, this._updateClock));
+
+        // Start the clock
+        this._updateClock();
+    },
+
+    _onButtonPress: function(actor, event) {
+        let button = event.get_button();
+        if (button == 3 && this._calendarState != this.State.OPEN)
+            this.toggle();
+        else
+            this._toggleCalendar();
+    },
+
+    closeCalendar: function() {
+        if (this._calendarState == this.State.CLOSED)
+            return;
+
+        this._calendarState = this.State.CLOSED;
+        this._calendarPopup.hide();
+
+        // closing the calendar should toggle off the menubar as well
+        this.emit('open-state-changed', false);
+        this.actor.remove_style_pseudo_class('pressed');
+    },
+
+    openCalendar: function() {
+        this._calendarState = this.State.OPEN;
+        this._calendarPopup.show();
+
+        this.actor.add_style_pseudo_class('pressed');
+    },
+
+    close: function() {
+        if (this._calendarState == this.State.OPEN)
+            return;
+
+        PanelMenuButton.prototype.close.call(this);
+    },
+
+    open: function() {
+        if (this._calendarState == this.State.OPEN) {
+            // trick the menubar into assuming an open menu so it'll
+            // pass button events on to us
+            this.emit('open-state-changed', true);
+            return;
+        }
+
+        PanelMenuButton.prototype.open.call(this);
+    },
+
+    _onPrefs: function() {
+        let args = ['gnome-shell-clock-preferences'];
+        let p = new Shell.Process({ args: args });
+
+        p.run();
+    },
+
+    _toggleCalendar: function() {
+        if (this._state == this.State.OPEN) {
+            this.close();
+            return;
+        }
+
+        if (this._calendarPopup == null) {
+            this._calendarPopup = new CalendarPopup();
+            this._calendarPopup.actor.hide();
+        }
+
+        if (this._calendarState == this.State.CLOSED) {
+            this.openCalendar();
+        } else {
+            this.closeCalendar();
+        }
+    },
+
+    _updateClock: function() {
+        let gconf = Shell.GConf.get_default();
+        let format = gconf.get_string(CLOCK_FORMAT_KEY);
+        let showDate = gconf.get_boolean(CLOCK_SHOW_DATE_KEY);
+        let showSeconds = gconf.get_boolean(CLOCK_SHOW_SECONDS_KEY);
+
+        let clockFormat;
+        switch (format) {
+            case 'unix':
+                // force updates every second
+                showSeconds = true;
+                clockFormat = '%s';
+                break;
+            case 'custom':
+                // force updates every second
+                showSeconds = true;
+                clockFormat = gconf.get_string(CLOCK_CUSTOM_FORMAT_KEY);
+                break;
+            case '24-hour':
+                if (showDate)
+	            /* Translators: This is the time format with date used
+                       in 24-hour mode. */
+                    clockFormat = showSeconds ? _("%a %b %e, %R:%S")
+                                              : _("%a %b %e, %R");
+                else
+	            /* Translators: This is the time format without date used
+                       in 24-hour mode. */
+                    clockFormat = showSeconds ? _("%a %R:%S")
+                                              : _("%a %R");
+                break;
+            case '12-hour':
+            default:
+                if (showDate)
+	            /* Translators: This is a time format with date used
+                       for AM/PM. */
+                    clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
+                                              : _("%a %b %e, %l:%M %p");
+                else
+	            /* Translators: This is a time format without date used
+                       for AM/PM. */
+                    clockFormat = showSeconds ? _("%a %l:%M:%S %p")
+                                              : _("%a %l:%M %p");
+                break;
+        }
+
+        let displayDate = new Date();
+        let msecRemaining;
+        if (showSeconds) {
+            msecRemaining = 1000 - displayDate.getMilliseconds();
+            if (msecRemaining < 50) {
+                displayDate.setSeconds(displayDate.getSeconds() + 1);
+                msecRemaining += 1000;
+            }
+        } else {
+            msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
+                                     displayDate.getMilliseconds());
+            if (msecRemaining < 500) {
+                displayDate.setMinutes(displayDate.getMinutes() + 1);
+                msecRemaining += 60000;
+            }
+        }
+
+        this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
+        Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
+        return false;
+    }
+};
+
 function Panel() {
     this._init();
 }
@@ -957,18 +1119,10 @@ Panel.prototype = {
 
         /* center */
 
-        let clockButton = new St.Button({ style_class: 'panel-button',
-                                          toggle_mode: true,
-                                          x_fill: true,
-                                          y_fill: false });
-        this._centerBox.add(clockButton, { y_fill: true });
-        clockButton.connect('clicked', Lang.bind(this, this._toggleCalendar));
+        this._clockButton = new ClockButton();
+        this._centerBox.add(this._clockButton.actor, { y_fill: true });
 
-        this._clock = new St.Label();
-        clockButton.set_child(this._clock);
-        this._clockButton = clockButton;
-
-        this._calendarPopup = null;
+        this._addMenu(this._clockButton);
 
         /* right */
 
@@ -1024,19 +1178,10 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
-
-        let gconf = Shell.GConf.get_default();
-        gconf.connect('changed', Lang.bind(this, this._updateClock));
-
-        // Start the clock
-        this._updateClock();
     },
 
     hideCalendar: function() {
-        if (this._calendarPopup != null) {
-            this._clockButton.checked = false;
-            this._calendarPopup.actor.hide();
-        }
+        this._clockButton.closeCalendar();
     },
 
     startupAnimation: function() {
@@ -1091,83 +1236,6 @@ Panel.prototype = {
             this._trayBox.add_style_pseudo_class('compact');
         else
             this._trayBox.remove_style_pseudo_class('compact');
-    },
-
-    _updateClock: function() {
-        let gconf = Shell.GConf.get_default();
-        let format = gconf.get_string(CLOCK_FORMAT_KEY);
-        let showDate = gconf.get_boolean(CLOCK_SHOW_DATE_KEY);
-        let showSeconds = gconf.get_boolean(CLOCK_SHOW_SECONDS_KEY);
-
-        let clockFormat;
-        switch (format) {
-            case 'unix':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = '%s';
-                break;
-            case 'custom':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = gconf.get_string(CLOCK_CUSTOM_FORMAT_KEY);
-                break;
-            case '24-hour':
-                if (showDate)
-                    /* Translators: This is the time format with date used
-                       in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %b %e, %R:%S")
-                                              : _("%a %b %e, %R");
-                else
-                    /* Translators: This is the time format without date used
-                       in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %R:%S")
-                                              : _("%a %R");
-                break;
-            case '12-hour':
-            default:
-                if (showDate)
-                    /* Translators: This is a time format with date used
-                       for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
-                                              : _("%a %b %e, %l:%M %p");
-                else
-                    /* Translators: This is a time format without date used
-                       for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %l:%M:%S %p")
-                                              : _("%a %l:%M %p");
-                break;
-        }
-
-        let displayDate = new Date();
-        let msecRemaining;
-        if (showSeconds) {
-            msecRemaining = 1000 - displayDate.getMilliseconds();
-            if (msecRemaining < 50) {
-                displayDate.setSeconds(displayDate.getSeconds() + 1);
-                msecRemaining += 1000;
-            }
-        } else {
-            msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
-                                     displayDate.getMilliseconds());
-            if (msecRemaining < 500) {
-                displayDate.setMinutes(displayDate.getMinutes() + 1);
-                msecRemaining += 60000;
-            }
-        }
-
-        this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
-        Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
-        return false;
-    },
-
-    _toggleCalendar: function(clockButton) {
-        if (clockButton.checked) {
-            if (this._calendarPopup == null)
-                this._calendarPopup = new CalendarPopup();
-            this._calendarPopup.show();
-        } else {
-            this._calendarPopup.hide();
-        }
     },
 
     _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
