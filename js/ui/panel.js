@@ -714,10 +714,10 @@ CalendarPopup.prototype = {
     _init: function() {
         let panelActor = Main.panel.actor;
 
-        this.actor = new St.BoxLayout({ name: 'calendarPopup' });
+        this.actor = new St.Bin({ name: 'calendarPopup' });
 
         this.calendar = new Calendar.Calendar();
-        this.actor.add(this.calendar.actor);
+        this.actor.set_child(this.calendar.actor);
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true,
                                            affectsStruts: false });
