@@ -287,6 +287,14 @@ DashDocDisplayItem.prototype = {
 
         this.actor._delegate = this;
         let draggable = DND.makeDraggable(this.actor);
+        draggable.connect('drag-begin',
+                          Lang.bind(this, function() {
+                              Main.overview.beginItemDrag(this);
+                          }));
+        draggable.connect('drag-end',
+                          Lang.bind(this, function() {
+                              Main.overview.endItemDrag(this);
+                          }));
     },
 
     getUri: function() {

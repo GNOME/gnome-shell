@@ -47,6 +47,14 @@ GenericDisplayItem.prototype = {
                                      }));
 
         let draggable = DND.makeDraggable(this.actor);
+        draggable.connect('drag-begin',
+                          Lang.bind(this, function() {
+                              Main.overview.beginItemDrag(this);
+                          }));
+        draggable.connect('drag-end',
+                          Lang.bind(this, function() {
+                              Main.overview.endItemDrag(this);
+                          }));
 
         this._iconBin = new St.Bin();
         this.actor.add(this._iconBin);

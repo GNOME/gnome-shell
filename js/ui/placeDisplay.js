@@ -443,6 +443,14 @@ DashPlaceDisplayItem.prototype = {
 
         this.actor._delegate = this;
         this._draggable = DND.makeDraggable(this.actor);
+        this._draggable.connect('drag-begin',
+                                Lang.bind(this, function() {
+                                    Main.overview.beginItemDrag(this);
+                                }));
+        this._draggable.connect('drag-end',
+                                Lang.bind(this, function() {
+                                    Main.overview.endItemDrag(this);
+                                }));
     },
 
     _onClicked: function(b) {

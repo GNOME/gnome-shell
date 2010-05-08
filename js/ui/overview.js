@@ -376,23 +376,20 @@ Overview.prototype = {
         }));
     },
 
-    //// Draggable target interface ////
+    //// Public methods ////
 
-    // Closes any active panes if a GenericDisplayItem is being
-    // dragged over the Overview, i.e. as soon as it starts being dragged.
-    // This allows the user to place the item on any workspace.
-    handleDragOver : function(source, actor, x, y, time) {
-        if (source instanceof GenericDisplay.GenericDisplayItem
-            || source instanceof AppDisplay.AppIcon) {
+    beginItemDrag: function(source) {
+        // Close any active panes if @source is a GenericDisplayItem.
+        // This allows the user to place the item on any workspace.
+        if (source instanceof GenericDisplay.GenericDisplayItem)
             if (this._activeDisplayPane != null)
                 this._activeDisplayPane.close();
-            return true;
-        }
-
-        return false;
+        this.emit('item-drag-begin');
     },
 
-    //// Public methods ////
+    endItemDrag: function(source) {
+        this.emit('item-drag-end');
+    },
 
     // Returns the scale the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.

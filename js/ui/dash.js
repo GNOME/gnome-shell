@@ -351,6 +351,14 @@ SearchResult.prototype = {
         this.actor.connect('clicked', Lang.bind(this, this._onResultClicked));
 
         let draggable = DND.makeDraggable(this.actor);
+        draggable.connect('drag-begin',
+                          Lang.bind(this, function() {
+                              Main.overview.beginItemDrag(this);
+                          }));
+        draggable.connect('drag-end',
+                          Lang.bind(this, function() {
+                              Main.overview.endItemDrag(this);
+                          }));
     },
 
     setSelected: function(selected) {

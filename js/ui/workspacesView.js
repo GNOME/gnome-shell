@@ -639,11 +639,15 @@ SingleView.prototype = {
 
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
+        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+                                                      Lang.bind(this, this._dragBegin));
+        this._itemDragEndId = Main.overview.connect('item-drag-end',
+                                                     Lang.bind(this, this._dragEnd));
         for (let i = 0; i < this._workspaces.length; i++) {
             this._workspaces[i]._windowDragBeginId = this._workspaces[i].connect('window-drag-begin',
-                                                                                 Lang.bind(this, this._onWindowDragBegin));
+                                                                                 Lang.bind(this, this._dragBegin));
             this._workspaces[i]._windowDragEndId = this._workspaces[i].connect('window-drag-end',
-                                                                               Lang.bind(this, this._onWindowDragEnd));
+                                                                               Lang.bind(this, this._dragEnd));
         }
 
         this.actor.add_actor(this._newWorkspaceArea.actor);
@@ -1085,9 +1089,9 @@ SingleView.prototype = {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 this.actor.add_actor(this._workspaces[w].actor);
                 this._workspaces[w]._windowDragBeginId = this._workspaces[w].connect('window-drag-begin',
-                                                                                     Lang.bind(this, this._onWindowDragBegin));
+                                                                                     Lang.bind(this, this._dragBegin));
                 this._workspaces[w]._windowDragEndId = this._workspaces[w].connect('window-drag-end',
-                                                                                   Lang.bind(this, this._onWindowDragEnd));
+                                                                                   Lang.bind(this, this._dragEnd));
             }
 
             this._computeWorkspacePositions();
@@ -1116,6 +1120,14 @@ SingleView.prototype = {
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
+        }
+        if (this._itemDragBeginId > 0) {
+            Main.overview.disconnect(this._itemDragBeginId);
+            this._itemDragBeginId = 0;
+        }
+        if (this._itemDragEndId > 0) {
+            Main.overview.disconnect(this._itemDragEndId);
+            this._itemDragEndId = 0;
         }
         for (let w = 0; w < this._workspaces.length; w++) {
             if (this._workspaces[w]._windowDragBeginId) {
@@ -1170,7 +1182,7 @@ SingleView.prototype = {
         return false;
     },
 
-    _onWindowDragBegin: function(w, actor) {
+    _dragBegin: function() {
         if (!this._scroll || this._scrolling)
             return;
 
@@ -1242,7 +1254,7 @@ SingleView.prototype = {
         }
     },
 
-    _onWindowDragEnd: function(w, actor) {
+    _dragEnd: function() {
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;

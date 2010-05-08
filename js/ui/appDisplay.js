@@ -42,17 +42,17 @@ AllAppView.prototype = {
     },
 
     _addApp: function(app) {
-        let App = new AppWellIcon(this._appSystem.get_app(app.get_id()));
-        App.connect('launching', Lang.bind(this, function() {
+        let appIcon = new AppWellIcon(this._appSystem.get_app(app.get_id()));
+        appIcon.connect('launching', Lang.bind(this, function() {
             this.emit('launching');
         }));
-        App._draggable.connect('drag-begin', Lang.bind(this, function() {
+        appIcon._draggable.connect('drag-begin', Lang.bind(this, function() {
             this.emit('drag-begin');
         }));
 
-        this._grid.addItem(App.actor);
+        this._grid.addItem(appIcon.actor);
 
-        this._apps.push(App);
+        this._apps.push(appIcon);
     },
 
     refresh: function(apps) {
@@ -402,6 +402,11 @@ AppWellIcon.prototype = {
         this._draggable.connect('drag-begin', Lang.bind(this,
             function () {
                 this._removeMenuTimeout();
+                Main.overview.beginItemDrag(this);
+            }));
+        this._draggable.connect('drag-end', Lang.bind(this,
+            function () {
+               Main.overview.endItemDrag(this);
             }));
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
