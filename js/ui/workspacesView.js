@@ -1057,7 +1057,11 @@ SingleView.prototype = {
             lostWorkspaces[l].disconnectAll();
 
         if (this._scroll != null)
-            this._scroll.adjustment.upper = newNumWorkspaces;
+            Tweener.addTween(this._scroll.adjustment,
+                             { upper: newNumWorkspaces,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad'
+                             });
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
@@ -1070,13 +1074,11 @@ SingleView.prototype = {
 
             this._computeWorkspacePositions();
             this._updateWorkspaceActors(false);
-            this._scrollScrollBarToIndex(active + 1, false);
         } else {
             this._lostWorkspaces = lostWorkspaces;
-            this._scrollScrollBarToIndex(active, false);
-            this._scrollToActive(true);
         }
 
+        this._scrollToActive(true);
         this._updatePanelVisibility();
     },
 
