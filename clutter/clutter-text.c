@@ -91,12 +91,6 @@ struct _LayoutCache
    */
   PangoLayout *layout;
 
-  /* The width that was used to generate this layout */
-  gfloat width;
-
-  /* The height that was used to generate this layout */
-  gfloat height;
-
   /* A number representing the age of this cache (so that when a
    * new layout is needed the last used cache is replaced)
    */
@@ -350,9 +344,10 @@ clutter_text_ensure_effective_attributes (ClutterText *self)
 }
 
 static PangoLayout *
-clutter_text_create_layout_no_cache (ClutterText *text,
-                                     gfloat       allocation_width,
-                                     gfloat       allocation_height)
+clutter_text_create_layout_no_cache (ClutterText       *text,
+				     gint               width,
+				     gint               height,
+				     PangoEllipsizeMode ellipsize)
 {
   ClutterTextPrivate *priv = text->priv;
   PangoLayout *layout;
@@ -418,70 +413,9 @@ clutter_text_create_layout_no_cache (ClutterText *text,
   pango_layout_set_justify (layout, priv->justify);
   pango_layout_set_wrap (layout, priv->wrap_mode);
 
-  /* Cases, assuming ellipsize != NONE on actor:
-   *
-   * Width request: ellipsization can be set or not on layout,
-   * doesn't matter.
-   *
-   * Height request: ellipsization must never be set on layout
-   * if wrap=true, because we need to measure the wrapped
-   * height. It must always be set if wrap=false.
-   *
-   * Allocate: ellipsization must always be set.
-   *
-   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931
-   */
-  if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
-    {
-      if (allocation_height < 0 && priv->wrap)
-        ; /* must not set ellipsization on wrap=true height request */
-      else
-        {
-          if (!priv->editable)
-            pango_layout_set_ellipsize (layout, priv->ellipsize);
-        }
-    }
-
-  /* We do not limit the layout width on editable, single-line text
-   * actors, since those can scroll the layout. For non-editable
-   * actors we only want to set the width if wrapping or ellipsizing
-   * is enabled.
-   */
-  if (allocation_width > 0 &&
-      (priv->editable ? !priv->single_line_mode
-       : (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap)))
-    {
-      gint width;
-
-      width = allocation_width > 0
-        ? (allocation_width * 1024)
-        : -1;
-
-      pango_layout_set_width (layout, width);
-    }
-
-  /* Pango only uses height if ellipsization is enabled, so don't set
-   * height if ellipsize isn't set. Pango implicitly enables wrapping
-   * if height is set, so don't set height if wrapping is disabled.
-   * In other words, only set height if we want to both wrap then
-   * ellipsize and we're not in single line mode.
-   *
-   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931 if this
-   * seems odd.
-   */
-  if (allocation_height > 0 &&
-      priv->wrap &&
-      priv->ellipsize != PANGO_ELLIPSIZE_NONE &&
-      !priv->single_line_mode)
-    {
-      gint height;
-
-      height = allocation_height > 0
-        ? (allocation_height * 1024)
-        : -1;
-
-      pango_layout_set_height (layout, height);
-    }
+  pango_layout_set_ellipsize (layout, ellipsize);
+  pango_layout_set_width (layout, width);
+  pango_layout_set_height (layout, height);
 
   g_free (contents);
 
@@ -541,6 +475,9 @@ clutter_text_create_layout (ClutterText *text,
   ClutterTextPrivate *priv = text->priv;
   LayoutCache *oldest_cache = priv->cached_layouts;
   gboolean found_free_cache = FALSE;
+  gint width = -1;
+  gint height = -1;
+  PangoEllipsizeMode ellipsize = PANGO_ELLIPSIZE_NONE;
   int i;
 
   CLUTTER_STATIC_COUNTER (text_cache_hit_counter,
@@ -551,6 +488,69 @@ clutter_text_create_layout (ClutterText *text,
                           "Text layout cache miss counter",
                           "Increments for each layout cache miss",
                           0);
+
+  /* First determine the width, height, and ellipsize mode that
+   * we need for the layout. The ellipsize mode depends on
+   * allocation_width/allocation_size as follows:
+   *
+   * Cases, assuming ellipsize != NONE on actor:
+   *
+   * Width request: ellipsization can be set or not on layout,
+   * doesn't matter.
+   *
+   * Height request: ellipsization must never be set on layout
+   * if wrap=true, because we need to measure the wrapped
+   * height. It must always be set if wrap=false.
+   *
+   * Allocate: ellipsization must always be set.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931
+   */
+
+  if (ellipsize != PANGO_ELLIPSIZE_NONE)
+    {
+      if (allocation_height < 0 && priv->wrap)
+        ; /* must not set ellipsization on wrap=true height request */
+      else
+        {
+          if (!priv->editable)
+            ellipsize = priv->ellipsize;
+        }
+    }
+
+  /* When painting, we always need to set the width, since
+   * we might need to align to the right. When getting the
+   * height, however, there are some cases where we know that
+   * the width won't affect the width.
+   *
+   * - editable, single-line text actors, since those can
+   *   scroll the layout.
+   * - non-wrapping, non-ellipsizing actors.
+   */
+  if (allocation_width >= 0 &&
+      (allocation_height >= 0 ||
+       !((priv->editable && priv->single_line_mode) ||
+         (priv->ellipsize == PANGO_ELLIPSIZE_NONE && !priv->wrap))))
+    {
+      width = allocation_width * 1024;
+    }
+
+  /* Pango only uses height if ellipsization is enabled, so don't set
+   * height if ellipsize isn't set. Pango implicitly enables wrapping
+   * if height is set, so don't set height if wrapping is disabled.
+   * In other words, only set height if we want to both wrap then
+   * ellipsize and we're not in single line mode.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931 if this
+   * seems odd.
+   */
+  if (allocation_height >= 0 &&
+      priv->wrap &&
+      priv->ellipsize != PANGO_ELLIPSIZE_NONE &&
+      !priv->single_line_mode)
+    {
+      height = allocation_height * 1024;
+    }
 
   /* Search for a cached layout with the same width and keep
    * track of the oldest one
@@ -563,80 +563,74 @@ clutter_text_create_layout (ClutterText *text,
 	  found_free_cache = TRUE;
 	  oldest_cache = priv->cached_layouts + i;
 	}
-      else if (priv->cached_layouts[i].width == allocation_width &&
-               priv->cached_layouts[i].height == allocation_height)
-	{
-          /* If this cached layout is using the same size then we can
-	   * just return that directly
-           */
-	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f",
-			text,
-                        allocation_width,
-                        allocation_height);
-
-          CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
-
-	  return priv->cached_layouts[i].layout;
-	}
       else
         {
-          PangoRectangle logical_rect;
-          gint logical_height;
-          gfloat layout_height;
-          gint logical_width;
-          gfloat layout_width;
+          PangoLayout *cached = priv->cached_layouts[i].layout;
+          gint cached_width = pango_layout_get_width (cached);
+	  gint cached_height = pango_layout_get_height (cached);
+	  gint cached_ellipsize = pango_layout_get_ellipsize (cached);
 
-          pango_layout_get_extents (priv->cached_layouts[i].layout, NULL, &logical_rect);
-
-          /* These calculations are taken from the _get_preferred_width and
-           * _get_preferred_height calls
-           */
-          logical_height = logical_rect.y + logical_rect.height;
-          layout_height = ceilf ((gfloat) logical_height / 1024.0f + 0.5);
-
-          logical_width = logical_rect.x + logical_rect.width;
-
-          layout_width = logical_width > 0
-            ? (logical_width / 1024.0f)
-            : 1;
-
-          if (allocation_height == -1 &&
-              allocation_width == layout_width)
-            {
-              /* We've been asked for our height for the width we gave
-               * as a result of a _get_preferred_width call
+	  if (cached_width == width &&
+	      cached_height == height &&
+	      cached_ellipsize == ellipsize)
+	    {
+              /* If this cached layout is using the same size then we can
+               * just return that directly
                */
-            CLUTTER_NOTE (ACTOR,
-                          "ClutterText: %p: cache hit for size %.2fx%.2f "
-                          "(matches width of extents)",
-                          text,
-                          allocation_width,
-                          allocation_height);
+              CLUTTER_NOTE (ACTOR,
+                            "ClutterText: %p: cache hit for size %.2fx%.2f",
+                            text,
+                            allocation_width,
+                            allocation_height);
 
-            CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
+              CLUTTER_COUNTER_INC (_clutter_uprof_context,
+                                   text_cache_hit_counter);
 
-            return priv->cached_layouts[i].layout;
-          }
-        else if (allocation_width == layout_width &&
-                 allocation_height == layout_height)
-          {
-            /* We've been asked for width and height we gave before */
-            CLUTTER_NOTE (ACTOR,
-                          "ClutterText: %p: cache hit for size %.2fx%.2f "
-                          "(matches size of extents)",
-                          text,
-                          allocation_width,
-                          allocation_height);
+              return priv->cached_layouts[i].layout;
+	    }
 
-            CLUTTER_COUNTER_INC (_clutter_uprof_context, text_cache_hit_counter);
+	  /* When getting the preferred height for a specific width,
+	   * we might be able to reuse the layout from getting the
+	   * preferred width. If the width that the layout gives
+	   * unconstrained is less than the width that we are using
+	   * than the height will be unaffected by that width.
+	   */
+	  if (allocation_height < 0 &&
+              cached_width == -1 &&
+              cached_ellipsize == ellipsize)
+	    {
+	      PangoRectangle logical_rect;
 
-            return priv->cached_layouts[i].layout;
-          }
-        else if (!found_free_cache &&
-                 (priv->cached_layouts[i].age < oldest_cache->age))
-          {
-            oldest_cache = priv->cached_layouts + i;
-          }
+	      pango_layout_get_extents (priv->cached_layouts[i].layout,
+                                        NULL,
+                                        &logical_rect);
+
+	      if (logical_rect.width <= width)
+		{
+		  /* We've been asked for our height for the width we gave as a result
+		   * of a _get_preferred_width call
+		   */
+		  CLUTTER_NOTE (ACTOR,
+                                "ClutterText: %p: cache hit for size %.2fx%.2f "
+				"(unwrapped width narrower than given width)",
+				text,
+				allocation_width,
+				allocation_height);
+
+                  CLUTTER_COUNTER_INC (_clutter_uprof_context,
+                                       text_cache_hit_counter);
+
+		  return priv->cached_layouts[i].layout;
+		}
+	    }
+
+	  if (!found_free_cache &&
+	      (priv->cached_layouts[i].age < oldest_cache->age))
+	    {
+	      oldest_cache = priv->cached_layouts + i;
+	    }
+
+	  return priv->cached_layouts[i].layout;
         }
     }
 
@@ -653,17 +647,12 @@ clutter_text_create_layout (ClutterText *text,
     g_object_unref (oldest_cache->layout);
 
   oldest_cache->layout =
-    clutter_text_create_layout_no_cache (text,
-                                         allocation_width,
-                                         allocation_height);
+    clutter_text_create_layout_no_cache (text, width, height, ellipsize);
 
   cogl_pango_ensure_glyph_cache_for_layout (oldest_cache->layout);
 
   /* Mark the 'time' this cache was created and advance the time */
   oldest_cache->age = priv->cache_age++;
-  oldest_cache->width = allocation_width;
-  oldest_cache->height = allocation_height;
-
   return oldest_cache->layout;
 }
 
