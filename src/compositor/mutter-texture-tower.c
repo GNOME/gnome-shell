@@ -422,7 +422,12 @@ texture_tower_revalidate_fbo (MutterTextureTower *tower,
   CoglMatrix modelview;
 
   if (tower->fbos[level] == COGL_INVALID_HANDLE)
-    tower->fbos[level] = cogl_offscreen_new_to_texture (dest_texture);
+    {
+      /* Work around http://bugzilla.openedhand.com/show_bug.cgi?id=2110 */
+      cogl_flush();
+
+      tower->fbos[level] = cogl_offscreen_new_to_texture (dest_texture);
+    }
 
   if (tower->fbos[level] == COGL_INVALID_HANDLE)
     return FALSE;
