@@ -273,8 +273,11 @@ try_creating_fbo (CoglOffscreen *offscreen,
       )
     return FALSE;
 
-  /* We are about to generate and bind a new fbo, so when next flushing the
-   * journal, we will need to rebind the current framebuffer... */
+  /* We are about to generate and bind a new fbo, so we pretend to change framebuffer
+   * state so that the old framebuffer will be rebound again before drawing.
+   * The framebuffer state can't be changed while their are active entries, so flush
+   * first. */
+  _cogl_journal_flush ();
   ctx->dirty_bound_framebuffer = 1;
 
   /* Generate framebuffer */
