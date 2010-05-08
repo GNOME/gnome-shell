@@ -870,6 +870,14 @@ st_table_get_preferred_width (ClutterActor *self,
       total_pref_width += pref_widths[i];
     }
 
+  /* If we were requested width-for-height, then we reported minimum/natural
+   * heights based on our natural width. If we were allocated less than our
+   * natural width, then we need more height. So in the width-for-height
+   * case we need to disable shrinking.
+   */
+  if (for_height >= 0)
+    total_min_width = total_pref_width;
+
   if (min_width_p)
     *min_width_p = total_min_width;
   if (natural_width_p)
@@ -891,6 +899,17 @@ st_table_get_preferred_height (ClutterActor *self,
   GList *list;
   gint i;
   gint *min_widths;
+
+  /* We only support height-for-width allocation. So if we are called
+   * width-for-height, calculate heights based on our natural width
+   */
+  if (for_width < 0)
+    {
+      float natural_width;
+
+      clutter_actor_get_preferred_width (self, -1, NULL, &natural_width);
+      for_width = natural_width;
+    }
 
   if (priv->n_rows < 1)
     {
