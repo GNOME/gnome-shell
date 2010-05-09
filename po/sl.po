@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-03-21 15:49+0000\n"
-"PO-Revision-Date: 2010-03-21 21:59+0100\n"
+"POT-Creation-Date: 2010-05-09 08:34+0000\n"
+"PO-Revision-Date: 2010-05-09 20:58+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -30,28 +30,28 @@ msgid "Window management and application launching"
 msgstr "Upravljanje oken in zaganjanje programov"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311
-#: ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:306
+#: ../js/ui/dash.js:850
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:338
 msgid "PREFERENCES"
 msgstr "Možnosti"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:697
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:701
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:702
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1029
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
@@ -65,154 +65,167 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/dash.js:194
+#: ../js/ui/dash.js:189
 msgid "Find"
 msgstr "Najdi"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:505
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:519
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871
-#: ../js/ui/placeDisplay.js:579
+#: ../js/ui/dash.js:869
+#: ../js/ui/placeDisplay.js:543
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878
-#: ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:876
+#: ../js/ui/docDisplay.js:489
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:354
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:391
 msgid "Enabled"
 msgstr "Omogočeno"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:393
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:395
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:397
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:422
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:428
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/overview.js:182
+#: ../js/ui/overview.js:181
 msgid "Undo"
 msgstr "Razveljavi"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:385
+#: ../js/ui/panel.js:351
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:616
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:576
+msgid "%a %b %e, %R:%S"
+msgstr "%a. %e. %b., %R:%S"
+
+#: ../js/ui/panel.js:577
+msgid "%a %b %e, %R"
+msgstr "%a, %e. %b., %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:581
+msgid "%a %R:%S"
+msgstr "%a. %R:%S"
+
+#: ../js/ui/panel.js:582
 msgid "%a %R"
 msgstr "%a. %R"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:619
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:589
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a. %e. %b., %H:%M:%S"
+
+#: ../js/ui/panel.js:590
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a. %e. %b., %H:%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:594
+msgid "%a %l:%M:%S %p"
+msgstr "%a, %H:%M:%S"
+
+#: ../js/ui/panel.js:595
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:103
+#: ../js/ui/placeDisplay.js:108
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Ni mogoče odklopiti '%s'"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:111
 msgid "Retry"
 msgstr "Poskusi znova"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/runDialog.js:232
+#: ../js/ui/runDialog.js:231
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/runDialog.js:374
+#: ../js/ui/runDialog.js:375
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:105
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:110
 msgid "Busy"
 msgstr "Zasedeno"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:115
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:124
 msgid "Account Information..."
 msgstr "Podrobnosti računa ..."
 
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "Stranska vrstica"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:129
 msgid "System Preferences..."
 msgstr "Sistemske možnosti ..."
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:138
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:143
 msgid "Switch User"
 msgstr "Preklop uporabnika"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:149
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "Izklopi ..."
-
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Programi"
-
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Nedavni dokumenti"
 
 #: ../js/ui/windowAttentionHandler.js:47
 #, c-format
@@ -224,11 +237,11 @@ msgstr "%s je končal začenjanje"
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
 
-#: ../src/shell-global.c:967
+#: ../src/shell-global.c:964
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:968
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -237,7 +250,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:973
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -246,7 +259,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:978
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -255,7 +268,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:983
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -288,6 +301,14 @@ msgstr "Poišči"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Sidebar"
+#~ msgstr "Stranska vrstica"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+#~ msgid "Applications"
+#~ msgstr "Programi"
+#~ msgid "Recent Documents"
+#~ msgstr "Nedavni dokumenti"
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
 #~ msgid "SEARCH RESULTS"
@@ -297,7 +318,8 @@ msgstr "%1$s: %2$s"
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
-#~ msgstr "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
+#~ msgstr ""
+#~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
 #~ msgid "Frequent"
@@ -308,3 +330,4 @@ msgstr "%1$s: %2$s"
 #~ msgstr "(poglej vse)"
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
+
