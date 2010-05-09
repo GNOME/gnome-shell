@@ -1023,8 +1023,13 @@ Workspace.prototype = {
                              (desiredHeight - buttonOuterHeight - captionHeight) / rect.height,
                              1.0 / this.scale);
 
-        x = xCenter - 0.5 * scale * rect.width;
-        y = y + height - rect.height * scale - captionHeight;
+        x = Math.floor(xCenter - 0.5 * scale * rect.width);
+
+        // We want to center the window in case we have just one
+        if (metaWindow.get_workspace().n_windows == 1)
+            y = Math.floor(yCenter * global.screen_height - 0.5 * scale * rect.height);
+        else
+            y = Math.floor(y + height - rect.height * scale - captionHeight);
 
         return [x, y, scale];
     },
