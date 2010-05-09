@@ -29,6 +29,7 @@ const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
+const Scripting = imports.ui.scripting;
 const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
@@ -180,6 +181,13 @@ function start() {
     log('GNOME Shell started at ' + _startDate);
 
     Mainloop.idle_add(_removeUnusedWorkspaces);
+
+    let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
+    if (perfModuleName) {
+        let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
+        let module = eval('imports.perf.' + perfModuleName + ';');
+        Scripting.runPerfScript(module, perfOutput);
+    }
 }
 
 /**

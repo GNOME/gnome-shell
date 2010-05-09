@@ -197,6 +197,9 @@ def start_shell():
             # need to force indirect rendering for NVIDIA.
             env['LIBGL_ALWAYS_INDIRECT'] = '1'
 
+    if options.perf is not None:
+        env['SHELL_PERF_MODULE'] = options.perf
+
     if options.debug:
         debug_command = options.debug_command.split()
         args = list(debug_command)
@@ -256,6 +259,8 @@ parser.add_option("", "--debug-command", metavar="COMMAND",
                   help="Command to use for debugging (defaults to 'gdb --args')")
 parser.add_option("-v", "--verbose", action="store_true")
 parser.add_option("", "--sync", action="store_true")
+parser.add_option("", "--perf", metavar="PERF_MODULE",
+		  help="Specify the name of a performance module to run")
 parser.add_option("", "--xephyr", action="store_true",
                   help="Run a debugging instance inside Xephyr")
 parser.add_option("", "--geometry", metavar="GEOMETRY",
