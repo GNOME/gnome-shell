@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "shell-global-private.h"
+#include "shell-perf-log.h"
 #include "shell-wm.h"
 
 #include "display.h"
@@ -501,6 +502,22 @@ global_stage_notify_height (GObject    *gobject,
                   NULL);
 }
 
+static void
+global_stage_before_paint (ClutterStage *stage,
+                           ShellGlobal  *global)
+{
+  shell_perf_log_event (shell_perf_log_get_default (),
+                        "clutter.stagePaintStart");
+}
+
+static void
+global_stage_after_paint (ClutterStage *stage,
+                          ShellGlobal  *global)
+{
+  shell_perf_log_event (shell_perf_log_get_default (),
+                        "clutter.stagePaintDone");
+}
+
 void
 _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)
@@ -520,6 +537,20 @@ _shell_global_set_plugin (ShellGlobal  *global,
   g_signal_connect (stage, "notify::height",
                     G_CALLBACK (global_stage_notify_height), global);
   update_screen_size (global);
+
+  g_signal_connect (stage, "paint",
+                    G_CALLBACK (global_stage_before_paint), global);
+  g_signal_connect_after (stage, "paint",
+                          G_CALLBACK (global_stage_after_paint), global);
+
+  shell_perf_log_define_event (shell_perf_log_get_default(),
+                               "clutter.stagePaintStart",
+                               "Start of stage page repaint",
+                               "");
+  shell_perf_log_define_event (shell_perf_log_get_default(),
+                               "clutter.stagePaintDone",
+                               "End of stage page repaint",
+                               "");
 }
 
 void
