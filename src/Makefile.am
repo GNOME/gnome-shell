@@ -71,6 +71,7 @@ shell_public_headers_h =		\
 	shell-overflow-list.h		\
 	shell-process.h			\
 	shell-global.h			\
+	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
 	shell-tray-manager.h		\
@@ -101,6 +102,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-process.c			\
 	shell-global.c			\
 	shell-global-private.h		\
+	shell-perf-log.c		\
 	shell-slicer.c			\
 	shell-stack.c			\
 	shell-tray-manager.c		\
