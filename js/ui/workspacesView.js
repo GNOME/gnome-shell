@@ -1373,10 +1373,10 @@ SingleView.prototype = {
     _updatePanelVisibility: function() {
         let showSwitches = (global.screen.n_workspaces > 1);
         if (this._scroll != null) {
-            if (showSwitches)
-                this._scroll.show();
-            else
-                this._scroll.hide();
+            Tweener.addTween(this._scroll,
+                             { opacity: showSwitches ? 255 : 0,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad' });
         }
     },
 
@@ -1531,10 +1531,11 @@ WorkspacesControls.prototype = {
     },
 
     _workspacesChanged: function() {
-        if (global.screen.n_workspaces == 1)
-            this._toggleViewButton.hide();
-        else
-            this._toggleViewButton.show();
+        let showToggleButton = (global.screen.n_workspaces > 1)
+        Tweener.addTween(this._toggleViewButton,
+                         { opacity: showToggleButton ? 255 : 0,
+                           time: WORKSPACE_SWITCH_TIME,
+                           transition: 'easeOutQuad' });
         this.updateControlsSensitivity();
     }
 };
