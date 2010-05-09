@@ -57,6 +57,10 @@ struct _ShellGlobal {
   ClutterActor *root_pixmap;
 
   gint last_change_screen_width, last_change_screen_height;
+
+  guint work_count;
+  GSList *leisure_closures;
+  guint leisure_function_id;
 };
 
 enum {
@@ -1391,4 +1395,135 @@ shell_global_set_property_mutable (ShellGlobal *global,
 
   JS_RemoveRoot (context, &val);
   return !gjs_log_exception (context, NULL);
+}
+
+typedef struct
+{
+  ShellLeisureFunction func;
+  gpointer user_data;
+  GDestroyNotify notify;
+} LeisureClosure;
+
+static gboolean
+run_leisure_functions (gpointer data)
+{
+  ShellGlobal *global = data;
+  GSList *closures;
+  GSList *iter;
+
+  global->leisure_function_id = 0;
+
+  /* We started more work since we scheduled the idle */
+  if (global->work_count > 0)
+    return FALSE;
+
+  closures = global->leisure_closures;
+  global->leisure_closures = NULL;
+
+  for (iter = closures; iter; iter = iter->next)
+    {
+      LeisureClosure *closure = closures->data;
+      closure->func (closure->user_data);
+
+      if (closure->notify)
+        closure->notify (closure->user_data);
+
+      g_slice_free (LeisureClosure, closure);
+    }
+
+  g_slist_free (closures);
+
+  return FALSE;
+}
+
+static void
+schedule_leisure_functions (ShellGlobal *global)
+{
+  /* This is called when we think we are ready to run leisure functions
+   * by our own accounting. We try to handle other types of business
+   * (like ClutterAnimation) by adding a low priority idle function.
+   *
+   * This won't work properly if the mainloop goes idle waiting for
+   * the vertical blanking interval or waiting for work being done
+   * in another thread.
+   */
+  if (!global->leisure_function_id)
+    global->leisure_function_id = g_idle_add_full (G_PRIORITY_LOW,
+                                                   run_leisure_functions,
+                                                   global, NULL);
+}
+
+/**
+ * shell_global_begin_work:
+ * @global: the #ShellGlobal
+ *
+ * Marks that we are currently doing work. This is used to to track
+ * whether we are busy for the purposes of shell_global_run_at_leisure().
+ * A count is kept and shell_global_end_work() must be called exactly
+ * as many times as shell_global_begin_work().
+ */
+void
+shell_global_begin_work (ShellGlobal *global)
+{
+  global->work_count++;
+}
+
+/**
+ * shell_global_end_work:
+ * @global: the #ShellGlobal
+ *
+ * Marks the end of work that we started with shell_global_begin_work().
+ * If no other work is ongoing and functions have been added with
+ * shell_global_run_at_leisure(), they will be run at the next
+ * opportunity.
+ */
+void
+shell_global_end_work (ShellGlobal *global)
+{
+  g_return_if_fail (global->work_count > 0);
+
+  global->work_count--;
+  if (global->work_count == 0 && global->leisure_closures != NULL)
+    schedule_leisure_functions (global);
+
+}
+
+/**
+ * shell_global_run_at_leisure:
+ * @global: the #ShellGlobal
+ * @func: function to call at leisure
+ * @user_data: data to pass to @func
+ * @notify: function to call to free @user_data
+ *
+ * Schedules a function to be called the next time the shell is idle.
+ * Idle means here no animations, no redrawing, and no ongoing background
+ * work. Since there is currently no way to hook into the Clutter master
+ * clock and know when is running, the implementation here is somewhat
+ * approximation. Animations done through the shell's Tweener module will
+ * be handled properly, but other animations may be detected as terminating
+ * early if they can be drawn fast enough so that the event loop goes idle
+ * between frames.
+ *
+ * The intent of this function is for performance measurement runs
+ * where a number of actions should be run serially and each action is
+ * timed individually. Using this function for other purposes will
+ * interfere with the ability to use it for performance measurement so
+ * should be avoided.
+ */
+void
+shell_global_run_at_leisure (ShellGlobal         *global,
+                             ShellLeisureFunction func,
+                             gpointer             user_data,
+                             GDestroyNotify       notify)
+{
+  LeisureClosure *closure = g_slice_new (LeisureClosure);
+  closure->func = func;
+  closure->user_data = user_data;
+  closure->notify = notify;
+
+  global->leisure_closures = g_slist_append (global->leisure_closures,
+                                             closure);
+
+  if (global->work_count == 0)
+    schedule_leisure_functions (global);
 }

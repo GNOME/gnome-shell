@@ -101,6 +101,16 @@ gboolean shell_global_set_property_mutable (ShellGlobal *global,
                                             const char  *property,
                                             gboolean     mutable);
 
+void shell_global_begin_work     (ShellGlobal         *global);
+void shell_global_end_work       (ShellGlobal         *global);
+
+typedef void (*ShellLeisureFunction) (gpointer data);
+
+void shell_global_run_at_leisure (ShellGlobal         *global,
+                                  ShellLeisureFunction func,
+                                  gpointer             user_data,
+                                  GDestroyNotify       notify);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

@@ -243,12 +243,14 @@ ClutterFrameTicker.prototype = {
 
     start : function() {
         this._timeline.start();
+        global.begin_work();
     },
 
     stop : function() {
         this._timeline.stop();
         this._startTime = -1;
         this._currentTime = -1;
+        global.end_work();
     }
 };
 
