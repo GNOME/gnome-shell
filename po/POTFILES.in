@@ -1,4 +1,6 @@
 data/gnome-shell.desktop.in.in
+data/gnome-shell-clock-preferences.desktop.in.in
+data/clock-preferences.ui
 js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/dash.js

@@ -12,7 +12,7 @@ desktop_DATA = gnome-shell.desktop gnome-shell-clock-preferences.desktop
 %.desktop:%.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
 
-pkgdata_DATA = clock-preferences.ui
+dist_pkgdata_DATA = clock-preferences.ui
 
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
