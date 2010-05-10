@@ -653,7 +653,7 @@ SingleView.prototype = {
         this._scrolling = false; // dragging scroll bar or desktop
         this._animatingScroll = false; // programatically move the scroll bar
         this._inDrag = false; // dragging a window
-
+        this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
         let primary = global.get_primary_monitor();
         this._dropGroup = new Clutter.Group({ x: 0, y: 0,
                                               width: primary.width,
@@ -833,11 +833,21 @@ SingleView.prototype = {
                 let activate = this._dragIndex;
                 let last = global.screen.n_workspaces - 1;
 
-                // switch workspaces according to the drag direction
-                if (stageX > this._dragStartX && activate > 0)
-                    activate--;
-                else if (stageX < this._dragStartX && activate < last)
-                    activate++;
+                // If the user has moved more than half a workspace, we want to "settle"
+                // to the new workspace even if the user stops dragging rather "throws"
+                // by releasing during the drag.
+                let noStop = Math.abs(activate - this._scroll.adjustment.value) > 0.5;
+
+                // We detect if the user is stopped by comparing the timestamp of the button
+                // release with the timestamp of the last motion. Experimentally, a difference
+                // of 0 or 1 millisecond indicates that the mouse is in motion, a larger
+                // difference indicates that the mouse is stopped.
+                if ((this._lastMotionTime > 0 && this._lastMotionTime > event.get_time() - 2) || noStop) {
+                    if (stageX > this._dragStartX && activate > 0)
+                        activate--;
+                    else if (stageX < this._dragStartX && activate < last)
+                        activate++;
+                }
 
                 if (activate != active) {
                     let workspace = this._workspaces[activate].metaWorkspace;
@@ -859,6 +869,7 @@ SingleView.prototype = {
 
                 this._scroll.adjustment.value += (dx / primary.width);
                 this._dragX = stageX;
+                this._lastMotionTime = event.get_time();
 
                 return true;
         }
