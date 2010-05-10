@@ -26,6 +26,7 @@ const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
+const Magnifier = imports.ui.magnifier;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -46,6 +47,7 @@ let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
+let magnifier = null;
 let _errorLogStack = [];
 let _startDate;
 
@@ -161,6 +163,9 @@ function start() {
     display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
+
+    // Install magnifier.
+    magnifier = new Magnifier.Magnifier();
 
     _log('info', 'loaded at ' + _startDate);
     log('GNOME Shell started at ' + _startDate);

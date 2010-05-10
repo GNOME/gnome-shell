@@ -26,6 +26,7 @@
 #endif
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
+#define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
 static void update_root_window_pixmap (ShellGlobal *global);
@@ -853,10 +854,24 @@ shell_global_grab_dbus_service (ShellGlobal *global)
           exit (1);
         }
     }
+
+  /* ...and the org.gnome.Magnifier service.
+   */
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, MAGNIFIER_DBUS_SERVICE,
+                          G_TYPE_UINT, 0,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire %s: %s\n", MAGNIFIER_DBUS_SERVICE, error->message);
+      /* Failing to acquire the magnifer service is not fatal.  Log the error,
+       * but keep going. */
+    }
   g_object_unref (bus);
 }
 
-static void 
+static void
 grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
 {
   ShellGlobal *global = SHELL_GLOBAL (user_data);
