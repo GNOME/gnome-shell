@@ -60,7 +60,7 @@ shell_gtk_embed_on_window_realize (GtkWidget     *widget,
    * screen.
    */
   clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (embed),
-                                         GDK_WINDOW_XWINDOW (widget->window),
+                                         GDK_WINDOW_XWINDOW (gtk_widget_get_window (widget)),
                                          FALSE);
 }
 
@@ -100,7 +100,7 @@ shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
       g_signal_connect (embed->priv->window, "realize",
                         G_CALLBACK (shell_gtk_embed_on_window_realize), embed);
 
-      if (GTK_WIDGET_REALIZED (window))
+      if (gtk_widget_get_realized (GTK_WIDGET (window)))
         shell_gtk_embed_on_window_realize (GTK_WIDGET (embed->priv->window), embed);
     }
 
@@ -155,7 +155,8 @@ shell_gtk_embed_get_preferred_width (ClutterActor *actor,
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
-  if (embed->priv->window && GTK_WIDGET_VISIBLE (embed->priv->window))
+  if (embed->priv->window
+      && gtk_widget_get_visible (GTK_WIDGET (embed->priv->window)))
     {
       GtkRequisition requisition;
       gtk_widget_size_request (GTK_WIDGET (embed->priv->window), &requisition);
@@ -174,7 +175,8 @@ shell_gtk_embed_get_preferred_height (ClutterActor *actor,
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
-  if (embed->priv->window && GTK_WIDGET_VISIBLE (embed->priv->window))
+  if (embed->priv->window
+      && gtk_widget_get_visible (GTK_WIDGET (embed->priv->window)))
     {
       GtkRequisition requisition;
       gtk_widget_size_request (GTK_WIDGET (embed->priv->window), &requisition);

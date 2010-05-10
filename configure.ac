@@ -59,9 +59,11 @@ CLUTTER_MIN_VERSION=1.2.0
 GOBJECT_INTROSPECTION_MIN_VERSION=0.6.9
 GJS_MIN_VERSION=0.6
 MUTTER_MIN_VERSION=2.29.1
+GTK_MIN_VERSION=2.20.0
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 dbus-glib-1
+                                 gtk+-2.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
                                  gjs-gi-1.0 >= $GJS_MIN_VERSION
 				 libgnome-menu $recorder_modules gconf-2.0

@@ -55,8 +55,12 @@ static void
 shell_embedded_window_show (GtkWidget *widget)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (widget);
+  GtkWidgetClass *widget_class;
 
-  GTK_WIDGET_SET_FLAGS (widget, GTK_VISIBLE);
+  /* Skip GtkWindow, but run the default GtkWidget handling which
+   * marks the widget visible */
+  widget_class = g_type_class_peek (GTK_TYPE_WIDGET);
+  widget_class->show (widget);
 
   if (window->priv->actor)
     {
@@ -107,7 +111,7 @@ shell_embedded_window_realize (GtkWidget *widget)
    * modifying the GDK hierarchy.
    */
   XReparentWindow (GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget)),
-                   GDK_WINDOW_XWINDOW (widget->window),
+                   GDK_WINDOW_XWINDOW (gtk_widget_get_window (widget)),
                    stage_xwindow,
                    window->priv->position.x, window->priv->position.y);
 }
@@ -202,7 +206,8 @@ _shell_embedded_window_set_actor (ShellEmbeddedWindow  *window,
 
   window->priv->actor = actor;
 
-  if (GTK_WIDGET_VISIBLE (window) && CLUTTER_ACTOR_IS_REALIZED (actor))
+  if (gtk_widget_get_visible (GTK_WIDGET (window))
+      && CLUTTER_ACTOR_IS_REALIZED (actor))
     gtk_widget_map (GTK_WIDGET (window));
 }
 
@@ -222,8 +227,8 @@ _shell_embedded_window_allocate (ShellEmbeddedWindow *window,
   window->priv->position.width = width;
   window->priv->position.height = height;
 
-  if (GTK_WIDGET_REALIZED (window))
-    gdk_window_move_resize (GTK_WIDGET (window)->window,
+  if (gtk_widget_get_realized (GTK_WIDGET (window)))
+    gdk_window_move_resize (gtk_widget_get_window (GTK_WIDGET (window)),
                             x, y, width, height);
 
   allocation.x = 0;
@@ -239,7 +244,7 @@ _shell_embedded_window_realize (ShellEmbeddedWindow *window)
 {
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 
-  if (GTK_WIDGET_VISIBLE (window))
+  if (gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_widget_map (GTK_WIDGET (window));
 }
 

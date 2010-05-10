@@ -268,7 +268,8 @@ shell_tray_manager_child_on_realize (GtkWidget             *widget,
     {
       bg_pixmap = create_bg_pixmap (gtk_widget_get_colormap (widget),
                                     &child->manager->priv->bg_color);
-      gdk_window_set_back_pixmap (widget->window, bg_pixmap, FALSE);
+      gdk_window_set_back_pixmap (gtk_widget_get_window (widget),
+                                  bg_pixmap, FALSE);
       g_object_unref (bg_pixmap);
     }
 }
