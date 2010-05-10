@@ -399,7 +399,6 @@ na_tray_child_set_composited (NaTrayChild *child,
 void
 na_tray_child_force_redraw (NaTrayChild *child)
 {
-  GtkAllocation allocation;
   GtkWidget *widget = GTK_WIDGET (child);
 
   if (gtk_widget_get_mapped (GTK_WIDGET (child)) && child->parent_relative_bg)
@@ -410,7 +409,10 @@ na_tray_child_force_redraw (NaTrayChild *child)
        * the redraw. It should be ok for GtkStatusIcon or EggTrayIcon.
        */
       Display *xdisplay = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget));
+      GtkAllocation allocation;
       XEvent xev;
+
+      gtk_widget_get_allocation (widget, &allocation);
 
       xev.xexpose.type = Expose;
       xev.xexpose.window = GDK_WINDOW_XWINDOW (gtk_socket_get_plug_window (GTK_SOCKET (child)));
