@@ -37,6 +37,7 @@ test_conformance_SOURCES = 		\
 	test-paint-opacity.c 		\
 	test-binding-pool.c		\
         test-clutter-text.c             \
+	test-clutter-cairo-texture.c    \
         test-text-cache.c               \
 	test-anchors.c                  \
 	test-model.c			\

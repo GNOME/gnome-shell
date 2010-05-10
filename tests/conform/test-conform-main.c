@@ -145,6 +145,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
   TEST_CONFORM_SIMPLE ("/texture", test_texture_fbo);
+  TEST_CONFORM_SIMPLE ("/texture/cairo", test_clutter_cairo_texture);
 
   TEST_CONFORM_SIMPLE ("/path", test_path);
 
