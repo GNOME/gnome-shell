@@ -255,6 +255,7 @@ TAGS
 /tests/conform/test-cogl-texture-rectangle
 /tests/conform/test-cogl-path
 /tests/conform/test-cogl-wrap-modes
+/tests/conform/wrappers
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
