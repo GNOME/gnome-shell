@@ -4,6 +4,7 @@ icondir=$(pkgdatadir)/icons
 icon_DATA=mutter-window-demo.png
 
 INCLUDES=@MUTTER_WINDOW_DEMO_CFLAGS@ @MUTTER_MESSAGE_CFLAGS@ \
+	-I$(top_srcdir)/src \
 	-DMUTTER_ICON_DIR=\"$(pkgdatadir)/icons\" \
 	-DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"
 

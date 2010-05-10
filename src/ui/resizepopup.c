@@ -26,6 +26,7 @@
 #include "util.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include "gtk-compat.h"
 
 struct _MetaResizePopup
 {

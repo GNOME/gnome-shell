@@ -24,6 +24,8 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 
+#include "gtk-compat.h"
+
 static GtkWidget* do_appwindow (void);
 
 static gboolean aspect_on;

@@ -24,6 +24,8 @@
 #include "themewidget.h"
 #include <math.h>
 
+#include "gtk-compat.h"
+
 static void meta_area_class_init   (MetaAreaClass  *klass);
 static void meta_area_init         (MetaArea       *area);
 static void meta_area_size_request (GtkWidget      *widget,

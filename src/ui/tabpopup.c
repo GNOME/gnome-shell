@@ -36,6 +36,8 @@
 #include <gtk/gtk.h>
 #include <math.h>
 
+#include "gtk-compat.h"
+
 #define OUTSIDE_SELECT_RECT 2
 #define INSIDE_SELECT_RECT 2
 

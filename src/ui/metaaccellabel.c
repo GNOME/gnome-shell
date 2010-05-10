@@ -37,6 +37,8 @@
 #include <string.h>
 #include "util.h"
 
+#include "gtk-compat.h"
+
 static void     meta_accel_label_class_init   (MetaAccelLabelClass *klass);
 static void     meta_accel_label_init         (MetaAccelLabel      *accel_label);
 static void     meta_accel_label_destroy      (GtkObject           *object);

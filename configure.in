@@ -124,7 +124,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-MUTTER_PC_MODULES='gtk+-2.0 >= 2.20 pango >= 1.2.0'
+MUTTER_PC_MODULES='gtk+-2.0 >= 2.18 pango >= 1.2.0'
 
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
@@ -184,8 +184,8 @@ AM_GLIB_GNU_GETTEXT
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 # gtk_window_set_icon_name requires gtk2+-2.6.0
-PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-2.0 >= 2.20)
-PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-2.0 >= 2.20)
+PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-2.0 >= 2.18)
+PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-2.0 >= 2.18)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
