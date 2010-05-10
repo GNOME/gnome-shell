@@ -15,6 +15,7 @@ TRAY_STAMP_FILES = stamp-na-marshal.h
 
 # please, keep this sorted alphabetically
 tray_source =			\
+	gtk-compat.h		\
 	tray/na-tray-child.c	\
 	tray/na-tray-child.h	\
 	tray/na-tray-manager.c	\

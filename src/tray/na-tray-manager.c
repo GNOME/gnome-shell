@@ -25,6 +25,7 @@
 #include <libintl.h>
 
 #include "na-tray-manager.h"
+#include "gtk-compat.h"
 
 #include <gdkconfig.h>
 #include <glib/gi18n-lib.h>

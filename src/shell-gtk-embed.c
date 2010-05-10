@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "shell-embedded-window-private.h"
+#include "gtk-compat.h"
 
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>

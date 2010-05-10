@@ -82,6 +82,7 @@ libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
 	gnome-shell-plugin.c		\
+	gtk-compat.h			\
 	shell-app.c			\
 	shell-app-private.h		\
 	shell-app-system.c		\

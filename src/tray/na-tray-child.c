@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "na-tray-child.h"
+#include "gtk-compat.h"
 
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
