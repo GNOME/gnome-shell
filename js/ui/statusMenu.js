@@ -2,11 +2,9 @@
 
 const Gdm = imports.gi.Gdm;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -18,21 +16,26 @@ const Panel = imports.ui.panel;
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-function StatusMenu() {
+function StatusMenuButton() {
     this._init();
 }
 
-StatusMenu.prototype = {
+StatusMenuButton.prototype = {
+    __proto__: Panel.PanelMenuButton.prototype,
+
     _init: function() {
+        Panel.PanelMenuButton.prototype._init.call(this, St.Align.START);
+        let box = new St.BoxLayout({ name: 'panelStatusMenu' });
+        this.actor.set_child(box);
+
         this._gdm = Gdm.UserManager.ref_default();
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
 
-        this.actor = new St.BoxLayout({ name: 'statusMenu' });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
-        this.actor.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
+        box.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
         // FIXME: these icons are all wrong (likewise in createSubMenu)
@@ -45,7 +48,7 @@ StatusMenu.prototype = {
         this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
 
         this._name = new St.Label({ text: this._user.get_real_name() });
-        this.actor.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
+        box.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
         this._userNameChangedId = this._user.connect('notify::display-name', Lang.bind(this, this._updateUserName));
 
         this._createSubMenu();
@@ -65,9 +68,9 @@ StatusMenu.prototype = {
     _updateSwitchUser: function() {
         let users = this._gdm.list_users();
         if (users.length > 1)
-            this._loginScreenItem.show();
+            this._loginScreenItem.actor.show();
         else
-            this._loginScreenItem.hide();
+            this._loginScreenItem.actor.hide();
     },
 
     _updatePresenceIcon: function(presence, status) {
@@ -81,80 +84,51 @@ StatusMenu.prototype = {
             this._iconBox.child = this._idleIcon;
     },
 
-    // The menu
-
-    _createImageMenuItem: function(label, iconName, forceIcon) {
-        let image = new Gtk.Image();
-        let item = new Gtk.ImageMenuItem({ label: label,
-                                           image: image,
-                                           always_show_image: forceIcon == true });
-        item.connect('style-set', Lang.bind(this,
-            function() {
-                image.set_from_icon_name(iconName, Gtk.IconSize.MENU);
-            }));
-
-        return item;
-    },
-
     _createSubMenu: function() {
-        this._menu = new Gtk.Menu();
-        this._menu.connect('deactivate', Lang.bind(this, function() { this.emit('deactivated'); }));
-
         let item;
 
-        item = this._createImageMenuItem(_("Available"), 'gtk-yes', true);
+        item = new Panel.PanelImageMenuItem(_("Available"), 'gtk-yes');
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Busy"), 'gtk-no', true);
+        item = new Panel.PanelImageMenuItem(_("Busy"), 'gtk-no');
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Invisible"), 'gtk-close', true);
+        item = new Panel.PanelImageMenuItem(_("Invisible"), 'gtk-close');
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = new Gtk.SeparatorMenuItem();
-        this._menu.append(item);
-        item.show();
+        item = new Panel.PanelSeparatorMenuItem();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Account Information..."), 'user-info');
+        item = new Panel.PanelImageMenuItem(_("Account Information..."), 'user-info');
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("System Preferences..."), 'preferences-desktop');
+        item = new Panel.PanelImageMenuItem(_("System Preferences..."), 'preferences-desktop');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = new Gtk.SeparatorMenuItem();
-        this._menu.append(item);
-        item.show();
+        item = new Panel.PanelSeparatorMenuItem();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Lock Screen"), 'system-lock-screen');
+        item = new Panel.PanelImageMenuItem(_("Lock Screen"), 'system-lock-screen');
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Switch User"), 'system-users');
+        item = new Panel.PanelImageMenuItem(_("Switch User"), 'system-users');
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
-        item = this._createImageMenuItem(_("Log Out..."), 'system-log-out');
+        item = new Panel.PanelImageMenuItem(_("Log Out..."), 'system-log-out');
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
 
-        item = this._createImageMenuItem(_("Shut Down..."), 'system-shutdown');
+        item = new Panel.PanelImageMenuItem(_("Shut Down..."), 'system-shutdown');
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-        this._menu.append(item);
-        item.show();
+        this.menu.addMenuItem(item);
     },
 
     _setPresenceStatus: function(item, status) {
@@ -192,54 +166,5 @@ StatusMenu.prototype = {
         // on failure
         let p = new Shell.Process({'args' : args});
         p.run();
-    },
-
-    // shell_status_menu_toggle:
-    // @event: event causing the toggle
-    //
-    // If the menu is not currently up, pops it up. Otherwise, hides it.
-    // Popping up may fail if another grab is already active; check with
-    // isActive().
-    toggle: function(event) {
-        if (this._menu.visible)
-            this._menu.popdown();
-        else {
-            // We don't want to overgrab a Mutter grab with the grab
-            // that GTK+ uses on menus.
-            if (global.display_is_grabbed())
-                return;
-
-            let [menuWidth, menuHeight] = this._menu.get_size_request ();
-
-            let panel;
-            for (panel = this.actor; panel; panel = panel.get_parent()) {
-                if (panel._delegate instanceof Panel.Panel)
-                    break;
-            }
-
-            let [panelX, panelY] = panel.get_transformed_position();
-            let [panelWidth, panelHeight] = panel.get_transformed_size();
-
-            let menuX;
-            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-                menuX = panelX;
-            } else {
-                menuX = Math.round(panelX + panelWidth - menuWidth);
-            }
-            let menuY = Math.round(panelY + panelHeight);
-
-            Shell.popup_menu(this._menu, event.get_button(), event.get_time(),
-                             menuX, menuY);
-        }
-    },
-    
-    //  isActive:
-    //  
-    //  Gets whether the menu is currently popped up
-    //  
-    //  Return value: %true if the menu is currently popped up
-    isActive: function() {
-        return this._menu.visible;
     }
 };
-Signals.addSignalMethods(StatusMenu.prototype);

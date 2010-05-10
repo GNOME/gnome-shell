@@ -9,13 +9,13 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
 const Signals = imports.signals;
+const DBus = imports.dbus;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
-const StatusMenu = imports.ui.statusMenu;
 const BoxPointer = imports.ui.boxpointer;
 
 const PANEL_HEIGHT = 26;
@@ -794,24 +794,12 @@ Panel.prototype = {
             }));
         this._traymanager.manage_stage(global.stage);
 
-        let statusmenu = this._statusmenu = new StatusMenu.StatusMenu();
-        let statusbutton = new St.Clickable({ name: 'panelStatus',
-                                               style_class: 'panel-button',
-                                               reactive: true,
-                                               y_fill: true });
-        statusbutton.set_child(statusmenu.actor);
-        statusbutton.connect('clicked', function (b, event) {
-            statusmenu.toggle(event);
-            // The statusmenu might not pop up if it couldn't get a pointer grab
-            if (statusmenu.isActive())
-                statusbutton.active = true;
-            return true;
-        });
-        this._rightBox.add(statusbutton);
-        // We get a deactivated event when the popup disappears
-        this._statusmenu.connect('deactivated', function (sm) {
-            statusbutton.active = false;
-        });
+        // We need to do this here to avoid a circular import with
+        // prototype dependencies.
+        let StatusMenu = imports.ui.statusMenu;
+        this._statusmenu = new StatusMenu.StatusMenuButton();
+        this._addMenu(this._statusmenu);
+        this._rightBox.add(this._statusmenu.actor);
 
         // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
