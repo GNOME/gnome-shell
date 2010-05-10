@@ -522,7 +522,7 @@ meta_window_menu_popup (MetaWindowMenu     *menu,
                   button,
                   timestamp);
 
-  if (!GTK_MENU_SHELL (menu->menu)->have_xgrab)
+  if (!gtk_widget_get_visible (menu->menu))
     meta_warning ("GtkMenu failed to grab the pointer\n");
 }
 

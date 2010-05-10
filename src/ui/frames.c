@@ -611,8 +611,9 @@ meta_frames_attach_style (MetaFrames  *frames,
     gtk_style_detach (frame->style);
 
   /* Weirdly, gtk_style_attach() steals a reference count from the style passed in */
-  g_object_ref (GTK_WIDGET (frames)->style);
-  frame->style = gtk_style_attach (GTK_WIDGET (frames)->style, frame->window);
+  g_object_ref (gtk_widget_get_style (GTK_WIDGET (frames)));
+  frame->style = gtk_style_attach (gtk_widget_get_style (GTK_WIDGET (frames)),
+                                   frame->window);
 }
 
 void
