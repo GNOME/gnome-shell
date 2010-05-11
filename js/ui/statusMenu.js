@@ -131,7 +131,7 @@ StatusMenuButton.prototype = {
         this.menu.addMenuItem(item);
     },
 
-    _setPresenceStatus: function(item, status) {
+    _setPresenceStatus: function(item, event, status) {
         this._presence.setStatus(status);
     },
 
