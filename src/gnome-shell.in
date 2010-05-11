@@ -1,4 +1,5 @@
 #!@PYTHON@
+# -*- mode: Python; indent-tabs-mode: nil; -*-
 
 import atexit
 import optparse
@@ -213,6 +214,68 @@ def start_shell():
         args.append('--sync')
     return subprocess.Popen(args, env=env)
 
+def run_shell():
+    if options.debug:
+        # Record initial terminal state so we can reset it to that
+        # later, in case we kill gdb at a bad time
+        termattrs = termios.tcgetattr(0);
+
+    normal_exit = False
+
+    if options.verbose:
+        print "Starting shell"
+
+    try:
+        shell = None
+        if options.xephyr:
+            xephyr = start_xephyr()
+            # This makes us not grab the org.gnome.Panel or
+            # org.freedesktop.Notifications D-Bus names
+            os.environ['GNOME_SHELL_NO_REPLACE'] = '1'
+            shell = start_shell()
+        else:
+            xephyr = None
+            shell = start_shell()
+
+        # Wait for shell to exit
+        if options.verbose:
+            print "Waiting for shell to exit"
+        shell.wait()
+
+    except KeyboardInterrupt, e:
+        try:
+            os.kill(shell.pid, signal.SIGKILL)
+        except:
+            pass
+        shell.wait()
+    finally:
+        # Clean up Xephyr if it outlived the shell
+        if xephyr:
+            try:
+                os.kill(xephyr.pid, signal.SIGKILL)
+            except OSError:
+                pass
+
+        if shell is None:
+            print "Failed to start shell"
+        elif shell.returncode == 0:
+            normal_exit = True
+            if options.verbose:
+                print "Shell exited normally"
+        elif shell.returncode < 0:
+            # Python has no mapping for strsignal; not worth using
+            # ctypes for this.
+            print "Shell killed with signal %d" % - shell.returncode
+        else:
+            # Normal reason here would be losing connection the X server
+            if options.verbose:
+                print "Shell exited with return code %d" % shell.returncode
+
+        if options.debug:
+            termios.tcsetattr(0, termios.TCSANOW, termattrs);
+
+    return normal_exit
+
 def restore_gnome():
     # Do imports lazily to save time and memory
     import gio
@@ -405,69 +468,13 @@ else:
     # tfp does not work correctly in Xephyr
     use_tfp = not options.xephyr
 
-if options.verbose:
-    print "Starting shell"
-
-
-
-if options.debug:
-    # Record initial terminal state so we can reset it to that
-    # later, in case we kill gdb at a bad time
-    termattrs = termios.tcgetattr(0);
-
 # We only respawn the previous environment on abnormal exit;
 # for a clean exit, we assume that gnome-shell was replaced with
 # something else.
 normal_exit = False
 
 try:
-    shell = None
-    if options.xephyr:
-        xephyr = start_xephyr()
-        # This makes us not grab the org.gnome.Panel or
-        # org.freedesktop.Notifications D-Bus names
-        os.environ['GNOME_SHELL_NO_REPLACE'] = '1'
-        shell = start_shell()
-    else:
-        xephyr = None
-        shell = start_shell()
-
-    # Wait for shell to exit
-    if options.verbose:
-        print "Waiting for shell to exit"
-    shell.wait()
-
-except KeyboardInterrupt, e:
-    try:
-        os.kill(shell.pid, signal.SIGKILL)
-    except:
-        pass
-    shell.wait()
+    normal_exit = run_shell()
 finally:
-    # Clean up Xephyr if it outlived the shell
-    if xephyr:
-        try:
-            os.kill(xephyr.pid, signal.SIGKILL)
-        except OSError:
-            pass
-
-    if shell is None:
-        print "Failed to start shell"
-    elif shell.returncode == 0:
-        normal_exit = True
-        if options.verbose:
-            print "Shell exited normally"
-    elif shell.returncode < 0:
-        # Python has no mapping for strsignal; not worth using
-        # ctypes for this.
-        print "Shell killed with signal %d" % - shell.returncode
-    else:
-        # Normal reason here would be losing connection the X server
-        if options.verbose:
-            print "Shell exited with return code %d" % shell.returncode
-
-    if options.debug:
-        termios.tcsetattr(0, termios.TCSANOW, termattrs);
-
     if not options.xephyr and options.replace and not normal_exit:
         restore_gnome()
