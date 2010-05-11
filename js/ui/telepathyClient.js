@@ -11,7 +11,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Telepathy = imports.misc.telepathy;
 
-let avatarManager;
+let contactManager;
 let channelDispatcher;
 
 // See Notification.appendMessage
@@ -54,7 +54,7 @@ Client.prototype = {
 
         this._channels = {};
 
-        avatarManager = new AvatarManager();
+        contactManager = new ContactManager();
 
         channelDispatcher = new Telepathy.ChannelDispatcher(DBus.session,
                                                             Telepathy.CHANNEL_DISPATCHER_NAME,
@@ -144,11 +144,11 @@ DBus.conformExport(Client.prototype, Telepathy.ClientIface);
 DBus.conformExport(Client.prototype, Telepathy.ClientObserverIface);
 
 
-function AvatarManager() {
+function ContactManager() {
     this._init();
 };
 
-AvatarManager.prototype = {
+ContactManager.prototype = {
     _init: function() {
         this._connections = {};
         // Note that if we changed this to '/telepathy/avatars' then
@@ -173,8 +173,8 @@ AvatarManager.prototype = {
         info.cacheDir = this._cacheDir + '/' + match[1];
         GLib.mkdir_with_parents(info.cacheDir, 0700);
 
-        // info.token[handle] is the token for @handle's avatar
-        info.token = {};
+        // info.tokens[handle] is the token for @handle's avatar
+        info.tokens = {};
 
         // info.icons[handle] is an array of the icon actors currently
         // being displayed for @handle. These will be updated
@@ -217,7 +217,7 @@ AvatarManager.prototype = {
 
     _setIcon: function(iconBox, info, handle) {
         let textureCache = St.TextureCache.get_default();
-        let token = info.token[handle];
+        let token = info.tokens[handle];
         let file;
 
         if (token) {
@@ -249,10 +249,10 @@ AvatarManager.prototype = {
         if (!info)
             return;
 
-        if (info.token[handle] == token)
+        if (info.tokens[handle] == token)
             return;
 
-        info.token[handle] = token;
+        info.tokens[handle] = token;
         if (token != '') {
             let file = this._getFileForToken(info, token);
             if (!GLib.file_test(file, GLib.FileTest.EXISTS)) {
@@ -306,7 +306,7 @@ AvatarManager.prototype = {
         this._setIcon(iconBox, info, handle);
 
         // Asynchronously load the real avatar if we don't have it yet.
-        if (info.token[handle] == null) {
+        if (info.tokens[handle] == null) {
             info.connectionAvatars.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
                 function (tokens, err) {
                     let token = tokens && tokens[handle] ? tokens[handle] : '';
@@ -357,7 +357,7 @@ Source.prototype = {
     },
 
     createIcon: function(size) {
-        return avatarManager.createAvatar(this._conn, this._targetHandle, size);
+        return contactManager.createAvatar(this._conn, this._targetHandle, size);
     },
 
     clicked: function() {
