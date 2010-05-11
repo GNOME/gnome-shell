@@ -203,7 +203,7 @@ function runPerfScript(scriptModule, outputFile) {
     _step(g,
           function() {
               _collect(scriptModule, outputFile);
-              Meta.exit(Meta.ExitCode.ERROR);
+              Meta.exit(Meta.ExitCode.SUCCESS);
           },
          function(err) {
              log("Script failed: " + err + "\n" + err.stack);

@@ -2,6 +2,7 @@
 # -*- mode: Python; indent-tabs-mode: nil; -*-
 
 import atexit
+import json
 import optparse
 import os
 import random
@@ -130,7 +131,7 @@ def _get_glx_extensions():
 
     return (server_glx_extensions, client_glx_extensions, glx_extensions)
 
-def start_shell():
+def start_shell(perf_output=None):
     bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
         running_from_source_tree = True
@@ -201,6 +202,9 @@ def start_shell():
     if options.perf is not None:
         env['SHELL_PERF_MODULE'] = options.perf
 
+    if perf_output is not None:
+        env['SHELL_PERF_OUTPUT'] = perf_output
+
     if options.debug:
         debug_command = options.debug_command.split()
         args = list(debug_command)
@@ -214,7 +218,7 @@ def start_shell():
         args.append('--sync')
     return subprocess.Popen(args, env=env)
 
-def run_shell():
+def run_shell(perf_output=None):
     if options.debug:
         # Record initial terminal state so we can reset it to that
         # later, in case we kill gdb at a bad time
@@ -235,7 +239,7 @@ def run_shell():
             shell = start_shell()
         else:
             xephyr = None
-            shell = start_shell()
+            shell = start_shell(perf_output=perf_output)
 
         # Wait for shell to exit
         if options.verbose:
@@ -275,6 +279,58 @@ def run_shell():
             termios.tcsetattr(0, termios.TCSANOW, termattrs);
 
     return normal_exit
+
+def run_performance_test():
+    iters = options.perf_iters
+    if options.perf_warmup:
+        iters += 1
+
+    metric_summaries = {}
+
+    for i in xrange(0, iters):
+        # We create an empty temporary file that the shell will overwrite
+        # with the contents.
+        handle, output_file = tempfile.mkstemp(".json", "gnome-shell-perf.")
+        os.close(handle)
+
+        # Run the performance test and collect the output as JSON
+        normal_exit = False
+        try:
+            normal_exit = run_shell(perf_output=output_file)
+        finally:
+            if not normal_exit:
+                os.remove(output_file)
+
+        if not normal_exit:
+            return False
+
+        try:
+            f = open(output_file)
+            output = json.load(f)
+            f.close()
+        finally:
+            os.remove(output_file)
+
+        if options.perf_warmup and i == 0:
+            continue
+
+        for metric, details in output.iteritems():
+            if not metric in metric_summaries:
+                summary = {}
+                summary['description'] = details['description']
+                summary['values'] = []
+                metric_summaries[metric] = summary
+            else:
+                summary = metric_summaries[metric]
+
+            summary['values'].append(details['value'])
+
+    for metric in sorted(metric_summaries.keys()):
+        summary = metric_summaries[metric]
+        print "#", summary['description']
+        print metric, ", ".join((str(x) for x in summary['values']))
+
+    return True
 
 def restore_gnome():
     # Do imports lazily to save time and memory
@@ -324,6 +380,11 @@ parser.add_option("-v", "--verbose", action="store_true")
 parser.add_option("", "--sync", action="store_true")
 parser.add_option("", "--perf", metavar="PERF_MODULE",
 		  help="Specify the name of a performance module to run")
+parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
+		  help="Numbers of iterations of performance module to run",
+                  default=1)
+parser.add_option("", "--perf-warmup", action="store_true",
+		  help="Run a dry run before performance tests")
 parser.add_option("", "--xephyr", action="store_true",
                   help="Run a debugging instance inside Xephyr")
 parser.add_option("", "--geometry", metavar="GEOMETRY",
@@ -474,7 +535,10 @@ else:
 normal_exit = False
 
 try:
-    normal_exit = run_shell()
+    if options.perf:
+        normal_exit = run_performance_test()
+    else:
+        normal_exit = run_shell()
 finally:
-    if not options.xephyr and options.replace and not normal_exit:
+    if not options.xephyr and options.replace and (options.perf or not normal_exit):
         restore_gnome()
