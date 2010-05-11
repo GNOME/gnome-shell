@@ -25,6 +25,8 @@ struct _ShellApp
 
   ShellAppInfo *info;
 
+  guint32 last_user_time;
+
   guint workspace_switch_id;
 
   GSList *windows;
@@ -560,10 +562,9 @@ shell_app_is_on_workspace (ShellApp *app,
  * @other: A #ShellApp
  *
  * Compare one #ShellApp instance to another, in the following way:
+ *   - Running applications sort before not-running applications.
  *   - If one of them has visible windows and the other does not, the one
  *     with visible windows is first.
- *   - If one has no windows at all (i.e. it's not running) and the other
- *     does, the one with windows is first.
  *   - Finally, the application which the user interacted with most recently
  *     compares earlier.
  */
@@ -572,7 +573,13 @@ shell_app_compare (ShellApp *app,
                    ShellApp *other)
 {
   gboolean vis_app, vis_other;
-  GSList *windows_app, *windows_other;
+
+  if (app->state != other->state)
+    {
+      if (app->state == SHELL_APP_STATE_RUNNING)
+        return -1;
+      return 1;
+    }
 
   vis_app = shell_app_has_visible_windows (app);
   vis_other = shell_app_has_visible_windows (other);
@@ -587,10 +594,7 @@ shell_app_compare (ShellApp *app,
   else if (!app->windows && other->windows)
     return 1;
 
-  windows_app = shell_app_get_windows (app);
-  windows_other = shell_app_get_windows (other);
-
-  return meta_window_get_user_time (windows_other->data) - meta_window_get_user_time (windows_app->data);
+  return other->last_user_time - app->last_user_time;
 }
 
 ShellApp *
@@ -642,6 +646,8 @@ shell_app_on_user_time_changed (MetaWindow *window,
                                 GParamSpec *pspec,
                                 ShellApp   *app)
 {
+  app->last_user_time = meta_window_get_user_time (window);
+
   /* Ideally we don't want to emit windows-changed if the sort order
    * isn't actually changing. This check catches most of those.
    */
@@ -668,6 +674,8 @@ void
 _shell_app_add_window (ShellApp        *app,
                        MetaWindow      *window)
 {
+  guint32 user_time;
+
   if (g_slist_find (app->windows, window))
     return;
 
@@ -675,6 +683,10 @@ _shell_app_add_window (ShellApp        *app,
   g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
   app->window_sort_stale = TRUE;
+
+  user_time = meta_window_get_user_time (window);
+  if (user_time > app->last_user_time)
+    app->last_user_time = user_time;
 
   if (app->state != SHELL_APP_STATE_RUNNING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
