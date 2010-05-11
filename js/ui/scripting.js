@@ -94,6 +94,15 @@ function scriptEvent(name) {
     Shell.PerfLog.get_default().event("script." + name);
 }
 
+/**
+ * collectStatistics
+ *
+ * Convenience function to trigger statistics collection
+ */
+function collectStatistics() {
+    Shell.PerfLog.get_default().collect_statistics();
+}
+
 function _step(g, finish, onError) {
     try {
         let waitFunction = g.next();
