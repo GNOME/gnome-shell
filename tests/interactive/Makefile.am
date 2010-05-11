@@ -20,6 +20,8 @@ UNIT_TESTS = \
 	test-fullscreen.c \
 	test-shader.c \
 	test-animator.c \
+	test-state.c \
+	test-state-animator.c \
 	test-unproject.c \
 	test-viewport.c \
 	test-fbo.c \
