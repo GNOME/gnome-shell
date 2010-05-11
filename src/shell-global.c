@@ -436,24 +436,33 @@ shell_global_get_windows (ShellGlobal *global)
 }
 
 static gboolean
-on_screen_size_changed_cb (gpointer data)
+update_screen_size (ShellGlobal *global)
 {
-  ShellGlobal *global = SHELL_GLOBAL (data);
-
   int width, height;
 
   mutter_plugin_query_screen_size (global->plugin, &width, &height);
 
-  if (global->last_change_screen_width != width || global->last_change_screen_height != height)
-    {
-      g_signal_emit (G_OBJECT (global), shell_global_signals[SCREEN_SIZE_CHANGED], 0);
-      global->last_change_screen_width = width;
-      global->last_change_screen_height = height;
+  if (global->last_change_screen_width == width && global->last_change_screen_height == height)
+    return FALSE;
 
-      /* update size of background actor to fix tiled backgrounds */
-      clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
-                              width, height);
-    }
+  global->last_change_screen_width = width;
+  global->last_change_screen_height = height;
+
+  /* update size of background actor to fix tiled backgrounds */
+  if (global->root_pixmap)
+    clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
+                            width, height);
+
+  return TRUE;
+}
+
+static gboolean
+on_screen_size_changed_cb (gpointer data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+
+  if (update_screen_size (global))
+    g_signal_emit (G_OBJECT (global), shell_global_signals[SCREEN_SIZE_CHANGED], 0);
 
   return FALSE;
 }
@@ -488,37 +497,25 @@ global_stage_notify_height (GObject    *gobject,
                   NULL);
 }
 
-static void
-global_plugin_notify_screen (GObject    *gobject,
-                             GParamSpec *pspec,
-                             gpointer    data)
-{
-  ShellGlobal *global = SHELL_GLOBAL (data);
-  ClutterActor *stage = mutter_plugin_get_stage (MUTTER_PLUGIN (gobject));
-
-  g_signal_connect (stage, "notify::width",
-                    G_CALLBACK (global_stage_notify_width), global);
-  g_signal_connect (stage, "notify::height",
-                    G_CALLBACK (global_stage_notify_height), global);
-}
-
 void
 _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)
 {
+  ClutterActor *stage;
+
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
 
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
-  /* At this point screen is NULL, so we can't yet do signal connections
-   * to the width and height; we wait until the screen property is set
-   * to do that. Note that this is a one time thing - screen will never
-   * change once first set.
-   */
-  g_signal_connect (plugin, "notify::screen",
-                    G_CALLBACK (global_plugin_notify_screen), global);
+  stage = mutter_plugin_get_stage (plugin);
+
+  g_signal_connect (stage, "notify::width",
+                    G_CALLBACK (global_stage_notify_width), global);
+  g_signal_connect (stage, "notify::height",
+                    G_CALLBACK (global_stage_notify_height), global);
+  update_screen_size (global);
 }
 
 void
@@ -1022,6 +1019,10 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
   if (global->root_pixmap == NULL)
     {
       global->root_pixmap = clutter_glx_texture_pixmap_new ();
+
+      clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
+                              global->last_change_screen_width,
+                              global->last_change_screen_height);
 
       clutter_texture_set_repeat (CLUTTER_TEXTURE (global->root_pixmap),
                                   TRUE, TRUE);

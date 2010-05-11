@@ -167,6 +167,9 @@ function start() {
     // Install magnifier.
     magnifier = new Magnifier.Magnifier();
 
+    // Perform initial relayout here
+    _relayout();
+
     _log('info', 'loaded at ' + _startDate);
     log('GNOME Shell started at ' + _startDate);
 

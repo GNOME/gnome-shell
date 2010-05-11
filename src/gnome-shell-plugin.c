@@ -140,8 +140,6 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 static void
 gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 {
-  _shell_global_set_plugin (shell_global_get(), MUTTER_PLUGIN(shell_plugin));
-
   meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
                                            "/desktop/gnome/shell/windows/button_layout");
 }
@@ -245,6 +243,7 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
   int status;
   const char *shell_js;
   char **search_path;
+  ShellGlobal *global;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -275,7 +274,11 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
   shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
 
-  _shell_global_set_gjs_context (shell_global_get (), shell_plugin->gjs_context);
+  /* Initialize the global object here. */
+  global = shell_global_get ();
+
+  _shell_global_set_plugin (global, MUTTER_PLUGIN(shell_plugin));
+  _shell_global_set_gjs_context (global, shell_plugin->gjs_context);
 
   if (!gjs_context_eval (shell_plugin->gjs_context,
                          "const Main = imports.ui.main; Main.start();",
