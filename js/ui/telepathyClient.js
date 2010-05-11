@@ -52,6 +52,7 @@ Client.prototype = {
                                   function (name) { /* FIXME: acquired */ },
                                   function (name) { /* FIXME: lost */ });
 
+        this._accounts = {};
         this._channels = {};
 
         contactManager = new ContactManager();
@@ -65,33 +66,47 @@ Client.prototype = {
         let accountManager = new Telepathy.AccountManager(DBus.session,
                                                           Telepathy.ACCOUNT_MANAGER_NAME,
                                                           Telepathy.nameToPath(Telepathy.ACCOUNT_MANAGER_NAME));
-        accountManager.GetRemote('ValidAccounts', Lang.bind(this, this._gotValidAccounts));
+        accountManager.GetRemote('ValidAccounts', Lang.bind(this,
+            function (accounts, err) {
+                if (!accounts)
+                    return;
+
+                for (let i = 0; i < accounts.length; i++)
+                    this._gotAccount(accounts[i]);
+            }));
+        accountManager.connect('AccountValidityChanged', Lang.bind(this, this._accountValidityChanged));
     },
 
-    _gotValidAccounts: function(accounts, err) {
-        if (!accounts)
-            return;
+    _accountValidityChanged: function(accountManager, accountPath, valid) {
+        if (!valid) {
+            delete this._accounts[accountPath];
+            // We don't need to clean up connections, sources, etc; they'll
+            // get Closed and cleaned up independently.
+        } else
+            this._gotAccount(accountPath);
+    },
 
-        for (let i = 0; i < accounts.length; i++) {
-            let account = new Telepathy.Account(DBus.session,
-                                                Telepathy.ACCOUNT_MANAGER_NAME,
-                                                accounts[i]);
-            account.GetRemote('Connection', Lang.bind(this,
-                function (connPath, err) {
-                    if (!connPath || connPath == '/')
-                        return;
+    _gotAccount: function(accountPath) {
+        let account = new Telepathy.Account(DBus.session,
+                                            Telepathy.ACCOUNT_MANAGER_NAME,
+                                            accountPath);
+        this._accounts[accountPath] = account;
+        account.GetRemote('Connection', Lang.bind(this,
+            function (connPath, err) {
+                if (!connPath || connPath == '/')
+                    return;
 
-                    let connReq = new Telepathy.ConnectionRequests(DBus.session,
-                                                                   Telepathy.pathToName(connPath),
-                                                                   connPath);
-                    connReq.GetRemote('Channels', Lang.bind(this,
-                        function(channels, err) {
-                            if (!channels)
-                                return;
-                            this._addChannels(account.getPath(), connPath, channels);
-                        }));
-                }));
-        }
+                let connReq = new Telepathy.ConnectionRequests(DBus.session,
+                                                               Telepathy.pathToName(connPath),
+                                                               connPath);
+                connReq.GetRemote('Channels', Lang.bind(this,
+                    function(channels, err) {
+                        if (!channels)
+                            return;
+
+                        this._addChannels(accountPath, connPath, channels);
+                    }));
+            }));
     },
 
     get Interfaces() {

@@ -262,6 +262,10 @@ const AccountManagerIface = {
         { name: 'ValidAccounts',
           signature: 'ao',
           access: 'read' }
+    ],
+    signals: [
+        { name: 'AccountValidityChanged',
+          inSignature: 'ob' }
     ]
 };
 let AccountManager = makeProxyClass(AccountManagerIface);
