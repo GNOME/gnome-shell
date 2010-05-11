@@ -7,6 +7,9 @@
 #include "shell-perf-log.h"
 
 typedef struct _ShellPerfEvent ShellPerfEvent;
+typedef struct _ShellPerfStatistic ShellPerfStatistic;
+typedef struct _ShellPerfStatisticsClosure ShellPerfStatisticsClosure;
+typedef union  _ShellPerfStatisticValue ShellPerfStatisticValue;
 typedef struct _ShellPerfBlock ShellPerfBlock;
 
 /**
@@ -35,10 +38,17 @@ struct _ShellPerfLog
 
   GPtrArray *events;
   GHashTable *events_by_name;
+  GPtrArray *statistics;
+  GHashTable *statistics_by_name;
+
+  GPtrArray *statistics_closures;
+
   GQueue *blocks;
 
   gint64 start_time;
   gint64 last_time;
+
+  guint statistics_timeout_id;
 
   guint enabled : 1;
 };
@@ -54,6 +64,30 @@ struct _ShellPerfEvent
   char *name;
   char *description;
   char *signature;
+};
+
+union _ShellPerfStatisticValue
+{
+  int i;
+  gint64 x;
+};
+
+struct _ShellPerfStatistic
+{
+  ShellPerfEvent *event;
+
+  ShellPerfStatisticValue current_value;
+  ShellPerfStatisticValue last_value;
+
+  guint initialized : 1;
+  guint recorded : 1;
+};
+
+struct _ShellPerfStatisticsClosure
+{
+  ShellPerfStatisticsCallback callback;
+  gpointer user_data;
+  GDestroyNotify notify;
 };
 
 /* The events in the log are stored in a linked list of fixed size
@@ -75,9 +109,16 @@ struct _ShellPerfBlock
   guchar buffer[BLOCK_SIZE];
 };
 
+/* Number of milliseconds between periodic statistics collection when
+ * events are enabled. Statistics collection can also be explicitly
+ * triggered.
+ */
+#define STATISTIC_COLLECTION_INTERVAL_MS 5000
+
 /* Builtin events */
 enum {
-  EVENT_SET_TIME
+  EVENT_SET_TIME,
+  EVENT_STATISTICS_COLLECTED
 };
 
 G_DEFINE_TYPE(ShellPerfLog, shell_perf_log, G_TYPE_OBJECT);
@@ -97,6 +138,9 @@ shell_perf_log_init (ShellPerfLog *perf_log)
 {
   perf_log->events = g_ptr_array_new ();
   perf_log->events_by_name = g_hash_table_new (g_str_hash, g_str_equal);
+  perf_log->statistics = g_ptr_array_new ();
+  perf_log->statistics_by_name = g_hash_table_new (g_str_hash, g_str_equal);
+  perf_log->statistics_closures = g_ptr_array_new ();
   perf_log->blocks = g_queue_new ();
 
   /* This event is used when timestamp deltas are greater than
@@ -105,6 +149,20 @@ shell_perf_log_init (ShellPerfLog *perf_log)
    * logging is enabled some time after starting the shell */
   shell_perf_log_define_event (perf_log, "perf.setTime", "", "x");
   g_assert (perf_log->events->len == EVENT_SET_TIME + 1);
+
+  /* The purpose of this event is to allow us to optimize out storing
+   * statistics that haven't changed. We want to mark every time we
+   * collect statistics even if we don't record any individual
+   * statistics so that we can distinguish sudden changes from gradual changes.
+   *
+   * The argument is the number of microseconds that statistics collection
+   * took; we record that since statistics collection could start taking
+   * significant time if we do things like grub around in /proc/
+   */
+  shell_perf_log_define_event (perf_log, "perf.statisticsCollected",
+                               "Finished collecting statistics",
+                               "x");
+  g_assert (perf_log->events->len == EVENT_STATISTICS_COLLECTED + 1);
 
   perf_log->start_time = perf_log->last_time = get_time();
 }
@@ -133,6 +191,16 @@ shell_perf_log_get_default (void)
   return perf_log;
 }
 
+static gboolean
+statistics_timeout (gpointer data)
+{
+  ShellPerfLog *perf_log = data;
+
+  shell_perf_log_collect_statistics (perf_log);
+
+  return TRUE;
+}
+
 /**
  * shell_perf_log_set_enabled:
  * @perf_log: a #ShellPerfLog
@@ -146,7 +214,22 @@ shell_perf_log_set_enabled (ShellPerfLog *perf_log,
 {
   enabled = enabled != FALSE;
 
-  perf_log->enabled = enabled;
+  if (enabled != perf_log->enabled)
+    {
+      perf_log->enabled = enabled;
+
+      if (enabled)
+        {
+          perf_log->statistics_timeout_id = g_timeout_add (STATISTIC_COLLECTION_INTERVAL_MS,
+                                                           statistics_timeout,
+                                                           perf_log);
+        }
+      else
+        {
+          g_source_remove (perf_log->statistics_timeout_id);
+          perf_log->statistics_timeout_id = 0;
+        }
+    }
 }
 
 static ShellPerfEvent *
@@ -379,6 +462,218 @@ shell_perf_log_event_s (ShellPerfLog *perf_log,
 
   record_event (perf_log, get_time(), event,
                 (const guchar *)arg, strlen (arg) + 1);
+}
+
+/**
+ * shell_perf_log_define_statistic:
+ * @name: name of the statistic and of the corresponding event.
+ *  This should follow the same guidelines as for shell_perf_log_define_event()
+ * @description: human readable description of the statistic.
+ * @signature: The type of the data stored for statistic. Must
+ *  currently be 'i' or 'x'.
+ *
+ * Defines a statistic. A statistic is a numeric value that is stored
+ * by the performance log and recorded periodically or when
+ * shell_perf_log_collect_statistics() is called explicitly.
+ *
+ * Code that defines a statistic should update it by calling
+ * the update function for the particular data type of the statistic,
+ * such as shell_perf_log_update_statistic_i(). This can be done
+ * at any time, but would normally done inside a function registered
+ * with shell_perf_log_add_statistics_callback(). These functions
+ * are called immediately before statistics are recorded.
+ */
+void
+shell_perf_log_define_statistic (ShellPerfLog *perf_log,
+                                 const char   *name,
+                                 const char   *description,
+                                 const char   *signature)
+{
+  ShellPerfEvent *event;
+  ShellPerfStatistic *statistic;
+
+  if (strcmp (signature, "i") != 0 &&
+      strcmp (signature, "x") != 0)
+    {
+      g_warning ("Only supported statistic signatures are 'i' and 'x'\n");
+      return;
+    }
+
+  event = define_event (perf_log, name, description, signature);
+  if (event == NULL)
+    return;
+
+  statistic = g_slice_new (ShellPerfStatistic);
+  statistic->event = event;
+
+  statistic->initialized = FALSE;
+  statistic->recorded = FALSE;
+
+  g_ptr_array_add (perf_log->statistics, statistic);
+  g_hash_table_insert (perf_log->statistics_by_name, event->name, statistic);
+}
+
+static ShellPerfStatistic *
+lookup_statistic (ShellPerfLog *perf_log,
+                  const char   *name,
+                  const char   *signature)
+{
+  ShellPerfStatistic *statistic = g_hash_table_lookup (perf_log->statistics_by_name, name);
+
+  if (G_UNLIKELY (statistic == NULL))
+    {
+      g_warning ("Unknown statistic '%s'\n", name);
+      return NULL;
+    }
+
+  if (G_UNLIKELY (strcmp (statistic->event->signature, signature) != 0))
+    {
+      g_warning ("Statistic '%s'; defined with signature '%s', used with '%s'\n",
+                 name, statistic->event->signature, signature);
+      return NULL;
+    }
+
+  return statistic;
+}
+
+/**
+ * shell_perf_log_update_statistic_i:
+ * @perf_log: a #ShellPerfLog
+ * @name: name of the statistic
+ * @value: new value for the statistic
+ *
+ * Updates the current value of an 32-bit integer statistic.
+ */
+void
+shell_perf_log_update_statistic_i (ShellPerfLog *perf_log,
+                                   const char   *name,
+                                   gint32        value)
+{
+  ShellPerfStatistic *statistic;
+
+  statistic = lookup_statistic (perf_log, name, "i");
+  if (G_UNLIKELY (statistic == NULL))
+      return;
+
+  statistic->current_value.i = value;
+  statistic->initialized = TRUE;
+}
+
+/**
+ * shell_perf_log_update_statistic_x:
+ * @perf_log: a #ShellPerfLog
+ * @name: name of the statistic
+ * @value: new value for the statistic
+ *
+ * Updates the current value of an 64-bit integer statistic.
+ */
+void
+shell_perf_log_update_statistic_x (ShellPerfLog *perf_log,
+                                   const char   *name,
+                                   gint64        value)
+{
+  ShellPerfStatistic *statistic;
+
+  statistic = lookup_statistic (perf_log, name, "x");
+  if (G_UNLIKELY (statistic == NULL))
+      return;
+
+  statistic->current_value.x = value;
+  statistic->initialized = TRUE;
+}
+
+/**
+ * shell_perf_log_add statistics_callback:
+ * @perf_log: a #ShellPerfLog
+ * @callback: function to call before recording statistics
+ * @user_data: data to pass to @callback
+ * @notify: function to call when @user_data is no longer needed
+ *
+ * Adds a function that will be called before statistics are recorded.
+ * The function would typically compute one or more statistics values
+ * and call a function such as shell_perf_log_update_statistic_i()
+ * to update the value that will be recorded.
+ */
+void
+shell_perf_log_add_statistics_callback (ShellPerfLog               *perf_log,
+                                        ShellPerfStatisticsCallback callback,
+                                        gpointer                    user_data,
+                                        GDestroyNotify              notify)
+{
+  ShellPerfStatisticsClosure *closure = g_slice_new (ShellPerfStatisticsClosure);
+
+  closure->callback = callback;
+  closure->user_data = user_data;
+  closure->notify = notify;
+
+  g_ptr_array_add (perf_log->statistics_closures, closure);
+}
+
+/**
+ * shell_perf_log_collect_statistics:
+ * @perf_log: a #ShellPerfLog
+ *
+ * Calls all the update functions added with
+ * shell_perf_log_add_statistics_callback() and then records events
+ * for all statistics, followed by a perf.statisticsCollected event.
+ */
+void
+shell_perf_log_collect_statistics (ShellPerfLog *perf_log)
+{
+  gint64 event_time = get_time ();
+  gint64 collection_time;
+  int i;
+
+  if (!perf_log->enabled)
+    return;
+
+  for (i = 0; i < perf_log->statistics_closures->len; i++)
+    {
+      ShellPerfStatisticsClosure *closure;
+
+      closure = g_ptr_array_index (perf_log->statistics_closures, i);
+      closure->callback (perf_log, closure->user_data);
+    }
+
+  collection_time = get_time() - event_time;
+
+  for (i = 0; i < perf_log->statistics->len; i++)
+    {
+      ShellPerfStatistic *statistic = g_ptr_array_index (perf_log->statistics, i);
+
+      if (!statistic->initialized)
+        continue;
+
+      switch (statistic->event->signature[0])
+        {
+        case 'i':
+          if (!statistic->recorded ||
+              statistic->current_value.i != statistic->last_value.i)
+            {
+              record_event (perf_log, event_time, statistic->event,
+                            (const guchar *)&statistic->current_value.i,
+                            sizeof (gint32));
+              statistic->last_value.i = statistic->current_value.i;
+              statistic->recorded = TRUE;
+            }
+          break;
+        case 'x':
+          if (!statistic->recorded ||
+              statistic->current_value.x != statistic->last_value.x)
+            {
+              record_event (perf_log, event_time, statistic->event,
+                            (const guchar *)&statistic->current_value.x,
+                            sizeof (gint64));
+              statistic->last_value.x = statistic->current_value.x;
+              statistic->recorded = TRUE;
+            }
+          break;
+        }
+    }
+
+  record_event (perf_log, event_time,
+                g_ptr_array_index (perf_log->events, EVENT_STATISTICS_COLLECTED),
+                (const guchar *)&collection_time, sizeof (gint64));
 }
 
 /**

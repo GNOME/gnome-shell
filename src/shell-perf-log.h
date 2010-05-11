@@ -39,6 +39,28 @@ void shell_perf_log_event_s      (ShellPerfLog *perf_log,
 				  const char   *name,
 				  const char   *arg);
 
+void shell_perf_log_define_statistic (ShellPerfLog *perf_log,
+                                      const char   *name,
+                                      const char   *description,
+                                      const char   *signature);
+
+void shell_perf_log_update_statistic_i (ShellPerfLog *perf_log,
+                                        const char   *name,
+                                        int           value);
+void shell_perf_log_update_statistic_x (ShellPerfLog *perf_log,
+                                        const char   *name,
+                                        gint64        value);
+
+typedef void (*ShellPerfStatisticsCallback) (ShellPerfLog *perf_log,
+                                             gpointer      data);
+
+void shell_perf_log_add_statistics_callback (ShellPerfLog               *perf_log,
+                                             ShellPerfStatisticsCallback callback,
+                                             gpointer                    user_data,
+                                             GDestroyNotify              notify);
+
+void shell_perf_log_collect_statistics (ShellPerfLog *perf_log);
+
 typedef void (*ShellPerfReplayFunction) (gint64      time,
 					 const char *name,
 					 const char *signature,
