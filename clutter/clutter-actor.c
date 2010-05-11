@@ -226,17 +226,21 @@
 #endif
 
 #include "clutter-actor.h"
+
+#include "clutter-action.h"
+#include "clutter-actor-meta-private.h"
 #include "clutter-container.h"
-#include "clutter-main.h"
+#include "clutter-debug.h"
 #include "clutter-enum-types.h"
-#include "clutter-scriptable.h"
-#include "clutter-script.h"
+#include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
-#include "clutter-units.h"
 #include "clutter-profile.h"
+#include "clutter-scriptable.h"
+#include "clutter-script.h"
 #include "clutter-stage.h"
+#include "clutter-units.h"
+
 #include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
@@ -391,6 +395,8 @@ struct _ClutterActorPrivate
    * See clutter_actor_queue_clipped_redraw() for details.
    */
   const ClutterActorBox *oob_queue_redraw_clip;
+
+  ClutterMetaGroup *actions;
 };
 
 enum
@@ -471,7 +477,9 @@ enum
   PROP_SHOW_ON_SET_PARENT,
 
   PROP_TEXT_DIRECTION,
-  PROP_HAS_POINTER
+  PROP_HAS_POINTER,
+
+  PROP_ACTIONS
 };
 
 enum
@@ -2892,6 +2900,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_text_direction (actor, g_value_get_enum (value));
       break;
 
+    case PROP_ACTIONS:
+      clutter_actor_add_action (actor, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3199,10 +3211,16 @@ clutter_actor_dispose (GObject *object)
 
   destroy_shader_data (self);
 
-  if (priv->pango_context)
+  if (priv->pango_context != NULL)
     {
       g_object_unref (priv->pango_context);
       priv->pango_context = NULL;
+    }
+
+  if (priv->actions != NULL)
+    {
+      g_object_unref (priv->actions);
+      priv->actions = NULL;
     }
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
@@ -3998,6 +4016,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_HAS_POINTER,
                                    pspec);
+
+  /**
+   * ClutterActor:actions:
+   *
+   * Adds a #ClutterAction to the actor
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_object ("actions",
+                               "Actions",
+                               "Adds an action to the actor",
+                               CLUTTER_TYPE_ACTION,
+                               CLUTTER_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_ACTIONS, pspec);
 
   /**
    * ClutterActor::destroy:
@@ -10171,4 +10203,118 @@ clutter_actor_has_allocation (ClutterActor *self)
   return priv->parent_actor != NULL &&
          CLUTTER_ACTOR_IS_VISIBLE (self) &&
          !priv->needs_allocation;
+}
+
+/**
+ * clutter_actor_add_action:
+ * @self: a #ClutterActor
+ * @action: a #ClutterAction
+ *
+ * Adds @action to the list of actions applied to @self
+ *
+ * A #ClutterAction can only belong to one actor at a time
+ *
+ * The #ClutterActor will hold a reference on @action until either
+ * clutter_actor_remove_action() or clutter_actor_clear_actions()
+ * is called
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_action (ClutterActor  *self,
+                          ClutterAction *action)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTION (action));
+
+  priv = self->priv;
+
+  if (priv->actions == NULL)
+    {
+      priv->actions = g_object_new (CLUTTER_TYPE_META_GROUP, NULL);
+      priv->actions->actor = self;
+    }
+
+  _clutter_meta_group_add_meta (priv->actions, CLUTTER_ACTOR_META (action));
+
+  g_object_notify (G_OBJECT (self), "actions");
+}
+
+/**
+ * clutter_actor_remove_action:
+ * @self: a #ClutterActor
+ * @action: a #ClutterAction
+ *
+ * Removes @action from the list of actions applied to @self
+ *
+ * The reference held by @self on the #ClutterAction will be released
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_action (ClutterActor  *self,
+                             ClutterAction *action)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTION (action));
+
+  priv = self->priv;
+
+  if (priv->actions == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->actions, CLUTTER_ACTOR_META (action));
+
+  g_object_notify (G_OBJECT (self), "actions");
+}
+
+/**
+ * clutter_actor_get_actions:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the list of actions applied to @self
+ *
+ * Return value: (transfer container) (element-type ClutterAction): a copy
+ *   of the list of #ClutterAction<!-- -->s. The contents of the list are
+ *   owned by the #ClutterActor. Use g_list_free() to free the resources
+ *   allocated by the returned #GList
+ *
+ * Since: 1.4
+ */
+GList *
+clutter_actor_get_actions (ClutterActor *self)
+{
+  const GList *actions;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  if (self->priv->actions == NULL)
+    return NULL;
+
+  actions = _clutter_meta_group_peek_metas (self->priv->actions);
+
+  return g_list_copy ((GList *) actions);
+}
+
+/**
+ * clutter_actor_clear_actions:
+ * @self: a #ClutterActor
+ *
+ * Clears the list of actions applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_clear_actions (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->actions == NULL)
+    return;
+
+  _clutter_meta_group_clear_metas (self->priv->actions);
 }

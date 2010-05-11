@@ -65,6 +65,7 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
 # please, keep this sorted alphabetically
 source_h =					\
+	$(srcdir)/clutter-action.h		\
 	$(srcdir)/clutter-actor-meta.h		\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
@@ -139,6 +140,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 # please, keep this sorted alphabetically
 source_c = \
+	$(srcdir)/clutter-action.c		\
 	$(srcdir)/clutter-actor-meta.c		\
 	$(srcdir)/clutter-actor.c		\
 	$(srcdir)/clutter-alpha.c 		\
