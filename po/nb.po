@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.28.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 19:32+0200\n"
-"PO-Revision-Date: 2010-05-02 19:33+0200\n"
+"POT-Creation-Date: 2010-05-11 19:37+0200\n"
+"PO-Revision-Date: 2010-05-11 19:51+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,14 @@ msgstr "GNOME Shell"
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Klokke"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "Tilpass klokken på panelet"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:850
@@ -117,19 +125,49 @@ msgstr "Angre"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:346
+#: ../js/ui/panel.js:351
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:565
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:576
+msgid "%a %b %e, %R:%S"
+msgstr "%a %e %b, %R.%S"
+
+#: ../js/ui/panel.js:577
+msgid "%a %b %e, %R"
+msgstr "%a %e %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:581
+msgid "%a %R:%S"
+msgstr "%a %R.%S"
+
+#: ../js/ui/panel.js:582
 msgid "%a %R"
 msgstr "%a %R"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:568
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:589
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %e %b, %l.%M.%S %p"
+
+#: ../js/ui/panel.js:590
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %e %b, %l.%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:594
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l.%M.%S %p"
+
+#: ../js/ui/panel.js:595
 msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+msgstr "%a %l.%M %p"
 
 #: ../js/ui/placeDisplay.js:108
 #, c-format
@@ -199,32 +237,32 @@ msgstr "%s er ferdig startet"
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
 
-#: ../src/shell-global.c:967
+#: ../src/shell-global.c:964
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:968
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:973
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:978
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:983
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
