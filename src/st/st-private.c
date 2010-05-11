@@ -155,7 +155,7 @@ _st_allocate_fill (StWidget        *parent,
 
   if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
     {
-      clutter_actor_get_preferred_width (child, available_height,
+      clutter_actor_get_preferred_width (child, -1,
                                          &min_width,
                                          &natural_width);
 
@@ -169,7 +169,7 @@ _st_allocate_fill (StWidget        *parent,
     }
   else
     {
-      clutter_actor_get_preferred_height (child, available_width,
+      clutter_actor_get_preferred_height (child, -1,
                                           &min_height,
                                           &natural_height);
 
