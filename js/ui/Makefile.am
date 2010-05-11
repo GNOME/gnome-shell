@@ -4,6 +4,7 @@ dist_jsui_DATA =		\
 	altTab.js		\
 	appDisplay.js		\
 	appFavorites.js		\
+	boxpointer.js   \
 	calendar.js		\
 	chrome.js		\
 	dash.js			\
