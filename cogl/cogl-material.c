@@ -1710,6 +1710,13 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
 #endif
 
 #ifndef HAVE_COGL_GLES /* GLES 1 only has glBlendFunc */
+      if (have_blend_equation_seperate &&
+          material->blend_equation_rgb != material->blend_equation_alpha)
+        GE (glBlendEquationSeparate (material->blend_equation_rgb,
+                                     material->blend_equation_alpha));
+      else
+        GE (glBlendEquation (material->blend_equation_rgb));
+
       if (blend_factor_uses_constant (material->blend_src_factor_rgb) ||
           blend_factor_uses_constant (material->blend_src_factor_alpha) ||
           blend_factor_uses_constant (material->blend_dst_factor_rgb) ||
@@ -1723,23 +1730,14 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
           (material->blend_src_factor_rgb != material->blend_src_factor_alpha ||
            (material->blend_src_factor_rgb !=
             material->blend_src_factor_alpha)))
-        {
-          if (have_blend_equation_seperate &&
-              material->blend_equation_rgb != material->blend_equation_alpha)
-            GE (glBlendEquationSeparate (material->blend_equation_rgb,
-                                         material->blend_equation_alpha));
-          else
-            GE (glBlendEquation (material->blend_equation_rgb));
-
-          GE (glBlendFuncSeparate (material->blend_src_factor_rgb,
-                                   material->blend_dst_factor_rgb,
-                                   material->blend_src_factor_alpha,
-                                   material->blend_dst_factor_alpha));
-        }
+        GE (glBlendFuncSeparate (material->blend_src_factor_rgb,
+                                 material->blend_dst_factor_rgb,
+                                 material->blend_src_factor_alpha,
+                                 material->blend_dst_factor_alpha));
       else
 #endif
-      GE (glBlendFunc (material->blend_src_factor_rgb,
-                       material->blend_dst_factor_rgb));
+        GE (glBlendFunc (material->blend_src_factor_rgb,
+                         material->blend_dst_factor_rgb));
     }
 }
 
