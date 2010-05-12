@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-05-09 19:00+0000\n"
-"PO-Revision-Date: 2010-05-09 21:02+0100\n"
+"POT-Creation-Date: 2010-05-12 07:36+0000\n"
+"PO-Revision-Date: 2010-05-12 12:23+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -131,49 +131,53 @@ msgstr "Spletna stran"
 msgid "Undo"
 msgstr "Razveljavi"
 
+#: ../js/ui/panel.js:498
+msgid "Quit"
+msgstr "Končaj"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:351
+#: ../js/ui/panel.js:703
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:576
+#: ../js/ui/panel.js:918
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:919
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:923
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:924
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:589
+#: ../js/ui/panel.js:931
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:932
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:936
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:937
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -199,39 +203,39 @@ msgstr "Vnos ukaza:"
 msgid "Execution of '%s' failed:"
 msgstr "Izvajanje '%s' je spodletelo:"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:90
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:110
+#: ../js/ui/statusMenu.js:94
 msgid "Busy"
 msgstr "Zasedeno"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:98
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../js/ui/statusMenu.js:124
+#: ../js/ui/statusMenu.js:105
 msgid "Account Information..."
 msgstr "Podrobnosti računa ..."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:109
 msgid "System Preferences..."
 msgstr "Sistemske možnosti ..."
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:116
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:143
+#: ../js/ui/statusMenu.js:120
 msgid "Switch User"
 msgstr "Preklop uporabnika"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:125
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:129
 msgid "Shut Down..."
 msgstr "Izklopi ..."
 
@@ -245,11 +249,11 @@ msgstr "%s je končal začenjanje"
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
 
-#: ../src/shell-global.c:964
+#: ../src/shell-global.c:979
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:968
+#: ../src/shell-global.c:983
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -258,7 +262,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:973
+#: ../src/shell-global.c:988
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -267,7 +271,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:978
+#: ../src/shell-global.c:993
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -276,7 +280,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:998
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -311,31 +315,43 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
+
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
+
 #~ msgid "Applications"
 #~ msgstr "Programi"
+
 #~ msgid "Recent Documents"
 #~ msgstr "Nedavni dokumenti"
+
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
+
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
+
 #~ msgid "Unknown"
 #~ msgstr "Neznano"
+
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
+
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr ""
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
+
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
+
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
+
 #~ msgid "More"
 #~ msgstr "Več"
+
 #~ msgid "(see all)"
 #~ msgstr "(poglej vse)"
+
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
-
