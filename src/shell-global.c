@@ -1117,7 +1117,14 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
 {
   GdkScreen *screen = gdk_screen_get_default ();
   GdkRectangle rect;
-  gint i, primary = 0;
+  gint primary = 0;
+
+  /* gdk_screen_get_primary_monitor is only present in gtk-2.20+
+   * and is in a useable state (supports heuristics and fallback modes)
+   * starting with 2.20.1
+   */
+#if !GTK_CHECK_VERSION (2, 20, 1)
+  gint i;
   gchar *output_name = NULL;
   gint num_monitors = gdk_screen_get_n_monitors (screen);
 
@@ -1136,6 +1143,9 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
             }
         }
     }
+#else
+  primary = gdk_screen_get_primary_monitor (screen);
+#endif
 
   gdk_screen_get_monitor_geometry (screen, primary, &rect);
 
