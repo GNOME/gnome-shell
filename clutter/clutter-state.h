@@ -82,6 +82,9 @@ struct _ClutterStateClass
   /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
+  void (*completed) (ClutterState *state);
+
   /* padding for future expansion */
   gpointer _padding_dummy[16];
 };
@@ -97,7 +100,8 @@ ClutterTimeline * clutter_state_change               (ClutterState    *state,
                                                       const gchar     *target_transition_name);
 ClutterTimeline * clutter_state_change_noanim        (ClutterState    *state,
                                                       const gchar     *target_transition_name);
-ClutterState *    clutter_state_set_key               (ClutterState   *state,
+const gchar     * clutter_state_get_target_state     (ClutterState    *state);
+ClutterState *    clutter_state_set_key              (ClutterState    *state,
                                                       const gchar     *source_transition_name,
                                                       const gchar     *target_transition_name,
                                                       GObject         *object,

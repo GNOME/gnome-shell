@@ -35,6 +35,7 @@
 
 #include "clutter-private.h"
 #include "clutter-state.h"
+#include "clutter-marshal.h"
 #include <gobject/gvaluecollector.h>
 #include <string.h>
 
@@ -98,6 +99,13 @@ typedef struct _ClutterStateKey
   gint             ref_count;
 } _ClutterStateKey;
 
+enum
+{
+  COMPLETED,
+  LAST_SIGNAL
+};
+
+static guint state_signals[LAST_SIGNAL] = {0, };
 
 #define CLUTTER_STATE_GET_PRIVATE(obj)            \
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
@@ -309,7 +317,7 @@ clutter_state_finalize (GObject *object)
 }
 
 static void clutter_state_completed (ClutterTimeline *timeline,
-                                     ClutterState   *state)
+                                     ClutterState    *state)
 {
   if (state->priv->current_animator)
     {
@@ -317,6 +325,7 @@ static void clutter_state_completed (ClutterTimeline *timeline,
                                      NULL);
       state->priv->current_animator = NULL;
     }
+  g_signal_emit (state, state_signals[COMPLETED], 0);
 }
 
 static void clutter_state_new_frame (ClutterTimeline *timeline,
@@ -925,6 +934,15 @@ clutter_state_class_init (ClutterStateClass *klass)
   gobject_class->finalize = clutter_state_finalize;
 
   g_type_class_add_private (klass, sizeof (ClutterStatePrivate));
+
+  state_signals[COMPLETED] =
+  g_signal_new (I_("completed"),
+                G_TYPE_FROM_CLASS (gobject_class),
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (ClutterStateClass, completed),
+                NULL, NULL,
+                clutter_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
 }
 
 static void
@@ -1264,11 +1282,19 @@ clutter_state_set_duration (ClutterState *state,
     }
 }
 
-/* should have durations for:
+/**
+ * clutter_state_get_duration:
+ * @state: a #ClutterState
+ * @source_state_name: the name of the source state to set duration for or NULL
+ * @target_state_name: the name of the source state to set duration for or NULL
  *
- * global:            NULL, NULL
- * per-state-default: NULL, state
- * directly encoded:  state, state
+ * Query the duration used for transitions between source/target state pair,
+ * the semantics for the query are the same as the semantics used for setting
+ * in #clutter_state_set_duration.
+ *
+ * Since: 1.4
+ * 
+ * Returns: the duration in ms.
  */
 guint
 clutter_state_get_duration (ClutterState *state,
@@ -1307,4 +1333,22 @@ clutter_state_get_duration (ClutterState *state,
   if (!ret)
     ret = state->priv->duration;
   return ret;
+}
+
+/**
+ * clutter_state_get_target_state:
+ * @state: a #ClutterState
+ *
+ * Query the currently set target-state, during a transition it will also
+ * return the current target. Can be useful in the completed callback.
+ *
+ * Since: 1.4
+ * 
+ * Returns: the duration in ms.
+ */
+const gchar *
+clutter_state_get_target_state (ClutterState *state)
+{
+  g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
+  return state->priv->target_state_name;
 }

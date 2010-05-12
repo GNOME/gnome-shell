@@ -23,6 +23,12 @@ static gboolean release_event (ClutterActor *actor,
   return TRUE;
 }
 
+static void completed (ClutterState *state,
+                       gpointer      data)
+{
+  g_print ("Completed transitioning to state: %s\n",
+           clutter_state_get_target_state (state), data);
+}
 
 static ClutterActor *new_rect (gint r,
                                gint g,
@@ -86,6 +92,7 @@ test_state_main (gint    argc,
           rects[1], "scale-y", CLUTTER_LINEAR, 2.0,
           NULL);
   clutter_state_set_duration (state, "start", "end", 5000);
+  g_signal_connect (state, "completed", G_CALLBACK (completed), NULL);
 
   clutter_actor_show (stage);
   clutter_state_change (state, "start");
