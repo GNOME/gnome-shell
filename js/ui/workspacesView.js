@@ -445,7 +445,7 @@ MosaicView.prototype = {
     },
 
     addWorkspace: function() {
-        global.screen.append_new_workspace(false, global.get_current_time());
+        return global.screen.append_new_workspace(false, global.get_current_time());
     },
 
     canRemoveWorkspace: function() {
@@ -1395,6 +1395,7 @@ SingleView.prototype = {
         let ws = global.screen.append_new_workspace(false,
                                                     global.get_current_time());
         ws.activate(global.get_current_time());
+        return ws;
     },
 
     removeWorkspace: function() {

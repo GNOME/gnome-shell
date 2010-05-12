@@ -458,7 +458,8 @@ AppWellIcon.prototype = {
         if (button == 1) {
             this._onActivate(event);
         } else if (button == 2) {
-            Main.overview.workspaces.addWorkspace();
+            let newWorkspace = Main.overview.workspaces.addWorkspace();
+            newWorkspace.activate(global.get_current_time());
             this.emit('launching');
             this.app.open_new_window();
             Main.overview.hide();
