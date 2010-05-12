@@ -91,6 +91,7 @@ source_h =					\
 	$(srcdir)/clutter-container.h		\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-device-manager.h	\
+	$(srcdir)/clutter-drag-action.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -166,6 +167,7 @@ source_c = \
 	$(srcdir)/clutter-color.c 		\
 	$(srcdir)/clutter-container.c		\
 	$(srcdir)/clutter-device-manager.c	\
+	$(srcdir)/clutter-drag-action.c		\
 	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
