@@ -156,20 +156,57 @@ PanelSeparatorMenuItem.prototype = {
 }
 Signals.addSignalMethods(PanelSeparatorMenuItem.prototype);
 
-function PanelImageMenuItem(text, iconName) {
-    this._init(text, iconName);
+function PanelImageMenuItem(text, iconName, alwaysShowImage) {
+    this._init(text, iconName, alwaysShowImage);
 }
 
+// We need to instantiate a GtkImageMenuItem so it
+// hooks up its properties on the GtkSettings
+var _gtkImageMenuItemCreated = false;
+
 PanelImageMenuItem.prototype = {
-    _init: function (text, iconName) {
+    _init: function (text, iconName, alwaysShowImage) {
+
+        if (!_gtkImageMenuItemCreated) {
+            let menuItem = new Gtk.ImageMenuItem();
+            menuItem.destroy();
+            _gtkImageMenuItemCreated = true;
+        }
+        this._alwaysShowImage = alwaysShowImage;
         this.actor = new St.BoxLayout({ style_class: 'panel-menu-item panel-image-menu-item',
                                         reactive: true,
                                         track_hover: true });
-        this.actor.add(St.TextureCache.get_default().load_icon_name(iconName, 16), { y_fill: false });
+        this._iconName = iconName;
+        this._size = 16;
+        this._imageBin = new St.Bin({ width: this._size, height: this._size });
+        this.actor.add(this._imageBin, { y_fill: false });
         this.actor.add(new St.Label({ text: text }), { expand: true });
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             this.emit('activate', event);
         }));
+        if (!alwaysShowImage) {
+            let settings = Gtk.Settings.get_default();
+            settings.connect('notify::gtk-menu-images', Lang.bind(this, this._onMenuImagesChanged));
+        }
+        this._onMenuImagesChanged();
+    },
+
+    _onMenuImagesChanged: function() {
+        let show;
+        if (this._alwaysShowImage) {
+            show = true;
+        } else {
+            let settings = Gtk.Settings.get_default();
+            show = settings.gtk_menu_images;
+        }
+        if (!show) {
+            let child = this._imageBin.get_child();
+            if (child)
+                child.destroy();
+        } else {
+            let img = St.TextureCache.get_default().load_icon_name(this._iconName, this._size);
+            this._imageBin.set_child(img);
+        }
     }
 }
 

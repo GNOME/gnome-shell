@@ -87,15 +87,15 @@ StatusMenuButton.prototype = {
     _createSubMenu: function() {
         let item;
 
-        item = new Panel.PanelImageMenuItem(_("Available"), 'gtk-yes');
+        item = new Panel.PanelImageMenuItem(_("Available"), 'gtk-yes', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Busy"), 'gtk-no');
+        item = new Panel.PanelImageMenuItem(_("Busy"), 'gtk-no', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Invisible"), 'gtk-close');
+        item = new Panel.PanelImageMenuItem(_("Invisible"), 'gtk-close', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this.menu.addMenuItem(item);
 
