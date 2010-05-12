@@ -1304,6 +1304,26 @@ shell_popup_menu (GtkMenu *menu, int button, guint32 time,
 }
 
 /**
+ * shell_write_string_to_stream:
+ * @stream: a #GOutputStream
+ * @str: a UTF-8 string to write to @stream
+ * @error: location to store GError
+ *
+ * Write a string to a GOutputStream as UTF-8. This is a workaround
+ * for not having binary buffers in GJS.
+ *
+ * Return value: %TRUE if write succeeded
+ */
+gboolean
+shell_write_string_to_stream (GOutputStream *stream,
+                              const char    *str,
+                              GError       **error)
+{
+  return g_output_stream_write_all (stream, str, strlen (str),
+                                    NULL, NULL, error);
+}
+
+/**
  * shell_global_get_current_time:
  * @global: A #ShellGlobal
  *

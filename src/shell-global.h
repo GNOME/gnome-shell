@@ -92,6 +92,10 @@ ClutterModifierType shell_get_event_state (ClutterEvent *event);
 void shell_popup_menu (GtkMenu *menu, int button, guint32 time,
                        int menu_x, int menu_y);
 
+gboolean shell_write_string_to_stream (GOutputStream *stream,
+                                       const char    *str,
+                                       GError       **error);
+
 guint32 shell_global_get_current_time (ShellGlobal *global);
 
 GAppLaunchContext *shell_global_create_app_launch_context (ShellGlobal *global);
