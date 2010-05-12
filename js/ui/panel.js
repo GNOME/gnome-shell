@@ -681,11 +681,14 @@ AppMenuButton.prototype = {
         this.menu.addMenuItem(this._quitMenu);
         this._quitMenu.connect('activate', Lang.bind(this, this._onQuit));
 
+        this._visible = !Main.overview.visible;
+        if (!this._visible)
+            this.hide();
         Main.overview.connect('hiding', Lang.bind(this, function () {
-            this.actor.opacity = 255;
+            this.show();
         }));
         Main.overview.connect('showing', Lang.bind(this, function () {
-            this.actor.opacity = 192;
+            this.hide();
         }));
 
         let tracker = Shell.WindowTracker.get_default();
@@ -697,6 +700,36 @@ AppMenuButton.prototype = {
         tracker.connect('app-running-changed', Lang.bind(this, this._sync));
 
         this._sync();
+    },
+
+    show: function() {
+        if (this._visible)
+            return;
+
+        this.actor.show();
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           time: Overview.ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: function() {
+                               this._visible = true;
+                           },
+                           onCompleteScope: this });
+    },
+
+    hide: function() {
+        if (!this._visible)
+            return;
+
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           time: Overview.ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: function() {
+                               this.actor.hide();
+                               this._visible = false;
+                           },
+                           onCompleteScope: this });
     },
 
     _getContentPreferredWidth: function(actor, forHeight, alloc) {
