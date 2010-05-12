@@ -72,7 +72,7 @@ const SHADOW_WIDTH = 6;
 
 const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
 
-const INFO_BAR_HIDE_TIMEOUT = 30;
+const INFO_BAR_HIDE_TIMEOUT = 10;
 
 let wideScreen = false;
 let displayGridColumnWidth = null;
@@ -107,9 +107,6 @@ InfoBar.prototype = {
 
         this._undoCallback = null;
         this._undo.connect('clicked', Lang.bind(this, this._onUndoClicked));
-
-        this._overviewWasHidden = false;
-        this._hidingOverviewId = 0;
     },
 
     _onUndoClicked: function() {
@@ -127,7 +124,6 @@ InfoBar.prototype = {
     },
 
     _hide: function() {
-        this._overviewWasHidden = false;
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            transition: 'easeOutQuad',
@@ -139,31 +135,15 @@ InfoBar.prototype = {
 
     _onTimeout: function() {
         this._timeoutId = 0;
-        if (this._overviewWasHidden)
-            this._hide();
+        this._hide();
         return false;
-    },
-
-    _onOverviewHiding: function() {
-        if (this._timeoutId == 0)
-            this._hide();
-        else
-            this._overviewWasHidden = true;
     },
 
     setMessage: function(text, undoCallback, undoLabel) {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
 
-        if (this._hidingOverviewId == 0) {
-            // Set here, because when constructor is called, overview is null.
-            if (!Main.overview)
-                return;
-            // We don't actually use the ID, it's just a way of tracking whether we've hooked up the signal
-            this._hidingOverviewId = Main.overview.connect('hiding', Lang.bind(this, this._onOverviewHiding));
-        }
         this._timeout = false;
-        this._overviewWasHidden = false;
 
         this._label.text = text;
 
