@@ -1141,8 +1141,6 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       else if (node->width > node->max_width)
         node->width = node->max_width;
     }
-  else
-    node->width = node->min_width;
 
   if (node->height != -1)
     {
@@ -1155,8 +1153,6 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       else if (node->height > node->max_height)
         node->height = node->max_height;
     }
-  else
-    node->height = node->min_height;
 }
 
 int
