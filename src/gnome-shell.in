@@ -314,16 +314,17 @@ def run_performance_test():
         if options.perf_warmup and i == 0:
             continue
 
-        for metric, details in output.iteritems():
-            if not metric in metric_summaries:
+        for metric in output['metrics']:
+            name = metric['name']
+            if not name in metric_summaries:
                 summary = {}
-                summary['description'] = details['description']
+                summary['description'] = metric['description']
                 summary['values'] = []
-                metric_summaries[metric] = summary
+                metric_summaries[name] = summary
             else:
-                summary = metric_summaries[metric]
+                summary = metric_summaries[name]
 
-            summary['values'].append(details['value'])
+            summary['values'].append(metric['value'])
 
     for metric in sorted(metric_summaries.keys()):
         summary = metric_summaries[metric]

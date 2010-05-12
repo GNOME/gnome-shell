@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 
 const Meta = imports.gi.Meta;
@@ -137,16 +138,38 @@ function _collect(scriptModule, outputFile) {
         scriptModule.finish();
 
     if (outputFile) {
-        let result = {};
-        for (let metric in scriptModule.METRICS) {
-            result[metric] = {
-                value: scriptModule.METRICS[metric],
-                description: scriptModule.METRIC_DESCRIPTIONS[metric]
-            };
-        }
+        let f = Gio.file_new_for_path(outputFile);
+        let raw = f.replace(null, false,
+                            Gio.FileCreateFlags.NONE,
+                            null);
+        let out = Gio.BufferedOutputStream.new_sized (raw, 4096);
+        Shell.write_string_to_stream (out, "{\n");
 
-        let contents = JSON.stringify(result);
-        GLib.file_set_contents(outputFile, contents, contents.length);
+        Shell.write_string_to_stream(out, '"events":\n');
+        Shell.PerfLog.get_default().dump_events(out);
+
+        Shell.write_string_to_stream(out, ',\n"metrics":\n[ ');
+        let first = true;
+        for (let name in scriptModule.METRICS) {
+            let value = scriptModule.METRICS[name];
+            let description = scriptModule.METRIC_DESCRIPTIONS[name];
+
+            if (!first)
+                Shell.write_string_to_stream(out, ',\n  ');
+            first = false;
+
+            Shell.write_string_to_stream(out,
+                                         '{ "name": ' + JSON.stringify(name) + ',\n' +
+                                         '    "description": ' + JSON.stringify(description) + ',\n' +
+                                         '    "value": ' + JSON.stringify(value) + ' }');
+        }
+        Shell.write_string_to_stream(out, ' ]');
+
+        Shell.write_string_to_stream (out, ',\n"log":\n');
+        Shell.PerfLog.get_default().dump_log(out);
+
+        Shell.write_string_to_stream (out, '\n}\n');
+        out.close(null);
     } else {
         let metrics = [];
         for (let metric in scriptModule.METRICS)

@@ -3,6 +3,7 @@
 #define __SHELL_PERF_LOG_H__
 
 #include <glib-object.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -64,10 +65,19 @@ void shell_perf_log_collect_statistics (ShellPerfLog *perf_log);
 typedef void (*ShellPerfReplayFunction) (gint64      time,
 					 const char *name,
 					 const char *signature,
-					 GValue     *arg);
+					 GValue     *arg,
+                                         gpointer    user_data);
 
 void shell_perf_log_replay (ShellPerfLog            *perf_log,
-			    ShellPerfReplayFunction  replay_function);
+			    ShellPerfReplayFunction  replay_function,
+                            gpointer                 user_data);
+
+gboolean shell_perf_log_dump_events (ShellPerfLog   *perf_log,
+                                     GOutputStream  *out,
+                                     GError        **error);
+gboolean shell_perf_log_dump_log    (ShellPerfLog   *perf_log,
+                                     GOutputStream  *out,
+                                     GError        **error);
 
 G_END_DECLS
 

@@ -255,6 +255,13 @@ define_event (ShellPerfLog *perf_log,
       return NULL;
     }
 
+  /* We could do stricter validation, but this will break our JSON dumps */
+  if (strchr (name, '"') != NULL)
+    {
+      g_warning ("Event names can't include '\"'");
+      return NULL;
+    }
+
   if (g_hash_table_lookup (perf_log->events_by_name, name) != NULL)
     {
       g_warning ("Duplicate event event for '%s'\n", name);
@@ -680,13 +687,15 @@ shell_perf_log_collect_statistics (ShellPerfLog *perf_log)
  * shell_perf_log_replay:
  * @perf_log: a #ShellPerfLog
  * @replay_function: function to call for each event in the log
+ * @user_data: data to pass to @replay_function
  *
  * Replays the log by calling the given function for each event
  * in the log.
  */
 void
 shell_perf_log_replay (ShellPerfLog            *perf_log,
-                       ShellPerfReplayFunction  replay_function)
+                       ShellPerfReplayFunction  replay_function,
+                       gpointer                 user_data)
 {
   gint64 event_time = perf_log->start_time;
   GList *iter;
@@ -754,8 +763,203 @@ shell_perf_log_replay (ShellPerfLog            *perf_log,
               pos += strlen ((char *)(block->buffer + pos)) + 1;
             }
 
-          replay_function (event_time, event->name, event->signature, &arg);
+          replay_function (event_time, event->name, event->signature, &arg, user_data);
           g_value_unset (&arg);
         }
     }
+}
+
+static char *
+escape_quotes (const char *input)
+{
+  GString *result;
+  const char *p;
+
+  if (strchr (input, '"') == NULL)
+    return (char *)input;
+
+  result = g_string_new (NULL);
+  for (p = input; *p; p++)
+    {
+      if (*p == '"')
+        g_string_append (result, "\\\"");
+      else
+        g_string_append_c (result, *p);
+    }
+
+  return g_string_free (result, FALSE);
+}
+
+static gboolean
+write_string (GOutputStream *out,
+              const char    *str,
+              GError       **error)
+{
+  return g_output_stream_write_all (out, str, strlen (str),
+                                    NULL, NULL,
+                                    error);
+}
+
+/**
+ * shell_perf_log_dump_events:
+ * @perf_log: a #ShellPerfLog
+ * @out: output stream into which to write the event definitions
+ * @error: location to store #GError, or %NULL
+ *
+ * Dump the definition of currently defined events and statistics, formatted
+ * as JSON, to the specified output stream. The JSON output is an array,
+ * with each element being a dictionary of the form:
+ *
+ * { name: <name of event>,
+ *   description: <descrition of string,
+ *   statistic: true } (only for statistics)
+ *
+ * Return value: %TRUE if the dump succeeded. %FALSE if an IO error occurred
+ */
+gboolean
+shell_perf_log_dump_events (ShellPerfLog   *perf_log,
+                            GOutputStream  *out,
+                            GError        **error)
+{
+  GString *output;
+  int i;
+
+  output = g_string_new (NULL);
+  g_string_append (output, "[ ");
+
+  for (i = 0; i < perf_log->events->len; i++)
+    {
+      ShellPerfEvent *event = g_ptr_array_index (perf_log->events, i);
+      char *escaped_description = escape_quotes (event->description);
+      gboolean is_statistic = g_hash_table_lookup (perf_log->statistics_by_name, event->name) != NULL;
+
+      if (i != 0)
+        g_string_append (output, ",\n  ");
+
+      g_string_append_printf (output,
+                                "{ \"name\": \"%s\",\n"
+                              "    \"description\": \"%s\"",
+                              event->name, escaped_description);
+      if (is_statistic)
+        g_string_append (output, ",\n    \"statistic\": true");
+
+      g_string_append (output, " }");
+
+      if (escaped_description != event->description)
+        g_free (escaped_description);
+    }
+
+  g_string_append (output, " ]");
+
+  return write_string (out, g_string_free (output, FALSE), error);
+}
+
+typedef struct {
+  GOutputStream *out;
+  GError *error;
+  gboolean first;
+} ReplayToJsonClosure;
+
+static void
+replay_to_json (gint64      time,
+                const char *name,
+                const char *signature,
+                GValue     *arg,
+                gpointer    user_data)
+{
+  ReplayToJsonClosure *closure = user_data;
+  char *event_str;
+
+  if (closure->error != NULL)
+    return;
+
+  if (!closure->first)
+    {
+      if (!write_string (closure->out, ",\n  ", &closure->error))
+        return;
+    }
+
+  closure->first = FALSE;
+
+  if (strcmp (signature, "") == 0)
+    {
+      event_str = g_strdup_printf ("[%" G_GINT64_FORMAT ", \"%s\"]", time, name);
+    }
+  else if (strcmp (signature, "i") == 0)
+    {
+      event_str = g_strdup_printf ("[%" G_GINT64_FORMAT ", \"%s\", %i]",
+                                   time,
+                                   name,
+                                   g_value_get_int (arg));
+    }
+  else if (strcmp (signature, "x") == 0)
+    {
+      event_str = g_strdup_printf ("[%" G_GINT64_FORMAT ", \"%s\", %"G_GINT64_FORMAT "]",
+                                   time,
+                                   name,
+                                   g_value_get_int64 (arg));
+    }
+  else if (strcmp (signature, "s") == 0)
+    {
+      const char *arg_str = g_value_get_string (arg);
+      char *escaped = escape_quotes (arg_str);
+
+      event_str = g_strdup_printf ("[%" G_GINT64_FORMAT ", \"%s\", \"%s\"]",
+                                   time,
+                                   name,
+                                   g_value_get_string (arg));
+
+      if (escaped != arg_str)
+        g_free (escaped);
+    }
+  else
+    {
+      g_assert_not_reached ();
+    }
+
+  if (!write_string (closure->out, event_str, &closure->error))
+      return;
+}
+
+/**
+ * shell_perf_log_dump_log:
+ * @perf_log: a #ShellPerfLog
+ * @out: output stream into which to write the event log
+ * @error: location to store #GError, or %NULL
+ *
+ * Writes the performance event log, formatted as JSON, to the specified
+ * output stream. For performance reasons, the output stream passed
+ * in should generally be a buffered (or memory) output stream, since
+ * it will be written to in small pieces. The JSON output is an array
+ * with the elements of the array also being arrays, of the form
+ * '[' <time>, <event name> [, <event_arg>... ] ']'.
+ *
+ * Return value: %TRUE if the dump succeeded. %FALSE if an IO error occurred
+ */
+gboolean
+shell_perf_log_dump_log (ShellPerfLog   *perf_log,
+                         GOutputStream  *out,
+                         GError        **error)
+{
+  ReplayToJsonClosure closure;
+
+  closure.out = out;
+  closure.error = NULL;
+  closure.first = TRUE;
+
+  if (!write_string (out, "[ ", &closure.error))
+    return FALSE;
+
+  shell_perf_log_replay (perf_log, replay_to_json, &closure);
+
+  if (closure.error != NULL)
+    {
+      g_propagate_error (error, closure.error);
+      return FALSE;
+    }
+
+  if (!write_string (out, " ]", &closure.error))
+    return FALSE;
+
+  return TRUE;
 }
