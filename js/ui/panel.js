@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -15,12 +16,13 @@ const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const Calendar = imports.ui.calendar;
+const Overview = imports.ui.overview;
 const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
 
 const PANEL_HEIGHT = 26;
 
-const DEFAULT_PADDING = 4;
+const POPUP_ANIMATION_TIME = 0.1;
 
 const PANEL_ICON_SIZE = 24;
 
@@ -136,7 +138,8 @@ PanelMenuItem.prototype = {
                                   x_fill: true,
                                   y_fill: true,
                                   x_align: St.Align.START });
-        this.actor.set_child(new St.Label({ text: text }));
+        this.label = new St.Label({ text: text });
+        this.actor.set_child(this.label);
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             this.emit('activate', event);
         }));
@@ -150,8 +153,31 @@ function PanelSeparatorMenuItem(text) {
 
 PanelSeparatorMenuItem.prototype = {
     _init: function (text) {
-        this.actor = new St.Bin({ x_fill: true, y_fill: true });
-        this.actor.set_child(new St.Bin({ style_class: 'panel-separator-menu-item' }));
+        this.actor = new St.DrawingArea({ style_class: 'panel-separator-menu-item' });
+        this.actor.connect('repaint', Lang.bind(this, this._onRepaint));
+    },
+
+    _onRepaint: function(area) {
+        let cr = area.get_context();
+        let themeNode = this.actor.get_theme_node();
+        let [width, height] = area.get_surface_size();
+        let found, margin, gradientHeight;
+        [found, margin] = themeNode.get_length('-margin-horizontal', false);
+        [found, gradientHeight] = themeNode.get_length('-gradient-height', false);
+        let startColor = new Clutter.Color()
+        themeNode.get_color('-gradient-start', false, startColor);
+        let endColor = new Clutter.Color()
+        themeNode.get_color('-gradient-end', false, endColor);
+
+        let gradientWidth = (width - margin * 2);
+        let gradientOffset = (height - gradientHeight) / 2;
+        let pattern = new Cairo.LinearGradient(margin, gradientOffset, width - margin, gradientOffset + gradientHeight);
+        pattern.addColorStopRGBA(0, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
+        pattern.addColorStopRGBA(0.5, endColor.red / 255, endColor.green / 255, endColor.blue / 255, endColor.alpha / 0xFF);
+        pattern.addColorStopRGBA(1, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
+        cr.setSource(pattern);
+        cr.rectangle(margin, gradientOffset, gradientWidth, gradientHeight);
+        cr.fill();
     }
 };
 Signals.addSignalMethods(PanelSeparatorMenuItem.prototype);
@@ -200,12 +226,11 @@ PanelImageMenuItem.prototype = {
             show = settings.gtk_menu_images;
         }
         if (!show) {
-            let child = this._imageBin.get_child();
-            if (child)
-                child.destroy();
+            this._imageBin.hide();
         } else {
             let img = St.TextureCache.get_default().load_icon_name(this._iconName, this._size);
             this._imageBin.set_child(img);
+            this._imageBin.show();
         }
     }
 };
@@ -218,8 +243,7 @@ function PanelMenu(sourceButton) {
 PanelMenu.prototype = {
     _init: function(sourceButton) {
         this._sourceButton = sourceButton;
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP, this._sourceButton,
-                                                     { x_fill: true, y_fill: true, x_align: St.Align.START });
+        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP, { x_fill: true, y_fill: true, x_align: St.Align.START });
         this.actor = this._boxPointer.actor;
         this.actor.style_class = 'panel-menu-boxpointer';
         this._box = new St.BoxLayout({ style_class: 'panel-menu-content',
@@ -293,6 +317,11 @@ PanelMenuButton.prototype = {
         let panelActor = Main.panel.actor;
         this.menu.actor.lower(panelActor);
         this.menu.actor.show();
+        this.menu.actor.opacity = 0;
+        this.menu.actor.reactive = true;
+        Tweener.addTween(this.menu.actor, { opacity: 255,
+                                            transition: "easeOutQuad",
+                                            time: POPUP_ANIMATION_TIME });
         this._repositionMenu();
 
         this.actor.add_style_pseudo_class('pressed');
@@ -355,7 +384,11 @@ PanelMenuButton.prototype = {
         if (this._state != this.State.OPEN)
             return;
         this._state = this.State.CLOSED;
-        this.menu.actor.hide();
+        this.menu.actor.reactive = false;
+        Tweener.addTween(this.menu.actor, { opacity: 0,
+                                            transition: "easeOutQuad",
+                                            time: POPUP_ANIMATION_TIME,
+                                            onComplete: Lang.bind(this, function () { this.menu.actor.hide(); })});
         this.actor.remove_style_pseudo_class('pressed');
         this.emit('open-state-changed', false);
     },
@@ -529,7 +562,9 @@ AppMenuButton.prototype = {
         this._label = new TextShadower();
         this._container.add_actor(this._label.actor);
 
-        this.menu.addAction(_("Quit"), Lang.bind(this, this._onQuit));
+        this._quitMenu = new PanelMenuItem('');
+        this.menu.addMenuItem(this._quitMenu);
+        this._quitMenu.connect('activate', Lang.bind(this, this._onQuit));
 
         Main.overview.connect('hiding', Lang.bind(this, function () {
             this.actor.opacity = 255;
@@ -630,7 +665,9 @@ AppMenuButton.prototype = {
 
         if (this._focusedApp != null) {
             let icon = this._focusedApp.get_faded_icon(AppDisplay.APPICON_SIZE);
-            this._label.setText(this._focusedApp.get_name());
+            let appName = this._focusedApp.get_name();
+            this._label.setText(appName);
+            this._quitMenu.label.set_text(_('Quit %s').format(appName));
             this._iconBox.set_child(icon);
             this._iconBox.show();
         }

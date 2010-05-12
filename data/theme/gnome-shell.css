@@ -131,14 +131,15 @@ StTooltip {
 .panel-menu {
     color: #ffffff;
     font-size: 16px;
+    min-width: 200px;
 }
 
 .panel-menu-content {
-    padding: 20px 0px;
+    padding: 10px 0px;
 }
 
 .panel-menu-item {
-    padding: 6px 30px;
+    padding: 6px 20px;
 }
 
 .panel-menu-item:hover {
@@ -146,12 +147,15 @@ StTooltip {
 }
 
 .panel-image-menu-item {
-    spacing: 6px;
+    spacing: 12px;
 }
 
 .panel-separator-menu-item {
-    background: #4c4c4c;
-    height: 1px;
+    -gradient-height: 2px;
+    -gradient-start: rgba(8,8,8,0);
+    -gradient-end: #333333;
+    -margin-horizontal: 30px;
+    height: 16px;
 }
 
 #appMenu {

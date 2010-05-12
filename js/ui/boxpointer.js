@@ -8,10 +8,6 @@ const Shell = imports.gi.Shell;
 /**
  * BoxPointer:
  * @side: A St.Side type; currently only St.Side.TOP is implemented
- * @sourceActor: The side of the BoxPointer where the pointer is
- *   constrained to be as big as the corresponding dimension of
- *   @sourceActor. E.g. for St.Side.TOP, the BoxPointer is horizontally
- *   constrained to be bigger than @sourceActor.
  * @binProperties: Properties to set on contained bin
  *
  * An actor which displays a triangle "arrow" pointing to a given
@@ -19,16 +15,15 @@ const Shell = imports.gi.Shell;
  * placed.  The arrow position may be controlled via setArrowOrigin().
  *
  */
-function BoxPointer(side, sourceActor, binProperties) {
-    this._init(side, sourceActor, binProperties);
+function BoxPointer(side, binProperties) {
+    this._init(side, binProperties);
 }
 
 BoxPointer.prototype = {
-    _init: function(arrowSide, sourceActor, binProperties) {
+    _init: function(arrowSide, binProperties) {
         if (arrowSide != St.Side.TOP)
             throw new Error('Not implemented');
         this._arrowSide = arrowSide;
-        this._sourceActor = sourceActor;
         this._arrowOrigin = 0;
         this.actor = new St.Bin({ x_fill: true,
                                   y_fill: true });
@@ -61,13 +56,8 @@ BoxPointer.prototype = {
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
         let [minInternalSize, natInternalSize] = this.bin.get_preferred_width(forHeight);
-        // The allocation property unlike get_allocation_box() doesn't trigger
-        // synchronous relayout, which would be bad here. We assume that the
-        // previous allocation of the button is fine.
-        let sourceAlloc = this._sourceActor.allocation;
-        let sourceWidth = sourceAlloc.x2 - sourceAlloc.x1;
-        alloc.min_size = Math.max(minInternalSize, sourceWidth);
-        alloc.natural_size = Math.max(natInternalSize, sourceWidth);
+        alloc.min_size = minInternalSize;
+        alloc.natural_size = natInternalSize;
         this._adjustAllocationForArrow(true, alloc);
     },
 
@@ -107,8 +97,6 @@ BoxPointer.prototype = {
 
     _drawBorder: function(area) {
         let themeNode = this.actor.get_theme_node();
-
-        let [sourceX, sourceY] = this._sourceActor.get_transformed_position();
 
         let found, borderWidth, borderRadius, rise, base;
         [found, borderWidth] = themeNode.get_length('-arrow-border-width', false);
