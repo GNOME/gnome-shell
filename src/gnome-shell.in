@@ -2,6 +2,7 @@
 # -*- mode: Python; indent-tabs-mode: nil; -*-
 
 import atexit
+import datetime
 import json
 import optparse
 import os
@@ -285,6 +286,7 @@ def run_performance_test():
     if options.perf_warmup:
         iters += 1
 
+    logs = []
     metric_summaries = {}
 
     for i in xrange(0, iters):
@@ -311,6 +313,10 @@ def run_performance_test():
         finally:
             os.remove(output_file)
 
+        # Grab the event definitions the first time around
+        if i == 0:
+            events = output['events']
+
         if options.perf_warmup and i == 0:
             continue
 
@@ -326,10 +332,45 @@ def run_performance_test():
 
             summary['values'].append(metric['value'])
 
-    for metric in sorted(metric_summaries.keys()):
-        summary = metric_summaries[metric]
-        print "#", summary['description']
-        print metric, ", ".join((str(x) for x in summary['values']))
+        logs.append(output['log'])
+
+    if options.perf_output:
+        # Write a complete report, formatted as JSON. The Javascript/C code that
+        # generates the individual reports we are summarizing here is very careful
+        # to format them nicely, but we just dump out a compressed no-whitespace
+        # version here for simplicity. Using json.dump(indent=0) doesn't real
+        # improve the readability of the output much.
+        report = {
+            'date': datetime.datetime.now().isoformat(),
+            'events': events,
+            'metrics': metric_summaries,
+            'logs': logs
+        }
+
+        # Add the Git revision if available
+        bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
+            top_dir = os.path.dirname(bin_dir)
+            git_dir = os.path.join(top_dir, '.git')
+            if os.path.exists(git_dir):
+                env = dict(os.environ)
+                env['GIT_DIR'] = git_dir
+                revision = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
+                                            env=env,
+                                            stdout=subprocess.PIPE).communicate()[0].strip()
+                report['revision'] = revision
+
+        f = open(options.perf_output, 'w')
+        json.dump(report, f)
+        f.close()
+    else:
+        # Write a human readable summary
+        print '------------------------------------------------------------';
+        for metric in sorted(metric_summaries.keys()):
+            summary = metric_summaries[metric]
+            print "#", summary['description']
+            print metric, ", ".join((str(x) for x in summary['values']))
+        print '------------------------------------------------------------';
 
     return True
 
@@ -386,6 +427,8 @@ parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
                   default=1)
 parser.add_option("", "--perf-warmup", action="store_true",
 		  help="Run a dry run before performance tests")
+parser.add_option("", "--perf-output",
+		  help="Output file to write performance report")
 parser.add_option("", "--xephyr", action="store_true",
                   help="Run a debugging instance inside Xephyr")
 parser.add_option("", "--geometry", metavar="GEOMETRY",
