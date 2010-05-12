@@ -1636,6 +1636,19 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
     }
 }
 
+#ifndef HAVE_COGL_GLES
+
+static gboolean
+blend_factor_uses_constant (GLenum blend_factor)
+{
+  return (blend_factor == GL_CONSTANT_COLOR ||
+          blend_factor == GL_ONE_MINUS_CONSTANT_COLOR ||
+          blend_factor == GL_CONSTANT_ALPHA ||
+          blend_factor == GL_ONE_MINUS_CONSTANT_ALPHA);
+}
+
+#endif
+
 static void
 _cogl_material_flush_base_gl_state (CoglMaterial *material,
                                     gboolean skip_gl_color)
@@ -1697,6 +1710,15 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
 #endif
 
 #ifndef HAVE_COGL_GLES /* GLES 1 only has glBlendFunc */
+      if (blend_factor_uses_constant (material->blend_src_factor_rgb) ||
+          blend_factor_uses_constant (material->blend_src_factor_alpha) ||
+          blend_factor_uses_constant (material->blend_dst_factor_rgb) ||
+          blend_factor_uses_constant (material->blend_dst_factor_alpha))
+        GE (glBlendColor (material->blend_constant[0],
+                          material->blend_constant[1],
+                          material->blend_constant[2],
+                          material->blend_constant[3]));
+
       if (have_blend_func_separate &&
           (material->blend_src_factor_rgb != material->blend_src_factor_alpha ||
            (material->blend_src_factor_rgb !=
@@ -1713,10 +1735,6 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
                                    material->blend_dst_factor_rgb,
                                    material->blend_src_factor_alpha,
                                    material->blend_dst_factor_alpha));
-          GE (glBlendColor (material->blend_constant[0],
-                            material->blend_constant[1],
-                            material->blend_constant[2],
-                            material->blend_constant[3]));
         }
       else
 #endif
