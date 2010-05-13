@@ -507,7 +507,7 @@ clutter_text_create_layout (ClutterText *text,
    * See http://bugzilla.gnome.org/show_bug.cgi?id=560931
    */
 
-  if (ellipsize != PANGO_ELLIPSIZE_NONE)
+  if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
     {
       if (allocation_height < 0 && priv->wrap)
         ; /* must not set ellipsization on wrap=true height request */
@@ -629,8 +629,6 @@ clutter_text_create_layout (ClutterText *text,
 	    {
 	      oldest_cache = priv->cached_layouts + i;
 	    }
-
-	  return priv->cached_layouts[i].layout;
         }
     }
 
