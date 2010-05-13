@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-05-11 18:13+0000\n"
-"PO-Revision-Date: 2010-05-11 20:41+0200\n"
+"POT-Creation-Date: 2010-05-13 18:31+0000\n"
+"PO-Revision-Date: 2010-05-13 21:13+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,19 +42,19 @@ msgstr "APLICACIONES"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:697
+#: ../js/ui/appDisplay.js:705
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:701
+#: ../js/ui/appDisplay.js:709
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:702
+#: ../js/ui/appDisplay.js:710
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:1029
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
@@ -120,57 +120,57 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/overview.js:181
+#: ../js/ui/overview.js:161
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/panel.js:498
+#: ../js/ui/panel.js:535
 msgid "Quit"
 msgstr "Salir"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:703
+#: ../js/ui/panel.js:740
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:955
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:919
+#: ../js/ui/panel.js:956
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:923
+#: ../js/ui/panel.js:960
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:961
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:931
+#: ../js/ui/panel.js:968
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:932
+#: ../js/ui/panel.js:969
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:936
+#: ../js/ui/panel.js:973
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:937
+#: ../js/ui/panel.js:974
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
@@ -242,32 +242,43 @@ msgstr "%s finalizó su lanzamiento"
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../src/shell-global.c:964
+#: ../js/ui/workspacesView.js:239
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"No se puede añadir un área de trabajo nueva porque se ha llegado al límite "
+"de áreas de trabajo."
+
+#: ../js/ui/workspacesView.js:256
+msgid "Can't remove the first workspace."
+msgstr "No se puede quitar el primer área de trabajo."
+
+#: ../src/shell-global.c:979
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:968
+#: ../src/shell-global.c:983
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:973
+#: ../src/shell-global.c:988
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:978
+#: ../src/shell-global.c:993
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:998
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
