@@ -11,6 +11,8 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const DND = imports.ui.dnd;
 const Lightbox = imports.ui.lightbox;
@@ -233,15 +235,31 @@ GenericWorkspacesView.prototype = {
     },
 
     addWorkspace: function() {
+        if (!this.canAddWorkspace()) {
+            Main.overview.infoBar.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
+            return null;
+        }
+
+        return global.screen.append_new_workspace(false, global.get_current_time());
+    },
+
+    _getWorkspaceIndexToRemove: function() {
         throw new Error("Not implemented");
     },
 
     canRemoveWorkspace: function() {
-        throw new Error("Not implemented");
+        return this._getWorkspaceIndexToRemove() > 0;
     },
 
     removeWorkspace: function() {
-        throw new Error("Not implemented");
+        if (!this.canRemoveWorkspace()) {
+            Main.overview.infoBar.setMessage(_("Can't remove the first workspace."));
+            return;
+        }
+        let index = this._getWorkspaceIndexToRemove();
+        let metaWorkspace = this._workspaces[index].metaWorkspace;
+        global.screen.remove_workspace(metaWorkspace,
+                                       global.get_current_time());
     },
 
     updateWorkspaces: function() {
@@ -261,7 +279,9 @@ GenericWorkspacesView.prototype = {
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        this.addWorkspace();
+        let ws = this.addWorkspace();
+        if (ws == null)
+            return false;
         return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     }
 };
@@ -444,19 +464,8 @@ MosaicView.prototype = {
         return null;
     },
 
-    addWorkspace: function() {
-        return global.screen.append_new_workspace(false, global.get_current_time());
-    },
-
-    canRemoveWorkspace: function() {
-        return global.screen.n_workspaces > 1;
-    },
-
-    removeWorkspace: function() {
-        let removedIndex = this._workspaces.length - 1;
-        let metaWorkspace = this._workspaces[removedIndex].metaWorkspace;
-        global.screen.remove_workspace(metaWorkspace,
-                                       global.get_current_time());
+    _getWorkspaceIndexToRemove: function() {
+        return this._workspaces.length - 1;
     }
 };
 
@@ -1377,10 +1386,6 @@ SingleView.prototype = {
         return actor;
     },
 
-    canRemoveWorkspace: function() {
-        return global.screen.get_active_workspace_index() != 0;
-    },
-
     _updatePanelVisibility: function() {
         let showSwitches = (global.screen.n_workspaces > 1);
         if (this._scroll != null) {
@@ -1392,17 +1397,15 @@ SingleView.prototype = {
     },
 
     addWorkspace: function() {
-        let ws = global.screen.append_new_workspace(false,
-                                                    global.get_current_time());
-        ws.activate(global.get_current_time());
+        let ws = GenericWorkspacesView.prototype.addWorkspace.call(this);
+        if (ws != null)
+            ws.activate(global.get_current_time());
+
         return ws;
     },
 
-    removeWorkspace: function() {
-        let removedIndex = global.screen.get_active_workspace_index();
-        let metaWorkspace = this._workspaces[removedIndex].metaWorkspace;
-        global.screen.remove_workspace(metaWorkspace,
-                                       global.get_current_time());
+    _getWorkspaceIndexToRemove: function() {
+        return global.screen.get_active_workspace_index();
     }
 };
 
@@ -1531,7 +1534,6 @@ WorkspacesControls.prototype = {
     _setButtonSensitivity: function(button, sensitive) {
         if (button == null)
             return;
-        button.reactive = sensitive;
         button.opacity = sensitive ? 255 : 85;
     },
 
