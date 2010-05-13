@@ -1710,7 +1710,7 @@ _cogl_texture_2d_sliced_get_data (CoglTexture     *tex,
         {
           src = new_bmp.data + y * new_bmp.rowstride;
           dst = data + y * rowstride;
-          memcpy (dst, src, new_bmp.width);
+          memcpy (dst, src, new_bmp.rowstride);
         }
 
       /* Free converted data */
