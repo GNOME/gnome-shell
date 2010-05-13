@@ -121,10 +121,10 @@ NotificationDaemon.prototype = {
             // kill the notification-daemon. pkill is more portable
             // than killall, but on Linux at least it won't match if
             // you pass more than 15 characters of the process name...
-            // However, if you use the "-f" flag to match the entire
+            // However, if you use the '-f' flag to match the entire
             // command line, it will work, but we have to be careful
-            // in that case that we don't match "gedit
-            // notification-daemon.c" or whatever...
+            // in that case that we don't match 'gedit
+            // notification-daemon.c' or whatever...
             let p = new Shell.Process({ args: ['pkill', '-f',
                                                '^([^ ]*/)?(notification-daemon|notify-osd)$']});
             p.run();

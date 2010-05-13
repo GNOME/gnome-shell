@@ -30,8 +30,8 @@ WorkspaceSwitcherPopup.prototype = {
 
         this._scaleWidth = global.screen_width / global.screen_height;
 
-        this._container = new St.BoxLayout({ style_class: "workspace-switcher-container" });
-        this._list = new St.BoxLayout({ style_class: "workspace-switcher" });
+        this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });
+        this._list = new St.BoxLayout({ style_class: 'workspace-switcher' });
 
         this._container.add(this._list);
 
@@ -73,7 +73,7 @@ WorkspaceSwitcherPopup.prototype = {
     _show : function() {
         Tweener.addTween(this._container, { opacity: 255,
                                             time: ANIMATION_TIME,
-                                            transition: "easeOutQuad"
+                                            transition: 'easeOutQuad'
                                            });
         this._position();
         this.actor.show();
@@ -92,7 +92,7 @@ WorkspaceSwitcherPopup.prototype = {
         this._timeoutId = 0;
         Tweener.addTween(this._container, { opacity: 0.0,
                                             time: ANIMATION_TIME,
-                                            transition: "easeOutQuad",
+                                            transition: 'easeOutQuad',
                                             onComplete: function() { this.actor.hide(); },
                                             onCompleteScope: this
                                            });

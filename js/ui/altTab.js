@@ -120,7 +120,7 @@ AltTabPopup.prototype = {
 
     show : function(backward) {
         let tracker = Shell.WindowTracker.get_default();
-        let apps = tracker.get_running_apps ("");
+        let apps = tracker.get_running_apps ('');
 
         if (!apps.length)
             return false;
@@ -420,7 +420,7 @@ AltTabPopup.prototype = {
         Tweener.addTween(this._thumbnails.actor,
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: function() { this.destroy(); }
                          });
         this._thumbnails = null;
@@ -437,7 +437,7 @@ AltTabPopup.prototype = {
         Tweener.addTween(this._thumbnails.actor,
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
-                           transition: "easeOutQuad"
+                           transition: 'easeOutQuad'
                          });
     }
 };
@@ -761,7 +761,7 @@ function AppIcon(app) {
 AppIcon.prototype = {
     _init: function(app) {
         this.app = app;
-        this.actor = new St.BoxLayout({ style_class: "alt-tab-app",
+        this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
                                          vertical: true });
         this.icon = null;
         this._iconBin = new St.Bin();
@@ -948,7 +948,7 @@ ThumbnailList.prototype = {
 
         let activeWorkspace = global.screen.get_active_workspace();
 
-        // We fake the value of "separatorAdded" when the app has no window
+        // We fake the value of 'separatorAdded' when the app has no window
         // on the current workspace, to avoid displaying a useless separator in
         // that case.
         let separatorAdded = windows.length == 0 || windows[0].get_workspace() != activeWorkspace;
@@ -964,10 +964,10 @@ ThumbnailList.prototype = {
               separatorAdded = true;
             }
 
-            let box = new St.BoxLayout({ style_class: "thumbnail-box",
+            let box = new St.BoxLayout({ style_class: 'thumbnail-box',
                                          vertical: true });
 
-            let bin = new St.Bin({ style_class: "thumbnail" });
+            let bin = new St.Bin({ style_class: 'thumbnail' });
 
             box.add_actor(bin);
             this._thumbnailBins.push(bin);

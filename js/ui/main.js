@@ -54,9 +54,9 @@ let _startDate;
 let background = null;
 
 function start() {
-    // Add a binding for "global" in the global JS namespace; (gjs
+    // Add a binding for 'global' in the global JS namespace; (gjs
     // keeps the web browser convention of having that namespace be
-    // called "window".)
+    // called 'window'.)
     window.global = Shell.Global.get();
 
     // Now monkey patch utility functions into the global proxy;
@@ -65,7 +65,7 @@ function start() {
     global.logError = _logError;
     global.log = _logDebug;
 
-    Gio.DesktopAppInfo.set_desktop_env("GNOME");
+    Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     global.grab_dbus_service();
     shellDBusService = new ShellDBus.GnomeShell();
@@ -94,17 +94,17 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
 
     let themeContext = St.ThemeContext.get_for_stage (global.stage);
-    let stylesheetPath = global.datadir + "/theme/gnome-shell.css";
+    let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
     let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
     themeContext.set_theme (theme);
 
     let shellwm = global.window_manager;
-    shellwm.takeover_keybinding("panel_main_menu");
-    shellwm.connect("keybinding::panel_main_menu", function () {
+    shellwm.takeover_keybinding('panel_main_menu');
+    shellwm.connect('keybinding::panel_main_menu', function () {
         overview.toggle();
     });
-    shellwm.takeover_keybinding("panel_run_dialog");
-    shellwm.connect("keybinding::panel_run_dialog", function () {
+    shellwm.takeover_keybinding('panel_run_dialog');
+    shellwm.connect('keybinding::panel_run_dialog', function () {
        getRunDialog().open();
     });
 
@@ -136,9 +136,9 @@ function start() {
         } else {
             //read the parameters from GConf always in case they have changed
             let gconf = Shell.GConf.get_default();
-            recorder.set_framerate(gconf.get_int("recorder/framerate"));
-            recorder.set_filename("shell-%d%u-%c." + gconf.get_string("recorder/file_extension"));
-            let pipeline = gconf.get_string("recorder/pipeline");
+            recorder.set_framerate(gconf.get_int('recorder/framerate'));
+            recorder.set_filename('shell-%d%u-%c.' + gconf.get_string('recorder/file_extension'));
+            let pipeline = gconf.get_string('recorder/pipeline');
             if (!pipeline.match(/^\s*$/))
                 recorder.set_pipeline(pipeline);
             else
@@ -191,7 +191,7 @@ function _log(category, msg) {
         for (let i = 2; i < arguments.length; i++) {
             text += JSON.stringify(arguments[i]);
             if (i < arguments.length - 1)
-                text += " ";
+                text += ' ';
         }
     }
     _errorLogStack.push({timestamp: new Date().getTime(),
@@ -280,8 +280,8 @@ function _globalKeyPressHandler(actor, event) {
         if (symbol == Clutter.Print) {
             // We want to be able to take screenshots of the shell at all times
             let gconf = Shell.GConf.get_default();
-            let command = gconf.get_string("/apps/metacity/keybinding_commands/command_screenshot");
-            if (command != null && command != "") {
+            let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
+            if (command != null && command != '') {
                 let [ok, len, args] = GLib.shell_parse_argv(command);
                 let p = new Shell.Process({'args' : args});
                 p.run();
@@ -354,7 +354,7 @@ function _findModal(actor) {
 function pushModal(actor) {
     if (modalCount == 0) {
         if (!global.begin_modal(global.get_current_time())) {
-            log("pushModal: invocation of begin_modal failed");
+            log('pushModal: invocation of begin_modal failed');
             return false;
         }
     }
@@ -521,7 +521,7 @@ function _queueBeforeRedraw(workId) {
  */
 function initializeDeferredWork(actor, callback, props) {
     // Turn into a string so we can use as an object property
-    let workId = "" + (++_deferredWorkSequence);
+    let workId = '' + (++_deferredWorkSequence);
     _deferredWorkData[workId] = { 'actor': actor,
                                   'callback': callback };
     actor.connect('notify::mapped', function () {
@@ -551,7 +551,7 @@ function initializeDeferredWork(actor, callback, props) {
 function queueDeferredWork(workId) {
     let data = _deferredWorkData[workId];
     if (!data) {
-        global.logError("invalid work id ", workId);
+        global.logError('invalid work id ', workId);
         return;
     }
     if (_deferredWorkQueue.indexOf(workId) < 0)

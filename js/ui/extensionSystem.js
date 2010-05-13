@@ -124,7 +124,7 @@ function init() {
     try {
         userExtensionsDir.make_directory_with_parents(null);
     } catch (e) {
-        global.logError(""+e);
+        global.logError('' + e);
     }
 
     disabledExtensions = Shell.GConf.get_default().get_string_list('disabled_extensions');

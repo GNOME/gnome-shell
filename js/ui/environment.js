@@ -36,7 +36,7 @@ function init() {
     String.prototype.format = Format.format;
 
     // Set the default direction for St widgets (this needs to be done before any use of St)
-    if (Gettext_gtk20.gettext("default:LTR") == "default:RTL") {
+    if (Gettext_gtk20.gettext('default:LTR') == 'default:RTL') {
         St.Widget.set_default_direction(St.TextDirection.RTL);
     }
 }

@@ -51,7 +51,7 @@ CommandCompleter.prototype = {
             this._paths[i] = file.get_path();
             this._monitors[i] = file.monitor_directory(Gio.FileMonitorFlags.NONE, null);
             if (this._monitors[i] != null) {
-                this._monitors[i].connect("changed", Lang.bind(this, this._onChanged));
+                this._monitors[i].connect('changed', Lang.bind(this, this._onChanged));
             }
         }
         this._paths = this._paths.filter(function(a) {
@@ -132,7 +132,7 @@ CommandCompleter.prototype = {
     },
 
     getCompletion: function(text) {
-        let common = "";
+        let common = '';
         let notInit = true;
         if (!this._valid) {
             this._update(0);
@@ -145,7 +145,7 @@ CommandCompleter.prototype = {
                     break;
             }
             if (k == 0)
-                return "";
+                return '';
             return s1.substr(0, k);
         }
         function _hasPrefix(s1, prefix) {
@@ -372,7 +372,7 @@ RunDialog.prototype = {
                     // We are only interested in the actual error, so parse
                     //that out.
                     let m = /.+\((.+)\)/.exec(e);
-                    let errorStr = _("Execution of '%s' failed:").format(command) + "\n" + m[1];
+                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + m[1];
                     this._errorMessage.set_text(errorStr);
 
                     this._errorBox.show();

@@ -34,7 +34,7 @@ function GenericDisplayItem() {
 
 GenericDisplayItem.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ style_class: "generic-display-item",
+        this.actor = new St.BoxLayout({ style_class: 'generic-display-item',
                                          reactive: true });
 
         this.actor._delegate = this;
@@ -144,7 +144,7 @@ GenericDisplayItem.prototype = {
 
     // Performes an action associated with launching this item, such as opening a file or an application.
     launch: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     //// Protected methods ////
@@ -176,12 +176,12 @@ GenericDisplayItem.prototype = {
         this._icon = this._createIcon();
         this._iconBin.set_child(this._icon);
 
-        this._name = new St.Label({ style_class: "generic-display-item-name",
+        this._name = new St.Label({ style_class: 'generic-display-item-name',
                                      text: nameText });
         this._infoText.add(this._name);
 
-        this._description = new St.Label({ style_class: "generic-display-item-description",
-                                            text: descriptionText ? descriptionText : "" });
+        this._description = new St.Label({ style_class: 'generic-display-item-description',
+                                            text: descriptionText ? descriptionText : '' });
         this._infoText.add(this._description);
     },
 
@@ -208,12 +208,12 @@ GenericDisplayItem.prototype = {
 
     // Returns an icon for the item.
     _createIcon: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     // Returns a preview icon for the item.
     _createPreviewIcon: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     }
 
     //// Private methods ////
@@ -356,7 +356,7 @@ GenericDisplay.prototype = {
         // TODO: figure out why this._list.displayedCount is returning a
         // positive number when this._mathedItems.length is 0
         // This can be triggered if a search string is entered for which there are no matches.
-        // log("this._mathedItems.length: " + this._matchedItems.length + " this._list.displayedCount " + this._list.displayedCount);
+        // log('this._mathedItems.length: ' + this._matchedItems.length + ' this._list.displayedCount ' + this._list.displayedCount);
         return this._matchedItemKeys.length > 0;
     },
 
@@ -402,7 +402,7 @@ GenericDisplay.prototype = {
     // and adds it to the list of displayed items, but does not yet display it.
     _addDisplayItem : function(itemId) {
         if (this._displayedItems.hasOwnProperty(itemId)) {
-            log("Tried adding a display item for " + itemId + ", but an item with this item id is already among displayed items.");
+            log('Tried adding a display item for ' + itemId + ', but an item with this item id is already among displayed items.');
             return;
         }
 
@@ -461,7 +461,7 @@ GenericDisplay.prototype = {
     // Return true if there's an active search or other constraint
     // on the list
     _filterActive: function() {
-        return this._search != "";
+        return this._search != '';
     },
 
     // Called when we are resetting state
@@ -584,13 +584,13 @@ GenericDisplay.prototype = {
     // Implementation should return %true if we are up to date, and %false
     // if a full reload occurred.
     _refreshCache: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     // Sets the list of the displayed items based on the default sorting order.
     // The default sorting order is specific to each implementing class.
     _setDefaultList: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     // Compares items associated with the item ids based on the order in which the
@@ -598,18 +598,18 @@ GenericDisplay.prototype = {
     // Intended to be used as a compareFunction for array.sort().
     // Returns an integer value indicating the result of the comparison.
     _compareItems: function(itemIdA, itemIdB) {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     // Checks if the item info can be a match for the search string. 
     // Returns a boolean flag indicating if that's the case.
     _isInfoMatching: function(itemInfo, search) {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     // Creates a display item based on itemInfo.
     _createDisplayItem: function(itemInfo) {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     //// Private methods ////

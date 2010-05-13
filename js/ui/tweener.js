@@ -46,7 +46,7 @@ let slowDownFactor = 1.0;
 
 // Called from Main.start
 function init() {
-    let slowdownEnv = GLib.getenv("GNOME_SHELL_SLOWDOWN_FACTOR");
+    let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
     if (slowdownEnv) {
         let factor = parseFloat(slowdownEnv);
         if (!isNaN(factor) && factor > 0.0)
@@ -190,7 +190,7 @@ function registerSpecialPropertySplitter(name, splitFunction, parameters) {
 }
 
 
-// The "FrameTicker" object is an object used to feed new frames to
+// The 'FrameTicker' object is an object used to feed new frames to
 // Tweener so it can update values and redraw. The default frame
 // ticker for Tweener just uses a simple timeout at a fixed frame rate
 // and has no idea of "catching up" by dropping frames.

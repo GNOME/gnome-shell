@@ -103,7 +103,7 @@ WindowManager.prototype = {
                            x: xDest,
                            y: 0,
                            time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: this._minimizeWindowDone,
                            onCompleteScope: this,
                            onCompleteParams: [shellwm, actor],
@@ -160,7 +160,7 @@ WindowManager.prototype = {
         Tweener.addTween(actor,
                          { opacity: 255,
                            time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: this._mapWindowDone,
                            onCompleteScope: this,
                            onCompleteParams: [shellwm, actor],
@@ -258,7 +258,7 @@ WindowManager.prototype = {
                          { x: xDest,
                            y: yDest,
                            time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: this._switchWorkspaceDone,
                            onCompleteScope: this,
                            onCompleteParams: [shellwm]
@@ -267,7 +267,7 @@ WindowManager.prototype = {
                          { x: 0,
                            y: 0,
                            time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad"
+                           transition: 'easeOutQuad'
                          });
     },
 
@@ -306,7 +306,7 @@ WindowManager.prototype = {
 
     _showWorkspaceSwitcher : function(shellwm, binding, window, backwards) {
         /* We don't support this kind of layout */
-        if (binding == "switch_to_workspace_up" || binding == "switch_to_workspace_down")
+        if (binding == 'switch_to_workspace_up' || binding == 'switch_to_workspace_down')
             return;
 
         if (global.screen.n_workspaces == 1)
@@ -315,11 +315,11 @@ WindowManager.prototype = {
         if (this._workspaceSwitcherPopup == null)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
-        if (binding == "switch_to_workspace_left") {
+        if (binding == 'switch_to_workspace_left') {
             this.actionMoveWorkspaceLeft();
         }
 
-        if (binding == "switch_to_workspace_right") {
+        if (binding == 'switch_to_workspace_right') {
             this.actionMoveWorkspaceRight();
         }
     },

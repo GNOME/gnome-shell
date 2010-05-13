@@ -19,8 +19,8 @@ const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
 
-// This is GNOME Shell's implementation of the Telepathy "Client"
-// interface. Specifically, the shell is a Telepathy "Observer", which
+// This is GNOME Shell's implementation of the Telepathy 'Client'
+// interface. Specifically, the shell is a Telepathy 'Observer', which
 // lets us see messages even if they belong to another app (eg,
 // Empathy).
 

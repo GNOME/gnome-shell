@@ -71,7 +71,7 @@ PlaceDeviceInfo.prototype = {
         this._mount = mount;
         this.name = mount.get_name();
         this._lowerName = this.name.toLowerCase();
-        this.id = "mount:" + mount.get_root().get_uri();
+        this.id = 'mount:' + mount.get_root().get_uri();
     },
 
     iconFactory: function(size) {
@@ -155,7 +155,7 @@ PlacesManager.prototype = {
 
         this._connect = new PlaceInfo('special:connect', _("Connect to..."),
             function (size) {
-                return St.TextureCache.get_default().load_icon_name("applications-internet", size);
+                return St.TextureCache.get_default().load_icon_name('applications-internet', size);
             },
             function () {
                 new Shell.Process({ args: ['nautilus-connect-server'] }).run();
@@ -168,7 +168,7 @@ PlacesManager.prototype = {
             try {
                 networkApp = Shell.AppSystem.get_default().load_from_desktop_file('network-scheme.desktop');
             } catch(e) {
-                log("Cannot create \"Network\" item, .desktop file not found or corrupt.");
+                log('Cannot create "Network" item, .desktop file not found or corrupt.');
             }
         }
 
@@ -208,7 +208,7 @@ PlacesManager.prototype = {
         this._volumeMonitor.connect('drive-changed', Lang.bind(this, this._updateDevices));
         this._updateDevices();
 
-        this._bookmarksPath = GLib.build_filenamev([GLib.get_home_dir(), ".gtk-bookmarks"]);
+        this._bookmarksPath = GLib.build_filenamev([GLib.get_home_dir(), '.gtk-bookmarks']);
         this._bookmarksFile = Gio.file_new_for_path(this._bookmarksPath);
         let monitor = this._bookmarksFile.monitor_file(Gio.FileMonitorFlags.NONE, null);
         this._bookmarkTimeoutId = 0;
@@ -340,7 +340,7 @@ PlacesManager.prototype = {
         this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
 
         if (this._isDesktopHome)
-            this._removeById(this._defaultPlaces, "special:desktop");
+            this._removeById(this._defaultPlaces, 'special:desktop');
         else
             this._defaultPlaces.splice(this._desktopMenuIndex, 0,
                                        this._desktopMenu);

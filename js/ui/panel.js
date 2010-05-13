@@ -794,7 +794,7 @@ Panel.prototype = {
 
         /* center */
 
-        let clockButton = new St.Button({ style_class: "panel-button",
+        let clockButton = new St.Button({ style_class: 'panel-button',
                                           toggle_mode: true,
                                           x_fill: true,
                                           y_fill: true });
@@ -881,7 +881,7 @@ Panel.prototype = {
         Tweener.addTween(this.actor,
                          { y: 0,
                            time: 0.2,
-                           transition: "easeOutQuad"
+                           transition: 'easeOutQuad'
                          });
     },
 
@@ -941,7 +941,7 @@ Panel.prototype = {
             case 'unix':
                 // force updates every second
                 showSeconds = true;
-                clockFormat = "%s";
+                clockFormat = '%s';
                 break;
             case 'custom':
                 // force updates every second
@@ -1119,7 +1119,7 @@ CalendarPopup.prototype = {
         Tweener.addTween(this.actor,
                          { y: panelActor.y + panelActor.height,
                            time: 0.2,
-                           transition: "easeOutQuad"
+                           transition: 'easeOutQuad'
                          });
     },
 
@@ -1129,7 +1129,7 @@ CalendarPopup.prototype = {
         Tweener.addTween(this.actor,
                          { y: panelActor.y + panelActor.height - this.actor.height,
                            time: 0.2,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: function() { this.actor.hide(); },
                            onCompleteScope: this
                          });

@@ -8,16 +8,16 @@ const Mainloop = imports.mainloop;
 const Main = imports.ui.main;
 
 const GnomeShellIface = {
-    name: "org.gnome.Shell",
-    methods: [{ name: "Eval",
-                inSignature: "s",
-                outSignature: "bs"
+    name: 'org.gnome.Shell',
+    methods: [{ name: 'Eval',
+                inSignature: 's',
+                outSignature: 'bs'
               }
              ],
     signals: [],
-    properties: [{ name: "OverviewActive",
-                   signature: "b",
-                   access: "readwrite" }]
+    properties: [{ name: 'OverviewActive',
+                   signature: 'b',
+                   access: 'readwrite' }]
 };
 
 function GnomeShell() {
@@ -50,7 +50,7 @@ GnomeShell.prototype = {
             returnValue = JSON.stringify(eval(code));
             // A hack; DBus doesn't have null/undefined
             if (returnValue == undefined)
-                returnValue = "";
+                returnValue = '';
             success = true;
         } catch (e) {
             returnValue = JSON.stringify(e);

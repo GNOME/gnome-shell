@@ -40,7 +40,7 @@ SearchResultDisplay.prototype = {
      * The terms are useful for search match highlighting.
      */
     renderResults: function(results, terms) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -67,7 +67,7 @@ SearchResultDisplay.prototype = {
      * Returns: The number of actors visible.
      */
     getVisibleResultCount: function() {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -79,14 +79,14 @@ SearchResultDisplay.prototype = {
      * available.
      */
     selectIndex: function() {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
      * Activate the currently selected search result.
      */
     activateSelected: function() {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     }
 };
 
@@ -127,7 +127,7 @@ SearchProvider.prototype = {
      * or network queries.
      */
     getInitialResultSet: function(terms) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -144,7 +144,7 @@ SearchProvider.prototype = {
      * result set, rather than possibly performing a full re-query.
      */
     getSubsearchResultSet: function(previousResults, newTerms) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -155,7 +155,7 @@ SearchProvider.prototype = {
      * properties which describe the given search result.
      */
     getResultMeta: function(id) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -194,7 +194,7 @@ SearchProvider.prototype = {
      * Called when the user chooses a given result.
      */
     activateResult: function(id) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     },
 
     /**
@@ -205,7 +205,7 @@ SearchProvider.prototype = {
      * displaying search results for that item type.
      */
     expandSearch: function(terms) {
-        throw new Error("not implemented");
+        throw new Error('Not implemented');
     }
 };
 Signals.addSignalMethods(SearchProvider.prototype);
@@ -238,7 +238,7 @@ SearchSystem.prototype = {
     },
 
     updateSearch: function(searchString) {
-        searchString = searchString.replace(/^\s+/g, "").replace(/\s+$/g, "");
+        searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
         if (searchString == '')
             return null;
 

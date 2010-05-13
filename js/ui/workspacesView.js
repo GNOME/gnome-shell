@@ -43,7 +43,7 @@ function GenericWorkspacesView(width, height, x, y, workspaces) {
 
 GenericWorkspacesView.prototype = {
     _init: function(width, height, x, y, workspaces) {
-        this.actor = new St.Bin({ style_class: "workspaces" });
+        this.actor = new St.Bin({ style_class: 'workspaces' });
         this._actor = new Clutter.Group();
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -227,7 +227,7 @@ GenericWorkspacesView.prototype = {
     },
 
     createControllerBar: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     canAddWorkspace: function() {
@@ -244,7 +244,7 @@ GenericWorkspacesView.prototype = {
     },
 
     _getWorkspaceIndexToRemove: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     canRemoveWorkspace: function() {
@@ -263,19 +263,19 @@ GenericWorkspacesView.prototype = {
     },
 
     updateWorkspaces: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     _transitionWorkspaces: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     _computeWorkspacePositions: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     _activeWorkspaceChanged: function() {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {

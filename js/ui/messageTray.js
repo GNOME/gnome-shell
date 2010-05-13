@@ -30,10 +30,10 @@ const State = {
 function _cleanMarkup(text) {
     // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
     // occurrences of '&'.
-    let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, "&amp;");
+    let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
     // Support <b>, <i>, and <u>, escape anything else
     // so it displays as raw markup.
-    return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, "&lt;$1");
+    return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, '&lt;$1');
 }
 
 // Notification:
@@ -332,7 +332,7 @@ Notification.prototype = {
         Tweener.addTween(this._bannerLabel,
                          { opacity: 0,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad" });
+                           transition: 'easeOutQuad' });
         return true;
     },
 
@@ -342,7 +342,7 @@ Notification.prototype = {
         Tweener.addTween(this._bannerLabel,
                          { opacity: 255,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad" });
+                           transition: 'easeOutQuad' });
         return true;
     },
 
@@ -692,7 +692,7 @@ MessageTray.prototype = {
 
     // All of the logic for what happens when occurs here; the various
     // event handlers merely update variables such as
-    // "this._pointerInTray", "this._summaryState", etc, and
+    // 'this._pointerInTray', 'this._summaryState', etc, and
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
@@ -782,19 +782,19 @@ MessageTray.prototype = {
 
     _showTray: function() {
         let primary = global.get_primary_monitor();
-        this._tween(this.actor, "_trayState", State.SHOWN,
+        this._tween(this.actor, '_trayState', State.SHOWN,
                     { y: primary.y + primary.height - this.actor.height,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad"
+                      transition: 'easeOutQuad'
                     });
     },
 
     _hideTray: function() {
         let primary = global.get_primary_monitor();
-        this._tween(this.actor, "_trayState", State.HIDDEN,
+        this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: primary.y + primary.height - 1,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad"
+                      transition: 'easeOutQuad'
                     });
     },
 
@@ -806,11 +806,11 @@ MessageTray.prototype = {
         this._notificationBin.y = this.actor.height;
         this._notificationBin.show();
 
-        this._tween(this._notificationBin, "_notificationState", State.SHOWN,
+        this._tween(this._notificationBin, '_notificationState', State.SHOWN,
                     { y: 0,
                       opacity: 255,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad",
+                      transition: 'easeOutQuad',
                       onComplete: this._showNotificationCompleted,
                       onCompleteScope: this
                     });
@@ -858,11 +858,11 @@ MessageTray.prototype = {
             this._reExpandNotificationId = 0;
         }
 
-        this._tween(this._notificationBin, "_notificationState", State.HIDDEN,
+        this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
                     { y: this.actor.height,
                       opacity: 0,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad",
+                      transition: 'easeOutQuad',
                       onComplete: this._hideNotificationCompleted,
                       onCompleteScope: this
                     });
@@ -877,10 +877,10 @@ MessageTray.prototype = {
 
     _expandNotification: function() {
         if (this._notification && this._notification.popOut()) {
-            this._tween(this._notificationBin, "_notificationState", State.SHOWN,
+            this._tween(this._notificationBin, '_notificationState', State.SHOWN,
                         { y: this.actor.height - this._notificationBin.height,
                           time: ANIMATION_TIME,
-                          transition: "easeOutQuad"
+                          transition: 'easeOutQuad'
                         });
 
             if (!this._reExpandNotificationId)
@@ -892,11 +892,11 @@ MessageTray.prototype = {
         let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
-        this._tween(this._summaryBin, "_summaryState", State.SHOWN,
+        this._tween(this._summaryBin, '_summaryState', State.SHOWN,
                     { y: 0,
                       opacity: 255,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad",
+                      transition: 'easeOutQuad',
                       onComplete: this._showSummaryCompleted,
                       onCompleteScope: this,
                       onCompleteParams: [withTimeout]
@@ -920,10 +920,10 @@ MessageTray.prototype = {
     },
 
     _hideSummary: function() {
-        this._tween(this._summaryBin, "_summaryState", State.HIDDEN,
+        this._tween(this._summaryBin, '_summaryState', State.HIDDEN,
                     { opacity: 0,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad"
+                      transition: 'easeOutQuad'
                     });
         this._summaryNeedsToBeShown = false;
     },
@@ -942,11 +942,11 @@ MessageTray.prototype = {
         this._summaryNotificationBin.y = this.actor.height;
         this._summaryNotificationBin.show();
 
-        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.SHOWN,
+        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.SHOWN,
                     { y: this.actor.height - this._summaryNotificationBin.height,
                       opacity: 255,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad"
+                      transition: 'easeOutQuad'
                     });
 
         if (!this._reExpandSummaryNotificationId)
@@ -954,21 +954,21 @@ MessageTray.prototype = {
     },
 
     _reExpandSummaryNotification: function() {
-        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.SHOWN,
+        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.SHOWN,
                     { y: this.actor.height - this._summaryNotificationBin.height,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad"
+                      transition: 'easeOutQuad'
                     });
     },
 
     _hideSummaryNotification: function() {
         this._summaryNotification.popIn();
 
-        this._tween(this._summaryNotificationBin, "_summaryNotificationState", State.HIDDEN,
+        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.HIDDEN,
                     { y: this.actor.height,
                       opacity: 0,
                       time: ANIMATION_TIME,
-                      transition: "easeOutQuad",
+                      transition: 'easeOutQuad',
                       onComplete: this._hideSummaryNotificationCompleted,
                       onCompleteScope: this
                     });

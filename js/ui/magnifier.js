@@ -43,22 +43,22 @@ const DEFAULT_CROSSHAIRS_LENGTH = 4096;
 const DEFAULT_CROSSHAIRS_CLIP = false;
 const DEFAULT_CROSSHAIRS_CLIP_SIZE = [100, 100];
 const DEFAULT_CROSSHAIRS_COLOR = new Clutter.Color();
-DEFAULT_CROSSHAIRS_COLOR.from_string("Red");
+DEFAULT_CROSSHAIRS_COLOR.from_string('Red');
 
 // GConf settings
-const A11Y_MAG_PREFS_DIR        = "/desktop/gnome/accessibility/magnifier";
-const SHOW_KEY                  = A11Y_MAG_PREFS_DIR + "/show_magnifier";
-const SCREEN_POSITION_KEY       = A11Y_MAG_PREFS_DIR + "/screen_position";
-const MAG_FACTOR_KEY            = A11Y_MAG_PREFS_DIR + "/mag_factor";
-const LENS_MODE_KEY             = A11Y_MAG_PREFS_DIR + "/lens_mode";
-const CLAMP_MODE_KEY            = A11Y_MAG_PREFS_DIR + "/scroll_at_edges";
-const MOUSE_TRACKING_KEY        = A11Y_MAG_PREFS_DIR + "/mouse_tracking";
-const SHOW_CROSS_HAIRS_KEY      = A11Y_MAG_PREFS_DIR + "/show_cross_hairs";
-const CROSS_HAIRS_THICKNESS_KEY = A11Y_MAG_PREFS_DIR + "/cross_hairs_thickness";
-const CROSS_HAIRS_COLOR_KEY     = A11Y_MAG_PREFS_DIR + "/cross_hairs_color";
-const CROSS_HAIRS_OPACITY_KEY   = A11Y_MAG_PREFS_DIR + "/cross_hairs_opacity";
-const CROSS_HAIRS_LENGTH_KEY    = A11Y_MAG_PREFS_DIR + "/cross_hairs_length";
-const CROSS_HAIRS_CLIP_KEY      = A11Y_MAG_PREFS_DIR + "/cross_hairs_clip";
+const A11Y_MAG_PREFS_DIR        = '/desktop/gnome/accessibility/magnifier';
+const SHOW_KEY                  = A11Y_MAG_PREFS_DIR + '/show_magnifier';
+const SCREEN_POSITION_KEY       = A11Y_MAG_PREFS_DIR + '/screen_position';
+const MAG_FACTOR_KEY            = A11Y_MAG_PREFS_DIR + '/mag_factor';
+const LENS_MODE_KEY             = A11Y_MAG_PREFS_DIR + '/lens_mode';
+const CLAMP_MODE_KEY            = A11Y_MAG_PREFS_DIR + '/scroll_at_edges';
+const MOUSE_TRACKING_KEY        = A11Y_MAG_PREFS_DIR + '/mouse_tracking';
+const SHOW_CROSS_HAIRS_KEY      = A11Y_MAG_PREFS_DIR + '/show_cross_hairs';
+const CROSS_HAIRS_THICKNESS_KEY = A11Y_MAG_PREFS_DIR + '/cross_hairs_thickness';
+const CROSS_HAIRS_COLOR_KEY     = A11Y_MAG_PREFS_DIR + '/cross_hairs_color';
+const CROSS_HAIRS_OPACITY_KEY   = A11Y_MAG_PREFS_DIR + '/cross_hairs_opacity';
+const CROSS_HAIRS_LENGTH_KEY    = A11Y_MAG_PREFS_DIR + '/cross_hairs_length';
+const CROSS_HAIRS_CLIP_KEY      = A11Y_MAG_PREFS_DIR + '/cross_hairs_clip';
 
 let magDBusService = null;
 
@@ -329,7 +329,7 @@ Magnifier.prototype = {
     /**
      * setCrosshairsColor:
      * Set the color of the crosshairs for all ZoomRegions.
-     * @color:  The color as a string, e.g. "#ff0000ff" or "red".
+     * @color:  The color as a string, e.g. '#ff0000ff' or 'red'.
      */
     setCrosshairsColor: function(color) {
         if (this._crossHairs) {
@@ -342,7 +342,7 @@ Magnifier.prototype = {
     /**
      * getCrosshairsColor:
      * Get the color of the crosshairs.
-     * @return: The color as a string, e.g. "#0000ffff" for blue.
+     * @return: The color as a string, e.g. '#0000ffff' or 'blue'.
      */
     getCrosshairsColor: function() {
         if (this._crossHairs) {
@@ -350,7 +350,7 @@ Magnifier.prototype = {
             return clutterColor.to_string();
         }
         else
-            return "#00000000";
+            return '#00000000';
     },
 
     /**

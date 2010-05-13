@@ -249,7 +249,7 @@ Chrome.prototype = {
         // The chrome layer should be visible unless there is a window
         // with layer FULLSCREEN, or a window with layer
         // OVERRIDE_REDIRECT that covers the whole screen.
-        // ("override_redirect" is not actually a layer above all
+        // ('override_redirect' is not actually a layer above all
         // other windows, but this seems to be how mutter treats it
         // currently...) If we wanted to be extra clever, we could
         // figure out when an OVERRIDE_REDIRECT window was trying to

@@ -41,7 +41,7 @@ DocDisplayItem.prototype = {
         GenericDisplay.GenericDisplayItem.prototype._init.call(this);
         this._docInfo = docInfo;
 
-        this._setItemInfo(docInfo.name, "");
+        this._setItemInfo(docInfo.name, '');
 
         this._timeoutTime = -1;
         this._resetTimeDisplay(currentSecs);
@@ -80,7 +80,7 @@ DocDisplayItem.prototype = {
     // Creates and returns a large preview icon, but only if this._docInfo is an image file
     // and we were able to generate a pixbuf from it successfully.
     _createLargePreviewIcon : function() {
-        if (this._docInfo.mimeType == null || this._docInfo.mimeType.indexOf("image/") != 0)
+        if (this._docInfo.mimeType == null || this._docInfo.mimeType.indexOf('image/') != 0)
             return null;
 
         try {
@@ -513,6 +513,6 @@ DocSearchProvider.prototype = {
     },
 
     expandSearch: function(terms) {
-        log("TODO expand docs search");
+        log('TODO expand docs search');
     }
 };

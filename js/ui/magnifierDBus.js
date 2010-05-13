@@ -53,8 +53,8 @@ const ZoomRegionIface = {
 };
 
 // For making unique ZoomRegion DBus proxy object paths of the form:
-// "/org/gnome/Magnifier/ZoomRegion/zoomer0",
-// "/org/gnome/Magnifier/ZoomRegion/zoomer1", etc.
+// '/org/gnome/Magnifier/ZoomRegion/zoomer0',
+// '/org/gnome/Magnifier/ZoomRegion/zoomer1', etc.
 let _zoomRegionInstanceCount = 0;
 
 function ShellMagnifier() {
@@ -118,7 +118,7 @@ ShellMagnifier.prototype = {
         let ROI = { x: roi[0], y: roi[1], width: roi[2], height: roi[3] };
         let viewBox = { x: viewPort[0], y: viewPort[1], width: viewPort[2], height: viewPort[3] };
         let realZoomRegion = Main.magnifier.createZoomRegion(xMagFactor, yMagFactor, ROI, viewBox);
-        let objectPath = ZOOM_SERVICE_PATH + "/zoomer" + _zoomRegionInstanceCount;
+        let objectPath = ZOOM_SERVICE_PATH + '/zoomer' + _zoomRegionInstanceCount;
         _zoomRegionInstanceCount++;
 
         let zoomRegionProxy = new ShellMagnifierZoomRegion(objectPath, realZoomRegion);
@@ -169,7 +169,7 @@ ShellMagnifier.prototype = {
             }
             if (!found) {
                 // Got a ZoomRegion with no DBus proxy, make one.
-                let newPath =  ZOOM_SERVICE_PATH + "/zoomer" + _zoomRegionInstanceCount;
+                let newPath =  ZOOM_SERVICE_PATH + '/zoomer' + _zoomRegionInstanceCount;
                 _zoomRegionInstanceCount++;
                 let zoomRegionProxy = new ShellMagnifierZoomRegion(newPath, aZoomRegion);
                 let proxyAndZoomer = {};

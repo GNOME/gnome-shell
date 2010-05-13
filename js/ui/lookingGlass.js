@@ -17,22 +17,22 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
 /* Imports...feel free to add here as needed */
-var commandHeader = "const Clutter = imports.gi.Clutter; " +
-                    "const GLib = imports.gi.GLib; " +
-                    "const Gtk = imports.gi.Gtk; " +
-                    "const Mainloop = imports.mainloop; " +
-                    "const Meta = imports.gi.Meta; " +
-                    "const Shell = imports.gi.Shell; " +
-                    "const Main = imports.ui.main; " +
-                    "const Lang = imports.lang; " +
-                    "const Tweener = imports.ui.tweener; " +
+var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
+                    'const GLib = imports.gi.GLib; ' +
+                    'const Gtk = imports.gi.Gtk; ' +
+                    'const Mainloop = imports.mainloop; ' +
+                    'const Meta = imports.gi.Meta; ' +
+                    'const Shell = imports.gi.Shell; ' +
+                    'const Main = imports.ui.main; ' +
+                    'const Lang = imports.lang; ' +
+                    'const Tweener = imports.ui.tweener; ' +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */
-                    "const stage = global.stage; " +
-                    "const color = function(pixel) { let c= new Clutter.Color(); c.from_pixel(pixel); return c; }; " +
+                    'const stage = global.stage; ' +
+                    'const color = function(pixel) { let c= new Clutter.Color(); c.from_pixel(pixel); return c; }; ' +
                     /* Special lookingGlass functions */
-                       "const it = Main.lookingGlass.getIt(); " +
-                    "const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ";
+                       'const it = Main.lookingGlass.getIt(); ' +
+                    'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
 
 function Notebook() {
     this._init();
@@ -42,14 +42,14 @@ Notebook.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
 
-        this.tabControls = new St.BoxLayout({ style_class: "labels" });
+        this.tabControls = new St.BoxLayout({ style_class: 'labels' });
 
         this._selectedIndex = -1;
         this._tabs = [];
     },
 
     appendPage: function(name, child) {
-        let labelBox = new St.BoxLayout({ style_class: "notebook-tab" });
+        let labelBox = new St.BoxLayout({ style_class: 'notebook-tab' });
         let label = new St.Button({ label: name });
         label.connect('clicked', Lang.bind(this, function () {
             this.selectChild(child);
@@ -153,13 +153,13 @@ Result.prototype = {
         cmdTxt.ellipsize = Pango.EllipsizeMode.END;
 
         this.actor.add(cmdTxt);
-        let resultTxt = new St.Label({ text: "r(" + index + ") = " + o });
+        let resultTxt = new St.Label({ text: 'r(' + index + ') = ' + o });
         resultTxt.ellipsize = Pango.EllipsizeMode.END;
 
         this.actor.add(resultTxt);
-        let line = new Clutter.Rectangle({ name: "Separator",
+        let line = new Clutter.Rectangle({ name: 'Separator',
                                            height: 1 });
-        let padBin = new St.Bin({ name: "Separator", x_fill: true, y_fill: true });
+        let padBin = new St.Bin({ name: 'Separator', x_fill: true, y_fill: true });
         padBin.add_actor(line);
         this.actor.add(padBin);
     }
@@ -171,7 +171,7 @@ function WindowList() {
 
 WindowList.prototype = {
     _init : function () {
-        this.actor = new St.BoxLayout({ name: "Windows", vertical: true, style: "spacing: 8px" });
+        this.actor = new St.BoxLayout({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
         let display = global.screen.get_display();
         let tracker = Shell.WindowTracker.get_default();
         this._updateId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._updateWindowList));
@@ -193,16 +193,16 @@ WindowList.prototype = {
             box.add(label.actor);
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
-            propsBox.add(new St.Label({ text: "wmclass: " + metaWindow.get_wm_class() }));
+            propsBox.add(new St.Label({ text: 'wmclass: ' + metaWindow.get_wm_class() }));
             let app = tracker.get_window_app(metaWindow);
             if (app != null && !app.is_transient()) {
                 let icon = app.create_icon_texture(22);
                 let propBox = new St.BoxLayout({ style: 'spacing: 6px; ' });
                 propsBox.add(propBox);
-                propBox.add(new St.Label({ text: "app: " + app.get_id() }), { y_align: St.Align.MIDDLE });
+                propBox.add(new St.Label({ text: 'app: ' + app.get_id() }), { y_align: St.Align.MIDDLE });
                 propBox.add(icon, { y_align: St.Align.MIDDLE });
             } else {
-                propsBox.add(new St.Label({ text: "<untracked>" }));
+                propsBox.add(new St.Label({ text: '<untracked>' }));
             }
         }
     }
@@ -219,7 +219,7 @@ PropertyInspector.prototype = {
 
         this._parentList = [];
 
-        this.actor = new St.BoxLayout({ name: "PropertyInspector", vertical: true });
+        this.actor = new St.BoxLayout({ name: 'PropertyInspector', vertical: true });
     },
 
     setTarget: function(actor) {
@@ -230,11 +230,11 @@ PropertyInspector.prototype = {
         for (let propName in actor) {
             let valueStr;
             try {
-                valueStr = "" + actor[propName];
+                valueStr = '' + actor[propName];
             } catch (e) {
                 valueStr = '<error>';
             }
-            let propText = propName + ": " + valueStr;
+            let propText = propName + ': ' + valueStr;
             let propDisplay = new St.Label({ reactive: true,
                                              text: propText });
             this.actor.add_actor(propDisplay);
@@ -250,7 +250,7 @@ Inspector.prototype = {
     _init: function() {
         let width = 150;
         let primary = global.get_primary_monitor();
-        let eventHandler = new St.BoxLayout({ name: "LookingGlassDialog",
+        let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
                                               vertical: false,
                                               y: primary.y + Math.floor(primary.height / 2),
                                               reactive: true });
@@ -336,7 +336,7 @@ ErrorLog.prototype = {
         let stack = Main._getAndClearErrorStack();
         for (let i = 0; i < stack.length; i++) {
             let logItem = stack[i];
-            text += logItem.category + " t=" + this._formatTime(new Date(logItem.timestamp)) + " " + logItem.message + "\n";
+            text += logItem.category + ' t=' + this._formatTime(new Date(logItem.timestamp)) + ' ' + logItem.message + '\n';
         }
         this.text.text = text;
     }
@@ -396,7 +396,7 @@ Extensions.prototype = {
             case ExtensionSystem.ExtensionState.OUT_OF_DATE:
                 return _("Out of date");
         }
-        return "Unknown"; // Not translated, shouldn't appear
+        return 'Unknown'; // Not translated, shouldn't appear
     },
 
     _createExtensionDisplay: function(meta) {
@@ -442,7 +442,7 @@ function LookingGlass() {
 LookingGlass.prototype = {
     _init : function() {
         this._idleHistorySaveId = 0;
-        let historyPath = global.userdatadir + "/lookingglass-history.txt";
+        let historyPath = global.userdatadir + '/lookingglass-history.txt';
         this._historyFile = Gio.file_new_for_path(historyPath);
         this._savedText = null;
         this._historyNavIndex = -1;
@@ -461,19 +461,19 @@ LookingGlass.prototype = {
         // Sort of magic, but...eh.
         this._maxItems = 150;
 
-        this.actor = new St.BoxLayout({ name: "LookingGlassDialog",
+        this.actor = new St.BoxLayout({ name: 'LookingGlassDialog',
                                         vertical: true,
                                         visible: false });
 
         let gconf = Shell.GConf.get_default();
-        gconf.watch_directory("/desktop/gnome/interface");
-        gconf.connect("changed::/desktop/gnome/interface/monospace_font_name",
+        gconf.watch_directory('/desktop/gnome/interface');
+        gconf.connect('changed::/desktop/gnome/interface/monospace_font_name',
                       Lang.bind(this, this._updateFont));
         this._updateFont();
 
         Main.uiGroup.add_actor(this.actor);
 
-        let toolbar = new St.BoxLayout({ name: "Toolbar" });
+        let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.actor.add_actor(toolbar);
         let inspectIcon = St.TextureCache.get_default().load_gicon(new Gio.ThemedIcon({ name: 'gtk-color-picker' }),
                                                                    24);
@@ -501,13 +501,13 @@ LookingGlass.prototype = {
         toolbar.add(emptyBox, { expand: true });
         toolbar.add_actor(notebook.tabControls);
 
-        this._evalBox = new St.BoxLayout({ name: "EvalBox", vertical: true });
+        this._evalBox = new St.BoxLayout({ name: 'EvalBox', vertical: true });
         notebook.appendPage('Evaluator', this._evalBox);
 
-        this._resultsArea = new St.BoxLayout({ name: "ResultsArea", vertical: true });
+        this._resultsArea = new St.BoxLayout({ name: 'ResultsArea', vertical: true });
         this._evalBox.add(this._resultsArea, { expand: true });
 
-        let entryArea = new St.BoxLayout({ name: "EntryArea" });
+        let entryArea = new St.BoxLayout({ name: 'EntryArea' });
         this._evalBox.add_actor(entryArea);
 
         let label = new St.Label({ text: 'js>>> ' });
@@ -543,7 +543,7 @@ LookingGlass.prototype = {
             // newline-separated.
             text.replace('\n', ' ');
             // Strip leading and trailing whitespace
-            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+            text = text.replace(/^\s+/g, '').replace(/\s+$/g, '');
             if (text == '')
                 return true;
             this._evaluate(text);
@@ -579,7 +579,7 @@ LookingGlass.prototype = {
 
     _updateFont: function() {
         let gconf = Shell.GConf.get_default();
-        let fontName = gconf.get_string("/desktop/gnome/interface/monospace_font_name");
+        let fontName = gconf.get_string('/desktop/gnome/interface/monospace_font_name');
         // This is mishandled by the scanner - should by Pango.FontDescription_from_string(fontName);
         // https://bugzilla.gnome.org/show_bug.cgi?id=595889
         let fontDesc = Pango.Font.description_from_string(fontName);
@@ -653,7 +653,7 @@ LookingGlass.prototype = {
         try {
             resultObj = eval(fullCmd);
         } catch (e) {
-            resultObj = "<exception " + e + ">";
+            resultObj = '<exception ' + e + '>';
         }
 
         this._pushResult(command, resultObj);
@@ -725,7 +725,7 @@ LookingGlass.prototype = {
         global.stage.set_key_focus(this._entry);
 
         Tweener.addTween(this.actor, { time: 0.5,
-                                       transition: "easeOutQuad",
+                                       transition: 'easeOutQuad',
                                        y: this._targetY
                                      });
     },
@@ -750,7 +750,7 @@ LookingGlass.prototype = {
         Main.popModal(this.actor);
 
         Tweener.addTween(this.actor, { time: 0.5,
-                                       transition: "easeOutQuad",
+                                       transition: 'easeOutQuad',
                                        y: this._hiddenY,
                                        onComplete: Lang.bind(this, function () {
                                            this.actor.hide();

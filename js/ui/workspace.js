@@ -325,7 +325,7 @@ DesktopClone.prototype = {
             Tweener.addTween(this._desktop,
                              { opacity: 255,
                                time: Overview.ANIMATION_TIME,
-                               transition: "easeOutQuad" });
+                               transition: 'easeOutQuad' });
         }
     },
 
@@ -339,7 +339,7 @@ DesktopClone.prototype = {
             Tweener.addTween(this._desktop,
                              { opacity: 0,
                                time: Overview.ANIMATION_TIME,
-                               transition: "easeOutQuad",
+                               transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
                                        this._desktop.hide();
@@ -374,7 +374,7 @@ WindowOverlay.prototype = {
         this._windowClone = windowClone;
         this._parentActor = parentActor;
 
-        let title = new St.Label({ style_class: "window-caption",
+        let title = new St.Label({ style_class: 'window-caption',
                                    text: metaWindow.title });
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         title._spacing = 0;
@@ -384,7 +384,7 @@ WindowOverlay.prototype = {
                 this.title.text = w.title;
             }));
 
-        let button = new St.Button({ style_class: "window-close" });
+        let button = new St.Button({ style_class: 'window-close' });
         button._overlap = 0;
 
         this._idleToggleCloseId = 0;
@@ -439,7 +439,7 @@ WindowOverlay.prototype = {
         Tweener.addTween(this.title,
                         { opacity: 255,
                           time: Overview.ANIMATION_TIME,
-                          transition: "easeOutQuad" });
+                          transition: 'easeOutQuad' });
     },
 
     chromeWidth: function () {
@@ -1105,7 +1105,7 @@ Workspace.prototype = {
                      Tweener.addTween(clone.actor,
                                       { opacity: 255,
                                         time: Overview.ANIMATION_TIME,
-                                        transition: "easeInQuad"
+                                        transition: 'easeInQuad'
                                       });
                 }
 
@@ -1116,7 +1116,7 @@ Workspace.prototype = {
                                    scale_y: scale,
                                    workspace_relative: workspaceZooming ? this : null,
                                    time: Overview.ANIMATION_TIME,
-                                   transition: "easeOutQuad",
+                                   transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
                                       this._fadeInWindowOverlay(clone, overlay);
                                    })
@@ -1370,7 +1370,7 @@ Workspace.prototype = {
                                    workspace_relative: this,
                                    time: Overview.ANIMATION_TIME,
                                    opacity: 255,
-                                   transition: "easeOutQuad"
+                                   transition: 'easeOutQuad'
                                  });
             } else {
                 // The window is hidden, make it shrink and fade it out
@@ -1380,7 +1380,7 @@ Workspace.prototype = {
                                    opacity: 0,
                                    workspace_relative: this,
                                    time: Overview.ANIMATION_TIME,
-                                   transition: "easeOutQuad"
+                                   transition: 'easeOutQuad'
                                  });
             }
         }
@@ -1403,7 +1403,7 @@ Workspace.prototype = {
                            scale_x: this.scale,
                            scale_y: this.scale,
                            time: Overview.ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, this._fadeInAllOverlays)
                          });
     },
@@ -1423,7 +1423,7 @@ Workspace.prototype = {
                            scale_x: this.scale,
                            scale_y: this.scale,
                            time: Overview.ANIMATION_TIME,
-                           transition: "easeOutQuad"
+                           transition: 'easeOutQuad'
                          });
 
         this._visible = true;
@@ -1445,7 +1445,7 @@ Workspace.prototype = {
                            scale_x: this.scale,
                            scale_y: this.scale,
                            time: Overview.ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: onComplete
                          });
 

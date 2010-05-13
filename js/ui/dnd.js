@@ -254,7 +254,7 @@ _Draggable.prototype = {
                                  { scale_x: scale * origScale,
                                    scale_y: scale * origScale,
                                    time: SCALE_ANIMATION_TIME,
-                                   transition: "easeOutQuad",
+                                   transition: 'easeOutQuad',
                                    onUpdate: function() {
                                        let currentScale = this._dragActor.scale_x / origScale;
                                        this._dragOffsetX = currentScale * origDragOffsetX;
@@ -368,7 +368,7 @@ _Draggable.prototype = {
                            scale_y: this._snapBackScale,
                            opacity: this._dragOrigOpacity,
                            time: SNAP_BACK_ANIMATION_TIME,
-                           transition: "easeOutQuad",
+                           transition: 'easeOutQuad',
                            onComplete: this._onSnapBackComplete,
                            onCompleteScope: this,
                            onCompleteParams: [this._dragActor, eventTime]

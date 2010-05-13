@@ -22,8 +22,8 @@ const Search = imports.ui.search;
 // 25 search results (per result type) should be enough for everyone
 const MAX_RENDERED_SEARCH_RESULTS = 25;
 
-const DOCS = "docs";
-const PLACES = "places";
+const DOCS = 'docs';
+const PLACES = 'places';
 
 /*
  * Returns the index in an array of a given length that is obtained
@@ -54,7 +54,7 @@ Pane.prototype = {
     _init: function () {
         this._open = false;
 
-        this.actor = new St.BoxLayout({ style_class: "dash-pane",
+        this.actor = new St.BoxLayout({ style_class: 'dash-pane',
                                          vertical: true,
                                          reactive: true });
         this.actor.connect('button-press-event', Lang.bind(this, function (a, e) {
@@ -185,7 +185,7 @@ function SearchEntry() {
 
 SearchEntry.prototype = {
     _init : function() {
-        this.actor = new St.Entry({ name: "searchEntry",
+        this.actor = new St.Entry({ name: 'searchEntry',
                                     hint_text: _("Find") });
         this.entry = this.actor.clutter_text;
 
@@ -193,7 +193,7 @@ SearchEntry.prototype = {
             function() {
                 if (this.isActive())
                     this.actor.set_secondary_icon_from_file(global.imagedir +
-                                                            "close-black.svg");
+                                                            'close-black.svg');
                 else
                     this.actor.set_secondary_icon_from_file(null);
             }));
@@ -530,7 +530,7 @@ SearchResults.prototype = {
             let meta = this._metaForProvider(provider);
             meta.actor.show();
             meta.resultDisplay.renderResults(providerResults, terms);
-            meta.count.set_text(""+providerResults.length);
+            meta.count.set_text('' + providerResults.length);
         }
 
         this.selectDown(false);
@@ -608,11 +608,11 @@ function MoreLink() {
 
 MoreLink.prototype = {
     _init : function () {
-        this.actor = new St.BoxLayout({ style_class: "more-link",
+        this.actor = new St.BoxLayout({ style_class: 'more-link',
                                         reactive: true });
         this.pane = null;
 
-        this._expander = new St.Bin({ style_class: "more-link-expander" });
+        this._expander = new St.Bin({ style_class: 'more-link-expander' });
         this.actor.add(this._expander, { expand: true, y_fill: false });
     },
 
@@ -644,9 +644,9 @@ function BackLink() {
 
 BackLink.prototype = {
     _init : function () {
-        this.actor = new St.Button({ style_class: "section-header-back",
+        this.actor = new St.Button({ style_class: 'section-header-back',
                                       reactive: true });
-        this.actor.set_child(new St.Bin({ style_class: "section-header-back-image" }));
+        this.actor.set_child(new St.Bin({ style_class: 'section-header-back-image' }));
     }
 };
 
@@ -656,12 +656,12 @@ function SectionHeader(title, suppressBrowse) {
 
 SectionHeader.prototype = {
     _init : function (title, suppressBrowse) {
-        this.actor = new St.Bin({ style_class: "section-header",
+        this.actor = new St.Bin({ style_class: 'section-header',
                                   x_align: St.Align.START,
                                   x_fill: true,
                                   y_fill: true,
                                   reactive: !suppressBrowse });
-        this._innerBox = new St.BoxLayout({ style_class: "section-header-inner" });
+        this._innerBox = new St.BoxLayout({ style_class: 'section-header-inner' });
         this.actor.set_child(this._innerBox);
 
         this.backLink = new BackLink();
@@ -671,12 +671,12 @@ SectionHeader.prototype = {
             this.emit('back-link-activated');
         }));
 
-        let textBox = new St.BoxLayout({ style_class: "section-text-content" });
-        this.text = new St.Label({ style_class: "section-title",
+        let textBox = new St.BoxLayout({ style_class: 'section-text-content' });
+        this.text = new St.Label({ style_class: 'section-title',
                                    text: title });
         textBox.add(this.text, { x_align: St.Align.START });
 
-        this.countText = new St.Label({ style_class: "section-count" });
+        this.countText = new St.Label({ style_class: 'section-count' });
         textBox.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
         this.countText.hide();
 
@@ -712,7 +712,7 @@ SectionHeader.prototype = {
     },
 
     setCountText : function(countText) {
-        if (countText == "") {
+        if (countText == '') {
             this.countText.hide();
         } else {
             this.countText.show();
@@ -729,14 +729,14 @@ function SearchSectionHeader(title, onClick) {
 
 SearchSectionHeader.prototype = {
     _init : function(title, onClick) {
-        this.actor = new St.Button({ style_class: "dash-search-section-header",
+        this.actor = new St.Button({ style_class: 'dash-search-section-header',
                                       x_fill: true,
                                       y_fill: true });
         let box = new St.BoxLayout();
         this.actor.set_child(box);
-        let titleText = new St.Label({ style_class: "dash-search-section-title",
+        let titleText = new St.Label({ style_class: 'dash-search-section-title',
                                         text: title });
-        this.countText = new St.Label({ style_class: "dash-search-section-count" });
+        this.countText = new St.Label({ style_class: 'dash-search-section-count' });
 
         box.add(titleText);
         box.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
@@ -776,14 +776,14 @@ Dash.prototype = {
         // of the Group actor ends up including the width of its hidden children, so we were getting a reactive object as
         // wide as the details pane that was blocking the clicks to the workspaces underneath it even when the details pane
         // was actually hidden.
-        this.actor = new St.BoxLayout({ name: "dash",
+        this.actor = new St.BoxLayout({ name: 'dash',
                                         vertical: true,
                                         reactive: true });
 
         // The searchArea just holds the entry
-        this.searchArea = new St.BoxLayout({ name: "dashSearchArea",
+        this.searchArea = new St.BoxLayout({ name: 'dashSearchArea',
                                              vertical: true });
-        this.sectionArea = new St.BoxLayout({ name: "dashSections",
+        this.sectionArea = new St.BoxLayout({ name: 'dashSections',
                                                vertical: true });
 
         this.actor.add(this.searchArea);

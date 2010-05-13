@@ -24,27 +24,27 @@ Calendar.prototype = {
         // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
         // should add a C function so we can do the full handling.
         this._weekStart = NaN;
-        let weekStartString = Gettext_gtk20.gettext("calendar:week_start:0");
-        if (weekStartString.indexOf("calendar:week_start:") == 0) {
+        let weekStartString = Gettext_gtk20.gettext('calendar:week_start:0');
+        if (weekStartString.indexOf('calendar:week_start:') == 0) {
             this._weekStart = parseInt(weekStartString.substring(20));
         }
 
         if (isNaN(this._weekStart) || this._weekStart < 0 || this._weekStart > 6) {
-            log("Translation of 'calendar:week_start:0' in GTK+ is not correct");
+            log('Translation of "calendar:week_start:0" in GTK+ is not correct');
             this._weekStart = 0;
         }
 
         // Find the ordering for month/year in the calendar heading
-        switch (Gettext_gtk20.gettext("calendar:MY")) {
-        case "calendar:MY":
-            this._headerFormat = "%B %Y";
+        switch (Gettext_gtk20.gettext('calendar:MY')) {
+        case 'calendar:MY':
+            this._headerFormat = '%B %Y';
             break;
-        case "calendar:YM":
-            this._headerFormat = "%Y %B";
+        case 'calendar:YM':
+            this._headerFormat = '%Y %B';
             break;
         default:
-            log("Translation of 'calendar:MY' in GTK+ is not correct");
-            this._headerFormat = "%B %Y";
+            log('Translation of "calendar:MY" in GTK+ is not correct');
+            this._headerFormat = '%B %Y';
             break;
         }
 
@@ -52,7 +52,7 @@ Calendar.prototype = {
         this.date = new Date();
 
         this.actor = new St.Table({ homogeneous: false,
-                                    style_class: "calendar",
+                                    style_class: 'calendar',
                                     reactive: true });
 
         this.actor.connect('scroll-event',
@@ -63,21 +63,21 @@ Calendar.prototype = {
         this.actor.add(this._topBox,
                        { row: 0, col: 0, col_span: 7 });
 
-        let [backlabel, forwardlabel] = ["&lt;", "&gt;"];
+        let [backlabel, forwardlabel] = ['&lt;', '&gt;'];
         if (St.Widget.get_default_direction () == St.TextDirection.RTL) {
             [backlabel, forwardlabel] = [forwardlabel, backlabel];
         }
 
         let back = new St.Button({ label: backlabel, style_class: 'calendar-change-month'  });
         this._topBox.add(back);
-        back.connect("clicked", Lang.bind(this, this._prevMonth));
+        back.connect('clicked', Lang.bind(this, this._prevMonth));
 
         this._dateLabel = new St.Label();
         this._topBox.add(this._dateLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         let forward = new St.Button({ label: forwardlabel, style_class: 'calendar-change-month' });
         this._topBox.add(forward);
-        forward.connect("clicked", Lang.bind(this, this._nextMonth));
+        forward.connect('clicked', Lang.bind(this, this._nextMonth));
 
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
@@ -86,7 +86,7 @@ Calendar.prototype = {
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
         for (let i = 0; i < 7; i++) {
-            this.actor.add(new St.Label({ text: iter.toLocaleFormat("%a") }),
+            this.actor.add(new St.Label({ text: iter.toLocaleFormat('%a') }),
                            { row: 1,
                              col: (7 + iter.getDay() - this._weekStart) % 7,
                              x_fill: false, x_align: St.Align.END });
@@ -161,11 +161,11 @@ Calendar.prototype = {
         while (true) {
             let label = new St.Label({ text: iter.getDate().toString() });
             if (_sameDay(now, iter))
-                label.style_class = "calendar-day calendar-today";
+                label.style_class = 'calendar-day calendar-today';
             else if (iter.getMonth() != this.date.getMonth())
-                label.style_class = "calendar-day calendar-other-month-day";
+                label.style_class = 'calendar-day calendar-other-month-day';
             else
-                label.style_class = "calendar-day";
+                label.style_class = 'calendar-day';
             this.actor.add(label,
                            { row: row, col: (7 + iter.getDay() - this._weekStart) % 7,
                              x_fill: false, x_align: St.Align.END });

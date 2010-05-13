@@ -323,7 +323,7 @@ AppSearchProvider.prototype = {
     },
 
     expandSearch: function(terms) {
-        log("TODO expand search");
+        log('TODO expand search');
     }
 };
 
@@ -713,7 +713,7 @@ AppIconMenu.prototype = {
     },
 
     _appendSeparator: function () {
-        let bin = new St.Bin({ style_class: "app-well-menu-separator" });
+        let bin = new St.Bin({ style_class: 'app-well-menu-separator' });
         this._windowContainer.add_actor(bin);
     },
 
@@ -850,7 +850,7 @@ function WellGrid() {
 
 WellGrid.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ name: "dashAppWell", vertical: true });
+        this.actor = new St.BoxLayout({ name: 'dashAppWell', vertical: true });
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._item_size = 48;
@@ -1012,7 +1012,7 @@ AppWell.prototype = {
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
         /* hardcode here pending some design about how exactly desktop contexts behave */
-        let contextId = "";
+        let contextId = '';
 
         let running = this._tracker.get_running_apps(contextId);
         let runningIds = this._appIdListToHash(running);

@@ -26,7 +26,7 @@ function BoxPointer(side, sourceActor, binProperties) {
 BoxPointer.prototype = {
     _init: function(arrowSide, sourceActor, binProperties) {
         if (arrowSide != St.Side.TOP)
-            throw new Error("not implemented");
+            throw new Error('Not implemented');
         this._arrowSide = arrowSide;
         this._sourceActor = sourceActor;
         this._arrowOrigin = 0;
