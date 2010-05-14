@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-05-12 07:36+0000\n"
-"PO-Revision-Date: 2010-05-12 12:23+0100\n"
+"POT-Creation-Date: 2010-05-13 20:00+0000\n"
+"PO-Revision-Date: 2010-05-14 21:33+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -47,19 +47,19 @@ msgstr "Programi"
 msgid "PREFERENCES"
 msgstr "Možnosti"
 
-#: ../js/ui/appDisplay.js:697
+#: ../js/ui/appDisplay.js:705
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:701
+#: ../js/ui/appDisplay.js:709
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:702
+#: ../js/ui/appDisplay.js:710
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1029
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
@@ -127,57 +127,57 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/overview.js:181
+#: ../js/ui/overview.js:161
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/panel.js:498
+#: ../js/ui/panel.js:535
 msgid "Quit"
 msgstr "Končaj"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:703
+#: ../js/ui/panel.js:740
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:955
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:919
+#: ../js/ui/panel.js:956
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:923
+#: ../js/ui/panel.js:960
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:961
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:931
+#: ../js/ui/panel.js:968
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:932
+#: ../js/ui/panel.js:969
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:936
+#: ../js/ui/panel.js:973
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:937
+#: ../js/ui/panel.js:974
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -249,6 +249,14 @@ msgstr "%s je končal začenjanje"
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
 
+#: ../js/ui/workspacesView.js:239
+msgid "Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje dovoljeno število."
+
+#: ../js/ui/workspacesView.js:256
+msgid "Can't remove the first workspace."
+msgstr "Ni mogoče odstraniti prve delovne površine."
+
 #: ../src/shell-global.c:979
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
@@ -315,43 +323,31 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
-
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
-
 #~ msgid "Applications"
 #~ msgstr "Programi"
-
 #~ msgid "Recent Documents"
 #~ msgstr "Nedavni dokumenti"
-
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
-
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
-
 #~ msgid "Unknown"
 #~ msgstr "Neznano"
-
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
-
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr ""
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
-
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
-
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
-
 #~ msgid "More"
 #~ msgstr "Več"
-
 #~ msgid "(see all)"
 #~ msgstr "(poglej vse)"
-
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
+
