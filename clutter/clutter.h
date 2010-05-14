@@ -53,6 +53,7 @@
 #include "clutter-child-meta.h"
 #include "clutter-clone.h"
 #include "clutter-color.h"
+#include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-device-manager.h"
 #include "clutter-drag-action.h"

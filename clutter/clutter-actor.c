@@ -229,6 +229,7 @@
 
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
+#include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -397,6 +398,7 @@ struct _ClutterActorPrivate
   const ClutterActorBox *oob_queue_redraw_clip;
 
   ClutterMetaGroup *actions;
+  ClutterMetaGroup *constraints;
 };
 
 enum
@@ -479,7 +481,8 @@ enum
   PROP_TEXT_DIRECTION,
   PROP_HAS_POINTER,
 
-  PROP_ACTIONS
+  PROP_ACTIONS,
+  PROP_CONSTRAINTS
 };
 
 enum
@@ -2904,6 +2907,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_add_action (actor, g_value_get_object (value));
       break;
 
+    case PROP_CONSTRAINTS:
+      clutter_actor_add_constraint (actor, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -4030,6 +4037,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                CLUTTER_TYPE_ACTION,
                                CLUTTER_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_ACTIONS, pspec);
+
+  /**
+   * ClutterActor:constraints:
+   *
+   * Adds a #ClutterConstaint to the actor
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_object ("constraints",
+                               "Constraints",
+                               "Adds a constraint to the actor",
+                               CLUTTER_TYPE_CONSTRAINT,
+                               CLUTTER_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_CONSTRAINTS, pspec);
 
   /**
    * ClutterActor::destroy:
@@ -10317,4 +10338,119 @@ clutter_actor_clear_actions (ClutterActor *self)
     return;
 
   _clutter_meta_group_clear_metas (self->priv->actions);
+}
+
+/**
+ * clutter_actor_add_constraint:
+ * @self: a #ClutterActor
+ * @constraint: a #ClutterConstraint
+ *
+ * Adds @constraint to the list of #ClutterConstraint<!-- -->s applied
+ * to @self
+ *
+ * The #ClutterActor will hold a reference on the @constraint until
+ * either clutter_actor_remove_constraint() or
+ * clutter_actor_clear_constraints() is called.
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_constraint (ClutterActor      *self,
+                              ClutterConstraint *constraint)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTION (constraint));
+
+  priv = self->priv;
+
+  if (priv->constraints == NULL)
+    {
+      priv->constraints = g_object_new (CLUTTER_TYPE_META_GROUP, NULL);
+      priv->constraints->actor = self;
+    }
+
+  _clutter_meta_group_add_meta (priv->constraints,
+                                CLUTTER_ACTOR_META (constraint));
+
+  g_object_notify (G_OBJECT (self), "constraints");
+}
+
+/**
+ * clutter_actor_remove_constraint:
+ * @self: a #ClutterActor
+ * @constraint: a #ClutterConstraint
+ *
+ * Removes @constraint from the list of constraints applied to @self
+ *
+ * The reference held by @self on the #ClutterConstraint will be released
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_constraint (ClutterActor      *self,
+                                 ClutterConstraint *constraint)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTION (constraint));
+
+  priv = self->priv;
+
+  if (priv->constraints == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->constraints,
+                                   CLUTTER_ACTOR_META (constraint));
+
+  g_object_notify (G_OBJECT (self), "constraints");
+}
+
+/**
+ * clutter_actor_get_constraints:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the list of constraints applied to @self
+ *
+ * Return value: (transfer container) (element-type ClutterConstraint): a copy
+ *   of the list of #ClutterConstraint<!-- -->s. The contents of the list are
+ *   owned by the #ClutterActor. Use g_list_free() to free the resources
+ *   allocated by the returned #GList
+ *
+ * Since: 1.4
+ */
+GList *
+clutter_actor_get_constraints (ClutterActor *self)
+{
+  const GList *constraints;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  if (self->priv->constraints == NULL)
+    return NULL;
+
+  constraints = _clutter_meta_group_peek_metas (self->priv->constraints);
+
+  return g_list_copy ((GList *) constraints);
+}
+
+/**
+ * clutter_actor_clear_constraints:
+ * @self: a #ClutterActor
+ *
+ * Clears the list of constraints applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_clear_constraints (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->constraints == NULL)
+    return;
+
+  _clutter_meta_group_clear_metas (self->priv->constraints);
 }

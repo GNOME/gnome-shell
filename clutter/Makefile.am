@@ -88,6 +88,7 @@ source_h =					\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color.h		\
+	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-device-manager.h	\
@@ -165,6 +166,7 @@ source_c = \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
+	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
