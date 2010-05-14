@@ -76,16 +76,23 @@ st_group_pick (ClutterActor       *actor,
 static void
 st_group_get_preferred_width (ClutterActor *actor,
                               gfloat        for_height,
-                              gfloat       *min_width,
-                              gfloat       *natural_width)
+                              gfloat       *min_width_p,
+                              gfloat       *natural_width_p)
 {
+  StThemeNode *node = st_widget_get_theme_node (ST_WIDGET (actor));
+  gdouble min_width, natural_width;
+  gint css_width, css_min_width, css_max_width;
   GList *l, *children;
-  gdouble min_right, natural_right;
+
+  css_width = st_theme_node_get_width (node);
+  css_min_width = st_theme_node_get_min_width (node);
+  css_max_width = st_theme_node_get_max_width (node);
 
   /* We will always be at least 0 sized (ie, if all of the actors are
-     to the left of the origin we won't return a negative size) */
-  min_right = 0;
-  natural_right = 0;
+   * to the left of the origin we won't return a negative size)
+   */
+  min_width = 0;
+  natural_width = 0;
 
   children = st_container_get_children_list (ST_CONTAINER (actor));
 
@@ -101,35 +108,52 @@ st_group_get_preferred_width (ClutterActor *actor,
                                      &child_min, &child_nat);
 
       /* Track the rightmost edge */
-      if (child_x + child_min > min_right)
-        min_right = child_x + child_min;
+      if (child_x + child_min > min_width)
+        min_width = child_x + child_min;
 
-      if (child_x + child_nat > natural_right)
-        natural_right = child_x + child_nat;
+      if (child_x + child_nat > natural_width)
+        natural_width = child_x + child_nat;
     }
 
   /* The size is defined as the distance from the origin to the right-hand
-     edge of the rightmost actor */
-  if (min_width)
-    *min_width = min_right;
+   * edge of the rightmost actor, unless overridden with min-width
+   */
+  if (min_width_p)
+    {
+      if (css_min_width != -1)
+        *min_width_p = css_min_width;
+      else
+        *min_width_p = min_width;
+    }
 
-  if (natural_width)
-    *natural_width = natural_right;
+  if (natural_width_p)
+    {
+      if (css_width != -1)
+        natural_width = css_width;
+      *natural_width_p = MIN (natural_width, css_max_width);
+    }
 }
 
 static void
 st_group_get_preferred_height (ClutterActor *actor,
                                gfloat        for_width,
-                               gfloat       *min_height,
-                               gfloat       *natural_height)
+                               gfloat       *min_height_p,
+                               gfloat       *natural_height_p)
 {
+  StThemeNode *node = st_widget_get_theme_node (ST_WIDGET (actor));
+  gdouble min_height, natural_height;
+  gint css_height, css_min_height, css_max_height;
   GList *l, *children;
-  gdouble min_bottom, natural_bottom;
+
+  css_height = st_theme_node_get_height (node);
+  css_min_height = st_theme_node_get_min_height (node);
+  css_max_height = st_theme_node_get_max_height (node);
 
   /* We will always be at least 0 sized (ie, if all of the actors are
-     above of the origin we won't return a negative size) */
-  min_bottom = 0;
-  natural_bottom = 0;
+   * above of the origin we won't return a negative size)
+   */
+  min_height = 0;
+  natural_height = 0;
 
   children = st_container_get_children_list (ST_CONTAINER (actor));
 
@@ -145,20 +169,30 @@ st_group_get_preferred_height (ClutterActor *actor,
                                       &child_min, &child_nat);
 
       /* Track the bottommost edge */
-      if (child_y + child_min > min_bottom)
-        min_bottom = child_y + child_min;
+      if (child_y + child_min > min_height)
+        min_height = child_y + child_min;
 
-      if (child_y + child_nat > natural_bottom)
-        natural_bottom = child_y + child_nat;
+      if (child_y + child_nat > natural_height)
+        natural_height = child_y + child_nat;
     }
 
   /* The size is defined as the distance from the origin to the right-hand
-     edge of the rightmost actor */
-  if (min_height)
-    *min_height = min_bottom;
+   * edge of the rightmost actor, unless overridden with min-height
+   */
+  if (min_height_p)
+    {
+      if (css_min_height != -1)
+        *min_height_p = css_min_height;
+      else
+        *min_height_p = min_height;
+    }
 
-  if (natural_height)
-    *natural_height = natural_bottom;
+  if (natural_height_p)
+    {
+      if (css_height != -1)
+        natural_height = css_height;
+      *natural_height_p = MIN (natural_height, css_max_height);
+    }
 }
 
 static void
