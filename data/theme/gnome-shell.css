@@ -368,6 +368,7 @@ StTooltip {
     caret-color: #fff;
     caret-size: 1px;
     height: 16px;
+    transition-duration: 1000;
 }
 
 #searchEntry:focus {
@@ -376,10 +377,14 @@ StTooltip {
     background-color: #e8e8e8;
     caret-color: #545454;
     -st-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
+    transition-duration: 0;
 }
 
 #searchEntry:hover {
-    border: 1px solid #767676;
+    color: #a8a8a8;
+    border: 1px solid #4d4d4d;
+    background-color: #e8e8e8;
+    caret-color: #545454;
 }
 
 .dash-section {
