@@ -636,7 +636,7 @@ StTooltip {
   background-color: rgba(0,0,0,0.85);
   spacing: 4px;
   padding: 4px;
-  border: 1px solid rgba(0,0,172,0.85);
+  border: 2px solid grey;
   border-radius: 4px;
 
   color: #88ff66;
@@ -656,19 +656,56 @@ StTooltip {
   padding: 2px;
 }
 
+#LookingGlassDialog .notebook-tab:hover {
+  color: #00ff00;
+}
+
 #LookingGlassDialog .notebook-tab:selected {
   border: 1px solid #88ff66;
-  padding: 1px;
+  border-radius: 4px;
+  padding: 5px;
 }
 
-#LookingGlassDialog StLabel
+#LookingGlassDialog .lg-inspector-title {
+    font-weight: bold;
+    padding-bottom: 8px;
+}
+
+.lg-dialog StLabel
 {
   color: #88ff66;
 }
 
-#LookingGlassDialog StEntry
+.lg-dialog StEntry
 {
   color: #88ff66;
+}
+
+.lg-obj-inspector-title
+{
+  spacing: 4px;
+}
+
+.lg-obj-inspector-button
+{
+  border: 1px solid #88ff66;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.lg-obj-inspector-button:hover
+{
+  border: 1px solid #00ff00;
+}
+
+.lg-dialog .shell-link
+{
+  color: #88ff66;
+}
+
+.lg-dialog .shell-link:hover
+{
+  color: #00ff00;
 }
 
 #LookingGlassDialog StBoxLayout#EvalBox
@@ -703,6 +740,14 @@ StTooltip {
 
 .lg-extension-actions {
     spacing: 6px;
+}
+
+#LookingGlassPropertyInspector {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid grey;
+    border-radius: 4px;
+    padding: 6px;
+    color: #88ff66;
 }
 
 /* Calendar popup */

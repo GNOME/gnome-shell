@@ -12,6 +12,7 @@ function Link(props) {
 Link.prototype = {
     _init : function(props) {
         let realProps = { reactive: true,
+                          track_hover: true,
                           style_class: 'shell-link' };
         // The user can pass in reactive: false to override the above and get
         // a non-reactive link (a link to the current page, perhaps)

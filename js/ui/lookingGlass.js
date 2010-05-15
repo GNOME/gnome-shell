@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
@@ -49,7 +50,9 @@ Notebook.prototype = {
     },
 
     appendPage: function(name, child) {
-        let labelBox = new St.BoxLayout({ style_class: 'notebook-tab' });
+        let labelBox = new St.BoxLayout({ style_class: 'notebook-tab',
+                                          reactive: true,
+                                          track_hover: true });
         let label = new St.Button({ label: name });
         label.connect('clicked', Lang.bind(this, function () {
             this.selectChild(child);
@@ -138,6 +141,40 @@ Notebook.prototype = {
 };
 Signals.addSignalMethods(Notebook.prototype);
 
+function objectToString(o) {
+    if (typeof(o) == typeof(objectToString)) {
+        // special case this since the default is way, way too verbose
+        return "<js function>";
+    } else {
+        return "" + o;
+    }
+}
+
+function ObjLink(o, title) {
+    this._init(o, title);
+}
+
+ObjLink.prototype = {
+    __proto__: Link.Link,
+
+    _init: function(o, title) {
+        let text;
+        if (title)
+            text = title;
+        else
+            text = objectToString(o);
+        text = GLib.markup_escape_text(text, -1);
+        this._obj = o;
+        Link.Link.prototype._init.call(this, { label: text });
+        this.actor.get_child().single_line_mode = true;
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+    },
+
+    _onClicked: function (link) {
+        Main.lookingGlass.inspectObject(this._obj, this.actor);
+    }
+}
+
 function Result(command, o, index) {
     this._init(command, o, index);
 }
@@ -150,15 +187,16 @@ Result.prototype = {
         this.actor = new St.BoxLayout({ vertical: true });
 
         let cmdTxt = new St.Label({ text: command });
-        cmdTxt.ellipsize = Pango.EllipsizeMode.END;
-
+        cmdTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         this.actor.add(cmdTxt);
-        let resultTxt = new St.Label({ text: 'r(' + index + ') = ' + o });
-        resultTxt.ellipsize = Pango.EllipsizeMode.END;
-
-        this.actor.add(resultTxt);
-        let line = new Clutter.Rectangle({ name: 'Separator',
-                                           height: 1 });
+        let box = new St.BoxLayout({});
+        this.actor.add(box);
+        let resultTxt = new St.Label({ text: 'r(' + index + ') = ' });
+        resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        box.add(resultTxt);
+        let objLink = new ObjLink(o);
+        box.add(objLink.actor);
+        let line = new Clutter.Rectangle({ name: 'Separator' });
         let padBin = new St.Bin({ name: 'Separator', x_fill: true, y_fill: true });
         padBin.add_actor(line);
         this.actor.add(padBin);
@@ -188,9 +226,8 @@ WindowList.prototype = {
             metaWindow.connect('unmanaged', Lang.bind(this, this._updateWindowList));
             let box = new St.BoxLayout({ vertical: true });
             this.actor.add(box);
-            let label = new Link.Link({ label: metaWindow.title, x_align: St.Align.START });
-            label.actor.connect('clicked', Lang.bind(this, function () { this.emit('selected', metaWindow); }));
-            box.add(label.actor);
+            let windowLink = new ObjLink(metaWindow, metaWindow.title);
+            box.add(windowLink.actor, { x_align: St.Align.START, x_fill: false });
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
             propsBox.add(new St.Label({ text: 'wmclass: ' + metaWindow.get_wm_class() }));
@@ -199,8 +236,10 @@ WindowList.prototype = {
                 let icon = app.create_icon_texture(22);
                 let propBox = new St.BoxLayout({ style: 'spacing: 6px; ' });
                 propsBox.add(propBox);
-                propBox.add(new St.Label({ text: 'app: ' + app.get_id() }), { y_align: St.Align.MIDDLE });
-                propBox.add(icon, { y_align: St.Align.MIDDLE });
+                propBox.add(new St.Label({ text: 'app: ' }), { y_fill: false });
+                let appLink = new ObjLink(app, app.get_id());
+                propBox.add(appLink.actor, { y_fill: false });
+                propBox.add(icon, { y_fill: false });
             } else {
                 propsBox.add(new St.Label({ text: '<untracked>' }));
             }
@@ -209,36 +248,109 @@ WindowList.prototype = {
 };
 Signals.addSignalMethods(WindowList.prototype);
 
-function PropertyInspector() {
+function ObjInspector() {
     this._init();
 }
 
-PropertyInspector.prototype = {
+ObjInspector.prototype = {
     _init : function () {
-        this._target = null;
+        this._obj = null;
+        this._previousObj = null;
 
         this._parentList = [];
 
-        this.actor = new St.BoxLayout({ name: 'PropertyInspector', vertical: true });
+        this.actor = new St.ScrollView({ x_fill: true, y_fill: true });
+        this.actor.get_hscroll_bar().hide();
+        this._container = new St.BoxLayout({ name: 'LookingGlassPropertyInspector',
+                                             style_class: 'lg-dialog',
+                                             vertical: true });
+        this.actor.add_actor(this._container);
     },
 
-    setTarget: function(actor) {
-        this.target = actor;
+    selectObject: function(obj, skipPrevious) {
+        if (!skipPrevious)
+            this._previousObj = this._obj;
+        else
+            this._previousObj = null;
+        this._obj = obj;
 
-        this.actor.get_children().forEach(function (child) { child.destroy(); });
+        this._container.get_children().forEach(function (child) { child.destroy(); });
 
-        for (let propName in actor) {
-            let valueStr;
-            try {
-                valueStr = '' + actor[propName];
-            } catch (e) {
-                valueStr = '<error>';
-            }
-            let propText = propName + ': ' + valueStr;
-            let propDisplay = new St.Label({ reactive: true,
-                                             text: propText });
-            this.actor.add_actor(propDisplay);
+        let hbox = new St.BoxLayout({ style_class: 'lg-obj-inspector-title' });
+        this._container.add_actor(hbox);
+        let label = new St.Label({ text: 'Inspecting: %s: %s'.format(typeof(obj),
+                                                                     objectToString(obj)) });
+        label.single_line_mode = true;
+        hbox.add(label, { expand: true, y_fill: false });
+        let button = new St.Button({ label: 'Insert', style_class: 'lg-obj-inspector-button' });
+        button.connect('clicked', Lang.bind(this, this._onInsert));
+        hbox.add(button);
+
+        if (this._previousObj != null) {
+            button = new St.Button({ label: 'Back', style_class: 'lg-obj-inspector-button' });
+            button.connect('clicked', Lang.bind(this, this._onBack));
+            hbox.add(button);
         }
+
+        button = new St.Button({ style_class: 'window-close' });
+        button.connect('clicked', Lang.bind(this, this.close));
+        hbox.add(button);
+        if (typeof(obj) == typeof({})) {
+            for (let propName in obj) {
+                let valueStr;
+                let link;
+                try {
+                    let prop = obj[propName];
+                    link = new ObjLink(prop).actor;
+                } catch (e) {
+                    link = new St.Label({ text: '<error>' });
+                }
+                let hbox = new St.BoxLayout();
+                let propText = propName + ": " + valueStr;
+                hbox.add(new St.Label({ text: propName + ': ' }));
+                hbox.add(link);
+                this._container.add_actor(hbox);
+            }
+        }
+    },
+
+    open: function(sourceActor) {
+        if (this._open)
+            return;
+        this._previousObj = null;
+        this._open = true;
+        this.actor.show();
+        if (sourceActor) {
+            this.actor.set_scale(0, 0);
+            let [sourceX, sourceY] = sourceActor.get_transformed_position();
+            let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
+            this.actor.move_anchor_point(Math.floor(sourceX + sourceWidth / 2),
+                                         Math.floor(sourceY + sourceHeight / 2));
+            Tweener.addTween(this.actor, { scale_x: 1, scale_y: 1,
+                                           transition: "easeOutQuad",
+                                           time: 0.2 });
+        } else {
+            this.actor.set_scale(1, 1);
+        }
+    },
+
+    close: function() {
+        if (!this._open)
+            return;
+        this._open = false;
+        this.actor.hide();
+        this._previousObj = null;
+        this._obj = null;
+    },
+
+    _onInsert: function() {
+        let obj = this._obj;
+        this.close();
+        Main.lookingGlass.insertObject(obj);
+    },
+
+    _onBack: function() {
+        this.selectObject(this._previousObj, true);
     }
 };
 
@@ -462,6 +574,7 @@ LookingGlass.prototype = {
         this._maxItems = 150;
 
         this.actor = new St.BoxLayout({ name: 'LookingGlassDialog',
+                                        style_class: 'lg-dialog',
                                         vertical: true,
                                         visible: false });
 
@@ -472,6 +585,10 @@ LookingGlass.prototype = {
         this._updateFont();
 
         Main.uiGroup.add_actor(this.actor);
+
+        this._objInspector = new ObjInspector();
+        Main.uiGroup.add_actor(this._objInspector.actor);
+        this._objInspector.actor.hide();
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.actor.add_actor(toolbar);
@@ -520,9 +637,6 @@ LookingGlass.prototype = {
                 global.stage.set_key_focus(this._entry);
         }));
         entryArea.add(this._entry, { expand: true });
-
-        this._propInspector = new PropertyInspector();
-        notebook.appendPage('Properties', this._propInspector.actor);
 
         this._windowList = new WindowList();
         this._windowList.connect('selected', Lang.bind(this, function(list, window) {
@@ -618,7 +732,6 @@ LookingGlass.prototype = {
         let result = new Result('>>> ' + command, obj, index);
         this._results.push(result);
         this._resultsArea.add(result.actor);
-        this._propInspector.setTarget(obj);
         if (this._borderPaintTarget != null) {
             this._borderPaintTarget.disconnect(this._borderPaintId);
             this._borderPaintTarget = null;
@@ -686,6 +799,9 @@ LookingGlass.prototype = {
         this.actor.y = this._hiddenY;
         this.actor.width = myWidth;
         this.actor.height = myHeight;
+        this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
+        this._objInspector.actor.set_position(this.actor.x + Math.floor(myWidth * 0.1),
+                                              this._targetY + Math.floor(myHeight * 0.1));
     },
 
     slaveTo: function(actor) {
@@ -696,11 +812,24 @@ LookingGlass.prototype = {
         this._resizeTo(actor);
     },
 
+    insertObject: function(obj) {
+        this._pushResult('<insert>', obj);
+    },
+
+    inspectObject: function(obj, sourceActor) {
+        this._objInspector.open(sourceActor);
+        this._objInspector.selectObject(obj);
+    },
+
     // Handle key events which are relevant for all tabs of the LookingGlass
     _globalKeyPressEvent : function(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
-            this.close();
+            if (this._objInspector.actor.visible) {
+                this._objInspector.close();
+            } else {
+                this.close();
+            }
             return true;
         }
         return false;
@@ -736,6 +865,8 @@ LookingGlass.prototype = {
 
         if (this._keyPressEventId)
             global.stage.disconnect(this._keyPressEventId);
+
+        this._objInspector.actor.hide();
 
         this._historyNavIndex = -1;
         this._open = false;
