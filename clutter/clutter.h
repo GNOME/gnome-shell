@@ -76,6 +76,7 @@
 #include "clutter-main.h"
 #include "clutter-media.h"
 #include "clutter-model.h"
+#include "clutter-offscreen-effect.h"
 #include "clutter-path.h"
 #include "clutter-rectangle.h"
 #include "clutter-score.h"
