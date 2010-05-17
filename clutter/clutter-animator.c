@@ -665,10 +665,13 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
                                           progress);
       start_key = property_iter->current->data;
 
-      sub_progress = (progress - property_iter->start)
-                   / (property_iter->end - property_iter->start);
+      if (property_iter->end == property_iter->start)
+        sub_progress = 0.0; /* we're past the final value */
+      else
+        sub_progress = (progress - property_iter->start)
+                     / (property_iter->end - property_iter->start);
 
-      /* do not change values if we're not active yet (delay) */
+      /* only change values if we active (delayed start) */
       if (sub_progress >= 0.0 && sub_progress <= 1.0)
         {
           GValue tmp_value = { 0, };
