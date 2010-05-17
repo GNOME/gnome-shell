@@ -151,8 +151,7 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, ',\n"metrics":\n[ ');
         let first = true;
         for (let name in scriptModule.METRICS) {
-            let value = scriptModule.METRICS[name];
-            let description = scriptModule.METRIC_DESCRIPTIONS[name];
+            let metric = scriptModule.METRICS[name]; 
 
             if (!first)
                 Shell.write_string_to_stream(out, ',\n  ');
@@ -160,8 +159,9 @@ function _collect(scriptModule, outputFile) {
 
             Shell.write_string_to_stream(out,
                                          '{ "name": ' + JSON.stringify(name) + ',\n' +
-                                         '    "description": ' + JSON.stringify(description) + ',\n' +
-                                         '    "value": ' + JSON.stringify(value) + ' }');
+                                         '    "description": ' + JSON.stringify(metric.description) + ',\n' +
+                                         '    "units": ' + JSON.stringify(metric.units) + ',\n' +
+                                         '    "value": ' + JSON.stringify(metric.value) + ' }');
         }
         Shell.write_string_to_stream(out, ' ]');
 
@@ -208,9 +208,18 @@ function _collect(scriptModule, outputFile) {
  * be called.
  *
  * The event handler and finish functions are expected to fill in
- * metrics to an object within the module called METRICS. The module
- * should also have an object called METRIC_DESCRIPTIONS with
- * descriptions for each metric that will be written into METRIC.
+ * metrics to an object within the module called METRICS. Each
+ * property of this object represents an individual metric. The
+ * name of the property is the name of the metric, the value
+ * of the property is an object with the following properties:
+ *
+ *  description: human readable description of the metric
+ *  units: a string representing the units of the metric. It has
+ *   the form '<unit> <unit> ... / <unit> / <unit> ...'. Certain
+ *   unit values are recognized: s, ms, us, B, KiB, MiB. Other
+ *   values can appear but are uninterpreted. Examples 's',
+ *   '/ s', 'frames', 'frames / s', 'MiB / s / frame'
+ *  value: computed value of the metric
  *
  * The resulting metrics will be written to @outputFile as JSON, or,
  * if @outputFile is not provided, logged.

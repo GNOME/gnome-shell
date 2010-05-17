@@ -325,6 +325,7 @@ def run_performance_test():
             if not name in metric_summaries:
                 summary = {}
                 summary['description'] = metric['description']
+                summary['units'] = metric['units']
                 summary['values'] = []
                 metric_summaries[name] = summary
             else:

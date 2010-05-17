@@ -8,16 +8,25 @@ const Scripting = imports.ui.scripting;
 // someone should be able to get an idea of how well the shell is performing
 // on a particular system.
 
-let METRIC_DESCRIPTIONS = {
-    overviewLatencyFirst: "Time to first frame after triggering overview, first time",
-    overviewFramesFirst: "Frames displayed when going to overview, first time",
-    overviewLatencySubsequent: "Time to first frame after triggering overview, second time",
-    overviewFramesSubsequent: "Frames displayed when going to overview, second time",
-    usedAfterOverview: "Malloc'ed bytes after the overview is shown once",
-    leakedAfterOverview: "Additional malloc'ed bytes the second time the overview is shown"
-};
-
 let METRICS = {
+    overviewLatencyFirst:
+    { description: "Time to first frame after triggering overview, first time",
+      units: "us" },
+    overviewFramesFirst:
+    { description: "Frames displayed when going to overview, first time",
+      units: "frames" },
+    overviewLatencySubsequent:
+    { description: "Time to first frame after triggering overview, second time",
+      units: "us"},
+    overviewFramesSubsequent:
+    { description: "Frames displayed when going to overview, second time",
+      units: "us" },
+    usedAfterOverview:
+    { description: "Malloc'ed bytes after the overview is shown once",
+      units: "B" },
+    leakedAfterOverview:
+    { description: "Additional malloc'ed bytes the second time the overview is shown",
+      units: "B" }
 };
 
 function run() {
@@ -63,19 +72,19 @@ function script_overviewShowDone(time) {
     overviewShowCount++;
 
     if (overviewShowCount == 1) {
-        METRICS.overviewLatencyFirst = overviewLatency;
-        METRICS.overviewFramesFirst = overviewFrames;
+        METRICS.overviewLatencyFirst.value = overviewLatency;
+        METRICS.overviewFramesFirst.value = overviewFrames;
     } else {
-        METRICS.overviewLatencySubsequent = overviewLatency;
-        METRICS.overviewFramesSubsequent = overviewFrames;
+        METRICS.overviewLatencySubsequent.value = overviewLatency;
+        METRICS.overviewFramesSubsequent.value = overviewFrames;
     }
 }
 
 function script_afterShowHide(time) {
     if (overviewShowCount == 1) {
-        METRICS.usedAfterOverview = mallocUsedSize;
+        METRICS.usedAfterOverview.value = mallocUsedSize;
     } else {
-        METRICS.leakedAfterOverview = mallocUsedSize - METRICS.usedAfterOverview;
+        METRICS.leakedAfterOverview.value = mallocUsedSize - METRICS.usedAfterOverview.value;
     }
 }
 
