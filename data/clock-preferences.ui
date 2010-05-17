@@ -71,8 +71,10 @@
                 <child type="label">
                   <object class="GtkLabel" id="label_format">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Clock Format&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="label" translatable="yes">Clock Format</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
                   </object>
                 </child>
               </object>
@@ -130,8 +132,10 @@
                 <child type="label">
                   <object class="GtkLabel" id="label_display">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Panel Display&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="label" translatable="yes">Panel Display</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
                   </object>
                 </child>
               </object>
