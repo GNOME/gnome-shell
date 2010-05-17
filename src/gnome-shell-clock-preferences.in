@@ -11,8 +11,11 @@ else
 fi
 
 progName="`basename $0`"
+localeDir="@localedir@"
 uiFile="$uiDir/clock-preferences.ui"
 export GJS_PATH="$jsDir"
 
 @GJS_CONSOLE@ -c "const ClockPreferences = imports.prefs.clockPreferences;
-ClockPreferences.main({ progName: '$progName', uiFile: '$uiFile' });"
+ClockPreferences.main({ progName: '$progName',
+                        uiFile: '$uiFile',
+                        localeDir: '$localeDir' });"

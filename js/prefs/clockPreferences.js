@@ -7,6 +7,8 @@ const GConf = imports.gi.GConf;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
+const Gettext = imports.gettext;
+
 const GCONF_DIR        = '/desktop/gnome/shell/clock';
 const FORMAT_KEY       = GCONF_DIR + '/format';
 const SHOW_DATE_KEY    = GCONF_DIR + '/show_date';
@@ -80,6 +82,9 @@ Signals.addSignalMethods(ClockPreferences.prototype);
 function main(params) {
     if ('progName' in params)
         GLib.set_prgname(params['progName']);
+    if ('localeDir' in params)
+        Gettext.bindtextdomain('gnome-shell', params['localeDir']);
+
     Gtk.init(null, null);
 
     let clockPrefs = new ClockPreferences(params['uiFile']);
