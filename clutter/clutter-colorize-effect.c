@@ -65,8 +65,6 @@ struct _ClutterColorizeEffect
 
   /* the tint of the colorization */
   ClutterColor tint;
-
-  guint source_set : 1;
 };
 
 struct _ClutterColorizeEffectClass
@@ -114,17 +112,12 @@ clutter_colorize_effect_pre_paint (ClutterEffect *effect)
   ClutterEffectClass *parent_class;
   float tint_r, tint_g, tint_b;
 
+  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
+    return FALSE;
+
   shader_effect = CLUTTER_SHADER_EFFECT (effect);
-  if (!self->source_set)
-    {
-      CoglHandle shader = clutter_shader_effect_get_shader (shader_effect);
 
-      if (shader == COGL_INVALID_HANDLE)
-        return FALSE;
-
-      cogl_shader_source (shader, colorize_glsl_shader);
-      self->source_set = TRUE;
-    }
+  clutter_shader_effect_set_shader_source (shader_effect, colorize_glsl_shader);
 
   /* we want normalized values here */
   tint_r = self->tint.red   / 255.0f;

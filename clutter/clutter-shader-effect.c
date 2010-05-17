@@ -38,51 +38,14 @@
  * <refsect2 id="ClutterShaderEffect-implementing">
  *   <title>Implementing a ClutterShaderEffect</title>
  *   <para>Creating a sub-class of #ClutterShaderEffect requires the
- *   overriding of the <function>set_actor()</function> virtual function
- *   from the #ClutterActorMeta class, and the <function>pre_paint()</function>
- *   virtual functions from the #ClutterEffect class.</para>
- *   <para>The <function>set_actor()</function> must chain up to the
- *   #ClutterShaderEffect implementation; if the effect has not been disabled
- *   by the super class implementation, then the sub-class should get the
- *   #CoglHandle for the fragment shader using
- *   clutter_shader_effect_get_shader() and call cogl_shader_source() to set
- *   the source of the program.</para>
- *   <example id="ClutterShaderEffect-example-preparing">
- *     <title>Preparing a ClutterShaderEffect</title>
- *     <para>The example below shows the typical implementation of the
- *     <function>set_actor()</function> phase of a #ClutterShaderEffect
- *     sub-class.</para>
- *     <programlisting>
- *  static void
- *  my_effect_set_actor (ClutterActorMeta *meta,
- *                       ClutterActor     *actor)
- *  {
- *    MyEffect *self = MY_EFFECT (meta);
- *    ClutterActorMetaClass *parent_class;
- *    CoglHandle handle;
- *
- *    /&ast; chain up to the parent's implementation &ast;/
- *    parent_class = CLUTTER_EFFECT_CLASS (my_effect_parent_class);
- *    parent_class->set_actor (meta, actor));
- *
- *    /&ast; if the parent class disabled the effect then we return &ast;
- *    if (!clutter_actor_meta_get_enabled (meta))
- *      return;
- *
- *    /&ast; we should have a handle to the shader at this point &ast;/
- *    handle = clutter_shader_effect_get_shader (CLUTTER_SHADER_EFFECT (self));
- *    if (handle == COGL_INVALID_HANDLE)
- *      return;
- *
- *    /&ast; set the source of the shader &ast;/
- *    cogl_shader_source (handle, my_effect_glsl_source);
- *  }
- *     </programlisting>
- *   </example>
- *   <para>The <function>pre_paint()</function> is optional and it depends on
- *   whether the fragment shader has uniforms to set. The sub-class should call
- *   clutter_shader_effect_set_uniform_value() or
- *   clutter_shader_effect_set_uniform() and then chain up to the
+ *   overriding of the <function>pre_paint()</function> virtual function
+ *   from the #ClutterEffect class.</para>
+ *   <para>The <function>pre_paint()</function> should set the shader's
+ *   source and eventually set the uniforms. The sub-class should call
+ *   clutter_shader_effect_set_shader_source() to set the shader source
+ *   code, and  clutter_shader_effect_set_uniform_value() or
+ *   clutter_shader_effect_set_uniform() to set the values of the shader
+ *   uniforms, if any; the sub-class should then chain up to the
  *   #ClutterShaderEffect implementation.</para>
  *   <example id="ClutterShaderEffect-example-uniforms">
  *     <title>Setting uniforms on a ClutterShaderEffect</title>
@@ -98,10 +61,12 @@
  *    ClutterEffectClass *parent_class;
  *    gfloat component_r, component_g, component_b;
  *
- *    /&ast; chain up to the parent's implementation &ast;/
- *    parent_class = CLUTTER_EFFECT_CLASS (my_effect_parent_class);
- *    if (!parent_class->pre_paint (effect))
+ *    /&ast; if the effect is not enabled we can bail out now &ast;/
+ *    if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
  *      return FALSE;
+ *
+ *    /&ast; this function is a no-op after the first call &ast;/
+ *    clutter_shader_effect_set_shader_source (shader, shader_source);
  *
  *    /&ast; the "tex" uniform is declared in the shader as:
  *     &ast;
@@ -127,7 +92,9 @@
  *                                       component_g,
  *                                       component_b);
  *
- *    return TRUE;
+ *    /&ast; chain up to the parent's implementation &ast;/
+ *    parent_class = CLUTTER_EFFECT_CLASS (my_effect_parent_class);
+ *    return parent_class->pre_paint (effect);
  *  }
  *     </programlisting>
  *   </example>
@@ -167,6 +134,7 @@ struct _ClutterShaderEffectPrivate
   GHashTable *uniforms;
 
   guint is_compiled : 1;
+  guint source_set  : 1;
 };
 
 G_DEFINE_ABSTRACT_TYPE (ClutterShaderEffect,
@@ -199,6 +167,7 @@ clutter_shader_effect_clear (ClutterShaderEffect *effect,
 
   priv->actor = NULL;
   priv->is_compiled = FALSE;
+  priv->source_set = FALSE;
 }
 
 static void
@@ -289,8 +258,6 @@ clutter_shader_effect_set_actor (ClutterActorMeta *meta,
   ClutterShaderEffect *self = CLUTTER_SHADER_EFFECT (meta);
   ClutterShaderEffectPrivate *priv = self->priv;
   ClutterActorMetaClass *parent;
-  ClutterActorBox allocation;
-  gfloat width, height;
 
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
     {
@@ -318,9 +285,6 @@ clutter_shader_effect_set_actor (ClutterActorMeta *meta,
   CLUTTER_NOTE (SHADER, "Preparing shader effect of type '%s'",
                 G_OBJECT_TYPE_NAME (meta));
 
-  clutter_actor_get_allocation_box (priv->actor, &allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
-
   priv->program = cogl_create_program ();
 
   priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
@@ -338,6 +302,9 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
    */
   if (priv->program == COGL_INVALID_HANDLE ||
       priv->shader == COGL_INVALID_HANDLE)
+    return;
+
+  if (!priv->source_set)
     return;
 
   if (!priv->is_compiled)
@@ -756,4 +723,45 @@ clutter_shader_effect_set_uniform (ClutterShaderEffect *effect,
                                             n_values,
                                             &args);
   va_end (args);
+}
+
+/**
+ * clutter_shader_effect_set_shader_source:
+ * @effect: a #ClutterShaderEffect
+ * @source: the source of a GLSL shader
+ *
+ * Sets the source of the GLSL shader used by @effect
+ *
+ * This function should only be called by implementations of
+ * the #ClutterShaderEffect class, and not by application code.
+ *
+ * This function can only be called once; subsequent calls will
+ * yield no result.
+ *
+ * Return value: %TRUE if the source was set
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
+                                         const gchar         *source)
+{
+  ClutterShaderEffectPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_SHADER_EFFECT (effect), FALSE);
+  g_return_val_if_fail (source != NULL && *source != '\0', FALSE);
+
+  priv = effect->priv;
+
+  if (priv->source_set)
+    return TRUE;
+
+  if (priv->shader == COGL_INVALID_HANDLE)
+    return FALSE;
+
+  cogl_shader_source (priv->shader, source);
+
+  priv->source_set = TRUE;
+
+  return TRUE;
 }

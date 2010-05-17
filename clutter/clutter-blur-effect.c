@@ -94,8 +94,6 @@ struct _ClutterBlurEffect
    */
   gfloat x_step;
   gfloat y_step;
-
-  guint source_set : 1;
 };
 
 struct _ClutterBlurEffectClass
@@ -147,16 +145,7 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
 
   shader_effect = CLUTTER_SHADER_EFFECT (effect);
 
-  if (!self->source_set)
-    {
-      CoglHandle shader = clutter_shader_effect_get_shader (shader_effect);
-
-      if (shader == COGL_INVALID_HANDLE)
-        return FALSE;
-
-      cogl_shader_source (shader, box_blur_glsl_shader);
-      self->source_set = TRUE;
-    }
+  clutter_shader_effect_set_shader_source (shader_effect, box_blur_glsl_shader);
 
   clutter_shader_effect_set_uniform (shader_effect,
                                      "tex",

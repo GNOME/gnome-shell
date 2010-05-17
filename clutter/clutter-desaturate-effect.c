@@ -67,8 +67,6 @@ struct _ClutterDesaturateEffect
 
   /* the desaturation factor, also known as "strength" */
   gdouble factor;
-
-  guint source_set : 1;
 };
 
 struct _ClutterDesaturateEffectClass
@@ -129,18 +127,7 @@ clutter_desaturate_effect_pre_paint (ClutterEffect *effect)
 
   shader_effect = CLUTTER_SHADER_EFFECT (effect);
 
-  if (!self->source_set)
-    {
-      CoglHandle shader;
-
-      /* get the CoglShader handle to set the source */
-      shader = clutter_shader_effect_get_shader (shader_effect);
-      if (shader == COGL_INVALID_HANDLE)
-        return FALSE;
-
-      cogl_shader_source (shader, desaturate_glsl_shader);
-      self->source_set = TRUE;
-    }
+  clutter_shader_effect_set_shader_source (shader_effect, desaturate_glsl_shader);
 
   factor = (float) self->factor;
 
