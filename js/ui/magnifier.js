@@ -80,8 +80,7 @@ Magnifier.prototype = {
 
         // Create the first ZoomRegion and initialize it according to the
         // magnification GConf settings.
-        let [objUnder, xMouse, yMouse, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [xMouse, yMouse, mask] = global.get_pointer();
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
         let showAtLaunch = this._gConfInit(aZoomRegion);
@@ -187,8 +186,7 @@ Magnifier.prototype = {
      * @return      true.
      */
     scrollToMousePos: function(prevCoord) {
-        let [objUnder, xMouse, yMouse, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [xMouse, yMouse, mask] = global.get_pointer();
 
         if (!prevCoord || prevCoord.x != xMouse || prevCoord.y != yMouse) {
             let sysMouseOverAny = false;
@@ -962,8 +960,7 @@ ZoomRegion.prototype = {
      * @return:     Whether the system mouse pointer is over the magnified view.
      */
     scrollToMousePos: function() {
-        let [objUnder, xMouse, yMouse, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [xMouse, yMouse, mask] = global.get_pointer();
 
         if (this._mouseTrackingMode == MouseTrackingMode.PROPORTIONAL) {
             this._setROIProportional(xMouse, yMouse);
@@ -1055,8 +1052,7 @@ ZoomRegion.prototype = {
         let mouseIsOver = false;
         if (this.isActive()) {
             if (!xMouse || !yMouse) {
-                let [objUnder, x, y, mask] =
-                    Gdk.Screen.get_default().get_root_window().get_pointer();
+                let [x, y, mask] = global.get_pointer();
                 xMouse = x;
                 yMouse = y;
             }
@@ -1174,8 +1170,7 @@ ZoomRegion.prototype = {
         x = parseInt(x.toFixed(1));
         y = parseInt(y.toFixed(1));
         let [xCenterMagView, yCenterMagView] = this.getCenter();
-        let [objUnder, xMouse, yMouse, mask] =
-            Gdk.Screen.get_default().get_root_window().get_pointer();
+        let [xMouse, yMouse, mask] = global.get_pointer();
         let [xMagFactor, yMagFactor] = this.getMagFactor();
 
         let xMagMouse = xMouse * xMagFactor + x;
