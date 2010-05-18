@@ -230,6 +230,14 @@ SearchEntry.prototype = {
     },
 
     reset: function () {
+        let [x, y, mask] = global.get_pointer();
+        let actor = global.stage.get_actor_at_pos (Clutter.PickMode.REACTIVE,
+                                                   x, y);
+        // this.actor is never hovered directly, only its clutter_text and icon
+        let hovered = this.actor == actor.get_parent();
+
+        this.actor.set_hover(hovered);
+
         this.entry.text = '';
         global.stage.set_key_focus(null);
         this.entry.set_cursor_visible(true);
