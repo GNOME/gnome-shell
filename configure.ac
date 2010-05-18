@@ -102,7 +102,9 @@ LT_INIT([disable-static])
 AC_HEADER_STDC
 
 # Checks for typedefs, structures, and compiler characteristics.
-AM_PATH_GLIB_2_0
+AM_PATH_GLIB_2_0([2.18.0], [have_glib=yes], [have_glib=no],
+                 [gobject gthread gmodule-no-export])
+AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
 dnl ========================================================================
 
@@ -760,14 +762,14 @@ AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.18 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
+CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
 
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS"
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
