@@ -229,10 +229,8 @@ clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
   g_assert (CLUTTER_IS_STAGE_EGL (impl));
   stage_egl = CLUTTER_STAGE_EGL (impl);
 
-  eglWaitNative (EGL_CORE_NATIVE_ENGINE);
   clutter_actor_paint (CLUTTER_ACTOR (stage_x11->wrapper));
   cogl_flush ();
 
-  eglWaitGL ();
   eglSwapBuffers (backend_egl->edpy, stage_egl->egl_surface);
 }
