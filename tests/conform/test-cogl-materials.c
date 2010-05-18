@@ -1,3 +1,4 @@
+#include "config.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -156,11 +157,20 @@ test_using_all_layers (TestState *state, int x, int y)
 
   /* FIXME: Cogl doesn't provide a way to query the maximum number of
      texture layers so for now we'll just ask GL directly. */
+#ifdef HAVE_COGL_GLES2
+  /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
+     GL_MAX_TEXTURE_IMAGE_UNITS instead */
+  glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_layers);
+  /* Cogl can't support more than 16 layers under GLES 2 */
+  if (n_layers > 16)
+    n_layers = 16;
+#else
   glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
   /* Cogl currently can't cope with more than 32 layers so we'll also
      limit the maximum to that. */
   if (n_layers > 32)
     n_layers = 32;
+#endif
 
   for (i = 0; i < n_layers; i++)
     {
