@@ -138,11 +138,34 @@ PanelBaseMenuItem.prototype = {
                                   x_fill: true,
                                   y_fill: true,
                                   x_align: St.Align.START });
+        this.active = false;
 
         if (reactive) {
             this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
                 this.emit('activate', event);
             }));
+            this.actor.connect('notify::hover', Lang.bind(this, this._hoverChanged));
+        }
+    },
+
+    _hoverChanged: function (actor) {
+        this.setActive(actor.hover);
+    },
+
+    activate: function (event) {
+        this.emit('activate', event);
+    },
+
+    setActive: function (active) {
+        let activeChanged = active != this.active;
+
+        if (activeChanged) {
+            this.active = active;
+            if (active)
+                this.actor.add_style_pseudo_class('active');
+            else
+                this.actor.remove_style_pseudo_class('active');
+            this.emit('active-changed', active);
         }
     }
 };

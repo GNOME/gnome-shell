@@ -142,7 +142,7 @@ StTooltip {
     padding: 6px 20px;
 }
 
-.panel-menu-item:hover {
+.panel-menu-item:active {
     background-color: #4c4c4c;
 }
 
