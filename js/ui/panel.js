@@ -141,7 +141,7 @@ PanelMenuItem.prototype = {
             this.emit('activate', event);
         }));
     }
-}
+};
 Signals.addSignalMethods(PanelMenuItem.prototype);
 
 function PanelSeparatorMenuItem(text) {
@@ -153,7 +153,7 @@ PanelSeparatorMenuItem.prototype = {
         this.actor = new St.Bin({ x_fill: true, y_fill: true });
         this.actor.set_child(new St.Bin({ style_class: 'panel-separator-menu-item' }));
     }
-}
+};
 Signals.addSignalMethods(PanelSeparatorMenuItem.prototype);
 
 function PanelImageMenuItem(text, iconName, alwaysShowImage) {
@@ -208,8 +208,7 @@ PanelImageMenuItem.prototype = {
             this._imageBin.set_child(img);
         }
     }
-}
-
+};
 Signals.addSignalMethods(PanelImageMenuItem.prototype);
 
 function PanelMenu(sourceButton) {
@@ -251,8 +250,7 @@ PanelMenu.prototype = {
     setArrowOrigin: function(origin) {
         this._boxPointer.setArrowOrigin(origin);
     }
-}
-
+};
 Signals.addSignalMethods(PanelMenu.prototype);
 
 function PanelMenuButton(menuAlignment) {
@@ -368,8 +366,7 @@ PanelMenuButton.prototype = {
         else
             this.open();
     }
-}
-
+};
 Signals.addSignalMethods(PanelMenuButton.prototype);
 
 
@@ -496,7 +493,7 @@ PanelMenuBar.prototype = {
         Main.popModal(this.actor);
         this.isMenuOpen = false;
     }
-}
+};
 
 /**
  * AppMenuButton:
