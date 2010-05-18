@@ -138,6 +138,7 @@ PanelBaseMenuItem.prototype = {
                                   x_fill: true,
                                   y_fill: true,
                                   x_align: St.Align.START });
+        this.actor._delegate = this;
         this.active = false;
 
         if (reactive) {
@@ -280,6 +281,28 @@ PanelImageMenuItem.prototype = {
     }
 };
 
+function mod(a, b) {
+    return (a + b) % b;
+}
+
+function findNextInCycle(items, current, direction) {
+    let cur;
+
+    if (items.length == 0)
+        return current;
+    else if (items.length == 1)
+        return items[0];
+
+    if (current)
+        cur = items.indexOf(current);
+    else if (direction == 1)
+        cur = items.length - 1;
+    else
+        cur = 0;
+
+    return items[mod(cur + direction, items.length)];
+}
+
 function PanelMenu(sourceButton) {
     this._init(sourceButton);
 }
@@ -294,6 +317,8 @@ PanelMenu.prototype = {
                                        vertical: true });
         this._boxPointer.bin.set_child(this._box);
         this.actor.add_style_class_name('panel-menu');
+
+        this._activeMenuItem = null;
     },
 
     addAction: function(title, callback) {
@@ -306,6 +331,15 @@ PanelMenu.prototype = {
 
     addMenuItem: function(menuItem) {
         this._box.add(menuItem.actor);
+        menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
+            if (active && this._activeMenuItem != menuItem) {
+                if (this._activeMenuItem)
+                    this._activeMenuItem.setActive(false);
+                this._activeMenuItem = menuItem;
+            } else if (!active && this._activeMenuItem == menuItem) {
+                this._activeMenuItem = null;
+            }
+        }));
         menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate');
         }));
@@ -317,6 +351,50 @@ PanelMenu.prototype = {
 
     setArrowOrigin: function(origin) {
         this._boxPointer.setArrowOrigin(origin);
+    },
+
+    open: function() {
+        let panelActor = Main.panel.actor;
+        this.actor.lower(panelActor);
+
+        this.actor.show();
+        this.actor.opacity = 0;
+        this.actor.reactive = true;
+        Tweener.addTween(this.actor, { opacity: 255,
+                                       transition: "easeOutQuad",
+                                       time: POPUP_ANIMATION_TIME });
+    },
+
+    close: function() {
+        this.actor.reactive = false;
+        Tweener.addTween(this.actor, { opacity: 0,
+                                       transition: "easeOutQuad",
+                                       time: POPUP_ANIMATION_TIME,
+                                       onComplete: Lang.bind(this, function () { this.actor.hide(); })});
+        if (this._activeMenuItem)
+            this._activeMenuItem.setActive(false);
+    },
+
+    handleKeyPress: function(event) {
+        if (event.get_key_symbol() == Clutter.space ||
+            event.get_key_symbol() == Clutter.Return) {
+            if (this._activeMenuItem)
+                this._activeMenuItem.activate(event);
+            return true;
+        } else if (event.get_key_symbol() == Clutter.Down
+                   || event.get_key_symbol() == Clutter.Up) {
+            let items = this._box.get_children().filter(function (child) { return child.visible && child.reactive; });
+            let current = this._activeMenuItem ? this._activeMenuItem.actor : null;
+            let direction = event.get_key_symbol() == Clutter.Down ? 1 : -1;
+
+            let next = findNextInCycle(items, current, direction);
+            if (next) {
+                next._delegate.setActive(true);
+                return true;
+            }
+        }
+
+        return false;
     }
 };
 Signals.addSignalMethods(PanelMenu.prototype);
@@ -339,6 +417,7 @@ PanelMenuButton.prototype = {
                                   x_fill: true,
                                   y_fill: true,
                                   track_hover: true });
+        this.actor._delegate = this;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         // FIXME - this will trigger a warning about a queued allocation from inside
         // allocate; hard to solve without a way to express a high level positioning
@@ -358,14 +437,7 @@ PanelMenuButton.prototype = {
             return;
         this._state = this.State.OPEN;
 
-        let panelActor = Main.panel.actor;
-        this.menu.actor.lower(panelActor);
-        this.menu.actor.show();
-        this.menu.actor.opacity = 0;
-        this.menu.actor.reactive = true;
-        Tweener.addTween(this.menu.actor, { opacity: 255,
-                                            transition: "easeOutQuad",
-                                            time: POPUP_ANIMATION_TIME });
+        this.menu.open();
         this._repositionMenu();
 
         this.actor.add_style_pseudo_class('pressed');
@@ -428,11 +500,7 @@ PanelMenuButton.prototype = {
         if (this._state != this.State.OPEN)
             return;
         this._state = this.State.CLOSED;
-        this.menu.actor.reactive = false;
-        Tweener.addTween(this.menu.actor, { opacity: 0,
-                                            transition: "easeOutQuad",
-                                            time: POPUP_ANIMATION_TIME,
-                                            onComplete: Lang.bind(this, function () { this.menu.actor.hide(); })});
+        this.menu.close();
         this.actor.remove_style_pseudo_class('pressed');
         this.emit('open-state-changed', false);
     },
@@ -558,9 +626,25 @@ PanelMenuBar.prototype = {
                 this._activeMenuButton.close();
             this._closeMenu();
             return true;
+        } else if (eventType == Clutter.EventType.KEY_PRESS
+                   && this._activeMenuButton != null
+                   && this._activeMenuButton.menu.handleKeyPress(event)) {
+                return true;
+        } else if (eventType == Clutter.EventType.KEY_PRESS
+                   && this._activeMenuButton != null
+                   && (event.get_key_symbol() == Clutter.Left
+                       || event.get_key_symbol() == Clutter.Right)) {
+            let direction = event.get_key_symbol() == Clutter.Right ? 1 : -1;
+            let next = findNextInCycle(this._menus, this._activeMenuButton, direction);
+            if (next != this._activeMenuButton) {
+                this._activeMenuButton.close();
+                next.open();
+            }
+            return true;
         } else if (activeMenuContains || this._eventIsOnAnyMenuButton(event)) {
             return false;
         }
+
         return true;
     },
 
