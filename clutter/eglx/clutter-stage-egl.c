@@ -140,7 +140,7 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
       stage_egl->egl_surface =
         eglCreateWindowSurface (edpy,
                                 backend_egl->egl_config,
-                                (EGLNativeWindowType) stage_x11->xwin,
+                                (NativeWindowType) stage_x11->xwin,
                                 NULL);
     }
 

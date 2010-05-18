@@ -32,7 +32,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       EGLBoolean status;
 
       backend_egl->edpy =
-        eglGetDisplay ((EGLNativeDisplayType) backend_x11->xdpy);
+        eglGetDisplay ((NativeDisplayType) backend_x11->xdpy);
 
       status = eglInitialize (backend_egl->edpy,
 			      &backend_egl->egl_version_major,
@@ -185,7 +185,7 @@ retry:
   backend_egl->dummy_surface =
     eglCreateWindowSurface (edpy,
                             backend_egl->egl_config,
-                            (EGLNativeWindowType) backend_egl->dummy_xwin,
+                            (NativeWindowType) backend_egl->dummy_xwin,
                             NULL);
 
   if (backend_egl->dummy_surface == EGL_NO_SURFACE)
