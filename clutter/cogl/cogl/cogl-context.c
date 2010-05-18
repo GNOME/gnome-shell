@@ -176,7 +176,7 @@ cogl_create_context (void)
                                 default_texture_data);
 
   cogl_set_source (_context->simple_material);
-  _cogl_material_flush_gl_state (_context->source_material, NULL);
+  _cogl_material_flush_gl_state (_context->source_material, FALSE);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 

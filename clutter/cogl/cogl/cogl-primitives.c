@@ -865,12 +865,18 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
       v += state->stride;
     }
 
+  if (G_UNLIKELY (ctx->legacy_state_set))
+    {
+      source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_legacy_state (source);
+    }
+  else
+    source = ctx->source_material;
+
   options.flags =
-    COGL_MATERIAL_FLUSH_DISABLE_MASK |
     COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE |
     COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-  /* disable all except the first layer */
-  options.disable_layers = (guint32)~1;
+
   options.layer0_override_texture = gl_handle;
 
   /* Override the wrapping mode on all of the slices to use a
@@ -887,15 +893,19 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
   options.wrap_mode_overrides.values[0].t =
     COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
 
-  if (G_UNLIKELY (ctx->legacy_state_set))
+  if (cogl_material_get_n_layers (source) != 1)
     {
-      source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
+      /* disable all except the first layer */
+      options.disable_layers = (guint32)~1;
+      options.flags |= COGL_MATERIAL_FLUSH_DISABLE_MASK;
     }
-  else
-    source = ctx->source_material;
 
-  _cogl_material_flush_gl_state (source, &options);
+  /* If we haven't already created a derived material... */
+  if (source == ctx->source_material)
+    source = cogl_material_copy (ctx->source_material);
+  _cogl_material_apply_overrides (source, &options);
+
+  _cogl_material_flush_gl_state (source, FALSE);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, state->n_vertices));
 
@@ -1030,16 +1040,6 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
         }
     }
 
-  options.flags = COGL_MATERIAL_FLUSH_FALLBACK_MASK;
-  if (use_color)
-    options.flags |= COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
-  options.fallback_layers = fallback_layers;
-  if (wrap_mode_overrides)
-    {
-      options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-      options.wrap_mode_overrides = *wrap_mode_overrides;
-    }
-
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
       source = cogl_material_copy (ctx->source_material);
@@ -1048,7 +1048,27 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
   else
     source = ctx->source_material;
 
-  _cogl_material_flush_gl_state (source, &options);
+  options.flags = 0;
+
+  if (G_UNLIKELY (fallback_layers))
+    {
+      options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+      options.fallback_layers = fallback_layers;
+    }
+  if (wrap_mode_overrides)
+    {
+      options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+      options.wrap_mode_overrides = *wrap_mode_overrides;
+    }
+  if (options.flags)
+    {
+      /* If we haven't already created a derived material... */
+      if (source == ctx->source_material)
+        source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_overrides (source, &options);
+    }
+
+  _cogl_material_flush_gl_state (source, use_color);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 
