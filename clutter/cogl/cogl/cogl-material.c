@@ -364,6 +364,9 @@ _cogl_material_init_default_material (void)
   material->big_state = big_state;
   material->has_big_state = TRUE;
 
+  material->static_breadcrumb = "default material";
+  material->has_static_breadcrumb = TRUE;
+
   /* Use the same defaults as the GL spec... */
   cogl_color_init_from_4ub (&material->color, 0xff, 0xff, 0xff, 0xff);
 
@@ -456,15 +459,21 @@ cogl_material_copy (CoglHandle handle)
   material->backend = src->backend;
   material->backend_priv_set = FALSE;
 
+  material->has_static_breadcrumb = FALSE;
+
   return _cogl_material_handle_new (material);
 }
 
 CoglHandle
 cogl_material_new (void)
 {
+  CoglHandle new;
+
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  return cogl_material_copy (ctx->default_material);
+  new = cogl_material_copy (ctx->default_material);
+  _cogl_material_set_static_breadcrumb (new, "new");
+  return new;
 }
 
 static void
@@ -1109,6 +1118,8 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       COGL_COUNTER_INC (_cogl_uprof_context, material_copy_on_write_counter);
 
       new_authority = cogl_material_copy (material->parent);
+      _cogl_material_set_static_breadcrumb (new_authority,
+                                            "pre_change_notify:copy-on-write");
 
       /* We could explicitly walk the descendants, OR together the set
        * of differences that we determine this material is the
@@ -6567,5 +6578,15 @@ _cogl_material_apply_legacy_state (CoglHandle handle)
       _cogl_material_set_user_program (handle,
                                        ctx->current_program);
     }
+}
+
+void
+_cogl_material_set_static_breadcrumb (CoglHandle handle,
+                                      const char *breadcrumb)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+
+  material->has_static_breadcrumb = TRUE;
+  material->static_breadcrumb = breadcrumb;
 }
 
