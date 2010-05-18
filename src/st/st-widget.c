@@ -53,20 +53,6 @@ struct _StWidgetPrivate
   gchar        *style_class;
   gchar        *inline_style;
 
-  ClutterActor *border_image;
-  ClutterActor *background_image;
-  ClutterColor  bg_color;
-
-  guint         border_width;
-  ClutterColor  border_color;
-
-  StGradientType bg_gradient_type;
-  ClutterColor  bg_gradient_end;
-
-  ClutterActorBox background_allocation;
-  gdouble       shadow_xoffset;
-  gdouble       shadow_yoffset;
-
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
   gboolean      is_style_dirty : 1;
@@ -243,12 +229,6 @@ st_widget_dispose (GObject *gobject)
       priv->theme = NULL;
     }
 
-  if (priv->border_image)
-    {
-      clutter_actor_unparent (priv->border_image);
-      priv->border_image = NULL;
-    }
-
   if (priv->theme_node)
     {
       g_object_run_dispose (G_OBJECT (priv->theme_node));
@@ -404,12 +384,6 @@ st_widget_map (ClutterActor *actor)
 
   st_widget_ensure_style ((StWidget*) actor);
 
-  if (priv->border_image)
-    clutter_actor_map (priv->border_image);
-
-  if (priv->background_image)
-    clutter_actor_map (priv->background_image);
-
   if (priv->tooltip)
     clutter_actor_map ((ClutterActor *) priv->tooltip);
 }
@@ -420,12 +394,6 @@ st_widget_unmap (ClutterActor *actor)
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
-
-  if (priv->border_image)
-    clutter_actor_unmap (priv->border_image);
-
-  if (priv->background_image)
-    clutter_actor_unmap (priv->background_image);
 
   if (priv->tooltip)
     clutter_actor_unmap ((ClutterActor *) priv->tooltip);
