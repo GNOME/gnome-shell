@@ -2475,7 +2475,7 @@ override_layer_texture_cb (CoglMaterialLayer *layer, void *user_data)
   return TRUE;
 }
 
-static void
+void
 _cogl_material_apply_overrides (CoglMaterial *material,
                                 CoglMaterialFlushOptions *options)
 {
@@ -6401,11 +6401,9 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
  */
 void
 _cogl_material_flush_gl_state (CoglHandle handle,
-                               CoglMaterialFlushOptions *options)
+                               gboolean skip_gl_color)
 {
-  CoglMaterial    *material;
-  gboolean         material_overriden;
-  gboolean         skip_gl_color = FALSE;
+  CoglMaterial    *material = COGL_MATERIAL (handle);
   unsigned long    materials_difference;
   int              n_layers;
   unsigned long   *layer_differences;
@@ -6421,33 +6419,6 @@ _cogl_material_flush_gl_state (CoglHandle handle,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context, material_flush_timer);
-
-  if (G_UNLIKELY (options &&
-                  (options->flags & ~COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)))
-    {
-      /* Create a oneshot material to handle the overrides.
-       *
-       * XXX: Note this is a stop-gap-solution: We are aiming to
-       * remove the overrides mechanism and move code like this out
-       * into the primitives code.
-       *
-       * Overrides were originally necessitated by the previously
-       * large cost of creating derived material, but they made things
-       * more complex and also introduced a limit of 32 layers.
-       *
-       * Although creating derived materials is now much cheaper it
-       * would be much better for primitives APIs to cache these
-       * derived materials as private data on the original material.
-       */
-      material = cogl_material_copy (handle);
-      _cogl_material_apply_overrides (material, options);
-      material_overriden = TRUE;
-    }
-  else
-    material = COGL_MATERIAL (handle);
-
-  if (options && options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
-    skip_gl_color = TRUE;
 
   if (ctx->current_material == material)
     materials_difference = ctx->current_material_changes_since_flush;
@@ -6589,9 +6560,6 @@ _cogl_material_flush_gl_state (CoglHandle handle,
       GE (glBindTexture (unit1->current_gl_target, unit1->gl_texture));
       unit1->dirty_gl_texture = FALSE;
     }
-
-  if (material_overriden)
-    cogl_handle_unref (material);
 
   COGL_TIMER_STOP (_cogl_uprof_context, material_flush_timer);
 }

@@ -33,7 +33,6 @@ typedef struct _CoglJournalEntry
 {
   CoglHandle               material;
   int                      n_layers;
-  CoglMaterialFlushOptions flush_options;
   CoglMatrix               model_view;
   /* XXX: These entries are pretty big now considering the padding in
    * CoglMaterialFlushOptions and CoglMatrix, so we might need to optimize this

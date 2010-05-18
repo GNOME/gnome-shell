@@ -1520,6 +1520,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   const GList *layers;
   guint32      fallback_layers = 0;
   int          i;
+  gboolean     skip_gl_color = FALSE;
   CoglMaterialFlushOptions options;
   CoglHandle   source;
 
@@ -1588,6 +1589,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
                     COGL_MATERIAL_BLEND_ENABLE_ENABLED;
                   source = cogl_material_copy (ctx->source_material);
                   _cogl_material_set_blend_enabled (source, blend_enable);
+                  skip_gl_color = TRUE;
                 }
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
@@ -1727,6 +1729,47 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   options.fallback_layers = fallback_layers;
 
+  if (G_UNLIKELY (options.flags))
+    {
+      /* If we haven't already created a derived material... */
+      if (source == ctx->source_material)
+        source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_overrides (source, &options);
+
+      /* TODO:
+       * overrides = cogl_material_get_data (material,
+       *                                     last_overrides_key);
+       * if (overrides)
+       *   {
+       *     age = cogl_material_get_age (material);
+       *     XXX: actually we also need to check for legacy_state
+       *     and blending overrides for use of glColorPointer...
+       *     if (overrides->ags != age ||
+       *         memcmp (&overrides->options, &options,
+       *                 sizeof (options) != 0)
+       *       {
+       *         cogl_handle_unref (overrides->weak_material);
+       *         g_slice_free (Overrides, overrides);
+       *         overrides = NULL;
+       *       }
+       *   }
+       * if (!overrides)
+       *   {
+       *     overrides = g_slice_new (Overrides);
+       *     overrides->weak_material =
+       *       cogl_material_weak_copy (ctx->source_material);
+       *     _cogl_material_apply_overrides (overrides->weak_material,
+       *                                     &options);
+       *
+       *     cogl_material_set_data (material, last_overrides_key,
+       *                             weak_overrides,
+       *                             free_overrides_cb,
+       *                             NULL);
+       *   }
+       * source = overrides->weak_material;
+       */
+    }
+
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
       /* If we haven't already created a derived material... */
@@ -1735,7 +1778,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
       _cogl_material_apply_legacy_state (source);
     }
 
-  _cogl_material_flush_gl_state (source, &options);
+  _cogl_material_flush_gl_state (source, skip_gl_color);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

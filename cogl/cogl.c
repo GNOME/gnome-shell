@@ -816,7 +816,6 @@ _cogl_disable_other_texcoord_arrays (const CoglBitmask *mask)
 void
 cogl_begin_gl (void)
 {
-  CoglMaterialFlushOptions options;
   unsigned long enable_flags = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -851,8 +850,7 @@ cogl_begin_gl (void)
    * A user should instead call cogl_set_source_color4ub() before
    * cogl_begin_gl() to simplify the state flushed.
    */
-  options.flags = 0;
-  _cogl_material_flush_gl_state (ctx->source_material, &options);
+  _cogl_material_flush_gl_state (ctx->source_material, FALSE);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

@@ -262,7 +262,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                   (ctxt->journal_rectangles_color & 4) ?
                                   color_intensity : 0,
                                   0xff);
-      _cogl_material_flush_gl_state (outline, NULL);
+      _cogl_material_flush_gl_state (outline, FALSE);
       _cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
       for (i = 0; i < batch_len; i++)
         GE( glDrawArrays (GL_LINE_LOOP, 4 * i + state->vertex_offset, 4) );
@@ -315,8 +315,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:   material batch len = %d\n", batch_len);
 
-  _cogl_material_flush_gl_state (batch_start->material,
-                                 &batch_start->flush_options);
+  _cogl_material_flush_gl_state (batch_start->material, TRUE);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -350,9 +349,9 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
    * that we that we are able to batch the 90% common cases, but may not
    * look at less common differences. */
   if (_cogl_material_equal (entry0->material,
-                            &entry0->flush_options,
+                            NULL,
                             entry1->material,
-                            &entry1->flush_options,
+                            NULL,
                             TRUE))
     return TRUE;
   else
@@ -670,6 +669,8 @@ _cogl_journal_log_quad (const float  *position,
   int               next_entry;
   guint32           disable_layers;
   CoglJournalEntry *entry;
+  CoglHandle        source;
+  CoglMaterialFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
                      "Journal Log",
@@ -786,36 +787,53 @@ _cogl_journal_log_quad (const float  *position,
   g_array_set_size (ctx->journal, next_entry + 1);
   entry = &g_array_index (ctx->journal, CoglJournalEntry, next_entry);
 
-  disable_layers = (1 << n_layers) - 1;
-  disable_layers = ~disable_layers;
+  entry->n_layers = n_layers;
+
+  source = material;
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      material = cogl_material_copy (material);
-      _cogl_material_apply_legacy_state (material);
-      entry->material = _cogl_material_journal_ref (material);
-      cogl_handle_unref (material);
+      source = cogl_material_copy (material);
+      _cogl_material_apply_legacy_state (source);
     }
-  else
-    entry->material = _cogl_material_journal_ref (material);
 
-  entry->n_layers = n_layers;
-  entry->flush_options.flags =
-    COGL_MATERIAL_FLUSH_FALLBACK_MASK |
-    COGL_MATERIAL_FLUSH_DISABLE_MASK |
-    COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
-  entry->flush_options.fallback_layers = fallback_layers;
-  entry->flush_options.disable_layers = disable_layers;
+  flush_options.flags = COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
+  if (G_UNLIKELY (cogl_material_get_n_layers (material) != n_layers))
+    {
+      disable_layers = (1 << n_layers) - 1;
+      disable_layers = ~disable_layers;
+      flush_options.disable_layers = disable_layers;
+      flush_options.flags |= COGL_MATERIAL_FLUSH_DISABLE_MASK;
+    }
+  if (G_UNLIKELY (fallback_layers))
+    {
+      flush_options.fallback_layers = fallback_layers;
+      flush_options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+    }
+  if (G_UNLIKELY (layer0_override_texture))
+    {
+      flush_options.flags |= COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
+      flush_options.layer0_override_texture = layer0_override_texture;
+    }
   if (wrap_mode_overrides)
     {
-      entry->flush_options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-      entry->flush_options.wrap_mode_overrides = *wrap_mode_overrides;
+      flush_options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+      flush_options.wrap_mode_overrides = *wrap_mode_overrides;
     }
-  if (layer0_override_texture)
+
+  if (G_UNLIKELY (flush_options.flags))
     {
-      entry->flush_options.flags |= COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
-      entry->flush_options.layer0_override_texture = layer0_override_texture;
+      /* If we haven't already created a derived material... */
+      if (source == material)
+        source = cogl_material_copy (material);
+      _cogl_material_apply_overrides (source, &flush_options);
     }
+
+  entry->material = _cogl_material_journal_ref (source);
+
+  if (G_UNLIKELY (source != material))
+    cogl_handle_unref (source);
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     cogl_get_modelview_matrix (&entry->model_view);
 

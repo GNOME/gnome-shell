@@ -131,7 +131,6 @@ _cogl_path_stroke_nodes (void)
   unsigned int   path_start = 0;
   unsigned long  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglPathData  *data;
-  CoglMaterialFlushOptions options;
   CoglHandle     source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -147,10 +146,6 @@ _cogl_path_stroke_nodes (void)
 
   _cogl_enable (enable_flags);
 
-  options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
-  /* disable all texture layers */
-  options.disable_layers = (guint32)~0;
-
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
       source = cogl_material_copy (ctx->source_material);
@@ -159,7 +154,20 @@ _cogl_path_stroke_nodes (void)
   else
     source = ctx->source_material;
 
-  _cogl_material_flush_gl_state (source, &options);
+  if (cogl_material_get_n_layers (source) != 0)
+    {
+      CoglMaterialFlushOptions options;
+      options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
+      /* disable all texture layers */
+      options.disable_layers = (guint32)~0;
+
+      /* If we haven't already created a derived material... */
+      if (source == ctx->source_material)
+        source = cogl_material_copy (ctx->source_material);
+      _cogl_material_apply_overrides (source, &options);
+    }
+
+  _cogl_material_flush_gl_state (source, FALSE);
 
   while (path_start < data->path_nodes->len)
     {
@@ -231,7 +239,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   prev_source = cogl_object_ref (ctx->source_material);
   cogl_set_source (ctx->stencil_material);
 
-  _cogl_material_flush_gl_state (ctx->source_material, NULL);
+  _cogl_material_flush_gl_state (ctx->source_material, FALSE);
 
   _cogl_enable (enable_flags);
 
@@ -389,7 +397,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
   else
     source = ctx->source_material;
 
-  _cogl_material_flush_gl_state (ctx->source_material, NULL);
+  _cogl_material_flush_gl_state (source, FALSE);
 
   _cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
 

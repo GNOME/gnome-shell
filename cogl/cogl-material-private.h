@@ -684,7 +684,7 @@ _cogl_material_get_colorubv (CoglHandle  handle,
 
 void
 _cogl_material_flush_gl_state (CoglHandle material,
-                               CoglMaterialFlushOptions *options);
+                               gboolean skip_gl_state);
 
 gboolean
 _cogl_material_equal (CoglHandle material0_handle,
@@ -724,6 +724,10 @@ _cogl_material_apply_legacy_state (CoglHandle handle);
 
 void
 _cogl_gl_use_program_wrapper (GLuint program);
+
+void
+_cogl_material_apply_overrides (CoglMaterial *material,
+                                CoglMaterialFlushOptions *options);
 
 CoglMaterialBlendEnable
 _cogl_material_get_blend_enabled (CoglHandle handle);
