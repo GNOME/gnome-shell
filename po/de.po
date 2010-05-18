@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-05-15 22:41+0000\n"
-"PO-Revision-Date: 2010-05-16 20:57+0100\n"
+"POT-Creation-Date: 2010-05-17 18:24+0000\n"
+"PO-Revision-Date: 2010-05-18 22:06+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,17 +42,18 @@ msgid "Customize the panel clock"
 msgstr "Die Uhr im Panel anpassen"
 
 #: ../data/clock-preferences.ui.h:1
-msgid "<b>Clock Format</b>"
-msgstr "<b>Uhr-Format</b>"
+#| msgid "<b>Clock Format</b>"
+msgid "Clock Format"
+msgstr "Uhr-Format"
 
 #: ../data/clock-preferences.ui.h:2
-msgid "<b>Panel Display</b>"
-msgstr "<b>Panel-Anzeige</b>"
-
-#: ../data/clock-preferences.ui.h:3
-#| msgid "System Preferences..."
 msgid "Clock Preferences"
 msgstr "Uhr-Einstellungen"
+
+#: ../data/clock-preferences.ui.h:3
+#| msgid "<b>Panel Display</b>"
+msgid "Panel Display"
+msgstr "Panel-Anzeige"
 
 #: ../data/clock-preferences.ui.h:4
 msgid "Show seco_nds"
@@ -129,31 +130,31 @@ msgstr "ORTE UND GERÄTE"
 msgid "RECENT ITEMS"
 msgstr "ZULETZT GEÖFFNETE DOKUMENTE"
 
-#: ../js/ui/lookingGlass.js:354
+#: ../js/ui/lookingGlass.js:466
 msgid "No extensions installed"
 msgstr "Keine Erweiterungen installiert"
 
-#: ../js/ui/lookingGlass.js:391
+#: ../js/ui/lookingGlass.js:503
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:505
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:507
 msgid "Error"
 msgstr "Fehler"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:509
 msgid "Out of date"
 msgstr "Veraltet"
 
-#: ../js/ui/lookingGlass.js:422
+#: ../js/ui/lookingGlass.js:534
 msgid "View Source"
 msgstr "Quelle zeigen"
 
-#: ../js/ui/lookingGlass.js:428
+#: ../js/ui/lookingGlass.js:540
 msgid "Web Page"
 msgstr "Webseite"
 
@@ -290,32 +291,32 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "Die erste Arbeitsfläche kann nicht entfernt werden."
 
-#: ../src/shell-global.c:979
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Vor weniger als einer Minute"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Vor %d Minute"
 msgstr[1] "Vor %d Minuten"
 
-#: ../src/shell-global.c:988
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Vor %d Stunde"
 msgstr[1] "Vor %d Stunden"
 
-#: ../src/shell-global.c:993
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Vor %d Tag"
 msgstr[1] "Vor %d Tagen"
 
-#: ../src/shell-global.c:998
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
