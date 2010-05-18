@@ -126,40 +126,61 @@ TextShadower.prototype = {
     }
 };
 
+function PanelBaseMenuItem(reactive) {
+    this._init(reactive);
+}
+
+PanelBaseMenuItem.prototype = {
+    _init: function (reactive) {
+        this.actor = new St.Bin({ style_class: 'panel-menu-item',
+                                  reactive: reactive,
+                                  track_hover: reactive,
+                                  x_fill: true,
+                                  y_fill: true,
+                                  x_align: St.Align.START });
+
+        if (reactive) {
+            this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+                this.emit('activate', event);
+            }));
+        }
+    }
+};
+Signals.addSignalMethods(PanelBaseMenuItem.prototype);
+
 function PanelMenuItem(text) {
     this._init(text);
 }
 
 PanelMenuItem.prototype = {
+    __proto__: PanelBaseMenuItem.prototype,
+
     _init: function (text) {
-        this.actor = new St.Bin({ style_class: 'panel-menu-item',
-                                  reactive: true,
-                                  track_hover: true,
-                                  x_fill: true,
-                                  y_fill: true,
-                                  x_align: St.Align.START });
+        PanelBaseMenuItem.prototype._init.call(this, true);
+
         this.label = new St.Label({ text: text });
         this.actor.set_child(this.label);
-        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
-            this.emit('activate', event);
-        }));
-    }
+    },
 };
-Signals.addSignalMethods(PanelMenuItem.prototype);
 
-function PanelSeparatorMenuItem(text) {
-    this._init(text);
+function PanelSeparatorMenuItem() {
+    this._init();
 }
 
 PanelSeparatorMenuItem.prototype = {
-    _init: function (text) {
-        this.actor = new St.DrawingArea({ style_class: 'panel-separator-menu-item' });
-        this.actor.connect('repaint', Lang.bind(this, this._onRepaint));
+    __proto__: PanelBaseMenuItem.prototype,
+
+    _init: function () {
+        PanelBaseMenuItem.prototype._init.call(this, false);
+
+        this._drawingArea = new St.DrawingArea({ style_class: 'panel-separator-menu-item' });
+        this.actor.set_child(this._drawingArea);
+        this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
     _onRepaint: function(area) {
         let cr = area.get_context();
-        let themeNode = this.actor.get_theme_node();
+        let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
         let found, margin, gradientHeight;
         [found, margin] = themeNode.get_length('-margin-horizontal', false);
@@ -180,7 +201,6 @@ PanelSeparatorMenuItem.prototype = {
         cr.fill();
     }
 };
-Signals.addSignalMethods(PanelSeparatorMenuItem.prototype);
 
 function PanelImageMenuItem(text, iconName, alwaysShowImage) {
     this._init(text, iconName, alwaysShowImage);
@@ -191,25 +211,27 @@ function PanelImageMenuItem(text, iconName, alwaysShowImage) {
 var _gtkImageMenuItemCreated = false;
 
 PanelImageMenuItem.prototype = {
+    __proto__: PanelBaseMenuItem.prototype,
+
     _init: function (text, iconName, alwaysShowImage) {
+        PanelBaseMenuItem.prototype._init.call(this, true);
 
         if (!_gtkImageMenuItemCreated) {
             let menuItem = new Gtk.ImageMenuItem();
             menuItem.destroy();
             _gtkImageMenuItemCreated = true;
         }
+
         this._alwaysShowImage = alwaysShowImage;
-        this.actor = new St.BoxLayout({ style_class: 'panel-menu-item panel-image-menu-item',
-                                        reactive: true,
-                                        track_hover: true });
         this._iconName = iconName;
         this._size = 16;
+
+        let box = new St.BoxLayout({ style_class: 'panel-image-menu-item' });
+        this.actor.set_child(box);
         this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        this.actor.add(this._imageBin, { y_fill: false });
-        this.actor.add(new St.Label({ text: text }), { expand: true });
-        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
-            this.emit('activate', event);
-        }));
+        box.add(this._imageBin, { y_fill: false });
+        box.add(new St.Label({ text: text }), { expand: true });
+
         if (!alwaysShowImage) {
             let settings = Gtk.Settings.get_default();
             settings.connect('notify::gtk-menu-images', Lang.bind(this, this._onMenuImagesChanged));
@@ -234,7 +256,6 @@ PanelImageMenuItem.prototype = {
         }
     }
 };
-Signals.addSignalMethods(PanelImageMenuItem.prototype);
 
 function PanelMenu(sourceButton) {
     this._init(sourceButton);
