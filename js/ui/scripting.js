@@ -148,6 +148,23 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, '"events":\n');
         Shell.PerfLog.get_default().dump_events(out);
 
+        let monitors = global.get_monitors()
+        let primary = global.get_primary_monitor()
+        Shell.write_string_to_stream(out, ',\n"monitors":\n[');
+        for (let i = 0; i < monitors.length; i++) {
+            let monitor = monitors[i];
+            let is_primary = (monitor.x == primary.x &&
+                              monitor.y == primary.y &&
+                              monitor.width == primary.width &&
+                              monitor.height == primary.height);
+            if (i != 0)
+                Shell.write_string_to_stream(out, ', ');
+            Shell.write_string_to_stream(out, '"%s%dx%d+%d+%d"'.format(is_primary ? "*" : "",
+                                                                       monitor.width, monitor.height,
+                                                                       monitor.x, monitor.y));
+        }
+        Shell.write_string_to_stream(out, ' ]');
+
         Shell.write_string_to_stream(out, ',\n"metrics":\n[ ');
         let first = true;
         for (let name in scriptModule.METRICS) {

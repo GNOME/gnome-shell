@@ -313,9 +313,10 @@ def run_performance_test():
         finally:
             os.remove(output_file)
 
-        # Grab the event definitions the first time around
+        # Grab the event definitions and monitor layout the first time around
         if i == 0:
             events = output['events']
+            monitors = output['monitors']
 
         if options.perf_warmup and i == 0:
             continue
@@ -344,6 +345,7 @@ def run_performance_test():
         report = {
             'date': datetime.datetime.now().isoformat(),
             'events': events,
+            'monitors': monitors,
             'metrics': metric_summaries,
             'logs': logs
         }
