@@ -477,6 +477,11 @@ struct _CoglMaterial
    * be allocated dynamically when required... */
   CoglMaterialBigState *big_state;
 
+  /* For debugging purposes it's possible to associate a static const
+   * string with a material which can be an aid when trying to trace
+   * where the material originates from */
+  const char      *static_breadcrumb;
+
   /* Cached state... */
 
   /* A cached, complete list of the layers this material depends
@@ -518,6 +523,11 @@ struct _CoglMaterial
 
   unsigned int          layers_cache_dirty:1;
   unsigned int          deprecated_get_layers_list_dirty:1;
+
+  /* For debugging purposes it's possible to associate a static const
+   * string with a material which can be an aid when trying to trace
+   * where the material originates from */
+  unsigned int          has_static_breadcrumb:1;
 
   /* There are multiple fragment processing backends for CoglMaterial,
    * glsl, arbfp and fixed. This identifies the backend being used for
@@ -733,6 +743,10 @@ _cogl_material_get_blend_enabled (CoglHandle handle);
 void
 _cogl_material_set_blend_enabled (CoglHandle handle,
                                   CoglMaterialBlendEnable enable);
+
+void
+_cogl_material_set_static_breadcrumb (CoglHandle handle,
+                                      const char *breadcrumb);
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 
