@@ -349,9 +349,7 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
    * that we that we are able to batch the 90% common cases, but may not
    * look at less common differences. */
   if (_cogl_material_equal (entry0->material,
-                            NULL,
                             entry1->material,
-                            NULL,
                             TRUE))
     return TRUE;
   else
@@ -797,7 +795,7 @@ _cogl_journal_log_quad (const float  *position,
       _cogl_material_apply_legacy_state (source);
     }
 
-  flush_options.flags = COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
+  flush_options.flags = 0;
   if (G_UNLIKELY (cogl_material_get_n_layers (material) != n_layers))
     {
       disable_layers = (1 << n_layers) - 1;
