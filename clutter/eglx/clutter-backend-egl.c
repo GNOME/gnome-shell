@@ -315,6 +315,12 @@ clutter_backend_egl_dispose (GObject *gobject)
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
 
+  /* We chain up before disposing our own resources so that
+     ClutterBackendX11 will destroy all of the stages before we
+     destroy the egl context. Otherwise the actors may try to make GL
+     calls during destruction which causes a crash */
+  G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
+
   if (backend_egl->dummy_surface != EGL_NO_SURFACE)
     {
       eglDestroySurface (backend_egl->edpy, backend_egl->dummy_surface);
@@ -338,8 +344,6 @@ clutter_backend_egl_dispose (GObject *gobject)
       eglTerminate (backend_egl->edpy);
       backend_egl->edpy = 0;
     }
-
-  G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
 }
 
 static GObject *
