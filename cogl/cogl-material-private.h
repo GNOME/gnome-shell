@@ -688,9 +688,7 @@ _cogl_material_flush_gl_state (CoglHandle material,
 
 gboolean
 _cogl_material_equal (CoglHandle material0_handle,
-                      CoglMaterialFlushOptions *material0_flush_options,
                       CoglHandle material1_handle,
-                      CoglMaterialFlushOptions *material1_flush_options,
                       gboolean skip_gl_color);
 
 CoglHandle

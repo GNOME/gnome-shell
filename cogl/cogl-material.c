@@ -3005,46 +3005,21 @@ _cogl_material_compare_differences (CoglMaterial *material0,
  * False positives aren't allowed.
  */
 gboolean
-_cogl_material_equal (CoglHandle material0_handle,
-                      CoglMaterialFlushOptions *material0_flush_options,
-                      CoglHandle material1_handle,
-                      CoglMaterialFlushOptions *material1_flush_options,
+_cogl_material_equal (CoglHandle handle0,
+                      CoglHandle handle1,
                       gboolean skip_gl_color)
 {
-  CoglMaterial  *material0;
-  CoglMaterial  *material1;
-  gboolean       material0_overridden = FALSE;
-  gboolean       material1_overridden = FALSE;
+  CoglMaterial  *material0 = COGL_MATERIAL (handle0);
+  CoglMaterial  *material1 = COGL_MATERIAL (handle1);
   unsigned long  materials_difference;
-  gboolean       equal = FALSE;
-
-  if (material0_flush_options->flags)
-    {
-      /* XXX: we really need to get rid of overrides! */
-      material0 = cogl_material_copy (material0_handle);
-      _cogl_material_apply_overrides (material0, material0_flush_options);
-      material0_overridden = TRUE;
-    }
-  else
-    material0 = COGL_MATERIAL (material0_handle);
-
-  if (material1_flush_options->flags)
-    {
-      /* XXX: we really need to get rid of overrides! */
-      material1 = cogl_material_copy (material1_handle);
-      _cogl_material_apply_overrides (material1, material1_flush_options);
-      material1_overridden = TRUE;
-    }
-  else
-    material1 = COGL_MATERIAL (material1_handle);
 
   if (material0 == material1)
-    goto done;
+    return TRUE;
 
   /* First check non-sparse properties */
 
   if (material0->real_blend_enable != material1->real_blend_enable)
-    goto done;
+    return FALSE;
 
   /* Then check sparse properties */
 
@@ -3062,7 +3037,7 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_COLOR);
 
       if (!cogl_color_equal (&authority0->color, &authority1->color))
-        goto done;
+        return FALSE;
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_LIGHTING)
@@ -3075,7 +3050,7 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_LIGHTING);
 
       if (!_cogl_material_lighting_state_equal (authority0, authority1))
-        goto done;
+        return FALSE;
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_ALPHA_FUNC)
@@ -3088,7 +3063,7 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_ALPHA_FUNC);
 
       if (!_cogl_material_alpha_state_equal (authority0, authority1))
-        goto done;
+        return FALSE;
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_BLEND)
@@ -3101,7 +3076,7 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_BLEND);
 
       if (!_cogl_material_blend_state_equal (authority0, authority1))
-        goto done;
+        return FALSE;
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_BLEND_ENABLE)
@@ -3114,7 +3089,7 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_BLEND_ENABLE);
 
       if (authority0->blend_enable != authority1->blend_enable)
-        goto done;
+        return FALSE;
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_LAYERS)
@@ -3127,19 +3102,10 @@ _cogl_material_equal (CoglHandle material0_handle,
                                       COGL_MATERIAL_STATE_LAYERS);
 
       if (!_cogl_material_layers_equal (authority0, authority1))
-        goto done;
+        return FALSE;
     }
 
-  equal = TRUE;
-
-done:
-
-  if (material0_overridden)
-    cogl_handle_unref (material0);
-  if (material1_overridden)
-    cogl_handle_unref (material1);
-
-  return equal;
+  return TRUE;
 }
 
 void
