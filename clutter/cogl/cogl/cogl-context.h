@@ -86,7 +86,8 @@ typedef struct
   unsigned long     current_material_flags;
   CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
-  unsigned int      n_texcoord_arrays_enabled;
+  /* Bitmask of texture coordinates arrays that are enabled */
+  unsigned int      texcoord_arrays_enabled;
 
   /* PBOs */
   /* This can be used to check if a pbo is bound */

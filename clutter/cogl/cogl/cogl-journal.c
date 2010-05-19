@@ -372,8 +372,8 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                                           void             *data)
 {
   CoglJournalFlushState *state = data;
-  int                    prev_n_texcoord_arrays_enabled;
   int                    i;
+  unsigned int           layers_mask;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -395,14 +395,10 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                                       (POS_STRIDE + COLOR_STRIDE) * 4 +
                                       TEX_STRIDE * 4 * i)));
     }
-  prev_n_texcoord_arrays_enabled =
-    ctx->n_texcoord_arrays_enabled;
-  ctx->n_texcoord_arrays_enabled = batch_start->n_layers;
-  for (; i < prev_n_texcoord_arrays_enabled; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-    }
+
+  layers_mask = ~((~(unsigned int) 0) << batch_start->n_layers);
+  ctx->texcoord_arrays_enabled |= layers_mask;
+  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled & ~layers_mask);
 
   batch_and_call (batch_start,
                   batch_len,
