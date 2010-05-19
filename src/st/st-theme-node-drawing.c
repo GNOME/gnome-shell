@@ -76,7 +76,6 @@ static CoglHandle
 create_shadow_material (StThemeNode  *node,
                         CoglHandle    src_texture)
 {
-  CoglColor   color;
   CoglHandle  material;
   CoglHandle  texture;
   StShadow   *shadow_spec;
@@ -199,19 +198,11 @@ create_shadow_material (StThemeNode  *node,
 
   material = cogl_material_new ();
 
-  cogl_color_set_from_4ub (&color,
-                           shadow_spec->color.red, shadow_spec->color.green,
-                           shadow_spec->color.blue, shadow_spec->color.alpha);
-  cogl_color_premultiply (&color);
-
-  cogl_material_set_layer_combine_constant (material, 0, &color);
   cogl_material_set_layer (material, 0, texture);
 
-  /* We ignore the material color, which encodes the overall opacity of the
-   * actor, so setting an ancestor of the shadow to partially opaque won't
-   * work. The easiest way to fix this would be to not set the combine or constant color
-   * here, then in paint set the material color to the shadow_spec_color *
-   * paint_opacity.*/
+  /* We set up the material to blend the shadow texture with the combine
+   * constant, but defer setting the latter until painting, so that we can
+   * take the actor's overall opacity into account. */
   cogl_material_set_layer_combine (material, 0,
                                    "RGBA = MODULATE (CONSTANT, TEXTURE[A])",
                                    NULL);
@@ -823,6 +814,39 @@ paint_texture_with_opacity (CoglHandle       texture,
 }
 
 static void
+paint_shadow_with_opacity (CoglHandle       shadow_material,
+                           StShadow        *shadow_spec,
+                           ClutterActorBox *box,
+                           guint8           paint_opacity)
+{
+  ClutterActorBox shadow_box;
+  CoglColor       color;
+
+  shadow_box.x1 = box->x1 + shadow_spec->xoffset
+                  - shadow_spec->blur - shadow_spec->spread;
+  shadow_box.y1 = box->y1 + shadow_spec->yoffset
+                  - shadow_spec->blur - shadow_spec->spread;
+  shadow_box.x2 = box->x2 + shadow_spec->xoffset
+                  + shadow_spec->blur + shadow_spec->spread;
+  shadow_box.y2 = box->y2 + shadow_spec->yoffset
+                  + shadow_spec->blur + shadow_spec->spread;
+
+  cogl_color_set_from_4ub (&color,
+                           shadow_spec->color.red   * paint_opacity / 255,
+                           shadow_spec->color.green * paint_opacity / 255,
+                           shadow_spec->color.blue  * paint_opacity / 255,
+                           shadow_spec->color.alpha * paint_opacity / 255);
+  cogl_color_premultiply (&color);
+
+  cogl_material_set_layer_combine_constant (shadow_material, 0, &color);
+
+  cogl_set_source (shadow_material);
+  cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1,
+                                      shadow_box.x2, shadow_box.y2,
+                                      0, 0, 1, 1);
+}
+
+static void
 st_theme_node_paint_borders (StThemeNode           *node,
                              const ClutterActorBox *box,
                              guint8                 paint_opacity)
@@ -1087,28 +1111,10 @@ st_theme_node_paint (StThemeNode           *node,
    */
 
   if (node->border_shadow_material)
-    {
-      StShadow *shadow_spec;
-      ClutterActorBox shadow_box;
-
-      shadow_spec = node->shadow;
-
-      shadow_box.x1 = allocation.x1 + shadow_spec->xoffset
-                      - shadow_spec->blur - shadow_spec->spread;
-      shadow_box.y1 = allocation.y1 + shadow_spec->yoffset
-                      - shadow_spec->blur - shadow_spec->spread;
-      shadow_box.x2 = allocation.x2 + shadow_spec->xoffset
-                      + shadow_spec->blur + shadow_spec->spread;
-      shadow_box.y2 = allocation.y2 + shadow_spec->yoffset
-                      + shadow_spec->blur + shadow_spec->spread;
-
-      cogl_material_set_color4ub (node->border_shadow_material,
-                                  paint_opacity, paint_opacity, paint_opacity, paint_opacity);
-
-      cogl_set_source (node->border_shadow_material);
-      cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1, shadow_box.x2, shadow_box.y2,
-                                          0, 0, 1, 1);
-    }
+    paint_shadow_with_opacity (node->border_shadow_material,
+                               node->shadow,
+                               &allocation,
+                               paint_opacity);
 
   if (node->border_texture != COGL_INVALID_HANDLE)
     {
@@ -1140,28 +1146,10 @@ st_theme_node_paint (StThemeNode           *node,
        * like boder and background color into account).
        */
       if (node->background_shadow_material != COGL_INVALID_HANDLE)
-        {
-          StShadow *shadow_spec;
-          ClutterActorBox shadow_box;
-
-          shadow_spec = node->shadow;
-
-          shadow_box.x1 = background_box.x1 + shadow_spec->xoffset
-                          - shadow_spec->blur - shadow_spec->spread;
-          shadow_box.y1 = background_box.y1 + shadow_spec->yoffset
-                          - shadow_spec->blur - shadow_spec->spread;
-          shadow_box.x2 = background_box.x2 + shadow_spec->xoffset
-                          + shadow_spec->blur + shadow_spec->spread;
-          shadow_box.y2 = background_box.y2 + shadow_spec->yoffset
-                          + shadow_spec->blur + shadow_spec->spread;
-
-          cogl_material_set_color4ub (node->background_shadow_material,
-                                      paint_opacity, paint_opacity, paint_opacity, paint_opacity);
-
-          cogl_set_source (node->background_shadow_material);
-          cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1, shadow_box.x2, shadow_box.y2,
-                                              0, 0, 1, 1);
-        }
+        paint_shadow_with_opacity (node->background_shadow_material,
+                                   node->shadow,
+                                   &background_box,
+                                   paint_opacity);
 
       paint_texture_with_opacity (node->background_texture, &background_box, paint_opacity);
     }
