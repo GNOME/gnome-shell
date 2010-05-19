@@ -155,6 +155,65 @@
  *   should read the documentation for the #ClutterUnits parser format for
  *   the valid units and syntax.</para>
  * </refsect2>
+ *
+ * <refsect2 id="ClutterActor-animating">
+ *   <title>Custom animatable properties</title>
+ *   <para>#ClutterActor allows accessing properties of #ClutterAction
+ *   and #ClutterConstraint instances associated to an actor instance
+ *   for animation purposes.</para>
+ *   <para>In order to access a specific #ClutterAction or a #ClutterConstraint
+ *   property it is necessary to set the #ClutterActorMeta:name property on the
+ *   given action or constraint.</para>
+ *   <para>The property can be accessed using the the following syntax:</para>
+ *   <informalexample>
+ *     <programlisting>
+ * @&lt;section&gt;.&lt;meta-name&gt;.&lt;property-name&gt;
+ *     </programlisting>
+ *   </informalexample>
+ *   <para>The initial <emphasis>@</emphasis> is mandatory.</para>
+ *   <para>The <emphasis>section</emphasis> fragment can be one between
+ *   "actions" or "constraints".</para>
+ *   <para>The <emphasis>meta-name</emphasis> fragment is the name of the
+ *   action or constraint, as specified by the #ClutterActorMeta:name
+ *   property.</para>
+ *   <para>The <emphasis>property-name</emphasis> fragment is the name of the
+ *   action or constraint property to be animated.</para>
+ *   <example id="example-ClutterActor-animating-meta">
+ *     <title>Animating a constraint property</title>
+ *     <para>The example below animates a #ClutterBindConstraint applied to an
+ *     actor using clutter_actor_animate(). The <emphasis>rect</emphasis> has
+ *     a binding constraint for the <emphasis>origin</emphasis> actor, and in
+ *     its initial state is fully transparent and overlapping the actor to
+ *     which is bound to. </para>
+ *     <programlisting>
+ * constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_X, 0.0);
+ * clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-x");
+ * clutter_actor_add_constraint (rect, constraint);
+ *
+ * constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_Y, 0.0);
+ * clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-y");
+ * clutter_actor_add_constraint (rect, constraint);
+ *
+ * clutter_actor_set_reactive (rect, TRUE);
+ * clutter_actor_set_opacity (rect, 0);
+ *
+ * g_signal_connect (rect, "button-press-event",
+ *                   G_CALLBACK (on_button_press),
+ *                   NULL);
+ *     </programlisting>
+ *     <para>On button press, the rectangle "slides" from behind the actor to
+ *     which is bound to, using the #ClutterBindConstraint:offset property and
+ *     the #ClutterActor:opacity property.</para>
+ *     <programlisting>
+ * float new_offset = clutter_actor_get_width (origin) + h_padding;
+ *
+ * clutter_actor_animate (rect, CLUTTER_EASE_OUT_CUBIC, 500,
+ *                        "opacity", 255,
+ *                        "@constraints.bind-x.offset", new_offset,
+ *                        NULL);
+ *     </programlisting>
+ *   </example>
+ * </refsect2>
  */
 
 /**
