@@ -229,6 +229,7 @@
 
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
+#include "clutter-animatable.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
@@ -517,6 +518,7 @@ enum
 static guint actor_signals[LAST_SIGNAL] = { 0, };
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
 
@@ -582,7 +584,9 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
                                   G_TYPE_INITIALLY_UNOWNED,
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                         clutter_scriptable_iface_init));
+                                                         clutter_scriptable_iface_init)
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                         clutter_animatable_iface_init));
 
 static const gchar *
 get_actor_debug_name (ClutterActor *actor)
@@ -8157,6 +8161,158 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
   iface->set_custom_property = clutter_actor_set_custom_property;
 }
 
+static ClutterActorMeta *
+get_meta_from_animation_property (ClutterActor  *actor,
+                                  const gchar   *name,
+                                  gchar        **name_p)
+{
+  ClutterActorPrivate *priv = actor->priv;
+  ClutterActorMeta *meta = NULL;
+  gchar **tokens;
+
+  /* if this is not a special property, fall through */
+  if (name[0] != '@')
+    return NULL;
+
+  /* detect the properties named using the following spec:
+   *
+   *   @<section>.<meta-name>.<property-name>
+   *
+   * where <section> can be one of the following:
+   *
+   *   - actions
+   *   - constraints
+   *
+   * and <meta-name> is the name set on a specific ActorMeta
+   */
+
+  tokens = g_strsplit (name + 1, ".", -1);
+  if (tokens == NULL || g_strv_length (tokens) != 3)
+    {
+      CLUTTER_NOTE (ANIMATION, "Invalid property name '%s'",
+                    name + 1);
+      g_strfreev (tokens);
+      return NULL;
+    }
+
+  if (strcmp (tokens[0], "actions") == 0)
+    meta = _clutter_meta_group_get_meta (priv->actions, tokens[1]);
+
+  if (strcmp (tokens[0], "constraints") == 0)
+    meta = _clutter_meta_group_get_meta (priv->constraints, tokens[1]);
+
+  if (name_p != NULL)
+    *name_p = g_strdup (tokens[2]);
+
+  CLUTTER_NOTE (ANIMATION,
+                "Looking for property '%s' of object '%s' in section '%s'",
+                tokens[2],
+                tokens[1],
+                tokens[0]);
+
+  g_strfreev (tokens);
+
+  return meta;
+}
+
+static GParamSpec *
+clutter_actor_find_property (ClutterAnimatable *animatable,
+                             ClutterAnimation  *animation,
+                             const gchar       *property_name)
+{
+  ClutterActorMeta *meta = NULL;
+  GObjectClass *klass = NULL;
+  GParamSpec *pspec = NULL;
+  gchar *p_name = NULL;
+
+  meta = get_meta_from_animation_property (CLUTTER_ACTOR (animatable),
+                                           property_name,
+                                           &p_name);
+
+  if (meta != NULL)
+    {
+      klass = G_OBJECT_GET_CLASS (meta);
+  
+      pspec = g_object_class_find_property (klass, p_name);
+
+      g_free (p_name);
+    }
+  else
+    {
+      klass = G_OBJECT_GET_CLASS (animatable);
+
+      pspec = g_object_class_find_property (klass, property_name);
+    }
+
+  return pspec;
+}
+
+static void
+clutter_actor_get_initial_state (ClutterAnimatable *animatable,
+                                 ClutterAnimation  *animation,
+                                 const gchar       *property_name,
+                                 GValue            *initial)
+{
+  ClutterActorMeta *meta = NULL;
+  gchar *p_name = NULL;
+
+  meta = get_meta_from_animation_property (CLUTTER_ACTOR (animatable),
+                                           property_name,
+                                           &p_name);
+
+  if (meta != NULL)
+    g_object_get_property (G_OBJECT (meta), p_name, initial);
+  else
+    g_object_get_property (G_OBJECT (animatable), property_name, initial);
+
+  g_free (p_name);
+}
+
+static void
+clutter_actor_set_final_state (ClutterAnimatable *animatable,
+                               ClutterAnimation  *animation,
+                               const gchar       *property_name,
+                               const GValue      *final)
+{
+  ClutterActorMeta *meta = NULL;
+  gchar *p_name = NULL;
+
+  meta = get_meta_from_animation_property (CLUTTER_ACTOR (animatable),
+                                           property_name,
+                                           &p_name);
+  if (meta != NULL)
+    g_object_set_property (G_OBJECT (meta), p_name, final);
+  else
+    g_object_set_property (G_OBJECT (animatable), property_name, final);
+
+  g_free (p_name);
+}
+
+static gboolean
+clutter_actor_animate_property (ClutterAnimatable *animatable,
+                                ClutterAnimation  *animation,
+                                const gchar       *property_name,
+                                const GValue      *initial,
+                                const GValue      *final,
+                                gdouble            progress,
+                                GValue            *new_value)
+{
+  ClutterInterval *interval;
+
+  interval = clutter_animation_get_interval (animation, property_name);
+
+  return clutter_interval_compute_value (interval, progress, new_value);
+}
+
+static void
+clutter_animatable_iface_init (ClutterAnimatableIface *iface)
+{
+  iface->animate_property = clutter_actor_animate_property;
+  iface->find_property = clutter_actor_find_property;
+  iface->get_initial_state = clutter_actor_get_initial_state;
+  iface->set_final_state = clutter_actor_set_final_state;
+}
+
 /**
  * clutter_actor_transform_stage_point
  * @self: A #ClutterActor
@@ -10361,7 +10517,7 @@ clutter_actor_add_constraint (ClutterActor      *self,
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (CLUTTER_IS_ACTION (constraint));
+  g_return_if_fail (CLUTTER_IS_CONSTRAINT (constraint));
 
   priv = self->priv;
 
@@ -10395,7 +10551,7 @@ clutter_actor_remove_constraint (ClutterActor      *self,
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (CLUTTER_IS_ACTION (constraint));
+  g_return_if_fail (CLUTTER_IS_CONSTRAINT (constraint));
 
   priv = self->priv;
 
