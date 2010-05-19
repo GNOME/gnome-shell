@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION:ClutterBindConstraint
+ * SECTION:clutter-bind-constraint
  * @Title: ClutterBindConstraint
  * @Short_Description: A constraint binding the position of an actor
  *

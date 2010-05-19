@@ -64,6 +64,7 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c \
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
 	clutter.h 			\
+	clutter-actor-meta-private.h	\
         clutter-bezier.h 		\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\

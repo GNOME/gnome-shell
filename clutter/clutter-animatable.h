@@ -52,7 +52,14 @@ typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
 
 /**
  * ClutterAnimatableIface:
- * @animate_property: virtual function for animating a property
+ * @animate_property: virtual function for custom interpolation of a
+ *   property
+ * @find_property: virtual function for retrieving the #GParamSpec of
+ *   an animatable property
+ * @get_initial_state: virtual function for retrieving the initial
+ *   state of an animatable property
+ * @set_final_state: virtual function for setting the state of an
+ *   animatable property
  *
  * Base interface for #GObject<!-- -->s that can be animated by a
  * a #ClutterAnimation.
@@ -101,11 +108,11 @@ GParamSpec *clutter_animatable_find_property     (ClutterAnimatable *animatable,
 void        clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
                                                   ClutterAnimation  *animation,
                                                   const gchar       *property_name,
-                                                  GValue            *initial);
+                                                  GValue            *value);
 void        clutter_animatable_set_final_state   (ClutterAnimatable *animatable,
                                                   ClutterAnimation  *animation,
                                                   const gchar       *property_name,
-                                                  const GValue      *final);
+                                                  const GValue      *value);
 
 G_END_DECLS
 

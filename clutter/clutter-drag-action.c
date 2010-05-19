@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION:ClutterDragAction
+ * SECTION:clutter-drag-action
  * @Title: ClutterDragAction
  * @Short_Description: Action enabling dragging on actors
  *

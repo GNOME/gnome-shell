@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION:ClutterAlignConstraint
+ * SECTION:clutter-align-constraint
  * @Title: ClutterAlignConstraint
  * @Short_Description: A constraint aligning the position of an actor
  *

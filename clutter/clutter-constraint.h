@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_CONSTRAINT_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_CONSTRAINT))
 #define CLUTTER_CONSTRAINT_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_CONSTRAINT, ClutterConstraintClass))
 
-typedef struct _ClutterConstraintPrivate        ClutterConstraintPrivate;
 typedef struct _ClutterConstraintClass          ClutterConstraintClass;
 
 /**
@@ -55,14 +54,10 @@ struct _ClutterConstraint
 {
   /*< private >*/
   ClutterActorMeta parent_instance;
-
-  ClutterConstraintPrivate *priv;
 };
 
 /**
  * ClutterConstraintClass:
- * @set_actor: virtual function, called when a constraint is applied to
- *   a #ClutterActor
  *
  * The <structname>ClutterConstraintClass</structname> structure contains
  * only private data
@@ -88,12 +83,12 @@ struct _ClutterConstraintClass
 GType clutter_constraint_get_type (void) G_GNUC_CONST;
 
 /* ClutterActor API */
-void   clutter_actor_add_constraint    (ClutterActor      *actor,
+void   clutter_actor_add_constraint    (ClutterActor      *self,
                                         ClutterConstraint *constraint);
-void   clutter_actor_remove_constraint (ClutterActor      *actor,
+void   clutter_actor_remove_constraint (ClutterActor      *self,
                                         ClutterConstraint *constraint);
-GList *clutter_actor_get_constraints   (ClutterActor      *actor);
-void   clutter_actor_clear_constraints (ClutterActor      *actor);
+GList *clutter_actor_get_constraints   (ClutterActor      *self);
+void   clutter_actor_clear_constraints (ClutterActor      *self);
 
 G_END_DECLS
 

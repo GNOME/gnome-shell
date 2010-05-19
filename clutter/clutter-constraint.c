@@ -1,3 +1,15 @@
+/**
+ * SECTION:clutter-constraint
+ * @Title: ClutterConstraint
+ * @Short_Description: A constraint on an actor's position or size
+ * @See_Also: #ClutterAction
+ *
+ * #ClutterConstraint is a base abstract class for modifiers of a #ClutterActor
+ * position or size.
+ *
+ * #ClutterConstraint is available since Clutter 1.4
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

@@ -125,6 +125,19 @@ clutter_animatable_animate_property (ClutterAnimatable *animatable,
   return res;
 }
 
+/**
+ * clutter_animatable_find_property:
+ * @animatable: a #ClutterAnimatable
+ * @animation: a #ClutterAnimation
+ * @property_name: the name of the animatable property to find
+ *
+ * Finds the #GParamSpec for @property_name
+ *
+ * Return value: (transfer none): The #GParamSpec for the given property
+ *   or %NULL
+ *
+ * Since: 1.4
+ */
 GParamSpec *
 clutter_animatable_find_property (ClutterAnimatable *animatable,
                                   ClutterAnimation  *animation,
@@ -146,6 +159,17 @@ clutter_animatable_find_property (ClutterAnimatable *animatable,
                                        property_name);
 }
 
+/**
+ * clutter_animatable_get_initial_state:
+ * @animatable: a #ClutterAnimatable
+ * @animation: a #ClutterAnimation
+ * @property_name: the name of the animatable property to retrieve
+ * @value: a #GValue initialized to the type of the property to retrieve
+ *
+ * Retrieves the current state of @property_name and sets @value with it
+ *
+ * Since: 1.4
+ */
 void
 clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
                                       ClutterAnimation  *animation,
@@ -167,6 +191,17 @@ clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
     g_object_get_property (G_OBJECT (animatable), property_name, value);
 }
 
+/**
+ * clutter_animatable_set_final_state:
+ * @animatable: a #ClutterAnimatable
+ * @animation: a #ClutterAnimation
+ * @property_name: the name of the animatable property to set
+ * @value: the value of the animatable property to set
+ *
+ * Sets the current state of @property_name to @value
+ *
+ * Since: 1.4
+ */
 void
 clutter_animatable_set_final_state (ClutterAnimatable *animatable,
                                     ClutterAnimation  *animation,

@@ -417,7 +417,6 @@ struct _ClutterStageStateEvent
 
 /**
  * ClutterEvent:
- * @type: event type
  *
  * Generic event wrapper.
  *
@@ -425,6 +424,7 @@ struct _ClutterStageStateEvent
  */
 union _ClutterEvent
 {
+  /*< private >*/
   ClutterEventType type;
 
   ClutterAnyEvent any;

@@ -274,7 +274,6 @@ CLUTTER_ACTOR_IS_REACTIVE
 <SUBSECTION>
 ClutterActorFlags
 ClutterRequestMode
-ClutterGeometry
 CLUTTER_CALLBACK
 ClutterCallback
 ClutterActor
@@ -410,6 +409,16 @@ clutter_actor_get_text_direction
 clutter_actor_has_pointer
 
 <SUBSECTION>
+clutter_actor_add_action
+clutter_actor_remove_action
+clutter_actor_get_actions
+clutter_actor_clear_actions
+clutter_actor_add_constraint
+clutter_actor_remove_constraint
+clutter_actor_get_constraints
+clutter_actor_clear_constraints
+
+<SUBSECTION>
 ClutterActorBox
 clutter_actor_box_new
 clutter_actor_box_copy
@@ -434,6 +443,10 @@ clutter_vertex_copy
 clutter_vertex_free
 clutter_vertex_equal
 
+<SUBSECTION>
+ClutterGeometry
+clutter_geometry_union
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
@@ -444,7 +457,9 @@ CLUTTER_TYPE_ACTOR
 CLUTTER_ACTOR_CLASS
 CLUTTER_IS_ACTOR_CLASS
 CLUTTER_ACTOR_GET_CLASS
+
 <SUBSECTION Private>
+ClutterRedrawFlags
 ClutterActorPrivate
 clutter_actor_get_type
 clutter_actor_box_get_type
@@ -1712,6 +1727,9 @@ clutter_text_get_type
 ClutterAnimatable
 ClutterAnimatableIface
 clutter_animatable_animate_property
+clutter_animatable_find_property
+clutter_animatable_get_initial_state
+clutter_animatable_set_final_state
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_ANIMATABLE
@@ -1993,6 +2011,8 @@ clutter_box_layout_set_spacing
 clutter_box_layout_get_spacing
 clutter_box_layout_set_vertical
 clutter_box_layout_get_vertical
+clutter_box_layout_set_homogeneous
+clutter_box_layout_get_homogeneous
 
 <SUBSECTION>
 clutter_box_layout_pack
@@ -2074,4 +2094,121 @@ CLUTTER_ANIMATOR_GET_CLASS
 clutter_animator_get_type
 clutter_animator_key_get_type
 ClutterAnimatorPrivate
+</SECTION>
+
+<SECTION>
+<FILE>clutter-actor-meta</FILE>
+<TITLE>ClutterActorMeta</TITLE>
+ClutterActorMeta
+ClutterActorMetaClass
+clutter_actor_meta_set_name
+clutter_actor_meta_get_name
+clutter_actor_meta_set_enabled
+clutter_actor_meta_get_enabled
+
+<SUBSECTION>
+clutter_actor_meta_get_actor
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_ACTOR_META
+CLUTTER_ACTOR_META
+CLUTTER_ACTOR_META_CLASS
+CLUTTER_IS_ACTOR_META
+CLUTTER_IS_ACTOR_META_CLASS
+CLUTTER_ACTOR_META_GET_CLASS
+clutter_actor_meta_get_type
+
+<SUBSECTION Private>
+ClutterActorMetaPrivate
+</SECTION>
+
+<SECTION>
+<FILE>clutter-action</FILE>
+<TITLE>ClutterAction</TITLE>
+ClutterAction
+ClutterActionClass
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_ACTION
+CLUTTER_ACTION
+CLUTTER_ACTION_CLASS
+CLUTTER_IS_ACTION
+CLUTTER_IS_ACTION_CLASS
+CLUTTER_ACTION_GET_CLASS
+clutter_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-constraint</FILE>
+<TITLE>ClutterConstraint</TITLE>
+ClutterConstraint
+ClutterConstraintClass
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_CONSTRAINT
+CLUTTER_CONSTRAINT
+CLUTTER_CONSTRAINT_CLASS
+CLUTTER_IS_CONSTRAINT
+CLUTTER_IS_CONSTRAINT_CLASS
+CLUTTER_CONSTRAINT_GET_CLASS
+clutter_constraint_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-drag-action</FILE>
+<TITLE>ClutterDragAction</TITLE>
+ClutterDragAction
+ClutterDragActionClass
+clutter_drag_action_new
+clutter_drag_action_set_drag_threshold
+clutter_drag_action_get_drag_threshold
+clutter_drag_action_set_drag_handle
+clutter_drag_action_get_drag_handle
+ClutterDragAxis
+clutter_drag_action_set_drag_axis
+clutter_drag_action_get_drag_axis
+
+<SUBSECTION>
+clutter_drag_action_get_press_coords
+clutter_drag_action_get_motion_coords
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_DRAG_ACTION
+CLUTTER_DRAG_ACTION
+CLUTTER_DRAG_ACTION_CLASS
+CLUTTER_IS_DRAG_ACTION
+CLUTTER_IS_DRAG_ACTION_CLASS
+CLUTTER_DRAG_ACTION_GET_CLASS
+clutter_drag_action_get_type
+
+<SUBSECTION Private>
+ClutterDragActionPrivate
+</SECTION>
+
+<SECTION>
+<FILE>clutter-bind-constraint</FILE>
+<TITLE>ClutterBindConstraint</TITLE>
+ClutterBindConstraint
+ClutterBindCoordinate
+clutter_bind_constraint_new
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_BIND_CONSTRAINT
+CLUTTER_BIND_CONSTRAINT
+CLUTTER_IS_BIND_CONSTRAINT
+clutter_bind_constraint_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-align-constraint</FILE>
+<TITLE>ClutterAlignConstraint</TITLE>
+ClutterAlignConstraint
+ClutterAlignAxis
+clutter_align_constraint_new
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_ALIGN_CONSTRAINT
+CLUTTER_ALIGN_CONSTRAINT
+CLUTTER_IS_ALIGN_CONSTRAINT
+clutter_align_constraint_get_type
 </SECTION>

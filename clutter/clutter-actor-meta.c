@@ -1,5 +1,5 @@
 /**
- * SECTION:ClutterActorMeta
+ * SECTION:clutter-actor-meta
  * @Title: ClutterActorMeta
  * @Short_Description: Base class of actor modifiers
  *

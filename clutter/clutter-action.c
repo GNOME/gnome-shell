@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION:ClutterAction
+ * SECTION:clutter-action
  * @Title: ClutterAction
  * @Short_Description: Abstract class for actor actions
  * @See_Also: #ClutterEffect
