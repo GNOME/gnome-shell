@@ -26,6 +26,13 @@
 
 typedef struct
 {
+  /* These are specific to winsys backends supporting Xlib. This
+     should probably eventually be moved into a separate file specific
+     to Xlib when Cogl gains a more complete winsys abstraction */
+#ifdef COGL_HAS_XLIB_SUPPORT
+  GSList *event_filters;
+#endif
+
   int stub;
 } CoglContextWinsys;
 

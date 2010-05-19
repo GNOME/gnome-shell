@@ -162,15 +162,18 @@ libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/cog
 
 libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
 
+if SUPPORT_XLIB
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-xlib.h \
+       $(srcdir)/winsys/cogl-xlib.c
+endif
 if SUPPORT_GLX
 libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-glx.c \
-       $(srcdir)/winsys/cogl-xlib.c
+       $(srcdir)/winsys/cogl-glx.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-egl.c \
-       $(srcdir)/winsys/cogl-xlib.c
+       $(srcdir)/winsys/cogl-egl.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 libclutter_cogl_la_SOURCES += \

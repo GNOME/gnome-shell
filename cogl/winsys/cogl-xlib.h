@@ -21,38 +21,17 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef __COGL_XLIB_H
+#define __COGL_XLIB_H
 
-#include "cogl-context.h"
+#include "cogl.h"
 
-void
-_cogl_create_context_winsys (CoglContext *context)
+typedef struct _CoglXlibFilterClosure CoglXlibFilterClosure;
+
+struct _CoglXlibFilterClosure
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
-  context->winsys.event_filters = NULL;
-#endif
-}
+  CoglXlibFilterFunc func;
+  gpointer data;
+};
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-
-#include "cogl-xlib.h"
-
-static void
-free_xlib_filter_closure (gpointer data, gpointer user_data)
-{
-  g_slice_free (CoglXlibFilterClosure, data);
-}
-
-#endif
-
-void
-_cogl_destroy_context_winsys (CoglContext *context)
-{
-#ifdef COGL_HAS_XLIB_SUPPORT
-  g_slist_foreach (context->winsys.event_filters,
-                   free_xlib_filter_closure, NULL);
-  g_slist_free (context->winsys.event_filters);
-#endif
-}
+#endif /* __COGL_XLIB_H */
