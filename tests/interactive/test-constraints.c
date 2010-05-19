@@ -126,6 +126,7 @@ test_constraints_main (int argc, char *argv[])
   stage = clutter_stage_new ();
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Constraints");
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 800, 600);
 
   /* main rect */
