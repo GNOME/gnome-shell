@@ -53,6 +53,7 @@
 #endif
 
 #include "cogl/cogl.h"
+#include "cogl/cogl-internal.h"
 
 #include "../clutter-debug.h"
 #include "../clutter-device-manager.h"
@@ -240,6 +241,10 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       double dpi;
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
+
+      /* Cogl needs to know the Xlib display connection for
+         CoglTexturePixmapX11 */
+      _cogl_xlib_set_display (backend_x11->xdpy);
 
       if (clutter_screen == -1)
         backend_x11->xscreen = DefaultScreenOfDisplay (backend_x11->xdpy);

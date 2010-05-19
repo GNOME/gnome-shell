@@ -38,6 +38,8 @@
 #include "../clutter-debug.h"
 #include "../clutter-main.h"
 
+#include "cogl/cogl-internal.h"
+
 #include <string.h>
 
 #include <glib.h>
@@ -457,6 +459,10 @@ event_translate (ClutterBackend *backend,
           node = node->next;
         }
     }
+
+  /* Pass the event through Cogl */
+  if (_cogl_xlib_handle_event (xevent) == COGL_XLIB_FILTER_REMOVE)
+    return FALSE;
 
   /* Do further processing only on events for the stage window (the x11
    * filters might be getting events for other windows, so do not mess

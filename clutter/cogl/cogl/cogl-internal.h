@@ -146,6 +146,17 @@ typedef enum _CoglXlibFilterReturn {
 } CoglXlibFilterReturn;
 
 /*
+ * CoglXlibFilterFunc:
+ *
+ * A callback function that can be registered with
+ * _cogl_xlib_add_filter. The function should return
+ * %COGL_XLIB_FILTER_REMOVE if it wants to prevent further processing
+ * or %COGL_XLIB_FILTER_CONTINUE otherwise.
+ */
+typedef CoglXlibFilterReturn (* CoglXlibFilterFunc) (XEvent *xevent,
+                                                     gpointer data);
+
+/*
  * cogl_xlib_handle_event:
  * @xevent: pointer to XEvent structure
  *
@@ -162,6 +173,47 @@ typedef enum _CoglXlibFilterReturn {
  */
 CoglXlibFilterReturn
 _cogl_xlib_handle_event (XEvent *xevent);
+
+/*
+ * _cogl_xlib_get_display:
+ *
+ * Return value: the Xlib display that will be used by the Xlib winsys
+ * backend. The display needs to be set with _cogl_xlib_set_display()
+ * before this function is called.
+ */
+Display *
+_cogl_xlib_get_display (void);
+
+/*
+ * cogl_xlib_set_display:
+ *
+ * Sets the Xlib display that Cogl will use for the Xlib winsys
+ * backend. This function should eventually go away when Cogl gains a
+ * more complete winsys abstraction.
+ */
+void
+_cogl_xlib_set_display (Display *display);
+
+/*
+ * _cogl_xlib_add_filter:
+ *
+ * Adds a callback function that will receive all X11 events. The
+ * function can stop further processing of the event by return
+ * %COGL_XLIB_FILTER_REMOVE.
+ */
+void
+_cogl_xlib_add_filter (CoglXlibFilterFunc func,
+                       gpointer data);
+
+/*
+ * _cogl_xlib_remove_filter:
+ *
+ * Removes a callback that was previously added with
+ * _cogl_xlib_add_filter().
+ */
+void
+_cogl_xlib_remove_filter (CoglXlibFilterFunc func,
+                          gpointer data);
 
 #endif /* COGL_HAS_XLIB_SUPPORT */
 
