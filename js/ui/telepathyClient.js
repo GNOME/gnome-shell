@@ -406,7 +406,7 @@ ContactManager.prototype = {
 
         let info = this._connections[conn.getPath()];
         if (!info)
-            info = this.addConnection(conn);
+            info = this.addConnection(conn.getPath());
 
         if (!info.icons[handle])
             info.icons[handle] = [];
