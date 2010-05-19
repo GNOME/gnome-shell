@@ -65,24 +65,47 @@ struct _ClutterAnimatableIface
   GTypeInterface parent_iface;
 
   /*< public >*/
-  gboolean (* animate_property) (ClutterAnimatable *animatable,
-                                 ClutterAnimation  *animation,
-                                 const gchar       *property_name,
-                                 const GValue      *initial_value,
-                                 const GValue      *final_value,
-                                 gdouble            progress,
-                                 GValue            *value);
+  gboolean    (* animate_property)  (ClutterAnimatable *animatable,
+                                     ClutterAnimation  *animation,
+                                     const gchar       *property_name,
+                                     const GValue      *initial_value,
+                                     const GValue      *final_value,
+                                     gdouble            progress,
+                                     GValue            *value);
+  GParamSpec *(* find_property)     (ClutterAnimatable *animatable,
+                                     ClutterAnimation  *animation,
+                                     const gchar       *property_name);
+  void        (* get_initial_state) (ClutterAnimatable *animatable,
+                                     ClutterAnimation  *animation,
+                                     const gchar       *property_name,
+                                     GValue            *value);
+  void        (* set_final_state)   (ClutterAnimatable *animatable,
+                                     ClutterAnimation  *animation,
+                                     const gchar       *property_name,
+                                     const GValue      *value);
 };
 
 GType clutter_animatable_get_type (void) G_GNUC_CONST;
 
-gboolean clutter_animatable_animate_property (ClutterAnimatable *animatable,
-                                              ClutterAnimation  *animation,
-                                              const gchar       *property_name,
-                                              const GValue      *initial_value,
-                                              const GValue      *final_value,
-                                              gdouble            progress,
-                                              GValue            *value);
+gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
+                                                  ClutterAnimation  *animation,
+                                                  const gchar       *property_name,
+                                                  const GValue      *initial_value,
+                                                  const GValue      *final_value,
+                                                  gdouble            progress,
+                                                  GValue            *value);
+
+GParamSpec *clutter_animatable_find_property     (ClutterAnimatable *animatable,
+                                                  ClutterAnimation  *animation,
+                                                  const gchar       *property_name);
+void        clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
+                                                  ClutterAnimation  *animation,
+                                                  const gchar       *property_name,
+                                                  GValue            *initial);
+void        clutter_animatable_set_final_state   (ClutterAnimatable *animatable,
+                                                  ClutterAnimation  *animation,
+                                                  const gchar       *property_name,
+                                                  const GValue      *final);
 
 G_END_DECLS
 

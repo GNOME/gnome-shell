@@ -124,3 +124,66 @@ clutter_animatable_animate_property (ClutterAnimatable *animatable,
 
   return res;
 }
+
+GParamSpec *
+clutter_animatable_find_property (ClutterAnimatable *animatable,
+                                  ClutterAnimation  *animation,
+                                  const gchar       *property_name)
+{
+  ClutterAnimatableIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATABLE (animatable), NULL);
+  g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+
+  CLUTTER_NOTE (ANIMATION, "Looking for property '%s'", property_name);
+
+  iface = CLUTTER_ANIMATABLE_GET_IFACE (animatable);
+  if (iface->find_property != NULL)
+    return iface->find_property (animatable, animation, property_name);
+
+  return g_object_class_find_property (G_OBJECT_GET_CLASS (animatable),
+                                       property_name);
+}
+
+void
+clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
+                                      ClutterAnimation  *animation,
+                                      const gchar       *property_name,
+                                      GValue            *value)
+{
+  ClutterAnimatableIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATABLE (animatable));
+  g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
+  g_return_if_fail (property_name != NULL);
+
+  CLUTTER_NOTE (ANIMATION, "Getting initial state of '%s'", property_name);
+
+  iface = CLUTTER_ANIMATABLE_GET_IFACE (animatable);
+  if (iface->get_initial_state != NULL)
+    iface->get_initial_state (animatable, animation, property_name, value);
+  else
+    g_object_get_property (G_OBJECT (animatable), property_name, value);
+}
+
+void
+clutter_animatable_set_final_state (ClutterAnimatable *animatable,
+                                    ClutterAnimation  *animation,
+                                    const gchar       *property_name,
+                                    const GValue      *value)
+{
+  ClutterAnimatableIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_ANIMATABLE (animatable));
+  g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
+  g_return_if_fail (property_name != NULL);
+
+  CLUTTER_NOTE (ANIMATION, "Setting state of property '%s'", property_name);
+
+  iface = CLUTTER_ANIMATABLE_GET_IFACE (animatable);
+  if (iface->set_final_state != NULL)
+    iface->set_final_state (animatable, animation, property_name, value);
+  else
+    g_object_set_property (G_OBJECT (animatable), property_name, value);
+}
