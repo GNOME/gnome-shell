@@ -80,6 +80,7 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
+	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
 	$(srcdir)/clutter-box.h			\
@@ -158,6 +159,7 @@ source_c = \
 	$(srcdir)/clutter-behaviour-rotate.c	\
 	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
+	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
 	$(srcdir)/clutter-bin-layout.c		\
 	$(srcdir)/clutter-box.c			\

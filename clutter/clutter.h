@@ -45,6 +45,7 @@
 #include "clutter-behaviour-path.h"
 #include "clutter-behaviour-rotate.h"
 #include "clutter-behaviour-scale.h"
+#include "clutter-bind-constraint.h"
 #include "clutter-binding-pool.h"
 #include "clutter-bin-layout.h"
 #include "clutter-box.h"
