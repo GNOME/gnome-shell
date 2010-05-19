@@ -75,9 +75,10 @@ check_pixel (TestState *state, int x, int y, guint32 color)
 }
 
 static void
-test_invalid_texture_layers (TestState *state, int x, int y)
+test_material_with_primitives (TestState *state,
+                               int x, int y,
+                               guint32 color)
 {
-  CoglHandle        material = cogl_material_new ();
   CoglTextureVertex verts[4] = {
     { .x = 0,          .y = 0,          .z = 0 },
     { .x = 0,          .y = QUAD_WIDTH, .z = 0 },
@@ -90,12 +91,6 @@ test_invalid_texture_layers (TestState *state, int x, int y)
 
   cogl_translate (x * QUAD_WIDTH, y * QUAD_WIDTH, 0);
 
-  /* explicitly create a layer with an invalid handle. This may be desireable
-   * if the user also sets a texture combine string that e.g. refers to a
-   * constant color. */
-  cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
-
-  cogl_set_source (material);
   cogl_rectangle (0, 0, QUAD_WIDTH, QUAD_WIDTH);
 
   cogl_translate (0, QUAD_WIDTH, 0);
@@ -111,19 +106,34 @@ test_invalid_texture_layers (TestState *state, int x, int y)
                           sizeof (CoglTextureVertex), /* stride */
                           verts);
   cogl_vertex_buffer_draw (vbo,
-			   COGL_VERTICES_MODE_TRIANGLE_FAN,
-			   0, /* first */
-			   4); /* count */
+                           COGL_VERTICES_MODE_TRIANGLE_FAN,
+                           0, /* first */
+                           4); /* count */
   cogl_handle_unref (vbo);
 
   cogl_pop_matrix ();
 
+  check_pixel (state, x, y,   color);
+  check_pixel (state, x, y+1, color);
+  check_pixel (state, x, y+2, color);
+}
+
+static void
+test_invalid_texture_layers (TestState *state, int x, int y)
+{
+  CoglHandle        material = cogl_material_new ();
+
+  /* explicitly create a layer with an invalid handle. This may be desireable
+   * if the user also sets a texture combine string that e.g. refers to a
+   * constant color. */
+  cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
+
+  cogl_set_source (material);
+
   cogl_handle_unref (material);
 
   /* We expect a white fallback material to be used */
-  check_pixel (state, x, y,   0xffffffff);
-  check_pixel (state, x, y+1, 0xffffffff);
-  check_pixel (state, x, y+2, 0xffffffff);
+  test_material_with_primitives (state, x, y, 0xffffffff);
 }
 
 static void
@@ -136,10 +146,6 @@ test_using_all_layers (TestState *state, int x, int y)
   CoglHandle red_texture;
   GLint n_layers;
   int i;
-
-  cogl_push_matrix ();
-
-  cogl_translate (x * QUAD_WIDTH, y * QUAD_WIDTH, 0);
 
   /* Create a material that uses the maximum number of layers. All but
      the last layer will use a solid white texture. The last layer
@@ -182,16 +188,13 @@ test_using_all_layers (TestState *state, int x, int y)
     }
 
   cogl_set_source (material);
-  cogl_rectangle (0, 0, QUAD_WIDTH, QUAD_WIDTH);
-
-  cogl_pop_matrix ();
 
   cogl_handle_unref (material);
   cogl_handle_unref (white_texture);
   cogl_handle_unref (red_texture);
 
   /* We expect the final fragment to be red */
-  check_pixel (state, x, y, 0xff0000ff);
+  test_material_with_primitives (state, x, y, 0xff0000ff);
 }
 
 static void
