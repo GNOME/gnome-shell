@@ -944,7 +944,7 @@ Panel.prototype = {
         let clockButton = new St.Button({ style_class: 'panel-button',
                                           toggle_mode: true,
                                           x_fill: true,
-                                          y_fill: true });
+                                          y_fill: false });
         this._centerBox.add(clockButton, { y_fill: true });
         clockButton.connect('clicked', Lang.bind(this, this._toggleCalendar));
 
