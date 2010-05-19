@@ -1012,7 +1012,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   unsigned int         stride;
   gsize                stride_bytes;
   GLfloat             *v;
-  int                  prev_n_texcoord_arrays_enabled;
+  unsigned int         layers_mask;
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
   CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
 
@@ -1165,14 +1165,9 @@ cogl_polygon (const CoglTextureVertex *vertices,
                              v + 3 + 2 * i));
     }
 
-  prev_n_texcoord_arrays_enabled = ctx->n_texcoord_arrays_enabled;
-  ctx->n_texcoord_arrays_enabled = n_layers;
-
-  for (; i < prev_n_texcoord_arrays_enabled; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-    }
+  layers_mask = ~((~(unsigned int) 0) << n_layers);
+  ctx->texcoord_arrays_enabled |= layers_mask;
+  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled & ~layers_mask);
 
   if (use_sliced_polygon_fallback)
     _cogl_texture_polygon_multiple_primitives (vertices,

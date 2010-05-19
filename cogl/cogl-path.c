@@ -190,7 +190,6 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
   float            bounds_h;
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle       prev_source;
-  int              i;
   CoglHandle       framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -263,12 +262,8 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
 
   GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
-  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-    }
-  ctx->n_texcoord_arrays_enabled = 0;
+  /* Disable all client texture coordinate arrays */
+  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled);
 
   while (path_start < path->data->path_nodes->len)
     {

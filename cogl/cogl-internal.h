@@ -132,6 +132,9 @@ _cogl_get_max_texture_image_units (void);
 void
 _cogl_flush_face_winding (void);
 
+void
+_cogl_disable_texcoord_arrays (unsigned int mask);
+
 #ifdef COGL_HAS_XLIB_SUPPORT
 
 /*

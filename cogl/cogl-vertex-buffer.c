@@ -1518,10 +1518,9 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   GLuint       generic_index = 0;
 #endif
   unsigned long enable_flags = 0;
-  int          max_texcoord_attrib_unit = -1;
+  unsigned int texcoord_arrays_used = 0;
   const GList *layers;
   guint32      fallback_layers = 0;
-  guint32      disable_layers = ~0;
   int          i;
   CoglMaterialFlushOptions options;
 
@@ -1531,8 +1530,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     cogl_vertex_buffer_submit_real (buffer);
 
   options.flags =
-    COGL_MATERIAL_FLUSH_FALLBACK_MASK |
-    COGL_MATERIAL_FLUSH_DISABLE_MASK;
+    COGL_MATERIAL_FLUSH_FALLBACK_MASK;
   memset (&options.wrap_mode_overrides, 0,
           sizeof (options.wrap_mode_overrides));
 
@@ -1598,9 +1596,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 				     gl_type,
 				     attribute->stride,
 				     pointer));
-              if (attribute->texture_unit > max_texcoord_attrib_unit)
-                max_texcoord_attrib_unit = attribute->texture_unit;
-              disable_layers &= ~(1 << attribute->texture_unit);
+              texcoord_arrays_used |= (1 << attribute->texture_unit);
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
@@ -1638,7 +1634,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   layers = cogl_material_get_layers (ctx->source_material);
   for (tmp = (GList *)layers, i = 0;
-       tmp != NULL && i <= max_texcoord_attrib_unit;
+       tmp != NULL;
        tmp = tmp->next, i++)
     {
       CoglHandle layer = (CoglHandle)tmp->data;
@@ -1702,12 +1698,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
         }
     }
 
-  for (i = max_texcoord_attrib_unit + 1; i < ctx->n_texcoord_arrays_enabled; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-    }
-  ctx->n_texcoord_arrays_enabled = max_texcoord_attrib_unit + 1;
+  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled &
+                                 ~texcoord_arrays_used);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should
@@ -1715,7 +1707,6 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   options.fallback_layers = fallback_layers;
-  options.disable_layers = disable_layers;
 
   _cogl_material_flush_gl_state (ctx->source_material, &options);
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);

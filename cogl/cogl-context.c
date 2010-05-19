@@ -97,7 +97,7 @@ cogl_create_context (void)
           0, sizeof (CoglMaterialFlushOptions));
   _context->current_layers = g_array_new (FALSE, FALSE,
                                           sizeof (CoglLayerInfo));
-  _context->n_texcoord_arrays_enabled = 0;
+  _context->texcoord_arrays_enabled = 0;
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 

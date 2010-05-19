@@ -764,11 +764,35 @@ cogl_read_pixels (int x,
 }
 
 void
+_cogl_disable_texcoord_arrays (unsigned int mask)
+{
+  int i = 0;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Update the mask of arrays that are enabled */
+  ctx->texcoord_arrays_enabled &= ~mask;
+
+  /* Disable all of the texture coord arrays that have a 1 in the bit
+     position in mask */
+  while (mask)
+    {
+      if ((mask & 1))
+        {
+          GE (glClientActiveTexture (GL_TEXTURE0 + i));
+          GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+        }
+
+      i++;
+      mask >>= 1;
+    }
+}
+
+void
 cogl_begin_gl (void)
 {
   CoglMaterialFlushOptions options;
   unsigned long enable_flags = 0;
-  int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -816,12 +840,7 @@ cogl_begin_gl (void)
   _cogl_flush_face_winding ();
 
   /* Disable all client texture coordinate arrays */
-  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-    }
-  ctx->n_texcoord_arrays_enabled = 0;
+  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled);
 }
 
 void
