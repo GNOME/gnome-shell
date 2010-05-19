@@ -37,8 +37,26 @@ G_BEGIN_DECLS
 #define CLUTTER_BIND_CONSTRAINT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BIND_CONSTRAINT, ClutterBindConstraint))
 #define CLUTTER_IS_BIND_CONSTRAINT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BIND_CONSTRAINT))
 
+/**
+ * ClutterBindConstraint:
+ *
+ * <structname>ClutterBindConstraint</structname> is an opaque structure
+ * whose members cannot be directly accessed
+ *
+ * Since: 1.4
+ */
 typedef struct _ClutterBindConstraint   ClutterBindConstraint;
 
+/**
+ * ClutterBindCoordinate:
+ * @CLUTTER_BIND_X: Bind the X coordinate
+ * @CLUTTER_BIND_Y: Bind the Y coordinate
+ * @CLUTTER_BIND_Z: Bind the Z coordinate
+ *
+ * Specifies which coordinate should be used in a binding
+ *
+ * Since: 1.4
+ */
 typedef enum { /*< prefix=CLUTTER_BIND >*/
   CLUTTER_BIND_X,
   CLUTTER_BIND_Y,

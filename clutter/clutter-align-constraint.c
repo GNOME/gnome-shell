@@ -1,3 +1,39 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:ClutterAlignConstraint
+ * @Title: ClutterAlignConstraint
+ * @Short_Description: A constraint aligning the position of an actor
+ *
+ * #ClutterAlignConstraint is a #ClutterConstraint that aligns the position
+ * of the #ClutterActor to which it is applied to the size of another
+ * #ClutterActor using an alignment factor
+ *
+ * #ClutterAlignConstraint is available since Clutter 1.4
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -209,14 +245,28 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
   gobject_class->set_property = clutter_align_constraint_set_property;
   gobject_class->get_property = clutter_align_constraint_get_property;
 
+  /**
+   * ClutterAlignConstraint:source:
+   *
+   * The #ClutterActor used as the source for the alignment
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_object ("source",
                                "Source",
-                               "The source of the binding",
+                               "The source of the alignment",
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 
+  /**
+   * ClutterAlignConstraint:align-axis:
+   *
+   * The axis to be used to compute the alignment
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_enum ("align-axis",
                              "Align Axis",
                              "The axis to align the position to",
@@ -226,6 +276,18 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
                              G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class, PROP_ALIGN_AXIS, pspec);
 
+  /**
+   * ClutterAlignConstraint:factor:
+   *
+   * The alignment factor, as a normalized value between 0.0 and 1.0
+   *
+   * The #ClutterAlignConstraint:factor depends on the
+   * #ClutterAlignConstraint:align-axis value: with %CLUTTER_ALIGN_X_AXIS,
+   * 0.0 means left and 1.0 means right; with %CLUTTER_ALIGN_Y_AXIS, 0.0
+   * means top and 1.0 means bottom
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_float ("factor",
                               "Factor",
                               "The alignment factor, between 0.0 and 1.0",
@@ -244,6 +306,20 @@ clutter_align_constraint_init (ClutterAlignConstraint *self)
   self->factor = 0.0f;
 }
 
+/**
+ * clutter_align_constraint_new:
+ * @source: the #ClutterActor to use as the source of the alignment
+ * @axis: the axis to be used to compute the alignment
+ * @factor: the alignment factor, between 0.0 and 1.0
+ *
+ * Creates a new constraint, aligning a #ClutterActor's position with
+ * regards of the size of the actor to @source, with the given alignment
+ * @factor
+ *
+ * Return value: the newly created #ClutterAlignConstraint
+ *
+ * Since: 1.4
+ */
 ClutterConstraint *
 clutter_align_constraint_new (ClutterActor     *source,
                               ClutterAlignAxis  axis,
