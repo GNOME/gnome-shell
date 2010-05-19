@@ -1,0 +1,259 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "clutter-align-constraint.h"
+
+#include "clutter-constraint.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-private.h"
+
+#define CLUTTER_ALIGN_CONSTRAINT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ALIGN_CONSTRAINT, ClutterAlignConstraintClass))
+#define CLUTTER_IS_ALIGN_CONSTRAINT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ALIGN_CONSTRAINT))
+#define CLUTTER_ALIGN_CONSTRAINT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ALIGN_CONSTRAINT, ClutterAlignConstraintClass))
+
+typedef struct _ClutterAlignConstraintClass      ClutterAlignConstraintClass;
+
+struct _ClutterAlignConstraint
+{
+  ClutterConstraint parent_instance;
+
+  ClutterActor *source;
+  ClutterAlignAxis align_axis;
+  gfloat factor;
+};
+
+struct _ClutterAlignConstraintClass
+{
+  ClutterConstraintClass parent_class;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_SOURCE,
+  PROP_ALIGN_AXIS,
+  PROP_FACTOR
+};
+
+G_DEFINE_TYPE (ClutterAlignConstraint,
+               clutter_align_constraint,
+               CLUTTER_TYPE_CONSTRAINT);
+
+static void
+update_actor_position (ClutterAlignConstraint *align)
+{
+  gfloat source_width, source_height;
+  gfloat actor_width, actor_height;
+  ClutterActor *actor;
+
+  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (align)))
+    return;
+
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (align));
+  if (actor == NULL)
+    return;
+
+  clutter_actor_get_size (align->source, &source_width, &source_height);
+  clutter_actor_get_size (actor, &actor_width, &actor_height);
+
+  switch (align->align_axis)
+    {
+    case CLUTTER_ALIGN_X_AXIS:
+      clutter_actor_set_x (actor, (source_width - actor_width) * align->factor);
+      break;
+
+    case CLUTTER_ALIGN_Y_AXIS:
+      clutter_actor_set_y (actor, (source_height - actor_height) * align->factor);
+      break;
+    }
+}
+
+static void
+source_position_changed (GObject                *gobject,
+                         GParamSpec             *pspec,
+                         ClutterAlignConstraint *align)
+{
+  if (strcmp (pspec->name, "width") == 0 ||
+      strcmp (pspec->name, "height") == 0)
+    {
+      update_actor_position (align);
+    }
+}
+
+static void
+source_destroyed (ClutterActor           *actor,
+                  ClutterAlignConstraint *align)
+{
+  align->source = NULL;
+}
+
+static void
+_clutter_align_constraint_set_source (ClutterAlignConstraint *align,
+                                      ClutterActor           *source)
+{
+  ClutterActor *old_source = align->source;
+
+  if (old_source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_destroyed),
+                                            align);
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_position_changed),
+                                            align);
+    }
+
+  align->source = source;
+  g_signal_connect (align->source, "notify",
+                    G_CALLBACK (source_position_changed),
+                    align);
+  g_signal_connect (align->source, "destroy",
+                    G_CALLBACK (source_destroyed),
+                    align);
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "source");
+}
+
+static void
+_clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
+                                          ClutterAlignAxis        axis)
+{
+  if (align->align_axis == axis)
+    return;
+
+  align->align_axis = axis;
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "align-axis");
+}
+
+static void
+_clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
+                                      gfloat                  factor)
+{
+  align->factor = CLAMP (factor, 0.0, 1.0);
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "factor");
+}
+
+static void
+clutter_align_constraint_set_property (GObject      *gobject,
+                                       guint         prop_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
+{
+  ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_SOURCE:
+      _clutter_align_constraint_set_source (align, g_value_get_object (value));
+      break;
+
+    case PROP_ALIGN_AXIS:
+      _clutter_align_constraint_set_align_axis (align, g_value_get_enum (value));
+      break;
+
+    case PROP_FACTOR:
+      _clutter_align_constraint_set_factor (align, g_value_get_float (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_align_constraint_get_property (GObject    *gobject,
+                                       guint       prop_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
+{
+  ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_SOURCE:
+      g_value_set_object (value, align->source);
+      break;
+
+    case PROP_ALIGN_AXIS:
+      g_value_set_enum (value, align->align_axis);
+      break;
+
+    case PROP_FACTOR:
+      g_value_set_float (value, align->factor);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  gobject_class->set_property = clutter_align_constraint_set_property;
+  gobject_class->get_property = clutter_align_constraint_get_property;
+
+  pspec = g_param_spec_object ("source",
+                               "Source",
+                               "The source of the binding",
+                               CLUTTER_TYPE_ACTOR,
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_CONSTRUCT);
+  g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
+
+  pspec = g_param_spec_enum ("align-axis",
+                             "Align Axis",
+                             "The axis to align the position to",
+                             CLUTTER_TYPE_ALIGN_AXIS,
+                             CLUTTER_ALIGN_X_AXIS,
+                             CLUTTER_PARAM_READWRITE |
+                             G_PARAM_CONSTRUCT);
+  g_object_class_install_property (gobject_class, PROP_ALIGN_AXIS, pspec);
+
+  pspec = g_param_spec_float ("factor",
+                              "Factor",
+                              "The alignment factor, between 0.0 and 1.0",
+                              0.0, 1.0,
+                              0.0,
+                              CLUTTER_PARAM_READWRITE |
+                              G_PARAM_CONSTRUCT);
+  g_object_class_install_property (gobject_class, PROP_FACTOR, pspec);
+}
+
+static void
+clutter_align_constraint_init (ClutterAlignConstraint *self)
+{
+  self->source = NULL;
+  self->align_axis = CLUTTER_ALIGN_X_AXIS;
+  self->factor = 0.0f;
+}
+
+ClutterConstraint *
+clutter_align_constraint_new (ClutterActor     *source,
+                              ClutterAlignAxis  axis,
+                              gfloat            factor)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (source), NULL);
+
+  return g_object_new (CLUTTER_TYPE_ALIGN_CONSTRAINT,
+                       "source", source,
+                       "align-axis", axis,
+                       "factor", factor,
+                       NULL);
+}

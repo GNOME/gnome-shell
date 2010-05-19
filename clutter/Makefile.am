@@ -68,6 +68,7 @@ source_h =					\
 	$(srcdir)/clutter-action.h		\
 	$(srcdir)/clutter-actor-meta.h		\
 	$(srcdir)/clutter-actor.h		\
+	$(srcdir)/clutter-align-constraint.h	\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
@@ -146,6 +147,7 @@ source_c = \
 	$(srcdir)/clutter-action.c		\
 	$(srcdir)/clutter-actor-meta.c		\
 	$(srcdir)/clutter-actor.c		\
+	$(srcdir)/clutter-align-constraint.c	\
 	$(srcdir)/clutter-alpha.c 		\
 	$(srcdir)/clutter-animatable.c		\
 	$(srcdir)/clutter-animation.c		\
