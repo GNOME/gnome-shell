@@ -41,10 +41,6 @@ on_button_release (ClutterActor *actor,
                   * -1.0f;
       east_offset = (clutter_actor_get_width (rects[Center]) + H_PADDING);
 
-      clutter_actor_animate (rects[Center], CLUTTER_LINEAR, 500,
-                             "opacity", 128,
-                             NULL);
-
       clutter_actor_animate (rects[NorthWest], CLUTTER_EASE_OUT_CUBIC, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", west_offset,
