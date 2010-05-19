@@ -799,6 +799,8 @@ _cogl_material_get_layer (CoglMaterial *material,
   material->layers =
     g_list_insert_before (material->layers, tmp, layer_handle);
 
+  material->n_layers++;
+
   return layer;
 }
 
@@ -824,7 +826,6 @@ cogl_material_set_layer (CoglHandle material_handle,
   /* possibly flush primitives referencing the current state... */
   _cogl_material_pre_change_notify (material, FALSE, NULL);
 
-  material->n_layers = g_list_length (material->layers);
   if (material->n_layers > _cogl_get_max_texture_image_units ())
     {
       if (!(material->flags & COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING))
