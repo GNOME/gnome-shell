@@ -1,3 +1,27 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
@@ -16,16 +40,16 @@ G_BEGIN_DECLS
 typedef struct _ClutterBindConstraint   ClutterBindConstraint;
 
 typedef enum { /*< prefix=CLUTTER_BIND >*/
-  CLUTTER_BIND_X_AXIS,
-  CLUTTER_BIND_Y_AXIS,
-  CLUTTER_BIND_Z_AXIS
-} ClutterBindAxis;
+  CLUTTER_BIND_X,
+  CLUTTER_BIND_Y,
+  CLUTTER_BIND_Z
+} ClutterBindCoordinate;
 
 GType clutter_bind_constraint_get_type (void) G_GNUC_CONST;
 
-ClutterConstraint *clutter_bind_constraint_new (ClutterActor    *source,
-                                                ClutterBindAxis  axis,
-                                                gfloat           offset);
+ClutterConstraint *clutter_bind_constraint_new (ClutterActor          *source,
+                                                ClutterBindCoordinate  coordinate,
+                                                gfloat                 offset);
 
 G_END_DECLS
 

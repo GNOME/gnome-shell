@@ -21,6 +21,9 @@ on_button_release (ClutterActor *actor,
                          * -1.0f;
       gfloat right_offset = clutter_actor_get_width (right_rect) + H_PADDING;
 
+      clutter_actor_animate (center_rect, CLUTTER_LINEAR, 500,
+                             "opacity", 128,
+                             NULL);
       clutter_actor_animate (left_rect, CLUTTER_EASE_OUT_CUBIC, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", left_offset,
@@ -32,6 +35,9 @@ on_button_release (ClutterActor *actor,
     }
   else
     {
+      clutter_actor_animate (center_rect, CLUTTER_LINEAR, 500,
+                             "opacity", 255,
+                             NULL);
       clutter_actor_animate (left_rect, CLUTTER_EASE_OUT_CUBIC, 500,
                              "opacity", 0,
                              "@constraints.x-bind.offset", 0.0f,
@@ -68,7 +74,7 @@ test_constraints_main (int argc, char *argv[])
                     G_CALLBACK (on_button_release),
                     NULL);
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
-  clutter_actor_set_size (rect, 256, 256);
+  clutter_actor_set_size (rect, 128, 128);
   clutter_actor_set_reactive (rect, TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
@@ -86,11 +92,11 @@ test_constraints_main (int argc, char *argv[])
   clutter_color_from_string (&rect_color, "#cc0000ff");
   rect = clutter_rectangle_new ();
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
-  clutter_actor_set_size (rect, 256, 256);
+  clutter_actor_set_size (rect, 128, 128);
   clutter_actor_set_opacity (rect, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
-  constraint = clutter_bind_constraint_new (center_rect, CLUTTER_BIND_X_AXIS, 0.0f);
+  constraint = clutter_bind_constraint_new (center_rect, CLUTTER_BIND_X, 0.0f);
   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "x-bind");
   clutter_actor_add_constraint (rect, constraint);
 
@@ -104,11 +110,11 @@ test_constraints_main (int argc, char *argv[])
   clutter_color_from_string (&rect_color, "#3465a4ff");
   rect = clutter_rectangle_new ();
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
-  clutter_actor_set_size (rect, 256, 256);
+  clutter_actor_set_size (rect, 128, 128);
   clutter_actor_set_opacity (rect, 0);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
-  constraint = clutter_bind_constraint_new (center_rect, CLUTTER_BIND_X_AXIS, 0.0f);
+  constraint = clutter_bind_constraint_new (center_rect, CLUTTER_BIND_X, 0.0f);
   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "x-bind");
   clutter_actor_add_constraint (rect, constraint);
 

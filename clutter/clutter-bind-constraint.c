@@ -1,3 +1,39 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:ClutterBindConstraint
+ * @Title: ClutterBindConstraint
+ * @Short_Description: A constraint binding the position of an actor
+ *
+ * #ClutterBindConstraint is a #ClutterConstraint that binds the position of
+ * the #ClutterActor to which it is applied to the the position of another
+ * #ClutterActor.
+ *
+ * #ClutterBindConstraint is available since Clutter 1.4
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -20,7 +56,7 @@ struct _ClutterBindConstraint
   ClutterConstraint parent_instance;
 
   ClutterActor *source;
-  ClutterBindAxis bind_axis;
+  ClutterBindCoordinate coordinate;
   gfloat offset;
 };
 
@@ -34,7 +70,7 @@ enum
   PROP_0,
 
   PROP_SOURCE,
-  PROP_BIND_AXIS,
+  PROP_COORDINATE,
   PROP_OFFSET
 };
 
@@ -59,17 +95,17 @@ update_actor_position (ClutterBindConstraint *bind)
   source_position.y = clutter_actor_get_y (bind->source);
   source_position.z = clutter_actor_get_depth (bind->source);
 
-  switch (bind->bind_axis)
+  switch (bind->coordinate)
     {
-    case CLUTTER_BIND_X_AXIS:
+    case CLUTTER_BIND_X:
       clutter_actor_set_x (actor, source_position.x + bind->offset);
       break;
 
-    case CLUTTER_BIND_Y_AXIS:
+    case CLUTTER_BIND_Y:
       clutter_actor_set_y (actor, source_position.y + bind->offset);
       break;
 
-    case CLUTTER_BIND_Z_AXIS:
+    case CLUTTER_BIND_Z:
       clutter_actor_set_depth (actor, source_position.z + bind->offset);
       break;
     }
@@ -89,7 +125,7 @@ source_position_changed (GObject               *gobject,
 }
 
 static void
-source_destroyed (ClutterActor *actor,
+source_destroyed (ClutterActor          *actor,
                   ClutterBindConstraint *bind)
 {
   bind->source = NULL;
@@ -125,17 +161,17 @@ _clutter_bind_constraint_set_source (ClutterBindConstraint *bind,
 }
 
 static void
-_clutter_bind_constraint_set_bind_axis (ClutterBindConstraint *bind,
-                                        ClutterBindAxis        axis)
+_clutter_bind_constraint_set_coordinate (ClutterBindConstraint *bind,
+                                         ClutterBindCoordinate  coord)
 {
-  if (bind->bind_axis == axis)
+  if (bind->coordinate == coord)
     return;
 
-  bind->bind_axis = axis;
+  bind->coordinate = coord;
 
   update_actor_position (bind);
 
-  g_object_notify (G_OBJECT (bind), "bind-axis");
+  g_object_notify (G_OBJECT (bind), "coordinate");
 }
 
 static void
@@ -166,8 +202,8 @@ clutter_bind_constraint_set_property (GObject      *gobject,
       _clutter_bind_constraint_set_source (bind, g_value_get_object (value));
       break;
 
-    case PROP_BIND_AXIS:
-      _clutter_bind_constraint_set_bind_axis (bind, g_value_get_enum (value));
+    case PROP_COORDINATE:
+      _clutter_bind_constraint_set_coordinate (bind, g_value_get_enum (value));
       break;
 
     case PROP_OFFSET:
@@ -194,8 +230,8 @@ clutter_bind_constraint_get_property (GObject    *gobject,
       g_value_set_object (value, bind->source);
       break;
 
-    case PROP_BIND_AXIS:
-      g_value_set_enum (value, bind->bind_axis);
+    case PROP_COORDINATE:
+      g_value_set_enum (value, bind->coordinate);
       break;
 
     case PROP_OFFSET:
@@ -217,6 +253,13 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
   gobject_class->set_property = clutter_bind_constraint_set_property;
   gobject_class->get_property = clutter_bind_constraint_get_property;
 
+  /**
+   * ClutterBindConstraint:source:
+   *
+   * The #ClutterActor used as the source for the binding
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_object ("source",
                                "Source",
                                "The source of the binding",
@@ -225,15 +268,29 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
                                G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 
-  pspec = g_param_spec_enum ("bind-axis",
-                             "Bind Axis",
-                             "The axis to bind the position from",
-                             CLUTTER_TYPE_BIND_AXIS,
-                             CLUTTER_BIND_X_AXIS,
+  /**
+   * ClutterBindConstraint:coordinate:
+   *
+   * The coordinate to be bound
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_enum ("coordinate",
+                             "Coordinate",
+                             "The coordinate to bind",
+                             CLUTTER_TYPE_BIND_COORDINATE,
+                             CLUTTER_BIND_X,
                              CLUTTER_PARAM_READWRITE |
                              G_PARAM_CONSTRUCT);
-  g_object_class_install_property (gobject_class, PROP_BIND_AXIS, pspec);
+  g_object_class_install_property (gobject_class, PROP_COORDINATE, pspec);
 
+  /**
+   * ClutterBindConstraint:offset:
+   *
+   * The offset, in pixels, to be applied to the binding
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_float ("offset",
                               "Offset",
                               "The offset in pixels to apply to the binding",
@@ -248,20 +305,33 @@ static void
 clutter_bind_constraint_init (ClutterBindConstraint *self)
 {
   self->source = NULL;
-  self->bind_axis = CLUTTER_BIND_X_AXIS;
+  self->coordinate = CLUTTER_BIND_X;
   self->offset = 0.0f;
 }
 
+/**
+ * clutter_bind_constraint_new:
+ * @source: the #ClutterActor to use as the source of the binding
+ * @coordinate: the coordinate to bind
+ * @offset: the offset to apply to the binding, in pixels
+ *
+ * Creates a new constraint, binding a #ClutterActor's position to
+ * the given @coordinate of the position of @source
+ *
+ * Return value: the newly created #ClutterBindConstraint
+ *
+ * Since: 1.4
+ */
 ClutterConstraint *
-clutter_bind_constraint_new (ClutterActor    *source,
-                             ClutterBindAxis  axis,
-                             gfloat           offset)
+clutter_bind_constraint_new (ClutterActor          *source,
+                             ClutterBindCoordinate  coordinate,
+                             gfloat                 offset)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (source), NULL);
 
   return g_object_new (CLUTTER_TYPE_BIND_CONSTRAINT,
                        "source", source,
-                       "bind-axis", axis,
+                       "coordinate", coordinate,
                        "offset", offset,
                        NULL);
 }
