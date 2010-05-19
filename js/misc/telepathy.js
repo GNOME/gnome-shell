@@ -22,7 +22,7 @@ function nameToPath(name) {
 
 function pathToName(path) {
     if (path[0] != '/')
-	throw new Error('not a D-Bus path: ' + path);
+        throw new Error('not a D-Bus path: ' + path);
     return path.substr(1).replace('/', '.', 'g');
 };
 

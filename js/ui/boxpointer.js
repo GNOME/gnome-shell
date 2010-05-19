@@ -1,7 +1,8 @@
-const Lang = imports.lang;
+/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
+const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
@@ -77,7 +78,7 @@ BoxPointer.prototype = {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        childBox.x1 = 0
+        childBox.x1 = 0;
         childBox.y1 = 0;
         childBox.x2 = availWidth;
         childBox.y2 = availHeight;
@@ -160,4 +161,4 @@ BoxPointer.prototype = {
             this._border.queue_repaint();
         }
     }
-}
+};

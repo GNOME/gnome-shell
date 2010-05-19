@@ -184,7 +184,7 @@ PanelMenuItem.prototype = {
 
         this.label = new St.Label({ text: text });
         this.actor.set_child(this.label);
-    },
+    }
 };
 
 function PanelSeparatorMenuItem() {
@@ -209,9 +209,9 @@ PanelSeparatorMenuItem.prototype = {
         let found, margin, gradientHeight;
         [found, margin] = themeNode.get_length('-margin-horizontal', false);
         [found, gradientHeight] = themeNode.get_length('-gradient-height', false);
-        let startColor = new Clutter.Color()
+        let startColor = new Clutter.Color();
         themeNode.get_color('-gradient-start', false, startColor);
-        let endColor = new Clutter.Color()
+        let endColor = new Clutter.Color();
         themeNode.get_color('-gradient-end', false, endColor);
 
         let gradientWidth = (width - margin * 2);
@@ -1112,12 +1112,12 @@ Panel.prototype = {
                 break;
             case '24-hour':
                 if (showDate)
-	            /* Translators: This is the time format with date used
+                    /* Translators: This is the time format with date used
                        in 24-hour mode. */
                     clockFormat = showSeconds ? _("%a %b %e, %R:%S")
                                               : _("%a %b %e, %R");
                 else
-	            /* Translators: This is the time format without date used
+                    /* Translators: This is the time format without date used
                        in 24-hour mode. */
                     clockFormat = showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
@@ -1125,12 +1125,12 @@ Panel.prototype = {
             case '12-hour':
             default:
                 if (showDate)
-	            /* Translators: This is a time format with date used
+                    /* Translators: This is a time format with date used
                        for AM/PM. */
                     clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
                                               : _("%a %b %e, %l:%M %p");
                 else
-	            /* Translators: This is a time format without date used
+                    /* Translators: This is a time format without date used
                        for AM/PM. */
                     clockFormat = showSeconds ? _("%a %l:%M:%S %p")
                                               : _("%a %l:%M %p");

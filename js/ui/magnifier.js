@@ -588,7 +588,7 @@ Magnifier.prototype = {
         let gConf = Shell.GConf.get_default();
         this.setCrosshairsClip(gConf.get_boolean(CROSS_HAIRS_CLIP_KEY));
     }
-}
+};
 
 function ZoomRegion(magnifier, mouseRoot) {
     this._init(magnifier, mouseRoot);
@@ -1200,7 +1200,7 @@ ZoomRegion.prototype = {
             this._crosshairsActor.set_position(x - groupWidth / 2, y - groupHeight / 2);
         }
     }
-}
+};
 
 function Crosshairs() {
     this._init();
@@ -1476,4 +1476,4 @@ Crosshairs.prototype = {
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
         this._vertBottomHair.set_position((groupWidth - thickness) / 2, bottom);
     }
- }
+};

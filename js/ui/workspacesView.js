@@ -633,11 +633,11 @@ SingleView.prototype = {
         this._leftShadow = new St.Bin({ style_class: 'left-workspaces-shadow',
                                         width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
                                         height: global.screen_height,
-                                        x: global.screen_width })
+                                        x: global.screen_width });
         this._rightShadow = new St.Bin({ style_class: 'right-workspaces-shadow',
                                          width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
                                          height: global.screen_height,
-                                         x: global.screen_width })
+                                         x: global.screen_width });
 
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
@@ -1071,7 +1071,7 @@ SingleView.prototype = {
     },
 
     updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces, lostWorkspaces) {
-	let active = global.screen.get_active_workspace_index();
+        let active = global.screen.get_active_workspace_index();
 
         for (let l = 0; l < lostWorkspaces.length; l++)
             lostWorkspaces[l].disconnectAll();
@@ -1545,7 +1545,7 @@ WorkspacesControls.prototype = {
     },
 
     _workspacesChanged: function() {
-        let showToggleButton = (global.screen.n_workspaces > 1)
+        let showToggleButton = (global.screen.n_workspaces > 1);
         Tweener.addTween(this._toggleViewButton,
                          { opacity: showToggleButton ? 255 : 0,
                            time: WORKSPACE_SWITCH_TIME,

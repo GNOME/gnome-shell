@@ -1,3 +1,5 @@
+/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const GConf = imports.gi.GConf;

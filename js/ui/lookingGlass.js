@@ -173,7 +173,7 @@ ObjLink.prototype = {
     _onClicked: function (link) {
         Main.lookingGlass.inspectObject(this._obj, this.actor);
     }
-}
+};
 
 function Result(command, o, index) {
     this._init(command, o, index);

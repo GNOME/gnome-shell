@@ -148,6 +148,6 @@ DocManager.prototype = {
         }
         return multipleMatches.concat(prefixMatches.concat(substringMatches));
     }
-}
+};
 
 Signals.addSignalMethods(DocManager.prototype);

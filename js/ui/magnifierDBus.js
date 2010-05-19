@@ -280,7 +280,7 @@ ShellMagnifier.prototype = {
         // Drop the leading '#'.
         return parseInt(colorString.slice(1), 16);
      }
-}
+};
 
 /**
  * ShellMagnifierZoomRegion:
@@ -369,7 +369,7 @@ ShellMagnifierZoomRegion.prototype = {
         let viewRect = { x: viewPort[0], y: viewPort[1], width: viewPort[2], height: viewPort[3] };
         this._zoomRegion.setViewPort(viewRect);
     }
-}
+};
 
 DBus.conformExport(ShellMagnifier.prototype, MagnifierIface);
 DBus.conformExport(ShellMagnifierZoomRegion.prototype, ZoomRegionIface);
