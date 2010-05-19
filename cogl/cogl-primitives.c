@@ -668,6 +668,7 @@ _cogl_rectangles_with_multitexture_coords (
       /* If multitexturing failed or we are drawing with a sliced texture
        * then we only support a single layer so we pluck out the texture
        * from the first material layer... */
+      layers = cogl_material_get_layers (material);
       first_layer = layers->data;
       tex_handle = cogl_material_layer_get_texture (first_layer);
 
