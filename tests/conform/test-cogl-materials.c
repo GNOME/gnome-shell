@@ -198,6 +198,32 @@ test_using_all_layers (TestState *state, int x, int y)
 }
 
 static void
+test_invalid_texture_layers_with_constant_colors (TestState *state,
+                                                  int x, int y)
+{
+  CoglHandle material = cogl_material_new ();
+  CoglColor constant_color;
+
+  /* explicitly create a layer with an invalid handle */
+  cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
+
+  /* ignore the fallback texture on the layer and use a constant color
+     instead */
+  cogl_color_set_from_4ub (&constant_color, 0, 0, 255, 255);
+  cogl_material_set_layer_combine (material, 0,
+                                   "RGBA=REPLACE(CONSTANT)",
+                                   NULL);
+  cogl_material_set_layer_combine_constant (material, 0, &constant_color);
+
+  cogl_set_source (material);
+
+  cogl_handle_unref (material);
+
+  /* We expect the final fragments to be green */
+  test_material_with_primitives (state, x, y, 0x0000ffff);
+}
+
+static void
 on_paint (ClutterActor *actor, TestState *state)
 {
   int frame_num;
@@ -205,8 +231,11 @@ on_paint (ClutterActor *actor, TestState *state)
   test_invalid_texture_layers (state,
                                0, 0 /* position */
                                );
+  test_invalid_texture_layers_with_constant_colors (state,
+                                                    1, 0 /* position */
+                                                    );
   test_using_all_layers (state,
-                         1, 0 /* position */
+                         2, 0 /* position */
                          );
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
