@@ -419,14 +419,9 @@ PanelMenuButton.prototype = {
                                   track_hover: true });
         this.actor._delegate = this;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        // FIXME - this will trigger a warning about a queued allocation from inside
-        // allocate; hard to solve without a way to express a high level positioning
-        // constraint between actors
-        this.actor.connect('notify::allocation', Lang.bind(this, this._repositionMenu));
         this._state = this.State.CLOSED;
         this.menu = new PanelMenu(this.actor);
         this.menu.connect('activate', Lang.bind(this, this._onActivated));
-        this.menu.actor.connect('notify::allocation', Lang.bind(this, this._repositionMenuArrow));
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
                                                 affectsStruts: false });
         this.menu.actor.hide();
@@ -460,9 +455,6 @@ PanelMenuButton.prototype = {
         let [buttonX, buttonY] = this.actor.get_transformed_position();
         let [buttonWidth, buttonHeight] = this.actor.get_transformed_size();
 
-        // We need to reset the size here; otherwise get_preferred_size will
-        // just return what we set below
-        this.menu.actor.set_size(-1, -1);
         let [minWidth, minHeight, natWidth, natHeight] = this.menu.actor.get_preferred_size();
 
         // Adjust X position for alignment
@@ -483,17 +475,10 @@ PanelMenuButton.prototype = {
         // Actually set the position
         let panelActor = Main.panel.actor;
         this.menu.actor.x = stageX;
-        this.menu.actor.width = natWidth;
         this.menu.actor.y = Math.floor(panelActor.y + panelActor.height);
-        // TODO - we could scroll here
-        this.menu.actor.height = natHeight;
-    },
 
-    _repositionMenuArrow: function() {
-        let [buttonX, buttonY] = this.actor.get_transformed_position();
-        let [buttonWidth, buttonHeight] = this.actor.get_transformed_size();
-        let [menuX, menuY] = this.menu.actor.get_transformed_position();
-        this.menu.setArrowOrigin((buttonX - menuX) + Math.floor(buttonWidth / 2));
+        // And adjust the arrow
+        this.menu.setArrowOrigin((buttonX - stageX) + Math.floor(buttonWidth / 2));
     },
 
     close: function() {
