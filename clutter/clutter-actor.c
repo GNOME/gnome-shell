@@ -10482,7 +10482,7 @@ clutter_actor_add_action (ClutterActor  *self,
  * clutter_actor_add_action_with_name:
  * @self: a #ClutterActor
  * @name: the name to set on the action
- * @constraint: a #ClutterAction
+ * @action: a #ClutterAction
  *
  * A convenience function for setting the name of a #ClutterAction
  * while adding it to the list of actions applied to @self
