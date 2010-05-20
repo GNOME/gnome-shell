@@ -48,33 +48,37 @@
 G_DEFINE_TYPE (ClutterState, clutter_state, G_TYPE_OBJECT);
 
 typedef struct StateAnimator {
-  const gchar     *source_state_name;
-  ClutterAnimator *animator;
+  const gchar     *source_state_name; /* interned string identifying entry */
+  ClutterAnimator *animator;          /* pointer to animator itself */
 } StateAnimator;
 
-typedef struct State { 
-  ClutterState *state;
-  const gchar  *name;
-  GHashTable   *durations; /* contains state objects */
-  GList        *keys;      /* list of all keys pertaining to transitions
-                              from other states to this one */
-  GArray       *animators; /* list of animators for transitioning from
-                            * specific source states
-                            */
+typedef struct State
+{ 
+  const gchar  *name;          /* interned string for this state name */
+  GHashTable   *durations;     /* durations for transitions from various state
+                                  names */
+  GList        *keys;          /* list of all keys pertaining to transitions
+                                  from other states to this one */
+  GArray       *animators;     /* list of animators for transitioning from
+                                * specific source states */
+  ClutterState *clutter_state; /* the ClutterState object this state belongs to
+                                */
 } State;
 
 struct _ClutterStatePrivate
 {
-  ClutterTimeline *timeline;
-  ClutterTimeline *slave_timeline;
-  const gchar     *source_state_name; 
-  const gchar     *target_state_name; 
-  State           *source_state;
-  State           *target_state;
-  GHashTable      *states;   /* contains state objects */
-
-  ClutterAnimator *current_animator;
-  guint            duration; /* global fallback duration */
+  GHashTable      *states;            /* contains state objects */
+  guint            duration;          /* global fallback duration */
+  ClutterTimeline *timeline;          /* The timeline used for doing the
+                                         progress */
+  ClutterTimeline *slave_timeline;    /* a slave timeline used to compute
+                                         alphas */
+  const gchar     *source_state_name; /* current source state */
+  State           *source_state;      /* current source_state */
+  const gchar     *target_state_name; /* current target state */
+  State           *target_state;      /* target state name */
+  ClutterAnimator *current_animator;  /* !NULL if the current transition is
+                                         overriden by an animator */
 };
 
 #define SLAVE_TIMELINE_LENGTH 10000
@@ -87,22 +91,24 @@ struct _ClutterStatePrivate
  */
 typedef struct _ClutterStateKey
 { 
-  GObject         *object;
-  const gchar     *property_name;
-  gulong           mode;
-  GValue           value;
-  gdouble          pre_delay;
-  gdouble          post_delay;
+  GObject         *object;       /* an Gobject */
+  const gchar     *property_name;/* the name of a property */
+  gulong           mode;         /* alpha to use */
+  GValue           value;        /* target value */
+  gdouble          pre_delay;    /* fraction of duration to delay before
+                                    starting */
+  gdouble          post_delay;   /* fraction of duration to be done in */
 
-  State           *source_state; 
-  State           *target_state; 
-  ClutterAlpha    *alpha;
-  ClutterInterval *interval;
+  State           *source_state; /* source state */
+  State           *target_state; /* target state */
 
-  ClutterState    *state;
+  ClutterAlpha    *alpha;        /* The alpha this key uses for interpolation */
+  ClutterInterval *interval;     /* The interval this key uses for
+                                    interpolation */
 
-  guint            is_inert : 1;
-  gint             ref_count;
+  guint            is_inert : 1; /* set if the key is being destroyed due to
+                                    weak reference */
+  gint             ref_count;    /* reference count for boxed life time */
 } _ClutterStateKey;
 
 enum
@@ -174,7 +180,7 @@ clutter_state_key_new (State       *state,
   g_object_ref_sink (state_key->alpha);
   clutter_alpha_set_mode (state_key->alpha, mode);
   clutter_alpha_set_timeline (state_key->alpha,
-                              state->state->priv->slave_timeline);
+                              state->clutter_state->priv->slave_timeline);
 
   state_key->interval =
     g_object_new (CLUTTER_TYPE_INTERVAL,
@@ -188,7 +194,7 @@ clutter_state_key_new (State       *state,
   g_value_unset (&value);
 
   g_object_weak_ref (object, object_disappeared,
-                     state_key->target_state->state);
+                     state_key->target_state->clutter_state);
 
   return state_key;
 }
@@ -208,7 +214,7 @@ clutter_state_key_free (gpointer clutter_state_key)
 
   if (!key->is_inert)
     g_object_weak_unref (key->object, object_disappeared,
-                         key->target_state->state);
+                         key->target_state->clutter_state);
   g_object_unref (key->alpha);
   g_object_unref (key->interval);
 
@@ -298,13 +304,13 @@ state_free (gpointer data)
 }
 
 static State *
-state_new (ClutterState *this,
+state_new (ClutterState *clutter_state,
            const gchar  *name)
 {
   State *state;
 
   state = g_new0 (State, 1);
-  state->state = this;
+  state->clutter_state = clutter_state;
   state->name = name;
   state->animators = g_array_new (TRUE, TRUE, sizeof (StateAnimator));
   state->durations = g_hash_table_new (g_direct_hash, g_direct_equal);
