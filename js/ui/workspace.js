@@ -125,7 +125,8 @@ WindowClone.prototype = {
                            Lang.bind(this, this._onLeave));
 
         this._draggable = DND.makeDraggable(this.actor,
-                                            { dragActorMaxSize: WINDOW_DND_SIZE,
+                                            { restoreOnSuccess: true,
+                                              dragActorMaxSize: WINDOW_DND_SIZE,
                                               dragActorOpacity: DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));

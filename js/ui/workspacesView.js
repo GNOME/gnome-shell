@@ -1244,7 +1244,6 @@ SingleView.prototype = {
             this._timeoutId = 0;
         }
         this._dropGroup.lower_bottom();
-        actor.opacity = 255;
         this._inDrag = false;
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);

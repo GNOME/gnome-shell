@@ -14,6 +14,8 @@ const Params = imports.misc.params;
 const SCALE_ANIMATION_TIME = 0.25;
 // Time to animate to original position on cancel
 const SNAP_BACK_ANIMATION_TIME = 0.25;
+// Time to animate to original position on success
+const REVERT_ANIMATION_TIME = 0.75;
 
 let eventHandlerActor = null;
 let currentDraggable = null;
@@ -41,6 +43,7 @@ function _Draggable(actor, params) {
 _Draggable.prototype = {
     _init : function(actor, params) {
         params = Params.parse(params, { manualMode: false,
+                                        restoreOnSuccess: false,
                                         dragActorMaxSize: undefined,
                                         dragActorOpacity: undefined });
 
@@ -54,12 +57,13 @@ _Draggable.prototype = {
         }));
         this._onEventId = null;
 
+        this._restoreOnSuccess = params.restoreOnSuccess;
         this._dragActorMaxSize = params.dragActorMaxSize;
         this._dragActorOpacity = params.dragActorOpacity;
 
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
-        this._snapBackInProgress = false; // The drag has been cancelled and the item is in the process of snapping back.
+        this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
     },
 
     _onButtonPress : function (actor, event) {
@@ -125,7 +129,7 @@ _Draggable.prototype = {
             this._buttonDown = false;
             if (this._dragInProgress) {
                 return this._dragActorDropped(event);
-            } else if (this._dragActor != null && !this._snapBackInProgress) {
+            } else if (this._dragActor != null && !this._animationInProgress) {
                 // Drag must have been cancelled with Esc.
                 this._dragComplete();
                 return true;
@@ -330,9 +334,14 @@ _Draggable.prototype = {
                                                 (dropY - targY) / target.scale_y,
                                                 event.get_time())) {
                     // If it accepted the drop without taking the actor,
-                    // destroy it.
-                    if (this._dragActor.get_parent() == this._dragActor.get_stage())
-                        this._dragActor.destroy();
+                    // handle it ourselves.
+                    if (this._dragActor.get_parent() == this._dragActor.get_stage()) {
+                        if (this._restoreOnSuccess) {
+                            this._restoreDragActor(event.get_time());
+                            return true;
+                        } else
+                            this._dragActor.destroy();
+                    }
 
                     this._dragInProgress = false;
                     this.emit('drag-end', event.get_time(), true);
@@ -348,18 +357,23 @@ _Draggable.prototype = {
         return true;
     },
 
+    // Get position of the drag actor's source if the source is still around,
+    // or return the original location if the actor itself was being dragged
+    // or the source is no longer around.
+    _getRestoreLocation: function() {
+        let locX = this._snapBackX;
+        let locY = this._snapBackY;
+
+        if (this._dragActorSource && this._dragActorSource.visible)
+            [locX, locY] = this._dragActorSource.get_transformed_position();
+        return [locX, locY];
+    },
+
     _cancelDrag: function(eventTime) {
         this._dragInProgress = false;
-        // Snap back to the actor source if the source is still around, snap back 
-        // to the original location if the actor itself was being dragged or the
-        // source is no longer around.
-        let snapBackX = this._snapBackX;
-        let snapBackY = this._snapBackY;
-        if (this._dragActorSource && this._dragActorSource.visible) {
-            [snapBackX, snapBackY] = this._dragActorSource.get_transformed_position();
-        }
+        let [snapBackX, snapBackY] = this._getRestoreLocation();
 
-        this._snapBackInProgress = true;
+        this._animationInProgress = true;
         // No target, so snap back
         Tweener.addTween(this._dragActor,
                          { x: snapBackX,
@@ -369,13 +383,33 @@ _Draggable.prototype = {
                            opacity: this._dragOrigOpacity,
                            time: SNAP_BACK_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: this._onSnapBackComplete,
+                           onComplete: this._onAnimationComplete,
                            onCompleteScope: this,
                            onCompleteParams: [this._dragActor, eventTime]
                          });
     },
 
-    _onSnapBackComplete : function (dragActor, eventTime) {
+    _restoreDragActor: function(eventTime) {
+        this._dragInProgress = false;
+        [restoreX, restoreY] = this._getRestoreLocation();
+
+        // fade the actor back in at its original location
+        this._dragActor.set_position(restoreX, restoreY);
+        this._dragActor.set_scale(this._snapBackScale, this._snapBackScale);
+        this._dragActor.opacity = 0;
+
+        this._animationInProgress = true;
+        Tweener.addTween(this._dragActor,
+                         { opacity: this._dragOrigOpacity,
+                           time: REVERT_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._onAnimationComplete,
+                           onCompleteScope: this,
+                           onCompleteParams: [this._dragActor, eventTime]
+                         });
+    },
+
+    _onAnimationComplete : function (dragActor, eventTime) {
         if (this._dragOrigParent) {
             dragActor.reparent(this._dragOrigParent);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
@@ -385,7 +419,7 @@ _Draggable.prototype = {
         }
         this.emit('drag-end', eventTime, false);
 
-        this._snapBackInProgress = false;
+        this._animationInProgress = false;
         if (!this._buttonDown)
             this._dragComplete();
     },
