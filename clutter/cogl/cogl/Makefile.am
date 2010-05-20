@@ -59,6 +59,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-debug.h 			\
 	$(srcdir)/cogl-fixed.h 			\
 	$(srcdir)/cogl-material.h 		\
+	$(srcdir)/cogl-vector.h 		\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-primitives.h 		\
@@ -104,6 +105,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-vertex-buffer-private.h 		\
 	$(srcdir)/cogl-vertex-buffer.c			\
 	$(srcdir)/cogl-matrix.c				\
+	$(srcdir)/cogl-vector.c				\
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
 	$(srcdir)/cogl-matrix-stack.h			\
