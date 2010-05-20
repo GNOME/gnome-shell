@@ -151,8 +151,7 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
                                "Name",
                                "The name of the meta",
                                NULL,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
+                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_NAME, pspec);
 
   /**
@@ -196,15 +195,6 @@ clutter_actor_meta_set_name (ClutterActorMeta *meta,
                              const gchar      *name)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR_META (meta));
-
-  if (meta->priv->name != NULL)
-    {
-      g_warning ("The ClutterActorMeta of type '%s' has already "
-                 "been named '%s'",
-                 G_OBJECT_TYPE_NAME (meta),
-                 meta->priv->name);
-      return;
-    }
 
   if (g_strcmp0 (meta->priv->name, name) == 0)
     return;
