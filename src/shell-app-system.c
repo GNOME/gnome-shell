@@ -309,9 +309,15 @@ reread_entries (ShellAppSystem     *self,
   g_slist_free (*cache);
   *cache = NULL;
 
-  *cache = gather_entries_recurse (self, *cache, unique, trunk);
-
-  gmenu_tree_item_unref (trunk);
+  if (!trunk)
+    {
+      *cache = NULL;
+    }
+  else
+    {
+      *cache = gather_entries_recurse (self, *cache, unique, trunk);
+      gmenu_tree_item_unref (trunk);
+    }
 }
 
 static void
