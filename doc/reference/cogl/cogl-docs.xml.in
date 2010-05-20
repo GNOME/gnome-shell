@@ -90,6 +90,7 @@
     </section>
 
     <xi:include href="xml/cogl-buffer.xml"/>
+    <xi:include href="xml/cogl-vector.xml"/>
 
   </chapter>
 
