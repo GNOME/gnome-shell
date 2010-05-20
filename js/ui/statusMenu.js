@@ -11,6 +11,7 @@ const _ = Gettext.gettext;
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
+const PopupMenu = imports.ui.popupMenu;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -88,46 +89,46 @@ StatusMenuButton.prototype = {
     _createSubMenu: function() {
         let item;
 
-        item = new Panel.PanelImageMenuItem(_("Available"), 'gtk-yes', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'gtk-yes', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Busy"), 'gtk-no', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'gtk-no', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Invisible"), 'gtk-close', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'gtk-close', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelSeparatorMenuItem();
+        item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Account Information..."), 'user-info');
+        item = new PopupMenu.PopupImageMenuItem(_("Account Information..."), 'user-info');
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("System Preferences..."), 'preferences-desktop');
+        item = new PopupMenu.PopupImageMenuItem(_("System Preferences..."), 'preferences-desktop');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelSeparatorMenuItem();
+        item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Lock Screen"), 'system-lock-screen');
+        item = new PopupMenu.PopupImageMenuItem(_("Lock Screen"), 'system-lock-screen');
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Switch User"), 'system-users');
+        item = new PopupMenu.PopupImageMenuItem(_("Switch User"), 'system-users');
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
         this.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
-        item = new Panel.PanelImageMenuItem(_("Log Out..."), 'system-log-out');
+        item = new PopupMenu.PopupImageMenuItem(_("Log Out..."), 'system-log-out');
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
 
-        item = new Panel.PanelImageMenuItem(_("Shut Down..."), 'system-shutdown');
+        item = new PopupMenu.PopupImageMenuItem(_("Shut Down..."), 'system-shutdown');
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
     },

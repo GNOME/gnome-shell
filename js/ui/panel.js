@@ -9,21 +9,20 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Tweener = imports.ui.tweener;
 const Signals = imports.signals;
 const DBus = imports.dbus;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
+const BoxPointer = imports.ui.boxpointer;
 const Calendar = imports.ui.calendar;
 const Overview = imports.ui.overview;
+const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
-const BoxPointer = imports.ui.boxpointer;
+const Tweener = imports.ui.tweener;
 
 const PANEL_HEIGHT = 26;
-
-const POPUP_ANIMATION_TIME = 0.1;
 
 const PANEL_ICON_SIZE = 24;
 
@@ -128,292 +127,12 @@ TextShadower.prototype = {
     }
 };
 
-function PanelBaseMenuItem(reactive) {
-    this._init(reactive);
-}
-
-PanelBaseMenuItem.prototype = {
-    _init: function (reactive) {
-        this.actor = new St.Bin({ style_class: 'panel-menu-item',
-                                  reactive: reactive,
-                                  track_hover: reactive,
-                                  x_fill: true,
-                                  y_fill: true,
-                                  x_align: St.Align.START });
-        this.actor._delegate = this;
-        this.active = false;
-
-        if (reactive) {
-            this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
-                this.emit('activate', event);
-            }));
-            this.actor.connect('notify::hover', Lang.bind(this, this._hoverChanged));
-        }
-    },
-
-    _hoverChanged: function (actor) {
-        this.setActive(actor.hover);
-    },
-
-    activate: function (event) {
-        this.emit('activate', event);
-    },
-
-    setActive: function (active) {
-        let activeChanged = active != this.active;
-
-        if (activeChanged) {
-            this.active = active;
-            if (active)
-                this.actor.add_style_pseudo_class('active');
-            else
-                this.actor.remove_style_pseudo_class('active');
-            this.emit('active-changed', active);
-        }
-    }
-};
-Signals.addSignalMethods(PanelBaseMenuItem.prototype);
-
-function PanelMenuItem(text) {
-    this._init(text);
-}
-
-PanelMenuItem.prototype = {
-    __proto__: PanelBaseMenuItem.prototype,
-
-    _init: function (text) {
-        PanelBaseMenuItem.prototype._init.call(this, true);
-
-        this.label = new St.Label({ text: text });
-        this.actor.set_child(this.label);
-    }
-};
-
-function PanelSeparatorMenuItem() {
-    this._init();
-}
-
-PanelSeparatorMenuItem.prototype = {
-    __proto__: PanelBaseMenuItem.prototype,
-
-    _init: function () {
-        PanelBaseMenuItem.prototype._init.call(this, false);
-
-        this._drawingArea = new St.DrawingArea({ style_class: 'panel-separator-menu-item' });
-        this.actor.set_child(this._drawingArea);
-        this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
-    },
-
-    _onRepaint: function(area) {
-        let cr = area.get_context();
-        let themeNode = area.get_theme_node();
-        let [width, height] = area.get_surface_size();
-        let found, margin, gradientHeight;
-        [found, margin] = themeNode.get_length('-margin-horizontal', false);
-        [found, gradientHeight] = themeNode.get_length('-gradient-height', false);
-        let startColor = new Clutter.Color();
-        themeNode.get_color('-gradient-start', false, startColor);
-        let endColor = new Clutter.Color();
-        themeNode.get_color('-gradient-end', false, endColor);
-
-        let gradientWidth = (width - margin * 2);
-        let gradientOffset = (height - gradientHeight) / 2;
-        let pattern = new Cairo.LinearGradient(margin, gradientOffset, width - margin, gradientOffset + gradientHeight);
-        pattern.addColorStopRGBA(0, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-        pattern.addColorStopRGBA(0.5, endColor.red / 255, endColor.green / 255, endColor.blue / 255, endColor.alpha / 0xFF);
-        pattern.addColorStopRGBA(1, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-        cr.setSource(pattern);
-        cr.rectangle(margin, gradientOffset, gradientWidth, gradientHeight);
-        cr.fill();
-    }
-};
-
-function PanelImageMenuItem(text, iconName, alwaysShowImage) {
-    this._init(text, iconName, alwaysShowImage);
-}
-
-// We need to instantiate a GtkImageMenuItem so it
-// hooks up its properties on the GtkSettings
-var _gtkImageMenuItemCreated = false;
-
-PanelImageMenuItem.prototype = {
-    __proto__: PanelBaseMenuItem.prototype,
-
-    _init: function (text, iconName, alwaysShowImage) {
-        PanelBaseMenuItem.prototype._init.call(this, true);
-
-        if (!_gtkImageMenuItemCreated) {
-            let menuItem = new Gtk.ImageMenuItem();
-            menuItem.destroy();
-            _gtkImageMenuItemCreated = true;
-        }
-
-        this._alwaysShowImage = alwaysShowImage;
-        this._iconName = iconName;
-        this._size = 16;
-
-        let box = new St.BoxLayout({ style_class: 'panel-image-menu-item' });
-        this.actor.set_child(box);
-        this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        box.add(this._imageBin, { y_fill: false });
-        box.add(new St.Label({ text: text }), { expand: true });
-
-        if (!alwaysShowImage) {
-            let settings = Gtk.Settings.get_default();
-            settings.connect('notify::gtk-menu-images', Lang.bind(this, this._onMenuImagesChanged));
-        }
-        this._onMenuImagesChanged();
-    },
-
-    _onMenuImagesChanged: function() {
-        let show;
-        if (this._alwaysShowImage) {
-            show = true;
-        } else {
-            let settings = Gtk.Settings.get_default();
-            show = settings.gtk_menu_images;
-        }
-        if (!show) {
-            this._imageBin.hide();
-        } else {
-            let img = St.TextureCache.get_default().load_icon_name(this._iconName, this._size);
-            this._imageBin.set_child(img);
-            this._imageBin.show();
-        }
-    }
-};
-
-function mod(a, b) {
-    return (a + b) % b;
-}
-
-function findNextInCycle(items, current, direction) {
-    let cur;
-
-    if (items.length == 0)
-        return current;
-    else if (items.length == 1)
-        return items[0];
-
-    if (current)
-        cur = items.indexOf(current);
-    else if (direction == 1)
-        cur = items.length - 1;
-    else
-        cur = 0;
-
-    return items[mod(cur + direction, items.length)];
-}
-
-function PanelMenu(sourceButton) {
-    this._init(sourceButton);
-}
-
-PanelMenu.prototype = {
-    _init: function(sourceButton) {
-        this._sourceButton = sourceButton;
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP, { x_fill: true, y_fill: true, x_align: St.Align.START });
-        this.actor = this._boxPointer.actor;
-        this.actor.style_class = 'panel-menu-boxpointer';
-        this._box = new St.BoxLayout({ style_class: 'panel-menu-content',
-                                       vertical: true });
-        this._boxPointer.bin.set_child(this._box);
-        this.actor.add_style_class_name('panel-menu');
-
-        this._activeMenuItem = null;
-    },
-
-    addAction: function(title, callback) {
-        var menuItem = new PanelMenuItem(title);
-        this.addMenuItem(menuItem);
-        menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
-            callback(event);
-        }));
-    },
-
-    addMenuItem: function(menuItem) {
-        this._box.add(menuItem.actor);
-        menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
-            if (active && this._activeMenuItem != menuItem) {
-                if (this._activeMenuItem)
-                    this._activeMenuItem.setActive(false);
-                this._activeMenuItem = menuItem;
-            } else if (!active && this._activeMenuItem == menuItem) {
-                this._activeMenuItem = null;
-            }
-        }));
-        menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
-            this.emit('activate');
-        }));
-    },
-
-    addActor: function(actor) {
-        this._box.add(actor);
-    },
-
-    setArrowOrigin: function(origin) {
-        this._boxPointer.setArrowOrigin(origin);
-    },
-
-    open: function() {
-        let panelActor = Main.panel.actor;
-        this.actor.lower(panelActor);
-
-        this.actor.show();
-        this.actor.opacity = 0;
-        this.actor.reactive = true;
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME });
-    },
-
-    close: function() {
-        this.actor.reactive = false;
-        Tweener.addTween(this.actor, { opacity: 0,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME,
-                                       onComplete: Lang.bind(this, function () { this.actor.hide(); })});
-        if (this._activeMenuItem)
-            this._activeMenuItem.setActive(false);
-    },
-
-    handleKeyPress: function(event) {
-        if (event.get_key_symbol() == Clutter.space ||
-            event.get_key_symbol() == Clutter.Return) {
-            if (this._activeMenuItem)
-                this._activeMenuItem.activate(event);
-            return true;
-        } else if (event.get_key_symbol() == Clutter.Down
-                   || event.get_key_symbol() == Clutter.Up) {
-            let items = this._box.get_children().filter(function (child) { return child.visible && child.reactive; });
-            let current = this._activeMenuItem ? this._activeMenuItem.actor : null;
-            let direction = event.get_key_symbol() == Clutter.Down ? 1 : -1;
-
-            let next = findNextInCycle(items, current, direction);
-            if (next) {
-                next._delegate.setActive(true);
-                return true;
-            }
-        }
-
-        return false;
-    }
-};
-Signals.addSignalMethods(PanelMenu.prototype);
-
 function PanelMenuButton(menuAlignment) {
     this._init(menuAlignment);
 }
 
 PanelMenuButton.prototype = {
-    State: {
-        OPEN: 0,
-        TRANSITIONING: 1,
-        CLOSED: 2
-    },
-
     _init: function(menuAlignment) {
-        this._menuAlignment = menuAlignment;
         this.actor = new St.Bin({ style_class: 'panel-button',
                                   reactive: true,
                                   x_fill: true,
@@ -421,225 +140,22 @@ PanelMenuButton.prototype = {
                                   track_hover: true });
         this.actor._delegate = this;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this._state = this.State.CLOSED;
-        this.menu = new PanelMenu(this.actor);
-        this.menu.connect('activate', Lang.bind(this, this._onActivated));
+        this.menu = new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, /* FIXME */ 0);
+        this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
                                                 affectsStruts: false });
         this.menu.actor.hide();
     },
 
-    open: function() {
-        if (this._state != this.State.CLOSED)
-            return;
-        this._state = this.State.OPEN;
-
-        this.menu.open();
-        this._repositionMenu();
-
-        this.actor.add_style_pseudo_class('pressed');
-        this.emit('open-state-changed', true);
-    },
-
-    _onActivated: function(button) {
-        this.emit('activate');
-        this.close();
-    },
-
     _onButtonPress: function(actor, event) {
-        this.toggle();
+        this.menu.toggle();
     },
 
-    _repositionMenu: function() {
-        let primary = global.get_primary_monitor();
-
-        // Positioning for the source button
-        let [buttonX, buttonY] = this.actor.get_transformed_position();
-        let [buttonWidth, buttonHeight] = this.actor.get_transformed_size();
-
-        let [minWidth, minHeight, natWidth, natHeight] = this.menu.actor.get_preferred_size();
-
-        // Adjust X position for alignment
-        let stageX = buttonX;
-        switch (this._menuAlignment) {
-            case St.Align.END:
-                stageX -= (natWidth - buttonWidth);
-                break;
-            case St.Align.MIDDLE:
-                stageX -= Math.floor((natWidth - buttonWidth) / 2);
-                break;
-        }
-
-        // Ensure we fit on the x position
-        stageX = Math.min(stageX, primary.x + primary.width - natWidth);
-        stageX = Math.max(stageX, primary.x);
-
-        // Actually set the position
-        let panelActor = Main.panel.actor;
-        this.menu.actor.x = stageX;
-        this.menu.actor.y = Math.floor(panelActor.y + panelActor.height);
-
-        // And adjust the arrow
-        this.menu.setArrowOrigin((buttonX - stageX) + Math.floor(buttonWidth / 2));
-    },
-
-    close: function() {
-        if (this._state != this.State.OPEN)
-            return;
-        this._state = this.State.CLOSED;
-        this.menu.close();
-        this.actor.remove_style_pseudo_class('pressed');
-        this.emit('open-state-changed', false);
-    },
-
-    toggle: function() {
-        if (this._state == this.State.OPEN)
-            this.close();
+    _onOpenStateChanged: function(menu, open) {
+        if (open)
+            this.actor.add_style_pseudo_class('pressed');
         else
-            this.open();
-    }
-};
-Signals.addSignalMethods(PanelMenuButton.prototype);
-
-
-/* Basic implementation of a menu container.
- * Call _addMenu to add menu buttons.
- */
-function PanelMenuBar() {
-    this._init();
-}
-
-PanelMenuBar.prototype = {
-    _init: function() {
-        this.actor = new St.BoxLayout({ style_class: 'menu-bar',
-                                        reactive: true });
-        this.isMenuOpen = false;
-
-        // these are more "private"
-        this._eventCaptureId = 0;
-        this._activeMenuButton = null;
-        this._menus = [];
-    },
-
-    _addMenu: function(button) {
-        this._menus.push(button);
-        button.actor.connect('enter-event', Lang.bind(this, this._onMenuEnter, button));
-        button.actor.connect('leave-event', Lang.bind(this, this._onMenuLeave, button));
-        button.actor.connect('button-press-event', Lang.bind(this, this._onMenuPress, button));
-        button.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState));
-        button.connect('activate', Lang.bind(this, this._onMenuActivated));
-    },
-
-    _onMenuOpenState: function(button, isOpen) {
-        if (!isOpen && button == this._activeMenuButton) {
-            this._activeMenuButton = null;
-        } else if (isOpen) {
-            this._activeMenuButton = button;
-        }
-    },
-
-    _onMenuEnter: function(actor, event, button) {
-        if (!this.isMenuOpen || button == this._activeMenuButton)
-            return false;
-
-        if (this._activeMenuButton != null)
-            this._activeMenuButton.close();
-        button.open();
-        return false;
-    },
-
-    _onMenuLeave: function(actor, event, button) {
-        return false;
-    },
-
-    _onMenuPress: function(actor, event, button) {
-        if (this.isMenuOpen)
-            return false;
-        Main.pushModal(this.actor);
-        this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
-        this.isMenuOpen = true;
-        return false;
-    },
-
-    _onMenuActivated: function(button) {
-        if (this.isMenuOpen)
-            this._closeMenu();
-    },
-
-    _containsActor: function(container, actor) {
-        let parent = actor;
-        while (parent != null) {
-            if (parent == container)
-                return true;
-            parent = parent.get_parent();
-        }
-        return false;
-    },
-
-    _eventIsOnActiveMenu: function(event) {
-        let src = event.get_source();
-        return this._activeMenuButton != null
-                && (this._containsActor(this._activeMenuButton.actor, src) ||
-                    this._containsActor(this._activeMenuButton.menu.actor, src));
-    },
-
-    _eventIsOnAnyMenuButton: function(event) {
-        let src = event.get_source();
-        for (let i = 0; i < this._menus.length; i++) {
-            let actor = this._menus[i].actor;
-            if (this._containsActor(actor, src))
-                return true;
-        }
-        return false;
-    },
-
-    _onEventCapture: function(actor, event) {
-        if (!this.isMenuOpen)
-            return false;
-        let activeMenuContains = this._eventIsOnActiveMenu(event);
-        let eventType = event.type();
-        if (eventType == Clutter.EventType.BUTTON_RELEASE) {
-            if (activeMenuContains) {
-                return false;
-            } else {
-                if (this._activeMenuButton != null)
-                    this._activeMenuButton.close();
-                this._closeMenu();
-                return true;
-            }
-        } else if ((eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains)
-                   || (eventType == Clutter.EventType.KEY_PRESS && event.get_key_symbol() == Clutter.Escape)) {
-            if (this._activeMenuButton != null)
-                this._activeMenuButton.close();
-            this._closeMenu();
-            return true;
-        } else if (eventType == Clutter.EventType.KEY_PRESS
-                   && this._activeMenuButton != null
-                   && this._activeMenuButton.menu.handleKeyPress(event)) {
-                return true;
-        } else if (eventType == Clutter.EventType.KEY_PRESS
-                   && this._activeMenuButton != null
-                   && (event.get_key_symbol() == Clutter.Left
-                       || event.get_key_symbol() == Clutter.Right)) {
-            let direction = event.get_key_symbol() == Clutter.Right ? 1 : -1;
-            let next = findNextInCycle(this._menus, this._activeMenuButton, direction);
-            if (next != this._activeMenuButton) {
-                this._activeMenuButton.close();
-                next.open();
-            }
-            return true;
-        } else if (activeMenuContains || this._eventIsOnAnyMenuButton(event)) {
-            return false;
-        }
-
-        return true;
-    },
-
-    _closeMenu: function() {
-        global.stage.disconnect(this._eventCaptureId);
-        this._eventCaptureId = 0;
-        Main.popModal(this.actor);
-        this.isMenuOpen = false;
+            this.actor.remove_style_pseudo_class('pressed');
     }
 };
 
@@ -677,7 +193,7 @@ AppMenuButton.prototype = {
         this._label = new TextShadower();
         this._container.add_actor(this._label.actor);
 
-        this._quitMenu = new PanelMenuItem('');
+        this._quitMenu = new PopupMenu.PopupMenuItem('');
         this.menu.addMenuItem(this._quitMenu);
         this._quitMenu.connect('activate', Lang.bind(this, this._onQuit));
 
@@ -840,7 +356,6 @@ ClockButton.prototype = {
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
-        this._calendarState = this.State.CLOSED;
         this._calendarPopup = null;
 
         let gconf = Shell.GConf.get_default();
@@ -852,47 +367,29 @@ ClockButton.prototype = {
 
     _onButtonPress: function(actor, event) {
         let button = event.get_button();
-        if (button == 3 && this._calendarState != this.State.OPEN)
-            this.toggle();
+        if (button == 3 &&
+            (!this._calendarPopup || !this._calendarPopup.isOpen))
+            this.menu.toggle();
         else
             this._toggleCalendar();
     },
 
     closeCalendar: function() {
-        if (this._calendarState == this.State.CLOSED)
+        if (!this._calendarPopup || !this._calendarPopup.isOpen)
             return;
 
-        this._calendarState = this.State.CLOSED;
         this._calendarPopup.hide();
 
-        // closing the calendar should toggle off the menubar as well
-        this.emit('open-state-changed', false);
+        this.menu.isOpen = false;
         this.actor.remove_style_pseudo_class('pressed');
     },
 
     openCalendar: function() {
-        this._calendarState = this.State.OPEN;
         this._calendarPopup.show();
 
+        // simulate an open menu, so it won't appear beneath the calendar
+        this.menu.isOpen = true;
         this.actor.add_style_pseudo_class('pressed');
-    },
-
-    close: function() {
-        if (this._calendarState == this.State.OPEN)
-            return;
-
-        PanelMenuButton.prototype.close.call(this);
-    },
-
-    open: function() {
-        if (this._calendarState == this.State.OPEN) {
-            // trick the menubar into assuming an open menu so it'll
-            // pass button events on to us
-            this.emit('open-state-changed', true);
-            return;
-        }
-
-        PanelMenuButton.prototype.open.call(this);
     },
 
     _onPrefs: function() {
@@ -903,21 +400,20 @@ ClockButton.prototype = {
     },
 
     _toggleCalendar: function() {
-        if (this._state == this.State.OPEN) {
-            this.close();
-            return;
-        }
-
         if (this._calendarPopup == null) {
             this._calendarPopup = new CalendarPopup();
             this._calendarPopup.actor.hide();
         }
 
-        if (this._calendarState == this.State.CLOSED) {
-            this.openCalendar();
-        } else {
-            this.closeCalendar();
+        if (this.menu.isOpen && !this._calendarPopup.isOpen) {
+            this.menu.close();
+            return;
         }
+
+        if (!this._calendarPopup.isOpen)
+            this.openCalendar();
+        else
+            this.closeCalendar();
     },
 
     _updateClock: function() {
@@ -993,12 +489,13 @@ function Panel() {
 }
 
 Panel.prototype = {
-    __proto__: PanelMenuBar.prototype,
-
     _init : function() {
-        PanelMenuBar.prototype._init.call(this);
-        this.actor.name = 'panel';
+        this.actor = new St.BoxLayout({ style_class: 'menu-bar',
+                                        name: 'panel',
+                                        reactive: true });
         this.actor._delegate = this;
+
+        this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
         this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
@@ -1115,14 +612,14 @@ Panel.prototype = {
         let appMenuButton = new AppMenuButton();
         this._leftBox.add(appMenuButton.actor);
 
-        this._addMenu(appMenuButton);
+        this._menus.addMenu(appMenuButton.menu);
 
         /* center */
 
         this._clockButton = new ClockButton();
         this._centerBox.add(this._clockButton.actor, { y_fill: true });
 
-        this._addMenu(this._clockButton);
+        this._menus.addMenu(this._clockButton.menu);
 
         /* right */
 
@@ -1152,7 +649,7 @@ Panel.prototype = {
         // prototype dependencies.
         let StatusMenu = imports.ui.statusMenu;
         this._statusmenu = new StatusMenu.StatusMenuButton();
-        this._addMenu(this._statusmenu);
+        this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
 
         // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
@@ -1266,7 +763,7 @@ Panel.prototype = {
     },
 
     _onHotCornerEntered : function() {
-        if (this.isMenuOpen)
+        if (this._menus.grabbed)
             return false;
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
@@ -1288,7 +785,7 @@ Panel.prototype = {
     },
 
     _onHotCornerClicked : function() {
-        if (this.isMenuOpen)
+        if (this._menus.grabbed)
             return false;
          if (!Main.overview.animationInProgress) {
              this._maybeToggleOverviewOnClick();
@@ -1333,6 +830,8 @@ CalendarPopup.prototype = {
         this.calendar = new Calendar.Calendar();
         this.actor.set_child(this.calendar.actor);
 
+        this.isOpen = false;
+
         Main.chrome.addActor(this.actor, { visibleInOverview: true,
                                            affectsStruts: false });
         this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
@@ -1341,6 +840,10 @@ CalendarPopup.prototype = {
 
     show: function() {
         let panelActor = Main.panel.actor;
+
+        if (this.isOpen)
+            return;
+        this.isOpen = true;
 
         // Reset the calendar to today's date
         this.calendar.setDate(new Date());
@@ -1357,6 +860,10 @@ CalendarPopup.prototype = {
 
     hide: function() {
         let panelActor = Main.panel.actor;
+
+        if (!this.isOpen)
+            return;
+        this.isOpen = false;
 
         Tweener.addTween(this.actor,
                          { y: panelActor.y + panelActor.height - this.actor.height,
