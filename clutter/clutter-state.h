@@ -126,16 +126,16 @@ ClutterAnimator * clutter_state_get_animator         (ClutterState    *state,
                                                       const gchar     *source_transition_name,
                                                       const gchar     *target_transition_name);
 
-GType             clutter_state_key_get_type              (void) G_GNUC_CONST;
-gdouble           clutter_state_key_get_pre_delay         (ClutterStateKey *state_key);
-gdouble           clutter_state_key_get_post_delay        (ClutterStateKey *state_key);
-gulong            clutter_state_key_get_mode              (ClutterStateKey *state_key);
-void              clutter_state_key_get_value             (ClutterStateKey *state_key,
-                                                           GValue          *value);
-GObject         * clutter_state_key_get_object            (ClutterStateKey *state_key);
-const gchar     * clutter_state_key_get_property_name     (ClutterStateKey *state_key);
-const gchar     * clutter_state_key_get_source_state_name (ClutterStateKey *state_key);
-const gchar     * clutter_state_key_get_target_state_name (ClutterStateKey *state_key);
+GType                 clutter_state_key_get_type              (void) G_GNUC_CONST;
+gdouble               clutter_state_key_get_pre_delay         (const ClutterStateKey *state_key);
+gdouble               clutter_state_key_get_post_delay        (const ClutterStateKey *state_key);
+gulong                clutter_state_key_get_mode              (const ClutterStateKey *state_key);
+void                  clutter_state_key_get_value             (const ClutterStateKey *state_key,
+                                                               GValue                *value);
+GObject *             clutter_state_key_get_object            (const ClutterStateKey *state_key);
+G_CONST_RETURN gchar *clutter_state_key_get_property_name     (const ClutterStateKey *state_key);
+G_CONST_RETURN gchar *clutter_state_key_get_source_state_name (const ClutterStateKey *state_key);
+G_CONST_RETURN gchar *clutter_state_key_get_target_state_name (const ClutterStateKey *state_key);
 
 G_END_DECLS
 

@@ -1008,22 +1008,22 @@ clutter_state_key_get_type (void)
   return our_type;
 }
 
-
-
 /**
  * clutter_state_key_get_pre_delay:
  * @state_key: a #ClutterStateKey
  *
- * Retrieve the pause before transitioning starts as a fraction of total
- * transition time.
+ * Retrieves the pause before transitioning starts as a fraction of
+ * the total transition time.
  *
- * Returns: the pre delay used before starting the transition.
+ * Return value: the pre delay used before starting the transition.
+ *
  * Since: 1.4
  */
 gdouble
-clutter_state_key_get_pre_delay (ClutterStateKey *state_key)
+clutter_state_key_get_pre_delay (const ClutterStateKey *state_key)
 {
-  g_return_val_if_fail (state_key, 0.0);
+  g_return_val_if_fail (state_key != NULL, 0.0);
+
   return state_key->pre_delay;
 }
 
@@ -1031,16 +1031,18 @@ clutter_state_key_get_pre_delay (ClutterStateKey *state_key)
  * clutter_state_key_get_post_delay:
  * @state_key: a #ClutterStateKey
  *
- * Retrieve the duration of the pause after transitioning is complete as
- * a fraction of total transition time.
+ * Retrieves the duration of the pause after transitioning is complete
+ * as a fraction of the total transition time.
  *
- * Returns: the post delay, used after doing the transition.
+ * Return value: the post delay, used after doing the transition.
+ *
  * Since: 1.4
  */
 gdouble
-clutter_state_key_get_post_delay (ClutterStateKey *state_key)
+clutter_state_key_get_post_delay (const ClutterStateKey *state_key)
 {
-  g_return_val_if_fail (state_key, 0.0);
+  g_return_val_if_fail (state_key != NULL, 0.0);
+
   return state_key->post_delay;
 }
 
@@ -1048,50 +1050,83 @@ clutter_state_key_get_post_delay (ClutterStateKey *state_key)
  * clutter_state_key_get_mode:
  * @state_key: a #ClutterStateKey
  *
- * Retrieve the easing mode used for a clutter_state_key.
+ * Retrieves the easing mode used for @state_key.
  *
- * Returns: the mode of a ClutterStateKey
+ * Return value: the mode of a #ClutterStateKey
+ *
  * Since: 1.4
  */
 gulong
-clutter_state_key_get_mode (ClutterStateKey *state_key)
+clutter_state_key_get_mode (const ClutterStateKey *state_key)
 {
-  g_return_val_if_fail (state_key, 0);
+  g_return_val_if_fail (state_key != NULL, 0);
+
   return state_key->mode;
 }
 
 /**
  * clutter_state_key_get_value:
  * @state_key: a #ClutterStateKey
- * @value: a #GValue initialized with the correct type for the state_key.
+ * @value: a #GValue initialized with the correct type for the @state_key
  *
- * Get a copy of the value for a ClutterStateKey, the passed in GValue needs
- * to be already initialized for the value type.
+ * Copies of the value for a #ClutterStateKey into @value
+ *
+ * The #GValue needs to be already initialized for the value type
+ * of the property or to a transformable type
  *
  * Since: 1.4
  */
 void
-clutter_state_key_get_value (ClutterStateKey *state_key,
-                             GValue          *value)
+clutter_state_key_get_value (const ClutterStateKey *state_key,
+                             GValue                *value)
 {
-  g_return_if_fail (state_key);
-  g_value_copy (&state_key->value, value);
-}
+  g_return_if_fail (state_key != NULL);
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (G_VALUE_TYPE (value) != G_TYPE_INVALID);
 
+  if (!g_type_is_a (G_VALUE_TYPE (&state_key->value), G_VALUE_TYPE (value)))
+    {
+      if (g_value_type_compatible (G_VALUE_TYPE (&state_key->value),
+                                   G_VALUE_TYPE (value)))
+        {
+          g_value_copy (&state_key->value, value);
+          return;
+        }
+
+      if (g_value_type_transformable (G_VALUE_TYPE (&state_key->value),
+                                      G_VALUE_TYPE (value)))
+        {
+          if (g_value_transform (&state_key->value, value))
+            return;
+        }
+
+      g_warning ("%s: Unable to convert from %s to %s for the "
+                 "property '%s' of object %s in the state key",
+                 G_STRLOC,
+                 g_type_name (G_VALUE_TYPE (&state_key->value)),
+                 g_type_name (G_VALUE_TYPE (value)),
+                 state_key->property_name,
+                 G_OBJECT_TYPE_NAME (state_key->object));
+    }
+  else
+    g_value_copy (&state_key->value, value);
+}
 
 /**
  * clutter_state_key_get_object:
  * @state_key: a #ClutterStateKey
  *
- * Get the object instance this #ClutterStateKey applies to.
+ * Retrieves the object instance this #ClutterStateKey applies to.
  *
- * Returns: the object this state key applies to.
+ * Return value: (transfer none): the object this state key applies to.
+ *
  * Since: 1.4
  */
 GObject *
-clutter_state_key_get_object (ClutterStateKey *state_key)
+clutter_state_key_get_object (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
+
   return state_key->object;
 }
 
@@ -1099,15 +1134,18 @@ clutter_state_key_get_object (ClutterStateKey *state_key)
  * clutter_state_key_get_property_name:
  * @state_key: a #ClutterStateKey
  *
- * Get the name of the property this #ClutterStateKey applies to.
+ * Retrieves the name of the property this #ClutterStateKey applies to
  *
- * Returns: the name of the property the key applies to.
+ * Return value: the name of the property. The returned string is owned
+ *   by the #ClutterStateKey and should never be modified or freed
+ *
  * Since: 1.4
  */
-const gchar *
-clutter_state_key_get_property_name (ClutterStateKey *state_key)
+G_CONST_RETURN gchar *
+clutter_state_key_get_property_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
+
   return state_key->property_name;
 }
 
@@ -1115,22 +1153,23 @@ clutter_state_key_get_property_name (ClutterStateKey *state_key)
  * clutter_state_key_get_source_state_name:
  * @state_key: a #ClutterStateKey
  *
- * Get the name of the source state this #ClutterStateKey contains,
- * or NULL if this is the generic state key for the given property
- * when transitioning to the target state.
+ * Retrieves the name of the source state of the @state_key
  *
- * Returns: the name of the source state for this key, or NULL if
- * the key is generic.
+ * Return value: the name of the source state for this key, or %NULL
+ *   if this is the generic state key for the given property when
+ *   transitioning to the target state. The returned string is owned
+ *   by the #ClutterStateKey and should never be modified or freed
+ *
  * Since: 1.4
  */
-const gchar *
-clutter_state_key_get_source_state_name (ClutterStateKey *state_key)
+G_CONST_RETURN gchar *
+clutter_state_key_get_source_state_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
-  if (state_key->source_state)
-    {
-      return state_key->source_state->name;
-    }
+
+  if (state_key->source_state != NULL)
+    return state_key->source_state->name;
+
   return NULL;
 }
 
@@ -1142,14 +1181,16 @@ clutter_state_key_get_source_state_name (ClutterStateKey *state_key)
  * or NULL if this is the generic state key for the given property
  * when transitioning to the target state.
  *
- * Returns: the name of the source state for this key, or NULL if
- * the key is generic.
+ * Return value: the name of the source state for this key, or NULL if
+ *   the key is generic
+ *
  * Since: 1.4
  */
-const gchar *
-clutter_state_key_get_target_state_name (ClutterStateKey *state_key)
+G_CONST_RETURN gchar *
+clutter_state_key_get_target_state_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
+
   return state_key->target_state->name;
 }
 
@@ -1207,16 +1248,20 @@ clutter_state_set_duration (ClutterState *state,
 /**
  * clutter_state_get_duration:
  * @state: a #ClutterState
- * @source_state_name: the name of the source state to set duration for or NULL
- * @target_state_name: the name of the source state to set duration for or NULL
+ * @source_state_name: (allow-none): the name of the source state to
+ *   get the duration of, or %NULL
+ * @target_state_name: (allow-none): the name of the source state to
+ *   get the duration of, or %NULL
  *
- * Query the duration used for transitions between source/target state pair,
- * the semantics for the query are the same as the semantics used for setting
- * in #clutter_state_set_duration.
+ * Queries the duration used for transitions between a source and
+ * target state pair
+ *
+ * The semantics for the query are the same as the semantics used for
+ * setting the duration with clutter_state_set_duration()
+ * 
+ * Return value: the duration, in milliseconds
  *
  * Since: 1.4
- * 
- * Returns: the duration in ms.
  */
 guint
 clutter_state_get_duration (ClutterState *state,
@@ -1224,7 +1269,7 @@ clutter_state_get_duration (ClutterState *state,
                             const gchar  *target_state_name)
 {
   State *target_state;
-  guint  ret = 0;
+  guint ret = 0;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (state), 0);
 
@@ -1232,18 +1277,18 @@ clutter_state_get_duration (ClutterState *state,
   if (source_state_name == g_intern_static_string ("default") ||
       source_state_name == g_intern_static_string (""))
     source_state_name = NULL;
+
   target_state_name = g_intern_string (target_state_name);
   if (target_state_name == g_intern_static_string ("default") ||
       target_state_name == g_intern_static_string (""))
     target_state_name = NULL;
 
   if (target_state_name == NULL)
-    {
-      return state->priv->duration;
-    }
+    return state->priv->duration;
+
   target_state = g_hash_table_lookup (state->priv->states,
                                       target_state_name);
-  if (target_state)
+  if (target_state != NULL)
     {
       if (source_state_name)
         ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
@@ -1252,8 +1297,10 @@ clutter_state_get_duration (ClutterState *state,
         ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
                                                     NULL));
     }
+
   if (!ret)
     ret = state->priv->duration;
+
   return ret;
 }
 
@@ -1261,16 +1308,22 @@ clutter_state_get_duration (ClutterState *state,
  * clutter_state_get_target_state:
  * @state: a #ClutterState
  *
- * Query the currently set target-state, during a transition it will also
- * return the current target. Can be useful in the completed callback.
+ * Queries the currently set target state.
+ *
+ * During a transition this function will also return the current target.
+ *
+ * This function is useful when called from handlers of the
+ * #ClutterState::completed signal.
+ * 
+ * Return value: a string containing the target state. The returned string
+ *   is owned by the #ClutterState and should not be modified or freed
  *
  * Since: 1.4
- * 
- * Returns: the duration in ms.
  */
-const gchar *
+G_CONST_RETURN gchar *
 clutter_state_get_target_state (ClutterState *state)
 {
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
+
   return state->priv->target_state_name;
 }
