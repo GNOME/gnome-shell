@@ -137,12 +137,10 @@ test_constraints_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5);
-  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "x-align");
-  clutter_actor_add_constraint (rect, constraint);
+  clutter_actor_add_constraint_with_name (rect, "x-align", constraint);
 
   constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5);
-  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "y-align");
-  clutter_actor_add_constraint (rect, constraint);
+  clutter_actor_add_constraint_with_name (rect, "y-align", constraint);
 
   rects[Center] = rect;
 
@@ -159,12 +157,10 @@ test_constraints_main (int argc, char *argv[])
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
       constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_X, 0.0);
-      clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "x-bind");
-      clutter_actor_add_constraint (rect, constraint);
+      clutter_actor_add_constraint_with_name (rect, "x-bind", constraint);
 
       constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_Y, 0.0);
-      clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "y-bind");
-      clutter_actor_add_constraint (rect, constraint);
+      clutter_actor_add_constraint_with_name (rect, "y-bind", constraint);
 
       rects[i] = rect;
     }

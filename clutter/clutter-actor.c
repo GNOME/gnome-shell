@@ -10479,6 +10479,37 @@ clutter_actor_add_action (ClutterActor  *self,
 }
 
 /**
+ * clutter_actor_add_action_with_name:
+ * @self: a #ClutterActor
+ * @name: the name to set on the action
+ * @constraint: a #ClutterAction
+ *
+ * A convenience function for setting the name of a #ClutterAction
+ * while adding it to the list of actions applied to @self
+ *
+ * This function is the logical equivalent of:
+ *
+ * |[
+ *   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (action), name);
+ *   clutter_actor_add_action (self, action);
+ * ]|
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_action_with_name (ClutterActor  *self,
+                                    const gchar   *name,
+                                    ClutterAction *action)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (CLUTTER_IS_ACTION (self));
+
+  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (action), name);
+  clutter_actor_add_action (self, action);
+}
+
+/**
  * clutter_actor_remove_action:
  * @self: a #ClutterActor
  * @action: a #ClutterAction
@@ -10509,6 +10540,40 @@ clutter_actor_remove_action (ClutterActor  *self,
 }
 
 /**
+ * clutter_actor_remove_action_by_name:
+ * @self: a #ClutterActor
+ * @name: the name of the action to remove
+ *
+ * Removes the #ClutterAction with the given name from the list
+ * of actions applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_action_by_name (ClutterActor *self,
+                                     const gchar  *name)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorMeta *meta;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+
+  priv = self->priv;
+
+  if (priv->actions == NULL)
+    return;
+
+  meta = _clutter_meta_group_get_meta (priv->actions, name);
+  if (meta == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->actions, meta);
+
+  g_object_notify (G_OBJECT (self), "actions");
+}
+
+/**
  * clutter_actor_get_actions:
  * @self: a #ClutterActor
  *
@@ -10534,6 +10599,33 @@ clutter_actor_get_actions (ClutterActor *self)
   actions = _clutter_meta_group_peek_metas (self->priv->actions);
 
   return g_list_copy ((GList *) actions);
+}
+
+/**
+ * clutter_actor_get_action:
+ * @self: a #ClutterActor
+ * @name: the name of the action to retrieve
+ *
+ * Retrieves the #ClutterAction with the given name in the list
+ * of actions applied to @self
+ *
+ * Return value: (transfer none): a #ClutterAction for the given
+ *   name, or %NULL. The returned #ClutterAction is owned by the
+ *   actor and it should not be unreferenced directly
+ *
+ * Since: 1.4
+ */
+ClutterAction *
+clutter_actor_get_action (ClutterActor *self,
+                          const gchar  *name)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  if (self->priv->actions == NULL)
+    return NULL;
+
+  return CLUTTER_ACTION (_clutter_meta_group_get_meta (self->priv->actions, name));
 }
 
 /**
@@ -10593,6 +10685,37 @@ clutter_actor_add_constraint (ClutterActor      *self,
 }
 
 /**
+ * clutter_actor_add_constraint_with_name:
+ * @self: a #ClutterActor
+ * @name: the name to set on the constraint
+ * @constraint: a #ClutterConstraint
+ *
+ * A convenience function for setting the name of a #ClutterConstraint
+ * while adding it to the list of constraints applied to @self
+ *
+ * This function is the logical equivalent of:
+ *
+ * |[
+ *   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), name);
+ *   clutter_actor_add_constraint (self, constraint);
+ * ]|
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_add_constraint_with_name (ClutterActor      *self,
+                                        const gchar       *name,
+                                        ClutterConstraint *constraint)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (CLUTTER_IS_CONSTRAINT (constraint));
+
+  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), name);
+  clutter_actor_add_constraint (self, constraint);
+}
+
+/**
  * clutter_actor_remove_constraint:
  * @self: a #ClutterActor
  * @constraint: a #ClutterConstraint
@@ -10624,6 +10747,38 @@ clutter_actor_remove_constraint (ClutterActor      *self,
 }
 
 /**
+ * clutter_actor_remove_constraint_by_name:
+ * @self: a #ClutterActor
+ * @name: the name of the constraint to remove
+ *
+ * Removes the #ClutterConstraint with the given name from the list
+ * of constraints applied to @self
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_remove_constraint_by_name (ClutterActor *self,
+                                         const gchar  *name)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorMeta *meta;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+
+  priv = self->priv;
+
+  if (priv->constraints == NULL)
+    return;
+
+  meta = _clutter_meta_group_get_meta (priv->constraints, name);
+  if (meta == NULL)
+    return;
+
+  _clutter_meta_group_remove_meta (priv->constraints, meta);
+}
+
+/**
  * clutter_actor_get_constraints:
  * @self: a #ClutterActor
  *
@@ -10649,6 +10804,33 @@ clutter_actor_get_constraints (ClutterActor *self)
   constraints = _clutter_meta_group_peek_metas (self->priv->constraints);
 
   return g_list_copy ((GList *) constraints);
+}
+
+/**
+ * clutter_actor_get_constraint:
+ * @self: a #ClutterActor
+ * @name: the name of the constraint to retrieve
+ *
+ * Retrieves the #ClutterConstraint with the given name in the list
+ * of constraints applied to @self
+ *
+ * Return value: (transfer none): a #ClutterConstraint for the given
+ *   name, or %NULL. The returned #ClutterConstraint is owned by the
+ *   actor and it should not be unreferenced directly
+ *
+ * Since: 1.4
+ */
+ClutterConstraint *
+clutter_actor_get_constraint (ClutterActor *self,
+                              const gchar  *name)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  if (self->priv->constraints == NULL)
+    return NULL;
+
+  return CLUTTER_CONSTRAINT (_clutter_meta_group_get_meta (self->priv->constraints, name));
 }
 
 /**
