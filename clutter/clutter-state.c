@@ -413,11 +413,17 @@ clutter_state_new_frame (ClutterTimeline *timeline,
 /**
  * clutter_state_change:
  * @state_name: a #ClutterState
- * @animate: whether we should animate the transition or not.
+ * @animate: whether we should animate the transition or not
  *
- * Change to @state_name and spend duration msecs when doing so.
+ * Change the current state of #ClutterState to @state_name
  *
- * Return value: the #ClutterTimeline that drives the #ClutterState instance.
+ * If @animate is %FALSE, the state transition will happen immediately;
+ * otherwise, the state transition will be animated over the duration
+ * set using clutter_state_set_duration()
+ *
+ * Return value: the #ClutterTimeline that drives the state transition
+ *
+ * Since: 1.4
  */
 ClutterTimeline *
 clutter_state_change (ClutterState *this,
@@ -428,7 +434,7 @@ clutter_state_change (ClutterState *this,
   State *state;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (this), NULL);
-  g_return_val_if_fail (target_state_name, NULL);
+  g_return_val_if_fail (target_state_name != NULL, NULL);
 
   if (target_state_name == NULL)
     target_state_name = "default";
@@ -439,9 +445,7 @@ clutter_state_change (ClutterState *this,
 
   if (target_state_name == priv->target_state_name)
     {
-      /* Avoiding transitioning if the desired state
-       * is already current
-       */
+      /* Avoid transitioning if the desired state is already current */
       return priv->timeline;
     }
 
@@ -524,23 +528,29 @@ clutter_state_change (ClutterState *this,
 /**
  * clutter_state_set:
  * @state: a #ClutterState instance.
- * @source_state_name: the name of the source state keys are being added for.
- * @target_state_name: the name of the target state keys are being added for.
+ * @source_state_name: the name of the source state keys are being added for
+ * @target_state_name: the name of the target state keys are being added for
  * @first_object: a #GObject
- * @first_property_name: the property to specify a key for
+ * @first_property_name: a property of @first_object to specify a key for
  * @first_mode: the id of the alpha function to use
- * @...: the value first_property_name should have in state_name, followed by
- * more object,property_name,mode,value,...  or NULL to terminate the varargs.
+ * @Varargs: the value @first_property_name should have in @state_name,
+ *   followed by object, property name, mode, value tuples, terminated
+ *   by %NULL
  *
  * Adds multiple keys to a named state of a #ClutterState instance, specifying
  * the easing mode and value a given property of an object should have at a
- * given progress of the animation. The mode specified is the mode used when
- * going to this key from the previous key of the property_name, If a given
- * object, state_name, property triple already exist the mode and value will be
- * replaced with the new values for the existing key. If a the property_name is
- * prefixed with "delayed::" two additional arguments are expected per key with a
- * value relative to the full state time to pause before transitioning and
- * after transitioning within the total transition time.
+ * given progress of the animation.
+ *
+ * The mode specified is the easing mode used when going to from the previous
+ * key to the specified key.
+ *
+ * If a given object, state_name, property tuple already exist then the mode
+ * and value will be replaced with the new specified values.
+ *
+ * If a the property_name is prefixed with "delayed::" two additional
+ * arguments per key are expected: a value relative to the full state time
+ * to pause before transitioning and a similar value to pause after
+ * transitioning.
  *
  * Since: 1.4
  */
@@ -654,13 +664,17 @@ clutter_state_set (ClutterState *state,
  * @property_name: the property to set a key for
  * @mode: the id of the alpha function to use
  * @value: the value for property_name of object in state_name
- * @pre_delay: relative time of the transition to be idle in the beginning of the transition
- * @post_delay: relative time of the transition to be idle in the end of the transition
+ * @pre_delay: relative time of the transition to be idle in the beginning
+ *   of the transition
+ * @post_delay: relative time of the transition to be idle in the end of
+ *   the transition
  *
  * Sets one specific end key for a state_name, object, property_name
  * combination.
  *
- * Returns: the #ClutterState instance, allowing chaining of multiple calls.
+ * Return value: the #ClutterState instance, allowing chaining of
+ *   multiple calls
+ *
  * Since: 1.4
  */
 ClutterState *
@@ -755,40 +769,53 @@ clutter_state_set_key (ClutterState  *this,
  * clutter_state_get_states:
  * @state: a #ClutterState instance.
  *
- * Get a list of all the state names managed by this #ClutterState.
+ * Gets a list of all the state names managed by this #ClutterState.
  *
- * Returns: a GList of const gchar * containing state names.
+ * Return value: (transfer container) (element-type utf8): a newly allocated
+ *   #GList of state names. The contents of the returned #GList are owned
+ *   by the #ClutterState and should not be modified or freed. Use
+ *   g_list_free() to free the resources allocated by the returned list when
+ *   done using it
+ *
  * Since: 1.4
  */
 GList *
 clutter_state_get_states (ClutterState *state)
 {
+  g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
+
   return g_hash_table_get_keys (state->priv->states);
 }
 
 /**
  * clutter_state_get_keys:
  * @state: a #ClutterState instance.
- * @source_state_name: the source transition name to query for, or NULL for all
- * source state.
- * @target_state_name: the target transition name to query for, or NULL for all
- * target state.
- * @object: the specific object instance to list keys for, or NULL for all
- * managed objects.
- * @property_name: the property name to search for or NULL for all properties.
+ * @source_state_name: (allow-none): the source transition name to query,
+ *   or %NULL for all source states
+ * @target_state_name: (allow-none): the target transition name to query,
+ *   or %NULL for all target states
+ * @object: (allow-none): the specific object instance to list keys for,
+ *   or %NULL for all managed objects
+ * @property_name: (allow-none): the property name to search for, or %NULL
+ *   for all properties.
  *
  * Returns a list of pointers to opaque structures with accessor functions
  * that describe the keys added to an animator.
  *
- * Return value: a GList of #ClutterAnimtorKey<!-- -->s.
+ * Return value: (transfer container) (element-type ClutterStateKey): a
+ *   newly allocated #GList of #ClutterStateKey<!-- -->s. The contents of
+ *   the returned list are owned by the #ClutterState and should not be
+ *   modified or freed. Use g_list_free() to free the resources allocated
+ *   by the returned list when done using it
+ *
  * Since: 1.4
  */
 GList *
 clutter_state_get_keys (ClutterState *state,
-                         const gchar   *source_state_name,
-                         const gchar   *target_state_name,
-                         GObject       *object,
-                         const gchar   *property_name)
+                        const gchar  *source_state_name,
+                        const gchar  *target_state_name,
+                        GObject      *object,
+                        const gchar  *property_name)
 {
   GList *s, *state_list;
   GList *targets = NULL;
@@ -801,13 +828,9 @@ clutter_state_get_keys (ClutterState *state,
   property_name = g_intern_string (property_name);
 
   if (target_state_name != NULL)
-    {
-      state_list = g_list_append (NULL, (void*)target_state_name);
-    }
+    state_list = g_list_append (NULL, (gpointer) target_state_name);
   else
-    {
-      state_list = clutter_state_get_states (state);
-    }
+    state_list = clutter_state_get_states (state);
 
   if (source_state_name)
     source_state = g_hash_table_lookup (state->priv->states,
@@ -825,31 +848,35 @@ clutter_state_get_keys (ClutterState *state,
           for (k = target_state->keys; k; k = k->next)
             {
               ClutterStateKey *key = k->data;
+
               if ((object == NULL || (object == key->object)) &&
                    (source_state_name == NULL || source_state == key->source_state) &&
                    (property_name == NULL || 
                     ((property_name == key->property_name))))
                 {
-                  targets = g_list_append (targets, key);
+                  targets = g_list_prepend (targets, key);
                 }
             }
         }
     }
+
   g_list_free (state_list);
-  return targets;
+
+  return g_list_reverse (targets);
 }
 
 
 /**
  * clutter_state_remove_key:
  * @state: a #ClutterState instance.
- * @source_state_name: the source state name to query for, or NULL for all
- * source state.
- * @target_state_name: the target state name to query for, or NULL for all
- * target state.
- * @object: the specific object instance to list keys for, or NULL for all
- * managed objects.
- * @property_name: the property name to search for or NULL for all properties.
+ * @source_state_name: (allow-none): the source state name to query,
+ *   or %NULL for all source states
+ * @target_state_name: (allow-none): the target state name to query,
+ *   or %NULL for all target states
+ * @object: (allow-none): the specific object instance to list keys for,
+ *   or %NULL for all managed objects
+ * @property_name: (allow-none): the property name to search for,
+ *   or %NULL for all properties.
  *
  * Removes all keys matching the search criteria passed in arguments.
  *
@@ -857,10 +884,10 @@ clutter_state_get_keys (ClutterState *state,
  */
 void
 clutter_state_remove_key (ClutterState *state,
-                           const gchar   *source_state_name,
-                           const gchar   *target_state_name,
-                           GObject       *object, 
-                           const gchar   *property_name)
+                          const gchar  *source_state_name,
+                          const gchar  *target_state_name,
+                          GObject      *object,
+                          const gchar  *property_name)
 {
   g_return_if_fail (CLUTTER_IS_STATE (state));
 
@@ -874,9 +901,11 @@ clutter_state_remove_key (ClutterState *state,
  * clutter_state_get_timeline:
  * @state: a #ClutterState
  *
- * Get the timeline driving the #ClutterState
+ * Gets the timeline driving the #ClutterState
  *
- * Return value: the #ClutterTimeline that drives the state change animations.
+ * Return value: (transfer none): the #ClutterTimeline that drives
+ *   the state change animations. The returned timeline is owned
+ *   by the #ClutterState and it should not be unreferenced directly
  *
  * Since: 1.4
  */
@@ -950,10 +979,12 @@ clutter_state_init (ClutterState *self)
  * @source_state_name: the name of a source state
  * @target_state_name: the name of a target state
  *
- * Retrieve a ClutterAnimation that is being used for transitioning between two
- * state if any.
+ * Retrieves the #ClutterAnimator that is being used for transitioning
+ * between the two states, if any has been set
  *
- * Returns: a #ClutterAnimator instance or NULL
+ * Return value: (transfer none): a #ClutterAnimator instance, or %NULL
+ *
+ * Since: 1.4
  */
 ClutterAnimator *
 clutter_state_get_animator (ClutterState *state,
@@ -993,13 +1024,21 @@ clutter_state_get_animator (ClutterState *state,
  * @state: a #ClutterState instance.
  * @source_state_name: the name of a source state
  * @target_state_name: the name of a target state
- * @animator: a #ClutterAnimator instance.
+ * @animator: (allow-none): a #ClutterAnimator instance, or %NULL to
+ *   unset an existing #ClutterAnimator
  *
- * Specify a ClutterAnimation to be used when transitioning between the two
- * named state, this allows specifying a transition between the state that is
+ * Specifies a #ClutterAnimator to be used when transitioning between
+ * the two named states.
+ *
+ * The @animator allows specifying a transition between the state that is
  * more elaborate than the basic transitions other allowed by the simple
- * tweening of #ClutterState. Pass NULL to unset an existing animator.
- * ClutterState takes a reference on the passed in animator if any.
+ * tweening of properties defined in the #ClutterState keys.
+ *
+ * If @animator is %NULL it will unset an existing animator.
+ *
+ * #ClutterState will take a reference on the passed @animator, if any
+ *
+ * Since: 1.4
  */
 void
 clutter_state_set_animator (ClutterState    *state,
@@ -1050,12 +1089,14 @@ clutter_state_set_animator (ClutterState    *state,
 static gpointer
 clutter_state_key_copy (gpointer boxed)
 {
-  ClutterStateKey *key = boxed;
+  if (boxed != NULL)
+    {
+      ClutterStateKey *key = boxed;
 
-  if (key != NULL)
-    key->ref_count += 1;
+      key->ref_count += 1;
+    }
 
-  return key;
+  return boxed;
 }
 
 GType
