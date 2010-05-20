@@ -341,7 +341,7 @@ static void clutter_state_new_frame (ClutterTimeline *timeline,
   if (state->priv->current_animator)
     return;
 
-  progress  = 1.0 * msecs / clutter_timeline_get_duration (timeline);
+  progress = clutter_timeline_get_progress (timeline);
 
   for (k = state->priv->target_state->keys; k; k = k->next)
     {
