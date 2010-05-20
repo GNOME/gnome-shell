@@ -29,7 +29,7 @@
 
 #include "json-types-private.h"
 
-/**
+/*
  * SECTION:json-node
  * @short_description: Node in a JSON object model
  *
@@ -61,7 +61,7 @@ json_node_get_type (void)
   return node_type;
 }
 
-/**
+/*
  * json_node_get_value_type:
  * @node: a #JsonNode
  *
@@ -96,7 +96,7 @@ json_node_get_value_type (JsonNode *node)
     }
 }
 
-/**
+/*
  * json_node_new:
  * @type: a #JsonNodeType
  *
@@ -118,7 +118,7 @@ json_node_new (JsonNodeType type)
   return data;
 }
 
-/**
+/*
  * json_node_copy:
  * @node: a #JsonNode
  *
@@ -167,7 +167,7 @@ json_node_copy (JsonNode *node)
   return copy;
 }
 
-/**
+/*
  * json_node_set_object:
  * @node: a #JsonNode
  * @object: a #JsonObject
@@ -190,7 +190,7 @@ json_node_set_object (JsonNode   *node,
     node->data.object = NULL;
 }
 
-/**
+/*
  * json_node_take_object:
  * @node: a #JsonNode
  * @object: a #JsonObject
@@ -214,7 +214,7 @@ json_node_take_object (JsonNode   *node,
     node->data.object = object;
 }
 
-/**
+/*
  * json_node_get_object:
  * @node: a #JsonNode
  *
@@ -231,7 +231,7 @@ json_node_get_object (JsonNode *node)
   return node->data.object;
 }
 
-/**
+/*
  * json_node_dup_object:
  * @node: a #JsonNode
  *
@@ -252,7 +252,7 @@ json_node_dup_object (JsonNode *node)
   return NULL;
 }
 
-/**
+/*
  * json_node_set_array:
  * @node: a #JsonNode
  * @array: a #JsonArray
@@ -275,7 +275,7 @@ json_node_set_array (JsonNode  *node,
     node->data.array = NULL;
 }
 
-/**
+/*
  * json_node_take_array:
  * @node: a #JsonNode
  * @array: a #JsonArray
@@ -299,7 +299,7 @@ json_node_take_array (JsonNode  *node,
     node->data.array = array;
 }
 
-/**
+/*
  * json_node_get_array:
  * @node: a #JsonNode
  *
@@ -316,7 +316,7 @@ json_node_get_array (JsonNode *node)
   return node->data.array;
 }
 
-/**
+/*
  * json_node_dup_array
  * @node: a #JsonNode
  *
@@ -337,7 +337,7 @@ json_node_dup_array (JsonNode *node)
   return NULL;
 }
 
-/**
+/*
  * json_node_get_value:
  * @node: a #JsonNode
  * @value: return location for an uninitialized value
@@ -366,7 +366,7 @@ node_value_unset (JsonNode *node)
     g_value_unset (&(node->data.value));
 }
 
-/**
+/*
  * json_node_set_value:
  * @node: a #JsonNode
  * @value: the #GValue to set
@@ -417,7 +417,7 @@ json_node_set_value (JsonNode     *node,
 
 }
 
-/**
+/*
  * json_node_free:
  * @node: a #JsonNode
  *
@@ -452,7 +452,7 @@ json_node_free (JsonNode *node)
     }
 }
 
-/**
+/*
  * json_node_type_name:
  * @node: a #JsonNode
  *
@@ -484,7 +484,7 @@ json_node_type_name (JsonNode *node)
   return "unknown";
 }
 
-/**
+/*
  * json_node_get_parent:
  * @node: a #JsonNode
  *
@@ -500,7 +500,7 @@ json_node_get_parent (JsonNode *node)
   return node->parent;
 }
 
-/**
+/*
  * json_node_set_string:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  * @value: a string value
@@ -530,7 +530,7 @@ json_node_set_string (JsonNode    *node,
     }
 }
 
-/**
+/*
  * json_node_get_string:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  *
@@ -552,7 +552,7 @@ json_node_get_string (JsonNode *node)
   return NULL;
 }
 
-/**
+/*
  * json_node_dup_string:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  *
@@ -575,7 +575,7 @@ json_node_dup_string (JsonNode *node)
   return NULL;
 }
 
-/**
+/*
  * json_node_set_int:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  * @value: an integer value
@@ -605,7 +605,7 @@ json_node_set_int (JsonNode *node,
     }
 }
 
-/**
+/*
  * json_node_get_int:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  *
@@ -627,7 +627,7 @@ json_node_get_int (JsonNode *node)
   return 0;
 }
 
-/**
+/*
  * json_node_set_double:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  * @value: a double value
@@ -657,7 +657,7 @@ json_node_set_double (JsonNode *node,
     }
 }
 
-/**
+/*
  * json_node_get_double:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  *
@@ -679,7 +679,7 @@ json_node_get_double (JsonNode *node)
   return 0.0;
 }
 
-/**
+/*
  * json_node_set_boolean:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  * @value: a boolean value
@@ -709,7 +709,7 @@ json_node_set_boolean (JsonNode *node,
     }
 }
 
-/**
+/*
  * json_node_get_boolean:
  * @node: a #JsonNode of type %JSON_NODE_VALUE
  *
@@ -731,7 +731,7 @@ json_node_get_boolean (JsonNode *node)
   return FALSE;
 }
 
-/**
+/*
  * json_node_get_node_type:
  * @node: a #JsonNode
  *
@@ -749,7 +749,7 @@ json_node_get_node_type (JsonNode *node)
   return node->type;
 }
 
-/**
+/*
  * json_node_is_null:
  * @node: a #JsonNode
  *

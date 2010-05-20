@@ -17,7 +17,7 @@
  *   Emmanuele Bassi  <ebassi@openedhand.com>
  */
 
-/**
+/*
  * SECTION:json-parser
  * @short_description: Parse JSON data streams
  *
@@ -167,7 +167,7 @@ json_parser_class_init (JsonParserClass *klass)
 
   gobject_class->dispose = json_parser_dispose;
 
-  /**
+  /*
    * JsonParser::parse-start:
    * @parser: the #JsonParser that received the signal
    * 
@@ -182,7 +182,7 @@ json_parser_class_init (JsonParserClass *klass)
                   NULL, NULL,
                   _json_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  /**
+  /*
    * JsonParser::parse-end:
    * @parser: the #JsonParser that received the signal
    *
@@ -197,7 +197,7 @@ json_parser_class_init (JsonParserClass *klass)
                   NULL, NULL,
                   _json_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  /**
+  /*
    * JsonParser::object-start:
    * @parser: the #JsonParser that received the signal
    * 
@@ -212,7 +212,7 @@ json_parser_class_init (JsonParserClass *klass)
                   NULL, NULL,
                   _json_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  /**
+  /*
    * JsonParser::object-member:
    * @parser: the #JsonParser that received the signal
    * @object: a #JsonObject
@@ -232,7 +232,7 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 2,
                   JSON_TYPE_OBJECT,
                   G_TYPE_STRING);
-  /**
+  /*
    * JsonParser::object-end:
    * @parser: the #JsonParser that received the signal
    * @object: the parsed #JsonObject
@@ -249,7 +249,7 @@ json_parser_class_init (JsonParserClass *klass)
                   _json_marshal_VOID__BOXED,
                   G_TYPE_NONE, 1,
                   JSON_TYPE_OBJECT);
-  /**
+  /*
    * JsonParser::array-start:
    * @parser: the #JsonParser that received the signal
    *
@@ -264,7 +264,7 @@ json_parser_class_init (JsonParserClass *klass)
                   NULL, NULL,
                   _json_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  /**
+  /*
    * JsonParser::array-element:
    * @parser: the #JsonParser that received the signal
    * @array: a #JsonArray
@@ -284,7 +284,7 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 2,
                   JSON_TYPE_ARRAY,
                   G_TYPE_INT);
-  /**
+  /*
    * JsonParser::array-end:
    * @parser: the #JsonParser that received the signal
    * @array: the parsed #JsonArrary
@@ -301,7 +301,7 @@ json_parser_class_init (JsonParserClass *klass)
                   _json_marshal_VOID__BOXED,
                   G_TYPE_NONE, 1,
                   JSON_TYPE_ARRAY);
-  /**
+  /*
    * JsonParser::error:
    * @parser: the parser instance that received the signal
    * @error: a pointer to the #GError
@@ -885,7 +885,7 @@ json_scanner_new (JsonParser *parser)
   return scanner;
 }
 
-/**
+/*
  * json_parser_new:
  * 
  * Creates a new #JsonParser instance. You can use the #JsonParser to
@@ -901,7 +901,7 @@ json_parser_new (void)
   return g_object_new (JSON_TYPE_PARSER, NULL);
 }
 
-/**
+/*
  * json_parser_load_from_file:
  * @parser: a #JsonParser
  * @filename: the path for the file to parse
@@ -944,7 +944,7 @@ json_parser_load_from_file (JsonParser   *parser,
   return retval;
 }
 
-/**
+/*
  * json_parser_load_from_data:
  * @parser: a #JsonParser
  * @data: the buffer to parse
@@ -1067,7 +1067,7 @@ json_parser_load_from_data (JsonParser   *parser,
   return retval;
 }
 
-/**
+/*
  * json_parser_get_root:
  * @parser: a #JsonParser
  *
@@ -1084,7 +1084,7 @@ json_parser_get_root (JsonParser *parser)
   return parser->priv->root;
 }
 
-/**
+/*
  * json_parser_get_current_line:
  * @parser: a #JsonParser
  *
@@ -1103,7 +1103,7 @@ json_parser_get_current_line (JsonParser *parser)
   return 0;
 }
 
-/**
+/*
  * json_parser_get_current_pos:
  * @parser: a #JsonParser
  *
