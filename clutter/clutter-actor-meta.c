@@ -307,6 +307,10 @@ clutter_actor_meta_get_actor (ClutterActorMeta *meta)
   return meta->priv->actor;
 }
 
+/*
+ * ClutterMetaGroup: a collection of ClutterActorMeta instances
+ */
+
 G_DEFINE_TYPE (ClutterMetaGroup, _clutter_meta_group, G_TYPE_OBJECT);
 
 static void
@@ -330,6 +334,16 @@ _clutter_meta_group_init (ClutterMetaGroup *self)
 {
 }
 
+/*
+ * _clutter_meta_group_add_meta:
+ * @group: a #ClutterMetaGroup
+ * @meta: a #ClutterActorMeta to add
+ *
+ * Adds @meta to @group
+ *
+ * This function will remove the floating reference of @meta or, if the
+ * floating reference has already been sunk, add a reference to it
+ */
 void
 _clutter_meta_group_add_meta (ClutterMetaGroup *group,
                               ClutterActorMeta *meta)
@@ -354,6 +368,13 @@ _clutter_meta_group_add_meta (ClutterMetaGroup *group,
   _clutter_actor_meta_set_actor (meta, group->actor);
 }
 
+/*
+ * _clutter_meta_group_remove_meta:
+ * @group: a #ClutterMetaGroup
+ * @meta: a #ClutterActorMeta to remove
+ *
+ * Removes @meta from @group and releases the reference being held on it
+ */
 void
 _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
                                  ClutterActorMeta *meta)
@@ -378,12 +399,27 @@ _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
   g_object_unref (meta);
 }
 
+/*
+ * _clutter_meta_group_peek_metas:
+ * @group: a #ClutterMetaGroup
+ *
+ * Returns a pointer to the #ClutterActorMeta list
+ *
+ * Return value: a const pointer to the #GList of #ClutterActorMeta
+ */
 G_CONST_RETURN GList *
 _clutter_meta_group_peek_metas (ClutterMetaGroup *group)
 {
   return group->meta;
 }
 
+/*
+ * _clutter_meta_group_clear_metas:
+ * @group: a #ClutterMetaGroup
+ *
+ * Clears @group of all #ClutterActorMeta instances and releases
+ * the reference on them
+ */
 void
 _clutter_meta_group_clear_metas (ClutterMetaGroup *group)
 {
@@ -394,6 +430,15 @@ _clutter_meta_group_clear_metas (ClutterMetaGroup *group)
   group->meta = NULL;
 }
 
+/*
+ * _clutter_meta_group_get_meta:
+ * @group: a #ClutterMetaGroup
+ * @name: the name of the #ClutterActorMeta to retrieve
+ *
+ * Retrieves a named #ClutterActorMeta from @group
+ *
+ * Return value: a #ClutterActorMeta for the given name, or %NULL
+ */
 ClutterActorMeta *
 _clutter_meta_group_get_meta (ClutterMetaGroup *group,
                               const gchar      *name)
