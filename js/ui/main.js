@@ -1,5 +1,11 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+imports.gi.versions.Clutter = '1.0';
+imports.gi.versions.Gio = '2.0';
+imports.gi.versions.Gdk = '2.0';
+imports.gi.versions.GdkPixbuf = '2.0';
+imports.gi.versions.Gtk = '2.0';
+
 const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
