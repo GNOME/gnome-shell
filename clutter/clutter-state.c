@@ -33,11 +33,17 @@
 #include "config.h"
 #endif
 
-#include "clutter-private.h"
 #include "clutter-state.h"
-#include "clutter-marshal.h"
+
 #include <gobject/gvaluecollector.h>
 #include <string.h>
+
+#include "clutter-alpha.h"
+#include "clutter-animator.h"
+#include "clutter-enum-types.h"
+#include "clutter-interval.h"
+#include "clutter-marshal.h"
+#include "clutter-private.h"
 
 G_DEFINE_TYPE (ClutterState, clutter_state, G_TYPE_OBJECT);
 

@@ -24,31 +24,17 @@
 #ifndef __CLUTTER_STATE_H__
 #define __CLUTTER_STATE_H__
 
-#include <clutter/clutter.h>
+#include <clutter/clutter-types.h>
+#include <clutter/clutter-timeline.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_STATE (clutter_state_get_type ())
-
-#define CLUTTER_STATE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_STATE, ClutterState))
-
-#define CLUTTER_STATE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_STATE, ClutterStateClass))
-
-#define CLUTTER_IS_STATE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_STATE))
-
-#define CLUTTER_IS_STATE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_STATE))
-
-#define CLUTTER_STATE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_STATE, ClutterStateClass))
+#define CLUTTER_TYPE_STATE              (clutter_state_get_type ())
+#define CLUTTER_STATE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STATE, ClutterState))
+#define CLUTTER_STATE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STATE, ClutterStateClass))
+#define CLUTTER_IS_STATE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STATE))
+#define CLUTTER_IS_STATE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STATE))
+#define CLUTTER_STATE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STATE, ClutterStateClass))
 
 typedef struct _ClutterState        ClutterState;
 typedef struct _ClutterStatePrivate ClutterStatePrivate;
