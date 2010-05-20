@@ -116,7 +116,7 @@ StTooltip {
 
 .panel-button:pressed {
     background-color: rgba(50,76,111,0.98);
-    border-radius: 4px;
+    border-radius: 4px 4px 0px 0px;
 }
 
 .panel-menu-boxpointer {
