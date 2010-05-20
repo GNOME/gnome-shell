@@ -39,13 +39,22 @@ G_BEGIN_DECLS
 typedef struct _ClutterState        ClutterState;
 typedef struct _ClutterStatePrivate ClutterStatePrivate;
 typedef struct _ClutterStateClass   ClutterStateClass;
+
+/**
+ * ClutterStateKey:
+ *
+ * <structname>ClutterStateKey</structname> is an opaque structure whose
+ * members cannot be accessed directly
+ *
+ * Since: 1.4
+ */
 typedef struct _ClutterStateKey     ClutterStateKey;
 
 /**
  * ClutterState:
  *
- * The #ClutterState structure contains only private data and
- * should be accessed using the provided API
+ * The <structname>ClutterState</structname> structure contains only
+ * private data and should be accessed using the provided API
  *
  * Since: 1.4
  */
@@ -58,8 +67,10 @@ struct _ClutterState
 
 /**
  * ClutterStateClass:
+ * @completed: class handler for the #ClutterState::completed signal
  *
- * The #ClutterStateClass structure contains only private data
+ * The <structname>ClutterStateClass</structname> structure contains
+ * only private data
  *
  * Since: 1.4
  */
@@ -69,10 +80,11 @@ struct _ClutterStateClass
   GObjectClass parent_class;
 
   /*< public >*/
-  void (*completed) (ClutterState *state);
+  void (* completed) (ClutterState *state);
 
+  /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[16];
+  gpointer _padding_dummy[8];
 };
 
 GType clutter_state_get_type (void) G_GNUC_CONST;
@@ -82,7 +94,6 @@ ClutterState    *clutter_state_new                    (void);
 ClutterTimeline * clutter_state_change               (ClutterState    *state,
                                                       const gchar     *target_transition_name,
                                                       gboolean         animate);
-const gchar     * clutter_state_get_target_state     (ClutterState    *state);
 ClutterState *    clutter_state_set_key              (ClutterState    *state,
                                                       const gchar     *source_transition_name,
                                                       const gchar     *target_transition_name,
@@ -125,6 +136,11 @@ void              clutter_state_set_animator         (ClutterState    *state,
 ClutterAnimator * clutter_state_get_animator         (ClutterState    *state,
                                                       const gchar     *source_transition_name,
                                                       const gchar     *target_transition_name);
+G_CONST_RETURN gchar *clutter_state_get_target_state (ClutterState    *state);
+
+/*
+ * ClutterStateKey
+ */
 
 GType                 clutter_state_key_get_type              (void) G_GNUC_CONST;
 gdouble               clutter_state_key_get_pre_delay         (const ClutterStateKey *state_key);
