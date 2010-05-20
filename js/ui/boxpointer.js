@@ -22,8 +22,6 @@ function BoxPointer(side, binProperties) {
 
 BoxPointer.prototype = {
     _init: function(arrowSide, binProperties) {
-        if (arrowSide != St.Side.TOP)
-            throw new Error('Not implemented');
         this._arrowSide = arrowSide;
         this._arrowOrigin = 0;
         this.actor = new St.Bin({ x_fill: true,
@@ -83,14 +81,23 @@ BoxPointer.prototype = {
         childBox.x2 = availWidth;
         childBox.y2 = availHeight;
         this._border.allocate(childBox, flags);
+
+        childBox.x1 = borderWidth;
+        childBox.y1 = borderWidth;
+        childBox.x2 = availWidth - borderWidth;
+        childBox.y2 = availHeight - borderWidth;
         switch (this._arrowSide) {
             case St.Side.TOP:
-                childBox.x1 = borderWidth;
-                childBox.y1 = rise + borderWidth;
-                childBox.x2 = availWidth - borderWidth;
-                childBox.y2 = availHeight - borderWidth;
+                childBox.y1 += rise;
                 break;
-            default:
+            case St.Side.BOTTOM:
+                childBox.y2 -= rise;
+                break;
+            case St.Side.LEFT:
+                childBox.x1 += rise;
+                break;
+            case St.Side.RIGHT:
+                childBox.x2 -= rise;
                 break;
         }
         this.bin.allocate(childBox, flags);
@@ -106,6 +113,7 @@ BoxPointer.prototype = {
         [found, borderRadius] = themeNode.get_length('-arrow-border-radius', false);
 
         let halfBorder = borderWidth / 2;
+        let halfBase = Math.floor(base/2);
 
         let borderColor = new Clutter.Color();
         themeNode.get_color('-arrow-border-color', false, borderColor);
@@ -121,30 +129,57 @@ BoxPointer.prototype = {
         }
         let cr = area.get_context();
         Clutter.cairo_set_source_color(cr, borderColor);
+
+        // Translate so that box goes from 0,0 to boxWidth,boxHeight,
+        // with the arrow poking out of that
         if (this._arrowSide == St.Side.TOP) {
             cr.translate(0, rise);
+        } else if (this._arrowSide == St.Side.LEFT) {
+            cr.translate(rise, 0);
         }
+
         cr.moveTo(borderRadius, halfBorder);
+
         if (this._arrowSide == St.Side.TOP) {
-            cr.translate(0, -rise);
-            let halfBase = Math.floor(base/2);
-            cr.lineTo(this._arrowOrigin - halfBase, rise + halfBorder);
-            cr.lineTo(this._arrowOrigin, halfBorder);
-            cr.lineTo(this._arrowOrigin + halfBase, rise + halfBorder);
-            cr.translate(0, rise);
+            cr.lineTo(this._arrowOrigin - halfBase, halfBorder);
+            cr.lineTo(this._arrowOrigin, halfBorder - rise);
+            cr.lineTo(this._arrowOrigin + halfBase, halfBorder);
         }
         cr.lineTo(boxWidth - borderRadius, halfBorder);
+
         cr.arc(boxWidth - borderRadius - halfBorder, borderRadius + halfBorder, borderRadius,
                3*Math.PI/2, Math.PI*2);
+
+        if (this._arrowSide == St.Side.RIGHT) {
+            cr.lineTo(boxWidth - halfBorder, this._arrowOrigin - halfBase);
+            cr.lineTo(boxWidth - halfBorder + rise, this._arrowOrigin);
+            cr.lineTo(boxWidth - halfBorder, this._arrowOrigin + halfBase);
+        }
         cr.lineTo(boxWidth - halfBorder, boxHeight - borderRadius);
+
         cr.arc(boxWidth - borderRadius - halfBorder, boxHeight - borderRadius - halfBorder, borderRadius,
                0, Math.PI/2);
+
+        if (this._arrowSide == St.Side.BOTTOM) {
+            cr.lineTo(this._arrowOrigin + halfBase, boxHeight - halfBorder);
+            cr.lineTo(this._arrowOrigin, boxHeight - halfBorder + rise);
+            cr.lineTo(this._arrowOrigin - halfBase, boxHeight - halfBorder);
+        }
         cr.lineTo(borderRadius, boxHeight - halfBorder);
+
         cr.arc(borderRadius + halfBorder, boxHeight - borderRadius - halfBorder, borderRadius,
                Math.PI/2, Math.PI);
+
+        if (this._arrowSide == St.Side.LEFT) {
+            cr.lineTo(halfBorder, this._arrowOrigin + halfBase);
+            cr.lineTo(halfBorder - rise, this._arrowOrigin);
+            cr.lineTo(halfBorder, this._arrowOrigin - halfBase);
+        }
         cr.lineTo(halfBorder, borderRadius);
+
         cr.arc(borderRadius + halfBorder, borderRadius + halfBorder, borderRadius,
                Math.PI, 3*Math.PI/2);
+
         Clutter.cairo_set_source_color(cr, backgroundColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, borderColor);
