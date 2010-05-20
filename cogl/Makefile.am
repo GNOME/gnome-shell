@@ -137,6 +137,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-mesa.c 			\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
+	$(srcdir)/cogl-bitmask.h                        \
+	$(srcdir)/cogl-bitmask.c                        \
 	$(NULL)
 
 # glib-mkenums rules
