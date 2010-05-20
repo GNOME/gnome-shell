@@ -386,8 +386,7 @@ on_paint (ClutterActor *actor)
 
   </chapter> <!-- actors }}} -->
 
-<!--
-  <chapter id="textures">
+  <chapter id="textures"> <!-- textures {{{ -->
     <title>Textures</title>
 
     <epigraph>
@@ -401,6 +400,150 @@ on_paint (ClutterActor *actor)
       <para>introduction</para>
     </section>
 
+    <section id="textures-drawing-with-cairo">
+      <title>Drawing 2D graphics onto a texture</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para>You want to draw 2D graphics inside a Clutter application.</para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para>Create a ClutterCairoTexture, then draw onto the Cairo context
+        it wraps using the Cairo API:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterActor *texture;
+cairo_t *cr;
+
+guint width, height;
+width = 800;
+height = 600;
+
+texture = clutter_cairo_texture_new (width, height);
+
+cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (texture));
+
+/*
+ * write onto the Cairo context cr using the Cairo API;
+ * see <ulink url="http://cairographics.org/manual/">the Cairo API reference</ulink> for details
+ */
+cairo_move_to (cr, 0, 0);
+cairo_line_to (cr, 800, 600);
+cairo_stroke (cr);
+
+/* does the actual drawing onto the texture */
+cairo_destroy (cr);
+          </programlisting>
+        </informalexample>
+
+        <para>Here's a <ulink url="http://cairographics.org/tutorial/">useful
+        Cairo tutorial</ulink> if you want to learn more about the Cairo API
+        itself.</para>
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para>A ClutterCairoTexture is a standard ClutterActor, so it can be
+        added to ClutterContainers (e.g. a ClutterStage or ClutterGroup),
+        animated, resized etc. in the usual ways.</para>
+
+        <para>Other useful operations:</para>
+
+        <itemizedlist>
+
+          <listitem>
+            <para><emphasis>To draw on part of the texture:</emphasis>
+            use <function>clutter_cairo_texture_create_region</function> to
+            retrieve a Cairo context for the region you want to draw on.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>To clear existing content from a texture:</emphasis>
+            use <function>clutter_cairo_texture_clear</function>.</para>
+
+            <para>You may need to do this as the texture reuses the same
+            Cairo context each time you call
+            <function>clutter_cairo_texture_create</function> or
+            <function>clutter_cairo_texture_create_region</function>.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>To resize the Cairo context wrapped
+            by a texture</emphasis>, use
+            <function>clutter_cairo_texture_set_surface_size</function>.</para>
+          </listitem>
+
+        </itemizedlist>
+
+        <section>
+          <title>Drawing pages from a PDF onto a ClutterCairoContext</title>
+
+          <para>Other libraries may provide an API for writing onto a
+          Cairo context; you can make use of these APIs on the exposed
+          Cairo context of a ClutterCairoTexture. For example, you
+          can use the poppler-glib API to display pages
+          from a PopplerDocument inside a Clutter application:</para>
+
+          <informalexample>
+            <programlisting>
+<![CDATA[
+#include <poppler/glib/poppler.h>
+
+/* snipped setup code (as above) */
+
+/*
+ * cast to CLUTTER_CAIRO_TEXTURE, as the functions
+ * used below require that type
+ */
+ClutterCairoTexture *cc_texture = CLUTTER_CAIRO_TEXTURE (texture);
+
+clutter_cairo_texture_clear (cc_texture);
+
+gchar *file_uri = "file:///path/to/file.pdf";
+guint page_num = 0;
+double page_width, page_height;
+
+PopplerDocument *doc;
+PopplerPage *page;
+GError *error = NULL;
+
+doc = poppler_document_new_from_file (file_uri, NULL, &error);
+
+page = poppler_document_get_page (doc, page_num);
+
+poppler_page_get_size (page, &page_width, &page_height);
+
+cr = clutter_cairo_texture_create (cc_texture);
+
+/* render the page to the context */
+poppler_page_render (page, cr);
+
+cairo_destroy (cr);
+]]>
+            </programlisting>
+          </informalexample>
+
+          <para>Note that if the page is larger than the Cairo context,
+          some of it might not be visible. Similarly, if the ClutterCairoTexture
+          is larger than the stage, some of that might not be visible. So you
+          may need to do some work to make the ClutterCairoTexture fit
+          inside the stage properly (e.g. resize the stage), and/or some work
+          to make the PDF page sit inside the Cairo context (e.g. scale the PDF
+          page or put it inside a scrollable actor).</para>
+
+        </section>
+
+      </section>
+
+    </section>
+
+<!--
     <section id="textures-aspect-ratio">
       <title>Maintaining the aspect ratio when loading a texture</title>
 
@@ -423,9 +566,9 @@ on_paint (ClutterActor *actor)
       </section>
 
     </section>
-
-  </chapter>
 -->
+
+  </chapter> <!-- textures }}} -->
 
 <!--
   <chapter id="animations">
