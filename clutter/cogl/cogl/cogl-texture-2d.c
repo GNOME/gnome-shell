@@ -156,21 +156,8 @@ _cogl_texture_2d_free (CoglTexture2D *tex_2d)
 static gboolean
 _cogl_texture_2d_is_pot (unsigned int num)
 {
-  gboolean have_bit = FALSE;
-
   /* Make sure there is only one bit set */
-  while (num)
-    {
-      if (num & 1)
-        {
-          if (have_bit)
-            return FALSE;
-          have_bit = TRUE;
-        }
-      num >>= 1;
-    }
-
-  return TRUE;
+  return (num & (num - 1)) == 0;
 }
 
 static gboolean
