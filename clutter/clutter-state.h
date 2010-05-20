@@ -93,13 +93,9 @@ GType clutter_state_get_type (void) G_GNUC_CONST;
 ClutterState    *clutter_state_new                    (void);
 
 
-/* XXX: clutter_state_run? 
- *      the current (target?) transition should be a property of ClutterState
- */
 ClutterTimeline * clutter_state_change               (ClutterState    *state,
-                                                      const gchar     *target_transition_name);
-ClutterTimeline * clutter_state_change_noanim        (ClutterState    *state,
-                                                      const gchar     *target_transition_name);
+                                                      const gchar     *target_transition_name,
+                                                      gboolean         animate);
 const gchar     * clutter_state_get_target_state     (ClutterState    *state);
 ClutterState *    clutter_state_set_key              (ClutterState    *state,
                                                       const gchar     *source_transition_name,

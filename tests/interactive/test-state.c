@@ -10,7 +10,7 @@ static gboolean press_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   clutter_grab_pointer (actor);
-  clutter_state_change (state, "end");
+  clutter_state_change (state, "end", TRUE);
   return TRUE;
 }
 
@@ -18,16 +18,16 @@ static gboolean release_event (ClutterActor *actor,
                                ClutterEvent *event,
                                gpointer      user_data)
 {
-  clutter_state_change (state, "start");
+  clutter_state_change (state, "start", TRUE);
   clutter_ungrab_pointer ();
   return TRUE;
 }
 
-static void completed (ClutterState *state,
+static void completed (ClutterState *sstate,
                        gpointer      data)
 {
   g_print ("Completed transitioning to state: %s\n",
-           clutter_state_get_target_state (state), data);
+           clutter_state_get_target_state (sstate));
 }
 
 static ClutterActor *new_rect (gint r,
@@ -95,7 +95,7 @@ test_state_main (gint    argc,
   g_signal_connect (state, "completed", G_CALLBACK (completed), NULL);
 
   clutter_actor_show (stage);
-  clutter_state_change (state, "start");
+  clutter_state_change (state, "start", TRUE);
 
   clutter_main ();
   g_object_unref (state);
