@@ -1136,12 +1136,16 @@ SingleView.prototype = {
             let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
             dropActor.show();
 
-            if (target._delegate && target._delegate != this && target._delegate.acceptDrop) {
-                let [targX, targY] = target.get_transformed_position();
-                return target._delegate.acceptDrop(source, dropActor,
-                                                   (x - targX) / target.scale_x,
-                                                   (y - targY) / target.scale_y,
-                                                   time);
+            while (target) {
+                if (target._delegate &&
+                    target._delegate != this &&
+                    target._delegate.acceptDrop) {
+
+                    let [r, targX, targY] = target.transform_stage_point(x, y);
+                    return target._delegate.acceptDrop(source, dropActor,
+                                                       targX, targY, time);
+                }
+                target = target.get_parent();
             }
             return false;
         }

@@ -302,13 +302,14 @@ _Draggable.prototype = {
             this._dragActor.show();
             while (target) {
                 if (target._delegate && target._delegate.handleDragOver) {
-                    let [targX, targY] = target.get_transformed_position();
+                    let [r, targX, targY] = target.transform_stage_point(stageX, stageY);
                     // We currently loop through all parents on drag-over even if one of the children has handled it.
                     // We can check the return value of the function and break the loop if it's true if we don't want
                     // to continue checking the parents.
-                    target._delegate.handleDragOver(this.actor._delegate, this._dragActor,
-                                                    (stageX - targX) / target.scale_x,
-                                                    (stageY - targY) / target.scale_y,
+                    target._delegate.handleDragOver(this.actor._delegate,
+                                                    this._dragActor,
+                                                    targX,
+                                                    targY,
                                                     event.get_time());
                 }
                 target = target.get_parent();
@@ -328,10 +329,11 @@ _Draggable.prototype = {
         this._dragActor.show();
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
-                let [targX, targY] = target.get_transformed_position();
-                if (target._delegate.acceptDrop(this.actor._delegate, this._dragActor,
-                                                (dropX - targX) / target.scale_x,
-                                                (dropY - targY) / target.scale_y,
+                let [r, targX, targY] = target.transform_stage_point(dropX, dropY);
+                if (target._delegate.acceptDrop(this.actor._delegate,
+                                                this._dragActor,
+                                                targX,
+                                                targY,
                                                 event.get_time())) {
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
