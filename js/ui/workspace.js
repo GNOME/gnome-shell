@@ -736,6 +736,9 @@ Workspace.prototype = {
      * Draw the user's attention to the given window @metaWindow.
      */
     setHighlightWindow: function (metaWindow) {
+        if (!this._lightbox)
+            return;
+
         let actor;
         if (metaWindow != null) {
             let clone = this.lookupCloneForMetaWindow(metaWindow);

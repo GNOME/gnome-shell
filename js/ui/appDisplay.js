@@ -18,6 +18,7 @@ const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
@@ -477,7 +478,9 @@ AppWellIcon.prototype = {
         this.actor.set_child(this._icon.actor);
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+
         this._menu = null;
+        this._menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._draggable = DND.makeDraggable(this.actor);
         this._draggable.connect('drag-begin', Lang.bind(this,
@@ -527,7 +530,7 @@ AppWellIcon.prototype = {
             this._removeMenuTimeout();
             this._menuTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT,
                 Lang.bind(this, function() {
-                    this.popupMenu(button);
+                    this.popupMenu();
                 }));
         }
     },
@@ -547,9 +550,7 @@ AppWellIcon.prototype = {
                 Main.overview.hide();
             }
         } else if (button == 3) {
-            // Don't bind to the right click here; we want left click outside the
-            // area to deactivate as well.
-            this.popupMenu(0);
+            this.popupMenu();
         }
         return false;
     },
@@ -558,7 +559,7 @@ AppWellIcon.prototype = {
         return this.app.get_id();
     },
 
-    popupMenu: function(activatingButton) {
+    popupMenu: function() {
         this._removeMenuTimeout();
         this.actor.fake_release();
 
@@ -577,9 +578,12 @@ AppWellIcon.prototype = {
                     this._onMenuPoppedDown();
                 }
             }));
+
+            this._menuManager.addMenu(this._menu, true);
         }
 
-        this._menu.popup(activatingButton);
+        this._menu.popup();
+        this._menuManager.grab();
 
         return false;
     },
@@ -646,6 +650,11 @@ AppWellIcon.prototype = {
         Main.overview.hide();
     },
 
+    // called by this._menuManager when it has the grab
+    menuEventFilter: function(event) {
+        return this._menu.menuEventFilter(event);
+    },
+
     shellWorkspaceLaunch : function() {
         this.app.open_new_window();
     },
@@ -667,102 +676,33 @@ function AppIconMenu(source) {
 }
 
 AppIconMenu.prototype = {
+    __proto__: PopupMenu.PopupMenu.prototype,
+
     _init: function(source) {
+        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, St.Align.MIDDLE, St.Side.LEFT, 0);
+
         this._source = source;
 
-        this.actor = new Shell.GenericContainer({ reactive: true });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.connect('active-changed', Lang.bind(this, this._onActiveChanged));
+        this.connect('activate', Lang.bind(this, this._onActivate));
+        this.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
 
-        this._windowContainer = new Shell.Menu({ style_class: 'app-well-menu',
-                                                 vertical: true,
-                                                 width: Main.overview._dash.actor.width });
-        this._windowContainer.connect('unselected', Lang.bind(this, this._onItemUnselected));
-        this._windowContainer.connect('selected', Lang.bind(this, this._onItemSelected));
-        this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
-        this._windowContainer.connect('activate', Lang.bind(this, this._onItemActivate));
-        this.actor.add_actor(this._windowContainer);
-
-        // Stay popped up on release over application icon
-        this._windowContainer.set_persistent_source(this._source.actor);
-
-        // Intercept events while the menu has the pointer grab to do window-related effects
-        this._windowContainer.connect('enter-event', Lang.bind(this, this._onMenuEnter));
-        this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
-        this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
-
-        this._arrow = new St.DrawingArea({ style_class: 'app-well-menu-arrow' });
-        this._arrow.connect('repaint', Lang.bind(this, function (area) {
-            Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT);
-        }));
-        this.actor.add_actor(this._arrow);
+        this.actor.add_style_class_name('app-well-menu');
 
         // Chain our visibility and lifecycle to that of the source
         source.actor.connect('notify::mapped', Lang.bind(this, function () {
             if (!source.actor.mapped)
-                this._windowContainer.popdown();
+                this.close();
         }));
         source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
 
         Main.uiGroup.add_actor(this.actor);
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [menuMin, menuNatural] = this._windowContainer.get_preferred_width(forHeight);
-        let [arrowMin, arrowNatural] = this._arrow.get_preferred_width(forHeight);
-        alloc.min_size = menuMin + arrowMin;
-        alloc.natural_size = menuNatural + arrowNatural;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [min, natural] = this._windowContainer.get_preferred_height(forWidth);
-        alloc.min_size = min;
-        alloc.natural_size = natural;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let childBox = new Clutter.ActorBox();
-        let themeNode = this._windowContainer.get_theme_node();
-
-        let width = box.x2 - box.x1;
-        let height = box.y2 - box.y1;
-
-        let [arrowMinWidth, arrowWidth] = this._arrow.get_preferred_width(height);
-
-        childBox.x1 = 0;
-        childBox.x2 = arrowWidth;
-        childBox.y1 = Math.floor((height / 2) - (arrowWidth / 2));
-        childBox.y2 = childBox.y1 + arrowWidth;
-        this._arrow.allocate(childBox, flags);
-
-        // Ensure the arrow is above the border area
-        let border = themeNode.get_border_width(St.Side.LEFT);
-        childBox.x1 = arrowWidth - border;
-        childBox.x2 = width;
-        childBox.y1 = 0;
-        childBox.y2 = height;
-        this._windowContainer.allocate(childBox, flags);
-    },
-
     _redisplay: function() {
-        this._windowContainer.remove_all();
+        this.removeAll();
 
         let windows = this._source.app.get_windows();
-
-        this._windowContainer.show();
-
-        let iconsDiffer = false;
-        let texCache = St.TextureCache.get_default();
-        if (windows.length > 0) {
-            let firstIcon = windows[0].mini_icon;
-            for (let i = 1; i < windows.length; i++) {
-                if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
-                    iconsDiffer = true;
-                    break;
-                }
-            }
-        }
 
         // Display the app windows menu items and the separator between windows
         // of the current desktop and other windows.
@@ -774,8 +714,8 @@ AppIconMenu.prototype = {
                 this._appendSeparator();
                 separatorShown = true;
             }
-            let box = this._appendMenuItem(windows[i].title);
-            box._window = windows[i];
+            let item = this._appendMenuItem(windows[i].title);
+            item._window = windows[i];
         }
 
         if (windows.length > 0)
@@ -794,45 +734,53 @@ AppIconMenu.prototype = {
     },
 
     _appendSeparator: function () {
-        let bin = new St.Bin({ style_class: 'app-well-menu-separator' });
-        this._windowContainer.add_actor(bin);
+        let separator = new PopupMenu.PopupSeparatorMenuItem();
+        this.addMenuItem(separator);
     },
 
     _appendMenuItem: function(labelText) {
-        let box = new St.BoxLayout({ style_class: 'app-well-menu-item',
-                                      reactive: true });
-        let label = new St.Label({ text: labelText });
-        box.add(label);
-        this._windowContainer.add_actor(box);
-        return box;
+        // FIXME: app-well-menu-item style
+        let item = new PopupMenu.PopupMenuItem(labelText);
+        this.addMenuItem(item);
+        return item;
     },
 
     popup: function(activatingButton) {
-        let [stageX, stageY] = this._source.actor.get_transformed_position();
-        let [stageWidth, stageHeight] = this._source.actor.get_transformed_size();
-
         this._redisplay();
-
-        this._windowContainer.popup(activatingButton, global.get_current_time());
-
-        this.emit('popup', true);
-
-        let x, y;
-        x = Math.floor(stageX + stageWidth);
-        y = Math.floor(stageY + (stageHeight / 2) - (this.actor.height / 2));
-
-        this.actor.set_position(x, y);
-        this.actor.show();
+        this.open();
     },
 
-    popdown: function() {
-        this._windowContainer.popdown();
-        this.emit('popup', false);
-        this.actor.hide();
+    _onOpenStateChanged: function (menu, open) {
+        if (open) {
+            this.emit('popup', true);
+        } else {
+            this._updateHighlight(null);
+            this.emit('popup', false);
+        }
     },
 
-    selectWindow: function(metaWindow) {
-        this._selectMenuItemForWindow(metaWindow);
+    // called by this._menuManager when it has the grab
+    menuEventFilter: function(event) {
+        let eventType = event.type();
+
+        // Check if the user is interacting with a window representation
+        // rather than interacting with the menu
+
+        if (eventType == Clutter.EventType.BUTTON_RELEASE) {
+            let metaWindow = this._findMetaWindowForActor(event.get_source());
+            if (metaWindow)
+                this.emit('activate-window', metaWindow);
+        } else if (eventType == Clutter.EventType.ENTER) {
+            let metaWindow = this._findMetaWindowForActor(event.get_source());
+            if (metaWindow)
+                this._selectMenuItemForWindow(metaWindow, true);
+        } else if (eventType == Clutter.EventType.LEAVE) {
+            let metaWindow = this._findMetaWindowForActor(event.get_source());
+            if (metaWindow)
+                this._selectMenuItemForWindow(metaWindow, false);
+        }
+
+        return false;
     },
 
     _findMetaWindowForActor: function (actor) {
@@ -843,64 +791,32 @@ AppIconMenu.prototype = {
         return null;
     },
 
-    // This function is called while the menu has a pointer grab; what we want
-    // to do is see if the mouse was released over a window representation
-    _onMenuButtonRelease: function (actor, event) {
-        let metaWindow = this._findMetaWindowForActor(event.get_source());
-        if (metaWindow) {
-            this.emit('activate-window', metaWindow);
-        }
-    },
-
     _updateHighlight: function (item) {
-        if (this._highlightedItem) {
-            this._highlightedItem.remove_style_pseudo_class('hover');
+        if (this._highlightedItem)
             this.emit('highlight-window', null);
-        }
         this._highlightedItem = item;
         if (this._highlightedItem) {
-            item.add_style_pseudo_class('hover');
             let window = this._highlightedItem._window;
             if (window)
                 this.emit('highlight-window', window);
         }
     },
 
-    _selectMenuItemForWindow: function (metaWindow) {
-        let children = this._windowContainer.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            let menuMetaWindow = child._window;
+    _selectMenuItemForWindow: function (metaWindow, selected) {
+        let items = this.getMenuItems();
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            let menuMetaWindow = item._window;
             if (menuMetaWindow == metaWindow)
-                this._updateHighlight(child);
+                item.setActive(selected);
         }
     },
 
-    // Called while menu has a pointer grab
-    _onMenuEnter: function (actor, event) {
-        let metaWindow = this._findMetaWindowForActor(event.get_source());
-        if (metaWindow) {
-            this._selectMenuItemForWindow(metaWindow);
-        }
-    },
-
-    // Called while menu has a pointer grab
-    _onMenuLeave: function (actor, event) {
-        let metaWindow = this._findMetaWindowForActor(event.get_source());
-        if (metaWindow) {
-            this._updateHighlight(null);
-        }
-    },
-
-    _onItemUnselected: function (actor, child) {
-        this._updateHighlight(null);
-    },
-
-    _onItemSelected: function (actor, child) {
+    _onActiveChanged: function (menu, child) {
         this._updateHighlight(child);
     },
 
-    _onItemActivate: function (actor, child) {
+    _onActivate: function (actor, child) {
         if (child._window) {
             let metaWindow = child._window;
             this.emit('activate-window', metaWindow);
@@ -915,12 +831,7 @@ AppIconMenu.prototype = {
             else
                 favs.addFavorite(this._source.app.get_id());
         }
-        this.popdown();
-    },
-
-    _onWindowSelectionCancelled: function () {
-        this.emit('highlight-window', null);
-        this.popdown();
+        this.close();
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
