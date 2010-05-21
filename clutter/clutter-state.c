@@ -113,6 +113,12 @@ typedef struct _ClutterStateKey
 
 enum
 {
+  PROP_0,
+  PROP_TARGET_STATE
+};
+
+enum
+{
   COMPLETED,
   LAST_SIGNAL
 };
@@ -443,7 +449,7 @@ clutter_state_change (ClutterState *this,
   g_return_val_if_fail (target_state_name != NULL, NULL);
 
   if (target_state_name == NULL)
-    target_state_name = "default";
+    target_state_name = g_intern_static_string ("default");
 
   target_state_name = g_intern_string (target_state_name);
   if (priv->target_state_name == NULL)
@@ -463,6 +469,8 @@ clutter_state_change (ClutterState *this,
 
   priv->source_state_name = priv->target_state_name;
   priv->target_state_name = target_state_name;
+
+  g_object_notify (G_OBJECT (this), "target-state");
 
   if (animate)
     {
@@ -562,11 +570,11 @@ clutter_state_change (ClutterState *this,
  */
 void
 clutter_state_set (ClutterState *state,
-                   const gchar   *source_state_name,
-                   const gchar   *target_state_name,
-                   gpointer       first_object,
-                   const gchar   *first_property_name,
-                   gulong         first_mode,
+                   const gchar  *source_state_name,
+                   const gchar  *target_state_name,
+                   gpointer      first_object,
+                   const gchar  *first_property_name,
+                   gulong        first_mode,
                    ...)
 {
   GObjectClass *klass;
@@ -855,10 +863,12 @@ clutter_state_get_keys (ClutterState *state,
             {
               ClutterStateKey *key = k->data;
 
-              if ((object == NULL || (object == key->object)) &&
-                   (source_state_name == NULL || source_state == key->source_state) &&
-                   (property_name == NULL || 
-                    ((property_name == key->property_name))))
+              if (   (object == NULL || (object == key->object))
+                  && (source_state_name == NULL
+                      ||source_state == key->source_state)
+                  && (property_name == NULL
+                      ||(property_name == key->property_name))
+                  )
                 {
                   targets = g_list_prepend (targets, key);
                 }
@@ -923,14 +933,54 @@ clutter_state_get_timeline (ClutterState *state)
   return state->priv->timeline;
 }
 
+
+static void
+clutter_state_set_property (GObject      *object,
+			    guint         prop_id,
+			    const GValue *value,
+			    GParamSpec   *pspec)
+{
+  ClutterState *state = CLUTTER_STATE (object);
+
+  switch (prop_id)
+    {
+      case PROP_TARGET_STATE:
+        clutter_state_change (state, g_value_get_string (value), TRUE);
+        break;
+      default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+clutter_state_get_property (GObject    *object,
+			    guint       prop_id,
+			    GValue     *value,
+			    GParamSpec *pspec)
+{
+  ClutterState *state = CLUTTER_STATE (object);
+  switch (prop_id)
+    {
+      case PROP_TARGET_STATE:
+        g_value_set_string (value,
+                            clutter_state_get_target_state (state));
+        break;
+      default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
 static void
 clutter_state_class_init (ClutterStateClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterStatePrivate));
 
-  gobject_class->finalize = clutter_state_finalize;
+  gobject_class->finalize     = clutter_state_finalize;
+  gobject_class->set_property = clutter_state_set_property;
+  gobject_class->get_property = clutter_state_get_property;
 
   /**
    * ClutterState::completed:
@@ -949,6 +999,21 @@ clutter_state_class_init (ClutterStateClass *klass)
                   NULL, NULL,
                   clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterState:target-state:
+   *
+   * The currently set target state, setting it causes the
+   * state machine to transition to the new state, use
+   * clutter_state_change() directly to directly jump to
+   * a state.
+   */
+  pspec = g_param_spec_string ("target-state",
+                               "Target State",
+                               "Currently set state",
+                               "default",
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TARGET_STATE, pspec);
 }
 
 static void
