@@ -36,13 +36,13 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_assert (g_list_find (states, g_intern_static_string ("clicked")));
   g_list_free (states);
 
-  duration = clutter_state_get_duration (CLUTTER_STATE (state), "*", "clicked");
+  duration = clutter_state_get_duration (CLUTTER_STATE (state), "base", "clicked");
   g_assert_cmpint (duration, ==, 250);
 
-  duration = clutter_state_get_duration (CLUTTER_STATE (state), "clicked", "*");
+  duration = clutter_state_get_duration (CLUTTER_STATE (state), "clicked", "base");
   g_assert_cmpint (duration, ==, 150);
 
-  keys = clutter_state_get_keys (CLUTTER_STATE (state), "*", "clicked",
+  keys = clutter_state_get_keys (CLUTTER_STATE (state), "base", "clicked",
                                  clutter_script_get_object (script, "rect"),
                                  "opacity");
   g_assert (keys != NULL);
