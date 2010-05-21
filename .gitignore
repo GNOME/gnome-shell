@@ -258,6 +258,7 @@ TAGS
 /tests/conform/test-cogl-path
 /tests/conform/test-cogl-wrap-modes
 /tests/conform/test-clutter-cairo-texture
+/tests/conform/test-state-base
 /tests/conform/wrappers
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text

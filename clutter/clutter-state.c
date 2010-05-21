@@ -44,8 +44,8 @@
 #include "clutter-interval.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-
-G_DEFINE_TYPE (ClutterState, clutter_state, G_TYPE_OBJECT);
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 typedef struct StateAnimator {
   const gchar     *source_state_name; /* interned string identifying entry */
@@ -123,12 +123,18 @@ enum
   LAST_SIGNAL
 };
 
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
 static guint state_signals[LAST_SIGNAL] = {0, };
 
 #define CLUTTER_STATE_GET_PRIVATE(obj)            \
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                CLUTTER_TYPE_STATE,                \
                ClutterStatePrivate))
+
+G_DEFINE_TYPE_WITH_CODE (ClutterState, clutter_state, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 /**
  * clutter_state_new:
@@ -669,6 +675,28 @@ clutter_state_set (ClutterState *state,
   va_end (args);
 }
 
+static void
+clutter_state_set_key_internal (ClutterState    *state,
+                                ClutterStateKey *key)
+{
+  State *target_state = key->target_state;
+  GList *old_item = NULL;
+
+  if ((old_item = g_list_find_custom (target_state->keys,
+                                      key,
+                                      sort_props_func)))
+    {
+      ClutterStateKey *old_key = old_item->data;
+
+      target_state->keys = g_list_remove (target_state->keys, old_key);
+      clutter_state_key_free (old_key);
+    }
+
+  target_state->keys = g_list_insert_sorted (target_state->keys,
+                                             key,
+                                             sort_props_func);
+}
+
 /**
  * clutter_state_set_key:
  * @this: a #ClutterState instance.
@@ -704,9 +732,8 @@ clutter_state_set_key (ClutterState  *this,
 {
   GParamSpec *pspec;
   ClutterStateKey *state_key;
-  GList           *old_item;
-  State           *source_state = NULL;
-  State           *target_state;
+  State *source_state = NULL;
+  State *target_state;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (this), NULL);
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
@@ -763,19 +790,8 @@ clutter_state_set_key (ClutterState  *this,
   g_value_init (&state_key->value, G_VALUE_TYPE (value));
   g_value_copy (value, &state_key->value);
 
-  if ((old_item = g_list_find_custom (target_state->keys,
-                                      state_key,
-                                      sort_props_func)))
-    {
-      ClutterStateKey *old_key = old_item->data;
+  clutter_state_set_key_internal (this, state_key);
 
-      target_state->keys = g_list_remove (target_state->keys, old_key);
-      clutter_state_key_free (old_key);
-    }
-
-  target_state->keys = g_list_insert_sorted (target_state->keys,
-                                             state_key,
-                                             sort_props_func);
   return this;
 }
 
@@ -1504,4 +1520,250 @@ clutter_state_get_target_state (ClutterState *state)
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
 
   return state->priv->target_state_name;
+}
+
+typedef struct _ParseClosure {
+  ClutterState *state;
+  ClutterScript *script;
+
+  GValue *value;
+
+  gboolean result;
+} ParseClosure;
+
+static void
+parse_state_transition (JsonArray *array,
+                        guint      index_,
+                        JsonNode  *element,
+                        gpointer   data)
+{
+  ParseClosure *clos = data;
+  ClutterStatePrivate *priv = clos->state->priv;
+  JsonObject *object;
+  const gchar *source_name, *target_name;
+  State *source_state, *target_state;
+  JsonArray *keys;
+  GSList *valid_keys = NULL;
+  GList *k;
+
+  if (JSON_NODE_TYPE (element) != JSON_NODE_OBJECT)
+    {
+      g_warning ("The 'transitions' member of a ClutterState description "
+                 "should be an array of objects, but the element %d of the "
+                 "array is of type '%s'. The element will be ignored.",
+                 index_,
+                 json_node_type_name (element));
+      return;
+    }
+
+  object = json_node_get_object (element);
+
+  if (!json_object_has_member (object, "source") ||
+      !json_object_has_member (object, "target") ||
+      !json_object_has_member (object, "keys"))
+    {
+      g_warning ("The transition description at index %d is missing one "
+                 "of the mandatory members: source, target and keys",
+                 index_);
+      return;
+    }
+
+  source_name = json_object_get_string_member (object, "source");
+  target_name = json_object_get_string_member (object, "target");
+
+  keys = json_object_get_array_member (object, "keys");
+  if (keys == NULL)
+    {
+      g_warning ("The transition description at index %d has an invalid "
+                 "key member of type '%s' when an array was expected.",
+                 index_,
+                 json_node_type_name (json_object_get_member (object, "keys")));
+      return;
+    }
+
+  source_name = g_intern_string (source_name);
+  source_state = g_hash_table_lookup (priv->states, source_name);
+  if (source_state == NULL)
+    {
+      source_state = state_new (clos->state, source_name);
+      g_hash_table_insert (priv->states, (gpointer) source_name, source_state);
+    }
+
+  target_name = g_intern_string (target_name);
+  target_state = g_hash_table_lookup (priv->states, target_name);
+  if (target_state == NULL)
+    {
+      target_state = state_new (clos->state, target_name);
+      g_hash_table_insert (priv->states, (gpointer) target_name, target_state);
+    }
+
+  if (json_object_has_member (object, "duration"))
+    {
+      guint duration = json_object_get_int_member (object, "duration");
+
+      clutter_state_set_duration (clos->state,
+                                  source_name,
+                                  target_name,
+                                  duration);
+    }
+
+  if (json_object_has_member (object, "animator"))
+    {
+      const gchar *id = json_object_get_string_member (object, "animator");
+      GObject *animator;
+
+      animator = clutter_script_get_object (clos->script, id);
+      if (animator == NULL)
+        {
+          g_warning ("No object with id '%s' has been defined.", id);
+          return;
+        }
+
+      clutter_state_set_animator (clos->state,
+                                  source_name,
+                                  target_name,
+                                  CLUTTER_ANIMATOR (animator));
+    }
+
+  if (G_IS_VALUE (clos->value))
+    valid_keys = g_slist_reverse (g_value_get_pointer (clos->value));
+  else
+    g_value_init (clos->value, G_TYPE_POINTER);
+
+  for (k = json_array_get_elements (keys);
+       k != NULL;
+       k = k->next)
+    {
+      JsonNode *node = k->data;
+      JsonArray *key = json_node_get_array (node);
+      ClutterStateKey *state_key;
+      GObject *gobject;
+      GParamSpec *pspec;
+      const gchar *id;
+      const gchar *property;
+      gulong mode;
+      gboolean res;
+
+      id = json_array_get_string_element (key, 0);
+      gobject = clutter_script_get_object (clos->script, id);
+      if (gobject == NULL)
+        {
+          g_warning ("No object with id '%s' has been defined.", id);
+          continue;
+        }
+
+      property = json_array_get_string_element (key, 1);
+      pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
+                                            property);
+      if (pspec == NULL)
+        {
+          g_warning ("The object of type '%s' and name '%s' has no "
+                     "property named '%s'.",
+                     G_OBJECT_TYPE_NAME (gobject),
+                     id,
+                     property);
+          continue;
+        }
+
+      mode = clutter_script_resolve_animation_mode (json_array_get_element (key, 2));
+
+      state_key = clutter_state_key_new (target_state,
+                                         gobject, property, pspec,
+                                         mode);
+
+      res = clutter_script_parse_node (clos->script,
+                                       &(state_key->value),
+                                       property,
+                                       json_array_get_element (key, 3),
+                                       pspec);
+      if (!res)
+        {
+          g_warning ("Unable to parse the key value for the "
+                     "property '%s' of object '%s' at index %d",
+                     property,
+                     id,
+                     index_);
+          clutter_state_key_free (state_key);
+          continue;
+        }
+
+      if (json_array_get_length (key) == 5)
+        {
+          state_key->pre_delay = json_array_get_double_element (key, 4);
+          state_key->post_delay = 0.0;
+        }
+      else if (json_array_get_length (key) == 6)
+        {
+          state_key->pre_delay = json_array_get_double_element (key, 4);
+          state_key->post_delay = json_array_get_double_element (key, 5);
+        }
+      else
+        {
+          state_key->pre_delay = 0.0;
+          state_key->post_delay = 0.0;
+        }
+
+      state_key->source_state = source_state;
+
+      valid_keys = g_slist_prepend (valid_keys, state_key);
+    }
+
+  g_value_set_pointer (clos->value, g_slist_reverse (valid_keys));
+
+  clos->result = TRUE;
+}
+
+static gboolean
+clutter_state_parse_custom_node (ClutterScriptable *scriptable,
+                                 ClutterScript     *script,
+                                 GValue            *value,
+                                 const gchar       *name,
+                                 JsonNode          *node)
+{
+  ParseClosure clos;
+
+  if (strcmp (name, "transitions") != 0)
+    return FALSE;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    return FALSE;
+
+  clos.state = CLUTTER_STATE (scriptable);
+  clos.script = script;
+  clos.value = value;
+  clos.result = FALSE;
+
+  json_array_foreach_element (json_node_get_array (node),
+                              parse_state_transition,
+                              &clos);
+
+  return clos.result;
+}
+
+static void
+clutter_state_set_custom_property (ClutterScriptable *scriptable,
+                                   ClutterScript     *script,
+                                   const gchar       *name,
+                                   const GValue      *value)
+{
+  if (strcmp (name, "transitions") == 0)
+    {
+      ClutterState *state = CLUTTER_STATE (scriptable);
+      GSList *keys = g_value_get_pointer (value);
+      GSList *k;
+
+      for (k = keys; k != NULL; k = k->next)
+        clutter_state_set_key_internal (state, k->data);
+
+      g_slist_free (keys);
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_state_parse_custom_node;
+  iface->set_custom_property = clutter_state_set_custom_property;
 }

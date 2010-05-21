@@ -51,6 +51,7 @@ test_conformance_SOURCES = 		\
 	test-actor-destroy.c		\
 	test-behaviours.c		\
 	test-animator.c			\
+	test-state.c			\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
