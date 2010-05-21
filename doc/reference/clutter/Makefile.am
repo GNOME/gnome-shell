@@ -38,6 +38,7 @@ MKTMPL_OPTIONS=
 # Extra options to supply to gtkdoc-fixref. Not normally needed.
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
 FIXXREF_OPTIONS=\
+	--extra-dir=../cogl/html \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/gobject \
 	--extra-dir=$(CAIRO_PREFIX)/share/gtk-doc/html/cairo \
@@ -64,6 +65,7 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c \
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
 	clutter.h 			\
+	clutter-actor-meta-private.h	\
         clutter-bezier.h 		\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\
@@ -83,7 +85,7 @@ IGNORE_HFILES=\
 	cogl 				\
 	eglnative 			\
 	eglx 				\
-	fruity 				\
+	fruity				\
 	glx 				\
 	osx 				\
 	x11 				\

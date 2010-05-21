@@ -29,7 +29,7 @@
 
 #include "json-types-private.h"
 
-/**
+/*
  * SECTION:json-object
  * @short_description: a JSON object representation
  *
@@ -64,7 +64,7 @@ json_object_get_type (void)
   return object_type;
 }
 
-/**
+/*
  * json_object_new:
  * 
  * Creates a new #JsonObject, an JSON object type representation.
@@ -86,7 +86,7 @@ json_object_new (void)
   return object;
 }
 
-/**
+/*
  * json_object_ref:
  * @object: a #JsonObject
  *
@@ -106,7 +106,7 @@ json_object_ref (JsonObject *object)
   return object;
 }
 
-/**
+/*
  * json_object_unref:
  * @object: a #JsonObject
  *
@@ -144,7 +144,7 @@ object_set_member_internal (JsonObject  *object,
                         node);
 }
 
-/**
+/*
  * json_object_add_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -178,7 +178,7 @@ json_object_add_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -204,7 +204,7 @@ json_object_set_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_int_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -232,7 +232,7 @@ json_object_set_int_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_double_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -260,7 +260,7 @@ json_object_set_double_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_boolean_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -288,7 +288,7 @@ json_object_set_boolean_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_string_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -316,7 +316,7 @@ json_object_set_string_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_null_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -341,7 +341,7 @@ json_object_set_null_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_array_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -371,7 +371,7 @@ json_object_set_array_member (JsonObject  *object,
   object_set_member_internal (object, member_name, node);
 }
 
-/**
+/*
  * json_object_set_object_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -448,7 +448,7 @@ g_hash_table_get_values (GHashTable *hash_table)
 }
 #endif /* GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 14 */
 
-/**
+/*
  * json_object_get_members:
  * @object: a #JsonObject
  *
@@ -468,7 +468,7 @@ json_object_get_members (JsonObject *object)
   return g_hash_table_get_keys (object->members);
 }
 
-/**
+/*
  * json_object_get_values:
  * @object: a #JsonObject
  *
@@ -487,7 +487,7 @@ json_object_get_values (JsonObject *object)
   return g_hash_table_get_values (object->members);
 }
 
-/**
+/*
  * json_object_dup_member:
  * @object: a #JsonObject
  * @member_name: the name of the JSON object member to access
@@ -523,7 +523,7 @@ object_get_member_internal (JsonObject  *object,
   return g_hash_table_lookup (object->members, member_name);
 }
 
-/**
+/*
  * json_object_get_member:
  * @object: a #JsonObject
  * @member_name: the name of the JSON object member to access
@@ -544,7 +544,7 @@ json_object_get_member (JsonObject  *object,
   return object_get_member_internal (object, member_name);
 }
 
-/**
+/*
  * json_object_get_int_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -574,7 +574,7 @@ json_object_get_int_member (JsonObject  *object,
   return json_node_get_int (node);
 }
 
-/**
+/*
  * json_object_get_double_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -604,7 +604,7 @@ json_object_get_double_member (JsonObject  *object,
   return json_node_get_double (node);
 }
 
-/**
+/*
  * json_object_get_boolean_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -634,7 +634,7 @@ json_object_get_boolean_member (JsonObject  *object,
   return json_node_get_boolean (node);
 }
 
-/**
+/*
  * json_object_get_null_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -663,7 +663,7 @@ json_object_get_null_member (JsonObject  *object,
   return JSON_NODE_TYPE (node) == JSON_NODE_NULL;
 }
 
-/**
+/*
  * json_object_get_string_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -693,7 +693,7 @@ json_object_get_string_member (JsonObject  *object,
   return json_node_get_string (node);
 }
 
-/**
+/*
  * json_object_get_array_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -723,7 +723,7 @@ json_object_get_array_member (JsonObject  *object,
   return json_node_get_array (node);
 }
 
-/**
+/*
  * json_object_get_object_member:
  * @object: a #JsonObject
  * @member_name: the name of the member
@@ -753,7 +753,7 @@ json_object_get_object_member (JsonObject  *object,
   return json_node_get_object (node);
 }
 
-/**
+/*
  * json_object_has_member:
  * @object: a #JsonObject
  * @member_name: the name of a JSON object member
@@ -772,7 +772,7 @@ json_object_has_member (JsonObject *object,
   return (g_hash_table_lookup (object->members, member_name) != NULL);
 }
 
-/**
+/*
  * json_object_get_size:
  * @object: a #JsonObject
  *
@@ -788,7 +788,7 @@ json_object_get_size (JsonObject *object)
   return g_hash_table_size (object->members);
 }
 
-/**
+/*
  * json_object_remove_member:
  * @object: a #JsonObject
  * @member_name: the name of the member to remove
@@ -827,7 +827,7 @@ json_object_foreach_internal (gpointer key,
   clos->func (clos->object, member_name, member_node, clos->data);
 }
 
-/**
+/*
  * json_object_foreach_member:
  * @object: a #JsonObject
  * @func: the function to be called on each member

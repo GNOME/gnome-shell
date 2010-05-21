@@ -40,11 +40,17 @@ G_BEGIN_DECLS
 
 /* Forward delarations to avoid header catch 22's */
 typedef struct _ClutterActor            ClutterActor;
+
 typedef struct _ClutterStage            ClutterStage;
 typedef struct _ClutterContainer        ClutterContainer; /* dummy */
 typedef struct _ClutterChildMeta        ClutterChildMeta;
 typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
+typedef struct _ClutterActorMeta        ClutterActorMeta;
+
 typedef struct _ClutterAnimator         ClutterAnimator;
+
+typedef struct _ClutterAction           ClutterAction;
+typedef struct _ClutterConstraint       ClutterConstraint;
 
 typedef union _ClutterEvent             ClutterEvent;
 

@@ -1419,7 +1419,7 @@ clutter_box_layout_get_vertical (ClutterBoxLayout *layout)
 /**
  * clutter_box_layout_set_homogeneous:
  * @layout: a #ClutterBoxLayout
- * @vertical: %TRUE if the layout should be homogeneous
+ * @homogeneous: %TRUE if the layout should be homogeneous
  *
  * Sets whether the size of @layout children should be
  * homogeneous

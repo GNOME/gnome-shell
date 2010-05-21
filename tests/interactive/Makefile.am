@@ -48,7 +48,9 @@ UNIT_TESTS = \
 	test-bin-layout.c \
 	test-flow-layout.c \
 	test-box-layout.c \
-	test-stage-sizing.c
+	test-stage-sizing.c \
+	test-drag.c \
+	test-constraints.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

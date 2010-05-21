@@ -65,6 +65,7 @@ struct _ClutterMediaIface
   /*< private >*/
   GTypeInterface base_iface;
 
+  /*< public >*/
   /* signals */
   void (* eos)   (ClutterMedia *media);
   void (* error) (ClutterMedia *media,

@@ -212,6 +212,7 @@ static void
 clutter_animation_real_completed (ClutterAnimation *self)
 {
   ClutterAnimationPrivate *priv = self->priv;
+  ClutterAnimatable *animatable = NULL;
   ClutterAnimation *animation;
   ClutterTimeline *timeline;
   ClutterTimelineDirection direction;
@@ -220,6 +221,9 @@ clutter_animation_real_completed (ClutterAnimation *self)
 
   timeline = clutter_animation_get_timeline (self);
   direction = clutter_timeline_get_direction (timeline);
+
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    animatable = CLUTTER_ANIMATABLE (priv->object);
 
   /* explicitly set the final state of the animation */
   CLUTTER_NOTE (ANIMATION, "Set final state on object [%p]", priv->object);
@@ -235,7 +239,12 @@ clutter_animation_real_completed (ClutterAnimation *self)
       else
         p_value = clutter_interval_peek_initial_value (interval);
 
-      g_object_set_property (priv->object, p_name, p_value);
+      if (animatable != NULL)
+        clutter_animatable_set_final_state (animatable, self,
+                                            p_name,
+                                            p_value);
+      else
+        g_object_set_property (priv->object, p_name, p_value);
     }
 
   /* at this point, if this animation was created by clutter_actor_animate()
@@ -580,6 +589,7 @@ clutter_animation_init (ClutterAnimation *self)
 
 static inline void
 clutter_animation_bind_property_internal (ClutterAnimation *animation,
+                                          const gchar      *property_name,
                                           GParamSpec       *pspec,
                                           ClutterInterval  *interval)
 {
@@ -589,17 +599,18 @@ clutter_animation_bind_property_internal (ClutterAnimation *animation,
     {
       g_warning ("Cannot bind property '%s': the interval is out "
                  "of bounds",
-                 pspec->name);
+                 property_name);
       return;
     }
 
   g_hash_table_insert (priv->properties,
-                       g_strdup (pspec->name),
+                       g_strdup (property_name),
                        g_object_ref_sink (interval));
 }
 
 static inline void
 clutter_animation_update_property_internal (ClutterAnimation *animation,
+                                            const gchar      *property_name,
                                             GParamSpec       *pspec,
                                             ClutterInterval  *interval)
 {
@@ -609,12 +620,12 @@ clutter_animation_update_property_internal (ClutterAnimation *animation,
     {
       g_warning ("Cannot bind property '%s': the interval is out "
                  "of bounds",
-                 pspec->name);
+                 property_name);
       return;
     }
 
   g_hash_table_replace (priv->properties,
-                        g_strdup (pspec->name),
+                        g_strdup (property_name),
                         g_object_ref_sink (interval));
 }
 
@@ -624,7 +635,6 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
                                  GType             argtype)
 {
   ClutterAnimationPrivate *priv;
-  GObjectClass *klass;
   GParamSpec *pspec;
   GType pspec_type;
 
@@ -647,9 +657,22 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
       return NULL;
     }
 
-  klass = G_OBJECT_GET_CLASS (priv->object);
-  pspec = g_object_class_find_property (klass, property_name);
-  if (!pspec)
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    {
+      ClutterAnimatable *animatable = CLUTTER_ANIMATABLE (priv->object);
+
+      pspec = clutter_animatable_find_property (animatable,
+                                                animation,
+                                                property_name);
+    }
+  else
+    {
+      GObjectClass *klass = G_OBJECT_GET_CLASS (priv->object);
+
+      pspec = g_object_class_find_property (klass, property_name);
+    }
+
+  if (pspec == NULL)
     {
       g_warning ("Cannot bind property '%s': objects of type '%s' have "
                  "no such property",
@@ -715,7 +738,9 @@ clutter_animation_bind_interval (ClutterAnimation *animation,
   if (pspec == NULL)
     return NULL;
 
-  clutter_animation_bind_property_internal (animation, pspec, interval);
+  clutter_animation_bind_property_internal (animation, property_name,
+                                            pspec,
+                                            interval);
 
   return animation;
 }
@@ -760,12 +785,21 @@ clutter_animation_bind (ClutterAnimation *animation,
     return NULL;
 
   g_value_init (&initial, G_PARAM_SPEC_VALUE_TYPE (pspec));
-  g_object_get_property (priv->object, property_name, &initial);
+
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (priv->object),
+                                          animation,
+                                          property_name,
+                                          &initial);
+  else
+    g_object_get_property (priv->object, property_name, &initial);
 
   interval = clutter_interval_new_with_values (type, &initial, final);
   g_value_unset (&initial);
 
-  clutter_animation_bind_property_internal (animation, pspec, interval);
+  clutter_animation_bind_property_internal (animation, property_name,
+                                            pspec,
+                                            interval);
 
   return animation;
 }
@@ -845,7 +879,6 @@ clutter_animation_update_interval (ClutterAnimation *animation,
                                    ClutterInterval  *interval)
 {
   ClutterAnimationPrivate *priv;
-  GObjectClass *klass;
   GParamSpec *pspec;
   GType pspec_type, int_type;
 
@@ -863,9 +896,22 @@ clutter_animation_update_interval (ClutterAnimation *animation,
       return;
     }
 
-  klass = G_OBJECT_GET_CLASS (priv->object);
-  pspec = g_object_class_find_property (klass, property_name);
-  if (!pspec)
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    {
+      ClutterAnimatable *animatable = CLUTTER_ANIMATABLE (priv->object);
+
+      pspec = clutter_animatable_find_property (animatable,
+                                                animation,
+                                                property_name);
+    }
+  else
+    {
+      GObjectClass *klass = G_OBJECT_GET_CLASS (priv->object);
+
+      pspec = g_object_class_find_property (klass, property_name);
+    }
+
+  if (pspec == NULL)
     {
       g_warning ("Cannot update property '%s': objects of type '%s' have "
                  "no such property",
@@ -889,7 +935,9 @@ clutter_animation_update_interval (ClutterAnimation *animation,
       return;
     }
 
-  clutter_animation_update_property_internal (animation, pspec, interval);
+  clutter_animation_update_property_internal (animation, property_name,
+                                              pspec,
+                                              interval);
 }
 
 /**
@@ -1050,7 +1098,14 @@ on_alpha_notify (GObject          *gobject,
         }
 
       if (apply)
-        g_object_set_property (priv->object, p_name, &value);
+        {
+          if (is_animatable)
+            clutter_animatable_set_final_state (animatable, animation,
+                                                p_name,
+                                                &value);
+          else
+            g_object_set_property (priv->object, p_name, &value);
+        }
 
       g_value_unset (&value);
     }
@@ -1688,26 +1743,41 @@ done:
       GValue cur_value = { 0, };
 
       g_value_init (&cur_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-      g_object_get_property (priv->object, property_name, &cur_value);
+
+      if (CLUTTER_IS_ANIMATABLE (priv->object))
+        clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (priv->object),
+                                              animation,
+                                              property_name,
+                                              &cur_value);
+      else
+        g_object_get_property (priv->object, property_name, &cur_value);
 
       interval =
         clutter_interval_new_with_values (G_PARAM_SPEC_VALUE_TYPE (pspec),
                                           &cur_value,
                                           &real_value);
 
-      if (!clutter_animation_has_property (animation, pspec->name))
-        clutter_animation_bind_property_internal (animation,
+      if (!clutter_animation_has_property (animation, property_name))
+        clutter_animation_bind_property_internal (animation, property_name,
                                                   pspec,
                                                   interval);
       else
-        clutter_animation_update_property_internal (animation,
+        clutter_animation_update_property_internal (animation, property_name,
                                                     pspec,
                                                     interval);
 
       g_value_unset (&cur_value);
     }
   else
-    g_object_set_property (priv->object, property_name, &real_value);
+    {
+      if (CLUTTER_IS_ANIMATABLE (priv->object))
+        clutter_animatable_set_final_state (CLUTTER_ANIMATABLE (priv->object),
+                                            animation,
+                                            property_name,
+                                            &real_value);
+      else
+        g_object_set_property (priv->object, property_name, &real_value);
+    }
 
   g_value_unset (&real_value);
 }
@@ -1719,11 +1789,15 @@ clutter_animation_setupv (ClutterAnimation    *animation,
                           const GValue        *values)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  GObjectClass *klass;
-  gint i;
+  ClutterAnimatable *animatable = NULL;
+  GObjectClass *klass = NULL;
   gboolean is_fixed = FALSE;
+  gint i;
 
-  klass = G_OBJECT_GET_CLASS (priv->object);
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    animatable = CLUTTER_ANIMATABLE (priv->object);
+  else
+    klass = G_OBJECT_GET_CLASS (priv->object);
 
   for (i = 0; i < n_properties; i++)
     {
@@ -1736,8 +1810,14 @@ clutter_animation_setupv (ClutterAnimation    *animation,
           is_fixed = TRUE;
         }
 
-      pspec = g_object_class_find_property (klass, property_name);
-      if (!pspec)
+      if (animatable != NULL)
+        pspec = clutter_animatable_find_property (animatable,
+                                                  animation,
+                                                  property_name);
+      else
+        pspec = g_object_class_find_property (klass, property_name);
+
+      if (pspec == NULL)
         {
           g_warning ("Cannot bind property '%s': objects of type '%s' do "
                      "not have this property",
@@ -1792,10 +1872,14 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
                                 va_list           var_args)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  GObjectClass *klass;
+  ClutterAnimatable *animatable = NULL;
+  GObjectClass *klass = NULL;
   const gchar *property_name;
 
-  klass = G_OBJECT_GET_CLASS (priv->object);
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    animatable = CLUTTER_ANIMATABLE (priv->object);
+  else
+    klass = G_OBJECT_GET_CLASS (priv->object);
 
   property_name = first_property_name;
   while (property_name != NULL)
@@ -1827,8 +1911,14 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
               is_fixed = TRUE;
             }
 
-          pspec = g_object_class_find_property (klass, property_name);
-          if (!pspec)
+          if (animatable != NULL)
+            pspec = clutter_animatable_find_property (animatable,
+                                                      animation,
+                                                      property_name);
+          else
+            pspec = g_object_class_find_property (klass, property_name);
+
+          if (pspec == NULL)
             {
               g_warning ("Cannot bind property '%s': objects of type '%s' do "
                          "not have this property",
@@ -1899,7 +1989,7 @@ animation_create_for_actor (ClutterActor *actor)
  * @actor: a #ClutterActor
  * @alpha: a #ClutterAlpha
  * @first_property_name: the name of a property
- * @VarArgs: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -1956,7 +2046,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @first_property_name: the name of a property
- * @VarArgs: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -2007,7 +2097,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @first_property_name: the name of a property
- * @VarArgs: a %NULL terminated list of property names and
+ * @Varargs: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current

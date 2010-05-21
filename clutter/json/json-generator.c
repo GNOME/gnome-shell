@@ -21,7 +21,7 @@
  *   Emmanuele Bassi  <ebassi@linux.intel.com>
  */
 
-/**
+/*
  * SECTION:json-generator
  * @short_description: Generates JSON data streams
  *
@@ -191,7 +191,7 @@ json_generator_class_init (JsonGeneratorClass *klass)
   gobject_class->get_property = json_generator_get_property;
   gobject_class->finalize = json_generator_finalize;
 
-  /**
+  /*
    * JsonGenerator:pretty:
    *
    * Whether the output should be "pretty-printed", with indentation and
@@ -205,7 +205,7 @@ json_generator_class_init (JsonGeneratorClass *klass)
                                                          "Pretty-print the output",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
-  /**
+  /*
    * JsonGenerator:indent:
    *
    * Number of spaces to be used to indent when pretty printing.
@@ -218,7 +218,7 @@ json_generator_class_init (JsonGeneratorClass *klass)
                                                       0, G_MAXUINT,
                                                       2,
                                                       G_PARAM_READWRITE));
-  /**
+  /*
    * JsonGenerator:root:
    *
    * The root #JsonNode to be used when constructing a JSON data
@@ -233,7 +233,7 @@ json_generator_class_init (JsonGeneratorClass *klass)
                                                        "Root of the JSON data tree",
                                                        JSON_TYPE_NODE,
                                                        G_PARAM_READWRITE));
-  /**
+  /*
    * JsonGenerator:indent-char:
    *
    * The character that should be used when indenting in pretty print.
@@ -519,7 +519,7 @@ dump_object (JsonGenerator *generator,
   return g_string_free (buffer, FALSE);
 }
 
-/**
+/*
  * json_generator_new:
  * 
  * Creates a new #JsonGenerator. You can use this object to generate a
@@ -534,7 +534,7 @@ json_generator_new (void)
   return g_object_new (JSON_TYPE_GENERATOR, NULL);
 }
 
-/**
+/*
  * json_generator_to_data:
  * @generator: a #JsonGenerator
  * @length: (out): return location for the length of the returned
@@ -588,7 +588,7 @@ json_generator_to_data (JsonGenerator *generator,
   return retval;
 }
 
-/**
+/*
  * json_generator_to_file:
  * @generator: a #JsonGenerator
  * @filename: path to the target file
@@ -618,7 +618,7 @@ json_generator_to_file (JsonGenerator  *generator,
   return retval;
 }
 
-/**
+/*
  * json_generator_set_root:
  * @generator: a #JsonGenerator
  * @node: a #JsonNode

@@ -27,7 +27,7 @@
 
 #include "json-types-private.h"
 
-/**
+/*
  * SECTION:json-array
  * @short_description: a JSON array representation
  *
@@ -57,7 +57,7 @@ json_array_get_type (void)
   return array_type;
 }
 
-/**
+/*
  * json_array_new:
  *
  * Creates a new #JsonArray.
@@ -77,7 +77,7 @@ json_array_new (void)
   return array;
 }
 
-/**
+/*
  * json_array_sized_new:
  * @n_elements: number of slots to pre-allocate
  *
@@ -98,7 +98,7 @@ json_array_sized_new (guint n_elements)
   return array;
 }
 
-/**
+/*
  * json_array_ref:
  * @array: a #JsonArray
  *
@@ -118,7 +118,7 @@ json_array_ref (JsonArray *array)
   return array;
 }
 
-/**
+/*
  * json_array_unref:
  * @array: a #JsonArray
  *
@@ -151,7 +151,7 @@ json_array_unref (JsonArray *array)
     }
 }
 
-/**
+/*
  * json_array_get_elements:
  * @array: a #JsonArray
  *
@@ -178,7 +178,7 @@ json_array_get_elements (JsonArray *array)
   return g_list_reverse (retval);
 }
 
-/**
+/*
  * json_array_dup_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -207,7 +207,7 @@ json_array_dup_element (JsonArray *array,
   return json_node_copy (retval);
 }
 
-/**
+/*
  * json_array_get_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -227,7 +227,7 @@ json_array_get_element (JsonArray *array,
   return g_ptr_array_index (array->elements, index_);
 }
 
-/**
+/*
  * json_array_get_int_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -257,7 +257,7 @@ json_array_get_int_element (JsonArray *array,
   return json_node_get_int (node);
 }
 
-/**
+/*
  * json_array_get_double_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -287,7 +287,7 @@ json_array_get_double_element (JsonArray *array,
   return json_node_get_double (node);
 }
 
-/**
+/*
  * json_array_get_boolean_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -317,7 +317,7 @@ json_array_get_boolean_element (JsonArray *array,
   return json_node_get_boolean (node);
 }
 
-/**
+/*
  * json_array_get_string_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -348,7 +348,7 @@ json_array_get_string_element (JsonArray *array,
   return json_node_get_string (node);
 }
 
-/**
+/*
  * json_array_get_null_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -376,7 +376,7 @@ json_array_get_null_element (JsonArray *array,
   return JSON_NODE_TYPE (node) == JSON_NODE_NULL;
 }
 
-/**
+/*
  * json_array_get_array_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -406,7 +406,7 @@ json_array_get_array_element (JsonArray *array,
   return json_node_get_array (node);
 }
 
-/**
+/*
  * json_array_get_object_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
@@ -436,7 +436,7 @@ json_array_get_object_element (JsonArray *array,
   return json_node_get_object (node);
 }
 
-/**
+/*
  * json_array_get_length:
  * @array: a #JsonArray
  *
@@ -452,7 +452,7 @@ json_array_get_length (JsonArray *array)
   return array->elements->len;
 }
 
-/**
+/*
  * json_array_add_element:
  * @array: a #JsonArray
  * @node: a #JsonNode
@@ -470,7 +470,7 @@ json_array_add_element (JsonArray *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_int_element:
  * @array: a #JsonArray
  * @value: an integer value
@@ -495,7 +495,7 @@ json_array_add_int_element (JsonArray *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_double_element:
  * @array: a #JsonArray
  * @value: a floating point value
@@ -520,7 +520,7 @@ json_array_add_double_element (JsonArray *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_boolean_element:
  * @array: a #JsonArray
  * @value: a boolean value
@@ -545,7 +545,7 @@ json_array_add_boolean_element (JsonArray *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_string_element:
  * @array: a #JsonArray
  * @value: a string value
@@ -571,7 +571,7 @@ json_array_add_string_element (JsonArray   *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_null_element:
  * @array: a #JsonArray
  *
@@ -593,7 +593,7 @@ json_array_add_null_element (JsonArray *array)
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_array_element:
  * @array: a #JsonArray
  * @value: a #JsonArray
@@ -620,7 +620,7 @@ json_array_add_array_element (JsonArray *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_add_object_element:
  * @array: a #JsonArray
  * @value: a #JsonObject
@@ -647,7 +647,7 @@ json_array_add_object_element (JsonArray  *array,
   g_ptr_array_add (array->elements, node);
 }
 
-/**
+/*
  * json_array_remove_element:
  * @array: a #JsonArray
  * @index_: the position of the element to be removed
@@ -665,7 +665,7 @@ json_array_remove_element (JsonArray *array,
   json_node_free (g_ptr_array_remove_index (array->elements, index_));
 }
 
-/**
+/*
  * json_array_foreach_element:
  * @array: a #JsonArray
  * @func: the function to be called on each element

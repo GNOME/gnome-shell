@@ -65,7 +65,10 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
 # please, keep this sorted alphabetically
 source_h =					\
+	$(srcdir)/clutter-action.h		\
+	$(srcdir)/clutter-actor-meta.h		\
 	$(srcdir)/clutter-actor.h		\
+	$(srcdir)/clutter-align-constraint.h	\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
@@ -78,6 +81,7 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
+	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
 	$(srcdir)/clutter-box.h			\
@@ -86,9 +90,11 @@ source_h =					\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color.h		\
+	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-device-manager.h	\
+	$(srcdir)/clutter-drag-action.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -138,7 +144,10 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 # please, keep this sorted alphabetically
 source_c = \
+	$(srcdir)/clutter-action.c		\
+	$(srcdir)/clutter-actor-meta.c		\
 	$(srcdir)/clutter-actor.c		\
+	$(srcdir)/clutter-align-constraint.c	\
 	$(srcdir)/clutter-alpha.c 		\
 	$(srcdir)/clutter-animatable.c		\
 	$(srcdir)/clutter-animation.c		\
@@ -152,6 +161,7 @@ source_c = \
 	$(srcdir)/clutter-behaviour-rotate.c	\
 	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
+	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
 	$(srcdir)/clutter-bin-layout.c		\
 	$(srcdir)/clutter-box.c			\
@@ -160,8 +170,10 @@ source_c = \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
+	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
 	$(srcdir)/clutter-device-manager.c	\
+	$(srcdir)/clutter-drag-action.c		\
 	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
@@ -206,6 +218,7 @@ source_c_priv = \
 	$(NULL)
 
 source_h_priv = \
+	$(srcdir)/clutter-actor-meta-private.h	\
 	$(srcdir)/clutter-bezier.h		\
 	$(srcdir)/clutter-debug.h 		\
 	$(srcdir)/clutter-keysyms-table.h	\

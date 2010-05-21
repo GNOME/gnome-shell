@@ -60,6 +60,7 @@
       <xi:include href="xml/clutter-media.xml"/>
       <xi:include href="xml/clutter-layout-manager.xml"/>
       <xi:include href="xml/clutter-layout-meta.xml"/>
+      <xi:include href="xml/clutter-actor-meta.xml"/>
     </chapter>
 
     <chapter>
@@ -86,6 +87,16 @@
       <xi:include href="xml/clutter-bin-layout.xml"/>
       <xi:include href="xml/clutter-flow-layout.xml"/>
       <xi:include href="xml/clutter-box-layout.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Actor Modifiers</title>
+
+      <xi:include href="xml/clutter-action.xml"/>
+      <xi:include href="xml/clutter-constraint.xml"/>
+      <xi:include href="xml/clutter-drag-action.xml"/>
+      <xi:include href="xml/clutter-bind-constraint.xml"/>
+      <xi:include href="xml/clutter-align-constraint.xml"/>
     </chapter>
 
   </part>
