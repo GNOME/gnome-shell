@@ -281,6 +281,96 @@ def run_shell(perf_output=None):
 
     return normal_exit
 
+def upload_performance_report(report_text):
+    # Local imports to avoid impacting gnome-shell startup time
+    import base64
+    from ConfigParser import RawConfigParser
+    import hashlib
+    import hmac
+    import httplib
+    import urlparse
+    import urllib
+
+    try:
+        config_home = os.environ['XDG_CONFIG_HOME']
+    except KeyError:
+        config_home = None
+
+    if not config_home:
+        config_home = os.path.expanduser("~/.config")
+
+    config_file = os.path.join(config_home, "gnome-shell/perf.ini")
+
+    try:
+        config = RawConfigParser()
+        f = open(config_file)
+        config.readfp(f)
+        f.close()
+
+        base_url = config.get('upload', 'url')
+        system_name = config.get('upload', 'name')
+        secret_key = config.get('upload', 'key')
+    except Exception, e:
+        print "Can't read upload configuration from %s: %s" % (config_file, str(e))
+        sys.exit(1)
+
+    # Determine host, port and upload URL from provided data, we're
+    # a bit extra-careful about normalization since the URL is part
+    # of the signature.
+
+    split = urlparse.urlsplit(base_url)
+    scheme = split[0].lower()
+    netloc = split[1]
+    base_path = split[2]
+
+    m = re.match(r'^(.*?)(?::(\d+))?$', netloc)
+    if m.group(2):
+        host, port = m.group(1), int(m.group(2))
+    else:
+        host, port = m.group(1), None
+
+    if scheme != "http":
+        print "'%s' is not a HTTP URL" % base_url
+        sys.exit(1)
+
+    if port is None:
+        port = 80
+
+    if base_path.endswith('/'):
+        base_path = base_path[:-1]
+
+    if port == 80:
+        normalized_base = "%s://%s%s" % (scheme, host, base_path)
+    else:
+        normalized_base = "%s://%s:%d%s" % (scheme, host, port, base_path)
+
+    upload_url = normalized_base + '/system/%s/upload' % system_name
+    upload_path = urlparse.urlsplit(upload_url)[2] # path portion
+
+    # Create signature based on upload URL and the report data
+
+    signature_data = 'POST&' + upload_url + "&&"
+    h = hmac.new(secret_key, digestmod=hashlib.sha1)
+    h.update(signature_data)
+    h.update(report_text)
+    signature = urllib.quote(base64.b64encode(h.digest()), "~")
+
+    headers = {
+        'User-Agent': 'gnome-shell',
+        'Content-Type': 'application/json',
+        'X-Shell-Signature': 'HMAC-SHA1 ' + signature
+    };
+
+    connection = httplib.HTTPConnection(host, port)
+    connection.request('POST', upload_path, report_text, headers)
+    response = connection.getresponse()
+
+    if response.status == 200:
+        print "Performance report upload succeeded"
+    else:
+        print "Performance report upload failed with status %d" % response.status
+        print response.read()
+
 def run_performance_test():
     iters = options.perf_iters
     if options.perf_warmup:
@@ -336,7 +426,7 @@ def run_performance_test():
 
         logs.append(output['log'])
 
-    if options.perf_output:
+    if options.perf_output or options.perf_upload:
         # Write a complete report, formatted as JSON. The Javascript/C code that
         # generates the individual reports we are summarizing here is very careful
         # to format them nicely, but we just dump out a compressed no-whitespace
@@ -363,9 +453,13 @@ def run_performance_test():
                                             stdout=subprocess.PIPE).communicate()[0].strip()
                 report['revision'] = revision
 
-        f = open(options.perf_output, 'w')
-        json.dump(report, f)
-        f.close()
+        if options.perf_output:
+            f = open(options.perf_output, 'w')
+            json.dump(report, f)
+            f.close()
+
+        if options.perf_upload:
+            upload_performance_report(json.dumps(report))
     else:
         # Write a human readable summary
         print '------------------------------------------------------------';
@@ -430,8 +524,10 @@ parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
                   default=1)
 parser.add_option("", "--perf-warmup", action="store_true",
 		  help="Run a dry run before performance tests")
-parser.add_option("", "--perf-output",
+parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
 		  help="Output file to write performance report")
+parser.add_option("", "--perf-upload", action="store_true",
+		  help="Upload performance report to server")
 parser.add_option("", "--xephyr", action="store_true",
                   help="Run a debugging instance inside Xephyr")
 parser.add_option("", "--geometry", metavar="GEOMETRY",
