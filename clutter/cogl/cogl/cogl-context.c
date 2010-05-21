@@ -100,6 +100,7 @@ cogl_create_context (void)
   _context->n_texcoord_arrays_enabled = 0;
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
+
   window_buffer = _cogl_onscreen_new ();
   cogl_set_framebuffer (window_buffer);
   /* XXX: the deprecated _cogl_set_draw_buffer API expects to
