@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-05-13 20:00+0000\n"
-"PO-Revision-Date: 2010-05-14 21:33+0100\n"
+"POT-Creation-Date: 2010-05-21 16:35+0000\n"
+"PO-Revision-Date: 2010-05-21 20:03+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,34 @@ msgstr "Ura"
 #: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
 msgid "Customize the panel clock"
 msgstr "Prilagodi uro pladnja"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Zapis ure"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Možnosti ure"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Prikazovanje pladnja"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Pokaži _sekunde"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Pokaži _datum"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12-urni zapis časa"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24-urni zapis časa"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:306
@@ -99,31 +127,31 @@ msgstr "Mesta in naprave"
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
 
-#: ../js/ui/lookingGlass.js:354
+#: ../js/ui/lookingGlass.js:466
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
-#: ../js/ui/lookingGlass.js:391
+#: ../js/ui/lookingGlass.js:503
 msgid "Enabled"
 msgstr "Omogočeno"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:505
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:507
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:509
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:422
+#: ../js/ui/lookingGlass.js:534
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:428
+#: ../js/ui/lookingGlass.js:540
 msgid "Web Page"
 msgstr "Spletna stran"
 
@@ -131,53 +159,49 @@ msgstr "Spletna stran"
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/panel.js:535
-msgid "Quit"
-msgstr "Končaj"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:740
+#: ../js/ui/panel.js:887
 msgid "Activities"
 msgstr "Dejavnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:955
+#: ../js/ui/panel.js:1102
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:956
+#: ../js/ui/panel.js:1103
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:960
+#: ../js/ui/panel.js:1107
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:961
+#: ../js/ui/panel.js:1108
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:968
+#: ../js/ui/panel.js:1115
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:969
+#: ../js/ui/panel.js:1116
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:973
+#: ../js/ui/panel.js:1120
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:974
+#: ../js/ui/panel.js:1121
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -257,11 +281,11 @@ msgstr "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo najve
 msgid "Can't remove the first workspace."
 msgstr "Ni mogoče odstraniti prve delovne površine."
 
-#: ../src/shell-global.c:979
+#: ../src/shell-global.c:1011
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:1015
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -270,7 +294,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:988
+#: ../src/shell-global.c:1020
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -279,7 +303,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:993
+#: ../src/shell-global.c:1025
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -288,7 +312,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:998
+#: ../src/shell-global.c:1030
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -321,6 +345,8 @@ msgstr "Poišči"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Quit"
+#~ msgstr "Končaj"
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
 #~ msgid "%H:%M"
