@@ -25,6 +25,7 @@ dist_jsui_DATA =		\
 	panel.js		\
 	placeDisplay.js		\
 	runDialog.js		\
+	scripting.js		\
 	search.js		\
 	shellDBus.js		\
 	statusMenu.js		\

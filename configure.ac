@@ -155,6 +155,7 @@ AC_CONFIG_FILES([
   js/Makefile
   js/misc/Makefile
   js/ui/Makefile
+  js/perf/Makefile
   js/prefs/Makefile
   src/Makefile
   tests/Makefile

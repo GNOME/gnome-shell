@@ -1,1 +1,1 @@
-SUBDIRS = misc ui prefs
+SUBDIRS = misc ui perf prefs
