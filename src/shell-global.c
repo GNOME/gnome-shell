@@ -1484,6 +1484,16 @@ run_leisure_functions (gpointer data)
   if (global->work_count > 0)
     return FALSE;
 
+  /*
+   * We do call MAYBE_GC() here to free up some memory and
+   * prevent the GC from running when we are busy doing other things.
+   */
+  shell_global_maybe_gc (global);
+
+  /* No leisure closures, so we are done */
+  if (global->leisure_closures == NULL)
+    return FALSE;
+
   closures = global->leisure_closures;
   global->leisure_closures = NULL;
 
@@ -1550,7 +1560,7 @@ shell_global_end_work (ShellGlobal *global)
   g_return_if_fail (global->work_count > 0);
 
   global->work_count--;
-  if (global->work_count == 0 && global->leisure_closures != NULL)
+  if (global->work_count == 0)
     schedule_leisure_functions (global);
 
 }
