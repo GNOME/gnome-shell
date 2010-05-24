@@ -739,6 +739,32 @@ _shell_app_remove_window (ShellApp   *app,
     }
 }
 
+/**
+ * shell_app_get_pids:
+ * @app: a #ShellApp
+ *
+ * Returns: (transfer container) (element-type int): An unordered list of process identifers associated with this application.
+ */
+GSList *
+shell_app_get_pids (ShellApp *app)
+{
+  GSList *result;
+  GSList *iter;
+
+  result = NULL;
+  for (iter = shell_app_get_windows (app); iter; iter = iter->next)
+    {
+      MetaWindow *window = iter->data;
+      int pid = meta_window_get_pid (window);
+      /* Note in the (by far) common case, app will only have one pid, so
+       * we'll hit the first element, so don't worry about O(N^2) here.
+       */
+      if (!g_slist_find (result, GINT_TO_POINTER (pid)))
+        result = g_slist_prepend (result, GINT_TO_POINTER (pid));
+    }
+  return result;
+}
+
 void
 _shell_app_set_starting (ShellApp        *app,
                          gboolean         starting)

@@ -56,6 +56,8 @@ guint shell_app_get_n_windows (ShellApp *app);
 
 GSList *shell_app_get_windows (ShellApp *app);
 
+GSList *shell_app_get_pids (ShellApp *app);
+
 gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);
