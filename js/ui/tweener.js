@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
 
@@ -221,6 +222,14 @@ ClutterFrameTicker.prototype = {
             function(timeline, frame) {
                 this._onNewFrame(frame);
             }));
+
+        let perf_log = Shell.PerfLog.get_default();
+        perf_log.define_event("tweener.framePrepareStart",
+                              "Start of a new animation frame",
+                              "");
+        perf_log.define_event("tweener.framePrepareDone",
+                              "Finished preparing frame",
+                              "");
     },
 
     _onNewFrame : function(frame) {
@@ -233,8 +242,11 @@ ClutterFrameTicker.prototype = {
             this._startTime = this._timeline.get_elapsed_time();
 
         // currentTime is in milliseconds
+        let perf_log = Shell.PerfLog.get_default();
         this._currentTime = (this._timeline.get_elapsed_time() - this._startTime) / slowDownFactor;
+        perf_log.event("tweener.framePrepareStart");
         this.emit('prepare-frame');
+        perf_log.event("tweener.framePrepareDone");
     },
 
     getTime : function() {
