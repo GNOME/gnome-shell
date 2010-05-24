@@ -430,10 +430,11 @@ clutter_state_new_frame (ClutterTimeline *timeline,
 
 /**
  * clutter_state_change:
- * @state_name: a #ClutterState
+ * @state: a #ClutterState
+ * @target_state_name: the state to transition to
  * @animate: whether we should animate the transition or not
  *
- * Change the current state of #ClutterState to @state_name
+ * Change the current state of #ClutterState to @target__name
  *
  * If @animate is %FALSE, the state transition will happen immediately;
  * otherwise, the state transition will be animated over the duration
@@ -444,20 +445,25 @@ clutter_state_new_frame (ClutterTimeline *timeline,
  * Since: 1.4
  */
 ClutterTimeline *
-clutter_state_change (ClutterState *this,
+clutter_state_change (ClutterState *state,
                       const gchar  *target_state_name,
                       gboolean      animate)
 {
-  ClutterStatePrivate *priv = this->priv;
-  State *state;
+  ClutterStatePrivate *priv;
+  ClutterAnimator *animator;
+  State *new_state;
+  GList *k;
 
-  g_return_val_if_fail (CLUTTER_IS_STATE (this), NULL);
+  g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
   g_return_val_if_fail (target_state_name != NULL, NULL);
 
+  priv = state->priv;
+
   if (target_state_name == NULL)
-    target_state_name = g_intern_static_string ("default");
+    target_state_name = "default";
 
   target_state_name = g_intern_string (target_state_name);
+
   if (priv->target_state_name == NULL)
     priv->target_state_name = g_intern_static_string ("default");
 
@@ -467,7 +473,7 @@ clutter_state_change (ClutterState *this,
       return priv->timeline;
     }
 
-  if (priv->current_animator)
+  if (priv->current_animator != NULL)
     {
       clutter_animator_set_timeline (priv->current_animator, NULL);
       priv->current_animator = NULL;
@@ -476,13 +482,13 @@ clutter_state_change (ClutterState *this,
   priv->source_state_name = priv->target_state_name;
   priv->target_state_name = target_state_name;
 
-  g_object_notify (G_OBJECT (this), "target-state");
+  g_object_notify (G_OBJECT (state), "target-state");
 
   if (animate)
     {
       guint duration;
 
-      duration = clutter_state_get_duration (this,
+      duration = clutter_state_get_duration (state,
                                              priv->source_state_name,
                                              priv->target_state_name);
       clutter_timeline_set_duration (priv->timeline, duration);
@@ -490,56 +496,49 @@ clutter_state_change (ClutterState *this,
   else
     clutter_timeline_set_duration (priv->timeline, 1);
 
-  state = g_hash_table_lookup (priv->states, target_state_name);
-  g_return_val_if_fail (state, NULL);
-
-  {
-    ClutterAnimator *animator;
-
-    animator = clutter_state_get_animator (this,
-                                           priv->source_state_name,
-                                           priv->target_state_name);
-    if (animator != NULL)
-      {
-        priv->current_animator = animator;
-        clutter_animator_set_timeline (animator, priv->timeline);
-
-        clutter_timeline_stop (priv->timeline);
-        clutter_timeline_rewind (priv->timeline);
-        clutter_timeline_start (priv->timeline);
-
-        return priv->timeline;
-      }
-  }
-
-  if (state)
+  new_state = g_hash_table_lookup (priv->states, target_state_name);
+  if (new_state == NULL)
     {
-      GList *k;
+      g_warning ("State '%s' not found", target_state_name);
 
-      for (k = state->keys; k; k = k->next)
-        {
-          ClutterStateKey *key = k->data;
-          GValue initial = {0,};
-
-          g_value_init (&initial,
-                        clutter_interval_get_value_type (key->interval));
-
-          g_object_get_property (key->object, key->property_name, &initial);
-          if (clutter_alpha_get_mode (key->alpha) != key->mode)
-            clutter_alpha_set_mode (key->alpha, key->mode);
-
-          clutter_interval_set_initial_value (key->interval, &initial);
-          clutter_interval_set_final_value (key->interval, &key->value);
-
-          g_value_unset (&initial);
-        }
-
-       priv->target_state = state;
-       clutter_timeline_rewind (priv->timeline);
-       clutter_timeline_start (priv->timeline);
+      return NULL;
     }
-  else
-    g_warning ("State '%s' not found", target_state_name);
+
+  animator = clutter_state_get_animator (state,
+                                         priv->source_state_name,
+                                         priv->target_state_name);
+  if (animator != NULL)
+    {
+      priv->current_animator = animator;
+      clutter_animator_set_timeline (animator, priv->timeline);
+
+      clutter_timeline_stop (priv->timeline);
+      clutter_timeline_rewind (priv->timeline);
+      clutter_timeline_start (priv->timeline);
+
+      return priv->timeline;
+    }
+
+  for (k = new_state->keys; k != NULL; k = k->next)
+    {
+      ClutterStateKey *key = k->data;
+      GValue initial = { 0, };
+
+      g_value_init (&initial, clutter_interval_get_value_type (key->interval));
+      g_object_get_property (key->object, key->property_name, &initial);
+
+      if (clutter_alpha_get_mode (key->alpha) != key->mode)
+        clutter_alpha_set_mode (key->alpha, key->mode);
+
+      clutter_interval_set_initial_value (key->interval, &initial);
+      clutter_interval_set_final_value (key->interval, &key->value);
+
+      g_value_unset (&initial);
+    }
+
+  priv->target_state = new_state;
+  clutter_timeline_rewind (priv->timeline);
+  clutter_timeline_start (priv->timeline);
 
   return priv->timeline;
 }
@@ -699,7 +698,7 @@ clutter_state_set_key_internal (ClutterState    *state,
 
 /**
  * clutter_state_set_key:
- * @this: a #ClutterState instance.
+ * @state: a #ClutterState instance.
  * @source_state_name: the source transition to specify transition for
  * @target_state_name: the name of the transition to set a key value for.
  * @object: the #GObject to set a key for
@@ -720,7 +719,7 @@ clutter_state_set_key_internal (ClutterState    *state,
  * Since: 1.4
  */
 ClutterState *
-clutter_state_set_key (ClutterState  *this,
+clutter_state_set_key (ClutterState  *state,
                        const gchar   *source_state_name,
                        const gchar   *target_state_name,
                        GObject       *object,
@@ -730,15 +729,18 @@ clutter_state_set_key (ClutterState  *this,
                        gdouble        pre_delay,
                        gdouble        post_delay)
 {
+  ClutterStatePrivate *priv;
   GParamSpec *pspec;
   ClutterStateKey *state_key;
   State *source_state = NULL;
   State *target_state;
 
-  g_return_val_if_fail (CLUTTER_IS_STATE (this), NULL);
+  g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (property_name, NULL);
   g_return_val_if_fail (value, NULL);
+
+  priv = state->priv;
 
   if (target_state_name == NULL)
     target_state_name = "default";
@@ -757,25 +759,26 @@ clutter_state_set_key (ClutterState  *this,
   target_state_name = g_intern_string (target_state_name);
   property_name = g_intern_string (property_name);
 
-  target_state = g_hash_table_lookup (this->priv->states,
-                                      target_state_name);
+  target_state = g_hash_table_lookup (priv->states, target_state_name);
 
   if (!target_state)
     {
-      target_state = state_new (this, target_state_name);
-      g_hash_table_insert (this->priv->states,
-                           (gpointer)target_state_name, target_state);
+      target_state = state_new (state, target_state_name);
+      g_hash_table_insert (priv->states,
+                           (gpointer) target_state_name,
+                           target_state);
     }
 
   if (source_state_name)
     {
-      source_state = g_hash_table_lookup (this->priv->states,
-                                          source_state_name);
+      source_state = g_hash_table_lookup (priv->states, source_state_name);
+
       if (!source_state)
         {
-          source_state = state_new (this, source_state_name);
-          g_hash_table_insert (this->priv->states,
-                               (gpointer)source_state_name, source_state);
+          source_state = state_new (state, source_state_name);
+          g_hash_table_insert (priv->states,
+                               (gpointer) source_state_name,
+                               source_state);
         }
     }
 
@@ -790,9 +793,9 @@ clutter_state_set_key (ClutterState  *this,
   g_value_init (&state_key->value, G_VALUE_TYPE (value));
   g_value_copy (value, &state_key->value);
 
-  clutter_state_set_key_internal (this, state_key);
+  clutter_state_set_key_internal (state, state_key);
 
-  return this;
+  return state;
 }
 
 /**

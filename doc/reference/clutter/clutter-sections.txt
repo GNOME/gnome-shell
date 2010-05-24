@@ -2236,6 +2236,7 @@ clutter_state_get_timeline
 clutter_state_set_animator
 clutter_state_get_animator
 clutter_state_get_target_state
+clutter_state_change
 
 <SUBSECTION>
 ClutterStateKey

@@ -92,11 +92,11 @@ ClutterState    *clutter_state_new                    (void);
 
 
 ClutterTimeline * clutter_state_change               (ClutterState    *state,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *target_state_name,
                                                       gboolean         animate);
 ClutterState *    clutter_state_set_key              (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       GObject         *object,
                                                       const gchar     *property_name,
                                                       guint            mode,
@@ -104,38 +104,38 @@ ClutterState *    clutter_state_set_key              (ClutterState    *state,
                                                       gdouble          pre_delay,
                                                       gdouble          post_delay);
 void              clutter_state_set_duration         (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       guint            duration);
 guint             clutter_state_get_duration         (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name);
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name);
 void              clutter_state_set                  (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       gpointer         first_object,
                                                       const gchar     *first_property_name,
                                                       gulong           first_mode,
                                                        ...);
 GList           * clutter_state_get_states           (ClutterState    *state);
 GList           * clutter_state_get_keys             (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       GObject         *object,
                                                       const gchar     *property_name);
 void              clutter_state_remove_key           (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       GObject         *object,
                                                       const gchar     *property_name);
 ClutterTimeline * clutter_state_get_timeline         (ClutterState    *state);
 void              clutter_state_set_animator         (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name,
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name,
                                                       ClutterAnimator *animator);
 ClutterAnimator * clutter_state_get_animator         (ClutterState    *state,
-                                                      const gchar     *source_transition_name,
-                                                      const gchar     *target_transition_name);
+                                                      const gchar     *source_state_name,
+                                                      const gchar     *target_state_name);
 G_CONST_RETURN gchar *clutter_state_get_target_state (ClutterState    *state);
 
 /*
