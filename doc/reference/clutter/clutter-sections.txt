@@ -407,6 +407,7 @@ clutter_actor_is_in_clone_paint
 clutter_actor_set_text_direction
 clutter_actor_get_text_direction
 clutter_actor_has_pointer
+clutter_actor_get_accessible
 
 <SUBSECTION>
 clutter_actor_add_action
