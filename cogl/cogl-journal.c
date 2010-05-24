@@ -373,7 +373,6 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 {
   CoglJournalFlushState *state = data;
   int                    i;
-  unsigned int           layers_mask;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -396,9 +395,9 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                                       TEX_STRIDE * 4 * i)));
     }
 
-  layers_mask = ~((~(unsigned int) 0) << batch_start->n_layers);
-  ctx->texcoord_arrays_enabled |= layers_mask;
-  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled & ~layers_mask);
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+  _cogl_bitmask_set_range (&ctx->temp_bitmask, batch_start->n_layers, TRUE);
+  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
   batch_and_call (batch_start,
                   batch_len,

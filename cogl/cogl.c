@@ -763,29 +763,33 @@ cogl_read_pixels (int x,
     }
 }
 
-void
-_cogl_disable_texcoord_arrays (unsigned int mask)
+static void
+_cogl_disable_other_texcoord_arrays_cb (int texcoord_array_num, gpointer data)
 {
-  int i = 0;
+  CoglContext *ctx = data;
 
+  GE (glClientActiveTexture (GL_TEXTURE0 + texcoord_array_num));
+  GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+}
+
+void
+_cogl_disable_other_texcoord_arrays (const CoglBitmask *mask)
+{
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* Set texcoord_arrays_to_disable to only contain the arrays we want
+     to disable */
+  _cogl_bitmask_clear_all (&ctx->texcoord_arrays_to_disable);
+  _cogl_bitmask_set_bits (&ctx->texcoord_arrays_to_disable,
+                          &ctx->texcoord_arrays_enabled);
+  _cogl_bitmask_clear_bits (&ctx->texcoord_arrays_to_disable, mask);
+
+  _cogl_bitmask_foreach (&ctx->texcoord_arrays_to_disable,
+                         _cogl_disable_other_texcoord_arrays_cb, ctx);
+
   /* Update the mask of arrays that are enabled */
-  ctx->texcoord_arrays_enabled &= ~mask;
-
-  /* Disable all of the texture coord arrays that have a 1 in the bit
-     position in mask */
-  while (mask)
-    {
-      if ((mask & 1))
-        {
-          GE (glClientActiveTexture (GL_TEXTURE0 + i));
-          GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-        }
-
-      i++;
-      mask >>= 1;
-    }
+  _cogl_bitmask_clear_bits (&ctx->texcoord_arrays_enabled,
+                            &ctx->texcoord_arrays_to_disable);
 }
 
 void
@@ -840,7 +844,8 @@ cogl_begin_gl (void)
   _cogl_flush_face_winding ();
 
   /* Disable all client texture coordinate arrays */
-  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled);
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 }
 
 void

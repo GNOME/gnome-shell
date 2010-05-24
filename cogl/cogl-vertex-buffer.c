@@ -1518,7 +1518,6 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   GLuint       generic_index = 0;
 #endif
   unsigned long enable_flags = 0;
-  unsigned int texcoord_arrays_used = 0;
   const GList *layers;
   guint32      fallback_layers = 0;
   int          i;
@@ -1533,6 +1532,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     COGL_MATERIAL_FLUSH_FALLBACK_MASK;
   memset (&options.wrap_mode_overrides, 0,
           sizeof (options.wrap_mode_overrides));
+
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
 
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
@@ -1596,7 +1597,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 				     gl_type,
 				     attribute->stride,
 				     pointer));
-              texcoord_arrays_used |= (1 << attribute->texture_unit);
+              _cogl_bitmask_set (&ctx->temp_bitmask,
+                                 attribute->texture_unit, TRUE);
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
@@ -1698,8 +1700,8 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
         }
     }
 
-  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled &
-                                 ~texcoord_arrays_used);
+  /* Disable any tex coord arrays that we didn't use */
+  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the material state) when flushing the clip stack, so should

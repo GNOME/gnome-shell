@@ -26,6 +26,7 @@
 
 #include "cogl.h"
 #include "cogl-matrix-stack.h"
+#include "cogl-bitmask.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -132,8 +133,10 @@ _cogl_get_max_texture_image_units (void);
 void
 _cogl_flush_face_winding (void);
 
+/* Disables the texcoord arrays that don't have a corresponding bit
+   set in the mask */
 void
-_cogl_disable_texcoord_arrays (unsigned int mask);
+_cogl_disable_other_texcoord_arrays (const CoglBitmask *mask);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 

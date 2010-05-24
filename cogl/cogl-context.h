@@ -32,6 +32,7 @@
 #include "cogl-material-private.h"
 #include "cogl-atlas.h"
 #include "cogl-buffer-private.h"
+#include "cogl-bitmask.h"
 
 typedef struct
 {
@@ -87,7 +88,12 @@ typedef struct
   CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
   /* Bitmask of texture coordinates arrays that are enabled */
-  unsigned int      texcoord_arrays_enabled;
+  CoglBitmask       texcoord_arrays_enabled;
+  /* These are temporary bitmasks that are used when disabling
+     texcoord arrays. They are here just to avoid allocating new ones
+     each time */
+  CoglBitmask       texcoord_arrays_to_disable;
+  CoglBitmask       temp_bitmask;
 
   /* PBOs */
   /* This can be used to check if a pbo is bound */
