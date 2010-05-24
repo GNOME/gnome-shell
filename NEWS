@@ -1,3 +1,73 @@
+Clutter 1.3.2 (24/05/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.2
+
+    » Add ActorMeta, a class for run-time composition of actions and
+      constraints on a ClutterActor:
+
+        » Add ClutterAction, a class for implementing business logic
+          related to event handling.
+
+        » Add ClutterConstraint, a class for implementing business
+          logic related to sizing and positioning.
+
+        » ClutterDragAction is an Action sub-class that implements
+          signals and properties for dragging actors.
+
+        » ClutterAlignConstraint and ClutterBindConstraint are two
+          Constraint sub-classes that allow relative positioning
+          with fixed layout managers.
+
+    » Add ClutterState, an object for defining state transitions.
+
+    » Add ClutterBoxLayout:homogeneous property.
+
+    » Implement retained clip stacks.
+
+    » Support retained paths.
+
+    » Add an experimental vector3 API.
+
+    » Require GLib >= 2.18.
+
+    » Require Atk >= 1.7.
+
+    » Make ClutterActor implement AtkImplementor, and allow retrieving
+      an AtkObject from a ClutterActor.
+
+    » Improve ClutterText's Pango layout caching mechanism.
+
+    » Fix set up of the GLX_SGI_swap_control extension.
+
+    » Fix EGLX backend.
+
+    » Documentation fixes for Clutter and COGL.
+
+    » Fix the conformance test suite by executing every test unit in
+      a separate process.
+
+    » Add platform-dependent defines for Cogl.
+
+    » Update the MingW cross-compilation script.
+
+    » New recipe in the Cookbook.
+
+Many thanks to:
+
+  Neil Roberts
+  Robert Bragg
+  Øyvind Kolås
+  Owen W. Taylor
+  Brian Tarricone
+  Damien Lespiau
+  Adel Gadllah
+  Chris Lord
+  Fridrich Strba
+  José Dapena Paz
+  Jussi Kukkonen
+  Rob Bradford
+
 Clutter 1.2.2 (15/03/2010)
 ===============================================================================
 
