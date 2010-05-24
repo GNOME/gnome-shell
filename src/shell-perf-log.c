@@ -130,7 +130,7 @@ get_time (void)
 
   g_get_current_time (&timeval);
 
-  return timeval.tv_sec * 10000000LL + timeval.tv_usec;
+  return timeval.tv_sec * G_GINT64_CONSTANT(1000000) + timeval.tv_usec;
 }
 
 static void
