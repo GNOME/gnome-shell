@@ -841,6 +841,8 @@ AppSwitcher.prototype = {
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
         let j = 0;
+        let height = 0;
+
         while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
         }
@@ -851,17 +853,11 @@ AppSwitcher.prototype = {
         if (this._separator)
            totalSpacing += this._separator.width + this._list.spacing;
 
-        // We just assume the whole screen here due to weirdness happing with the passed width
-        let focus = global.get_focus_monitor();
-        let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
-        let availWidth = focus.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
-        let height = 0;
-
         for(let i =  0; i < iconSizes.length; i++) {
                 this._iconSize = iconSizes[i];
                 height = iconSizes[i] + iconSpacing;
                 let w = height * this._items.length + totalSpacing;
-                if (w <= availWidth)
+                if (w <= forWidth)
                         break;
         }
 
