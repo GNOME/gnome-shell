@@ -49,3 +49,4 @@ clutter_drag_action_get_type
 clutter_constraint_get_type
 clutter_bind_constraint_get_type
 clutter_align_constraint_get_type
+clutter_state_get_type
