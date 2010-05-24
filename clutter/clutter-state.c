@@ -449,9 +449,10 @@ clutter_state_change (ClutterState *state,
                       gboolean      animate)
 {
   ClutterStatePrivate *priv;
-  ClutterAnimator *animator;
-  State *new_state;
-  GList *k;
+  ClutterAnimator     *animator;
+  State               *new_state;
+  guint                duration;
+  GList               *k;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
   g_return_val_if_fail (target_state_name != NULL, NULL);
@@ -483,17 +484,10 @@ clutter_state_change (ClutterState *state,
 
   g_object_notify (G_OBJECT (state), "target-state");
 
-  if (animate)
-    {
-      guint duration;
-
-      duration = clutter_state_get_duration (state,
-                                             priv->source_state_name,
-                                             priv->target_state_name);
-      clutter_timeline_set_duration (priv->timeline, duration);
-    }
-  else
-    clutter_timeline_set_duration (priv->timeline, 1);
+  duration = clutter_state_get_duration (state,
+                                         priv->source_state_name,
+                                         priv->target_state_name);
+  clutter_timeline_set_duration (priv->timeline, duration);
 
   new_state = g_hash_table_lookup (priv->states, target_state_name);
   if (new_state == NULL)
@@ -506,38 +500,51 @@ clutter_state_change (ClutterState *state,
   animator = clutter_state_get_animator (state,
                                          priv->source_state_name,
                                          priv->target_state_name);
+  priv->target_state = new_state;
+
   if (animator != NULL)
-    {
+    {         /* we've got an animator overriding the tweened animation */
       priv->current_animator = animator;
       clutter_animator_set_timeline (animator, priv->timeline);
+    }
+  else
+    {
+      for (k = new_state->keys; k != NULL; k = k->next)
+        {
+          ClutterStateKey *key = k->data;
+          GValue initial = { 0, };
 
+          g_value_init (&initial, clutter_interval_get_value_type (
+                                                               key->interval));
+          g_object_get_property (key->object, key->property_name, &initial);
+
+          if (clutter_alpha_get_mode (key->alpha) != key->mode)
+            clutter_alpha_set_mode (key->alpha, key->mode);
+
+          clutter_interval_set_initial_value (key->interval, &initial);
+          clutter_interval_set_final_value (key->interval, &key->value);
+
+          g_value_unset (&initial);
+        }
+    }
+
+  if (!animate)
+    {
+      clutter_timeline_stop (priv->timeline);
+      clutter_timeline_advance (priv->timeline, duration);
+
+      /* emit signals, to change properties, and indicate that the
+       * state change is complete */
+      g_signal_emit_by_name (priv->timeline, "new-frame",
+                             GINT_TO_POINTER(duration), NULL);
+      g_signal_emit_by_name (priv->timeline, "completed", NULL);
+    }
+  else
+    {
       clutter_timeline_stop (priv->timeline);
       clutter_timeline_rewind (priv->timeline);
       clutter_timeline_start (priv->timeline);
-
-      return priv->timeline;
     }
-
-  for (k = new_state->keys; k != NULL; k = k->next)
-    {
-      ClutterStateKey *key = k->data;
-      GValue initial = { 0, };
-
-      g_value_init (&initial, clutter_interval_get_value_type (key->interval));
-      g_object_get_property (key->object, key->property_name, &initial);
-
-      if (clutter_alpha_get_mode (key->alpha) != key->mode)
-        clutter_alpha_set_mode (key->alpha, key->mode);
-
-      clutter_interval_set_initial_value (key->interval, &initial);
-      clutter_interval_set_final_value (key->interval, &key->value);
-
-      g_value_unset (&initial);
-    }
-
-  priv->target_state = new_state;
-  clutter_timeline_rewind (priv->timeline);
-  clutter_timeline_start (priv->timeline);
 
   return priv->timeline;
 }
