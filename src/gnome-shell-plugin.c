@@ -42,6 +42,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <GL/glx.h>
+#include <GL/glxext.h>
+
 #include "display.h"
 
 #include "shell-global-private.h"
@@ -103,6 +106,10 @@ struct _GnomeShellPlugin
   Atom panel_action;
   Atom panel_action_run_dialog;
   Atom panel_action_main_menu;
+
+  int glx_error_base;
+  int glx_event_base;
+  guint have_swap_event : 1;
 };
 
 struct _GnomeShellPluginClass
@@ -284,12 +291,14 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
   MetaScreen *screen;
   MetaDisplay *display;
+  Display *xdisplay;
   GtkSettings *settings;
   GError *error = NULL;
   int status;
   const char *shell_js;
   char **search_path;
   ShellGlobal *global;
+  const char *glx_extensions;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -309,6 +318,21 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
 
   screen = mutter_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
+
+  xdisplay = meta_display_get_xdisplay (display);
+
+  glXQueryExtension (xdisplay,
+                     &shell_plugin->glx_error_base,
+                     &shell_plugin->glx_event_base);
+
+  glx_extensions = glXQueryExtensionsString (xdisplay,
+                                             meta_screen_get_screen_number (screen));
+  shell_plugin->have_swap_event = strstr (glx_extensions, "GLX_INTEL_swap_event") != NULL;
+
+  shell_perf_log_define_event (shell_perf_log_get_default (),
+                               "glx.swapComplete",
+                               "GL buffer swap complete event received (with timestamp of completion)",
+                               "x");
 
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
@@ -451,6 +475,25 @@ static gboolean
 gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
                                   XEvent       *xev)
 {
+#ifdef GLX_INTEL_swap_event
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+
+  if (shell_plugin->have_swap_event &&
+      xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
+    {
+      GLXBufferSwapComplete *swap_complete_event;
+      swap_complete_event = (GLXBufferSwapComplete *)xev;
+
+      /* Buggy early versions of the INTEL_swap_event implementation in Mesa
+       * can send this with a ust of 0. Simplify life for consumers
+       * by ignoring such events */
+      if (swap_complete_event->ust != 0)
+        shell_perf_log_event_x (shell_perf_log_get_default (),
+                                "glx.swapComplete",
+                                swap_complete_event->ust);
+    }
+#endif
+
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 
