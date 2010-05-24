@@ -84,6 +84,7 @@
 #include "clutter-stage.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
+#include "clutter-state.h"
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"

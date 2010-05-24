@@ -151,6 +151,8 @@ TAGS
 /tests/interactive/test-stage-sizing
 /tests/interactive/test-drag
 /tests/interactive/test-constraints
+/tests/interactive/test-state
+/tests/interactive/test-state-animator
 /tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-cogl-backface-culling
@@ -258,6 +260,7 @@ TAGS
 /tests/conform/test-cogl-path
 /tests/conform/test-cogl-wrap-modes
 /tests/conform/test-clutter-cairo-texture
+/tests/conform/test-state-base
 /tests/conform/wrappers
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
