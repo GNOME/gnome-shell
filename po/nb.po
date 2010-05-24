@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.28.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 19:37+0200\n"
-"PO-Revision-Date: 2010-05-11 19:51+0200\n"
+"POT-Creation-Date: 2010-05-24 16:28+0200\n"
+"PO-Revision-Date: 2010-05-24 16:29+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -32,6 +32,34 @@ msgstr "Klokke"
 msgid "Customize the panel clock"
 msgstr "Tilpass klokken på panelet"
 
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Klokkeformat"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Brukervalg for klokke"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Panelvisning"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Vis seku_nder"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Vis _dato"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12-timers format"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24-timers format"
+
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:850
 msgid "APPLICATIONS"
@@ -41,19 +69,19 @@ msgstr "PROGRAMMER"
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:697
+#: ../js/ui/appDisplay.js:705
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:701
+#: ../js/ui/appDisplay.js:709
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:702
+#: ../js/ui/appDisplay.js:710
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:1029
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
@@ -91,81 +119,81 @@ msgstr "STEDER & ENHETER"
 msgid "RECENT ITEMS"
 msgstr "SISTE OPPFØRINGER"
 
-#: ../js/ui/lookingGlass.js:354
+#: ../js/ui/lookingGlass.js:466
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
-#: ../js/ui/lookingGlass.js:391
+#: ../js/ui/lookingGlass.js:503
 msgid "Enabled"
 msgstr "Aktivert"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:505
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:507
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:509
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:422
+#: ../js/ui/lookingGlass.js:534
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:428
+#: ../js/ui/lookingGlass.js:540
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/overview.js:181
+#: ../js/ui/overview.js:161
 msgid "Undo"
 msgstr "Angre"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:351
+#: ../js/ui/panel.js:887
 msgid "Activities"
 msgstr "Aktiviteter"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:576
+#: ../js/ui/panel.js:1102
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:1103
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:1107
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:1108
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:589
+#: ../js/ui/panel.js:1115
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:1116
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:1120
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:1121
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
@@ -191,39 +219,39 @@ msgstr "Oppgi en kommando:"
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:90
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/statusMenu.js:110
+#: ../js/ui/statusMenu.js:94
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:98
 msgid "Invisible"
 msgstr "Usynlig"
 
-#: ../js/ui/statusMenu.js:124
+#: ../js/ui/statusMenu.js:105
 msgid "Account Information..."
 msgstr "Kontoinformasjon..."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:109
 msgid "System Preferences..."
 msgstr "Brukervalg for systemet..."
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:116
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:143
+#: ../js/ui/statusMenu.js:120
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:125
 msgid "Log Out..."
 msgstr "Logg ut..."
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:129
 msgid "Shut Down..."
 msgstr "Avslutt..."
 
@@ -237,32 +265,41 @@ msgstr "%s er ferdig startet"
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
 
-#: ../src/shell-global.c:964
+#: ../js/ui/workspacesView.js:239
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr "Kan ikke legge til nytt arbeidsområde fordi grensen for maksimalt antall arbeidsområder er nådd."
+
+#: ../js/ui/workspacesView.js:256
+msgid "Can't remove the first workspace."
+msgstr "Kan ikke fjerne første arbeidsområde"
+
+#: ../src/shell-global.c:1027
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:968
+#: ../src/shell-global.c:1031
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:973
+#: ../src/shell-global.c:1036
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:978
+#: ../src/shell-global.c:1041
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:1046
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
