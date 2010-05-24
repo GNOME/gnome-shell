@@ -179,7 +179,7 @@ clutter_state_key_new (State       *state,
                        guint        mode)
 {
   ClutterStateKey *state_key;
-  GValue value = {0, };
+  GValue value = { 0, };
 
   state_key = g_slice_new0 (ClutterStateKey);
 
@@ -363,22 +363,22 @@ clutter_state_new_frame (ClutterTimeline *timeline,
                          gint             msecs,
                          ClutterState    *state)
 {
-  GList       *k;
-  gdouble      progress;
+  ClutterStatePrivate *priv = state->priv;
+  GList *k;
+  gdouble progress;
   const gchar *curprop = NULL;
-  GObject     *curobj = NULL;
-  gboolean     found_specific = FALSE;
+  GObject *curobj = NULL;
+  gboolean found_specific = FALSE;
 
-  if (state->priv->current_animator)
+  if (priv->current_animator)
     return;
 
   progress = clutter_timeline_get_progress (timeline);
 
-  for (k = state->priv->target_state->keys; k; k = k->next)
+  for (k = priv->target_state->keys; k; k = k->next)
     {
       ClutterStateKey *key = k->data;
-      GValue           value = {0,};
-      gdouble          sub_progress;
+      gdouble sub_progress;
 
       if ((curprop && !(curprop == key->property_name)) ||
           key->object != curobj)
@@ -390,16 +390,17 @@ clutter_state_new_frame (ClutterTimeline *timeline,
 
       if (!found_specific)
         {
-          if (key->source_state &&
-              key->source_state->name &&
-              g_str_equal (state->priv->source_state_name,
-                           key->source_state->name))
+          if (key->source_state != NULL &&
+              key->source_state->name != NULL &&
+              g_str_equal (priv->source_state_name, key->source_state->name))
             {
               found_specific = TRUE;
             }
 
           if (found_specific || key->source_state == NULL)
             {
+              const GValue *value;
+
               sub_progress = (progress - key->pre_delay) /
                              (1.0 - (key->pre_delay + key->post_delay));
 
@@ -407,18 +408,16 @@ clutter_state_new_frame (ClutterTimeline *timeline,
                 {
                   if (sub_progress >= 1.0)
                     sub_progress = 1.0;
-                  clutter_timeline_advance (state->priv->slave_timeline,
+
+                  clutter_timeline_advance (priv->slave_timeline,
                                             sub_progress * SLAVE_TIMELINE_LENGTH);
                   sub_progress = clutter_alpha_get_alpha (key->alpha);
 
-                  g_value_init (&value,
-                               clutter_interval_get_value_type (key->interval));
-                  clutter_interval_compute_value (key->interval, sub_progress,
-                                                  &value);
-                  g_object_set_property (key->object, key->property_name,
-                                         &value);
-                  g_value_unset (&value);
+                  value = clutter_interval_compute (key->interval, sub_progress);
+                  if (value != NULL)
+                    g_object_set_property (key->object, key->property_name, value);
                 }
+
               /* XXX: should the target value of the default destination be
                * used even when found a specific source_state key?
                */
