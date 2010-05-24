@@ -97,7 +97,9 @@ cogl_create_context (void)
           0, sizeof (CoglMaterialFlushOptions));
   _context->current_layers = g_array_new (FALSE, FALSE,
                                           sizeof (CoglLayerInfo));
-  _context->texcoord_arrays_enabled = 0;
+  _cogl_bitmask_init (&_context->texcoord_arrays_enabled);
+  _cogl_bitmask_init (&_context->temp_bitmask);
+  _cogl_bitmask_init (&_context->texcoord_arrays_to_disable);
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
@@ -200,6 +202,10 @@ _cogl_destroy_context ()
     _cogl_atlas_free (_context->atlas);
   if (_context->atlas_texture)
     cogl_handle_unref (_context->atlas_texture);
+
+  _cogl_bitmask_destroy (&_context->texcoord_arrays_enabled);
+  _cogl_bitmask_destroy (&_context->temp_bitmask);
+  _cogl_bitmask_destroy (&_context->texcoord_arrays_to_disable);
 
   g_free (_context);
 }

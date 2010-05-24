@@ -263,7 +263,8 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
   GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
   /* Disable all client texture coordinate arrays */
-  _cogl_disable_texcoord_arrays (ctx->texcoord_arrays_enabled);
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
   while (path_start < path->data->path_nodes->len)
     {
