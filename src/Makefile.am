@@ -68,7 +68,6 @@ shell_public_headers_h =		\
 	shell-gconf.h			\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
-	shell-menu.h			\
 	shell-overflow-list.h		\
 	shell-process.h			\
 	shell-global.h			\
@@ -104,7 +103,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-gconf.c			\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
-	shell-menu.c			\
 	shell-overflow-list.c		\
 	shell-process.c			\
 	shell-global.c			\
