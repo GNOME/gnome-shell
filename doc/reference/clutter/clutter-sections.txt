@@ -1590,8 +1590,9 @@ clutter_interval_set_interval
 clutter_interval_get_interval
 
 <SUBSECTION>
-clutter_interval_compute_value
 clutter_interval_validate
+clutter_interval_compute_value
+clutter_interval_compute
 
 <SUBSECTION>
 ClutterProgressFunc
