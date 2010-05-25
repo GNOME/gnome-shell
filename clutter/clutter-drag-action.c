@@ -349,6 +349,22 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
 }
 
 static void
+clutter_drag_action_real_drag_motion (ClutterDragAction *action,
+                                      ClutterActor      *actor,
+                                      gfloat             delta_x,
+                                      gfloat             delta_y)
+{
+  ClutterActor *drag_handle;
+
+  if (action->priv->drag_handle != NULL)
+    drag_handle = action->priv->drag_handle;
+  else
+    drag_handle = actor;
+
+  clutter_actor_move_by (drag_handle, delta_x, delta_y);
+}
+
+static void
 clutter_drag_action_set_property (GObject      *gobject,
                                   guint         prop_id,
                                   const GValue *value,
@@ -442,6 +458,8 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   gobject_class->dispose = clutter_drag_action_dispose;
 
   meta_class->set_actor = clutter_drag_action_set_actor;
+
+  klass->drag_motion = clutter_drag_action_real_drag_motion;
 
   /**
    * ClutterDragAction:drag-threshold:
@@ -550,6 +568,13 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * to take into account eventual transformations. If you want the
    * stage coordinates of the latest motion event you can use
    * clutter_drag_action_get_motion_coords().
+   *
+   * The default handler of the signal will call clutter_actor_move_by()
+   * either on @actor or, if set, of #ClutterDragAction:drag-handle using
+   * the @delta_x and @delta_y components of the dragging motion. If you
+   * want to override the default behaviour, you can connect to this
+   * signal and call g_signal_stop_emission_by_name() from within your
+   * callback.
    *
    * Since: 1.4
    */

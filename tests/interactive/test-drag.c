@@ -36,21 +36,6 @@ on_drag_begin (ClutterDragAction   *action,
 }
 
 static void
-on_drag_motion (ClutterDragAction   *action,
-                ClutterActor        *actor,
-                gfloat               delta_x,
-                gfloat               delta_y,
-                ClutterModifierType  modifiers)
-{
-  ClutterActor *drag_handle;
-
-  drag_handle = clutter_drag_action_get_drag_handle (action);
-  g_assert (drag_handle != NULL);
-
-  clutter_actor_move_by (drag_handle, delta_x, delta_y);
-}
-
-static void
 on_drag_end (ClutterDragAction   *action,
              ClutterActor        *actor,
              gfloat               event_x,
@@ -176,7 +161,6 @@ test_drag_main (int argc, char *argv[])
                                      get_drag_axis (drag_axis));
 
   g_signal_connect (action, "drag-begin", G_CALLBACK (on_drag_begin), NULL);
-  g_signal_connect (action, "drag-motion", G_CALLBACK (on_drag_motion), NULL);
   g_signal_connect (action, "drag-end", G_CALLBACK (on_drag_end), NULL);
 
   clutter_actor_add_action (handle, action);
