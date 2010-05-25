@@ -3,7 +3,13 @@
 
 import atexit
 import datetime
-import json
+try:
+    import json
+except ImportError:
+    try:
+        import simplejson as json
+    except ImportError:
+        json = None
 import optparse
 import os
 import random
@@ -548,9 +554,15 @@ if args:
     parser.print_usage()
     sys.exit(1)
 
-if options.create_extension:
-    import json
+if options.create_extension and json is None:
+    print 'The Python simplejson module is required to create a new GNOME Shell extension'
+    sys.exit(1)
 
+if options.perf and json is None:
+    print 'The Python simplejson module is required for performance tests'
+    sys.exit(1)
+
+if options.create_extension:
     print
     print '''Name should be a very short (ideally descriptive) string.
 Examples are: "Click To Focus",  "Adblock", "Shell Window Shrinker".
