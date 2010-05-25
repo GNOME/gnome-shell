@@ -173,7 +173,7 @@ on_event (ClutterActor       *actor,
       break;
     }
 
-  return FALSE;
+  return res;
 }
 
 static void
