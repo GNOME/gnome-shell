@@ -69,14 +69,14 @@ TextShadower.prototype = {
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
         let [minWidth, natWidth] = this._label.get_preferred_width(forHeight);
-        alloc.min_size = minWidth;
-        alloc.natural_size = natWidth;
+        alloc.min_size = minWidth + 2;
+        alloc.natural_size = natWidth + 2;
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
         let [minHeight, natHeight] = this._label.get_preferred_height(forWidth);
-        alloc.min_size = minHeight;
-        alloc.natural_size = natHeight;
+        alloc.min_size = minHeight + 2;
+        alloc.natural_size = natHeight + 2;
     },
 
     _allocate: function(actor, box, flags) {
@@ -88,8 +88,8 @@ TextShadower.prototype = {
         let [minChildWidth, minChildHeight, natChildWidth, natChildHeight] =
             this._label.get_preferred_size();
 
-        let childWidth = Math.min(natChildWidth, availWidth);
-        let childHeight = Math.min(natChildHeight, availHeight);
+        let childWidth = Math.min(natChildWidth, availWidth - 2);
+        let childHeight = Math.min(natChildHeight, availHeight - 2);
 
         for (let i = 0; i < children.length; i++) {
             let child = children[i];
