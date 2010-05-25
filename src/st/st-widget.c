@@ -41,6 +41,7 @@
 #include "st-texture-cache.h"
 #include "st-theme-context.h"
 #include "st-tooltip.h"
+#include "st-theme-node-transition.h"
 
 /*
  * Forward declaration for sake of StWidgetChild
@@ -52,6 +53,8 @@ struct _StWidgetPrivate
   gchar        *pseudo_class;
   gchar        *style_class;
   gchar        *inline_style;
+
+  StThemeNodeTransition *transition_animation;
 
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
@@ -236,6 +239,13 @@ st_widget_dispose (GObject *gobject)
       priv->theme_node = NULL;
     }
 
+  if (priv->transition_animation)
+    {
+      g_object_run_dispose (G_OBJECT (priv->transition_animation));
+      g_object_unref (priv->transition_animation);
+      priv->transition_animation = NULL;
+    }
+
   if (priv->tooltip)
     {
       ClutterContainer *parent;
@@ -349,12 +359,20 @@ st_widget_paint (ClutterActor *actor)
   StWidget *self = ST_WIDGET (actor);
   StThemeNode *theme_node;
   ClutterActorBox allocation;
+  guint8 opacity;
 
   theme_node = st_widget_get_theme_node (self);
 
   clutter_actor_get_allocation_box (actor, &allocation);
 
-  st_theme_node_paint (theme_node, &allocation, clutter_actor_get_paint_opacity (actor));
+  opacity = clutter_actor_get_paint_opacity (actor);
+
+  if (self->priv->transition_animation)
+    st_theme_node_transition_paint (self->priv->transition_animation,
+                                    &allocation,
+                                    opacity);
+  else
+    st_theme_node_paint (theme_node, &allocation, opacity);
 }
 
 static void
@@ -1185,9 +1203,19 @@ st_widget_init (StWidget *actor)
 
   actor->priv = priv = ST_WIDGET_GET_PRIVATE (actor);
   priv->is_stylable = TRUE;
+  priv->transition_animation = NULL;
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
+}
+
+static void
+on_transition_completed (StThemeNodeTransition *transition,
+                         StWidget              *widget)
+{
+  g_object_run_dispose (G_OBJECT (widget->priv->transition_animation));
+  g_object_unref (widget->priv->transition_animation);
+  widget->priv->transition_animation = NULL;
 }
 
 static void
@@ -1195,10 +1223,36 @@ st_widget_recompute_style (StWidget    *widget,
                            StThemeNode *old_theme_node)
 {
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
+  int transition_duration;
 
   if (!old_theme_node ||
       !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
     clutter_actor_queue_relayout ((ClutterActor *) widget);
+
+  transition_duration = st_theme_node_get_transition_duration (new_theme_node);
+
+  if (transition_duration > 0)
+    {
+      if (widget->priv->transition_animation != NULL)
+        {
+          st_theme_node_transition_update (widget->priv->transition_animation,
+                                           new_theme_node);
+        }
+      else if (old_theme_node)
+        {
+          widget->priv->transition_animation =
+            st_theme_node_transition_new (old_theme_node,
+                                          new_theme_node,
+                                          transition_duration);
+
+          g_signal_connect (widget->priv->transition_animation, "completed",
+                            G_CALLBACK (on_transition_completed), widget);
+          g_signal_connect_swapped (widget->priv->transition_animation,
+                                    "new-frame",
+                                    G_CALLBACK (clutter_actor_queue_redraw),
+                                    widget);
+        }
+    }
 
   g_signal_emit (widget, signals[STYLE_CHANGED], 0);
   widget->priv->is_style_dirty = FALSE;
