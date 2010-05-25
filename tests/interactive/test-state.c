@@ -19,7 +19,6 @@ static gboolean press_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   ClutterState *state = CLUTTER_STATE (user_data);
-  clutter_grab_pointer (actor);
   clutter_state_change (state, "right", TRUE);
   return TRUE;
 }
@@ -30,7 +29,6 @@ static gboolean release_event (ClutterActor *actor,
 {
   ClutterState *state = CLUTTER_STATE (user_data);
   clutter_state_change (state, "active", TRUE);
-  clutter_ungrab_pointer ();
   return TRUE;
 }
 
@@ -105,6 +103,10 @@ test_state_main (gint    argc,
   clutter_stage_set_color (CLUTTER_STAGE (stage), &black);
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
 
+  g_signal_connect (stage, "button-press-event",
+                    G_CALLBACK (press_event), layout_state);
+  g_signal_connect (stage, "button-release-event",
+                    G_CALLBACK (release_event), layout_state);
 
   for (i=0; i<TOTAL; i++)
     {
@@ -120,10 +122,6 @@ test_state_main (gint    argc,
       clutter_actor_set_position (actor, 320.0, 240.0);
       clutter_actor_set_reactive (actor, TRUE);
 
-      g_signal_connect (actor, "button-press-event",
-                        G_CALLBACK (press_event), layout_state);
-      g_signal_connect (actor, "button-release-event",
-                        G_CALLBACK (release_event), layout_state);
 
       clutter_state_set (layout_state, NULL, "active",
             actor, "delayed::x", CLUTTER_LINEAR,
