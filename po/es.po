@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-05-15 22:41+0000\n"
-"PO-Revision-Date: 2010-05-16 11:00+0200\n"
+"POT-Creation-Date: 2010-05-19 16:31+0000\n"
+"PO-Revision-Date: 2010-05-25 18:28+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,17 +34,18 @@ msgid "Customize the panel clock"
 msgstr "Personalizar el reloj del panel"
 
 #: ../data/clock-preferences.ui.h:1
-msgid "<b>Clock Format</b>"
-msgstr "<b>Formato del reloj</b>"
+#| msgid "<b>Clock Format</b>"
+msgid "Clock Format"
+msgstr "Formato del reloj"
 
 #: ../data/clock-preferences.ui.h:2
-msgid "<b>Panel Display</b>"
-msgstr "<b>Mostrado del panel</b>"
-
-#: ../data/clock-preferences.ui.h:3
-#| msgid "System Preferences..."
 msgid "Clock Preferences"
 msgstr "Preferencias del reloj"
+
+#: ../data/clock-preferences.ui.h:3
+#| msgid "<b>Panel Display</b>"
+msgid "Panel Display"
+msgstr "Panel de visualización"
 
 #: ../data/clock-preferences.ui.h:4
 msgid "Show seco_nds"
@@ -121,31 +122,31 @@ msgstr "LUGARES Y DISPOSITIVOS"
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
-#: ../js/ui/lookingGlass.js:354
+#: ../js/ui/lookingGlass.js:466
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
-#: ../js/ui/lookingGlass.js:391
+#: ../js/ui/lookingGlass.js:503
 msgid "Enabled"
 msgstr "Activado"
 
-#: ../js/ui/lookingGlass.js:393
+#: ../js/ui/lookingGlass.js:505
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:395
+#: ../js/ui/lookingGlass.js:507
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:397
+#: ../js/ui/lookingGlass.js:509
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:422
+#: ../js/ui/lookingGlass.js:534
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:428
+#: ../js/ui/lookingGlass.js:540
 msgid "Web Page"
 msgstr "Página web"
 
@@ -153,53 +154,49 @@ msgstr "Página web"
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/panel.js:535
-msgid "Quit"
-msgstr "Salir"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:740
+#: ../js/ui/panel.js:774
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:955
+#: ../js/ui/panel.js:989
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:956
+#: ../js/ui/panel.js:990
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:960
+#: ../js/ui/panel.js:994
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:961
+#: ../js/ui/panel.js:995
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:968
+#: ../js/ui/panel.js:1002
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:969
+#: ../js/ui/panel.js:1003
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:973
+#: ../js/ui/panel.js:1007
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:974
+#: ../js/ui/panel.js:1008
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
@@ -282,32 +279,32 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "No se puede quitar el primer área de trabajo."
 
-#: ../src/shell-global.c:979
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:983
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:988
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:993
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:998
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -337,6 +334,9 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Quit"
+#~ msgstr "Salir"
 
 #~ msgid "Sidebar"
 #~ msgstr "Barra lateral"
