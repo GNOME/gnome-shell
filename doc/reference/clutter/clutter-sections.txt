@@ -2264,3 +2264,23 @@ clutter_state_key_get_type
 <SUBSECTION Private>
 ClutterStatePrivate
 </SECTION>
+
+<SECTION>
+<FILE>clutter-click-action</FILE>
+<TITLE>ClutterClickAction</TITLE>
+ClutterClickAction
+ClutterClickActionClass
+clutter_click_action_new
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_CLICK_ACTION
+CLUTTER_CLICK_ACTION
+CLUTTER_CLICK_ACTION_CLASS
+CLUTTER_IS_CLICK_ACTION
+CLUTTER_IS_CLICK_ACTION_CLASS
+CLUTTER_CLICK_ACTION_GET_CLASS
+clutter_click_action_get_type
+
+<SUBSECTION Private>
+ClutterClickActionPrivate
+</SECTION>
