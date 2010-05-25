@@ -93,9 +93,31 @@ void
 _cogl_create_context_winsys (CoglContext *context)
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
-  context->winsys.event_filters = NULL;
+  {
+    Display *display = _cogl_xlib_get_display ();
+    int damage_error;
 
-  context->winsys.trap_state = NULL;
+    /* Check whether damage events are supported on this display */
+    if (!XDamageQueryExtension (display,
+                                &context->winsys.damage_base,
+                                &damage_error))
+      context->winsys.damage_base = -1;
+
+    context->winsys.event_filters = NULL;
+
+    context->winsys.trap_state = NULL;
+  }
+#endif
+
+#ifdef COGL_HAS_GLX_SUPPORT
+  {
+    int i;
+
+    for (i = 0; i < COGL_WINSYS_N_CACHED_CONFIGS; i++)
+      context->winsys.glx_cached_configs[i].depth = -1;
+
+    context->winsys.rectangle_state = COGL_WINSYS_RECTANGLE_STATE_UNKNOWN;
+  }
 #endif
 
   _cogl_winsys_features_init (context);

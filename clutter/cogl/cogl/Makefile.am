@@ -162,9 +162,14 @@ libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/cog
 libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
 
 if SUPPORT_XLIB
+cogl_public_h += \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11.h
+
 libclutter_cogl_la_SOURCES += \
        $(srcdir)/winsys/cogl-xlib.h \
-       $(srcdir)/winsys/cogl-xlib.c
+       $(srcdir)/winsys/cogl-xlib.c \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11.c \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
 endif
 if SUPPORT_GLX
 libclutter_cogl_la_SOURCES += \

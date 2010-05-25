@@ -23,3 +23,23 @@
 
 /* This can be included multiple times with different definitions for
    the COGL_WINSYS_FEATURE_* functions */
+
+#ifdef COGL_HAS_GLX_SUPPORT
+
+COGL_WINSYS_FEATURE_BEGIN (texture_from_pixmap,
+                           "EXT\0",
+                           "texture_from_pixmap\0",
+                           COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP,
+                           0)
+COGL_WINSYS_FEATURE_FUNCTION (void, glXBindTexImage,
+                              (Display     *display,
+                               GLXDrawable  drawable,
+                               int          buffer,
+                               int         *attribList))
+COGL_WINSYS_FEATURE_FUNCTION (void, glXReleaseTexImage,
+                              (Display     *display,
+                               GLXDrawable  drawable,
+                               int          buffer))
+COGL_WINSYS_FEATURE_END ()
+
+#endif
