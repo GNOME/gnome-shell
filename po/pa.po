@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-03-20 22:48+0000\n"
-"PO-Revision-Date: 2010-03-31 07:46+0530\n"
+"POT-Creation-Date: 2010-05-19 16:31+0000\n"
+"PO-Revision-Date: 2010-05-25 19:31+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,28 +26,65 @@ msgstr "ਗਨੋਮ ਸ਼ੈਲ"
 msgid "Window management and application launching"
 msgstr "ਵਿੰਡੋ ਪਰਬੰਧ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਓ"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "ਘੜੀ"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "ਪੈਨਲ ਘੜੀ ਕਸਟਮਾਈਜ਼ ਕਰੋ"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "ਘੜੀ ਫਾਰਮੈਟ"
+
+#: ../data/clock-preferences.ui.h:2
+#| msgid "System Preferences..."
+msgid "Clock Preferences"
+msgstr "ਘੜੀ ਪਸੰਦ"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "ਪੈਨਲ ਦਿੱਖ"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "ਸਕਿੰਟ ਵੇਖੋ(_n)"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "ਮਿਤੀ ਵੇਖੋ(_d)"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_੧੨ ਘੰਟੇ ਫਾਰਮੈਟ"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_੨੪ ਘੰਟੇ ਫਾਰਮੈਟ"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:850
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:338
 msgid "PREFERENCES"
 msgstr "ਪਸੰਦ"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:705
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:709
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:710
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟੋ"
 
@@ -58,159 +95,173 @@ msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਵਿੱਚ ਸ਼ਾਮ�
 
 #: ../js/ui/appFavorites.js:107
 #, c-format
-#| msgid "Remove from Favorites"
 msgid "%s has been removed from your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।"
 
-#: ../js/ui/dash.js:194
-#| msgid "Find..."
+#: ../js/ui/dash.js:189
 msgid "Find"
 msgstr "ਖੋਜ"
 
-#: ../js/ui/dash.js:507
-#| msgid "Search"
+#: ../js/ui/dash.js:505
 msgid "Searching..."
 msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:519
 msgid "No matching results."
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
+#: ../js/ui/dash.js:869 ../js/ui/placeDisplay.js:543
 msgid "PLACES & DEVICES"
 msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
-#| msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:876 ../js/ui/docDisplay.js:489
 msgid "RECENT ITEMS"
 msgstr "ਤਾਜ਼ਾ ਆਈਟਮਾਂ"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:466
 msgid "No extensions installed"
 msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:503
 msgid "Enabled"
 msgstr "ਚਾਲੂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:505
 msgid "Disabled"
 msgstr "ਬੰਦ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:507
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:509
 msgid "Out of date"
 msgstr "ਪੁਰਾਣਾ"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:534
 msgid "View Source"
 msgstr "ਸਰੋਤ ਵੇਖੋ"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:540
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/overview.js:182
+#: ../js/ui/overview.js:161
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:385
+#: ../js/ui/panel.js:774
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:616
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:989
+msgid "%a %b %e, %R:%S"
+msgstr "%a, %e %b %R:%S"
+
+#: ../js/ui/panel.js:990
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %R"
+msgstr "%a %e %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:994
+#| msgid "%a %R"
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/panel.js:995
 msgid "%a %R"
 msgstr "%a %R"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:619
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:1002
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %e %b, %l:%M:%S %p"
+
+#: ../js/ui/panel.js:1003
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %e %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:1007
+#| msgid "%a %l:%M %p"
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/panel.js:1008
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
-#: ../js/ui/placeDisplay.js:103
+#: ../js/ui/placeDisplay.js:108
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "'%s' ਅਣ-ਮਾਊਂਟ ਕਰਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:111
 msgid "Retry"
 msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../js/ui/runDialog.js:232
+#: ../js/ui/runDialog.js:231
 msgid "Please enter a command:"
 msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
 
-#: ../js/ui/runDialog.js:374
+#: ../js/ui/runDialog.js:375
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:90
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:94
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:98
 msgid "Invisible"
 msgstr "ਅਦਿੱਖ"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:105
 msgid "Account Information..."
 msgstr "ਅਕਾਊਂਟ ਜਾਣਕਾਰੀ..."
 
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "ਬਾਹੀ"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:109
 msgid "System Preferences..."
 msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:116
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:120
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:125
 msgid "Log Out..."
 msgstr "ਲਾਗਆਉਟ..."
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:129
 msgid "Shut Down..."
 msgstr "ਬੰਦ ਕਰੋ..."
-
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "ਐਪਲੀਕੇਸ਼ਨ"
-
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ"
 
 #: ../js/ui/windowAttentionHandler.js:47
 #, c-format
@@ -222,32 +273,43 @@ msgstr "%s ਸ਼ੁਰੂ ਹੋਣਾ ਖਤਮ ਹੋਇਆ"
 msgid "'%s' is ready"
 msgstr "'%s' ਤਿਆਰ ਹੈ"
 
-#: ../src/shell-global.c:967
+#: ../js/ui/workspacesView.js:239
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ "
+"ਚੁੱਕੀ ਹੈ।"
+
+#: ../js/ui/workspacesView.js:256
+msgid "Can't remove the first workspace."
+msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
+
+#: ../src/shell-global.c:976
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:980
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:985
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:990
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:995
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -277,6 +339,18 @@ msgstr "ਖੋਜ"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Sidebar"
+#~ msgstr "ਬਾਹੀ"
+
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgid "Applications"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#~ msgid "Recent Documents"
+#~ msgstr "ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ"
 
 #~ msgid "Frequent"
 #~ msgstr "ਅਕਸਰ"
