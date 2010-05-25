@@ -234,12 +234,12 @@ st_table_homogeneous_allocate (ClutterActor          *self,
   col_spacing = priv->col_spacing;
   row_spacing = priv->row_spacing;
 
-  col_width = (int) (content_box->x2 - content_box->x1
-               - (col_spacing * (priv->n_cols - 1)))
-              / priv->n_cols + 0.5;
-  row_height = (int) (content_box->y2 - content_box->y1
-                - (row_spacing * (priv->n_rows - 1)))
-               / priv->n_rows + 0.5;
+  col_width = (int) ((content_box->x2 - content_box->x1
+                      - (col_spacing * (priv->n_cols - 1)))
+                     / priv->n_cols + 0.5);
+  row_height = (int) ((content_box->y2 - content_box->y1
+                      - (row_spacing * (priv->n_rows - 1)))
+                      / priv->n_rows + 0.5);
 
   children = st_container_get_children_list (ST_CONTAINER (self));
   for (list = children; list; list = list->next)
