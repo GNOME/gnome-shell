@@ -3342,7 +3342,7 @@ clutter_actor_get_accessible (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  return CLUTTER_ACTOR_GET_CLASS (self)->get_accessible (actor);
+  return CLUTTER_ACTOR_GET_CLASS (self)->get_accessible (self);
 }
 
 static AtkObject *
