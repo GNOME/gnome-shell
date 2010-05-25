@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
@@ -56,6 +57,7 @@ TextShadower.prototype = {
         this.actor.add_actor(this._label);
         for (let i = 0; i < 4; i++) {
             let actor = new St.Label({ style_class: 'label-shadow' });
+            actor.clutter_text.ellipsize = Pango.EllipsizeMode.END;
             this.actor.add_actor(actor);
         }
         this._label.raise_top();
@@ -838,44 +840,25 @@ Panel.prototype = {
             let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
             let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
             let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
-            let leftWidth, centerWidth, rightWidth;
-            if (allocWidth < (leftNaturalWidth + centerNaturalWidth + rightNaturalWidth)) {
-                leftWidth = leftMinWidth;
-                centerWidth = centerMinWidth;
-                rightWidth = rightMinWidth;
-            } else {
-                leftWidth = leftNaturalWidth;
-                centerWidth = centerNaturalWidth;
-                rightWidth = rightNaturalWidth;
-            }
 
-            let x;
+            let sideWidth, centerWidth;
+            centerWidth = centerNaturalWidth;
+            sideWidth = (allocWidth - centerWidth) / 2;
+
             let childBox = new Clutter.ActorBox();
             childBox.x1 = 0;
             childBox.y1 = 0;
-            childBox.x2 = x = childBox.x1 + leftWidth;
+            childBox.x2 = childBox.x1 + Math.floor(sideWidth);
             childBox.y2 = allocHeight;
             this._leftBox.allocate(childBox, flags);
 
-            let centerNaturalX = Math.floor(allocWidth / 2 - (centerWidth / 2));
-            /* Check left side */
-            if (x < centerNaturalX) {
-                /* We didn't overflow the left, use the natural. */
-                x = centerNaturalX;
-            }
-            /* Check right side */
-            if (x + centerWidth > (allocWidth - rightWidth)) {
-                x = allocWidth - rightWidth - centerWidth;
-            }
-            childBox = new Clutter.ActorBox();
-            childBox.x1 = x;
+            childBox.x1 = Math.ceil(sideWidth);
             childBox.y1 = 0;
-            childBox.x2 = x = childBox.x1 + centerWidth;
+            childBox.x2 = childBox.x1 + centerWidth;
             childBox.y2 = allocHeight;
             this._centerBox.allocate(childBox, flags);
 
-            childBox = new Clutter.ActorBox();
-            childBox.x1 = allocWidth - rightWidth;
+            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), rightNaturalWidth);
             childBox.y1 = 0;
             childBox.x2 = allocWidth;
             childBox.y2 = allocHeight;
