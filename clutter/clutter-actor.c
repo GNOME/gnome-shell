@@ -3320,7 +3320,7 @@ clutter_actor_finalize (GObject *object)
 
 /**
  * clutter_actor_get_accessible:
- * @actor: a #ClutterActor
+ * @self: a #ClutterActor
  *
  * Returns the accessible object that describes the actor to an
  * assistive technology.
@@ -3337,38 +3337,29 @@ clutter_actor_finalize (GObject *object)
  *
  * Returns: (transfer none): the #AtkObject associated with @actor
  */
-AtkObject*
-clutter_actor_get_accessible (ClutterActor *actor)
+AtkObject *
+clutter_actor_get_accessible (ClutterActor *self)
 {
-  ClutterActorClass *klass;
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
-
-  klass = CLUTTER_ACTOR_GET_CLASS (actor);
-
-  g_return_val_if_fail (klass->get_accessible != NULL, NULL);
-
-  return klass->get_accessible (actor);
+  return CLUTTER_ACTOR_GET_CLASS (self)->get_accessible (actor);
 }
 
-static AtkObject*
+static AtkObject *
 clutter_actor_real_get_accessible (ClutterActor *actor)
 {
-  AtkObject* accessible;
-
-  accessible = atk_gobject_accessible_for_object (G_OBJECT (actor));
-
-  return accessible;
+  return atk_gobject_accessible_for_object (G_OBJECT (actor));
 }
 
-static AtkObject*
+static AtkObject *
 _clutter_actor_ref_accessible (AtkImplementor *implementor)
 {
   AtkObject *accessible;
 
   accessible = clutter_actor_get_accessible (CLUTTER_ACTOR (implementor));
-  if (accessible)
+  if (accessible != NULL)
     g_object_ref (accessible);
+
   return accessible;
 }
 

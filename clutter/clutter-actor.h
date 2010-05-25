@@ -276,9 +276,6 @@ struct _ClutterActorClass
   void (* apply_transform)      (ClutterActor           *actor,
                                  CoglMatrix             *matrix);
 
-  /* accessibility support */
-  AtkObject* (*get_accessible)  (ClutterActor *actor);
-
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
                                      ClutterEvent         *event);
@@ -304,6 +301,9 @@ struct _ClutterActorClass
   void     (* key_focus_out)        (ClutterActor         *actor);
 
   void     (* queue_relayout)       (ClutterActor         *actor);
+
+  /* accessibility support */
+  AtkObject * (* get_accessible)    (ClutterActor         *actor);
 
   /*< private >*/
   /* padding for future expansion */
@@ -570,7 +570,7 @@ void                 clutter_actor_pop_internal       (ClutterActor         *sel
 
 gboolean             clutter_actor_has_allocation     (ClutterActor         *self);
 
-AtkObject*           clutter_actor_get_accessible     (ClutterActor *actor);
+AtkObject *          clutter_actor_get_accessible     (ClutterActor         *self);
 
 G_END_DECLS
 
