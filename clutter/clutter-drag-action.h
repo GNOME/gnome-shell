@@ -105,8 +105,7 @@ struct _ClutterDragActionClass
   void (* drag_motion) (ClutterDragAction   *action,
                         ClutterActor        *actor,
                         gfloat               delta_x,
-                        gfloat               delta_y,
-                        ClutterModifierType  modifiers);
+                        gfloat               delta_y);
   void (* drag_end)    (ClutterDragAction   *action,
                         ClutterActor        *actor,
                         gfloat               event_x,

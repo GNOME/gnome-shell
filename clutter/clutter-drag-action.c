@@ -31,33 +31,22 @@
  * all the necessary logic for dragging actors.
  *
  * The simplest usage of #ClutterDragAction consists in adding it to
- * a #ClutterActor and connecting to the #ClutterDragAction::drag-motion
- * signal handler to move the actor; for instance:
+ * a #ClutterActor and setting it as reactive; for instance, the following
+ * code:
  *
  * |[
- *   ClutterAction *action = clutter_drag_action_new ();
- *
- *   g_signal_connect (action, "drag-motion",
- *                     G_CALLBACK (on_drag_motion),
- *                     NULL);
- *
- *   clutter_actor_add_action (actor, action);
+ *   clutter_actor_add_action (actor, clutter_drag_action_new ());
+ *   clutter_actor_set_reactive (actor, TRUE);
  * ]|
  *
- * Where the on_drag_motion() signal handler calls clutter_actor_move_by()
- * using the delta between motion events passed to the handler:
+ * will automatically result in the actor moving to follow the pointer
+ * whenever the pointer's button is pressed over the actor and moved
+ * across the stage.
  *
- * |[
- *   static void
- *   on_drag_motion (ClutterDragAction   *action,
- *                   ClutterActor        *actor,
- *                   gfloat               delta_x,
- *                   gfloat               delta_y,
- *                   ClutterModifierType  modifiers)
- *   {
- *     clutter_actor_move_by (actor, delta_x, delta_y);
- *   }
- * ]|
+ * The #ClutterDragAction will signal the begin and the end of a dragging
+ * through the #ClutterDragAction::drag-begin and #ClutterDragAction::drag-end
+ * signals, respectively. Each pointer motion during a drag will also result
+ * in the #ClutterDragAction::drag-motion signal to be emitted.
  *
  * It is also possible to set another #ClutterActor as the dragged actor
  * by calling clutter_drag_action_set_drag_handle() from within a handle
@@ -558,7 +547,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * @delta_y: the Y component of the distance between the press event
    *   that began the dragging and the current position of the pointer,
    *   as of the latest motion event
-   * @modifiers: the modifiers of the latest motion event
    *
    * The ::drag-motion signal is emitted for each motion event after
    * the #ClutterDragAction::drag-begin signal has been emitted.
