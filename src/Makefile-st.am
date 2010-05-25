@@ -110,7 +110,8 @@ st_source_private_h =				\
     st/st-private.h				\
     st/st-table-private.h			\
     st/st-theme-private.h			\
-    st/st-theme-node-private.h
+    st/st-theme-node-private.h			\
+    st/st-theme-node-transition.h
 
 # please, keep this sorted alphabetically
 st_source_c =					\
@@ -142,6 +143,7 @@ st_source_c =					\
     st/st-theme-context.c			\
     st/st-theme-node.c				\
     st/st-theme-node-drawing.c		\
+    st/st-theme-node-transition.c		\
     st/st-tooltip.c				\
     st/st-widget.c				\
     $(NULL)
