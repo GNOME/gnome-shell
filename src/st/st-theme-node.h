@@ -80,6 +80,8 @@ StThemeNode *st_theme_node_get_parent (StThemeNode *node);
 
 StTheme *st_theme_node_get_theme (StThemeNode *node);
 
+gboolean    st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b);
+
 GType       st_theme_node_get_element_type  (StThemeNode *node);
 const char *st_theme_node_get_element_id    (StThemeNode *node);
 const char *st_theme_node_get_element_class (StThemeNode *node);

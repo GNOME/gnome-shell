@@ -233,6 +233,49 @@ st_theme_node_get_pseudo_class (StThemeNode *node)
   return node->pseudo_class;
 }
 
+/**
+ * st_theme_node_equal:
+ * @node_a: first #StThemeNode
+ * @node_b: second #StThemeNode
+ *
+ * Compare two #StThemeNodes. Two nodes which compare equal will match
+ * the same CSS rules and have the same style properties. However, two
+ * nodes that have ended up with identical style properties do not
+ * necessarily compare equal.
+ * In detail, @node_a and @node_b are considered equal iff
+ * <itemizedlist>
+ *   <listitem>
+ *     <para>they share the same #StTheme and #StThemeContext</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>they have the same parent</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>they have the same element type</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>their id, class, pseudo-class and inline-style match</para>
+ *   </listitem>
+ * </itemizedlist>
+ *
+ * Returns: %TRUE if @node_a equals @node_b
+ */
+gboolean
+st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node_a), FALSE);
+  g_return_val_if_fail (ST_IS_THEME_NODE (node_b), FALSE);
+
+  return node_a->parent_node == node_b->parent_node &&
+         node_a->context == node_b->context &&
+         node_a->theme == node_b->theme &&
+         node_a->element_type == node_b->element_type &&
+         !g_strcmp0 (node_a->element_id, node_b->element_id) &&
+         !g_strcmp0 (node_a->element_class, node_b->element_class) &&
+         !g_strcmp0 (node_a->pseudo_class, node_b->pseudo_class) &&
+         !g_strcmp0 (node_a->inline_style, node_b->inline_style);
+}
+
 static void
 ensure_properties (StThemeNode *node)
 {
