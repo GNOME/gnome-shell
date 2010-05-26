@@ -204,7 +204,7 @@ Chrome.prototype = {
             let actorData = this._trackedActors[i];
             if (this._inOverview && !actorData.visibleInOverview)
                 this.actor.set_skip_paint(actorData.actor, true);
-            else if (this._inFullscreen && !actorData.visibleInFullscreen)
+            else if (!this._inOverview && this._inFullscreen && !actorData.visibleInFullscreen)
                 this.actor.set_skip_paint(actorData.actor, true);
             else
                 this.actor.set_skip_paint(actorData.actor, false);
