@@ -15,10 +15,10 @@ on_animation_complete (ClutterAnimation *animation,
   clutter_actor_set_reactive (actor, TRUE);
 }
 
-static gboolean
-on_button_press (ClutterActor       *actor,
-                 ClutterButtonEvent *event,
-                 gpointer            dummy)
+static void
+on_clicked (ClutterClickAction *action,
+            ClutterActor       *actor,
+            gpointer            dummy G_GNUC_UNUSED)
 {
   ClutterAnimation *animation;
   gfloat old_x, old_y, new_x, new_y;
@@ -78,8 +78,6 @@ on_button_press (ClutterActor       *actor,
   g_signal_connect (animation,
                     "completed", G_CALLBACK (on_animation_complete),
                     actor);
-
-  return TRUE;
 }
 
 G_MODULE_EXPORT int
@@ -88,6 +86,7 @@ test_animation_main (int argc, char *argv[])
   ClutterActor *stage, *rect;
   ClutterColor stage_color = { 0x66, 0x66, 0xdd, 0xff };
   ClutterColor rect_color = { 0x44, 0xdd, 0x44, 0xff };
+  ClutterAction *action;
 
   clutter_init (&argc, &argv);
 
@@ -103,9 +102,10 @@ test_animation_main (int argc, char *argv[])
                               clutter_actor_get_height (stage) / 2);
   clutter_actor_set_opacity (rect, 0x88);
   clutter_actor_set_reactive (rect, TRUE);
-  g_signal_connect (rect,
-                    "button-press-event", G_CALLBACK (on_button_press),
-                    NULL);
+
+  action = clutter_click_action_new ();
+  g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
+  clutter_actor_add_action_with_name (rect, "click", action);
 
   clutter_actor_show (stage);
 
