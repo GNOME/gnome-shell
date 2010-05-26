@@ -127,6 +127,14 @@ cogl_create_context (void)
 
   _context->gl_blend_enable_cache = FALSE;
 
+  _context->depth_test_enabled_cache = FALSE;
+  _context->depth_test_function_cache = COGL_DEPTH_TEST_FUNCTION_LESS;
+  _context->depth_writing_enabled_cache = TRUE;
+  _context->depth_range_near_cache = 0;
+  _context->depth_range_far_cache = 1;
+
+  _context->legacy_depth_test_enabled = FALSE;
+
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
   window_buffer = _cogl_onscreen_new ();

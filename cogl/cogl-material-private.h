@@ -311,8 +311,9 @@ typedef enum _CoglMaterialState
   COGL_MATERIAL_STATE_ALPHA_FUNC        = 1L<<4,
   COGL_MATERIAL_STATE_BLEND             = 1L<<5,
   COGL_MATERIAL_STATE_USER_SHADER       = 1L<<6,
+  COGL_MATERIAL_STATE_DEPTH             = 1L<<7,
 
-  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<7,
+  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<8,
 
   COGL_MATERIAL_STATE_ALL_SPARSE =
     COGL_MATERIAL_STATE_COLOR |
@@ -321,7 +322,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_LIGHTING |
     COGL_MATERIAL_STATE_ALPHA_FUNC |
     COGL_MATERIAL_STATE_BLEND |
-    COGL_MATERIAL_STATE_USER_SHADER,
+    COGL_MATERIAL_STATE_USER_SHADER |
+    COGL_MATERIAL_STATE_DEPTH,
 
   COGL_MATERIAL_STATE_AFFECTS_BLENDING =
     COGL_MATERIAL_STATE_COLOR |
@@ -335,7 +337,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_LIGHTING |
     COGL_MATERIAL_STATE_ALPHA_FUNC |
     COGL_MATERIAL_STATE_BLEND |
-    COGL_MATERIAL_STATE_USER_SHADER
+    COGL_MATERIAL_STATE_USER_SHADER |
+    COGL_MATERIAL_STATE_DEPTH
 
 } CoglMaterialState;
 
@@ -390,10 +393,20 @@ typedef struct
 
 typedef struct
 {
+  gboolean              depth_test_enabled;
+  CoglDepthTestFunction depth_test_function;
+  gboolean              depth_writing_enabled;
+  float                 depth_range_near;
+  float                 depth_range_far;
+} CoglMaterialDepthState;
+
+typedef struct
+{
   CoglMaterialLightingState lighting_state;
   CoglMaterialAlphaFuncState alpha_state;
   CoglMaterialBlendState blend_state;
   CoglHandle user_program;
+  CoglMaterialDepthState depth_state;
 } CoglMaterialBigState;
 
 typedef enum

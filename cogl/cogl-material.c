@@ -347,6 +347,7 @@ _cogl_material_init_default_material (void)
   CoglMaterialLightingState *lighting_state = &big_state->lighting_state;
   CoglMaterialAlphaFuncState *alpha_state = &big_state->alpha_state;
   CoglMaterialBlendState *blend_state = &big_state->blend_state;
+  CoglMaterialDepthState *depth_state = &big_state->depth_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -408,6 +409,13 @@ _cogl_material_init_default_material (void)
   blend_state->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
 
   big_state->user_program = COGL_INVALID_HANDLE;
+
+  /* The same as the GL defaults */
+  depth_state->depth_test_enabled = FALSE;
+  depth_state->depth_test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
+  depth_state->depth_writing_enabled = TRUE;
+  depth_state->depth_range_near = 0;
+  depth_state->depth_range_far = 1;
 
   ctx->default_material = _cogl_material_handle_new (material);
 }
@@ -987,6 +995,13 @@ _cogl_material_copy_differences (CoglMaterial *dest,
           cogl_handle_ref (src->big_state->user_program);
       else
         big_state->user_program = COGL_INVALID_HANDLE;
+    }
+
+  if (differences & COGL_MATERIAL_STATE_DEPTH)
+    {
+      memcpy (&big_state->depth_state,
+              &src->big_state->depth_state,
+              sizeof (CoglMaterialDepthState));
     }
 
   /* XXX: we shouldn't bother doing this in most cases since
@@ -2891,6 +2906,15 @@ _cogl_material_blend_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
+_cogl_material_depth_state_equal (CoglMaterial *authority0,
+                                  CoglMaterial *authority1)
+{
+  return memcmp (&authority0->big_state->depth_state,
+                 &authority1->big_state->depth_state,
+                 sizeof (CoglMaterialDepthState)) == 0;
+}
+
+static gboolean
 _cogl_material_layers_equal (CoglMaterial *authority0,
                              CoglMaterial *authority1)
 {
@@ -3100,6 +3124,19 @@ _cogl_material_equal (CoglHandle handle0,
                                       COGL_MATERIAL_STATE_BLEND_ENABLE);
 
       if (authority0->blend_enable != authority1->blend_enable)
+        return FALSE;
+    }
+
+  if (materials_difference & COGL_MATERIAL_STATE_DEPTH)
+    {
+      CoglMaterial *authority0 =
+        _cogl_material_get_authority (material0,
+                                      COGL_MATERIAL_STATE_DEPTH);
+      CoglMaterial *authority1 =
+        _cogl_material_get_authority (material1,
+                                      COGL_MATERIAL_STATE_DEPTH);
+
+      if (!_cogl_material_depth_state_equal (authority0, authority1))
         return FALSE;
     }
 
@@ -3886,6 +3923,200 @@ _cogl_material_set_user_program (CoglHandle handle,
   material->big_state->user_program = program;
 
   handle_automatic_blend_enable (material, state);
+}
+
+void
+cogl_material_set_depth_test_enabled (CoglHandle handle,
+                                      gboolean enable)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
+  CoglMaterial *authority;
+  CoglMaterialDepthState *depth_state;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  authority = _cogl_material_get_authority (material, state);
+
+  depth_state = &authority->big_state->depth_state;
+  if (depth_state->depth_test_enabled == enable)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->depth_state.depth_test_enabled = enable;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_depth_state_equal);
+}
+
+gboolean
+cogl_material_get_depth_test_enabled (CoglHandle handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterial *authority;
+
+  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+
+  return authority->big_state->depth_state.depth_test_enabled;
+}
+
+void
+cogl_material_set_depth_writing_enabled (CoglHandle handle,
+                                         gboolean enable)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
+  CoglMaterial *authority;
+  CoglMaterialDepthState *depth_state;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  authority = _cogl_material_get_authority (material, state);
+
+  depth_state = &authority->big_state->depth_state;
+  if (depth_state->depth_writing_enabled == enable)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->depth_state.depth_writing_enabled = enable;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_depth_state_equal);
+}
+
+gboolean
+cogl_material_get_depth_writing_enabled (CoglHandle handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterial *authority;
+
+  g_return_val_if_fail (cogl_is_material (handle), TRUE);
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+
+  return authority->big_state->depth_state.depth_writing_enabled;
+}
+
+void
+cogl_material_set_depth_test_function (CoglHandle handle,
+                                       CoglDepthTestFunction function)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
+  CoglMaterial *authority;
+  CoglMaterialDepthState *depth_state;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  authority = _cogl_material_get_authority (material, state);
+
+  depth_state = &authority->big_state->depth_state;
+  if (depth_state->depth_test_function == function)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->depth_state.depth_test_function = function;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_depth_state_equal);
+}
+
+CoglDepthTestFunction
+cogl_material_get_depth_test_function (CoglHandle handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterial *authority;
+
+  g_return_val_if_fail (cogl_is_material (handle),
+                        COGL_DEPTH_TEST_FUNCTION_LESS);
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+
+  return authority->big_state->depth_state.depth_test_function;
+}
+
+
+gboolean
+cogl_material_set_depth_range (CoglHandle handle,
+                               float near,
+                               float far,
+                               GError **error)
+{
+#ifndef COGL_HAS_GLES
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
+  CoglMaterial *authority;
+  CoglMaterialDepthState *depth_state;
+
+  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+
+  authority = _cogl_material_get_authority (material, state);
+
+  depth_state = &authority->big_state->depth_state;
+  if (depth_state->depth_range_near == near &&
+      depth_state->depth_range_far == far)
+    return TRUE;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->depth_state.depth_range_near = near;
+  material->big_state->depth_state.depth_range_far = far;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_depth_state_equal);
+  return TRUE;
+#else
+  g_set_error (error,
+               COGL_ERROR,
+               COGL_ERROR_MISSING_FEATURE,
+               "glDepthRange not available on GLES 1");
+  return FALSE;
+#endif
+}
+
+void
+cogl_material_get_depth_range (CoglHandle handle,
+                               float *near,
+                               float *far)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglMaterial *authority;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+
+  *near = authority->big_state->depth_state.depth_range_near;
+  *far = authority->big_state->depth_state.depth_range_far;
 }
 
 static CoglMaterialLayer *
@@ -5838,9 +6069,45 @@ blend_factor_uses_constant (GLenum blend_factor)
 #endif
 
 static void
-_cogl_material_flush_color_blend_alpha_state (CoglMaterial *material,
-                                              unsigned long materials_difference,
-                                              gboolean      skip_gl_color)
+flush_depth_state (CoglMaterialDepthState *depth_state)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->depth_test_function_cache != depth_state->depth_test_function)
+    {
+      GE (glDepthFunc (depth_state->depth_test_function));
+      ctx->depth_test_function_cache = depth_state->depth_test_function;
+    }
+
+  if (ctx->depth_writing_enabled_cache != depth_state->depth_writing_enabled)
+    {
+      GE (glDepthMask (depth_state->depth_writing_enabled ?
+                       GL_TRUE : GL_FALSE));
+      ctx->depth_writing_enabled_cache = depth_state->depth_writing_enabled;
+    }
+
+#ifndef COGL_HAS_GLES
+  if (ctx->depth_range_near_cache != depth_state->depth_range_near ||
+      ctx->depth_range_far_cache != depth_state->depth_range_far)
+    {
+#ifdef COGL_HAS_GLES2
+      GE (glDepthRangef (depth_state->depth_range_near,
+                         depth_state->depth_range_far));
+#else
+      GE (glDepthRange (depth_state->depth_range_near,
+                        depth_state->depth_range_far));
+#endif
+      ctx->depth_range_near_cache = depth_state->depth_range_near;
+      ctx->depth_range_far_cache = depth_state->depth_range_far;
+    }
+#endif /* COGL_HAS_GLES */
+}
+
+static void
+_cogl_material_flush_color_blend_alpha_depth_state (
+                                            CoglMaterial *material,
+                                            unsigned long materials_difference,
+                                            gboolean      skip_gl_color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -5948,12 +6215,36 @@ _cogl_material_flush_color_blend_alpha_state (CoglMaterial *material,
                        alpha_state->alpha_func_reference));
     }
 
+  if (materials_difference & COGL_MATERIAL_STATE_DEPTH)
+    {
+      CoglMaterial *authority =
+        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+      CoglMaterialDepthState *depth_state = &authority->big_state->depth_state;
+
+      if (depth_state->depth_test_enabled)
+        {
+          if (ctx->depth_test_enabled_cache != TRUE)
+            {
+              GE (glEnable (GL_DEPTH_TEST));
+              ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
+            }
+          flush_depth_state (depth_state);
+        }
+      else if (ctx->depth_test_enabled_cache != FALSE)
+        {
+          GE (glDisable (GL_DEPTH_TEST));
+          ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
+        }
+    }
+
   if (material->real_blend_enable != ctx->gl_blend_enable_cache)
     {
       if (material->real_blend_enable)
         GE (glEnable (GL_BLEND));
       else
         GE (glDisable (GL_BLEND));
+      /* XXX: we shouldn't update any other blend state if blending
+       * is disabled! */
       ctx->gl_blend_enable_cache = material->real_blend_enable;
     }
 }
@@ -6129,9 +6420,9 @@ _cogl_material_flush_common_gl_state (CoglMaterial  *material,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_material_flush_color_blend_alpha_state (material,
-                                                materials_difference,
-                                                skip_gl_color);
+  _cogl_material_flush_color_blend_alpha_depth_state (material,
+                                                      materials_difference,
+                                                      skip_gl_color);
 
   state.i = 0;
   state.layer_differences = layer_differences;
@@ -6568,16 +6859,18 @@ _cogl_material_apply_legacy_state (CoglHandle handle)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* It was a mistake that we ever copied the OpenGL style API for
+   * associating these things directly with the context when we
+   * originally wrote Cogl. Until the corresponding deprecated APIs
+   * can be removed though we now shoehorn the state changes through
+   * the cogl_material API instead.
+   */
+
   if (ctx->current_program)
-    {
-      /* It was a mistake that we ever copied the OpenGL style API for
-       * making a program current (cogl_program_use) on the context.
-       * Until cogl_program_use is removed we will transparently set
-       * the program on the material because the cogl-material code is
-       * in the best position to juggle the corresponding GL state. */
-      _cogl_material_set_user_program (handle,
-                                       ctx->current_program);
-    }
+    _cogl_material_set_user_program (handle, ctx->current_program);
+
+  if (ctx->legacy_depth_test_enabled)
+    cogl_material_set_depth_test_enabled (handle, TRUE);
 }
 
 void
