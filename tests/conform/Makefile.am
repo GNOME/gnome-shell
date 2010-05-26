@@ -31,6 +31,7 @@ test_conformance_SOURCES = 		\
 	test-cogl-pixel-buffer.c	\
 	test-cogl-path.c		\
 	test-cogl-object.c		\
+	test-cogl-depth-test.c		\
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\

@@ -233,6 +233,7 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  * @COGL_FEATURE_UNSIGNED_INT_INDICES: Set if
  *     %COGL_INDICES_TYPE_UNSIGNED_INT is supported in
  *     cogl_vertex_buffer_indices_new().
+ * @COGL_FEATURE_DEPTH_RANGE: cogl_material_set_depth_range() support
  *
  * Flags for the supported features.
  *
@@ -252,7 +253,8 @@ typedef enum
   COGL_FEATURE_STENCIL_BUFFER         = (1 << 10),
   COGL_FEATURE_VBOS		      = (1 << 11),
   COGL_FEATURE_PBOS		      = (1 << 12),
-  COGL_FEATURE_UNSIGNED_INT_INDICES   = (1 << 13)
+  COGL_FEATURE_UNSIGNED_INT_INDICES   = (1 << 13),
+  COGL_FEATURE_DEPTH_RANGE            = (1 << 14)
 } CoglFeatureFlags;
 
 /**
@@ -402,6 +404,27 @@ typedef enum { /*< prefix=COGL_BLEND_STRING_ERROR >*/
 
 GQuark
 cogl_blend_string_error_quark (void);
+
+#define COGL_ERROR (_cogl_error_quark ())
+
+/**
+ * CoglError:
+ * @COGL_ERROR_MISSING_FEATURE: You tried to use a feature not
+ *    currently available; likely because of missing driver support.
+ *
+ * Error enumeration for Cogl
+ *
+ * Currently this is only used by Cogl API marked as experimental so
+ * this enum should also be considered experimental.
+ *
+ * Since: 1.4
+ */
+typedef enum { /*< prefix=COGL_ERROR >*/
+  COGL_ERROR_MISSING_FEATURE
+} CoglError;
+
+GQuark
+_cogl_error_quark (void);
 
 G_END_DECLS
 

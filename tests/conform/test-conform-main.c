@@ -198,6 +198,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_path);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_depth_test);
 
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);

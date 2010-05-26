@@ -109,6 +109,14 @@ typedef struct
 
   gboolean          gl_blend_enable_cache;
 
+  gboolean              depth_test_enabled_cache;
+  CoglDepthTestFunction depth_test_function_cache;
+  gboolean              depth_writing_enabled_cache;
+  float                 depth_range_near_cache;
+  float                 depth_range_far_cache;
+
+  gboolean              legacy_depth_test_enabled;
+
   /* PBOs */
   /* This can be used to check if a pbo is bound */
   CoglBuffer       *current_pbo;

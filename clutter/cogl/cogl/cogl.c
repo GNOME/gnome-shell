@@ -287,25 +287,28 @@ _cogl_get_enable (void)
   return ctx->enable_flags;
 }
 
+/* XXX: This API has been deprecated */
 void
 cogl_set_depth_test_enabled (gboolean setting)
 {
-  /* Currently the journal can't track changes to depth state... */
-  _cogl_journal_flush ();
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (setting)
-    {
-      glEnable (GL_DEPTH_TEST);
-      glDepthFunc (GL_LEQUAL);
-    }
+  if (ctx->legacy_depth_test_enabled == setting)
+    return;
+
+  ctx->legacy_depth_test_enabled = setting;
+  if (ctx->legacy_depth_test_enabled)
+    ctx->legacy_state_set++;
   else
-    glDisable (GL_DEPTH_TEST);
+    ctx->legacy_state_set--;
 }
 
+/* XXX: This API has been deprecated */
 gboolean
 cogl_get_depth_test_enabled (void)
 {
-  return glIsEnabled (GL_DEPTH_TEST) == GL_TRUE ? TRUE : FALSE;
+  _COGL_GET_CONTEXT (ctx, FALSE);
+  return ctx->legacy_depth_test_enabled;
 }
 
 void
@@ -1136,3 +1139,10 @@ _cogl_transform_point (const CoglMatrix *matrix_mv,
 
 #undef VIEWPORT_TRANSFORM_X
 #undef VIEWPORT_TRANSFORM_Y
+
+GQuark
+_cogl_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-error-quark");
+}
+
