@@ -50,7 +50,8 @@ static const GDebugKey cogl_log_debug_keys[] = {
   { "draw", COGL_DEBUG_DRAW },
   { "opengl", COGL_DEBUG_OPENGL },
   { "pango", COGL_DEBUG_PANGO },
-  { "show-source", COGL_DEBUG_SHOW_SOURCE}
+  { "show-source", COGL_DEBUG_SHOW_SOURCE},
+  { "offscreen", COGL_DEBUG_OFFSCREEN }
 };
 static const int n_cogl_log_debug_keys =
   G_N_ELEMENTS (cogl_log_debug_keys);
@@ -124,6 +125,7 @@ _cogl_parse_debug_string (const char *value,
       OPT ("disable-glsl:", "disable use of GLSL");
       OPT ("show-source:", "show generated ARBfp/GLSL");
       OPT ("opengl:", "traces some select OpenGL calls");
+      OPT ("offscreen:", "debug offscreen support");
       g_printerr ("\n%28s\n", "Special debug values:");
       OPT ("all:", "Enables all non-behavioural debug options");
       OPT ("verbose:", "Enables all non-behavioural debug options");

@@ -67,6 +67,11 @@ COGL_FEATURE_FUNCTION (void, glDeleteFramebuffers,
                         const                 GLuint *framebuffers))
 COGL_FEATURE_FUNCTION (void, glGenerateMipmap,
                        (GLenum                target))
+COGL_FEATURE_FUNCTION (void, glGetFramebufferAttachmentParameteriv,
+                       (GLenum                target,
+                        GLenum                attachment,
+                        GLenum                pname,
+                        GLint                *params))
 COGL_FEATURE_END ()
 
 COGL_FEATURE_BEGIN (element_index_uint, 255, 255,
