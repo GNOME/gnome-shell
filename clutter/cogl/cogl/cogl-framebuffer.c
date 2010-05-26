@@ -729,7 +729,7 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
 }
 
 int
-cogl_framebuffer_get_red_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_red_bits (CoglHandle framebuffer)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
 
@@ -739,7 +739,7 @@ cogl_framebuffer_get_red_bits (CoglHandle framebuffer)
 }
 
 int
-cogl_framebuffer_get_green_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_green_bits (CoglHandle framebuffer)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
 
@@ -749,7 +749,7 @@ cogl_framebuffer_get_green_bits (CoglHandle framebuffer)
 }
 
 int
-cogl_framebuffer_get_blue_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_blue_bits (CoglHandle framebuffer)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
 
@@ -759,7 +759,7 @@ cogl_framebuffer_get_blue_bits (CoglHandle framebuffer)
 }
 
 int
-cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
 
