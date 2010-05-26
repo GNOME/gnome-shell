@@ -92,7 +92,8 @@ EXTRA_HFILES=
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES = \
-	fill-rule.png
+	fill-rule.png \
+	cogl_ortho.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
@@ -121,4 +122,5 @@ include $(top_srcdir)/gtk-doc.make
 # e.g. EXTRA_DIST += version.xml.in
 
 EXTRA_DIST += \
-	fill-rule.png
+	fill-rule.png \
+	cogl_ortho.png
