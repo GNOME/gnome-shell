@@ -178,6 +178,7 @@ clutter_state_key_new (State       *state,
                        GParamSpec  *pspec,
                        guint        mode)
 {
+  ClutterStatePrivate *priv = state->clutter_state->priv;
   ClutterStateKey *state_key;
   GValue value = { 0, };
 
@@ -191,8 +192,7 @@ clutter_state_key_new (State       *state,
   state_key->alpha = clutter_alpha_new ();
   g_object_ref_sink (state_key->alpha);
   clutter_alpha_set_mode (state_key->alpha, mode);
-  clutter_alpha_set_timeline (state_key->alpha,
-                              state->clutter_state->priv->slave_timeline);
+  clutter_alpha_set_timeline (state_key->alpha, priv->slave_timeline);
 
   state_key->interval =
     g_object_new (CLUTTER_TYPE_INTERVAL,
@@ -225,8 +225,12 @@ clutter_state_key_free (gpointer clutter_state_key)
     return;
 
   if (!key->is_inert)
-    g_object_weak_unref (key->object, object_disappeared,
-                         key->target_state->clutter_state);
+    {
+      g_object_weak_unref (key->object,
+                           object_disappeared,
+                           key->target_state->clutter_state);
+    }
+
   g_object_unref (key->alpha);
   g_object_unref (key->interval);
 
@@ -503,7 +507,8 @@ clutter_state_change (ClutterState *state,
   priv->target_state = new_state;
 
   if (animator != NULL)
-    {         /* we've got an animator overriding the tweened animation */
+    {
+      /* we've got an animator overriding the tweened animation */
       priv->current_animator = animator;
       clutter_animator_set_timeline (animator, priv->timeline);
     }
@@ -514,8 +519,7 @@ clutter_state_change (ClutterState *state,
           ClutterStateKey *key = k->data;
           GValue initial = { 0, };
 
-          g_value_init (&initial, clutter_interval_get_value_type (
-                                                               key->interval));
+          g_value_init (&initial, clutter_interval_get_value_type (key->interval));
           g_object_get_property (key->object, key->property_name, &initial);
 
           if (clutter_alpha_get_mode (key->alpha) != key->mode)
@@ -536,7 +540,8 @@ clutter_state_change (ClutterState *state,
       /* emit signals, to change properties, and indicate that the
        * state change is complete */
       g_signal_emit_by_name (priv->timeline, "new-frame",
-                             GINT_TO_POINTER(duration), NULL);
+                             GINT_TO_POINTER (duration),
+                             NULL);
       g_signal_emit_by_name (priv->timeline, "completed", NULL);
     }
   else
@@ -549,6 +554,52 @@ clutter_state_change (ClutterState *state,
   return priv->timeline;
 }
 
+static GParamSpec *
+get_property_from_object (GObject     *gobject,
+                          const gchar *property_name)
+{
+  GObjectClass *klass = G_OBJECT_GET_CLASS (gobject);
+  GParamSpec *pspec;
+
+  pspec = g_object_class_find_property (klass, property_name);
+  if (pspec == NULL)
+    {
+      g_warning ("Cannot bind property '%s': objects of type '%s' "
+                 "do not have this property",
+                 property_name,
+                 G_OBJECT_TYPE_NAME (gobject));
+      return NULL;
+    }
+
+  if (!(pspec->flags & G_PARAM_WRITABLE))
+    {
+      g_warning ("Cannot bind property '%s' of object of type '%s': "
+                 "the property is not writable",
+                 property_name,
+                 G_OBJECT_TYPE_NAME (gobject));
+      return NULL;
+    }
+
+  if (!(pspec->flags & G_PARAM_READABLE))
+    {
+      g_warning ("Cannot bind property '%s' of object of type '%s': "
+                 "the property is not readable",
+                 property_name,
+                 G_OBJECT_TYPE_NAME (gobject));
+      return NULL;
+    }
+
+  if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+    {
+      g_warning ("Cannot bind property '%s' of object of type '%s': "
+                 "the property is set as constructor-only",
+                 property_name,
+                 G_OBJECT_TYPE_NAME (gobject));
+      return NULL;
+    }
+
+  return pspec;
+}
 
 /**
  * clutter_state_set:
@@ -558,7 +609,7 @@ clutter_state_change (ClutterState *state,
  * @first_object: a #GObject
  * @first_property_name: a property of @first_object to specify a key for
  * @first_mode: the id of the alpha function to use
- * @Varargs: the value @first_property_name should have in @state_name,
+ * @Varargs: the value @first_property_name should have in @target_state_name,
  *   followed by object, property name, mode, value tuples, terminated
  *   by %NULL
  *
@@ -569,13 +620,46 @@ clutter_state_change (ClutterState *state,
  * The mode specified is the easing mode used when going to from the previous
  * key to the specified key.
  *
- * If a given object, state_name, property tuple already exist then the mode
- * and value will be replaced with the new specified values.
+ * For instance, the code below:
  *
- * If a the property_name is prefixed with "delayed::" two additional
+ * |[
+ *   clutter_state_set (state, "default", "hover",
+ *                      button, "opacity", 255, CLUTTER_LINEAR,
+ *                      button, "scale-x", 1.2, CLUTTER_EASE_OUT_CUBIC,
+ *                      button, "scale-y", 1.2, CLUTTER_EASE_OUT_CUBIC,
+ *                      NULL);
+ * ]|
+ *
+ * will create a transition between the "default" and "hover" state; the
+ * <emphasis>button</emphasis> object will have the #ClutterActor:opacity
+ * property animated to a value of 255 using %CLUTTER_LINEAR as the animation
+ * mode, and the #ClutterActor:scale-x and #ClutterActor:scale-y properties
+ * animated to a value of 1.2 using %CLUTTER_EASE_OUT_CUBIC as the animation
+ * mode. To change the state (and start the transition) you can use the
+ * clutter_state_change() function:
+ *
+ * |[
+ *   clutter_state_change (state, "hover", TRUE);
+ * ]|
+ *
+ * If a given object, state_name, property tuple already exist in the
+ * #ClutterState instance, then the mode and value will be replaced with
+ * the new specified values.
+ *
+ * If a property name is prefixed with "delayed::" two additional
  * arguments per key are expected: a value relative to the full state time
  * to pause before transitioning and a similar value to pause after
- * transitioning.
+ * transitioning, e.g.:
+ *
+ * |[
+ *   clutter_state_set (state, "hover", "toggled",
+ *                      button, "delayed::scale-x", 1.0, 0.2, 0.2,
+ *                      button, "delayed::scale-y", 1.0, 0.2, 0.2,
+ *                      NULL);
+ * ]|
+ *
+ * will pause for 20% of the duration of the transition before animating,
+ * and 20% of the duration after animating.
  *
  * Since: 1.4
  */
@@ -588,11 +672,12 @@ clutter_state_set (ClutterState *state,
                    gulong        first_mode,
                    ...)
 {
-  GObjectClass *klass;
-  gpointer      object;
-  const gchar  *property_name;
-  gulong        mode;
-  va_list       args;
+  gpointer object;
+  const gchar *property_name;
+  gulong mode;
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_STATE (state));
 
   object = first_object;
 
@@ -610,20 +695,12 @@ clutter_state_set (ClutterState *state,
       gchar *error = NULL;
       const gchar *real_property_name = property_name;
 
-      klass = G_OBJECT_GET_CLASS (object);
-
       if (g_str_has_prefix (property_name, "delayed::"))
         real_property_name = strstr (property_name, "::") + 2;
 
-      pspec = g_object_class_find_property (klass, real_property_name);
+      pspec = get_property_from_object (object, real_property_name);
       if (pspec == NULL)
-        {
-          g_warning ("Cannot bind property '%s': objects of type '%s' "
-                     "do not have this property",
-                     real_property_name,
-                     G_OBJECT_TYPE_NAME (object));
-          break;
-        }
+        break;
 
 #if GLIB_CHECK_VERSION (2, 23, 2)
       G_VALUE_COLLECT_INIT (&value, G_PARAM_SPEC_VALUE_TYPE (pspec),
@@ -702,6 +779,50 @@ clutter_state_set_key_internal (ClutterState    *state,
                                              sort_props_func);
 }
 
+/*
+ * clutter_state_get_state:
+ * @state: a #ClutterState
+ * @state_name: the name of the state to be retrieved
+ * @force_creation: %TRUE if the state should be forcibly created
+ *   if not found
+ *
+ * Retrieves the #State structure for @state_name inside the given
+ * #ClutterState instance
+ *
+ * If @state_name is %NULL and @force_creation is %TRUE then the
+ * #State for the default state name will be returned; if @force_creation
+ * is %FALSE then %NULL will be returned
+ *
+ * Return value: a #State structure for the given name, or %NULL
+ */
+static State *
+clutter_state_get_state (ClutterState *state,
+                         const gchar  *state_name,
+                         gboolean      force_creation)
+{
+  ClutterStatePrivate *priv = state->priv;
+  State *retval;
+
+  if (state_name == NULL)
+    {
+      if (force_creation)
+        state_name = g_intern_static_string ("default");
+      else
+        return NULL;
+    }
+  else
+    state_name = g_intern_string (state_name);
+
+  retval = g_hash_table_lookup (priv->states, state_name);
+  if (retval == NULL)
+    {
+      retval = state_new (state, state_name);
+      g_hash_table_insert (priv->states, (gpointer) state_name, retval);
+    }
+
+  return retval;
+}
+
 /**
  * clutter_state_set_key:
  * @state: a #ClutterState instance.
@@ -748,46 +869,14 @@ clutter_state_set_key (ClutterState  *state,
 
   priv = state->priv;
 
-  if (target_state_name == NULL)
-    target_state_name = "default";
+  pspec = get_property_from_object (object, property_name);
+  if (pspec == NULL)
+    return state;
 
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object),
-                                        property_name);
-  if (pspec == NULL || !(pspec->flags & G_PARAM_WRITABLE))
-    {
-      g_warning ("No writable property '%s' for object type '%s' found",
-                 property_name,
-                 G_OBJECT_TYPE_NAME (object));
-      return NULL;
-    }
+  source_state = clutter_state_get_state (state, source_state_name, FALSE);
+  target_state = clutter_state_get_state (state, target_state_name, TRUE);
 
-  source_state_name = g_intern_string (source_state_name);
-  target_state_name = g_intern_string (target_state_name);
   property_name = g_intern_string (property_name);
-
-  target_state = g_hash_table_lookup (priv->states, target_state_name);
-
-  if (!target_state)
-    {
-      target_state = state_new (state, target_state_name);
-      g_hash_table_insert (priv->states,
-                           (gpointer) target_state_name,
-                           target_state);
-    }
-
-  if (source_state_name)
-    {
-      source_state = g_hash_table_lookup (priv->states, source_state_name);
-
-      if (!source_state)
-        {
-          source_state = state_new (state, source_state_name);
-          g_hash_table_insert (priv->states,
-                               (gpointer) source_state_name,
-                               source_state);
-        }
-    }
-
   state_key = clutter_state_key_new (target_state,
                                      object, property_name, pspec,
                                      mode);
@@ -875,12 +964,12 @@ clutter_state_get_keys (ClutterState *state,
     source_state = g_hash_table_lookup (state->priv->states,
                                         source_state_name);
 
-  for (s = state_list; s; s=s->next)
+  for (s = state_list; s != NULL; s = s->next)
     {
       State *target_state;
-      target_state = g_hash_table_lookup (state->priv->states, s->data);
 
-      if (target_state)
+      target_state = g_hash_table_lookup (state->priv->states, s->data);
+      if (target_state != NULL)
         {
           GList *k;
 
@@ -888,12 +977,11 @@ clutter_state_get_keys (ClutterState *state,
             {
               ClutterStateKey *key = k->data;
 
-              if (   (object == NULL || (object == key->object))
-                  && (source_state_name == NULL
-                      ||source_state == key->source_state)
-                  && (property_name == NULL
-                      ||(property_name == key->property_name))
-                  )
+              if ((object == NULL || (object == key->object)) &&
+                  (source_state_name == NULL ||
+                   source_state == key->source_state) &&
+                  (property_name == NULL ||
+                   (property_name == key->property_name)))
                 {
                   targets = g_list_prepend (targets, key);
                 }
@@ -1397,14 +1485,19 @@ clutter_state_key_get_target_state_name (const ClutterStateKey *state_key)
 /**
  * clutter_state_set_duration:
  * @state: a #ClutterState
- * @source_state_name: the name of the source state to set duration for or NULL
- * @target_state_name: the name of the source state to set duration for or NULL
- * @duration: milliseconds for transition between source_state and target_state.
+ * @source_state_name: (allow-none): the name of the source state, or %NULL
+ * @target_state_name: (allow-none): the name of the target state, or %NULL
+ * @duration: the duration of the transition, in milliseconds
  *
- * If both state names are NULL the default duration for ClutterState is set,
- * if only target_state_name is specified this becomes the default duration
- * for transitions to this state. When both are specified the change only
- * applies to this transition.
+ * Sets the duration of a transition.
+ *
+ * If both state names are %NULL the default duration for @state is set.
+ *
+ * If only @target_state_name is specified, the passed @duration becomes
+ * the default duration for transitions to the target state.
+ *
+ * If both states names are specified, the passed @duration only applies
+ * to the specified transition.
  *
  * Since: 1.4
  */
@@ -1547,7 +1640,6 @@ parse_state_transition (JsonArray *array,
                         gpointer   data)
 {
   ParseClosure *clos = data;
-  ClutterStatePrivate *priv = clos->state->priv;
   JsonObject *object;
   const gchar *source_name, *target_name;
   State *source_state, *target_state;
@@ -1577,9 +1669,6 @@ parse_state_transition (JsonArray *array,
       return;
     }
 
-  source_name = json_object_get_string_member (object, "source");
-  target_name = json_object_get_string_member (object, "target");
-
   keys = json_object_get_array_member (object, "keys");
   if (keys == NULL)
     {
@@ -1590,29 +1679,18 @@ parse_state_transition (JsonArray *array,
       return;
     }
 
-  source_name = g_intern_string (source_name);
-  source_state = g_hash_table_lookup (priv->states, source_name);
-  if (source_state == NULL)
-    {
-      source_state = state_new (clos->state, source_name);
-      g_hash_table_insert (priv->states, (gpointer) source_name, source_state);
-    }
+  source_name = json_object_get_string_member (object, "source");
+  source_state = clutter_state_get_state (clos->state, source_name, FALSE);
 
-  target_name = g_intern_string (target_name);
-  target_state = g_hash_table_lookup (priv->states, target_name);
-  if (target_state == NULL)
-    {
-      target_state = state_new (clos->state, target_name);
-      g_hash_table_insert (priv->states, (gpointer) target_name, target_state);
-    }
+  target_name = json_object_get_string_member (object, "target");
+  target_state = clutter_state_get_state (clos->state, target_name, TRUE);
 
   if (json_object_has_member (object, "duration"))
     {
       guint duration = json_object_get_int_member (object, "duration");
 
       clutter_state_set_duration (clos->state,
-                                  source_name,
-                                  target_name,
+                                  source_name, target_name,
                                   duration);
     }
 
@@ -1696,20 +1774,22 @@ parse_state_transition (JsonArray *array,
           continue;
         }
 
-      if (json_array_get_length (key) == 5)
+      switch (json_array_get_length (key))
         {
+        case 5:
           state_key->pre_delay = json_array_get_double_element (key, 4);
           state_key->post_delay = 0.0;
-        }
-      else if (json_array_get_length (key) == 6)
-        {
+          break;
+
+        case 6:
           state_key->pre_delay = json_array_get_double_element (key, 4);
           state_key->post_delay = json_array_get_double_element (key, 5);
-        }
-      else
-        {
+          break;
+
+        default:
           state_key->pre_delay = 0.0;
           state_key->post_delay = 0.0;
+          break;
         }
 
       state_key->source_state = source_state;
