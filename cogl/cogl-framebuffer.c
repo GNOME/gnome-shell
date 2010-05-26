@@ -641,8 +641,6 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
   _cogl_matrix_stack_dirty (framebuffer->modelview_stack);
   _cogl_matrix_stack_dirty (framebuffer->projection_stack);
   _cogl_clip_state_dirty (&framebuffer->clip_state);
-
-  _cogl_framebuffer_init_bits (framebuffer);
 }
 
 void
@@ -784,6 +782,11 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
                       framebuffer->viewport_height));
       ctx->dirty_gl_viewport = FALSE;
     }
+
+  /* since we might have changed the framebuffer, we should initialize
+   * the bits; this is a no-op if they have already been initialized
+   */
+  _cogl_framebuffer_init_bits (framebuffer);
 
   /* XXX: Flushing clip state may trash the modelview and projection
    * matrices so we must do it before flushing the matrices...
