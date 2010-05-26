@@ -10559,7 +10559,7 @@ clutter_actor_add_action_with_name (ClutterActor  *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (name != NULL);
-  g_return_if_fail (CLUTTER_IS_ACTION (self));
+  g_return_if_fail (CLUTTER_IS_ACTION (action));
 
   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (action), name);
   clutter_actor_add_action (self, action);
