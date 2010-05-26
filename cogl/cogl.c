@@ -555,16 +555,16 @@ cogl_get_bitmasks (int *red,
   framebuffer = _cogl_get_framebuffer ();
 
   if (red)
-    *red = cogl_framebuffer_get_red_bits (framebuffer);
+    *red = _cogl_framebuffer_get_red_bits (framebuffer);
 
   if (green)
-    *green = cogl_framebuffer_get_green_bits (framebuffer);
+    *green = _cogl_framebuffer_get_green_bits (framebuffer);
 
   if (blue)
-    *blue = cogl_framebuffer_get_blue_bits (framebuffer);
+    *blue = _cogl_framebuffer_get_blue_bits (framebuffer);
 
   if (alpha)
-    *alpha = cogl_framebuffer_get_alpha_bits (framebuffer);
+    *alpha = _cogl_framebuffer_get_alpha_bits (framebuffer);
 }
 
 void
