@@ -52,7 +52,8 @@ UNIT_TESTS = \
 	test-box-layout.c \
 	test-stage-sizing.c \
 	test-drag.c \
-	test-constraints.c
+	test-constraints.c \
+	test-scrolling.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
