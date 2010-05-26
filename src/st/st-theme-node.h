@@ -128,6 +128,10 @@ void   st_theme_node_get_border_color  (StThemeNode  *node,
                                         StSide        side,
                                         ClutterColor *color);
 
+int    st_theme_node_get_outline_width (StThemeNode  *node);
+void   st_theme_node_get_outline_color (StThemeNode  *node,
+                                        ClutterColor *color);
+
 double st_theme_node_get_padding       (StThemeNode  *node,
                                         StSide        side);
 

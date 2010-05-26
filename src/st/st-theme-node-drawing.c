@@ -1054,6 +1054,54 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   cogl_handle_unref (material);
 }
 
+static void
+st_theme_node_paint_outline (StThemeNode           *node,
+                             const ClutterActorBox *box,
+                             guint8                 paint_opacity)
+
+{
+  float width, height;
+  int outline_width;
+  ClutterColor outline_color, effective_outline;
+
+  width = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  outline_width = st_theme_node_get_outline_width (node);
+  if (outline_width == 0)
+    return;
+
+  st_theme_node_get_outline_color (node, &outline_color);
+  over (&outline_color, &node->background_color, &effective_outline);
+
+  cogl_set_source_color4ub (effective_outline.red,
+                            effective_outline.green,
+                            effective_outline.blue,
+                            paint_opacity * effective_outline.alpha / 255);
+
+  /* The outline is drawn just outside the border, which means just
+   * outside the allocation box. This means that in some situations
+   * involving clip_to_allocation or the screen edges, you won't be
+   * able to see the outline. In practice, it works well enough.
+   */
+
+  /* NORTH */
+  cogl_rectangle (-outline_width, -outline_width,
+                  width + outline_width, 0);
+
+  /* EAST */
+  cogl_rectangle (width, 0,
+                  width + outline_width, height);
+
+  /* SOUTH */
+  cogl_rectangle (-outline_width, height,
+                  width + outline_width, height + outline_width);
+
+  /* WEST */
+  cogl_rectangle (-outline_width, 0,
+                  0, height);
+}
+
 void
 st_theme_node_paint (StThemeNode           *node,
                      const ClutterActorBox *box,
@@ -1120,6 +1168,8 @@ st_theme_node_paint (StThemeNode           *node,
     }
   else
     st_theme_node_paint_borders (node, box, paint_opacity);
+
+  st_theme_node_paint_outline (node, box, paint_opacity);
 
   if (node->background_texture != COGL_INVALID_HANDLE)
     {

@@ -24,9 +24,11 @@ struct _StThemeNode {
 
   ClutterColor foreground_color;
   ClutterColor border_color[4];
+  ClutterColor outline_color;
 
   int border_width[4];
   int border_radius[4];
+  int outline_width;
   guint padding[4];
 
   int width;

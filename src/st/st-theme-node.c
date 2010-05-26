@@ -943,7 +943,7 @@ do_border_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Set value for width/color/node in any order */
+      /* Set value for width/color/style in any order */
       CRTerm *term;
 
       for (term = decl->value; term; term = term->next)
@@ -965,7 +965,6 @@ do_border_property (StThemeNode   *node,
                 }
               else if (strcmp (ident, "dotted") == 0 ||
                        strcmp (ident, "dashed") == 0 ||
-                       strcmp (ident, "solid") == 0 ||
                        strcmp (ident, "double") == 0 ||
                        strcmp (ident, "groove") == 0 ||
                        strcmp (ident, "ridge") == 0 ||
@@ -1034,6 +1033,97 @@ do_border_property (StThemeNode   *node,
       if (width_set)
         node->border_width[side] = width;
     }
+}
+
+static void
+do_outline_property (StThemeNode   *node,
+                     CRDeclaration *decl)
+{
+  const char *property_name = decl->property->stryng->str + 7; /* Skip 'outline' */
+  ClutterColor color;
+  gboolean color_set = FALSE;
+  int width;
+  gboolean width_set = FALSE;
+
+  if (strcmp (property_name, "") == 0)
+    {
+      /* Set value for width/color/style in any order */
+      CRTerm *term;
+
+      for (term = decl->value; term; term = term->next)
+        {
+          GetFromTermResult result;
+
+          if (term->type == TERM_IDENT)
+            {
+              const char *ident = term->content.str->stryng->str;
+              if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
+                {
+                  width = 0.;
+                  continue;
+                }
+              else if (strcmp (ident, "solid") == 0)
+                {
+                  /* The only thing we support */
+                  continue;
+                }
+              else if (strcmp (ident, "dotted") == 0 ||
+                       strcmp (ident, "dashed") == 0 ||
+                       strcmp (ident, "double") == 0 ||
+                       strcmp (ident, "groove") == 0 ||
+                       strcmp (ident, "ridge") == 0 ||
+                       strcmp (ident, "inset") == 0 ||
+                       strcmp (ident, "outset") == 0)
+                {
+                  /* Treat the same as solid */
+                  continue;
+                }
+
+              /* Presumably a color, fall through */
+            }
+
+          if (term->type == TERM_NUMBER)
+            {
+              result = get_length_from_term_int (node, term, FALSE, &width);
+              if (result != VALUE_NOT_FOUND)
+                {
+                  width_set = result == VALUE_FOUND;
+                  continue;
+                }
+            }
+
+          result = get_color_from_term (node, term, &color);
+          if (result != VALUE_NOT_FOUND)
+            {
+              color_set = result == VALUE_FOUND;
+              continue;
+            }
+        }
+
+    }
+  else if (strcmp (property_name, "-color") == 0)
+    {
+      if (decl->value == NULL || decl->value->next != NULL)
+        return;
+
+      if (get_color_from_term (node, decl->value, &color) == VALUE_FOUND)
+        /* Ignore inherit */
+        color_set = TRUE;
+    }
+  else if (strcmp (property_name, "-width") == 0)
+    {
+      if (decl->value == NULL || decl->value->next != NULL)
+        return;
+
+      if (get_length_from_term_int (node, decl->value, FALSE, &width) == VALUE_FOUND)
+        /* Ignore inherit */
+        width_set = TRUE;
+    }
+
+  if (color_set)
+    node->outline_color = color;
+  if (width_set)
+    node->outline_width = width;
 }
 
 static void
@@ -1144,6 +1234,9 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       node->border_color[j] = TRANSPARENT_COLOR;
     }
 
+  node->outline_width = 0;
+  node->outline_color = TRANSPARENT_COLOR;
+
   node->width = -1;
   node->height = -1;
   node->min_width = -1;
@@ -1158,6 +1251,8 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
 
       if (g_str_has_prefix (property_name, "border"))
         do_border_property (node, decl);
+      else if (g_str_has_prefix (property_name, "outline"))
+        do_outline_property (node, decl);
       else if (g_str_has_prefix (property_name, "padding"))
         do_padding_property (node, decl);
       else if (strcmp (property_name, "width") == 0)
@@ -1221,6 +1316,27 @@ st_theme_node_get_border_radius (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
 
   return node->border_radius[corner];
+}
+
+int
+st_theme_node_get_outline_width (StThemeNode  *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0);
+
+  _st_theme_node_ensure_geometry (node);
+
+  return node->outline_width;
+}
+
+void
+st_theme_node_get_outline_color (StThemeNode  *node,
+                                 ClutterColor *color)
+{
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+
+  _st_theme_node_ensure_geometry (node);
+
+  *color = node->outline_color;
 }
 
 int
@@ -2539,13 +2655,13 @@ st_theme_node_get_content_box (StThemeNode           *node,
 /**
  * st_theme_node_get_paint_box:
  * @node: a #StThemeNode
- * @allocation: the box allocated to a #ClutterAlctor
+ * @allocation: the box allocated to a #ClutterActor
  * @paint_box: computed box occupied when painting the actor
  *
- * Gets the box used to paint the actor, including the area occupied by
- * properties which paint outside the actor's assigned allocation
- * (currently only st-shadow). When painting @node to an offscreen buffer,
- * this function can be used to determine the necessary size of the buffer.
+ * Gets the box used to paint the actor, including the area occupied
+ * by properties which paint outside the actor's assigned allocation.
+ * When painting @node to an offscreen buffer, this function can be
+ * used to determine the necessary size of the buffer.
  */
 void
 st_theme_node_get_paint_box (StThemeNode           *node,
@@ -2553,25 +2669,30 @@ st_theme_node_get_paint_box (StThemeNode           *node,
                              ClutterActorBox       *paint_box)
 {
   StShadow *shadow;
+  ClutterActorBox shadow_box;
+  int outline_width;
 
   g_return_if_fail (ST_IS_THEME_NODE (node));
   g_return_if_fail (actor_box != NULL);
   g_return_if_fail (paint_box != NULL);
 
   shadow = st_theme_node_get_shadow (node);
-  if (shadow)
+  outline_width = st_theme_node_get_outline_width (node);
+  if (!shadow && !outline_width)
     {
-      ClutterActorBox shadow_box;
-
-      st_shadow_get_box (shadow, actor_box, &shadow_box);
-
-      paint_box->x1 = MIN (actor_box->x1, shadow_box.x1);
-      paint_box->x2 = MAX (actor_box->x2, shadow_box.x2);
-      paint_box->y1 = MIN (actor_box->y1, shadow_box.y1);
-      paint_box->y2 = MAX (actor_box->y2, shadow_box.y2);
+      *paint_box = *actor_box;
+      return;
     }
+
+  if (shadow)
+    st_shadow_get_box (shadow, actor_box, &shadow_box);
   else
-    *paint_box = *actor_box;
+    shadow_box = *actor_box;
+
+  paint_box->x1 = MIN (actor_box->x1 - outline_width, shadow_box.x1);
+  paint_box->x2 = MAX (actor_box->x2 + outline_width, shadow_box.x2);
+  paint_box->y1 = MIN (actor_box->y1 - outline_width, shadow_box.y1);
+  paint_box->y2 = MAX (actor_box->y2 + outline_width, shadow_box.y2);
 }
 
 
