@@ -3,9 +3,8 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Johan Bilien  <johan.bilien@nokia.com>
- *
  * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +19,9 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
- *
+ * Authors:
+ *  Johan Bilien   <johan.bilien@nokia.com>
+ *  Neil Roberts   <neil@linux.intel.com>
  */
 
 /**
@@ -47,14 +48,10 @@
 #include "clutter-private.h"
 
 #include "cogl/cogl.h"
+#include "cogl/winsys/cogl-texture-pixmap-x11.h"
 
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xcomposite.h>
-
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <sys/time.h>
-#include <X11/extensions/XShm.h>
 
 enum
 {
@@ -103,15 +100,10 @@ struct _ClutterX11TexturePixmapPrivate
   guint         pixmap_width, pixmap_height;
   guint         depth;
 
-  XImage       *image;
-  XShmSegmentInfo shminfo;
-
   gboolean      automatic_updates;
   Damage        damage;
-  Drawable      damage_drawable;
 
   /* FIXME: lots of gbooleans. coalesce into bitfields */
-  gboolean	have_shm;
   gboolean      window_redirect_automatic;
   gboolean      window_mapped;
   gboolean      destroyed;
@@ -152,150 +144,21 @@ check_extensions (ClutterX11TexturePixmap *texture)
 }
 
 static void
-free_shm_resources (ClutterX11TexturePixmap *texture)
+process_damage_event (ClutterX11TexturePixmap *texture,
+                      XDamageNotifyEvent *damage_event)
 {
-  ClutterX11TexturePixmapPrivate *priv;
-
-  priv = texture->priv;
-
-  if (priv->shminfo.shmid != -1)
-    {
-      XShmDetach(clutter_x11_get_default_display(),
-		 &priv->shminfo);
-      shmdt(priv->shminfo.shmaddr);
-      shmctl(priv->shminfo.shmid, IPC_RMID, NULL);
-      priv->shminfo.shmid = -1;
-    }
-}
-
-/* Tries to allocate enough shared mem to handle a full size
- * update size of the X Pixmap. */
-static gboolean
-try_alloc_shm (ClutterX11TexturePixmap *texture)
-{
-  ClutterX11TexturePixmapPrivate  *priv;
-  XImage			  *dummy_image;
-  Display			  *dpy;
-
-  priv = texture->priv;
-  dpy  = clutter_x11_get_default_display();
-
-  g_return_val_if_fail (priv->pixmap, FALSE);
-
-  if (!XShmQueryExtension(dpy) || g_getenv("CLUTTER_X11_NO_SHM"))
-    {
-      priv->have_shm = FALSE;
-      return FALSE;
-    }
-
-  clutter_x11_trap_x_errors ();
-
-  /* We are creating a dummy_image so we can have Xlib calculate
-   * image->bytes_per_line - including any magic padding it may
-   * want - for the largest possible ximage we might need to use
-   * when handling updates to the texture.
-   *
-   * Note: we pass a NULL shminfo here, but that has no bearing
-   * on the setup of the XImage, except that ximage->obdata will
-   * == NULL.
-   */
-  dummy_image =
-    XShmCreateImage(dpy,
-		    DefaultVisual(dpy,
-				  clutter_x11_get_default_screen()),
-		    priv->depth,
-		    ZPixmap,
-		    NULL,
-		    NULL, /* shminfo, */
-		    priv->pixmap_width,
-		    priv->pixmap_height);
-  if (!dummy_image)
-    goto failed_image_create;
-
-  priv->shminfo.shmid = shmget (IPC_PRIVATE,
-				dummy_image->bytes_per_line
-				* dummy_image->height,
-				IPC_CREAT | 0777);
-  if (priv->shminfo.shmid == -1)
-    goto failed_shmget;
-
-  priv->shminfo.shmaddr = shmat (priv->shminfo.shmid, NULL, 0);
-  if (priv->shminfo.shmaddr == (void *) -1)
-    goto failed_shmat;
-
-  priv->shminfo.readOnly = False;
-
-  if (XShmAttach (dpy, &priv->shminfo) == 0)
-    goto failed_xshmattach;
-
-  if (clutter_x11_untrap_x_errors ())
-    g_warning ("X Error: Failed to setup XShm");
-
-  XDestroyImage (dummy_image);
-
-  priv->have_shm = TRUE;
-
-  return TRUE;
-
-failed_xshmattach:
-  g_warning ("XShmAttach failed");
-  shmdt (priv->shminfo.shmaddr);
-
-failed_shmat:
-  g_warning ("shmat failed");
-  shmctl (priv->shminfo.shmid, IPC_RMID, NULL);
-
-failed_shmget:
-  g_warning ("shmget failed");
-  XDestroyImage (dummy_image);
-
-failed_image_create:
-  if (clutter_x11_untrap_x_errors ())
-    g_warning ("X Error: Failed to setup XShm");
-
-  priv->have_shm = FALSE;
-  return FALSE;
-}
-
-static void
-check_for_pixmap_damage (ClutterX11TexturePixmap *texture)
-{
-  ClutterX11TexturePixmapPrivate *priv = texture->priv;
   Display *dpy;
-  XserverRegion parts;
-  int i, r_count;
-  XRectangle *r_damage;
-  XRectangle r_bounds;
 
-  clutter_x11_trap_x_errors ();
-
-  /*
-   * Retrieve the damaged region and break it down into individual
-   * rectangles so we do not have to update the whole shebang.
-   */
   dpy = clutter_x11_get_default_display();
-  parts = XFixesCreateRegion (dpy, NULL, 0);
-  XDamageSubtract (dpy, priv->damage, None, parts);
 
-  r_damage = XFixesFetchRegionAndBounds (dpy,
-                                         parts,
-                                         &r_count,
-                                         &r_bounds);
-
-  clutter_x11_untrap_x_errors ();
-
-  if (r_damage)
-    {
-      for (i = 0; i < r_count; ++i)
-        clutter_x11_texture_pixmap_update_area (texture,
-                                                r_damage[i].x,
-                                                r_damage[i].y,
-                                                r_damage[i].width,
-                                                r_damage[i].height);
-      XFree (r_damage);
-    }
-
-  XFixesDestroyRegion (dpy, parts);
+  /* Cogl will deal with updating the texture and subtracting from the
+     damage region so we only need to queue a redraw */
+  g_signal_emit (texture, signals[QUEUE_DAMAGE_REDRAW],
+                 0,
+                 damage_event->area.x,
+                 damage_event->area.y,
+                 damage_event->area.width,
+                 damage_event->area.height);
 }
 
 static ClutterX11FilterReturn
@@ -315,10 +178,10 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
     {
       XDamageNotifyEvent *dev = (XDamageNotifyEvent*)xev;
 
-      if (dev->drawable != priv->damage_drawable)
+      if (dev->damage != priv->damage)
         return CLUTTER_X11_FILTER_CONTINUE;
 
-      check_for_pixmap_damage (texture);
+      process_damage_event (texture, dev);
     }
 
   return  CLUTTER_X11_FILTER_CONTINUE;
@@ -359,6 +222,32 @@ on_x_event_filter_too (XEvent *xev, ClutterEvent *cev, gpointer data)
 }
 
 static void
+update_pixmap_damage_object (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv = texture->priv;
+  CoglHandle cogl_texture;
+
+  /* If we already have a CoglTexturePixmapX11 then update its
+     damage object */
+  cogl_texture =
+    clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (texture));
+
+  if (cogl_texture && cogl_is_texture_pixmap_x11 (cogl_texture))
+    {
+      if (priv->damage)
+        {
+          const CoglTexturePixmapX11ReportLevel report_level =
+            COGL_TEXTURE_PIXMAP_X11_DAMAGE_BOUNDING_BOX;
+          cogl_texture_pixmap_x11_set_damage_object (cogl_texture,
+                                                     priv->damage,
+                                                     report_level);
+        }
+      else
+        cogl_texture_pixmap_x11_set_damage_object (cogl_texture, 0, 0);
+    }
+}
+
+static void
 create_damage_resources (ClutterX11TexturePixmap *texture)
 {
   ClutterX11TexturePixmapPrivate *priv;
@@ -367,19 +256,14 @@ create_damage_resources (ClutterX11TexturePixmap *texture)
   priv = texture->priv;
   dpy = clutter_x11_get_default_display();
 
-  if (!priv->window && !priv->pixmap)
+  if (!priv->pixmap)
     return;
 
   clutter_x11_trap_x_errors ();
 
-  if (priv->window)
-    priv->damage_drawable = priv->window;
-  else
-    priv->damage_drawable = priv->pixmap;
-
   priv->damage = XDamageCreate (dpy,
-				priv->damage_drawable,
-				XDamageReportNonEmpty);
+                                priv->pixmap,
+                                XDamageReportBoundingBox);
 
   /* Errors here might occur if the window is already destroyed, we
    * simply skip processing damage and assume that the texture pixmap
@@ -389,7 +273,11 @@ create_damage_resources (ClutterX11TexturePixmap *texture)
   clutter_x11_untrap_x_errors ();
 
   if (priv->damage)
-    clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
+    {
+      clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
+
+      update_pixmap_damage_object (texture);
+    }
 }
 
 static void
@@ -408,9 +296,10 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
       XSync (dpy, FALSE);
       clutter_x11_untrap_x_errors ();
       priv->damage = None;
-      priv->damage_drawable = None;
 
       clutter_x11_remove_filter (on_x_event_filter, (gpointer)texture);
+
+      update_pixmap_damage_object (texture);
     }
 }
 
@@ -482,15 +371,12 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
       */
     }
 
-  self->priv->image = NULL;
   self->priv->automatic_updates = FALSE;
   self->priv->damage = None;
-  self->priv->damage_drawable = None;
   self->priv->window = None;
   self->priv->pixmap = None;
   self->priv->pixmap_height = 0;
   self->priv->pixmap_width = 0;
-  self->priv->shminfo.shmid = -1;
   self->priv->window_redirect_automatic = TRUE;
   self->priv->window_mapped = FALSE;
   self->priv->destroyed = FALSE;
@@ -514,14 +400,6 @@ clutter_x11_texture_pixmap_dispose (GObject *object)
       XFreePixmap (clutter_x11_get_default_display (), priv->pixmap);
       priv->pixmap = None;
     }
-
-  if (priv->image)
-    {
-      XDestroyImage (priv->image);
-      priv->image = NULL;
-    }
-
-  free_shm_resources (texture);
 
   G_OBJECT_CLASS (clutter_x11_texture_pixmap_parent_class)->dispose (object);
 }
@@ -622,25 +500,9 @@ clutter_x11_texture_pixmap_get_property (GObject      *object,
 }
 
 static void
-clutter_x11_texture_pixmap_realize (ClutterActor *actor)
-{
-  ClutterX11TexturePixmap        *texture = CLUTTER_X11_TEXTURE_PIXMAP (actor);
-  ClutterX11TexturePixmapPrivate *priv = texture->priv;
-
-  CLUTTER_ACTOR_CLASS (clutter_x11_texture_pixmap_parent_class)->
-      realize (actor);
-
-  clutter_x11_texture_pixmap_update_area_real (texture,
-					       0, 0,
-					       priv->pixmap_width,
-					       priv->pixmap_height);
-}
-
-static void
 clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
   ClutterBackend    *default_backend;
 
@@ -649,8 +511,6 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   object_class->dispose      = clutter_x11_texture_pixmap_dispose;
   object_class->set_property = clutter_x11_texture_pixmap_set_property;
   object_class->get_property = clutter_x11_texture_pixmap_get_property;
-
-  actor_class->realize       = clutter_x11_texture_pixmap_realize;
 
   klass->update_area         = clutter_x11_texture_pixmap_update_area_real;
 
@@ -799,9 +659,11 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * @width: The width of the damage region
    * @height: The height of the damage region
    *
-   * ::queue-damage-redraw is emitted to notify that some sub-region of the
-   * underlying pixmap has changed and you need to queue a
-   * corresponding redraw for the actor.
+   * ::queue-damage-redraw is emitted to notify that some sub-region
+   * of the texture has been changed (either by an automatic damage
+   * update or by an explicit call to
+   * clutter_x11_texture_pixmap_update_area). This usually means a
+   * redraw needs to be queued for the actor.
    *
    * The default handler will queue a clipped redraw in response to
    * the damage, using the assumption that the pixmap is being painted
@@ -846,196 +708,12 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
                                              gint                     width,
                                              gint                     height)
 {
-  ClutterX11TexturePixmapPrivate       *priv;
-  Display                              *dpy;
-  XImage                               *image;
-  char				       *first_pixel;
-  GError                               *error = NULL;
-  guint                                 bytes_per_line;
-  char				       *data;
-  gboolean                              data_allocated = FALSE;
-  int                                   err_code;
+  CoglHandle cogl_texture;
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (texture))
-    return;
+  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (texture));
 
-  priv = texture->priv;
-  dpy  = clutter_x11_get_default_display();
-
-  if (!priv->pixmap)
-    return;
-
-  if (priv->shminfo.shmid == -1)
-    try_alloc_shm (texture);
-
-  clutter_x11_trap_x_errors ();
-
-  if (priv->have_shm)
-    {
-      image =
-	XShmCreateImage(dpy,
-			DefaultVisual(dpy,
-				      clutter_x11_get_default_screen()),
-			priv->depth,
-			ZPixmap,
-			NULL,
-			&priv->shminfo,
-			width,
-			height);
-      image->data = priv->shminfo.shmaddr;
-
-      XShmGetImage (dpy, priv->pixmap, image, x, y, AllPlanes);
-      first_pixel = image->data;
-    }
-  else
-    {
-      if (!priv->image)
-	{
-          priv->image = XGetImage (dpy,
-                                   priv->pixmap,
-                                   0, 0,
-                                   priv->pixmap_width, priv->pixmap_height,
-                                   AllPlanes,
-                                   ZPixmap);
-	  first_pixel  = priv->image->data + priv->image->bytes_per_line * y
-			  + x * priv->image->bits_per_pixel/8;
-	}
-      else
-	{
-          XGetSubImage (dpy,
-                        priv->pixmap,
-                        x, y,
-                        width, height,
-                        AllPlanes,
-                        ZPixmap,
-                        priv->image,
-                        x, y);
-	  first_pixel  = priv->image->data + priv->image->bytes_per_line * y
-            + x * priv->image->bits_per_pixel/8;
-	}
-      image = priv->image;
-    }
-
-  XSync (dpy, FALSE);
-
-  if ((err_code = clutter_x11_untrap_x_errors ()))
-    {
-      g_warning ("Failed to get XImage of pixmap: %lx, removing",
-                 priv->pixmap);
-      /* safe to assume pixmap has gone away? - therefor reset */
-      clutter_x11_texture_pixmap_set_pixmap (texture, None);
-      return;
-    }
-
-  if (priv->depth == 24)
-    {
-      guint xpos, ypos;
-
-      for (ypos=0; ypos<height; ypos++)
-	for (xpos=0; xpos<width; xpos++)
-            {
-	    char *p = first_pixel + image->bytes_per_line*ypos
-			  + xpos * 4;
-	    p[3] = 0xFF;
-        }
-
-      data = first_pixel;
-      bytes_per_line = image->bytes_per_line;
-    }
-  else if (priv->depth == 16)
-    {
-      guint xpos, ypos;
-      data = g_malloc (height * width * 4);
-      data_allocated = TRUE;
-      bytes_per_line = width * 4;
-
-      for (ypos=0; ypos<height; ypos++)
-	for (xpos=0; xpos<width; xpos++)
-            {
-	    char *src_p = first_pixel + image->bytes_per_line * ypos
-			    + xpos * 2;
-	    guint16 *src_pixel = (guint16 *)src_p;
-	    char *dst_p = data + bytes_per_line * ypos + xpos * 4;
-	    guint32 *dst_pixel = (guint32 *)dst_p;
-
-	    *dst_pixel =
-	      ((((*src_pixel << 3) & 0xf8) | ((*src_pixel >> 2) & 0x7)) | \
-	      (((*src_pixel << 5) & 0xfc00) | ((*src_pixel >> 1) & 0x300)) | \
-	      (((*src_pixel << 8) & 0xf80000) | ((*src_pixel << 3) & 0x70000)))
-	      | 0xff000000;
-	  }
-    }
-  else if (priv->depth == 32)
-    {
-      bytes_per_line = image->bytes_per_line;
-      data = first_pixel;
-    }
-  else
-    return;
-
-  /* For debugging purposes, un comment to simply generate dummy
-   * pixmap data. (A Green background and Blue cross) */
-#if 0
-  {
-    guint xpos, ypos;
-
-    if (data_allocated)
-      g_free (data);
-    data_allocated = TRUE;
-    data = g_malloc (width*height*4);
-    bytes_per_line = width *4;
-
-    for (ypos=0; ypos<height; ypos++)
-      for (xpos=0; xpos<width; xpos++)
-	{
-	  char *p = data + width*4*ypos + xpos * 4;
-	  guint32 *pixel = (guint32 *)p;
-	  if ((xpos > width/2 && xpos <= (width/2) + width/4)
-	      || (ypos > height/2 && ypos <= (height/2) + height/4))
-	    *pixel=0xff0000ff;
-	  else
-	    *pixel=0xff00ff00;
-	}
-  }
-#endif
-
-  if (x != 0 || y != 0 ||
-      width != priv->pixmap_width || height != priv->pixmap_height)
-    clutter_texture_set_area_from_rgb_data  (CLUTTER_TEXTURE (texture),
-					     (guint8 *)data,
-					     TRUE,
-					     x, y,
-					     width, height,
-					     bytes_per_line,
-					     4,
-					     CLUTTER_TEXTURE_RGB_FLAG_BGR |
-					     CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
-					     &error);
-  else
-    clutter_texture_set_from_rgb_data  (CLUTTER_TEXTURE (texture),
-					(guint8 *)data,
-					TRUE,
-					width, height,
-					bytes_per_line,
-					4,
-					CLUTTER_TEXTURE_RGB_FLAG_BGR |
-					CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
-					&error);
-
-
-
-  if (error)
-    {
-      g_warning ("Error when uploading from pixbuf: %s",
-                 error->message);
-      g_error_free (error);
-    }
-
-  if (data_allocated)
-    g_free (data);
-
-  if (priv->have_shm)
-    XFree (image);
+  if (cogl_texture)
+    cogl_texture_pixmap_x11_update_area (cogl_texture, x, y, width, height);
 }
 
 /**
@@ -1121,6 +799,8 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   Status       status = 0;
   gboolean     new_pixmap = FALSE, new_pixmap_width = FALSE;
   gboolean     new_pixmap_height = FALSE, new_pixmap_depth = FALSE;
+  CoglHandle   material;
+  CoglHandle   cogl_texture;
 
   ClutterX11TexturePixmapPrivate *priv;
 
@@ -1129,6 +809,12 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   priv = texture->priv;
 
   clutter_x11_trap_x_errors ();
+
+  /* Get rid of the existing Cogl texture early because it may try to
+     use the pixmap which we might destroy */
+  material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
+  if (material)
+    cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
 
   status = XGetGeometry (clutter_x11_get_default_display(),
                          (Drawable)pixmap,
@@ -1148,12 +834,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       width = height = depth = 0;
     }
 
-  if (priv->image)
-    {
-      XDestroyImage (priv->image);
-      priv->image = NULL;
-    }
-
   if (priv->pixmap != pixmap)
     {
       if (priv->pixmap && priv->owns_pixmap)
@@ -1162,12 +842,10 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       priv->pixmap = pixmap;
       new_pixmap = TRUE;
 
-      /* The damage object is created on the window if there is any
-       * but if there is no window, then we create it directly on
-       * the pixmap, so it needs to be recreated with a change in
-       * pixmap.
+      /* The damage object is created on the pixmap, so it needs to be
+       * recreated with a change in pixmap.
        */
-      if (priv->automatic_updates && new_pixmap && !priv->window)
+      if (priv->automatic_updates && new_pixmap)
 	{
 	  free_damage_resources (texture);
 	  create_damage_resources (texture);
@@ -1205,19 +883,13 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   if (new_pixmap_depth)
     g_object_notify (G_OBJECT (texture), "pixmap-depth");
 
-  free_shm_resources (texture);
-
-  if (priv->depth != 0 &&
-      priv->pixmap != None &&
-      priv->pixmap_width != 0 &&
-      priv->pixmap_height != 0)
+  if (pixmap)
     {
-      if (CLUTTER_ACTOR_IS_REALIZED (texture))
-        clutter_x11_texture_pixmap_update_area (texture,
-                                                0, 0,
-                                                priv->pixmap_width,
-                                                priv->pixmap_height);
-
+      cogl_texture = cogl_texture_pixmap_x11_new (pixmap, FALSE);
+      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (texture),
+                                        cogl_texture);
+      cogl_handle_unref (cogl_texture);
+      update_pixmap_damage_object (texture);
     }
 
   /*
@@ -1308,12 +980,6 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
       XSelectInput (dpy, priv->window,
                     attr.your_event_mask | StructureNotifyMask);
       clutter_x11_add_filter (on_x_event_filter_too, (gpointer)texture);
-    }
-
-  if (priv->automatic_updates)
-    {
-      free_damage_resources (texture);
-      create_damage_resources (texture);
     }
 
   g_object_ref (texture);
@@ -1509,6 +1175,5 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
     free_damage_resources (texture);
 
   priv->automatic_updates = setting;
-
 }
 
