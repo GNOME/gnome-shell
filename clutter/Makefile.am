@@ -324,6 +324,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \
 		$(json_gir_pkg) \
+		--pkg atk \
 	        --pkg pango \
 	        --pkg pangocairo \
 	        --output $@ \
