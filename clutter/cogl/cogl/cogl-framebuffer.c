@@ -51,6 +51,8 @@
 #define glFramebufferRenderbuffer         ctx->drv.pf_glFramebufferRenderbuffer
 #define glCheckFramebufferStatus          ctx->drv.pf_glCheckFramebufferStatus
 #define glDeleteFramebuffers              ctx->drv.pf_glDeleteFramebuffers
+#define glGetFramebufferAttachmentParameteriv \
+                                          ctx->drv.pf_glGetFramebufferAttachmentParameteriv
 
 #endif
 
@@ -80,6 +82,24 @@
 #endif
 #ifndef GL_DEPTH_COMPONENT16
 #define GL_DEPTH_COMPONENT16    0x81A5
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE      0x8212
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE    0x8213
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE     0x8214
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE    0x8215
+#endif
+#ifndef GL_FRAMEBUFFER_ATTCHMENT_DEPTH_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE    0x8216
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE
+#define GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE  0x8217
 #endif
 
 typedef enum {
@@ -253,13 +273,63 @@ _cogl_framebuffer_get_projection_stack (CoglHandle handle)
 static inline void
 _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (G_LIKELY (!framebuffer->dirty_bitmasks))
     return;
 
-  GE( glGetIntegerv (GL_RED_BITS,   &framebuffer->red_bits)   );
-  GE( glGetIntegerv (GL_GREEN_BITS, &framebuffer->green_bits) );
-  GE( glGetIntegerv (GL_BLUE_BITS,  &framebuffer->blue_bits)  );
-  GE( glGetIntegerv (GL_ALPHA_BITS, &framebuffer->alpha_bits) );
+#ifdef HAVE_COGL_GL
+  if (cogl_features_available (COGL_FEATURE_OFFSCREEN)
+      && framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+    {
+      GLenum attachment, pname;
+
+      attachment = GL_COLOR_ATTACHMENT0;
+
+      pname = GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE;
+      GE( glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                 attachment,
+                                                 pname,
+                                                 &framebuffer->red_bits) );
+
+      pname = GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE;
+      GE( glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                 attachment,
+                                                 pname,
+                                                 &framebuffer->green_bits) );
+
+      pname = GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE;
+      GE( glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                 attachment,
+                                                 pname,
+                                                 &framebuffer->blue_bits) );
+
+      pname = GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE;
+      GE( glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                 attachment,
+                                                 pname,
+                                                 &framebuffer->alpha_bits) );
+    }
+  else
+#endif /* HAVE_COGL_GL */
+    {
+      GE( glGetIntegerv (GL_RED_BITS,   &framebuffer->red_bits)   );
+      GE( glGetIntegerv (GL_GREEN_BITS, &framebuffer->green_bits) );
+      GE( glGetIntegerv (GL_BLUE_BITS,  &framebuffer->blue_bits)  );
+      GE( glGetIntegerv (GL_ALPHA_BITS, &framebuffer->alpha_bits) );
+    }
+
+
+  COGL_NOTE (OFFSCREEN,
+             "RGBA Bits for framebuffer[%p, %s]: %d, %d, %d, %d",
+             framebuffer,
+             framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN
+               ? "offscreen"
+               : "onscreen",
+             framebuffer->red_bits,
+             framebuffer->blue_bits,
+             framebuffer->green_bits,
+             framebuffer->alpha_bits);
 
   framebuffer->dirty_bitmasks = FALSE;
 }
