@@ -2909,9 +2909,13 @@ static gboolean
 _cogl_material_depth_state_equal (CoglMaterial *authority0,
                                   CoglMaterial *authority1)
 {
-  return memcmp (&authority0->big_state->depth_state,
-                 &authority1->big_state->depth_state,
-                 sizeof (CoglMaterialDepthState)) == 0;
+  if (authority0->big_state->depth_state.depth_test_enabled == FALSE &&
+      authority1->big_state->depth_state.depth_test_enabled == FALSE)
+    return TRUE;
+  else
+    return memcmp (&authority0->big_state->depth_state,
+                   &authority1->big_state->depth_state,
+                   sizeof (CoglMaterialDepthState)) == 0;
 }
 
 static gboolean
@@ -3023,6 +3027,22 @@ _cogl_material_compare_differences (CoglMaterial *material0,
 
 }
 
+static gboolean
+simple_property_equal (CoglMaterial *material0,
+                       CoglMaterial *material1,
+                       unsigned long materials_difference,
+                       CoglMaterialState state,
+                       CoglMaterialStateComparitor comparitor)
+{
+  if (materials_difference & state)
+    {
+      if (!comparitor (_cogl_material_get_authority (material0, state),
+                       _cogl_material_get_authority (material1, state)))
+        return FALSE;
+    }
+  return TRUE;
+}
+
 /* Comparison of two arbitrary materials is done by:
  * 1) walking up the parents of each material until a common
  *    ancestor is found, and at each step ORing together the
@@ -3064,94 +3084,64 @@ _cogl_material_equal (CoglHandle handle0,
   if (materials_difference & COGL_MATERIAL_STATE_COLOR &&
       !skip_gl_color)
     {
+      CoglMaterialState state = COGL_MATERIAL_STATE_COLOR;
       CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_COLOR);
+        _cogl_material_get_authority (material0, state);
       CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_COLOR);
+        _cogl_material_get_authority (material1, state);
 
       if (!cogl_color_equal (&authority0->color, &authority1->color))
         return FALSE;
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_LIGHTING)
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_LIGHTING,
+                              _cogl_material_lighting_state_equal))
+    return FALSE;
+
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_ALPHA_FUNC,
+                              _cogl_material_alpha_state_equal))
+    return FALSE;
+
+  /* We don't need to compare the detailed blending state if we know
+   * blending is disabled for both materials. */
+  if (material0->real_blend_enable &&
+      materials_difference & COGL_MATERIAL_STATE_BLEND)
     {
+      CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
       CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_LIGHTING);
+        _cogl_material_get_authority (material0, state);
       CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_LIGHTING);
-
-      if (!_cogl_material_lighting_state_equal (authority0, authority1))
-        return FALSE;
-    }
-
-  if (materials_difference & COGL_MATERIAL_STATE_ALPHA_FUNC)
-    {
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_ALPHA_FUNC);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_ALPHA_FUNC);
-
-      if (!_cogl_material_alpha_state_equal (authority0, authority1))
-        return FALSE;
-    }
-
-  if (materials_difference & COGL_MATERIAL_STATE_BLEND)
-    {
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_BLEND);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_BLEND);
+        _cogl_material_get_authority (material1, state);
 
       if (!_cogl_material_blend_state_equal (authority0, authority1))
         return FALSE;
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_BLEND_ENABLE)
-    {
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_BLEND_ENABLE);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_BLEND_ENABLE);
+  /* XXX: we don't need to compare the BLEND_ENABLE state because it's
+   * already reflected in ->real_blend_enable */
+#if 0
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_BLEND,
+                              _cogl_material_blend_enable_equal))
+    return FALSE;
+#endif
 
-      if (authority0->blend_enable != authority1->blend_enable)
-        return FALSE;
-    }
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_DEPTH,
+                              _cogl_material_depth_state_equal))
+    return FALSE;
 
-  if (materials_difference & COGL_MATERIAL_STATE_DEPTH)
-    {
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_DEPTH);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_DEPTH);
-
-      if (!_cogl_material_depth_state_equal (authority0, authority1))
-        return FALSE;
-    }
-
-  if (materials_difference & COGL_MATERIAL_STATE_LAYERS)
-    {
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0,
-                                      COGL_MATERIAL_STATE_LAYERS);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1,
-                                      COGL_MATERIAL_STATE_LAYERS);
-
-      if (!_cogl_material_layers_equal (authority0, authority1))
-        return FALSE;
-    }
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_LAYERS,
+                              _cogl_material_layers_equal))
+    return FALSE;
 
   return TRUE;
 }
