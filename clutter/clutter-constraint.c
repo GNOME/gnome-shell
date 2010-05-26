@@ -1,11 +1,15 @@
 /**
  * SECTION:clutter-constraint
  * @Title: ClutterConstraint
- * @Short_Description: A constraint on an actor's position or size
+ * @Short_Description: Abstract class for constraints on position or size
  * @See_Also: #ClutterAction
  *
  * #ClutterConstraint is a base abstract class for modifiers of a #ClutterActor
  * position or size.
+ *
+ * A #ClutterConstraint sub-class should contain the logic for modifying
+ * the position or size of the #ClutterActor to which it is applied, using
+ * the various signals and properties of #ClutterActor itself.
  *
  * #ClutterConstraint is available since Clutter 1.4
  */

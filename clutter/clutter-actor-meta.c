@@ -2,6 +2,7 @@
  * SECTION:clutter-actor-meta
  * @Title: ClutterActorMeta
  * @Short_Description: Base class of actor modifiers
+ * @See_Also: #ClutterAction, #ClutterConstraint
  *
  * #ClutterActorMeta is an abstract class providing a common API for
  * modifiers of #ClutterActor

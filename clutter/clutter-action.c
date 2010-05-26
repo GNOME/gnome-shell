@@ -25,16 +25,18 @@
 /**
  * SECTION:clutter-action
  * @Title: ClutterAction
- * @Short_Description: Abstract class for actor actions
- * @See_Also: #ClutterEffect
+ * @Short_Description: Abstract class for event-related logic
+ * @See_Also: #ClutterConstraint
  *
- * #ClutterAction is an abstract base class for action that modify the
- * user interaction of a #ClutterActor, just like #ClutterEffect is an
- * abstract class for modifiers of the appearance of a #ClutterActor.
+ * #ClutterAction is an abstract base class for event-related actions that
+ * modify the user interaction of a #ClutterActor, just like
+ * #ClutterConstraint is an abstract class for modifiers of an actor's
+ * position or size.
  *
  * Implementations of #ClutterAction are associated to an actor and can
  * provide behavioral changes when dealing with user input - for instance
- * drag and drop capabilities, or scrolling, or panning.
+ * drag and drop capabilities, or scrolling, or panning - by using the
+ * various event-related signals provided by #ClutterActor itself.
  *
  * #ClutterAction is available since Clutter 1.4
  */
