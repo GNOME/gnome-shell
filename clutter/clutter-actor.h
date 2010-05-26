@@ -447,6 +447,9 @@ void                  clutter_actor_get_clip                  (ClutterActor     
                                                                gfloat                *yoff,
                                                                gfloat                *width,
                                                                gfloat                *height);
+void                  clutter_actor_set_clip_to_allocation    (ClutterActor          *self,
+                                                               gboolean               clip_set);
+gboolean              clutter_actor_get_clip_to_allocation    (ClutterActor          *self);
 
 void                  clutter_actor_set_parent                (ClutterActor          *self,
                                                                ClutterActor          *parent);

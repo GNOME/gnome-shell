@@ -2854,11 +2854,7 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_CLIP_TO_ALLOCATION:
-      if (priv->clip_to_allocation != g_value_get_boolean (value))
-        {
-          priv->clip_to_allocation = g_value_get_boolean (value);
-          clutter_actor_queue_redraw (actor);
-        }
+      clutter_actor_set_clip_to_allocation (actor, g_value_get_boolean (value));
       break;
 
     case PROP_REACTIVE:
@@ -10906,4 +10902,54 @@ clutter_actor_clear_constraints (ClutterActor *self)
     return;
 
   _clutter_meta_group_clear_metas (self->priv->constraints);
+}
+
+/**
+ * clutter_actor_set_clip_to_allocation:
+ * @self: a #ClutterActor
+ * @clip_set: %TRUE to apply a clip tracking the allocation
+ *
+ * Sets whether @self should be clipped to the same size as its
+ * allocation
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_set_clip_to_allocation (ClutterActor *self,
+                                      gboolean      clip_set)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clip_set = !!clip_set;
+
+  priv = self->priv;
+
+  if (priv->clip_to_allocation != clip_set)
+    {
+      priv->clip_to_allocation = clip_set;
+
+      clutter_actor_queue_redraw (self);
+
+      g_object_notify (G_OBJECT (self), "clip-to-allocation");
+    }
+}
+
+/**
+ * clutter_actor_get_clip_to_allocation:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set using clutter_actor_set_clip_to_allocation()
+ *
+ * Return value: %TRUE if the #ClutterActor is clipped to its allocation
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_actor_get_clip_to_allocation (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return self->priv->clip_to_allocation;
 }

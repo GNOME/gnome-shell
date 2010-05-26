@@ -347,6 +347,8 @@ clutter_actor_set_clip
 clutter_actor_remove_clip
 clutter_actor_has_clip
 clutter_actor_get_clip
+clutter_actor_set_clip_to_allocation
+clutter_actor_get_clip_to_allocation
 
 <SUBSECTION>
 clutter_actor_set_parent

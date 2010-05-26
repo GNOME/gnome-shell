@@ -63,13 +63,13 @@ test_scrolling_main (int argc, char *argv[])
 
   /* scroll: the group that contains the scrolling viewport; we set its
    * size to be the same as one rectangle, position it in the middle of
-   * the stage and sets it to clip its contents to the allocated size
+   * the stage and set it to clip its contents to the allocated size
    */
   scroll = clutter_group_new ();
   clutter_actor_set_size (scroll, RECT_WIDTH, RECT_HEIGHT);
   clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
   clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
-  g_object_set (scroll, "clip-to-allocation", TRUE, NULL);
+  clutter_actor_set_clip_to_allocation (scroll, TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), scroll);
 
   /* viewport: the actual container for the children; we scroll it using
