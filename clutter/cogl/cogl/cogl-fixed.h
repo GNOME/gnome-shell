@@ -497,7 +497,7 @@ cogl_fixed_tan (CoglFixed angle);
 CoglFixed cogl_fixed_cos (CoglFixed angle);
 
 /**
- * cogl_fixed_atani:
+ * cogl_fixed_atan:
  * @a: a #CoglFixed number
  *
  * Computes the arc tangent of @a.
@@ -507,7 +507,7 @@ CoglFixed cogl_fixed_cos (CoglFixed angle);
  * Since: 1.0
  */
 CoglFixed
-cogl_fixed_atani (CoglFixed a);
+cogl_fixed_atan (CoglFixed a);
 
 /**
  * cogl_fixed_atan2:
@@ -797,7 +797,7 @@ int
 cogl_double_to_int   (double value);
 
 unsigned int
-cogl_double_to_unit (double value);
+cogl_double_to_uint (double value);
 
 G_END_DECLS
 
