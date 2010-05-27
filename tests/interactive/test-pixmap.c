@@ -105,7 +105,7 @@ create_pixmap (guint *width, guint *height, guint *depth)
 
   data = g_malloc (w * h * 4);
   image = XCreateImage (dpy,
-                        None,
+                        NULL,
                         32,
                         ZPixmap,
                         0,

@@ -142,7 +142,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on '%s'",
 			clutter_display_name);
 	  backend_x11->xdpy = XOpenDisplay (clutter_display_name);
-          if (backend_x11->xdpy == None)
+          if (backend_x11->xdpy == NULL)
             {
               g_set_error (error, CLUTTER_INIT_ERROR,
                            CLUTTER_INIT_ERROR_BACKEND,

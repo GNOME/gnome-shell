@@ -159,7 +159,7 @@ clutter_backend_glx_dispose (GObject *gobject)
     {
       glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
       glXDestroyContext (backend_x11->xdpy, backend_glx->gl_context);
-      backend_glx->gl_context = None;
+      backend_glx->gl_context = NULL;
     }
 
   if (backend_glx->dummy_glxwin)
@@ -222,7 +222,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   /* this will make sure that the GL context exists */
-  g_assert (backend_glx->gl_context != None);
+  g_assert (backend_glx->gl_context != NULL);
   g_assert (glXGetCurrentDrawable () != None);
 
   CLUTTER_NOTE (BACKEND,
@@ -394,7 +394,7 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
     None
   };
 
-  if (backend_x11->xdpy == None || backend_x11->xscreen == None)
+  if (backend_x11->xdpy == NULL || backend_x11->xscreen == NULL)
     return FALSE;
 
   /* If we don't already have a cached config then try to get one */
@@ -420,7 +420,7 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
 
                   vinfo = glXGetVisualFromFBConfig (backend_x11->xdpy,
                                                     configs[i]);
-                  if (vinfo == None)
+                  if (vinfo == NULL)
                     continue;
 
                   if (vinfo->depth == 32 &&
@@ -492,7 +492,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
   int minor;
   GLXDrawable dummy_drawable;
 
-  if (backend_glx->gl_context != None)
+  if (backend_glx->gl_context != NULL)
     return TRUE;
 
   xdisplay = clutter_x11_get_default_display ();
@@ -513,7 +513,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                                  GLX_RGBA_TYPE,
                                                  NULL,
                                                  True);
-  if (backend_glx->gl_context == None)
+  if (backend_glx->gl_context == NULL)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
@@ -540,7 +540,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
    * now this is the best solution available.
    */
   xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
-  if (xvisinfo == None)
+  if (xvisinfo == NULL)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
@@ -649,7 +649,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
                     (unsigned int) drawable);
 
       /* no GL context to set */
-      if (backend_glx->gl_context == None)
+      if (backend_glx->gl_context == NULL)
         return;
 
       clutter_x11_trap_x_errors ();
