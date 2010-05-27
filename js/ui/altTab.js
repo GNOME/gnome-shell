@@ -69,7 +69,7 @@ AltTabPopup.prototype = {
 
     _allocate: function (actor, box, flags) {
         let childBox = new Clutter.ActorBox();
-        let focus = global.get_focus_monitor();
+        let primary = global.get_primary_monitor();
 
         let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
         let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
@@ -79,11 +79,11 @@ AltTabPopup.prototype = {
 
         // Allocate the appSwitcher
         // We select a size based on an icon size that does not overflow the screen
-        let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(focus.width - hPadding);
+        let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(primary.width - hPadding);
         let [childMinWidth, childNaturalWidth] = this._appSwitcher.actor.get_preferred_width(childNaturalHeight);
-        childBox.x1 = Math.max(focus.x + leftPadding, focus.x + Math.floor((focus.width - childNaturalWidth) / 2));
-        childBox.x2 = Math.min(childBox.x1 + focus.width - hPadding, childBox.x1 + childNaturalWidth);
-        childBox.y1 = focus.y + Math.floor((focus.height - childNaturalHeight) / 2);
+        childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
+        childBox.x2 = Math.min(childBox.x1 + primary.width - hPadding, childBox.x1 + childNaturalWidth);
+        childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
         this._appSwitcher.actor.allocate(childBox, flags);
 
@@ -97,10 +97,10 @@ AltTabPopup.prototype = {
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
             let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
-            childBox.x1 = Math.max(focus.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > focus.x + focus.width - hPadding) {
-                let offset = childBox.x1 + childNaturalWidth - focus.width + hPadding;
-                childBox.x1 = Math.max(focus.x + leftPadding, childBox.x1 - offset - hPadding);
+            childBox.x1 = Math.max(primary.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
+            if (childBox.x1 + childNaturalWidth > primary.x + primary.width - hPadding) {
+                let offset = childBox.x1 + childNaturalWidth - primary.width + hPadding;
+                childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
             }
 
             let [found, spacing] = this.actor.get_theme_node().get_length('spacing', false);
@@ -108,10 +108,10 @@ AltTabPopup.prototype = {
                 spacing = 0;
 
             childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > focus.x + focus.width - rightPadding)
-                childBox.x2 = focus.x + focus.width - rightPadding;
+            if (childBox.x2 > primary.x + primary.width - rightPadding)
+                childBox.x2 = primary.x + primary.width - rightPadding;
             childBox.y1 = this._appSwitcher.actor.allocation.y2 + spacing;
-            this._thumbnails.addClones(focus.height - bottomPadding - childBox.y1);
+            this._thumbnails.addClones(primary.height - bottomPadding - childBox.y1);
             let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.actor.allocate(childBox, flags);
@@ -601,7 +601,7 @@ SwitcherList.prototype = {
                 this._items[this._highlighted].style_class = 'selected-item-box';
         }
 
-        let monitor = global.get_focus_monitor();
+        let monitor = global.get_primary_monitor();
         let itemSize = this._items[index].allocation.x2 - this._items[index].allocation.x1;
         let [posX, posY] = this._items[index].get_transformed_position();
         posX += this.actor.x;
@@ -629,7 +629,7 @@ SwitcherList.prototype = {
 
     _scrollToRight : function() {
         this._scrollableLeft = true;
-        let monitor = global.get_focus_monitor();
+        let monitor = global.get_primary_monitor();
         let padding = this.actor.get_theme_node().get_horizontal_padding();
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + parentPadding;
@@ -726,9 +726,9 @@ SwitcherList.prototype = {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
-        let focus = global.get_focus_monitor();
+        let primary = global.get_primary_monitor();
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
-        if (this.actor.allocation.x2 == focus.x + focus.width - parentRightPadding) {
+        if (this.actor.allocation.x2 == primary.x + primary.width - parentRightPadding) {
             if (this._squareItems)
                 childWidth = childHeight;
             else {
