@@ -368,6 +368,8 @@ _cogl_material_init_default_material (void)
   material->static_breadcrumb = "default material";
   material->has_static_breadcrumb = TRUE;
 
+  material->age = 0;
+
   /* Use the same defaults as the GL spec... */
   cogl_color_init_from_4ub (&material->color, 0xff, 0xff, 0xff, 0xff);
 
@@ -468,6 +470,8 @@ cogl_material_copy (CoglHandle handle)
   material->backend_priv_set = FALSE;
 
   material->has_static_breadcrumb = FALSE;
+
+  material->age = 0;
 
   return _cogl_material_handle_new (material);
 }
@@ -1184,6 +1188,8 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
    * are now free to modify the material. */
   g_assert (!material->has_children);
 
+  material->age++;
+
   /* If the material isn't already an authority for the state group
    * being modified then we need to initialize the corresponding
    * state. */
@@ -1560,6 +1566,9 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
     unit->layer_changes_since_flush |= change;
 
 init_layer_state:
+
+  if (required_owner)
+    required_owner->age++;
 
   /* If the material isn't already an authority for the state group
    * being modified then we need to initialize the corresponding
@@ -4107,6 +4116,16 @@ cogl_material_get_depth_range (CoglHandle handle,
 
   *near = authority->big_state->depth_state.depth_range_near;
   *far = authority->big_state->depth_state.depth_range_far;
+}
+
+unsigned long
+_cogl_material_get_age (CoglHandle handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+
+  g_return_val_if_fail (cogl_is_material (handle), 0);
+
+  return material->age;
 }
 
 static CoglMaterialLayer *
