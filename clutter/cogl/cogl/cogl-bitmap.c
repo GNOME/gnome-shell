@@ -33,7 +33,7 @@
 
 static void _cogl_bitmap_free (CoglBitmap *bmp);
 
-COGL_HANDLE_DEFINE (Bitmap, bitmap);
+COGL_OBJECT_DEFINE (Bitmap, bitmap);
 
 static void
 _cogl_bitmap_free (CoglBitmap *bmp)
@@ -162,7 +162,7 @@ cogl_bitmap_get_size_from_file (const char *filename,
   return _cogl_bitmap_get_size_from_file (filename, width, height);
 }
 
-CoglHandle
+CoglBitmap *
 cogl_bitmap_new_from_file (const char  *filename,
                            GError     **error)
 {
@@ -185,6 +185,6 @@ cogl_bitmap_new_from_file (const char  *filename,
     }
 
   ret = g_memdup (&bmp, sizeof (CoglBitmap));
-  return _cogl_bitmap_handle_new (ret);
+  return _cogl_bitmap_object_new (ret);
 }
 

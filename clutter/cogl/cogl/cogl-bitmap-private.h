@@ -30,7 +30,7 @@
 
 #include "cogl-handle.h"
 
-typedef struct _CoglBitmap
+struct _CoglBitmap
 {
   CoglHandleObject _parent;
   guint8          *data;
@@ -38,7 +38,7 @@ typedef struct _CoglBitmap
   int              width;
   int              height;
   int              rowstride;
-} CoglBitmap;
+};
 
 gboolean
 _cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
