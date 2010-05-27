@@ -472,6 +472,13 @@ struct _CoglMaterial
    * bitfield can associate private data with a material. */
   void		  *backend_priv;
 
+  /* Whenever a material is modified we increment the age. There's no
+   * guarantee that it won't wrap but it can nevertheless be a
+   * convenient mechanism to determine when a material has been
+   * changed to you can invalidate some some associated cache that
+   * depends on the old state. */
+  unsigned long    age;
+
   /* This is the primary color of the material.
    *
    * This is a sparse property, ref COGL_MATERIAL_STATE_COLOR */
@@ -760,6 +767,9 @@ _cogl_material_set_blend_enabled (CoglHandle handle,
 void
 _cogl_material_set_static_breadcrumb (CoglHandle handle,
                                       const char *breadcrumb);
+
+unsigned long
+_cogl_material_get_age (CoglHandle handle);
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 
