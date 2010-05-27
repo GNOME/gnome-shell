@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+typedef struct _CoglBitmap CoglBitmap;
+
 /**
  * SECTION:cogl-bitmap
  * @short_description: Fuctions for loading images
@@ -51,12 +53,12 @@ G_BEGIN_DECLS
  * Loads an image file from disk. This function can be safely called from
  * within a thread.
  *
- * Return value: a #CoglHandle to the new loaded image data, or
- *   %COGL_INVALID_HANDLE if loading the image failed.
+ * Return value: a #CoglBitmap to the new loaded image data, or
+ *   %NULL if loading the image failed.
  *
  * Since: 1.0
  */
-CoglHandle
+CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
                            GError **error);
 
