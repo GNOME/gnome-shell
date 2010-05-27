@@ -1762,9 +1762,11 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	      GE (glDisableClientState (GL_NORMAL_ARRAY));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
-              GE (glClientActiveTexture (GL_TEXTURE0 +
-                                         attribute->texture_unit));
-	      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+              /* The enabled state of the texture coord arrays is
+                 cached in ctx->enabled_texcoord_arrays so we don't
+                 need to do anything here. The array will be disabled
+                 by the next drawing primitive if it is not
+                 required */
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
