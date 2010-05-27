@@ -389,7 +389,7 @@ cogl_set_viewport (int x,
                    int width,
                    int height)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -514,7 +514,7 @@ cogl_features_available (CoglFeatureFlags features)
 void
 cogl_get_viewport (float v[4])
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   int viewport[4];
   int i;
 
@@ -621,7 +621,7 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   int        framebuffer_height;
   int        bpp;
   CoglBitmap bmp;
@@ -1110,7 +1110,7 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
 CoglClipState *
 _cogl_get_clip_state (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
 
   framebuffer = _cogl_get_framebuffer ();
   return _cogl_framebuffer_get_clip_state (framebuffer);
@@ -1147,7 +1147,7 @@ cogl_set_source_texture (CoglHandle texture_handle)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (texture_handle != COGL_INVALID_HANDLE);
+  g_return_if_fail (texture_handle != NULL);
 
   cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
   cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);

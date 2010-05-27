@@ -56,7 +56,6 @@ typedef struct _CoglBezCubic
   floatVec2 p4;
 } CoglBezCubic;
 
-typedef struct _CoglPath CoglPath;
 typedef struct _CoglPathData CoglPathData;
 
 struct _CoglPath
@@ -81,11 +80,11 @@ struct _CoglPathData
 
 /* This is an internal version of cogl_path_new that doesn't affect
    the current path and just creates a new handle */
-CoglHandle
+CoglPath *
 _cogl_path_new (void);
 
 void
-_cogl_add_path_to_stencil_buffer (CoglHandle path,
+_cogl_add_path_to_stencil_buffer (CoglPath  *path,
                                   gboolean   merge,
                                   gboolean   need_clear);
 

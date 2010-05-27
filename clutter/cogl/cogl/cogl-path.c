@@ -26,6 +26,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-object.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
@@ -44,7 +45,7 @@
 
 static void _cogl_path_free (CoglPath *path);
 
-COGL_HANDLE_DEFINE (Path, path);
+COGL_OBJECT_DEFINE (Path, path);
 
 static void
 _cogl_path_data_unref (CoglPathData *data)
@@ -179,7 +180,7 @@ _cogl_path_get_bounds (floatVec2 nodes_min,
 }
 
 void
-_cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
+_cogl_add_path_to_stencil_buffer (CoglPath  *path,
                                   gboolean   merge,
                                   gboolean   need_clear)
 {
@@ -190,16 +191,13 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
   float            bounds_h;
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle       prev_source;
-  CoglHandle       framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
-  CoglPath        *path;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  path = COGL_PATH (path_handle);
 
   /* We don't track changes to the stencil buffer in the journal
    * so we need to flush any batched geometry first */
@@ -211,7 +209,7 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
   _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* Just setup a simple material that doesn't use texturing... */
-  prev_source = cogl_handle_ref (ctx->source_material);
+  prev_source = cogl_object_ref (ctx->source_material);
   cogl_set_source (ctx->stencil_material);
 
   _cogl_material_flush_gl_state (ctx->source_material, NULL);
@@ -316,7 +314,7 @@ _cogl_add_path_to_stencil_buffer (CoglHandle path_handle,
 
   /* restore the original material */
   cogl_set_source (prev_source);
-  cogl_handle_unref (prev_source);
+  cogl_object_unref (prev_source);
 }
 
 static int
@@ -525,7 +523,7 @@ _cogl_path_fill_nodes (void)
   if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
       cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
-      CoglHandle framebuffer;
+      CoglFramebuffer *framebuffer;
       CoglClipState *clip_state;
 
       _cogl_journal_flush ();
@@ -689,7 +687,7 @@ cogl_path_new (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_handle_unref (ctx->current_path);
+  cogl_object_unref (ctx->current_path);
   ctx->current_path = _cogl_path_new ();
 }
 
@@ -1062,7 +1060,7 @@ cogl_path_rel_curve_to (float x_1,
                       data->path_pen.y + y_3);
 }
 
-CoglHandle
+CoglPath *
 cogl_path_get (void)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
@@ -1071,21 +1069,21 @@ cogl_path_get (void)
 }
 
 void
-cogl_path_set (CoglHandle handle)
+cogl_path_set (CoglPath *path)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!cogl_is_path (handle))
+  if (!cogl_is_path (path))
     return;
 
-  /* Reference the new handle first in case it is the same as the old
-     handle */
-  cogl_handle_ref (handle);
-  cogl_handle_unref (ctx->current_path);
-  ctx->current_path = handle;
+  /* Reference the new object first in case it is the same as the old
+     object */
+  cogl_object_ref (path);
+  cogl_object_unref (ctx->current_path);
+  ctx->current_path = path;
 }
 
-CoglHandle
+CoglPath *
 _cogl_path_new (void)
 {
   CoglPath *path;
@@ -1098,26 +1096,24 @@ _cogl_path_new (void)
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
 
-  return _cogl_path_handle_new (path);
+  return _cogl_path_object_new (path);
 }
 
-CoglHandle
-cogl_path_copy (CoglHandle handle)
+CoglPath *
+cogl_path_copy (CoglPath *old_path)
 {
-  CoglPath *old_path, *new_path;
+  CoglPath *new_path;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  if (!cogl_is_path (handle))
-    return COGL_INVALID_HANDLE;
-
-  old_path = COGL_PATH (handle);
+  if (!cogl_is_path (old_path))
+    return NULL;
 
   new_path = g_slice_new (CoglPath);
   new_path->data = old_path->data;
   new_path->data->ref_count++;
 
-  return _cogl_path_handle_new (new_path);
+  return _cogl_path_object_new (new_path);
 }
 
 static void
