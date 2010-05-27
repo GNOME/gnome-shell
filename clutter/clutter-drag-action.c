@@ -212,7 +212,7 @@ emit_drag_end (ClutterDragAction *action,
     g_signal_emit (action, drag_signals[DRAG_END], 0,
                    actor,
                    priv->last_motion_x, priv->last_motion_y,
-                   clutter_event_get_button (event),
+                   priv->press_button,
                    clutter_event_get_state (event));
 
   /* disconnect the capture */
