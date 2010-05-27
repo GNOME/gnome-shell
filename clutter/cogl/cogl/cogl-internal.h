@@ -134,7 +134,8 @@ void
 _cogl_flush_face_winding (void);
 
 /* Disables the texcoord arrays that don't have a corresponding bit
-   set in the mask */
+   set in the mask and sets ctx->texcoord_arrays_enabled to mask. Note
+   that it doesn't enable any extra texcoord arrays */
 void
 _cogl_disable_other_texcoord_arrays (const CoglBitmask *mask);
 
