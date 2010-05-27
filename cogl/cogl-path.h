@@ -51,6 +51,8 @@ G_BEGIN_DECLS
  * rather then in the absolute coordinates.
  */
 
+typedef struct _CoglPath CoglPath;
+
 /**
  * cogl_path_fill:
  *
@@ -368,49 +370,50 @@ cogl_path_round_rectangle (float x_1,
 /**
  * cogl_path_get:
  *
- * Gets a handle to the current path. The path can later be used again
- * by calling cogl_path_set(). Note that the path isn't copied so if
- * you later call any functions to add to the path it will affect the
- * returned handle too. No reference is taken on the path so if you
- * want to retain it you should take your own reference with
- * cogl_handle_ref().
+ * Gets a pointer to the current path. The path can later be used
+ * again by calling cogl_path_set(). Note that the path isn't copied
+ * so if you later call any functions to add to the path it will
+ * affect the returned object too. No reference is taken on the path
+ * so if you want to retain it you should take your own reference with
+ * cogl_object_ref().
  *
- * Return value: a handle to the current path.
+ * Return value: a pointer to the current path.
  *
  * Since: 1.4
  */
-CoglHandle
+CoglPath *
 cogl_path_get (void);
 
 /**
  * cogl_path_set:
- * @handle: A %CoglHandle to a path
+ * @path: A #CoglPath object
  *
- * Replaces the current path with @handle. A reference is taken on the
- * handle so if you no longer need the path you should unref with
- * cogl_handle_unref().
+ * Replaces the current path with @path. A reference is taken on the
+ * object so if you no longer need the path you should unref with
+ * cogl_object_unref().
  *
  * Since: 1.4
  */
 void
-cogl_path_set (CoglHandle handle);
+cogl_path_set (CoglPath *path);
 
 /**
  * cogl_path_copy:
- * @handle: A %CoglHandle to a path
+ * @path: A #CoglPath object
  *
- * Returns a new copy of the path in @handle. The new path has a
+ * Returns a new copy of the path in @path. The new path has a
  * reference count of 1 so you should unref it with
- * cogl_handle_unref() if you no longer need it.
+ * cogl_object_unref() if you no longer need it.
  *
  * Internally the path will share the data until one of the paths is
  * modified so copying paths should be relatively cheap.
  *
- * Return value: a copy of the path in @handle.
+ * Return value: a copy of the path in @path.
  */
-CoglHandle
-cogl_path_copy (CoglHandle handle);
+CoglPath *
+cogl_path_copy (CoglPath *path);
 
 G_END_DECLS
 
 #endif /* __COGL_PATH_H__ */
+
