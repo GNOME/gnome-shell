@@ -31,6 +31,7 @@
 
 #include <cogl/cogl-defines.h>
 
+#include <cogl/cogl-object.h>
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-debug.h>

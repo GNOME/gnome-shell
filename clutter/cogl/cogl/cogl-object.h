@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  *
  */
@@ -24,162 +25,100 @@
 #ifndef __COGL_OBJECT_H
 #define __COGL_OBJECT_H
 
-/* For compatability until all components have been converted */
-typedef struct _CoglObjectClass CoglHandleClass;
-typedef struct _CoglObject      CoglHandleObject;
+typedef struct _CoglObject      CoglObject;
 
-typedef struct _CoglObjectClass
-{
-  GQuark   type;
-  void    *virt_free;
-} CoglObjectClass;
-
-/* All Cogl objects inherit from this base object by adding a member:
+/**
+ * CoglUserDataKey:
+ * @unused: ignored.
  *
- *   CoglObject _parent;
+ * A #CoglUserDataKey is used to declare a key for attaching data to a
+ * #CoglObject using cogl_object_set_user_data. The typedef only exists as a
+ * formality to make code self documenting since only the unique address of a
+ * #CoglUserDataKey is used.
  *
- * at the top of its main structure. This structure is initialized
- * when you call _cogl_#type_name#_object_new (new_object);
+ * Typically you would declare a static #CoglUserDataKey and set private data
+ * on an object something like this:
+ *
+ * |[
+ * static CoglUserDataKey path_private_key;
+ *
+ * static void
+ * destroy_path_private_cb (void *data)
+ * {
+ *   g_free (data);
+ * }
+ *
+ * static void
+ * my_path_set_data (CoglPath *path, void *data)
+ * {
+ *   cogl_object_set_user_data (COGL_OBJECT (path),
+ *                              &private_key,
+ *                              data,
+ *                              destroy_path_private_cb);
+ * }
+ * ]|
+ *
+ * Since: 1.4
  */
-typedef struct _CoglObject
+typedef struct
 {
-  unsigned int     ref_count;
-  CoglObjectClass *klass;
-} CoglObject;
+  int unused;
+} CoglUserDataKey;
 
-/* Helper macro to encapsulate the common code for COGL reference
-   counted objects */
+/**
+ * CoglUserDataDestroyCallback:
+ * @user_data: The data whos association with a #CoglObject has been
+ *             destoyed.
+ *
+ * When associating private data with a #CoglObject a callback can be
+ * given which will be called either if the object is destroyed or if
+ * cogl_object_set_user_data() is called with NULL user_data for the
+ * same key.
+ *
+ * Since: 1.4
+ */
+typedef void (*CoglUserDataDestroyCallback) (void *user_data);
 
-#ifdef COGL_OBJECT_DEBUG
+/**
+ * cogl_object_set_user_data:
+ * @object: The object to associate private data with
+ * @key: The address of a #CoglUserDataKey which provides a unique value
+ *       with which to index the private data.
+ * @user_data: The data to associate with the given object, or NULL to
+ *             remove a previous association.
+ * @destroy: A #CoglUserDataDestroyCallback to call if the object is
+ *           destroyed or if the association is removed by later setting
+ *           NULL data for the same key.
+ *
+ * Associates some private @user_data with a given #CoglObject. To
+ * later remove the association call cogl_object_set_user_data() with
+ * the same @key but NULL for the @user_data.
+ *
+ * Since: 1.4
+ */
+void
+cogl_object_set_user_data (CoglObject *object,
+                           CoglUserDataKey *key,
+                           void *user_data,
+                           CoglUserDataDestroyCallback destroy);
 
-#define _COGL_OBJECT_DEBUG_NEW(type_name, obj)			        \
-  COGL_NOTE (HANDLE, "COGL " G_STRINGIFY (type_name) " NEW   %p %i",    \
-	     (obj), (obj)->ref_count)
-
-#define _COGL_OBJECT_DEBUG_REF(type_name, object)       G_STMT_START {  \
-  CoglObject *__obj = (CoglObject *)object;                             \
-  COGL_NOTE (HANDLE, "COGL %s REF %p %i",	                        \
-             g_quark_to_string ((__obj)->klass->type),                  \
-             (__obj), (__obj)->ref_count);              } G_STMT_END
-
-#define _COGL_OBJECT_DEBUG_UNREF(type_name, object)     G_STMT_START {  \
-  CoglObject *__obj = (CoglObject *)object;                 \
-  COGL_NOTE (HANDLE, "COGL %s UNREF %p %i",	                        \
-             g_quark_to_string ((__obj)->klass->type),                  \
-             (__obj), (__obj)->ref_count - 1);          } G_STMT_END
-
-#define COGL_OBJECT_DEBUG_FREE(obj)                                     \
-  COGL_NOTE (HANDLE, "COGL %s FREE %p",                                 \
-             g_quark_to_string ((obj)->klass->type), (obj))
-
-#else /* !COGL_OBJECT_DEBUG */
-
-#define _COGL_OBJECT_DEBUG_NEW(type_name, obj)
-#define _COGL_OBJECT_DEBUG_REF(type_name, obj)
-#define _COGL_OBJECT_DEBUG_UNREF(type_name, obj)
-#define COGL_OBJECT_DEBUG_FREE(obj)
-
-#endif /* COGL_OBJECT_DEBUG */
-
-/* For temporary compatability */
-#define _COGL_HANDLE_DEBUG_NEW _COGL_OBJECT_DEBUG_NEW
-#define _COGL_HANDLE_DEBUG_REF _COGL_OBJECT_DEBUG_REF
-#define _COGL_HANDLE_DEBUG_UNREF _COGL_OBJECT_DEBUG_UNREF
-#define COGL_HANDLE_DEBUG_FREE COGL_OBJECT_DEBUG_FREE
-
-#define COGL_OBJECT_DEFINE(TypeName, type_name)	                \
-								\
-static CoglObjectClass _cogl_##type_name##_class;               \
-								\
-GQuark                                                          \
-_cogl_object_##type_name##_get_type (void)                      \
-{                                                               \
-  static GQuark type = 0;                                       \
-  if (!type)                                                    \
-    type = g_quark_from_static_string ("Cogl"#TypeName);        \
-  return type;                                                  \
-}                                                               \
-                                                                \
-GQuark                                                          \
-_cogl_handle_##type_name##_get_type (void)                      \
-{                                                               \
-  return _cogl_object_##type_name##_get_type ();                \
-}                                                               \
-								\
-static Cogl##TypeName *						\
-_cogl_##type_name##_object_new (Cogl##TypeName *new_obj)	\
-{				                                \
-  CoglObject *obj = (CoglObject *)&new_obj->_parent;\
-  obj->ref_count = 1;                                           \
-								\
-  obj->klass = &_cogl_##type_name##_class;                      \
-  if (!obj->klass->type)                                        \
-    {                                                           \
-      obj->klass->type = _cogl_object_##type_name##_get_type ();\
-      obj->klass->virt_free = _cogl_##type_name##_free;         \
-    }                                                           \
-								\
-  _COGL_OBJECT_DEBUG_NEW (TypeName, obj);                       \
-  return new_obj;			                        \
-}								\
-								\
-Cogl##TypeName *                                                \
-_cogl_##type_name##_pointer_from_handle (CoglHandle handle)	\
-{								\
-  return handle;				                \
-}								\
-								\
-gboolean							\
-cogl_is_##type_name (CoglHandle object)			        \
-{                                                               \
-  CoglObject *obj = object;                                     \
-                                                                \
-  if (object == NULL)                                           \
-    return FALSE;                                               \
-                                                                \
-  return (obj->klass->type ==                                   \
-          _cogl_object_##type_name##_get_type ());              \
-}								\
-								\
-void * G_GNUC_DEPRECATED					\
-cogl_##type_name##_ref (void *object)			        \
-{								\
-  if (!cogl_is_##type_name (object))				\
-    return NULL;				                \
-                                                                \
-  _COGL_OBJECT_DEBUG_REF (TypeName, object);			\
-								\
-  cogl_handle_ref (object);                                     \
-								\
-  return object;						\
-}								\
-								\
-void G_GNUC_DEPRECATED					        \
-cogl_##type_name##_unref (void *object)			        \
-{								\
-  if (!cogl_is_##type_name (object))				\
-    {                                                           \
-      g_warning (G_STRINGIFY (cogl_##type_name##_unref)         \
-                 ": Ignoring unref of Cogl handle "             \
-                 "due to type mismatch");                       \
-      return;							\
-    }                                                           \
-								\
-  _COGL_OBJECT_DEBUG_UNREF (TypeName, object);		        \
-                                                                \
-  cogl_handle_unref (object);                                   \
-}
-
-/* For temporary compatability */
-#define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
-								\
-COGL_OBJECT_DEFINE (TypeName, type_name)                        \
-								\
-static Cogl##TypeName *						\
-_cogl_##type_name##_handle_new (CoglHandle handle)	        \
-{                                                               \
-  return _cogl_##type_name##_object_new (handle);               \
-}
-
+/**
+ * cogl_object_get_user_data:
+ * @object: The object with associated private data to query
+ * @key: The address of a #CoglUserDataKey which provides a unique value
+ *       with which to index the private data.
+ *
+ * Finds the user data previously associated with @object using
+ * the given @key. If no user data has been associated with @object
+ * for the given @key this function returns NULL.
+ *
+ * Returns: The user data previously associated with @object using
+ * the given @key; or NULL if no associated data is found.
+ *
+ * Since: 1.4
+ */
+void *
+cogl_object_get_user_data (CoglObject *object,
+                           CoglUserDataKey *key);
 #endif /* __COGL_OBJECT_H */
 
