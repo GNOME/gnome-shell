@@ -118,7 +118,7 @@ transform_point (CoglMatrix *matrix_mv,
 
 /* Try to push a rectangle given in object coordinates as a rectangle in window
  * coordinates instead of object coordinates */
-gboolean
+static gboolean
 try_pushing_rect_as_window_rect (float x_1,
                                  float y_1,
                                  float x_2,

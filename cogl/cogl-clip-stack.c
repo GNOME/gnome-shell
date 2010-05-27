@@ -285,7 +285,7 @@ set_clip_planes (float x_1,
     }
 }
 
-void
+static void
 add_stencil_clip_rectangle (float x_1,
                             float y_1,
                             float x_2,
