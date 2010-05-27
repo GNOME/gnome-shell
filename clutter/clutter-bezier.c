@@ -153,7 +153,7 @@ _clutter_bezier_t2x (const ClutterBezier * b, _FixedT t)
     + b->dx;
 }
 
-gint
+static gint
 _clutter_bezier_t2y (const ClutterBezier * b, _FixedT t)
 {
   /*
