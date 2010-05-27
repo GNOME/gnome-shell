@@ -260,7 +260,7 @@ free_clips (CallbackData *data)
   data->clips = NULL;
 }
 
-static gpointer
+static gboolean
 on_key_press (ClutterActor *stage, ClutterKeyEvent *event,
               CallbackData *data)
 {
