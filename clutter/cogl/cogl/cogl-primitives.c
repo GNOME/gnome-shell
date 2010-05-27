@@ -256,7 +256,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
     }
 
   state.wrap_mode_overrides = NULL;
-  memset (&state.wrap_mode_overrides, 0, sizeof (state.wrap_mode_overrides));
+  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
 
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side. By
