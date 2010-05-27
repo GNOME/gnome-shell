@@ -45,11 +45,13 @@ G_BEGIN_DECLS
  * OpenGL implementation allows it, COGL will use Pixel Buffer Objects.
  */
 
+typedef struct _CoglBuffer CoglBuffer;
+
 /**
  * cogl_is_buffer:
  * @handle: a #CoglHandle to test
  *
- * Checks whether @handle is a buffer handle.
+ * Checks whether @buffer is a buffer object.
  *
  * Return value: %TRUE if the handle is a CoglBuffer, and %FALSE otherwise
  *
@@ -61,7 +63,7 @@ cogl_is_buffer (CoglHandle handle);
 
 /**
  * cogl_buffer_get_size:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  *
  * Retrieves the size of buffer
  *
@@ -71,7 +73,7 @@ cogl_is_buffer (CoglHandle handle);
  * Stability: Unstable
  */
 unsigned int
-cogl_buffer_get_size (CoglHandle handle);
+cogl_buffer_get_size (CoglBuffer *buffer);
 
 /**
  * CoglBufferUsageHint:
@@ -90,7 +92,7 @@ typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
 
 /**
  * cogl_buffer_set_usage_hint:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  * @hint: the new hint
  *
  * Sets the usage hint on a buffer. See #CoglBufferUsageHint for a description
@@ -100,12 +102,12 @@ typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
  * Stability: Unstable
  */
 void
-cogl_buffer_set_usage_hint (CoglHandle          handle,
+cogl_buffer_set_usage_hint (CoglBuffer         *buffer,
                             CoglBufferUsageHint hint);
 
 /**
  * cogl_buffer_get_usage_hint:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  *
  * Retrieves the usage hint set using cogl_buffer_set_usage_hint()
  *
@@ -115,7 +117,7 @@ cogl_buffer_set_usage_hint (CoglHandle          handle,
  * Stability: Unstable
  */
 CoglBufferUsageHint
-cogl_buffer_get_usage_hint (CoglHandle handle);
+cogl_buffer_get_usage_hint (CoglBuffer *buffer);
 
 /**
  * CoglBufferUpdateHint:
@@ -138,7 +140,7 @@ typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
 
 /**
  * cogl_buffer_set_update_hint:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  * @hint: the new hint
  *
  * Sets the update hint on a buffer. See #CoglBufferUpdateHint for a description
@@ -148,12 +150,12 @@ typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
  * Stability: Unstable
  */
 void
-cogl_buffer_set_update_hint (CoglHandle           handle,
+cogl_buffer_set_update_hint (CoglBuffer          *buffer,
                              CoglBufferUpdateHint hint);
 
 /**
  * cogl_buffer_get_update_hint:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  *
  * Retrieves the update hints set using cogl_buffer_set_update_hint()
  *
@@ -163,7 +165,7 @@ cogl_buffer_set_update_hint (CoglHandle           handle,
  * Stability: Unstable
  */
 CoglBufferUpdateHint
-cogl_buffer_get_update_hint (CoglHandle handle);
+cogl_buffer_get_update_hint (CoglBuffer *buffer);
 
 /**
  * CoglBufferAccess:
@@ -186,7 +188,7 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
 
 /**
  * cogl_buffer_map:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  * @access: how the mapped buffer will by use by the application
  *
  * Maps the buffer into the application address space for direct access.
@@ -197,12 +199,12 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * Stability: Unstable
  */
 guint8 *
-cogl_buffer_map (CoglHandle       handle,
+cogl_buffer_map (CoglBuffer      *buffer,
                  CoglBufferAccess access);
 
 /**
  * cogl_buffer_unmap:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  *
  * Unmaps a buffer previously mapped by cogl_buffer_map().
  *
@@ -210,11 +212,11 @@ cogl_buffer_map (CoglHandle       handle,
  * Stability: Unstable
  */
 void
-cogl_buffer_unmap (CoglHandle handle);
+cogl_buffer_unmap (CoglBuffer *buffer);
 
 /**
  * cogl_buffer_set_data:
- * @handle: a buffer handle
+ * @buffer: a buffer object
  * @offset: destination offset (in bytes) in the buffer
  * @data: a pointer to the data to be copied into the buffer
  * @size: number of bytes to copy
@@ -229,7 +231,7 @@ cogl_buffer_unmap (CoglHandle handle);
  * Stability: Unstable
  */
 gboolean
-cogl_buffer_set_data (CoglHandle    handle,
+cogl_buffer_set_data (CoglBuffer  *buffer,
                       gsize        offset,
                       const guint8 *data,
                       gsize        size);
@@ -240,37 +242,37 @@ cogl_buffer_set_data (CoglHandle    handle,
  * above into the real symbols */
 
 gboolean
-cogl_is_buffer_EXP (CoglHandle handle);
+cogl_is_buffer_EXP (const void *object);
 
 unsigned int
-cogl_buffer_get_size_EXP (CoglHandle handle);
+cogl_buffer_get_size_EXP (CoglBuffer *buffer);
 
 void
-cogl_buffer_set_usage_hint_EXP (CoglHandle          handle,
+cogl_buffer_set_usage_hint_EXP (CoglBuffer         *buffer,
                                 CoglBufferUsageHint hint);
 
 CoglBufferUsageHint
-cogl_buffer_get_usage_hint_EXP (CoglHandle handle);
+cogl_buffer_get_usage_hint_EXP (CoglBuffer *buffer);
 
 void
-cogl_buffer_set_update_hint_EXP (CoglHandle           handle,
+cogl_buffer_set_update_hint_EXP (CoglBuffer          *buffer,
                                  CoglBufferUpdateHint hint);
 
 CoglBufferUpdateHint
-cogl_buffer_get_update_hint_EXP (CoglHandle handle);
+cogl_buffer_get_update_hint_EXP (CoglBuffer *buffer);
 
 guint8 *
-cogl_buffer_map_EXP (CoglHandle       handle,
+cogl_buffer_map_EXP (CoglBuffer      *buffer,
                      CoglBufferAccess access);
 
 void
-cogl_buffer_unmap_EXP (CoglHandle handle);
+cogl_buffer_unmap_EXP (CoglBuffer *buffer);
 
 gboolean
-cogl_buffer_set_data_EXP (CoglHandle    handle,
-                          gsize        offset,
+cogl_buffer_set_data_EXP (CoglBuffer   *buffer,
+                          gsize         offset,
                           const guint8 *data,
-                          gsize        size);
+                          gsize         size);
 
 #define cogl_is_buffer  cogl_is_buffer_EXP
 #define cogl_buffer_get_size cogl_buffer_get_size_EXP
