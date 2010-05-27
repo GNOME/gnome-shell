@@ -790,6 +790,7 @@ _cogl_disable_other_texcoord_arrays (const CoglBitmask *mask)
   /* Update the mask of arrays that are enabled */
   _cogl_bitmask_clear_bits (&ctx->texcoord_arrays_enabled,
                             &ctx->texcoord_arrays_to_disable);
+  _cogl_bitmask_set_bits (&ctx->texcoord_arrays_enabled, mask);
 }
 
 void
