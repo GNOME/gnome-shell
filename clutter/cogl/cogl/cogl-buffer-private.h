@@ -45,7 +45,6 @@ G_BEGIN_DECLS
 #define COGL_BUFFER_FLAG_IS_SET(buffer, flag) \
   ((buffer)->flags & (COGL_BUFFER_FLAG_ ## flag))
 
-typedef struct _CoglBuffer       CoglBuffer;
 typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable

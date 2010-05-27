@@ -70,14 +70,14 @@
 
 #endif
 
-void cogl_buffer_unmap_EXP (CoglHandle handle);
+void cogl_buffer_unmap_EXP (CoglBuffer *buffer);
 
 gboolean
-cogl_is_buffer_EXP (CoglHandle handle)
+cogl_is_buffer_EXP (const void *object)
 {
-  CoglHandleObject *obj = (CoglHandleObject *) handle;
+  CoglObject *obj = (CoglObject *)object;
 
-  if (handle == COGL_INVALID_HANDLE)
+  if (obj == NULL)
     return FALSE;
 
   return obj->klass->type == _cogl_handle_pixel_buffer_get_type ();
@@ -179,68 +179,64 @@ _cogl_buffer_bind (CoglBuffer *buffer,
 }
 
 unsigned int
-cogl_buffer_get_size_EXP (CoglHandle handle)
+cogl_buffer_get_size_EXP (CoglBuffer *buffer)
 {
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return 0;
 
-  return COGL_BUFFER (handle)->size;
+  return COGL_BUFFER (buffer)->size;
 }
 
 void
-cogl_buffer_set_usage_hint_EXP (CoglHandle          handle,
+cogl_buffer_set_usage_hint_EXP (CoglBuffer *buffer,
                                 CoglBufferUsageHint hint)
 {
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return;
 
   if (G_UNLIKELY (hint > COGL_BUFFER_USAGE_HINT_TEXTURE))
     hint = COGL_BUFFER_USAGE_HINT_TEXTURE;
 
-  COGL_BUFFER (handle)->usage_hint = hint;
+  buffer->usage_hint = hint;
 }
 
 CoglBufferUsageHint
-cogl_buffer_get_usage_hint_EXP (CoglHandle handle)
+cogl_buffer_get_usage_hint_EXP (CoglBuffer *buffer)
 {
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return FALSE;
 
-  return COGL_BUFFER (handle)->usage_hint;
+  return buffer->usage_hint;
 }
 
 void
-cogl_buffer_set_update_hint_EXP (CoglHandle          handle,
+cogl_buffer_set_update_hint_EXP (CoglBuffer *buffer,
                                  CoglBufferUpdateHint hint)
 {
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return;
 
   if (G_UNLIKELY (hint > COGL_BUFFER_UPDATE_HINT_STREAM))
     hint = COGL_BUFFER_UPDATE_HINT_STATIC;
 
-  COGL_BUFFER (handle)->update_hint = hint;
+  buffer->update_hint = hint;
 }
 
 CoglBufferUpdateHint
-cogl_buffer_get_update_hint_EXP (CoglHandle handle)
+cogl_buffer_get_update_hint_EXP (CoglBuffer *buffer)
 {
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return FALSE;
 
-  return COGL_BUFFER (handle)->update_hint;
+  return buffer->update_hint;
 }
 
 guint8 *
-cogl_buffer_map_EXP (CoglHandle       handle,
+cogl_buffer_map_EXP (CoglBuffer      *buffer,
                      CoglBufferAccess access)
 {
-  CoglBuffer *buffer;
-
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return FALSE;
-
-  buffer = COGL_BUFFER (handle);
 
   if (COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
     return buffer->data;
@@ -250,14 +246,10 @@ cogl_buffer_map_EXP (CoglHandle       handle,
 }
 
 void
-cogl_buffer_unmap_EXP (CoglHandle handle)
+cogl_buffer_unmap_EXP (CoglBuffer *buffer)
 {
-  CoglBuffer *buffer;
-
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return;
-
-  buffer = COGL_BUFFER (handle);
 
   if (!COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
     return;
@@ -266,17 +258,13 @@ cogl_buffer_unmap_EXP (CoglHandle handle)
 }
 
 gboolean
-cogl_buffer_set_data_EXP (CoglHandle    handle,
+cogl_buffer_set_data_EXP (CoglBuffer   *buffer,
                           gsize         offset,
                           const guint8 *data,
                           gsize         size)
 {
-  CoglBuffer *buffer;
-
-  if (!cogl_is_buffer (handle))
+  if (!cogl_is_buffer (buffer))
     return FALSE;
-
-  buffer = COGL_BUFFER (handle);
 
   if (G_UNLIKELY((offset + size) > buffer->size))
     return FALSE;
