@@ -65,9 +65,9 @@ WorkspaceSwitcherPopup.prototype = {
     },
 
     _position: function() {
-        let focus = global.get_focus_monitor();
-        this._container.x = focus.x + Math.floor((focus.width - this._container.width) / 2);
-        this._container.y = focus.y + Math.floor((focus.height - this._container.height) / 2);
+        let primary = global.get_primary_monitor();
+        this._container.x = primary.x + Math.floor((primary.width - this._container.width) / 2);
+        this._container.y = primary.y + Math.floor((primary.height - this._container.height) / 2);
     },
 
     _show : function() {
