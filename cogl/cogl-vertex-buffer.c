@@ -800,7 +800,7 @@ filter_strided_attribute (CoglVertexBufferAttrib *attribute,
 	}
     }
   new_cogl_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
-  new_cogl_vbo->vbo_name = 0;
+  new_cogl_vbo->vbo_name = NULL;
   new_cogl_vbo->attributes = NULL;
   new_cogl_vbo->attributes =
     g_list_prepend (new_cogl_vbo->attributes, attribute);
@@ -1059,7 +1059,7 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
 
   if (!fallback)
     {
-      g_return_if_fail (cogl_vbo->vbo_name != 0);
+      g_return_if_fail (cogl_vbo->vbo_name != NULL);
 
       GE (glBindBuffer (GL_ARRAY_BUFFER,
 			GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
@@ -1352,7 +1352,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
    */
 
   new_multipack_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
-  new_multipack_vbo->vbo_name = 0;
+  new_multipack_vbo->vbo_name = NULL;
   new_multipack_vbo->flags =
     COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
     | COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
@@ -1400,7 +1400,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 	   * in their own VBO so that updates don't impact other attributes
 	   */
 
-	  cogl_vbo->vbo_name = 0;
+	  cogl_vbo->vbo_name = NULL;
 	  cogl_vbo->flags =
             COGL_VERTEX_BUFFER_VBO_FLAG_UNSTRIDED
 	    | COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
@@ -1546,7 +1546,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	{
 	  GE (glBindBuffer (GL_ARRAY_BUFFER,
 			    GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
-	  base = 0;
+	  base = NULL;
 	}
       else
 	base = cogl_vbo->vbo_name;
@@ -1832,7 +1832,7 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
   gsize indices_bytes;
   CoglVertexBufferIndices *indices;
 
-  _COGL_GET_CONTEXT (ctx, 0);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   indices = g_slice_alloc (sizeof (CoglVertexBufferIndices));
 
@@ -1852,7 +1852,7 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
     {
       g_critical ("unknown indices type %d", indices_type);
       g_slice_free (CoglVertexBufferIndices, indices);
-      return 0;
+      return NULL;
     }
 
   indices_bytes = get_indices_type_size (indices->type) * indices_len;

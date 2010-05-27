@@ -537,7 +537,7 @@ upload_vertices_to_vbo (GArray *vertices, CoglJournalFlushState *state)
 
   /* As we flush the journal entries in batches we walk forward through the
    * above VBO starting at offset 0... */
-  state->vbo_offset = 0;
+  state->vbo_offset = NULL;
 
   return journal_vbo;
 }

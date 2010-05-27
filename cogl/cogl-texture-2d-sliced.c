@@ -864,7 +864,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
           /* Pass NULL data to init size and internal format */
           GE( glTexImage2D (tex_2ds->gl_target, 0, gl_intformat,
                             x_span->size, y_span->size, 0,
-                            gl_format, gl_type, 0) );
+                            gl_format, gl_type, NULL) );
         }
     }
 
