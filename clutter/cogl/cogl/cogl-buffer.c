@@ -236,7 +236,7 @@ cogl_buffer_map_EXP (CoglBuffer      *buffer,
                      CoglBufferAccess access)
 {
   if (!cogl_is_buffer (buffer))
-    return FALSE;
+    return NULL;
 
   if (COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
     return buffer->data;

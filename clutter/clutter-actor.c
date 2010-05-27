@@ -9224,7 +9224,7 @@ clutter_actor_get_shader (ClutterActor *self)
   ClutterActorPrivate *actor_priv;
   ShaderData     *shader_data;
 
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;

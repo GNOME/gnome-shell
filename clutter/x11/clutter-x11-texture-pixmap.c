@@ -163,7 +163,7 @@ free_shm_resources (ClutterX11TexturePixmap *texture)
       XShmDetach(clutter_x11_get_default_display(),
 		 &priv->shminfo);
       shmdt(priv->shminfo.shmaddr);
-      shmctl(priv->shminfo.shmid, IPC_RMID, 0);
+      shmctl(priv->shminfo.shmid, IPC_RMID, NULL);
       priv->shminfo.shmid = -1;
     }
 }
@@ -219,7 +219,7 @@ try_alloc_shm (ClutterX11TexturePixmap *texture)
   if (priv->shminfo.shmid == -1)
     goto failed_shmget;
 
-  priv->shminfo.shmaddr = shmat (priv->shminfo.shmid, 0, 0);
+  priv->shminfo.shmaddr = shmat (priv->shminfo.shmid, NULL, 0);
   if (priv->shminfo.shmaddr == (void *) -1)
     goto failed_shmat;
 
@@ -243,7 +243,7 @@ failed_xshmattach:
 
 failed_shmat:
   g_warning ("shmat failed");
-  shmctl (priv->shminfo.shmid, IPC_RMID, 0);
+  shmctl (priv->shminfo.shmid, IPC_RMID, NULL);
 
 failed_shmget:
   g_warning ("shmget failed");
@@ -274,7 +274,7 @@ check_for_pixmap_damage (ClutterX11TexturePixmap *texture)
    * rectangles so we do not have to update the whole shebang.
    */
   dpy = clutter_x11_get_default_display();
-  parts = XFixesCreateRegion (dpy, 0, 0);
+  parts = XFixesCreateRegion (dpy, NULL, 0);
   XDamageSubtract (dpy, priv->damage, None, parts);
 
   r_damage = XFixesFetchRegionAndBounds (dpy,

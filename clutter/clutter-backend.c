@@ -280,8 +280,8 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   ClutterStageManager *stage_manager;
   ClutterStageWindow *stage_window;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
-  g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), NULL);
 
   stage_manager = clutter_stage_manager_get_default ();
 

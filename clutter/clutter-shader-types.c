@@ -488,7 +488,7 @@ clutter_value_get_shader_float (const GValue *value,
 {
   ClutterShaderFloat *shader_float;
 
-  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value), 0);
+  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value), NULL);
 
   shader_float = value->data[0].v_pointer;
 
@@ -520,7 +520,7 @@ clutter_value_get_shader_int (const GValue *value,
 {
   ClutterShaderInt *shader_int;
 
-  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_INT (value), 0);
+  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_INT (value), NULL);
 
   shader_int = value->data[0].v_pointer;
 
@@ -552,7 +552,7 @@ clutter_value_get_shader_matrix (const GValue *value,
 {
   ClutterShaderMatrix *shader_matrix;
 
-  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value), 0);
+  g_return_val_if_fail (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value), NULL);
 
   shader_matrix = value->data[0].v_pointer;
 

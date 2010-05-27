@@ -1174,7 +1174,7 @@ clutter_path_get_description (ClutterPath *path)
   GString *str;
   GSList *l;
 
-  g_return_val_if_fail (CLUTTER_IS_PATH (path), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_PATH (path), NULL);
 
   priv = path->priv;
 

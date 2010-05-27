@@ -78,7 +78,7 @@ CoglHandle
 cogl_create_program (void)
 {
   CoglProgram *program;
-  _COGL_GET_CONTEXT (ctx, 0);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   program = g_slice_new (CoglProgram);
   program->gl_handle = glCreateProgramObject ();

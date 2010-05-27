@@ -1091,8 +1091,8 @@ clutter_script_lookup_filename (ClutterScript *script,
   gchar *dirname;
   gchar *retval;
 
-  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
-  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
+  g_return_val_if_fail (filename != NULL, NULL);
 
   if (g_path_is_absolute (filename))
     return g_strdup (filename);

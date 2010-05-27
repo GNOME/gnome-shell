@@ -207,7 +207,7 @@ clutter_script_flags_from_string (GType        type,
   const gchar *flag;
 
   g_return_val_if_fail (G_TYPE_IS_FLAGS (type), 0);
-  g_return_val_if_fail (string != 0, 0);
+  g_return_val_if_fail (string != NULL, 0);
 
   ret = TRUE;
   

@@ -1065,7 +1065,7 @@ cogl_path_rel_curve_to (float x_1,
 CoglHandle
 cogl_path_get (void)
 {
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   return ctx->current_path;
 }
@@ -1106,7 +1106,7 @@ cogl_path_copy (CoglHandle handle)
 {
   CoglPath *old_path, *new_path;
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   if (!cogl_is_path (handle))
     return COGL_INVALID_HANDLE;
