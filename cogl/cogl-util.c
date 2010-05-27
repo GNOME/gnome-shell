@@ -61,48 +61,67 @@ cogl_util_next_p2 (int a)
 
 /* gtypes */
 
+void *
+cogl_object_ref (void *object)
+{
+  CoglObject *obj = object;
+
+  g_return_val_if_fail (object != NULL, NULL);
+
+  obj->ref_count++;
+  return object;
+}
+
 CoglHandle
 cogl_handle_ref (CoglHandle handle)
 {
-  CoglHandleObject *obj = (CoglHandleObject *)handle;
-
-  g_return_val_if_fail (handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
-
-  obj->ref_count++;
-  return handle;
+  return cogl_object_ref (handle);
 }
 
 void
-cogl_handle_unref (CoglHandle handle)
+cogl_object_unref (void *object)
 {
-  CoglHandleObject *obj = (CoglHandleObject *)handle;
+  CoglObject *obj = object;
 
-  g_return_if_fail (handle != COGL_INVALID_HANDLE);
+  g_return_if_fail (object != NULL);
   g_return_if_fail (obj->ref_count > 0);
 
   if (--obj->ref_count < 1)
     {
       void (*free_func)(void *obj);
 
-      COGL_HANDLE_DEBUG_FREE (obj);
+      COGL_OBJECT_DEBUG_FREE (obj);
       free_func = obj->klass->virt_free;
       free_func (obj);
     }
 }
 
+void
+cogl_handle_unref (CoglHandle handle)
+{
+  cogl_object_unref (handle);
+}
+
 GType
-cogl_handle_get_type (void)
+cogl_object_get_type (void)
 {
   static GType our_type = 0;
 
+  /* XXX: We are keeping the "CoglHandle" name for now incase it would
+   * break bindings to change to "CoglObject" */
   if (G_UNLIKELY (our_type == 0))
     our_type = g_boxed_type_register_static (g_intern_static_string ("CoglHandle"),
-                                            (GBoxedCopyFunc) cogl_handle_ref,
-                                            (GBoxedFreeFunc) cogl_handle_unref);
+                                             (GBoxedCopyFunc) cogl_object_ref,
+                                             (GBoxedFreeFunc) cogl_object_unref);
 
   return our_type;
 }
 
+GType
+cogl_handle_get_type (void)
+{
+  return cogl_object_get_type ();
+}
 /*
  * CoglFixed
  */

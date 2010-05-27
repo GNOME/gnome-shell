@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,142 +16,20 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  *
+ */
+
+/* This file is just kept for compatability while we eradicate
+ * CoglHandle
  */
 
 #ifndef __COGL_HANDLE_H
 #define __COGL_HANDLE_H
 
-typedef struct _CoglHandleClass
-{
-  GQuark   type;
-  void    *virt_free;
-} CoglHandleClass;
-
-/* All Cogl objects inherit from this base object by adding a member:
- *
- *   CoglHandleObject _parent;
- *
- * at the top of its main structure. This structure is initialized
- * when you call _cogl_#type_name#_handle_new (new_object);
- */
-typedef struct _CoglHandleObject
-{
-  unsigned int     ref_count;
-  CoglHandleClass *klass;
-} CoglHandleObject;
-
-/* Helper macro to encapsulate the common code for COGL reference
-   counted handles */
-
-#ifdef COGL_HANDLE_DEBUG
-
-#define _COGL_HANDLE_DEBUG_NEW(type_name, obj)			        \
-  COGL_NOTE (HANDLE, "COGL " G_STRINGIFY (type_name) " NEW   %p %i",    \
-	     (obj), (obj)->ref_count)
-
-#define _COGL_HANDLE_DEBUG_REF(type_name, handle)       G_STMT_START {  \
-  CoglHandleObject *__obj = (CoglHandleObject *)handle;                 \
-  COGL_NOTE (HANDLE, "COGL %s REF %p %i",	                        \
-             g_quark_to_string ((__obj)->klass->type),                  \
-             (__obj), (__obj)->ref_count);              } G_STMT_END
-
-#define _COGL_HANDLE_DEBUG_UNREF(type_name, handle)     G_STMT_START {  \
-  CoglHandleObject *__obj = (CoglHandleObject *)handle;                 \
-  COGL_NOTE (HANDLE, "COGL %s UNREF %p %i",	                        \
-             g_quark_to_string ((__obj)->klass->type),                  \
-             (__obj), (__obj)->ref_count - 1);          } G_STMT_END
-
-#define COGL_HANDLE_DEBUG_FREE(obj)                                     \
-  COGL_NOTE (HANDLE, "COGL %s FREE %p",                                 \
-             g_quark_to_string ((obj)->klass->type), (obj))
-
-#else /* !COGL_HANDLE_DEBUG */
-
-#define _COGL_HANDLE_DEBUG_NEW(type_name, obj)
-#define _COGL_HANDLE_DEBUG_REF(type_name, obj)
-#define _COGL_HANDLE_DEBUG_UNREF(type_name, obj)
-#define COGL_HANDLE_DEBUG_FREE(obj)
-
-#endif /* COGL_HANDLE_DEBUG */
-
-#define COGL_HANDLE_DEFINE(TypeName, type_name)	                \
-								\
-static CoglHandleClass _cogl_##type_name##_class;               \
-								\
-GQuark                                                          \
-_cogl_handle_##type_name##_get_type (void)                      \
-{                                                               \
-  static GQuark type = 0;                                       \
-  if (!type)                                                    \
-    type = g_quark_from_static_string ("Cogl"#TypeName);        \
-  return type;                                                  \
-}                                                               \
-								\
-static CoglHandle						\
-_cogl_##type_name##_handle_new (Cogl##TypeName *new_obj)	\
-{				                                \
-  CoglHandleObject *obj = (CoglHandleObject *)&new_obj->_parent;\
-  obj->ref_count = 1;                                           \
-								\
-  obj->klass = &_cogl_##type_name##_class;                      \
-  if (!obj->klass->type)                                        \
-    {                                                           \
-      obj->klass->type = _cogl_handle_##type_name##_get_type ();\
-      obj->klass->virt_free = _cogl_##type_name##_free;         \
-    }                                                           \
-								\
-  _COGL_HANDLE_DEBUG_NEW (TypeName, obj);                       \
-  return (CoglHandle) new_obj;			                \
-}								\
-								\
-Cogl##TypeName *						\
-_cogl_##type_name##_pointer_from_handle (CoglHandle handle)	\
-{								\
-  return (Cogl##TypeName *) handle;				\
-}								\
-								\
-gboolean							\
-cogl_is_##type_name (CoglHandle handle)			        \
-{                                                               \
-  CoglHandleObject *obj = (CoglHandleObject *)handle;           \
-                                                                \
-  if (handle == COGL_INVALID_HANDLE)                            \
-    return FALSE;                                               \
-                                                                \
-  return (obj->klass->type ==                                   \
-          _cogl_handle_##type_name##_get_type ());              \
-}								\
-								\
-CoglHandle G_GNUC_DEPRECATED					\
-cogl_##type_name##_ref (CoglHandle handle)			\
-{								\
-  if (!cogl_is_##type_name (handle))				\
-    return COGL_INVALID_HANDLE;				        \
-                                                                \
-  _COGL_HANDLE_DEBUG_REF (TypeName, handle);			\
-								\
-  cogl_handle_ref (handle);                                     \
-								\
-  return handle;						\
-}								\
-								\
-void G_GNUC_DEPRECATED					        \
-cogl_##type_name##_unref (CoglHandle handle)			\
-{								\
-  if (!cogl_is_##type_name (handle))				\
-    {                                                           \
-      g_warning (G_STRINGIFY (cogl_##type_name##_unref)         \
-                 ": Ignoring unref of Cogl handle "             \
-                 "due to type mismatch");                       \
-      return;							\
-    }                                                           \
-								\
-  _COGL_HANDLE_DEBUG_UNREF (TypeName, handle);		        \
-                                                                \
-  cogl_handle_unref (handle);                                   \
-}
+#include "cogl-object.h"
 
 #endif /* __COGL_HANDLE_H */
+
