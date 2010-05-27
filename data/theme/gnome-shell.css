@@ -899,6 +899,10 @@ StTooltip {
     padding: 0px 4px 2px 0px;
 }
 
+.calendar-calendarweek {
+    color: #666666;
+}
+
 /* App Switcher */
 #altTabPopup {
     padding: 8px;

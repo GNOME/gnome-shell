@@ -1268,6 +1268,7 @@ CalendarPopup.prototype = {
         Main.chrome.addActor(this.actor, { visibleInOverview: true,
                                            affectsStruts: false });
         this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
+        this.calendar.actor.connect('notify::width', Lang.bind(this, this._centerPopup));
     },
 
     show: function() {
@@ -1276,7 +1277,7 @@ CalendarPopup.prototype = {
         // Reset the calendar to today's date
         this.calendar.setDate(new Date());
 
-        this.actor.x = Math.round(panelActor.x + (panelActor.width - this.actor.width) / 2);
+        this._centerPopup();
         this.actor.lower(panelActor);
         this.actor.show();
         Tweener.addTween(this.actor,
@@ -1296,5 +1297,10 @@ CalendarPopup.prototype = {
                            onComplete: function() { this.actor.hide(); },
                            onCompleteScope: this
                          });
+    },
+
+    _centerPopup: function() {
+        let panelActor = Main.panel.actor;
+        this.actor.x = Math.round(panelActor.x + (panelActor.width - this.actor.width) / 2);
     }
 };

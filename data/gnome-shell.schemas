@@ -438,6 +438,20 @@
         </locale>
       </schema>
 
+      <!-- Calendar -->
+      <schema>
+        <key>/schemas/desktop/gnome/shell/calendar/show_weekdate</key>
+          <applyto>/desktop/gnome/shell/calendar/show_weekdate</applyto>
+          <owner>gnome-shell</owner>
+          <type>bool</type>
+          <default>false</default>
+          <locale name="C">
+            <short>Show the week date in the calendar</short>
+            <long>
+              If true, display the ISO week date in the calendar.
+            </long>
+          </locale>
+      </schema>
   </schemalist>
 
 </gconfschemafile>
