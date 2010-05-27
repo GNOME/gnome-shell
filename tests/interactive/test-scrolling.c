@@ -35,7 +35,7 @@ on_drag_end (ClutterDragAction   *action,
   /* check if we're at the viewport edges */
   if (viewport_x > 0)
     {
-      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_QUAD, 250,
+      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_BOUNCE, 250,
                              "x", 0.0,
                              NULL);
       return;
@@ -43,7 +43,7 @@ on_drag_end (ClutterDragAction   *action,
 
   if (viewport_x < (-1.0f * (RECT_WIDTH * (N_RECTS - 1))))
     {
-      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_QUAD, 250,
+      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_BOUNCE, 250,
                              "x", (-1.0f * (RECT_WIDTH * (N_RECTS - 1))),
                              NULL);
       return;
