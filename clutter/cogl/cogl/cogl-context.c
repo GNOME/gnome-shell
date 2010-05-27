@@ -167,7 +167,7 @@ cogl_create_context (void)
 }
 
 void
-_cogl_destroy_context ()
+_cogl_destroy_context (void)
 {
 
   if (_context == NULL)
@@ -217,7 +217,7 @@ _cogl_destroy_context ()
 }
 
 CoglContext *
-_cogl_context_get_default ()
+_cogl_context_get_default (void)
 {
   /* Create if doesn't exist yet */
   if (_context == NULL)

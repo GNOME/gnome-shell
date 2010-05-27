@@ -8,25 +8,25 @@
 typedef void (*PaintFunc) (void);
 
 static void
-test_paint_line ()
+test_paint_line (void)
 {
   cogl_path_line (-50, -25, 50, 25);
 }
 
 static void
-test_paint_rect ()
+test_paint_rect (void)
 {
   cogl_path_rectangle (-50, -25, 50, 25);
 }
 
 static void
-test_paint_rndrect()
+test_paint_rndrect(void)
 {
   cogl_path_round_rectangle (-50, -25, 50, 25, 10, 5);
 }
 
 static void
-test_paint_polyl ()
+test_paint_polyl (void)
 {
   gfloat poly_coords[] = {
     -50, -50,
@@ -39,7 +39,7 @@ test_paint_polyl ()
 }
 
 static void
-test_paint_polyg ()
+test_paint_polyg (void)
 {
   gfloat poly_coords[] = {
     -50, -50,
@@ -52,13 +52,13 @@ test_paint_polyg ()
 }
 
 static void
-test_paint_elp ()
+test_paint_elp (void)
 {
   cogl_path_ellipse (0, 0, 60, 40);
 }
 
 static void
-test_paint_curve ()
+test_paint_curve (void)
 {
   cogl_path_move_to (-50, +50);
 

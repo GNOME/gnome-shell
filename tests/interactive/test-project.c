@@ -6,7 +6,7 @@
 static ClutterActor *main_stage, *rect, *p[5];
 
 static void
-init_handles ()
+init_handles (void)
 {
   gint              i;
   ClutterVertex    v[4];
@@ -49,7 +49,7 @@ init_handles ()
 }
 
 static void
-place_handles ()
+place_handles (void)
 {
   gint              i;
   ClutterVertex    v[4];

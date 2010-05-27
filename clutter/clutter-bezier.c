@@ -96,7 +96,7 @@ struct _ClutterBezier
 };
 
 ClutterBezier *
-_clutter_bezier_new ()
+_clutter_bezier_new (void)
 {
   return g_slice_new0 (ClutterBezier);
 }

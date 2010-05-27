@@ -44,7 +44,7 @@ queue_redraw (gpointer stage)
 }
 
 static ClutterActor *
-create_label ()
+create_label (void)
 {
   ClutterColor label_color = { 0xff, 0xff, 0xff, 0xff };
   ClutterActor *label;
