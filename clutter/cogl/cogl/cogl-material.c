@@ -351,6 +351,7 @@ _cogl_material_init_default_material (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  material->is_weak = FALSE;
   material->journal_ref_count = 0;
   material->parent = NULL;
   material->backend = COGL_MATERIAL_BACKEND_UNDEFINED;
@@ -422,6 +423,56 @@ _cogl_material_init_default_material (void)
   ctx->default_material = _cogl_material_handle_new (material);
 }
 
+static void
+_cogl_material_unparent (CoglMaterial *material)
+{
+  CoglMaterial *parent = material->parent;
+
+  if (parent == NULL)
+    return;
+
+  g_return_if_fail (parent->has_children);
+
+  if (parent->first_child == material)
+    {
+      if (parent->children)
+        {
+          parent->first_child = parent->children->data;
+          parent->children =
+            g_list_delete_link (parent->children, parent->children);
+        }
+      else
+        parent->has_children = FALSE;
+    }
+  else
+    parent->children = g_list_remove (parent->children, material);
+
+  cogl_handle_unref (parent);
+
+  material->parent = NULL;
+}
+
+static void
+_cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
+{
+  cogl_handle_ref (parent);
+
+  if (material->parent)
+    _cogl_material_unparent (material);
+
+  material->parent = parent;
+  if (G_UNLIKELY (parent->has_children))
+    parent->children = g_list_prepend (parent->children, material);
+  else
+    {
+      parent->has_children = TRUE;
+      parent->first_child = material;
+      parent->children = NULL;
+    }
+
+  material->parent = parent;
+}
+
 /* XXX: Always have an eye out for opportunities to lower the cost of
  * cogl_material_copy. */
 CoglHandle
@@ -434,17 +485,12 @@ cogl_material_copy (CoglHandle handle)
 
   material->_parent = src->_parent;
 
+  material->is_weak = FALSE;
+
   material->journal_ref_count = 0;
 
-  material->parent = cogl_handle_ref (src);
-  if (src->has_children)
-    src->children = g_list_prepend (src->children, material);
-  else
-    {
-      src->has_children = TRUE;
-      src->first_child = material;
-      src->children = NULL;
-    }
+  material->parent = NULL;
+  _cogl_material_set_parent (material, src);
 
   material->has_children = FALSE;
 
@@ -476,6 +522,26 @@ cogl_material_copy (CoglHandle handle)
   return _cogl_material_handle_new (material);
 }
 
+/* XXX: we should give this more thought before making anything like
+ * this API public! */
+CoglHandle
+_cogl_material_weak_copy (CoglHandle handle)
+{
+  CoglMaterial *material = COGL_MATERIAL (handle);
+  CoglHandle copy;
+  CoglMaterial *copy_material;
+
+  /* If we make a public API we might want want to allow weak copies
+   * of weak material? */
+  g_return_val_if_fail (!material->is_weak, COGL_INVALID_HANDLE);
+
+  copy = cogl_material_copy (handle);
+  copy_material = COGL_MATERIAL (copy);
+  copy_material->is_weak = TRUE;
+
+  return copy;
+}
+
 CoglHandle
 cogl_material_new (void)
 {
@@ -486,33 +552,6 @@ cogl_material_new (void)
   new = cogl_material_copy (ctx->default_material);
   _cogl_material_set_static_breadcrumb (new, "new");
   return new;
-}
-
-static void
-_cogl_material_unparent (CoglMaterial *material)
-{
-  CoglMaterial *parent = material->parent;
-
-  if (parent == NULL)
-    return;
-
-  g_return_if_fail (parent->has_children);
-
-  if (parent->first_child == material)
-    {
-      if (parent->children)
-        {
-          parent->first_child = parent->children->data;
-          parent->children =
-            g_list_delete_link (parent->children, parent->children);
-        }
-      else
-        parent->has_children = FALSE;
-    }
-  else
-    parent->children = g_list_remove (parent->children, material);
-
-  cogl_handle_unref (parent);
 }
 
 static void
@@ -1053,10 +1092,39 @@ _cogl_material_foreach_child (CoglMaterial *material,
 }
 
 static gboolean
-change_parent_cb (CoglMaterial *child,
-                  void *user_data)
+check_if_strong_cb (CoglMaterial *material, void *user_data)
 {
-  child->parent = user_data;
+  gboolean *has_strong_child = user_data;
+
+  if (!material->is_weak)
+    {
+      *has_strong_child = TRUE;
+      return FALSE;
+    }
+  return TRUE;
+}
+
+static gboolean
+has_strong_children (CoglMaterial *material)
+{
+  gboolean has_strong_child = FALSE;
+  _cogl_material_foreach_child (material,
+                                check_if_strong_cb,
+                                &has_strong_child);
+  return has_strong_child;
+}
+
+static gboolean
+reparent_strong_children_cb (CoglMaterial *material,
+                             void *user_data)
+{
+  CoglMaterial *parent = user_data;
+
+  if (material->is_weak)
+    return TRUE;
+
+  _cogl_material_set_parent (material, parent);
+
   return TRUE;
 }
 
@@ -1125,7 +1193,7 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
    * for unless we create another material to take its place first and
    * make sure descendants reference this new material instead.
    */
-  if (material->has_children)
+  if (has_strong_children (material))
     {
       CoglMaterial *new_authority;
       COGL_STATIC_COUNTER (material_copy_on_write_counter,
@@ -1155,14 +1223,13 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       _cogl_material_copy_differences (new_authority, material,
                                        material->differences);
 
-      /* Reparent the children of material to be children of
+      /* Reparent the strong children of material to be children of
        * new_authority instead... */
-      new_authority->has_children = TRUE;
-      new_authority->first_child = material->first_child;
-      new_authority->children = material->children;
-      material->has_children = FALSE;
-      _cogl_material_foreach_child (new_authority,
-                                    change_parent_cb,
+      new_authority->has_children = FALSE;
+      new_authority->first_child = NULL;
+      new_authority->children = NULL;
+      _cogl_material_foreach_child (material,
+                                    reparent_strong_children_cb,
                                     new_authority);
 
       /* If the new_authority has any
@@ -1184,9 +1251,9 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
         }
     }
 
-  /* At this point we know we have a material with no dependants so we
-   * are now free to modify the material. */
-  g_assert (!material->has_children);
+  /* At this point we know we have a material with no strong
+   * dependants (though we may have some weak children) so we are now
+   * free to modify the material. */
 
   material->age++;
 

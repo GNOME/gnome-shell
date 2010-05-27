@@ -523,6 +523,12 @@ struct _CoglMaterial
 
   /* bitfields */
 
+  /* Weak materials don't count as dependants on their parents which
+   * means that the parent material can be modified without
+   * considering how the modifications may affect the weak material.
+   */
+  unsigned int          is_weak:1;
+
   /* Determines if material->big_state is valid */
   unsigned int          has_big_state:1;
 
