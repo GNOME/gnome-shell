@@ -84,6 +84,27 @@ void
 cogl_handle_unref (CoglHandle Handle);
 
 /**
+ * cogl_handle_ref:
+ * @object: a #CoglObject
+ *
+ * Increases the reference count of @handle by 1
+ *
+ * Returns: the @object, with its reference count increased
+ */
+void *
+cogl_object_ref (void *object);
+
+/**
+ * cogl_handle_unref:
+ * @object: a #CoglObject
+ *
+ * Drecreases the reference count of @object by 1; if the reference
+ * count reaches 0, the resources allocated by @object will be freed
+ */
+void
+cogl_object_unref (void *object);
+
+/**
  * CoglFuncPtr:
  *
  * The type used by cogl for function pointers, note that this type
