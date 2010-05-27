@@ -1,6 +1,12 @@
 <SECTION>
 <FILE>cogl</FILE>
 <TITLE>General API</TITLE>
+CoglObject
+cogl_object_ref
+cogl_object_unref
+CoglUserDataKey
+cogl_object_get_user_data
+cogl_object_set_user_data
 COGL_INVALID_HANDLE
 CoglHandle
 cogl_handle_ref

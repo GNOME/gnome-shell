@@ -80,6 +80,9 @@ cogl_sources_c = \
 	$(srcdir)/cogl-context.c			\
 	$(srcdir)/cogl-internal.h			\
 	$(srcdir)/cogl.c				\
+	$(srcdir)/cogl-object-private.h			\
+	$(srcdir)/cogl-object.h				\
+	$(srcdir)/cogl-object.c				\
 	$(srcdir)/cogl-util.h 				\
 	$(srcdir)/cogl-util.c 				\
 	$(srcdir)/cogl-bitmap-private.h 		\

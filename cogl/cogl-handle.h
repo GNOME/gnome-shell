@@ -29,7 +29,7 @@
 #ifndef __COGL_HANDLE_H
 #define __COGL_HANDLE_H
 
-#include "cogl-object.h"
+#include "cogl-object-private.h"
 
 #endif /* __COGL_HANDLE_H */
 
