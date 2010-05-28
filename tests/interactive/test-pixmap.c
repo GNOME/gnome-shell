@@ -307,6 +307,8 @@ test_pixmap_main (int argc, char **argv)
   label = clutter_text_new_with_text ("fixed", "ClutterX11Texture (Pixmap)");
   clutter_container_add_actor (CLUTTER_CONTAINER (group), label);
   tex = clutter_x11_texture_pixmap_new_with_pixmap (pixmap);
+  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex),
+                                            TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), tex);
   clutter_actor_set_position (tex, 0, 20);
   clutter_texture_set_filter_quality (CLUTTER_TEXTURE (tex),
