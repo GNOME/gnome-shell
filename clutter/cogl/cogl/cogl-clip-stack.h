@@ -24,18 +24,20 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
-CoglHandle
+typedef struct _CoglClipStack CoglClipStack;
+
+CoglClipStack *
 _cogl_clip_stack_new (void);
 
 void
-_cogl_clip_stack_push_window_rectangle (CoglHandle handle,
+_cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int x_offset,
                                         int y_offset,
                                         int width,
                                         int height);
 
 void
-_cogl_clip_stack_push_rectangle (CoglHandle handle,
+_cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float x_1,
                                  float y_1,
                                  float x_2,
@@ -43,14 +45,14 @@ _cogl_clip_stack_push_rectangle (CoglHandle handle,
                                  const CoglMatrix *modelview_matrix);
 
 void
-_cogl_clip_stack_push_from_path (CoglHandle handle,
-                                 CoglHandle path,
+_cogl_clip_stack_push_from_path (CoglClipStack *stack,
+                                 CoglPath *path,
                                  const CoglMatrix *modelview_matrix);
 void
-_cogl_clip_stack_pop (CoglHandle handle);
+_cogl_clip_stack_pop (CoglClipStack *stack);
 
 void
-_cogl_clip_stack_flush (CoglHandle handle,
+_cogl_clip_stack_flush (CoglClipStack *stack,
                         gboolean *stencil_used_p);
 
 
@@ -60,16 +62,16 @@ _cogl_clip_stack_flush (CoglHandle handle,
  */
 /*
  * _cogl_clip_stack_copy:
- * @handle: A handle to a clip stack
+ * @stack: A #CoglClipStack
  *
- * Creates a copy of the given clip stack and returns a new handle to
+ * Creates a copy of the given clip stack and returns a new pointer to
  * it. The data from the original stack is shared with the new stack
  * so making copies is relatively cheap. Modifying the original stack
  * does not affect the new stack.
  *
- * Return value: a new clip stack with the same data as @handle
+ * Return value: a new clip stack with the same data as @stack
  */
-CoglHandle
-_cogl_clip_stack_copy (CoglHandle handle);
+CoglClipStack *
+_cogl_clip_stack_copy (CoglClipStack *stack);
 
 #endif /* __COGL_CLIP_STACK_H */

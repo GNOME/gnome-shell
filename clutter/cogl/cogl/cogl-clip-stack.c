@@ -40,7 +40,6 @@
 #include "cogl-util.h"
 #include "cogl-path-private.h"
 
-typedef struct _CoglClipStack CoglClipStack;
 typedef struct _CoglClipStackEntry CoglClipStackEntry;
 typedef struct _CoglClipStackEntryRect CoglClipStackEntryRect;
 typedef struct _CoglClipStackEntryWindowRect CoglClipStackEntryWindowRect;
@@ -63,11 +62,11 @@ typedef enum
  * For example, the following sequence of operations would generate
  * the tree below:
  *
- * CoglHandle stack_a = _cogl_clip_stack_new ();
+ * CoglClipStack *stack_a = _cogl_clip_stack_new ();
  * _cogl_set_clip_stack (stack_a);
  * cogl_clip_stack_push_rectangle (...);
  * cogl_clip_stack_push_rectangle (...);
- * CoglHandle stack_b = _cogl_clip_stack_copy (stack_a);
+ * CoglClipStack *stack_b = _cogl_clip_stack_copy (stack_a);
  * cogl_clip_stack_push_from_path ();
  * cogl_set_clip_stack (stack_b);
  * cogl_clip_stack_push_window_rectangle (...);
@@ -95,7 +94,7 @@ typedef enum
 
 struct _CoglClipStack
 {
-  CoglHandleObject _parent;
+  CoglObject _parent;
 
   CoglClipStackEntry *stack_top;
 };
@@ -144,12 +143,12 @@ struct _CoglClipStackEntryPath
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;
 
-  CoglHandle             path;
+  CoglPath              *path;
 };
 
 static void _cogl_clip_stack_free (CoglClipStack *stack);
 
-COGL_HANDLE_DEFINE (ClipStack, clip_stack);
+COGL_OBJECT_DEFINE (ClipStack, clip_stack);
 
 #define COGL_CLIP_STACK(stack) ((CoglClipStack *) (stack))
 
@@ -184,7 +183,7 @@ set_clip_plane (GLint plane_num,
   GLdouble plane[4];
 #endif
   GLfloat angle;
-  CoglHandle framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -236,7 +235,7 @@ set_clip_planes (float x_1,
 		 float x_2,
 		 float y_2)
 {
-  CoglHandle framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrix modelview_matrix;
@@ -293,7 +292,7 @@ add_stencil_clip_rectangle (float x_1,
                             gboolean first)
 {
   CoglHandle current_source;
-  CoglHandle framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -304,7 +303,7 @@ add_stencil_clip_rectangle (float x_1,
   _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* temporarily swap in our special stenciling material */
-  current_source = cogl_handle_ref (ctx->source_material);
+  current_source = cogl_object_ref (ctx->source_material);
   cogl_set_source (ctx->stencil_material);
 
   if (first)
@@ -365,7 +364,7 @@ add_stencil_clip_rectangle (float x_1,
 
   /* restore the original source material */
   cogl_set_source (current_source);
-  cogl_handle_unref (current_source);
+  cogl_object_unref (current_source);
 }
 
 static void
@@ -414,13 +413,12 @@ _cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
 }
 
 void
-_cogl_clip_stack_push_window_rectangle (CoglHandle handle,
+_cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int x_offset,
                                         int y_offset,
                                         int width,
                                         int height)
 {
-  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryWindowRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -436,14 +434,13 @@ _cogl_clip_stack_push_window_rectangle (CoglHandle handle,
 }
 
 void
-_cogl_clip_stack_push_rectangle (CoglHandle handle,
+_cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float x_1,
                                  float y_1,
                                  float x_2,
                                  float y_2,
                                  const CoglMatrix *modelview_matrix)
 {
-  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryRect *entry;
 
   /* Make a new entry */
@@ -460,11 +457,10 @@ _cogl_clip_stack_push_rectangle (CoglHandle handle,
 }
 
 void
-_cogl_clip_stack_push_from_path (CoglHandle handle,
-                                 CoglHandle path,
+_cogl_clip_stack_push_from_path (CoglClipStack *stack,
+                                 CoglPath *path,
                                  const CoglMatrix *modelview_matrix)
 {
-  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntryPath *entry;
 
   entry = _cogl_clip_stack_push_entry (stack,
@@ -496,7 +492,7 @@ _cogl_clip_stack_entry_unref (CoglClipStackEntry *entry)
           break;
 
         case COGL_CLIP_STACK_PATH:
-          cogl_handle_unref (((CoglClipStackEntryPath *) entry)->path);
+          cogl_object_unref (((CoglClipStackEntryPath *) entry)->path);
           g_slice_free1 (sizeof (CoglClipStackEntryPath), entry);
           break;
 
@@ -509,9 +505,8 @@ _cogl_clip_stack_entry_unref (CoglClipStackEntry *entry)
 }
 
 void
-_cogl_clip_stack_pop (CoglHandle handle)
+_cogl_clip_stack_pop (CoglClipStack *stack)
 {
-  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   CoglClipStackEntry *entry;
 
   g_return_if_fail (stack->stack_top != NULL);
@@ -532,10 +527,9 @@ _cogl_clip_stack_pop (CoglHandle handle)
 }
 
 void
-_cogl_clip_stack_flush (CoglHandle handle,
+_cogl_clip_stack_flush (CoglClipStack *stack,
                         gboolean *stencil_used_p)
 {
-  CoglClipStack *stack = COGL_CLIP_STACK (handle);
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
@@ -639,7 +633,7 @@ _cogl_clip_stack_flush (CoglHandle handle,
         scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
       else
         {
-          CoglHandle framebuffer = _cogl_get_framebuffer ();
+          CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
 
           /* We store the entry coordinates in Cogl coordinate space
            * but OpenGL requires the window origin to be the bottom
@@ -669,7 +663,7 @@ _cogl_clip_stack_flush (CoglHandle handle,
   *stencil_used_p = using_stencil_buffer;
 }
 
-CoglHandle
+CoglClipStack *
 _cogl_clip_stack_new (void)
 {
   CoglClipStack *stack;
@@ -677,7 +671,7 @@ _cogl_clip_stack_new (void)
   stack = g_slice_new (CoglClipStack);
   stack->stack_top = NULL;
 
-  return _cogl_clip_stack_handle_new (stack);
+  return _cogl_clip_stack_object_new (stack);
 }
 
 void
@@ -691,19 +685,15 @@ _cogl_clip_stack_free (CoglClipStack *stack)
   g_slice_free (CoglClipStack, stack);
 }
 
-CoglHandle
-_cogl_clip_stack_copy (CoglHandle handle)
+CoglClipStack *
+_cogl_clip_stack_copy (CoglClipStack *old_stack)
 {
-  CoglHandle new_handle;
-  CoglClipStack *new_stack, *old_stack;
+  CoglClipStack *new_stack;
 
-  if (!cogl_is_clip_stack (handle))
-    return COGL_INVALID_HANDLE;
+  if (!cogl_is_clip_stack (old_stack))
+    return NULL;
 
-  old_stack = COGL_CLIP_STACK (handle);
-
-  new_handle = _cogl_clip_stack_new ();
-  new_stack = COGL_CLIP_STACK (new_handle);
+  new_stack = _cogl_clip_stack_new ();
 
   /* We can copy the stack by just referencing the other stack's
      data. There's no need to implement copy-on-write because the
@@ -714,5 +704,5 @@ _cogl_clip_stack_copy (CoglHandle handle)
   if (new_stack->stack_top)
     new_stack->stack_top->ref_count++;
 
-  return new_handle;
+  return new_stack;
 }
