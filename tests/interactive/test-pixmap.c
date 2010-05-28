@@ -196,7 +196,7 @@ test_pixmap_main (int argc, char **argv)
   Display	      *xdpy;
   int		       screen;
   Window	       rootwin;
-  ClutterActor        *group, *label, *stage, *tex;
+  ClutterActor        *group = NULL, *label, *stage, *tex;
   Pixmap               pixmap;
   const ClutterColor   gry = { 0x99, 0x99, 0x99, 0xFF };
   Window               win_remote;
@@ -241,19 +241,23 @@ test_pixmap_main (int argc, char **argv)
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 400);
 
-  group = clutter_group_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
-  label = clutter_text_new_with_text ("fixed", "ClutterX11Texture (Window)");
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), label);
-  tex = clutter_x11_texture_pixmap_new_with_window (win_remote);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), tex);
-  clutter_actor_set_position (tex, 0, 20);
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex),
-					    TRUE);
-  clutter_texture_set_filter_quality (CLUTTER_TEXTURE (tex),
-				      CLUTTER_TEXTURE_QUALITY_HIGH);
-  clutter_actor_set_position (group, 0, 0);
-  clutter_behaviour_apply (depth_behavior, group);
+  if (!disable_x11)
+    {
+      group = clutter_group_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
+      label = clutter_text_new_with_text ("fixed",
+                                          "ClutterX11Texture (Window)");
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), label);
+      tex = clutter_x11_texture_pixmap_new_with_window (win_remote);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group), tex);
+      clutter_actor_set_position (tex, 0, 20);
+      clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex),
+                                                TRUE);
+      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (tex),
+                                          CLUTTER_TEXTURE_QUALITY_HIGH);
+      clutter_actor_set_position (group, 0, 0);
+      clutter_behaviour_apply (depth_behavior, group);
+    }
 
 #ifdef HAVE_CLUTTER_GLX
   /* a window with glx */
@@ -283,7 +287,10 @@ test_pixmap_main (int argc, char **argv)
     }
 #endif /* HAVE_CLUTTER_GLX */
 
-  row_height = clutter_actor_get_height (group);
+  if (group)
+    row_height = clutter_actor_get_height (group);
+  else
+    row_height = 0;
 
   /* NB: We only draw on the window after being redirected, so we dont
    * have to worry about handling expose events... */
