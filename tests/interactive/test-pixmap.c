@@ -23,6 +23,7 @@
 
 static gboolean disable_x11 = FALSE;
 static gboolean disable_glx = FALSE;
+static gboolean disable_animation = FALSE;
 
 static GOptionEntry g_options[] =
 {
@@ -37,6 +38,12 @@ static GOptionEntry g_options[] =
     G_OPTION_ARG_NONE,
     &disable_glx,
     "Disable redirection through GLX pixmap",
+    NULL },
+  { "disable-animation",
+    0, 0,
+    G_OPTION_ARG_NONE,
+    &disable_animation,
+    "Disable the animations",
     NULL },
 
   { NULL }
@@ -256,7 +263,8 @@ test_pixmap_main (int argc, char **argv)
       clutter_texture_set_filter_quality (CLUTTER_TEXTURE (tex),
                                           CLUTTER_TEXTURE_QUALITY_HIGH);
       clutter_actor_set_position (group, 0, 0);
-      clutter_behaviour_apply (depth_behavior, group);
+      if (!disable_animation)
+        clutter_behaviour_apply (depth_behavior, group);
     }
 
 #ifdef HAVE_CLUTTER_GLX
@@ -279,7 +287,8 @@ test_pixmap_main (int argc, char **argv)
 				  clutter_actor_get_width (stage)
 				  - clutter_actor_get_width (tex),
 				  0);
-      clutter_behaviour_apply (depth_behavior, group);
+      if (!disable_animation)
+        clutter_behaviour_apply (depth_behavior, group);
 
       if (!clutter_glx_texture_pixmap_using_extension (
 				      CLUTTER_GLX_TEXTURE_PIXMAP (tex)))
@@ -316,7 +325,8 @@ test_pixmap_main (int argc, char **argv)
   /* oddly, the actor's size is 0 until it is realized, even though
      pixmap-height is set */
   clutter_actor_set_position (group, 0, row_height);
-  clutter_behaviour_apply (depth_behavior, group);
+  if (!disable_animation)
+    clutter_behaviour_apply (depth_behavior, group);
 
 
   g_signal_connect (stage, "key-release-event",
@@ -326,7 +336,8 @@ test_pixmap_main (int argc, char **argv)
 
   clutter_actor_show (stage);
 
-  clutter_timeline_start (timeline);
+  if (!disable_animation)
+    clutter_timeline_start (timeline);
 
   clutter_main ();
 # endif /* USE_GDKPIXBUF */
