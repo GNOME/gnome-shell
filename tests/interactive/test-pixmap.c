@@ -71,16 +71,29 @@ stage_button_press_cb (ClutterActor    *actor,
 {
   Pixmap        pxm = (Pixmap)data;
   Display      *dpy = clutter_x11_get_default_display ();
-  GC            gc;
-  XGCValues     gc_values = {0};
+  static GC     gc = None;
+  static int    x = 100, y = 100;
 
+  if (gc == None)
+    {
+      XGCValues gc_values = { 0 };
 
-  gc = XCreateGC (dpy,
-                  pxm,
-                  0,
-                  &gc_values);
+      gc_values.line_width = 12;
+      /* This is an attempt to get a black pixel will full
+         opacity. Seemingly the BlackPixel macro and the default GC
+         value are a fully transparent color */
+      gc_values.foreground = 0xff000000;
 
-  XDrawLine (dpy, pxm, gc, 0, 0, 100, 100);
+      gc = XCreateGC (dpy,
+                      pxm,
+                      GCLineWidth | GCForeground,
+                      &gc_values);
+    }
+
+  XDrawArc (dpy, pxm, gc, x, y, 100, 100, 0, 360 * 64);
+
+  x -= 5;
+  y -= 5;
 
   return FALSE;
 }
