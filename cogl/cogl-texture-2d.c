@@ -485,6 +485,8 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   if (tmp_bmp_owner)
     g_free (tmp_bmp.data);
 
+  tex_2d->mipmaps_dirty = TRUE;
+
   return TRUE;
 }
 
