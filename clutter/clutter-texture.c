@@ -93,6 +93,7 @@ struct _ClutterTexturePrivate
   guint load_async_set : 1;  /* used to make load_async possible */
   guint pick_with_alpha : 1;
   guint pick_with_alpha_supported : 1;
+  guint seen_create_pick_material_warning : 1;
 };
 
 struct _ClutterTextureAsyncData
@@ -550,6 +551,8 @@ gen_texcoords_and_draw_cogl_rectangle (ClutterActor *self)
 static CoglHandle
 create_pick_material (ClutterActor *self)
 {
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
   CoglHandle pick_material = cogl_material_new ();
   GError *error = NULL;
 
@@ -558,11 +561,10 @@ create_pick_material (ClutterActor *self)
                                         "  MODULATE (CONSTANT, TEXTURE[A])",
                                         &error))
     {
-      static gboolean seen_warning = FALSE;
-      if (!seen_warning)
+      if (!priv->seen_create_pick_material_warning)
         g_warning ("Error setting up texture combine for shaped "
                    "texture picking: %s", error->message);
-      seen_warning = TRUE;
+      priv->seen_create_pick_material_warning = TRUE;
       g_error_free (error);
       cogl_handle_unref (pick_material);
       return COGL_INVALID_HANDLE;
@@ -1226,6 +1228,7 @@ clutter_texture_init (ClutterTexture *self)
   priv->keep_aspect_ratio = FALSE;
   priv->pick_with_alpha   = FALSE;
   priv->pick_with_alpha_supported = TRUE;
+  priv->seen_create_pick_material_warning = FALSE;
 }
 
 /**
