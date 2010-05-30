@@ -9,7 +9,6 @@ const Shell = imports.gi.Shell;
 const Gettext_gtk20 = imports.gettext.domain('gtk20');
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
-const MSECS_IN_WEEK = MSECS_IN_DAY * 7;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
@@ -20,12 +19,20 @@ function _sameDay(dateA, dateB) {
 }
 
 function _getCalendarWeekForDate(date) {
-    let startOfYear = new Date(date.getFullYear(), 0, 1);
-    let sday = startOfYear.getDay();
-    let offset = 4 + (7 * Math.floor(sday * (1/5))) - sday;
-    let firstThursday = new Date(date.getFullYear(), 0, 1 + offset);
-    let weekOfYear = Math.ceil((date.getTime() - firstThursday.getTime()) / MSECS_IN_WEEK);
-    return weekOfYear;
+    // Based on the algorithms found here:
+    // http://en.wikipedia.org/wiki/Talk:ISO_week_date
+    let midnightDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    // Need to get Monday to be 1 ... Sunday to be 7
+    let dayOfWeek = 1 + ((midnightDate.getDay() + 6) % 7);
+    let nearestThursday = new Date(midnightDate.getFullYear(), midnightDate.getMonth(),
+                                   midnightDate.getDate() + (4 - dayOfWeek));
+
+    let jan1st = new Date(nearestThursday.getFullYear(), 0, 1);
+    let diffDate = nearestThursday - jan1st;
+    let dayNumber = Math.floor(Math.abs(diffDate) / MSECS_IN_DAY);
+    let weekNumber = Math.floor(dayNumber / 7) + 1;
+
+    return weekNumber;
 }
 
 function _getDigitWidth(actor){
