@@ -223,7 +223,11 @@ WindowList.prototype = {
         let tracker = Shell.WindowTracker.get_default();
         for (let i = 0; i < windows.length; i++) {
             let metaWindow = windows[i].metaWindow;
-            metaWindow.connect('unmanaged', Lang.bind(this, this._updateWindowList));
+            // Avoid multiple connections
+            if (!metaWindow._lookingGlassManaged) {
+                metaWindow.connect('unmanaged', Lang.bind(this, this._updateWindowList));
+                metaWindow._lookingGlassManaged = true;
+            }
             let box = new St.BoxLayout({ vertical: true });
             this.actor.add(box);
             let windowLink = new ObjLink(metaWindow, metaWindow.title);
