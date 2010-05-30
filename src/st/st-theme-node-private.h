@@ -36,6 +36,8 @@ struct _StThemeNode {
   int max_width;
   int max_height;
 
+  int transition_duration;
+
   char *background_image;
   StBorderImage *border_image;
   StShadow *shadow;

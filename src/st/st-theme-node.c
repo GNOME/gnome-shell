@@ -20,6 +20,7 @@ G_DEFINE_TYPE (StThemeNode, st_theme_node, G_TYPE_OBJECT)
 static void
 st_theme_node_init (StThemeNode *node)
 {
+  node->transition_duration = -1;
   _st_theme_node_init_drawing_state (node);
 }
 
@@ -1546,6 +1547,33 @@ st_theme_node_get_padding (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
 
   return node->padding[side];
+}
+
+/**
+ * st_theme_node_get_transition_duration:
+ * @node: an #StThemeNode
+ *
+ * Get the value of the transition-duration property, which
+ * specifies the transition time between the previous #StThemeNode
+ * and @node.
+ *
+ * Returns: the node's transition duration in milliseconds
+ */
+int
+st_theme_node_get_transition_duration (StThemeNode *node)
+{
+  gdouble value = 0.0;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0);
+
+  if (node->transition_duration > -1)
+    return node->transition_duration;
+
+  st_theme_node_get_double (node, "transition-duration", FALSE, &value);
+
+  node->transition_duration = (int)value;
+
+  return node->transition_duration;
 }
 
 StTextDecoration

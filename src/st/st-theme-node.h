@@ -141,6 +141,8 @@ int    st_theme_node_get_min_height    (StThemeNode  *node);
 int    st_theme_node_get_max_width     (StThemeNode  *node);
 int    st_theme_node_get_max_height    (StThemeNode  *node);
 
+int    st_theme_node_get_transition_duration (StThemeNode *node);
+
 StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
 
 /* Font rule processing is pretty complicated, so we just hardcode it
