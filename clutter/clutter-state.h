@@ -116,7 +116,7 @@ void              clutter_state_set                  (ClutterState    *state,
                                                       gpointer         first_object,
                                                       const gchar     *first_property_name,
                                                       gulong           first_mode,
-                                                       ...);
+                                                       ...) G_GNUC_NULL_TERMINATED;
 GList           * clutter_state_get_states           (ClutterState    *state);
 GList           * clutter_state_get_keys             (ClutterState    *state,
                                                       const gchar     *source_state_name,

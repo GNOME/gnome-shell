@@ -117,7 +117,7 @@ void                 clutter_animator_set                        (ClutterAnimato
                                                                   const gchar          *first_property_name,
                                                                   guint                 first_mode,
                                                                   gdouble               first_progress,
-                                                                  ...);
+                                                                  ...) G_GNUC_NULL_TERMINATED;
 GList              * clutter_animator_get_keys                   (ClutterAnimator      *animator,
                                                                   GObject              *object,
                                                                   const gchar          *property_name,
