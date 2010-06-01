@@ -494,9 +494,13 @@ clutter_texture_set_from_file
 clutter_texture_set_from_rgb_data
 clutter_texture_set_from_yuv_data
 clutter_texture_set_area_from_rgb_data
+
+<SUBSECTION>
 clutter_texture_get_base_size
 clutter_texture_get_pixel_format
 clutter_texture_get_max_tile_waste
+
+<SUBSECTION>
 clutter_texture_get_filter_quality
 clutter_texture_set_filter_quality
 clutter_texture_get_cogl_texture
@@ -513,6 +517,8 @@ clutter_texture_get_load_async
 clutter_texture_set_load_async
 clutter_texture_get_load_data_async
 clutter_texture_set_load_data_async
+clutter_texture_get_pick_with_alpha
+clutter_texture_set_pick_with_alpha
 
 <SUBSECTION Standard>
 CLUTTER_TEXTURE

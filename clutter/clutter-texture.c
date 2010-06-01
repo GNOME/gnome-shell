@@ -2826,6 +2826,8 @@ clutter_texture_get_load_data_async (ClutterTexture *texture)
 /**
  * clutter_texture_set_pick_with_alpha:
  * @texture: a #ClutterTexture
+ * @pick_with_alpha: %TRUE if the alpha channel should affect the
+ *   picking shape
  *
  * Sets whether @texture should have it's shape defined by the alpha
  * channel when picking.
@@ -2861,7 +2863,6 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
     }
 
   /* NB: the pick material is created lazily when we first pick */
-
   priv->pick_with_alpha = pick_with_alpha;
 }
 
