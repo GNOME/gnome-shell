@@ -54,6 +54,18 @@ G_BEGIN_DECLS
 typedef struct _CoglPath CoglPath;
 
 /**
+ * cogl_is_path:
+ * @handle: A CoglHandle
+ *
+ * Gets whether the given handle references an existing path object.
+ *
+ * Return value: %TRUE if the handle references a #CoglPath,
+ *   %FALSE otherwise
+ */
+gboolean
+cogl_is_path (CoglHandle handle);
+
+/**
  * cogl_path_fill:
  *
  * Fills the interior of the constructed shape using the current
