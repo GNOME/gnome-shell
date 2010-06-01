@@ -27,6 +27,8 @@
 
 typedef struct _CoglObject      CoglObject;
 
+#define COGL_OBJECT(X)          ((CoglObject *)X)
+
 /**
  * CoglUserDataKey:
  * @unused: ignored.
