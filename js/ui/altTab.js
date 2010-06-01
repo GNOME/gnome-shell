@@ -156,6 +156,14 @@ var AppSwitcherPopup = new Lang.Class({
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
 
+    _quitApplication: function(appIndex) {
+        let appIcon = this._items[appIndex];
+        if (!appIcon)
+            return;
+
+        appIcon.app.request_quit();
+    },
+
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
@@ -168,6 +176,8 @@ var AppSwitcherPopup = new Lang.Class({
             this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
+        } else if (keysym == Clutter.q) {
+            this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Left)
                 this._select(this._selectedIndex, this._previousWindow());
