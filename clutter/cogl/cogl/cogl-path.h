@@ -368,7 +368,7 @@ cogl_path_round_rectangle (float x_1,
                            float arc_step);
 
 /**
- * cogl_path_get:
+ * cogl_get_path:
  *
  * Gets a pointer to the current path. The path can later be used
  * again by calling cogl_path_set(). Note that the path isn't copied
@@ -382,10 +382,10 @@ cogl_path_round_rectangle (float x_1,
  * Since: 1.4
  */
 CoglPath *
-cogl_path_get (void);
+cogl_get_path (void);
 
 /**
- * cogl_path_set:
+ * cogl_set_path:
  * @path: A #CoglPath object
  *
  * Replaces the current path with @path. A reference is taken on the
@@ -395,7 +395,7 @@ cogl_path_get (void);
  * Since: 1.4
  */
 void
-cogl_path_set (CoglPath *path);
+cogl_set_path (CoglPath *path);
 
 /**
  * cogl_path_copy:

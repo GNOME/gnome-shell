@@ -235,7 +235,7 @@ cogl_clip_push_from_path_preserve (void)
 
   cogl_get_modelview_matrix (&modelview_matrix);
 
-  _cogl_clip_stack_push_from_path (stack, cogl_path_get (),
+  _cogl_clip_stack_push_from_path (stack, cogl_get_path (),
                                    &modelview_matrix);
 
   clip_state->stack_dirty = TRUE;

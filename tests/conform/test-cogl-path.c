@@ -82,27 +82,27 @@ on_paint (ClutterActor *actor, TestState *state)
                        BLOCK_SIZE, BLOCK_SIZE);
   cogl_path_rectangle (BLOCK_SIZE / 2, BLOCK_SIZE / 2,
                        BLOCK_SIZE * 3 / 4, BLOCK_SIZE);
-  path_a = cogl_handle_ref (cogl_path_get ());
+  path_a = cogl_handle_ref (cogl_get_path ());
   draw_path_at (0, 0);
 
   /* Create another path filling the whole block */
   cogl_path_rectangle (0, 0, BLOCK_SIZE, BLOCK_SIZE);
-  path_b = cogl_handle_ref (cogl_path_get ());
+  path_b = cogl_handle_ref (cogl_get_path ());
   draw_path_at (1, 0);
 
   /* Draw the first path again */
-  cogl_path_set (path_a);
+  cogl_set_path (path_a);
   draw_path_at (2, 0);
 
   /* Draw a copy of path a */
   path_c = cogl_path_copy (path_a);
-  cogl_path_set (path_c);
+  cogl_set_path (path_c);
   draw_path_at (3, 0);
 
   /* Add another rectangle to path a. We'll use line_to's instead of
      cogl_rectangle so that we don't create another sub-path because
      that is more likely to break the copy */
-  cogl_path_set (path_a);
+  cogl_set_path (path_a);
   cogl_path_line_to (0, BLOCK_SIZE / 2);
   cogl_path_line_to (0, 0);
   cogl_path_line_to (BLOCK_SIZE / 2, 0);
@@ -110,13 +110,13 @@ on_paint (ClutterActor *actor, TestState *state)
   draw_path_at (4, 0);
 
   /* Draw the copy again. It should not have changed */
-  cogl_path_set (path_c);
+  cogl_set_path (path_c);
   draw_path_at (5, 0);
 
   /* Add another rectangle to path c. It will be added in two halves,
      one as an extension of the previous path and the other as a new
      sub path */
-  cogl_path_set (path_c);
+  cogl_set_path (path_c);
   cogl_path_line_to (BLOCK_SIZE / 2, 0);
   cogl_path_line_to (BLOCK_SIZE * 3 / 4, 0);
   cogl_path_line_to (BLOCK_SIZE * 3 / 4, BLOCK_SIZE / 2);
@@ -125,7 +125,7 @@ on_paint (ClutterActor *actor, TestState *state)
   draw_path_at (6, 0);
 
   /* Draw the original path again. It should not have changed */
-  cogl_path_set (path_a);
+  cogl_set_path (path_a);
   draw_path_at (7, 0);
 
   cogl_handle_unref (path_a);
