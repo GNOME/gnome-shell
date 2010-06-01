@@ -154,6 +154,7 @@ cogl_rectangle_with_multitexture_coords
 cogl_polygon
 
 <SUBSECTION>
+cogl_is_path
 cogl_path_new
 cogl_get_path
 cogl_set_path
