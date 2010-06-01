@@ -1061,29 +1061,6 @@ cogl_path_rel_curve_to (float x_1,
 }
 
 CoglPath *
-cogl_path_get (void)
-{
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  return ctx->current_path;
-}
-
-void
-cogl_path_set (CoglPath *path)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!cogl_is_path (path))
-    return;
-
-  /* Reference the new object first in case it is the same as the old
-     object */
-  cogl_object_ref (path);
-  cogl_object_unref (ctx->current_path);
-  ctx->current_path = path;
-}
-
-CoglPath *
 _cogl_path_new (void)
 {
   CoglPath *path;
@@ -1241,3 +1218,27 @@ cogl_rel_curve2_to (float x_1,
 }
 
 #endif
+
+CoglPath *
+cogl_get_path (void)
+{
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  return ctx->current_path;
+}
+
+void
+cogl_set_path (CoglPath *path)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!cogl_is_path (path))
+    return;
+
+  /* Reference the new object first in case it is the same as the old
+     object */
+  cogl_object_ref (path);
+  cogl_object_unref (ctx->current_path);
+  ctx->current_path = path;
+}
+
