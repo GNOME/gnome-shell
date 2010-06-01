@@ -123,13 +123,7 @@ _cogl_##type_name##_object_new (Cogl##TypeName *new_obj)	\
   return new_obj;			                        \
 }								\
 								\
-static Cogl##TypeName *						\
-_cogl_##type_name##_handle_new (CoglHandle handle)	        \
-{                                                               \
-  return _cogl_##type_name##_object_new (handle);               \
-}                                                               \
-								\
-Cogl##TypeName *						\
+Cogl##TypeName *                                                \
 _cogl_##type_name##_pointer_from_handle (CoglHandle handle)	\
 {								\
   return handle;				                \
@@ -177,7 +171,15 @@ cogl_##type_name##_unref (void *object)			        \
 }
 
 /* For temporary compatability */
-#define COGL_HANDLE_DEFINE COGL_OBJECT_DEFINE
+#define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
+								\
+COGL_OBJECT_DEFINE (TypeName, type_name)                        \
+								\
+static Cogl##TypeName *						\
+_cogl_##type_name##_handle_new (CoglHandle handle)	        \
+{                                                               \
+  return _cogl_##type_name##_object_new (handle);               \
+}
 
 #endif /* __COGL_OBJECT_H */
 
