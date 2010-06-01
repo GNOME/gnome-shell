@@ -125,8 +125,9 @@ static gboolean
 _cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
                                         CoglPixelFormat dst_format)
 {
-  return ((src_format & COGL_A_BIT) &&
+  return ((src_format & dst_format & COGL_A_BIT) &&
           src_format != COGL_PIXEL_FORMAT_A_8 &&
+          dst_format != COGL_PIXEL_FORMAT_A_8 &&
           (src_format & COGL_PREMULT_BIT) !=
           (dst_format & COGL_PREMULT_BIT));
 }
