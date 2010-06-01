@@ -548,6 +548,7 @@ StTooltip {
     width: 70px;
     height: 70px;
     font-size: 10px;
+    transition-duration: 200;
 }
 
 .app-well-app.running {
@@ -565,6 +566,7 @@ StTooltip {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(61,61,61,0.8);
     background-gradient-end: rgba(24,24,24,0.2);
+    transition-duration: 200;
 }
 
 .app-well-app:active {
@@ -614,6 +616,7 @@ StTooltip {
     border: 1px solid #181818;
     padding-left: 4px;
     padding-right: 4px;
+    transition-duration: 200;
 }
 
 .places-item:hover {
@@ -621,6 +624,7 @@ StTooltip {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(61,61,61,0.8);
     background-gradient-end: rgba(24,24,24,0.2);
+    transition-duration: 200;
 }
 
 /* Recent items */
@@ -635,6 +639,7 @@ StTooltip {
     border: 1px solid #181818;
     padding-left: 4px;
     padding-right: 4px;
+    transition-duration: 200;
 }
 
 .recent-docs-item:hover {
@@ -642,6 +647,7 @@ StTooltip {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(61,61,61,0.8);
     background-gradient-end: rgba(24,24,24,0.2);
+    transition-duration: 200;
 }
 
 /* LookingGlass */
