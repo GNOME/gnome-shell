@@ -20,6 +20,10 @@ test_rotate_main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
+  /* Make a timeline */
+  timeline = clutter_timeline_new (7692);
+  clutter_timeline_set_loop (timeline, TRUE);
+
   stage = clutter_stage_get_default ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage),
@@ -35,7 +39,10 @@ test_rotate_main (int argc, char *argv[])
 
   clutter_actor_set_position (hand, 240, 140);
   clutter_actor_show (hand);
-  clutter_actor_add_effect (hand, clutter_desaturate_effect_new (0.75));
+  clutter_actor_add_effect_with_name (hand, "desaturate", clutter_desaturate_effect_new (0.75));
+  clutter_actor_animate_with_timeline (hand, CLUTTER_LINEAR, timeline,
+                                       "@effects.desaturate.factor", 1.0,
+                                       NULL);
 
   label = clutter_text_new_with_text ("Mono 16",
                                       "The Wonder\n"
@@ -47,10 +54,6 @@ test_rotate_main (int argc, char *argv[])
 
   clutter_container_add (CLUTTER_CONTAINER (stage), hand, label, NULL);
   
-  /* Make a timeline */
-  timeline = clutter_timeline_new (7692); /* num frames, fps */
-  clutter_timeline_set_loop (timeline, TRUE);
-
   /* Set an alpha func to power behaviour */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
 

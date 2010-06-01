@@ -172,7 +172,7 @@
  *   </informalexample>
  *   <para>The initial <emphasis>@</emphasis> is mandatory.</para>
  *   <para>The <emphasis>section</emphasis> fragment can be one between
- *   "actions" or "constraints".</para>
+ *   "actions", "constraints" and "effects".</para>
  *   <para>The <emphasis>meta-name</emphasis> fragment is the name of the
  *   action or constraint, as specified by the #ClutterActorMeta:name
  *   property.</para>
@@ -8401,6 +8401,7 @@ get_meta_from_animation_property (ClutterActor  *actor,
    *
    *   - actions
    *   - constraints
+   *   - effects
    *
    * and <meta-name> is the name set on a specific ActorMeta
    */
@@ -8419,6 +8420,9 @@ get_meta_from_animation_property (ClutterActor  *actor,
 
   if (strcmp (tokens[0], "constraints") == 0)
     meta = _clutter_meta_group_get_meta (priv->constraints, tokens[1]);
+
+  if (strcmp (tokens[0], "effects") == 0)
+    meta = _clutter_meta_group_get_meta (priv->effects, tokens[1]);
 
   if (name_p != NULL)
     *name_p = g_strdup (tokens[2]);
