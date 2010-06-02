@@ -33,7 +33,8 @@
 #include "cogl-feature-private.h"
 
 gboolean
-_cogl_feature_check (const CoglFeatureData *data,
+_cogl_feature_check (const char *driver_prefix,
+                     const CoglFeatureData *data,
                      unsigned int gl_major,
                      unsigned int gl_minor,
                      const char *extensions_string)
@@ -79,8 +80,8 @@ _cogl_feature_check (const CoglFeatureData *data,
                *extension;
                extension += strlen (extension) + 1)
             {
-              g_string_set_size (full_extension_name, 0);
-              g_string_append (full_extension_name, "GL_");
+              g_string_assign (full_extension_name, driver_prefix);
+              g_string_append_c (full_extension_name, '_');
               g_string_append_len (full_extension_name,
                                    namespace, namespace_len);
               g_string_append_c (full_extension_name, '_');

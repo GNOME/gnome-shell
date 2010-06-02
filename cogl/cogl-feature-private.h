@@ -67,7 +67,8 @@ struct _CoglFeatureData
   const CoglFeatureFunction *functions;
 };
 
-gboolean _cogl_feature_check (const CoglFeatureData *data,
+gboolean _cogl_feature_check (const char *driver_prefix,
+                              const CoglFeatureData *data,
                               unsigned int gl_major, unsigned int gl_minor,
                               const char *extensions_string);
 

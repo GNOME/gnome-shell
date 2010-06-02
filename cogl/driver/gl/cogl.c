@@ -219,7 +219,7 @@ _cogl_features_init (void)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
   for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
-    if (_cogl_feature_check (cogl_feature_data + i,
+    if (_cogl_feature_check ("GL", cogl_feature_data + i,
                              gl_major, gl_minor,
                              gl_extensions))
       {

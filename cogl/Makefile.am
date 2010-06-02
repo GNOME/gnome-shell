@@ -77,6 +77,7 @@ cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys.h			\
 	$(srcdir)/winsys/cogl-context-winsys.h          \
 	$(srcdir)/winsys/cogl-context-winsys.c          \
+	$(srcdir)/winsys/cogl-winsys-feature-functions.h \
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context.h			\
 	$(srcdir)/cogl-context.c			\
