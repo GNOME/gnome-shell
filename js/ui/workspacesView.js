@@ -665,10 +665,10 @@ SingleView.prototype = {
         this._animatingScroll = false; // programatically move the scroll bar
         this._inDrag = false; // dragging a window
         this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
-        let primary = global.get_primary_monitor();
+
         this._dropGroup = new Clutter.Group({ x: 0, y: 0,
-                                              width: primary.width,
-                                              height: primary.height });
+                                              width: global.screen_width,
+                                              height: global.screen_height });
         this._dropGroup._delegate = this;
         global.stage.add_actor(this._dropGroup);
         this._dropGroup.lower_bottom();
@@ -1195,19 +1195,20 @@ SingleView.prototype = {
 
     handleDragOver: function(self, actor, x, y) {
         let onPanel = false;
-
+        let primary = global.get_primary_monitor();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        if (x == 0 && activeWorkspaceIndex > 0 && this._dragOverLastX !== 0) {
+
+        if (x <= primary.x && activeWorkspaceIndex > 0 && this._dragOverLastX !== primary.x) {
             this._workspaces[activeWorkspaceIndex - 1].metaWorkspace.activate(global.get_current_time());
             this._workspaces[activeWorkspaceIndex - 1].setReservedSlot(actor._delegate);
-            this._dragOverLastX = 0;
+            this._dragOverLastX = primary.x;
             return;
         }
-        if (x == global.screen_width - 1 && this._workspaces[activeWorkspaceIndex + 1] &&
-            this._dragOverLastX != global.screen_width - 1) {
+        if (x >= primary.x + primary.width - 1 && this._workspaces[activeWorkspaceIndex + 1] &&
+            this._dragOverLastX != primary.x + primary.width - 1) {
             this._workspaces[activeWorkspaceIndex + 1].metaWorkspace.activate(global.get_current_time());
             this._workspaces[activeWorkspaceIndex + 1].setReservedSlot(actor._delegate);
-            this._dragOverLastX = global.screen_width - 1;
+            this._dragOverLastX = primary.x + primary.width - 1;
             return;
         }
 
