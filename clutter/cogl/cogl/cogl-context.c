@@ -43,6 +43,10 @@
 
 extern void
 _cogl_create_context_driver (CoglContext *context);
+extern void
+_cogl_create_context_winsys (CoglContext *context);
+extern void
+_cogl_destroy_context_winsys (CoglContext *context);
 
 static CoglContext *_context = NULL;
 static gboolean gl_is_indirect = FALSE;
@@ -71,6 +75,8 @@ cogl_create_context (void)
   /* TODO: combine these two into one function */
   _cogl_create_context_driver (_context);
   _cogl_features_init ();
+
+  _cogl_create_context_winsys (_context);
 
   _cogl_material_init_default_material ();
   _cogl_material_init_default_layers ();
@@ -208,6 +214,8 @@ _cogl_destroy_context (void)
 
   if (_context == NULL)
     return;
+
+  _cogl_destroy_context_winsys (_context);
 
   _cogl_destroy_texture_units ();
 
