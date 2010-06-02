@@ -7,8 +7,7 @@ INCLUDES = \
 	-I$(srcdir) \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../.. \
-	-I$(srcdir)/winsys \
-	-I$(srcdir)/driver/$(COGL_DRIVER) \
+	-I$(srcdir)/../../winsys \
 	-I../.. \
 	-I../../.. \
 	-DG_DISABLE_SINGLE_INCLUDES \
