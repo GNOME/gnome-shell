@@ -51,6 +51,7 @@ void meta_fatal      (const char *format,
 
 typedef enum
 {
+  META_DEBUG_VERBOSE         = -1,
   META_DEBUG_FOCUS           = 1 << 0,
   META_DEBUG_WORKAREA        = 1 << 1,
   META_DEBUG_STACK           = 1 << 2,
@@ -78,6 +79,8 @@ typedef enum
 void meta_topic_real      (MetaDebugTopic topic,
                            const char    *format,
                            ...) G_GNUC_PRINTF (2, 3);
+void meta_add_verbose_topic    (MetaDebugTopic topic);
+void meta_remove_verbose_topic (MetaDebugTopic topic);
 
 void meta_push_no_msg_prefix (void);
 void meta_pop_no_msg_prefix  (void);

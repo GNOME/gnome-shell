@@ -40,6 +40,12 @@
 #include <X11/Xlib.h>   /* must explicitly be included for Solaris; #326746 */
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
+static void
+meta_topic_real_valist (MetaDebugTopic topic,
+                        const char    *format,
+                        va_list        args);
+
+
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
 void
@@ -71,7 +77,7 @@ meta_print_backtrace (void)
 }
 #endif
 
-static gboolean is_verbose = FALSE;
+static gint verbose_topics = 0;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
 static int no_prefix = 0;
@@ -128,7 +134,7 @@ ensure_logfile (void)
 gboolean
 meta_is_verbose (void)
 {
-  return is_verbose;
+  return verbose_topics != 0;
 }
 
 void
@@ -141,8 +147,48 @@ meta_set_verbose (gboolean setting)
   if (setting)
     ensure_logfile ();
 #endif
-  
-  is_verbose = setting;
+
+  if (setting)
+    meta_add_verbose_topic (META_DEBUG_VERBOSE);
+  else
+    meta_remove_verbose_topic (META_DEBUG_VERBOSE);
+}
+
+/**
+ * meta_add_verbose_topic:
+ * @topic: Topic for which logging will be started
+ *
+ * Ensure log messages for the given topic @topic
+ * will be printed.
+ */
+void
+meta_add_verbose_topic (MetaDebugTopic topic)
+{
+  if (verbose_topics == META_DEBUG_VERBOSE)
+    return;
+  if (topic == META_DEBUG_VERBOSE)
+    verbose_topics = META_DEBUG_VERBOSE;
+  else
+    verbose_topics |= topic;
+}
+
+/**
+ * meta_remove_verbose_topic:
+ * @topic: Topic for which logging will be stopped
+ *
+ * Stop printing log messages for the given topic @topic.  Note
+ * that this method does not stack with meta_add_verbose_topic();
+ * i.e. if two calls to meta_add_verbose_topic() for the same
+ * topic are made, one call to meta_remove_verbose_topic() will
+ * remove it.
+ */
+void
+meta_remove_verbose_topic (MetaDebugTopic topic)
+{
+  if (topic == META_DEBUG_VERBOSE)
+    verbose_topics = 0;
+  else
+    verbose_topics &= ~topic;
 }
 
 gboolean
@@ -250,27 +296,10 @@ void
 meta_verbose_real (const char *format, ...)
 {
   va_list args;
-  gchar *str;
-  FILE *out;
 
-  g_return_if_fail (format != NULL);
-
-  if (!is_verbose)
-    return;
-  
   va_start (args, format);
-  str = g_strdup_vprintf (format, args);
+  meta_topic_real_valist (META_DEBUG_VERBOSE, format, args);
   va_end (args);
-
-  out = logfile ? logfile : stderr;
-  
-  if (no_prefix == 0)
-    utf8_fputs ("Window manager: ", out);
-  utf8_fputs (str, out);
-
-  fflush (out);
-  
-  g_free (str);
 }
 #endif /* WITH_VERBOSE_MODE */
 
@@ -324,6 +353,8 @@ topic_name (MetaDebugTopic topic)
       return "COMPOSITOR";
     case META_DEBUG_EDGE_RESISTANCE:
       return "EDGE_RESISTANCE";
+    case META_DEBUG_VERBOSE:
+      return "VERBOSE";
     }
 
   return "WM";
@@ -331,23 +362,22 @@ topic_name (MetaDebugTopic topic)
 
 static int sync_count = 0;
 
-void
-meta_topic_real (MetaDebugTopic topic,
-                 const char *format,
-                 ...)
+static void
+meta_topic_real_valist (MetaDebugTopic topic,
+                        const char    *format,
+                        va_list        args)
 {
-  va_list args;
   gchar *str;
   FILE *out;
 
   g_return_if_fail (format != NULL);
 
-  if (!is_verbose)
+  if (verbose_topics == 0
+      || (topic == META_DEBUG_VERBOSE && verbose_topics != META_DEBUG_VERBOSE)
+      || (!(verbose_topics & topic)))
     return;
-  
-  va_start (args, format);  
+
   str = g_strdup_vprintf (format, args);
-  va_end (args);
 
   out = logfile ? logfile : stderr;
 
@@ -365,6 +395,18 @@ meta_topic_real (MetaDebugTopic topic,
   fflush (out);
   
   g_free (str);
+}
+
+void
+meta_topic_real (MetaDebugTopic topic,
+                 const char *format,
+                 ...)
+{
+  va_list args;
+
+  va_start (args, format);
+  meta_topic_real_valist (topic, format, args);
+  va_end (args);
 }
 #endif /* WITH_VERBOSE_MODE */
 
