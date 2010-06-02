@@ -24,6 +24,11 @@
 #ifndef __COGL_CONTEXT_WINSYS_H
 #define __COGL_CONTEXT_WINSYS_H
 
+typedef enum
+{
+  COGL_WINSYS_FEATURE_STUB /* no features are defined yet */
+} CoglWinsysFeatureFlags;
+
 typedef struct
 {
   /* These are specific to winsys backends supporting Xlib. This
@@ -33,7 +38,21 @@ typedef struct
   GSList *event_filters;
 #endif
 
-  int stub;
+  /* Function pointers for winsys specific extensions */
+#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e)
+
+#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
+  ret (APIENTRY * pf_ ## name) args;
+
+#define COGL_WINSYS_FEATURE_END()
+
+#include "cogl-winsys-feature-functions.h"
+
+#undef COGL_WINSYS_FEATURE_BEGIN
+#undef COGL_WINSYS_FEATURE_FUNCTION
+#undef COGL_WINSYS_FEATURE_END
+
+  CoglWinsysFeatureFlags feature_flags;
 } CoglContextWinsys;
 
 #endif /* __COGL_CONTEXT_WINSYS_H */

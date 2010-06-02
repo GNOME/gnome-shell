@@ -84,7 +84,7 @@ _cogl_features_init (void)
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
   for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
-    if (_cogl_feature_check (cogl_feature_data + i,
+    if (_cogl_feature_check ("GL", cogl_feature_data + i,
                              0, 0,
                              gl_extensions))
         flags |= cogl_feature_data[i].feature_flags;

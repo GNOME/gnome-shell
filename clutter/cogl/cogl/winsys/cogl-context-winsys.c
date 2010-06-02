@@ -25,7 +25,69 @@
 #include "config.h"
 #endif
 
+#ifdef COGL_HAS_GLX_SUPPORT
+#include <GL/glx.h>
+#endif
+
 #include "cogl-context.h"
+#include "cogl-feature-private.h"
+
+/* Define a set of arrays containing the functions required from GL
+   for each winsys feature */
+#define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
+                                  feature_flags, feature_flags_private) \
+  static const CoglFeatureFunction                                      \
+  cogl_winsys_feature_ ## name ## _funcs[] = {
+#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args)                   \
+  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, winsys.pf_ ## name) },
+#define COGL_WINSYS_FEATURE_END()               \
+  { NULL, 0 },                                  \
+    };
+#include "cogl-winsys-feature-functions.h"
+
+/* Define an array of features */
+#undef COGL_WINSYS_FEATURE_BEGIN
+#define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
+                                  feature_flags, feature_flags_private) \
+  { 255, 255, namespaces, extension_names,                              \
+      feature_flags, feature_flags_private,                             \
+      cogl_winsys_feature_ ## name ## _funcs },
+#undef COGL_WINSYS_FEATURE_FUNCTION
+#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args)
+#undef COGL_WINSYS_FEATURE_END
+#define COGL_WINSYS_FEATURE_END()
+
+static const CoglFeatureData cogl_winsys_feature_data[] =
+  {
+#include "cogl-winsys-feature-functions.h"
+  };
+
+static const char *
+_cogl_get_winsys_extensions (void)
+{
+#ifdef COGL_HAS_GLX_SUPPORT
+  Display *display = _cogl_xlib_get_display ();
+
+  return glXQueryExtensionsString (display, DefaultScreen (display));
+#else
+  return "";
+#endif
+}
+
+static void
+_cogl_winsys_features_init (CoglContext *context)
+{
+  CoglWinsysFeatureFlags flags = 0;
+  const char *extensions = _cogl_get_winsys_extensions ();
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (cogl_winsys_feature_data); i++)
+    if (_cogl_feature_check ("GLX", cogl_winsys_feature_data + i, 0, 0,
+                             extensions))
+      flags |= cogl_winsys_feature_data[i].feature_flags;
+
+  context->winsys.feature_flags = flags;
+}
 
 void
 _cogl_create_context_winsys (CoglContext *context)
@@ -33,6 +95,8 @@ _cogl_create_context_winsys (CoglContext *context)
 #ifdef COGL_HAS_XLIB_SUPPORT
   context->winsys.event_filters = NULL;
 #endif
+
+  _cogl_winsys_features_init (context);
 }
 
 #ifdef COGL_HAS_XLIB_SUPPORT
