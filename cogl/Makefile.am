@@ -75,6 +75,8 @@ cogl_public_h = \
 
 cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys.h			\
+	$(srcdir)/winsys/cogl-context-winsys.h          \
+	$(srcdir)/winsys/cogl-context-winsys.c          \
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context.h			\
 	$(srcdir)/cogl-context.c			\

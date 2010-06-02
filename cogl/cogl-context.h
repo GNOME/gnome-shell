@@ -26,6 +26,7 @@
 
 #include "cogl-internal.h"
 #include "cogl-context-driver.h"
+#include "cogl-context-winsys.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
@@ -167,6 +168,7 @@ typedef struct
   GSList           *texture_types;
 
   CoglContextDriver drv;
+  CoglContextWinsys winsys;
 } CoglContext;
 
 CoglContext *
