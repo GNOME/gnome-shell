@@ -468,7 +468,7 @@ drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
 #endif /* __linux__ */
 
 static void
-glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
+wait_for_vblank (ClutterBackendGLX *backend_glx)
 {
   /* If we are going to wait for VBLANK manually, we not only need
    * to flush out pending drawing to the GPU before we sleep, we
@@ -486,46 +486,35 @@ glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
    * happen when we use GLX_SWAP and let the driver do the right thing
    */
 
-  switch (backend_glx->vblank_type)
+  if (backend_glx->vblank_type == CLUTTER_VBLANK_NONE)
+    return;
+
+  if (backend_glx->wait_video_sync)
     {
-    case CLUTTER_VBLANK_GLX_SWAP:
-      CLUTTER_NOTE (BACKEND, "Waiting for vblank (swap)");
-      break;
+      unsigned int retraceCount;
 
-    case CLUTTER_VBLANK_GLX:
-      {
-        unsigned int retraceCount;
+      glFinish ();
 
-        glFinish ();
-
-        CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
-        backend_glx->get_video_sync (&retraceCount);
-        backend_glx->wait_video_sync (2,
-                                      (retraceCount + 1) % 2,
-                                      &retraceCount);
-      }
-      break;
-
-    case CLUTTER_VBLANK_DRI:
-#ifdef __linux__
-      {
-        drm_wait_vblank_t blank;
-
-        glFinish ();
-
-        CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
-        blank.request.type     = DRM_VBLANK_RELATIVE;
-        blank.request.sequence = 1;
-        blank.request.signal   = 0;
-        drm_wait_vblank (backend_glx->dri_fd, &blank);
-      }
-#endif
-      break;
-
-    case CLUTTER_VBLANK_NONE:
-    default:
-      break;
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
+      backend_glx->get_video_sync (&retraceCount);
+      backend_glx->wait_video_sync (2,
+                                    (retraceCount + 1) % 2,
+                                    &retraceCount);
     }
+  else
+#ifdef __linux__
+    {
+      drm_wait_vblank_t blank;
+
+      glFinish ();
+
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
+      blank.request.type     = DRM_VBLANK_RELATIVE;
+      blank.request.sequence = 1;
+      blank.request.signal   = 0;
+      drm_wait_vblank (backend_glx->dri_fd, &blank);
+    }
+#endif
 }
 
 void
@@ -584,9 +573,6 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
     return;
 
   drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
-
-  /* wait for the next vblank */
-  glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
 
   /* push on the screen */
   if (backend_glx->can_blit_sub_buffer &&
@@ -658,6 +644,12 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
       copy_area.width = clip->width;
       copy_area.height = clip->height;
 
+      /* glXCopySubBufferMESA and glBlitFramebuffer are not integrated with the
+       * glXSwapIntervalSGI mechanism which we usually use to throttle the
+       * Clutter framerate to the vertical refresh and so we have to manually
+       * wait for the vblank period. */
+      wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+
       CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
       _clutter_backend_glx_blit_sub_buffer (backend_glx,
                                             drawable,
@@ -678,6 +670,9 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
        * progress... */
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_glx->pending_swaps++;
+
+      if (backend_glx->vblank_type != CLUTTER_VBLANK_GLX_SWAP)
+        wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
 
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, drawable);

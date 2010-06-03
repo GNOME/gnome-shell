@@ -245,6 +245,20 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   gl_extensions = (const gchar *)glGetString (GL_EXTENSIONS);
 
+  /* When using glBlitFramebuffer or glXCopySubBufferMESA for sub stage
+   * redraws, we cannot rely on glXSwapIntervalSGI to throttle the blits
+   * so we need to resort to manually synchronizing with the vblank so we
+   * always check for the video_sync extension...
+   */
+  if (_cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+    {
+      backend_glx->get_video_sync =
+        (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
+
+      backend_glx->wait_video_sync =
+        (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
+    }
+
   use_dri = check_vblank_env ("dri");
 
   /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
@@ -314,12 +328,6 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
       _cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
     {
       CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
-
-      backend_glx->get_video_sync =
-        (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
-
-      backend_glx->wait_video_sync =
-        (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
 
       if ((backend_glx->get_video_sync != NULL) &&
           (backend_glx->wait_video_sync != NULL))
