@@ -470,30 +470,12 @@ drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
 static void
 wait_for_vblank (ClutterBackendGLX *backend_glx)
 {
-  /* If we are going to wait for VBLANK manually, we not only need
-   * to flush out pending drawing to the GPU before we sleep, we
-   * need to wait for it to finish. Otherwise, we may end up with
-   * the situation:
-   *
-   *        - We finish drawing      - GPU drawing continues
-   *        - We go to sleep         - GPU drawing continues
-   * VBLANK - We call glXSwapBuffers - GPU drawing continues
-   *                                 - GPU drawing continues
-   *                                 - Swap buffers happens
-   *
-   * Producing a tear. Calling glFinish() first will cause us to properly
-   * wait for the next VBLANK before we swap. This obviously does not
-   * happen when we use GLX_SWAP and let the driver do the right thing
-   */
-
   if (backend_glx->vblank_type == CLUTTER_VBLANK_NONE)
     return;
 
   if (backend_glx->wait_video_sync)
     {
       unsigned int retraceCount;
-
-      glFinish ();
 
       CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
       backend_glx->get_video_sync (&retraceCount);
@@ -505,8 +487,6 @@ wait_for_vblank (ClutterBackendGLX *backend_glx)
 #ifdef __linux__
     {
       drm_wait_vblank_t blank;
-
-      glFinish ();
 
       CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
       blank.request.type     = DRM_VBLANK_RELATIVE;
@@ -526,6 +506,7 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   ClutterBackendGLX *backend_glx;
   ClutterStageX11   *stage_x11;
   GLXDrawable        drawable;
+  unsigned int       video_sync_count;
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
                         "Painting actors",
@@ -573,6 +554,17 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
     return;
 
   drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+
+  /* If we might ever use _clutter_backend_glx_blit_sub_buffer then we
+   * always need to keep track of the video_sync_count so that we can
+   * throttle blits.
+   *
+   * Note: we get the count *before* we issue any glXCopySubBuffer or
+   * blit_sub_buffer request in case the count would go up before
+   * returning control to us.
+   */
+  if (backend_glx->can_blit_sub_buffer && backend_glx->get_video_sync)
+    backend_glx->get_video_sync (&video_sync_count);
 
   /* push on the screen */
   if (backend_glx->can_blit_sub_buffer &&
@@ -644,11 +636,42 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
       copy_area.width = clip->width;
       copy_area.height = clip->height;
 
-      /* glXCopySubBufferMESA and glBlitFramebuffer are not integrated with the
-       * glXSwapIntervalSGI mechanism which we usually use to throttle the
-       * Clutter framerate to the vertical refresh and so we have to manually
-       * wait for the vblank period. */
-      wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+      /* glXCopySubBufferMESA and glBlitFramebuffer are not integrated
+       * with the glXSwapIntervalSGI mechanism which we usually use to
+       * throttle the Clutter framerate to the vertical refresh and so
+       * we have to manually wait for the vblank period...
+       */
+
+      /* Here 'is_synchronized' only means that the blit won't cause a
+       * tear, ie it won't prevent multiple blits per retrace if they
+       * can all be performed in the blanking period. If that's the
+       * case then we still want to use the vblank sync menchanism but
+       * we only need it to throttle redraws.
+       */
+      if (!backend_glx->blit_sub_buffer_is_synchronized)
+        {
+          /* XXX: note that glXCopySubBuffer, at least for Intel, is
+           * synchronized with the vblank but glBlitFramebuffer may
+           * not be so we use the same scheme we do when calling
+           * glXSwapBuffers without the swap_control extension and
+           * call glFinish () before waiting for the vblank period.
+           *
+           * See where we call glXSwapBuffers for more details.
+           */
+          glFinish ();
+          wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+        }
+      else if (backend_glx->get_video_sync)
+        {
+          /* If we have the GLX_SGI_video_sync extension then we can
+           * be a bit smarter about how we throttle blits by avoiding
+           * any waits if we can see that the video sync count has
+           * already progressed. */
+          if (backend_glx->last_video_sync_count == video_sync_count)
+            wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+        }
+      else
+        wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
 
       CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
       _clutter_backend_glx_blit_sub_buffer (backend_glx,
@@ -672,12 +695,34 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
         stage_glx->pending_swaps++;
 
       if (backend_glx->vblank_type != CLUTTER_VBLANK_GLX_SWAP)
-        wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+        {
+          /* If we are going to wait for VBLANK manually, we not only
+           * need to flush out pending drawing to the GPU before we
+           * sleep, we need to wait for it to finish. Otherwise, we
+           * may end up with the situation:
+           *
+           *        - We finish drawing      - GPU drawing continues
+           *        - We go to sleep         - GPU drawing continues
+           * VBLANK - We call glXSwapBuffers - GPU drawing continues
+           *                                 - GPU drawing continues
+           *                                 - Swap buffers happens
+           *
+           * Producing a tear. Calling glFinish() first will cause us
+           * to properly wait for the next VBLANK before we swap. This
+           * obviously does not happen when we use _GLX_SWAP and let
+           * the driver do the right thing
+           */
+          glFinish ();
+
+          wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+        }
 
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, drawable);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
+
+  backend_glx->last_video_sync_count = video_sync_count;
 
   /* reset the redraw clipping for the next paint... */
   stage_glx->initialized_redraw_clip = FALSE;

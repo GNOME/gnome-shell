@@ -91,10 +91,12 @@ struct _ClutterBackendGLX
   SwapIntervalProc       swap_interval;
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
+  unsigned int           last_video_sync_count;
 
   gboolean               can_blit_sub_buffer;
   CopySubBufferProc      copy_sub_buffer;
   BlitFramebufferProc    blit_framebuffer;
+  gboolean               blit_sub_buffer_is_synchronized;
 
   /* props */
   Atom atom_WM_STATE;

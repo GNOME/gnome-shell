@@ -379,6 +379,7 @@ vblank_setup_done:
       backend_glx->copy_sub_buffer =
         (CopySubBufferProc) cogl_get_proc_address ("glXCopySubBufferMESA");
       backend_glx->can_blit_sub_buffer = TRUE;
+      backend_glx->blit_sub_buffer_is_synchronized = TRUE;
     }
   else if (_cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
@@ -387,6 +388,7 @@ vblank_setup_done:
       backend_glx->blit_framebuffer =
         (BlitFramebufferProc) cogl_get_proc_address ("glBlitFramebuffer");
       backend_glx->can_blit_sub_buffer = TRUE;
+      backend_glx->blit_sub_buffer_is_synchronized = FALSE;
     }
 
   CLUTTER_NOTE (BACKEND, "backend features checked");
