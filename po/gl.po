@@ -12,63 +12,70 @@
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007, 2008.
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Dieguez <fran.dieguez@glug.es>, 2009.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 10:05+0200\n"
-"PO-Revision-Date: 2009-07-13 14:36+0200\n"
-"Last-Translator: Fran Dieguez <fran.dieguez@glug.es>\n"
-"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2010-06-03 23:46+0200\n"
+"PO-Revision-Date: 2010-06-03 23:46+0200\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\\n"
 "X-Generator: Lokalize 0.3\n"
+
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Evento de campá"
 
 #: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de xanela descoñecida: %d"
 
-#: ../src/core/delete.c:105
+#. Translators: %s is a window title
+#: ../src/core/delete.c:95
 #, c-format
-msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt> non está a responder.</b></big>\n"
-"\n"
-"<i>Elixa entre esperar un pouco a que continúe ou forzar a saída do "
-"aplicativo.</i>"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> non está respondendo."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:100
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Pode elixir esperar un momento para ver se continúa ou forzar ao aplicativo "
+"a pechar completamente."
+
+#: ../src/core/delete.c:109
 msgid "_Wait"
 msgstr "Espe_rar"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:109
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/delete.c:217
+#: ../src/core/delete.c:207
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ocorreu un fallo ao obter o nome do host: %s\n"
 
-#: ../src/core/display.c:329
+#: ../src/core/display.c:362
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:414
+#: ../src/core/display.c:447
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Fallo ao abrir a pantalla do sistema de xanelas X '%s'\n"
 
-#: ../src/core/errors.c:236
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -79,12 +86,12 @@ msgstr ""
 "probabelmente saíu do servidor X ou \n"
 "matou/destruíu o xestor de xanelas.\n"
 
-#: ../src/core/errors.c:243
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro moi grave de E/S %d (%s) na pantalla '%s'.\n"
 
-#: ../src/core/keybindings.c:681
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -96,7 +103,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2345
+#: ../src/core/keybindings.c:2399
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -107,86 +114,92 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2435
+#: ../src/core/keybindings.c:2489
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Non se definiu ningún comando %d.\n"
 
-#: ../src/core/keybindings.c:3427
+#: ../src/core/keybindings.c:3502
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Non se definiu ningún comando de terminal.\n"
 
-#: ../src/core/main.c:127
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., e outros\n"
-"Isto é software libre; vexa o código fonte para obter as condicións de "
-"copia.\n"
-"Non hai NINGUNHA GARANTÍA nin de COMERCIALIZACIÓN nin de ADECUACIÓN PARA UN "
-"FIN ESPECÍFICO.\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 
-#: ../src/core/main.c:257
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Desactivar a conexión ao xestor de sesión"
 
-#: ../src/core/main.c:263
+#: ../src/core/main.c:267
 msgid "Replace the running window manager with Mutter"
 msgstr "Substituír o xestor de xanelas en execución co Mutter"
 
-#: ../src/core/main.c:269
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "Especificar o ID de xestión de sesión"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "Pantalla X que se vai usar"
 
-#: ../src/core/main.c:280
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión dende o ficheiro de salvagarda"
 
-#: ../src/core/main.c:286
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/core/main.c:292
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:298
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "Activar a composición"
 
-#: ../src/core/main.c:304
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "Desactivar a composición"
 
-#: ../src/core/main.c:310
+#: ../src/core/main.c:314
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Non poñer a pantalla completa as xanelas maximizadas e que non teñen "
+"decoración"
+
+#: ../src/core/main.c:320
 msgid "Comma-separated list of compositor plugins"
 msgstr "Lista de separadas por comas dos complementos do compositor"
 
-#: ../src/core/main.c:316
+#: ../src/core/main.c:326
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr "Se se debe mostrar a xanela emerxente/marco ao rotar nas xanelas."
 
-#: ../src/core/main.c:323
+#: ../src/core/main.c:333
 msgid "Internal argument for GObject introspection"
 msgstr "Argumento interno para a introspección de GObject"
 
-#: ../src/core/main.c:665
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Fallou ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:681
+#: ../src/core/main.c:679
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -194,7 +207,7 @@ msgstr ""
 "Non foi posíbel encontrar ningún tema! Asegúrese de que %s existe e de que "
 "contén os temas habituais.\n"
 
-#: ../src/core/main.c:742
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ocorreu un fallo ao reiniciar: %s\n"
@@ -210,24 +223,36 @@ msgstr "Ocorreu un fallo ao reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:522 ../src/core/prefs.c:683
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "A chave GConf '%s' está configurada cun valor non válido\n"
 
-#: ../src/core/prefs.c:609 ../src/core/prefs.c:852
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d almacenado na chave GConf %s está fóra do intervalo %d a %d\n"
 
-#: ../src/core/prefs.c:653 ../src/core/prefs.c:730 ../src/core/prefs.c:778
-#: ../src/core/prefs.c:842 ../src/core/prefs.c:1142 ../src/core/prefs.c:1158
-#: ../src/core/prefs.c:1175 ../src/core/prefs.c:1191
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1323 ../src/core/prefs.c:1339
+#: ../src/core/prefs.c:1356 ../src/core/prefs.c:1372
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "A chave GConf \"%s\" está configurada cun tipo non válido\n"
 
-#: ../src/core/prefs.c:1282
+#: ../src/core/prefs.c:1202
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr ""
+"A chave de GConf %s xa está en uso e non é posíbel usala para sobrescribir %"
+"s\n"
+
+#: ../src/core/prefs.c:1261
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "Non é posíbel sobrescribir a chave de GConf, non se encontrou %s\n"
+
+#: ../src/core/prefs.c:1463
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -235,14 +260,14 @@ msgstr ""
 "Desactiváronse os arranxos para aplicativos danados. Pode que algúns "
 "aplicativos non se comporten correctamente.\n"
 
-#: ../src/core/prefs.c:1353
+#: ../src/core/prefs.c:1534
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Non foi posíbel analizar a descrición do tipo de letra \"%s\" da chave GConf "
 "%s\n"
 
-#: ../src/core/prefs.c:1415
+#: ../src/core/prefs.c:1596
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -251,17 +276,17 @@ msgstr ""
 "\"%s\" encontrado na base de datos de configuración non é un valor válido "
 "para o modificador do botón do rato\n"
 
-#: ../src/core/prefs.c:1839
+#: ../src/core/prefs.c:2023
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir o número de espazos de traballo en %d: %s\n"
 
-#: ../src/core/prefs.c:2023 ../src/core/prefs.c:2529
+#: ../src/core/prefs.c:2205 ../src/core/prefs.c:2707
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/prefs.c:2056 ../src/core/prefs.c:2234
+#: ../src/core/prefs.c:2237 ../src/core/prefs.c:2415
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -270,37 +295,40 @@ msgstr ""
 "\"%s\" encontrado na base de datos de configuración non é un valor válido "
 "para a combinación de teclas \"%s\"\n"
 
-#: ../src/core/prefs.c:2610
+#: ../src/core/prefs.c:2788
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir o nome do espazo de traballo %d como \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2808
+#: ../src/core/prefs.c:2992
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Erro ao definir o estado do compositor: %s\n"
 
-#: ../src/core/prefs.c:2836
+#: ../src/core/prefs.c:3021
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Erro ao definir a lista de complementos de clutter: %s\n"
 
-#: ../src/core/prefs.c:2879
+#: ../src/core/prefs.c:3065
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
+"Produciuse un erro ao estabelecer o estado da vida das xanelas ocultas %s\n"
 
-#: ../src/core/prefs.c:2907
+#: ../src/core/prefs.c:3093
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
+"Produciuse un erro ao estabelecer o estado dos separadores en xanelas "
+"emerxentes %s\n"
 
-#: ../src/core/screen.c:562
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización '%s' non é válida\n"
 
-#: ../src/core/screen.c:578
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -309,7 +337,7 @@ msgstr ""
 "A visualización %d na pantalla \"%s\" ten xa un xestor de xanelas, tente "
 "usar a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:605
+#: ../src/core/screen.c:620
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -317,70 +345,64 @@ msgstr ""
 "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
 "visualización \"%s\"\n"
 
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla \"%s\" ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:872
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla \"%s\"\n"
 
-#: ../src/core/session.c:851 ../src/core/session.c:858
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Non foi posíbel crear o directorio '%s': %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Non foi posíbel abrir o ficheiro de sesión '%s' para escritura: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro ao escribir o ficheiro de sesión '%s': %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro ao pechar o ficheiro de sesión '%s': %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1107
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Ocorreu un fallo ao ler o ficheiro de sesión gardado %s: %s\n"
-
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ocorreu un fallo ao analizar o ficheiro de sesión gardado: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1198
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "O atributo <mutter_session> foi visto mais xa temos o ID de sesión"
 
-#: ../src/core/session.c:1208 ../src/core/session.c:1283
-#: ../src/core/session.c:1315 ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atributo descoñecido %s no elemento <%s>"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> aniñada"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento descoñecido %s"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1822
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -388,51 +410,51 @@ msgstr ""
 "Estas xanelas non soportan &quot;save current setup&quot; e terán que "
 "reiniciarse manualmente a próxima vez que inicie a sesión."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:104
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Fallo ao abrir o rexistro de depuración: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:114
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Ocorreu un fallo ao facer fdopen() no ficheiro de rexistro %s: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:120
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Ficheiro de rexistro %s aberto\n"
 
-#: ../src/core/util.c:138 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "O Mutter compilouse sen soporte para o modo detallado\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:239
 msgid "Window manager: "
 msgstr "Xestor de xanelas: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:391
 msgid "Bug in window manager: "
 msgstr "Erro no xestor de xanelas: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:424
 msgid "Window manager warning: "
 msgstr "Aviso do xestor de xanelas: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:452
 msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6072
+#: ../src/core/window.c:6228
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -448,7 +470,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6735
+#: ../src/core/window.c:6891
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -468,7 +490,7 @@ msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -489,12 +511,12 @@ msgstr ""
 "Isto non parece ser un erro do aplicativo nin do xestor de xanelas.\n"
 "A xanela ten título=\"%s\" a clase=\"%s\" e o nome=\"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "A propiedade %s na xanela 0x%lx contén UTF-8 non válido\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
@@ -618,202 +640,202 @@ msgstr "Moverse inmediatamente entre os paneis e o escritorio"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Moverse inmediatamente cara a atrás entre os paneis e o escritorio"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Ocultar todas as xanelas normais e cambiar o foco ao escritorio"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Mostrar o menú principal do panel"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Mostrar a caixa de diálogo \"Executar un aplicativo\" do panel"
 
-#: ../src/include/all-keybindings.h:199
+#: ../src/include/all-keybindings.h:211
 msgid "Start or stop recording the session"
 msgstr "Iniciar ou deter a grabación da sesión"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Coller unha captura de pantalla"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Coller unha captura de pantalla dunha xanela"
 
-#: ../src/include/all-keybindings.h:244
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Executar nun terminal"
 
-#: ../src/include/all-keybindings.h:259
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Activar o menú da xanela"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Alternar o modo de pantalla completa"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Alternar o estado maximizado"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr ""
 "Alternar entre se unha xanela será visíbel sempre sobre outras xanelas ou non"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Maximizar a xanela"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Restaurar a xanela"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Alternar o estado ensombrecido"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Minimizar a xanela"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Pechar a xanela"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Mover a xanela"
 
-#: ../src/include/all-keybindings.h:280
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Redimensionar a xanela"
 
-#: ../src/include/all-keybindings.h:283
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr ""
 "Alternar entre se unha xanela está en todos os espazos de traballo ou só nun"
 
-#: ../src/include/all-keybindings.h:287
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Mover a xanela ao espazo de traballo 1"
 
-#: ../src/include/all-keybindings.h:290
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Mover a xanela ao espazo de traballo 2"
 
-#: ../src/include/all-keybindings.h:293
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Mover a xanela ao espazo de traballo 3"
 
-#: ../src/include/all-keybindings.h:296
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Mover a xanela ao espazo de traballo 4"
 
-#: ../src/include/all-keybindings.h:299
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Mover a xanela ao espazo de traballo 5"
 
-#: ../src/include/all-keybindings.h:302
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Mover a xanela ao espazo de traballo 6"
 
-#: ../src/include/all-keybindings.h:305
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Mover a xanela ao espazo de traballo 7"
 
-#: ../src/include/all-keybindings.h:308
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Mover a xanela ao espazo de traballo 8"
 
-#: ../src/include/all-keybindings.h:311
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Mover a xanela ao espazo de traballo 9"
 
-#: ../src/include/all-keybindings.h:314
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Mover a xanela ao espazo de traballo 10"
 
-#: ../src/include/all-keybindings.h:317
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Mover a xanela ao espazo de traballo 11"
 
-#: ../src/include/all-keybindings.h:320
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Mover a xanela ao espazo de traballo 12"
 
-#: ../src/include/all-keybindings.h:332
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Mover a xanela un espazo de traballo cara á esquerda"
 
-#: ../src/include/all-keybindings.h:335
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Mover a xanela un espazo de traballo cara á dereita"
 
-#: ../src/include/all-keybindings.h:338
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Mover a xanela un espazo de traballo cara a arriba"
 
-#: ../src/include/all-keybindings.h:341
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Mover a xanela un espazo de traballo cara a abaixo"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr ""
 "Elevar unha xanela se está cuberta por outra, en caso contrario baixala"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Subir a xanela por enriba doutras xanelas"
 
-#: ../src/include/all-keybindings.h:348
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Baixar unha xanela debaixo doutras xanelas"
 
-#: ../src/include/all-keybindings.h:352
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Maximizar a xanela verticalmente"
 
-#: ../src/include/all-keybindings.h:356
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Maximizar a xanela horizontalmente"
 
-#: ../src/include/all-keybindings.h:360
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Mover a xanela á esquina noroeste (arriba á esquerda)"
 
-#: ../src/include/all-keybindings.h:363
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Mover a xanela á esquina nordeste (arriba á dereita)"
 
-#: ../src/include/all-keybindings.h:366
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Mover a xanela á esquina sudoeste (abaixo á esquerda)"
 
-#: ../src/include/all-keybindings.h:369
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Mover a xanela á esquina sueste (abaixo á dereita)"
 
-#: ../src/include/all-keybindings.h:373
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Mover a xanela ao lado norte (arriba) da pantalla"
 
-#: ../src/include/all-keybindings.h:376
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Mover a xanela ao lado sur (abaixo) da pantalla"
 
-#: ../src/include/all-keybindings.h:379
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Mover a xanela ao lado leste (dereita) da pantalla"
 
-#: ../src/include/all-keybindings.h:382
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Mover a xanela ao lado oeste (esquerda) da pantalla"
 
-#: ../src/include/all-keybindings.h:385
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Mover a xanela ao centro da pantalla"
 
@@ -859,47 +881,47 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1139
 msgid "Close Window"
 msgstr "Pechar a xanela"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1142
 msgid "Window Menu"
 msgstr "Menú da xanela"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1145
 msgid "Minimize Window"
 msgstr "Minimizar a xanela"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1148
 msgid "Maximize Window"
 msgstr "Maximizar a xanela"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1151
 msgid "Restore Window"
 msgstr "Restaurar a xanela"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1154
 msgid "Roll Up Window"
 msgstr "Pregar a xanela"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1157
 msgid "Unroll Window"
 msgstr "Despregar a xanela"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1160
 msgid "Keep Window On Top"
 msgstr "Manter a xanela na parte superior"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1163
 msgid "Remove Window From Top"
 msgstr "Quitar a xanela da parte superior"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1166
 msgid "Always On Visible Workspace"
 msgstr "Sempre no espazo de traballo visíbel"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1169
 msgid "Put Window On Only One Workspace"
 msgstr "Pór a xanela nun só espazo de traballo"
 
@@ -1000,7 +1022,7 @@ msgstr "Espazo de traballo 1_0"
 msgid "Workspace %s%d"
 msgstr "Espazo de traballo %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:396
 msgid "Move to Another _Workspace"
 msgstr "Mover a outro _espazo de traballo"
 
@@ -1009,7 +1031,7 @@ msgstr "Mover a outro _espazo de traballo"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:106
 msgid "Shift"
 msgstr "Maiús"
 
@@ -1018,7 +1040,7 @@ msgstr "Maiús"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:112
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1027,7 +1049,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:118
 msgid "Alt"
 msgstr "Alt"
 
@@ -1036,7 +1058,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:124
 msgid "Meta"
 msgstr "Meta"
 
@@ -1045,7 +1067,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:130
 msgid "Super"
 msgstr "Super"
 
@@ -1054,7 +1076,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:136
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -1063,7 +1085,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:142
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1072,7 +1094,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:148
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1081,7 +1103,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:154
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1090,61 +1112,61 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:160
 msgid "Mod5"
 msgstr "Mod5"
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:114
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:256
 msgid "top"
 msgstr "superior"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:258
 msgid "bottom"
 msgstr "inferior"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:260
 msgid "left"
 msgstr "esquerda"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:262
 msgid "right"
 msgstr "dereita"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "a xeometría do marco non especifica a dimensión \"%s\""
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:308
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "a xeometría do marco non especifica a dimensión \"%s\" para o bordo \"%s\""
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:345
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "A proporción de aspecto do botón %g non é razoábel"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:357
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "A xeometría do marco non especifica o tamaño dos botóns"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1022
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Os degradados deben ter polo menos dúas cores"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1153,7 +1175,7 @@ msgstr ""
 "A especificación de cor do GTK debe ter o estado entre parénteses, exemplo. "
 "gtk:fg[NORMAL] onde NORMAL é o estado; non se puido analizar \"%s\""
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1163,17 +1185,17 @@ msgstr ""
 "estado, exemplo. gtk:fg[NORMAL] onde NORMAL é o estado; non se puido "
 "analizar \"%s\""
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Non se entende o estado \"%s\" na especificación da cor"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Non se entende o compoñente de cor \"%s\" na especificación da cor"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1182,17 +1204,17 @@ msgstr ""
 "O formato de blend é \"blend/bg_color/fg_color/alpha\", \"%s\"non coincide "
 "co formato"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Non foi posíbel analizar o valor alfa \"%s\" na cor mesturada"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "O valor alfa \"%s\" na cor mesturada non está entre 0.0 e 1.0"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1200,28 +1222,28 @@ msgstr ""
 "O formato de sombreado é \"shade/base_color/factor\", \"%s\" non coincide co "
 "formato"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Non foi posíbel o factor de sombreado \"%s\" na cor sombreada"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "O factor de sombreado \"%s\" na cor sombreada é negativo"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Non foi posíbel analizar a cor \"%s\""
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1588
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "A expresión de coordenadas contén un carácter '%s' que non está permitido"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1615
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1230,13 +1252,13 @@ msgstr ""
 "A expresión de coordenadas contén un número de coma flotante '%s' que non se "
 "puido analizar"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1629
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "A expresión de coordenadas contén un enteiro '%s' que non se puido analizar"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1751
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1245,17 +1267,17 @@ msgstr ""
 "A expresión de coordenadas contén un operador non válido ao inicio do seu "
 "texto: \"%s\""
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1808
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "A expresión de coordenadas está baleira ou non se entendeu"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1919 ../src/ui/theme.c:1929 ../src/ui/theme.c:1963
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "A expresión de coordenadas resultou nun erro de división por cero"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:1971
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1263,7 +1285,7 @@ msgstr ""
 "A expresión de coordenadas tentou usar un operador mod cun número de coma "
 "flotante"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2027
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
@@ -1271,18 +1293,18 @@ msgstr ""
 "A expresión de coordenadas ten un operador \"%s\" onde se esperaba un "
 "operando"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2036
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "A expresión de coordenadas ten un operando onde se esperaba un operador"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2044
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "A expresión de coordenadas remata cun operador en vez dun operando"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2054
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1291,42 +1313,42 @@ msgstr ""
 "A expresión de coordenadas ten un operador \"%c\" seguido do operador \"%c\" "
 "sen un operando entre eles"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2205 ../src/ui/theme.c:2250
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "A expresión de coordenadas ten unha variábel ou constante descoñecida \"%s\""
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2304
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "O analizador da expresión de coordenadas desbordou o seu búfer."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2333
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "A expresión de coordenadas ten unha paréntese pechada sen unha paréntese "
 "aberta"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2397
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "A expresión de coordenadas ten unha paréntese aberta sen unha paréntese "
 "pechada"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2408
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "A expresión de coordenadas non parece ter nin operadores nin operandos"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2610 ../src/ui/theme.c:2630 ../src/ui/theme.c:2650
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "O tema contiña unha expresión que resultou ser un erro: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4261
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1335,25 +1357,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> débese "
 "especificar para este estilo de marco"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4769 ../src/ui/theme.c:4794
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4838
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Fallo ao cargar o tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4977 ../src/ui/theme.c:4984
+#: ../src/ui/theme.c:4991 ../src/ui/theme.c:4998
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Non se configurou <%s> para o tema \"%s\""
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5006
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1362,7 +1384,7 @@ msgstr ""
 "Non hai un estilo de marco para o tipo de xanela \"%s\" no tema \"%s\", "
 "engada un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5449 ../src/ui/theme.c:5511 ../src/ui/theme.c:5574
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1370,7 +1392,7 @@ msgstr ""
 "As constantes definidas polo usuario deben comezar cunha letra maiúscula; \"%"
 "s\" non o fai"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5457 ../src/ui/theme.c:5519 ../src/ui/theme.c:5582
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "A constante \"%s\" xa foi definida"
@@ -1378,68 +1400,68 @@ msgstr "A constante \"%s\" xa foi definida"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Non está definido o atributo \"%s\" no elemento <%s>"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Liña %d carácter %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "O atributo \"%s\" repetiuse dúas veces no mesmo elemento <%s>"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "O atributo \"%s\" non é válido no elemento <%s> neste contexto"
 
-#: ../src/ui/theme-parser.c:522
+#: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Non foi posíbel analizar \"%s\" como un enteiro"
 
-#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Non se comprenden os caracteres sobrantes \"%s\" na cadea \"%s\""
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "O enteiro %ld debe ser positivo"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "O enteiro %ld é demasiado grande. O máximo actual é %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Non foi posíbel analizar \"%s\" como un número de coma flotante"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Os valores booleanos deben ser \"true\" ou \"false\", non \"%s\""
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "O ángulo debe estar entre 0.0 e 360.0, foi %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Alfa debe estar entre 0.0 (invisíbel) e 1.0 (completamente opaco), foi %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1448,59 +1470,59 @@ msgstr ""
 "A escala de título non é válida \"%s\" (debe ser de xx-small,x-small,small,"
 "medium,large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1008 ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1105 ../src/ui/theme-parser.c:1208
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> nome \"%s\" usado unha segunda vez"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1020 ../src/ui/theme-parser.c:1117
+#: ../src/ui/theme-parser.c:1220
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "O <%s> pai \"%s\" non se definiu"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1130
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "A <%s> xeometría \"%s\" non se definiu"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "<%s> debe especificar ou unha xeometría ou un pai que teña unha xeometría"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1185
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Especifique un fondo para un valor alfa para que teña sentido"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1252
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Descoñécese o tipo \"%s\" no elemento <%s>"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1263
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Descoñécese o style_set \"%s\" no elemento <%s>"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1271
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "O tipo de xanela \"%s\" xa se asignou a un conxunto de estilo"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1301 ../src/ui/theme-parser.c:1365
+#: ../src/ui/theme-parser.c:1591 ../src/ui/theme-parser.c:2826
+#: ../src/ui/theme-parser.c:2872 ../src/ui/theme-parser.c:3020
+#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3250
+#: ../src/ui/theme-parser.c:3288 ../src/ui/theme-parser.c:3326
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Non se permite o elemento <%s> por baixo de <%s>"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1415 ../src/ui/theme-parser.c:1429
+#: ../src/ui/theme-parser.c:1474
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1508,123 +1530,123 @@ msgstr ""
 "Non é posíbel especificar \"button_width\"/\"button_height\" e \"aspect_ratio"
 "\" ao mesmo tempo para os botóns"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1438
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Descoñécese a distancia \"%s\""
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1483
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Descoñécese a proporción de aspecto \"%s\""
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1545
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Descoñécese o bordo \"%s\""
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1856
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Non hai ningún atributo \"start_angle\" nin \"from\" no elemento <%s>"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1863
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Non hai ningún atributo \"extent_angle\" nin \"to\" no elemento <%s>"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2103
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Non se entendeu o valor \"%s\" para o tipo de degradado"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2181 ../src/ui/theme-parser.c:2556
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Non se entendeu o tipo de recheo \"%s\" para o elemento <%s>"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2348 ../src/ui/theme-parser.c:2431
+#: ../src/ui/theme-parser.c:2494
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Non se entendeu o estado \"%s\" para o elemento <%s>"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2358 ../src/ui/theme-parser.c:2441
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Non se entendeu a sombra \"%s\" para o elemento <%s>"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2368
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Non se entendeu a frecha \"%s\" para o elemento <%s>"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2682 ../src/ui/theme-parser.c:2778
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Non se definiu unha <draw_ops> chamada \"%s\""
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Incluír o draw_ops \"%s\" aquí poderá crear unha referencia circular"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2905
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Descoñécese a posición \"%s\" para a peza do marco"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2913
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "O estilo do marco xa ten unha peza na posición %s"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2930 ../src/ui/theme-parser.c:3005
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Non se definiu ningunha <draw_ops> co nome \"%s\""
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2959
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Descoñécese a función \"%s\" para o botón"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2968
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "A función \"%s\" do botón non existe nesta versión (%d, necesítase %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Descoñécese o estado descoñecido \"%s\" para o botón"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2988
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "O estilo do marco xa ten un botón para a función %s estado %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3059
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" non é un valor válido para o atributo foco"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3068
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" non é un valor válido para o atributo estado"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3078
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Non se definiu ningún estilo chamado \"%s\""
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3099 ../src/ui/theme-parser.c:3122
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" non é un valor válido para o atributo redimensionar"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3133
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1633,7 +1655,7 @@ msgstr ""
 "Non debería ter o atributo \"resize\" no elemento <%s> para os estados "
 "maximizado/ensombrecido"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -1641,18 +1663,18 @@ msgstr ""
 "Non debería ter o atributo \"resize\" no elemento <%s> para os estados "
 "maximizados"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3161 ../src/ui/theme-parser.c:3183
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 "O estilo xa foi especificado para o estado %s redimensionado %s foco %s"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "O estilo xa foi especificado para estado %s foco %s"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3233
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1661,7 +1683,7 @@ msgstr ""
 "atributo draw_ops e tamén un elemento <draw_ops> ou especificou os dous "
 "elementos)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3271
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1670,7 +1692,7 @@ msgstr ""
 "atributo draw_ops e tamén un elemento <draw_ops> ou especificou os dous "
 "elementos)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3309
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1679,12 +1701,31 @@ msgstr ""
 "un atributo draw_ops e tamén un elemento <draw_ops> ou especificou os dous "
 "elementos)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3373
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "Especificación de versión «%s» errónea"
+
+#: ../src/ui/theme-parser.c:3446
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"Non é posíbel usar o atributo «version» con metacity-theme-1.xml ou metacity-"
+"theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3469
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr ""
+"O tema require a versión %s pero a última versión admitida do tema é a %d.%d"
+
+#: ../src/ui/theme-parser.c:3501
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "O elemento máis externo no tema debe ser <metacity_theme> non <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3521
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -1692,12 +1733,12 @@ msgstr ""
 "Non se permite o elemento <%s> dentro dun elemento name/author/date/"
 "description"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3526
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Non se permite o elemento <%s> dentro dun elemento <constant>"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3538
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
@@ -1705,59 +1746,41 @@ msgstr ""
 "Non se permite o elemento <%s> dentro dun elemento distance/border/"
 "aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3560
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Non se permite o elemento <%s> dentro dun elemento de operación debuxo"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3570 ../src/ui/theme-parser.c:3600
+#: ../src/ui/theme-parser.c:3605 ../src/ui/theme-parser.c:3610
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Non se permite o elemento <%s> dentro dun elemento <%s>"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3838
 msgid "No draw_ops provided for frame piece"
 msgstr "Non se proporcionou draw_ops para a peza do marco"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3853
 msgid "No draw_ops provided for button"
 msgstr "Non se proporcionou draw_ops para botón"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3907
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Non se permite texto dentro do elemento <%s>"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<name> especificada dúas veces para este tema"
+#: ../src/ui/theme-parser.c:3965 ../src/ui/theme-parser.c:3977
+#: ../src/ui/theme-parser.c:3989 ../src/ui/theme-parser.c:4001
+#: ../src/ui/theme-parser.c:4013
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> especificada dúas veces para este tema"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<author> especificada dúas veces para este tema"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> especificada dúas veces para este tema"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<date> especificada dúas veces para este tema"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<description> especificada dúas veces para este tema"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4283
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Non se encontrou ningún ficheiro válido para o tema %s\n"
-
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "O ficheiro de tema %s non contén ningún elemento raíz <metacity_theme>"
 
 #: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
@@ -1807,109 +1830,109 @@ msgstr "/Xanelas/_Todas as ancoraxes"
 msgid "/Windows/Des_ktop"
 msgstr "/Xanelas/_Escritorio"
 
-#: ../src/ui/theme-viewer.c:136
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Abrir outra destas xanelas"
 
-#: ../src/ui/theme-viewer.c:143
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "Este é un botón de demostración cunha icona 'abrir'"
 
-#: ../src/ui/theme-viewer.c:150
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Este é un botón de demostración cunha icona 'saír'"
 
-#: ../src/ui/theme-viewer.c:243
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Esta é unha mensaxe de mostra no diálogo de mostra"
 
-#: ../src/ui/theme-viewer.c:326
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Elemento de menú falso %d\n"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Xanela só con bordo"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:379
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Xanela de aplicativo normal"
 
-#: ../src/ui/theme-viewer.c:383
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Caixa de diálogo"
 
-#: ../src/ui/theme-viewer.c:387
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Caixa de diálogo modal"
 
-#: ../src/ui/theme-viewer.c:391
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Paleta de utilidades"
 
-#: ../src/ui/theme-viewer.c:395
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Menú desprazado"
 
-#: ../src/ui/theme-viewer.c:399
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Bordo"
 
-#: ../src/ui/theme-viewer.c:727
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Proba de disposición de botóns %d"
 
-#: ../src/ui/theme-viewer.c:756
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para debuxar un marco de xanela"
 
-#: ../src/ui/theme-viewer.c:799
+#: ../src/ui/theme-viewer.c:802
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uso: metacity-theme-viewer [NOMETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:806
+#: ../src/ui/theme-viewer.c:809
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Erro ao cargar o tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:812
+#: ../src/ui/theme-viewer.c:815
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Cargouse o tema \"%s\" en %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:853
+#: ../src/ui/theme-viewer.c:858
 msgid "Normal Title Font"
 msgstr "Tipo de letra de título normal"
 
-#: ../src/ui/theme-viewer.c:859
+#: ../src/ui/theme-viewer.c:864
 msgid "Small Title Font"
 msgstr "Tipo de letra de título pequena"
 
-#: ../src/ui/theme-viewer.c:865
+#: ../src/ui/theme-viewer.c:870
 msgid "Large Title Font"
 msgstr "Tipo de letra de título grande"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:875
 msgid "Button Layouts"
 msgstr "Disposición dos botóns"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:880
 msgid "Benchmark"
 msgstr "Banco de probas"
 
-#: ../src/ui/theme-viewer.c:922
+#: ../src/ui/theme-viewer.c:927
 msgid "Window Title Goes Here"
 msgstr "O título da xanela vai aquí"
 
-#: ../src/ui/theme-viewer.c:1026
+#: ../src/ui/theme-viewer.c:1031
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1920,46 +1943,65 @@ msgstr ""
 "marco) e %g segundos de tempo estándar incluíndo recursos do servidor X (%g "
 "milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1245
+#: ../src/ui/theme-viewer.c:1250
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "a proba de expresión da posición devolveu TRUE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1252
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "a proba de expresión da posición devolveu FALSE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1251
+#: ../src/ui/theme-viewer.c:1256
 msgid "Error was expected but none given"
 msgstr "Esperábase un erro, mais non se deu ningún"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1258
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Esperábase un erro %d mais deuse %d"
 
-#: ../src/ui/theme-viewer.c:1259
+#: ../src/ui/theme-viewer.c:1264
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Non se esperaba ningún erro mais devolveuse un: %s"
 
-#: ../src/ui/theme-viewer.c:1263
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "o valor x era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1271
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "o valor y era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1331
+#: ../src/ui/theme-viewer.c:1336
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresións de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "Ocorreu un fallo ao ler o ficheiro de sesión gardado %s: %s\n"
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<author> especificada dúas veces para este tema"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "<copyright> especificada dúas veces para este tema"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<date> especificada dúas veces para este tema"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "<description> especificada dúas veces para este tema"
+
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr ""
+#~ "O ficheiro de tema %s non contén ningún elemento raíz <metacity_theme>"
 
 #~ msgid "Desktop"
 #~ msgstr "Escritorio"
@@ -2459,9 +2501,6 @@ msgstr ""
 
 #~ msgid "Window title font"
 #~ msgstr "Tipo de letra do título da xanela"
-
-#~ msgid "\"%s\" is not responding."
-#~ msgstr "\"%s\" non está respondendo."
 
 #~ msgid "Title"
 #~ msgstr "Título"
