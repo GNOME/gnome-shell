@@ -53,6 +53,7 @@ DISTCLEANFILES += cogl-defines.h
 
 # public headers
 cogl_public_h = \
+	$(srcdir)/cogl-object.h 		\
 	$(srcdir)/cogl-bitmap.h 		\
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
