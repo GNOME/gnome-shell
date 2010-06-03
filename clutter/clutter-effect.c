@@ -43,7 +43,7 @@
  *   <itemizedlist>
  *     <listitem><simpara><function>prepare()</function>, which is called when
  *     attaching the #ClutterEffect to a #ClutterActor through the
- *     clutter_actor_set_effect() function or when the actor is being
+ *     clutter_actor_add_effect() function or when the actor is being
  *     painted;</simpara></listitem>
  *     <listitem><simpara><function>pre_paint()</function>, which is called
  *     before painting the #ClutterActor.</simpara></listitem>

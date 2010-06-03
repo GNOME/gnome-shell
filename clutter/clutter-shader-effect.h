@@ -90,7 +90,7 @@ gboolean   clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
 void       clutter_shader_effect_set_uniform       (ClutterShaderEffect *effect,
                                                     const gchar         *name,
                                                     GType                gtype,
-                                                    gsize                size,
+                                                    gsize                n_values,
                                                     ...);
 void       clutter_shader_effect_set_uniform_value (ClutterShaderEffect *effect,
                                                     const gchar         *name,

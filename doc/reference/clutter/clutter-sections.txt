@@ -399,8 +399,6 @@ clutter_actor_get_shader
 clutter_actor_set_shader_param
 clutter_actor_set_shader_param_float
 clutter_actor_set_shader_param_int
-clutter_actor_get_effect
-clutter_actor_set_effect
 
 <SUBSECTION>
 clutter_actor_grab_key_focus
@@ -428,6 +426,13 @@ clutter_actor_remove_constraint_by_name
 clutter_actor_get_constraints
 clutter_actor_get_constraint
 clutter_actor_clear_constraints
+clutter_actor_add_effect
+clutter_actor_add_effect_with_name
+clutter_actor_remove_effect
+clutter_actor_remove_effect_by_name
+clutter_actor_get_effects
+clutter_actor_get_effect
+clutter_actor_clear_effects
 
 <SUBSECTION>
 ClutterActorBox
@@ -2316,9 +2321,7 @@ clutter_effect_get_type
 <FILE>clutter-offscreen-effect</FILE>
 ClutterOffscreenEffect
 ClutterOffscreenEffectClass
-clutter_offscreen_effect_get_actor
 clutter_offscreen_effect_get_target
-<SUBSECTION>
 clutter_offscreen_effect_create_target
 clutter_offscreen_effect_paint_target
 <SUBSECTION Standard>
@@ -2341,6 +2344,7 @@ ClutterShaderEffectClass
 clutter_shader_effect_set_uniform
 clutter_shader_effect_set_uniform_value
 <SUBSECTION>
+clutter_shader_effect_set_shader_source
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
 <SUBSECTION Standard>

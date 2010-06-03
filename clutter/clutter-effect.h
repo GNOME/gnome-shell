@@ -59,7 +59,6 @@ struct _ClutterEffect
 
 /**
  * ClutterEffectClass:
- * @prepare: virtual function
  * @pre_paint: virtual function
  * @post_paint: virtual function
  *

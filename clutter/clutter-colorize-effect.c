@@ -23,8 +23,8 @@
  */
 
 /**
- * SECTION:clutter-desaturate-effect
- * @short_description: A desaturation effect
+ * SECTION:clutter-colorize-effect
+ * @short_description: A colorization effect
  * @see_also: #ClutterEffect, #ClutterOffscreenEffect
  *
  * #ClutterColorizeEffect is a sub-class of #ClutterEffect that
