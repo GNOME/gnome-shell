@@ -431,6 +431,11 @@ ErrorLog.prototype = {
         this.actor = new St.BoxLayout();
         this.text = new St.Label();
         this.actor.add(this.text);
+        // We need to override StLabel's default ellipsization when
+        // using line_wrap; otherwise ClutterText's layout is going
+        // to constrain both the width and height, which prevents
+        // scrolling.
+        this.text.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.text.clutter_text.line_wrap = true;
         this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
     },
