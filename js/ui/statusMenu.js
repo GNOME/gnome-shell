@@ -9,6 +9,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const GnomeSession = imports.misc.gnomeSession;
+const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
@@ -136,27 +137,33 @@ StatusMenuButton.prototype = {
     },
 
     _onAccountInformationActivate: function() {
+        Main.overview.hide();
         this._spawn(['gnome-about-me']);
     },
 
     _onPreferencesActivate: function() {
+        Main.overview.hide();
         this._spawn(['gnome-control-center']);
     },
 
     _onLockScreenActivate: function() {
+        Main.overview.hide();
         this._spawn(['gnome-screensaver-command', '--lock']);
     },
 
     _onLoginScreenActivate: function() {
+        Main.overview.hide();
         this._gdm.goto_login_session();
         this._onLockScreenActivate();
     },
 
     _onQuitSessionActivate: function() {
+        Main.overview.hide();
         this._spawn(['gnome-session-save', '--logout-dialog']);
     },
 
     _onShutDownActivate: function() {
+        Main.overview.hide();
         this._spawn(['gnome-session-save', '--shutdown-dialog']);
     },
 
