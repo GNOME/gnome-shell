@@ -250,7 +250,11 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
    * so we need to resort to manually synchronizing with the vblank so we
    * always check for the video_sync extension...
    */
-  if (_cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+  if (_cogl_check_extension ("GLX_SGI_video_sync", glx_extensions) &&
+      /* Note: the GLX_SGI_video_sync spec explicitly states this extension
+       * only works for direct contexts. */
+      glXIsDirect (clutter_x11_get_default_display (),
+                   backend_glx->gl_context))
     {
       backend_glx->get_video_sync =
         (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
