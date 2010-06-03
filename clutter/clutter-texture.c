@@ -911,6 +911,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
@@ -928,105 +929,86 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   gobject_class->set_property = clutter_texture_set_property;
   gobject_class->get_property = clutter_texture_get_property;
 
-  g_object_class_install_property
-    (gobject_class, PROP_SYNC_SIZE,
-     g_param_spec_boolean ("sync-size",
-			   "Sync size of actor",
-			   "Auto sync size of actor to underlying pixbuf "
-			   "dimensions",
-			   TRUE,
-			   CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("sync-size",
+                                P_("Sync size of actor"),
+                                P_("Auto sync size of actor to underlying pixbuf dimensions"),
+                                TRUE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SYNC_SIZE, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_NO_SLICE,
-     g_param_spec_boolean ("disable-slicing",
-			   "Disable Slicing",
-			   "Force the underlying texture to be singlular"
-			   "and not made of of smaller space saving "
-                           "inidivual textures.",
-			   FALSE,
-			   G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("disable-slicing",
+                                P_("Disable Slicing"),
+                                P_("Forces the underlying texture to be singlular and not made of of smaller space saving inidivual textures."),
+                                FALSE,
+                                G_PARAM_CONSTRUCT_ONLY |
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_NO_SLICE, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_MAX_TILE_WASTE,
-     g_param_spec_int ("tile-waste",
-                       "Tile Waste",
-                       "Maximum waste area of a sliced texture",
-                       -1, G_MAXINT,
-                       COGL_TEXTURE_MAX_WASTE,
-                       CLUTTER_PARAM_READABLE));
+  pspec = g_param_spec_int ("tile-waste",
+                            P_("Tile Waste"),
+                            P_("Maximum waste area of a sliced texture"),
+                            -1, G_MAXINT,
+                            COGL_TEXTURE_MAX_WASTE,
+                            CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_MAX_TILE_WASTE, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_REPEAT_X,
-     g_param_spec_boolean ("repeat-x",
-			   "Tile underlying pixbuf in x direction",
-			   "Repeat underlying pixbuf rather than scale "
-			   "in x direction.",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("repeat-x",
+                                P_("Horizontal repeat"),
+                                P_("Repeat the contents rather than scaling them horizontally."),
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_REPEAT_X, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_REPEAT_Y,
-     g_param_spec_boolean ("repeat-y",
-			   "Tile underlying pixbuf in y direction",
-			   "Repeat underlying pixbuf rather than scale "
-			   "in y direction.",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("repeat-y",
+                                P_("Vertical repeat"),
+                                P_("Repeat the contents rather than scaling them vertically."),
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_REPEAT_Y, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_FILTER_QUALITY,
-     g_param_spec_enum ("filter-quality",
-                       "Filter Quality",
-                       "Rendering quality used when drawing the texture.",
-                       CLUTTER_TYPE_TEXTURE_QUALITY,
-		       CLUTTER_TEXTURE_QUALITY_MEDIUM,
-		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_enum ("filter-quality",
+                             P_("Filter Quality"),
+                             P_("Rendering quality used when drawing the texture."),
+                             CLUTTER_TYPE_TEXTURE_QUALITY,
+                             CLUTTER_TEXTURE_QUALITY_MEDIUM,
+                             G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_FILTER_QUALITY, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_PIXEL_FORMAT,
-     g_param_spec_enum ("pixel-format",
-		        "Texture pixel format",
-		        "CoglPixelFormat to use.",
-                        COGL_TYPE_PIXEL_FORMAT,
-		        COGL_PIXEL_FORMAT_RGBA_8888,
-		        CLUTTER_PARAM_READABLE));
+  pspec = g_param_spec_enum ("pixel-format",
+                             P_("Pixel Format"),
+                             P_("The Cogl pixel format to use."),
+                             COGL_TYPE_PIXEL_FORMAT,
+                             COGL_PIXEL_FORMAT_RGBA_8888,
+                             CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_PIXEL_FORMAT, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_COGL_TEXTURE,
-     g_param_spec_boxed ("cogl-texture",
-			 "COGL Texture",
-			 "The underlying COGL texture handle used to draw "
-			 "this actor",
-			 COGL_TYPE_HANDLE,
-			 G_PARAM_READWRITE));
+  pspec = g_param_spec_boxed ("cogl-texture",
+                              P_("COGL Texture"),
+                              P_("The underlying COGL texture handle used to draw this actor"),
+                              COGL_TYPE_HANDLE,
+                              G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COGL_TEXTURE, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_COGL_MATERIAL,
-     g_param_spec_boxed ("cogl-material",
-			 "COGL Material",
-			 "The underlying COGL material handle used to draw "
-			 "this actor",
-			 COGL_TYPE_HANDLE,
-			 G_PARAM_READWRITE));
+  pspec = g_param_spec_boxed ("cogl-material",
+                              P_("COGL Material"),
+                              P_("The underlying COGL material handle used to draw this actor"),
+                              COGL_TYPE_HANDLE,
+                              G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COGL_MATERIAL, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_FILENAME,
-     g_param_spec_string ("filename",
-                          "Filename",
-                          "The full path of the file containing the texture",
-                          NULL,
-                          G_PARAM_WRITABLE));
+  pspec = g_param_spec_string ("filename",
+                               P_("Filename"),
+                               P_("The full path of the file containing the texture"),
+                               NULL,
+                               G_PARAM_WRITABLE);
+  g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
 
-  g_object_class_install_property
-    (gobject_class, PROP_KEEP_ASPECT_RATIO,
-     g_param_spec_boolean ("keep-aspect-ratio",
-			   "Keep Aspect Ratio",
-			   "Keep the aspect ratio of the texture when "
-			   "requesting the preferred width or height",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
-
+  pspec = g_param_spec_boolean ("keep-aspect-ratio",
+                                P_("Keep Aspect Ratio"),
+                                P_("Keep the aspect ratio of the texture when requesting the preferred width or height"),
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_KEEP_ASPECT_RATIO, pspec);
 
   /**
    * ClutterTexture:load-async:
@@ -1047,14 +1029,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.0
    */
-  g_object_class_install_property
-    (gobject_class, PROP_LOAD_ASYNC,
-     g_param_spec_boolean ("load-async",
-			   "Load asynchronously",
-			   "Load files inside a thread to avoid blocking when "
-                           "loading images.",
-			   FALSE,
-			   CLUTTER_PARAM_WRITABLE));
+  pspec = g_param_spec_boolean ("load-async",
+                                P_("Load asynchronously"),
+                                P_("Load files inside a thread to avoid blocking when loading images from disk."),
+                                FALSE,
+                                CLUTTER_PARAM_WRITABLE);
+  g_object_class_install_property (gobject_class, PROP_LOAD_ASYNC, pspec);
 
 
   /**
@@ -1065,14 +1045,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.0
    */
-  g_object_class_install_property
-    (gobject_class, PROP_LOAD_DATA_ASYNC,
-     g_param_spec_boolean ("load-data-async",
-			   "Load data asynchronously",
-			   "Decode image data files inside a thread to reduce "
-                           "blocking when loading images.",
-			   FALSE,
-			   CLUTTER_PARAM_WRITABLE));
+  pspec = g_param_spec_boolean ("load-data-async",
+                                P_("Load data asynchronously"),
+                                P_("Decode image data files inside a thread to reduce blocking when loading images from disk."),
+                                FALSE,
+                                CLUTTER_PARAM_WRITABLE);
+  g_object_class_install_property (gobject_class, PROP_LOAD_DATA_ASYNC, pspec);
 
   /**
    * ClutterTexture::pick-with-alpha:
@@ -1091,13 +1069,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.4
    */
-  g_object_class_install_property
-    (gobject_class, PROP_PICK_WITH_ALPHA,
-     g_param_spec_boolean ("pick-with-alpha",
-			   "Pick With Alpha Channel",
-                           "Shape actor with alpha channel when picking",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("pick-with-alpha",
+                                P_("Pick With Alpha"),
+                                P_("Shape actor with alpha channel when picking"),
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_PICK_WITH_ALPHA, pspec);
 
   /**
    * ClutterTexture::size-change:

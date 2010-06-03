@@ -266,8 +266,8 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("source",
-                               "Source",
-                               "The source of the binding",
+                               P_("Source"),
+                               P_("The source of the binding"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
@@ -281,8 +281,8 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_enum ("coordinate",
-                             "Coordinate",
-                             "The coordinate to bind",
+                             P_("Coordinate"),
+                             P_("The coordinate to bind"),
                              CLUTTER_TYPE_BIND_COORDINATE,
                              CLUTTER_BIND_X,
                              CLUTTER_PARAM_READWRITE |
@@ -297,8 +297,8 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_float ("offset",
-                              "Offset",
-                              "The offset in pixels to apply to the binding",
+                              P_("Offset"),
+                              P_("The offset in pixels to apply to the binding"),
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0f,
                               CLUTTER_PARAM_READWRITE |

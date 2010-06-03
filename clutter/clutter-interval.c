@@ -60,6 +60,7 @@
 #include "clutter-color.h"
 #include "clutter-fixed.h"
 #include "clutter-interval.h"
+#include "clutter-private.h"
 #include "clutter-units.h"
 
 typedef struct
@@ -404,8 +405,8 @@ clutter_interval_class_init (ClutterIntervalClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_gtype ("value-type",
-                              "Value Type",
-                              "The type of the values in the interval",
+                              P_("Value Type"),
+                              P_("The type of the values in the interval"),
                               G_TYPE_NONE,
                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_VALUE_TYPE, pspec);

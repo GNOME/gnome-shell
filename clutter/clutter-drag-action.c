@@ -467,9 +467,8 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("drag-threshold",
-                             "Drag Threshold",
-                             "The amount of pixels required to start "
-                             "dragging",
+                             P_("Drag Threshold"),
+                             P_("The amount of pixels required to start dragging"),
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
@@ -490,8 +489,8 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("drag-handle",
-                               "Drag Handle",
-                               "The actor that is being dragged",
+                               P_("Drag Handle"),
+                               P_("The actor that is being dragged"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_DRAG_HANDLE, pspec);
@@ -504,8 +503,8 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_enum ("drag-axis",
-                             "Drag Axis",
-                             "Constraints the dragging to an axis",
+                             P_("Drag Axis"),
+                             P_("Constraints the dragging to an axis"),
                              CLUTTER_TYPE_DRAG_AXIS,
                              CLUTTER_DRAG_AXIS_NONE,
                              CLUTTER_PARAM_READWRITE);

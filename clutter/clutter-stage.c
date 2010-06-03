@@ -1015,8 +1015,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("fullscreen-set",
-                                "Fullscreen Set",
-                                "Whether the main stage is fullscreen",
+                                P_("Fullscreen Set"),
+                                P_("Whether the main stage is fullscreen"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class,
@@ -1032,9 +1032,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * and it might be deprecated at any later date.</para></warning>
    */
   pspec = g_param_spec_boolean ("offscreen",
-                                "Offscreen",
-                                "Whether the main stage should be "
-                                "rendered offscreen",
+                                P_("Offscreen"),
+                                P_("Whether the main stage should be rendered offscreen"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
@@ -1046,9 +1045,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Whether the mouse pointer should be visible
    */
   pspec = g_param_spec_boolean ("cursor-visible",
-                                "Cursor Visible",
-                                "Whether the mouse pointer is visible "
-                                "on the main stage",
+                                P_("Cursor Visible"),
+                                P_("Whether the mouse pointer is visible on the main stage"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
@@ -1062,9 +1060,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_boolean ("user-resizable",
-                                "User Resizable",
-                                "Whether the stage is able to be resized "
-                                "via user interaction",
+                                P_("User Resizable"),
+                                P_("Whether the stage is able to be resized via user interaction"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
@@ -1076,8 +1073,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * The color of the main stage.
    */
   pspec = clutter_param_spec_color ("color",
-                                    "Color",
-                                    "The color of the stage",
+                                    P_("Color"),
+                                    P_("The color of the stage"),
                                     &default_stage_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
@@ -1091,8 +1088,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.8.2
    */
   pspec = g_param_spec_boxed ("perspective",
-                              "Perspective",
-                              "Perspective projection parameters",
+                              P_("Perspective"),
+                              P_("Perspective projection parameters"),
                               CLUTTER_TYPE_PERSPECTIVE,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
@@ -1107,8 +1104,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_string ("title",
-                               "Title",
-                               "Stage Title",
+                               P_("Title"),
+                               P_("Stage Title"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TITLE, pspec);
@@ -1123,8 +1120,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_boolean ("use-fog",
-                                "Use Fog",
-                                "Whether to enable depth cueing",
+                                P_("Use Fog"),
+                                P_("Whether to enable depth cueing"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_FOG, pspec);
@@ -1138,8 +1135,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boxed ("fog",
-                              "Fog",
-                              "Settings for the depth cueing",
+                              P_("Fog"),
+                              P_("Settings for the depth cueing"),
                               CLUTTER_TYPE_FOG,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_FOG, pspec);
@@ -1155,9 +1152,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("use-alpha",
-                                "Use Alpha",
-                                "Whether to honour the alpha component of "
-                                "the stage color",
+                                P_("Use Alpha"),
+                                P_("Whether to honour the alpha component of the stage color"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_ALPHA, pspec);
@@ -1173,8 +1169,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_object ("key-focus",
-                               "Key Focus",
-                               "The currently key focused actor",
+                               P_("Key Focus"),
+                               P_("The currently key focused actor"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_KEY_FOCUS, pspec);
@@ -1190,8 +1186,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("no-clear-hint",
-                                "No Clear Hint",
-                                "Whether the stage should clear its contents",
+                                P_("No Clear Hint"),
+                                P_("Whether the stage should clear its contents"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_NO_CLEAR_HINT, pspec);
@@ -1205,7 +1201,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.6
    */
   stage_signals[FULLSCREEN] =
-    g_signal_new ("fullscreen",
+    g_signal_new (I_("fullscreen"),
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterStageClass, fullscreen),
@@ -1222,7 +1218,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.6
    */
   stage_signals[UNFULLSCREEN] =
-    g_signal_new ("unfullscreen",
+    g_signal_new (I_("unfullscreen"),
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, unfullscreen),
@@ -1239,7 +1235,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.6
    */
   stage_signals[ACTIVATE] =
-    g_signal_new ("activate",
+    g_signal_new (I_("activate"),
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, activate),
@@ -1256,7 +1252,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * Since: 0.6
    */
   stage_signals[DEACTIVATE] =
-    g_signal_new ("deactivate",
+    g_signal_new (I_("deactivate"),
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, deactivate),

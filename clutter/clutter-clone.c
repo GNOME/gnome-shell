@@ -271,8 +271,8 @@ clutter_clone_class_init (ClutterCloneClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_object ("source",
-                               "Source",
-                               "Specifies the actor to be cloned",
+                               P_("Source"),
+                               P_("Specifies the actor to be cloned"),
                                CLUTTER_TYPE_ACTOR,
                                G_PARAM_CONSTRUCT |
                                CLUTTER_PARAM_READWRITE);

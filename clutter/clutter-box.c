@@ -487,8 +487,8 @@ clutter_box_class_init (ClutterBoxClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_object ("layout-manager",
-                               "Layout Manager",
-                               "The layout manager used by the box",
+                               P_("Layout Manager"),
+                               P_("The layout manager used by the box"),
                                CLUTTER_TYPE_LAYOUT_MANAGER,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
@@ -506,8 +506,8 @@ clutter_box_class_init (ClutterBoxClass *klass)
    * Since: 1.2
    */
   pspec = clutter_param_spec_color ("color",
-                                    "Color",
-                                    "The background color of the box",
+                                    P_("Color"),
+                                    P_("The background color of the box"),
                                     &default_box_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
@@ -520,8 +520,8 @@ clutter_box_class_init (ClutterBoxClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("color-set",
-                                "Color Set",
-                                "Whether the background color is set",
+                                P_("Color Set"),
+                                P_("Whether the background color is set"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLOR_SET, pspec);

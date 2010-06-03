@@ -858,8 +858,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_enum ("orientation",
-                             "Orientation",
-                             "The orientation of the layout",
+                             P_("Orientation"),
+                             P_("The orientation of the layout"),
                              CLUTTER_TYPE_FLOW_ORIENTATION,
                              CLUTTER_FLOW_HORIZONTAL,
                              CLUTTER_PARAM_READWRITE |
@@ -875,9 +875,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("homogeneous",
-                                "Homogeneous",
-                                "Whether each item should receive the "
-                                "same allocation",
+                                P_("Homogeneous"),
+                                P_("Whether each item should receive the same allocation"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
@@ -892,8 +891,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("column-spacing",
-                              "Column Spacing",
-                              "The spacing between columns",
+                              P_("Column Spacing"),
+                              P_("The spacing between columns"),
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
@@ -911,8 +910,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("row-spacing",
-                              "Row Spacing",
-                              "The spacing between rows",
+                              P_("Row Spacing"),
+                              P_("The spacing between rows"),
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
@@ -928,8 +927,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("min-column-width",
-                              "Minimum Column Width",
-                              "Minimum width for each column",
+                              P_("Minimum Column Width"),
+                              P_("Minimum width for each column"),
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
@@ -946,8 +945,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("max-column-width",
-                              "Maximum Column Width",
-                              "Maximum width for each column",
+                              P_("Maximum Column Width"),
+                              P_("Maximum width for each column"),
                               -1.0, G_MAXFLOAT,
                               -1.0,
                               CLUTTER_PARAM_READWRITE);
@@ -963,8 +962,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("min-row-height",
-                              "Minimum Row Height",
-                              "Minimum height for each row",
+                              P_("Minimum Row Height"),
+                              P_("Minimum height for each row"),
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
@@ -981,8 +980,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_float ("max-row-height",
-                              "Maximum Row Height",
-                              "Maximum height for each row",
+                              P_("Maximum Row Height"),
+                              P_("Maximum height for each row"),
                               -1.0, G_MAXFLOAT,
                               -1.0,
                               CLUTTER_PARAM_READWRITE);

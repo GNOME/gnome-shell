@@ -332,8 +332,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * Since: 0.2
    */
   pspec = g_param_spec_object ("timeline",
-                               "Timeline",
-                               "Timeline used by the alpha",
+                               P_("Timeline"),
+                               P_("Timeline used by the alpha"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_TIMELINE, pspec);
@@ -348,8 +348,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * Since: 0.2
    */
   pspec = g_param_spec_double ("alpha",
-                               "Alpha value",
-                               "Alpha value",
+                               P_("Alpha value"),
+                               P_("Alpha value as computed by the alpha"),
                                -1.0, 2.0,
                                0.0,
                                CLUTTER_PARAM_READABLE);
@@ -369,8 +369,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_ulong ("mode",
-                              "Mode",
-                              "Progress mode",
+                              P_("Mode"),
+                              P_("Progress mode"),
                               0, G_MAXULONG,
                               CLUTTER_CUSTOM_MODE,
                               G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);

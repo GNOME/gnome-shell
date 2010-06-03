@@ -386,8 +386,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-start",
-                               "Start Angle",
-                               "Initial angle",
+                               P_("Start Angle"),
+                               P_("Initial angle"),
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
@@ -401,8 +401,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-end",
-                               "End Angle",
-                               "Final angle",
+                               P_("End Angle"),
+                               P_("Final angle"),
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
@@ -416,8 +416,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-tilt-x",
-                               "Angle x tilt",
-                               "Tilt of the ellipse around x axis",
+                               P_("Angle x tilt"),
+                               P_("Tilt of the ellipse around x axis"),
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
@@ -431,8 +431,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-tilt-y",
-                               "Angle y tilt",
-                               "Tilt of the ellipse around y axis",
+                               P_("Angle y tilt"),
+                               P_("Tilt of the ellipse around y axis"),
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
@@ -446,8 +446,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-tilt-z",
-                               "Angle z tilt",
-                               "Tilt of the ellipse around z axis",
+                               P_("Angle z tilt"),
+                               P_("Tilt of the ellipse around z axis"),
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
@@ -461,8 +461,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_int ("width",
-                            "Width",
-                            "Width of the ellipse",
+                            P_("Width"),
+                            P_("Width of the ellipse"),
                             0, G_MAXINT,
                             100,
                             CLUTTER_PARAM_READWRITE);
@@ -476,8 +476,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_int ("height",
-                            "Height",
-                            "Height of ellipse",
+                            P_("Height"),
+                            P_("Height of ellipse"),
                             0, G_MAXINT,
                             50,
                             CLUTTER_PARAM_READWRITE);
@@ -491,8 +491,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_boxed ("center",
-                              "Center",
-                              "Center of ellipse",
+                              P_("Center"),
+                              P_("Center of ellipse"),
                               CLUTTER_TYPE_KNOT,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_CENTER, pspec);
@@ -505,8 +505,8 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_enum ("direction",
-                             "Direction",
-                             "Direction of rotation",
+                             P_("Direction"),
+                             P_("Direction of rotation"),
                              CLUTTER_TYPE_ROTATE_DIRECTION,
                              CLUTTER_ROTATE_CW,
                              CLUTTER_PARAM_READWRITE);

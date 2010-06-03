@@ -515,8 +515,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   klass->update_area         = clutter_x11_texture_pixmap_update_area_real;
 
   pspec = g_param_spec_ulong ("pixmap",
-			      "Pixmap",
-			      "The X11 Pixmap to be bound",
+			      P_("Pixmap"),
+			      P_("The X11 Pixmap to be bound"),
 			      0, G_MAXULONG,
 			      None,
 			      G_PARAM_READWRITE);
@@ -524,9 +524,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_object_class_install_property (object_class, PROP_PIXMAP, pspec);
 
   pspec = g_param_spec_uint ("pixmap-width",
-                             "Pixmap width",
-                             "The width of the "
-                             "pixmap bound to this texture",
+                             P_("Pixmap width"),
+                             P_("The width of the pixmap bound to this texture"),
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
@@ -534,9 +533,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_object_class_install_property (object_class, PROP_PIXMAP_WIDTH, pspec);
 
   pspec = g_param_spec_uint ("pixmap-height",
-                             "Pixmap height",
-                             "The height of the "
-                             "pixmap bound to this texture",
+                             P_("Pixmap height"),
+                             P_("The height of the pixmap bound to this texture"),
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
@@ -544,9 +542,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_object_class_install_property (object_class, PROP_PIXMAP_HEIGHT, pspec);
 
   pspec = g_param_spec_uint ("pixmap-depth",
-                             "Pixmap Depth",
-                             "The depth (in number of bits) of the "
-                             "pixmap bound to this texture",
+                             P_("Pixmap Depth"),
+                             P_("The depth (in number of bits) of the pixmap bound to this texture"),
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
@@ -554,17 +551,17 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_object_class_install_property (object_class, PROP_DEPTH, pspec);
 
   pspec = g_param_spec_boolean ("automatic-updates",
-                                "Automatic Updates",
-                                "If the texture should be kept in "
-                                "sync with any pixmap changes.",
+                                P_("Automatic Updates"),
+                                P_("If the texture should be kept in "
+                                   "sync with any pixmap changes."),
                                 FALSE,
                                 G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class, PROP_AUTO, pspec);
 
   pspec = g_param_spec_ulong ("window",
-			      "Window",
-			      "The X11 Window to be bound",
+			      P_("Window"),
+			      P_("The X11 Window to be bound"),
 			      0, G_MAXULONG,
 			      None,
 			      G_PARAM_READWRITE);
@@ -572,9 +569,9 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_object_class_install_property (object_class, PROP_WINDOW, pspec);
 
   pspec = g_param_spec_boolean ("window-redirect-automatic",
-                                "Window Redirect Automatic",
-                                "If composite window redirects are set to "
-                                "Automatic (or Manual if false)",
+                                P_("Window Redirect Automatic"),
+                                P_("If composite window redirects are set to "
+                                   "Automatic (or Manual if false)"),
                                 TRUE,
                                 G_PARAM_READWRITE);
 
@@ -583,8 +580,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
 
   pspec = g_param_spec_boolean ("window-mapped",
-                                "Window Mapped",
-                                "If window is mapped",
+                                P_("Window Mapped"),
+                                P_("If window is mapped"),
                                 FALSE,
                                 G_PARAM_READABLE);
 
@@ -593,8 +590,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
 
   pspec = g_param_spec_boolean ("destroyed",
-                                "Destroyed",
-                                "If window has been destroyed",
+                                P_("Destroyed"),
+                                P_("If window has been destroyed"),
                                 FALSE,
                                 G_PARAM_READABLE);
 
@@ -602,8 +599,8 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                                    PROP_DESTROYED, pspec);
 
   pspec = g_param_spec_int ("window-x",
-                            "Window X",
-                            "X position of window on screen according to X11",
+                            P_("Window X"),
+                            P_("X position of window on screen according to X11"),
                             G_MININT, G_MAXINT, 0, G_PARAM_READABLE);
 
   g_object_class_install_property (object_class,
@@ -611,16 +608,16 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
 
   pspec = g_param_spec_int ("window-y",
-                            "Window Y",
-                            "Y position of window on screen according to X11",
+                            P_("Window Y"),
+                            P_("Y position of window on screen according to X11"),
                             G_MININT, G_MAXINT, 0, G_PARAM_READABLE);
 
   g_object_class_install_property (object_class,
                                    PROP_WINDOW_Y, pspec);
 
   pspec = g_param_spec_boolean ("window-override-redirect",
-                                "Window Override Redirect",
-                                "If this is an override-redirect window",
+                                P_("Window Override Redirect"),
+                                P_("If this is an override-redirect window"),
                                 FALSE,
                                 G_PARAM_READABLE);
 
@@ -638,7 +635,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * Since: 0.8
    */
   signals[UPDATE_AREA] =
-      g_signal_new ("update-area",
+      g_signal_new (g_intern_static_string ("update-area"),
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_FIRST,
                     G_STRUCT_OFFSET (ClutterX11TexturePixmapClass, \
@@ -695,7 +692,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
   if (!CLUTTER_IS_BACKEND_X11 (default_backend))
     {
-      g_critical ("ClutterX11TexturePixmap instanciated with a "
+      g_critical ("ClutterX11TexturePixmap instantiated with a "
                   "non-X11 backend");
       return;
     }

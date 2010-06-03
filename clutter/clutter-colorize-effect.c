@@ -208,8 +208,8 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
    * Since: 1.4
    */
   pspec = clutter_param_spec_color ("tint",
-                                    "Tint",
-                                    "The tint to apply",
+                                    P_("Tint"),
+                                    P_("The tint to apply"),
                                     &default_tint,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TINT, pspec);

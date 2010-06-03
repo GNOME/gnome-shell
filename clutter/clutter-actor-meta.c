@@ -157,8 +157,8 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("actor",
-                               "Actor",
-                               "The actor attached to the meta",
+                               P_("Actor"),
+                               P_("The actor attached to the meta"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
@@ -171,8 +171,8 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_string ("name",
-                               "Name",
-                               "The name of the meta",
+                               P_("Name"),
+                               P_("The name of the meta"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_NAME, pspec);
@@ -185,8 +185,8 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("enabled",
-                                "Enabled",
-                                "Whether the meta is enabled",
+                                P_("Enabled"),
+                                P_("Whether the meta is enabled"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ENABLED, pspec);

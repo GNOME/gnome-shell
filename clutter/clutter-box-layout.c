@@ -381,43 +381,43 @@ clutter_box_child_class_init (ClutterBoxChildClass *klass)
   gobject_class->finalize = clutter_box_child_finalize;
 
   pspec = g_param_spec_boolean ("expand",
-                                "Expand",
-                                "Allocate extra space for the child",
+                                P_("Expand"),
+                                P_("Allocate extra space for the child"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_EXPAND, pspec);
 
   pspec = g_param_spec_boolean ("x-fill",
-                                "Horizontal Fill",
-                                "Whether the child should receive priority "
-                                "when the container is allocating spare space "
-                                "on the horizontal axis",
+                                P_("Horizontal Fill"),
+                                P_("Whether the child should receive priority "
+                                   "when the container is allocating spare space "
+                                   "on the horizontal axis"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_X_FILL, pspec);
 
   pspec = g_param_spec_boolean ("y-fill",
-                                "Vertical Fill",
-                                "Whether the child should receive priority "
-                                "when the container is allocating spare space "
-                                "on the vertical axis",
+                                P_("Vertical Fill"),
+                                P_("Whether the child should receive priority "
+                                   "when the container is allocating spare space "
+                                   "on the vertical axis"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_Y_FILL, pspec);
 
   pspec = g_param_spec_enum ("x-align",
-                             "Horizontal Alignment",
-                             "Horizontal alignment of the actor within "
-                             "the cell",
+                             P_("Horizontal Alignment"),
+                             P_("Horizontal alignment of the actor within "
+                                "the cell"),
                              CLUTTER_TYPE_BOX_ALIGNMENT,
                              CLUTTER_BOX_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_X_ALIGN, pspec);
 
   pspec = g_param_spec_enum ("y-align",
-                             "Vertical Alignment",
-                             "Vertical alignment of the actor within "
-                             "the cell",
+                             P_("Vertical Alignment"),
+                             P_("Vertical alignment of the actor within "
+                                "the cell"),
                              CLUTTER_TYPE_BOX_ALIGNMENT,
                              CLUTTER_BOX_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
@@ -1160,9 +1160,9 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("vertical",
-                                "Vertical",
-                                "Whether the layout should be vertical, rather"
-                                "than horizontal",
+                                P_("Vertical"),
+                                P_("Whether the layout should be vertical, rather"
+                                   "than horizontal"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_VERTICAL, pspec);
@@ -1176,9 +1176,9 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("homogeneous",
-                                "Homogeneous",
-                                "Whether the layout should be homogeneous, i.e."
-                                "all childs get the same size",
+                                P_("Homogeneous"),
+                                P_("Whether the layout should be homogeneous, i.e."
+                                   "all childs get the same size"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
@@ -1192,8 +1192,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("pack-start",
-                                "Pack Start",
-                                "Whether to pack items at the start of the box",
+                                P_("Pack Start"),
+                                P_("Whether to pack items at the start of the box"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_PACK_START, pspec);
@@ -1206,8 +1206,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_uint ("spacing",
-                             "Spacing",
-                             "Spacing between children",
+                             P_("Spacing"),
+                             P_("Spacing between children"),
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SPACING, pspec);
@@ -1221,8 +1221,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("use-animations",
-                                "Use Animations",
-                                "Whether layout changes should be animated",
+                                P_("Use Animations"),
+                                P_("Whether layout changes should be animated"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_ANIMATIONS, pspec);
@@ -1243,8 +1243,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_ulong ("easing-mode",
-                              "Easing Mode",
-                              "The easing mode of the animations",
+                              P_("Easing Mode"),
+                              P_("The easing mode of the animations"),
                               0, G_MAXULONG,
                               CLUTTER_EASE_OUT_CUBIC,
                               CLUTTER_PARAM_READWRITE);
@@ -1261,8 +1261,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_uint ("easing-duration",
-                             "Easing Duration",
-                             "The duration of the animations",
+                             P_("Easing Duration"),
+                             P_("The duration of the animations"),
                              0, G_MAXUINT,
                              500,
                              CLUTTER_PARAM_READWRITE);

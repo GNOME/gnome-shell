@@ -177,8 +177,8 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    * Since: 0.2
    */
   pspec = g_param_spec_uint ("opacity-start",
-                             "Opacity Start",
-                             "Initial opacity level",
+                             P_("Opacity Start"),
+                             P_("Initial opacity level"),
                              0, 255,
                              0,
                              CLUTTER_PARAM_READWRITE);
@@ -192,8 +192,8 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    * Since: 0.2
    */
   pspec = g_param_spec_uint ("opacity-end",
-                             "Opacity End",
-                             "Final opacity level",
+                             P_("Opacity End"),
+                             P_("Final opacity level"),
                              0, 255,
                              0,
                              CLUTTER_PARAM_READWRITE);

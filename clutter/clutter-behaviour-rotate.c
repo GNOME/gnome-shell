@@ -270,8 +270,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-start",
-                               "Angle Begin",
-                               "Initial angle",
+                               P_("Angle Begin"),
+                               P_("Initial angle"),
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
@@ -287,8 +287,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_double ("angle-end",
-                               "Angle End",
-                               "Final angle",
+                               P_("Angle End"),
+                               P_("Final angle"),
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
@@ -304,8 +304,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_enum ("axis",
-                             "Axis",
-                             "Axis of rotation",
+                             P_("Axis"),
+                             P_("Axis of rotation"),
                              CLUTTER_TYPE_ROTATE_AXIS,
                              CLUTTER_Z_AXIS,
                              CLUTTER_PARAM_READWRITE);
@@ -321,8 +321,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_enum ("direction",
-                             "Direction",
-                             "Direction of rotation",
+                             P_("Direction"),
+                             P_("Direction of rotation"),
                              CLUTTER_TYPE_ROTATE_DIRECTION,
                              CLUTTER_ROTATE_CW,
                              CLUTTER_PARAM_READWRITE);
@@ -338,8 +338,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_int ("center-x",
-                            "Center-X",
-                            "X center of rotation",
+                            P_("Center X"),
+                            P_("X coordinate of the center of rotation"),
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);
@@ -355,8 +355,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_int ("center-y",
-                            "Center-Y",
-                            "Y center of rotation",
+                            P_("Center Y"),
+                            P_("Y coordinate of the center of rotation"),
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);
@@ -372,8 +372,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    * Since: 0.4
    */
   pspec = g_param_spec_int ("center-z",
-                            "Center-Z",
-                            "Z center of rotation",
+                            P_("Center Z"),
+                            P_("Z coordinate of the center of rotation"),
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);

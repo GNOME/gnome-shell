@@ -2495,8 +2495,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_string ("font-name",
-                               "Font Name",
-                               "The font to be used by the text",
+                               P_("Font Name"),
+                               P_("The font to be used by the text"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_FONT_NAME, pspec);
@@ -2512,8 +2512,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_boxed ("font-description",
-                              "Font Description",
-                              "The font description to be used",
+                              P_("Font Description"),
+                              P_("The font description to be used"),
                               PANGO_TYPE_FONT_DESCRIPTION,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
@@ -2528,8 +2528,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_string ("text",
-                               "Text",
-                               "The text to render",
+                               P_("Text"),
+                               P_("The text to render"),
                                "",
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
@@ -2542,8 +2542,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = clutter_param_spec_color ("color",
-                                    "Font Color",
-                                    "Color of the font used by the text",
+                                    P_("Font Color"),
+                                    P_("Color of the font used by the text"),
                                     &default_text_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
@@ -2556,8 +2556,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("editable",
-                                "Editable",
-                                "Whether the text is editable",
+                                P_("Editable"),
+                                P_("Whether the text is editable"),
                                 TRUE,
                                 G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_EDITABLE, pspec);
@@ -2571,8 +2571,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("selectable",
-                                "Selectable",
-                                "Whether the text is selectable",
+                                P_("Selectable"),
+                                P_("Whether the text is selectable"),
                                 TRUE,
                                 G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SELECTABLE, pspec);
@@ -2585,9 +2585,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("activatable",
-                                "Activatable",
-                                "Whether pressing return causes the "
-                                "activate signal to be emitted",
+                                P_("Activatable"),
+                                P_("Whether pressing return causes the activate signal to be emitted"),
                                 TRUE,
                                 G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ACTIVATABLE, pspec);
@@ -2602,8 +2601,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("cursor-visible",
-                                "Cursor Visible",
-                                "Whether the input cursor is visible",
+                                P_("Cursor Visible"),
+                                P_("Whether the input cursor is visible"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_VISIBLE, pspec);
@@ -2616,8 +2615,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = clutter_param_spec_color ("cursor-color",
-                                    "Cursor Color",
-                                    "Cursor Color",
+                                    P_("Cursor Color"),
+                                    P_("Cursor Color"),
                                     &default_cursor_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR, pspec);
@@ -2630,8 +2629,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("cursor-color-set",
-                                "Cursor Color Set",
-                                "Whether the cursor color has been set",
+                                P_("Cursor Color Set"),
+                                P_("Whether the cursor color has been set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR_SET, pspec);
@@ -2645,8 +2644,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_int ("cursor-size",
-                            "Cursor Size",
-                            "The width of the cursor, in pixels",
+                            P_("Cursor Size"),
+                            P_("The width of the cursor, in pixels"),
                             -1, G_MAXINT, DEFAULT_CURSOR_SIZE,
                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_SIZE, pspec);
@@ -2659,8 +2658,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_int ("position",
-                            "Position",
-                            "The cursor position",
+                            P_("Position"),
+                            P_("The cursor position"),
                             -1, G_MAXINT,
                             -1,
                             CLUTTER_PARAM_READWRITE);
@@ -2674,9 +2673,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_int ("selection-bound",
-                            "Selection-bound",
-                            "The cursor position of the other end "
-                            "of the selection",
+                            P_("Selection-bound"),
+                            P_("The cursor position of the other end of the selection"),
                             -1, G_MAXINT,
                             -1,
                             CLUTTER_PARAM_READWRITE);
@@ -2690,8 +2688,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = clutter_param_spec_color ("selection-color",
-                                    "Selection Color",
-                                    "Selection Color",
+                                    P_("Selection Color"),
+                                    P_("Selection Color"),
                                     &default_selection_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR, pspec);
@@ -2704,8 +2702,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("selection-color-set",
-                                "Selection Color Set",
-                                "Whether the selection color has been set",
+                                P_("Selection Color Set"),
+                                P_("Whether the selection color has been set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR_SET, pspec);
@@ -2719,9 +2717,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boxed ("attributes",
-                              "Attributes",
-                              "A list of style attributes to apply to "
-                              "the contents of the actor",
+                              P_("Attributes"),
+                              P_("A list of style attributes to apply to the contents of the actor"),
                               PANGO_TYPE_ATTR_LIST,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ATTRIBUTES, pspec);
@@ -2735,9 +2732,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("use-markup",
-                                "Use markup",
-                                "Whether or not the text "
-                                "includes Pango markup",
+                                P_("Use markup"),
+                                P_("Whether or not the text includes Pango markup"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_MARKUP, pspec);
@@ -2752,9 +2748,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("line-wrap",
-                                "Line wrap",
-                                "If set, wrap the lines if the text "
-                                "becomes too wide",
+                                P_("Line wrap"),
+                                P_("If set, wrap the lines if the text becomes too wide"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_LINE_WRAP, pspec);
@@ -2768,8 +2763,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_enum ("line-wrap-mode",
-                             "Line wrap mode",
-                             "Control how line-wrapping is done",
+                             P_("Line wrap mode"),
+                             P_("Control how line-wrapping is done"),
                              PANGO_TYPE_WRAP_MODE,
                              PANGO_WRAP_WORD,
                              CLUTTER_PARAM_READWRITE);
@@ -2783,8 +2778,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_enum ("ellipsize",
-                             "Ellipsize",
-                             "The preferred place to ellipsize the string",
+                             P_("Ellipsize"),
+                             P_("The preferred place to ellipsize the string"),
                              PANGO_TYPE_ELLIPSIZE_MODE,
                              PANGO_ELLIPSIZE_NONE,
                              CLUTTER_PARAM_READWRITE);
@@ -2799,9 +2794,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_enum ("line-alignment",
-                             "Line Alignment",
-                             "The preferred alignment for the string, "
-                             "for multi-line text",
+                             P_("Line Alignment"),
+                             P_("The preferred alignment for the string, for multi-line text"),
                              PANGO_TYPE_ALIGNMENT,
                              PANGO_ALIGN_LEFT,
                              CLUTTER_PARAM_READWRITE);
@@ -2816,8 +2810,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("justify",
-                                "Justify",
-                                "Whether the text should be justified",
+                                P_("Justify"),
+                                P_("Whether the text should be justified"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
@@ -2831,9 +2825,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_unichar ("password-char",
-                                "Password Character",
-                                "If non-zero, use this character to "
-                                "display the actor's contents",
+                                P_("Password Character"),
+                                P_("If non-zero, use this character to display the actor's contents"),
                                 0,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_PASSWORD_CHAR, pspec);
@@ -2846,8 +2839,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_int ("max-length",
-                            "Max Length",
-                            "Maximum length of the text inside the actor",
+                            P_("Max Length"),
+                            P_("Maximum length of the text inside the actor"),
                             -1, G_MAXINT, 0,
                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_MAX_LENGTH, pspec);
@@ -2869,8 +2862,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("single-line-mode",
-                                "Single Line Mode",
-                                "Whether the text should be a single line",
+                                P_("Single Line Mode"),
+                                P_("Whether the text should be a single line"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SINGLE_LINE_MODE, pspec);
@@ -2884,7 +2877,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   text_signals[TEXT_CHANGED] =
-    g_signal_new ("text-changed",
+    g_signal_new (I_("text-changed"),
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterTextClass, text_changed),
@@ -2909,7 +2902,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.2
    */
   text_signals[INSERT_TEXT] =
-    g_signal_new ("insert-text",
+    g_signal_new (I_("insert-text"),
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0,
@@ -2932,7 +2925,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.2
    */
   text_signals[DELETE_TEXT] =
-    g_signal_new ("delete-text",
+    g_signal_new (I_("delete-text"),
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0,
@@ -2955,7 +2948,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   text_signals[CURSOR_EVENT] =
-    g_signal_new ("cursor-event",
+    g_signal_new (I_("cursor-event"),
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextClass, cursor_event),
@@ -2975,7 +2968,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   text_signals[ACTIVATE] =
-    g_signal_new ("activate",
+    g_signal_new (I_("activate"),
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterTextClass, activate),

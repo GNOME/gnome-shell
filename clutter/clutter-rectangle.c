@@ -244,8 +244,8 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    * The color of the rectangle.
    */
   pspec = clutter_param_spec_color ("color",
-                                    "Color",
-                                    "The color of the rectangle",
+                                    P_("Color"),
+                                    P_("The color of the rectangle"),
                                     &default_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
@@ -258,8 +258,8 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    * Since: 0.2
    */
   pspec = clutter_param_spec_color ("border-color",
-                                    "Border Color",
-                                    "The color of the border of the rectangle",
+                                    P_("Border Color"),
+                                    P_("The color of the border of the rectangle"),
                                     &default_border_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_BORDER_COLOR, pspec);
@@ -274,8 +274,8 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_BORDER_WIDTH,
                                    g_param_spec_uint ("border-width",
-                                                      "Border Width",
-                                                      "The width of the border of the rectangle",
+                                                      P_("Border Width"),
+                                                      P_("The width of the border of the rectangle"),
                                                       0, G_MAXUINT,
                                                       0,
                                                       CLUTTER_PARAM_READWRITE));
@@ -289,8 +289,8 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_HAS_BORDER,
                                    g_param_spec_boolean ("has-border",
-                                                         "Has Border",
-                                                         "Whether the rectangle should have a border",
+                                                         P_("Has Border"),
+                                                         P_("Whether the rectangle should have a border"),
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
 

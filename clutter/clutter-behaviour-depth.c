@@ -167,8 +167,8 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_DEPTH_START,
                                    g_param_spec_int ("depth-start",
-                                                     "Start Depth",
-                                                     "Initial depth to apply",
+                                                     P_("Start Depth"),
+                                                     P_("Initial depth to apply"),
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
@@ -181,8 +181,8 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_DEPTH_END,
                                    g_param_spec_int ("depth-end",
-                                                     "End Depth",
-                                                     "Final depth to apply",
+                                                     P_("End Depth"),
+                                                     P_("Final depth to apply"),
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
 }

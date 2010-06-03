@@ -110,8 +110,8 @@ clutter_layout_meta_class_init (ClutterLayoutMetaClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_object ("manager",
-                               "Manager",
-                               "The manager that created this data",
+                               P_("Manager"),
+                               P_("The manager that created this data"),
                                CLUTTER_TYPE_LAYOUT_MANAGER,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);

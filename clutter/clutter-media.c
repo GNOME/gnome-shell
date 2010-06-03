@@ -76,8 +76,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 0.2
        */
       pspec = g_param_spec_string ("uri",
-                                   "URI",
-                                   "URI of a media file",
+                                   P_("URI"),
+                                   P_("URI of a media file"),
                                    NULL,
                                    CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -90,8 +90,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 0.2
        */
       pspec = g_param_spec_boolean ("playing",
-                                    "Playing",
-                                    "Wheter the actor is playing",
+                                    P_("Playing"),
+                                    P_("Wheter the actor is playing"),
                                     FALSE,
                                     CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -105,8 +105,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 1.0
        */
       pspec = g_param_spec_double ("progress",
-                                   "Progress",
-                                   "Current progress of the playback",
+                                   P_("Progress"),
+                                   P_("Current progress of the playback"),
                                    0.0, 1.0, 0.0,
                                    CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -119,8 +119,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 1.2
        */
       pspec = g_param_spec_string ("subtitle-uri",
-                                   "Subtitle URI",
-                                   "URI of a subtitle file",
+                                   P_("Subtitle URI"),
+                                   P_("URI of a subtitle file"),
                                    NULL,
                                    CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -135,8 +135,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 1.2
        */
       pspec = g_param_spec_string ("subtitle-font-name",
-                                   "Subtitle Font Name",
-                                   "The font used to display subtitles",
+                                   P_("Subtitle Font Name"),
+                                   P_("The font used to display subtitles"),
                                    NULL,
                                    CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -150,8 +150,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 1.0
        */
       pspec = g_param_spec_double ("audio-volume",
-                                   "Audio Volume",
-                                   "The volume of the audio",
+                                   P_("Audio Volume"),
+                                   P_("The volume of the audio"),
                                    0.0, 1.0, 0.5,
                                    CLUTTER_PARAM_READWRITE);
       g_object_interface_install_property (g_iface, pspec);
@@ -164,8 +164,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 0.2
        */
       pspec = g_param_spec_boolean ("can-seek",
-                                    "Can Seek",
-                                    "Whether the current stream is seekable",
+                                    P_("Can Seek"),
+                                    P_("Whether the current stream is seekable"),
                                     FALSE,
                                     CLUTTER_PARAM_READABLE);
       g_object_interface_install_property (g_iface, pspec);
@@ -179,8 +179,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 1.0
        */
       pspec = g_param_spec_double ("buffer-fill",
-                                   "Buffer Fill",
-                                   "The fill level of the buffer",
+                                   P_("Buffer Fill"),
+                                   P_("The fill level of the buffer"),
                                    0.0, 1.0, 0.0,
                                    CLUTTER_PARAM_READABLE);
       g_object_interface_install_property (g_iface, pspec);
@@ -193,8 +193,8 @@ clutter_media_base_init (gpointer g_iface)
        * Since: 0.2
        */
       pspec = g_param_spec_double ("duration",
-                                   "Duration",
-                                   "The duration of the stream, in seconds",
+                                   P_("Duration"),
+                                   P_("The duration of the stream, in seconds"),
                                    0, G_MAXDOUBLE, 0,
                                    CLUTTER_PARAM_READABLE);
       g_object_interface_install_property (g_iface, pspec);

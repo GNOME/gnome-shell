@@ -208,8 +208,8 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_string ("vertex-source",
-                               "Vertex Source",
-                               "Source of vertex shader",
+                               P_("Vertex Source"),
+                               P_("Source of vertex shader"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_VERTEX_SOURCE, pspec);
@@ -222,8 +222,8 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_string ("fragment-source",
-                               "Fragment Source",
-                               "Source of fragment shader",
+                               P_("Fragment Source"),
+                               P_("Source of fragment shader"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_FRAGMENT_SOURCE, pspec);
@@ -237,8 +237,8 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * Since: 0.8
    */
   pspec = g_param_spec_boolean ("compiled",
-                                "Compiled",
-                                "Whether the shader is compiled and linked",
+                                P_("Compiled"),
+                                P_("Whether the shader is compiled and linked"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (object_class, PROP_COMPILED, pspec);
@@ -251,8 +251,8 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_boolean ("enabled",
-                                "Enabled",
-                                "Whether the shader is enabled",
+                                P_("Enabled"),
+                                P_("Whether the shader is enabled"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_ENABLED, pspec);

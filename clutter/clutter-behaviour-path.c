@@ -210,9 +210,9 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
   gobject_class->dispose = clutter_behaviour_path_dispose;
 
   pspec = g_param_spec_object ("path",
-                               "Path",
-                               "The ClutterPath object representing the path "
-                               "to animate along",
+                               P_("Path"),
+                               P_("The ClutterPath object representing the path "
+                                  "to animate along"),
                                CLUTTER_TYPE_PATH,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_PATH, pspec);

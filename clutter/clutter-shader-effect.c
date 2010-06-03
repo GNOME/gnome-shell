@@ -429,8 +429,8 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_enum ("shader-type",
-                             "Shader Type",
-                             "The type of shader used",
+                             P_("Shader Type"),
+                             P_("The type of shader used"),
                              CLUTTER_TYPE_SHADER_TYPE,
                              CLUTTER_FRAGMENT_SHADER,
                              CLUTTER_PARAM_WRITABLE |

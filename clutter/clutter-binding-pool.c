@@ -313,8 +313,8 @@ clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_string ("name",
-                               "Name",
-                               "The unique name of the binding pool",
+                               P_("Name"),
+                               P_("The unique name of the binding pool"),
                                NULL,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);

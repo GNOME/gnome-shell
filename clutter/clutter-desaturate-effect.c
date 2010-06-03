@@ -214,8 +214,8 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_double ("factor",
-                               "Factor",
-                               "The desaturation factor",
+                               P_("Factor"),
+                               P_("The desaturation factor"),
                                0.0, 1.0,
                                1.0,
                                CLUTTER_PARAM_READWRITE);

@@ -125,8 +125,8 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
   gobject_class->get_property = clutter_device_manager_get_property;
 
   pspec = g_param_spec_object ("backend",
-                               "Backend",
-                               "The ClutterBackend of the device manager",
+                               P_("Backend"),
+                               P_("The ClutterBackend of the device manager"),
                                CLUTTER_TYPE_BACKEND,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);

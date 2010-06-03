@@ -1783,8 +1783,8 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_uint ("duration",
-                             "Duration",
-                             "The duration of the animation",
+                             P_("Duration"),
+                             P_("The duration of the animation"),
                              0, G_MAXUINT,
                              2000,
                              CLUTTER_PARAM_READWRITE);
@@ -1799,8 +1799,8 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_object ("timeline",
-                               "Timeline",
-                               "The timeline of the animation",
+                               P_("Timeline"),
+                               P_("The timeline of the animation"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);

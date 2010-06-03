@@ -209,8 +209,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_double ("x-scale-start",
-                               "X Start Scale",
-                               "Initial scale on the X axis",
+                               P_("X Start Scale"),
+                               P_("Initial scale on the X axis"),
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
@@ -225,8 +225,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_double ("x-scale-end",
-                               "X End Scale",
-                               "Final scale on the X axis",
+                               P_("X End Scale"),
+                               P_("Final scale on the X axis"),
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
@@ -241,8 +241,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_double ("y-scale-start",
-                               "Y Start Scale",
-                               "Initial scale on the Y axis",
+                               P_("Y Start Scale"),
+                               P_("Initial scale on the Y axis"),
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
@@ -257,8 +257,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_double ("y-scale-end",
-                               "Y End Scale",
-                               "Final scale on the Y axis",
+                               P_("Y End Scale"),
+                               P_("Final scale on the Y axis"),
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);

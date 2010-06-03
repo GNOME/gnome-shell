@@ -390,8 +390,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_uint ("surface-width",
-                             "Surface Width",
-                             "The width of the Cairo surface",
+                             P_("Surface Width"),
+                             P_("The width of the Cairo surface"),
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
@@ -407,8 +407,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_uint ("surface-height",
-                             "Surface-Height",
-                             "The height of the Cairo surface",
+                             P_("Surface Height"),
+                             P_("The height of the Cairo surface"),
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);

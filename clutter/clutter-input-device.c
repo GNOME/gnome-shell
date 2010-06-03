@@ -124,8 +124,8 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_int ("id",
-                            "Id",
-                            "Unique identifier of the device",
+                            P_("Id"),
+                            P_("Unique identifier of the device"),
                             -1, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE |
@@ -140,8 +140,8 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_string ("name",
-                               "Name",
-                               "The name of the device",
+                               P_("Name"),
+                               P_("The name of the device"),
                                NULL,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);
@@ -155,8 +155,8 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_enum ("device-type",
-                             "Device Type",
-                             "The type of the device",
+                             P_("Device Type"),
+                             P_("The type of the device"),
                              CLUTTER_TYPE_INPUT_DEVICE_TYPE,
                              CLUTTER_POINTER_DEVICE,
                              CLUTTER_PARAM_READWRITE |

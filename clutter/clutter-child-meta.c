@@ -120,8 +120,8 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    * Since: 0.8
    */
   pspec = g_param_spec_object ("container",
-                               "Container",
-                               "The container that created this data",
+                               P_("Container"),
+                               P_("The container that created this data"),
                                CLUTTER_TYPE_CONTAINER,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);
@@ -135,8 +135,8 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    * Since: 0.8
    */
   pspec = g_param_spec_object ("actor",
-                               "Actor",
-                               "The actor wrapped by this data",
+                               P_("Actor"),
+                               P_("The actor wrapped by this data"),
                                CLUTTER_TYPE_ACTOR,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);

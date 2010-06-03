@@ -1156,8 +1156,8 @@ clutter_state_class_init (ClutterStateClass *klass)
    * change state without a transition.
    */
   pspec = g_param_spec_string ("state",
-                               "State",
-                               "Currently set state, (transition to this state might not be complete)",
+                               P_("State"),
+                               P_("Currently set state, (transition to this state might not be complete)"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_STATE, pspec);
@@ -1169,8 +1169,8 @@ clutter_state_class_init (ClutterStateClass *klass)
    * source/target state pair. The values is in milliseconds.
    */
   pspec = g_param_spec_uint ("duration",
-                             "Duration",
-                             "Default transition duration",
+                             P_("Duration"),
+                             P_("Default transition duration"),
                              0, 86400000, 1000,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_DURATION, pspec);

@@ -251,9 +251,9 @@ clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
   gobject_class->get_property = clutter_bin_layer_get_property;
 
   pspec = g_param_spec_enum ("x-align",
-                             "Horizontal Alignment",
-                             "Horizontal alignment for the actor "
-                             "inside the layer",
+                             P_("Horizontal Alignment"),
+                             P_("Horizontal alignment for the actor "
+                                "inside the layer"),
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
@@ -262,9 +262,9 @@ clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
                                    pspec);
 
   pspec = g_param_spec_enum ("y-align",
-                             "Vertical Alignment",
-                             "Vertical alignment for the actor "
-                             "inside the layer manager",
+                             P_("Vertical Alignment"),
+                             P_("Vertical alignment for the actor "
+                                "inside the layer manager"),
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
@@ -640,9 +640,9 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_enum ("x-align",
-                             "Horizontal Alignment",
-                             "Default horizontal alignment for the actors "
-                             "inside the layout manager",
+                             P_("Horizontal Alignment"),
+                             P_("Default horizontal alignment for the actors "
+                                "inside the layout manager"),
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
@@ -657,9 +657,9 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    * Since: 1.2
    */
   pspec = g_param_spec_enum ("y-align",
-                             "Vertical Alignment",
-                             "Default vertical alignment for the actors "
-                             "inside the layout manager",
+                             P_("Vertical Alignment"),
+                             P_("Default vertical alignment for the actors "
+                                "inside the layout manager"),
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);

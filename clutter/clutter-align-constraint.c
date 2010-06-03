@@ -206,8 +206,8 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("source",
-                               "Source",
-                               "The source of the alignment",
+                               P_("Source"),
+                               P_("The source of the alignment"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
@@ -221,8 +221,8 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_enum ("align-axis",
-                             "Align Axis",
-                             "The axis to align the position to",
+                             P_("Align Axis"),
+                             P_("The axis to align the position to"),
                              CLUTTER_TYPE_ALIGN_AXIS,
                              CLUTTER_ALIGN_X_AXIS,
                              CLUTTER_PARAM_READWRITE |
@@ -242,8 +242,8 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_float ("factor",
-                              "Factor",
-                              "The alignment factor, between 0.0 and 1.0",
+                              P_("Factor"),
+                              P_("The alignment factor, between 0.0 and 1.0"),
                               0.0, 1.0,
                               0.0,
                               CLUTTER_PARAM_READWRITE |

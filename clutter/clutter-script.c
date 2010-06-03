@@ -397,8 +397,8 @@ clutter_script_class_init (ClutterScriptClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_boolean ("filename-set",
-                                "Filename Set",
-                                "Whether the :filename property is set",
+                                P_("Filename Set"),
+                                P_("Whether the :filename property is set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_FILENAME_SET, pspec);
@@ -412,8 +412,8 @@ clutter_script_class_init (ClutterScriptClass *klass)
    * Since: 0.6
    */
   pspec = g_param_spec_string ("filename",
-                               "Filename",
-                               "The path of the currently parsed file",
+                               P_("Filename"),
+                               P_("The path of the currently parsed file"),
                                NULL,
                                CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);

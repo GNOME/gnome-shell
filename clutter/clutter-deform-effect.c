@@ -518,8 +518,8 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("x-tiles",
-                             "Horiontal Tiles",
-                             "The number of horizontal tiles",
+                             P_("Horiontal Tiles"),
+                             P_("The number of horizontal tiles"),
                              1, G_MAXUINT,
                              DEFAULT_N_TILES,
                              CLUTTER_PARAM_READWRITE);
@@ -534,8 +534,8 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("y-tiles",
-                             "Vertical Tiles",
-                             "The number of vertical tiles",
+                             P_("Vertical Tiles"),
+                             P_("The number of vertical tiles"),
                              1, G_MAXUINT,
                              DEFAULT_N_TILES,
                              CLUTTER_PARAM_READWRITE);
@@ -552,9 +552,8 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boxed ("back-material",
-                              "Back Material",
-                              "The material to be used when painting the "
-                              "back of the actor",
+                              P_("Back Material"),
+                              P_("The material to be used when painting the back of the actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_BACK_MATERIAL, pspec);

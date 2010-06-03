@@ -233,9 +233,8 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("pressed",
-                                "Pressed",
-                                "Whether the clickable should "
-                                "be in pressed state",
+                                P_("Pressed"),
+                                P_("Whether the clickable should be in pressed state"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
@@ -248,8 +247,8 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("held",
-                                "Held",
-                                "Whether the clickable has a grab",
+                                P_("Held"),
+                                P_("Whether the clickable has a grab"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_HELD, pspec);
