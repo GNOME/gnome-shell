@@ -32,7 +32,10 @@ on_drag_begin (ClutterDragAction   *action,
 
   clutter_drag_action_set_drag_handle (action, drag_handle);
 
-  clutter_actor_set_opacity (actor, 128);
+  /* fully desaturate the actor */
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
+                         "@effects.disable.factor", 1.0,
+                         NULL);
 }
 
 static void
@@ -68,14 +71,14 @@ on_drag_end (ClutterDragAction   *action,
                                            &real_y);
 
       clutter_actor_animate (actor, CLUTTER_EASE_OUT_CUBIC, 150,
-                             "opacity", 255,
+                             "@effects.disable.factor", 0.0,
                              "x", real_x,
                              "y", real_y,
                              NULL);
     }
   else
     clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
-                           "opacity", 255,
+                           "@effects.disable.factor", 0.0,
                            NULL);
 }
 
@@ -164,6 +167,8 @@ test_drag_main (int argc, char *argv[])
   g_signal_connect (action, "drag-end", G_CALLBACK (on_drag_end), NULL);
 
   clutter_actor_add_action (handle, action);
+
+  clutter_actor_add_effect_with_name (handle, "disable", clutter_desaturate_effect_new (0.0));
 
   clutter_actor_show (stage);
 
