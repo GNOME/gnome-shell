@@ -320,6 +320,15 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
   return _cogl_texture_2d_handle_new (tex_2d);
 }
 
+void
+_cogl_texture_2d_externally_modified (CoglHandle handle)
+{
+  if (!cogl_is_texture_2d (handle))
+    return;
+
+  COGL_TEXTURE_2D (handle)->mipmaps_dirty = TRUE;
+}
+
 static int
 _cogl_texture_2d_get_max_waste (CoglTexture *tex)
 {

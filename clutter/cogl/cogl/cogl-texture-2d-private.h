@@ -67,4 +67,15 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
                                   CoglTextureFlags flags,
                                   CoglPixelFormat  internal_format);
 
+/*
+ * _cogl_texture_2d_externally_modified:
+ * @handle: A handle to a 2D texture
+ *
+ * This should be called whenever the texture is modified other than
+ * by using cogl_texture_set_region. It will cause the mipmaps to be
+ * invalidated
+ */
+void
+_cogl_texture_2d_externally_modified (CoglHandle handle);
+
 #endif /* __COGL_TEXTURE_2D_H */
