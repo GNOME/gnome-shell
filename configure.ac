@@ -1027,8 +1027,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
                    "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
-
-ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS" | tr '\n' ' '`"
+AS_ALL_LINGUAS
 AM_GLIB_GNU_GETTEXT
 GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
