@@ -69,6 +69,7 @@ enum {
 
   PROP_OVERLAY_GROUP,
   PROP_SCREEN,
+  PROP_GDK_SCREEN,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
@@ -79,16 +80,7 @@ enum {
   PROP_USERDATADIR,
 };
 
-/* Signals */
-enum
-{
-  SCREEN_SIZE_CHANGED,
-  LAST_SIGNAL
-};
-
 G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
-
-static guint shell_global_signals [LAST_SIGNAL] = { 0 };
 
 static void
 shell_global_set_property(GObject         *object,
@@ -119,6 +111,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_SCREEN:
       g_value_set_object (value, shell_global_get_screen (global));
+      break;
+    case PROP_GDK_SCREEN:
+      g_value_set_object (value, shell_global_get_gdk_screen (global));
       break;
     case PROP_SCREEN_WIDTH:
       {
@@ -207,15 +202,6 @@ shell_global_class_init (ShellGlobalClass *klass)
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
 
-  shell_global_signals[SCREEN_SIZE_CHANGED] =
-    g_signal_new ("screen-size-changed",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellGlobalClass, screen_size_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
-
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
                                    g_param_spec_object ("overlay-group",
@@ -230,6 +216,15 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Metacity screen object for the shell",
                                                         META_TYPE_SCREEN,
                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_GDK_SCREEN,
+                                   g_param_spec_object ("gdk-screen",
+                                                        "GdkScreen",
+                                                        "Gdk screen object for the shell",
+                                                        GDK_TYPE_SCREEN,
+                                                        G_PARAM_READABLE));
+
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN_WIDTH,
                                    g_param_spec_int ("screen-width",
@@ -426,6 +421,19 @@ shell_global_get_screen (ShellGlobal  *global)
 }
 
 /**
+ * shell_global_get_gdk_screen:
+ *
+ * Return value: (transfer none): Gdk screen object for the shell
+ */
+GdkScreen *
+shell_global_get_gdk_screen (ShellGlobal *global)
+{
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
+
+  return gdk_screen_get_default ();
+}
+
+/**
  * shell_global_get_windows:
  *
  * Gets the list of MutterWindows for the plugin's screen
@@ -441,9 +449,10 @@ shell_global_get_windows (ShellGlobal *global)
 }
 
 static gboolean
-update_screen_size (ShellGlobal *global)
+update_screen_size (gpointer data)
 {
   int width, height;
+  ShellGlobal *global = SHELL_GLOBAL (data);
 
   mutter_plugin_query_screen_size (global->plugin, &width, &height);
 
@@ -458,17 +467,6 @@ update_screen_size (ShellGlobal *global)
     clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
                             width, height);
 
-  return TRUE;
-}
-
-static gboolean
-on_screen_size_changed_cb (gpointer data)
-{
-  ShellGlobal *global = SHELL_GLOBAL (data);
-
-  if (update_screen_size (global))
-    g_signal_emit (G_OBJECT (global), shell_global_signals[SCREEN_SIZE_CHANGED], 0);
-
   return FALSE;
 }
 
@@ -482,7 +480,7 @@ global_stage_notify_width (GObject    *gobject,
   g_object_notify (G_OBJECT (global), "screen-width");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
-                  on_screen_size_changed_cb,
+                  update_screen_size,
                   global,
                   NULL);
 }
@@ -497,7 +495,7 @@ global_stage_notify_height (GObject    *gobject,
   g_object_notify (G_OBJECT (global), "screen-height");
 
   meta_later_add (META_LATER_BEFORE_REDRAW,
-                  on_screen_size_changed_cb,
+                  update_screen_size,
                   global,
                   NULL);
 }
@@ -1167,7 +1165,7 @@ shell_global_get_monitors (ShellGlobal *global)
 GdkRectangle *
 shell_global_get_primary_monitor (ShellGlobal  *global)
 {
-  GdkScreen *screen = gdk_screen_get_default ();
+  GdkScreen *screen = shell_global_get_gdk_screen (global);
   GdkRectangle rect;
   gint primary = 0;
 

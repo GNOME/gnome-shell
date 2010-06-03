@@ -159,7 +159,7 @@ function start() {
     global.stage.add_actor(background);
     background.lower_bottom();
 
-    global.connect('screen-size-changed', _relayout);
+    global.gdk_screen.connect('monitors-changed', _relayout);
 
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();

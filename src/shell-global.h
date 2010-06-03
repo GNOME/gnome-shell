@@ -25,8 +25,6 @@ typedef struct _ShellGlobalClass ShellGlobalClass;
 struct _ShellGlobalClass
 {
   GObjectClass parent_class;
-
-  void (*screen_size_changed) (ShellGlobal *global);
 };
 
 GType            shell_global_get_type            (void) G_GNUC_CONST;
@@ -39,6 +37,8 @@ ClutterActor *shell_get_event_related(ClutterEvent *event);
 ShellGlobal *shell_global_get (void);
 
 MetaScreen *shell_global_get_screen (ShellGlobal  *global);
+
+GdkScreen *shell_global_get_gdk_screen (ShellGlobal  *global);
 
 gboolean shell_global_add_extension_importer (ShellGlobal *global,
                                               const char  *target_object_script,

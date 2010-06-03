@@ -452,8 +452,8 @@ MessageTray.prototype = {
         Main.chrome.trackActor(this._notificationBin);
         Main.chrome.trackActor(this._summaryNotificationBin);
 
-        global.connect('screen-size-changed',
-                       Lang.bind(this, this._setSizePosition));
+        global.gdk_screen.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
+
         this._setSizePosition();
 
         Main.overview.connect('showing', Lang.bind(this,
