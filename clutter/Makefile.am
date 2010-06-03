@@ -285,9 +285,11 @@ EXTRA_LTLIBRARIES = libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
 	$(source_h) \
-	$(top_builddir)/clutter/clutter-json.h 		\
 	$(top_builddir)/clutter/clutter-enum-types.h 	\
 	$(top_srcdir)/clutter/clutter.h
+nodist_clutter_HEADERS = \
+	$(top_builddir)/clutter/clutter-json.h
+
 
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in
