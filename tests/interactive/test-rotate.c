@@ -40,6 +40,7 @@ test_rotate_main (int argc, char *argv[])
   clutter_actor_set_position (hand, 240, 140);
   clutter_actor_show (hand);
   clutter_actor_add_effect_with_name (hand, "desaturate", clutter_desaturate_effect_new (0.75));
+  clutter_actor_add_effect_with_name (hand, "blur", clutter_blur_effect_new ());
   clutter_actor_animate_with_timeline (hand, CLUTTER_LINEAR, timeline,
                                        "@effects.desaturate.factor", 1.0,
                                        NULL);

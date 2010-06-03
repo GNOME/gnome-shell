@@ -204,6 +204,7 @@ get_screen_offsets (ClutterActor *actor,
 {
   ClutterVertex verts[4];
   gfloat x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
+  gfloat v[4] = { 0, };
   gint i;
 
   /* Get the actors allocation transformed into screen coordinates.
@@ -231,6 +232,17 @@ get_screen_offsets (ClutterActor *actor,
   *y_offset = ROUND (y_min);
 
 #undef ROUND
+
+  /* since we're setting up a viewport with a negative offset to paint
+   * in an FBO with the same modelview and projection matrices as the
+   * stage, we need to offset the computed absolute allocation vertices
+   * with the current viewport's X and Y offsets. this works even with
+   * the default case where the viewport is set up by Clutter to be
+   * (0, 0, stage_width, stage_height)
+   */
+  cogl_get_viewport (v);
+  *x_offset -= v[0];
+  *y_offset -= v[1];
 }
 
 static gboolean
