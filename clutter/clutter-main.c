@@ -2574,7 +2574,7 @@ clutter_base_init (void)
     {
       initialised = TRUE;
 
-      bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+      bindtextdomain (GETTEXT_PACKAGE, CLUTTER_LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
       /* initialise GLib type system */

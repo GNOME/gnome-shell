@@ -30,6 +30,12 @@
  * Various miscellaneous utilility functions.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <glib/gi18n-lib.h>
+
 #include "clutter-util.h"
 #include "clutter-main.h"
 
@@ -52,4 +58,18 @@ clutter_util_next_p2 (gint a)
     rval <<= 1;
 
   return rval;
+}
+
+/*< private >
+ * _clutter_gettext:
+ * @str: a string to localize
+ *
+ * Retrieves the localized version of @str, using the Clutter domain
+ *
+ * Return value: the translated string
+ */
+G_CONST_RETURN gchar *
+_clutter_gettext (const gchar *str)
+{
+  return g_dgettext (GETTEXT_PACKAGE, str);
 }

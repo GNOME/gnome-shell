@@ -38,6 +38,10 @@
  * Since: 0.4
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-behaviour-ellipse.h"

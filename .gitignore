@@ -94,7 +94,6 @@ mkinstalldirs
 stamp-h1
 TAGS
 /tests/tools/disable-npots.sh
-/po/Makefile.in.in
 /po/POTFILES
 /po/*.pot
 *.swn

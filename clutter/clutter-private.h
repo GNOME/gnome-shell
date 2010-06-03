@@ -34,6 +34,8 @@
 
 #include <glib.h>
 
+#include <glib/gi18n-lib.h>
+
 #include "pango/cogl-pango.h"
 
 #include "clutter-backend.h"
@@ -194,6 +196,15 @@ PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
 
 #define I_(str)  (g_intern_static_string ((str)))
+
+/* mark all properties under the "Property" context */
+#ifdef ENABLE_NLS
+#define P_(String) (_clutter_gettext ((String)))
+#else
+#define P_(String) (String)
+#endif
+
+G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 
 /* device manager */
 void _clutter_device_manager_add_device     (ClutterDeviceManager *device_manager,

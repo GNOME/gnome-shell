@@ -28,14 +28,6 @@ else
                 && mv gtk-doc.temp gtk-doc.make
 fi
 
-GLIB_GETTEXTIZE=`which glib-gettextize`
-if test -z $GLIB_GETTEXTIZE; then
-        echo "*** No glib-gettextize ***"
-        exit 1
-else
-        glib-gettextize -f || exit $?
-fi
-
 AUTORECONF=`which autoreconf`
 if test -z $AUTORECONF; then
         echo "*** No autoreconf found ***"
