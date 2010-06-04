@@ -2508,6 +2508,44 @@ st_theme_node_get_content_box (StThemeNode           *node,
   content_box->y2 = (int)(0.5 + content_box->y1 + content_height);
 }
 
+/**
+ * st_theme_node_get_paint_box:
+ * @node: a #StThemeNode
+ * @allocation: the box allocated to a #ClutterAlctor
+ * @paint_box: computed box occupied when painting the actor
+ *
+ * Gets the box used to paint the actor, including the area occupied by
+ * properties which paint outside the actor's assigned allocation
+ * (currently only st-shadow). When painting @node to an offscreen buffer,
+ * this function can be used to determine the necessary size of the buffer.
+ */
+void
+st_theme_node_get_paint_box (StThemeNode           *node,
+                             const ClutterActorBox *actor_box,
+                             ClutterActorBox       *paint_box)
+{
+  StShadow *shadow;
+
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+  g_return_if_fail (actor_box != NULL);
+  g_return_if_fail (paint_box != NULL);
+
+  shadow = st_theme_node_get_shadow (node);
+  if (shadow)
+    {
+      ClutterActorBox shadow_box;
+
+      st_shadow_get_box (shadow, actor_box, &shadow_box);
+
+      paint_box->x1 = MIN (actor_box->x1, shadow_box.x1);
+      paint_box->x2 = MAX (actor_box->x2, shadow_box.x2);
+      paint_box->y1 = MIN (actor_box->y1, shadow_box.y1);
+      paint_box->y2 = MAX (actor_box->y2, shadow_box.y2);
+    }
+  else
+    *paint_box = *actor_box;
+}
+
 
 /**
  * st_theme_node_geometry_equal:

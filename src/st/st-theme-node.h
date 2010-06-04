@@ -169,6 +169,10 @@ void st_theme_node_adjust_preferred_height (StThemeNode  *node,
 void st_theme_node_get_content_box         (StThemeNode        *node,
                                             const ClutterActorBox *actor_box,
                                             ClutterActorBox       *content_box);
+/* Helper for StThemeNodeTransition */
+void st_theme_node_get_paint_box           (StThemeNode           *node,
+                                            const ClutterActorBox *actor_box,
+                                            ClutterActorBox       *paint_box);
 
 gboolean st_theme_node_geometry_equal (StThemeNode *node,
                                        StThemeNode *other);

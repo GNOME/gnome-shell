@@ -77,6 +77,35 @@ st_shadow_free (StShadow *shadow)
   g_slice_free (StShadow, shadow);
 }
 
+/**
+ * st_shadow_get_box:
+ * @shadow: a #StShadow
+ * @actor_box: the box allocated to a #ClutterAlctor
+ * @shadow_box: computed box occupied by @shadow
+ *
+ * Gets the box used to paint @shadow, which will be partly
+ * outside of @actor_box
+ */
+void
+st_shadow_get_box (StShadow              *shadow,
+                   const ClutterActorBox *actor_box,
+                   ClutterActorBox       *shadow_box)
+{
+  g_return_if_fail (shadow != NULL);
+  g_return_if_fail (actor_box != NULL);
+  g_return_if_fail (shadow_box != NULL);
+
+  shadow_box->x1 = actor_box->x1 + shadow->xoffset
+                   - shadow->blur - shadow->spread;
+  shadow_box->x2 = actor_box->x2 + shadow->xoffset
+                   + shadow->blur + shadow->spread;
+  shadow_box->y1 = actor_box->y1 + shadow->yoffset
+                   - shadow->blur - shadow->spread;
+  shadow_box->y2 = actor_box->y2 + shadow->yoffset
+                   + shadow->blur + shadow->spread;
+}
+
+
 GType
 st_shadow_get_type (void)
 {

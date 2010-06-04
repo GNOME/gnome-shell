@@ -41,6 +41,10 @@ StShadow *st_shadow_new      (ClutterColor   *color,
 StShadow *st_shadow_copy     (const StShadow *shadow);
 void      st_shadow_free     (StShadow       *shadow);
 
+void      st_shadow_get_box  (StShadow              *shadow,
+                              const ClutterActorBox *actor_box,
+                              ClutterActorBox       *shadow_box);
+
 G_END_DECLS
 
 #endif /* __ST_SHADOW__ */

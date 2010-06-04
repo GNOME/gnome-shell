@@ -32,6 +32,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "st-shadow.h"
 #include "st-theme-private.h"
 #include "st-theme-context.h"
 #include "st-texture-cache.h"
@@ -822,14 +823,7 @@ paint_shadow_with_opacity (CoglHandle       shadow_material,
   ClutterActorBox shadow_box;
   CoglColor       color;
 
-  shadow_box.x1 = box->x1 + shadow_spec->xoffset
-                  - shadow_spec->blur - shadow_spec->spread;
-  shadow_box.y1 = box->y1 + shadow_spec->yoffset
-                  - shadow_spec->blur - shadow_spec->spread;
-  shadow_box.x2 = box->x2 + shadow_spec->xoffset
-                  + shadow_spec->blur + shadow_spec->spread;
-  shadow_box.y2 = box->y2 + shadow_spec->yoffset
-                  + shadow_spec->blur + shadow_spec->spread;
+  st_shadow_get_box (shadow_spec, box, &shadow_box);
 
   cogl_color_set_from_4ub (&color,
                            shadow_spec->color.red   * paint_opacity / 255,
