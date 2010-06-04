@@ -429,6 +429,7 @@ meta_display_open (void)
   GSList *tmp;
   int i;
   guint32 timestamp;
+  char buf[257];
 
   /* A list of all atom names, so that we can intern them in one go. */
   char *atom_names[] = {
@@ -463,6 +464,11 @@ meta_display_open (void)
    */
   the_display->name = g_strdup (XDisplayName (NULL));
   the_display->xdisplay = xdisplay;
+  if (gethostname (buf, sizeof(buf)-1) == 0)
+    {
+      buf[sizeof(buf)-1] = '\0';
+      the_display->hostname = g_strdup (buf);
+    }
   the_display->error_trap_synced_at_last_pop = TRUE;
   the_display->error_traps = 0;
   the_display->error_trap_handler = NULL;

@@ -9116,6 +9116,21 @@ meta_window_get_client_machine (MetaWindow *window)
 }
 
 /**
+ * meta_window_is_remote:
+ * @window: a #MetaWindow
+ *
+ * Returns: %TRUE if this window originates from a host
+ * different from the one running mutter.
+ */
+gboolean
+meta_window_is_remote (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), FALSE);
+
+  return g_strcmp0 (window->wm_client_machine, window->display->hostname) != 0;
+}
+
+/**
  * meta_window_is_modal:
  * @window: a #MetaWindow
  *

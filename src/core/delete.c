@@ -179,36 +179,23 @@ meta_window_delete (MetaWindow  *window,
 void
 meta_window_kill (MetaWindow *window)
 {
-  char buf[257];
-  
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Killing %s brutally\n",
               window->desc);
 
-  if (window->wm_client_machine != NULL &&
+  if (!meta_window_is_remote (window) &&
       window->net_wm_pid > 0)
     {
-      if (gethostname (buf, sizeof(buf)-1) == 0)
-        {
-          if (strcmp (buf, window->wm_client_machine) == 0)
-            {
-              meta_topic (META_DEBUG_WINDOW_OPS,
-                          "Killing %s with kill()\n",
-                          window->desc);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Killing %s with kill()\n",
+                  window->desc);
 
-              if (kill (window->net_wm_pid, 9) < 0)
-                meta_topic (META_DEBUG_WINDOW_OPS,
-                            "Failed to signal %s: %s\n",
-                            window->desc, strerror (errno));
-            }
-        }
-      else
-        {
-          meta_warning (_("Failed to get hostname: %s\n"),
-                        strerror (errno));
-        }
+      if (kill (window->net_wm_pid, 9) < 0)
+        meta_topic (META_DEBUG_WINDOW_OPS,
+                    "Failed to signal %s: %s\n",
+                    window->desc, strerror (errno));
     }
-  
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Disconnecting %s with XKillClient()\n",
               window->desc);

@@ -83,10 +83,11 @@ struct _MetaDisplay
   
   char *name;
   Display *xdisplay;
+  char *hostname;
 
   Window leader_window;
   Window timestamp_pinging_window;
-  
+
   /* Pull in all the names of atoms as fields; we will intern them when the
    * class is constructed.
    */
