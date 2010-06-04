@@ -105,6 +105,10 @@ clutter_event_source_new (ClutterBackend *backend)
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
 
+#if GLIB_CHECK_VERSION (2, 25, 8)
+  g_source_set_name (source, "Clutter X11 Event");
+#endif
+
   event_source->backend = backend;
 
   return source;

@@ -260,6 +260,9 @@ clutter_clock_source_new (ClutterMasterClock *master_clock)
   GSource *source = g_source_new (&clock_funcs, sizeof (ClutterClockSource));
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
 
+#if GLIB_CHECK_VERSION (2, 25, 8)
+  g_source_set_name (source, "Clutter master clock");
+#endif
   clock_source->master_clock = master_clock;
 
   return source;

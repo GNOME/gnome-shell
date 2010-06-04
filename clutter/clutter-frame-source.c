@@ -101,6 +101,10 @@ clutter_frame_source_add_full (gint           priority,
   if (priority != G_PRIORITY_DEFAULT)
     g_source_set_priority (source, priority);
 
+#if GLIB_CHECK_VERSION (2, 25, 8)
+  g_source_set_name (source, "Clutter frame timeout");
+#endif
+
   g_source_set_callback (source, func, data, notify);
 
   ret = g_source_attach (source, NULL);
