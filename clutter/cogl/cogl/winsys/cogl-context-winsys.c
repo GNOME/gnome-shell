@@ -94,6 +94,8 @@ _cogl_create_context_winsys (CoglContext *context)
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
   context->winsys.event_filters = NULL;
+
+  context->winsys.trap_state = NULL;
 #endif
 
   _cogl_winsys_features_init (context);

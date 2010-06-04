@@ -25,6 +25,9 @@
 #define __COGL_XLIB_H
 
 #include "cogl.h"
+#include "cogl-context-winsys.h"
+
+#include <X11/Xlib.h>
 
 typedef struct _CoglXlibFilterClosure CoglXlibFilterClosure;
 
@@ -33,5 +36,31 @@ struct _CoglXlibFilterClosure
   CoglXlibFilterFunc func;
   gpointer data;
 };
+
+/*
+ * _cogl_xlib_trap_errors:
+ * @state: A temporary place to store data for the trap.
+ *
+ * Traps every X error until _cogl_xlib_untrap_errors() called. You
+ * should allocate an uninitialised CoglXlibTrapState struct on the
+ * stack to pass to this function. The same pointer should later be
+ * passed to _cogl_xlib_untrap_errors(). Calls to
+ * _cogl_xlib_trap_errors() can be nested as long as
+ * _cogl_xlib_untrap_errors() is called with the corresponding state
+ * pointers in reverse order.
+ */
+void
+_cogl_xlib_trap_errors (CoglXlibTrapState *state);
+
+/*
+ * _cogl_xlib_untrap_errors:
+ * @state: The state that was passed to _cogl_xlib_trap_errors().
+ *
+ * Removes the X error trap and returns the current status.
+ *
+ * Return value: the trapped error code, or 0 for success
+ */
+int
+_cogl_xlib_untrap_errors (CoglXlibTrapState *state);
 
 #endif /* __COGL_XLIB_H */

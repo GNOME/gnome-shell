@@ -129,3 +129,42 @@ _cogl_xlib_remove_filter (CoglXlibFilterFunc func,
         }
     }
 }
+
+static int
+error_handler (Display     *xdpy,
+               XErrorEvent *error)
+{
+  _COGL_GET_CONTEXT (ctxt, 0);
+
+  g_assert (ctxt->winsys.trap_state);
+
+  ctxt->winsys.trap_state->trapped_error_code = error->error_code;
+
+  return 0;
+}
+
+void
+_cogl_xlib_trap_errors (CoglXlibTrapState *state)
+{
+  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  state->trapped_error_code = 0;
+  state->old_error_handler = XSetErrorHandler (error_handler);
+
+  state->old_state = ctxt->winsys.trap_state;
+  ctxt->winsys.trap_state = state;
+}
+
+int
+_cogl_xlib_untrap_errors (CoglXlibTrapState *state)
+{
+  _COGL_GET_CONTEXT (ctxt, 0);
+
+  g_assert (state == ctxt->winsys.trap_state);
+
+  XSetErrorHandler (state->old_error_handler);
+
+  ctxt->winsys.trap_state = state->old_state;
+
+  return state->trapped_error_code;
+}
