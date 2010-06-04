@@ -190,12 +190,12 @@ EXTRA_DIST += stb_image.c
 cogl_headers = \
 	$(cogl_public_h) \
 	$(srcdir)/cogl-deprecated.h \
-	cogl-defines.h \
 	cogl-enum-types.h \
 	$(NULL)
 
 coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglinclude_HEADERS = $(cogl_headers)
+nodist_coglinclude_HEADERS = cogl-defines.h
 
 if HAVE_INTROSPECTION
 Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
