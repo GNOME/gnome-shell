@@ -1817,8 +1817,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       unit = _cogl_get_texture_unit (i);
 
-      _cogl_material_layer_ensure_mipmaps (layer_handle);
-
       new_gl_layer_info.layer0_overridden =
         layer0_override_texture ? TRUE : FALSE;
       new_gl_layer_info.fallback =
