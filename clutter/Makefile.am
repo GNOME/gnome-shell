@@ -136,7 +136,6 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
-	$(top_builddir)/clutter/clutter-version.h \
 	$(NULL)
 
 # glib-genmarshal rules
@@ -288,7 +287,8 @@ clutter_HEADERS = \
 	$(top_builddir)/clutter/clutter-enum-types.h 	\
 	$(top_srcdir)/clutter/clutter.h
 nodist_clutter_HEADERS = \
-	$(top_builddir)/clutter/clutter-json.h
+	$(top_builddir)/clutter/clutter-json.h \
+	$(top_builddir)/clutter/clutter-version.h
 
 
 DISTCLEANFILES += clutter-version.h
@@ -343,6 +343,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 	        --pkg pangocairo \
 	        --output $@ \
 		$(clutter_HEADERS) \
+		$(nodist_clutter_HEADERS) \
 		$(source_c)
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
