@@ -24,10 +24,30 @@
 #ifndef __COGL_CONTEXT_WINSYS_H
 #define __COGL_CONTEXT_WINSYS_H
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include <X11/Xlib.h>
+#endif
+
 typedef enum
 {
   COGL_WINSYS_FEATURE_STUB /* no features are defined yet */
 } CoglWinsysFeatureFlags;
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+
+typedef struct _CoglXlibTrapState CoglXlibTrapState;
+
+struct _CoglXlibTrapState
+{
+  /* These values are intended to be internal to
+     _cogl_xlib_{un,}trap_errors but they need to be in the header so
+     that the struct can be allocated on the stack */
+  int (* old_error_handler) (Display *, XErrorEvent *);
+  int trapped_error_code;
+  CoglXlibTrapState *old_state;
+};
+
+#endif
 
 typedef struct
 {
@@ -36,6 +56,9 @@ typedef struct
      to Xlib when Cogl gains a more complete winsys abstraction */
 #ifdef COGL_HAS_XLIB_SUPPORT
   GSList *event_filters;
+  /* Current top of the XError trap state stack. The actual memory for
+     these is expected to be allocated on the stack by the caller */
+  CoglXlibTrapState *trap_state;
 #endif
 
   /* Function pointers for winsys specific extensions */
