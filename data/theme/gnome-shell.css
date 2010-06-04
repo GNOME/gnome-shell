@@ -520,6 +520,16 @@ StTooltip {
     color: #ffffff;
 }
 
+.app-section-divider-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.app-section-divider {
+    height: 2px;
+    background-image: url("separator-white.png");
+}
+
 .all-app-controls-panel {
     height: 30px;
 }

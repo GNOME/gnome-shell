@@ -52,7 +52,7 @@ char *shell_app_info_get_executable (ShellAppInfo *info);
 char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
 GIcon *shell_app_info_get_icon (ShellAppInfo *info);
 ClutterActor *shell_app_info_create_icon_texture (ShellAppInfo *info, float size);
-GSList *shell_app_info_get_categories (ShellAppInfo *info);
+char *shell_app_info_get_section (ShellAppInfo *info);
 gboolean shell_app_info_get_is_nodisplay (ShellAppInfo *info);
 gboolean shell_app_info_is_transient (ShellAppInfo *info);
 
@@ -69,6 +69,7 @@ gboolean shell_app_info_launch (ShellAppInfo *info,
 
 ShellAppInfo *shell_app_system_load_from_desktop_file (ShellAppSystem *system, const char *filename, GError **error);
 
+GList *shell_app_system_get_sections (ShellAppSystem *system);
 ShellApp *shell_app_system_get_app (ShellAppSystem *system, const char *id);
 ShellApp *shell_app_system_get_app_for_path (ShellAppSystem *system, const char *desktop_path);
 ShellApp *shell_app_system_get_app_for_window (ShellAppSystem *self, MetaWindow *window);

@@ -1,0 +1,36 @@
+<Menu>
+	<Name>Applications</Name>
+	<DefaultAppDirs/>
+	<Menu>
+		<Name>Games</Name>
+		<Include>
+			<And>
+				<Category>Game</Category>
+			</And>
+		</Include>
+	</Menu>
+	<Menu>
+		<Name>Tools</Name>
+		<Include>
+			<Category>Development</Category>
+			<And>
+				<Category>System</Category>
+				<Not>
+					<Category>Settings</Category>
+				</Not>
+			</And>
+			<Category>Utility</Category>
+		</Include>
+	</Menu>
+	<Menu>
+		<Name>Other</Name>
+		<OnlyUnallocated/>
+		<Include>
+			<And>
+				<Not><Category>Core</Category></Not>
+				<Not><Category>Settings</Category></Not>
+				<Not><Category>Screensaver</Category></Not>
+			</And>
+		</Include>
+	</Menu>
+</Menu>

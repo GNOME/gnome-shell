@@ -24,12 +24,12 @@ const APPICON_SIZE = 48;
 const WELL_MAX_COLUMNS = 8;
 const MENU_POPUP_TIMEOUT = 600;
 
-function AllAppView() {
+function AlphabeticalView() {
     this._init();
 }
 
-AllAppView.prototype = {
-    _init: function(apps) {
+AlphabeticalView.prototype = {
+    _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
         this._grid = new WellGrid(true);
         this._appSystem = Shell.AppSystem.get_default();
@@ -71,7 +71,67 @@ AllAppView.prototype = {
     }
 };
 
-Signals.addSignalMethods(AllAppView.prototype);
+Signals.addSignalMethods(AlphabeticalView.prototype);
+
+function ViewByCategories() {
+    this._init();
+}
+
+ViewByCategories.prototype = {
+    _init: function() {
+        this._appSystem = Shell.AppSystem.get_default();
+        this.actor = new St.BoxLayout({ vertical: true });
+        this.actor._delegate = this;
+        this._sections = [];
+    },
+
+    _updateSections: function(apps) {
+        this._removeAll();
+
+        let sections = this._appSystem.get_sections();
+        if (!sections)
+            return;
+        for (let i = 0; i < sections.length; i++) {
+            if (i) {
+                let actor = new St.Bin({ style_class: 'app-section-divider' });
+                let divider = new St.Bin({ style_class: 'app-section-divider-container',
+                                           child: actor,
+                                           x_fill: true });
+
+                this.actor.add(divider, { y_fill: false, expand: true });
+            }
+            let _apps = apps.filter(function(app) {
+                return app.get_section() == sections[i];
+            });
+            this._sections[i] = { view: new AlphabeticalView(),
+                                  apps: _apps,
+                                  name: sections[i] };
+            this._sections[i].view.connect('launching', Lang.bind(this, function() {
+                this.emit('launching');
+            }));
+            this._sections[i].view.connect('drag-begin', Lang.bind(this, function() {
+                this.emit('drag-begin');
+            }));
+            this.actor.add(this._sections[i].view.actor, { y_align: St.Align.START, expand: true });
+        }
+    },
+
+    _removeAll: function() {
+        this.actor.destroy_children();
+        this._sections.forEach(function (section) { section.view.disconnectAll(); });
+
+        this._sections = [];
+    },
+
+    refresh: function(apps) {
+        this._updateSections(apps);
+        for (let i = 0; i < this._sections.length; i++) {
+            this._sections[i].view.refresh(this._sections[i].apps);
+        }
+    }
+};
+
+Signals.addSignalMethods(ViewByCategories.prototype);
 
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their name.
@@ -100,7 +160,7 @@ AllAppDisplay.prototype = {
         this.actor.add(bin);
         this.actor.add(view, { expand: true, y_fill: false, y_align: St.Align.START });
 
-        this._appView = new AllAppView();
+        this._appView = new ViewByCategories();
         this._appView.connect('launching', Lang.bind(this, this.close));
         this._appView.connect('drag-begin', Lang.bind(this, this.close));
         this._scrollView.add_actor(this._appView.actor);

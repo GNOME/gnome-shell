@@ -40,6 +40,7 @@ dist_theme_DATA =				\
 	theme/section-back.svg          \
 	theme/section-more.svg          \
 	theme/section-more-open.svg          \
+	theme/separator-white.png          \
 	theme/single-view-active.svg          \
 	theme/single-view.svg          \
 	theme/ws-switch-arrow-left.svg		\
@@ -49,12 +50,18 @@ dist_theme_DATA =				\
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = gnome-shell.schemas
 
+menudir = $(sysconfdir)/xdg/menus
+
+menu_DATA = \
+	gs-applications.menu
+
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
 	gnome-shell-clock-preferences.desktop.in.in	\
+	$(menu_DATA)					\
 	$(schema_DATA)
 
 CLEANFILES =						\

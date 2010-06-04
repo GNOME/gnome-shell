@@ -156,6 +156,7 @@ def start_shell(perf_output=None):
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
                 'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', ''),
+                'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + os.environ.get('XDG_CONFIG_DIRS', ''),
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
     if running_from_source_tree:

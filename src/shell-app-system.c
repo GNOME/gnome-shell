@@ -1109,10 +1109,84 @@ shell_app_info_get_icon (ShellAppInfo *info)
   return NULL;
 }
 
-GSList *
-shell_app_info_get_categories (ShellAppInfo *info)
+/**
+ * shell_app_system_get_sections:
+ *
+ * return names of sections in applications menu.
+ *
+ * Returns: (element-type utf8) (transfer full): List of Names
+ */
+GList *
+shell_app_system_get_sections (ShellAppSystem *system)
 {
-  return NULL; /* TODO */
+  GList *res = NULL;
+  GSList *i, *contents;
+  GMenuTreeDirectory *root;
+
+  root = gmenu_tree_get_root_directory (system->priv->apps_tree);
+
+  if (G_UNLIKELY (!root))
+    g_error ("applications.menu not found.");
+
+  contents = gmenu_tree_directory_get_contents (root);
+
+  for (i = contents; i; i = i->next)
+    {
+      GMenuTreeItem *item = i->data;
+      if (gmenu_tree_item_get_type (item) == GMENU_TREE_ITEM_DIRECTORY)
+        {
+          char *name = g_strdup (gmenu_tree_directory_get_name ((GMenuTreeDirectory*)item));
+
+          g_assert (name);
+
+          res = g_list_append (res, name);
+        }
+      gmenu_tree_item_unref (item);
+    }
+
+  g_slist_free (contents);
+
+  return res;
+}
+
+/**
+ * shell_app_info_get_section:
+ *
+ * return name of section, that contain this application.
+ * Returns: (transfer full): section name
+ */
+char *
+shell_app_info_get_section (ShellAppInfo *info)
+{
+  char *name;
+  GMenuTreeDirectory *dir, *parent;
+
+  if (info->type != SHELL_APP_INFO_TYPE_ENTRY)
+    return NULL;
+
+  dir = gmenu_tree_item_get_parent ((GMenuTreeItem*)info->entry);
+  if (!dir)
+    return NULL;
+
+  parent = gmenu_tree_item_get_parent ((GMenuTreeItem*)dir);
+  if (!parent)
+    return NULL;
+
+  while (TRUE)
+    {
+      GMenuTreeDirectory *pparent = gmenu_tree_item_get_parent ((GMenuTreeItem*)parent);
+      if (!pparent)
+        break;
+      gmenu_tree_item_unref ((GMenuTreeItem*)dir);
+      dir = parent;
+      parent = pparent;
+    }
+
+  name = g_strdup (gmenu_tree_directory_get_name (dir));
+
+  gmenu_tree_item_unref ((GMenuTreeItem*)dir);
+  gmenu_tree_item_unref ((GMenuTreeItem*)parent);
+  return name;
 }
 
 gboolean
