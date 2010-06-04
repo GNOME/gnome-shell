@@ -523,9 +523,45 @@ _cogl_rectangles_with_multitexture_coords (
 	continue;
 
       /* We need to ensure the mipmaps are ready before deciding
-         anything else about the texture because it could become
-         something completely different if it needs to be migrated out
-         of the atlas */
+       * anything else about the texture because the texture storage
+       * could completely change if it needs to be migrated out of the
+       * atlas and will affect how we validate the layer.
+       *
+       * FIXME: this needs to be generalized. There could be any
+       * number of things that might require a shuffling of the
+       * underlying texture storage. We could add two mechanisms to
+       * generalize this a bit...
+       *
+       * 1) add a _cogl_material_layer_update_storage() function that
+       * would for instance consider if mipmapping is necessary and
+       * potentially migrate the texture from an atlas.
+       *
+       * 2) allow setting of transient primitive-flags on a material
+       * that may affect the outcome of _update_storage(). One flag
+       * could indicate that we expect to sample beyond the bounds of
+       * the texture border.
+       *
+       *   flags = COGL_MATERIAL_PRIMITIVE_FLAG_VALID_BORDERS;
+       *   _cogl_material_layer_assert_primitive_flags (layer, flags)
+       *   _cogl_material_layer_update_storage (layer)
+       *   enqueue primitive in journal
+       *
+       *   when the primitive is dequeued and drawn we should:
+       *   _cogl_material_flush_gl_state (material)
+       *   draw primitive
+       *   _cogl_material_unassert_primitive_flags (layer, flags);
+       *
+       * _cogl_material_layer_update_storage should take into
+       * consideration all the asserted primitive requirements.  (E.g.
+       * there could be multiple primitives in the journal - or in a
+       * renderlist in the future - that need mipmaps or that need
+       * valid contents beyond their borders (for cogl_polygon)
+       * meaning they can't work with textures in an atas, so
+       * _cogl_material_layer_update_storage would pass on these
+       * requirements to the texture atlas backend which would make
+       * sure the referenced texture is migrated out of the atlas and
+       * mipmaps are generated.)
+       */
       _cogl_material_layer_ensure_mipmaps (layer);
 
       tex_handle = cogl_material_layer_get_texture (layer);
@@ -1041,9 +1077,21 @@ cogl_polygon (const CoglTextureVertex *vertices,
         continue;
 
       /* Give the texture a chance to know that we're rendering
-         non-quad shaped primitives. If the texture is in an atlas it
-         will be migrated */
+       * non-quad shaped primitives. If the texture is in an atlas it
+       * will be migrated
+       *
+       * FIXME: this needs to be generalized. There could be any
+       * number of things that might require a shuffling of the
+       * underlying texture storage.
+       */
       _cogl_texture_ensure_non_quad_rendering (tex_handle);
+
+      /* We need to ensure the mipmaps are ready before deciding
+       * anything else about the texture because the texture storate
+       * could completely change if it needs to be migrated out of the
+       * atlas and will affect how we validate the layer.
+       */
+      _cogl_material_layer_ensure_mipmaps (layer);
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {
