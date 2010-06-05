@@ -215,6 +215,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   const gchar *glx_extensions = NULL;
+  const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
   gboolean use_dri = FALSE;
 
@@ -241,6 +242,8 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
                               clutter_x11_get_default_screen ());
 
   CLUTTER_NOTE (BACKEND, "  GLX Extensions: %s", glx_extensions);
+
+  gl_extensions = (const gchar *)glGetString (GL_EXTENSIONS);
 
   use_dri = check_vblank_env ("dri");
 
@@ -363,6 +366,15 @@ vblank_setup_done:
     {
       backend_glx->copy_sub_buffer =
         (CopySubBufferProc) cogl_get_proc_address ("glXCopySubBufferMESA");
+      backend_glx->can_blit_sub_buffer = TRUE;
+    }
+  else if (_cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
+    {
+      CLUTTER_NOTE (BACKEND,
+                    "Using glBlitFramebuffer fallback for sub_buffer copies");
+      backend_glx->blit_framebuffer =
+        (BlitFramebufferProc) cogl_get_proc_address ("glBlitFramebuffer");
+      backend_glx->can_blit_sub_buffer = TRUE;
     }
 
   CLUTTER_NOTE (BACKEND, "backend features checked");
@@ -462,6 +474,29 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
     }
   else
     return FALSE;
+}
+
+void
+_clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
+                                      GLXDrawable drawable,
+                                      int x, int y, int width, int height)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
+
+  if (backend_glx->copy_sub_buffer)
+    {
+      backend_glx->copy_sub_buffer (backend_x11->xdpy, drawable,
+                                    x, y, width, height);
+    }
+  else if (backend_glx->blit_framebuffer)
+    {
+      glDrawBuffer (GL_FRONT);
+      backend_glx->blit_framebuffer (x, y, x + width, y + height,
+                                     x, y, x + width, y + height,
+                                     GL_COLOR_BUFFER_BIT, GL_NEAREST);
+      glDrawBuffer (GL_BACK);
+      glFlush();
+    }
 }
 
 static XVisualInfo *

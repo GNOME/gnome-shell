@@ -60,6 +60,16 @@ typedef int (*SwapIntervalProc)  (int           interval);
 typedef void (*CopySubBufferProc)(Display *dpy,
                                   GLXDrawable drawable,
                                   int x, int y, int width, int height);
+typedef void (*BlitFramebufferProc) (GLint      srcX0,
+                                     GLint      srcY0,
+                                     GLint      srcX1,
+                                     GLint      srcY1,
+                                     GLint      dstX0,
+                                     GLint      dstY0,
+                                     GLint      dstX1,
+                                     GLint      dstY1,
+                                     GLbitfield mask,
+                                     GLenum     filter);
 
 struct _ClutterBackendGLX
 {
@@ -82,7 +92,9 @@ struct _ClutterBackendGLX
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
 
+  gboolean               can_blit_sub_buffer;
   CopySubBufferProc      copy_sub_buffer;
+  BlitFramebufferProc    blit_framebuffer;
 
   /* props */
   Atom atom_WM_STATE;
@@ -99,6 +111,11 @@ GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 gboolean
 _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_x11,
                                    GLXFBConfig       *config);
+
+void
+_clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
+                                      GLXDrawable drawable,
+                                      int x, int y, int width, int height);
 
 G_END_DECLS
 

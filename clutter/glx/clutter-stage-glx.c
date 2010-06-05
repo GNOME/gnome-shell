@@ -547,10 +547,10 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                         "glXSwapBuffers",
                         "The time spent blocked by glXSwapBuffers",
                         0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (copy_sub_buffer_timer,
+  CLUTTER_STATIC_TIMER (blit_sub_buffer_timer,
                         "Redrawing", /* parent */
-                        "glXCopySubBufferMESA",
-                        "The time spent blocked by glXCopySubBufferMESA",
+                        "glx_blit_sub_buffer",
+                        "The time spent in _glx_blit_sub_buffer",
                         0 /* no application private data */);
 
   backend     = clutter_get_default_backend ();
@@ -561,7 +561,7 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  if (backend_glx->copy_sub_buffer &&
+  if (backend_glx->can_blit_sub_buffer &&
       /* NB: a degenerate redraw clip width == full stage redraw */
       (stage_glx->bounding_redraw_clip.width != 0) &&
       G_LIKELY (!(clutter_paint_debug_flags &
@@ -589,7 +589,7 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
 
   /* push on the screen */
-  if (backend_glx->copy_sub_buffer &&
+  if (backend_glx->can_blit_sub_buffer &&
       /* NB: a degenerate redraw clip width == full stage redraw */
       (stage_glx->bounding_redraw_clip.width != 0) &&
       G_LIKELY (!(clutter_paint_debug_flags &
@@ -599,11 +599,9 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
       ClutterGeometry copy_area;
 
       CLUTTER_NOTE (BACKEND,
-                    "glXCopySubBufferMESA (display: %p, "
-                                          "window: 0x%lx, "
+                    "_glx_blit_sub_buffer (window: 0x%lx, "
                                           "x: %d, y: %d, "
                                           "width: %d, height: %d)",
-                    backend_x11->xdpy,
                     (unsigned long) drawable,
                     stage_glx->bounding_redraw_clip.x,
                     stage_glx->bounding_redraw_clip.y,
@@ -660,14 +658,14 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
       copy_area.width = clip->width;
       copy_area.height = clip->height;
 
-      CLUTTER_TIMER_START (_clutter_uprof_context, copy_sub_buffer_timer);
-      backend_glx->copy_sub_buffer (backend_x11->xdpy,
-                                    drawable,
-                                    copy_area.x,
-                                    copy_area.y,
-                                    copy_area.width,
-                                    copy_area.height);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, copy_sub_buffer_timer);
+      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
+      _clutter_backend_glx_blit_sub_buffer (backend_glx,
+                                            drawable,
+                                            copy_area.x,
+                                            copy_area.y,
+                                            copy_area.width,
+                                            copy_area.height);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
     }
   else
     {
