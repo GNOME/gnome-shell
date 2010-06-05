@@ -996,7 +996,6 @@ WellGrid.prototype = {
         let nColumns = 0;
         let usedWidth = 0;
         while (nColumns < WELL_MAX_COLUMNS &&
-                nColumns < children.length &&
                 (usedWidth + this._item_size <= forWidth)) {
             usedWidth += this._item_size + this._spacing;
             nColumns += 1;
