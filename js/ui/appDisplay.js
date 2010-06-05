@@ -470,24 +470,19 @@ AppWellIcon.prototype = {
             }));
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('show', Lang.bind(this, this._onShow));
-        this.actor.connect('hide', Lang.bind(this, this._onHideDestroy));
-        this.actor.connect('destroy', Lang.bind(this, this._onHideDestroy));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._stateChangedId = 0;
         this._menuTimeoutId = 0;
-    },
-
-    _onShow: function() {
         this._stateChangedId = this.app.connect('notify::state',
                                                 Lang.bind(this,
                                                           this._onStateChanged));
         this._onStateChanged();
     },
 
-    _onHideDestroy: function() {
+    _onDestroy: function() {
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
+        this._stateChangedId = 0;
         this._removeMenuTimeout();
     },
 
