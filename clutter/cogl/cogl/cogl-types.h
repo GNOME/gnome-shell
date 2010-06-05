@@ -81,10 +81,10 @@ cogl_handle_ref (CoglHandle handle);
  * count reaches 0, the resources allocated by @handle will be freed
  */
 void
-cogl_handle_unref (CoglHandle Handle);
+cogl_handle_unref (CoglHandle handle);
 
 /**
- * cogl_handle_ref:
+ * cogl_object_ref:
  * @object: a #CoglObject
  *
  * Increases the reference count of @handle by 1
@@ -95,7 +95,7 @@ void *
 cogl_object_ref (void *object);
 
 /**
- * cogl_handle_unref:
+ * cogl_object_unref:
  * @object: a #CoglObject
  *
  * Drecreases the reference count of @object by 1; if the reference

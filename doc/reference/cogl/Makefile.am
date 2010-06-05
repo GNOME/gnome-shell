@@ -74,6 +74,7 @@ IGNORE_HFILES=\
 	cogl-matrix-private.h 			\
 	cogl-matrix-stack.h 			\
 	cogl-spans.h 				\
+	cogl-object-private.h			\
 	cogl-pixel-buffer-private.h		\
 	cogl-profile.h				\
 	cogl-sub-texture-private.h		\

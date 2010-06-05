@@ -329,7 +329,7 @@ cogl_sqrti
 
 <SUBSECTION>
 cogl_fixed_atan2
-cogl_fixed_atani
+cogl_fixed_atan
 cogl_fixed_cos
 cogl_fixed_log2
 cogl_fixed_pow
@@ -508,6 +508,12 @@ cogl_is_pixel_buffer
 <SUBSECTION>
 cogl_texture_new_from_buffer
 
+<SUBSECTION Private>
+cogl_buffer_access_get_type
+cogl_buffer_update_hint_get_type
+cogl_buffer_usage_hint_get_type
+</SECTION>
+
 <SECTION>
 <FILE>cogl-vector</FILE>
 <TITLE>Vectors</TITLE>
@@ -527,9 +533,4 @@ cogl_vector3_magnitude
 cogl_vector3_cross_product
 cogl_vector3_dot_product
 cogl_vector3_distance
-
-<SUBSECTION Private>
-cogl_buffer_access_get_type
-cogl_buffer_update_hint_get_type
-cogl_buffer_usage_hint_get_type
 </SECTION>
