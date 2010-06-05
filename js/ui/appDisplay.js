@@ -971,7 +971,12 @@ WellGrid.prototype = {
             let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
 
             let childBox = new Clutter.ActorBox();
-            childBox.x1 = Math.floor(x + childXSpacing);
+            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+                let _x = box.x2 - (x + width);
+                childBox.x1 = Math.floor(_x - childXSpacing);
+            } else {
+                childBox.x1 = Math.floor(x + childXSpacing);
+            }
             childBox.y1 = Math.floor(y + childYSpacing);
             childBox.x2 = childBox.x1 + width;
             childBox.y2 = childBox.y1 + height;
