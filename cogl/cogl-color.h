@@ -300,6 +300,19 @@ void
 cogl_color_premultiply (CoglColor *color);
 
 /**
+ * cogl_color_unpremultiply:
+ * @color: the color to unpremultiply
+ *
+ * Converts a pre-multiplied color to a non-premultiplied color. For
+ * example, semi-transparent red is (0.5, 0, 0, 0.5) when premultiplied
+ * and (1.0, 0, 0, 0.5) when non-premultiplied.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_unpremultiply (CoglColor *color);
+
+/**
  * cogl_color_equal:
  * @v1: a #CoglColor
  * @v2: a #CoglColor
