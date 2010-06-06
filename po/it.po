@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-06 21:27+0200\n"
-"PO-Revision-Date: 2010-04-06 22:51+0200\n"
+"POT-Creation-Date: 2010-06-06 14:37+0200\n"
+"PO-Revision-Date: 2010-06-06 14:47+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -24,28 +24,64 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestione finestre e avvio applicazioni"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Orologio\t"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "Personalizza l'orologio sul pannello"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Formato ora"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Preferenze di Orologio"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Visualizzazione sul pannello"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Mostrare i _secondi"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Mostrare la _data"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "Formato _12 ore"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "Formato _24 ore"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:850
+#: ../js/ui/appDisplay.js:366 ../js/ui/dash.js:858
 msgid "APPLICATIONS"
 msgstr "Applicazioni"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:398
 msgid "PREFERENCES"
 msgstr "Preferenze"
 
-#: ../js/ui/appDisplay.js:723
+#: ../js/ui/appDisplay.js:770
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:727
+#: ../js/ui/appDisplay.js:774
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:775
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
-#: ../js/ui/appDisplay.js:1055
+#: ../js/ui/appDisplay.js:1102
 msgid "Drag here to add favorites"
 msgstr "Trascinare qui per aggiungere ai preferiti"
 
@@ -63,76 +99,106 @@ msgstr "%s è stato rimosso dai preferiti."
 msgid "Find"
 msgstr "Trova"
 
-#: ../js/ui/dash.js:505
+#: ../js/ui/dash.js:513
 msgid "Searching..."
 msgstr "Ricerca..."
 
-#: ../js/ui/dash.js:519
+#: ../js/ui/dash.js:527
 msgid "No matching results."
 msgstr "Nessun risultato."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:869 ../js/ui/placeDisplay.js:543
+#: ../js/ui/dash.js:877 ../js/ui/placeDisplay.js:551
 msgid "PLACES & DEVICES"
 msgstr "Risorse e dispositivi"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:876 ../js/ui/docDisplay.js:489
+#: ../js/ui/dash.js:884 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "Elementi recenti"
 
-#: ../js/ui/lookingGlass.js:362
+#: ../js/ui/lookingGlass.js:475
 msgid "No extensions installed"
 msgstr "Nessuna estensione installata"
 
 # (ndt) o abilitata?
-#: ../js/ui/lookingGlass.js:399
+#: ../js/ui/lookingGlass.js:512
 msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
-#: ../js/ui/lookingGlass.js:401
+#: ../js/ui/lookingGlass.js:514
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: ../js/ui/lookingGlass.js:403
+#: ../js/ui/lookingGlass.js:516
 msgid "Error"
 msgstr "Errore"
 
-#: ../js/ui/lookingGlass.js:405
+#: ../js/ui/lookingGlass.js:518
 msgid "Out of date"
 msgstr "Non aggiornato"
 
-#: ../js/ui/lookingGlass.js:430
+#: ../js/ui/lookingGlass.js:543
 msgid "View Source"
 msgstr "Visualizza sorgente"
 
-#: ../js/ui/lookingGlass.js:436
+#: ../js/ui/lookingGlass.js:549
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/overview.js:181
+#: ../js/ui/overview.js:161
 msgid "Undo"
 msgstr "Annulla"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:374
-msgid "Activities"
-msgstr "Attività"
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:945
+msgid "%a %b %e, %R:%S"
+msgstr "%a %e %b, %k.%M.%S"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:594
+# (ndt) proviamo col k, se non funge, sappiamo il perché...
+#: ../js/ui/panel.js:946
+msgid "%a %b %e, %R"
+msgstr "%a %e %b, %k.%M"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:950
+msgid "%a %R:%S"
+msgstr "%a %k.%M.%S"
+
+#: ../js/ui/panel.js:951
 msgid "%a %R"
 msgstr "%a %k.%M"
 
-# (ndt) proviamo col k, se non funge, sappiamo il perché...
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:597
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:958
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %e %b, %l.%M.%S %P"
+
+#: ../js/ui/panel.js:959
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %e %b, %l.%M %P"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:963
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l.%M.%S %P"
+
+#: ../js/ui/panel.js:964
 msgid "%a %l:%M %p"
-msgstr "%a %k.%M"
+msgstr "%a %l.%M %P"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:1065
+msgid "Activities"
+msgstr "Attività"
 
 # (ndt) libera, ma unmount non si può proprio vedere...
 #: ../js/ui/placeDisplay.js:108
@@ -157,39 +223,39 @@ msgstr "Inserire un comando:"
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/statusMenu.js:110
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "Invisibile"
 
-#: ../js/ui/statusMenu.js:124
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "Informazioni account..."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "Preferenze di sistema..."
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/statusMenu.js:143
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "Termina sessione..."
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "Arresta..."
 
@@ -204,32 +270,44 @@ msgstr "Avvio di %s completato"
 msgid "'%s' is ready"
 msgstr "«%s» è pronto"
 
-#: ../src/shell-global.c:967
+# (ndt) un po' liberetta...
+#: ../js/ui/workspacesView.js:237
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"Impossibile aggiungere un nuovo spazio di lavoro: raggiunto il limite "
+"massimo consentito."
+
+#: ../js/ui/workspacesView.js:254
+msgid "Can't remove the first workspace."
+msgstr "Impossibile rimuovere il primo spazio di lavoro."
+
+#: ../src/shell-global.c:1025
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:1029
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:1034
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:1039
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:1044
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
