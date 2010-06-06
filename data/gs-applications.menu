@@ -1,4 +1,9 @@
 <Menu>
+    <DefaultLayout>
+        <Menuname>Apps</Menuname>
+        <Menuname>Games</Menuname>
+        <Menuname>Tools</Menuname>
+    </DefaultLayout>
 	<Name>Applications</Name>
 	<DefaultAppDirs/>
 	<Menu>
@@ -23,7 +28,7 @@
 		</Include>
 	</Menu>
 	<Menu>
-		<Name>Other</Name>
+		<Name>Apps</Name>
 		<OnlyUnallocated/>
 		<Include>
 			<And>
