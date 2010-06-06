@@ -17,8 +17,22 @@ const SNAP_BACK_ANIMATION_TIME = 0.25;
 // Time to animate to original position on success
 const REVERT_ANIMATION_TIME = 0.75;
 
+const DragMotionResult = {
+    NO_DROP:   0,
+    COPY_DROP: 1,
+    MOVE_DROP: 2,
+    CONTINUE:  3
+};
+
+const DragDropResult = {
+    FAILURE:  0,
+    SUCCESS:  1,
+    CONTINUE: 2
+};
+
 let eventHandlerActor = null;
 let currentDraggable = null;
+let dragMonitors = [];
 
 function _getEventHandlerActor() {
     if (!eventHandlerActor) {
@@ -34,6 +48,18 @@ function _getEventHandlerActor() {
                                   });
     }
     return eventHandlerActor;
+}
+
+function addDragMonitor(monitor) {
+    dragMonitors.push(monitor);
+}
+
+function removeMonitor(monitor) {
+    for (let i = 0; i < dragMonitors.length; i++)
+        if (dragMonitors[i] == monitor) {
+            dragMonitors.splice(i, 1);
+            return;
+        }
 }
 
 function _Draggable(actor, params) {
@@ -294,12 +320,37 @@ _Draggable.prototype = {
         if (this._dragActor) {
             this._dragActor.set_position(stageX + this._dragOffsetX,
                                          stageY + this._dragOffsetY);
+
             // Because we want to find out what other actor is located at the current position of this._dragActor,
             // we have to temporarily hide this._dragActor.
             this._dragActor.hide();
             let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                       stageX, stageY);
             this._dragActor.show();
+
+            // We call observers only once per motion with the innermost
+            // target actor. If necessary, the observer can walk the
+            // parent itself.
+            let dragEvent = {
+                x: stageX,
+                y: stageY,
+                dragActor: this._dragActor,
+                targetActor: target
+            };
+            for (let i = 0; i < dragMonitors.length; i++) {
+                let motionFunc = dragMonitors[i].dragMotion;
+                if (motionFunc)
+                    switch (motionFunc(dragEvent)) {
+                        case DragMotionResult.NO_DROP:
+                        case DragMotionResult.COPY_DROP:
+                        case DragMotionResult.MOVE_DROP:
+                            // TODO: set a special cursor or something ;)
+                            return true;
+                        case DragMotionResult.CONTINUE:
+                            continue;
+                    }
+            }
+
             while (target) {
                 if (target._delegate && target._delegate.handleDragOver) {
                     let [r, targX, targY] = target.transform_stage_point(stageX, stageY);
@@ -327,6 +378,27 @@ _Draggable.prototype = {
         let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                   dropX, dropY);
         this._dragActor.show();
+
+        // We call observers only once per motion with the innermost
+        // target actor. If necessary, the observer can walk the
+        // parent itself.
+        let dropEvent = {
+            dropActor: this._dragActor,
+            targetActor: target,
+            clutterEvent: event
+        };
+        for (let i = 0; i < dragMonitors.length; i++) {
+            let dropFunc = dragMonitors[i].dragDrop;
+            if (dropFunc)
+                switch (dropFunc(dropEvent)) {
+                    case DragDropResult.FAILURE:
+                    case DragDropResult.SUCCESS:
+                        return true;
+                    case DragDropResult.CONTINUE:
+                        continue;
+                }
+        }
+
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
                 let [r, targX, targY] = target.transform_stage_point(dropX, dropY);
