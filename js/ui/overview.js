@@ -24,6 +24,9 @@ const WorkspacesView = imports.ui.workspacesView;
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
+// Time for pane menus to fade in/out
+const PANE_FADE_TIME = 0.1;
+
 // We divide the screen into a grid of rows and columns, which we use
 // to help us position the Overview components, such as the side panel
 // that lists applications and documents, the workspaces display, and 

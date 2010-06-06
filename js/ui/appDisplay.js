@@ -17,7 +17,9 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Overview = imports.ui.overview;
 const Search = imports.ui.search;
+const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 
 const APPICON_SIZE = 48;
@@ -179,9 +181,28 @@ AllAppDisplay.prototype = {
     },
 
     toggle: function() {
-        this.emit('open-state-changed', !this.actor.visible);
-
-        this.actor.visible = !this.actor.visible;
+        if (this.actor.visible) {
+            Tweener.addTween(this.actor,
+                             { opacity: 0,
+                               time: Overview.PANE_FADE_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this.actor.hide();
+                                       this.emit('open-state-changed',
+                                                 this.actor.visible);
+                                   })
+                             });
+        } else {
+            this.actor.show();
+            this.emit('open-state-changed', this.actor.visible);
+            this.actor.opacity = 0;
+            Tweener.addTween(this.actor,
+                             { opacity: 255,
+                               time: Overview.PANE_FADE_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
     },
 
     close: function() {

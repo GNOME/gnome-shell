@@ -17,7 +17,9 @@ const DocDisplay = imports.ui.docDisplay;
 const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
+const Overview = imports.ui.overview;
 const Search = imports.ui.search;
+const Tweener = imports.ui.tweener;
 
 // 25 search results (per result type) should be enough for everyone
 const MAX_RENDERED_SEARCH_RESULTS = 25;
@@ -79,16 +81,29 @@ Pane.prototype = {
         if (this._open)
             return;
         this._open = true;
-        this.actor.show();
         this.emit('open-state-changed', this._open);
+        this.actor.opacity = 0;
+        this.actor.show();
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           time: Overview.PANE_FADE_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
     close: function () {
         if (!this._open)
             return;
         this._open = false;
-        this.actor.hide();
-        this.emit('open-state-changed', this._open);
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           time: Overview.PANE_FADE_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this.actor.hide();
+                               this.emit('open-state-changed', this._open);
+                           })
+                         });
     },
 
     destroyContent: function() {
