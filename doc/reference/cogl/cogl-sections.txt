@@ -383,6 +383,24 @@ cogl_color_get_blue_float
 cogl_color_get_alpha_float
 
 <SUBSECTION>
+cogl_color_set_red
+cogl_color_set_green
+cogl_color_set_blue
+cogl_color_set_alpha
+
+<SUBSECTION>
+cogl_color_set_red_byte
+cogl_color_set_green_byte
+cogl_color_set_blue_byte
+cogl_color_set_alpha_byte
+
+<SUBSECTION>
+cogl_color_set_red_float
+cogl_color_set_green_float
+cogl_color_set_blue_float
+cogl_color_set_alpha_float
+
+<SUBSECTION>
 cogl_color_premultiply
 cogl_color_unpremultiply
 cogl_color_equal

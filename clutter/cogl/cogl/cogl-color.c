@@ -156,6 +156,90 @@ cogl_color_get_alpha (const CoglColor *color)
 }
 
 void
+cogl_color_set_red_byte (CoglColor     *color,
+                         unsigned char  red)
+{
+  color->red = red;
+}
+
+void
+cogl_color_set_red_float (CoglColor *color,
+                          float      red)
+{
+  color->red = red * 255.0;
+}
+
+void
+cogl_color_set_red (CoglColor *color,
+                    float      red)
+{
+  color->red = red * 255.0;
+}
+
+void
+cogl_color_set_green_byte (CoglColor     *color,
+                           unsigned char  green)
+{
+  color->green = green;
+}
+
+void
+cogl_color_set_green_float (CoglColor *color,
+                            float      green)
+{
+  color->green = green * 255.0;
+}
+
+void
+cogl_color_set_green (CoglColor *color,
+                      float      green)
+{
+  color->green = green * 255.0;
+}
+
+void
+cogl_color_set_blue_byte (CoglColor     *color,
+                          unsigned char  blue)
+{
+  color->blue = blue;
+}
+
+void
+cogl_color_set_blue_float (CoglColor *color,
+                           float      blue)
+{
+  color->blue = blue * 255.0;
+}
+
+void
+cogl_color_set_blue (CoglColor *color,
+                     float      blue)
+{
+  color->blue = blue * 255.0;
+}
+
+void
+cogl_color_set_alpha_byte (CoglColor     *color,
+                           unsigned char  alpha)
+{
+  color->alpha = alpha;
+}
+
+void
+cogl_color_set_alpha_float (CoglColor *color,
+                            float      alpha)
+{
+  color->alpha = alpha * 255.0;
+}
+
+void
+cogl_color_set_alpha (CoglColor *color,
+                      float      alpha)
+{
+  color->alpha = alpha * 255.0;
+}
+
+void
 cogl_color_premultiply (CoglColor *color)
 {
   color->red = (color->red * color->alpha + 128) / 255;

@@ -287,6 +287,162 @@ float
 cogl_color_get_alpha (const CoglColor *color);
 
 /**
+ * cogl_color_set_red_byte:
+ * @color: a #CoglColor
+ * @red: a byte value between 0 and 255
+ *
+ * Sets the red channel of @color to @red.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_red_byte (CoglColor     *color,
+                         unsigned char  red);
+
+/**
+ * cogl_color_set_green_byte:
+ * @color: a #CoglColor
+ * @green: a byte value between 0 and 255
+ *
+ * Sets the green channel of @color to @green.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_green_byte (CoglColor     *color,
+                           unsigned char  green);
+
+/**
+ * cogl_color_set_blue_byte:
+ * @color: a #CoglColor
+ * @blue: a byte value between 0 and 255
+ *
+ * Sets the blue channel of @color to @blue.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_blue_byte (CoglColor     *color,
+                          unsigned char  blue);
+
+/**
+ * cogl_color_set_alpha_byte:
+ * @color: a #CoglColor
+ * @alpha: a byte value between 0 and 255
+ *
+ * Sets the alpha channel of @color to @alpha.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_alpha_byte (CoglColor     *color,
+                           unsigned char  alpha);
+
+/**
+ * cogl_color_set_red_float:
+ * @color: a #CoglColor
+ * @red: a float value between 0.0f and 1.0f
+ *
+ * Sets the red channel of @color to @red.
+ *
+ * since: 1.4
+ */
+void
+cogl_color_set_red_float (CoglColor *color,
+                          float      red);
+
+/**
+ * cogl_color_set_green_float:
+ * @color: a #CoglColor
+ * @green: a float value between 0.0f and 1.0f
+ *
+ * Sets the green channel of @color to @green.
+ *
+ * since: 1.4
+ */
+void
+cogl_color_set_green_float (CoglColor *color,
+                            float      green);
+
+/**
+ * cogl_color_set_blue_float:
+ * @color: a #CoglColor
+ * @blue: a float value between 0.0f and 1.0f
+ *
+ * Sets the blue channel of @color to @blue.
+ *
+ * since: 1.4
+ */
+void
+cogl_color_set_blue_float (CoglColor *color,
+                           float      blue);
+
+/**
+ * cogl_color_set_alpha_float:
+ * @color: a #CoglColor
+ * @alpha: a float value between 0.0f and 1.0f
+ *
+ * Sets the alpha channel of @color to @alpha.
+ *
+ * since: 1.4
+ */
+void
+cogl_color_set_alpha_float (CoglColor *color,
+                            float      alpha);
+
+/**
+ * cogl_color_set_red:
+ * @color: a #CoglColor
+ * @red: a float value between 0.0f and 1.0f
+ *
+ * Sets the red channel of @color to @red.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_red (CoglColor *color,
+                    float      red);
+
+/**
+ * cogl_color_set_green:
+ * @color: a #CoglColor
+ * @green: a float value between 0.0f and 1.0f
+ *
+ * Sets the green channel of @color to @green.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_green (CoglColor *color,
+                      float      green);
+
+/**
+ * cogl_color_set_blue:
+ * @color: a #CoglColor
+ * @blue: a float value between 0.0f and 1.0f
+ *
+ * Sets the blue channel of @color to @blue.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_blue (CoglColor *color,
+                     float      blue);
+
+/**
+ * cogl_color_set_alpha:
+ * @color: a #CoglColor
+ * @alpha: a float value between 0.0f and 1.0f
+ *
+ * Sets the alpha channel of @color to @alpha.
+ *
+ * Since: 1.4
+ */
+void
+cogl_color_set_alpha (CoglColor *color,
+                      float      alpha);
+
+/**
  * cogl_color_premultiply:
  * @color: the color to premultiply
  *
