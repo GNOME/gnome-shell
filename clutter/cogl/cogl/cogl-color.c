@@ -163,6 +163,17 @@ cogl_color_premultiply (CoglColor *color)
   color->blue = (color->blue * color->alpha + 128) / 255;
 }
 
+void
+cogl_color_unpremultiply (CoglColor *color)
+{
+  if (color->alpha != 0)
+    {
+      color->red = (color->red * 255) / color->alpha;
+      color->green = (color->green * 255) / color->alpha;
+      color->blue = (color->blue * 255) / color->alpha;
+    }
+}
+
 gboolean
 cogl_color_equal (gconstpointer v1, gconstpointer v2)
 {

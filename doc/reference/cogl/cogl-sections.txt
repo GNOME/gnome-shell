@@ -384,6 +384,7 @@ cogl_color_get_alpha_float
 
 <SUBSECTION>
 cogl_color_premultiply
+cogl_color_unpremultiply
 cogl_color_equal
 </SECTION>
 
