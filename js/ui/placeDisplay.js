@@ -46,10 +46,14 @@ PlaceInfo.prototype = {
         for (let i = 0; i < terms.length; i++) {
             let term = terms[i];
             let idx = this._lowerName.indexOf(term);
-            if (idx == 0)
-                return Search.MatchType.PREFIX;
-            else if (idx > 0)
-                mtype = Search.MatchType.SUBSTRING;
+            if (idx == 0) {
+                mtype = Search.MatchType.PREFIX;
+            } else if (idx > 0) {
+                if (mtype == Search.MatchType.NONE)
+                    mtype = Search.MatchType.SUBSTRING;
+            } else {
+                return Search.MatchType.NONE;
+            }
         }
         return mtype;
     },
@@ -571,8 +575,9 @@ PlaceSearchProvider.prototype = {
     },
 
     _searchPlaces: function(places, terms) {
-        let multipleResults = [];
+        let multiplePrefixResults = [];
         let prefixResults = [];
+        let multipleSubstringResults = [];
         let substringResults = [];
 
         terms = terms.map(String.toLowerCase);
@@ -580,17 +585,20 @@ PlaceSearchProvider.prototype = {
         for (let i = 0; i < places.length; i++) {
             let place = places[i];
             let mtype = place.matchTerms(terms);
-            if (mtype == Search.MatchType.MULTIPLE)
-                multipleResults.push(place.id);
+            if (mtype == Search.MatchType.MULTIPLE_PREFIX)
+                multiplePrefixResults.push(place.id);
             else if (mtype == Search.MatchType.PREFIX)
                 prefixResults.push(place.id);
+            else if (mtype == Search.MatchType.MULTIPLE_SUBSTRING)
+                multipleSubstringResults.push(place.id);
             else if (mtype == Search.MatchType.SUBSTRING)
                 substringResults.push(place.id);
         }
-        multipleResults.sort(this._compareResultMeta);
+        multiplePrefixResults.sort(this._compareResultMeta);
         prefixResults.sort(this._compareResultMeta);
+        multipleSubstringResults.sort(this._compareResultMeta);
         substringResults.sort(this._compareResultMeta);
-        return multipleResults.concat(prefixResults.concat(substringResults));
+        return multiplePrefixResults.concat(prefixResults.concat(multipleSubstringResults.concat(substringResults)));
     },
 
     getInitialResultSet: function(terms) {

@@ -9,9 +9,10 @@ const RESULT_ICON_SIZE = 24;
 // implementations.
 const MatchType = {
     NONE: 0,
-    MULTIPLE: 1,
-    PREFIX: 2,
-    SUBSTRING: 3
+    SUBSTRING: 1,
+    MULTIPLE_SUBSTRING: 2,
+    PREFIX: 3,
+    MULTIPLE_PREFIX: 4
 };
 
 function SearchResultDisplay(provider) {
@@ -107,7 +108,7 @@ SearchProvider.prototype = {
 
     /**
      * getInitialResultSet:
-     * @terms: Array of search terms, treated as logical OR
+     * @terms: Array of search terms, treated as logical AND
      *
      * Called when the user first begins a search (most likely
      * therefore a single term of length one or two), or when
@@ -119,7 +120,8 @@ SearchProvider.prototype = {
      * item.  Ordering of returned results is up to the discretion of the provider,
      * but you should follow these heruistics:
      *
-     *  * Put items which match multiple search terms before single matches
+     *  * Put items where the term matches multiple criteria (e.g. name and
+     *    description) before single matches
      *  * Put items which match on a prefix before non-prefix substring matches
      *
      * This function should be fast; do not perform unindexed full-text searches

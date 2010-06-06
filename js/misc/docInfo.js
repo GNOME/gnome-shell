@@ -39,15 +39,12 @@ DocInfo.prototype = {
             let term = terms[i];
             let idx = this._lowerName.indexOf(term);
             if (idx == 0) {
-                if (mtype != Search.MatchType.NONE)
-                    return Search.MatchType.MULTIPLE;
                 mtype = Search.MatchType.PREFIX;
             } else if (idx > 0) {
-                if (mtype != Search.MatchType.NONE)
-                    return Search.MatchType.MULTIPLE;
-                mtype = Search.MatchType.SUBSTRING;
+                if (mtype == Search.MatchType.NONE)
+                    mtype = Search.MatchType.SUBSTRING;
             } else {
-                continue;
+                return Search.MatchType.NONE;
             }
         }
         return mtype;
@@ -109,39 +106,35 @@ DocManager.prototype = {
         return this._docSystem.queue_existence_check(count);
     },
 
-    initialSearch: function(terms) {
-        let multipleMatches = [];
+    _searchDocs: function(items, terms) {
+        let multiplePrefixMatches = [];
         let prefixMatches = [];
+        let multipleSubtringMatches = [];
         let substringMatches = [];
-        for (let i = 0; i < this._infosByTimestamp.length; i++) {
-            let item = this._infosByTimestamp[i];
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
             let mtype = item.matchTerms(terms);
-            if (mtype == Search.MatchType.MULTIPLE)
-                multipleMatches.push(item.uri);
+            if (mtype == Search.MatchType.MULTIPLE_PREFIX)
+                multiplePrefixMatches.push(item.uri);
             else if (mtype == Search.MatchType.PREFIX)
                 prefixMatches.push(item.uri);
+            else if (mtype == Search.MatchType.MULTIPLE_SUBSTRING)
+                multipleSubtringMatches.push(item.uri);
             else if (mtype == Search.MatchType.SUBSTRING)
                 substringMatches.push(item.uri);
          }
-        return multipleMatches.concat(prefixMatches.concat(substringMatches));
+        return multiplePrefixMatches.concat(prefixMatches.concat(multipleSubtringMatches.concat(substringMatches)));
+    },
+
+    initialSearch: function(terms) {
+        return this._searchDocs(this._infosByTimestamp, terms);
     },
 
     subsearch: function(previousResults, terms) {
-        let multipleMatches = [];
-        let prefixMatches = [];
-        let substringMatches = [];
-        for (let i = 0; i < previousResults.length; i++) {
-            let uri = previousResults[i];
-            let item = this._infosByUri[uri];
-            let mtype = item.matchTerms(terms);
-            if (mtype == Search.MatchType.MULTIPLE)
-                multipleMatches.push(uri);
-            else if (mtype == Search.MatchType.PREFIX)
-                prefixMatches.push(uri);
-            else if (mtype == Search.MatchType.SUBSTRING)
-                substringMatches.push(uri);
-        }
-        return multipleMatches.concat(prefixMatches.concat(substringMatches));
+        return this._searchDocs(previousResults.map(Lang.bind(this,
+            function(url) {
+                return this._infosByUri[url];
+            })), terms);
     }
 };
 

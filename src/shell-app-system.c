@@ -663,9 +663,10 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
 
 typedef enum {
   MATCH_NONE,
-  MATCH_MULTIPLE, /* Matches multiple terms */
+  MATCH_SUBSTRING, /* Not prefix, substring */
+  MATCH_MULTIPLE_SUBSTRING, /* Matches multiple criteria with substrings */
   MATCH_PREFIX, /* Strict prefix */
-  MATCH_SUBSTRING /* Not prefix, substring */
+  MATCH_MULTIPLE_PREFIX, /* Matches multiple criteria, at least one prefix */
 } ShellAppInfoSearchMatch;
 
 static char *
@@ -733,36 +734,45 @@ shell_app_info_match_terms (ShellAppInfo  *info,
   match = MATCH_NONE;
   for (iter = terms; iter; iter = iter->next)
     {
+      ShellAppInfoSearchMatch current_match;
       const char *term = iter->data;
       const char *p;
 
+      current_match = MATCH_NONE;
+
       p = strstr (info->casefolded_name, term);
       if (p == info->casefolded_name)
-        {
-          if (match != MATCH_NONE)
-            return MATCH_MULTIPLE;
-          else
-            match = MATCH_PREFIX;
-         }
+        current_match = MATCH_PREFIX;
       else if (p != NULL)
-        match = MATCH_SUBSTRING;
+        current_match = MATCH_SUBSTRING;
 
       p = strstr (info->casefolded_exec, term);
-      if (p == info->casefolded_exec)
-        {
-          if (match != MATCH_NONE)
-            return MATCH_MULTIPLE;
-          else
-            match = MATCH_PREFIX;
-         }
-      else if (p != NULL)
-        match = MATCH_SUBSTRING;
-
-      if (!info->casefolded_description)
-        continue;
-      p = strstr (info->casefolded_description, term);
       if (p != NULL)
-        match = MATCH_SUBSTRING;
+        {
+          if (p == info->casefolded_exec)
+            current_match = (current_match == MATCH_NONE) ? MATCH_PREFIX
+                                                          : MATCH_MULTIPLE_PREFIX;
+          else if (current_match < MATCH_PREFIX)
+            current_match = (current_match == MATCH_NONE) ? MATCH_SUBSTRING
+                                                          : MATCH_MULTIPLE_SUBSTRING;
+        }
+
+      if (info->casefolded_description && current_match < MATCH_PREFIX)
+        {
+          /* Only do substring matches, as prefix matches are not meaningful
+           * enough for descriptions
+           */
+          p = strstr (info->casefolded_description, term);
+          if (p != NULL)
+            current_match = (current_match == MATCH_NONE) ? MATCH_SUBSTRING
+                                                          : MATCH_MULTIPLE_SUBSTRING;
+        }
+
+      if (current_match == MATCH_NONE)
+        return current_match;
+
+      if (current_match > match)
+        match = current_match;
     }
   return match;
 }
@@ -788,14 +798,24 @@ shell_app_info_compare (gconstpointer a,
 
 static GSList *
 sort_and_concat_results (ShellAppSystem *system,
-                         GSList         *multiple_matches,
+                         GSList         *multiple_prefix_matches,
                          GSList         *prefix_matches,
+                         GSList         *multiple_substring_matches,
                          GSList         *substring_matches)
 {
-  multiple_matches = g_slist_sort_with_data (multiple_matches, shell_app_info_compare, system);
-  prefix_matches = g_slist_sort_with_data (prefix_matches, shell_app_info_compare, system);
-  substring_matches = g_slist_sort_with_data (substring_matches, shell_app_info_compare, system);
-  return g_slist_concat (multiple_matches, g_slist_concat (prefix_matches, substring_matches));
+  multiple_prefix_matches = g_slist_sort_with_data (multiple_prefix_matches,
+                                                    shell_app_info_compare,
+                                                    system);
+  prefix_matches = g_slist_sort_with_data (prefix_matches,
+                                           shell_app_info_compare,
+                                           system);
+  multiple_substring_matches = g_slist_sort_with_data (multiple_substring_matches,
+                                                       shell_app_info_compare,
+                                                       system);
+  substring_matches = g_slist_sort_with_data (substring_matches,
+                                              shell_app_info_compare,
+                                              system);
+  return g_slist_concat (multiple_prefix_matches, g_slist_concat (prefix_matches, g_slist_concat (multiple_substring_matches, substring_matches)));
 }
 
 /**
@@ -821,8 +841,9 @@ static inline void
 shell_app_system_do_match (ShellAppSystem   *system,
                            ShellAppInfo     *info,
                            GSList           *terms,
-                           GSList          **multiple_results,
+                           GSList          **multiple_prefix_results,
                            GSList          **prefix_results,
+                           GSList          **multiple_substring_results,
                            GSList          **substring_results)
 {
   const char *id = shell_app_info_get_id (info);
@@ -836,11 +857,16 @@ shell_app_system_do_match (ShellAppSystem   *system,
     {
       case MATCH_NONE:
         break;
-      case MATCH_MULTIPLE:
-        *multiple_results = g_slist_prepend (*multiple_results, (char *) id);
+      case MATCH_MULTIPLE_PREFIX:
+        *multiple_prefix_results = g_slist_prepend (*multiple_prefix_results,
+                                                    (char *) id);
         break;
       case MATCH_PREFIX:
         *prefix_results = g_slist_prepend (*prefix_results, (char *) id);
+        break;
+      case MATCH_MULTIPLE_SUBSTRING:
+        *multiple_substring_results = g_slist_prepend (*multiple_substring_results,
+                                                    (char *) id);
         break;
       case MATCH_SUBSTRING:
         *substring_results = g_slist_prepend (*substring_results, (char *) id);
@@ -853,8 +879,9 @@ shell_app_system_initial_search_internal (ShellAppSystem  *self,
                                           GSList          *terms,
                                           GSList          *source)
 {
-  GSList *multiple_results = NULL;
+  GSList *multiple_prefix_results = NULL;
   GSList *prefix_results = NULL;
+  GSList *multiple_subtring_results = NULL;
   GSList *substring_results = NULL;
   GSList *iter;
   GSList *normalized_terms = normalize_terms (terms);
@@ -863,19 +890,21 @@ shell_app_system_initial_search_internal (ShellAppSystem  *self,
     {
       ShellAppInfo *info = iter->data;
 
-      shell_app_system_do_match (self, info, normalized_terms, &multiple_results, &prefix_results, &substring_results);
+      shell_app_system_do_match (self, info, normalized_terms,
+                                 &multiple_prefix_results, &prefix_results,
+                                 &multiple_subtring_results, &substring_results);
     }
   g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
   g_slist_free (normalized_terms);
 
-  return sort_and_concat_results (self, multiple_results, prefix_results, substring_results);
+  return sort_and_concat_results (self, multiple_prefix_results, prefix_results, multiple_subtring_results, substring_results);
 }
 
 /**
  * shell_app_system_initial_search:
  * @self: A #ShellAppSystem
  * @prefs: %TRUE if we should search preferences instead of apps
- * @terms: (element-type utf8): List of terms, logical OR
+ * @terms: (element-type utf8): List of terms, logical AND
  *
  * Search through applications for the given search terms.  Note that returned
  * strings are only valid until a return to the main loop.
@@ -896,7 +925,7 @@ shell_app_system_initial_search (ShellAppSystem  *self,
  * @self: A #ShellAppSystem
  * @prefs: %TRUE if we should search preferences instead of apps
  * @previous_results: (element-type utf8): List of previous results
- * @terms: (element-type utf8): List of terms, logical OR
+ * @terms: (element-type utf8): List of terms, logical AND
  *
  * Search through a previous result set; for more information, see
  * js/ui/search.js.  Note the value of @prefs must be
@@ -912,8 +941,9 @@ shell_app_system_subsearch (ShellAppSystem   *system,
                             GSList           *terms)
 {
   GSList *iter;
-  GSList *multiple_results = NULL;
+  GSList *multiple_prefix_results = NULL;
   GSList *prefix_results = NULL;
+  GSList *multiple_substring_results = NULL;
   GSList *substring_results = NULL;
   GSList *normalized_terms = normalize_terms (terms);
 
@@ -931,7 +961,9 @@ shell_app_system_subsearch (ShellAppSystem   *system,
       if (!info)
         continue;
 
-      shell_app_system_do_match (system, info, normalized_terms, &multiple_results, &prefix_results, &substring_results);
+      shell_app_system_do_match (system, info, normalized_terms,
+                                 &multiple_prefix_results, &prefix_results,
+                                 &multiple_substring_results, &substring_results);
     }
   g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
   g_slist_free (normalized_terms);
@@ -939,7 +971,7 @@ shell_app_system_subsearch (ShellAppSystem   *system,
   /* Note that a shorter term might have matched as a prefix, but
      when extended only as a substring, so we have to redo the
      sort rather than reusing the existing ordering */
-  return sort_and_concat_results (system, multiple_results, prefix_results, substring_results);
+  return sort_and_concat_results (system, multiple_prefix_results, prefix_results, multiple_substring_results, substring_results);
 }
 
 const char *
