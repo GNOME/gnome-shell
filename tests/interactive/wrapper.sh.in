@@ -11,5 +11,5 @@ echo "$ libtool --mode=execute \\"
 echo "          gdb --eval-command=\"b `echo $UNIT_TEST|tr '-' '_'`_main\" \\"
 echo "              --args ./test-interactive $UNIT_TEST" 
 
-./test-interactive $UNIT_TEST "$@"
+@abs_builddir@/test-interactive $UNIT_TEST "$@"
 

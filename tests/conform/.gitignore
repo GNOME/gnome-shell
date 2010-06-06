@@ -1,4 +1,5 @@
 *.o
+/test-launcher.sh
 /stamp-test-conformance
 /test-anchors
 /test-cogl-backface-culling

@@ -12,7 +12,7 @@ UNIT_TEST=`basename ${UNIT_TEST_PATH}`
 
 echo "Running: ./test-conformance -p ${UNIT_TEST_PATH} $@"
 echo ""
-./test-conformance -p ${UNIT_TEST_PATH} "$@"
+@abs_builddir@/test-conformance -p ${UNIT_TEST_PATH} "$@"
 
 echo ""
 echo "NOTE: For debugging purposes, you can run this single test as follows:"

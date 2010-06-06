@@ -67,11 +67,12 @@ wrappers: stamp-test-conformance
 	@true
 stamp-test-conformance: test-conformance$(EXEEXT)
 	@mkdir -p wrappers
+	@chmod +x test-launcher.sh
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
-		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(EXEEXT) ; \
+		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(EXEEXT) ; \
 		( echo "#!/bin/sh" ; echo "exec ./test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
 		chmod +x wrappers/$$unit$(EXEEXT); \
@@ -177,7 +178,8 @@ full-report: full-report-generate
 		gnome-open "$$x"; \
 	done
 
-EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh run-tests.sh
+EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
+DISTCLEANFILES = test-launcher.sh
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES

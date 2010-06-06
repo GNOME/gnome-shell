@@ -1,4 +1,5 @@
 *.o
+/wrapper.sh
 /stamp-test-interactive
 /test-actor-clone
 /test-actors

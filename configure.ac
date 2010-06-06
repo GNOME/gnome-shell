@@ -1029,8 +1029,10 @@ AC_CONFIG_FILES([
         clutter/json/Makefile
         tests/Makefile
         tests/conform/Makefile
+        tests/conform/test-launcher.sh
         tests/data/Makefile
         tests/interactive/Makefile
+        tests/interactive/wrapper.sh
         tests/micro-bench/Makefile
         tests/tools/Makefile
         doc/Makefile

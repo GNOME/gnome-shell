@@ -65,7 +65,8 @@ endif
 wrappers: stamp-test-interactive
 	@true
 stamp-test-interactive: test-interactive$(EXEEXT)
-	@wrapper=$(top_srcdir)/tests/interactive/wrapper.sh ; \
+	@wrapper=$(abs_builddir)/wrapper.sh ; \
+	chmod +x $$wrapper && \
 	for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
@@ -102,12 +103,13 @@ noinst_PROGRAMS = test-interactive
 test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_CPPFLAGS = \
-	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
+	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
 
-EXTRA_DIST = wrapper.sh
+EXTRA_DIST = wrapper.sh.in
+DISTCLEANFILES = wrapper.sh
 
 BUILT_SOURCES = wrappers
 
