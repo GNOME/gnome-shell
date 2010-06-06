@@ -627,15 +627,44 @@ SingleView.prototype = {
     __proto__: GenericWorkspacesView.prototype,
 
     _init: function(width, height, x, y, workspaces) {
+        let shadowWidth = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
+
         this._newWorkspaceArea = new NewWorkspaceArea();
+        this._newWorkspaceArea.actor._delegate = {
+            acceptDrop: Lang.bind(this, this._acceptNewWorkspaceDrop)
+        };
         this._leftShadow = new St.Bin({ style_class: 'left-workspaces-shadow',
-                                        width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
+                                        width: shadowWidth,
                                         height: global.screen_height,
                                         x: global.screen_width });
+        this._leftShadow._delegate = {
+            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
+                let active = global.screen.get_active_workspace_index();
+                let leftWorkspace = this._workspaces[active - 1];
+                if (leftWorkspace &&
+                    leftWorkspace.acceptDrop(source, actor, x, y, time)) {
+                    leftWorkspace.metaWorkspace.activate(time);
+                    return true;
+                }
+                return false;
+            })
+        };
         this._rightShadow = new St.Bin({ style_class: 'right-workspaces-shadow',
-                                         width: Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE),
+                                         width: shadowWidth,
                                          height: global.screen_height,
                                          x: global.screen_width });
+        this._rightShadow._delegate = {
+            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
+                let active = global.screen.get_active_workspace_index();
+                let rightWorkspace = this._workspaces[active + 1];
+                if (rightWorkspace &&
+                    rightWorkspace.acceptDrop(source, actor, x, y, time)) {
+                    rightWorkspace.metaWorkspace.activate(time);
+                    return true;
+                }
+                return false;
+            })
+        };
 
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
@@ -666,12 +695,6 @@ SingleView.prototype = {
         this._inDrag = false; // dragging a window
         this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
 
-        this._dropGroup = new Clutter.Group({ x: 0, y: 0,
-                                              width: global.screen_width,
-                                              height: global.screen_height });
-        this._dropGroup._delegate = this;
-        global.stage.add_actor(this._dropGroup);
-        this._dropGroup.lower_bottom();
         this._dragIndex = -1;
 
         this._buttonPressId = 0;
@@ -1116,7 +1139,6 @@ SingleView.prototype = {
     _onDestroy: function() {
         GenericWorkspacesView.prototype._onDestroy.call(this);
         this._setWorkspaceDraggable(this._dragIndex, false);
-        this._dropGroup.destroy();
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
@@ -1141,47 +1163,6 @@ SingleView.prototype = {
         }
     },
 
-    acceptDrop: function(source, dropActor, x, y, time) {
-        if (x < this._x || y < this._y || y > this._y + this._height) {
-            this._dropGroup.lower_bottom();
-            dropActor.hide();
-            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-            dropActor.show();
-
-            while (target) {
-                if (target._delegate &&
-                    target._delegate != this &&
-                    target._delegate.acceptDrop) {
-
-                    let [r, targX, targY] = target.transform_stage_point(x, y);
-                    return target._delegate.acceptDrop(source, dropActor,
-                                                       targX, targY, time);
-                }
-                target = target.get_parent();
-            }
-            return false;
-        }
-
-        for (let i = 0; i < this._workspaces.length; i++) {
-            let [dx, dy] = this._workspaces[i].actor.get_transformed_position();
-            let [dw, dh] = this._workspaces[i].actor.get_transformed_size();
-
-            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
-                let accept = this._workspaces[i].acceptDrop(source, dropActor, x, y, time);
-                if (accept)
-                    this._workspaces[i].metaWorkspace.activate(time);
-                return accept;
-            }
-        }
-
-        let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
-        let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
-        if (x > dx && y > dy && y < dy + dh)
-            return this._acceptNewWorkspaceDrop(source, dropActor, x, y, time);
-
-        return false;
-    },
-
     _dragBegin: function() {
         if (!this._scroll || this._scrolling)
             return;
@@ -1190,69 +1171,84 @@ SingleView.prototype = {
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);
 
-        this._dropGroup.raise_top();
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+        DND.addDragMonitor(this._dragMonitor);
     },
 
-    handleDragOver: function(self, actor, x, y) {
-        let onPanel = false;
+    _onDragMotion: function(dragEvent) {
         let primary = global.get_primary_monitor();
+
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
+        let rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
+        let hoverWorkspace = null;
 
-        if (x <= primary.x && activeWorkspaceIndex > 0 && this._dragOverLastX !== primary.x) {
-            this._workspaces[activeWorkspaceIndex - 1].metaWorkspace.activate(global.get_current_time());
-            this._workspaces[activeWorkspaceIndex - 1].setReservedSlot(actor._delegate);
-            this._dragOverLastX = primary.x;
-            return;
+        // reactive monitor edges
+        let leftEdge = primary.x;
+        let switchLeft = (dragEvent.x <= leftEdge && leftWorkspace);
+        if (switchLeft && this._dragOverLastX != leftEdge) {
+            leftWorkspace.metaWorkspace.activate(global.get_current_time());
+            leftWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
+            this._dragOverLastX = leftEdge;
+
+            return DND.DragMotionResult.MOVE_DROP;
         }
-        if (x >= primary.x + primary.width - 1 && this._workspaces[activeWorkspaceIndex + 1] &&
-            this._dragOverLastX != primary.x + primary.width - 1) {
-            this._workspaces[activeWorkspaceIndex + 1].metaWorkspace.activate(global.get_current_time());
-            this._workspaces[activeWorkspaceIndex + 1].setReservedSlot(actor._delegate);
-            this._dragOverLastX = primary.x + primary.width - 1;
-            return;
+        let rightEdge = primary.x + primary.width - 1;
+        let switchRight = (dragEvent.x >= rightEdge && rightWorkspace);
+        if (switchRight && this._dragOverLastX != rightEdge) {
+            rightWorkspace.metaWorkspace.activate(global.get_current_time());
+            rightWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
+            this._dragOverLastX = rightEdge;
+
+            return DND.DragMotionResult.MOVE_DROP;
+        }
+        this._dragOverLastX = dragEvent.x;
+
+        // check hover state of new workspace area / inactive workspaces
+        if (leftWorkspace) {
+            if (dragEvent.targetActor == this._leftShadow) {
+                hoverWorkspace = leftWorkspace;
+                leftWorkspace.actor.opacity = 255;
+            } else {
+                leftWorkspace.actor.opacity = 200;
+            }
         }
 
-        this._dragOverLastX = x;
-
-        let [dx, dy] = this._newWorkspaceArea.actor.get_transformed_position();
-        let [dw, dh] = this._newWorkspaceArea.actor.get_transformed_size();
-        this._newWorkspaceArea.setStyle(x > dx && y > dy && y < dy + dh);
-
-        [dx, dy] = this._leftShadow.get_transformed_position();
-        [dw, dh] = this._leftShadow.get_transformed_size();
-        if (this._workspaces[activeWorkspaceIndex - 1]) {
-            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
-                onPanel = -1;
-                this._workspaces[activeWorkspaceIndex - 1].actor.opacity = 255;
-            } else
-                this._workspaces[activeWorkspaceIndex - 1].actor.opacity = 200;
+        if (rightWorkspace) {
+            if (dragEvent.targetActor == this._rightShadow) {
+                hoverWorkspace = rightWorkspace;
+                rightWorkspace.actor.opacity = 255;
+            } else {
+                rightWorkspace.actor.opacity = 200;
+            }
+        } else {
+            let targetParent = dragEvent.targetActor.get_parent();
+            if (targetParent == this._newWorkspaceArea.actor)
+                this._newWorkspaceArea.setStyle(true);
+            else
+                this._newWorkspaceArea.setStyle(false);
         }
 
-        [dx, dy] = this._rightShadow.get_transformed_position();
-        [dw, dh] = this._rightShadow.get_transformed_size();
-        if (this._workspaces[activeWorkspaceIndex + 1]) {
-            if (x > dx && x < dx + dw && y > dy && y < dy + dh) {
-                onPanel = 1;
-                this._workspaces[activeWorkspaceIndex + 1].actor.opacity = 255;
-            } else
-                this._workspaces[activeWorkspaceIndex + 1].actor.opacity = 200;
-        }
-        if (onPanel) {
+
+        // handle delayed workspace switches
+        if (hoverWorkspace) {
             if (!this._timeoutId)
-                this._timeoutId = Mainloop.timeout_add_seconds (1, Lang.bind(this, function() {
-                   let i = global.screen.get_active_workspace_index();
-                   if (this._workspaces[i + onPanel]) {
-                       this._workspaces[i + onPanel].metaWorkspace.activate(global.get_current_time());
-                       this._workspaces[i + onPanel].setReservedSlot(actor._delegate);
-                   }
-                   return true;
-                }));
+                this._timeoutId = Mainloop.timeout_add_seconds(1,
+                    Lang.bind(this, function() {
+                       hoverWorkspace.metaWorkspace.activate(global.get_current_time());
+                       hoverWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
+                       return false;
+                    }));
         } else {
             if (this._timeoutId) {
                 Mainloop.source_remove(this._timeoutId);
                 this._timeoutId = 0;
             }
         }
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _dragEnd: function() {
@@ -1260,7 +1256,7 @@ SingleView.prototype = {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
-        this._dropGroup.lower_bottom();
+        DND.removeMonitor(this._dragMonitor);
         this._inDrag = false;
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);
