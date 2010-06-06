@@ -383,7 +383,7 @@ Overview.prototype = {
                 }
                 this._transparentBackground.lower_bottom();
                 this._paneContainer.hide();
-                this._lightbox.actor.hide(true);
+                this._lightbox.actor.hide();
             }
         }));
     },
