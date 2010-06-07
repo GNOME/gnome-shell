@@ -263,6 +263,7 @@ TAGS
 /tests/conform/test-clutter-cairo-texture
 /tests/conform/test-state-base
 /tests/conform/test-texture-pick-with-alpha
+/tests/conform/test-cogl-object
 /tests/conform/wrappers
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
