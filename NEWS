@@ -1,3 +1,41 @@
+Clutter 1.3.4 (07/06/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.3.2
+
+    » Add ClutterEffect, a ClutterActorMeta sub-class that affects the
+      way an actor paints itself.
+
+        » Clutter provides a base class for effects painting to an
+          offscreen buffer, and a base class for effects using the
+          GL programmable pipeline (through the GLSL shader language).
+
+        » Clutter also provides some simple, shader-based effects:
+          ClutterBlurEffect, ClutterColorizeEffect and
+          ClutterDesaturateEffect.
+
+        » Effects can be applied to any actor, and can also be stacked.
+
+    » Add ClutterClickAction, an action that provides "button-like"
+      semantics for any ClutterActor.
+
+    » ClutterDragAction now moves the actor to which it has been applied
+      by default, using a class handler for the ::drag-motion signal.
+
+    » Add the :pick-with-alpha property to ClutterTexture; this property
+      allows using the alpha channel of a texture when picking it.
+
+    » Regenerate the mipmaps on COGL textures when a texture is modified.
+
+    » Documentation and build fixes.
+
+Many thanks to:
+
+  Robert Bragg
+  Damien Lespiau
+  Neil Roberts
+  Colin Walters
+
 Clutter 1.3.2 (24/05/2010)
 ===============================================================================
 
