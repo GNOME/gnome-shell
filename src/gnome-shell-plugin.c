@@ -38,7 +38,9 @@
 #include <gjs/gjs.h>
 #include <girepository.h>
 #include <gmodule.h>
+#ifdef HAVE_MALLINFO
 #include <malloc.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 
@@ -246,6 +248,7 @@ static void
 malloc_statistics_callback (ShellPerfLog *perf_log,
                             gpointer      data)
 {
+#ifdef HAVE_MALLINFO
   struct mallinfo info = mallinfo ();
 
   shell_perf_log_update_statistic_i (perf_log,
@@ -257,6 +260,7 @@ malloc_statistics_callback (ShellPerfLog *perf_log,
   shell_perf_log_update_statistic_i (perf_log,
                                      "malloc.usedSize",
                                      info.uordblks);
+#endif
 }
 
 static void
