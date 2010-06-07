@@ -259,10 +259,8 @@ window_is_tracked (MetaWindow *window)
 gboolean
 shell_window_tracker_is_window_interesting (MetaWindow *window)
 {
-  if (!window_is_tracked (window))
-    return FALSE;
-
-  if (meta_window_is_skip_taskbar (window))
+  if (meta_window_is_override_redirect (window)
+      || meta_window_is_skip_taskbar (window))
     return FALSE;
 
   switch (meta_window_get_window_type (window))
@@ -395,6 +393,9 @@ get_app_for_window (ShellWindowTracker    *monitor,
 {
   ShellApp *result;
   const char *startup_id;
+
+  if (meta_window_is_remote (window))
+    return shell_app_system_get_app_for_window (shell_app_system_get_default (), window);
 
   result = NULL;
   /* First, we check whether we already know about this window,
