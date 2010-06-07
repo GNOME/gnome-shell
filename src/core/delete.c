@@ -22,8 +22,7 @@
  * 02111-1307, USA.
  */
 
-#define _GNU_SOURCE
-#define _SVID_SOURCE /* for gethostname() */
+#define _XOPEN_SOURCE /* for kill() */
 
 #include <config.h>
 #include "util.h"
