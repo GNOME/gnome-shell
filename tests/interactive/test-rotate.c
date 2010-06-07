@@ -14,8 +14,9 @@ test_rotate_main (int argc, char *argv[])
   ClutterAlpha     *alpha;
   ClutterBehaviour *r_behave;
   ClutterActor     *stage;
-  ClutterActor     *hand, *label;
+  ClutterActor     *hand, *label, *rect;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
+  ClutterColor      rect_color;
   gchar            *file;
 
   clutter_init (&argc, &argv);
@@ -37,8 +38,13 @@ test_rotate_main (int argc, char *argv[])
 
   g_free (file);
 
+  clutter_color_from_string (&rect_color, "#ce5c00ff");
+  rect = clutter_rectangle_new_with_color (&rect_color);
+  clutter_actor_add_effect_with_name (rect, "blur", clutter_blur_effect_new ());
+  clutter_actor_set_position (rect, 340, 140);
+  clutter_actor_set_size (rect, 150, 150);
+
   clutter_actor_set_position (hand, 240, 140);
-  clutter_actor_show (hand);
   clutter_actor_add_effect_with_name (hand, "desaturate", clutter_desaturate_effect_new (0.75));
   clutter_actor_add_effect_with_name (hand, "blur", clutter_blur_effect_new ());
   clutter_actor_animate_with_timeline (hand, CLUTTER_LINEAR, timeline,
@@ -53,7 +59,7 @@ test_rotate_main (int argc, char *argv[])
   clutter_actor_set_position (label, 150, 150);
   clutter_actor_set_size (label, 500, 100);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), hand, label, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (stage), rect, hand, label, NULL);
   
   /* Set an alpha func to power behaviour */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
@@ -70,6 +76,7 @@ test_rotate_main (int argc, char *argv[])
   /* Apply it to our actor */
   clutter_behaviour_apply (r_behave, hand);
   clutter_behaviour_apply (r_behave, label);
+  clutter_behaviour_apply (r_behave, rect);
 
   /* start the timeline and thus the animations */
   clutter_timeline_start (timeline);
