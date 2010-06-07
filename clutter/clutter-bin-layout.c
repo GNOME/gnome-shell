@@ -559,9 +559,13 @@ clutter_bin_layout_set_container (ClutterLayoutManager *manager,
                                   ClutterContainer     *container)
 {
   ClutterBinLayoutPrivate *priv;
+  ClutterLayoutManagerClass *parent_class;
 
   priv = CLUTTER_BIN_LAYOUT (manager)->priv;
   priv->container = container;
+
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_bin_layout_parent_class);
+  parent_class->set_container (manager, container);
 }
 
 static void

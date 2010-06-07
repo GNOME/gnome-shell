@@ -156,6 +156,8 @@ void
 clutter_fixed_layout_set_container (ClutterLayoutManager *manager,
                                     ClutterContainer *container)
 {
+  ClutterLayoutManagerClass *parent_class;
+
   if (container != NULL)
     {
       g_object_set_data (G_OBJECT (manager), "fixed-container", container);
@@ -176,6 +178,9 @@ clutter_fixed_layout_set_container (ClutterLayoutManager *manager,
 
       g_object_set_data (G_OBJECT (manager), "fixed-container", NULL);
     }
+
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_fixed_layout_parent_class);
+  parent_class->set_container (manager, container);
 }
 
 static void

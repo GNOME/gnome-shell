@@ -42,6 +42,7 @@
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
+#include "clutter-layout-manager.h"
 #include "clutter-master-clock.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
@@ -334,6 +335,8 @@ gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 
 gboolean _clutter_effect_pre_paint  (ClutterEffect *effect);
 void     _clutter_effect_post_paint (ClutterEffect *effect);
+
+GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
 
 G_END_DECLS
 

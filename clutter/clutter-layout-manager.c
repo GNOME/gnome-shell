@@ -361,6 +361,14 @@ layout_manager_real_allocate (ClutterLayoutManager   *manager,
   LAYOUT_MANAGER_WARN_NOT_IMPLEMENTED (manager, "allocate");
 }
 
+static void
+layout_manager_real_set_container (ClutterLayoutManager *manager,
+                                   ClutterContainer     *container)
+{
+  if (container != NULL)
+    g_object_set_data (G_OBJECT (container), "clutter-layout-manager", manager);
+}
+
 static ClutterLayoutMeta *
 layout_manager_real_create_child_meta (ClutterLayoutManager *manager,
                                        ClutterContainer     *container,
@@ -492,6 +500,7 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->begin_animation = layout_manager_real_begin_animation;
   klass->get_animation_progress = layout_manager_real_get_animation_progress;
   klass->end_animation = layout_manager_real_end_animation;
+  klass->set_container = layout_manager_real_set_container;
 
   /**
    * ClutterLayoutManager::layout-changed:
@@ -683,6 +692,12 @@ clutter_layout_manager_set_container (ClutterLayoutManager *manager,
   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
   if (klass->set_container)
     klass->set_container (manager, container);
+}
+
+GType
+_clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager)
+{
+  return CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager)->get_child_meta_type (manager);
 }
 
 static inline ClutterLayoutMeta *

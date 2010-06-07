@@ -296,6 +296,12 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.4
+-------------------------------------------------------------------------------
+
+* ClutterLayoutManager sub-classes should chain up to the parent class's
+  implementation.
+
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
 

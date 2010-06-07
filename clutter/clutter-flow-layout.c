@@ -684,6 +684,7 @@ clutter_flow_layout_set_container (ClutterLayoutManager *manager,
                                    ClutterContainer     *container)
 {
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
+  ClutterLayoutManagerClass *parent_class;
 
   priv->container = container;
 
@@ -700,6 +701,9 @@ clutter_flow_layout_set_container (ClutterLayoutManager *manager,
       clutter_actor_set_request_mode (CLUTTER_ACTOR (priv->container),
                                       request_mode);
     }
+
+  parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_flow_layout_parent_class);
+  parent_class->set_container (manager, container);
 }
 
 static void
