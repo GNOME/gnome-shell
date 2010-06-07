@@ -313,9 +313,9 @@ increment_usage_for_app (ShellAppUsage *self,
 }
 
 static void
-on_app_running_changed (ShellWindowTracker *tracker,
-                        ShellApp           *app,
-                        gpointer            user_data)
+on_app_state_changed (ShellWindowTracker *tracker,
+                      ShellApp           *app,
+                      gpointer            user_data)
 {
   ShellAppUsage *self = SHELL_APP_USAGE (user_data);
   UsageData *usage;
@@ -326,7 +326,7 @@ on_app_running_changed (ShellWindowTracker *tracker,
 
   usage = get_usage_for_app (self, app);
 
-  running = shell_app_get_n_windows (app) > 0;
+  running = shell_app_get_state (app) == SHELL_APP_STATE_RUNNING;
 
   usage->last_seen = get_time ();
 }
@@ -389,7 +389,7 @@ shell_app_usage_init (ShellAppUsage *self)
 
   tracker = shell_window_tracker_get_default ();
   g_signal_connect (tracker, "notify::focus-app", G_CALLBACK (on_focus_app_changed), self);
-  g_signal_connect (tracker, "app-running-changed", G_CALLBACK (on_app_running_changed), self);
+  g_signal_connect (tracker, "app-state-changed", G_CALLBACK (on_app_state_changed), self);
 
   session_bus = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
   self->session_proxy = dbus_g_proxy_new_for_name (session_bus, "org.gnome.SessionManager",

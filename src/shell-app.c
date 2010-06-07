@@ -8,7 +8,7 @@
 #include "shell-enum-types.h"
 #include "display.h"
 #include "st.h"
-#include "shell-window-tracker.h"
+#include "shell-window-tracker-private.h"
 
 #include <string.h>
 
@@ -632,6 +632,8 @@ shell_app_state_transition (ShellApp      *app,
                       state == SHELL_APP_STATE_STARTING));
   app->state = state;
   g_object_notify (G_OBJECT (app), "state");
+
+  _shell_window_tracker_notify_app_state_changed (shell_window_tracker_get_default (), app);
 }
 
 static void

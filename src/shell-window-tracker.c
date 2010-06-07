@@ -13,7 +13,7 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include "shell-window-tracker.h"
+#include "shell-window-tracker-private.h"
 #include "shell-app-system.h"
 #include "shell-app-private.h"
 #include "st/st-texture-cache.h"
@@ -64,7 +64,6 @@ struct _ShellWindowTracker
 {
   GObject parent;
 
-  guint idle_focus_change_id;
   ShellApp *focus_app;
 
   /* <MetaWindow * window, ShellApp *app> */
@@ -82,7 +81,7 @@ enum {
 };
 
 enum {
-  APP_RUNNING_CHANGED,
+  APP_STATE_CHANGED,
   STARTUP_SEQUENCE_CHANGED,
   TRACKED_WINDOWS_CHANGED,
 
@@ -135,14 +134,14 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                         SHELL_TYPE_APP,
                                                         G_PARAM_READABLE));
 
-  signals[APP_RUNNING_CHANGED] = g_signal_new ("app-running-changed",
-                                     SHELL_TYPE_WINDOW_TRACKER,
-                                     G_SIGNAL_RUN_LAST,
-                                     0,
-                                     NULL, NULL,
-                                     g_cclosure_marshal_VOID__OBJECT,
-                                     G_TYPE_NONE, 1,
-                                     SHELL_TYPE_APP);
+  signals[APP_STATE_CHANGED] = g_signal_new ("app-state-changed",
+                                             SHELL_TYPE_WINDOW_TRACKER,
+                                             G_SIGNAL_RUN_LAST,
+                                             0,
+                                             NULL, NULL,
+                                             g_cclosure_marshal_VOID__OBJECT,
+                                             G_TYPE_NONE, 1,
+                                             SHELL_TYPE_APP);
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
                                    SHELL_TYPE_WINDOW_TRACKER,
                                    G_SIGNAL_RUN_LAST,
@@ -516,14 +515,6 @@ track_window (ShellWindowTracker *self,
 
   _shell_app_add_window (app, window);
 
-  if (shell_app_get_n_windows (app) == 1)
-    {
-      /* key is owned by the app */
-      g_hash_table_insert (self->running_apps, (char*)shell_app_get_id (app),
-                           app);
-      g_signal_emit (self, signals[APP_RUNNING_CHANGED], 0, app);
-    }
-
   g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 }
 
@@ -552,13 +543,6 @@ disassociate_window (ShellWindowTracker   *self,
   g_hash_table_remove (self->window_to_app, window);
 
   _shell_app_remove_window (app, window);
-
-  if (shell_app_get_n_windows (app) == 0)
-    {
-       const char *id = shell_app_get_id (app);
-       g_hash_table_remove (self->running_apps, id);
-       g_signal_emit (self, signals[APP_RUNNING_CHANGED], 0, app);
-    }
 
   g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 
@@ -643,6 +627,27 @@ init_window_tracking (ShellWindowTracker *self)
   shell_window_tracker_on_n_workspaces_changed (screen, NULL, self);
 }
 
+void
+_shell_window_tracker_notify_app_state_changed (ShellWindowTracker *self,
+                                                ShellApp           *app)
+{
+  ShellAppState state = shell_app_get_state (app);
+
+  switch (state)
+    {
+    case SHELL_APP_STATE_RUNNING:
+      /* key is owned by the app */
+      g_hash_table_insert (self->running_apps, (char*)shell_app_get_id (app), app);
+      break;
+    case SHELL_APP_STATE_STARTING:
+      break;
+    case SHELL_APP_STATE_STOPPED:
+      g_hash_table_remove (self->running_apps, shell_app_get_id (app));
+      break;
+    }
+  g_signal_emit (self, signals[APP_STATE_CHANGED], 0, app);
+}
+
 static void
 on_startup_sequence_changed (MetaScreen            *screen,
                              SnStartupSequence     *sequence,
@@ -665,13 +670,10 @@ on_startup_sequence_changed (MetaScreen            *screen,
         {
           MetaScreen *screen = shell_global_get_screen (shell_global_get ());
           MetaDisplay *display = meta_screen_get_display (screen);
-          long tv_sec, tv_usec;
-
-          sn_startup_sequence_get_initiated_time (sequence, &tv_sec, &tv_usec);
 
           _shell_app_set_starting (app, starting);
-          set_focus_app (self, app);
-          meta_display_focus_the_no_focus_window (display, screen, tv_sec);
+          meta_display_focus_the_no_focus_window (display, screen,
+                                                  sn_startup_sequence_get_timestamp (sequence));
         }
     }
 

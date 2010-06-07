@@ -1078,7 +1078,7 @@ AppWell.prototype = {
 
         this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
         AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
-        this._tracker.connect('app-running-changed', Lang.bind(this, this._queueRedisplay));
+        this._tracker.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
     },
 
     _appIdListToHash: function(apps) {

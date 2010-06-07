@@ -116,7 +116,8 @@ libgnome_shell_la_SOURCES =		\
 
 non_gir_sources =				\
 	shell-embedded-window-private.h		\
-	shell-global-private.h
+	shell-global-private.h			\
+	shell-window-tracker-private.h
 
 shell_recorder_sources =        \
 	shell-recorder.c	\

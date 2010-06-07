@@ -697,7 +697,7 @@ AppMenuButton.prototype = {
         // cases where the focused window's application changes without the focus
         // changing.  An example case is how we map Firefox based on the window
         // title which is a dynamic property.
-        tracker.connect('app-running-changed', Lang.bind(this, this._sync));
+        tracker.connect('app-state-changed', Lang.bind(this, this._sync));
 
         this._sync();
     },
