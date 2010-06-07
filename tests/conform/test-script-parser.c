@@ -336,3 +336,54 @@ test_script_animation (TestConformSimpleFixture *fixture,
   g_object_unref (script);
   g_free (test_file);
 }
+
+void
+test_script_layout_property (TestConformSimpleFixture *fixture,
+                             gconstpointer dummy G_GNUC_UNUSED)
+{
+  ClutterScript *script = clutter_script_new ();
+  GObject *manager, *container, *actor;
+  GError *error = NULL;
+  gchar *test_file;
+  gboolean x_fill, expand;
+  ClutterBoxAlignment y_align;
+
+  test_file = clutter_test_get_data_file ("test-script-layout-property.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
+
+#if GLIB_CHECK_VERSION (2, 20, 0)
+  g_assert_no_error (error);
+#else
+  g_assert (error == NULL);
+#endif
+
+  manager = container = actor = NULL;
+  clutter_script_get_objects (script,
+                              "manager", &manager,
+                              "container", &container,
+                              "actor", &actor,
+                              NULL);
+
+  g_assert (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_assert (CLUTTER_IS_CONTAINER (container));
+  g_assert (CLUTTER_IS_ACTOR (actor));
+
+  x_fill = FALSE;
+  y_align = CLUTTER_BOX_ALIGNMENT_START;
+  expand = FALSE;
+  clutter_layout_manager_child_get (CLUTTER_LAYOUT_MANAGER (manager),
+                                    CLUTTER_CONTAINER (container),
+                                    CLUTTER_ACTOR (actor),
+                                    "x-fill", &x_fill,
+                                    "y-align", &y_align,
+                                    "expand", &expand,
+                                    NULL);
+
+  g_assert (x_fill);
+  g_assert (y_align == CLUTTER_BOX_ALIGNMENT_CENTER);
+  g_assert (expand);
+
+  g_object_unref (script);
+}

@@ -1051,6 +1051,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       pinfo->node = json_node_copy (node);
       pinfo->pspec = NULL;
       pinfo->is_child = g_str_has_prefix (name, "child::") ? TRUE : FALSE;
+      pinfo->is_layout = g_str_has_prefix (name, "layout::") ? TRUE : FALSE;
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
     }
@@ -1422,9 +1423,11 @@ clutter_script_translate_parameters (ClutterScript  *script,
       GParameter param = { NULL };
       gboolean res = FALSE;
 
-      if (pinfo->is_child)
+      if (pinfo->is_child || pinfo->is_layout)
         {
-          CLUTTER_NOTE (SCRIPT, "Child property '%s' ignored", pinfo->name);
+          CLUTTER_NOTE (SCRIPT, "Skipping %s property '%s'",
+                        pinfo->is_child ? "child" : "layout",
+                        pinfo->name);
           unparsed = g_list_prepend (unparsed, pinfo);
           continue;
         }
@@ -1528,6 +1531,112 @@ clutter_script_construct_parameters (ClutterScript  *script,
   g_type_class_unref (klass);
 
   return unparsed;
+}
+
+static void
+apply_layout_properties (ClutterScript    *script,
+                         ClutterContainer *container,
+                         ClutterActor     *actor,
+                         ObjectInfo       *oinfo)
+{
+  ClutterScriptable *scriptable = NULL;
+  ClutterScriptableIface *iface = NULL;
+  gboolean set_custom_property = FALSE;
+  gboolean parse_custom_node = FALSE;
+  GList *l, *unresolved, *properties;
+  ClutterLayoutManager *manager;
+  GType meta_type;
+
+  manager = g_object_get_data (G_OBJECT (container), "clutter-layout-manager");
+  if (manager == NULL)
+    return;
+
+  meta_type = _clutter_layout_manager_get_child_meta_type (manager);
+  if (meta_type == G_TYPE_INVALID)
+    return;
+
+  CLUTTER_NOTE (SCRIPT, "Layout manager of type '%s' with meta type '%s'",
+                G_OBJECT_TYPE_NAME (manager),
+                g_type_name (meta_type));
+
+  /* shortcut, to avoid typechecking every time */
+  if (CLUTTER_IS_SCRIPTABLE (manager))
+    {
+      scriptable = CLUTTER_SCRIPTABLE (manager);
+      iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
+
+      parse_custom_node = iface->parse_custom_node != NULL ? TRUE : FALSE;
+      set_custom_property = iface->set_custom_property != NULL ? TRUE : FALSE;
+    }
+
+  properties = oinfo->properties;
+  oinfo->properties = NULL;
+
+  unresolved = NULL;
+  for (l = properties; l != NULL; l = l->next)
+    {
+      PropertyInfo *pinfo = l->data;
+      GValue value = { 0, };
+      gboolean res = FALSE;
+      const gchar *name;
+
+      if (!pinfo->is_layout)
+        {
+          unresolved = g_list_prepend (unresolved, pinfo);
+          continue;
+        }
+
+      name = pinfo->name + strlen ("layout::");
+
+      pinfo->pspec =
+        clutter_layout_manager_find_child_property (manager, name);
+
+      if (pinfo->pspec != NULL)
+        g_param_spec_ref (pinfo->pspec);
+
+      CLUTTER_NOTE (SCRIPT, "Parsing %s layout property (id:%s)",
+                    pinfo->pspec != NULL ? "regular" : "custom",
+                    name);
+
+      if (parse_custom_node)
+        res = iface->parse_custom_node (scriptable, script, &value,
+                                        name,
+                                        pinfo->node);
+
+      if (!res)
+        res = clutter_script_parse_node (script, &value,
+                                         name,
+                                         pinfo->node,
+                                         pinfo->pspec);
+
+      if (!res)
+        {
+          CLUTTER_NOTE (SCRIPT, "Layout property '%s' ignored", name);
+          unresolved = g_list_prepend (unresolved, pinfo);
+          continue;
+        }
+
+      CLUTTER_NOTE (SCRIPT,
+                    "Setting %s layout property '%s' (type:%s) to "
+                    "object '%s' (id:%s)",
+                    set_custom_property ? "custom" : "regular",
+                    name,
+                    g_type_name (G_VALUE_TYPE (&value)),
+                    g_type_name (oinfo->gtype),
+                    oinfo->id);
+
+      clutter_layout_manager_child_set_property (manager, container, actor,
+                                                 name,
+                                                 &value);
+
+      g_value_unset (&value);
+
+      property_info_free (pinfo);
+    }
+
+  g_list_free (properties);
+
+  oinfo->properties = unresolved;
 }
 
 static void
@@ -1715,10 +1824,6 @@ add_children (ClutterScript *script,
                     g_type_name (G_OBJECT_TYPE (container)));
 
       clutter_container_add_actor (container, CLUTTER_ACTOR (object));
-
-      apply_child_properties (script,
-                              container, CLUTTER_ACTOR (object),
-                              child_info);
     }
 
   g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
@@ -1736,6 +1841,49 @@ _clutter_script_check_unresolved (ClutterScript *script,
 
   if (oinfo->behaviours != NULL && CLUTTER_IS_ACTOR (oinfo->object))
     apply_behaviours (script, oinfo);
+
+  /* this is a bit *eugh*, but it allows us to effectively make sure
+   * that child and layout properties are parsed and applied to the
+   * right child
+   */
+  if (oinfo->properties != NULL && CLUTTER_IS_ACTOR (oinfo->object))
+    {
+      ClutterActor *parent;
+
+      parent = clutter_actor_get_parent (CLUTTER_ACTOR (oinfo->object));
+      if (parent != NULL && CLUTTER_IS_CONTAINER (parent))
+        {
+          ClutterContainer *container = CLUTTER_CONTAINER (parent);
+          ClutterActor *actor = CLUTTER_ACTOR (oinfo->object);
+          GList *children, *l;
+
+          children = clutter_container_get_children (container);
+
+          for (l = children; l != NULL; l = l->next)
+            {
+              GObject *child = l->data;
+              ObjectInfo *child_info;
+              const gchar *id;
+
+              id = clutter_get_script_id (child);
+              if (id == NULL || *id == '\0')
+                continue;
+
+              child_info = _clutter_script_get_object_info (script, id);
+              if (child_info == NULL)
+                continue;
+
+              apply_child_properties (script, container,
+                                      actor,
+                                      child_info);
+              apply_layout_properties (script, container,
+                                       actor,
+                                       child_info);
+            }
+
+          g_list_free (children);
+        }
+    }
 
   if (oinfo->properties || oinfo->children || oinfo->behaviours)
     oinfo->has_unresolved = TRUE;
