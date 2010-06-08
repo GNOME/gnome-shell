@@ -252,7 +252,7 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
   StThemeNodeTransitionPrivate *priv = transition->priv;
 
   guint width, height;
-  CoglColor constant = { 0, 0, 0, 0 };
+  CoglColor constant;
   float tex_coords[] = {
     0.0, 0.0, 1.0, 1.0,
     0.0, 0.0, 1.0, 1.0,
@@ -279,7 +279,8 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
   width = cogl_texture_get_width (priv->old_texture);
   height = cogl_texture_get_height (priv->old_texture);
 
-  constant.alpha = clutter_alpha_get_alpha (priv->alpha) * paint_opacity;
+  cogl_color_set_from_4ub (&constant, 0, 0, 0,
+                           clutter_alpha_get_alpha (priv->alpha) * paint_opacity);
 
   cogl_material_set_layer_combine_constant (priv->material, 1, &constant);
 
