@@ -930,8 +930,8 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 
   /* We haven't tried to get a location for any of the custom uniforms
      yet */
-  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
-    program->custom_uniforms[i] = COGL_GLES2_UNBOUND_CUSTOM_UNIFORM;
+  for (i = 0; i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
+    program->custom_gl_uniforms[i] = COGL_PROGRAM_UNBOUND_CUSTOM_UNIFORM;
 
   w->compiled_programs = g_slist_append (w->compiled_programs, program);
 
@@ -942,7 +942,6 @@ void
 _cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 {
   GSList *node, *next;
-  int i;
 
   for (node = wrapper->compiled_programs; node; node = next)
     {
@@ -967,10 +966,6 @@ _cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
       g_slist_free1 (node);
     }
   wrapper->compiled_fragment_shaders = NULL;
-
-  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
-    if (wrapper->custom_uniforms[i].count > 1)
-      g_free (wrapper->custom_uniforms[i].v.array);
 }
 
 static void
@@ -1180,6 +1175,7 @@ static void
 _cogl_wrap_prepare_for_draw (void)
 {
   CoglGles2WrapperProgram *program;
+  guint32 dirty_custom_uniforms = 0;
 
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1200,12 +1196,18 @@ _cogl_wrap_prepare_for_draw (void)
 	  w->current_program = program;
 	  /* All of the uniforms are probably now out of date */
 	  w->dirty_uniforms = COGL_GLES2_DIRTY_ALL;
-	  w->dirty_custom_uniforms = (1 << COGL_GLES2_NUM_CUSTOM_UNIFORMS) - 1;
+	  dirty_custom_uniforms = (1 << COGL_PROGRAM_NUM_CUSTOM_UNIFORMS) - 1;
 	}
       w->settings_dirty = FALSE;
     }
   else
-    program = w->current_program;
+    {
+      CoglProgram *user_program =
+        _cogl_program_pointer_from_handle (w->settings.user_program);
+      if (user_program)
+        dirty_custom_uniforms = user_program->dirty_custom_uniforms;
+      program = w->current_program;
+    }
 
   /* Make sure all of the uniforms are up to date */
   if (w->dirty_uniforms)
@@ -1284,7 +1286,7 @@ _cogl_wrap_prepare_for_draw (void)
       w->dirty_uniforms = 0;
     }
 
-  if (w->dirty_custom_uniforms)
+  if (dirty_custom_uniforms)
     {
       int i;
 
@@ -1294,21 +1296,20 @@ _cogl_wrap_prepare_for_draw (void)
 	    = _cogl_program_pointer_from_handle (w->settings.user_program);
 	  const char *uniform_name;
 
-	  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
-	    if ((w->dirty_custom_uniforms & (1 << i))
+	  for (i = 0; i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
+	    if ((dirty_custom_uniforms & (1 << i))
 		&& (uniform_name = user_program->custom_uniform_names[i]))
 	      {
-		if (program->custom_uniforms[i]
-		    == COGL_GLES2_UNBOUND_CUSTOM_UNIFORM)
-		  program->custom_uniforms[i]
+		if (program->custom_gl_uniforms[i]
+		    == COGL_PROGRAM_UNBOUND_CUSTOM_UNIFORM)
+		  program->custom_gl_uniforms[i]
 		    = glGetUniformLocation (program->program, uniform_name);
-		if (program->custom_uniforms[i] >= 0)
-		  cogl_gles2_do_set_uniform (program->custom_uniforms[i],
-					     &w->custom_uniforms[i]);
+		if (program->custom_gl_uniforms[i] >= 0)
+		  cogl_gles2_do_set_uniform (program->custom_gl_uniforms[i],
+					     &user_program->custom_uniforms[i]);
 	      }
+          user_program->dirty_custom_uniforms = 0;
 	}
-
-      w->dirty_custom_uniforms = 0;
     }
 
   if (w->dirty_attribute_pointers

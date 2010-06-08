@@ -63,9 +63,13 @@ _cogl_program_free (CoglProgram *program)
       ctx->drv.gles2.settings_dirty = TRUE;
     }
 
-  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
-    if (program->custom_uniform_names[i])
-      g_free (program->custom_uniform_names[i]);
+  for (i = 0; i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
+    {
+      if (program->custom_uniform_names[i])
+        g_free (program->custom_uniform_names[i]);
+      if (program->custom_uniforms[i].count > 1)
+        g_free (program->custom_uniforms[i].v.array);
+    }
 
   g_slice_free (CoglProgram, program);
 }
@@ -75,10 +79,7 @@ cogl_create_program (void)
 {
   CoglProgram *program;
 
-  program = g_slice_new (CoglProgram);
-  program->attached_shaders = NULL;
-  memset (program->custom_uniform_names, 0,
-	  COGL_GLES2_NUM_CUSTOM_UNIFORMS * sizeof (char *));
+  program = g_slice_new0 (CoglProgram);
 
   return _cogl_program_handle_new (program);
 }
@@ -153,11 +154,11 @@ cogl_program_get_uniform_location (CoglHandle   handle,
      with a new fixed functionality shader. Instead we make our own
      mapping of uniform numbers and cache the names */
   for (i = 0; program->custom_uniform_names[i]
-	 && i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
+	 && i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
     if (!strcmp (program->custom_uniform_names[i], uniform_name))
       return i;
 
-  if (i < COGL_GLES2_NUM_CUSTOM_UNIFORMS)
+  if (i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS)
     {
       program->custom_uniform_names[i] = g_strdup (uniform_name);
       return i;
@@ -190,12 +191,18 @@ cogl_program_uniform_x (int uniform_no,
 			gsize value_size,
 			gconstpointer value)
 {
+  CoglProgram *program;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (uniform_no >= 0 && uniform_no < COGL_GLES2_NUM_CUSTOM_UNIFORMS
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  if (uniform_no >= 0 && uniform_no < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS
       && size >= 1 && size <= 4 && count >= 1)
     {
-      CoglBoxedValue *bv = ctx->drv.gles2.custom_uniforms + uniform_no;
+      CoglBoxedValue *bv = program->custom_uniforms + uniform_no;
 
       if (count == 1)
 	{
@@ -224,7 +231,7 @@ cogl_program_uniform_x (int uniform_no,
       bv->size = size;
       bv->count = count;
 
-      ctx->drv.gles2.dirty_custom_uniforms |= 1 << uniform_no;
+      program->dirty_custom_uniforms |= 1 << uniform_no;
     }
 }
 
@@ -255,11 +262,16 @@ cogl_program_uniform_matrix (int   uniform_no,
                              gboolean  transpose,
                              const GLfloat  *value)
 {
+  CoglProgram *program;
   CoglBoxedValue *bv;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  bv = ctx->drv.gles2.custom_uniforms + uniform_no;
+  program = ctx->current_program;
+
+  g_return_if_fail (program != NULL);
+
+  bv = program->custom_uniforms + uniform_no;
 
   cogl_program_uniform_x (uniform_no, size, count, COGL_BOXED_MATRIX,
 			  sizeof (float) * size * size, value);
