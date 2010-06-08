@@ -20,7 +20,7 @@ typedef struct
 
 /* These variables are used instead of the standard GLSL variables on
    GLES 2 */
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_HAS_GLES2
 
 #define GLES2_VARS \
   "precision mediump float;\n" \
@@ -29,13 +29,13 @@ typedef struct
 #define TEX_COORD "tex_coord"
 #define COLOR_VAR "frag_color"
 
-#else /* HAVE_COGL_GLES2 */
+#else /* COGL_HAS_GLES2 */
 
 #define GLES2_VARS ""
 #define TEX_COORD "gl_TexCoord[0]"
 #define COLOR_VAR "gl_Color"
 
-#endif /* HAVE_COGL_GLES2 */
+#endif /* COGL_HAS_GLES2 */
 
 /* a couple of boilerplate defines that are common amongst all the
  * sample shaders
@@ -301,7 +301,7 @@ button_release_cb (ClutterActor    *actor,
   return FALSE;
 }
 
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_HAS_GLES2
 static gboolean
 timeout_cb (gpointer data)
 {
@@ -314,7 +314,7 @@ timeout_cb (gpointer data)
 
   return TRUE;
 }
-#endif /* HAVE_COGL_GLES2 */
+#endif /* COGL_HAS_GLES2 */
 
 G_MODULE_EXPORT gint
 test_shader_main (gint argc, gchar *argv[])
@@ -412,7 +412,7 @@ test_shader_main (gint argc, gchar *argv[])
   g_signal_connect (actor, "button-release-event",
                     G_CALLBACK (button_release_cb), NULL);
 
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_HAS_GLES2
   /* On an embedded platform it is difficult to right click so we will
      cycle through the shaders automatically */
   g_timeout_add_seconds (3, timeout_cb, actor);
