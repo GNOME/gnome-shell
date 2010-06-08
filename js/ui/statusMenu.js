@@ -40,11 +40,10 @@ StatusMenuButton.prototype = {
         box.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
-        // FIXME: these icons are all wrong (likewise in createSubMenu)
-        this._availableIcon = textureCache.load_icon_name('gtk-yes', 16);
-        this._busyIcon = textureCache.load_icon_name('gtk-no', 16);
-        this._invisibleIcon = textureCache.load_icon_name('gtk-close', 16);
-        this._idleIcon = textureCache.load_icon_name('gtk-media-pause', 16);
+        this._availableIcon = textureCache.load_icon_name('user-available', 16);
+        this._busyIcon = textureCache.load_icon_name('user-busy', 16);
+        this._invisibleIcon = textureCache.load_icon_name('user-invisible', 16);
+        this._idleIcon = textureCache.load_icon_name('user-idle', 16);
 
         this._presence.connect('StatusChanged', Lang.bind(this, this._updatePresenceIcon));
         this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
@@ -89,15 +88,15 @@ StatusMenuButton.prototype = {
     _createSubMenu: function() {
         let item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'gtk-yes', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'gtk-no', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'gtk-close', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'user-invisible', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this.menu.addMenuItem(item);
 
