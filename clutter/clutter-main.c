@@ -2889,10 +2889,12 @@ clutter_set_font_flags (ClutterFontFlags flags)
 
   backend = clutter_get_default_backend ();
 
-  if (CLUTTER_CONTEXT ()->font_map)
-    cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
-					    (flags
-                                             & CLUTTER_FONT_MIPMAPPING) != 0);
+  if (CLUTTER_CONTEXT ()->font_map == NULL)
+    _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
+
+  cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
+					  (flags
+                                           & CLUTTER_FONT_MIPMAPPING) != 0);
 
   old_flags = clutter_get_font_flags ();
 
