@@ -221,6 +221,17 @@ st_widget_get_property (GObject    *gobject,
 }
 
 static void
+st_widget_remove_transition (StWidget *widget)
+{
+  if (widget->priv->transition_animation)
+    {
+      g_object_run_dispose (G_OBJECT (widget->priv->transition_animation));
+      g_object_unref (widget->priv->transition_animation);
+      widget->priv->transition_animation = NULL;
+    }
+}
+
+static void
 st_widget_dispose (GObject *gobject)
 {
   StWidget *actor = ST_WIDGET (gobject);
@@ -239,12 +250,7 @@ st_widget_dispose (GObject *gobject)
       priv->theme_node = NULL;
     }
 
-  if (priv->transition_animation)
-    {
-      g_object_run_dispose (G_OBJECT (priv->transition_animation));
-      g_object_unref (priv->transition_animation);
-      priv->transition_animation = NULL;
-    }
+  st_widget_remove_transition (actor);
 
   if (priv->tooltip)
     {
@@ -1213,9 +1219,7 @@ static void
 on_transition_completed (StThemeNodeTransition *transition,
                          StWidget              *widget)
 {
-  g_object_run_dispose (G_OBJECT (widget->priv->transition_animation));
-  g_object_unref (widget->priv->transition_animation);
-  widget->priv->transition_animation = NULL;
+  st_widget_remove_transition (widget);
 }
 
 static void
@@ -1252,6 +1256,10 @@ st_widget_recompute_style (StWidget    *widget,
                                     G_CALLBACK (clutter_actor_queue_redraw),
                                     widget);
         }
+    }
+  else if (widget->priv->transition_animation)
+    {
+      st_widget_remove_transition (widget);
     }
 
   g_signal_emit (widget, signals[STYLE_CHANGED], 0);
