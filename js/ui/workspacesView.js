@@ -794,6 +794,7 @@ SingleView.prototype = {
     _scrollToActive: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
 
+        this._computeWorkspacePositions();
         this._updateWorkspaceActors(showAnimation);
         this._scrollScrollBarToIndex(active, showAnimation);
     },
@@ -1210,18 +1211,18 @@ SingleView.prototype = {
         if (leftWorkspace) {
             if (dragEvent.targetActor == this._leftShadow) {
                 hoverWorkspace = leftWorkspace;
-                leftWorkspace.actor.opacity = 255;
+                leftWorkspace.opacity = leftWorkspace.actor.opacity = 255;
             } else {
-                leftWorkspace.actor.opacity = 200;
+                leftWorkspace.opacity = leftWorkspace.actor.opacity = 200;
             }
         }
 
         if (rightWorkspace) {
             if (dragEvent.targetActor == this._rightShadow) {
                 hoverWorkspace = rightWorkspace;
-                rightWorkspace.actor.opacity = 255;
+                rightWorkspace.opacity = rightWorkspace.actor.opacity = 255;
             } else {
-                rightWorkspace.actor.opacity = 200;
+                rightWorkspace.opacity = rightWorkspace.actor.opacity = 200;
             }
         } else {
             let targetParent = dragEvent.targetActor.get_parent();
