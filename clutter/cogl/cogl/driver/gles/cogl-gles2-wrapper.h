@@ -26,6 +26,7 @@
 
 #include "cogl.h" /* needed for gl header include */
 #include "cogl-internal.h"
+#include "cogl-program.h"
 
 G_BEGIN_DECLS
 
@@ -43,9 +44,6 @@ typedef struct _CoglGles2WrapperTextureUnitSettings
 typedef struct _CoglGles2WrapperSettings  CoglGles2WrapperSettings;
 typedef struct _CoglGles2WrapperProgram	  CoglGles2WrapperProgram;
 typedef struct _CoglGles2WrapperShader	  CoglGles2WrapperShader;
-
-#define COGL_GLES2_NUM_CUSTOM_UNIFORMS    16
-#define COGL_GLES2_UNBOUND_CUSTOM_UNIFORM -2
 
 /* Must be a power of two */
 #define COGL_GLES2_MODELVIEW_STACK_SIZE   32
@@ -190,7 +188,7 @@ struct _CoglGles2Wrapper
   /* Whether the settings have changed since the last draw */
   gboolean settings_dirty;
   /* Uniforms that have changed since the last draw */
-  int dirty_uniforms, dirty_custom_uniforms;
+  int dirty_uniforms;
 
   /* Attribute pointers that have changed since the last draw */
   int dirty_attribute_pointers;
@@ -214,12 +212,13 @@ struct _CoglGles2Wrapper
   GLfloat fog_end;
   GLfloat fog_color[4];
   GLfloat point_size;
-  CoglBoxedValue custom_uniforms[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
 };
 
 struct _CoglGles2WrapperProgram
 {
   GLuint    program;
+
+  CoglProgram *user_program;
 
   /* The settings that were used to generate this combination */
   CoglGles2WrapperSettings settings;
@@ -230,7 +229,7 @@ struct _CoglGles2WrapperProgram
 
   /* The uniforms for this program */
   CoglGles2WrapperUniforms uniforms;
-  GLint custom_uniforms[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
+  GLint custom_gl_uniforms[COGL_PROGRAM_NUM_CUSTOM_UNIFORMS];
 };
 
 struct _CoglGles2WrapperShader

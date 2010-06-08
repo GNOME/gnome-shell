@@ -27,6 +27,9 @@
 #include "cogl-gles2-wrapper.h"
 #include "cogl-handle.h"
 
+#define COGL_PROGRAM_NUM_CUSTOM_UNIFORMS 16
+#define COGL_PROGRAM_UNBOUND_CUSTOM_UNIFORM -2
+
 typedef struct _CoglProgram CoglProgram;
 
 struct _CoglProgram
@@ -35,7 +38,13 @@ struct _CoglProgram
 
   GSList            *attached_shaders;
 
-  char              *custom_uniform_names[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
+  char              *custom_uniform_names[COGL_PROGRAM_NUM_CUSTOM_UNIFORMS];
+
+  CoglBoxedValue     custom_uniforms[COGL_PROGRAM_NUM_CUSTOM_UNIFORMS];
+
+  /* Uniforms that have changed since the last time this program was
+   * used. */
+  guint32            dirty_custom_uniforms;
 };
 
 CoglProgram *_cogl_program_pointer_from_handle (CoglHandle handle);
