@@ -603,7 +603,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
   has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
 
-  disable_clip_planes ();
+  if (has_clip_planes)
+    disable_clip_planes ();
   disable_stencil_buffer ();
 
   /* If the stack is empty then there's nothing else to do */
