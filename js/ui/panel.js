@@ -815,7 +815,7 @@ AppMenuButton.prototype = {
             let icon = this._focusedApp.get_faded_icon(AppDisplay.APPICON_SIZE);
             let appName = this._focusedApp.get_name();
             this._label.setText(appName);
-            this._quitMenu.label.set_text(_('Quit %s').format(appName));
+            this._quitMenu.label.set_text(_("Quit %s").format(appName));
             this._iconBox.set_child(icon);
             this._iconBox.show();
         }
@@ -835,7 +835,7 @@ ClockButton.prototype = {
 
     _init: function() {
         PanelMenuButton.prototype._init.call(this, St.Align.START);
-        this.menu.addAction("Preferences", Lang.bind(this, this._onPrefs));
+        this.menu.addAction(_("Preferences"), Lang.bind(this, this._onPrefs));
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
