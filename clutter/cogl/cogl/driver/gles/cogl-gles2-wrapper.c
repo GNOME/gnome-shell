@@ -1276,7 +1276,7 @@ cogl_wrap_prepare_for_draw (void)
             GLint tex_coord_var_index;
             CoglGles2WrapperTextureUnit *texture_unit;
 
-            texture_unit = w->texture_units + w->active_texture_unit;
+            texture_unit = w->texture_units + i;
             if (!texture_unit->texture_coords_enabled)
               continue;
 
@@ -1303,8 +1303,7 @@ cogl_wrap_prepare_for_draw (void)
 
       for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
 	{
-	  CoglGles2WrapperTextureUnit *texture_unit
-            = w->texture_units + w->active_texture_unit;
+          CoglGles2WrapperTextureUnit *texture_unit = w->texture_units + i;
           GLint attrib = program->attributes.multi_texture_coords[i];
 
           if (attrib != -1)
@@ -1495,7 +1494,7 @@ cogl_wrap_glEnableClientState (GLenum array)
     case GL_TEXTURE_COORD_ARRAY:
       /* TODO - review if this should be in w->settings? */
 
-      texture_unit = w->texture_units + w->active_texture_unit;
+      texture_unit = w->texture_units + w->active_client_texture_unit;
       if (texture_unit->texture_coords_enabled != 1)
 	{
 	  texture_unit->texture_coords_enabled = 1;
