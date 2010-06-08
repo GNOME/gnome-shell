@@ -80,7 +80,15 @@ gboolean task (gpointer user_data)
                     GINT_TO_POINTER (LOAD_ASYNC));
 
   for (i = 0; i < 3; i++)
-    clutter_texture_set_from_file (CLUTTER_TEXTURE (image[i]), path, NULL);
+    {
+      GError *error = NULL;
+
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (image[i]), path, &error);
+      if (error != NULL)
+        g_error ("Unable to load image at '%s': %s",
+                 path != NULL ? path : "<unknown>",
+                 error->message);
+    }
 
   for (i = 0; i < 3; i++)
     clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
@@ -129,11 +137,11 @@ test_texture_async_main (int argc, char *argv[])
 
   error = NULL;
 
-  path = (argc > 0)
+  path = (argc > 1)
        ? g_strdup (argv[1])
        : g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
  
-  g_timeout_add (500, task, path);
+  clutter_threads_add_timeout (500, task, path);
 
   clutter_main ();
 
