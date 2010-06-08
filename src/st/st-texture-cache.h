@@ -41,6 +41,12 @@ GType st_texture_cache_get_type (void) G_GNUC_CONST;
 
 StTextureCache* st_texture_cache_get_default (void);
 
+ClutterGroup *
+st_texture_cache_load_sliced_image (StTextureCache    *cache,
+                                    const gchar       *path,
+                                    gint               grid_width,
+                                    gint               grid_height);
+
 ClutterActor *st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
                                                      GObject           *object,
                                                      const char        *property_name);

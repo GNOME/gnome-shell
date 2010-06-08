@@ -986,6 +986,142 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   return CLUTTER_ACTOR (texture);
 }
 
+typedef struct {
+  gchar *path;
+  gint   grid_width, grid_height;
+  ClutterGroup *group;
+} AsyncImageData;
+
+static ClutterActor *
+load_from_pixbuf (GdkPixbuf *pixbuf)
+{
+  ClutterTexture *texture;
+  CoglHandle texdata;
+  int width = gdk_pixbuf_get_width (pixbuf);
+  int height = gdk_pixbuf_get_height (pixbuf);
+
+  texture = create_default_texture (st_texture_cache_get_default ());
+
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), width, height);
+
+  texdata = pixbuf_to_cogl_handle (pixbuf);
+
+  set_texture_cogl_texture (texture, texdata);
+
+  cogl_handle_unref (texdata);
+  return CLUTTER_ACTOR (texture);
+}
+
+static void
+on_sliced_image_loaded (GObject *source_object,
+                        GAsyncResult *res,
+                        gpointer user_data)
+{
+  AsyncImageData *data = (AsyncImageData *)user_data;
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  GList *list;
+
+  if (g_simple_async_result_propagate_error (simple, NULL))
+    return;
+
+  for (list = g_simple_async_result_get_op_res_gpointer (simple); list; list = g_list_next (list))
+    {
+      ClutterActor *actor = load_from_pixbuf (GDK_PIXBUF (list->data));
+      clutter_actor_hide (actor);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (data->group), actor);
+      g_object_unref (list->data);
+    }
+}
+
+static void
+on_data_destroy (gpointer data)
+{
+  AsyncImageData *d = (AsyncImageData *)data;
+  g_free (d->path);
+  g_object_unref (d->group);
+  g_free (d);
+}
+
+static void
+load_sliced_image (GSimpleAsyncResult *result,
+                   GObject *object,
+                   GCancellable *cancellable)
+{
+  AsyncImageData *data;
+  GList *res = NULL;
+  GdkPixbuf *pix;
+  gint width, height, y, x;
+
+  g_assert (!cancellable);
+
+  data = g_object_get_data (G_OBJECT (result), "load_sliced_image");
+  g_assert (data);
+
+  if (!(pix = gdk_pixbuf_new_from_file (data->path, NULL)))
+    return;
+
+  width = gdk_pixbuf_get_width (pix);
+  height = gdk_pixbuf_get_height (pix);
+  for (y = 0; y < height; y += data->grid_width)
+    {
+      for (x = 0; x < width; x += data->grid_height)
+        {
+          GdkPixbuf *pixbuf = gdk_pixbuf_new_subpixbuf (pix, x, y, data->grid_width, data->grid_height);
+          if (!pixbuf)
+            {
+              g_simple_async_result_set_error (result, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                                               "Has failed thumbnail");
+              break;
+            }
+          res = g_list_append (res, pixbuf);
+        }
+    }
+  if (res)
+    g_simple_async_result_set_op_res_gpointer (result, res, (GDestroyNotify)g_list_free);
+}
+
+/**
+ * st_texture_cache_load_sliced_image:
+ * @cache: A #StTextureCache
+ * @path: Path to a filename
+ * @grid_width: Width in pixels
+ * @grid_height: Height in pixels
+ *
+ * This function reads a single image file which contains multiple images internally.
+ * The image file will be divided using @grid_width and @grid_height;
+ * note that the dimensions of the image loaded from @path 
+ * should be a multiple of the specified grid dimensions.
+ *
+ * Returns: (transfer none): A new ClutterGroup
+ */
+ClutterGroup *
+st_texture_cache_load_sliced_image (StTextureCache    *cache,
+                                    const gchar       *path,
+                                    gint               grid_width,
+                                    gint               grid_height)
+{
+  AsyncImageData *data;
+  GSimpleAsyncResult *result;
+  ClutterGroup *group = CLUTTER_GROUP (clutter_group_new ());
+
+  data = g_new0 (AsyncImageData, 1);
+  data->grid_width = grid_width;
+  data->grid_height = grid_height;
+  data->path = g_strdup (path);
+  data->group = group;
+  g_object_ref (G_OBJECT (group));
+
+  result = g_simple_async_result_new (G_OBJECT (cache), on_sliced_image_loaded, data, st_texture_cache_load_sliced_image);
+
+  g_object_set_data_full (G_OBJECT (result), "load_sliced_image", data, on_data_destroy);
+  g_simple_async_result_run_in_thread (result, load_sliced_image, G_PRIORITY_DEFAULT, NULL);
+
+  g_object_unref (result);
+
+  return group;
+}
+
 /**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
