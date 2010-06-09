@@ -4877,15 +4877,6 @@ _cogl_material_layer_has_user_matrix (CoglHandle handle)
   return authority->parent ? TRUE : FALSE;
 }
 
-static gboolean
-is_mipmap_filter (CoglMaterialFilter filter)
-{
-  return (filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
-          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
-          || filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
-          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
-}
-
 static void
 _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
                                   CoglMaterialFilter *min_filter,
@@ -4900,23 +4891,31 @@ _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
 }
 
 void
-_cogl_material_layer_ensure_mipmaps (CoglHandle handle)
+_cogl_material_layer_pre_paint (CoglHandle handle)
 {
   CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayer *texture_authority;
-  CoglMaterialFilter min_filter;
-  CoglMaterialFilter mag_filter;
 
   texture_authority =
     _cogl_material_layer_get_authority (layer,
                                         COGL_MATERIAL_LAYER_STATE_TEXTURE);
 
-  _cogl_material_layer_get_filters (layer, &min_filter, &mag_filter);
+  if (texture_authority->texture != COGL_INVALID_HANDLE)
+    {
+      CoglTexturePrePaintFlags flags = 0;
+      CoglMaterialFilter min_filter;
+      CoglMaterialFilter mag_filter;
 
-  if (texture_authority->texture != COGL_INVALID_HANDLE &&
-      (is_mipmap_filter (min_filter) ||
-       is_mipmap_filter (mag_filter)))
-    _cogl_texture_ensure_mipmaps (texture_authority->texture);
+      _cogl_material_layer_get_filters (layer, &min_filter, &mag_filter);
+
+      if (min_filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
+          || min_filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
+          || min_filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
+          || min_filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR)
+        flags |= COGL_TEXTURE_NEEDS_MIPMAP;
+
+      _cogl_texture_pre_paint (layer->texture, flags);
+    }
 }
 
 CoglMaterialFilter

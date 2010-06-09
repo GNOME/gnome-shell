@@ -629,11 +629,12 @@ gboolean
 _cogl_material_layer_has_user_matrix (CoglHandle layer_handle);
 
 /*
- * Ensures the mipmaps are available for the texture in the layer if
- * the filter settings would require it
+ * Calls the pre_paint method on the layer texture if there is
+ * one. This will determine whether mipmaps are needed based on the
+ * filter settings.
  */
 void
-_cogl_material_layer_ensure_mipmaps (CoglHandle layer_handler);
+_cogl_material_layer_pre_paint (CoglHandle layer_handler);
 
 /*
  * CoglMaterialFlushFlag:

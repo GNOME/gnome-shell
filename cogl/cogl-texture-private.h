@@ -55,6 +55,14 @@ typedef enum {
   COGL_TRANSFORM_SOFTWARE_REPEAT,
 } CoglTransformResult;
 
+/* Flags given to the pre_paint method */
+typedef enum {
+  /* The texture is going to be used with filters that require
+     mipmapping. This gives the texture the opportunity to
+     automatically update the mipmap tree */
+  COGL_TEXTURE_NEEDS_MIPMAP = 1
+} CoglTexturePrePaintFlags;
+
 struct _CoglTextureVtable
 {
   /* Virtual functions that must be implemented for a texture
@@ -106,7 +114,7 @@ struct _CoglTextureVtable
                         GLenum min_filter,
                         GLenum mag_filter);
 
-  void (* ensure_mipmaps) (CoglTexture *tex);
+  void (* pre_paint) (CoglTexture *tex, CoglTexturePrePaintFlags flags);
   void (* ensure_non_quad_rendering) (CoglTexture *tex);
 
   void (* set_wrap_mode_parameters) (CoglTexture *tex,
@@ -189,7 +197,7 @@ _cogl_texture_set_filters (CoglHandle handle,
                            GLenum mag_filter);
 
 void
-_cogl_texture_ensure_mipmaps (CoglHandle handle);
+_cogl_texture_pre_paint (CoglHandle handle, CoglTexturePrePaintFlags flags);
 
 void
 _cogl_texture_ensure_non_quad_rendering (CoglHandle handle);

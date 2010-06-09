@@ -414,25 +414,26 @@ _cogl_texture_2d_set_filters (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_2d_ensure_mipmaps (CoglTexture *tex)
+_cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Only update if the mipmaps are dirty */
-  if (!tex_2d->auto_mipmap || !tex_2d->mipmaps_dirty)
-    return;
+  if ((flags & COGL_TEXTURE_NEEDS_MIPMAP) &&
+      tex_2d->auto_mipmap && tex_2d->mipmaps_dirty)
+    {
+      _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                       tex_2d->gl_texture,
+                                       FALSE);
+      /* glGenerateMipmap is defined in the FBO extension. We only allow
+         CoglTexture2D instances to be created if this feature is
+         available so we don't need to check for the extension */
+      _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
 
-  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
-                                   tex_2d->gl_texture,
-                                   FALSE);
-  /* glGenerateMipmap is defined in the FBO extension. We only allow
-     CoglTexture2D instances to be created if this feature is
-     available so we don't need to check for the extension */
-  _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
-
-  tex_2d->mipmaps_dirty = FALSE;
+      tex_2d->mipmaps_dirty = FALSE;
+    }
 }
 
 static void
@@ -656,7 +657,7 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_transform_quad_coords_to_gl,
     _cogl_texture_2d_get_gl_texture,
     _cogl_texture_2d_set_filters,
-    _cogl_texture_2d_ensure_mipmaps,
+    _cogl_texture_2d_pre_paint,
     _cogl_texture_2d_ensure_non_quad_rendering,
     _cogl_texture_2d_set_wrap_mode_parameters,
     _cogl_texture_2d_get_format,
