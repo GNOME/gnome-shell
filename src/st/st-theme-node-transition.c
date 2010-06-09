@@ -129,27 +129,47 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
   /* If the update is the reversal of the current transition,
    * we reverse the timeline.
    * Otherwise, we should initiate a new transition from the
-   * current state to the new one; this is hard to do, so we
-   * just cancel the ongoing transition in that case.
+   * current state to the new one; this is hard to do if the
+   * transition is in an intermediate state, so we just cancel
+   * the ongoing transition in that case.
    * Note that reversing a timeline before any time elapsed
    * results in the timeline's time position being set to the
    * full duration - this is not what we want, so we cancel the
    * transition as well in that case.
    */
-  if (st_theme_node_equal (new_node, old_node)
-      && clutter_timeline_get_elapsed_time (priv->timeline) > 0)
+  if (st_theme_node_equal (new_node, old_node))
     {
-      if (direction == CLUTTER_TIMELINE_FORWARD)
-        clutter_timeline_set_direction (priv->timeline,
-                                        CLUTTER_TIMELINE_BACKWARD);
+      if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
+        {
+          if (direction == CLUTTER_TIMELINE_FORWARD)
+            clutter_timeline_set_direction (priv->timeline,
+                                            CLUTTER_TIMELINE_BACKWARD);
+          else
+            clutter_timeline_set_direction (priv->timeline,
+                                            CLUTTER_TIMELINE_FORWARD);
+        }
       else
-        clutter_timeline_set_direction (priv->timeline,
-                                        CLUTTER_TIMELINE_FORWARD);
+        {
+          clutter_timeline_stop (priv->timeline);
+          g_signal_emit (transition, signals[COMPLETED], 0);
+        }
     }
   else
     {
-      clutter_timeline_stop (priv->timeline);
-      g_signal_emit (transition, signals[COMPLETED], 0);
+      if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
+        {
+          clutter_timeline_stop (priv->timeline);
+          g_signal_emit (transition, signals[COMPLETED], 0);
+        }
+      else
+        {
+          guint new_duration = st_theme_node_get_transition_duration (new_node);
+
+          clutter_timeline_set_duration (priv->timeline, new_duration);
+          g_object_unref (priv->new_theme_node);
+          priv->new_theme_node = g_object_ref (new_node);
+          priv->needs_setup = TRUE;
+        }
     }
 }
 
