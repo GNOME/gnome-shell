@@ -405,13 +405,6 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
 			      &stage_glx->bounding_redraw_clip);
     }
 
-  /* FIXME: This threshold was plucked out of thin air! */
-  if (stage_glx->bounding_redraw_clip.height > 300)
-    {
-      /* Set a degenerate clip to force a full redraw */
-      stage_glx->bounding_redraw_clip.width = 0;
-    }
-
 #if 0
   redraw_area = (stage_glx->bounding_redraw_clip.width *
                  stage_glx->bounding_redraw_clip.height);
@@ -694,7 +687,8 @@ clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_glx->pending_swaps++;
 
-      if (backend_glx->vblank_type != CLUTTER_VBLANK_GLX_SWAP)
+      if (backend_glx->vblank_type != CLUTTER_VBLANK_GLX_SWAP &&
+          backend_glx->vblank_type != CLUTTER_VBLANK_NONE)
         {
           /* If we are going to wait for VBLANK manually, we not only
            * need to flush out pending drawing to the GPU before we
