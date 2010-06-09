@@ -670,8 +670,6 @@ _cogl_atlas_texture_migrate (unsigned int                    n_textures,
   unsigned int i;
   CoglAtlasTextureBlitData blit_data;
 
-  _cogl_atlas_texture_blit_begin (&blit_data, new_texture, old_texture);
-
   /* We don't know if any materials may currently be referenced in the
    * journal that depend on the current underlying GL texture storage
    * so we flush the journal before migrating.
@@ -680,6 +678,8 @@ _cogl_atlas_texture_migrate (unsigned int                    n_textures,
    * a flush so we don't have to consider recursion here.
    */
   _cogl_journal_flush ();
+
+  _cogl_atlas_texture_blit_begin (&blit_data, new_texture, old_texture);
 
   for (i = 0; i < n_textures; i++)
     {
