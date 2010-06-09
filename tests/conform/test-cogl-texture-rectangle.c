@@ -141,7 +141,7 @@ validate_result (TestState *state)
   guint8 *data, *p;
   int x, y;
 
-  p = data = g_malloc (512 * 256 * 4);
+  p = data = g_malloc (512 * 384 * 4);
 
   cogl_read_pixels (0, 0, 512, 384,
                     COGL_READ_PIXELS_COLOR_BUFFER,
