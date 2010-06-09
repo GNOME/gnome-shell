@@ -549,7 +549,7 @@ StTooltip {
 .app-well-app {
     border: 1px solid #181818;
     border-radius: 4px;
-    padding: 2px;
+    padding: 4px;
     width: 70px;
     height: 70px;
     font-size: 10px;
