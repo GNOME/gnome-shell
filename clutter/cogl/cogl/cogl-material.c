@@ -359,14 +359,19 @@ _cogl_material_pre_change_notify (CoglMaterial *material,
 static void
 handle_automatic_blend_enable (CoglMaterial *material)
 {
-  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
+  gboolean needs_blending_enabled =
+    _cogl_material_needs_blending_enabled (material, NULL);
 
-  if (_cogl_material_needs_blending_enabled (material, NULL))
+  if (needs_blending_enabled !=
+      !!(material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND))
     {
       _cogl_material_pre_change_notify (material,
                                         COGL_MATERIAL_CHANGE_ENABLE_BLEND,
                                         NULL);
-      material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+      if (needs_blending_enabled)
+        material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+      else
+        material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
     }
 }
 
