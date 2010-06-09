@@ -1009,6 +1009,10 @@ StTooltip {
 }
 
 /* Workspace Switcher */
+.workspace-switcher-group {
+    padding: 12px;
+}
+
 .workspace-switcher-container {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);
@@ -1025,7 +1029,7 @@ StTooltip {
 }
 
 .ws-switcher-active-left {
-    height: 98px;
+    height: 100px;
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-left.svg");
@@ -1033,7 +1037,7 @@ StTooltip {
 }
 
 .ws-switcher-active-right {
-    height: 98px;
+    height: 100px;
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-right.svg");
