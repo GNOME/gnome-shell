@@ -95,6 +95,7 @@ source_h =					\
 	$(srcdir)/clutter-colorize-effect.h	\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-deform-effect.h	\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
 	$(srcdir)/clutter-device-manager.h	\
@@ -182,6 +183,7 @@ source_c = \
 	$(srcdir)/clutter-colorize-effect.c	\
 	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-deform-effect.c	\
 	$(srcdir)/clutter-desaturate-effect.c	\
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
