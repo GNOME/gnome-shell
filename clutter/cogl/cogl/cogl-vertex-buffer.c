@@ -1669,7 +1669,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
        * could completely change if it needs to be migrated out of the
        * atlas and will affect how we validate the layer.
        */
-      _cogl_material_layer_ensure_mipmaps (layer);
+      _cogl_material_layer_pre_paint (layer);
 
       if (!_cogl_texture_can_hardware_repeat (tex_handle))
         {

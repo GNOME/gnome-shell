@@ -1400,12 +1400,17 @@ _cogl_texture_2d_sliced_set_filters (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_2d_sliced_ensure_mipmaps (CoglTexture *tex)
+_cogl_texture_2d_sliced_pre_paint (CoglTexture *tex,
+                                   CoglTexturePrePaintFlags flags)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   int                  i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We only care about the mipmap flag */
+  if ((flags & COGL_TEXTURE_NEEDS_MIPMAP) == 0)
+    return;
 
   /* Only update if the mipmaps are dirty */
   if (!tex_2ds->auto_mipmap || !tex_2ds->mipmaps_dirty)
@@ -1757,7 +1762,7 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_transform_quad_coords_to_gl,
     _cogl_texture_2d_sliced_get_gl_texture,
     _cogl_texture_2d_sliced_set_filters,
-    _cogl_texture_2d_sliced_ensure_mipmaps,
+    _cogl_texture_2d_sliced_pre_paint,
     _cogl_texture_2d_sliced_ensure_non_quad_rendering,
     _cogl_texture_2d_sliced_set_wrap_mode_parameters,
     _cogl_texture_2d_sliced_get_format,

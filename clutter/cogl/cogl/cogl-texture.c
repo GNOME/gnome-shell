@@ -785,7 +785,7 @@ _cogl_texture_set_filters (CoglHandle handle,
 }
 
 void
-_cogl_texture_ensure_mipmaps (CoglHandle handle)
+_cogl_texture_pre_paint (CoglHandle handle, CoglTexturePrePaintFlags flags)
 {
   CoglTexture *tex;
 
@@ -794,7 +794,7 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
 
   tex = COGL_TEXTURE (handle);
 
-  tex->vtable->ensure_mipmaps (tex);
+  tex->vtable->pre_paint (tex, flags);
 }
 
 void

@@ -385,11 +385,12 @@ _cogl_sub_texture_set_filters (CoglTexture *tex,
 }
 
 static void
-_cogl_sub_texture_ensure_mipmaps (CoglTexture *tex)
+_cogl_sub_texture_pre_paint (CoglTexture *tex,
+                             CoglTexturePrePaintFlags flags)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  _cogl_texture_ensure_mipmaps (sub_tex->full_texture);
+  _cogl_texture_pre_paint (sub_tex->full_texture, flags);
 }
 
 static void
@@ -551,7 +552,7 @@ cogl_sub_texture_vtable =
     _cogl_sub_texture_transform_quad_coords_to_gl,
     _cogl_sub_texture_get_gl_texture,
     _cogl_sub_texture_set_filters,
-    _cogl_sub_texture_ensure_mipmaps,
+    _cogl_sub_texture_pre_paint,
     _cogl_sub_texture_ensure_non_quad_rendering,
     _cogl_sub_texture_set_wrap_mode_parameters,
     _cogl_sub_texture_get_format,

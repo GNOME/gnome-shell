@@ -407,16 +407,17 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
 }
 
 static void
-_cogl_atlas_texture_ensure_mipmaps (CoglTexture *tex)
+_cogl_atlas_texture_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
-  /* Mipmaps do not work well with the current atlas so instead we'll
-     just migrate the texture out and use a regular texture */
-  _cogl_atlas_texture_migrate_out_of_atlas (atlas_tex);
+  if ((flags & COGL_TEXTURE_NEEDS_MIPMAP))
+    /* Mipmaps do not work well with the current atlas so instead
+       we'll just migrate the texture out and use a regular texture */
+    _cogl_atlas_texture_migrate_out_of_atlas (atlas_tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_ensure_mipmaps (atlas_tex->sub_texture);
+  _cogl_texture_pre_paint (atlas_tex->sub_texture, flags);
 }
 
 static void
@@ -1081,7 +1082,7 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_transform_quad_coords_to_gl,
     _cogl_atlas_texture_get_gl_texture,
     _cogl_atlas_texture_set_filters,
-    _cogl_atlas_texture_ensure_mipmaps,
+    _cogl_atlas_texture_pre_paint,
     _cogl_atlas_texture_ensure_non_quad_rendering,
     _cogl_atlas_texture_set_wrap_mode_parameters,
     _cogl_atlas_texture_get_format,

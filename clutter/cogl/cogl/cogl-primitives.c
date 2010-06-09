@@ -561,7 +561,7 @@ _cogl_rectangles_with_multitexture_coords (
        * sure the referenced texture is migrated out of the atlas and
        * mipmaps are generated.)
        */
-      _cogl_material_layer_ensure_mipmaps (layer);
+      _cogl_material_layer_pre_paint (layer);
 
       tex_handle = cogl_material_layer_get_texture (layer);
 
@@ -1137,7 +1137,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
        * could completely change if it needs to be migrated out of the
        * atlas and will affect how we validate the layer.
        */
-      _cogl_material_layer_ensure_mipmaps (layer);
+      _cogl_material_layer_pre_paint (layer);
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {
