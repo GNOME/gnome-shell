@@ -333,7 +333,8 @@ RunDialog.prototype = {
     _run : function(input, inTerminal) {
         let command = input;
 
-        if (this._history.length > 0 && this._history[this._history.length - 1] != input) {
+        if (this._history.length == 0 ||
+            this._history[this._history.length - 1] != input) {
             this._history.push(input);
             this._saveHistory();
         }
