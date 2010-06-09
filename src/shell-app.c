@@ -12,6 +12,26 @@
 
 #include <string.h>
 
+/* This is mainly a memory usage optimization - the user is going to
+ * be running far fewer of the applications at one time than they have
+ * installed.  But it also just helps keep the code more logically
+ * separated.
+ */
+typedef struct {
+  guint refcount;
+
+  /* Last time the user interacted with any of this application's windows */
+  guint32 last_user_time;
+
+  /* Signal connection to dirty window sort list on workspace changes */
+  guint workspace_switch_id;
+
+  GSList *windows;
+
+  /* Whether or not we need to resort the windows; this is done on demand */
+  gboolean window_sort_stale : 1;
+} ShellAppRunningState;
+
 /**
  * SECTION:shell-app
  * @short_description: Object representing an application
@@ -23,16 +43,11 @@ struct _ShellApp
 {
   GObject parent;
 
+  ShellAppState state;
+
   ShellAppInfo *info;
 
-  guint32 last_user_time;
-
-  guint workspace_switch_id;
-
-  GSList *windows;
-
-  ShellAppState state;
-  gboolean window_sort_stale : 1;
+  ShellAppRunningState *running_state;
 };
 
 G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT);
@@ -48,6 +63,9 @@ enum {
 };
 
 static guint shell_app_signals[LAST_SIGNAL] = { 0 };
+
+static void create_running_state (ShellApp *app);
+static void unref_running_state (ShellAppRunningState *state);
 
 static void
 shell_app_get_property (GObject    *gobject,
@@ -507,22 +525,27 @@ shell_app_compare_windows (gconstpointer   a,
 GSList *
 shell_app_get_windows (ShellApp *app)
 {
-  if (app->window_sort_stale)
+  if (app->running_state == NULL)
+    return NULL;
+
+  if (app->running_state->window_sort_stale)
     {
       CompareWindowsData data;
       data.app = app;
       data.active_workspace = meta_screen_get_active_workspace (shell_global_get_screen (shell_global_get ()));
-      app->windows = g_slist_sort_with_data (app->windows, shell_app_compare_windows, &data);
-      app->window_sort_stale = FALSE;
+      app->running_state->windows = g_slist_sort_with_data (app->running_state->windows, shell_app_compare_windows, &data);
+      app->running_state->window_sort_stale = FALSE;
     }
 
-  return app->windows;
+  return app->running_state->windows;
 }
 
 guint
 shell_app_get_n_windows (ShellApp *app)
 {
-  return g_slist_length (app->windows);
+  if (app->running_state == NULL)
+    return 0;
+  return g_slist_length (app->running_state->windows);
 }
 
 static gboolean
@@ -530,7 +553,10 @@ shell_app_has_visible_windows (ShellApp   *app)
 {
   GSList *iter;
 
-  for (iter = app->windows; iter; iter = iter->next)
+  if (app->running_state == NULL)
+    return FALSE;
+
+  for (iter = app->running_state->windows; iter; iter = iter->next)
     {
       MetaWindow *window = iter->data;
 
@@ -547,7 +573,10 @@ shell_app_is_on_workspace (ShellApp *app,
 {
   GSList *iter;
 
-  for (iter = app->windows; iter; iter = iter->next)
+  if (app->running_state == NULL)
+    return FALSE;
+
+  for (iter = app->running_state->windows; iter; iter = iter->next)
     {
       if (meta_window_get_workspace (iter->data) == workspace)
         return TRUE;
@@ -589,12 +618,16 @@ shell_app_compare (ShellApp *app,
   else if (!vis_app && vis_other)
     return 1;
 
-  if (app->windows && !other->windows)
-    return -1;
-  else if (!app->windows && other->windows)
-    return 1;
+  if (app->state == SHELL_APP_STATE_RUNNING)
+    {
+      if (app->running_state->windows && !other->running_state->windows)
+        return -1;
+      else if (!app->running_state->windows && other->running_state->windows)
+        return 1;
+      return other->running_state->last_user_time - app->running_state->last_user_time;
+    }
 
-  return other->last_user_time - app->last_user_time;
+  return 0;
 }
 
 ShellApp *
@@ -631,9 +664,20 @@ shell_app_state_transition (ShellApp      *app,
   g_return_if_fail (!(app->state == SHELL_APP_STATE_RUNNING &&
                       state == SHELL_APP_STATE_STARTING));
   app->state = state;
-  g_object_notify (G_OBJECT (app), "state");
+
+  if (app->state != SHELL_APP_STATE_RUNNING && app->running_state)
+    {
+      unref_running_state (app->running_state);
+      app->running_state = NULL;
+    }
+  else if (app->state == SHELL_APP_STATE_RUNNING)
+    {
+      create_running_state (app);
+    }
 
   _shell_window_tracker_notify_app_state_changed (shell_window_tracker_get_default (), app);
+
+  g_object_notify (G_OBJECT (app), "state");
 }
 
 static void
@@ -648,14 +692,16 @@ shell_app_on_user_time_changed (MetaWindow *window,
                                 GParamSpec *pspec,
                                 ShellApp   *app)
 {
-  app->last_user_time = meta_window_get_user_time (window);
+  g_assert (app->running_state != NULL);
+
+  app->running_state->last_user_time = meta_window_get_user_time (window);
 
   /* Ideally we don't want to emit windows-changed if the sort order
    * isn't actually changing. This check catches most of those.
    */
-  if (window != app->windows->data)
+  if (window != app->running_state->windows->data)
     {
-      app->window_sort_stale = TRUE;
+      app->running_state->window_sort_stale = TRUE;
       g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
     }
 }
@@ -667,9 +713,13 @@ shell_app_on_ws_switch (MetaScreen         *screen,
                         MetaMotionDirection direction,
                         gpointer            data)
 {
-  ShellApp *self = SHELL_APP (data);
-  self->window_sort_stale = TRUE;
-  g_signal_emit (self, shell_app_signals[WINDOWS_CHANGED], 0);
+  ShellApp *app = SHELL_APP (data);
+
+  g_assert (app->running_state != NULL);
+
+  app->running_state->window_sort_stale = TRUE;
+
+  g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 }
 
 void
@@ -678,65 +728,49 @@ _shell_app_add_window (ShellApp        *app,
 {
   guint32 user_time;
 
-  if (g_slist_find (app->windows, window))
+  if (app->running_state && g_slist_find (app->running_state->windows, window))
     return;
 
-  app->windows = g_slist_prepend (app->windows, g_object_ref (window));
-  g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
-  g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
-  app->window_sort_stale = TRUE;
+  g_object_freeze_notify (G_OBJECT (app));
 
-  user_time = meta_window_get_user_time (window);
-  if (user_time > app->last_user_time)
-    app->last_user_time = user_time;
-
+  /* Ensure we've initialized running state */
   if (app->state != SHELL_APP_STATE_RUNNING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 
+  g_assert (app->running_state != NULL);
+
+  app->running_state->window_sort_stale = TRUE;
+  app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
+  g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
+  g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
+
+  user_time = meta_window_get_user_time (window);
+  if (user_time > app->running_state->last_user_time)
+    app->running_state->last_user_time = user_time;
+
+  g_object_thaw_notify (G_OBJECT (app));
+
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
-
-  if (app->workspace_switch_id == 0)
-    {
-      MetaScreen *screen = shell_global_get_screen (shell_global_get ());
-
-      app->workspace_switch_id =
-        g_signal_connect (screen, "workspace-switched", G_CALLBACK(shell_app_on_ws_switch), app);
-    }
-}
-
-static void
-disconnect_workspace_switch (ShellApp  *app)
-{
-  MetaScreen *screen;
-
-  if (app->workspace_switch_id == 0)
-    return;
-
-  screen = shell_global_get_screen (shell_global_get ());
-  g_signal_handler_disconnect (screen, app->workspace_switch_id);
-  app->workspace_switch_id = 0;
 }
 
 void
 _shell_app_remove_window (ShellApp   *app,
                           MetaWindow *window)
 {
-  if (!g_slist_find (app->windows, window))
+  g_assert (app->running_state != NULL);
+
+  if (!g_slist_find (app->running_state->windows, window))
     return;
 
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_object_unref (window);
-  app->windows = g_slist_remove (app->windows, window);
+  app->running_state->windows = g_slist_remove (app->running_state->windows, window);
+
+  if (app->running_state->windows == NULL)
+    shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
 
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
-
-  if (app->windows == NULL)
-    {
-      disconnect_workspace_switch (app);
-
-      shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
-    }
 }
 
 /**
@@ -792,9 +826,12 @@ shell_app_request_quit (ShellApp   *app)
 {
   GSList *iter;
 
+  if (shell_app_get_state (app) != SHELL_APP_STATE_RUNNING)
+    return FALSE;
+
   /* TODO - check for an XSMP connection; we could probably use that */
 
-  for (iter = app->windows; iter; iter = iter->next)
+  for (iter = app->running_state->windows; iter; iter = iter->next)
     {
       MetaWindow *win = iter->data;
 
@@ -804,6 +841,35 @@ shell_app_request_quit (ShellApp   *app)
       meta_window_delete (win, shell_global_get_current_time (shell_global_get ()));
     }
   return TRUE;
+}
+
+static void
+create_running_state (ShellApp *app)
+{
+  MetaScreen *screen;
+
+  g_assert (app->running_state == NULL);
+
+  screen = shell_global_get_screen (shell_global_get ());
+  app->running_state = g_slice_new0 (ShellAppRunningState);
+  app->running_state->refcount = 1;
+  app->running_state->workspace_switch_id =
+    g_signal_connect (screen, "workspace-switched", G_CALLBACK(shell_app_on_ws_switch), app);
+}
+
+static void
+unref_running_state (ShellAppRunningState *state)
+{
+  MetaScreen *screen;
+
+  state->refcount--;
+  if (state->refcount > 0)
+    return;
+
+  screen = shell_global_get_screen (shell_global_get ());
+
+  g_signal_handler_disconnect (screen, state->workspace_switch_id);
+  g_slice_free (ShellAppRunningState, state);
 }
 
 static void
@@ -823,10 +889,11 @@ shell_app_dispose (GObject *object)
       app->info = NULL;
     }
 
-  while (app->windows)
-    _shell_app_remove_window (app, app->windows->data);
-
-  disconnect_workspace_switch (app);
+  if (app->running_state)
+    {
+      while (app->running_state->windows)
+        _shell_app_remove_window (app, app->running_state->windows->data);
+    }
 
   G_OBJECT_CLASS(shell_app_parent_class)->dispose (object);
 }
