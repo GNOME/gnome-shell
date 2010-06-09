@@ -1040,6 +1040,7 @@ function AppWell() {
 
 AppWell.prototype = {
     _init : function() {
+        this._placeholderText = null;
         this._menus = [];
         this._menuDisplays = [];
 
@@ -1096,10 +1097,14 @@ AppWell.prototype = {
             let display = new AppWellIcon(app);
             this._grid.addItem(display.actor);
         }
+        if (this._placeholderText) {
+            this._placeholderText.destroy();
+            this._placeholderText = null;
+        }
 
         if (running.length == 0 && nFavorites == 0) {
-            let text = new St.Label({ text: _("Drag here to add favorites")});
-            this._grid.actor.set_child(text);
+            this._placeholderText = new St.Label({ text: _("Drag here to add favorites") });
+            this.actor.add_actor(this._placeholderText);
         }
     },
 
