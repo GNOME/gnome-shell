@@ -678,6 +678,29 @@ result:
   return actor;
 }
 
+CoglPangoFontMap *
+_clutter_context_get_pango_fontmap (ClutterMainContext *self)
+{
+  CoglPangoFontMap *font_map;
+  gdouble resolution;
+  gboolean use_mipmapping;
+
+  if (G_LIKELY (self->font_map != NULL))
+    return self->font_map;
+
+  font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
+
+  resolution = clutter_backend_get_resolution (self->backend);
+  cogl_pango_font_map_set_resolution (font_map, resolution);
+
+  use_mipmapping = !clutter_disable_mipmap_text;
+  cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
+
+  self->font_map = font_map;
+
+  return self->font_map;
+}
+
 static ClutterTextDirection
 clutter_get_text_direction (void)
 {
@@ -774,22 +797,12 @@ _clutter_context_get_pango_context (ClutterMainContext *self)
 PangoContext *
 _clutter_context_create_pango_context (ClutterMainContext *self)
 {
+  CoglPangoFontMap *font_map;
   PangoContext *context;
 
-  if (self->font_map == NULL)
-    {
-      gdouble resolution;
+  font_map = _clutter_context_get_pango_fontmap (self);
 
-      self->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
-
-      resolution = clutter_backend_get_resolution (self->backend);
-      cogl_pango_font_map_set_resolution (self->font_map, resolution);
-
-      if (G_LIKELY (!clutter_disable_mipmap_text))
-        cogl_pango_font_map_set_use_mipmapping (self->font_map, TRUE);
-    }
-
-  context = cogl_pango_font_map_create_context (self->font_map);
+  context = cogl_pango_font_map_create_context (font_map);
   update_pango_context (self->backend, context);
   pango_context_set_language (context, pango_language_get_default ());
 
@@ -2860,8 +2873,10 @@ clutter_get_keyboard_grab (void)
 void
 clutter_clear_glyph_cache (void)
 {
-  if (CLUTTER_CONTEXT ()->font_map)
-    cogl_pango_font_map_clear_glyph_cache (CLUTTER_CONTEXT ()->font_map);
+  CoglPangoFontMap *font_map;
+
+  font_map = _clutter_context_get_pango_fontmap (CLUTTER_CONTEXT ());
+  cogl_pango_font_map_clear_glyph_cache (font_map);
 }
 
 /**
@@ -2882,19 +2897,19 @@ clutter_clear_glyph_cache (void)
 void
 clutter_set_font_flags (ClutterFontFlags flags)
 {
+  ClutterMainContext *context = _clutter_context_get_default ();
+  CoglPangoFontMap *font_map;
   ClutterFontFlags old_flags, changed_flags;
   const cairo_font_options_t *font_options;
   cairo_font_options_t *new_font_options;
+  gboolean use_mipmapping;
   ClutterBackend *backend;
 
   backend = clutter_get_default_backend ();
 
-  if (CLUTTER_CONTEXT ()->font_map == NULL)
-    _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
-
-  cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
-					  (flags
-                                           & CLUTTER_FONT_MIPMAPPING) != 0);
+  font_map = _clutter_context_get_pango_fontmap (context);
+  use_mipmapping = (flags & CLUTTER_FONT_MIPMAPPING) != 0;
+  cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
 
   old_flags = clutter_get_font_flags ();
 
@@ -2915,8 +2930,9 @@ clutter_set_font_flags (ClutterFontFlags flags)
 
   cairo_font_options_destroy (new_font_options);
 
-  if (CLUTTER_CONTEXT ()->pango_context)
-    update_pango_context (backend, CLUTTER_CONTEXT ()->pango_context);
+  /* update the default pango context, if any */
+  if (context->pango_context != NULL)
+    update_pango_context (backend, context->pango_context);
 }
 
 /**
@@ -2932,18 +2948,16 @@ clutter_set_font_flags (ClutterFontFlags flags)
 ClutterFontFlags
 clutter_get_font_flags (void)
 {
-  ClutterMainContext *ctxt = CLUTTER_CONTEXT ();
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
   CoglPangoFontMap *font_map = NULL;
   const cairo_font_options_t *font_options;
   ClutterFontFlags flags = 0;
 
-  font_map = CLUTTER_CONTEXT ()->font_map;
-
-  if (G_LIKELY (font_map)
-      && cogl_pango_font_map_get_use_mipmapping (font_map))
+  font_map = _clutter_context_get_pango_fontmap (context);
+  if (cogl_pango_font_map_get_use_mipmapping (font_map))
     flags |= CLUTTER_FONT_MIPMAPPING;
 
-  font_options = clutter_backend_get_font_options (ctxt->backend);
+  font_options = clutter_backend_get_font_options (context->backend);
 
   if ((cairo_font_options_get_hint_style (font_options)
        != CAIRO_HINT_STYLE_DEFAULT)
@@ -2999,10 +3013,9 @@ clutter_get_input_device_for_id (gint id)
 PangoFontMap *
 clutter_get_font_map (void)
 {
-  if (CLUTTER_CONTEXT ()->font_map)
-    return PANGO_FONT_MAP (CLUTTER_CONTEXT ()->font_map);
+  ClutterMainContext *context = _clutter_context_get_default ();
 
-  return NULL;
+  return PANGO_FONT_MAP (_clutter_context_get_pango_fontmap (context));
 }
 
 typedef struct _ClutterRepaintFunction
