@@ -94,7 +94,6 @@ typedef struct _CoglBlendStringArgument
 typedef enum _CoglBlendStringFunctionType
 {
   /* shared */
-  COGL_BLEND_STRING_FUNCTION_AUTO_COMPOSITE,
   COGL_BLEND_STRING_FUNCTION_ADD,
 
   /* texture combine only */

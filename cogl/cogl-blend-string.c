@@ -103,7 +103,6 @@ static CoglBlendStringColorSourceInfo tex_combine_texture_n_color_source = {
 /* NB: These must be sorted so any name that's a subset of another
  * comes later than the longer name. */
 static CoglBlendStringFunctionInfo tex_combine_functions[] = {
-  DEFINE_FUNCTION (AUTO_COMPOSITE, 14, 0),
   DEFINE_FUNCTION (REPLACE, 7, 1),
   DEFINE_FUNCTION (MODULATE, 8, 2),
   DEFINE_FUNCTION (ADD_SIGNED, 10, 2),
@@ -115,7 +114,6 @@ static CoglBlendStringFunctionInfo tex_combine_functions[] = {
 };
 
 static CoglBlendStringFunctionInfo blend_functions[] = {
-  DEFINE_FUNCTION (AUTO_COMPOSITE, 14, 0),
   DEFINE_FUNCTION (ADD, 3, 2)
 };
 

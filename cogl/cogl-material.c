@@ -1222,9 +1222,6 @@ setup_texture_combine_state (CoglBlendStringStatement *statement,
 
   switch (statement->function->type)
     {
-    case COGL_BLEND_STRING_FUNCTION_AUTO_COMPOSITE:
-      *texture_combine_func = GL_MODULATE; /* FIXME */
-      break;
     case COGL_BLEND_STRING_FUNCTION_REPLACE:
       *texture_combine_func = GL_REPLACE;
       break;
