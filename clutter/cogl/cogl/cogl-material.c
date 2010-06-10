@@ -82,6 +82,9 @@
 
 typedef struct _CoglMaterialBackendARBfpPrivate
 {
+  CoglMaterial *authority_cache;
+  unsigned long authority_cache_age;
+
   GString *source;
   GLuint gl_program;
   gboolean *sampled;
@@ -115,8 +118,11 @@ static const CoglMaterialBackend *backends[] =
 };
 /* NB: material->backend is currently a 3bit unsigned int bitfield */
 #define COGL_MATERIAL_BACKEND_GLSL       0
+#define COGL_MATERIAL_BACKEND_GLSL_MASK  (1L<<0)
 #define COGL_MATERIAL_BACKEND_ARBFP      1
+#define COGL_MATERIAL_BACKEND_ARBFP_MASK (1L<<1)
 #define COGL_MATERIAL_BACKEND_FIXED      2
+#define COGL_MATERIAL_BACKEND_FIXED_MASK (1L<<2)
 
 #elif defined (HAVE_COGL_GLES2)
 
@@ -452,6 +458,35 @@ _cogl_material_unparent (CoglMaterial *material)
   material->parent = NULL;
 }
 
+/* This recursively frees the layers_cache of a material and all of
+ * its descendants.
+ *
+ * For instance if we change a materials ->layer_differences list
+ * then that material and all of its descendants may now have
+ * incorrect layer caches. */
+static void
+recursively_free_layer_caches (CoglMaterial *material)
+{
+  GList *l;
+
+  /* Note: we maintain the invariable that if a material already has a
+   * dirty layers_cache then so do all of its descendants. */
+  if (material->layers_cache_dirty)
+    return;
+
+  if (G_UNLIKELY (material->layers_cache != material->short_layers_cache))
+    g_slice_free1 (sizeof (CoglMaterialLayer *) * material->n_layers,
+                   material->layers_cache);
+  material->layers_cache_dirty = TRUE;
+
+  if (material->has_children)
+    {
+      recursively_free_layer_caches (material->first_child);
+      for (l = material->children; l; l = l->next)
+        recursively_free_layer_caches (l->data);
+    }
+}
+
 static void
 _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
 {
@@ -476,6 +511,14 @@ _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
    * layers could now be invalid so free it... */
   if (material->differences & COGL_MATERIAL_STATE_LAYERS)
     recursively_free_layer_caches (material);
+
+  /* If the fragment processing backend is also caching state along
+   * with the material that depends on the materials ancestry then it
+   * may be notified here...
+   */
+  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
+      backends[material->backend]->material_set_parent_notify)
+    backends[material->backend]->material_set_parent_notify (material);
 }
 
 /* XXX: Always have an eye out for opportunities to lower the cost of
@@ -495,7 +538,6 @@ cogl_material_copy (CoglHandle handle)
   material->journal_ref_count = 0;
 
   material->parent = NULL;
-  _cogl_material_set_parent (material, src);
 
   material->has_children = FALSE;
 
@@ -518,11 +560,13 @@ cogl_material_copy (CoglHandle handle)
   material->deprecated_get_layers_list_dirty = TRUE;
 
   material->backend = src->backend;
-  material->backend_priv_set = FALSE;
+  material->backend_priv_set_mask = 0;
 
   material->has_static_breadcrumb = FALSE;
 
   material->age = 0;
+
+  _cogl_material_set_parent (material, src);
 
   return _cogl_material_handle_new (material);
 }
@@ -704,35 +748,6 @@ _cogl_material_update_layers_cache (CoglMaterial *material)
     }
 
   g_warn_if_reached ();
-}
-
-/* This recursively frees the layers_cache of a material and all of
- * its descendants.
- *
- * For instance if we change a materials ->layer_differences list
- * then that material and all of its descendants may now have
- * incorrect layer caches. */
-static void
-recursively_free_layer_caches (CoglMaterial *material)
-{
-  GList *l;
-
-  /* Note: we maintain the invariable that if a material already has a
-   * dirty layers_cache then so do all of its descendants. */
-  if (material->layers_cache_dirty)
-    return;
-
-  if (G_UNLIKELY (material->layers_cache != material->short_layers_cache))
-    g_slice_free1 (sizeof (CoglMaterialLayer *) * material->n_layers,
-                   material->layers_cache);
-  material->layers_cache_dirty = TRUE;
-
-  if (material->has_children)
-    {
-      recursively_free_layer_caches (material->first_child);
-      for (l = material->children; l; l = l->next)
-        recursively_free_layer_caches (l->data);
-    }
 }
 
 typedef gboolean (*CoglMaterialLayerCallback) (CoglMaterialLayer *layer,
@@ -5230,6 +5245,7 @@ static const CoglMaterialBackend _cogl_material_glsl_backend =
   _cogl_material_backend_glsl_passthrough,
   _cogl_material_backend_glsl_end,
   NULL, /* material_state_change_notify */
+  NULL, /* material_set_parent_notify */
   NULL, /* layer_state_change_notify */
   NULL, /* free_priv */
 };
@@ -5244,12 +5260,164 @@ _cogl_material_backend_arbfp_get_max_texture_units (void)
   return get_max_texture_image_units ();
 }
 
+typedef struct
+{
+  int i;
+  CoglMaterialLayer **layers;
+} AddLayersToArrayState;
+
+static gboolean
+add_layer_to_array_cb (CoglMaterialLayer *layer,
+                       void *user_data)
+{
+  AddLayersToArrayState *state = user_data;
+  state->layers[state->i++] = layer;
+  return TRUE;
+}
+
+static gboolean
+layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
+                           CoglMaterialLayer **material1_layers,
+                           int n_layers)
+{
+  int i;
+  /* The layer state that affects arbfp codegen... */
+  unsigned long arbfp_codegen_modifiers =
+    COGL_MATERIAL_LAYER_STATE_COMBINE |
+    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT |
+    COGL_MATERIAL_LAYER_STATE_UNIT |
+    COGL_MATERIAL_LAYER_STATE_TEXTURE;
+
+  for (i = 0; i < n_layers; i++)
+    {
+      CoglMaterialLayer *layer0 = material0_layers[i];
+      CoglMaterialLayer *layer1 = material1_layers[i];
+      unsigned long layer_differences;
+
+      if (layer0 == layer1)
+        continue;
+
+      layer_differences =
+        _cogl_material_layer_compare_differences (layer0, layer1);
+
+      if (layer_differences & arbfp_codegen_modifiers)
+        {
+          /* When it comes to texture differences the only thing that
+           * affects the arbfp is the target enum... */
+          if (layer_differences == COGL_MATERIAL_LAYER_STATE_TEXTURE)
+            {
+              CoglHandle tex0 = _cogl_material_layer_get_texture (layer0);
+              CoglHandle tex1 = _cogl_material_layer_get_texture (layer1);
+              GLenum gl_target0;
+              GLenum gl_target1;
+
+              cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
+              cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
+              if (gl_target0 == gl_target1)
+                continue;
+            }
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/* This tries to find the oldest ancestor whos state would generate
+ * the same arbfp program as the current material. This is a simple
+ * mechanism for reducing the number of arbfp programs we have to
+ * generate.
+ */
+static CoglMaterial *
+find_arbfp_authority (CoglMaterial *material)
+{
+  CoglMaterial *authority0;
+  CoglMaterial *authority1;
+  int n_layers;
+  CoglMaterialLayer **authority0_layers;
+  CoglMaterialLayer **authority1_layers;
+
+  /* XXX: we'll need to update this when we add fog support to the
+   * arbfp codegen */
+
+  /* Find the first material that modifies state that affects the
+   * arbfp codegen... */
+  authority0 = _cogl_material_get_authority (material,
+                                             COGL_MATERIAL_STATE_LAYERS);
+
+  /* Find the next ancestor after that, that also modifies state
+   * affecting arbfp codegen... */
+  if (authority0->parent)
+    authority1 = _cogl_material_get_authority (authority0->parent,
+                                               COGL_MATERIAL_STATE_LAYERS);
+  else
+    return authority0;
+
+  n_layers = authority0->n_layers;
+
+  for (;;)
+    {
+      AddLayersToArrayState state;
+
+      if (authority0->n_layers != authority1->n_layers)
+        return authority0;
+
+      authority0_layers =
+        g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
+      state.i = 0;
+      state.layers = authority0_layers;
+      _cogl_material_foreach_layer (authority0,
+                                    add_layer_to_array_cb,
+                                    &state);
+
+      authority1_layers =
+        g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
+      state.i = 0;
+      state.layers = authority1_layers;
+      _cogl_material_foreach_layer (authority1,
+                                    add_layer_to_array_cb,
+                                    &state);
+
+      if (layers_arbfp_would_differ (authority0_layers, authority1_layers,
+                                     n_layers))
+        return authority0;
+
+      /* Find the next ancestor after that, that also modifies state
+       * affecting arbfp codegen... */
+
+      if (!authority1->parent)
+        break;
+
+      authority0 = authority1;
+      authority1 = _cogl_material_get_authority (authority1->parent,
+                                                 COGL_MATERIAL_STATE_LAYERS);
+      if (authority1 == authority0)
+        break;
+    }
+
+  return authority1;
+}
+
+static void
+invalidate_arbfp_authority_cache (CoglMaterial *material)
+{
+  if (material->backend_priv_set_mask  & COGL_MATERIAL_BACKEND_ARBFP_MASK)
+    {
+      CoglMaterialBackendARBfpPrivate *priv =
+        material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+      priv->authority_cache = NULL;
+      priv->authority_cache_age = 0;
+    }
+}
+
 static gboolean
 _cogl_material_backend_arbfp_start (CoglMaterial *material,
                                     int n_layers,
                                     unsigned long materials_difference)
 {
+  CoglMaterial *authority;
   CoglMaterialBackendARBfpPrivate *priv;
+  CoglMaterialBackendARBfpPrivate *authority_priv;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -5260,19 +5428,53 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   if (ctx->fog_enabled)
     return FALSE;
 
-  if (!material->backend_priv_set)
-    {
-      material->backend_priv = g_slice_new0 (CoglMaterialBackendARBfpPrivate);
-      material->backend_priv_set = TRUE;
-    }
-  priv = material->backend_priv;
+  /* Note: we allocate ARBfp private state for both the given material
+   * and the authority. (The oldest ancestor whos state will result in
+   * the same program being generated) The former will simply cache a
+   * pointer to the authority and the later will track the arbfp
+   * program that we will generate.
+   */
 
-  if (priv->gl_program == 0)
+  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
+    {
+      material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP] =
+        g_slice_new0 (CoglMaterialBackendARBfpPrivate);
+      material->backend_priv_set_mask |= COGL_MATERIAL_BACKEND_ARBFP_MASK;
+    }
+  priv = material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+
+  /* XXX: We are making assumptions that we don't yet support
+   * modification of ancestors to optimize the sharing of state in the
+   * material graph. When we start to support this then the arbfp
+   * backend will somehow need to be notified of graph changes that
+   * may invalidate authority_cache pointers.
+   */
+
+  if (priv->authority_cache &&
+      priv->authority_cache_age != _cogl_material_get_age (material))
+    invalidate_arbfp_authority_cache (material);
+
+  if (!priv->authority_cache)
+    {
+      priv->authority_cache = find_arbfp_authority (material);
+      priv->authority_cache_age = _cogl_material_get_age (material);
+    }
+
+  authority = priv->authority_cache;
+  if (!(authority->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
+    {
+      authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP] =
+        g_slice_new0 (CoglMaterialBackendARBfpPrivate);
+      authority->backend_priv_set_mask |= COGL_MATERIAL_BACKEND_ARBFP_MASK;
+    }
+  authority_priv = authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+
+  if (authority_priv->gl_program == 0)
     {
       /* We reuse a single grow-only GString for ARBfp code-gen */
       g_string_set_size (ctx->arbfp_source_buffer, 0);
-      priv->source = ctx->arbfp_source_buffer;
-      g_string_append (priv->source,
+      authority_priv->source = ctx->arbfp_source_buffer;
+      g_string_append (authority_priv->source,
                        "!!ARBfp1.0\n"
                        "TEMP output;\n"
                        "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
@@ -5280,10 +5482,21 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
                        "PARAM one = {1, 1, 1, 1};\n"
                        "PARAM two = {2, 2, 2, 2};\n"
                        "PARAM minus_one = {-1, -1, -1, -1};\n");
-      priv->sampled = g_new0 (gboolean, n_layers);
+      authority_priv->sampled = g_new0 (gboolean, n_layers);
     }
 
   return TRUE;
+}
+
+static CoglMaterial *
+get_arbfp_authority (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv =
+    material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+
+  g_return_val_if_fail (priv != NULL, NULL);
+
+  return priv->authority_cache;
 }
 
 /* Determines if we need to handle the RGB and A texture combining
@@ -5453,7 +5666,9 @@ setup_arg (CoglMaterial *material,
            GLint op,
            CoglMaterialBackendARBfpArg *arg)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterialBackendARBfpPrivate *priv =
+    arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
   GLenum gl_target;
   CoglHandle texture;
@@ -5585,7 +5800,9 @@ append_function (CoglMaterial *material,
                  CoglMaterialBackendARBfpArg *args,
                  int n_args)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterialBackendARBfpPrivate *priv =
+    arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   const char *mask_name;
 
   switch (mask)
@@ -5714,7 +5931,7 @@ append_function (CoglMaterial *material,
 }
 
 static void
-append_masked_combine (CoglMaterial *material,
+append_masked_combine (CoglMaterial *arbfp_authority,
                        CoglMaterialLayer *layer,
                        CoglBlendStringChannelMask mask,
                        GLint function,
@@ -5729,7 +5946,7 @@ append_masked_combine (CoglMaterial *material,
 
   for (i = 0; i < n_args; i++)
     {
-      setup_arg (material,
+      setup_arg (arbfp_authority,
                  layer,
                  mask,
                  i,
@@ -5738,7 +5955,7 @@ append_masked_combine (CoglMaterial *material,
                  &args[i]);
     }
 
-  append_function (material,
+  append_function (arbfp_authority,
                    mask,
                    function,
                    args,
@@ -5750,7 +5967,9 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
                                         CoglMaterialLayer *layer,
                                         unsigned long layers_difference)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterialBackendARBfpPrivate *priv =
+    arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   CoglMaterialLayer *combine_authority =
     _cogl_material_layer_get_authority (layer,
                                         COGL_MATERIAL_LAYER_STATE_COMBINE);
@@ -5831,7 +6050,9 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
 gboolean
 _cogl_material_backend_arbfp_passthrough (CoglMaterial *material)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterialBackendARBfpPrivate *priv =
+    arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
   if (!priv->source)
     return TRUE;
@@ -5844,7 +6065,9 @@ static gboolean
 _cogl_material_backend_arbfp_end (CoglMaterial *material,
                                   unsigned long materials_difference)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterialBackendARBfpPrivate *priv =
+    arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -5894,22 +6117,42 @@ _cogl_material_backend_arbfp_material_pre_change_notify (
                                                    CoglMaterialState change,
                                                    const CoglColor *new_color)
 {
-  CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+  CoglMaterialBackendARBfpPrivate *priv =
+    material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   static const unsigned long fragment_op_changes =
     COGL_MATERIAL_STATE_LAYERS;
     /* TODO: COGL_MATERIAL_STATE_FOG */
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (material->backend_priv_set &&
+  if (material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK &&
       priv->gl_program &&
       change & fragment_op_changes)
     {
-      /* XXX: what if this is the currently bound program? we need to
-       * dirty our cache. */
       GE (glDeletePrograms (1, &priv->gl_program));
       priv->gl_program = 0;
     }
+}
+
+static gboolean
+invalidate_arbfp_authority_cache_cb (CoglMaterial *material,
+                                     void *user_data)
+{
+  invalidate_arbfp_authority_cache (material);
+  return TRUE;
+}
+
+static void
+_cogl_material_backend_arbfp_material_set_parent_notify (
+                                                CoglMaterial *material)
+{
+  /* Any arbfp authority cache associated with this material or
+   * any of its descendants will now be invalid. */
+  invalidate_arbfp_authority_cache (material);
+
+  _cogl_material_foreach_child (material,
+                                invalidate_arbfp_authority_cache_cb,
+                                NULL);
 }
 
 static void
@@ -5928,15 +6171,16 @@ _cogl_material_backend_arbfp_free_priv (CoglMaterial *material)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (material->backend_priv_set)
+  if (material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK)
     {
-      CoglMaterialBackendARBfpPrivate *priv = material->backend_priv;
+      CoglMaterialBackendARBfpPrivate *priv =
+        material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
       glDeletePrograms (1, &priv->gl_program);
       if (priv->sampled)
         g_free (priv->sampled);
-      g_slice_free (CoglMaterialBackendARBfpPrivate, material->backend_priv);
-      material->backend_priv_set = FALSE;
+      g_slice_free (CoglMaterialBackendARBfpPrivate, priv);
+      material->backend_priv_set_mask &= ~COGL_MATERIAL_BACKEND_ARBFP_MASK;
     }
 }
 
@@ -5948,6 +6192,7 @@ static const CoglMaterialBackend _cogl_material_arbfp_backend =
   _cogl_material_backend_arbfp_passthrough,
   _cogl_material_backend_arbfp_end,
   _cogl_material_backend_arbfp_material_pre_change_notify,
+  _cogl_material_backend_arbfp_material_set_parent_notify,
   _cogl_material_backend_arbfp_layer_pre_change_notify,
   _cogl_material_backend_arbfp_free_priv,
   NULL
@@ -6099,6 +6344,7 @@ static const CoglMaterialBackend _cogl_material_fixed_backend =
   NULL, /* passthrough */
   _cogl_material_backend_fixed_end,
   NULL, /* material_change_notify */
+  NULL, /* material_set_parent_notify */
   NULL, /* layer_change_notify */
   NULL /* free_priv */
 };
