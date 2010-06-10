@@ -4,20 +4,19 @@
 # Anton Meixome <certima@certima.net>, 2009.
 # Antón Méixome <meixome@certima.net>, 2009.
 # Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 23:32+0200\n"
-"PO-Revision-Date: 2010-06-03 23:34+0200\n"
+"POT-Creation-Date: 2010-06-10 17:01+0200\n"
+"PO-Revision-Date: 2010-06-10 17:01+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galician <gnome@g11.net>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.4.0\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -65,27 +64,27 @@ msgid "_24 hour format"
 msgstr "Formato _24 horas"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:858
+#: ../js/ui/appDisplay.js:387 ../js/ui/dash.js:881
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:338
+#: ../js/ui/appDisplay.js:419
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:710
+#: ../js/ui/appDisplay.js:786
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:790
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:715
+#: ../js/ui/appDisplay.js:791
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
-#: ../js/ui/appDisplay.js:1042
+#: ../js/ui/appDisplay.js:1127
 msgid "Drag here to add favorites"
 msgstr "Arrastre aquí para engadir aos favoritos"
 
@@ -99,27 +98,27 @@ msgstr "%s foi engadido aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s foi eliminado dos seus favoritos."
 
-#: ../js/ui/dash.js:189
+#: ../js/ui/dash.js:204
 msgid "Find"
 msgstr "Buscar"
 
-#: ../js/ui/dash.js:513
+#: ../js/ui/dash.js:536
 msgid "Searching..."
 msgstr "Buscando..."
 
-#: ../js/ui/dash.js:527
+#: ../js/ui/dash.js:550
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:877 ../js/ui/placeDisplay.js:551
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:551
 msgid "PLACES & DEVICES"
 msgstr "LUGARES e DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:884 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECENTES"
 
@@ -151,9 +150,18 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/overview.js:161
+#: ../js/ui/overview.js:165
 msgid "Undo"
 msgstr "Desfacer"
+
+#: ../js/ui/panel.js:818
+#, c-format
+msgid "Quit %s"
+msgstr "Saír de %s"
+
+#: ../js/ui/panel.js:838
+msgid "Preferences"
+msgstr "Preferencias"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -214,48 +222,48 @@ msgstr "Reintentar"
 msgid "Connect to..."
 msgstr "Conectar con..."
 
-#: ../js/ui/runDialog.js:231
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/runDialog.js:375
+#: ../js/ui/runDialog.js:380
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de %s"
 
-#: ../js/ui/statusMenu.js:90
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:94
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:98
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "Invisíbel"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "Información da conta..."
 
-#: ../js/ui/statusMenu.js:109
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "Preferencias do sistema..."
 
-#: ../js/ui/statusMenu.js:116
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:120
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "Saír da sesión..."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "Apagar..."
 
@@ -280,32 +288,32 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "Non é posíbel quitar a primeira área de traballo."
 
-#: ../src/shell-global.c:1027
+#: ../src/shell-global.c:1025
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1031
+#: ../src/shell-global.c:1029
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1036
+#: ../src/shell-global.c:1034
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1041
+#: ../src/shell-global.c:1039
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1046
+#: ../src/shell-global.c:1044
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
