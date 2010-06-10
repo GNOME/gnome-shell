@@ -312,6 +312,13 @@ COGL_FEATURE_FUNCTION (void, glDeleteBuffers,
                         const GLuint		*buffers))
 COGL_FEATURE_END ()
 
+COGL_FEATURE_BEGIN (texture_rectangle, 255, 255,
+                    "ARB\0",
+                    "texture_rectangle\0",
+                    COGL_FEATURE_TEXTURE_RECTANGLE,
+                    0)
+COGL_FEATURE_END ()
+
 /* Cogl requires OpenGL 1.2 so we assume these functions are always
    available and don't bother setting any feature flags. We still have
    to fetch the function pointers though because under Windows you can

@@ -70,6 +70,11 @@ _cogl_texture_driver_gen (GLenum   gl_target,
         GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
         break;
 
+      case GL_TEXTURE_RECTANGLE_ARB:
+        /* Texture rectangles already default to GL_LINEAR so nothing
+           needs to be done */
+        break;
+
       default:
         g_assert_not_reached();
         }
@@ -201,26 +206,28 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
                                      int    width,
                                      int    height)
 {
-  if (gl_target ==  GL_TEXTURE_2D)
-    {
-      /* Proxy texture allows for a quick check for supported size */
+  GLenum proxy_target;
+  GLint new_width = 0;
 
-      GLint new_width = 0;
-
-      GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
-			width, height, 0 /* border */,
-			gl_format, gl_type, NULL) );
-
-      GE( glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
-				    GL_TEXTURE_WIDTH, &new_width) );
-
-      return new_width != 0;
-    }
+  if (gl_target == GL_TEXTURE_2D)
+    proxy_target = GL_PROXY_TEXTURE_2D;
+#if HAVE_COGL_GL
+  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    proxy_target = GL_PROXY_TEXTURE_RECTANGLE_ARB;
+#endif
   else
-    {
-      /* not used */
-      return 0;
-    }
+    /* Unknown target, assume it's not supported */
+    return FALSE;
+
+  /* Proxy texture allows for a quick check for supported size */
+  GE( glTexImage2D (proxy_target, 0, GL_RGBA,
+                    width, height, 0 /* border */,
+                    gl_format, gl_type, NULL) );
+
+  GE( glGetTexLevelParameteriv (proxy_target, 0,
+                                GL_TEXTURE_WIDTH, &new_width) );
+
+  return new_width != 0;
 }
 
 void
