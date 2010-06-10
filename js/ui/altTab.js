@@ -15,12 +15,13 @@ const Tweener = imports.ui.tweener;
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
+const POPUP_FADE_TIME = 0.1; // seconds
 
 const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
 const THUMBNAIL_DEFAULT_SIZE = 256;
 const THUMBNAIL_POPUP_TIME = 500; // milliseconds
-const THUMBNAIL_FADE_TIME = 0.2; // seconds
+const THUMBNAIL_FADE_TIME = 0.1; // seconds
 
 const iconSizes = [96, 64, 48, 32, 22];
 
@@ -179,6 +180,14 @@ AltTabPopup.prototype = {
             this._finish();
             return false;
         }
+
+        this.actor.opacity = 0;
+        this.actor.show();
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           time: POPUP_FADE_TIME,
+                           transition: 'easeOutQuad'
+                         });
 
         return true;
     },
@@ -352,7 +361,15 @@ AltTabPopup.prototype = {
     },
 
     destroy : function() {
-        this.actor.destroy();
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           time: POPUP_FADE_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this,
+                               function() {
+                                   this.actor.destroy();
+                               })
+                         });
     },
 
     _onDestroy : function() {

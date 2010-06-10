@@ -21,7 +21,7 @@ const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 const HISTORY_KEY = 'run_dialog/history';
 const HISTORY_LIMIT = 512;
 
-const DIALOG_FADE_TIME = 0.2;
+const DIALOG_FADE_TIME = 0.1;
 
 function CommandCompleter() {
     this._init();

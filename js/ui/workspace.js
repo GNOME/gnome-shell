@@ -28,7 +28,8 @@ FRAME_COLOR.from_pixel(0xffffffff);
 
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
-const LIGHTBOX_FADE_TIME = 0.2;
+const LIGHTBOX_FADE_TIME = 0.1;
+const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
 
@@ -441,7 +442,7 @@ WindowOverlay.prototype = {
         this._parentActor.raise_top();
         Tweener.addTween(this.title,
                         { opacity: 255,
-                          time: Overview.ANIMATION_TIME,
+                          time: CLOSE_BUTTON_FADE_TIME,
                           transition: 'easeOutQuad' });
     },
 

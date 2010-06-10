@@ -9,7 +9,7 @@ const Main = imports.ui.main;
 
 const Tweener = imports.ui.tweener;
 
-const ANIMATION_TIME = 0.075;
+const ANIMATION_TIME = 0.1;
 const DISPLAY_TIMEOUT = 600;
 
 const LEFT = -1;
