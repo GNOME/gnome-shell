@@ -2401,3 +2401,43 @@ CLUTTER_IS_DESATURATE_EFFECT
 <SUBSECTION Private>
 clutter_desaturate_effect_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-deform-effect</FILE>
+ClutterDeformEffect
+ClutterDeformEffectClass
+clutter_deform_effect_set_back_material
+clutter_deform_effect_get_back_material
+clutter_deform_effect_set_n_tiles
+clutter_deform_effect_get_n_tiles
+<SUBSECTION>
+clutter_deform_effect_invalidate
+<SUBSECTION Standard>
+CLUTTER_TYPE_DEFORM_EFFECT
+CLUTTER_DEFORM_EFFECT
+CLUTTER_DEFORM_EFFECT_CLASS
+CLUTTER_IS_DEFORM_EFFECT
+CLUTTER_IS_DEFORM_EFFECT_CLASS
+CLUTTER_DEFORM_EFFECT_GET_CLASS
+<SUBSECTION Private>
+ClutterDeformEffectPrivate
+clutter_deform_effect_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-page-turn-effect</FILE>
+ClutterPageTurnEffect
+clutter_page_turn_effect_new
+clutter_page_turn_effect_set_period
+clutter_page_turn_effect_get_period
+clutter_page_turn_effect_set_angle
+clutter_page_turn_effect_get_angle
+clutter_page_turn_effect_set_radius
+clutter_page_turn_effect_get_radius
+<SUBSECTION Standard>
+CLUTTER_TYPE_PAGE_TURN_EFFECT
+CLUTTER_PAGE_TURN_EFFECT
+CLUTTER_IS_PAGE_TURN_EFFECT
+<SUBSECTION Private>
+clutter_page_turn_effect_get_type
+</SECTION>
