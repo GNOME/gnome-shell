@@ -316,12 +316,12 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
 
   /* paint the texture at the same position as the actor would be,
    * in Stage coordinates, since we set up the modelview matrix to
-   * be exactly as the stage sets it up
+   * be exactly as the stage sets it up, plus the eventual offsets
+   * due to offscreen effects stacking
    */
-  cogl_rectangle_with_texture_coords (priv->x_offset,
-                                      priv->y_offset,
-                                      priv->x_offset + priv->target_width,
-                                      priv->y_offset + priv->target_height,
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      priv->target_width,
+                                      priv->target_height,
                                       0.0, 0.0,
                                       1.0, 1.0);
 }
@@ -363,6 +363,8 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   cogl_set_modelview_matrix (&matrix);
 
   cogl_push_matrix ();
+
+  cogl_translate (priv->x_offset, priv->y_offset, 0.0f);
 
   /* paint the target material; this is virtualized for
    * sub-classes that require special hand-holding
