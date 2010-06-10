@@ -270,3 +270,10 @@ cogl_color_equal (gconstpointer v1, gconstpointer v2)
   return *c1 == *c2 ? TRUE : FALSE;
 }
 
+void
+_cogl_color_get_rgba_4ubv (const CoglColor *color,
+                           guint8 *dest)
+{
+  memcpy (dest, color, 4);
+}
+
