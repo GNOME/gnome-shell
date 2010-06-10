@@ -468,9 +468,9 @@ struct _CoglMaterial
    * material in comparison to its parent. */
   unsigned long    differences;
 
-  /* The fragment processing backend identified by the ->backend
-   * bitfield can associate private data with a material. */
-  void		  *backend_priv;
+  /* The fragment processing backends can associate private data with a
+   * material. */
+  void		  *backend_privs[COGL_MATERIAL_N_BACKENDS];
 
   /* Whenever a material is modified we increment the age. There's no
    * guarantee that it won't wrap but it can nevertheless be a
@@ -523,6 +523,17 @@ struct _CoglMaterial
 
   /* bitfields */
 
+  /* A material can have private data associated with it for multiple
+   * fragment processing backends. Although only one backend is
+   * associated with a material the backends may want to cache private
+   * state with the ancestors of other materials and those ancestors
+   * could currently be associated with different backends.
+   *
+   * Each set bit indicates if the correspondong ->backend_privs[]
+   * entry is valid.
+   */
+  unsigned int          backend_priv_set_mask:COGL_MATERIAL_N_BACKENDS;
+
   /* Weak materials don't count as dependants on their parents which
    * means that the parent material can be modified without
    * considering how the modifications may affect the weak material.
@@ -560,9 +571,6 @@ struct _CoglMaterial
    * the material and any private state the backend has associated
    * with the material. */
   unsigned int          backend:3;
-
-  /* Determines if ->backend_priv has been initialized */
-  unsigned int          backend_priv_set:1;
 };
 
 typedef struct _CoglMaterialBackend
@@ -582,6 +590,7 @@ typedef struct _CoglMaterialBackend
   void (*material_pre_change_notify) (CoglMaterial *material,
                                       CoglMaterialState change,
                                       const CoglColor *new_color);
+  void (*material_set_parent_notify) (CoglMaterial *material);
   void (*layer_pre_change_notify) (CoglMaterialLayer *layer,
                                    CoglMaterialLayerState change);
 
