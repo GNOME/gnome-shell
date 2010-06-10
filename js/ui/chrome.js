@@ -65,15 +65,6 @@ Chrome.prototype = {
             children[i].allocate_preferred_size(flags);
     },
 
-    _verifyAncestry: function(actor, ancestor) {
-        while (actor) {
-            if (actor == ancestor)
-                return true;
-            actor = actor.get_parent();
-        }
-        return false;
-    },
-
     // addActor:
     // @actor: an actor to add to the chrome layer
     // @params: (optional) additional params
@@ -195,7 +186,7 @@ Chrome.prototype = {
     },
 
     _actorReparented: function(actor, oldParent) {
-        if (!this._verifyAncestry(actor, this.actor))
+        if (!this.actor.contains(actor))
             this._untrackActor(actor);
     },
 

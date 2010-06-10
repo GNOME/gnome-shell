@@ -629,11 +629,8 @@ Notification.prototype = {
             return false;
 
         let source = event.get_source ();
-        while (source) {
-            if (source == notification)
-                return false;
-            source = source.get_parent();
-        }
+        if (source && notification.contains(source))
+            return false;
 
         // @source is outside @notification, which has to mean that
         // we have a pointer grab, and the user clicked outside the

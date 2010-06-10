@@ -494,28 +494,17 @@ PopupMenuManager.prototype = {
             this.ungrab();
     },
 
-    _containsActor: function(container, actor) {
-        let parent = actor;
-        while (parent != null) {
-            if (parent == container)
-                return true;
-            parent = parent.get_parent();
-        }
-        return false;
-    },
-
     _eventIsOnActiveMenu: function(event) {
         let src = event.get_source();
         return this._activeMenu != null
-                && (this._containsActor(this._activeMenu.actor, src) ||
-                    this._containsActor(this._activeMenu.sourceActor, src));
+                && (this._activeMenu.actor.contains(src) ||
+                    this._activeMenu.sourceActor.contains(src));
     },
 
     _eventIsOnAnyMenuSource: function(event) {
         let src = event.get_source();
         for (let i = 0; i < this._menus.length; i++) {
-            let actor = this._menus[i].sourceActor;
-            if (this._containsActor(actor, src))
+            if (this._menus[i].sourceActor.contains(src))
                 return true;
         }
         return false;

@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Gettext_gtk20 = imports.gettext.domain('gtk20');
@@ -69,6 +70,12 @@ function init() {
 
     _patchContainerClass(St.BoxLayout);
     _patchContainerClass(St.Table);
+
+    Clutter.Actor.prototype.contains = function(child) {
+        while (child != null && child != this)
+            child = child.get_parent();
+        return child != null;
+    };
 
     _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
                  'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');

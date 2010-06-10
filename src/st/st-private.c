@@ -310,3 +310,12 @@ _st_set_text_from_style (ClutterText *text,
 
   pango_attr_list_unref (attribs);
 }
+
+gboolean
+_st_actor_contains (ClutterActor *actor,
+                    ClutterActor *child)
+{
+  while (child != NULL && child != actor)
+    child = clutter_actor_get_parent (child);
+  return child != NULL;
+}

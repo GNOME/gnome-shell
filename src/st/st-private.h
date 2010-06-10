@@ -72,4 +72,7 @@ void _st_allocate_fill (StWidget        *parent,
 void _st_set_text_from_style (ClutterText *text,
                               StThemeNode *theme_node);
 
+gboolean _st_actor_contains (ClutterActor *actor,
+                             ClutterActor *child);
+
 #endif /* __ST_PRIVATE_H__ */

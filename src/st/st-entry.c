@@ -65,6 +65,7 @@
 #include "st-texture-cache.h"
 #include "st-marshal.h"
 #include "st-clipboard.h"
+#include "st-private.h"
 
 #define HAS_FOCUS(actor) (clutter_actor_get_stage (actor) && clutter_stage_get_key_focus ((ClutterStage *) clutter_actor_get_stage (actor)) == actor)
 
@@ -578,21 +579,12 @@ st_entry_key_focus_in (ClutterActor *actor)
 }
 
 static gboolean
-actor_contains (ClutterActor *widget,
-                ClutterActor *other)
-{
-  while (other != NULL && other != widget)
-    other = clutter_actor_get_parent (other);
-  return other != NULL;
-}
-
-static gboolean
 st_entry_enter_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
-  if (actor_contains (actor, event->source)
+  if (_st_actor_contains (actor, event->source)
       && priv->hint && priv->hint_visible)
     {
       st_widget_set_hover (ST_WIDGET (actor), TRUE);
@@ -605,7 +597,7 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  if (!actor_contains (actor, event->related))
+  if (!_st_actor_contains (actor, event->related))
     st_widget_set_hover (ST_WIDGET (actor), FALSE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);

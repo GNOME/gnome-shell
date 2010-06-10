@@ -11,6 +11,8 @@
 
 #include "st-clickable.h"
 
+#include "st-private.h"
+
 G_DEFINE_TYPE (StClickable, st_clickable, ST_TYPE_BIN);
 
 struct _StClickablePrivate {
@@ -70,17 +72,6 @@ set_pressed (StClickable  *self,
 }
 
 static gboolean
-st_clickable_contains (StClickable     *self,
-                       ClutterActor    *actor)
-{
-  while (actor != NULL && actor != (ClutterActor*)self)
-    {
-      actor = clutter_actor_get_parent (actor);
-    }
-  return actor != NULL;
-}
-
-static gboolean
 st_clickable_enter_event (ClutterActor         *actor,
                           ClutterCrossingEvent *event)
 {
@@ -130,7 +121,7 @@ st_clickable_button_press_event (ClutterActor       *actor,
   if (self->priv->held)
     return TRUE;
 
-  if (!st_clickable_contains (self, event->source))
+  if (!_st_actor_contains (actor, event->source))
     return FALSE;
 
   self->priv->held = TRUE;
@@ -157,7 +148,7 @@ st_clickable_button_release_event (ClutterActor       *actor,
   self->priv->held = FALSE;
   clutter_ungrab_pointer ();
 
-  if (!st_clickable_contains (self, event->source))
+  if (!_st_actor_contains (actor, event->source))
     return FALSE;
 
   set_pressed (self, FALSE);

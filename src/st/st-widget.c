@@ -558,15 +558,6 @@ st_widget_get_theme_node (StWidget *widget)
 }
 
 static gboolean
-actor_contains (ClutterActor *widget,
-                ClutterActor *other)
-{
-  while (other != NULL && other != widget)
-    other = clutter_actor_get_parent (other);
-  return other != NULL;
-}
-
-static gboolean
 st_widget_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
@@ -574,7 +565,7 @@ st_widget_enter (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (actor_contains (actor, event->source))
+      if (_st_actor_contains (actor, event->source))
         st_widget_set_hover (ST_WIDGET (actor), TRUE);
       else
         {
@@ -600,7 +591,7 @@ st_widget_leave (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (!actor_contains (actor, event->related))
+      if (!_st_actor_contains (actor, event->related))
         st_widget_set_hover (ST_WIDGET (actor), FALSE);
     }
 
@@ -1589,17 +1580,13 @@ st_widget_sync_hover (StWidget *widget)
 {
   ClutterDeviceManager *device_manager;
   ClutterInputDevice *pointer;
-  ClutterActor *actor;
+  ClutterActor *pointer_actor;
 
   device_manager = clutter_device_manager_get_default ();
   pointer = clutter_device_manager_get_core_device (device_manager,
                                                     CLUTTER_POINTER_DEVICE);
-  actor = clutter_input_device_get_pointer_actor (pointer);
-
-  while (actor && actor != (ClutterActor *)widget)
-    actor = clutter_actor_get_parent (actor);
-
-  st_widget_set_hover (widget, actor == (ClutterActor *)widget);
+  pointer_actor = clutter_input_device_get_pointer_actor (pointer);
+  st_widget_set_hover (widget, _st_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
 }
 
 /**

@@ -275,16 +275,7 @@ SearchEntry.prototype = {
 
     _onCapturedEvent: function(actor, event) {
         let source = event.get_source();
-        let panelEvent = false;
-
-        if (source) {
-            let parent = source;
-            do {
-                if (parent == Main.panel.actor)
-                    break;
-            } while ((parent = parent.get_parent()) != null);
-            panelEvent = (parent != null);
-        }
+        let panelEvent = source && Main.panel.actor.contains(source);
 
         switch (event.type()) {
             case Clutter.EventType.BUTTON_PRESS:
