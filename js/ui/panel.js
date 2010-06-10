@@ -28,6 +28,10 @@ const PANEL_ICON_SIZE = 24;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
+const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
+const SPINNER_UPDATE_TIMEOUT = 130;
+const SPINNER_SPEED = 0.02;
+
 const STANDARD_TRAY_ICON_ORDER = ['keyboard', 'volume', 'bluetooth', 'network', 'battery'];
 const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
@@ -40,6 +44,49 @@ const CLOCK_FORMAT_KEY        = 'clock/format';
 const CLOCK_CUSTOM_FORMAT_KEY = 'clock/custom_format';
 const CLOCK_SHOW_DATE_KEY     = 'clock/show_date';
 const CLOCK_SHOW_SECONDS_KEY  = 'clock/show_seconds';
+
+function AnimatedIcon(name, size) {
+    this._init(name, size);
+}
+
+AnimatedIcon.prototype = {
+    _init: function(name, size) {
+        this.actor = new St.Bin({ visible: false });
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::visible', Lang.bind(this, function() {
+            if (this.actor.visible) {
+                this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+            } else {
+                if (this._timeoutId)
+                    Mainloop.source_remove(this._timeoutId);
+                this._timeoutId = 0;
+            }
+        }));
+
+        this._timeoutId = 0;
+        this._i = 0;
+        this._animations = St.TextureCache.get_default().load_sliced_image (global.datadir + '/theme/' + name, size, size);
+        this.actor.set_child(this._animations);
+    },
+
+    _update: function() {
+        this._animations.hide_all();
+        this._animations.show();
+        if (this._i && this._i < this._animations.get_n_children())
+            this._animations.get_nth_child(this._i++).show();
+        else {
+            this._i = 1;
+            if (this._animations.get_n_children())
+                this._animations.get_nth_child(0).show();
+        }
+        return true;
+    },
+
+    _onDestroy: function() {
+        if (this._timeoutId)
+            Mainloop.source_remove(this._timeoutId);
+    }
+};
 
 function TextShadower() {
     this._init();
@@ -207,13 +254,22 @@ AppMenuButton.prototype = {
             this.hide();
         }));
 
+        this._updateId = 0;
+        this._animationStep = 0;
+        this._clipWidth = AppDisplay.APPICON_SIZE / 2;
+        this._direction = SPINNER_SPEED;
+
+        this._spinner = new AnimatedIcon('process-working.png', 24);
+        this._container.add_actor(this._spinner.actor);
+        this._spinner.actor.lower_bottom();
+
+        this._shadow = new St.Bin({ style_class: 'label-real-shadow' });
+        this._shadow.hide();
+        this._container.add_actor(this._shadow);
+
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
-        // For now just resync on all running state changes; this is mainly to handle
-        // cases where the focused window's application changes without the focus
-        // changing.  An example case is how we map Firefox based on the window
-        // title which is a dynamic property.
-        tracker.connect('app-state-changed', Lang.bind(this, this._sync));
+        tracker.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
 
         this._sync();
     },
@@ -246,6 +302,66 @@ AppMenuButton.prototype = {
                                this._visible = false;
                            },
                            onCompleteScope: this });
+    },
+
+    _stopAnimation: function(animate) {
+        this._label.actor.remove_clip();
+        if (this._updateId) {
+            this._shadow.hide();
+            if (animate) {
+                Tweener.addTween(this._spinner.actor,
+                                 { opacity: 0,
+                                   time: 0.2,
+                                   transition: "easeOutQuad",
+                                   onCompleteScope: this,
+                                   onComplete: function() {
+                                       this._spinner.actor.opacity = 255;
+                                       this._spinner.actor.hide();
+                                   }
+                                 });
+            }
+            Mainloop.source_remove(this._updateId);
+            this._updateId = 0;
+        }
+        if (!animate)
+            this._spinner.actor.hide();
+    },
+
+    stopAnimation: function() {
+        this._direction = SPINNER_SPEED * 3;
+        this._stop = true;
+    },
+
+    _update: function() {
+        this._animationStep += this._direction;
+        if (this._animationStep > 1 && this._stop) {
+            this._animationStep = 1;
+            this._stopAnimation(true);
+            return false;
+        }
+        if (this._animationStep < 0 || this._animationStep > 1) {
+            this._direction = -this._direction;
+            this._animationStep += 2 * this._direction;
+        }
+        this._clipWidth = this._label.actor.width - (this._label.actor.width - AppDisplay.APPICON_SIZE / 2) * (1 - this._animationStep);
+        if (this.actor.get_direction() == St.TextDirection.LTR) {
+            this._label.actor.set_clip(0, 0, this._clipWidth + this._shadow.width, this.actor.height);
+        } else {
+            this._label.actor.set_clip(this._label.actor.width - this._clipWidth, 0, this._clipWidth, this.actor.height);
+        }
+        this._container.queue_relayout();
+        return true;
+    },
+
+    startAnimation: function() {
+        this._direction = SPINNER_SPEED;
+        this._stopAnimation(false);
+        this._animationStep = 0;
+        this._update();
+        this._stop = false;
+        this._updateId = Mainloop.timeout_add(SPINNER_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+        this._spinner.actor.show();
+        this._shadow.show();
     },
 
     _getContentPreferredWidth: function(actor, forHeight, alloc) {
@@ -305,6 +421,25 @@ AppMenuButton.prototype = {
             childBox.x1 = Math.max(0, childBox.x2 - naturalWidth);
         }
         this._label.actor.allocate(childBox, flags);
+
+        if (direction == St.TextDirection.LTR) {
+            childBox.x1 = Math.floor(iconWidth / 2) + this._clipWidth + this._shadow.width;
+            childBox.x2 = childBox.x1 + this._spinner.actor.width;
+            childBox.y1 = box.y1;
+            childBox.y2 = box.y2 - 1;
+            this._spinner.actor.allocate(childBox, flags);
+            childBox.x1 = Math.floor(iconWidth / 2) + this._clipWidth + 2;
+            childBox.x2 = childBox.x1 + this._shadow.width;
+            childBox.y1 = box.y1;
+            childBox.y2 = box.y2 - 1;
+            this._shadow.allocate(childBox, flags);
+        } else {
+            childBox.x1 = this._label.actor.width - this._clipWidth - this._spinner.actor.width;
+            childBox.x2 = childBox.x1 + this._spinner.actor.width;
+            childBox.y1 = box.y1;
+            childBox.y2 = box.y2 - 1;
+            this._spinner.actor.allocate(childBox, flags);
+        }
     },
 
     _onQuit: function() {
@@ -313,27 +448,55 @@ AppMenuButton.prototype = {
         this._focusedApp.request_quit();
     },
 
+    _onAppStateChanged: function(tracker, app) {
+        let state = app.state;
+        if (app == this._lastStartedApp
+            && state != Shell.AppState.STARTING) {
+            this._lastStartedApp = null;
+        } else if (state == Shell.AppState.STARTING) {
+            this._lastStartedApp = app;
+        }
+        // For now just resync on all running state changes; this is mainly to handle
+        // cases where the focused window's application changes without the focus
+        // changing.  An example case is how we map OpenOffice.org based on the window
+        // title which is a dynamic property.
+        this._sync();
+    },
+
     _sync: function() {
         let tracker = Shell.WindowTracker.get_default();
 
         let focusedApp = tracker.focus_app;
-        if (focusedApp == this._focusedApp)
-          return;
+        if (focusedApp == this._focusedApp) {
+            if (focusedApp && focusedApp.get_state() != Shell.AppState.STARTING)
+                this.stopAnimation();
+            return;
+        } else {
+            this._stopAnimation();
+        }
 
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
         this._label.setText('');
+        this.actor.reactive = false;
 
         this._focusedApp = focusedApp;
 
-        if (this._focusedApp != null) {
-            let icon = this._focusedApp.get_faded_icon(AppDisplay.APPICON_SIZE);
-            let appName = this._focusedApp.get_name();
-            this._label.setText(appName);
-            this._quitMenu.label.set_text(_("Quit %s").format(appName));
+        let targetApp = this._focusedApp != null ? this._focusedApp : this._lastStartedApp;
+        if (targetApp != null) {
+            let icon = targetApp.get_faded_icon(AppDisplay.APPICON_SIZE);
+
+            this._label.setText(targetApp.get_name());
+            // TODO - _quit() doesn't really work on apps in state STARTING yet
+            this._quitMenu.label.set_text(_('Quit %s').format(targetApp.get_name()));
+
+            this.actor.reactive = true;
             this._iconBox.set_child(icon);
             this._iconBox.show();
+
+            if (targetApp.get_state() == Shell.AppState.STARTING)
+                this.startAnimation();
         }
 
         this.emit('changed');
@@ -597,7 +760,7 @@ Panel.prototype = {
                                         Lang.bind(this, this._onHotCornerClicked));
 
         // In addition to being triggered by the mouse enter event, the hot corner
-        // can be triggered by clicking on it. This is useful if the user wants to 
+        // can be triggered by clicking on it. This is useful if the user wants to
         // undo the effect of triggering the hot corner once in the hot corner.
         this._hotCorner.connect('enter-event',
                                 Lang.bind(this, this._onHotCornerEntered));
