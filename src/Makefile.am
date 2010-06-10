@@ -81,9 +81,16 @@ shell_public_headers_h =		\
 	shell-wm.h              \
 	shell-xfixes-cursor.h
 
+# Files we don't want to be scanned by introspection
+non_gir_sources =				\
+	shell-embedded-window-private.h		\
+	shell-global-private.h			\
+	shell-window-tracker-private.h
+
 libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
+	$(non_gir_sources)		\
 	gnome-shell-plugin.c		\
 	gtk-compat.h			\
 	shell-app.c			\
@@ -94,7 +101,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-doc-system.c		\
 	shell-drawing.c			\
 	shell-embedded-window.c		\
-	shell-embedded-window-private.h	\
 	shell-gconf.c			\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
@@ -102,7 +108,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-overflow-list.c		\
 	shell-process.c			\
 	shell-global.c			\
-	shell-global-private.h		\
 	shell-perf-log.c		\
 	shell-slicer.c			\
 	shell-stack.c			\
@@ -112,18 +117,9 @@ libgnome_shell_la_SOURCES =		\
 	shell-wm.c              \
 	shell-xfixes-cursor.c
 
-
-
-non_gir_sources =				\
-	shell-embedded-window-private.h		\
-	shell-global-private.h			\
-	shell-window-tracker-private.h
-
 shell_recorder_sources =        \
 	shell-recorder.c	\
-	shell-recorder.h	\
-	shell-recorder-src.c	\
-	shell-recorder-src.h
+	shell-recorder.h
 
 # Custom element is an internal detail
 shell_recorder_non_gir_sources =  \
@@ -140,7 +136,7 @@ test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
 test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
 
 test_recorder_SOURCES =     \
-	$(shell_recorder_sources) \
+	$(shell_recorder_sources) $(shell_recorder_non_gir_sources) \
 	test-recorder.c
 endif BUILD_RECORDER
 
