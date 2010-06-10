@@ -128,6 +128,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-texture.c			\
 	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
+	$(srcdir)/cogl-texture-rectangle-private.h      \
+	$(srcdir)/cogl-texture-rectangle.c              \
 	$(srcdir)/cogl-atlas.h                          \
 	$(srcdir)/cogl-atlas.c                          \
 	$(srcdir)/cogl-atlas-texture-private.h          \
