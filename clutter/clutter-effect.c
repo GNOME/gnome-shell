@@ -39,29 +39,17 @@
  * <refsect2 id="ClutterEffect-implementation">
  *   <title>Implementing a ClutterEffect</title>
  *   <para>Creating a sub-class of #ClutterEffect requires the implementation
- *   of three virtual functions:</para>
+ *   of two virtual functions:</para>
  *   <itemizedlist>
- *     <listitem><simpara><function>prepare()</function>, which is called when
- *     attaching the #ClutterEffect to a #ClutterActor through the
- *     clutter_actor_add_effect() function or when the actor is being
- *     painted;</simpara></listitem>
  *     <listitem><simpara><function>pre_paint()</function>, which is called
  *     before painting the #ClutterActor.</simpara></listitem>
  *     <listitem><simpara><function>post_paint()</function>, which is called
  *     after painting the #ClutterActor.</simpara></listitem>
  *   </itemizedlist>
- *   <para>The <function>prepare()</function> function receives the
- *   #ClutterActor to which the effect has been attached to, and it should be
- *   used to set up the initial state of the effect, for instance depending on
- *   the actor that has been passed. The function returns a boolean value,
- *   which is used to determine whether the #ClutterEffect has been prepared or
- *   not. An unprepared shader will be asked to prepare itself again during the
- *   actor's paint sequence, and if it fails again it will be ignored.</para>
  *   <para>The <function>pre_paint()</function> function should be used to set
  *   up the #ClutterEffect right before the #ClutterActor's paint
- *   sequence. This function, like <function>prepare()</function> can fail, and
- *   return %FALSE; in that case, no <function>post_paint()</function>
- *   invocation will follow.</para>
+ *   sequence. This function can fail, and return %FALSE; in that case, no
+ *   <function>post_paint()</function> invocation will follow.</para>
  *   <para>The <function>post_paint()</function> function is called after the
  *   #ClutterActor's paint sequence.</para>
  *   <para>The <function>pre_paint()</function> phase could be seen as a custom
@@ -73,8 +61,8 @@
  *     <title>A simple ClutterEffect implementation</title>
  *     <para>The example below creates two rectangles: one will be painted
  *     "behind" the actor, while another will be painted "on top" of the actor.
- *     The <function>prepare()</function> phase will create the two materials
- *     used for the two different rectangles; the
+ *     The <function>set_actor()</function> implementation will create the two
+ *     materials used for the two different rectangles; the
  *     <function>pre_paint()</function> function will paint the first material
  *     using cogl_rectangle(), while the <function>post_paint()</function>
  *     phase will paint the second material.</para>
