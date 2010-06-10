@@ -355,6 +355,7 @@ clutter_actor_set_parent
 clutter_actor_get_parent
 clutter_actor_reparent
 clutter_actor_unparent
+clutter_actor_contains
 clutter_actor_raise
 clutter_actor_lower
 clutter_actor_raise_top

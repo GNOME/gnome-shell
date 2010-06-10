@@ -7568,6 +7568,31 @@ clutter_actor_reparent (ClutterActor *self,
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
    }
 }
+
+/**
+ * clutter_actor_contains:
+ * @self: A #ClutterActor
+ * @descendant: A #ClutterActor, possibly contained in @self
+ *
+ * Determines if @descendant is contained inside @self (either as an
+ * immediate child, or as a deeper descendant).
+ *
+ * Return value: whether @descendent is contained within @self
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_actor_contains (ClutterActor *self,
+			ClutterActor *descendant)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (descendant), FALSE);
+
+  while (descendant != NULL && descendant != self)
+    descendant = descendant->priv->parent_actor;
+  return descendant == self;
+}
+
 /**
  * clutter_actor_raise:
  * @self: A #ClutterActor

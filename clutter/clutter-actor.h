@@ -458,6 +458,8 @@ ClutterActor *        clutter_actor_get_parent                (ClutterActor     
 void                  clutter_actor_reparent                  (ClutterActor          *self,
                                                                ClutterActor          *new_parent);
 void                  clutter_actor_unparent                  (ClutterActor          *self);
+gboolean              clutter_actor_contains                  (ClutterActor          *self,
+							       ClutterActor          *descendant);
 ClutterActor*         clutter_actor_get_stage                 (ClutterActor          *actor);
 
 void                  clutter_actor_raise                     (ClutterActor          *self,
