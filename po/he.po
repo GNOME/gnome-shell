@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 16:26+0300\n"
-"PO-Revision-Date: 2010-06-03 16:31+0200\n"
+"POT-Creation-Date: 2010-06-10 12:19+0300\n"
+"PO-Revision-Date: 2010-06-10 12:20+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,27 +61,27 @@ msgid "_24 hour format"
 msgstr "מבנה _24 שעות"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:858
+#: ../js/ui/appDisplay.js:387 ../js/ui/dash.js:881
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:338
+#: ../js/ui/appDisplay.js:419
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:710
+#: ../js/ui/appDisplay.js:786
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:790
 msgid "Remove from Favorites"
 msgstr "הסר מהמועדפים"
 
-#: ../js/ui/appDisplay.js:715
+#: ../js/ui/appDisplay.js:791
 msgid "Add to Favorites"
 msgstr "הוסף למועדפים"
 
-#: ../js/ui/appDisplay.js:1042
+#: ../js/ui/appDisplay.js:1127
 msgid "Drag here to add favorites"
 msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
 
@@ -95,61 +95,70 @@ msgstr "%s נוסף למועדפים שלך"
 msgid "%s has been removed from your favorites."
 msgstr "%s הוסר מהמועדפים שלך."
 
-#: ../js/ui/dash.js:189
+#: ../js/ui/dash.js:204
 msgid "Find"
 msgstr "חיפוש"
 
-#: ../js/ui/dash.js:513
+#: ../js/ui/dash.js:536
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/dash.js:527
+#: ../js/ui/dash.js:550
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:877 ../js/ui/placeDisplay.js:551
+#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:551
 msgid "PLACES & DEVICES"
 msgstr "מקומות והתקנים"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:884 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "פריטים אחרונים"
 
-#: ../js/ui/lookingGlass.js:470
+#: ../js/ui/lookingGlass.js:475
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:507
+#: ../js/ui/lookingGlass.js:512
 msgid "Enabled"
 msgstr "פעיל"
 
-#: ../js/ui/lookingGlass.js:509
+#: ../js/ui/lookingGlass.js:514
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:511
+#: ../js/ui/lookingGlass.js:516
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:513
+#: ../js/ui/lookingGlass.js:518
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:538
+#: ../js/ui/lookingGlass.js:543
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:544
+#: ../js/ui/lookingGlass.js:549
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/overview.js:161
+#: ../js/ui/overview.js:165
 msgid "Undo"
 msgstr "ביטול"
+
+#: ../js/ui/panel.js:818
+#, c-format
+msgid "Quit %s"
+msgstr "יציאה מ־%s"
+
+#: ../js/ui/panel.js:838
+msgid "Preferences"
+msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -210,48 +219,48 @@ msgstr "ניסיון חוזר"
 msgid "Connect to..."
 msgstr "התחבר אל..."
 
-#: ../js/ui/runDialog.js:231
+#: ../js/ui/runDialog.js:235
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/runDialog.js:375
+#: ../js/ui/runDialog.js:380
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
-#: ../js/ui/statusMenu.js:90
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/statusMenu.js:94
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:98
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "בלתי נראה"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "מידע על המשתמש..."
 
-#: ../js/ui/statusMenu.js:109
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "העדפות מערכת..."
 
-#: ../js/ui/statusMenu.js:116
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:120
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "החלף משתמש"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "כיבוי..."
 
@@ -274,32 +283,32 @@ msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממ�
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
-#: ../src/shell-global.c:1027
+#: ../src/shell-global.c:1025
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1031
+#: ../src/shell-global.c:1029
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 
-#: ../src/shell-global.c:1036
+#: ../src/shell-global.c:1034
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 
-#: ../src/shell-global.c:1041
+#: ../src/shell-global.c:1039
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 
-#: ../src/shell-global.c:1046
+#: ../src/shell-global.c:1044
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
