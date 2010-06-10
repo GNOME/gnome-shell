@@ -54,33 +54,67 @@ cogl_color_free (CoglColor *color)
 }
 
 void
+cogl_color_init_from_4ub (CoglColor *color,
+                          guint8     red,
+                          guint8     green,
+                          guint8     blue,
+                          guint8     alpha)
+{
+  g_return_if_fail (color != NULL);
+
+  color->red   = red;
+  color->green = green;
+  color->blue  = blue;
+  color->alpha = alpha;
+}
+
+/* XXX: deprecated, use cogl_color_init_from_4ub */
+void
 cogl_color_set_from_4ub (CoglColor *dest,
                          guint8     red,
                          guint8     green,
                          guint8     blue,
                          guint8     alpha)
 {
-  g_return_if_fail (dest != NULL);
-
-  dest->red   = red;
-  dest->green = green;
-  dest->blue  = blue;
-  dest->alpha = alpha;
+  cogl_color_init_from_4ub (dest, red, green, blue, alpha);
 }
 
 void
-cogl_color_set_from_4f (CoglColor *dest,
-                        float  red,
-                        float  green,
-                        float  blue,
-                        float  alpha)
+cogl_color_init_from_4f (CoglColor *color,
+                         float      red,
+                         float      green,
+                         float      blue,
+                         float      alpha)
 {
-  g_return_if_fail (dest != NULL);
+  g_return_if_fail (color != NULL);
 
-  dest->red   =  (red * 255);
-  dest->green =  (green * 255);
-  dest->blue  =  (blue * 255);
-  dest->alpha =  (alpha * 255);
+  color->red   =  (red * 255);
+  color->green =  (green * 255);
+  color->blue  =  (blue * 255);
+  color->alpha =  (alpha * 255);
+}
+
+/* XXX: deprecated, use cogl_color_init_from_4f */
+void
+cogl_color_set_from_4f (CoglColor *color,
+                        float      red,
+                        float      green,
+                        float      blue,
+                        float      alpha)
+{
+  cogl_color_init_from_4f (color, red, green, blue, alpha);
+}
+
+void
+cogl_color_init_from_4fv (CoglColor *color,
+                          float *color_array)
+{
+  g_return_if_fail (color != NULL);
+
+  color->red   =  (color_array[0] * 255);
+  color->green =  (color_array[1] * 255);
+  color->blue  =  (color_array[2] * 255);
+  color->alpha =  (color_array[3] * 255);
 }
 
 unsigned char
