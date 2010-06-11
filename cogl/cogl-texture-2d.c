@@ -44,7 +44,7 @@
 
 static void _cogl_texture_2d_free (CoglTexture2D *tex_2d);
 
-COGL_HANDLE_DEFINE (Texture2D, texture_2d);
+COGL_TEXTURE_DEFINE (Texture2D, texture_2d);
 
 static const CoglTextureVtable cogl_texture_2d_vtable;
 

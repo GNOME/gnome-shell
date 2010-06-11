@@ -142,6 +142,17 @@ typedef enum _CoglTextureChangeFlags
 void
 _cogl_texture_free (CoglTexture *texture);
 
+/* This is used to register a type to the list of handle types that
+   will be considered a texture in cogl_is_texture() */
+void
+_cogl_texture_register_texture_type (GQuark type);
+
+#define COGL_TEXTURE_DEFINE(TypeName, type_name)                        \
+  COGL_HANDLE_DEFINE_WITH_CODE                                          \
+  (TypeName, type_name,                                                 \
+   _cogl_texture_register_texture_type (_cogl_handle_                   \
+                                        ## type_name ## _get_type ()))
+
 void
 _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
                                              float virtual_tx_1,

@@ -65,6 +65,8 @@ cogl_create_context (void)
   _context->feature_flags_private = 0;
   _context->features_cached = FALSE;
 
+  _context->texture_types = NULL;
+
   /* Initialise the driver specific state */
   /* TODO: combine these two into one function */
   _cogl_create_context_driver (_context);
@@ -250,6 +252,8 @@ _cogl_destroy_context (void)
   _cogl_bitmask_destroy (&_context->texcoord_arrays_enabled);
   _cogl_bitmask_destroy (&_context->temp_bitmask);
   _cogl_bitmask_destroy (&_context->texcoord_arrays_to_disable);
+
+  g_slist_free (_context->texture_types);
 
   g_free (_context);
 }

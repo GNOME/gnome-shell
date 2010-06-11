@@ -42,7 +42,7 @@
 
 static void _cogl_sub_texture_free (CoglSubTexture *sub_tex);
 
-COGL_HANDLE_DEFINE (SubTexture, sub_texture);
+COGL_TEXTURE_DEFINE (SubTexture, sub_texture);
 
 static const CoglTextureVtable cogl_sub_texture_vtable;
 
