@@ -27,7 +27,11 @@
 
 #include "cogl.h"
 
+#ifdef HAVE_COGL_GLES2
 #include <EGL/egl.h>
+#else /* HAVE_COGL_GLES2 */
+#include <GLES/egl.h>
+#endif /* HAVE_COGL_GLES2 */
 
 CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
