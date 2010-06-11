@@ -36,6 +36,7 @@
 
 #include "st-widget.h"
 
+#include "st-label.h"
 #include "st-marshal.h"
 #include "st-private.h"
 #include "st-texture-cache.h"
@@ -1604,4 +1605,102 @@ st_widget_get_hover (StWidget *widget)
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
 
   return widget->priv->hover;
+}
+
+static gboolean
+append_actor_text (GString      *desc,
+                   ClutterActor *actor)
+{
+  if (CLUTTER_IS_TEXT (actor))
+    {
+      g_string_append_printf (desc, " (\"%s\")",
+                              clutter_text_get_text (CLUTTER_TEXT (actor)));
+      return TRUE;
+    }
+  else if (ST_IS_LABEL (actor))
+    {
+      g_string_append_printf (desc, " (\"%s\")",
+                              st_label_get_text (ST_LABEL (actor)));
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+/**
+ * st_describe_actor:
+ * @actor: a #ClutterActor
+ *
+ * Creates a string describing @actor, for use in debugging. This
+ * includes the class name and actor name (if any), plus if @actor
+ * is an #StWidget, its style class and pseudo class names.
+ *
+ * Return value: the debug name.
+ */
+char *
+st_describe_actor (ClutterActor *actor)
+{
+  GString *desc;
+  const char *name;
+  int i;
+
+  if (!actor)
+    return g_strdup ("[null]");
+
+  desc = g_string_new (NULL);
+  g_string_append_printf (desc, "[%p %s", actor,
+                          G_OBJECT_TYPE_NAME (actor));
+
+  if (ST_IS_WIDGET (actor))
+    {
+      const char *style_class = st_widget_get_style_class_name (ST_WIDGET (actor));
+      const char *pseudo_class = st_widget_get_style_pseudo_class (ST_WIDGET (actor));
+      char **classes;
+
+      if (style_class)
+        {
+          classes = g_strsplit (style_class, ",", -1);
+          for (i = 0; classes[i]; i++)
+            {
+              g_strchug (classes[i]);
+              g_string_append_printf (desc, ".%s", classes[i]);
+            }
+          g_strfreev (classes);
+        }
+
+      if (pseudo_class)
+        {
+          classes = g_strsplit (pseudo_class, ",", -1);
+          for (i = 0; classes[i]; i++)
+            {
+              g_strchug (classes[i]);
+              g_string_append_printf (desc, ":%s", classes[i]);
+            }
+          g_strfreev (classes);
+        }
+    }
+
+  name = clutter_actor_get_name (actor);
+  if (name)
+    g_string_append_printf (desc, " \"%s\"", name);
+
+  if (!append_actor_text (desc, actor) && CLUTTER_IS_CONTAINER (actor))
+    {
+      GList *children, *l;
+
+      /* Do a limited search of @actor's children looking for a label */
+      children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+      for (l = children, i = 0; l && i < 20; l = l->next, i++)
+        {
+          if (append_actor_text (desc, l->data))
+            break;
+          else if (CLUTTER_IS_CONTAINER (l->data))
+            children = g_list_concat (children, clutter_container_get_children (l->data));
+        }
+      g_list_free (children);
+    }
+
+  g_string_append_c (desc, ']');
+
+  return g_string_free (desc, FALSE);
 }

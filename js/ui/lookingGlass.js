@@ -402,14 +402,10 @@ Inspector.prototype = {
             let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
                                                        stageX,
                                                        stageY);
-            let id, style_class;
-            if (target instanceof St.Widget) {
-                id = target.get_theme_node().get_element_id();
-                style_class = target.get_theme_node().get_element_class();
-            }
-            let position = '<inspect x: ' + stageX + ' y: ' + stageY + '>';
-            let style = '<style id: ' + id  + ' class: ' + style_class + '>';
-            displayText.text = position + ' ' + style + ' ' + target;
+            let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
+            displayText.text = '';
+            let description = St.describe_actor(target);
+            displayText.text = position + ' ' + description;
             if (borderPaintTarget != null)
                 borderPaintTarget.disconnect(borderPaintId);
             borderPaintTarget = target;

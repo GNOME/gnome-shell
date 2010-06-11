@@ -141,6 +141,8 @@ void                  st_widget_set_direction             (StWidget        *self
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);
 
+/* debug method */
+char *st_describe_actor (ClutterActor *actor);
 
 G_END_DECLS
 
