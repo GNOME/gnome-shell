@@ -317,115 +317,115 @@ struct _CoglGles2WrapperShader
 
 #endif /* GL_MODELVIEW */
 
-void cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper);
-void cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper);
+void _cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper);
+void _cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper);
 
-void cogl_wrap_glPushMatrix ();
-void cogl_wrap_glPopMatrix ();
-void cogl_wrap_glMatrixMode (GLenum mode);
-void cogl_wrap_glLoadIdentity ();
-void cogl_wrap_glMultMatrixf (const GLfloat *m);
-void cogl_wrap_glLoadMatrixf (const GLfloat *m);
-void cogl_wrap_glFrustumf (GLfloat left, GLfloat right,
-			   GLfloat bottom, GLfloat top,
-			   GLfloat z_near, GLfloat z_far);
-void cogl_wrap_glScalef (GLfloat x, GLfloat y, GLfloat z);
-void cogl_wrap_glTranslatef (GLfloat x, GLfloat y, GLfloat z);
-void cogl_wrap_glRotatef (GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
-void cogl_wrap_glOrthof (GLfloat left, GLfloat right,
-			 GLfloat bottom, GLfloat top,
-			 GLfloat near, GLfloat far);
+void _cogl_wrap_glPushMatrix ();
+void _cogl_wrap_glPopMatrix ();
+void _cogl_wrap_glMatrixMode (GLenum mode);
+void _cogl_wrap_glLoadIdentity ();
+void _cogl_wrap_glMultMatrixf (const GLfloat *m);
+void _cogl_wrap_glLoadMatrixf (const GLfloat *m);
+void _cogl_wrap_glFrustumf (GLfloat left, GLfloat right,
+                            GLfloat bottom, GLfloat top,
+                            GLfloat z_near, GLfloat z_far);
+void _cogl_wrap_glScalef (GLfloat x, GLfloat y, GLfloat z);
+void _cogl_wrap_glTranslatef (GLfloat x, GLfloat y, GLfloat z);
+void _cogl_wrap_glRotatef (GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
+void _cogl_wrap_glOrthof (GLfloat left, GLfloat right,
+                          GLfloat bottom, GLfloat top,
+                          GLfloat near, GLfloat far);
 
-void cogl_wrap_glEnable (GLenum cap);
-void cogl_wrap_glDisable (GLenum cap);
+void _cogl_wrap_glEnable (GLenum cap);
+void _cogl_wrap_glDisable (GLenum cap);
 
-void cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
-				  const GLvoid *pointer);
-void cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
-				const GLvoid *pointer);
-void cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
-			       const GLvoid *pointer);
-void cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
-				const GLvoid *pointer);
+void _cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
+                                   const GLvoid *pointer);
+void _cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
+                                 const GLvoid *pointer);
+void _cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
+                                const GLvoid *pointer);
+void _cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
+                                 const GLvoid *pointer);
 
-void cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param);
-void cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params);
+void _cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param);
+void _cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params);
 
-void cogl_wrap_glClientActiveTexture (GLenum texture);
-void cogl_wrap_glActiveTexture (GLenum texture);
+void _cogl_wrap_glClientActiveTexture (GLenum texture);
+void _cogl_wrap_glActiveTexture (GLenum texture);
 
-void cogl_wrap_glEnableClientState (GLenum array);
-void cogl_wrap_glDisableClientState (GLenum array);
+void _cogl_wrap_glEnableClientState (GLenum array);
+void _cogl_wrap_glDisableClientState (GLenum array);
 
-void cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref);
+void _cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref);
 
-void cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a);
-void cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a);
+void _cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a);
+void _cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 
-void cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation);
+void _cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation);
 
-void cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
-void cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params);
+void _cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
+void _cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params);
 
-void cogl_wrap_glFogf (GLenum pname, GLfloat param);
-void cogl_wrap_glFogfv (GLenum pname, const GLfloat *params);
+void _cogl_wrap_glFogf (GLenum pname, GLfloat param);
+void _cogl_wrap_glFogfv (GLenum pname, const GLfloat *params);
 
-void cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
-void cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
-                               const GLvoid *indices);
-void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
+void _cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
+void _cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
+                                const GLvoid *indices);
+void _cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 
-void cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params);
+void _cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params);
 
 /* This function is only available on GLES 2 */
-#define cogl_wrap_glGenerateMipmap glGenerateMipmap
+#define _cogl_wrap_glGenerateMipmap glGenerateMipmap
 
 void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 
 /* Remap the missing GL functions to use the wrappers */
 #ifndef COGL_GLES2_WRAPPER_NO_REMAP
-#define glDrawArrays                 cogl_wrap_glDrawArrays
-#define glDrawElements               cogl_wrap_glDrawElements
-#define glPushMatrix                 cogl_wrap_glPushMatrix
-#define glPopMatrix                  cogl_wrap_glPopMatrix
-#define glMatrixMode                 cogl_wrap_glMatrixMode
-#define glLoadIdentity               cogl_wrap_glLoadIdentity
-#define glMultMatrixf                cogl_wrap_glMultMatrixf
-#define glLoadMatrixf                cogl_wrap_glLoadMatrixf
-#define glFrustumf                   cogl_wrap_glFrustumf
-#define glScalef                     cogl_wrap_glScalef
-#define glTranslatef                 cogl_wrap_glTranslatef
-#define glRotatef                    cogl_wrap_glRotatef
-#define glOrthof                     cogl_wrap_glOrthof
-#define glEnable                     cogl_wrap_glEnable
-#define glDisable                    cogl_wrap_glDisable
-#define glTexCoordPointer            cogl_wrap_glTexCoordPointer
-#define glVertexPointer              cogl_wrap_glVertexPointer
-#define glColorPointer               cogl_wrap_glColorPointer
-#define glNormalPointer              cogl_wrap_glNormalPointer
-#define glTexEnvi                    cogl_wrap_glTexEnvi
-#define glTexEnvfv                   cogl_wrap_glTexEnvfv
-#define glActiveTexture              cogl_wrap_glActiveTexture
-#define glClientActiveTexture        cogl_wrap_glClientActiveTexture
-#define glEnableClientState          cogl_wrap_glEnableClientState
-#define glDisableClientState         cogl_wrap_glDisableClientState
-#define glAlphaFunc                  cogl_wrap_glAlphaFunc
-#define glColor4f                    cogl_wrap_glColor4f
-#define glColor4ub                   cogl_wrap_glColor4ub
-#define glClipPlanef                 cogl_wrap_glClipPlanef
-#define glGetIntegerv                cogl_wrap_glGetIntegerv
-#define glGetFloatv                  cogl_wrap_glGetFloatv
-#define glFogf                       cogl_wrap_glFogf
-#define glFogfv                      cogl_wrap_glFogfv
-#define glTexParameteri              cogl_wrap_glTexParameteri
-#define glMaterialfv                 cogl_wrap_glMaterialfv
+#define glDrawArrays                 _cogl_wrap_glDrawArrays
+#define glDrawElements               _cogl_wrap_glDrawElements
+#define glPushMatrix                 _cogl_wrap_glPushMatrix
+#define glPopMatrix                  _cogl_wrap_glPopMatrix
+#define glMatrixMode                 _cogl_wrap_glMatrixMode
+#define glLoadIdentity               _cogl_wrap_glLoadIdentity
+#define glMultMatrixf                _cogl_wrap_glMultMatrixf
+#define glLoadMatrixf                _cogl_wrap_glLoadMatrixf
+#define glFrustumf                   _cogl_wrap_glFrustumf
+#define glScalef                     _cogl_wrap_glScalef
+#define glTranslatef                 _cogl_wrap_glTranslatef
+#define glRotatef                    _cogl_wrap_glRotatef
+#define glOrthof                     _cogl_wrap_glOrthof
+#define glEnable                     _cogl_wrap_glEnable
+#define glDisable                    _cogl_wrap_glDisable
+#define glTexCoordPointer            _cogl_wrap_glTexCoordPointer
+#define glVertexPointer              _cogl_wrap_glVertexPointer
+#define glColorPointer               _cogl_wrap_glColorPointer
+#define glNormalPointer              _cogl_wrap_glNormalPointer
+#define glTexEnvi                    _cogl_wrap_glTexEnvi
+#define glTexEnvfv                   _cogl_wrap_glTexEnvfv
+#define glActiveTexture              _cogl_wrap_glActiveTexture
+#define glClientActiveTexture        _cogl_wrap_glClientActiveTexture
+#define glEnableClientState          _cogl_wrap_glEnableClientState
+#define glDisableClientState         _cogl_wrap_glDisableClientState
+#define glAlphaFunc                  _cogl_wrap_glAlphaFunc
+#define glColor4f                    _cogl_wrap_glColor4f
+#define glColor4ub                   _cogl_wrap_glColor4ub
+#define glClipPlanef                 _cogl_wrap_glClipPlanef
+#define glGetIntegerv                _cogl_wrap_glGetIntegerv
+#define glGetFloatv                  _cogl_wrap_glGetFloatv
+#define glFogf                       _cogl_wrap_glFogf
+#define glFogfv                      _cogl_wrap_glFogfv
+#define glTexParameteri              _cogl_wrap_glTexParameteri
+#define glMaterialfv                 _cogl_wrap_glMaterialfv
 #endif /* COGL_GLES2_WRAPPER_NO_REMAP */
 
 #else /* HAVE_COGL_GLES2 */
 
 /* COGL uses the automatic mipmap generation for GLES 1 so
    glGenerateMipmap doesn't need to do anything */
-#define cogl_wrap_glGenerateMipmap(x) ((void) 0)
+#define _cogl_wrap_glGenerateMipmap(x) ((void) 0)
 
 /* GLES doesn't have glDrawRangeElements, so we simply pretend it does
  * but that it makes no use of the start, end constraints: */

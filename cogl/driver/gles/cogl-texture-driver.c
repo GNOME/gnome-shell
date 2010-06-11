@@ -325,7 +325,7 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 void
 _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 {
-  GE( cogl_wrap_glGenerateMipmap (gl_target) );
+  GE( _cogl_wrap_glGenerateMipmap (gl_target) );
 }
 
 CoglPixelFormat
