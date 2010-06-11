@@ -2,6 +2,28 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
+static gboolean
+on_enter (ClutterActor *actor,
+          ClutterEvent *event)
+{
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
+                         "@effects.curl.period", 0.25,
+                         NULL);
+
+  return FALSE;
+}
+
+static gboolean
+on_leave (ClutterActor *actor,
+          ClutterEvent *event)
+{
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
+                         "@effects.curl.period", 0.0,
+                         NULL);
+
+  return FALSE;
+}
+
 static void
 on_drag_begin (ClutterDragAction   *action,
                ClutterActor        *actor,
@@ -156,6 +178,8 @@ test_drag_main (int argc, char *argv[])
   clutter_actor_set_position (handle, (800 - 128) / 2, (600 - 128) / 2);
   clutter_actor_set_reactive (handle, TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), handle);
+  g_signal_connect (handle, "enter-event", G_CALLBACK (on_enter), NULL);
+  g_signal_connect (handle, "leave-event", G_CALLBACK (on_leave), NULL);
 
   action = clutter_drag_action_new ();
   clutter_drag_action_set_drag_threshold (CLUTTER_DRAG_ACTION (action),
@@ -169,6 +193,7 @@ test_drag_main (int argc, char *argv[])
   clutter_actor_add_action (handle, action);
 
   clutter_actor_add_effect_with_name (handle, "disable", clutter_desaturate_effect_new (0.0));
+  clutter_actor_add_effect_with_name (handle, "curl", clutter_page_turn_effect_new (0.0, 135.0, 12.0));
 
   clutter_actor_show (stage);
 

@@ -95,6 +95,7 @@ source_h =					\
 	$(srcdir)/clutter-colorize-effect.h	\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-deform-effect.h	\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
 	$(srcdir)/clutter-device-manager.h	\
@@ -117,6 +118,7 @@ source_h =					\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-model.h		\
 	$(srcdir)/clutter-offscreen-effect.h	\
+	$(srcdir)/clutter-page-turn-effect.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-score.h 		\
@@ -182,6 +184,7 @@ source_c = \
 	$(srcdir)/clutter-colorize-effect.c	\
 	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-deform-effect.c	\
 	$(srcdir)/clutter-desaturate-effect.c	\
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
@@ -205,6 +208,7 @@ source_c = \
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-offscreen-effect.c	\
+	$(srcdir)/clutter-page-turn-effect.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-rectangle.c 		\
 	$(srcdir)/clutter-score.c 		\

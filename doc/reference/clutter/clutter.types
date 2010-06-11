@@ -27,6 +27,7 @@ clutter_click_action_get_type
 clutter_clone_get_type
 clutter_colorize_effect_get_type
 clutter_constraint_get_type
+clutter_deform_effect_get_type
 clutter_desaturate_effect_get_type
 clutter_device_manager_get_type
 clutter_drag_action_get_type
@@ -43,6 +44,7 @@ clutter_media_get_type
 clutter_model_get_type
 clutter_model_iter_get_type
 clutter_offscreen_effect_get_type
+clutter_page_turn_effect_get_type
 clutter_path_get_type
 clutter_rectangle_get_type
 clutter_score_get_type
