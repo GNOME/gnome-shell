@@ -106,7 +106,7 @@ struct _CoglObject
 #define _COGL_HANDLE_DEBUG_UNREF _COGL_OBJECT_DEBUG_UNREF
 #define COGL_HANDLE_DEBUG_FREE COGL_OBJECT_DEBUG_FREE
 
-#define COGL_OBJECT_DEFINE(TypeName, type_name)                 \
+#define COGL_OBJECT_DEFINE_WITH_CODE(TypeName, type_name, code) \
                                                                 \
 static CoglObjectClass _cogl_##type_name##_class;               \
                                                                 \
@@ -115,7 +115,10 @@ _cogl_object_##type_name##_get_type (void)                      \
 {                                                               \
   static GQuark type = 0;                                       \
   if (!type)                                                    \
-    type = g_quark_from_static_string ("Cogl"#TypeName);        \
+    {                                                           \
+      type = g_quark_from_static_string ("Cogl"#TypeName);      \
+      { code; }                                                 \
+    }                                                           \
   return type;                                                  \
 }                                                               \
                                                                 \
@@ -191,16 +194,22 @@ cogl_##type_name##_unref (void *object)                         \
   cogl_handle_unref (object);                                   \
 }
 
+#define COGL_OBJECT_DEFINE(TypeName, type_name)                 \
+  COGL_OBJECT_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
+
 /* For temporary compatability */
-#define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
+#define COGL_HANDLE_DEFINE_WITH_CODE(TypeName, type_name, code) \
                                                                 \
-COGL_OBJECT_DEFINE (TypeName, type_name)                        \
+COGL_OBJECT_DEFINE_WITH_CODE (TypeName, type_name, code)        \
                                                                 \
 static Cogl##TypeName *                                         \
 _cogl_##type_name##_handle_new (CoglHandle handle)              \
 {                                                               \
   return _cogl_##type_name##_object_new (handle);               \
 }
+
+#define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
+  COGL_HANDLE_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
 
 #endif /* __COGL_OBJECT_PRIVATE_H */
 
