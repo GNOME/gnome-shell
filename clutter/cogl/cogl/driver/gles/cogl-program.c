@@ -321,6 +321,12 @@ cogl_program_uniform_1f (int uniform_no,
 }
 
 void
+cogl_program_uniform_1i (int uniform_no,
+                         int    value)
+{
+}
+
+void
 cogl_program_uniform_float (int  uniform_no,
                             int     size,
                             int     count,
