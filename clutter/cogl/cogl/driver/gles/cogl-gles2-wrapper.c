@@ -118,7 +118,7 @@ initialize_texture_units (CoglGles2Wrapper *w)
   /* We will need to set the matrix mode to GL_TEXTURE to
    * initialise any new texture units, so we save the current
    * mode for restoring afterwards */
-  GE( cogl_wrap_glGetIntegerv (GL_MATRIX_MODE, &prev_mode));
+  GE( _cogl_wrap_glGetIntegerv (GL_MATRIX_MODE, &prev_mode));
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     {
@@ -128,36 +128,36 @@ initialize_texture_units (CoglGles2Wrapper *w)
       memset (new_unit, 0, sizeof (CoglGles2WrapperTextureUnit));
 
       w->active_texture_unit = i;
-      GE( cogl_wrap_glMatrixMode (GL_TEXTURE));
-      GE( cogl_wrap_glLoadIdentity ());
+      GE( _cogl_wrap_glMatrixMode (GL_TEXTURE));
+      GE( _cogl_wrap_glLoadIdentity ());
 
       /* The real GL default is GL_MODULATE but the shader only
          supports GL_COMBINE so let's default to that instead */
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,
-                               GL_COMBINE) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,
-                               GL_MODULATE) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
-                               GL_PREVIOUS) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
-                               GL_TEXTURE) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
-                               GL_SRC_COLOR) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
-                               GL_SRC_COLOR) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA,
-                               GL_MODULATE) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
-                               GL_PREVIOUS) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
-                               GL_TEXTURE) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
-                               GL_SRC_COLOR) );
-      GE( cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
-                               GL_SRC_COLOR) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,
+                                GL_COMBINE) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,
+                                GL_MODULATE) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
+                                GL_PREVIOUS) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
+                                GL_TEXTURE) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
+                                GL_SRC_COLOR) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
+                                GL_SRC_COLOR) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA,
+                                GL_MODULATE) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
+                                GL_PREVIOUS) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
+                                GL_TEXTURE) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
+                                GL_SRC_COLOR) );
+      GE( _cogl_wrap_glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
+                                GL_SRC_COLOR) );
     }
 
-  GE( cogl_wrap_glMatrixMode ((GLenum) prev_mode));
+  GE( _cogl_wrap_glMatrixMode ((GLenum) prev_mode));
 
   w->settings.texture_units = 0;
 
@@ -165,34 +165,34 @@ initialize_texture_units (CoglGles2Wrapper *w)
 }
 
 void
-cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
+_cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 {
   GLfloat default_fog_color[4] = { 0, 0, 0, 0 };
 
   memset (wrapper, 0, sizeof (CoglGles2Wrapper));
 
   /* Initialize the stacks */
-  cogl_wrap_glMatrixMode (GL_PROJECTION);
-  cogl_wrap_glLoadIdentity ();
-  cogl_wrap_glMatrixMode (GL_MODELVIEW);
-  cogl_wrap_glLoadIdentity ();
+  _cogl_wrap_glMatrixMode (GL_PROJECTION);
+  _cogl_wrap_glLoadIdentity ();
+  _cogl_wrap_glMatrixMode (GL_MODELVIEW);
+  _cogl_wrap_glLoadIdentity ();
 
   /* The gl*ActiveTexture wrappers will initialise the texture
    * stack for the texture unit when it's first activated */
-  cogl_wrap_glActiveTexture (GL_TEXTURE0);
-  cogl_wrap_glClientActiveTexture (GL_TEXTURE0);
+  _cogl_wrap_glActiveTexture (GL_TEXTURE0);
+  _cogl_wrap_glClientActiveTexture (GL_TEXTURE0);
 
   /* Initialize the fogging options */
-  cogl_wrap_glDisable (GL_FOG);
-  cogl_wrap_glFogf (GL_FOG_MODE, GL_LINEAR);
-  cogl_wrap_glFogf (GL_FOG_DENSITY, 1.0);
-  cogl_wrap_glFogf (GL_FOG_START, 0);
-  cogl_wrap_glFogf (GL_FOG_END, 1);
-  cogl_wrap_glFogfv (GL_FOG_COLOR, default_fog_color);
+  _cogl_wrap_glDisable (GL_FOG);
+  _cogl_wrap_glFogf (GL_FOG_MODE, GL_LINEAR);
+  _cogl_wrap_glFogf (GL_FOG_DENSITY, 1.0);
+  _cogl_wrap_glFogf (GL_FOG_START, 0);
+  _cogl_wrap_glFogf (GL_FOG_END, 1);
+  _cogl_wrap_glFogfv (GL_FOG_COLOR, default_fog_color);
 
   /* Initialize alpha testing */
-  cogl_wrap_glDisable (GL_ALPHA_TEST);
-  cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
+  _cogl_wrap_glDisable (GL_ALPHA_TEST);
+  _cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
 
   initialize_texture_units (wrapper);
 }
@@ -295,7 +295,7 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
       return (CoglGles2WrapperShader *) node->data;
 
   /* Otherwise create a new shader */
-  shader_source = g_string_new (cogl_fixed_vertex_shader_per_vertex_attribs);
+  shader_source = g_string_new (_cogl_fixed_vertex_shader_per_vertex_attribs);
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
@@ -308,8 +308,8 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
       n_texture_units = i + 1;
 
-  g_string_append (shader_source, cogl_fixed_vertex_shader_transform_matrices);
-  g_string_append (shader_source, cogl_fixed_vertex_shader_output_variables);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_transform_matrices);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_output_variables);
 
   if (n_texture_units > 0)
     {
@@ -322,8 +322,8 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
                               n_texture_units);
     }
 
-  g_string_append (shader_source, cogl_fixed_vertex_shader_fogging_options);
-  g_string_append (shader_source, cogl_fixed_vertex_shader_main_start);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_fogging_options);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_main_start);
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
@@ -339,31 +339,31 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
                                 i);
       }
 
-  g_string_append (shader_source, cogl_fixed_vertex_shader_frag_color_start);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_frag_color_start);
 
   if (settings->fog_enabled)
     {
-      g_string_append (shader_source, cogl_fixed_vertex_shader_fog_start);
+      g_string_append (shader_source, _cogl_fixed_vertex_shader_fog_start);
 
       switch (settings->fog_mode)
 	{
 	case GL_EXP:
-	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_exp);
+          g_string_append (shader_source, _cogl_fixed_vertex_shader_fog_exp);
 	  break;
 
 	case GL_EXP2:
-	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_exp2);
+          g_string_append (shader_source, _cogl_fixed_vertex_shader_fog_exp2);
 	  break;
 
 	default:
-	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_linear);
+          g_string_append (shader_source, _cogl_fixed_vertex_shader_fog_linear);
 	  break;
 	}
 
-      g_string_append (shader_source, cogl_fixed_vertex_shader_fog_end);
+      g_string_append (shader_source, _cogl_fixed_vertex_shader_fog_end);
     }
 
-  g_string_append (shader_source, cogl_fixed_vertex_shader_end);
+  g_string_append (shader_source, _cogl_fixed_vertex_shader_end);
 
   shader_obj = cogl_gles2_wrapper_create_shader (GL_VERTEX_SHADER,
 						 shader_source->str);
@@ -585,14 +585,14 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
       return (CoglGles2WrapperShader *) node->data;
 
   /* Otherwise create a new shader */
-  shader_source = g_string_new (cogl_fixed_fragment_shader_variables_start);
+  shader_source = g_string_new (_cogl_fixed_fragment_shader_variables_start);
 
   /* Find the biggest enabled texture unit index */
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
       n_texture_units = i + 1;
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_inputs);
+  g_string_append (shader_source, _cogl_fixed_fragment_shader_inputs);
 
   if (n_texture_units > 0)
     {
@@ -600,17 +600,18 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
                               "varying vec2       tex_coord[%d];\n",
                               n_texture_units);
 
-      g_string_append (shader_source, cogl_fixed_fragment_shader_texturing_options);
+      g_string_append (shader_source,
+                       _cogl_fixed_fragment_shader_texturing_options);
       g_string_append_printf (shader_source,
                               "uniform sampler2D  texture_unit[%d];\n",
                               n_texture_units);
     }
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_fogging_options);
+  g_string_append (shader_source, _cogl_fixed_fragment_shader_fogging_options);
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_main_declare);
+  g_string_append (shader_source, _cogl_fixed_fragment_shader_main_declare);
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_main_start);
+  g_string_append (shader_source, _cogl_fixed_fragment_shader_main_start);
 
   /* This pointless extra variable is needed to work around an
      apparent bug in the PowerVR drivers. Without it the alpha
@@ -667,41 +668,41 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
         }
 
   if (settings->fog_enabled)
-    g_string_append (shader_source, cogl_fixed_fragment_shader_fog);
+    g_string_append (shader_source, _cogl_fixed_fragment_shader_fog);
 
   if (settings->alpha_test_enabled)
     switch (settings->alpha_test_func)
       {
       case GL_NEVER:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_never);
+                         _cogl_fixed_fragment_shader_alpha_never);
 	break;
       case GL_LESS:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_less);
+                         _cogl_fixed_fragment_shader_alpha_less);
 	break;
       case GL_EQUAL:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_equal);
+                         _cogl_fixed_fragment_shader_alpha_equal);
 	break;
       case GL_LEQUAL:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_lequal);
+                         _cogl_fixed_fragment_shader_alpha_lequal);
 	break;
       case GL_GREATER:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_greater);
+                         _cogl_fixed_fragment_shader_alpha_greater);
 	break;
       case GL_NOTEQUAL:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_notequal);
+                         _cogl_fixed_fragment_shader_alpha_notequal);
 	break;
       case GL_GEQUAL:
 	g_string_append (shader_source,
-			 cogl_fixed_fragment_shader_alpha_gequal);
+                         _cogl_fixed_fragment_shader_alpha_gequal);
       }
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_end);
+  g_string_append (shader_source, _cogl_fixed_fragment_shader_end);
 
   shader_obj = cogl_gles2_wrapper_create_shader (GL_FRAGMENT_SHADER,
 						 shader_source->str);
@@ -896,7 +897,7 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 }
 
 void
-cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
+_cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 {
   GSList *node, *next;
   int i;
@@ -959,7 +960,7 @@ cogl_gles2_wrapper_notify_matrix_changed (CoglGles2Wrapper *wrapper,
 }
 
 void
-cogl_wrap_glMatrixMode (GLenum mode)
+_cogl_wrap_glMatrixMode (GLenum mode)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -991,7 +992,7 @@ cogl_gles2_get_current_matrix (CoglGles2Wrapper *wrapper)
 }
 
 void
-cogl_wrap_glLoadIdentity (void)
+_cogl_wrap_glLoadIdentity (void)
 {
   CoglMatrix *matrix;
 
@@ -1005,7 +1006,7 @@ cogl_wrap_glLoadIdentity (void)
 }
 
 void
-cogl_wrap_glLoadMatrixf (const GLfloat *m)
+_cogl_wrap_glLoadMatrixf (const GLfloat *m)
 {
   CoglMatrix *matrix;
 
@@ -1019,7 +1020,7 @@ cogl_wrap_glLoadMatrixf (const GLfloat *m)
 }
 
 void
-cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
+_cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
 			   const GLvoid *pointer)
 {
   glVertexAttribPointer (COGL_GLES2_WRAPPER_VERTEX_ATTRIB, size, type,
@@ -1027,7 +1028,7 @@ cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
 }
 
 void
-cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
+_cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
 			     const GLvoid *pointer)
 {
   int active_unit;
@@ -1047,15 +1048,15 @@ cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
 }
 
 void
-cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
-			  const GLvoid *pointer)
+_cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
+                           const GLvoid *pointer)
 {
   glVertexAttribPointer (COGL_GLES2_WRAPPER_COLOR_ATTRIB, size, type,
 			 GL_TRUE, stride, pointer);
 }
 
 void
-cogl_wrap_glNormalPointer (GLenum type, GLsizei stride, const GLvoid *pointer)
+_cogl_wrap_glNormalPointer (GLenum type, GLsizei stride, const GLvoid *pointer)
 {
   glVertexAttribPointer (COGL_GLES2_WRAPPER_NORMAL_ATTRIB, 1, type,
 			 GL_FALSE, stride, pointer);
@@ -1134,7 +1135,7 @@ cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
 }
 
 static void
-cogl_wrap_prepare_for_draw (void)
+_cogl_wrap_prepare_for_draw (void)
 {
   CoglGles2WrapperProgram *program;
 
@@ -1320,24 +1321,24 @@ cogl_wrap_prepare_for_draw (void)
 }
 
 void
-cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
+_cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 {
-  cogl_wrap_prepare_for_draw ();
+  _cogl_wrap_prepare_for_draw ();
 
   glDrawArrays (mode, first, count);
 }
 
 void
-cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
+_cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
                           const GLvoid *indices)
 {
-  cogl_wrap_prepare_for_draw ();
+  _cogl_wrap_prepare_for_draw ();
 
   glDrawElements (mode, count, type, indices);
 }
 
 void
-cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
+_cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
   if (target == GL_TEXTURE_ENV)
     {
@@ -1382,7 +1383,7 @@ cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 }
 
 void
-cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
+_cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
 {
   if (target == GL_TEXTURE_ENV && pname == GL_TEXTURE_ENV_COLOR)
     {
@@ -1397,7 +1398,7 @@ cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
 }
 
 void
-cogl_wrap_glClientActiveTexture (GLenum texture)
+_cogl_wrap_glClientActiveTexture (GLenum texture)
 {
   int texture_unit_index = texture - GL_TEXTURE0;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
@@ -1407,7 +1408,7 @@ cogl_wrap_glClientActiveTexture (GLenum texture)
 }
 
 void
-cogl_wrap_glActiveTexture (GLenum texture)
+_cogl_wrap_glActiveTexture (GLenum texture)
 {
   int texture_unit_index = texture - GL_TEXTURE0;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
@@ -1419,7 +1420,7 @@ cogl_wrap_glActiveTexture (GLenum texture)
 }
 
 void
-cogl_wrap_glEnable (GLenum cap)
+_cogl_wrap_glEnable (GLenum cap)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1450,7 +1451,7 @@ cogl_wrap_glEnable (GLenum cap)
 }
 
 void
-cogl_wrap_glDisable (GLenum cap)
+_cogl_wrap_glDisable (GLenum cap)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1481,7 +1482,7 @@ cogl_wrap_glDisable (GLenum cap)
 }
 
 void
-cogl_wrap_glEnableClientState (GLenum array)
+_cogl_wrap_glEnableClientState (GLenum array)
 {
   CoglGles2WrapperTextureUnit *texture_unit;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
@@ -1512,7 +1513,7 @@ cogl_wrap_glEnableClientState (GLenum array)
 }
 
 void
-cogl_wrap_glDisableClientState (GLenum array)
+_cogl_wrap_glDisableClientState (GLenum array)
 {
   CoglGles2WrapperTextureUnit *texture_unit;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
@@ -1543,7 +1544,7 @@ cogl_wrap_glDisableClientState (GLenum array)
 }
 
 void
-cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
+_cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1557,26 +1558,26 @@ cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
 }
 
 void
-cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
+_cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
 {
   glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB, r, g, b, a);
 }
 
 void
-cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a)
+_cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 {
   glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
                     r/255.0, g/255.0, b/255.0, a/255.0);
 }
 
 void
-cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation)
+_cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation)
 {
   /* FIXME */
 }
 
 void
-cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+_cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1603,7 +1604,7 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
 }
 
 void
-cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
+_cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
 {
   CoglGles2WrapperTextureUnit *texture_unit;
 
@@ -1631,7 +1632,7 @@ cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
 }
 
 void
-cogl_wrap_glFogf (GLenum pname, GLfloat param)
+_cogl_wrap_glFogf (GLenum pname, GLfloat param)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1659,7 +1660,7 @@ cogl_wrap_glFogf (GLenum pname, GLfloat param)
 }
 
 void
-cogl_wrap_glFogfv (GLenum pname, const GLfloat *params)
+_cogl_wrap_glFogfv (GLenum pname, const GLfloat *params)
 {
   int i;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
@@ -1674,14 +1675,14 @@ cogl_wrap_glFogfv (GLenum pname, const GLfloat *params)
 }
 
 void
-cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param)
+_cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param)
 {
   if (pname != GL_GENERATE_MIPMAP)
     glTexParameteri (target, pname, param);
 }
 
 void
-cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params)
+_cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params)
 {
   /* FIXME: the GLES 2 backend doesn't yet support lighting so this
      function can't do anything */

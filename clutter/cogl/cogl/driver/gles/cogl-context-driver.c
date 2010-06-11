@@ -40,7 +40,7 @@ _cogl_create_context_driver (CoglContext *_context)
 
   /* Init the GLES2 wrapper */
 #ifdef HAVE_COGL_GLES2
-  cogl_gles2_wrapper_init (&_context->drv.gles2);
+  _cogl_gles2_wrapper_init (&_context->drv.gles2);
 #endif
 }
 
