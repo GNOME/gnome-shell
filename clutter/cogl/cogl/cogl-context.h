@@ -162,6 +162,10 @@ typedef struct
   CoglMaterialProgramType current_use_program_type;
   GLuint                  current_gl_program;
 
+  /* List of types that will be considered a subclass of CoglTexture in
+     cogl_is_texture */
+  GSList           *texture_types;
+
   CoglContextDriver drv;
 } CoglContext;
 

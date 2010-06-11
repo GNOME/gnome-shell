@@ -59,18 +59,31 @@
  * abstract class manually.
  */
 
+void
+_cogl_texture_register_texture_type (GQuark type)
+{
+  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  ctxt->texture_types = g_slist_prepend (ctxt->texture_types,
+                                         GINT_TO_POINTER (type));
+}
+
 gboolean
 cogl_is_texture (CoglHandle handle)
 {
   CoglHandleObject *obj = (CoglHandleObject *)handle;
+  GSList *l;
+
+  _COGL_GET_CONTEXT (ctxt, FALSE);
 
   if (handle == COGL_INVALID_HANDLE)
     return FALSE;
 
-  return (obj->klass->type == _cogl_handle_texture_2d_get_type () ||
-          obj->klass->type == _cogl_handle_atlas_texture_get_type () ||
-          obj->klass->type == _cogl_handle_texture_2d_sliced_get_type () ||
-          obj->klass->type == _cogl_handle_sub_texture_get_type ());
+  for (l = ctxt->texture_types; l; l = l->next)
+    if (GPOINTER_TO_INT (l->data) == obj->klass->type)
+      return TRUE;
+
+  return FALSE;
 }
 
 CoglHandle

@@ -50,7 +50,7 @@
 
 static void _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds);
 
-COGL_HANDLE_DEFINE (Texture2DSliced, texture_2d_sliced);
+COGL_TEXTURE_DEFINE (Texture2DSliced, texture_2d_sliced);
 
 static const CoglTextureVtable cogl_texture_2d_sliced_vtable;
 
