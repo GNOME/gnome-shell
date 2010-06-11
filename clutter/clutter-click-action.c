@@ -102,16 +102,6 @@ click_action_set_pressed (ClutterClickAction *action,
 }
 
 static gboolean
-actor_contains_source (ClutterActor *actor,
-                       ClutterActor *event_source)
-{
-  while (event_source != NULL && event_source != actor)
-    event_source = clutter_actor_get_parent (event_source);
-
-  return event_source != NULL;
-}
-
-static gboolean
 on_event (ClutterActor       *actor,
           ClutterEvent       *event,
           ClutterClickAction *action)
@@ -131,7 +121,7 @@ on_event (ClutterActor       *actor,
       if (priv->is_held)
         return TRUE;
 
-      if (!actor_contains_source (actor, clutter_event_get_source (event)))
+      if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
         return FALSE;
 
       priv->is_held = TRUE;
@@ -153,7 +143,7 @@ on_event (ClutterActor       *actor,
       priv->is_held = FALSE;
       clutter_ungrab_pointer ();
 
-      if (!actor_contains_source (actor, clutter_event_get_source (event)))
+      if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
         return FALSE;
 
       click_action_set_pressed (action, FALSE);
