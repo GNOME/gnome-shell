@@ -63,11 +63,6 @@ static GList *clutter_shaders_list = NULL;
 
 #define CLUTTER_SHADER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SHADER, ClutterShaderPrivate))
 
-typedef enum {
-  CLUTTER_VERTEX_SHADER,
-  CLUTTER_FRAGMENT_SHADER
-} ClutterShaderType;
-
 struct _ClutterShaderPrivate
 {
   guint       compiled         : 1; /* Shader is bound to the GL context */

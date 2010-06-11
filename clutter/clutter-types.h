@@ -417,6 +417,20 @@ typedef enum {
   CLUTTER_TEXT_DIRECTION_RTL
 } ClutterTextDirection;
 
+/**
+ * ClutterShaderType:
+ * @CLUTTER_VERTEX_SHADER: a vertex shader
+ * @CLUTTER_FRAGMENT_SHADER: a fragment shader
+ *
+ * The type of GLSL shader program
+ *
+ * Since: 1.4
+ */
+typedef enum {
+  CLUTTER_VERTEX_SHADER,
+  CLUTTER_FRAGMENT_SHADER
+} ClutterShaderType;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */

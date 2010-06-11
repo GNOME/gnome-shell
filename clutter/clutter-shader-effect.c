@@ -112,6 +112,7 @@
 #include "cogl/cogl.h"
 
 #include "clutter-debug.h"
+#include "clutter-enum-types.h"
 #include "clutter-feature.h"
 #include "clutter-private.h"
 #include "clutter-shader-types.h"
@@ -128,6 +129,8 @@ struct _ClutterShaderEffectPrivate
 {
   ClutterActor *actor;
 
+  ClutterShaderType shader_type;
+
   CoglHandle program;
   CoglHandle shader;
 
@@ -135,6 +138,13 @@ struct _ClutterShaderEffectPrivate
 
   guint is_compiled : 1;
   guint source_set  : 1;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_SHADER_TYPE
 };
 
 G_DEFINE_ABSTRACT_TYPE (ClutterShaderEffect,
@@ -287,7 +297,21 @@ clutter_shader_effect_set_actor (ClutterActorMeta *meta,
 
   priv->program = cogl_create_program ();
 
-  priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+  switch (priv->shader_type)
+    {
+    case CLUTTER_FRAGMENT_SHADER:
+      priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+      break;
+
+    case CLUTTER_VERTEX_SHADER:
+      priv->shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
+      break;
+
+    default:
+      priv->shader = COGL_INVALID_HANDLE;
+      break;
+    }
+
   g_assert (priv->shader != COGL_INVALID_HANDLE);
 }
 
@@ -351,6 +375,26 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
 }
 
 static void
+clutter_shader_effect_set_property (GObject      *gobject,
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
+{
+  ClutterShaderEffectPrivate *priv = CLUTTER_SHADER_EFFECT (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_SHADER_TYPE:
+      priv->shader_type = g_value_get_enum (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_shader_effect_finalize (GObject *gobject)
 {
   ClutterShaderEffect *effect = CLUTTER_SHADER_EFFECT (gobject);
@@ -366,12 +410,32 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-
-  g_type_class_add_private (klass, sizeof (ClutterShaderEffectPrivate));
+  GParamSpec *pspec;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
 
+  g_type_class_add_private (klass, sizeof (ClutterShaderEffectPrivate));
+
+  gobject_class->set_property = clutter_shader_effect_set_property;
   gobject_class->finalize = clutter_shader_effect_finalize;
+
+  /**
+   * ClutterShaderEffect:shader-type:
+   *
+   * The type of shader that is used by the effect. This property
+   * should be set by the constructor of #ClutterShaderEffect
+   * sub-classes.
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_enum ("shader-type",
+                             "Shader Type",
+                             "The type of shader used",
+                             CLUTTER_TYPE_SHADER_TYPE,
+                             CLUTTER_FRAGMENT_SHADER,
+                             CLUTTER_PARAM_WRITABLE |
+                             G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_SHADER_TYPE, pspec);
 
   meta_class->set_actor = clutter_shader_effect_set_actor;
 

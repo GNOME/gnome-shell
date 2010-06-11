@@ -2339,6 +2339,7 @@ clutter_offscreen_effect_get_type
 <SECTION>
 <TITLE>ClutterShaderEffect</TITLE>
 <FILE>clutter-shader-effect</FILE>
+ClutterShaderType
 ClutterShaderEffect
 ClutterShaderEffectClass
 clutter_shader_effect_set_uniform
