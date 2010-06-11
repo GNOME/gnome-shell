@@ -784,7 +784,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                     G_STRUCT_OFFSET (ClutterX11TexturePixmapClass, \
                                      update_area),
                     NULL, NULL,
-                    clutter_marshal_VOID__INT_INT_INT_INT,
+                    _clutter_marshal_VOID__INT_INT_INT_INT,
                     G_TYPE_NONE, 4,
                     G_TYPE_INT,
                     G_TYPE_INT,
@@ -818,7 +818,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__INT_INT_INT_INT,
+                  _clutter_marshal_VOID__INT_INT_INT_INT,
                   G_TYPE_NONE, 4,
                   G_TYPE_INT,
                   G_TYPE_INT,

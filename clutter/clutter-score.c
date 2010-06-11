@@ -241,7 +241,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterScoreClass, timeline_started),
 		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
+		  _clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE,
 		  1, CLUTTER_TYPE_TIMELINE);
   /**
@@ -260,7 +260,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
                  G_SIGNAL_RUN_LAST,
                  G_STRUCT_OFFSET (ClutterScoreClass, timeline_completed),
                  NULL, NULL,
-                 clutter_marshal_VOID__OBJECT,
+                 _clutter_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1,
                  CLUTTER_TYPE_TIMELINE);
   /**
@@ -277,7 +277,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterScoreClass, completed),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterScore::started:
@@ -293,7 +293,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterScoreClass, started),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterScore::paused:
@@ -310,7 +310,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterScoreClass, paused),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 }
 

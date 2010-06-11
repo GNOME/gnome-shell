@@ -1152,7 +1152,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterStageClass, fullscreen),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterStage::unfullscreen
@@ -1169,7 +1169,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, unfullscreen),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterStage::activate
@@ -1186,7 +1186,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, activate),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterStage::deactivate
@@ -1203,7 +1203,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, deactivate),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
@@ -1233,7 +1233,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterStageClass, delete_event),
                   _clutter_boolean_handled_accumulator, NULL,
-                  clutter_marshal_BOOLEAN__BOXED,
+                  _clutter_marshal_BOOLEAN__BOXED,
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 

@@ -140,7 +140,7 @@ source_h =					\
 
 # glib-genmarshal rules
 glib_marshal_list = clutter-marshal.list
-glib_marshal_prefix = clutter_marshal
+glib_marshal_prefix = _clutter_marshal
 include $(top_srcdir)/build/autotools/Makefile.am.marshal
 
 # glib-mkenums rules

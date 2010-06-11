@@ -148,7 +148,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_INPUT_DEVICE);
 
@@ -168,7 +168,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_INPUT_DEVICE);
 }

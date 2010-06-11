@@ -233,7 +233,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterBehaviourPathClass, knot_reached),
                   NULL, NULL,
-                  clutter_marshal_VOID__UINT,
+                  _clutter_marshal_VOID__UINT,
                   G_TYPE_NONE, 1,
                   G_TYPE_UINT);
 

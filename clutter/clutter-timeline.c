@@ -324,7 +324,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, new_frame),
 		  NULL, NULL,
-		  clutter_marshal_VOID__INT,
+		  _clutter_marshal_VOID__INT,
 		  G_TYPE_NONE,
 		  1, G_TYPE_INT);
   /**
@@ -340,7 +340,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, completed),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterTimeline::started:
@@ -357,7 +357,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, started),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterTimeline::paused:
@@ -371,7 +371,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, paused),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterTimeline::marker-reached:
@@ -411,7 +411,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                   G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
                   G_STRUCT_OFFSET (ClutterTimelineClass, marker_reached),
                   NULL, NULL,
-                  clutter_marshal_VOID__STRING_INT,
+                  _clutter_marshal_VOID__STRING_INT,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_INT);

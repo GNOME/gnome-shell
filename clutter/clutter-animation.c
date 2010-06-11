@@ -145,6 +145,7 @@
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-interval.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
@@ -551,7 +552,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterAnimationClass, started),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   /**
@@ -572,7 +573,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterAnimationClass, completed),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 }
 

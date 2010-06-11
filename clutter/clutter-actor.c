@@ -4290,7 +4290,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_CLEANUP | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
 		  G_STRUCT_OFFSET (ClutterActorClass, destroy),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterActor::show:
@@ -4307,7 +4307,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterActorClass, show),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterActor::hide:
@@ -4324,7 +4324,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterActorClass, hide),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
    * ClutterActor::parent-set:
@@ -4341,7 +4341,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, parent_set),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 
@@ -4401,7 +4401,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, queue_redraw),
 		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
+		  _clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 
@@ -4428,7 +4428,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, queue_relayout),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
@@ -4452,7 +4452,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4474,7 +4474,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, button_press_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4496,7 +4496,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, button_release_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4518,7 +4518,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, scroll_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4540,7 +4540,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, key_press_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4563,7 +4563,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, key_release_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
@@ -4585,7 +4585,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, motion_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -4603,7 +4603,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, key_focus_in),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
@@ -4620,7 +4620,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, key_focus_out),
 		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
@@ -4641,7 +4641,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, enter_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -4663,7 +4663,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, leave_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -4691,7 +4691,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, captured_event),
 		  _clutter_boolean_handled_accumulator, NULL,
-		  clutter_marshal_BOOLEAN__BOXED,
+		  _clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -4715,7 +4715,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, paint),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
   /**
    * ClutterActor::realize:
@@ -4732,7 +4732,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, realize),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
   /**
    * ClutterActor::unrealize:
@@ -4749,7 +4749,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, unrealize),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   /**
@@ -4800,7 +4800,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, pick),
                   NULL, NULL,
-                  clutter_marshal_VOID__BOXED,
+                  _clutter_marshal_VOID__BOXED,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_COLOR | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -4825,7 +4825,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
-                  clutter_marshal_VOID__BOXED_FLAGS,
+                  _clutter_marshal_VOID__BOXED_FLAGS,
                   G_TYPE_NONE, 2,
                   CLUTTER_TYPE_ACTOR_BOX,
                   CLUTTER_TYPE_ALLOCATION_FLAGS);

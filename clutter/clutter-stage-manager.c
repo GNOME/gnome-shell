@@ -145,7 +145,7 @@ clutter_stage_manager_class_init (ClutterStageManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterStageManagerClass, stage_added),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_STAGE);
   /**
@@ -164,7 +164,7 @@ clutter_stage_manager_class_init (ClutterStageManagerClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterStageManagerClass, stage_removed),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_STAGE);
 }

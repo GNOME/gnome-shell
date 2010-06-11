@@ -271,7 +271,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterClickActionClass, clicked),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 }

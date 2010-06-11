@@ -1115,7 +1115,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, size_change),
 		  NULL, NULL,
-		  clutter_marshal_VOID__INT_INT,
+		  _clutter_marshal_VOID__INT_INT,
 		  G_TYPE_NONE, 2,
                   G_TYPE_INT,
                   G_TYPE_INT);
@@ -1132,7 +1132,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, pixbuf_change),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
   /**
@@ -1152,7 +1152,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, load_finished),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
+		  _clutter_marshal_VOID__POINTER,
 		  G_TYPE_NONE,
 		  1,
                   G_TYPE_POINTER);

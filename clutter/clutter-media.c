@@ -40,9 +40,11 @@
 #include "config.h"
 #endif
 
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-marshal.h"
 #include "clutter-media.h"
 #include "clutter-main.h"
-#include "clutter-enum-types.h"
 #include "clutter-private.h" 	/* for DBG */
 
 enum
@@ -211,7 +213,7 @@ clutter_media_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_LAST,
                       G_STRUCT_OFFSET (ClutterMediaIface, eos),
                       NULL, NULL,
-                      g_cclosure_marshal_VOID__VOID,
+                      _clutter_marshal_VOID__VOID,
                       G_TYPE_NONE, 0);
       /**
        * ClutterMedia::error:
@@ -228,7 +230,7 @@ clutter_media_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_LAST,
                       G_STRUCT_OFFSET (ClutterMediaIface, error),
                       NULL, NULL,
-                      g_cclosure_marshal_VOID__POINTER,
+                      _clutter_marshal_VOID__POINTER,
                       G_TYPE_NONE, 1,
                       G_TYPE_POINTER);
     }

@@ -325,7 +325,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterBehaviourClass, applied),
 		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
+		  _clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_ACTOR);
   /**
@@ -336,6 +336,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * The ::removed signal is emitted each time a behaviour is not applied
    * to an actor anymore.
    *
+   * Since: 0.4
    */
   behave_signals[REMOVED] =
     g_signal_new ("removed",
@@ -343,7 +344,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterBehaviourClass, removed),
 		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
+		  _clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_ACTOR);
 

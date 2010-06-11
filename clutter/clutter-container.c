@@ -124,7 +124,7 @@ clutter_container_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (ClutterContainerIface, actor_added),
                       NULL, NULL,
-                      clutter_marshal_VOID__OBJECT,
+                      _clutter_marshal_VOID__OBJECT,
                       G_TYPE_NONE, 1,
                       CLUTTER_TYPE_ACTOR);
       /**
@@ -143,7 +143,7 @@ clutter_container_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (ClutterContainerIface, actor_removed),
                       NULL, NULL,
-                      clutter_marshal_VOID__OBJECT,
+                      _clutter_marshal_VOID__OBJECT,
                       G_TYPE_NONE, 1,
                       CLUTTER_TYPE_ACTOR);
 
@@ -164,7 +164,7 @@ clutter_container_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
                       NULL, NULL,
-                      clutter_marshal_VOID__OBJECT_OBJECT_PARAM,
+                      _clutter_marshal_VOID__OBJECT_OBJECT_PARAM,
                       G_TYPE_NONE, 2,
                       CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
 

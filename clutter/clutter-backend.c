@@ -199,7 +199,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (ClutterBackendClass, resolution_changed),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   backend_signals[FONT_CHANGED] =
@@ -208,7 +208,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (ClutterBackendClass, font_changed),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
   klass->resolution_changed = clutter_backend_real_resolution_changed;

@@ -349,7 +349,7 @@ clutter_model_class_init (ClutterModelClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterModelClass, row_added),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_MODEL_ITER);
    /**
@@ -369,7 +369,7 @@ clutter_model_class_init (ClutterModelClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterModelClass, row_removed),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_MODEL_ITER);
    /**
@@ -389,7 +389,7 @@ clutter_model_class_init (ClutterModelClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterModelClass, row_changed),
                   NULL, NULL,
-                  clutter_marshal_VOID__OBJECT,
+                  _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_MODEL_ITER);
   /**
@@ -406,7 +406,7 @@ clutter_model_class_init (ClutterModelClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterModelClass, sort_changed),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
    /**
    * ClutterModel::filter-changed:
@@ -422,7 +422,7 @@ clutter_model_class_init (ClutterModelClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterModelClass, filter_changed),
                   NULL, NULL,
-                  clutter_marshal_VOID__VOID,
+                  _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 }
 

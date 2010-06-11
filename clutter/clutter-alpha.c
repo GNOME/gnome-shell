@@ -459,7 +459,7 @@ clutter_alpha_set_closure_internal (ClutterAlpha *alpha,
   /* set the marshaller */
   if (G_CLOSURE_NEEDS_MARSHAL (closure))
     {
-      GClosureMarshal marshal = clutter_marshal_DOUBLE__VOID;
+      GClosureMarshal marshal = _clutter_marshal_DOUBLE__VOID;
 
       g_closure_set_marshal (closure, marshal);
     }
