@@ -245,8 +245,9 @@ NotificationDaemon.prototype = {
             // 'body-images',
             'body-markup',
             // 'icon-multi',
-            'icon-static'
+            'icon-static',
             // 'sound',
+            'x-gnome-icon-buttons'
         ];
     },
 

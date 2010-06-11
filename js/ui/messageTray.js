@@ -19,6 +19,7 @@ const SUMMARY_TIMEOUT = 1;
 const HIDE_TIMEOUT = 0.2;
 
 const ICON_SIZE = 24;
+const BUTTON_ICON_SIZE = 36;
 
 const MAX_SOURCE_TITLE_WIDTH = 180;
 
@@ -262,8 +263,16 @@ Notification.prototype = {
             this._buttonBox = box;
         }
 
-        let button = new St.Button({ style_class: 'notification-button',
-                                     label: label });
+        let button = new St.Button();
+
+        if (Gtk.IconTheme.get_default().has_icon(id)) {
+            button.add_style_class_name('notification-icon-button');
+            button.child = St.TextureCache.get_default().load_icon_name(id, BUTTON_ICON_SIZE);
+        } else {
+            button.add_style_class_name('notification-button');
+            button.label = label;
+        }
+
         this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
     },
