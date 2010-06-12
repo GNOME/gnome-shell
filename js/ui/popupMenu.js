@@ -277,6 +277,10 @@ PopupMenu.prototype = {
 
         let primary = global.get_primary_monitor();
 
+        // We need to show it now to force an allocation,
+        // so that we can query the correct size.
+        this.actor.show();
+
         // Position correctly relative to the sourceActor
         let [sourceX, sourceY] = this.sourceActor.get_transformed_position();
         let [sourceWidth, sourceHeight] = this.sourceActor.get_transformed_size();
@@ -351,7 +355,6 @@ PopupMenu.prototype = {
         this.actor.y = Math.floor(menuY);
 
         // Now show it
-        this.actor.show();
         this.actor.opacity = 0;
         this.actor.reactive = true;
         Tweener.addTween(this.actor, { opacity: 255,
