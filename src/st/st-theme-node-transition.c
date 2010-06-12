@@ -198,7 +198,7 @@ calculate_offscreen_box (StThemeNodeTransition *transition,
                            - allocation->y1;
 }
 
-static void
+static gboolean
 setup_framebuffers (StThemeNodeTransition *transition,
                     const ClutterActorBox *allocation,
                     guint8                 paint_opacity)
@@ -209,6 +209,9 @@ setup_framebuffers (StThemeNodeTransition *transition,
 
   width  = priv->offscreen_box.x2 - priv->offscreen_box.x1;
   height = priv->offscreen_box.y2 - priv->offscreen_box.y1;
+
+  g_return_val_if_fail (width  > 0, FALSE);
+  g_return_val_if_fail (height > 0, FALSE);
 
   if (priv->old_texture)
     cogl_handle_unref (priv->old_texture);
@@ -222,6 +225,9 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                                   COGL_TEXTURE_NO_SLICING,
                                                   COGL_PIXEL_FORMAT_ANY);
 
+  g_return_val_if_fail (priv->old_texture != COGL_INVALID_HANDLE, FALSE);
+  g_return_val_if_fail (priv->new_texture != COGL_INVALID_HANDLE, FALSE);
+
   if (priv->old_offscreen)
     cogl_handle_unref (priv->old_offscreen);
   priv->old_offscreen = cogl_offscreen_new_to_texture (priv->old_texture);
@@ -229,6 +235,9 @@ setup_framebuffers (StThemeNodeTransition *transition,
   if (priv->new_offscreen)
     cogl_handle_unref (priv->new_offscreen);
   priv->new_offscreen = cogl_offscreen_new_to_texture (priv->new_texture);
+
+  g_return_val_if_fail (priv->old_offscreen != COGL_INVALID_HANDLE, FALSE);
+  g_return_val_if_fail (priv->new_offscreen != COGL_INVALID_HANDLE, FALSE);
 
   if (priv->material)
     cogl_handle_unref (priv->material);
@@ -262,6 +271,8 @@ setup_framebuffers (StThemeNodeTransition *transition,
                        allocation,
                        paint_opacity);
   cogl_pop_framebuffer ();
+
+  return TRUE;
 }
 
 void
@@ -291,9 +302,9 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
       priv->last_opacity = paint_opacity;
 
       calculate_offscreen_box (transition, allocation);
-      setup_framebuffers (transition, allocation, paint_opacity);
-
-      priv->needs_setup = FALSE;
+      priv->needs_setup = !setup_framebuffers (transition,
+                                               allocation,
+                                               paint_opacity);
     }
 
   width = cogl_texture_get_width (priv->old_texture);
