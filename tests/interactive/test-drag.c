@@ -29,7 +29,6 @@ on_drag_begin (ClutterDragAction   *action,
                ClutterActor        *actor,
                gfloat               event_x,
                gfloat               event_y,
-               gint                 button,
                ClutterModifierType  modifiers)
 {
   gboolean is_copy = (modifiers & CLUTTER_SHIFT_MASK) ? TRUE : FALSE;
@@ -65,7 +64,6 @@ on_drag_end (ClutterDragAction   *action,
              ClutterActor        *actor,
              gfloat               event_x,
              gfloat               event_y,
-             gint                 button,
              ClutterModifierType  modifiers)
 {
   ClutterActor *drag_handle;

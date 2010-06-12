@@ -82,7 +82,6 @@ struct _ClutterDragActionPrivate
   gfloat press_x;
   gfloat press_y;
   ClutterModifierType press_state;
-  gint press_button;
 
   gfloat last_motion_x;
   gfloat last_motion_y;
@@ -131,7 +130,6 @@ emit_drag_begin (ClutterDragAction *action,
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
                  actor,
                  priv->press_x, priv->press_y,
-                 priv->press_button,
                  priv->press_state);
 }
 
@@ -212,7 +210,6 @@ emit_drag_end (ClutterDragAction *action,
     g_signal_emit (action, drag_signals[DRAG_END], 0,
                    actor,
                    priv->last_motion_x, priv->last_motion_y,
-                   priv->press_button,
                    clutter_event_get_state (event));
 
   /* disconnect the capture */
@@ -277,11 +274,13 @@ on_button_press (ClutterActor      *actor,
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return FALSE;
 
+  if (clutter_event_get_button (event) != 1)
+    return FALSE;
+
   if (priv->stage == NULL)
     priv->stage = clutter_actor_get_stage (actor);
 
   clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
-  priv->press_button = clutter_event_get_button (event);
   priv->press_state = clutter_event_get_state (event);
 
   priv->last_motion_x = priv->press_x;
@@ -512,7 +511,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * @actor: the #ClutterActor attached to the action
    * @event_x: the X coordinate (in stage space) of the press event
    * @event_y: the Y coordinate (in stage space) of the press event
-   * @button: the button of the press event
    * @modifiers: the modifiers of the press event
    *
    * The ::drag-begin signal is emitted when the #ClutterDragAction
@@ -529,12 +527,11 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterDragActionClass, drag_begin),
                   NULL, NULL,
-                  _clutter_marshal_VOID__OBJECT_FLOAT_FLOAT_INT_FLAGS,
-                  G_TYPE_NONE, 5,
+                  _clutter_marshal_VOID__OBJECT_FLOAT_FLOAT_FLAGS,
+                  G_TYPE_NONE, 4,
                   CLUTTER_TYPE_ACTOR,
                   G_TYPE_FLOAT,
                   G_TYPE_FLOAT,
-                  G_TYPE_INT,
                   CLUTTER_TYPE_MODIFIER_TYPE);
 
   /**
@@ -584,7 +581,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * @actor: the #ClutterActor attached to the action
    * @event_x: the X coordinate (in stage space) of the release event
    * @event_y: the Y coordinate (in stage space) of the release event
-   * @button: the button of the release event
    * @modifiers: the modifiers of the release event
    *
    * The ::drag-end signal is emitted at the end of the dragging,
@@ -601,12 +597,11 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterDragActionClass, drag_end),
                   NULL, NULL,
-                  _clutter_marshal_VOID__OBJECT_FLOAT_FLOAT_INT_FLAGS,
-                  G_TYPE_NONE, 5,
+                  _clutter_marshal_VOID__OBJECT_FLOAT_FLOAT_FLAGS,
+                  G_TYPE_NONE, 4,
                   CLUTTER_TYPE_ACTOR,
                   G_TYPE_FLOAT,
                   G_TYPE_FLOAT,
-                  G_TYPE_INT,
                   CLUTTER_TYPE_MODIFIER_TYPE);
 }
 

@@ -25,7 +25,6 @@ on_drag_end (ClutterDragAction   *action,
              ClutterActor        *actor,
              gfloat               event_x,
              gfloat               event_y,
-             guint                button,
              ClutterModifierType  modifiers)
 {
   gfloat viewport_x = clutter_actor_get_x (viewport);

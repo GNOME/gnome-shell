@@ -100,7 +100,6 @@ struct _ClutterDragActionClass
                         ClutterActor        *actor,
                         gfloat               event_x,
                         gfloat               event_y,
-                        gint                 button,
                         ClutterModifierType  modifiers);
   void (* drag_motion) (ClutterDragAction   *action,
                         ClutterActor        *actor,
@@ -110,7 +109,6 @@ struct _ClutterDragActionClass
                         ClutterActor        *actor,
                         gfloat               event_x,
                         gfloat               event_y,
-                        gint                 button,
                         ClutterModifierType  modifiers);
 
   /*< private >*/
