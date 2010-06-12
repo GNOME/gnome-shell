@@ -623,6 +623,14 @@ Panel.prototype = {
 
         /* right */
 
+        // Yet-another-Ubuntu-workaround - we have to kill their
+        // app-indicators, so that applications fall back to normal
+        // status icons
+        // http://bugzilla.gnome.org/show_bug.cgi=id=621382
+        let p = new Shell.Process({ args: ['pkill', '-f',
+                                           '^([^ ]*/)?indicator-application-service$']});
+        p.run();
+
         // The tray icons live in trayBox within trayContainer.
         // The trayBox is hidden when there are no tray icons.
         let trayContainer = new St.Bin({ y_align: St.Align.MIDDLE });
