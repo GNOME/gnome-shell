@@ -99,6 +99,13 @@ Notification.prototype = {
         this.actor = new St.Table({ name: 'notification',
                                     reactive: true });
         this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
+        this.actor.connect('button-release-event', Lang.bind(this,
+            function (actor, event) {
+                if (!this._actionArea ||
+                    !this._actionArea.contains(event.get_source()))
+                    this.source.clicked();
+            }));
+
         this.update(title, banner, true);
 
         Main.overview.connect('showing', Lang.bind(this,
@@ -136,17 +143,11 @@ Notification.prototype = {
         }
 
         this._icon = this.source.createIcon(ICON_SIZE);
-        this._icon.reactive = true;
         this.actor.add(this._icon, { row: 0,
                                      col: 0,
                                      x_expand: false,
                                      y_expand: false,
                                      y_fill: false });
-
-        this._icon.connect('button-release-event', Lang.bind(this,
-            function () {
-                this.source.clicked();
-            }));
 
         // The first line should have the title, followed by the
         // banner text, but ellipsized if they won't both fit. We can't
