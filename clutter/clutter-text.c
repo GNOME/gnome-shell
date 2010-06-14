@@ -2795,6 +2795,9 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Setting this property will also set the #ClutterText:activatable
    * property as a side-effect.
    *
+   * The #ClutterText:single-line-mode property is used only if the
+   * #ClutterText:editable property is set to %TRUE.
+   *
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("single-line-mode",
@@ -4839,7 +4842,8 @@ clutter_text_get_chars (ClutterText *self,
  * @single_line: whether to enable single line mode
  *
  * Sets whether a #ClutterText actor should be in single line mode
- * or not.
+ * or not. Only editable #ClutterText<!-- -->s can be in single line
+ * mode.
  *
  * A text actor in single line mode will not wrap text and will clip
  * the the visible area to the predefined size. The contents of the
