@@ -1,0 +1,337 @@
+# Thai translation for gnome-shell.
+# Copyright (C) 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Sira Nokyoongtong <gumaraa@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2010-06-13 23:04+0000\n"
+"PO-Revision-Date: 2010-06-14 20:22+0700\n"
+"Last-Translator: Sira Nokyoongtong <gumaraa@gmail.com>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr ""
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr ""
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "นาฬิกา"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "ปรับแต่งนาฬิกาบนพาเนล"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "รูปแบบนาฬิกา"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "ปรับแต่งค่านาฬิกา"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "การแสดงบนพาเนล"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "แสดง_วินาที"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "แสดงวัน_ที่"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "แ_บบ AM/PM"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "แบบ _24 ขั่วโมง"
+
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:872
+msgid "APPLICATIONS"
+msgstr "โปรแกรม"
+
+#: ../js/ui/appDisplay.js:420
+msgid "PREFERENCES"
+msgstr "ปรับแต่ง"
+
+#: ../js/ui/appDisplay.js:726
+msgid "New Window"
+msgstr "หน้าต่างใหม่"
+
+#: ../js/ui/appDisplay.js:730
+msgid "Remove from Favorites"
+msgstr "ลบออกจากรายการโปรด"
+
+#: ../js/ui/appDisplay.js:731
+msgid "Add to Favorites"
+msgstr "เพิ่มเข้าในรายการโปรด"
+
+#: ../js/ui/appDisplay.js:1038
+msgid "Drag here to add favorites"
+msgstr "ลากมาที่นี่เพื่อเพิ่มเป็นรายการโปรด"
+
+#: ../js/ui/appFavorites.js:89
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s ถูกเพิ่มเข้าในรายการโปรดของคุณแล้ว"
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s ถูกลบออกจากรายการโปรดของคุณแล้ว"
+
+#: ../js/ui/dash.js:204
+msgid "Find"
+msgstr "หา"
+
+#: ../js/ui/dash.js:527
+msgid "Searching..."
+msgstr "กำลังค้นหา..."
+
+#: ../js/ui/dash.js:541
+msgid "No matching results."
+msgstr "ไม่มีผลลัพธ์ที่ตรงกัน"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:891 ../js/ui/placeDisplay.js:551
+msgid "PLACES & DEVICES"
+msgstr ""
+
+#. **** Documents ****
+#: ../js/ui/dash.js:898 ../js/ui/docDisplay.js:497
+msgid "RECENT ITEMS"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:475
+msgid "No extensions installed"
+msgstr "ไม่มีส่วนขยายติดตั้งอยู่"
+
+#: ../js/ui/lookingGlass.js:512
+msgid "Enabled"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:514
+msgid "Disabled"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:516
+msgid "Error"
+msgstr "ผิดพลาด"
+
+#: ../js/ui/lookingGlass.js:518
+msgid "Out of date"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:543
+msgid "View Source"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:549
+msgid "Web Page"
+msgstr "หน้าเว็บ"
+
+#: ../js/ui/overview.js:165
+msgid "Undo"
+msgstr "เรียกคืน"
+
+#: ../js/ui/panel.js:334
+#, c-format
+msgid "Quit %s"
+msgstr "ออกจาก %s"
+
+#: ../js/ui/panel.js:354
+msgid "Preferences"
+msgstr "ปรับแต่ง"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:441
+msgid "%a %b %e, %R:%S"
+msgstr ""
+
+#: ../js/ui/panel.js:442
+msgid "%a %b %e, %R"
+msgstr ""
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:446
+msgid "%a %R:%S"
+msgstr ""
+
+#: ../js/ui/panel.js:447
+msgid "%a %R"
+msgstr ""
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:454
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr ""
+
+#: ../js/ui/panel.js:455
+msgid "%a %b %e, %l:%M %p"
+msgstr ""
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:459
+msgid "%a %l:%M:%S %p"
+msgstr ""
+
+#: ../js/ui/panel.js:460
+msgid "%a %l:%M %p"
+msgstr ""
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:562
+msgid "Activities"
+msgstr "กิจกรรม"
+
+#: ../js/ui/placeDisplay.js:108
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "เลิกเมานท์ '%s' ไม่สำเร็จ"
+
+#: ../js/ui/placeDisplay.js:111
+msgid "Retry"
+msgstr "ลองใหม่"
+
+#: ../js/ui/placeDisplay.js:156
+msgid "Connect to..."
+msgstr "เชื่อมต่อไปยัง..."
+
+#: ../js/ui/runDialog.js:235
+msgid "Please enter a command:"
+msgstr "โปรดป้อนคำสั่ง:"
+
+#: ../js/ui/runDialog.js:380
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:91
+msgid "Available"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:95
+msgid "Busy"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:99
+msgid "Invisible"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:106
+msgid "Account Information..."
+msgstr "ข้อมูลบัญชี..."
+
+#: ../js/ui/statusMenu.js:110
+msgid "System Preferences..."
+msgstr "ปรับแต่งระบบ..."
+
+#: ../js/ui/statusMenu.js:117
+msgid "Lock Screen"
+msgstr "ล็อคหน้าจอ"
+
+#: ../js/ui/statusMenu.js:121
+msgid "Switch User"
+msgstr "สลับผู้ใช้"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Log Out..."
+msgstr "ออกจากระบบ..."
+
+#: ../js/ui/statusMenu.js:130
+msgid "Shut Down..."
+msgstr "ปิดเครื่อง..."
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr ""
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' พร้อมแล้ว"
+
+#: ../js/ui/workspacesView.js:237
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+
+#: ../js/ui/workspacesView.js:254
+msgid "Can't remove the first workspace."
+msgstr "ไม่สามารถลบพื้นที่ทำงานแรกได้"
+
+#: ../src/shell-global.c:1025
+msgid "Less than a minute ago"
+msgstr "ไม่ถึงหนึ่งนาทีก่อน"
+
+#: ../src/shell-global.c:1029
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d นาทีก่อน"
+
+#: ../src/shell-global.c:1034
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d ชั่วโมงก่อน"
+
+#: ../src/shell-global.c:1039
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d วันก่อน"
+
+#: ../src/shell-global.c:1044
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d สัปดาห์ก่อน"
+
+#: ../src/shell-uri-util.c:89
+msgid "Home Folder"
+msgstr "โฟลเดอร์บ้าน"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:104
+msgid "File System"
+msgstr "ระบบแฟ้ม"
+
+#: ../src/shell-uri-util.c:250
+msgid "Search"
+msgstr "ค้นหา"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr ""
