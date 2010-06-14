@@ -140,6 +140,10 @@ source_h =					\
 	$(srcdir)/clutter-util.h 		\
 	$(NULL)
 
+built_source_h = \
+	clutter-enum-types.h			\
+	clutter-marshal.h
+
 # glib-genmarshal rules
 glib_marshal_list = clutter-marshal.list
 glib_marshal_prefix = _clutter_marshal
@@ -189,7 +193,6 @@ source_c = \
 	$(srcdir)/clutter-device-manager.c	\
 	$(srcdir)/clutter-drag-action.c		\
 	$(srcdir)/clutter-effect.c		\
-	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
@@ -203,7 +206,6 @@ source_c = \
 	$(srcdir)/clutter-layout-meta.c		\
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
-	clutter-marshal.c			\
 	$(srcdir)/clutter-master-clock.c	\
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
@@ -235,6 +237,10 @@ source_c_priv = \
 	$(srcdir)/clutter-profile.c		\
 	$(srcdir)/clutter-timeout-interval.c    \
 	$(NULL)
+
+built_source_c = \
+	clutter-enum-types.c			\
+	clutter-marshal.c
 
 source_h_priv = \
 	$(srcdir)/clutter-actor-meta-private.h	\
@@ -272,6 +278,10 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c_priv) \
 	$(source_h_priv)
 
+nodist_libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
+	$(built_source_c) \
+	$(built_source_h)
+
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
@@ -288,11 +298,11 @@ EXTRA_LTLIBRARIES = libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
 	$(source_h) \
-	$(top_builddir)/clutter/clutter-enum-types.h 	\
 	$(top_srcdir)/clutter/clutter.h
 nodist_clutter_HEADERS = \
 	$(top_builddir)/clutter/clutter-json.h \
-	$(top_builddir)/clutter/clutter-version.h
+	$(top_builddir)/clutter/clutter-version.h \
+	$(built_source_h)
 
 
 DISTCLEANFILES += clutter-version.h
@@ -348,7 +358,8 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 	        --output $@ \
 		$(clutter_HEADERS) \
 		$(nodist_clutter_HEADERS) \
-		$(source_c)
+		$(source_c) \
+		$(built_source_c)
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
 
