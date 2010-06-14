@@ -471,6 +471,11 @@ _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
     }
 
   material->parent = parent;
+
+  /* Since we just changed the ancestry of the material its cache of
+   * layers could now be invalid so free it... */
+  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+    recursively_free_layer_caches (material);
 }
 
 /* XXX: Always have an eye out for opportunities to lower the cost of
@@ -1231,24 +1236,6 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       _cogl_material_foreach_child (material,
                                     reparent_strong_children_cb,
                                     new_authority);
-
-      /* If the new_authority has any
-       * ->layer_differences then we dirty any layer_caches for all
-       * its descendants since _cogl_material_copy_differences will
-       * have created new layers which won't be correctly referenced
-       * in the caches.
-       */
-      if (new_authority->differences & COGL_MATERIAL_STATE_LAYERS)
-        {
-          /* NB: we can't call recursively_free_layer_caches
-           * directly for the material since it will assume if
-           * new_authority->layers_cache == NULL then all the
-           * descendants already have invalidated caches. */
-          _cogl_material_foreach_child (new_authority,
-                                        (CoglMaterialChildCallback)
-                                          recursively_free_layer_caches,
-                                        NULL);
-        }
     }
 
   /* At this point we know we have a material with no strong
