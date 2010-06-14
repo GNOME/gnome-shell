@@ -43,6 +43,52 @@
  * be synthesized by Clutter itself or by the application code.
  */
 
+typedef struct _ClutterEventPrivate {
+  ClutterEvent base;
+
+  gpointer platform_data;
+} ClutterEventPrivate;
+
+static GHashTable *all_events = NULL;
+
+static gboolean
+is_event_allocated (const ClutterEvent *event)
+{
+  if (all_events == NULL)
+    return FALSE;
+
+  return g_hash_table_lookup (all_events, event) != NULL;
+}
+
+/*
+ * _clutter_event_get_platform_data:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the pointer to platform-specific data inside an event
+ *
+ * Return value: a pointer to platform-specific data
+ *
+ * Since: 1.4
+ */
+gpointer
+_clutter_event_get_platform_data (const ClutterEvent *event)
+{
+  if (!is_event_allocated (event))
+    return NULL;
+
+  return ((ClutterEventPrivate *) event)->platform_data;
+}
+
+void
+_clutter_event_set_platform_data (ClutterEvent *event,
+                                  gpointer      data)
+{
+  if (!is_event_allocated (event))
+    return;
+
+  ((ClutterEventPrivate *) event)->platform_data = data;
+}
+
 /**
  * clutter_event_type:
  * @event: a #ClutterEvent
@@ -606,9 +652,17 @@ ClutterEvent *
 clutter_event_new (ClutterEventType type)
 {
   ClutterEvent *new_event;
+  ClutterEventPrivate *priv;
 
-  new_event = g_slice_new0 (ClutterEvent);
+  priv = g_slice_new0 (ClutterEventPrivate);
+
+  new_event = (ClutterEvent *) priv;
   new_event->type = new_event->any.type = type;
+
+  if (all_events == NULL)
+    all_events = g_hash_table_new (NULL, NULL);
+
+  g_hash_table_replace (all_events, priv, GUINT_TO_POINTER (1));
 
   return new_event;
 }
@@ -631,6 +685,11 @@ clutter_event_copy (ClutterEvent *event)
   new_event = clutter_event_new (CLUTTER_NOTHING);
   *new_event = *event;
 
+  if (is_event_allocated (event))
+    _clutter_backend_copy_event_data (clutter_get_default_backend (),
+                                      event,
+                                      new_event);
+
   return new_event;
 }
 
@@ -644,7 +703,12 @@ void
 clutter_event_free (ClutterEvent *event)
 {
   if (G_LIKELY (event != NULL))
-    g_slice_free (ClutterEvent, event);
+    {
+      _clutter_backend_free_event_data (clutter_get_default_backend (), event);
+
+      g_hash_table_remove (all_events, event);
+      g_slice_free (ClutterEventPrivate, (ClutterEventPrivate *) event);
+    }
 }
 
 /**
