@@ -1017,6 +1017,8 @@ AC_CONFIG_FILES([
         clutter/osx/Makefile
         clutter/win32/Makefile
         clutter/win32/clutter-win32.pc
+        clutter/cally/Makefile
+        clutter/cally/cally.pc
         clutter/cogl/Makefile
         clutter/cogl/cogl/Makefile
         clutter/cogl/cogl/cogl-defines.h
