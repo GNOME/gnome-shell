@@ -6074,6 +6074,13 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
   if (priv->source)
     {
       GLenum gl_error;
+      COGL_STATIC_COUNTER (backend_arbfp_compile_counter,
+                           "arbfp compile counter",
+                           "Increments each time a new ARBfp "
+                           "program is compiled",
+                           0 /* no application private data */);
+
+      COGL_COUNTER_INC (_cogl_uprof_context, backend_arbfp_compile_counter);
 
       g_string_append (priv->source, "MOV result.color,output;\n");
       g_string_append (priv->source, "END\n");
