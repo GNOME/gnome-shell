@@ -115,15 +115,15 @@ DocDisplayItem.prototype = {
 /* This class represents a display containing a collection of document items.
  * The documents are sorted by how recently they were last visited.
  */
-function DocDisplay(flags) {
-    this._init(flags);
+function DocDisplay() {
+    this._init();
 }
 
 DocDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(flags) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
+    _init : function() {
+        GenericDisplay.GenericDisplay.prototype._init.call(this);
         // We keep a single timeout callback for updating last visited times
         // for all the items in the display. This avoids creating individual
         // callbacks for each item in the display. So proper time updates

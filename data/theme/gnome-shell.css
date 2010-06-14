@@ -408,20 +408,6 @@ StTooltip {
     padding: 4px 0px;
 }
 
-.section-header-back {
-    padding: 0px 4px 0px 0px;
-    border-right: 1px solid #262626;
-}
-
-.section-header-back-image {
-    background-image: url("section-back.svg");
-    width: 12px;
-    height: 16px;
-}
-
-.section-count {
-}
-
 .dash-section-content {
     color: #ffffff;
     spacing: 8px;

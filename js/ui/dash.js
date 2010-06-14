@@ -24,9 +24,6 @@ const Tweener = imports.ui.tweener;
 // 25 search results (per result type) should be enough for everyone
 const MAX_RENDERED_SEARCH_RESULTS = 25;
 
-const DOCS = 'docs';
-const PLACES = 'places';
-
 /*
  * Returns the index in an array of a given length that is obtained
  * if the provided index is incremented by an increment and the array
@@ -38,14 +35,6 @@ const PLACES = 'places';
  */
 function _getIndexWrapped(index, increment, length) {
    return (index + increment + length) % length;
-}
-
-function _createDisplay(displayType, flags) {
-    if (displayType == DOCS)
-        return new DocDisplay.DocDisplay(flags);
-    else if (displayType == PLACES)
-        return new PlaceDisplay.PlaceDisplay(flags);
-    return null;
 }
 
 function Pane() {
@@ -63,15 +52,6 @@ Pane.prototype = {
             // Eat button press events so they don't go through and close the pane
             return true;
         }));
-
-        let chromeTop = new St.BoxLayout();
-
-        let dummy = new St.Bin();
-        chromeTop.add(dummy, { expand: true });
-        this.actor.add(chromeTop);
-
-        this.content = new St.BoxLayout({ vertical: true });
-        this.actor.add(this.content, { expand: true });
 
         // Hidden by default
         this.actor.hide();
@@ -107,7 +87,7 @@ Pane.prototype = {
     },
 
     destroyContent: function() {
-        let children = this.content.get_children();
+        let children = this.actor.get_children();
         for (let i = 0; i < children.length; i++) {
             children[i].destroy();
         }
@@ -122,50 +102,21 @@ Pane.prototype = {
 };
 Signals.addSignalMethods(Pane.prototype);
 
-function ResultArea(displayType, flags) {
-    this._init(displayType, flags);
+function ResultArea() {
+    this._init();
 }
 
 ResultArea.prototype = {
-    _init : function(displayType, flags) {
+    _init : function() {
         this.actor = new St.BoxLayout({ vertical: true });
         this.resultsContainer = new St.BoxLayout({ style_class: 'dash-results-container' });
         this.actor.add(this.resultsContainer, { expand: true });
 
-        this.display = _createDisplay(displayType, flags);
+        this.display = new DocDisplay.DocDisplay();
         this.resultsContainer.add(this.display.actor, { expand: true });
         this.display.load();
     }
 };
-
-// Utility function shared between ResultPane and the DocDisplay in the main dash.
-// Connects to the detail signal of the display, and on-demand creates a new
-// pane.
-function createPaneForDetails(dash, display) {
-    let detailPane = null;
-    display.connect('show-details', Lang.bind(this, function(display, index) {
-        if (detailPane == null) {
-            detailPane = new Pane();
-            detailPane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
-                if (!isOpen) {
-                    /* Ensure we don't keep around large preview textures */
-                    detailPane.destroyContent();
-                }
-            }));
-            dash._addPane(detailPane, St.Align.START);
-        }
-
-        if (index >= 0) {
-            detailPane.destroyContent();
-            let details = display.createDetailsForIndex(index);
-            detailPane.content.add(details, { expand: true });
-            detailPane.open();
-        } else {
-            detailPane.close();
-        }
-    }));
-    return null;
-}
 
 function ResultPane(dash) {
     this._init(dash);
@@ -176,21 +127,12 @@ ResultPane.prototype = {
 
     _init: function(dash) {
         Pane.prototype._init.call(this);
-        this._dash = dash;
-    },
 
-    // Create a display of displayType and pack it into this pane's
-    // content area.  Return the display.
-    packResults: function(displayType) {
-        let resultArea = new ResultArea(displayType);
-
-        createPaneForDetails(this._dash, resultArea.display);
-
-        this.content.add(resultArea.actor, { expand: true });
+        let resultArea = new ResultArea();
+        this.actor.add(resultArea.actor, { expand: true });
         this.connect('open-state-changed', Lang.bind(this, function(pane, isOpen) {
             resultArea.display.resetState();
         }));
-        return resultArea.display;
     }
 };
 
@@ -238,10 +180,6 @@ SearchEntry.prototype = {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
-    },
-
-    setPane: function (pane) {
-        this._pane = pane;
     },
 
     reset: function () {
@@ -660,18 +598,6 @@ MoreLink.prototype = {
 
 Signals.addSignalMethods(MoreLink.prototype);
 
-function BackLink() {
-    this._init();
-}
-
-BackLink.prototype = {
-    _init : function () {
-        this.actor = new St.Button({ style_class: 'section-header-back',
-                                      reactive: true });
-        this.actor.set_child(new St.Bin({ style_class: 'section-header-back-image' }));
-    }
-};
-
 function SectionHeader(title, suppressBrowse) {
     this._init(title, suppressBrowse);
 }
@@ -686,21 +612,10 @@ SectionHeader.prototype = {
         this._innerBox = new St.BoxLayout({ style_class: 'section-header-inner' });
         this.actor.set_child(this._innerBox);
 
-        this.backLink = new BackLink();
-        this._innerBox.add(this.backLink.actor);
-        this.backLink.actor.hide();
-        this.backLink.actor.connect('clicked', Lang.bind(this, function (actor) {
-            this.emit('back-link-activated');
-        }));
-
         let textBox = new St.BoxLayout({ style_class: 'section-text-content' });
         this.text = new St.Label({ style_class: 'section-title',
                                    text: title });
         textBox.add(this.text, { x_align: St.Align.START });
-
-        this.countText = new St.Label({ style_class: 'section-count' });
-        textBox.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
-        this.countText.hide();
 
         this._innerBox.add(textBox, { expand: true });
 
@@ -715,31 +630,11 @@ SectionHeader.prototype = {
         this.moreLink.activate();
     },
 
-    setTitle : function(title) {
-        this.text.text = title;
-    },
-
-    setBackLinkVisible : function(visible) {
-        if (visible)
-            this.backLink.actor.show();
-        else
-            this.backLink.actor.hide();
-    },
-
     setMoreLinkVisible : function(visible) {
         if (visible)
             this.moreLink.actor.show();
         else
             this.moreLink.actor.hide();
-    },
-
-    setCountText : function(countText) {
-        if (countText == '') {
-            this.countText.hide();
-        } else {
-            this.countText.show();
-            this.countText.text = countText;
-        }
     }
 };
 
@@ -904,7 +799,6 @@ Dash.prototype = {
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
-                this._moreDocsPane.packResults(DOCS);
                 this._addPane(this._moreDocsPane, St.Align.END);
                 link.setPane(this._moreDocsPane);
            }

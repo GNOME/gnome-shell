@@ -229,35 +229,25 @@ GenericDisplayItem.prototype = {
 
 Signals.addSignalMethods(GenericDisplayItem.prototype);
 
-const GenericDisplayFlags = {
-    DISABLE_VSCROLLING: 1 << 0
-};
-
 /* This is a virtual class that represents a display containing a collection of items
  * that can be filtered with a search string.
  */
-function GenericDisplay(flags) {
-    this._init(flags);
+function GenericDisplay() {
+    this._init();
 }
 
 GenericDisplay.prototype = {
-    _init : function(flags) {
-        let disableVScrolling = (flags & GenericDisplayFlags.DISABLE_VSCROLLING) != 0;
+    _init : function() {
         this._search = '';
         this._expanded = false;
 
-        if (disableVScrolling) {
-            this.actor = this._list = new Shell.OverflowList({ spacing: 6,
-                                                               item_height: 50 });
-        } else {
-            this.actor = new St.ScrollView({ x_fill: true,
-                                             y_fill: false,
-                                             vshadows: true });
-            this._list = new St.BoxLayout({ style_class: 'generic-display-container',
-                                             vertical: true });
-            this.actor.add_actor(this._list);
-            this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        }
+        this.actor = new St.ScrollView({ x_fill: true,
+                                         y_fill: false,
+                                         vshadows: true });
+        this._list = new St.BoxLayout({ style_class: 'generic-display-container',
+                                         vertical: true });
+        this.actor.add_actor(this._list);
+        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this._pendingRedisplay = RedisplayFlags.NONE;
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
@@ -381,8 +371,7 @@ GenericDisplay.prototype = {
     resetState: function() {
         this._filterReset();
         this._openDetailIndex = -1;
-        if (!(this.actor instanceof Shell.OverflowList))
-            this.actor.get_vscroll_bar().get_adjustment().value = 0;
+        this.actor.get_vscroll_bar().get_adjustment().value = 0;
     },
 
     // Returns an actor which acts as a sidebar; this is used for
@@ -661,11 +650,7 @@ GenericDisplay.prototype = {
     // Returns a display item based on its index in the ordering of the
     // display children.
     _findDisplayedByIndex: function(index) {
-        let actor;
-        if (this.actor instanceof Shell.OverflowList)
-            actor = this.actor.get_displayed_actor(index);
-        else
-            actor = this._list.get_children()[index];
+        let actor = this._list.get_children()[index];
         return this._findDisplayedByActor(actor);
     },
 
@@ -700,8 +685,6 @@ GenericDisplay.prototype = {
     },
 
     _getVisibleCount: function() {
-        if (this.actor instanceof Shell.OverflowList)
-            return this._list.displayed_count;
         return this._list.get_n_children();
     },
 
