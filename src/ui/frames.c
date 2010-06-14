@@ -2006,22 +2006,26 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 static GdkGC *
 get_bg_gc (GdkWindow *window, int x_offset, int y_offset)
 {
-  GdkWindowObject *private = (GdkWindowObject *)window;
+  GdkWindow *parent = gdk_window_get_parent (window);
+  GdkPixmap *back_pixmap;
+  gboolean parent_relative;
   guint gc_mask = 0;
   GdkGCValues gc_values;
 
-  if (private->bg_pixmap == GDK_PARENT_RELATIVE_BG && private->parent)
+  gdk_window_get_back_pixmap (window, &back_pixmap, &parent_relative);
+  if (parent_relative && parent)
     {
-      return get_bg_gc (GDK_WINDOW (private->parent),
-                        x_offset + private->x,
-                        y_offset + private->y);
+      gint window_x, window_y;
+
+      gdk_window_get_position (window, &window_x, &window_y);
+      return get_bg_gc (parent,
+                        x_offset + window_x,
+                        y_offset + window_y);
     }
-  else if (private->bg_pixmap && 
-           private->bg_pixmap != GDK_PARENT_RELATIVE_BG && 
-           private->bg_pixmap != GDK_NO_BG)
+  else if (back_pixmap)
     {
       gc_values.fill = GDK_TILED;
-      gc_values.tile = private->bg_pixmap;
+      gc_values.tile = back_pixmap;
       gc_values.ts_x_origin = x_offset;
       gc_values.ts_y_origin = y_offset;
       
@@ -2031,9 +2035,11 @@ get_bg_gc (GdkWindow *window, int x_offset, int y_offset)
     }
   else
     {
+      GdkColor bg_color;
       GdkGC *gc = gdk_gc_new (window);
 
-      gdk_gc_set_foreground (gc, &(private->bg_color));
+      gdk_window_get_background (window, &bg_color);
+      gdk_gc_set_foreground (gc, &bg_color);
 
       return gc;
     }
@@ -2550,7 +2556,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
       /* Set A in ARGB to window_background_alpha, if we have ARGB */
 
       visual = gtk_widget_get_visual (GTK_WIDGET (frames));
-      if (visual->depth == 32) /* we have ARGB */
+      if (gdk_visual_get_depth (visual) == 32) /* we have ARGB */
         {
           color.pixel = (color.pixel & 0xffffff) &
             style->window_background_alpha << 24;
