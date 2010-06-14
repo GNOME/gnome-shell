@@ -49,6 +49,34 @@ static GOptionEntry g_options[] =
   { NULL }
 };
 
+static void
+toggle_texture_quality (ClutterActor *actor)
+{
+  if (CLUTTER_IS_CONTAINER (actor))
+    clutter_container_foreach (CLUTTER_CONTAINER (actor),
+                               (ClutterCallback) toggle_texture_quality,
+                               NULL);
+
+  if (CLUTTER_IS_TEXTURE (actor))
+    {
+      ClutterTextureQuality quality;
+
+      quality = clutter_texture_get_filter_quality (CLUTTER_TEXTURE (actor));
+
+      if (quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        quality = CLUTTER_TEXTURE_QUALITY_MEDIUM;
+      else
+        quality = CLUTTER_TEXTURE_QUALITY_HIGH;
+
+      g_print ("switching to quality %s for %p\n",
+               quality == CLUTTER_TEXTURE_QUALITY_HIGH
+               ? "high" : "medium",
+               actor);
+
+      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (actor), quality);
+    }
+}
+
 static gboolean
 stage_key_release_cb (ClutterActor *actor,
 		      ClutterEvent *event,
@@ -59,6 +87,10 @@ stage_key_release_cb (ClutterActor *actor,
     case CLUTTER_q:
     case CLUTTER_Q:
       clutter_main_quit ();
+      break;
+
+    case CLUTTER_m:
+      toggle_texture_quality (actor);
       break;
     }
   return FALSE;
