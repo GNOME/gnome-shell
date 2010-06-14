@@ -70,94 +70,100 @@ static void run_position_expression_timings (void);
 static void run_theme_benchmark (void);
 
 
-static GtkItemFactoryEntry menu_items[] =
+static const gchar *menu_item_string =
+  "<ui>\n"
+    "<menubar>\n"
+      "<menu name='Windows' action='Windows'>\n"
+        "<menuitem name='Dialog' action='Dialog'/>\n"
+        "<menuitem name='Modal dialog' action='Modal dialog'/>\n"
+        "<menuitem name='Utility' action='Utility'/>\n"
+        "<menuitem name='Splashscreen' action='Splashscreen'/>\n"
+        "<menuitem name='Top dock' action='Top dock'/>\n"
+        "<menuitem name='Bottom dock' action='Bottom dock'/>\n"
+        "<menuitem name='Left dock' action='Left dock'/>\n"
+        "<menuitem name='Right dock' action='Right dock'/>\n"
+        "<menuitem name='Desktop' action='Desktop'/>\n"
+      "</menu>\n"
+    "</menubar>\n"
+    "<toolbar>\n"
+      "<separator/>\n"
+      "<toolitem name='New' action='New'/>\n"
+      "<toolitem name='Open' action='Open'/>\n"
+      "<toolitem name='Quit' action='Quit'/>\n"
+      "<separator/>\n"
+    "</toolbar>\n"
+  "</ui>\n";
+
+static GtkActionEntry menu_items[] =
 {
-  { N_("/_Windows"),              NULL,         NULL,                     0, "<Branch>" },
-  { N_("/Windows/tearoff"),       NULL,         NULL,                     0, "<Tearoff>" },
-  { N_("/Windows/_Dialog"),       "<control>d",  NULL,               0, NULL },
-  { N_("/Windows/_Modal dialog"), NULL,          NULL,         0, NULL },
-  { N_("/Windows/_Utility"),      "<control>u",  NULL,              0, NULL },
-  { N_("/Windows/_Splashscreen"), "<control>s",  NULL,         0, NULL },
-  { N_("/Windows/_Top dock"),     NULL,          NULL,                 0, NULL },
-  { N_("/Windows/_Bottom dock"),  NULL,          NULL,                 0, NULL },
-  { N_("/Windows/_Left dock"),    NULL,          NULL,                 0, NULL },
-  { N_("/Windows/_Right dock"),   NULL,          NULL,                 0, NULL },
-  { N_("/Windows/_All docks"),    NULL,          NULL,                 0, NULL },
-  { N_("/Windows/Des_ktop"),      NULL,          NULL,              0, NULL }
+  { "Windows",		NULL, N_("_Windows"),		NULL,		NULL, NULL },
+  { "Dialog",		NULL, N_("_Dialog"),		"<control>d",	NULL, NULL },
+  { "Modal dialog",	NULL, N_("_Modal dialog"),	NULL,		NULL, NULL },
+  { "Utility",		NULL, N_("_Utility"),		"<control>u",	NULL, NULL },
+  { "Splashscreen",	NULL, N_("_Splashscreen"),	"<control>s",	NULL, NULL },
+  { "Top dock",		NULL, N_("_Top dock"),		NULL,		NULL, NULL },
+  { "Bottom dock",	NULL, N_("_Bottom dock"),	NULL,		NULL, NULL },
+  { "Left dock",	NULL, N_("_Left dock"),		NULL,		NULL, NULL },
+  { "Right dock",	NULL, N_("_Right dock"),	NULL,		NULL, NULL },
+  { "All docks",	NULL, N_("_All docks"),		NULL,		NULL, NULL },
+  { "Desktop",		NULL, N_("Des_ktop"),		NULL,		NULL, NULL }
 };
 
-static void
-insert_stock_button (GtkWidget          *toolbar,
-                     const gchar        *stock_id,
-                     const gchar        *text)
+static GtkActionEntry tool_items[] =
 {
-  GtkToolItem *button;
-
-  button = gtk_tool_button_new_from_stock (stock_id);
-  gtk_tool_item_set_tooltip_text (button, text);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar),
-                      button,
-                      -1); /*-1 means append to end of toolbar*/
-
-  return;
-}
+  { "New",	GTK_STOCK_NEW,	NULL,	NULL,
+    N_("Open another one of these windows"),		NULL },
+  { "Open",	GTK_STOCK_OPEN,	NULL,	NULL,
+    N_("This is a demo button with an 'open' icon"),	NULL },
+  { "Quit",	GTK_STOCK_QUIT,	NULL,	NULL,
+    N_("This is a demo button with a 'quit' icon"),	NULL }
+};
 
 static GtkWidget *
 normal_contents (void)
 {
   GtkWidget *table;
-  GtkWidget *toolbar;
   GtkWidget *handlebox;
   GtkWidget *statusbar;
   GtkWidget *contents;
   GtkWidget *sw;
-  GtkItemFactory *item_factory;
+  GtkActionGroup *action_group;
+  GtkUIManager *ui_manager;
       
   table = gtk_table_new (1, 4, FALSE);
   
   /* Create the menubar
    */
       
-  item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", NULL);
+  action_group = gtk_action_group_new ("mainmenu");
+  gtk_action_group_add_actions (action_group,
+                                menu_items,
+                                G_N_ELEMENTS (menu_items),
+                                NULL);
+  gtk_action_group_add_actions (action_group,
+                                tool_items,
+                                G_N_ELEMENTS (tool_items),
+                                NULL);
 
-  gtk_item_factory_set_translate_func(item_factory,
-				      (GtkTranslateFunc)gettext, NULL, NULL);
+  ui_manager = gtk_ui_manager_new ();
 
-  /* Set up item factory to go away */
-  g_object_ref (item_factory);
-  g_object_ref_sink (item_factory);
-  g_object_unref (item_factory);
-  g_object_set_data_full (G_OBJECT (table),
-                          "<main>",
-                          item_factory,
-                          (GDestroyNotify) g_object_unref);
+  gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
 
   /* create menu items */
-  gtk_item_factory_create_items (item_factory, G_N_ELEMENTS (menu_items),
-                                 menu_items, NULL);
+  gtk_ui_manager_add_ui_from_string (ui_manager, menu_item_string, -1, NULL);
 
   gtk_table_attach (GTK_TABLE (table),
-                    gtk_item_factory_get_widget (item_factory, "<main>"),
+                    gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
                     /* X direction */          /* Y direction */
                     0, 1,                      0, 1,
                     GTK_EXPAND | GTK_FILL,     0,
                     0,                         0);
 
-  /* Create the toolbar
-   */
-  toolbar = gtk_toolbar_new ();
-
-  insert_stock_button (toolbar, GTK_STOCK_NEW,
-                       _("Open another one of these windows"));
-  insert_stock_button (toolbar, GTK_STOCK_OPEN,
-                       _("This is a demo button with an 'open' icon"));
-  insert_stock_button (toolbar, GTK_STOCK_QUIT,
-                       _("This is a demo button with a 'quit' icon"));
-
   handlebox = gtk_handle_box_new ();
 
-  gtk_container_add (GTK_CONTAINER (handlebox), toolbar);
-      
+  gtk_container_add (GTK_CONTAINER (handlebox),
+                     gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"));
+
   gtk_table_attach (GTK_TABLE (table),
                     handlebox,
                     /* X direction */       /* Y direction */
@@ -202,6 +208,8 @@ normal_contents (void)
                     0,                      0);
 
   gtk_widget_show_all (table);
+
+  g_object_unref (ui_manager);
 
   return table;
 }
