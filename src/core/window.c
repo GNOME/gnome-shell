@@ -3235,10 +3235,6 @@ meta_window_unmaximize (MetaWindow        *window,
           window->display->grab_anchor_window_pos = target_rect;
         }
 
-      /* Make sure user_rect is current.
-       */
-      force_save_user_window_placement (window);
-
       if (window->display->compositor)
         {
           MetaRectangle old_rect, new_rect;
@@ -3267,6 +3263,10 @@ meta_window_unmaximize (MetaWindow        *window,
                                    target_rect.width,
                                    target_rect.height);
         }
+
+      /* Make sure user_rect is current.
+       */
+      force_save_user_window_placement (window);
 
       recalc_window_features (window);
       set_net_wm_state (window);
