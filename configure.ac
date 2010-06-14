@@ -277,9 +277,6 @@ AS_CASE([$CLUTTER_WINSYS],
 
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
-
-          # Mesa 7.3 added a GL pkg-config file, finally
-          PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
         ],
 
         [eglnative],
