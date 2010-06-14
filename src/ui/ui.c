@@ -32,6 +32,7 @@
 #include "theme.h"
 
 #include "inlinepixbufs.h"
+#include "gdk-compat.h"
 
 #include <string.h>
 #include <stdlib.h>
