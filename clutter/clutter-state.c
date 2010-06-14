@@ -1680,7 +1680,26 @@ parse_state_transition (JsonArray *array,
     }
 
   source_name = json_object_get_string_member (object, "source");
-  source_state = clutter_state_get_state (clos->state, source_name, FALSE);
+  if (source_name)
+    {
+      source_name = g_intern_string (source_name);
+      source_state = g_hash_table_lookup (clos->state->priv->states,
+                                          source_name);
+      if (source_state == NULL)
+        {
+          source_state = state_new (clos->state, source_name);
+          g_hash_table_insert (clos->state->priv->states,
+                              (gpointer) source_name, source_state);
+        }
+    }
+  else
+    {
+      /* the parsed transition is to be the default transition to
+       * the specified target state if no other more specific transition
+       * exist with both source_name and target_name specified.
+       */
+      source_state = NULL;
+    }
 
   target_name = json_object_get_string_member (object, "target");
   target_state = clutter_state_get_state (clos->state, target_name, TRUE);
