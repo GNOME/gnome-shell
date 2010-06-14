@@ -168,6 +168,9 @@ sort_props_func (gconstpointer a,
   return pa->object - pb->object;
 }
 
+static State * clutter_state_get_state (ClutterState *state,
+                                        const gchar  *state_name,
+                                        gboolean      force_creation);
 static void object_disappeared (gpointer data,
                                 GObject *where_the_object_was);
 
@@ -254,8 +257,7 @@ clutter_state_remove_key_internal (ClutterState *this,
   property_name = g_intern_string (property_name);
 
   if (source_state_name)
-    source_state = g_hash_table_lookup (this->priv->states,
-                                        source_state_name);
+    source_state = clutter_state_get_state (this, source_state_name, FALSE);
 
   if (target_state_name != NULL)
     state_list = g_list_append (NULL, (gpointer) target_state_name);
@@ -265,7 +267,7 @@ clutter_state_remove_key_internal (ClutterState *this,
   for (s = state_list; s != NULL; s = s->next)
     {
       State *target_state;
-      target_state = g_hash_table_lookup (this->priv->states, s->data);
+      target_state = clutter_state_get_state (this, s->data, FALSE);
 
       if (target_state)
         {
@@ -493,7 +495,7 @@ clutter_state_change (ClutterState *state,
                                          priv->target_state_name);
   clutter_timeline_set_duration (priv->timeline, duration);
 
-  new_state = g_hash_table_lookup (priv->states, target_state_name);
+  new_state = clutter_state_get_state (state, target_state_name, FALSE);
   if (new_state == NULL)
     {
       g_warning ("State '%s' not found", target_state_name);
@@ -961,14 +963,13 @@ clutter_state_get_keys (ClutterState *state,
     state_list = clutter_state_get_states (state);
 
   if (source_state_name)
-    source_state = g_hash_table_lookup (state->priv->states,
-                                        source_state_name);
+    source_state = clutter_state_get_state (state, source_state_name, FALSE);
 
   for (s = state_list; s != NULL; s = s->next)
     {
       State *target_state;
 
-      target_state = g_hash_table_lookup (state->priv->states, s->data);
+      target_state = clutter_state_get_state (state, s->data, FALSE);
       if (target_state != NULL)
         {
           GList *k;
@@ -1188,7 +1189,7 @@ clutter_state_get_animator (ClutterState *state,
 
   target_state_name = g_intern_string (target_state_name);
 
-  target_state = g_hash_table_lookup (state->priv->states, target_state_name);
+  target_state = clutter_state_get_state (state, target_state_name, FALSE);
   if (target_state == NULL)
     return NULL;
   
@@ -1239,7 +1240,7 @@ clutter_state_set_animator (ClutterState    *state,
   source_state_name = g_intern_string (source_state_name);
   target_state_name = g_intern_string (target_state_name);
 
-  target_state = g_hash_table_lookup (state->priv->states, target_state_name);
+  target_state = clutter_state_get_state (state, target_state_name, FALSE);
   if (target_state == NULL)
     return;
   
@@ -1527,7 +1528,7 @@ clutter_state_set_duration (ClutterState *state,
       return;
     }
 
-  target_state = g_hash_table_lookup (state->priv->states, target_state_name);
+  target_state = clutter_state_get_state (state, target_state_name, FALSE);
   if (target_state != NULL)
     {
       if (source_state_name != NULL)
@@ -1582,8 +1583,7 @@ clutter_state_get_duration (ClutterState *state,
   if (target_state_name == NULL)
     return state->priv->duration;
 
-  target_state = g_hash_table_lookup (state->priv->states,
-                                      target_state_name);
+  target_state = clutter_state_get_state (state, target_state_name, FALSE);
   if (target_state != NULL)
     {
       if (source_state_name)
@@ -1680,26 +1680,7 @@ parse_state_transition (JsonArray *array,
     }
 
   source_name = json_object_get_string_member (object, "source");
-  if (source_name)
-    {
-      source_name = g_intern_string (source_name);
-      source_state = g_hash_table_lookup (clos->state->priv->states,
-                                          source_name);
-      if (source_state == NULL)
-        {
-          source_state = state_new (clos->state, source_name);
-          g_hash_table_insert (clos->state->priv->states,
-                              (gpointer) source_name, source_state);
-        }
-    }
-  else
-    {
-      /* the parsed transition is to be the default transition to
-       * the specified target state if no other more specific transition
-       * exist with both source_name and target_name specified.
-       */
-      source_state = NULL;
-    }
+  source_state = clutter_state_get_state (clos->state, source_name, FALSE);
 
   target_name = json_object_get_string_member (object, "target");
   target_state = clutter_state_get_state (clos->state, target_name, TRUE);
