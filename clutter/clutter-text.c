@@ -532,7 +532,7 @@ clutter_text_create_layout (ClutterText *text,
        !((priv->editable && priv->single_line_mode) ||
          (priv->ellipsize == PANGO_ELLIPSIZE_NONE && !priv->wrap))))
     {
-      width = allocation_width * 1024;
+      width = allocation_width * 1024 + 0.5f;
     }
 
   /* Pango only uses height if ellipsization is enabled, so don't set
@@ -549,7 +549,7 @@ clutter_text_create_layout (ClutterText *text,
       priv->ellipsize != PANGO_ELLIPSIZE_NONE &&
       !priv->single_line_mode)
     {
-      height = allocation_height * 1024;
+      height = allocation_height * 1024 + 0.5f;
     }
 
   /* Search for a cached layout with the same width and keep
