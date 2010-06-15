@@ -143,15 +143,37 @@ _cogl_bind_gl_texture_transient (GLenum gl_target,
                                  gboolean is_foreign);
 
 #if defined (HAVE_COGL_GL)
-/* glsl, arbfp, fixed */
+
+/* NB: material->backend is currently a 3bit unsigned int bitfield */
+#define COGL_MATERIAL_BACKEND_GLSL       0
+#define COGL_MATERIAL_BACKEND_GLSL_MASK  (1L<<0)
+#define COGL_MATERIAL_BACKEND_ARBFP      1
+#define COGL_MATERIAL_BACKEND_ARBFP_MASK (1L<<1)
+#define COGL_MATERIAL_BACKEND_FIXED      2
+#define COGL_MATERIAL_BACKEND_FIXED_MASK (1L<<2)
+
 #define COGL_MATERIAL_N_BACKENDS         3
+
 #elif defined (HAVE_COGL_GLES2)
-/* glsl, fixed */
+
+#define COGL_MATERIAL_BACKEND_GLSL       0
+#define COGL_MATERIAL_BACKEND_GLSL_MASK  (1L<<0)
+#define COGL_MATERIAL_BACKEND_FIXED      1
+#define COGL_MATERIAL_BACKEND_FIXED_MASK (1L<<1)
+
 #define COGL_MATERIAL_N_BACKENDS         2
+
 #else /* HAVE_COGL_GLES */
-/* fixed */
+
+#define COGL_MATERIAL_BACKEND_FIXED      0
+#define COGL_MATERIAL_BACKEND_FIXED_MASK (1L<<0)
+
 #define COGL_MATERIAL_N_BACKENDS         1
+
 #endif
+
+#define COGL_MATERIAL_BACKEND_DEFAULT    0
+#define COGL_MATERIAL_BACKEND_UNDEFINED  3
 
 typedef enum
 {
@@ -724,6 +746,24 @@ typedef struct _CoglMaterialFlushOptions
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
 } CoglMaterialFlushOptions;
 
+
+void
+_cogl_set_active_texture_unit (int unit_index);
+
+void
+_cogl_delete_gl_texture (GLuint gl_texture);
+
+int
+_cogl_get_max_texture_image_units (void);
+
+
+void
+_cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type);
+
+unsigned int
+_cogl_get_n_args_for_combine_func (GLint func);
+
+
 void
 _cogl_material_get_colorubv (CoglHandle  handle,
                              guint8     *color);
@@ -758,9 +798,6 @@ _cogl_material_set_user_program (CoglHandle handle,
                                  CoglHandle program);
 
 void
-_cogl_delete_gl_texture (GLuint gl_texture);
-
-void
 _cogl_material_texture_storage_change_notify (CoglHandle texture);
 
 void
@@ -786,6 +823,40 @@ _cogl_material_set_static_breadcrumb (CoglHandle handle,
 
 unsigned long
 _cogl_material_get_age (CoglHandle handle);
+
+CoglMaterial *
+_cogl_material_get_authority (CoglMaterial *material,
+                              unsigned long difference);
+
+typedef gboolean (*CoglMaterialChildCallback) (CoglMaterial *child,
+                                               void *user_data);
+
+void
+_cogl_material_foreach_child (CoglMaterial *material,
+                              CoglMaterialChildCallback callback,
+                              void *user_data);
+
+unsigned long
+_cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
+                                          CoglMaterialLayer *layer1);
+
+CoglMaterialLayer *
+_cogl_material_layer_get_authority (CoglMaterialLayer *layer,
+                                    unsigned long difference);
+
+CoglHandle
+_cogl_material_layer_get_texture (CoglMaterialLayer *layer);
+
+typedef gboolean (*CoglMaterialLayerCallback) (CoglMaterialLayer *layer,
+                                               void *user_data);
+
+void
+_cogl_material_foreach_layer (CoglMaterial *material,
+                              CoglMaterialLayerCallback callback,
+                              void *user_data);
+
+int
+_cogl_material_layer_get_unit_index (CoglMaterialLayer *layer);
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 
