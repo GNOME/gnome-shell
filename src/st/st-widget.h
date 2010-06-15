@@ -78,7 +78,10 @@ struct _StWidgetClass
   ClutterActorClass parent_class;
 
   /* vfuncs */
-  void (* style_changed)   (StWidget *self);
+  void     (* style_changed)   (StWidget         *self);
+  gboolean (* navigate_focus)  (StWidget         *self,
+                                ClutterActor     *from,
+                                GtkDirectionType  direction);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;
@@ -136,6 +139,14 @@ void                  st_widget_set_default_direction     (StTextDirection  dir)
 StTextDirection       st_widget_get_direction             (StWidget        *self);
 void                  st_widget_set_direction             (StWidget        *self,
                                                            StTextDirection  dir);
+
+void                  st_widget_set_can_focus             (StWidget        *widget,
+                                                           gboolean         can_focus);
+gboolean              st_widget_get_can_focus             (StWidget        *widget);
+gboolean              st_widget_navigate_focus            (StWidget        *widget,
+                                                           ClutterActor    *from,
+                                                           GtkDirectionType direction,
+                                                           gboolean         wrap_around);
 
 /* Only to be used by sub-classes of StWidget */
 void                  st_widget_style_changed             (StWidget        *widget);
