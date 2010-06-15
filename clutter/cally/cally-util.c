@@ -295,7 +295,7 @@ _listener_info_destroy (gpointer data)
 static guint
 add_listener (GSignalEmissionHook listener,
               const gchar         *object_type,
-              const gchar         *signal,
+              const gchar         *signal_name,
               const gchar         *hook_data)
 {
   GType type;
@@ -305,7 +305,7 @@ add_listener (GSignalEmissionHook listener,
   type = g_type_from_name (object_type);
   if (type)
     {
-      signal_id  = g_signal_lookup (signal, type);
+      signal_id  = g_signal_lookup (signal_name, type);
       if (signal_id > 0)
         {
           CallyUtilListenerInfo *listener_info;
@@ -327,7 +327,7 @@ add_listener (GSignalEmissionHook listener,
         {
           /* This is mainly because some "window:xxx" methods not
              implemented on CallyStage */
-          g_debug ("Signal type %s not supported\n", signal);
+          g_debug ("Signal type %s not supported\n", signal_name);
         }
     }
   else
@@ -521,10 +521,10 @@ cally_util_stage_added_cb (ClutterStageManager *stage_manager,
                            ClutterStage *stage,
                            gpointer data)
 {
-  GCallback cally_key_snooper = G_CALLBACK (data);
+  GCallback cally_key_snooper_cb = G_CALLBACK (data);
   AtkObject *cally_stage = NULL;
 
-  g_signal_connect (G_OBJECT (stage), "captured-event", cally_key_snooper, NULL);
+  g_signal_connect (G_OBJECT (stage), "captured-event", cally_key_snooper_cb, NULL);
 
   cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
   if (cally_stage != NULL)
@@ -536,11 +536,11 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
                              ClutterStage *stage,
                              gpointer data)
 {
-  GCallback cally_key_snooper = G_CALLBACK (data);
+  GCallback cally_key_snooper_cb = G_CALLBACK (data);
   gint num = 0;
   AtkObject *cally_stage = NULL;
 
-  num = g_signal_handlers_disconnect_by_func (stage, cally_key_snooper, NULL);
+  num = g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
 
   cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
   if (cally_stage != NULL)

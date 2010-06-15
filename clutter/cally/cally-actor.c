@@ -100,7 +100,6 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <clutter/clutter.h>
 
 #ifdef HAVE_CLUTTER_X11
@@ -1224,12 +1223,12 @@ cally_actor_real_notify_clutter (GObject    *obj,
   AtkState      state;
   gboolean      value;
 
-  if (strcmp (pspec->name, "visible") == 0)
+  if (g_strcmp0 (pspec->name, "visible") == 0)
     {
       state = ATK_STATE_VISIBLE;
       value = CLUTTER_ACTOR_IS_VISIBLE (actor);
     }
-  else if (strcmp (pspec->name, "reactive") == 0)
+  else if (g_strcmp0 (pspec->name, "reactive") == 0)
     {
       state = ATK_STATE_SENSITIVE;
       value = CLUTTER_ACTOR_IS_REACTIVE (actor);
