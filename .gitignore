@@ -265,6 +265,7 @@ TAGS
 /tests/conform/test-texture-pick-with-alpha
 /tests/conform/test-cogl-object
 /tests/conform/test-script-layout-property
+/tests/conform/test-cogl-depth-test
 /tests/conform/wrappers
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
