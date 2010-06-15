@@ -1094,7 +1094,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   GLfloat             *v;
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
   CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
-  CoglHandle           original_source_material;
+  CoglHandle           original_source_material = NULL;
   gboolean             overrode_material = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
