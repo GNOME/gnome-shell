@@ -101,6 +101,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\
+	$(srcdir)/cogl-color-private.h    		\
 	$(srcdir)/cogl-color.c				\
 	$(srcdir)/cogl-buffer-private.h 		\
 	$(srcdir)/cogl-buffer.c				\
