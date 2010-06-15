@@ -1992,7 +1992,7 @@ gl_target_to_arbfp_string (GLenum gl_target)
 #endif
     if (gl_target == GL_TEXTURE_2D)
     return "2D";
-#ifdef ARB_texture_rectangle
+#ifdef GL_ARB_texture_rectangle
   else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
     return "RECT";
 #endif
