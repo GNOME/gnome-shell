@@ -119,6 +119,12 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-stack.h			\
 	$(srcdir)/cogl-material.c			\
 	$(srcdir)/cogl-material-private.h		\
+	$(srcdir)/cogl-material-glsl.c			\
+	$(srcdir)/cogl-material-glsl-private.h		\
+	$(srcdir)/cogl-material-arbfp.c			\
+	$(srcdir)/cogl-material-arbfp-private.h		\
+	$(srcdir)/cogl-material-fixed.c			\
+	$(srcdir)/cogl-material-fixed-private.h		\
 	$(srcdir)/cogl-blend-string.c			\
 	$(srcdir)/cogl-blend-string.h			\
 	$(srcdir)/cogl-debug.c				\
