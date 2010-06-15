@@ -1,0 +1,4 @@
+*.o
+/test-text-perf
+/test-text
+/test-picking
