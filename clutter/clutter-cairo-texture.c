@@ -430,6 +430,14 @@ clutter_cairo_texture_init (ClutterCairoTexture *self)
    * match that format
    */
   priv->format = CAIRO_FORMAT_ARGB32;
+
+  /* the Cairo surface is responsible for driving the size of
+   * the texture; if we let sync_size to its default of TRUE,
+   * the Texture will try to queue a relayout every time we
+   * change the size of the Cairo surface - which is not what
+   * we want
+   */
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (self), FALSE);
 }
 
 /**

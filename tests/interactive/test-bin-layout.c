@@ -3,12 +3,14 @@
 #include <cairo/cairo.h>
 #include <clutter/clutter.h>
 
-static ClutterActor *
-make_background (const ClutterColor *color,
-                 gfloat              width,
-                 gfloat              height)
+static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
+
+static void
+update_background (ClutterActor       *tex,
+                   const ClutterColor *color,
+                   gfloat              width,
+                   gfloat              height)
 {
-  ClutterActor *tex = clutter_cairo_texture_new (width, height);
   cairo_t *cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (tex));
   cairo_pattern_t *pat;
   gfloat x, y;
@@ -62,8 +64,6 @@ make_background (const ClutterColor *color,
   cairo_destroy (cr);
 
 #undef BG_ROUND_RADIUS
-
-  return tex;
 }
 
 static gboolean
@@ -90,14 +90,51 @@ on_box_leave (ClutterActor *box,
   return TRUE;
 }
 
+static void
+on_rect_clicked (ClutterClickAction *action,
+                 ClutterActor       *rect,
+                 ClutterActor       *box)
+{
+  static gboolean is_expanded = FALSE;
+
+  if (!is_expanded)
+    clutter_actor_animate (box, CLUTTER_EASE_OUT_BOUNCE, 250,
+                           "width", 400.0,
+                           "height", 400.0,
+                           NULL);
+  else
+    clutter_actor_animate (box, CLUTTER_EASE_OUT_BOUNCE, 250,
+                           "width", 200.0,
+                           "height", 200.0,
+                           NULL);
+
+  is_expanded = !is_expanded;
+}
+
+static void
+on_box_allocation_changed (ClutterActor           *box,
+                           const ClutterActorBox  *allocation,
+                           ClutterAllocationFlags  flags,
+                           ClutterActor           *background)
+{
+  gfloat new_width, new_height;
+
+  clutter_actor_box_get_size (allocation, &new_width, &new_height);
+  clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (background),
+                                          new_width,
+                                          new_height);
+
+  update_background (background, &bg_color, new_width, new_height);
+}
+
 G_MODULE_EXPORT int
 test_bin_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *box, *rect;
   ClutterLayoutManager *layout;
   ClutterColor stage_color = { 0xe0, 0xf2, 0xfc, 0xff };
-  ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
   ClutterColor *color;
+  ClutterAction *action;
 
   clutter_init (&argc, &argv);
 
@@ -116,7 +153,11 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_set_name (box, "box");
 
-  rect = make_background (&bg_color, 200, 200);
+  /* the contents of the texture are created every time the allocation
+   * of the box changes, to keep the background's size the same as the
+   * box's size
+   */
+  rect = clutter_cairo_texture_new (100, 100);
 
   /* first method: use clutter_box_pack() */
   clutter_box_pack (CLUTTER_BOX (box), rect,
@@ -126,6 +167,9 @@ test_bin_layout_main (int argc, char *argv[])
 
   clutter_actor_lower_bottom (rect);
   clutter_actor_set_name (rect, "background");
+  g_signal_connect (box, "allocation-changed",
+                    G_CALLBACK (on_box_allocation_changed),
+                    rect);
 
   {
     ClutterActor *tex;
@@ -167,9 +211,13 @@ test_bin_layout_main (int argc, char *argv[])
 
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_opacity (rect, 0);
+  clutter_actor_set_reactive (rect, TRUE);
   clutter_actor_raise_top (rect);
   clutter_actor_set_name (rect, "emblem");
 
+  action = clutter_click_action_new ();
+  clutter_actor_add_action (rect, action);
+  g_signal_connect (action, "clicked", G_CALLBACK (on_rect_clicked), box);
 
   g_signal_connect (box,
                     "enter-event", G_CALLBACK (on_box_enter),
