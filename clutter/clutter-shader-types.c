@@ -399,6 +399,7 @@ clutter_value_set_shader_float (GValue         *value,
   gint i;
 
   g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value));
+  g_return_if_fail (size <= 4);
 
   shader_float = value->data[0].v_pointer;
 
@@ -428,6 +429,7 @@ clutter_value_set_shader_int (GValue     *value,
   gint i;
 
   g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_INT (value));
+  g_return_if_fail (size <= 4);
 
   shader_int = value->data[0].v_pointer;
 
@@ -457,6 +459,7 @@ clutter_value_set_shader_matrix (GValue       *value,
   gint i;
 
   g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value));
+  g_return_if_fail (size <= 4);
 
   shader_matrix = value->data[0].v_pointer;
 
