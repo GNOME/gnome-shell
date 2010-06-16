@@ -273,7 +273,7 @@ clutter_state_remove_key_internal (ClutterState *this,
         {
           GList *k;
 
-          for (k = target_state->keys; k; k = k->next)
+          for (k = target_state->keys; k != NULL; k = k?k->next:NULL)
             {
               ClutterStateKey *key = k->data;
 
