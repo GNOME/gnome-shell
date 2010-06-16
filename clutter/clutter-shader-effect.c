@@ -637,6 +637,8 @@ clutter_shader_effect_set_uniform_valist (ClutterShaderEffect *effect,
 
   if (value_type == G_TYPE_INT)
     {
+      g_return_if_fail (n_values <= 4);
+
       /* if we only have one value we can go through the fast path
        * of using G_TYPE_INT, otherwise we create a vector of integers
        * from the passed values
@@ -667,6 +669,8 @@ clutter_shader_effect_set_uniform_valist (ClutterShaderEffect *effect,
 
   if (value_type == G_TYPE_FLOAT)
     {
+      g_return_if_fail (n_values <= 4);
+
       /* if we only have one value we can go through the fast path
        * of using G_TYPE_FLOAT, otherwise we create a vector of floats
        * from the passed values
