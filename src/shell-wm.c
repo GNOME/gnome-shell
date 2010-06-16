@@ -14,24 +14,19 @@ struct _ShellWM {
   GObject parent;
 
   MutterPlugin *plugin;
-  GList *switch_workspace_actors;
 };
 
 /* Signals */
 enum
 {
   MINIMIZE,
-  KILL_MINIMIZE,
   MAXIMIZE,
-  KILL_MAXIMIZE,
   UNMAXIMIZE,
-  KILL_UNMAXIMIZE,
   MAP,
-  KILL_MAP,
   DESTROY,
-  KILL_DESTROY,
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
+  KILL_WINDOW_EFFECTS,
 
   KEYBINDING,
 
@@ -39,9 +34,6 @@ enum
 };
 
 G_DEFINE_TYPE(ShellWM, shell_wm, G_TYPE_OBJECT);
-
-static void shell_wm_set_switch_workspace_actors (ShellWM *wm,
-                                                  GList   *actors);
 
 static guint shell_wm_signals [LAST_SIGNAL] = { 0 };
 
@@ -53,10 +45,6 @@ shell_wm_init (ShellWM *wm)
 static void
 shell_wm_finalize (GObject *object)
 {
-  ShellWM *wm = SHELL_WM (object);
-
-  shell_wm_set_switch_workspace_actors (wm, NULL);
-
   G_OBJECT_CLASS (shell_wm_parent_class)->finalize (object);
 }
 
@@ -76,15 +64,6 @@ shell_wm_class_init (ShellWMClass *klass)
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   MUTTER_TYPE_COMP_WINDOW);
-  shell_wm_signals[KILL_MINIMIZE] =
-    g_signal_new ("kill-minimize",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
   shell_wm_signals[MAXIMIZE] =
     g_signal_new ("maximize",
                   G_TYPE_FROM_CLASS (klass),
@@ -94,15 +73,6 @@ shell_wm_class_init (ShellWMClass *klass)
                   _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
                   G_TYPE_NONE, 5,
                   MUTTER_TYPE_COMP_WINDOW, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
-  shell_wm_signals[KILL_MAXIMIZE] =
-    g_signal_new ("kill-maximize",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
   shell_wm_signals[UNMAXIMIZE] =
     g_signal_new ("unmaximize",
                   G_TYPE_FROM_CLASS (klass),
@@ -112,15 +82,6 @@ shell_wm_class_init (ShellWMClass *klass)
                   _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
                   G_TYPE_NONE, 1,
                   MUTTER_TYPE_COMP_WINDOW, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
-  shell_wm_signals[KILL_UNMAXIMIZE] =
-    g_signal_new ("kill-unmaximize",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
   shell_wm_signals[MAP] =
     g_signal_new ("map",
                   G_TYPE_FROM_CLASS (klass),
@@ -130,15 +91,6 @@ shell_wm_class_init (ShellWMClass *klass)
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   MUTTER_TYPE_COMP_WINDOW);
-  shell_wm_signals[KILL_MAP] =
-    g_signal_new ("kill-map",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
   shell_wm_signals[DESTROY] =
     g_signal_new ("destroy",
                   G_TYPE_FROM_CLASS (klass),
@@ -148,15 +100,6 @@ shell_wm_class_init (ShellWMClass *klass)
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   MUTTER_TYPE_COMP_WINDOW);
-  shell_wm_signals[KILL_DESTROY] =
-    g_signal_new ("kill-destroy",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
   shell_wm_signals[SWITCH_WORKSPACE] =
     g_signal_new ("switch-workspace",
 		  G_TYPE_FROM_CLASS (klass),
@@ -174,6 +117,15 @@ shell_wm_class_init (ShellWMClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  shell_wm_signals[KILL_WINDOW_EFFECTS] =
+    g_signal_new ("kill-window-effects",
+		  G_TYPE_FROM_CLASS (klass),
+		  G_SIGNAL_RUN_LAST,
+		  0,
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+		  MUTTER_TYPE_COMP_WINDOW);
 
   /**
    * ShellWM::keybinding:
@@ -204,49 +156,12 @@ shell_wm_class_init (ShellWMClass *klass)
 
 void
 _shell_wm_switch_workspace (ShellWM      *wm,
-                            const GList **actors,
                             gint          from,
                             gint          to,
                             MetaMotionDirection direction)
 {
-  shell_wm_set_switch_workspace_actors (wm, (GList *)*actors);
   g_signal_emit (wm, shell_wm_signals[SWITCH_WORKSPACE], 0,
                  from, to, direction);
-}
-
-/**
- * shell_wm_get_switch_workspace_actors:
- * @wm: the #ShellWM
- *
- * A workaround for a missing feature in gobject-introspection. Returns
- * the list of windows involved in a switch-workspace operation (which
- * cannot be passed directly to the signal handler because there's no
- * way to annotate the element-type of a signal parameter.)
- *
- * Return value: (element-type MutterWindow) (transfer full): the list
- * of windows
- **/
-GList *
-shell_wm_get_switch_workspace_actors (ShellWM *wm)
-{
-  GList *l;
-
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_ref (l->data);
-  return g_list_copy (wm->switch_workspace_actors);
-}
-
-static void
-shell_wm_set_switch_workspace_actors (ShellWM *wm, GList *actors)
-{
-  const GList *l;
-
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_unref (l->data);
-  g_list_free (wm->switch_workspace_actors);
-  wm->switch_workspace_actors = g_list_copy (actors);
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_ref (l->data);
 }
 
 /**
@@ -259,15 +174,7 @@ shell_wm_set_switch_workspace_actors (ShellWM *wm, GList *actors)
 void
 shell_wm_completed_switch_workspace (ShellWM *wm)
 {
-  g_return_if_fail (wm->switch_workspace_actors != NULL);
-
-  /* mutter_plugin_effect_completed() requires us to pass a window,
-   * though it doesn't matter *which* window in this case.
-   */
-  mutter_plugin_effect_completed (wm->plugin,
-                                  wm->switch_workspace_actors->data,
-                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
-  shell_wm_set_switch_workspace_actors (wm, NULL);
+  mutter_plugin_switch_workspace_completed (wm->plugin);
 }
 
 /**
@@ -281,9 +188,7 @@ void
 shell_wm_completed_minimize (ShellWM      *wm,
                              MutterWindow *actor)
 {
-  mutter_plugin_effect_completed (wm->plugin,
-                                  actor,
-                                  MUTTER_PLUGIN_MINIMIZE);
+  mutter_plugin_minimize_completed (wm->plugin, actor);
 }
 
 /**
@@ -297,9 +202,7 @@ void
 shell_wm_completed_maximize (ShellWM      *wm,
                              MutterWindow *actor)
 {
-  mutter_plugin_effect_completed (wm->plugin,
-                                  actor,
-                                  MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_maximize_completed (wm->plugin, actor);
 }
 
 /**
@@ -313,9 +216,7 @@ void
 shell_wm_completed_unmaximize (ShellWM      *wm,
                                MutterWindow *actor)
 {
-  mutter_plugin_effect_completed (wm->plugin,
-                                  actor,
-                                  MUTTER_PLUGIN_UNMAXIMIZE);
+  mutter_plugin_unmaximize_completed (wm->plugin, actor);
 }
 
 /**
@@ -329,9 +230,7 @@ void
 shell_wm_completed_map (ShellWM      *wm,
                         MutterWindow *actor)
 {
-  mutter_plugin_effect_completed (wm->plugin,
-                                  actor,
-                                  MUTTER_PLUGIN_MAP);
+  mutter_plugin_map_completed (wm->plugin, actor);
 }
 
 /**
@@ -345,28 +244,20 @@ void
 shell_wm_completed_destroy (ShellWM      *wm,
                             MutterWindow *actor)
 {
-  mutter_plugin_effect_completed (wm->plugin,
-                                  actor,
-                                  MUTTER_PLUGIN_DESTROY);
+  mutter_plugin_destroy_completed (wm->plugin, actor);
 }
 
 void
-_shell_wm_kill_effect (ShellWM      *wm,
-                       MutterWindow *actor,
-                       gulong        events)
+_shell_wm_kill_switch_workspace (ShellWM      *wm)
 {
-  if (events & MUTTER_PLUGIN_MINIMIZE)
-    g_signal_emit (wm, shell_wm_signals[KILL_MINIMIZE], 0, actor);
-  if (events & MUTTER_PLUGIN_MAXIMIZE)
-    g_signal_emit (wm, shell_wm_signals[KILL_MAXIMIZE], 0, actor);
-  if (events & MUTTER_PLUGIN_UNMAXIMIZE)
-    g_signal_emit (wm, shell_wm_signals[KILL_UNMAXIMIZE], 0, actor);
-  if (events & MUTTER_PLUGIN_MAP)
-    g_signal_emit (wm, shell_wm_signals[KILL_MAP], 0, actor);
-  if (events & MUTTER_PLUGIN_DESTROY)
-    g_signal_emit (wm, shell_wm_signals[KILL_DESTROY], 0, actor);
-  if (events & MUTTER_PLUGIN_SWITCH_WORKSPACE)
-    g_signal_emit (wm, shell_wm_signals[KILL_SWITCH_WORKSPACE], 0);
+  g_signal_emit (wm, shell_wm_signals[KILL_SWITCH_WORKSPACE], 0);
+}
+
+void
+_shell_wm_kill_window_effects (ShellWM      *wm,
+                               MutterWindow *actor)
+{
+  g_signal_emit (wm, shell_wm_signals[KILL_WINDOW_EFFECTS], 0, actor);
 }
 
 

@@ -30,18 +30,21 @@ WindowManager.prototype = {
         this._destroying = [];
 
         this._switchData = null;
-        this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
+        this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
+            this._minimizeWindowDone(shellwm, actor);
+            this._maximizeWindowDone(shellwm, actor);
+            this._unmaximizeWindowDone(shellwm, actor);
+            this._mapWindowDone(shellwm, actor);
+            this._destroyWindowDone(shellwm, actor);
+        }));
+
+        this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
-        this._shellwm.connect('kill-minimize', Lang.bind(this, this._minimizeWindowDone));
         this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
-        this._shellwm.connect('kill-maximize', Lang.bind(this, this._maximizeWindowDone));
         this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
-        this._shellwm.connect('kill-unmaximize', Lang.bind(this, this._unmaximizeWindowDone));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
-        this._shellwm.connect('kill-map', Lang.bind(this, this._mapWindowDone));
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
-        this._shellwm.connect('kill-destroy', Lang.bind(this, this._destroyWindowDone));
 
         this._workspaceSwitcherPopup = null;
         this.setKeybindingHandler('switch_to_workspace_left', Lang.bind(this, this._showWorkspaceSwitcher));
@@ -197,7 +200,7 @@ WindowManager.prototype = {
             return;
         }
 
-        let windows = shellwm.get_switch_workspace_actors();
+        let windows = global.get_windows();
 
         /* @direction is the direction that the "camera" moves, so the
          * screen contents have to move one screen's worth in the

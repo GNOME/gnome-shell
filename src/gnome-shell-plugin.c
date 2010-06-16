@@ -78,13 +78,13 @@ static void     gnome_shell_plugin_destroy          (MutterPlugin         *plugi
                                                      MutterWindow         *actor);
 
 static void     gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
-                                                     const GList         **actors,
                                                      gint                  from,
                                                      gint                  to,
                                                      MetaMotionDirection   direction);
-static void     gnome_shell_plugin_kill_effect      (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor,
-                                                     gulong                events);
+
+static void     gnome_shell_plugin_kill_window_effects   (MutterPlugin         *plugin,
+                                                          MutterWindow         *actor);
+static void     gnome_shell_plugin_kill_switch_workspace (MutterPlugin         *plugin);
 
 static gboolean                gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
                                                                  XEvent       *event);
@@ -142,7 +142,9 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->destroy          = gnome_shell_plugin_destroy;
 
   plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
-  plugin_class->kill_effect      = gnome_shell_plugin_kill_effect;
+
+  plugin_class->kill_window_effects   = gnome_shell_plugin_kill_window_effects;
+  plugin_class->kill_switch_workspace = gnome_shell_plugin_kill_switch_workspace;
 
   plugin_class->xevent_filter    = gnome_shell_plugin_xevent_filter;
   plugin_class->plugin_info      = gnome_shell_plugin_plugin_info;
@@ -458,22 +460,24 @@ gnome_shell_plugin_destroy (MutterPlugin         *plugin,
 
 static void
 gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
-                                     const GList         **actors,
                                      gint                  from,
                                      gint                  to,
                                      MetaMotionDirection   direction)
 {
-  _shell_wm_switch_workspace (get_shell_wm(),
-                              actors, from, to, direction);
+  _shell_wm_switch_workspace (get_shell_wm(), from, to, direction);
 }
 
 static void
-gnome_shell_plugin_kill_effect (MutterPlugin         *plugin,
-                                MutterWindow         *actor,
-                                gulong                events)
+gnome_shell_plugin_kill_window_effects (MutterPlugin         *plugin,
+                                        MutterWindow         *actor)
 {
-  _shell_wm_kill_effect (get_shell_wm(),
-                         actor, events);
+  _shell_wm_kill_window_effects (get_shell_wm(), actor);
+}
+
+static void
+gnome_shell_plugin_kill_switch_workspace (MutterPlugin         *plugin)
+{
+  _shell_wm_kill_switch_workspace (get_shell_wm());
 }
 
 static gboolean

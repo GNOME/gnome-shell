@@ -64,13 +64,12 @@ void _shell_wm_destroy    (ShellWM      *wm,
 			   MutterWindow *actor);
 
 void _shell_wm_switch_workspace (ShellWM              *wm,
-				 const GList         **actors,
 				 gint                  from,
 				 gint                  to,
 				 MetaMotionDirection   direction);
-void _shell_wm_kill_effect      (ShellWM              *wm,
-				 MutterWindow         *actor,
-				 gulong                events);
+void _shell_wm_kill_window_effects  (ShellWM              *wm,
+				     MutterWindow         *actor);
+void _shell_wm_kill_switch_workspace (ShellWM              *wm);
 
 /* Keybinding stuff */
 void shell_wm_takeover_keybinding (ShellWM    *wm,
