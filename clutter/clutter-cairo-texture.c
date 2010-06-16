@@ -300,8 +300,7 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 			       cairo,
                                clutter_cairo_texture_surface_destroy);
 
-  /* Create a blank Cogl texture
-   */
+  /* Create a blank Cogl texture */
   cogl_texture = cogl_texture_new_from_data (priv->width, priv->height,
                                              COGL_TEXTURE_NONE,
                                              CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
@@ -321,8 +320,8 @@ clutter_cairo_texture_notify (GObject    *object,
      that if both the width and height properties are set using a
      single call to g_object_set then the surface will only be resized
      once because the notifications will be frozen in between */
-  if (!strcmp ("surface-width", pspec->name)
-      || !strcmp ("surface-height", pspec->name))
+  if (strcmp ("surface-width", pspec->name) == 0 ||
+      strcmp ("surface-height", pspec->name) == 0)
     {
       ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (object);
 
@@ -368,6 +367,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   gobject_class->finalize     = clutter_cairo_texture_finalize;
   gobject_class->set_property = clutter_cairo_texture_set_property;
@@ -389,14 +389,15 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    *
    * Since: 1.0
    */
+  pspec = g_param_spec_uint ("surface-width",
+                             "Surface Width",
+                             "The width of the Cairo surface",
+                             0, G_MAXUINT,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_SURFACE_WIDTH,
-                                   g_param_spec_uint ("surface-width",
-                                                      "Surface-Width",
-                                                      "Surface Width",
-                                                      0, G_MAXUINT,
-                                                      0,
-                                                      CLUTTER_PARAM_READWRITE));
+                                   pspec);
   /**
    * ClutterCairoTexture:surface-height:
    *
@@ -405,14 +406,15 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    *
    * Since: 1.0
    */
+  pspec = g_param_spec_uint ("surface-height",
+                             "Surface-Height",
+                             "The height of the Cairo surface",
+                             0, G_MAXUINT,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_SURFACE_HEIGHT,
-                                   g_param_spec_uint ("surface-height",
-                                                      "Surface-Height",
-                                                      "Surface Height",
-                                                      0, G_MAXUINT,
-                                                      0,
-                                                      CLUTTER_PARAM_READWRITE));
+                                   pspec);
 }
 
 static void
