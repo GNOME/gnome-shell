@@ -64,9 +64,19 @@ typedef enum { /*< prefix=CLUTTER_ALIGN >*/
 
 GType clutter_align_constraint_get_type (void) G_GNUC_CONST;
 
-ClutterConstraint *clutter_align_constraint_new (ClutterActor     *source,
-                                                 ClutterAlignAxis  axis,
-                                                 gfloat            factor);
+ClutterConstraint *clutter_align_constraint_new            (ClutterActor           *source,
+                                                            ClutterAlignAxis        axis,
+                                                            gfloat                  factor);
+
+void               clutter_align_constraint_set_source     (ClutterAlignConstraint *constraint,
+                                                            ClutterActor           *source);
+ClutterActor *     clutter_align_constraint_get_source     (ClutterAlignConstraint *constraint);
+void               clutter_align_constraint_set_align_axis (ClutterAlignConstraint *constraint,
+                                                            ClutterAlignAxis        align_axis);
+ClutterAlignAxis   clutter_align_constraint_get_align_axis (ClutterAlignConstraint *constraint);
+void               clutter_align_constraint_set_factor     (ClutterAlignConstraint *constraint,
+                                                            gfloat                  factor);
+gfloat             clutter_align_constraint_get_factor     (ClutterAlignConstraint *constraint);
 
 G_END_DECLS
 

@@ -92,6 +92,9 @@ update_actor_position (ClutterAlignConstraint *align)
   if (actor == NULL)
     return;
 
+  if (align->source == NULL)
+    return;
+
   clutter_actor_get_size (align->source, &source_width, &source_height);
   clutter_actor_get_size (actor, &actor_width, &actor_height);
 
@@ -127,60 +130,6 @@ source_destroyed (ClutterActor           *actor,
 }
 
 static void
-_clutter_align_constraint_set_source (ClutterAlignConstraint *align,
-                                      ClutterActor           *source)
-{
-  ClutterActor *old_source = align->source;
-
-  if (old_source != NULL)
-    {
-      g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_destroyed),
-                                            align);
-      g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_position_changed),
-                                            align);
-    }
-
-  align->source = source;
-  g_signal_connect (align->source, "notify",
-                    G_CALLBACK (source_position_changed),
-                    align);
-  g_signal_connect (align->source, "destroy",
-                    G_CALLBACK (source_destroyed),
-                    align);
-
-  update_actor_position (align);
-
-  g_object_notify (G_OBJECT (align), "source");
-}
-
-static void
-_clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
-                                          ClutterAlignAxis        axis)
-{
-  if (align->align_axis == axis)
-    return;
-
-  align->align_axis = axis;
-
-  update_actor_position (align);
-
-  g_object_notify (G_OBJECT (align), "align-axis");
-}
-
-static void
-_clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
-                                      gfloat                  factor)
-{
-  align->factor = CLAMP (factor, 0.0, 1.0);
-
-  update_actor_position (align);
-
-  g_object_notify (G_OBJECT (align), "factor");
-}
-
-static void
 clutter_align_constraint_set_property (GObject      *gobject,
                                        guint         prop_id,
                                        const GValue *value,
@@ -191,15 +140,15 @@ clutter_align_constraint_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      _clutter_align_constraint_set_source (align, g_value_get_object (value));
+      clutter_align_constraint_set_source (align, g_value_get_object (value));
       break;
 
     case PROP_ALIGN_AXIS:
-      _clutter_align_constraint_set_align_axis (align, g_value_get_enum (value));
+      clutter_align_constraint_set_align_axis (align, g_value_get_enum (value));
       break;
 
     case PROP_FACTOR:
-      _clutter_align_constraint_set_factor (align, g_value_get_float (value));
+      clutter_align_constraint_set_factor (align, g_value_get_float (value));
       break;
 
     default:
@@ -332,4 +281,162 @@ clutter_align_constraint_new (ClutterActor     *source,
                        "align-axis", axis,
                        "factor", factor,
                        NULL);
+}
+
+/**
+ * clutter_align_constraint_set_source:
+ * @align: a #ClutterAlignConstraint
+ * @source: a #ClutterActor
+ *
+ * Sets the source of the alignment constraint
+ *
+ * Since: 1.4
+ */
+void
+clutter_align_constraint_set_source (ClutterAlignConstraint *align,
+                                     ClutterActor           *source)
+{
+  ClutterActor *old_source;
+
+  g_return_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align));
+  g_return_if_fail (CLUTTER_IS_ACTOR (source));
+
+  if (align->source == source)
+    return;
+
+  old_source = align->source;
+  if (old_source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_destroyed),
+                                            align);
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_position_changed),
+                                            align);
+    }
+
+  align->source = source;
+  g_signal_connect (align->source, "notify",
+                    G_CALLBACK (source_position_changed),
+                    align);
+  g_signal_connect (align->source, "destroy",
+                    G_CALLBACK (source_destroyed),
+                    align);
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "source");
+}
+
+/**
+ * clutter_align_constraint_get_source:
+ * @align: a #ClutterAlignConstraint
+ *
+ * Retrieves the source of the alignment
+ *
+ * Return value: (transfer none): the #ClutterActor used as the source
+ *   of the alignment
+ *
+ * Since: 1.4
+ */
+ClutterActor *
+clutter_align_constraint_get_source (ClutterAlignConstraint *align)
+{
+  g_return_val_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align), NULL);
+
+  return align->source;
+}
+
+/**
+ * clutter_align_constraint_set_align_axis:
+ * @align: a #ClutterAlignConstraint
+ * @axis: the axis to which the alignment refers to
+ *
+ * Sets the axis to which the alignment refers to
+ *
+ * Since: 1.4
+ */
+void
+clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
+                                         ClutterAlignAxis        axis)
+{
+  g_return_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align));
+
+  if (align->align_axis == axis)
+    return;
+
+  align->align_axis = axis;
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "align-axis");
+}
+
+/**
+ * clutter_align_constraint_get_align_axis:
+ * @align: a #ClutterAlignConstraint
+ *
+ * Retrieves the value set using clutter_align_constraint_set_align_axis()
+ *
+ * Return value: the alignment axis
+ *
+ * Since: 1.4
+ */
+ClutterAlignAxis
+clutter_align_constraint_get_align_axis (ClutterAlignConstraint *align)
+{
+  g_return_val_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align),
+                        CLUTTER_ALIGN_X_AXIS);
+
+  return align->align_axis;
+}
+
+/**
+ * clutter_align_constraint_set_factor:
+ * @align: a #ClutterAlignConstraint
+ * @factor: the alignment factor, between 0.0 and 1.0
+ *
+ * Sets the alignment factor of the constraint
+ *
+ * The factor depends on the #ClutterAlignConstraint:align-axis property
+ * and it is a value between 0.0 (meaning left, when
+ * #ClutterAlignConstraint:align-axis is set to %CLUTTER_ALIGN_X_AXIS; or
+ * meaning top, when #ClutterAlignConstraint:align-axis is set to
+ * %CLUTTER_ALIGN_Y_AXIS) and 1.0 (meaning right, when
+ * #ClutterAlignConstraint:align-axis is set to %CLUTTER_ALIGN_X_AXIS; or
+ * meaning bottom, when #ClutterAlignConstraint:align-axis is set to
+ * %CLUTTER_ALIGN_Y_AXIS). A value of 0.5 aligns in the middle in either
+ * cases
+ *
+ * Since: 1.4
+ */
+void
+clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
+                                     gfloat                  factor)
+{
+  g_return_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align));
+
+  align->factor = CLAMP (factor, 0.0, 1.0);
+
+  update_actor_position (align);
+
+  g_object_notify (G_OBJECT (align), "factor");
+}
+
+/**
+ * clutter_align_constraint_get_factor:
+ * @align: a #ClutterAlignConstraint
+ *
+ * Retrieves the factor set using clutter_align_constraint_set_factor()
+ *
+ * Return value: the alignment factor
+ *
+ * Since: 1.4
+ */
+gfloat
+clutter_align_constraint_get_factor (ClutterAlignConstraint *align)
+{
+  g_return_val_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align), 0.0);
+
+  return align->factor;
 }
