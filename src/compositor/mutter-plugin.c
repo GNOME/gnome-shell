@@ -367,9 +367,25 @@ _mutter_plugin_effect_started (MutterPlugin *plugin)
 }
 
 void
-mutter_plugin_effect_completed (MutterPlugin *plugin,
-                                MutterWindow *actor,
-                                unsigned long event)
+mutter_plugin_switch_workspace_completed (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+
+  if (priv->running-- < 0)
+    {
+      g_warning ("Error in running effect accounting, adjusting.");
+      priv->running = 0;
+    }
+
+  mutter_switch_workspace_completed (screen);
+}
+
+static void
+mutter_plugin_window_effect_completed (MutterPlugin *plugin,
+                                       MutterWindow *actor,
+                                       unsigned long event)
 {
   MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
 
@@ -391,17 +407,42 @@ mutter_plugin_effect_completed (MutterPlugin *plugin,
                  name ? name : "unknown");
     }
 
-  if (event == MUTTER_PLUGIN_SWITCH_WORKSPACE)
-    {
-      /* The window is just used to identify the screen */
-      MetaWindow *window = mutter_window_get_meta_window (actor);
-      MetaScreen *screen = meta_window_get_screen (window);
-      mutter_switch_workspace_completed (screen);
-    }
-    else
-    {
-      mutter_window_effect_completed (actor, event);
-    }
+  mutter_window_effect_completed (actor, event);
+}
+
+void
+mutter_plugin_minimize_completed (MutterPlugin *plugin,
+                                  MutterWindow *actor)
+{
+  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MINIMIZE);
+}
+
+void
+mutter_plugin_maximize_completed (MutterPlugin *plugin,
+                                  MutterWindow *actor)
+{
+  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MAXIMIZE);
+}
+
+void
+mutter_plugin_unmaximize_completed (MutterPlugin *plugin,
+                                    MutterWindow *actor)
+{
+  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_UNMAXIMIZE);
+}
+
+void
+mutter_plugin_map_completed (MutterPlugin *plugin,
+                             MutterWindow *actor)
+{
+  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MAP);
+}
+
+void
+mutter_plugin_destroy_completed (MutterPlugin *plugin,
+                                 MutterWindow *actor)
+{
+  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_DESTROY);
 }
 
 void

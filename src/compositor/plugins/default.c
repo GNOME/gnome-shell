@@ -81,11 +81,12 @@ static void     unmaximize (MutterPlugin *plugin,
                             gint x, gint y, gint width, gint height);
 
 static void switch_workspace (MutterPlugin *plugin,
-                              const GList **actors, gint from, gint to,
+                              gint from, gint to,
                               MetaMotionDirection direction);
 
-static void kill_effect (MutterPlugin *plugin,
-                         MutterWindow *actor, gulong event);
+static void kill_window_effects (MutterPlugin *plugin,
+                                 MutterWindow *actor);
+static void kill_switch_workspace (MutterPlugin     *plugin);
 
 static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
 
@@ -99,7 +100,6 @@ struct _MutterDefaultPluginPrivate
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace1;
   ClutterTimeline       *tml_switch_workspace2;
-  GList                **actors;
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
 
@@ -220,8 +220,9 @@ mutter_default_plugin_class_init (MutterDefaultPluginClass *klass)
   plugin_class->unmaximize       = unmaximize;
   plugin_class->destroy          = destroy;
   plugin_class->switch_workspace = switch_workspace;
-  plugin_class->kill_effect      = kill_effect;
   plugin_class->plugin_info      = plugin_info;
+  plugin_class->kill_window_effects   = kill_window_effects;
+  plugin_class->kill_switch_workspace = kill_switch_workspace;
 
   g_type_class_add_private (gobject_class, sizeof (MutterDefaultPluginPrivate));
 }
@@ -270,20 +271,12 @@ get_actor_private (MutterWindow *actor)
   return priv;
 }
 
-typedef struct SwitchWorkspaceData
-{
-  MutterPlugin  *plugin;
-  const GList  **actors;
-} SwitchWorkspaceData;
-
 static void
 on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
-  SwitchWorkspaceData        *sw_data = data;
-  MutterPlugin               *plugin  = sw_data->plugin;
+  MutterPlugin               *plugin  = MUTTER_PLUGIN (data);
   MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
-  GList        *l     = *((GList**)sw_data->actors);
-  MutterWindow *actor_for_cb = l->data;
+  GList        *l     = mutter_plugin_get_windows (plugin);
 
   while (l)
     {
@@ -303,21 +296,17 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
   clutter_actor_destroy (priv->desktop1);
   clutter_actor_destroy (priv->desktop2);
 
-  priv->actors = NULL;
   priv->tml_switch_workspace1 = NULL;
   priv->tml_switch_workspace2 = NULL;
   priv->desktop1 = NULL;
   priv->desktop2 = NULL;
 
-  g_free (data);
-
-  mutter_plugin_effect_completed (plugin, actor_for_cb,
-                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
+  mutter_plugin_switch_workspace_completed (plugin);
 }
 
 static void
 switch_workspace (MutterPlugin *plugin,
-                  const GList **actors, gint from, gint to,
+                  gint from, gint to,
                   MetaMotionDirection direction)
 {
   MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
@@ -328,11 +317,7 @@ switch_workspace (MutterPlugin *plugin,
   ClutterActor *stage;
   int           screen_width, screen_height;
   MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-  SwitchWorkspaceData *sw_data = g_new (SwitchWorkspaceData, 1);
   ClutterAnimation *animation;
-
-  sw_data->plugin = plugin;
-  sw_data->actors = actors;
 
   stage = mutter_plugin_get_stage (plugin);
 
@@ -353,14 +338,13 @@ switch_workspace (MutterPlugin *plugin,
 
   if (from == to)
     {
-      mutter_plugin_effect_completed (plugin, NULL,
-                           MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      mutter_plugin_switch_workspace_completed (plugin);
       return;
     }
 
   n_workspaces = meta_screen_get_n_workspaces (screen);
 
-  l = g_list_last (*((GList**) actors));
+  l = g_list_last (mutter_plugin_get_windows (plugin));
 
   while (l)
     {
@@ -395,7 +379,6 @@ switch_workspace (MutterPlugin *plugin,
       l = l->prev;
     }
 
-  priv->actors   = (GList **)actors;
   priv->desktop1 = workspace0;
   priv->desktop2 = workspace1;
 
@@ -408,7 +391,7 @@ switch_workspace (MutterPlugin *plugin,
   g_signal_connect (priv->tml_switch_workspace1,
                     "completed",
                     G_CALLBACK (on_switch_workspace_effect_complete),
-                    sw_data);
+                    plugin);
 
   animation = clutter_actor_animate (workspace1, CLUTTER_EASE_IN_SINE,
                                      SWITCH_TIMEOUT,
@@ -446,8 +429,7 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mc_window,
-                                  MUTTER_PLUGIN_MINIMIZE);
+  mutter_plugin_minimize_completed (plugin, mc_window);
 
   g_free (data);
 }
@@ -490,8 +472,7 @@ minimize (MutterPlugin *plugin, MutterWindow *mc_window)
 
     }
   else
-    mutter_plugin_effect_completed (plugin, mc_window,
-                                    MUTTER_PLUGIN_MINIMIZE);
+    mutter_plugin_minimize_completed (plugin, mc_window);
 }
 
 /*
@@ -516,8 +497,7 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mc_window,
-                                  MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_maximize_completed (plugin, mc_window);
 
   g_free (data);
 }
@@ -587,8 +567,7 @@ maximize (MutterPlugin *plugin,
       return;
     }
 
-  mutter_plugin_effect_completed (plugin, mc_window,
-                                  MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_maximize_completed (plugin, mc_window);
 }
 
 /*
@@ -611,8 +590,7 @@ unmaximize (MutterPlugin *plugin,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  mutter_plugin_effect_completed (plugin, mc_window,
-                                  MUTTER_PLUGIN_UNMAXIMIZE);
+  mutter_plugin_unmaximize_completed (plugin, mc_window);
 }
 
 static void
@@ -631,7 +609,7 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mc_window, MUTTER_PLUGIN_MAP);
+  mutter_plugin_map_completed (plugin, mc_window);
 
   g_free (data);
 }
@@ -677,8 +655,7 @@ map (MutterPlugin *plugin, MutterWindow *mc_window)
 
     }
   else
-    mutter_plugin_effect_completed (plugin, mc_window,
-                                    MUTTER_PLUGIN_MAP);
+    mutter_plugin_map_completed (plugin, mc_window);
 }
 
 /*
@@ -694,8 +671,7 @@ on_destroy_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 
   apriv->tml_destroy = NULL;
 
-  mutter_plugin_effect_completed (plugin, mc_window,
-                                  MUTTER_PLUGIN_DESTROY);
+  mutter_plugin_destroy_completed (plugin, mc_window);
 }
 
 /*
@@ -732,54 +708,48 @@ destroy (MutterPlugin *plugin, MutterWindow *mc_window)
                         data);
     }
   else
-    mutter_plugin_effect_completed (plugin, mc_window,
-                                    MUTTER_PLUGIN_DESTROY);
+    mutter_plugin_destroy_completed (plugin, mc_window);
 }
 
 static void
-kill_effect (MutterPlugin *plugin, MutterWindow *mc_window, gulong event)
+kill_switch_workspace (MutterPlugin     *plugin)
+{
+  MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
+
+  if (priv->tml_switch_workspace1)
+    {
+      clutter_timeline_stop (priv->tml_switch_workspace1);
+      clutter_timeline_stop (priv->tml_switch_workspace2);
+      g_signal_emit_by_name (priv->tml_switch_workspace1, "completed", NULL);
+    }
+}
+
+static void
+kill_window_effects (MutterPlugin *plugin, MutterWindow *mc_window)
 {
   ActorPrivate *apriv;
 
-  if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
-    {
-      MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
-
-      if (priv->tml_switch_workspace1)
-        {
-          clutter_timeline_stop (priv->tml_switch_workspace1);
-          clutter_timeline_stop (priv->tml_switch_workspace2);
-          g_signal_emit_by_name (priv->tml_switch_workspace1, "completed", NULL);
-        }
-
-      if (!(event & ~MUTTER_PLUGIN_SWITCH_WORKSPACE))
-        {
-          /* Workspace switch only, nothing more to do */
-          return;
-        }
-    }
-
   apriv = get_actor_private (mc_window);
 
-  if ((event & MUTTER_PLUGIN_MINIMIZE) && apriv->tml_minimize)
+  if (apriv->tml_minimize)
     {
       clutter_timeline_stop (apriv->tml_minimize);
       g_signal_emit_by_name (apriv->tml_minimize, "completed", NULL);
     }
 
-  if ((event & MUTTER_PLUGIN_MAXIMIZE) && apriv->tml_maximize)
+  if (apriv->tml_maximize)
     {
       clutter_timeline_stop (apriv->tml_maximize);
       g_signal_emit_by_name (apriv->tml_maximize, "completed", NULL);
     }
 
-  if ((event & MUTTER_PLUGIN_MAP) && apriv->tml_map)
+  if (apriv->tml_map)
     {
       clutter_timeline_stop (apriv->tml_map);
       g_signal_emit_by_name (apriv->tml_map, "completed", NULL);
     }
 
-  if ((event & MUTTER_PLUGIN_DESTROY) && apriv->tml_destroy)
+  if (apriv->tml_destroy)
     {
       clutter_timeline_stop (apriv->tml_destroy);
       g_signal_emit_by_name (apriv->tml_destroy, "completed", NULL);

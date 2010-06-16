@@ -790,7 +790,6 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 
   if (!info->plugin_mgr ||
       !mutter_plugin_manager_switch_workspace (info->plugin_mgr,
-					       (const GList **)&info->windows,
 					       from_indx,
 					       to_indx,
 					       direction))

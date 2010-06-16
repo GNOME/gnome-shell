@@ -402,9 +402,8 @@ mutter_plugin_manager_get (MetaScreen *screen)
 }
 
 static void
-mutter_plugin_manager_kill_effect (MutterPluginManager *plugin_mgr,
-                                   MutterWindow        *actor,
-                                   unsigned long        events)
+mutter_plugin_manager_kill_window_effects (MutterPluginManager *plugin_mgr,
+                                           MutterWindow        *actor)
 {
   GList *l = plugin_mgr->plugins;
 
@@ -414,17 +413,32 @@ mutter_plugin_manager_kill_effect (MutterPluginManager *plugin_mgr,
       MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
       if (!mutter_plugin_disabled (plugin)
-	  && (mutter_plugin_features (plugin) & events)
-	  && klass->kill_effect)
-        klass->kill_effect (plugin, actor, events);
+	  && klass->kill_window_effects)
+        klass->kill_window_effects (plugin, actor);
 
       l = l->next;
     }
 }
 
-#define ALL_BUT_SWITCH \
-  MUTTER_PLUGIN_ALL_EFFECTS & \
-  ~MUTTER_PLUGIN_SWITCH_WORKSPACE
+static void
+mutter_plugin_manager_kill_switch_workspace (MutterPluginManager *plugin_mgr)
+{
+  GList *l = plugin_mgr->plugins;
+
+  while (l)
+    {
+      MutterPlugin        *plugin = l->data;
+      MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
+
+      if (!mutter_plugin_disabled (plugin)
+          && (mutter_plugin_features (plugin) & MUTTER_PLUGIN_SWITCH_WORKSPACE)
+	  && klass->kill_switch_workspace)
+        klass->kill_switch_workspace (plugin);
+
+      l = l->next;
+    }
+}
+
 /*
  * Public method that the compositor hooks into for events that require
  * no additional parameters.
@@ -461,10 +475,9 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
             case MUTTER_PLUGIN_MINIMIZE:
               if (klass->minimize)
                 {
-                  mutter_plugin_manager_kill_effect (
+                  mutter_plugin_manager_kill_window_effects (
 		      plugin_mgr,
-		      actor,
-		      ALL_BUT_SWITCH);
+		      actor);
 
                   _mutter_plugin_effect_started (plugin);
                   klass->minimize (plugin, actor);
@@ -473,10 +486,9 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
             case MUTTER_PLUGIN_MAP:
               if (klass->map)
                 {
-                  mutter_plugin_manager_kill_effect (
+                  mutter_plugin_manager_kill_window_effects (
 		      plugin_mgr,
-		      actor,
-		      ALL_BUT_SWITCH);
+		      actor);
 
                   _mutter_plugin_effect_started (plugin);
                   klass->map (plugin, actor);
@@ -540,10 +552,9 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
             case MUTTER_PLUGIN_MAXIMIZE:
               if (klass->maximize)
                 {
-                  mutter_plugin_manager_kill_effect (
+                  mutter_plugin_manager_kill_window_effects (
 		      plugin_mgr,
-		      actor,
-		      ALL_BUT_SWITCH);
+		      actor);
 
                   _mutter_plugin_effect_started (plugin);
                   klass->maximize (plugin, actor,
@@ -554,10 +565,9 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
             case MUTTER_PLUGIN_UNMAXIMIZE:
               if (klass->unmaximize)
                 {
-                  mutter_plugin_manager_kill_effect (
+                  mutter_plugin_manager_kill_window_effects (
 		      plugin_mgr,
-		      actor,
-		      ALL_BUT_SWITCH);
+		      actor);
 
                   _mutter_plugin_effect_started (plugin);
                   klass->unmaximize (plugin, actor,
@@ -586,7 +596,6 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
  */
 gboolean
 mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
-                                        const GList        **actors,
                                         gint                 from,
                                         gint                 to,
                                         MetaMotionDirection  direction)
@@ -604,19 +613,15 @@ mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
       MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
       if (!mutter_plugin_disabled (plugin) &&
-          (mutter_plugin_features (plugin) & MUTTER_PLUGIN_SWITCH_WORKSPACE) &&
-          (actors && *actors))
+          (mutter_plugin_features (plugin) & MUTTER_PLUGIN_SWITCH_WORKSPACE))
         {
           if (klass->switch_workspace)
             {
               retval = TRUE;
-              mutter_plugin_manager_kill_effect (
-		  plugin_mgr,
-		  MUTTER_WINDOW ((*actors)->data),
-		  MUTTER_PLUGIN_SWITCH_WORKSPACE);
+              mutter_plugin_manager_kill_switch_workspace (plugin_mgr);
 
               _mutter_plugin_effect_started (plugin);
-              klass->switch_workspace (plugin, actors, from, to, direction);
+              klass->switch_workspace (plugin, from, to, direction);
             }
         }
 

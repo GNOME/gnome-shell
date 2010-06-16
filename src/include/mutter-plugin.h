@@ -32,19 +32,6 @@
 #include <X11/extensions/Xfixes.h>
 #include <gmodule.h>
 
-/*
- * FIXME -- move these to a private include
- * Required by plugin manager.
- */
-#define MUTTER_PLUGIN_MINIMIZE         (1<<0)
-#define MUTTER_PLUGIN_MAXIMIZE         (1<<1)
-#define MUTTER_PLUGIN_UNMAXIMIZE       (1<<2)
-#define MUTTER_PLUGIN_MAP              (1<<3)
-#define MUTTER_PLUGIN_DESTROY          (1<<4)
-#define MUTTER_PLUGIN_SWITCH_WORKSPACE (1<<5)
-
-#define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
-
 #define MUTTER_TYPE_PLUGIN            (mutter_plugin_get_type ())
 #define MUTTER_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_PLUGIN, MutterPlugin))
 #define MUTTER_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
@@ -95,20 +82,18 @@ struct _MutterPluginClass
                             MutterWindow       *actor);
 
   void (*switch_workspace) (MutterPlugin       *plugin,
-                            const GList       **actors,
                             gint                from,
                             gint                to,
                             MetaMotionDirection direction);
 
   /*
-   * Called if an effect should be killed prematurely; the plugin must
+   * Called if an effects should be killed prematurely; the plugin must
    * call the completed() callback as if the effect terminated naturally.
-   * The events parameter is a bitmask indicating which effects are to be
-   * killed.
    */
-  void (*kill_effect)      (MutterPlugin     *plugin,
-                            MutterWindow     *actor,
-                            gulong            events);
+  void (*kill_window_effects)      (MutterPlugin     *plugin,
+                                    MutterWindow     *actor);
+
+  void (*kill_switch_workspace)    (MutterPlugin     *plugin);
 
   /* General XEvent filter. This is fired *before* mutter itself handles
    * an event. Return TRUE to block any further processing.
@@ -227,9 +212,27 @@ struct _MutterPluginVersion
   }                                                                     \
 
 void
-mutter_plugin_effect_completed (MutterPlugin  *plugin,
-                                MutterWindow  *actor,
-                                unsigned long  event);
+mutter_plugin_switch_workspace_completed (MutterPlugin *plugin);
+
+void
+mutter_plugin_minimize_completed (MutterPlugin *plugin,
+                                  MutterWindow *actor);
+
+void
+mutter_plugin_maximize_completed (MutterPlugin *plugin,
+                                  MutterWindow *actor);
+
+void
+mutter_plugin_unmaximize_completed (MutterPlugin *plugin,
+                                    MutterWindow *actor);
+
+void
+mutter_plugin_map_completed (MutterPlugin *plugin,
+                             MutterWindow *actor);
+
+void
+mutter_plugin_destroy_completed (MutterPlugin *plugin,
+                                 MutterWindow *actor);
 
 ClutterActor *
 mutter_plugin_get_overlay_group (MutterPlugin *plugin);

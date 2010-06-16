@@ -31,6 +31,15 @@
 #include "mutter-plugin.h"
 #undef   MUTTER_PLUGIN_FROM_MANAGER_
 
+#define MUTTER_PLUGIN_MINIMIZE         (1<<0)
+#define MUTTER_PLUGIN_MAXIMIZE         (1<<1)
+#define MUTTER_PLUGIN_UNMAXIMIZE       (1<<2)
+#define MUTTER_PLUGIN_MAP              (1<<3)
+#define MUTTER_PLUGIN_DESTROY          (1<<4)
+#define MUTTER_PLUGIN_SWITCH_WORKSPACE (1<<5)
+
+#define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
+
 typedef struct MutterPluginManager MutterPluginManager;
 
 MutterPluginManager * mutter_plugin_manager_get         (MetaScreen *screen);
@@ -54,7 +63,6 @@ void mutter_plugin_manager_update_workspaces (MutterPluginManager *mgr);
 void mutter_plugin_manager_update_workspace (MutterPluginManager *mgr, MetaWorkspace *w);
 
 gboolean mutter_plugin_manager_switch_workspace (MutterPluginManager *mgr,
-						 const GList **actors,
 						 gint          from,
 						 gint          to,
 						 MetaMotionDirection direction);
