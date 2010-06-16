@@ -1407,7 +1407,7 @@ clutter_animator_remove_key_internal (ClutterAnimator *animator,
 
   priv = animator->priv;
 
-  for (k = priv->score; k != NULL; k = k->next)
+  for (k = priv->score; k != NULL; k = k?k->next:NULL)
     {
       ClutterAnimatorKey *key = k->data;
 
