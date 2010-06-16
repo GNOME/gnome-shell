@@ -114,6 +114,7 @@ typedef struct _ClutterStateKey
 enum
 {
   PROP_0,
+  PROP_DURATION,
   PROP_TARGET_STATE
 };
 
@@ -1061,6 +1062,9 @@ clutter_state_set_property (GObject      *object,
       case PROP_TARGET_STATE:
         clutter_state_change (state, g_value_get_string (value), TRUE);
         break;
+      case PROP_DURATION:
+        state->priv->duration = g_value_get_uint (value);
+        break;
       default:
        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -1078,6 +1082,9 @@ clutter_state_get_property (GObject    *object,
       case PROP_TARGET_STATE:
         g_value_set_string (value,
                             clutter_state_get_target_state (state));
+        break;
+      case PROP_DURATION:
+        g_value_set_uint (value, state->priv->duration);
         break;
       default:
        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1128,6 +1135,19 @@ clutter_state_class_init (ClutterStateClass *klass)
                                "default",
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TARGET_STATE, pspec);
+
+  /**
+   * ClutterState:duration:
+   *
+   * Default duration used if an duration has not been specified for a specific
+   * source/target state pair. The values is in milliseconds.
+   */
+  pspec = g_param_spec_uint ("duration",
+                             "Duration",
+                             "Default transition duration",
+                             0, 86400000, 1000,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
 }
 
 static void
