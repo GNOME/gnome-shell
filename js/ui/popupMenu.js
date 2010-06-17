@@ -11,7 +11,48 @@ const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
 const Tweener = imports.ui.tweener;
 
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
+
 const POPUP_ANIMATION_TIME = 0.1;
+
+function Switch() {
+    this._init.apply(this, arguments);
+}
+
+Switch.prototype = {
+    _init: function(state) {
+        this.actor = new St.BoxLayout({ style_class: 'switch' });
+        // Translators: the "ON" and "OFF" strings are used in the
+        // toggle switches in the status area menus, and must be SHORT.
+        // If you don't have suitable short words, consider initials,
+        // "0"/"1", "⚪"/"⚫", etc.
+        this._on = new St.Label({ style_class: 'switch-label', text: _("ON") });
+        this._off = new St.Label({ style_class: 'switch-label', text: _("OFF") });
+        this.actor.add(this._on, { fill: true });
+        this.actor.add(this._off, { fill: true });
+        this.setToggleState(state);
+    },
+
+    setToogleState: function(state) {
+        if (state) {
+            this._on.remove_style_pseudo_class('checked');
+            this._on.text = _("ON");
+            this._off.add_style_pseudo_class('checked');
+            this._off.text = '|||';
+        } else {
+            this._off.remove_style_pseudo_class('checked');
+            this._off.text = _("OFF");
+            this._on.add_style_pseudo_class('checked');
+            this._on.text = '|||';
+        }
+        this.state = state;
+    },
+
+    toggle: function() {
+        this.setToggleState(!this.state);
+    }
+};
 
 function PopupBaseMenuItem(reactive) {
     this._init(reactive);
@@ -112,6 +153,45 @@ PopupSeparatorMenuItem.prototype = {
         cr.fill();
     }
 };
+
+function PopupSwitchMenuItem() {
+    this._init.apply(this, arguments);
+}
+
+PopupSwitchMenuItem.prototype = {
+    __proto__: PopupBaseMenuItem.prototype,
+
+    _init: function(text, active) {
+        PopupBaseMenuItem.prototype._init.call(this, true);
+
+        this.active = !!active;
+        this.label = new St.Label({ text: text });
+        this._switch = new Switch(this.active);
+
+        this._box = new St.BoxLayout({ style_class: 'popup-switch-menu-item' });
+        this._box.add(this.label,{ expand: true });
+        this._box.add(this._switch.actor);
+        this.actor.set_child(this._box);
+
+        this.connect('activate', Lang.bind(this,function(from) {
+            this.toggle();
+        }));
+    },
+
+    toggle: function() {
+        this._switch.toggle();
+        this.emit('toggled', this._switch.state);
+    },
+
+    get state() {
+        return this._switch.state;
+    },
+
+    setToggleState: function(state) {
+        this._switch.setToggleState(state);
+    }
+}
+
 
 function PopupImageMenuItem(text, iconName, alwaysShowImage) {
     this._init(text, iconName, alwaysShowImage);

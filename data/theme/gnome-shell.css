@@ -144,6 +144,22 @@ StTooltip {
     height: 1em;
 }
 
+/* Switches (to be used in menus) */
+.switch {
+	border-radius: 5px;
+	border: 1px solid #ffffff;
+	padding: 0px 0.2em;
+}
+.switch-label {
+	font-size: 0.8em;
+	padding: 2px 0.1em; /* account for border if checked */
+}
+.switch-label:checked {
+	border: 2px solid #ffffff;
+	border-radius: 4px;
+	padding: 0px 0.3em;
+}
+
 /* Panel */
 
 #panel {
