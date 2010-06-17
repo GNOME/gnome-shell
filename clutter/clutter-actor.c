@@ -301,7 +301,7 @@
 #include "clutter-private.h"
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"
-#include "clutter-script.h"
+#include "clutter-script-private.h"
 #include "clutter-stage.h"
 #include "clutter-units.h"
 
@@ -8297,6 +8297,40 @@ parse_rotation (ClutterActor *actor,
   return retval;
 }
 
+static GSList *
+parse_actor_metas (ClutterScript *script,
+                   ClutterActor  *actor,
+                   JsonNode      *node)
+{
+  GList *elements, *l;
+  GSList *retval = NULL;
+
+  if (!JSON_NODE_HOLDS_ARRAY (node))
+    return NULL;
+
+  elements = json_array_get_elements (json_node_get_array (node));
+
+  for (l = elements; l != NULL; l = l->next)
+    {
+      JsonNode *element = l->data;
+      const gchar *id = _clutter_script_get_id_from_node (element);
+      GObject *meta;
+
+      if (id == NULL || *id == '\0')
+        continue;
+
+      meta = clutter_script_get_object (script, id);
+      if (meta == NULL)
+        continue;
+
+      retval = g_slist_prepend (retval, meta);
+    }
+
+  g_list_free (elements);
+
+  return g_slist_reverse (retval);
+}
+
 static gboolean
 clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
                                  ClutterScript     *script,
@@ -8355,6 +8389,19 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
       else
         g_slice_free (RotationInfo, info);
     }
+  else if (strcmp (name, "actions") == 0 ||
+           strcmp (name, "constraints") == 0 ||
+           strcmp (name, "effects") == 0)
+    {
+      GSList *l;
+
+      l = parse_actor_metas (script, actor, node);
+
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, l);
+
+      retval = TRUE;
+    }
 
   return retval;
 }
@@ -8365,6 +8412,8 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
                                    const gchar       *name,
                                    const GValue      *value)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (scriptable);
+
 #ifdef CLUTTER_ENABLE_DEBUG
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_SCRIPT))
     {
@@ -8388,16 +8437,45 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
 
       info = g_value_get_pointer (value);
 
-      clutter_actor_set_rotation (CLUTTER_ACTOR (scriptable),
+      clutter_actor_set_rotation (actor,
                                   info->axis, info->angle,
                                   info->center_x,
                                   info->center_y,
                                   info->center_z);
 
       g_slice_free (RotationInfo, info);
+
+      return;
     }
-  else
-    g_object_set_property (G_OBJECT (scriptable), name, value);
+
+  if (strcmp (name, "actions") == 0 ||
+      strcmp (name, "constraints") == 0 ||
+      strcmp (name, "effects") == 0)
+    {
+      GSList *metas, *l;
+
+      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
+        return;
+
+      metas = g_value_get_pointer (value);
+      for (l = metas; l != NULL; l = l->next)
+        {
+          if (name[0] == 'a')
+            clutter_actor_add_action (actor, l->data);
+
+          if (name[0] == 'c')
+            clutter_actor_add_constraint (actor, l->data);
+
+          if (name[0] == 'e')
+            clutter_actor_add_effect (actor, l->data);
+        }
+
+      g_slist_free (metas);
+
+      return;
+    }
+
+  g_object_set_property (G_OBJECT (scriptable), name, value);
 }
 
 static void

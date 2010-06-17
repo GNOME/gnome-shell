@@ -7,15 +7,37 @@
     "pack-start" : false
   },
   {
-    "id" : "test",
-    "type" : "ClutterBox",
-    "layout-manager" : "layout", 
+    "type" : "ClutterStage",
+    "id" : "main-stage",
     "children" : [
       {
-        "id" : "child-1",
-        "type" : "ClutterRectangle",
-        "width" : "3 em",
-        "height" : "3 em"
+        "id" : "test",
+        "type" : "ClutterBox",
+        "layout-manager" : "layout",
+        "children" : [
+          {
+            "id" : "child-1",
+            "type" : "ClutterRectangle",
+            "width" : "3 em",
+            "height" : "3 em"
+          }
+        ],
+        "constraints" : [
+          {
+            "type" : "ClutterAlignConstraint",
+            "name" : "x-align",
+            "factor" : 0.5,
+            "align-axis" : "x-axis",
+            "source" : "main-stage"
+          },
+          {
+            "type" : "ClutterAlignConstraint",
+            "name" : "y-align",
+            "factor" : 0.5,
+            "align-axis" : "y-axis",
+            "source" : "main-stage"
+          }
+        ]
       }
     ]
   }
