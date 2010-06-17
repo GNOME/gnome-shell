@@ -149,6 +149,8 @@ guint _clutter_script_get_last_merge_id (ClutterScript *script);
 void _clutter_script_add_object_info (ClutterScript *script,
                                       ObjectInfo    *oinfo);
 
+const gchar *_clutter_script_get_id_from_node (JsonNode *node);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_SCRIPT_PRIVATE_H__ */

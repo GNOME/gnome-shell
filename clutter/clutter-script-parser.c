@@ -487,8 +487,8 @@ clutter_script_parse_color (ClutterScript *script,
   return FALSE;
 }
 
-static const gchar *
-get_id_from_node (JsonNode *node)
+const gchar *
+_clutter_script_get_id_from_node (JsonNode *node)
 {
   JsonObject *object;
 
@@ -531,7 +531,7 @@ parse_children (ObjectInfo *oinfo,
       JsonNode *child = json_array_get_element (array, i);
       const gchar *id;
 
-      id = get_id_from_node (child);
+      id = _clutter_script_get_id_from_node (child);
       if (id)
         retval = g_list_prepend (retval, g_strdup (id));
     }
@@ -672,7 +672,7 @@ parse_behaviours (ObjectInfo *oinfo,
       JsonNode *child = json_array_get_element (array, i);
       const gchar *id;
 
-      id = get_id_from_node (child);
+      id = _clutter_script_get_id_from_node (child);
       if (id)
         retval = g_list_prepend (retval, g_strdup (id));
     }
@@ -1115,7 +1115,7 @@ clutter_script_parse_node (ClutterScript *script,
                * definitions are parsed leaf-first we are guaranteed
                * to have a defined object at this point
                */
-              id = get_id_from_node (node);
+              id = _clutter_script_get_id_from_node (node);
               if (id == NULL || *id == '\0')
                 return FALSE;
 
