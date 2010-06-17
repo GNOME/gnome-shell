@@ -122,7 +122,7 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/osx/win32/fruity@:>@],
+            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/eglx/eglnative/osx/win32/fruity@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
 
@@ -162,6 +162,29 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           # Mesa 7.3 added a GL pkg-config file, finally
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
+        ],
+
+        [opengl-egl-xlib],
+        [
+          clutter_gl_header="GL/gl.h"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+
+          SUPPORT_X11=1
+          SUPPORT_XLIB=1
+          SUPPORT_EGL=1
+          SUPPORT_EGL_PLATFORM_POWERVR_X11=1
+
+          COGL_DRIVER="gl"
+
+          CLUTTER_WINSYS=eglx
+          CLUTTER_WINSYS_BASE=x11
+          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          # I think this winsys can be API and ABI compatible with the
+          # glx flavour so we can also be cheeky and use the same soname
+          CLUTTER_SONAME_INFIX=glx
+
+          PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
+          PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
         ],
 
         [eglx],
