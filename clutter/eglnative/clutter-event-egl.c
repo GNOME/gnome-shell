@@ -55,6 +55,8 @@ struct _ClutterEventSource
 #endif
 };
 
+#ifdef HAVE_TSLIB
+
 static gboolean clutter_event_prepare  (GSource     *source,
                                         gint        *timeout);
 static gboolean clutter_event_check    (GSource     *source);
@@ -91,10 +93,12 @@ get_backend_time (void)
 
   return g_timer_elapsed (backend_egl->event_timer, NULL) * 1000;
 }
+#endif
 
 void
 _clutter_events_egl_init (ClutterBackendEGL *backend_egl)
 {
+#ifdef HAVE_TSLIB
   ClutterEventSource *event_source;
   const char *device_name;
   GSource *source;
@@ -103,7 +107,6 @@ _clutter_events_egl_init (ClutterBackendEGL *backend_egl)
   g_assert (backend_egl->event_timer != NULL);
   g_timer_start (backend_egl->event_timer);
 
-#ifdef HAVE_TSLIB
   source = backend_egl->event_source = clutter_event_source_new (backend_egl);
   event_source = (ClutterEventSource *) source;
 
@@ -151,6 +154,7 @@ _clutter_events_egl_init (ClutterBackendEGL *backend_egl)
 void
 _clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
 {
+#ifdef HAVE_TSLIB
   if (backend_egl->event_timer != NULL)
     {
       CLUTTER_NOTE (EVENT, "Stopping the timer");
@@ -164,16 +168,17 @@ _clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
       ClutterEventSource *event_source =
                 (ClutterEventSource *) backend_egl->event_source;
 
-#ifdef HAVE_TSLIB
       ts_close (event_source->ts_device);
       event_sources = g_list_remove (event_sources, backend_egl->event_source);
-#endif /* HAVE_TSLIB */
 
       g_source_destroy (backend_egl->event_source);
       g_source_unref (backend_egl->event_source);
       backend_egl->event_source = NULL;
     }
+#endif /* HAVE_TSLIB */
 }
+
+#ifdef HAVE_TSLIB
 
 static gboolean
 clutter_event_prepare (GSource *source,
@@ -212,24 +217,22 @@ clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterEventSource *event_source = (ClutterEventSource *) source;
   ClutterEvent *event;
-#ifdef HAVE_TSLIB
+  ClutterEventSource *event_source = (ClutterEventSource *) source;
   struct ts_sample    tsevent;
-#endif
   ClutterMainContext *clutter_context;
-  static gint         last_x = 0, last_y = 0;
-  static gboolean     clicked = FALSE;
 
   clutter_threads_enter ();
 
   clutter_context = _clutter_context_get_default ();
 
-#ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */
   if ((!clutter_events_pending()) &&
       (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
+      static gint     last_x = 0, last_y = 0;
+      static gboolean clicked = FALSE;
+
       /* Avoid sending too many events which are just pressure changes.
        *
        * FIXME - We don't current handle pressure in events and thus
@@ -273,7 +276,6 @@ clutter_event_dispatch (GSource     *source,
 
       g_queue_push_head (clutter_context->events_queue, event);
     }
-#endif /* HAVE_TSLIB */
 
   /* Pop an event off the queue if any */
   event = clutter_event_get ();
@@ -286,7 +288,10 @@ clutter_event_dispatch (GSource     *source,
     }
 
 out:
+
   clutter_threads_leave ();
 
   return TRUE;
 }
+
+#endif
