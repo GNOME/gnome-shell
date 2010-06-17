@@ -5090,6 +5090,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
       priv->needs_allocation)
     return; /* save some cpu cycles */
 
+#if CLUTTER_ENABLE_DEBUG
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
       (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_RELAYOUT))
     {
@@ -5098,6 +5099,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
                  "not recommended",
                  get_actor_debug_name (self));
     }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
 }
