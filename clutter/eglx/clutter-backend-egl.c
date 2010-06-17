@@ -157,7 +157,9 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
 
     EGL_BUFFER_SIZE,     EGL_DONT_CARE,
 
-#if defined (HAVE_COGL_GLES2)
+#if defined (HAVE_COGL_GL)
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
+#elif defined (HAVE_COGL_GLES2)
     EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 #else
     EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
@@ -205,6 +207,10 @@ retry:
       error_message = "Unable to select a valid EGL configuration";
       goto fail;
     }
+
+#ifdef HAVE_COGL_GL
+  eglBindAPI (EGL_OPENGL_API);
+#endif
 
   if (backend_egl->egl_context == EGL_NO_CONTEXT)
     {
