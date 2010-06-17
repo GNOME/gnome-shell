@@ -257,7 +257,8 @@ clutter_bind_constraint_init (ClutterBindConstraint *self)
 
 /**
  * clutter_bind_constraint_new:
- * @source: the #ClutterActor to use as the source of the binding
+ * @source: (allow-none): the #ClutterActor to use as the source of
+ *   the binding, or %NULL
  * @coordinate: the coordinate to bind
  * @offset: the offset to apply to the binding, in pixels
  *
@@ -273,7 +274,7 @@ clutter_bind_constraint_new (ClutterActor          *source,
                              ClutterBindCoordinate  coordinate,
                              gfloat                 offset)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (source), NULL);
+  g_return_val_if_fail (source == NULL || CLUTTER_IS_ACTOR (source), NULL);
 
   return g_object_new (CLUTTER_TYPE_BIND_CONSTRAINT,
                        "source", source,
@@ -285,7 +286,7 @@ clutter_bind_constraint_new (ClutterActor          *source,
 /**
  * clutter_bind_constraint_set_source:
  * @constraint: a #ClutterBindConstraint
- * @source: a #ClutterActor
+ * @source: (allow-none): a #ClutterActor, or %NULL to unset the source
  *
  * Sets the source #ClutterActor for the constraint
  *
@@ -298,7 +299,7 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
   ClutterActor *old_source;
 
   g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
-  g_return_if_fail (CLUTTER_IS_ACTOR (source));
+  g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
   old_source = constraint->source;
   if (old_source != NULL)
@@ -312,14 +313,17 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
     }
 
   constraint->source = source;
-  g_signal_connect (constraint->source, "notify",
-                    G_CALLBACK (source_position_changed),
-                    constraint);
-  g_signal_connect (constraint->source, "destroy",
-                    G_CALLBACK (source_destroyed),
-                    constraint);
+  if (constraint->source != NULL)
+    {
+      g_signal_connect (constraint->source, "notify",
+                        G_CALLBACK (source_position_changed),
+                        constraint);
+      g_signal_connect (constraint->source, "destroy",
+                        G_CALLBACK (source_destroyed),
+                        constraint);
 
-  update_actor_position (constraint);
+      update_actor_position (constraint);
+    }
 
   g_object_notify (G_OBJECT (constraint), "source");
 }

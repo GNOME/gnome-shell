@@ -257,7 +257,8 @@ clutter_align_constraint_init (ClutterAlignConstraint *self)
 
 /**
  * clutter_align_constraint_new:
- * @source: the #ClutterActor to use as the source of the alignment
+ * @source: (allow-none): the #ClutterActor to use as the source of the
+ *   alignment, or %NULL
  * @axis: the axis to be used to compute the alignment
  * @factor: the alignment factor, between 0.0 and 1.0
  *
@@ -274,7 +275,7 @@ clutter_align_constraint_new (ClutterActor     *source,
                               ClutterAlignAxis  axis,
                               gfloat            factor)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (source), NULL);
+  g_return_val_if_fail (source == NULL || CLUTTER_IS_ACTOR (source), NULL);
 
   return g_object_new (CLUTTER_TYPE_ALIGN_CONSTRAINT,
                        "source", source,
@@ -286,7 +287,7 @@ clutter_align_constraint_new (ClutterActor     *source,
 /**
  * clutter_align_constraint_set_source:
  * @align: a #ClutterAlignConstraint
- * @source: a #ClutterActor
+ * @source: (allow-none): a #ClutterActor, or %NULL to unset the source
  *
  * Sets the source of the alignment constraint
  *
@@ -299,7 +300,7 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
   ClutterActor *old_source;
 
   g_return_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align));
-  g_return_if_fail (CLUTTER_IS_ACTOR (source));
+  g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
   if (align->source == source)
     return;
@@ -316,14 +317,18 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
     }
 
   align->source = source;
-  g_signal_connect (align->source, "notify",
-                    G_CALLBACK (source_position_changed),
-                    align);
-  g_signal_connect (align->source, "destroy",
-                    G_CALLBACK (source_destroyed),
-                    align);
 
-  update_actor_position (align);
+  if (align->source != NULL)
+    {
+      g_signal_connect (align->source, "notify",
+                        G_CALLBACK (source_position_changed),
+                        align);
+      g_signal_connect (align->source, "destroy",
+                        G_CALLBACK (source_destroyed),
+                        align);
+
+      update_actor_position (align);
+    }
 
   g_object_notify (G_OBJECT (align), "source");
 }
