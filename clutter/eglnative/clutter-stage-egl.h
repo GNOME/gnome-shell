@@ -35,4 +35,7 @@ struct _ClutterStageEGLClass
 
 GType clutter_stage_egl_get_type (void) G_GNUC_CONST;
 
+void  clutter_stage_egl_redraw   (ClutterStageEGL *stage_egl,
+                                  ClutterStage    *stage);
+
 #endif /* __CLUTTER_STAGE_EGL_H__ */
