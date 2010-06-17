@@ -65,9 +65,19 @@ typedef enum { /*< prefix=CLUTTER_BIND >*/
 
 GType clutter_bind_constraint_get_type (void) G_GNUC_CONST;
 
-ClutterConstraint *clutter_bind_constraint_new (ClutterActor          *source,
-                                                ClutterBindCoordinate  coordinate,
-                                                gfloat                 offset);
+ClutterConstraint *   clutter_bind_constraint_new            (ClutterActor          *source,
+                                                              ClutterBindCoordinate  coordinate,
+                                                              gfloat                 offset);
+
+void                  clutter_bind_constraint_set_source     (ClutterBindConstraint *constraint,
+                                                              ClutterActor          *actor);
+ClutterActor *        clutter_bind_constraint_get_source     (ClutterBindConstraint *constraint);
+void                  clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
+                                                              ClutterBindCoordinate  coordinate);
+ClutterBindCoordinate clutter_bind_constraint_get_coordinate (ClutterBindConstraint *constraint);
+void                  clutter_bind_constraint_set_offset     (ClutterBindConstraint *constraint,
+                                                              gfloat                 offset);
+gfloat                clutter_bind_constraint_get_offset     (ClutterBindConstraint *constraint);
 
 G_END_DECLS
 

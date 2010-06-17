@@ -84,6 +84,9 @@ update_actor_position (ClutterBindConstraint *bind)
   ClutterVertex source_position;
   ClutterActor *actor;
 
+  if (bind->source == NULL)
+    return;
+
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (bind)))
     return;
 
@@ -132,63 +135,6 @@ source_destroyed (ClutterActor          *actor,
 }
 
 static void
-_clutter_bind_constraint_set_source (ClutterBindConstraint *bind,
-                                     ClutterActor          *source)
-{
-  ClutterActor *old_source = bind->source;
-
-  if (old_source != NULL)
-    {
-      g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_destroyed),
-                                            bind);
-      g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_position_changed),
-                                            bind);
-    }
-
-  bind->source = source;
-  g_signal_connect (bind->source, "notify",
-                    G_CALLBACK (source_position_changed),
-                    bind);
-  g_signal_connect (bind->source, "destroy",
-                    G_CALLBACK (source_destroyed),
-                    bind);
-
-  update_actor_position (bind);
-
-  g_object_notify (G_OBJECT (bind), "source");
-}
-
-static void
-_clutter_bind_constraint_set_coordinate (ClutterBindConstraint *bind,
-                                         ClutterBindCoordinate  coord)
-{
-  if (bind->coordinate == coord)
-    return;
-
-  bind->coordinate = coord;
-
-  update_actor_position (bind);
-
-  g_object_notify (G_OBJECT (bind), "coordinate");
-}
-
-static void
-_clutter_bind_constraint_set_offset (ClutterBindConstraint *bind,
-                                     gfloat                 offset)
-{
-  if (fabs (bind->offset - offset) < 0.00001f)
-    return;
-
-  bind->offset = offset;
-
-  update_actor_position (bind);
-
-  g_object_notify (G_OBJECT (bind), "offset");
-}
-
-static void
 clutter_bind_constraint_set_property (GObject      *gobject,
                                       guint         prop_id,
                                       const GValue *value,
@@ -199,15 +145,15 @@ clutter_bind_constraint_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      _clutter_bind_constraint_set_source (bind, g_value_get_object (value));
+      clutter_bind_constraint_set_source (bind, g_value_get_object (value));
       break;
 
     case PROP_COORDINATE:
-      _clutter_bind_constraint_set_coordinate (bind, g_value_get_enum (value));
+      clutter_bind_constraint_set_coordinate (bind, g_value_get_enum (value));
       break;
 
     case PROP_OFFSET:
-      _clutter_bind_constraint_set_offset (bind, g_value_get_float (value));
+      clutter_bind_constraint_set_offset (bind, g_value_get_float (value));
       break;
 
     default:
@@ -334,4 +280,151 @@ clutter_bind_constraint_new (ClutterActor          *source,
                        "coordinate", coordinate,
                        "offset", offset,
                        NULL);
+}
+
+/**
+ * clutter_bind_constraint_set_source:
+ * @constraint: a #ClutterBindConstraint
+ * @source: a #ClutterActor
+ *
+ * Sets the source #ClutterActor for the constraint
+ *
+ * Since: 1.4
+ */
+void
+clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
+                                    ClutterActor          *source)
+{
+  ClutterActor *old_source;
+
+  g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
+  g_return_if_fail (CLUTTER_IS_ACTOR (source));
+
+  old_source = constraint->source;
+  if (old_source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_destroyed),
+                                            constraint);
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_position_changed),
+                                            constraint);
+    }
+
+  constraint->source = source;
+  g_signal_connect (constraint->source, "notify",
+                    G_CALLBACK (source_position_changed),
+                    constraint);
+  g_signal_connect (constraint->source, "destroy",
+                    G_CALLBACK (source_destroyed),
+                    constraint);
+
+  update_actor_position (constraint);
+
+  g_object_notify (G_OBJECT (constraint), "source");
+}
+
+/**
+ * clutter_bind_constraint_get_source:
+ * @constraint: a #ClutterBindConstraint
+ *
+ * Retrieves the #ClutterActor set using clutter_bind_constraint_set_source()
+ *
+ * Return value: (transfer none): a pointer to the source actor
+ *
+ * Since: 1.4
+ */
+ClutterActor *
+clutter_bind_constraint_get_source (ClutterBindConstraint *constraint)
+{
+  g_return_val_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint), NULL);
+
+  return constraint->source;
+}
+
+/**
+ * clutter_bind_constraint_set_coordinate:
+ * @constraint: a #ClutterBindConstraint
+ * @coordinate: the coordinate to bind
+ *
+ * Sets the coordinate to bind in the constraint
+ *
+ * Since: 1.4
+ */
+void
+clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
+                                        ClutterBindCoordinate  coordinate)
+{
+  g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
+
+  if (constraint->coordinate == coordinate)
+    return;
+
+  constraint->coordinate = coordinate;
+
+  update_actor_position (constraint);
+
+  g_object_notify (G_OBJECT (constraint), "coordinate");
+}
+
+/**
+ * clutter_bind_constraint_get_coordinate:
+ * @constraint: a #ClutterBindConstraint
+ *
+ * Retrieves the bound coordinate of the constraint
+ *
+ * Return value: the bound coordinate
+ *
+ * Since: 1.4
+ */
+ClutterBindCoordinate
+clutter_bind_constraint_get_coordinate (ClutterBindConstraint *constraint)
+{
+  g_return_val_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint),
+                        CLUTTER_BIND_X);
+
+  return constraint->coordinate;
+}
+
+/**
+ * clutter_bind_constraint_set_offset:
+ * @constraint: a #ClutterBindConstraint
+ * @offset: the offset to apply, in pixels
+ *
+ * Sets the offset to be applied to the constraint
+ *
+ * Since: 1.4
+ */
+void
+clutter_bind_constraint_set_offset (ClutterBindConstraint *constraint,
+                                    gfloat                 offset)
+{
+  g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
+
+  if (fabs (constraint->offset - offset) < 0.00001f)
+    return;
+
+  constraint->offset = offset;
+
+  update_actor_position (constraint);
+
+  g_object_notify (G_OBJECT (constraint), "offset");
+}
+
+/**
+ * clutter_bind_constraint_get_offset:
+ * @constraint: a #ClutterBindConstraint
+ *
+ * Retrieves the offset set using clutter_bind_constraint_set_offset()
+ *
+ * Return value: the offset, in pixels
+ *
+ * Since: 1.4
+ */
+gfloat
+clutter_bind_constraint_get_offset (ClutterBindConstraint *bind)
+{
+  g_return_val_if_fail (CLUTTER_IS_BIND_CONSTRAINT (bind), 0.0);
+
+  return bind->offset;
 }
