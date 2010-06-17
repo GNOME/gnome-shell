@@ -17,9 +17,13 @@ noinst_LTLIBRARIES = libclutter-eglnative.la
 libclutter_eglnative_la_SOURCES = \
 	clutter-backend-egl.h \
 	clutter-backend-egl.c \
-	clutter-event-tslib.c \
 	clutter-stage-egl.h \
 	clutter-stage-egl.c \
 	clutter-egl-headers.h
+
+if USE_TSLIB
+libclutter_eglnative_la_SOURCES += clutter-event-tslib.c
+endif
+
 libclutter_eglnative_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 libclutter_eglnative_la_LIBADD = $(common_ldadd)

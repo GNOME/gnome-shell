@@ -424,6 +424,8 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
       ]
 )
 
+AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
+
 AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
 # at this point we must have a GL header to check
