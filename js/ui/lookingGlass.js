@@ -404,8 +404,7 @@ Inspector.prototype = {
                                                        stageY);
             let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
             displayText.text = '';
-            let description = St.describe_actor(target);
-            displayText.text = position + ' ' + description;
+            displayText.text = position + ' ' + target;
             if (borderPaintTarget != null)
                 borderPaintTarget.disconnect(borderPaintId);
             borderPaintTarget = target;

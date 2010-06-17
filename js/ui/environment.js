@@ -71,6 +71,9 @@ function init() {
     _patchContainerClass(St.BoxLayout);
     _patchContainerClass(St.Table);
 
+    Clutter.Actor.prototype.toString = function() {
+        return St.describe_actor(this);
+    };
     Clutter.Actor.prototype.contains = function(child) {
         while (child != null && child != this)
             child = child.get_parent();
