@@ -207,6 +207,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_pixel_buffer);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_rectangle);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_wrap_modes);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_pixmap_x11);
 
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);

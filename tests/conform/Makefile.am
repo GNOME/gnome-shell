@@ -27,6 +27,7 @@ test_conformance_SOURCES = 		\
 	test-cogl-multitexture.c        \
 	test-cogl-texture-mipmaps.c     \
 	test-cogl-texture-rectangle.c   \
+	test-cogl-texture-pixmap-x11.c  \
 	test-cogl-wrap-modes.c          \
 	test-cogl-pixel-buffer.c	\
 	test-cogl-path.c		\
