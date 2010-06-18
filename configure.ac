@@ -109,6 +109,8 @@ AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 dnl ========================================================================
 
 # defaults
+FLAVOUR_LIBS=""
+FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
 CLUTTER_WINSYS=glx
@@ -167,21 +169,21 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                                [HAVE_LIBGLES=no])
 
                   AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                        [GLES_LIBS="-lGLES_CM"],
+                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
                         [
                           AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
                                        [HAVE_LIBGLES=yes],
                                        [HAVE_LIBGLES=no])
 
                           AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                [GLES_LIBS="-lGLESv1_CM"],
+                                [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
                                 [
                                   AC_CHECK_LIB(gles_cm, [eglInitialize],
                                                [HAVE_LIBGLES=yes],
                                                [HAVE_LIBGLES=no])
 
                                   AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                        [GLES_LIBS="-lgles_cm"],
+                                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
                                         [
                                           AC_MSG_ERROR([GLES library not found and egl backend requested.])
                                         ]
@@ -204,7 +206,7 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
                                    [],
                                    [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
-                  GLES_LIBS="-lGLESv2 -lEGL"
+                  FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2 -lEGL"
                 ],
 
                 [fruity],
@@ -251,8 +253,8 @@ AS_CASE([$CLUTTER_WINSYS],
                        [HAVE_LIBGLX=yes],
                        [AC_MSG_ERROR([Required GLX library not found])])
 
-          GLX_LIBS="$X11_LIBS -lGL"
-          GLX_CFLAGS="$X11_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS -lGL"
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
@@ -272,8 +274,8 @@ AS_CASE([$CLUTTER_WINSYS],
           AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
                      [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
 
-          EGL_LIBS="$GLES_LIBS $X11_LIBS"
-          EGL_CFLAGS="$GLES_CFLAGS $X11_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS"
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
@@ -293,8 +295,8 @@ AS_CASE([$CLUTTER_WINSYS],
                 [AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])]
           )
 
-          EGL_LIBS="$GLES_LIBS $TSLIB_LIBS"
-          EGL_CFLAGS="$TSLIB_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS"
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
         ],
 
         [fruity],
@@ -306,8 +308,7 @@ AS_CASE([$CLUTTER_WINSYS],
           AC_DEFINE([COGL_HAS_EGL_PLATFORM_FRUITY_SUPPORT], [1],
                      [Cogl supports OpenGLES using the EGL API with Fruity platform typedefs])
 
-          EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
-          EGL_CFLAGS=""
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
         ],
 
         [osx],
@@ -321,7 +322,7 @@ AS_CASE([$CLUTTER_WINSYS],
           COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
-          OSX_LIBS="-framework Cocoa -framework OpenGL"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -framework Cocoa -framework OpenGL"
         ],
 
         [win32],
@@ -335,8 +336,8 @@ AS_CASE([$CLUTTER_WINSYS],
           COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
-          WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
-          WIN32_LIBS="-lopengl32 -lgdi32 -lwinmm"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -lopengl32 -lgdi32 -lwinmm"
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS -D_WIN32_WINNT=0x0500"
           CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
 
           AC_CHECK_TOOL(WINDRES, windres, no)
@@ -560,6 +561,8 @@ AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
 
         x11_tests=yes
         BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
+        FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS"
+        FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
       ]
 )
 
@@ -796,8 +799,8 @@ PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
 
-CLUTTER_CFLAGS="$EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
-CLUTTER_LIBS="$EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
+CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
+CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
