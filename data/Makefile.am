@@ -52,8 +52,8 @@ gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
 # We need to compile schemas at make time
 # to run from source tree
-gschemas.compiled: org.gnome.shell.gschema.xml
-        $(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --targetdir=. .
+gschemas.compiled:
+	$(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --targetdir=. .
 
 all-local: gschemas.compiled
 
