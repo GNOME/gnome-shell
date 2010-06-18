@@ -165,12 +165,12 @@ libclutter_cogl_la_SOURCES += \
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-eglx.c \
+       $(srcdir)/winsys/cogl-egl.c \
        $(srcdir)/winsys/cogl-xlib.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-eglnative.c
+       $(srcdir)/winsys/cogl-egl.c
 endif
 if SUPPORT_EGL_PLATFORM_FRUITY
 libclutter_cogl_la_SOURCES += \

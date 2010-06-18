@@ -1823,13 +1823,8 @@ ClutterGLXTexturePixmapPrivate
 
 <SECTION>
 <TITLE>EGL Specific Support</TITLE>
-<FILE>clutter-eglnative</FILE>
+<FILE>clutter-egl</FILE>
 clutter_egl_display
-</SECTION>
-
-<SECTION>
-<TITLE>EGLX Specific Support</TITLE>
-<FILE>clutter-eglx</FILE>
 clutter_eglx_display
 </SECTION>
 

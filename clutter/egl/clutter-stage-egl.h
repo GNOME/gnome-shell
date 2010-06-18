@@ -4,8 +4,14 @@
 #include <glib-object.h>
 #include <clutter/clutter-stage.h>
 
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+
 #include "clutter-egl-headers.h"
 #include "clutter-backend-egl.h"
+
+#include "../x11/clutter-stage-x11.h"
 
 #define CLUTTER_TYPE_STAGE_EGL                  (clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGL))
@@ -19,18 +25,26 @@ typedef struct _ClutterStageEGLClass    ClutterStageEGLClass;
 
 struct _ClutterStageEGL
 {
-  ClutterActor parent_instance;
+  ClutterStageX11 parent_instance;
 
-  /* the stage wrapper */
+#ifdef COGL_HAS_X11_SUPPORT
+
+  EGLSurface egl_surface;
+
+#else
+
+ /* the stage wrapper */
   ClutterStage      *wrapper;
 
   /* back pointer to the backend */
   ClutterBackendEGL *backend;
+
+#endif
 };
 
 struct _ClutterStageEGLClass
 {
-  ClutterActorClass parent_class;
+  ClutterStageX11Class parent_class;
 };
 
 GType clutter_stage_egl_get_type (void) G_GNUC_CONST;

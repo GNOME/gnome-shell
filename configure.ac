@@ -176,7 +176,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           COGL_DRIVER="gl"
 
-          CLUTTER_WINSYS=eglx
+          CLUTTER_WINSYS=egl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           # I think this winsys can be API and ABI compatible with the
@@ -199,7 +199,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           COGL_DRIVER="gles"
 
-          CLUTTER_WINSYS=eglx
+          CLUTTER_WINSYS=egl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=eglx
@@ -223,7 +223,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
 
-          CLUTTER_WINSYS=eglnative
+          CLUTTER_WINSYS=egl
           CLUTTER_SONAME_INFIX=eglnative
         ],
 
@@ -948,8 +948,7 @@ AC_CONFIG_FILES([
         clutter/x11/Makefile
         clutter/x11/clutter-x11.pc
         clutter/glx/Makefile
-        clutter/eglx/Makefile
-        clutter/eglnative/Makefile
+        clutter/egl/Makefile
         clutter/fruity/Makefile
         clutter/osx/Makefile
         clutter/win32/Makefile

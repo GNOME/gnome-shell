@@ -24,10 +24,10 @@
  */
 
 /**
- * SECTION:clutter-eglnative
+ * SECTION:clutter-egl
  * @short_description: EGL specific API
  *
- * The EGL backend for Clutter provides some specific API.
+ * The EGL backend for Clutter provides some EGL specific API
  */
 
 #ifndef __CLUTTER_EGL_H__
@@ -35,13 +35,41 @@
 
 #include <glib.h>
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#endif
+
 #include "clutter-egl-headers.h"
 
 #include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS
 
-EGLDisplay clutter_egl_display (void);
+#ifdef COGL_HAS_XLIB_SUPPORT
+/**
+ * clutter_eglx_display:
+ *
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter
+ *
+ * Return value: the EGL display
+ *
+ * Since: 0.4
+ */
+EGLDisplay
+clutter_eglx_display (void);
+#endif
+
+/**
+ * clutter_egl_display:
+ *
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter
+ *
+ * Return value: the EGL display
+ */
+EGLDisplay
+clutter_egl_display (void);
 
 G_END_DECLS
 

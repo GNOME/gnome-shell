@@ -39,7 +39,7 @@
 #include "../x11/clutter-backend-x11.h"
 #endif
 
-#include "clutter-eglx.h"
+#include "clutter-egl.h"
 
 G_BEGIN_DECLS
 
