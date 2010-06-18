@@ -1094,9 +1094,9 @@ cogl_material_get_depth_test_function (CoglHandle handle);
 /**
  * cogl_material_set_depth_range:
  * @handle: A CoglMaterial handle
- * @near: The near component of the desired depth range which will be
+ * @near_val: The near component of the desired depth range which will be
  * clamped to the range [0, 1]
- * @far: The far component of the desired depth range which will be
+ * @far_val: The far component of the desired depth range which will be
  * clamped to the range [0, 1]
  * @error: location to store an error of type #CoglError
  *
@@ -1128,15 +1128,15 @@ cogl_material_get_depth_test_function (CoglHandle handle);
  */
 gboolean
 cogl_material_set_depth_range (CoglHandle handle,
-                               float near,
-                               float far,
+                               float near_val,
+                               float far_val,
                                GError **error);
 
 /**
  * cogl_material_get_depth_range_mapping:
  * @handle: A CoglMaterial handle
- * @near: A pointer to store the near component of the depth range
- * @far: A pointer to store the far component of the depth range
+ * @near_val: A pointer to store the near component of the depth range
+ * @far_val: A pointer to store the far component of the depth range
  *
  * Gets the current range to which normalized depth values are mapped
  * before writing to the depth buffer. This corresponds to the range
@@ -1146,8 +1146,8 @@ cogl_material_set_depth_range (CoglHandle handle,
  */
 void
 cogl_material_get_depth_range (CoglHandle handle,
-                               float *near,
-                               float *far);
+                               float *near_val,
+                               float *far_val);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 

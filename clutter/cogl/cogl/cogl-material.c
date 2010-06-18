@@ -4129,8 +4129,8 @@ cogl_material_get_depth_test_function (CoglHandle handle)
 
 gboolean
 cogl_material_set_depth_range (CoglHandle handle,
-                               float near,
-                               float far,
+                               float near_val,
+                               float far_val,
                                GError **error)
 {
 #ifndef COGL_HAS_GLES
@@ -4144,8 +4144,8 @@ cogl_material_set_depth_range (CoglHandle handle,
   authority = _cogl_material_get_authority (material, state);
 
   depth_state = &authority->big_state->depth_state;
-  if (depth_state->depth_range_near == near &&
-      depth_state->depth_range_far == far)
+  if (depth_state->depth_range_near == near_val &&
+      depth_state->depth_range_far == far_val)
     return TRUE;
 
   /* - Flush journal primitives referencing the current state.
@@ -4155,8 +4155,8 @@ cogl_material_set_depth_range (CoglHandle handle,
    */
   _cogl_material_pre_change_notify (material, state, NULL);
 
-  material->big_state->depth_state.depth_range_near = near;
-  material->big_state->depth_state.depth_range_far = far;
+  material->big_state->depth_state.depth_range_near = near_val;
+  material->big_state->depth_state.depth_range_far = far_val;
 
   _cogl_material_update_authority (material, authority, state,
                                    _cogl_material_depth_state_equal);
@@ -4172,8 +4172,8 @@ cogl_material_set_depth_range (CoglHandle handle,
 
 void
 cogl_material_get_depth_range (CoglHandle handle,
-                               float *near,
-                               float *far)
+                               float *near_val,
+                               float *far_val)
 {
   CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
@@ -4183,8 +4183,8 @@ cogl_material_get_depth_range (CoglHandle handle,
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
 
-  *near = authority->big_state->depth_state.depth_range_near;
-  *far = authority->big_state->depth_state.depth_range_far;
+  *near_val = authority->big_state->depth_state.depth_range_near;
+  *far_val = authority->big_state->depth_state.depth_range_far;
 }
 
 unsigned long
