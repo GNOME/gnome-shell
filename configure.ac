@@ -109,11 +109,12 @@ AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 dnl ========================================================================
 
 # defaults
+CLUTTER_FLAVOUR=glx
 FLAVOUR_LIBS=""
 FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
-CLUTTER_WINSYS=glx
+CLUTTER_WINSYS=
 clutter_gl_header=""
 glesversion=1.1
 use_gles2_wrapper=no
@@ -123,7 +124,7 @@ experimental_image=no
 AC_ARG_WITH([flavour],
             [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/osx/win32/fruity@:>@],
                             [Select the Clutter window system backend])],
-            [CLUTTER_WINSYS=$with_flavour])
+            [CLUTTER_FLAVOUR=$with_flavour])
 
 AC_ARG_WITH([gles],
             [AC_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
@@ -139,7 +140,7 @@ AM_CONDITIONAL(HAVE_LIBDL, [test "x$HAVE_LIBDL" = "xyes"])
 
 dnl === Clutter windowing system backend ======================================
 
-AS_CASE([$CLUTTER_WINSYS],
+AS_CASE([$CLUTTER_FLAVOUR],
 
         [glx],
         [
@@ -165,6 +166,7 @@ AS_CASE([$CLUTTER_WINSYS],
           FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS -lGL"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
+          CLUTTER_WINSYS=glx
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
 
@@ -188,6 +190,7 @@ AS_CASE([$CLUTTER_WINSYS],
           FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
+          CLUTTER_WINSYS=eglx
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
         ],
@@ -210,6 +213,8 @@ AS_CASE([$CLUTTER_WINSYS],
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
+
+          CLUTTER_WINSYS=eglnative
         ],
 
         [fruity],
@@ -226,6 +231,8 @@ AS_CASE([$CLUTTER_WINSYS],
           glesversion=fruity
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
+
+          CLUTTER_WINSYS=fruity
         ],
 
         [osx],
@@ -240,6 +247,8 @@ AS_CASE([$CLUTTER_WINSYS],
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -framework Cocoa -framework OpenGL"
+
+          CLUTTER_WINSYS=osx
         ],
 
         [win32],
@@ -261,6 +270,8 @@ AS_CASE([$CLUTTER_WINSYS],
           if test "$WINDRES" = no; then
              AC_MSG_ERROR([*** windres is required])
           fi
+
+          CLUTTER_WINSYS=win32
         ],
 
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
@@ -388,7 +399,6 @@ CLUTTER_WINSYS_LIB=libclutter-$CLUTTER_WINSYS-$CLUTTER_API_VERSION.la
 AC_SUBST([CLUTTER_WINSYS_LIB])
 
 dnl === Clutter substitutions kept for backwards compatibility ================
-CLUTTER_FLAVOUR=$CLUTTER_WINSYS
 AC_SUBST([CLUTTER_FLAVOUR])
 CLUTTER_COGL=$COGL_DRIVER
 AC_SUBST([CLUTTER_COGL])
