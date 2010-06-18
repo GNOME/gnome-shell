@@ -317,7 +317,7 @@ state_free (gpointer data)
        state->keys = g_list_remove (state->keys, state->keys->data))
     clutter_state_key_free (state->keys->data);
 
-  g_array_unref (state->animators);
+  g_array_free (state->animators, TRUE);
   g_hash_table_destroy (state->durations);
   g_free (state);
 }
