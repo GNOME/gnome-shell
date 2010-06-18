@@ -37,6 +37,10 @@
 
 #include <string.h>
 
+#ifdef HAVE_COGL_GL
+#define glActiveTexture _context->drv.pf_glActiveTexture
+#endif
+
 extern void
 _cogl_create_context_driver (CoglContext *context);
 
