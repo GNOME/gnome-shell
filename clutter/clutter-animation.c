@@ -1792,7 +1792,6 @@ clutter_animation_setupv (ClutterAnimation    *animation,
   ClutterAnimationPrivate *priv = animation->priv;
   ClutterAnimatable *animatable = NULL;
   GObjectClass *klass = NULL;
-  gboolean is_fixed = FALSE;
   gint i;
 
   if (CLUTTER_IS_ANIMATABLE (priv->object))
@@ -1804,6 +1803,7 @@ clutter_animation_setupv (ClutterAnimation    *animation,
     {
       const gchar *property_name = properties[i];
       GParamSpec *pspec;
+      gboolean is_fixed = FALSE;
 
       if (g_str_has_prefix (property_name, "fixed::"))
         {
