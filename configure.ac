@@ -146,25 +146,14 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           clutter_gl_header="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
-          AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
-          AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])
-          AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])
-          AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
 
+          SUPPORT_X11=1
+          SUPPORT_XLIB=1
+          SUPPORT_GLX=1
 
           COGL_DRIVER="gl"
-          AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
-          AC_CHECK_HEADERS([GL/glx.h],
-                           [],
-                           [AC_MSG_ERROR([Unable to locate required GLX headers])])
-
-          AC_CHECK_LIB(GL, [glXCreateContext],
-                       [HAVE_LIBGLX=yes],
-                       [AC_MSG_ERROR([Required GLX library not found])])
-
-          FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS -lGL"
-          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"
 
           CLUTTER_WINSYS=glx
           CLUTTER_WINSYS_BASE=x11
@@ -178,17 +167,13 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
-          AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
-          AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])
-          AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])
-          AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
-          AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
-                     [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
+
+          SUPPORT_X11=1
+          SUPPORT_XLIB=1
+          SUPPORT_EGL=1
+          SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
           COGL_DRIVER="gles"
-
-          FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS"
-          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
           CLUTTER_WINSYS=eglx
           CLUTTER_WINSYS_BASE=x11
@@ -199,10 +184,9 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
-          AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
-          AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
-          AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
-                     [Cogl supports OpenGLES using the EGL API with PowerVR NULL platform typedefs])
+
+          SUPPORT_EGL=1
+          SUPPORT_EGL_PLATFORM_POWERVR_NULL=1
 
           PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
           AS_IF([test "x$have_tslib" = "xyes"],
@@ -240,6 +224,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           experimental_backend="yes"
           clutter_gl_header="OpenGL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
+
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
           AC_DEFINE([COGL_HAS_OSX_SUPPORT], [1], [Cogl supports the OSX window system])
 
@@ -277,25 +262,61 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
 )
 
+AS_IF([test "x$SUPPORT_X11" = "x1"],
+      [ AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])])
+AS_IF([test "x$SUPPORT_XLIB" = "x1"],
+      [ AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])])
+
+AS_IF([test "x$SUPPORT_GLX" = "x1"],
+      [
+        AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
+
+        AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
+
+        AC_CHECK_HEADERS([GL/glx.h],
+                         [],
+                         [AC_MSG_ERROR([Unable to locate required GLX headers])])
+
+        AC_CHECK_LIB(GL, [glXCreateContext],
+                     [HAVE_LIBGLX=yes],
+                     [AC_MSG_ERROR([Required GLX library not found])])
+      ])
+
+AS_IF([test "x$SUPPORT_EGL" = "x1"],
+      [
+        AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
+        AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
+      ])
+
+AS_IF([test "x$SUPPORT_EGL_POWERVR_X11" = "x1"],
+      [
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
+                  [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
+      ])
+
+AS_IF([test "x$SUPPORT_EGL_POWERVR_NULL" = "x1"],
+      [
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
+                  [Cogl supports OpenGLES using the EGL API with PowerVR NULL platform typedefs])
+      ])
+
 # winsys conditionals for use in automake files...
-AM_CONDITIONAL(SUPPORT_GLX, [test "x$CLUTTER_WINSYS" = "xglx"])
-AM_CONDITIONAL(SUPPORT_X11, [test "x$CLUTTER_WINSYS" = "xglx" -o \
-                             "x$CLUTTER_WINSYS" = "xeglx"])
-AM_CONDITIONAL(SUPPORT_XLIB, [test "x$CLUTTER_WINSYS" = "xglx" -o \
-                              "x$CLUTTER_WINSYS" = "xeglx"])
-AM_CONDITIONAL(SUPPORT_EGL,
-               [test "x$CLUTTER_WINSYS" = "xeglx" -o \
-                "x$CLUTTER_WINSYS" = "xeglnative" -o \
-                "x$CLUTTER_WINSYS" = "xfruity"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$CLUTTER_WINSYS" = "xeglx"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$CLUTTER_WINSYS" = "xeglnative"])
+AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "x1"])
+AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "x1"])
+AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "x1"])
+AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 
-dnl === COGL GLES backend =====================================================
+dnl === COGL driver backend =====================================================
 
-AS_IF([test "x$COGL_DRIVER" = "xgles" ],
+AS_IF([test "x$COGL_DRIVER" = "xgl"],
+      [ AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering]) ])
+
+AS_IF([test "x$COGL_DRIVER" = "xgles"],
 
       [
         AS_CASE([$glesversion],
@@ -448,7 +469,7 @@ dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
 x11_tests=no
 
-AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
+AS_IF([test "x$SUPPORT_XLIB" = "x1"],
       [
         # base X11 includes and libraries
         AC_MSG_CHECKING([for X11])
@@ -1003,8 +1024,7 @@ else
 echo "        Windowing system: ${CLUTTER_WINSYS} (WARNING: Experimental)"
 fi
 
-if test "x$CLUTTER_WINSYS" = "xglx" ||
-   test "x$CLUTTER_WINSYS" = "xeglx"; then
+if test "x$SUPPORT_XLIB" = "x1"; then
 echo "        Enable XInput 1.0: ${xinput}"
 echo "        Enable X11 tests: ${x11_tests}"
 fi
