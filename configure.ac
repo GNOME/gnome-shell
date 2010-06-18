@@ -130,9 +130,6 @@ AC_ARG_WITH([gles],
                             [Select Clutter GLES version (for EGL backends)])],
             [glesversion=$with_gles])
 
-# the fruity backend requires a different handling for GLES
-AS_IF([test "x$CLUTTER_WINSYS" = "xfruity"], [glesversion=fruity])
-
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
 
@@ -225,6 +222,8 @@ AS_CASE([$CLUTTER_WINSYS],
                      [Cogl supports OpenGLES using the EGL API with Fruity platform typedefs])
 
           COGL_DRIVER="gles"
+          # the fruity backend requires a different handling for GLES
+          glesversion=fruity
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
         ],
