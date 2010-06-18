@@ -443,6 +443,39 @@ AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 
 AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
+dnl The value of this variable will directly go in the install
+dnl cogl-defines.h header
+COGL_DEFINES_="";
+dnl Space-separated list of symbols that should be defined in
+dnl cogl-defines.h
+COGL_DEFINES_SYMBOLS="";
+
+if test "x$SUPPORT_X11" = "x1"; then
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11"
+fi;
+
+if test "x$SUPPORT_XLIB" = "x1"; then
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB"
+fi;
+
+AS_CASE([$COGL_DRIVER],
+        [gl],
+        [COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GL"
+         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GL"],
+        [gles],
+        [COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES"
+         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GLES"],
+        [AC_MSG_ERROR([Unknown cogl driver $COGL_DRIVER])])
+
+dnl Copy all of the words in COGL_DEFINES_SYMBOLS as separate #define
+dnl lines in COGL_DEFINES
+for x in $COGL_DEFINES_SYMBOLS; do
+  COGL_DEFINES="$COGL_DEFINES
+#define $x 1"
+done;
+
+AC_SUBST(COGL_DEFINES)
+
 # at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
 AC_CHECK_HEADERS([$clutter_gl_header],
@@ -970,8 +1003,7 @@ AC_CONFIG_FILES([
         clutter/win32/clutter-win32.pc
         clutter/cogl/Makefile
         clutter/cogl/cogl/Makefile
-        clutter/cogl/cogl/driver/gl/cogl-defines.h
-        clutter/cogl/cogl/driver/gles/cogl-defines.h
+        clutter/cogl/cogl/cogl-defines.h
         clutter/cogl/cogl/cogl.pc
         clutter/cogl/cogl/driver/Makefile
         clutter/cogl/cogl/driver/gl/Makefile

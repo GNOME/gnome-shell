@@ -45,9 +45,6 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
-cogl-defines.h: $(top_builddir)/clutter/cogl/cogl/driver/gl/cogl-defines.h $(top_builddir)/clutter/cogl/cogl/driver/gles/cogl-defines.h
-	$(QUIET_GEN)cp -f $(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/cogl-defines.h $(@F)
-
 BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
 
