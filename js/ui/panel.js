@@ -702,10 +702,39 @@ Panel.prototype = {
             sideWidth = (allocWidth - centerWidth) / 2;
 
             let childBox = new Clutter.ActorBox();
-            childBox.x1 = 0;
             childBox.y1 = 0;
-            childBox.x2 = childBox.x1 + Math.floor(sideWidth);
+            childBox.y2 = this._hotCornerEnvirons.height;
+            if (this.actor.get_direction() == St.TextDirection.RTL) {
+                childBox.x1 = allocWidth - this._hotCornerEnvirons.width;
+                childBox.x2 = allocWidth;
+            } else {
+                childBox.x1 = 0;
+                childBox.x2 = this._hotCornerEnvirons.width;
+            }
+            this._hotCornerEnvirons.allocate(childBox, flags);
+
+            childBox.y1 = 0;
+            childBox.y2 = this._hotCorner.height;
+            if (this.actor.get_direction() == St.TextDirection.RTL) {
+                childBox.x1 = allocWidth - this._hotCorner.width;
+                childBox.x2 = allocWidth;
+            } else {
+                childBox.x1 = 0;
+                childBox.x2 = this._hotCorner.width;
+            }
+            this._hotCorner.allocate(childBox, flags);
+
+            childBox.y1 = 0;
             childBox.y2 = allocHeight;
+            if (this.actor.get_direction() == St.TextDirection.RTL) {
+                childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
+                                                    leftNaturalWidth);
+                childBox.x2 = allocWidth;
+            } else {
+                childBox.x1 = 0;
+                childBox.x2 = Math.min(Math.floor(sideWidth),
+                                       leftNaturalWidth);
+            }
             this._leftBox.allocate(childBox, flags);
 
             childBox.x1 = Math.ceil(sideWidth);
@@ -714,10 +743,17 @@ Panel.prototype = {
             childBox.y2 = allocHeight;
             this._centerBox.allocate(childBox, flags);
 
-            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth), rightNaturalWidth);
             childBox.y1 = 0;
-            childBox.x2 = allocWidth;
             childBox.y2 = allocHeight;
+            if (this.actor.get_direction() == St.TextDirection.RTL) {
+                childBox.x1 = 0;
+                childBox.x2 = Math.min(Math.floor(sideWidth),
+                                       rightNaturalWidth);
+            } else {
+                childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
+                                                    rightNaturalWidth);
+                childBox.x2 = allocWidth;
+            }
             this._rightBox.allocate(childBox, flags);
         }));
 
@@ -737,16 +773,12 @@ Panel.prototype = {
         // multiple times due to an accidental jitter.
         this._hotCornerEntered = false;
 
-        this._hotCornerEnvirons = new Clutter.Rectangle({ x: 0,
-                                                          y: 0,
-                                                          width: 3,
+        this._hotCornerEnvirons = new Clutter.Rectangle({ width: 3,
                                                           height: 3,
                                                           opacity: 0,
                                                           reactive: true });
 
-        this._hotCorner = new Clutter.Rectangle({ x: 0,
-                                                  y: 0,
-                                                  width: 1,
+        this._hotCorner = new Clutter.Rectangle({ width: 1,
                                                   height: 1,
                                                   opacity: 0,
                                                   reactive: true });
@@ -770,8 +802,8 @@ Panel.prototype = {
         this._hotCorner.connect('leave-event',
                                 Lang.bind(this, this._onHotCornerLeft));
 
-        this._leftBox.add(this._hotCornerEnvirons);
-        this._leftBox.add(this._hotCorner);
+        this._boxContainer.add_actor(this._hotCornerEnvirons);
+        this._boxContainer.add_actor(this._hotCorner);
 
         let appMenuButton = new AppMenuButton();
         this._leftBox.add(appMenuButton.actor);
