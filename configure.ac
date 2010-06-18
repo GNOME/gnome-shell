@@ -158,6 +158,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_WINSYS=glx
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          CLUTTER_SONAME_INFIX=glx
 
           # Mesa 7.3 added a GL pkg-config file, finally
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
@@ -178,6 +179,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_WINSYS=eglx
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          CLUTTER_SONAME_INFIX=eglx
         ],
 
         [eglnative],
@@ -199,6 +201,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
 
           CLUTTER_WINSYS=eglnative
+          CLUTTER_SONAME_INFIX=eglnative
         ],
 
         [fruity],
@@ -217,6 +220,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
 
           CLUTTER_WINSYS=fruity
+          CLUTTER_SONAME_INFIX=fruity
         ],
 
         [osx],
@@ -234,6 +238,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS -framework Cocoa -framework OpenGL"
 
           CLUTTER_WINSYS=osx
+          CLUTTER_SONAME_INFIX=osx
         ],
 
         [win32],
@@ -257,6 +262,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           fi
 
           CLUTTER_WINSYS=win32
+          CLUTTER_SONAME_INFIX=win32
         ],
 
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
@@ -415,8 +421,9 @@ AC_SUBST([CLUTTER_WINSYS_BASE])
 AC_SUBST([CLUTTER_WINSYS_BASE_LIB])
 AC_SUBST(CLUTTER_GL_HEADER)
 AC_SUBST(CLUTTER_STAGE_TYPE)
+AC_SUBST(CLUTTER_SONAME_INFIX)
 
-CLUTTER_WINSYS_LIB=libclutter-$CLUTTER_WINSYS-$CLUTTER_API_VERSION.la
+CLUTTER_WINSYS_LIB=libclutter-$CLUTTER_SONAME_INFIX-$CLUTTER_API_VERSION.la
 AC_SUBST([CLUTTER_WINSYS_LIB])
 
 dnl === Clutter substitutions kept for backwards compatibility ================

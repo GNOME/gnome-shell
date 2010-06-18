@@ -8,7 +8,7 @@ ACLOCAL_AMFLAGS = -I build/autotools
 
 pcfiles = \
 	clutter-$(CLUTTER_API_VERSION).pc \
-	clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc \
+	clutter-$(CLUTTER_SONAME_INFIX)-$(CLUTTER_API_VERSION).pc \
 	$(NULL)
 
 # clutter-<major>.<minor>.pc - for generic dependencies
@@ -16,7 +16,7 @@ clutter-$(CLUTTER_API_VERSION).pc: clutter.pc
 	$(QUIET_GEN)cp $< $@
 
 # clutter-<winsys>-<major>.<minor>.pc - for backend-specific dependencies
-clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc: clutter.pc
+clutter-$(CLUTTER_SONAME_INFIX)-$(CLUTTER_API_VERSION).pc: clutter.pc
 	$(QUIET_GEN)cp $< $@
 
 .PHONY: test-report full-report

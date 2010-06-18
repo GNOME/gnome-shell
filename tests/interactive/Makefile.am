@@ -94,7 +94,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter 	\
 	-I$(top_builddir)/clutter/cogl
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 

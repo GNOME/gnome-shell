@@ -256,7 +256,7 @@ source_h_priv = \
 	$(srcdir)/clutter-timeout-interval.h    \
 	$(NULL)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
+libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
@@ -264,7 +264,7 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(clutter_json_libadd) \
 	$(CLUTTER_WINSYS_BASE_LIB)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
@@ -272,17 +272,17 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(CLUTTER_WINSYS_BASE_LIB) \
 	$(win32_resources)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
+libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
 	$(source_h) \
 	$(source_c_priv) \
 	$(source_h_priv)
 
-nodist_libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
+nodist_libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(built_source_c) \
 	$(built_source_h)
 
-libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
 	-export-dynamic \
@@ -293,7 +293,7 @@ libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 
 lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)
 
-EXTRA_LTLIBRARIES = libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+EXTRA_LTLIBRARIES = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
@@ -333,7 +333,7 @@ if HAVE_INTROSPECTION
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
 
-Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
@@ -348,7 +348,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--include=PangoCairo-1.0 \
 		--include=Cogl-@CLUTTER_API_VERSION@ \
 		$(json_gir_include) \
-		--library=libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la \
+		--library=libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la \
 		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \
 		$(json_gir_pkg) \
