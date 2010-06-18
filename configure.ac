@@ -153,15 +153,17 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           COGL_DRIVER="gl"
 
-          FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"
-
           CLUTTER_WINSYS=glx
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=glx
 
           # Mesa 7.3 added a GL pkg-config file, finally
-          PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
+          PKG_CHECK_EXISTS([gl],
+                           [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"],
+                           # if a pkg-config file isn't found just add -lGL
+                           # and hope for the best.
+                           [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"])
         ],
 
         [opengl-egl-xlib],
