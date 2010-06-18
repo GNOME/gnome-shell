@@ -140,94 +140,6 @@ BACKEND_PC_FILES=""
 AC_CHECK_LIB(dl, [dlopen], [HAVE_LIBDL=yes], [HAVE_LIBDL=no])
 AM_CONDITIONAL(HAVE_LIBDL, [test "x$HAVE_LIBDL" = "xyes"])
 
-dnl === COGL GLES backend =====================================================
-
-AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
-       test "x$CLUTTER_WINSYS" = "xeglx"      ||
-       test "x$CLUTTER_WINSYS" = "xfruity"],
-
-      [
-        AS_CASE([$glesversion],
-
-                [1*],
-                [
-                  clutter_gl_header="GLES/gl.h"
-
-                  COGL_DRIVER="gles"
-                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
-
-                  AC_CHECK_HEADERS([GLES/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-
-                  # check for upper/lower case libgles_em
-                  # The powervr sdk uses lower case.
-                  AC_CHECK_LIB(GLES_CM, [eglInitialize],
-                               [HAVE_LIBGLES=yes],
-                               [HAVE_LIBGLES=no])
-
-                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
-                        [
-                          AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
-                                       [HAVE_LIBGLES=yes],
-                                       [HAVE_LIBGLES=no])
-
-                          AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
-                                [
-                                  AC_CHECK_LIB(gles_cm, [eglInitialize],
-                                               [HAVE_LIBGLES=yes],
-                                               [HAVE_LIBGLES=no])
-
-                                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
-                                        [
-                                          AC_MSG_ERROR([GLES library not found and egl backend requested.])
-                                        ]
-                                  )
-                                ]
-                          )
-                        ]
-                  )
-                ],
-
-                [2*],
-                [
-                  clutter_gl_header="GLES2/gl2.h"
-                  use_gles2_wrapper=yes
-                  COGL_DRIVER="gles"
-                  AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
-
-                  AC_CHECK_HEADERS([EGL/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-                  FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2 -lEGL"
-                ],
-
-                [fruity],
-                [
-                  clutter_gl_header="GLES/gl.h"
-                  COGL_DRIVER="gles"
-                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
-
-                  AC_CHECK_HEADERS([GLES/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
-                ],
-
-                [AC_MSG_ERROR([Unknown argument for --with-gles])]
-        )
-      ]
-)
-
-AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
-
 dnl === Clutter windowing system backend ======================================
 
 AS_CASE([$CLUTTER_WINSYS],
@@ -274,6 +186,8 @@ AS_CASE([$CLUTTER_WINSYS],
           AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
                      [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
 
+          COGL_DRIVER="gles"
+
           FLAVOUR_LIBS="$FLAVOUR_LIBS $X11_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $X11_CFLAGS"
 
@@ -295,6 +209,8 @@ AS_CASE([$CLUTTER_WINSYS],
                 [AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])]
           )
 
+          COGL_DRIVER="gles"
+
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
         ],
@@ -307,6 +223,8 @@ AS_CASE([$CLUTTER_WINSYS],
           AC_DEFINE([HAVE_CLUTTER_FRUITY], [1], [Have the Fruity backend])
           AC_DEFINE([COGL_HAS_EGL_PLATFORM_FRUITY_SUPPORT], [1],
                      [Cogl supports OpenGLES using the EGL API with Fruity platform typedefs])
+
+          COGL_DRIVER="gles"
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
         ],
@@ -364,6 +282,89 @@ AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$CLUTTER_WINSYS" = "xe
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
+
+dnl === COGL GLES backend =====================================================
+
+AS_IF([test "x$COGL_DRIVER" = "xgles" ],
+
+      [
+        AS_CASE([$glesversion],
+
+                [1*],
+                [
+                  clutter_gl_header="GLES/gl.h"
+
+                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+
+                  AC_CHECK_HEADERS([GLES/egl.h],
+                                   [],
+                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+
+                  # check for upper/lower case libgles_em
+                  # The powervr sdk uses lower case.
+                  AC_CHECK_LIB(GLES_CM, [eglInitialize],
+                               [HAVE_LIBGLES=yes],
+                               [HAVE_LIBGLES=no])
+
+                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
+                        [
+                          AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
+                                       [HAVE_LIBGLES=yes],
+                                       [HAVE_LIBGLES=no])
+
+                          AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                                [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
+                                [
+                                  AC_CHECK_LIB(gles_cm, [eglInitialize],
+                                               [HAVE_LIBGLES=yes],
+                                               [HAVE_LIBGLES=no])
+
+                                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
+                                        [
+                                          AC_MSG_ERROR([GLES library not found and egl backend requested.])
+                                        ]
+                                  )
+                                ]
+                          )
+                        ]
+                  )
+                ],
+
+                [2*],
+                [
+                  clutter_gl_header="GLES2/gl2.h"
+                  use_gles2_wrapper=yes
+                  AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
+
+                  AC_CHECK_HEADERS([EGL/egl.h],
+                                   [],
+                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+                  FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2 -lEGL"
+                ],
+
+                [fruity],
+                [
+                  clutter_gl_header="GLES/gl.h"
+                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+
+                  AC_CHECK_HEADERS([GLES/egl.h],
+                                   [],
+                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
+                ],
+
+                [AC_MSG_ERROR([Unknown argument for --with-gles])]
+        )
+      ]
+)
+
+AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
 # at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
