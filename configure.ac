@@ -350,76 +350,89 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
       [
         AS_CASE([$glesversion],
 
-                [1*],
-                [
-                  clutter_gl_header="GLES/gl.h"
+          [1*],
+          [
+            clutter_gl_header="GLES/gl.h"
 
-                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+            AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
-                  AC_CHECK_HEADERS([GLES/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
+            AC_CHECK_HEADERS([GLES/egl.h],
+                             [],
+                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
+            PKG_CHECK_EXISTS([glesv1_cm],
+              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv1_cm"],
+              [
+                # check for upper/lower case libgles_em
+                # The powervr sdk uses lower case.
+                AC_CHECK_LIB(GLES_CM, [eglInitialize],
+                             [HAVE_LIBGLES=yes],
+                             [HAVE_LIBGLES=no])
 
-                  # check for upper/lower case libgles_em
-                  # The powervr sdk uses lower case.
-                  AC_CHECK_LIB(GLES_CM, [eglInitialize],
-                               [HAVE_LIBGLES=yes],
-                               [HAVE_LIBGLES=no])
+                AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
+                      [
+                        AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
+                                     [HAVE_LIBGLES=yes],
+                                     [HAVE_LIBGLES=no])
 
-                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
-                        [
-                          AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
-                                       [HAVE_LIBGLES=yes],
-                                       [HAVE_LIBGLES=no])
+                        AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                              [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
+                              [
+                                AC_CHECK_LIB(gles_cm, [eglInitialize],
+                                             [HAVE_LIBGLES=yes],
+                                             [HAVE_LIBGLES=no])
 
-                          AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
-                                [
-                                  AC_CHECK_LIB(gles_cm, [eglInitialize],
-                                               [HAVE_LIBGLES=yes],
-                                               [HAVE_LIBGLES=no])
+                                AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
+                                      [
+                                        AC_MSG_ERROR([GLES library not found and egl backend requested.])
+                                      ]
+                                )
+                              ]
+                        )
+                      ]
+                     )
+              ])
 
-                                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                        [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
-                                        [
-                                          AC_MSG_ERROR([GLES library not found and egl backend requested.])
-                                        ]
-                                  )
-                                ]
-                          )
-                        ]
-                  )
-                ],
+            PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"])
+          ],
 
-                [2*],
-                [
-                  clutter_gl_header="GLES2/gl2.h"
-                  use_gles2_wrapper=yes
-                  AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
+          [2*],
+          [
+            clutter_gl_header="GLES2/gl2.h"
+            use_gles2_wrapper=yes
+            AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
+            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
-                  AC_CHECK_HEADERS([EGL/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
+            PKG_CHECK_EXISTS([glesv2],
+                             [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
+                             [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2"])
 
-                  FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2 -lEGL"
-                ],
+            PKG_CHECK_EXISTS([egl],
+              [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"],
+              [
+                AC_CHECK_HEADERS([EGL/egl.h],
+                                 [],
+                                 [AC_MSG_ERROR([Unable to locate required EGL headers])])
+                FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"
+              ]
+              )
+          ],
 
-                [fruity],
-                [
-                  clutter_gl_header="GLES/gl.h"
-                  AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-                  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+          [fruity],
+          [
+            clutter_gl_header="GLES/gl.h"
+            AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
-                  AC_CHECK_HEADERS([GLES/egl.h],
-                                   [],
-                                   [AC_MSG_ERROR([Unable to locate required GLES headers])])
-                ],
+            AC_CHECK_HEADERS([GLES/egl.h],
+                             [],
+                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
+          ],
 
-                [AC_MSG_ERROR([Unknown argument for --with-gles])]
+          [AC_MSG_ERROR([Unknown argument for --with-gles])]
         )
       ]
 )
