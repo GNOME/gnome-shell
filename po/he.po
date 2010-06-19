@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-10 12:19+0300\n"
-"PO-Revision-Date: 2010-06-10 12:20+0200\n"
+"POT-Creation-Date: 2010-06-19 17:59+0300\n"
+"PO-Revision-Date: 2010-06-19 18:01+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,192 @@ msgstr "שעון"
 #: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
 msgid "Customize the panel clock"
 msgstr "התאמת פאנל השעון"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "Custom format of the clock"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Enable internal tools useful for developers and testers from Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "File extension used for storing the screencast"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "Framerate used for recording screencasts."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "History for command (Alt-F2) dialog"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "Hour format"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr "If true, display the ISO week date in the calendar."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr "List of desktop file IDs for favorite applications"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "Overview workspace view mode"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "Show date in clock"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "Show the week date in the calendar"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "Show time with seconds"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "The gstreamer pipeline used to encode the screencast"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+msgid "Uuids of extensions to disable"
+msgstr "Uuids of extensions to disable"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "Whether to collect stats about applications usage"
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
@@ -61,89 +247,89 @@ msgid "_24 hour format"
 msgstr "מבנה _24 שעות"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:387 ../js/ui/dash.js:881
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:419
+#: ../js/ui/appDisplay.js:420
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:786
+#: ../js/ui/appDisplay.js:726
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:790
+#: ../js/ui/appDisplay.js:730
 msgid "Remove from Favorites"
 msgstr "הסר מהמועדפים"
 
-#: ../js/ui/appDisplay.js:791
+#: ../js/ui/appDisplay.js:731
 msgid "Add to Favorites"
 msgstr "הוסף למועדפים"
 
-#: ../js/ui/appDisplay.js:1127
+#: ../js/ui/appDisplay.js:1038
 msgid "Drag here to add favorites"
 msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
 
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:88
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s נוסף למועדפים שלך"
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:106
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s הוסר מהמועדפים שלך."
 
-#: ../js/ui/dash.js:204
+#: ../js/ui/dash.js:146
 msgid "Find"
 msgstr "חיפוש"
 
-#: ../js/ui/dash.js:536
+#: ../js/ui/dash.js:465
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/dash.js:550
+#: ../js/ui/dash.js:479
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:900 ../js/ui/placeDisplay.js:551
+#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
 msgid "PLACES & DEVICES"
 msgstr "מקומות והתקנים"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:907 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "פריטים אחרונים"
 
-#: ../js/ui/lookingGlass.js:475
+#: ../js/ui/lookingGlass.js:471
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:512
+#: ../js/ui/lookingGlass.js:508
 msgid "Enabled"
 msgstr "פעיל"
 
-#: ../js/ui/lookingGlass.js:514
+#: ../js/ui/lookingGlass.js:510
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:516
+#: ../js/ui/lookingGlass.js:512
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:518
+#: ../js/ui/lookingGlass.js:514
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:543
+#: ../js/ui/lookingGlass.js:539
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:549
+#: ../js/ui/lookingGlass.js:545
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
@@ -151,79 +337,74 @@ msgstr "דף אינטרנט"
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/panel.js:818
-#, c-format
-msgid "Quit %s"
-msgstr "יציאה מ־%s"
-
-#: ../js/ui/panel.js:838
+#: ../js/ui/panel.js:519
 msgid "Preferences"
 msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:945
+#: ../js/ui/panel.js:605
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:946
+#: ../js/ui/panel.js:606
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:950
+#: ../js/ui/panel.js:610
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:951
+#: ../js/ui/panel.js:611
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:958
+#: ../js/ui/panel.js:618
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:959
+#: ../js/ui/panel.js:619
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:963
+#: ../js/ui/panel.js:623
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:964
+#: ../js/ui/panel.js:624
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:1065
+#: ../js/ui/panel.js:726
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/placeDisplay.js:108
+#: ../js/ui/placeDisplay.js:109
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "ארע כשל בניתוק '%s'"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/placeDisplay.js:112
 msgid "Retry"
 msgstr "ניסיון חוזר"
 
-#: ../js/ui/placeDisplay.js:156
+#: ../js/ui/placeDisplay.js:157
 msgid "Connect to..."
 msgstr "התחבר אל..."
 
-#: ../js/ui/runDialog.js:235
+#: ../js/ui/runDialog.js:234
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/runDialog.js:380
+#: ../js/ui/runDialog.js:379
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
@@ -283,32 +464,32 @@ msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממ�
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
-#: ../src/shell-global.c:1025
+#: ../src/shell-global.c:1039
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1029
+#: ../src/shell-global.c:1043
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 
-#: ../src/shell-global.c:1034
+#: ../src/shell-global.c:1048
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1053
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 
-#: ../src/shell-global.c:1044
+#: ../src/shell-global.c:1058
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -338,6 +519,9 @@ msgstr "חפש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Quit %s"
+#~ msgstr "יציאה מ־%s"
 
 #~ msgid "PLACES"
 #~ msgstr "מקומות"
