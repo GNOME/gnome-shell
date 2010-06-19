@@ -46,7 +46,10 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-left.svg		\
 	theme/ws-switch-arrow-right.svg
 
-gsettings_SCHEMAS = org.gnome.shell.gschema.xml
+gsettings_SCHEMAS =					\
+	org.gnome.accessibility.magnifier.gschema.xml   \
+	org.gnome.shell.gschema.xml
+
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
@@ -77,6 +80,7 @@ EXTRA_DIST =						\
 	gnome-shell-clock-preferences.desktop.in.in	\
 	$(menu_DATA)					\
 	$(gconfschema_DATA)				\
+	org.gnome.accessibility.magnifier.xml.in	\
 	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\

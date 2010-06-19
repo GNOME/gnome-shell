@@ -1,7 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const GConf = imports.gi.GConf;
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Lang = imports.lang;
@@ -9,6 +9,7 @@ const Mainloop = imports.mainloop;
 const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
 
+// Keep enums in sync with GSettings schemas
 const MouseTrackingMode = {
     NONE: 0,
     CENTERED: 1,
@@ -25,38 +26,22 @@ const ScreenPosition = {
     RIGHT_HALF: 5
 };
 
-// Default settings
-const DEFAULT_X_MAGFACTOR = 2;
-const DEFAULT_Y_MAGFACTOR = 2;
-const DEFAULT_MOUSE_POLL_FREQUENCY = 50;
-const DEFAULT_LENS_MODE = false;
-const DEFAULT_SCREEN_POSITION = ScreenPosition.BOTTOM_HALF;
-const DEFAULT_MOUSE_TRACKING_MODE = MouseTrackingMode.CENTERED;
-const DEFAULT_CLAMP_SCROLLING_AT_EDGES = true;
+const MOUSE_POLL_FREQUENCY = 50;
+const CROSSHAIRS_CLIP_SIZE = [100, 100];
 
-const DEFAULT_SHOW_CROSSHAIRS = false;
-const DEFAULT_CROSSHAIRS_THICKNESS = 8;
-const DEFAULT_CROSSHAIRS_OPACITY = 169;     // 66%
-const DEFAULT_CROSSHAIRS_LENGTH = 4096;
-const DEFAULT_CROSSHAIRS_CLIP = false;
-const DEFAULT_CROSSHAIRS_CLIP_SIZE = [100, 100];
-const DEFAULT_CROSSHAIRS_COLOR = new Clutter.Color();
-DEFAULT_CROSSHAIRS_COLOR.from_string('Red');
-
-// GConf settings
-const A11Y_MAG_PREFS_DIR        = '/desktop/gnome/accessibility/magnifier';
-const SHOW_KEY                  = A11Y_MAG_PREFS_DIR + '/show_magnifier';
-const SCREEN_POSITION_KEY       = A11Y_MAG_PREFS_DIR + '/screen_position';
-const MAG_FACTOR_KEY            = A11Y_MAG_PREFS_DIR + '/mag_factor';
-const LENS_MODE_KEY             = A11Y_MAG_PREFS_DIR + '/lens_mode';
-const CLAMP_MODE_KEY            = A11Y_MAG_PREFS_DIR + '/scroll_at_edges';
-const MOUSE_TRACKING_KEY        = A11Y_MAG_PREFS_DIR + '/mouse_tracking';
-const SHOW_CROSS_HAIRS_KEY      = A11Y_MAG_PREFS_DIR + '/show_cross_hairs';
-const CROSS_HAIRS_THICKNESS_KEY = A11Y_MAG_PREFS_DIR + '/cross_hairs_thickness';
-const CROSS_HAIRS_COLOR_KEY     = A11Y_MAG_PREFS_DIR + '/cross_hairs_color';
-const CROSS_HAIRS_OPACITY_KEY   = A11Y_MAG_PREFS_DIR + '/cross_hairs_opacity';
-const CROSS_HAIRS_LENGTH_KEY    = A11Y_MAG_PREFS_DIR + '/cross_hairs_length';
-const CROSS_HAIRS_CLIP_KEY      = A11Y_MAG_PREFS_DIR + '/cross_hairs_clip';
+// Settings
+const SHOW_KEY                  = 'show-magnifier';
+const SCREEN_POSITION_KEY       = 'screen-position';
+const MAG_FACTOR_KEY            = 'mag-factor';
+const LENS_MODE_KEY             = 'lens-mode';
+const CLAMP_MODE_KEY            = 'scroll-at-edges';
+const MOUSE_TRACKING_KEY        = 'mouse-tracking';
+const SHOW_CROSS_HAIRS_KEY      = 'show-cross-hairs';
+const CROSS_HAIRS_THICKNESS_KEY = 'cross-hairs-thickness';
+const CROSS_HAIRS_COLOR_KEY     = 'cross-hairs-color';
+const CROSS_HAIRS_OPACITY_KEY   = 'cross-hairs-opacity';
+const CROSS_HAIRS_LENGTH_KEY    = 'cross-hairs-length';
+const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
 let magDBusService = null;
 
@@ -77,11 +62,11 @@ Magnifier.prototype = {
         this._cursorRoot.add_actor(this._mouseSprite);
 
         // Create the first ZoomRegion and initialize it according to the
-        // magnification GConf settings.
+        // magnification settings.
         let [xMouse, yMouse, mask] = global.get_pointer();
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
-        let showAtLaunch = this._gConfInit(aZoomRegion);
+        let showAtLaunch = this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(xMouse, yMouse);
 
         xfixesCursor.connect('cursor-change', Lang.bind(this, this._updateMouseSprite));
@@ -151,7 +136,7 @@ Magnifier.prototype = {
         let prevCoord = { x: NaN, y: NaN };
         if (!this._mouseTrackingId)
             this._mouseTrackingId = Mainloop.timeout_add(
-                DEFAULT_MOUSE_POLL_FREQUENCY,
+                MOUSE_POLL_FREQUENCY,
                 Lang.bind(this, this.scrollToMousePos, prevCoord)
             );
     },
@@ -281,17 +266,16 @@ Magnifier.prototype = {
     /**
      * addCrosshairs:
      * Add and show a cross hair centered on the magnified mouse.
-     * @thickness:  The thickness of the vertical and horizontal lines of the
-     *              crosshair.
-     * @color:      The color of the crosshairs
-     * @opacity:    The opacity.
-     * @length:     The length of each hair.
-     * @clip:       Whether the crosshairs intersection is clipped by the
-     *              magnified mouse image.
      */
-    addCrosshairs: function(thickness, color, opacity, length, clip) {
+    addCrosshairs: function() {
         if (!this._crossHairs)
             this._crossHairs = new Crosshairs();
+
+        let thickness = this._settings.get_int(CROSS_HAIRS_THICKNESS_KEY);
+        let color = this._settings.get_string(CROSS_HAIRS_COLOR_KEY);
+        let opacity = this._settings.get_int(CROSS_HAIRS_OPACITY_KEY);
+        let length = this._settings.get_int(CROSS_HAIRS_LENGTH_KEY);
+        let clip = this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY);
 
         this.setCrosshairsThickness(thickness);
         this.setCrosshairsColor(color);
@@ -313,7 +297,7 @@ Magnifier.prototype = {
     setCrosshairsVisible: function(visible) {
         if (visible) {
             if (!this._crossHairs)
-                this.addCrosshairs(DEFAULT_CROSSHAIRS_THICKNESS, DEFAULT_CROSSHAIRS_COLOR, DEFAULT_CROSSHAIRS_OPACITY, DEFAULT_CROSSHAIRS_CLIP);
+                this.addCrosshairs();
             this._crossHairs.show();
         }
         else {
@@ -425,7 +409,7 @@ Magnifier.prototype = {
     setCrosshairsClip: function(clip) {
         if (clip) {
             if (this._crossHairs)
-                this._crossHairs.setClip(DEFAULT_CROSSHAIRS_CLIP_SIZE);
+                this._crossHairs.setClip(CROSSHAIRS_CLIP_SIZE);
         }
         else {
             // Setting no clipping on crosshairs means a zero sized clip
@@ -458,61 +442,84 @@ Magnifier.prototype = {
         this._mouseSprite.set_anchor_point(xHot, yHot);
     },
 
-    _gConfInit: function(zoomRegion) {
-        let gConf = GConf.Client.get_default();
+    _settingsInit: function(zoomRegion) {
+        this._settings = new Gio.Settings({ schema: 'org.gnome.accessibility.magnifier' });
+
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.
-            let aPref = parseFloat(gConf.get_float(MAG_FACTOR_KEY).toFixed(2));
+            let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
             if (aPref != 0.0)
                 zoomRegion.setMagFactor(aPref, aPref);
 
-            aPref = gConf.get_int(SCREEN_POSITION_KEY);
+            aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
             if (aPref)
                 zoomRegion.setScreenPosition(aPref);
 
-            zoomRegion.setLensMode(gConf.get_bool(LENS_MODE_KEY));
-            zoomRegion.setClampScrollingAtEdges(!gConf.get_bool(CLAMP_MODE_KEY));
+            zoomRegion.setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
+            zoomRegion.setClampScrollingAtEdges(!this._settings.get_boolean(CLAMP_MODE_KEY));
 
-            aPref = gConf.get_int(MOUSE_TRACKING_KEY);
+            aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
             if (aPref)
                 zoomRegion.setMouseTrackingMode(aPref);
         }
-        let showCrosshairs = gConf.get_bool(SHOW_CROSS_HAIRS_KEY);
-        let thickness = gConf.get_int(CROSS_HAIRS_THICKNESS_KEY);
-        let color = gConf.get_string(CROSS_HAIRS_COLOR_KEY);
-        let opacity = gConf.get_int(CROSS_HAIRS_OPACITY_KEY);
-        let length = gConf.get_int(CROSS_HAIRS_LENGTH_KEY);
-        let clip = gConf.get_bool(CROSS_HAIRS_CLIP_KEY);
-        this.addCrosshairs(thickness, color, opacity, length, clip);
+
+        let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
+        this.addCrosshairs();
         this.setCrosshairsVisible(showCrosshairs);
 
-        gConf.add_dir(A11Y_MAG_PREFS_DIR, GConf.ClientPreloadType.PRELOAD_ONELEVEL);
-        gConf.notify_add(SHOW_KEY, Lang.bind(this, this._updateShowHide));
-        gConf.notify_add(SCREEN_POSITION_KEY, Lang.bind(this, this._updateScreenPosition));
-        gConf.notify_add(MAG_FACTOR_KEY, Lang.bind(this, this._updateMagFactor));
-        gConf.notify_add(LENS_MODE_KEY, Lang.bind(this, this._updateLensMode));
-        gConf.notify_add(CLAMP_MODE_KEY, Lang.bind(this, this._updateClampMode));
-        gConf.notify_add(MOUSE_TRACKING_KEY, Lang.bind(this, this._updateMouseTrackingMode));
-        gConf.notify_add(SHOW_CROSS_HAIRS_KEY, Lang.bind(this, this._updateShowCrosshairs));
-        gConf.notify_add(CROSS_HAIRS_THICKNESS_KEY, Lang.bind(this, this._updateCrosshairsThickness));
-        gConf.notify_add(CROSS_HAIRS_COLOR_KEY, Lang.bind(this, this._updateCrosshairsColor));
-        gConf.notify_add(CROSS_HAIRS_OPACITY_KEY, Lang.bind(this, this._updateCrosshairsOpacity));
-        gConf.notify_add(CROSS_HAIRS_LENGTH_KEY, Lang.bind(this, this._updateCrosshairsLength));
-        gConf.notify_add(CROSS_HAIRS_CLIP_KEY, Lang.bind(this, this._updateCrosshairsClip));
+        this._settings.connect('changed::' + SHOW_KEY,
+                               Lang.bind(this, function() {
+            this.setActive(this._settings.get_boolean(SHOW_KEY));
+        }));
 
-        return gConf.get_bool(SHOW_KEY);
+        this._settings.connect('changed::' + SCREEN_POSITION_KEY,
+                               Lang.bind(this, this._updateScreenPosition));
+        this._settings.connect('changed::' + MAG_FACTOR_KEY,
+                               Lang.bind(this, this._updateMagFactor));
+        this._settings.connect('changed::' + LENS_MODE_KEY,
+                               Lang.bind(this, this._updateLensMode));
+        this._settings.connect('changed::' + CLAMP_MODE_KEY,
+                               Lang.bind(this, this._updateClampMode));
+        this._settings.connect('changed::' + MOUSE_TRACKING_KEY,
+                               Lang.bind(this, this._updateMouseTrackingMode));
+
+        this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsVisible(this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY));
+        }));
+
+        this._settings.connect('changed::' + CROSS_HAIRS_THICKNESS_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsThickness(this._settings.get_int(CROSS_HAIRS_THICKNESS_KEY));
+        }));
+
+        this._settings.connect('changed::' + CROSS_HAIRS_COLOR_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsColor(this._settings.get_string(CROSS_HAIRS_COLOR_KEY));
+        }));
+
+        this._settings.connect('changed::' + CROSS_HAIRS_OPACITY_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsOpacity(this._settings.get_int(CROSS_HAIRS_OPACITY_KEY));
+        }));
+
+        this._settings.connect('changed::' + CROSS_HAIRS_LENGTH_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsLength(this._settings.get_int(CROSS_HAIRS_LENGTH_KEY));
+        }));
+
+        this._settings.connect('changed::' + CROSS_HAIRS_CLIP_KEY,
+                               Lang.bind(this, function() {
+            this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
+        }));
+
+        return this._settings.get_boolean(SHOW_KEY);
    },
-
-    _updateShowHide: function() {
-        let gConf = GConf.Client.get_default();
-        this.setActive(gConf.get_bool(SHOW_KEY));
-    },
 
     _updateScreenPosition: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = GConf.Client.get_default();
-            let position = gConf.get_int(SCREEN_POSITION_KEY);
+            let position = this._settings.get_enum(SCREEN_POSITION_KEY);
             this._zoomRegions[0].setScreenPosition(position);
             if (position != ScreenPosition.FULL_SCREEN)
                 this._updateLensMode();
@@ -522,9 +529,8 @@ Magnifier.prototype = {
     _updateMagFactor: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = GConf.Client.get_default();
             // Mag factor is accurate to two decimal places.
-            let magFactor = parseFloat(gConf.get_float(MAG_FACTOR_KEY).toFixed(2));
+            let magFactor = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
             this._zoomRegions[0].setMagFactor(magFactor, magFactor);
         }
     },
@@ -532,17 +538,15 @@ Magnifier.prototype = {
     _updateLensMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = GConf.Client.get_default();
-            this._zoomRegions[0].setLensMode(gConf.get_bool(LENS_MODE_KEY));
+            this._zoomRegions[0].setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
         }
     },
 
     _updateClampMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = GConf.Client.get_default();
             this._zoomRegions[0].setClampScrollingAtEdges(
-                !gConf.get_bool(CLAMP_MODE_KEY)
+                !this._settings.get_boolean(CLAMP_MODE_KEY)
             );
         }
     },
@@ -550,41 +554,10 @@ Magnifier.prototype = {
     _updateMouseTrackingMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = GConf.Client.get_default();
             this._zoomRegions[0].setMouseTrackingMode(
-                gConf.get_int(MOUSE_TRACKING_KEY)
+                this._settings.get_enum(MOUSE_TRACKING_KEY)
             );
         }
-    },
-
-    _updateShowCrosshairs: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsVisible(gConf.get_bool(SHOW_CROSS_HAIRS_KEY));
-    },
-
-    _updateCrosshairsThickness: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsThickness(gConf.get_int(CROSS_HAIRS_THICKNESS_KEY));
-    },
-
-    _updateCrosshairsColor: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsColor(gConf.get_string(CROSS_HAIRS_COLOR_KEY));
-    },
-
-    _updateCrosshairsOpacity: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsOpacity(gConf.get_int(CROSS_HAIRS_OPACITY_KEY));
-    },
-
-    _updateCrosshairsLength: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsLength(gConf.get_int(CROSS_HAIRS_LENGTH_KEY));
-    },
-
-    _updateCrosshairsClip: function() {
-        let gConf = GConf.Client.get_default();
-        this.setCrosshairsClip(gConf.get_bool(CROSS_HAIRS_CLIP_KEY));
     }
 };
 
@@ -626,12 +599,6 @@ ZoomRegion.prototype = {
             this._mouseRoot = mouseRoot;
         this._mainGroup.add_actor(this._mouseRoot);
         this._crossHairs = null;
-
-        this.setMagFactor(DEFAULT_X_MAGFACTOR, DEFAULT_Y_MAGFACTOR);
-        this.setScreenPosition(DEFAULT_SCREEN_POSITION);
-        this.setLensMode(DEFAULT_LENS_MODE);
-        this.setClampScrollingAtEdges(DEFAULT_CLAMP_SCROLLING_AT_EDGES);
-        this.setMouseTrackingMode(DEFAULT_MOUSE_TRACKING_MODE);
     },
 
     /**
@@ -1212,35 +1179,16 @@ Crosshairs.prototype = {
         // length (i.e., extend beyond the edges of the view they appear in).
         let groupWidth = global.screen_width * 3;
         let groupHeight = global.screen_height * 3;
+
         this._actor = new Clutter.Group({
             clip_to_allocation: false,
             width: groupWidth,
             height: groupHeight
         });
-        this._horizLeftHair = new Clutter.Rectangle({
-            color: DEFAULT_CROSSHAIRS_COLOR,
-            width: groupWidth / 2,
-            height: DEFAULT_CROSSHAIRS_THICKNESS,
-            opacity:  DEFAULT_CROSSHAIRS_OPACITY
-        });
-        this._horizRightHair = new Clutter.Rectangle({
-            color: DEFAULT_CROSSHAIRS_COLOR,
-            width: groupWidth / 2,
-            height: DEFAULT_CROSSHAIRS_THICKNESS,
-            opacity:  DEFAULT_CROSSHAIRS_OPACITY
-        });
-        this._vertTopHair = new Clutter.Rectangle({
-            color: DEFAULT_CROSSHAIRS_COLOR,
-            width: DEFAULT_CROSSHAIRS_THICKNESS,
-            height: groupHeight / 2,
-            opacity:  DEFAULT_CROSSHAIRS_OPACITY
-        });
-        this._vertBottomHair = new Clutter.Rectangle({
-            color: DEFAULT_CROSSHAIRS_COLOR,
-            width: DEFAULT_CROSSHAIRS_THICKNESS,
-            height: groupHeight / 2,
-            opacity:  DEFAULT_CROSSHAIRS_OPACITY
-        });
+        this._horizLeftHair = new Clutter.Rectangle();
+        this._horizRightHair = new Clutter.Rectangle();
+        this._vertTopHair = new Clutter.Rectangle();
+        this._vertBottomHair = new Clutter.Rectangle();
         this._actor.add_actor(this._horizLeftHair);
         this._actor.add_actor(this._horizRightHair);
         this._actor.add_actor(this._vertTopHair);
