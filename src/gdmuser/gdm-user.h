@@ -26,7 +26,7 @@
 #define __GDM_USER__ 1
 
 #include <sys/types.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
