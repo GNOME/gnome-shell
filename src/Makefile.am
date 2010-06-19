@@ -232,7 +232,7 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
 	        --namespace=St							\
 	        --nsversion=1.0							\
 	        --include=Clutter-1.0						\
-	        --include=Gtk-2.0						\
+	        --include=Gtk-3.0						\
 		--add-include-path=$(builddir)     				\
 	        --libtool="$(LIBTOOL)"						\
 	        --library=libst-1.0.la						\

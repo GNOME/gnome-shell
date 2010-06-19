@@ -61,17 +61,17 @@ CLUTTER_MIN_VERSION=1.2.8
 GOBJECT_INTROSPECTION_MIN_VERSION=0.6.11
 GJS_MIN_VERSION=0.7
 MUTTER_MIN_VERSION=2.31.4
-GTK_MIN_VERSION=2.21.1
+GTK_MIN_VERSION=2.90.4
 GIO_MIN_VERSION=2.25.9
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  gio-unix-2.0 dbus-glib-1
-                                 gtk+-2.0 >= $GTK_MIN_VERSION
+                                 gtk+-3.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
                                  gjs-gi-1.0 >= $GJS_MIN_VERSION
 				 libgnome-menu $recorder_modules gconf-2.0
-                                 gdk-x11-2.0
+                                 gdk-x11-3.0
 				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                  libstartup-notification-1.0
@@ -88,9 +88,9 @@ CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
-PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-2.0 libcroco-0.6 gnome-desktop-2.0 >= 2.26)
-PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
-PKG_CHECK_MODULES(TRAY, gtk+-2.0)
+PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.90.0)
+PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
+PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 
 MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
 # FIXME: metacity-plugins.pc should point directly to its .gir file

@@ -2,9 +2,9 @@
 
 imports.gi.versions.Clutter = '1.0';
 imports.gi.versions.Gio = '2.0';
-imports.gi.versions.Gdk = '2.0';
+imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.GdkPixbuf = '2.0';
-imports.gi.versions.Gtk = '2.0';
+imports.gi.versions.Gtk = '3.0';
 
 const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
