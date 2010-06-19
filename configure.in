@@ -124,7 +124,30 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-MUTTER_PC_MODULES='gtk+-2.0 >= 2.18 pango >= 1.2.0'
+AC_MSG_CHECKING([which gtk+ version to compile against])
+AC_ARG_WITH([gtk],
+  AC_HELP_STRING([--with-gtk=2.0|3.0],
+                 [which gtk+ version to compile against (default: 2)]),
+  [case "$with_gtk" in
+      2.0|3.0) ;;
+      *) AC_MSG_ERROR([invalid gtk+ version specified]);;
+  esac],
+  [with_gtk=2.0])
+AC_MSG_RESULT([$with_gtk])
+
+case "$with_gtk" in
+  2.0) GTK_API_VERSION=2.0
+       GTK_MIN_VERSION=2.18
+       CANBERRA_GTK=libcanberra-gtk
+       ;;
+  3.0) GTK_API_VERSION=3.0
+       GTK_MIN_VERSION=2.90
+       CANBERRA_GTK=libcanberra-gtk3
+       ;;
+esac
+
+MUTTER_PC_MODULES="gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION pango >= 1.2.0"
+AC_SUBST(GTK_API_VERSION)
 
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
@@ -184,8 +207,8 @@ AM_GLIB_GNU_GETTEXT
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 # gtk_window_set_icon_name requires gtk2+-2.6.0
-PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-2.0 >= 2.18)
-PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-2.0 >= 2.18)
+PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -222,10 +245,10 @@ AC_MSG_CHECKING([libcanberra-gtk])
 if test x$with_libcanberra = xno ; then
   AC_MSG_RESULT([disabled])
 else
-  if $PKG_CONFIG --exists libcanberra-gtk; then
+  if $PKG_CONFIG --exists $CANBERRA_GTK; then
     have_libcanberra=yes
     AC_MSG_RESULT(yes)
-    MUTTER_PC_MODULES="$MUTTER_PC_MODULES libcanberra-gtk"
+    MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CANBERRA_GTK"
     AC_DEFINE([HAVE_LIBCANBERRA], 1, [Building with libcanberra for playing sounds])
   else
     AC_MSG_RESULT(no)
@@ -545,7 +568,7 @@ fi
 
 dnl ==========================================================================
 echo "
-mutter-$VERSION:
+mutter-$VERSION (using gtk+-${GTK_API_VERSION}):
 
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}

@@ -211,11 +211,11 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
 		--include=GObject-2.0			\
-		--include=Gdk-2.0			\
-		--include=Gtk-2.0			\
+		--include=Gdk-@GTK_API_VERSION@		\
+		--include=Gtk-@GTK_API_VERSION@		\
 		--include=Clutter-1.0			\
 		--pkg=clutter-1.0			\
-		--pkg=gtk+-2.0				\
+		--pkg=gtk+-@GTK_API_VERSION@		\
 		--include=xlib-2.0			\
 		--include=xfixes-4.0			\
 		--program=$$pwd/mutter			\
