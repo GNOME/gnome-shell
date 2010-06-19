@@ -136,7 +136,7 @@ function start() {
 
     let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
 
-    global.screen.connect('toggle-recording', function(recorderSettings) {
+    global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
         }
