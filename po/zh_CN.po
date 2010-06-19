@@ -3,15 +3,17 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Ray Wang <raywang@gnome.org>, 2009.
 # jiero <lililjlj@gmail.com>, 2010.
+# YunQiang Su <wzssyqa@gmail.com>, 2010.
+# Aron Xu <aronxu@gnome.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-01-15 17:17+0000\n"
-"PO-Revision-Date: 2010-01-17 15:30+0800\n"
-"Last-Translator: jiero <lililjlj@gmail.com>\n"
-"Language-Team: Simplified Chinese <i10n>\n"
+"POT-Creation-Date: 2010-06-18 18:29+0000\n"
+"PO-Revision-Date: 2010-06-19 21:48+0800\n"
+"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"Language-Team: Simplified Chinese <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
@@ -25,117 +27,432 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "窗口管理和应用程序启动"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "时钟"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "自定义面板时钟"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "自定义面板时钟格式"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "小时格式"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "显示日期"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "在日历中显示星期"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "显示秒"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#, fuzzy
+#| msgid "No extensions installed"
+msgid "Uuids of extensions to disable"
+msgstr "未安装扩展"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr ""
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "时钟格式"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "时钟首选项"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "面板显示"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "显示秒(_N)"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "显示日期(_D)"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12 时格式"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24 小时格式"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:252 ../js/ui/dash.js:865
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:276
+#: ../js/ui/appDisplay.js:420
 msgid "PREFERENCES"
 msgstr "首选项"
 
-#: ../js/ui/appDisplay.js:644
+#: ../js/ui/appDisplay.js:726
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:730
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:649
+#: ../js/ui/appDisplay.js:731
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: ../js/ui/appDisplay.js:1001
+#: ../js/ui/appDisplay.js:1038
 msgid "Drag here to add favorites"
-msgstr "拖到这里加入收藏"
+msgstr "拖到这里加入收藏夹"
 
-#: ../js/ui/dash.js:240
-msgid "Find..."
-msgstr "查找..."
+#: ../js/ui/appFavorites.js:88
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s 已经添加到了您的收藏夹。"
 
-#: ../js/ui/dash.js:493
+#: ../js/ui/appFavorites.js:106
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s 已经从您的收藏夹移除。"
+
+#: ../js/ui/dash.js:146
+msgid "Find"
+msgstr "查找"
+
+#: ../js/ui/dash.js:465
 msgid "Searching..."
-msgstr "搜索..."
+msgstr "正在搜索..."
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:479
 msgid "No matching results."
-msgstr ""
+msgstr "无匹配结果。"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:885 ../js/ui/placeDisplay.js:519
+#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
 msgid "PLACES & DEVICES"
-msgstr ""
+msgstr "位置和设备"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:892
-#, fuzzy
-#| msgid "RECENT DOCUMENTS"
+#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
-msgstr "最近的文档"
+msgstr "最近的项目"
+
+#: ../js/ui/lookingGlass.js:471
+msgid "No extensions installed"
+msgstr "未安装扩展"
+
+#: ../js/ui/lookingGlass.js:508
+msgid "Enabled"
+msgstr "启用"
+
+#: ../js/ui/lookingGlass.js:510
+msgid "Disabled"
+msgstr "禁用"
+
+#: ../js/ui/lookingGlass.js:512
+msgid "Error"
+msgstr "错误"
+
+#: ../js/ui/lookingGlass.js:514
+msgid "Out of date"
+msgstr "过时"
+
+#: ../js/ui/lookingGlass.js:539
+msgid "View Source"
+msgstr "查看源"
+
+#: ../js/ui/lookingGlass.js:545
+msgid "Web Page"
+msgstr "网页"
+
+#: ../js/ui/overview.js:165
+msgid "Undo"
+msgstr "撤销"
+
+#: ../js/ui/panel.js:519
+msgid "Preferences"
+msgstr "首选项"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:605
+msgid "%a %b %e, %R:%S"
+msgstr "%A %b %e, %R:%S"
+
+#: ../js/ui/panel.js:606
+msgid "%a %b %e, %R"
+msgstr "%A %m月%d日 %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:610
+msgid "%a %R:%S"
+msgstr "%A %R:%S"
+
+#: ../js/ui/panel.js:611
+msgid "%a %R"
+msgstr "%A %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:618
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%A %m月%d日 %p%I:%M:%S"
+
+#: ../js/ui/panel.js:619
+msgid "%a %b %e, %l:%M %p"
+msgstr "%A %m月%d日 %p%I:%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:623
+msgid "%a %l:%M:%S %p"
+msgstr "%A %p%I:%M:%S"
+
+#: ../js/ui/panel.js:624
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:336
+#: ../js/ui/panel.js:726
 msgid "Activities"
 msgstr "活动"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:549
-msgid "%a %l:%M %p"
-msgstr "%A %H:%M"
+#: ../js/ui/placeDisplay.js:109
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "卸载 %s 失败"
 
-#: ../js/ui/placeDisplay.js:144
+#: ../js/ui/placeDisplay.js:112
+msgid "Retry"
+msgstr "重试"
+
+#: ../js/ui/placeDisplay.js:157
 msgid "Connect to..."
 msgstr "连接到..."
 
-#: ../js/ui/runDialog.js:245
+#: ../js/ui/runDialog.js:234
 msgid "Please enter a command:"
 msgstr "请输入一个命令："
 
-#: ../js/ui/runDialog.js:361
+#: ../js/ui/runDialog.js:379
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr "运行“%s”失败"
+msgstr "运行“%s”失败："
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../js/ui/statusMenu.js:91
+msgid "Available"
+msgstr "可用"
 
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "应用程序"
+#: ../js/ui/statusMenu.js:95
+msgid "Busy"
+msgstr "忙碌"
 
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "最近文档"
+#: ../js/ui/statusMenu.js:99
+msgid "Invisible"
+msgstr "隐身"
 
-#: ../src/shell-global.c:890
+#: ../js/ui/statusMenu.js:106
+msgid "Account Information..."
+msgstr "帐户信息..."
+
+#: ../js/ui/statusMenu.js:110
+msgid "System Preferences..."
+msgstr "系统首选项..."
+
+#: ../js/ui/statusMenu.js:117
+msgid "Lock Screen"
+msgstr "锁住屏幕"
+
+#: ../js/ui/statusMenu.js:121
+msgid "Switch User"
+msgstr "切换用户"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Log Out..."
+msgstr "退出..."
+
+#: ../js/ui/statusMenu.js:130
+msgid "Shut Down..."
+msgstr "关机..."
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s 已启动"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "%s 已就绪"
+
+#: ../js/ui/workspacesView.js:237
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr "无法添加新工作区，因为已经达到了工作区数量限制。"
+
+#: ../js/ui/workspacesView.js:254
+msgid "Can't remove the first workspace."
+msgstr "不能移除第一个工作区。"
+
+#: ../src/shell-global.c:1039
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:894
+#: ../src/shell-global.c:1043
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:899
+#: ../src/shell-global.c:1048
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:904
+#: ../src/shell-global.c:1053
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:909
+#: ../src/shell-global.c:1058
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -165,6 +482,15 @@ msgstr "搜索"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgid "Applications"
+#~ msgstr "应用程序"
+
+#~ msgid "Recent Documents"
+#~ msgstr "最近文档"
+
 #~ msgid "PLACES"
 #~ msgstr "位置"
 
@@ -189,23 +515,5 @@ msgstr "%1$s: %2$s"
 #~ msgid "Can't logout: %s"
 #~ msgstr "不能退出：%s"
 
-#~ msgid "Account Information..."
-#~ msgstr "帐户信息..."
-
 #~ msgid "Sidebar"
 #~ msgstr "侧边栏"
-
-#~ msgid "System Preferences..."
-#~ msgstr "系统首选项..."
-
-#~ msgid "Lock Screen"
-#~ msgstr "锁住屏幕"
-
-#~ msgid "Switch User"
-#~ msgstr "切换用户"
-
-#~ msgid "Log Out..."
-#~ msgstr "退出..."
-
-#~ msgid "Shut Down..."
-#~ msgstr "关机..."
