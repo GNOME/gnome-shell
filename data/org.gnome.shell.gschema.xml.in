@@ -131,7 +131,7 @@
       </_description>
     </key>
     <key name="pipeline" type="s">
-      <default>''</default>
+      <default>'videorate ! theoraenc ! oggmux'</default>
       <_summary>The gstreamer pipeline used to encode the screencast</_summary>
       <_description>
         Sets the GStreamer pipeline used to encode recordings.
