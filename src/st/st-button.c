@@ -54,8 +54,7 @@ enum
 
   PROP_LABEL,
   PROP_TOGGLE_MODE,
-  PROP_CHECKED,
-  PROP_TRANSITION_DURATION
+  PROP_CHECKED
 };
 
 enum
@@ -72,16 +71,10 @@ struct _StButtonPrivate
 {
   gchar            *text;
 
-  guint8            old_opacity;
-
   guint             is_pressed : 1;
   guint             is_hover : 1;
   guint             is_checked : 1;
   guint             is_toggle : 1;
-
-  gint              transition_duration;
-
-  ClutterAnimation *animation;
 
   gint              spacing;
 };
@@ -242,7 +235,6 @@ st_button_set_property (GObject      *gobject,
                         GParamSpec   *pspec)
 {
   StButton *button = ST_BUTTON (gobject);
-  StButtonPrivate *priv = ST_BUTTON (gobject)->priv;
 
   switch (prop_id)
     {
@@ -254,9 +246,6 @@ st_button_set_property (GObject      *gobject,
       break;
     case PROP_CHECKED:
       st_button_set_checked (button, g_value_get_boolean (value));
-      break;
-    case PROP_TRANSITION_DURATION:
-      priv->transition_duration = g_value_get_int (value);
       break;
 
 
@@ -284,9 +273,6 @@ st_button_get_property (GObject    *gobject,
       break;
     case PROP_CHECKED:
       g_value_set_boolean (value, priv->is_checked);
-      break;
-    case PROP_TRANSITION_DURATION:
-      g_value_set_int (value, priv->transition_duration);
       break;
 
 
@@ -349,12 +335,6 @@ st_button_class_init (StButtonClass *klass)
                                 FALSE, G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHECKED, pspec);
 
-  pspec = g_param_spec_int ("transition-duration",
-                            "Transition Duration",
-                            "Duration of the state transition effect",
-                            0, G_MAXINT, 120, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TRANSITION_DURATION, pspec);
-
 
   /**
    * StButton::clicked:
@@ -378,7 +358,6 @@ static void
 st_button_init (StButton *button)
 {
   button->priv = ST_BUTTON_GET_PRIVATE (button);
-  button->priv->transition_duration = 120;
   button->priv->spacing = 6;
 
   clutter_actor_set_reactive ((ClutterActor *) button, TRUE);
