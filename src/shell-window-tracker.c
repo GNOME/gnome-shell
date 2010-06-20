@@ -542,7 +542,8 @@ disassociate_window (ShellWindowTracker   *self,
 
   g_hash_table_remove (self->window_to_app, window);
 
-  _shell_app_remove_window (app, window);
+  if (shell_window_tracker_is_window_interesting (window))
+      _shell_app_remove_window (app, window);
 
   g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 
