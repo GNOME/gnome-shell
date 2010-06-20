@@ -68,6 +68,8 @@ struct _StTooltipPrivate
   ClutterGeometry *tip_area;
 };
 
+extern gfloat st_slow_down_factor;
+
 G_DEFINE_TYPE (StTooltip, st_tooltip, ST_TYPE_WIDGET);
 
 static void
@@ -540,7 +542,7 @@ st_tooltip_hide (StTooltip *tooltip)
                 NULL);
   animation =
     clutter_actor_animate (CLUTTER_ACTOR (tooltip), CLUTTER_EASE_IN_SINE,
-                           150,
+                           (guint)(150 * st_slow_down_factor),
                            "scale-x", 0.0,
                            "scale-y", 0.0,
                            NULL);

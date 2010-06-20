@@ -1,10 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
 
@@ -43,17 +43,8 @@ const Tweener = imports.tweener.tweener;
 // calls any of these is almost certainly wrong anyway, because they
 // affect the entire application.)
 
-let slowDownFactor = 1.0;
-
 // Called from Main.start
 function init() {
-    let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
-    if (slowdownEnv) {
-        let factor = parseFloat(slowdownEnv);
-        if (!isNaN(factor) && factor > 0.0)
-            slowDownFactor = factor;
-    }
-
     Tweener.setFrameTicker(new ClutterFrameTicker());
 }
 
@@ -216,7 +207,6 @@ ClutterFrameTicker.prototype = {
         // when we need to stop, so use 1000 seconds as "infinity"
         this._timeline = new Clutter.Timeline({ duration: 1000*1000 });
         this._startTime = -1;
-        this._currentTime = -1;
 
         this._timeline.connect('new-frame', Lang.bind(this,
             function(timeline, frame) {
@@ -243,17 +233,18 @@ ClutterFrameTicker.prototype = {
 
         // currentTime is in milliseconds
         let perf_log = Shell.PerfLog.get_default();
-        this._currentTime = (this._timeline.get_elapsed_time() - this._startTime) / slowDownFactor;
         perf_log.event("tweener.framePrepareStart");
         this.emit('prepare-frame');
         perf_log.event("tweener.framePrepareDone");
     },
 
     getTime : function() {
-        return this._currentTime;
+        return this._timeline.get_elapsed_time();
     },
 
     start : function() {
+        if (St.get_slow_down_factor() > 0)
+            Tweener.setTimeScale(1 / St.get_slow_down_factor());
         this._timeline.start();
         global.begin_work();
     },
@@ -261,7 +252,6 @@ ClutterFrameTicker.prototype = {
     stop : function() {
         this._timeline.stop();
         this._startTime = -1;
-        this._currentTime = -1;
         global.end_work();
     }
 };

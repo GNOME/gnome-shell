@@ -106,6 +106,8 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
+extern gfloat st_slow_down_factor;
+
 static gboolean
 handle_button_press_event_cb (ClutterActor       *actor,
                               ClutterButtonEvent *event,
@@ -875,7 +877,7 @@ trough_paging_cb (StScrollBar *self)
   * idea, but it's a lot less involved than extenind the current animation */
   a = self->priv->paging_animation = g_object_new (CLUTTER_TYPE_ANIMATION,
                                                    "object", self->priv->adjustment,
-                                                   "duration", PAGING_SUBSEQUENT_REPEAT_TIMEOUT,
+                                                   "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * st_slow_down_factor),
                                                    "mode", mode,
                                                    NULL);
   g_value_init (&v, G_TYPE_DOUBLE);
@@ -961,7 +963,7 @@ stepper_move_on (StScrollBarPrivate *priv,
 
   a = g_object_new (CLUTTER_TYPE_ANIMATION,
                     "object", priv->adjustment,
-                    "duration", PAGING_SUBSEQUENT_REPEAT_TIMEOUT,
+                    "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * st_slow_down_factor),
                     "mode", mode,
                     NULL);
 

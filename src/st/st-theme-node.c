@@ -15,6 +15,8 @@ static void st_theme_node_finalize           (GObject                 *object);
 static const ClutterColor BLACK_COLOR = { 0, 0, 0, 0xff };
 static const ClutterColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
 
+extern gfloat st_slow_down_factor;
+
 G_DEFINE_TYPE (StThemeNode, st_theme_node, G_TYPE_OBJECT)
 
 static void
@@ -1683,13 +1685,13 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0);
 
   if (node->transition_duration > -1)
-    return node->transition_duration;
+    return st_slow_down_factor * node->transition_duration;
 
   st_theme_node_get_double (node, "transition-duration", FALSE, &value);
 
   node->transition_duration = (int)value;
 
-  return node->transition_duration;
+  return st_slow_down_factor * node->transition_duration;
 }
 
 StTextDecoration

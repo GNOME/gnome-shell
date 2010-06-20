@@ -141,8 +141,10 @@ void                  st_widget_set_direction             (StWidget        *self
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);
 
-/* debug method */
-char *st_describe_actor (ClutterActor *actor);
+/* debug methods */
+char  *st_describe_actor       (ClutterActor *actor);
+void   st_set_slow_down_factor (gfloat factor);
+gfloat st_get_slow_down_factor (void);
 
 G_END_DECLS
 
