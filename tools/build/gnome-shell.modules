@@ -87,7 +87,7 @@
   <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch repo="git.gnome.org" module="gconf"/>
     <dependencies>
-      <dep package="gtk+"/>
+      <dep package="glib"/>
     </dependencies>
   </autotools>
 
