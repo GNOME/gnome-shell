@@ -1,3 +1,22 @@
+/**
+ * SECTION:clutter-settings
+ * @Title: ClutterSettings
+ * @Short_Description: Settings configuration
+ *
+ * Clutter depends on some settings to perform operations like detecting
+ * multiple button press events, or font options to render text.
+ *
+ * Usually, Clutter will strive to use the platform's settings in order
+ * to be as much integrated as possible. It is, however, possible to
+ * change these settings on a per-application basis, by using the
+ * #ClutterSettings singleton object and setting its properties. It is
+ * also possible, for toolkit developers, to retrieve the settings from
+ * the #ClutterSettings properties when implementing new UI elements,
+ * for instance the default font name.
+ *
+ * #ClutterSettings is available since Clutter 1.4
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -113,6 +132,18 @@ settings_update_font_options (ClutterSettings *self)
 
   cairo_font_options_set_antialias (options, antialias_mode);
 
+  CLUTTER_NOTE (BACKEND, "New font options:\n"
+                " - antialias:  %d\n"
+                " - hinting:    %d\n"
+                " - hint-style: %s\n"
+                " - rgba:       %s\n"
+                " - dpi:        %.2f",
+                self->xft_antialias,
+                self->xft_hinting,
+                self->xft_hint_style,
+                self->xft_rgba,
+                self->resolution);
+
   clutter_backend_set_font_options (self->backend, options);
   cairo_font_options_destroy (options);
 }
@@ -120,6 +151,8 @@ settings_update_font_options (ClutterSettings *self)
 static void
 settings_update_resolution (ClutterSettings *self)
 {
+  CLUTTER_NOTE (BACKEND, "New resolution: %.2f", self->resolution);
+
   g_signal_emit_by_name (self->backend, "resolution-changed");
 }
 
@@ -264,6 +297,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
   gobject_class->notify = clutter_settings_notify;
   gobject_class->finalize = clutter_settings_finalize;
 
+  /**
+   * ClutterSettings:backend:
+   *
+   * A back pointer to the #ClutterBackend
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_object ("backend",
                                "Backend",
                                "A pointer to the backend",
@@ -272,6 +312,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
 
+  /**
+   * ClutterSettings:double-click-time:
+   *
+   * The time, in milliseconds, that should elapse between button-press
+   * events in order to increase the click count by 1.
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_int ("double-click-time",
                             "Double Click Time",
                             "The time between clicks necessary to detect "
@@ -283,6 +331,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_DOUBLE_CLICK_TIME,
                                    pspec);
 
+  /**
+   * ClutterSettings:double-click-distance:
+   *
+   * The maximum distance, in pixels, between button-press events that
+   * determines whether or not to increase the click count by 1.
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_int ("double-click-distance",
                             "Double Click Distance",
                             "The distance between clicks necessary to detect "
@@ -294,6 +350,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_DOUBLE_CLICK_DISTANCE,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-name:
+   *
+   * The default font name that should be used by text actors, as
+   * a string that can be passed to pango_font_description_from_string().
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_string ("font-name",
                                "Font Name",
                                "The description of the default font, as "
@@ -304,6 +368,15 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_FONT_NAME,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-antialias:
+   *
+   * Whether or not to use antialiasing when rendering text; a value
+   * of 1 enables it unconditionally; a value of 0 disables it
+   * unconditionally; and -1 will use the system's default.
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_int ("font-antialias",
                             "Font Antialias",
                             "Whether to use antialiasing (1 to enable, 0 to "
@@ -315,6 +388,15 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_FONT_ANTIALIAS,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-dpi:
+   *
+   * The DPI used when rendering text, as a value of 1024 * dots/inch.
+   *
+   * If set to -1, the system's default will be used instead
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_int ("font-dpi",
                             "Font DPI",
                             "The resolution of the font, in 1024 * dots/inch, "
@@ -326,6 +408,15 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_FONT_DPI,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-hinting:
+   *
+   * Whether or not to use hinting when rendering text; a value of 1
+   * unconditionally enables it; a value of 0 unconditionally disables
+   * it; and a value of -1 will use the system's default.
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_int ("font-hinting",
                             "Font Hinting",
                             "Whether to use hinting (1 to enable, 0 to disable "
@@ -337,6 +428,20 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_FONT_HINTING,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-hint-style:
+   *
+   * The style of the hinting used when rendering text. Valid values
+   * are:
+   * <itemizedlist>
+   *   <listitem><simpara>hintnone</simpara></listitem>
+   *   <listitem><simpara>hintslight</simpara></listitem>
+   *   <listitem><simpara>hintmedium</simpara></listitem>
+   *   <listitem><simpara>hintfull</simpara></listitem>
+   * </itemizedlist>
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_string ("font-hint-style",
                                "Font Hint Style",
                                "The style of hinting (hintnone, hintslight, "
@@ -347,6 +452,21 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                    PROP_FONT_HINT_STYLE,
                                    pspec);
 
+  /**
+   * ClutterSettings:font-subpixel-order:
+   *
+   * The type of sub-pixel antialiasing used when rendering text. Valid
+   * values are:
+   * <itemizedlist>
+   *   <listitem><simpara>none</simpara></listitem>
+   *   <listitem><simpara>rgb</simpara></listitem>
+   *   <listitem><simpara>bgr</simpara></listitem>
+   *   <listitem><simpara>vrgb</simpara></listitem>
+   *   <listitem><simpara>vbgr</simpara></listitem>
+   * </itemizedlist>
+   *
+   * Since: 1.4
+   */
   pspec = g_param_spec_string ("font-subpixel-order",
                                "Font Subpixel Order",
                                "The type of subpixel antialiasing (none, rgb, "
