@@ -569,10 +569,11 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
   backend_win32->no_event_retrieval = FALSE;
   backend_win32->invisible_cursor   = NULL;
 
-  /* FIXME: get from GetSystemMetric? */
+  /* FIXME: get from GetSystemMetric?
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
   clutter_backend_set_resolution (backend, 96.0);
+  */
 
   /* Set the maximum precision for Windows time functions. Without
      this glib will not be able to sleep accurately enough to give a
