@@ -662,9 +662,17 @@ clutter_backend_set_resolution (ClutterBackend *backend,
  * clutter_backend_get_resolution:
  * @backend: a #ClutterBackend
  *
- * Gets the resolution for font handling on the screen; see
- * clutter_backend_set_resolution() for full details.
- * 
+ * Gets the resolution for font handling on the screen.
+ *
+ * The resolution is a scale factor between points specified in a
+ * #PangoFontDescription and cairo units. The default value is 96.0,
+ * meaning that a 10 point font will be 13 units
+ * high (10 * 96. / 72. = 13.3).
+ *
+ * Clutter will set the resolution using the current backend when
+ * initializing; the resolution is also stored in the
+ * #ClutterSettings:font-dpi property.
+ *
  * Return value: the current resolution, or -1 if no resolution
  *   has been set.
  *
