@@ -95,6 +95,7 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
 void                        clutter_backend_set_resolution            (ClutterBackend             *backend,
                                                                        gdouble                     dpi);
 gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);
@@ -104,12 +105,14 @@ guint                       clutter_backend_get_double_click_time     (ClutterBa
 void                        clutter_backend_set_double_click_distance (ClutterBackend             *backend,
                                                                        guint                       distance);
 guint                       clutter_backend_get_double_click_distance (ClutterBackend             *backend);
-void                        clutter_backend_set_font_options          (ClutterBackend             *backend,
-                                                                       const cairo_font_options_t *options);
-const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
 void                        clutter_backend_set_font_name             (ClutterBackend             *backend,
                                                                        const gchar                *font_name);
 G_CONST_RETURN gchar *      clutter_backend_get_font_name             (ClutterBackend             *backend);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
+void                        clutter_backend_set_font_options          (ClutterBackend             *backend,
+                                                                       const cairo_font_options_t *options);
+const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
 
 G_END_DECLS
 
