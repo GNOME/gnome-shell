@@ -904,13 +904,13 @@ timed_poll (GPollFD *ufds,
   gint ret;
   CLUTTER_STATIC_TIMER (poll_timer,
                         "Mainloop", /* parent */
-                        "poll (idle)",
+                        "Mainloop Idle",
                         "The time spent idle in poll()",
                         0 /* no application private data */);
 
-  CLUTTER_TIMER_START (_clutter_uprof_context, poll_timer);
+  CLUTTER_TIMER_START (uprof_get_mainloop_context (), poll_timer);
   ret = prev_poll (ufds, nfsd, timeout_);
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, poll_timer);
+  CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), poll_timer);
   return ret;
 }
 #endif
@@ -931,7 +931,7 @@ clutter_main (void)
                         0 /* no application private data */);
 
   if (clutter_main_loop_level == 0)
-    CLUTTER_TIMER_START (_clutter_uprof_context, mainloop_timer);
+    CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
   /* Make sure there is a context */
   CLUTTER_CONTEXT ();
@@ -981,7 +981,7 @@ clutter_main (void)
   CLUTTER_MARK ();
 
   if (clutter_main_loop_level == 0)
-    CLUTTER_TIMER_STOP (_clutter_uprof_context, mainloop_timer);
+    CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
 }
 
 static void
@@ -1621,12 +1621,19 @@ clutter_init_real (GError **error)
     return CLUTTER_INIT_ERROR_BACKEND;
 
 #ifdef CLUTTER_ENABLE_PROFILE
-    {
-      UProfContext *cogl_context;
-      cogl_context = uprof_find_context ("Cogl");
-      if (cogl_context)
-        uprof_context_link (_clutter_uprof_context, cogl_context);
-    }
+  /* We need to be absolutely sure that uprof has been initialized
+   * before calling _clutter_uprof_init. uprof_init (NULL, NULL)
+   * will be a NOP if it has been initialized but it will also
+   * mean subsequent parsing of the UProf GOptionGroup will have no
+   * affect.
+   *
+   * Sadly GOptionGroup based library initialization is extremly
+   * fragile by design because GOptionGroups have no notion of
+   * dependencies and our post_parse_hook may be called before
+   * the cogl or uprof groups get parsed.
+   */
+  uprof_init (NULL, NULL);
+  _clutter_uprof_init ();
 
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
     _clutter_profile_suspend ();
@@ -1995,6 +2002,14 @@ clutter_init_with_args (int            *argc,
       group = cogl_get_option_group ();
       g_option_context_add_group (context, group);
 
+      /* Note: That due to the implementation details of glib's goption
+       * parsing; cogl and uprof will not actually have there arguments
+       * parsed before the post_parse_hook is called! */
+#ifdef CLUTTER_ENABLE_PROFILE
+      group = uprof_get_option_group ();
+      g_option_context_add_group (context, group);
+#endif
+
       if (entries)
 	g_option_context_add_main_entries (context, entries, translation_domain);
 
@@ -2027,6 +2042,9 @@ clutter_parse_args (int    *argc,
 {
   GOptionContext *option_context;
   GOptionGroup   *clutter_group, *cogl_group;
+#ifdef CLUTTER_ENABLE_PROFILE
+  GOptionGroup   *uprof_group;
+#endif
   GError         *error = NULL;
   gboolean        ret = TRUE;
 
@@ -2044,6 +2062,11 @@ clutter_parse_args (int    *argc,
 
   cogl_group = cogl_get_option_group ();
   g_option_context_add_group (option_context, cogl_group);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  uprof_group = uprof_get_option_group ();
+  g_option_context_add_group (option_context, uprof_group);
+#endif
 
   if (!g_option_context_parse (option_context, argc, argv, &error))
     {

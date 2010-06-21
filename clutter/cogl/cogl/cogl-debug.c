@@ -103,37 +103,14 @@ _cogl_parse_debug_string (const char *value,
   else if (strcmp (value, "help") == 0)
     {
       g_printerr ("\n\n%28s\n", "Supported debug values:");
-#define OPT(NAME, HELP) \
-      g_printerr ("%28s %s\n", NAME, HELP);
-      OPT ("handle:", "debug ref counting issues for Cogl objects");
-      OPT ("slicing:", "debug the creation of texture slices");
-      OPT ("atlas:", "debug texture atlas management");
-      OPT ("blend-strings:", "debug blend-string parsing");
-      OPT ("journal:", "view all geometry passing through the journal");
-      OPT ("batching:", "show how geometry is being batched in the journal");
-      OPT ("matrices:", "trace all matrix manipulation");
-      /* XXX: we should replace the "draw" option its very hand wavy... */
-      OPT ("draw:", "misc tracing of some drawing operations");
-      OPT ("pango:", "trace the pango renderer");
-      OPT ("texture-pixmap:", "trace the Cogl texture pixmap backend");
-      OPT ("rectangles:", "add wire outlines for all rectangular geometry");
-      OPT ("disable-batching:", "disable the journal batching");
-      OPT ("disable-vbos:", "disable use of OpenGL vertex buffer objects");
-      OPT ("disable-pbos:", "disable use of OpenGL pixel buffer objects");
-      OPT ("disable-software-transform",
-           "use the GPU to transform rectangular geometry");
-      OPT ("dump-atlas-image:", "dump atlas changes to an image file");
-      OPT ("disable-atlas:", "disable texture atlasing");
-      OPT ("disable-texturing:", "disable texturing primitives");
-      OPT ("disable-arbfp:", "disable use of ARBfp");
-      OPT ("disable-glsl:", "disable use of GLSL");
-      OPT ("disable-blending:", "disable use of blending");
-      OPT ("show-source:", "show generated ARBfp/GLSL");
-      OPT ("opengl:", "traces some select OpenGL calls");
-      OPT ("offscreen:", "debug offscreen support");
+#define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
+      g_printerr ("%28s %s\n", NAME ":", DESCRIPTION);
+#include "cogl-debug-options.h"
       g_printerr ("\n%28s\n", "Special debug values:");
-      OPT ("all:", "Enables all non-behavioural debug options");
-      OPT ("verbose:", "Enables all non-behavioural debug options");
+      OPT (IGNORED, "ignored", "all", "ignored", \
+           "Enables all non-behavioural debug options");
+      OPT (IGNORED, "ignored", "verbose", "ignored", \
+           "Enables all non-behavioural debug options");
 #undef OPT
       exit (1);
     }

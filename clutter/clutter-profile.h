@@ -49,9 +49,15 @@ extern UProfContext *_clutter_uprof_context;
 #define CLUTTER_TIMER_STOP      UPROF_TIMER_STOP
 
 void
+_clutter_uprof_init (void);
+
+void
 _clutter_profile_suspend (void);
 void
 _clutter_profile_resume (void);
+
+void
+_clutter_profile_trace_message (const char *format, ...);
 
 #else /* CLUTTER_ENABLE_PROFILE */
 
@@ -64,6 +70,8 @@ _clutter_profile_resume (void);
 
 #define _clutter_profile_suspend() G_STMT_START {} G_STMT_END
 #define _clutter_profile_resume() G_STMT_START {} G_STMT_END
+
+#define _clutter_profile_trace_message g_message
 
 #endif /* CLUTTER_ENABLE_PROFILE */
 
