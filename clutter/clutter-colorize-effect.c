@@ -97,8 +97,12 @@ enum
 {
   PROP_0,
 
-  PROP_TINT
+  PROP_TINT,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterColorizeEffect,
                clutter_colorize_effect,
@@ -212,6 +216,7 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
                                     P_("The tint to apply"),
                                     &default_tint,
                                     CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TINT] = pspec;
   g_object_class_install_property (gobject_class, PROP_TINT, pspec);
 }
 
@@ -260,7 +265,7 @@ clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
   if (effect->actor != NULL)
     clutter_actor_queue_redraw (effect->actor);
 
-  g_object_notify (G_OBJECT (effect), "tint");
+  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_TINT]);
 }
 
 /**

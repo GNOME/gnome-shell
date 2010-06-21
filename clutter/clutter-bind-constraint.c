@@ -117,8 +117,12 @@ enum
 
   PROP_SOURCE,
   PROP_COORDINATE,
-  PROP_OFFSET
+  PROP_OFFSET,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterBindConstraint,
                clutter_bind_constraint,
@@ -272,6 +276,7 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
+  obj_props[PROP_SOURCE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 
   /**
@@ -288,6 +293,7 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
                              CLUTTER_BIND_X,
                              CLUTTER_PARAM_READWRITE |
                              G_PARAM_CONSTRUCT);
+  obj_props[PROP_COORDINATE] = pspec;
   g_object_class_install_property (gobject_class, PROP_COORDINATE, pspec);
 
   /**
@@ -304,6 +310,7 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
                               0.0f,
                               CLUTTER_PARAM_READWRITE |
                               G_PARAM_CONSTRUCT);
+  obj_props[PROP_OFFSET] = pspec;
   g_object_class_install_property (gobject_class, PROP_OFFSET, pspec);
 }
 
@@ -391,7 +398,7 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
       update_actor_coords (constraint);
     }
 
-  g_object_notify (G_OBJECT (constraint), "source");
+  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
 }
 
 /**
@@ -434,7 +441,7 @@ clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
 
   update_actor_coords (constraint);
 
-  g_object_notify (G_OBJECT (constraint), "coordinate");
+  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_COORDINATE]);
 }
 
 /**
@@ -478,7 +485,7 @@ clutter_bind_constraint_set_offset (ClutterBindConstraint *constraint,
 
   update_actor_coords (constraint);
 
-  g_object_notify (G_OBJECT (constraint), "offset");
+  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
 }
 
 /**

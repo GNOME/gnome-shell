@@ -71,8 +71,12 @@ enum
 
   PROP_SOURCE,
   PROP_ALIGN_AXIS,
-  PROP_FACTOR
+  PROP_FACTOR,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterAlignConstraint,
                clutter_align_constraint,
@@ -211,6 +215,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
+  obj_props[PROP_SOURCE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 
   /**
@@ -227,6 +232,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
                              CLUTTER_ALIGN_X_AXIS,
                              CLUTTER_PARAM_READWRITE |
                              G_PARAM_CONSTRUCT);
+  obj_props[PROP_ALIGN_AXIS] = pspec;
   g_object_class_install_property (gobject_class, PROP_ALIGN_AXIS, pspec);
 
   /**
@@ -248,6 +254,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
                               0.0,
                               CLUTTER_PARAM_READWRITE |
                               G_PARAM_CONSTRUCT);
+  obj_props[PROP_FACTOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_FACTOR, pspec);
 }
 
@@ -334,7 +341,7 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
       update_actor_position (align);
     }
 
-  g_object_notify (G_OBJECT (align), "source");
+  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_SOURCE]);
 }
 
 /**
@@ -378,7 +385,7 @@ clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
 
   update_actor_position (align);
 
-  g_object_notify (G_OBJECT (align), "align-axis");
+  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_ALIGN_AXIS]);
 }
 
 /**
@@ -429,7 +436,7 @@ clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
 
   update_actor_position (align);
 
-  g_object_notify (G_OBJECT (align), "factor");
+  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_FACTOR]);
 }
 
 /**

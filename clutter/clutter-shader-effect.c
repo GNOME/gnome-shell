@@ -144,8 +144,12 @@ enum
 {
   PROP_0,
 
-  PROP_SHADER_TYPE
+  PROP_SHADER_TYPE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_ABSTRACT_TYPE (ClutterShaderEffect,
                         clutter_shader_effect,
@@ -435,6 +439,7 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
                              CLUTTER_FRAGMENT_SHADER,
                              CLUTTER_PARAM_WRITABLE |
                              G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_SHADER_TYPE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SHADER_TYPE, pspec);
 
   meta_class->set_actor = clutter_shader_effect_set_actor;

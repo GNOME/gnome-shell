@@ -81,8 +81,12 @@ enum
   PROP_FONT_DPI,
   PROP_FONT_HINTING,
   PROP_FONT_HINT_STYLE,
-  PROP_FONT_RGBA
+  PROP_FONT_RGBA,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterSettings, clutter_settings, G_TYPE_OBJECT);
 
@@ -328,6 +332,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                CLUTTER_TYPE_BACKEND,
                                CLUTTER_PARAM_WRITABLE |
                                G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_BACKEND] = pspec;
   g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
 
   /**
@@ -345,6 +350,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                             0, G_MAXINT,
                             250,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DOUBLE_CLICK_TIME] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_DOUBLE_CLICK_TIME,
                                    pspec);
@@ -364,6 +370,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                             0, G_MAXINT,
                             5,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DOUBLE_CLICK_DISTANCE] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_DOUBLE_CLICK_DISTANCE,
                                    pspec);
@@ -382,6 +389,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                "one that could be parsed by Pango",
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_NAME] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_NAME,
                                    pspec);
@@ -402,6 +410,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                             -1, 1,
                             -1,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_ANTIALIAS] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_ANTIALIAS,
                                    pspec);
@@ -422,6 +431,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                             -1, 1024 * 1024,
                             -1,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_DPI] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_DPI,
                                    pspec);
@@ -442,6 +452,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                             -1, 1,
                             -1,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_HINTING] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_HINTING,
                                    pspec);
@@ -466,6 +477,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                "hintmedium, hintfull)",
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_HINT_STYLE] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_HINT_STYLE,
                                    pspec);
@@ -491,6 +503,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                                "bgr, vrgb, vbgr)",
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_RGBA] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_RGBA,
                                    pspec);

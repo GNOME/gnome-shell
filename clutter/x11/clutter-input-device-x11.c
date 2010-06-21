@@ -30,8 +30,12 @@ enum
 {
   PROP_0,
 
-  PROP_IS_CORE
+  PROP_IS_CORE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterInputDeviceX11,
                clutter_input_device_x11,
@@ -92,6 +96,7 @@ clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE |
                                 G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_IS_CORE] = pspec;
   g_object_class_install_property (gobject_class, PROP_IS_CORE, pspec);
 }
 

@@ -66,7 +66,11 @@ enum
   PROP_Y_SCALE_START,
   PROP_X_SCALE_END,
   PROP_Y_SCALE_END,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 typedef struct {
   gdouble scale_x;
@@ -214,6 +218,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_X_SCALE_START] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_X_SCALE_START,
                                    pspec);
@@ -230,6 +235,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_X_SCALE_END] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_X_SCALE_END,
                                    pspec);
@@ -246,6 +252,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y_SCALE_START] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_Y_SCALE_START,
                                    pspec);
@@ -262,6 +269,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y_SCALE_END] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_Y_SCALE_END,
                                    pspec);
@@ -342,25 +350,25 @@ clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
   if (priv->x_scale_start != x_scale_start)
     {
       priv->x_scale_start = x_scale_start;
-      g_object_notify (G_OBJECT (scale), "x-scale-start");
+      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_START]);
     }
 
   if (priv->y_scale_start != y_scale_start)
     {
       priv->y_scale_start = y_scale_start;
-      g_object_notify (G_OBJECT (scale), "y-scale-start");
+      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_START]);
     }
 
   if (priv->x_scale_end != x_scale_end)
     {
       priv->x_scale_end = x_scale_end;
-      g_object_notify (G_OBJECT (scale), "x-scale-end");
+      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_END]);
     }
 
   if (priv->y_scale_end != y_scale_end)
     {
       priv->y_scale_end = y_scale_end;
-      g_object_notify (G_OBJECT (scale), "y-scale-end");
+      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (scale));

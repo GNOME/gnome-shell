@@ -153,8 +153,12 @@ enum
 {
   PROP_0,
 
-  PROP_NAME
+  PROP_NAME,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterBindingPool, clutter_binding_pool, G_TYPE_OBJECT);
 
@@ -318,6 +322,7 @@ clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
                                NULL,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_NAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_NAME, pspec);
 }
 

@@ -118,8 +118,12 @@ enum
 {
   PROP_0,
   PROP_DURATION,
-  PROP_STATE
+  PROP_STATE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -477,7 +481,7 @@ clutter_state_change (ClutterState *state,
   priv->source_state_name = priv->target_state_name;
   priv->target_state_name = target_state_name;
 
-  g_object_notify (G_OBJECT (state), "state");
+  _clutter_notify_by_pspec (G_OBJECT (state), obj_props[PROP_STATE]);
 
   duration = clutter_state_get_duration (state,
                                          priv->source_state_name,
@@ -1160,6 +1164,7 @@ clutter_state_class_init (ClutterStateClass *klass)
                                P_("Currently set state, (transition to this state might not be complete)"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_STATE] = pspec;
   g_object_class_install_property (gobject_class, PROP_STATE, pspec);
 
   /**
@@ -1173,6 +1178,7 @@ clutter_state_class_init (ClutterStateClass *klass)
                              P_("Default transition duration"),
                              0, 86400000, 1000,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DURATION] = pspec;
   g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
 }
 

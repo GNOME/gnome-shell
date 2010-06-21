@@ -74,7 +74,11 @@ enum
   PROP_ANGLE_TILT_Y,
   PROP_ANGLE_TILT_Z,
   PROP_DIRECTION,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 struct _ClutterBehaviourEllipsePrivate
 {
@@ -391,6 +395,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_START] = pspec;
   g_object_class_install_property (object_class, PROP_ANGLE_START, pspec);
 
   /**
@@ -406,6 +411,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_END] = pspec;
   g_object_class_install_property (object_class, PROP_ANGLE_END, pspec);
 
   /**
@@ -421,6 +427,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_TILT_X] = pspec;
   g_object_class_install_property (object_class, PROP_ANGLE_TILT_X, pspec);
 
   /**
@@ -436,6 +443,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_TILT_Y] = pspec;
   g_object_class_install_property (object_class, PROP_ANGLE_TILT_Y, pspec);
 
   /**
@@ -451,6 +459,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                0.0, 360.0,
                                360.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_TILT_Z] = pspec;
   g_object_class_install_property (object_class, PROP_ANGLE_TILT_Z, pspec);
 
   /**
@@ -466,6 +475,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                             0, G_MAXINT,
                             100,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_WIDTH] = pspec;
   g_object_class_install_property (object_class, PROP_WIDTH, pspec);
 
   /**
@@ -481,6 +491,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                             0, G_MAXINT,
                             50,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_HEIGHT] = pspec;
   g_object_class_install_property (object_class, PROP_HEIGHT, pspec);
 
   /**
@@ -495,6 +506,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                               P_("Center of ellipse"),
                               CLUTTER_TYPE_KNOT,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CENTER] = pspec;
   g_object_class_install_property (object_class, PROP_CENTER, pspec);
 
   /**
@@ -510,6 +522,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                              CLUTTER_TYPE_ROTATE_DIRECTION,
                              CLUTTER_ROTATE_CW,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DIRECTION] = pspec;
   g_object_class_install_property (object_class, PROP_DIRECTION, pspec);
 }
 
@@ -609,7 +622,7 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
       priv->center.x = x;
       priv->center.y = y;
 
-      g_object_notify (G_OBJECT (self), "center");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CENTER]);
     }
 }
 
@@ -665,7 +678,7 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse *self,
     {
       priv->a = width / 2;
 
-      g_object_notify (G_OBJECT (self), "width");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_WIDTH]);
     }
 }
 
@@ -710,7 +723,7 @@ clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse *self,
     {
       priv->b = height / 2;
 
-      g_object_notify (G_OBJECT (self), "height");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HEIGHT]);
     }
 }
 
@@ -758,7 +771,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
   if (priv->angle_start != new_angle)
     {
       priv->angle_start = new_angle;
-      g_object_notify (G_OBJECT (self), "angle-start");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_START]);
     }
 }
 
@@ -807,7 +820,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
     {
       priv->angle_end = new_angle;
 
-      g_object_notify (G_OBJECT (self), "angle-end");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_END]);
     }
 }
 
@@ -858,7 +871,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
         {
           priv->angle_tilt_x = angle_tilt;
 
-          g_object_notify (G_OBJECT (self), "angle-tilt-x");
+          _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_X]);
         }
       break;
 
@@ -867,7 +880,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
         {
           priv->angle_tilt_y = angle_tilt;
 
-          g_object_notify (G_OBJECT (self), "angle-tilt-y");
+          _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_Y]);
         }
       break;
 
@@ -876,7 +889,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
         {
           priv->angle_tilt_z = angle_tilt;
 
-          g_object_notify (G_OBJECT (self), "angle-tilt-z");
+          _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_Z]);
         }
       break;
     }
@@ -943,21 +956,21 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
     {
       priv->angle_tilt_x = angle_tilt_x;
 
-      g_object_notify (G_OBJECT (self), "angle-tilt-x");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_X]);
     }
 
   if (priv->angle_tilt_y != angle_tilt_y)
     {
       priv->angle_tilt_y = angle_tilt_y;
 
-      g_object_notify (G_OBJECT (self), "angle-tilt-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_Y]);
     }
 
   if (priv->angle_tilt_z != angle_tilt_z)
     {
       priv->angle_tilt_z = angle_tilt_z;
 
-      g_object_notify (G_OBJECT (self), "angle-tilt-z");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANGLE_TILT_Z]);
     }
 
   g_object_thaw_notify (G_OBJECT (self));
@@ -1038,6 +1051,6 @@ clutter_behaviour_ellipse_set_direction (ClutterBehaviourEllipse *self,
     {
       priv->direction = direction;
 
-      g_object_notify (G_OBJECT (self), "direction");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DIRECTION]);
     }
 }

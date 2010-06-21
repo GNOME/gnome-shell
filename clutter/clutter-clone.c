@@ -55,8 +55,12 @@ enum
 {
   PROP_0,
 
-  PROP_SOURCE
+  PROP_SOURCE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 #define CLUTTER_CLONE_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLONE, ClutterClonePrivate))
 
@@ -276,6 +280,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
                                CLUTTER_TYPE_ACTOR,
                                G_PARAM_CONSTRUCT |
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SOURCE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 }
 
@@ -352,7 +357,7 @@ clutter_clone_set_source_internal (ClutterClone *clone,
 			G_CALLBACK (clone_source_queue_relayout_cb), clone);
     }
 
-  g_object_notify (G_OBJECT (clone), "source");
+  _clutter_notify_by_pspec (G_OBJECT (clone), obj_props[PROP_SOURCE]);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
 }

@@ -140,8 +140,12 @@ enum
   PROP_0,
 
   PROP_X_ALIGN,
-  PROP_Y_ALIGN
+  PROP_Y_ALIGN,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
@@ -171,7 +175,7 @@ set_layer_x_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  g_object_notify (G_OBJECT (self), "x-align");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_ALIGN]);
 }
 
 static void
@@ -190,7 +194,7 @@ set_layer_y_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  g_object_notify (G_OBJECT (self), "y-align");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_ALIGN]);
 }
 
 static void
@@ -257,6 +261,7 @@ clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LAYER_X_ALIGN] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_LAYER_X_ALIGN,
                                    pspec);
@@ -268,6 +273,7 @@ clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LAYER_Y_ALIGN] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_LAYER_Y_ALIGN,
                                    pspec);
@@ -299,7 +305,7 @@ set_x_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (self), "x-align");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_ALIGN]);
     }
 }
 
@@ -318,7 +324,7 @@ set_y_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (self), "y-align");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_ALIGN]);
     }
 }
 
@@ -646,6 +652,7 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_X_ALIGN] = pspec;
   g_object_class_install_property (gobject_class, PROP_X_ALIGN, pspec);
 
   /**
@@ -663,6 +670,7 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
                              CLUTTER_TYPE_BIN_ALIGNMENT,
                              CLUTTER_BIN_ALIGNMENT_CENTER,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y_ALIGN] = pspec;
   g_object_class_install_property (gobject_class, PROP_Y_ALIGN, pspec);
 
   layout_class->get_preferred_width =

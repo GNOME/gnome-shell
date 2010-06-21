@@ -369,6 +369,18 @@ void     _clutter_event_set_platform_data (ClutterEvent       *event,
                                            gpointer            data);
 gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
+#if GLIB_CHECK_VERSION (2, 25, 9)
+
+#define _clutter_notify_by_pspec(obj, pspec) \
+  g_object_notify_by_pspec ((obj), (pspec))
+
+#else
+
+#define _clutter_notify_by_pspec(obj, pspec) \
+  g_object_notify ((obj), (pspec)->name)
+
+#endif
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

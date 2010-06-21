@@ -75,8 +75,12 @@ enum
 {
   PROP_0,
 
-  PROP_VALUE_TYPE
+  PROP_VALUE_TYPE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -409,6 +413,7 @@ clutter_interval_class_init (ClutterIntervalClass *klass)
                               P_("The type of the values in the interval"),
                               G_TYPE_NONE,
                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_VALUE_TYPE] = pspec;
   g_object_class_install_property (gobject_class, PROP_VALUE_TYPE, pspec);
 }
 

@@ -217,8 +217,12 @@ enum
   PROP_0,
 
   PROP_FILENAME_SET,
-  PROP_FILENAME
+  PROP_FILENAME,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 #define CLUTTER_SCRIPT_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SCRIPT, ClutterScriptPrivate))
@@ -401,6 +405,7 @@ clutter_script_class_init (ClutterScriptClass *klass)
                                 P_("Whether the :filename property is set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_FILENAME_SET] = pspec;
   g_object_class_install_property (gobject_class, PROP_FILENAME_SET, pspec);
 
   /**
@@ -416,6 +421,7 @@ clutter_script_class_init (ClutterScriptClass *klass)
                                P_("The path of the currently parsed file"),
                                NULL,
                                CLUTTER_PARAM_READABLE);
+  obj_props[PROP_FILENAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
 }
 

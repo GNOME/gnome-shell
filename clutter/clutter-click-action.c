@@ -74,8 +74,12 @@ enum
   PROP_0,
 
   PROP_HELD,
-  PROP_PRESSED
+  PROP_PRESSED,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -98,7 +102,7 @@ click_action_set_pressed (ClutterClickAction *action,
     return;
 
   priv->is_pressed = is_pressed;
-  g_object_notify (G_OBJECT (action), "pressed");
+  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_PRESSED]);
 }
 
 static gboolean
@@ -237,6 +241,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                                 P_("Whether the clickable should be in pressed state"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_PRESSED] = pspec;
   g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
 
   /**
@@ -251,6 +256,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                                 P_("Whether the clickable has a grab"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_HELD] = pspec;
   g_object_class_install_property (gobject_class, PROP_HELD, pspec);
 
   /**

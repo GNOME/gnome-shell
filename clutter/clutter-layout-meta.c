@@ -50,8 +50,12 @@ enum
 {
   PROP_0,
 
-  PROP_MANAGER
+  PROP_MANAGER,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void
 clutter_layout_meta_set_property (GObject      *object,
@@ -115,6 +119,7 @@ clutter_layout_meta_class_init (ClutterLayoutMetaClass *klass)
                                CLUTTER_TYPE_LAYOUT_MANAGER,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MANAGER] = pspec;
   g_object_class_install_property (gobject_class, PROP_MANAGER, pspec);
 }
 

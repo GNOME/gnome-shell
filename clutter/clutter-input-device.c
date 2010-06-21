@@ -46,8 +46,12 @@ enum
 
   PROP_ID,
   PROP_DEVICE_TYPE,
-  PROP_NAME
+  PROP_NAME,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterInputDevice, clutter_input_device, G_TYPE_OBJECT);
 
@@ -130,6 +134,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                             0,
                             CLUTTER_PARAM_READWRITE |
                             G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_ID] = pspec;
   g_object_class_install_property (gobject_class, PROP_ID, pspec);
 
   /**
@@ -145,6 +150,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                                NULL,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_NAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_NAME, pspec);
 
   /**
@@ -161,6 +167,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                              CLUTTER_POINTER_DEVICE,
                              CLUTTER_PARAM_READWRITE |
                              G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_DEVICE_TYPE] = pspec;
   g_object_class_install_property (gobject_class, PROP_DEVICE_TYPE, pspec);
 }
 

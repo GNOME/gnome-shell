@@ -103,8 +103,12 @@ enum
 {
   PROP_0,
 
-  PROP_FACTOR
+  PROP_FACTOR,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterDesaturateEffect,
                clutter_desaturate_effect,
@@ -219,6 +223,7 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
                                0.0, 1.0,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FACTOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_FACTOR, pspec);
 }
 
@@ -273,7 +278,7 @@ clutter_desaturate_effect_set_factor (ClutterDesaturateEffect *effect,
       if (effect->actor != NULL)
         clutter_actor_queue_redraw (effect->actor);
 
-      g_object_notify (G_OBJECT (effect), "factor");
+      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_FACTOR]);
     }
 }
 

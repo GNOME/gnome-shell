@@ -159,8 +159,12 @@ enum
   PROP_DURATION,
   PROP_LOOP,
   PROP_TIMELINE,
-  PROP_ALPHA
+  PROP_ALPHA,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -460,6 +464,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                                P_("Object to which the animation applies"),
                                G_TYPE_OBJECT,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OBJECT] = pspec;
   g_object_class_install_property (gobject_class, PROP_OBJECT, pspec);
 
   /**
@@ -477,6 +482,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                               0, G_MAXULONG,
                               CLUTTER_LINEAR,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MODE] = pspec;
   g_object_class_install_property (gobject_class, PROP_MODE, pspec);
 
   /**
@@ -491,6 +497,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                              P_("Duration of the animation, in milliseconds"),
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DURATION] = pspec;
   g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
 
   /**
@@ -505,6 +512,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                                 P_("Whether the animation should loop"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LOOP] = pspec;
   g_object_class_install_property (gobject_class, PROP_LOOP, pspec);
 
   /**
@@ -519,6 +527,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                                P_("The timeline used by the animation"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TIMELINE] = pspec;
   g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);
 
   /**
@@ -533,6 +542,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                                P_("The alpha used by the animation"),
                                CLUTTER_TYPE_ALPHA,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ALPHA] = pspec;
   g_object_class_install_property (gobject_class, PROP_ALPHA, pspec);
 
   /**
@@ -1128,7 +1138,7 @@ clutter_animation_get_alpha_internal (ClutterAnimation *animation)
 
       priv->alpha = g_object_ref_sink (alpha);
 
-      g_object_notify (G_OBJECT (animation), "alpha");
+      _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_ALPHA]);
     }
 
   return priv->alpha;
@@ -1163,7 +1173,7 @@ clutter_animation_get_timeline_internal (ClutterAnimation *animation)
   /* the alpha owns the timeline now */
   g_object_unref (timeline);
 
-  g_object_notify (G_OBJECT (animation), "timeline");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_TIMELINE]);
 
   return timeline;
 }
@@ -1228,7 +1238,7 @@ clutter_animation_set_object (ClutterAnimation *animation,
   if (object != NULL)
     priv->object = g_object_ref (object);
 
-  g_object_notify (G_OBJECT (animation), "object");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_OBJECT]);
 }
 
 /**
@@ -1277,7 +1287,7 @@ clutter_animation_set_mode (ClutterAnimation *animation,
 
   clutter_alpha_set_mode (alpha, mode);
 
-  g_object_notify (G_OBJECT (animation), "mode");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_MODE]);
 
   g_object_thaw_notify (G_OBJECT (animation));
 }
@@ -1333,7 +1343,7 @@ clutter_animation_set_duration (ClutterAnimation *animation,
   clutter_timeline_set_duration (timeline, msecs);
   clutter_timeline_rewind (timeline);
 
-  g_object_notify (G_OBJECT (animation), "duration");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_DURATION]);
 
   g_object_thaw_notify (G_OBJECT (animation));
 }
@@ -1366,7 +1376,7 @@ clutter_animation_set_loop (ClutterAnimation *animation,
   timeline = clutter_animation_get_timeline_internal (animation);
   clutter_timeline_set_loop (timeline, loop);
 
-  g_object_notify (G_OBJECT (animation), "loop");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_LOOP]);
 
   g_object_thaw_notify (G_OBJECT (animation));
 }
@@ -1459,9 +1469,9 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
 
   alpha = clutter_animation_get_alpha_internal (animation);
   clutter_alpha_set_timeline (alpha, timeline);
-  g_object_notify (G_OBJECT (animation), "timeline");
-  g_object_notify (G_OBJECT (animation), "duration");
-  g_object_notify (G_OBJECT (animation), "loop");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_TIMELINE]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_DURATION]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_LOOP]);
 
   if (timeline)
     {
@@ -1589,11 +1599,11 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
 
 out:
   /* emit all relevant notifications */
-  g_object_notify (G_OBJECT (animation), "mode");
-  g_object_notify (G_OBJECT (animation), "duration");
-  g_object_notify (G_OBJECT (animation), "loop");
-  g_object_notify (G_OBJECT (animation), "alpha");
-  g_object_notify (G_OBJECT (animation), "timeline");
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_MODE]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_DURATION]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_LOOP]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_ALPHA]);
+  _clutter_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_TIMELINE]);
 
   g_object_thaw_notify (G_OBJECT (animation));
 }

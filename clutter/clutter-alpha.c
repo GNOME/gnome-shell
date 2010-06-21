@@ -140,8 +140,12 @@ enum
   
   PROP_TIMELINE,
   PROP_ALPHA,
-  PROP_MODE
+  PROP_MODE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void
 timeline_new_frame_cb (ClutterTimeline *timeline,
@@ -152,7 +156,7 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
 
   /* Update alpha value and notify */
   priv->alpha = clutter_alpha_get_alpha (alpha);
-  g_object_notify (G_OBJECT (alpha), "alpha");
+  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_ALPHA]);
 }
 
 static void 
@@ -336,6 +340,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                                P_("Timeline used by the alpha"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TIMELINE] = pspec;
   g_object_class_install_property (object_class, PROP_TIMELINE, pspec);
 
   /**
@@ -353,6 +358,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                                -1.0, 2.0,
                                0.0,
                                CLUTTER_PARAM_READABLE);
+  obj_props[PROP_ALPHA] = pspec;
   g_object_class_install_property (object_class, PROP_ALPHA, pspec);
 
   /**
@@ -374,6 +380,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                               0, G_MAXULONG,
                               CLUTTER_CUSTOM_MODE,
                               G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MODE] = pspec;
   g_object_class_install_property (object_class, PROP_MODE, pspec);
 }
 
@@ -488,7 +495,7 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
   clutter_alpha_set_closure_internal (alpha, closure);
 
   priv->mode = CLUTTER_CUSTOM_MODE;
-  g_object_notify (G_OBJECT (alpha), "mode");
+  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 /**
@@ -524,7 +531,7 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
   clutter_alpha_set_closure_internal (alpha, closure);
 
   priv->mode = CLUTTER_CUSTOM_MODE;
-  g_object_notify (G_OBJECT (alpha), "mode");
+  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 /**
@@ -569,7 +576,7 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
                         alpha);
     }
 
-  g_object_notify (G_OBJECT (alpha), "timeline");
+  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_TIMELINE]);
 }
 
 /**
@@ -1291,7 +1298,7 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
   else
     g_assert_not_reached ();
 
-  g_object_notify (G_OBJECT (alpha), "mode");
+  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 static gulong

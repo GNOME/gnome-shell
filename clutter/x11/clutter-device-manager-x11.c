@@ -43,8 +43,12 @@ enum
 {
   PROP_0,
 
-  PROP_USE_XINPUT_1
+  PROP_USE_XINPUT_1,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterDeviceManagerX11,
                clutter_device_manager_x11,
@@ -339,6 +343,7 @@ clutter_device_manager_x11_class_init (ClutterDeviceManagerX11Class *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE |
                                 G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_USE_XINPUT_1] = pspec;
   g_object_class_install_property (gobject_class, PROP_USE_XINPUT_1, pspec);
 }
 

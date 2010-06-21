@@ -100,8 +100,12 @@ enum
 
   PROP_DRAG_THRESHOLD,
   PROP_DRAG_HANDLE,
-  PROP_DRAG_AXIS
+  PROP_DRAG_AXIS,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -472,6 +476,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DRAG_THRESHOLD] = pspec;
   g_object_class_install_property (gobject_class, PROP_DRAG_THRESHOLD, pspec);
 
   /**
@@ -493,6 +498,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                                P_("The actor that is being dragged"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DRAG_HANDLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_DRAG_HANDLE, pspec);
 
   /**
@@ -508,6 +514,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                              CLUTTER_TYPE_DRAG_AXIS,
                              CLUTTER_DRAG_AXIS_NONE,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DRAG_AXIS] = pspec;
   g_object_class_install_property (gobject_class, PROP_DRAG_AXIS, pspec);
 
   /**
@@ -657,7 +664,7 @@ clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
 
   priv->drag_threshold = threshold;
 
-  g_object_notify (G_OBJECT (action), "drag-threshold");
+  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_THRESHOLD]);
 }
 
 /**
@@ -703,7 +710,7 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
 
   priv->drag_handle = handle;
 
-  g_object_notify (G_OBJECT (action), "drag-handle");
+  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_HANDLE]);
 }
 
 /**
@@ -751,7 +758,7 @@ clutter_drag_action_set_drag_axis (ClutterDragAction *action,
 
   priv->drag_axis = axis;
 
-  g_object_notify (G_OBJECT (action), "drag-axis");
+  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_AXIS]);
 }
 
 /**

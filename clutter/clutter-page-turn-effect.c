@@ -71,8 +71,12 @@ enum
 
   PROP_PERIOD,
   PROP_ANGLE,
-  PROP_RADIUS
+  PROP_RADIUS,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterPageTurnEffect,
                clutter_page_turn_effect,
@@ -223,6 +227,7 @@ clutter_page_turn_effect_class_init (ClutterPageTurnEffectClass *klass)
                                0.0, 1.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_PERIOD] = pspec;
   g_object_class_install_property (gobject_class, PROP_PERIOD, pspec);
 
   /**
@@ -238,6 +243,7 @@ clutter_page_turn_effect_class_init (ClutterPageTurnEffectClass *klass)
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_ANGLE, pspec);
 
   /**
@@ -253,6 +259,7 @@ clutter_page_turn_effect_class_init (ClutterPageTurnEffectClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               24.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_RADIUS] = pspec;
   g_object_class_install_property (gobject_class, PROP_RADIUS, pspec);
 
   deform_class->deform_vertex = clutter_page_turn_effect_deform_vertex;
@@ -314,7 +321,7 @@ clutter_page_turn_effect_set_period (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  g_object_notify (G_OBJECT (effect), "period");
+  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_PERIOD]);
 }
 
 /**
@@ -355,7 +362,7 @@ clutter_page_turn_effect_set_angle (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  g_object_notify (G_OBJECT (effect), "angle");
+  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_ANGLE]);
 }
 
 /**
@@ -395,7 +402,7 @@ clutter_page_turn_effect_set_radius (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  g_object_notify (G_OBJECT (effect), "radius");
+  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_RADIUS]);
 }
 
 /**

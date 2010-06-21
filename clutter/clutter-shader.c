@@ -86,8 +86,12 @@ enum
   PROP_VERTEX_SOURCE,
   PROP_FRAGMENT_SOURCE,
   PROP_COMPILED,
-  PROP_ENABLED
+  PROP_ENABLED,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterShader, clutter_shader, G_TYPE_OBJECT);
 
@@ -212,6 +216,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
                                P_("Source of vertex shader"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_VERTEX_SOURCE] = pspec;
   g_object_class_install_property (object_class, PROP_VERTEX_SOURCE, pspec);
 
   /**
@@ -226,6 +231,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
                                P_("Source of fragment shader"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FRAGMENT_SOURCE] = pspec;
   g_object_class_install_property (object_class, PROP_FRAGMENT_SOURCE, pspec);
 
   /**
@@ -241,6 +247,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
                                 P_("Whether the shader is compiled and linked"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_COMPILED] = pspec;
   g_object_class_install_property (object_class, PROP_COMPILED, pspec);
 
   /**
@@ -255,6 +262,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
                                 P_("Whether the shader is enabled"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ENABLED] = pspec;
   g_object_class_install_property (object_class, PROP_ENABLED, pspec);
 }
 
@@ -325,7 +333,7 @@ clutter_shader_set_source (ClutterShader     *shader,
 
       priv->fragment_source = g_strndup (data, length);
       priv->fragment_is_glsl = is_glsl;
-      g_object_notify (G_OBJECT (shader), "fragment-source");
+      _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_FRAGMENT_SOURCE]);
       break;
 
     case CLUTTER_VERTEX_SHADER:
@@ -333,7 +341,7 @@ clutter_shader_set_source (ClutterShader     *shader,
 
       priv->vertex_source = g_strndup (data, length);
       priv->vertex_is_glsl = is_glsl;
-      g_object_notify (G_OBJECT (shader), "vertex-source");
+      _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_VERTEX_SOURCE]);
       break;
     }
 
@@ -560,7 +568,7 @@ clutter_shader_compile (ClutterShader  *shader,
     }
 
   priv->compiled = bind_glsl_shader (shader, error);
-  g_object_notify (G_OBJECT (shader), "compiled");
+  _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_COMPILED]);
 
   return priv->compiled;
 }
@@ -601,7 +609,7 @@ clutter_shader_release (ClutterShader *shader)
   priv->program = COGL_INVALID_HANDLE;
   priv->compiled = FALSE;
 
-  g_object_notify (G_OBJECT (shader), "compiled");
+  _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_COMPILED]);
 }
 
 /**
@@ -669,7 +677,7 @@ clutter_shader_set_is_enabled (ClutterShader *shader,
       else
         cogl_program_use (COGL_INVALID_HANDLE);
 
-      g_object_notify (G_OBJECT (shader), "enabled");
+      _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_ENABLED]);
     }
 }
 

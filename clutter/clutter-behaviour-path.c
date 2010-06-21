@@ -107,8 +107,12 @@ enum
 {
   PROP_0,
 
-  PROP_PATH
+  PROP_PATH,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void
 actor_apply_knot_foreach (ClutterBehaviour *behaviour,
@@ -215,6 +219,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                                   "to animate along"),
                                CLUTTER_TYPE_PATH,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_PATH] = pspec;
   g_object_class_install_property (gobject_class, PROP_PATH, pspec);
 
   /**
@@ -418,7 +423,7 @@ clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
 
   priv->path = path;
 
-  g_object_notify (G_OBJECT (pathb), "path");
+  _clutter_notify_by_pspec (G_OBJECT (pathb), obj_props[PROP_PATH]);
 }
 
 /**

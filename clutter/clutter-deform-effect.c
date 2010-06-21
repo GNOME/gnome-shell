@@ -93,8 +93,12 @@ enum
   PROP_X_TILES,
   PROP_Y_TILES,
 
-  PROP_BACK_MATERIAL
+  PROP_BACK_MATERIAL,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_ABSTRACT_TYPE (ClutterDeformEffect,
                         clutter_deform_effect,
@@ -523,6 +527,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
                              1, G_MAXUINT,
                              DEFAULT_N_TILES,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_X_TILES] = pspec;
   g_object_class_install_property (gobject_class, PROP_X_TILES, pspec);
 
   /**
@@ -539,6 +544,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
                              1, G_MAXUINT,
                              DEFAULT_N_TILES,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y_TILES] = pspec;
   g_object_class_install_property (gobject_class, PROP_Y_TILES, pspec);
 
   /**
@@ -556,6 +562,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
                               P_("The material to be used when painting the back of the actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_BACK_MATERIAL] = pspec;
   g_object_class_install_property (gobject_class, PROP_BACK_MATERIAL, pspec);
 
   meta_class->set_actor = clutter_deform_effect_set_actor;
@@ -661,7 +668,7 @@ clutter_deform_effect_set_n_tiles (ClutterDeformEffect *effect,
     {
       priv->x_tiles = x_tiles;
 
-      g_object_notify (G_OBJECT (effect), "x-tiles");
+      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_X_TILES]);
 
       tiles_changed = TRUE;
     }
@@ -670,7 +677,7 @@ clutter_deform_effect_set_n_tiles (ClutterDeformEffect *effect,
     {
       priv->y_tiles = y_tiles;
 
-      g_object_notify (G_OBJECT (effect), "y-tiles");
+      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_Y_TILES]);
 
       tiles_changed = TRUE;
     }

@@ -176,8 +176,12 @@ struct _ClutterBehaviourPrivate
 enum
 {
   PROP_0,
-  PROP_ALPHA
+  PROP_ALPHA,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum {
   APPLIED,
@@ -305,6 +309,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
                                P_("Alpha Object to drive the behaviour"),
                                CLUTTER_TYPE_ALPHA,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ALPHA] = pspec;
   g_object_class_install_property (object_class, PROP_ALPHA, pspec);
 
   klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
@@ -639,7 +644,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
                     priv->alpha, priv->notify_id);
     }
 
-  g_object_notify (G_OBJECT (behave), "alpha");
+  _clutter_notify_by_pspec (G_OBJECT (behave), obj_props[PROP_ALPHA]);
 }
 
 /**

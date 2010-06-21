@@ -217,8 +217,12 @@ enum
   PROP_ACTIVATABLE,
   PROP_PASSWORD_CHAR,
   PROP_MAX_LENGTH,
-  PROP_SINGLE_LINE_MODE
+  PROP_SINGLE_LINE_MODE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -263,7 +267,7 @@ clutter_text_clear_selection (ClutterText *self)
   if (priv->selection_bound != priv->position)
     {
       priv->selection_bound = priv->position;
-      g_object_notify (G_OBJECT (self), "selection-bound");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
     }
 }
@@ -483,7 +487,7 @@ clutter_text_set_font_description_internal (ClutterText          *self,
   if (priv->text && priv->text[0] != '\0')
     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "font-description");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_DESCRIPTION]);
 }
 
 static void
@@ -936,10 +940,10 @@ clutter_text_delete_selection (ClutterText *self)
 
   /* Not required to be guarded by g_object_freeze/thaw_notify */
   if (priv->position != old_position)
-    g_object_notify (G_OBJECT (self), "position");
+    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
 
   if (priv->selection_bound != old_selection)
-    g_object_notify (G_OBJECT (self), "selection-bound");
+    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
 
   return TRUE;
 }
@@ -1010,7 +1014,7 @@ clutter_text_set_text_internal (ClutterText *self,
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
-  g_object_notify (G_OBJECT (self), "text");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -2506,6 +2510,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                P_("The font to be used by the text"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_NAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_FONT_NAME, pspec);
 
   /**
@@ -2523,6 +2528,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                               P_("The font description to be used"),
                               PANGO_TYPE_FONT_DESCRIPTION,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FONT_DESCRIPTION] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_FONT_DESCRIPTION,
                                    pspec);
@@ -2539,6 +2545,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                P_("The text to render"),
                                "",
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TEXT] = pspec;
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
   /**
@@ -2553,6 +2560,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Color of the font used by the text"),
                                     &default_text_color,
                                     CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
   /**
@@ -2567,6 +2575,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the text is editable"),
                                 TRUE,
                                 G_PARAM_READWRITE);
+  obj_props[PROP_EDITABLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_EDITABLE, pspec);
 
   /**
@@ -2582,6 +2591,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the text is selectable"),
                                 TRUE,
                                 G_PARAM_READWRITE);
+  obj_props[PROP_SELECTABLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTABLE, pspec);
 
   /**
@@ -2596,6 +2606,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether pressing return causes the activate signal to be emitted"),
                                 TRUE,
                                 G_PARAM_READWRITE);
+  obj_props[PROP_ACTIVATABLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_ACTIVATABLE, pspec);
 
   /**
@@ -2612,6 +2623,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the input cursor is visible"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CURSOR_VISIBLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_CURSOR_VISIBLE, pspec);
 
   /**
@@ -2626,6 +2638,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Cursor Color"),
                                     &default_cursor_color,
                                     CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CURSOR_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR, pspec);
 
   /**
@@ -2640,6 +2653,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the cursor color has been set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_CURSOR_COLOR_SET] = pspec;
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR_SET, pspec);
 
   /**
@@ -2655,6 +2669,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                             P_("The width of the cursor, in pixels"),
                             -1, G_MAXINT, DEFAULT_CURSOR_SIZE,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CURSOR_SIZE] = pspec;
   g_object_class_install_property (gobject_class, PROP_CURSOR_SIZE, pspec);
 
   /**
@@ -2670,6 +2685,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                             -1, G_MAXINT,
                             -1,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_POSITION] = pspec;
   g_object_class_install_property (gobject_class, PROP_POSITION, pspec);
 
   /**
@@ -2685,6 +2701,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                             -1, G_MAXINT,
                             -1,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SELECTION_BOUND] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTION_BOUND, pspec);
 
   /**
@@ -2699,6 +2716,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Selection Color"),
                                     &default_selection_color,
                                     CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SELECTION_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR, pspec);
 
   /**
@@ -2713,6 +2731,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the selection color has been set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_SELECTION_COLOR_SET] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR_SET, pspec);
 
   /**
@@ -2728,6 +2747,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                               P_("A list of style attributes to apply to the contents of the actor"),
                               PANGO_TYPE_ATTR_LIST,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ATTRIBUTES] = pspec;
   g_object_class_install_property (gobject_class, PROP_ATTRIBUTES, pspec);
 
   /**
@@ -2750,6 +2770,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether or not the text includes Pango markup"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_USE_MARKUP] = pspec;
   g_object_class_install_property (gobject_class, PROP_USE_MARKUP, pspec);
 
   /**
@@ -2766,6 +2787,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("If set, wrap the lines if the text becomes too wide"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LINE_WRAP] = pspec;
   g_object_class_install_property (gobject_class, PROP_LINE_WRAP, pspec);
 
   /**
@@ -2782,6 +2804,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                              PANGO_TYPE_WRAP_MODE,
                              PANGO_WRAP_WORD,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LINE_WRAP_MODE] = pspec;
   g_object_class_install_property (gobject_class, PROP_LINE_WRAP_MODE, pspec);
 
   /**
@@ -2797,6 +2820,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                              PANGO_TYPE_ELLIPSIZE_MODE,
                              PANGO_ELLIPSIZE_NONE,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ELLIPSIZE] = pspec;
   g_object_class_install_property (gobject_class, PROP_ELLIPSIZE, pspec);
 
   /**
@@ -2813,6 +2837,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                              PANGO_TYPE_ALIGNMENT,
                              PANGO_ALIGN_LEFT,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LINE_ALIGNMENT] = pspec;
   g_object_class_install_property (gobject_class, PROP_LINE_ALIGNMENT, pspec);
 
   /**
@@ -2828,6 +2853,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the text should be justified"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_JUSTIFY] = pspec;
   g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
 
   /**
@@ -2843,6 +2869,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("If non-zero, use this character to display the actor's contents"),
                                 0,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_PASSWORD_CHAR] = pspec;
   g_object_class_install_property (gobject_class, PROP_PASSWORD_CHAR, pspec);
 
   /**
@@ -2857,6 +2884,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                             P_("Maximum length of the text inside the actor"),
                             -1, G_MAXINT, 0,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MAX_LENGTH] = pspec;
   g_object_class_install_property (gobject_class, PROP_MAX_LENGTH, pspec);
 
   /**
@@ -2880,6 +2908,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 P_("Whether the text should be a single line"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SINGLE_LINE_MODE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SINGLE_LINE_MODE, pspec);
 
   /**
@@ -3247,7 +3276,7 @@ clutter_text_set_editable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "editable");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EDITABLE]);
     }
 }
 
@@ -3297,7 +3326,7 @@ clutter_text_set_selectable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "selectable");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTABLE]);
     }
 }
 
@@ -3351,7 +3380,7 @@ clutter_text_set_activatable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "activatable");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
     }
 }
 
@@ -3442,7 +3471,7 @@ clutter_text_set_cursor_visible (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "cursor-visible");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
     }
 }
 
@@ -3496,8 +3525,8 @@ clutter_text_set_cursor_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "cursor-color");
-  g_object_notify (G_OBJECT (self), "cursor-color-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR]);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR_SET]);
 }
 
 /**
@@ -3638,7 +3667,7 @@ clutter_text_set_selection_bound (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "selection-bound");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
     }
 }
 
@@ -3694,8 +3723,8 @@ clutter_text_set_selection_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "selection-color");
-  g_object_notify (G_OBJECT (self), "selection-color-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR]);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR_SET]);
 }
 
 /**
@@ -3841,7 +3870,7 @@ clutter_text_set_font_name (ClutterText *self,
   clutter_text_set_font_description_internal (self, desc);
   priv->is_default_font = is_default_font;
 
-  g_object_notify (G_OBJECT (self), "font-name");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
 }
 
 /**
@@ -3899,7 +3928,7 @@ clutter_text_set_use_markup_internal (ClutterText *self,
           priv->markup_attrs = NULL;
         }
 
-      g_object_notify (G_OBJECT (self), "use-markup");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_USE_MARKUP]);
     }
 }
 
@@ -4023,7 +4052,7 @@ clutter_text_set_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "color");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COLOR]);
 }
 
 /**
@@ -4080,7 +4109,7 @@ clutter_text_set_ellipsize (ClutterText        *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "ellipsize");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ELLIPSIZE]);
     }
 }
 
@@ -4150,7 +4179,7 @@ clutter_text_set_line_wrap (ClutterText *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "line-wrap");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP]);
     }
 }
 
@@ -4183,7 +4212,7 @@ clutter_text_set_line_wrap_mode (ClutterText   *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "line-wrap-mode");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP_MODE]);
     }
 }
 
@@ -4248,7 +4277,7 @@ clutter_text_set_attributes (ClutterText   *self,
 
   clutter_text_dirty_cache (self);
 
-  g_object_notify (G_OBJECT (self), "attributes");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ATTRIBUTES]);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
@@ -4305,7 +4334,7 @@ clutter_text_set_line_alignment (ClutterText    *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "line-alignment");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_ALIGNMENT]);
     }
 }
 
@@ -4418,7 +4447,7 @@ clutter_text_set_justify (ClutterText *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "justify");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_JUSTIFY]);
     }
 }
 
@@ -4497,7 +4526,7 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "position");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
 }
 
 /**
@@ -4531,7 +4560,7 @@ clutter_text_set_cursor_size (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "cursor-size");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_SIZE]);
     }
 }
 
@@ -4583,7 +4612,7 @@ clutter_text_set_password_char (ClutterText *self,
       clutter_text_dirty_cache (self);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "password-char");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_PASSWORD_CHAR]);
     }
 }
 
@@ -4641,7 +4670,7 @@ clutter_text_set_max_length (ClutterText *self,
       clutter_text_set_text (self, new);
       g_free (new);
 
-      g_object_notify (G_OBJECT (self), "max-length");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAX_LENGTH]);
     }
 }
 
@@ -4866,7 +4895,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   g_string_free (new, TRUE);
 
-  g_object_notify (G_OBJECT (self), "text");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
 }
 
 /**
@@ -4953,13 +4982,13 @@ clutter_text_set_single_line_mode (ClutterText *self,
         {
           priv->activatable = TRUE;
 
-          g_object_notify (G_OBJECT (self), "activatable");
+          _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
         }
 
       clutter_text_dirty_cache (self);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "single-line-mode");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SINGLE_LINE_MODE]);
 
       g_object_thaw_notify (G_OBJECT (self));
     }

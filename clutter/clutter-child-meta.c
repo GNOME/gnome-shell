@@ -52,8 +52,12 @@ enum
   PROP_0,
 
   PROP_CONTAINER,
-  PROP_ACTOR
+  PROP_ACTOR,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void
 clutter_child_meta_set_property (GObject      *object,
@@ -125,6 +129,7 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
                                CLUTTER_TYPE_CONTAINER,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CONTAINER] = pspec;
   g_object_class_install_property (gobject_class, PROP_CONTAINER, pspec);
 
   /**
@@ -140,6 +145,7 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
                                CLUTTER_TYPE_ACTOR,
                                G_PARAM_CONSTRUCT_ONLY |
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ACTOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
 }
 

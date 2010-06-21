@@ -91,8 +91,12 @@ enum
   PROP_0,
 
   PROP_SURFACE_WIDTH,
-  PROP_SURFACE_HEIGHT
+  PROP_SURFACE_HEIGHT,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 #ifdef CLUTTER_ENABLE_DEBUG
 #define clutter_warn_if_paint_fail(obj)                 G_STMT_START {  \
@@ -395,6 +399,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SURFACE_WIDTH] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_SURFACE_WIDTH,
                                    pspec);
@@ -412,6 +417,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SURFACE_HEIGHT] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_SURFACE_HEIGHT,
                                    pspec);
@@ -709,13 +715,13 @@ clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
   if (priv->width != width)
     {
       priv->width = width;
-      g_object_notify (G_OBJECT (self), "surface-width");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_WIDTH]);
     }
 
   if (priv->height != height)
     {
       priv->height = height;
-      g_object_notify (G_OBJECT (self), "surface-height");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_HEIGHT]);
     }
 
   clutter_cairo_texture_surface_resize_internal (self);

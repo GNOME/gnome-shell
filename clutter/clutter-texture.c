@@ -144,8 +144,12 @@ enum
   PROP_KEEP_ASPECT_RATIO,
   PROP_LOAD_ASYNC,
   PROP_LOAD_DATA_ASYNC,
-  PROP_PICK_WITH_ALPHA
+  PROP_PICK_WITH_ALPHA,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -942,6 +946,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Auto sync size of actor to underlying pixbuf dimensions"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SYNC_SIZE] = pspec;
   g_object_class_install_property (gobject_class, PROP_SYNC_SIZE, pspec);
 
   pspec = g_param_spec_boolean ("disable-slicing",
@@ -950,6 +955,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 FALSE,
                                 G_PARAM_CONSTRUCT_ONLY |
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NO_SLICE] = pspec;
   g_object_class_install_property (gobject_class, PROP_NO_SLICE, pspec);
 
   pspec = g_param_spec_int ("tile-waste",
@@ -958,6 +964,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                             -1, G_MAXINT,
                             COGL_TEXTURE_MAX_WASTE,
                             CLUTTER_PARAM_READABLE);
+  obj_props[PROP_MAX_TILE_WASTE] = pspec;
   g_object_class_install_property (gobject_class, PROP_MAX_TILE_WASTE, pspec);
 
   pspec = g_param_spec_boolean ("repeat-x",
@@ -965,6 +972,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Repeat the contents rather than scaling them horizontally."),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_REPEAT_X] = pspec;
   g_object_class_install_property (gobject_class, PROP_REPEAT_X, pspec);
 
   pspec = g_param_spec_boolean ("repeat-y",
@@ -972,6 +980,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Repeat the contents rather than scaling them vertically."),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_REPEAT_Y] = pspec;
   g_object_class_install_property (gobject_class, PROP_REPEAT_Y, pspec);
 
   pspec = g_param_spec_enum ("filter-quality",
@@ -980,6 +989,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                              CLUTTER_TYPE_TEXTURE_QUALITY,
                              CLUTTER_TEXTURE_QUALITY_MEDIUM,
                              G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FILTER_QUALITY] = pspec;
   g_object_class_install_property (gobject_class, PROP_FILTER_QUALITY, pspec);
 
   pspec = g_param_spec_enum ("pixel-format",
@@ -988,6 +998,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                              COGL_TYPE_PIXEL_FORMAT,
                              COGL_PIXEL_FORMAT_RGBA_8888,
                              CLUTTER_PARAM_READABLE);
+  obj_props[PROP_PIXEL_FORMAT] = pspec;
   g_object_class_install_property (gobject_class, PROP_PIXEL_FORMAT, pspec);
 
   pspec = g_param_spec_boxed ("cogl-texture",
@@ -995,6 +1006,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                               P_("The underlying COGL texture handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COGL_TEXTURE] = pspec;
   g_object_class_install_property (gobject_class, PROP_COGL_TEXTURE, pspec);
 
   pspec = g_param_spec_boxed ("cogl-material",
@@ -1002,6 +1014,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                               P_("The underlying COGL material handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COGL_MATERIAL] = pspec;
   g_object_class_install_property (gobject_class, PROP_COGL_MATERIAL, pspec);
 
   /**
@@ -1018,6 +1031,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                P_("The path of the file containing the image data"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FILENAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
 
   pspec = g_param_spec_boolean ("keep-aspect-ratio",
@@ -1025,6 +1039,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Keep the aspect ratio of the texture when requesting the preferred width or height"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_KEEP_ASPECT_RATIO] = pspec;
   g_object_class_install_property (gobject_class, PROP_KEEP_ASPECT_RATIO, pspec);
 
   /**
@@ -1051,6 +1066,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Load files inside a thread to avoid blocking when loading images from disk."),
                                 FALSE,
                                 CLUTTER_PARAM_WRITABLE);
+  obj_props[PROP_LOAD_ASYNC] = pspec;
   g_object_class_install_property (gobject_class, PROP_LOAD_ASYNC, pspec);
 
 
@@ -1067,6 +1083,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Decode image data files inside a thread to reduce blocking when loading images from disk."),
                                 FALSE,
                                 CLUTTER_PARAM_WRITABLE);
+  obj_props[PROP_LOAD_DATA_ASYNC] = pspec;
   g_object_class_install_property (gobject_class, PROP_LOAD_DATA_ASYNC, pspec);
 
   /**
@@ -1091,6 +1108,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                                 P_("Shape actor with alpha channel when picking"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_PICK_WITH_ALPHA] = pspec;
   g_object_class_install_property (gobject_class, PROP_PICK_WITH_ALPHA, pspec);
 
   /**
@@ -1416,7 +1434,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* If resized actor may need resizing but paint() will do this */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
-  g_object_notify (G_OBJECT (texture), "cogl-texture");
+  _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_COGL_TEXTURE]);
 }
 
 static gboolean
@@ -1965,7 +1983,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
-  g_object_notify (G_OBJECT (texture), "filename");
+  _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILENAME]);
 
   return TRUE;
 }
@@ -2013,7 +2031,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
-      g_object_notify (G_OBJECT (texture), "filter-quality");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILTER_QUALITY]);
     }
 }
 
@@ -2558,7 +2576,7 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
 
-      g_object_notify (G_OBJECT (texture), "sync-size");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_SYNC_SIZE]);
     }
 }
 
@@ -2610,7 +2628,7 @@ clutter_texture_set_repeat (ClutterTexture *texture,
     {
       priv->repeat_x = repeat_x;
 
-      g_object_notify (G_OBJECT (texture), "repeat-x");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_X]);
 
       changed = TRUE;
     }
@@ -2619,7 +2637,7 @@ clutter_texture_set_repeat (ClutterTexture *texture,
     {
       priv->repeat_y = repeat_y;
 
-      g_object_notify (G_OBJECT (texture), "repeat-y");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_Y]);
 
       changed = TRUE;
     }
@@ -2713,7 +2731,7 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
 
-      g_object_notify (G_OBJECT (texture), "keep-aspect-ratio");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_KEEP_ASPECT_RATIO]);
     }
 }
 
@@ -2768,8 +2786,8 @@ clutter_texture_set_load_async (ClutterTexture *texture,
 
       priv->load_async_set = load_async;
 
-      g_object_notify (G_OBJECT (texture), "load-async");
-      g_object_notify (G_OBJECT (texture), "load-data-async");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
     }
 }
 
@@ -2826,8 +2844,8 @@ clutter_texture_set_load_data_async (ClutterTexture *texture,
 
       priv->load_async_set = load_async;
 
-      g_object_notify (G_OBJECT (texture), "load-async");
-      g_object_notify (G_OBJECT (texture), "load-data-async");
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
+      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
     }
 }
 

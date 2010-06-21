@@ -101,8 +101,12 @@ enum
 
   PROP_LAYOUT_MANAGER,
   PROP_COLOR,
-  PROP_COLOR_SET
+  PROP_COLOR_SET,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
@@ -394,7 +398,7 @@ set_layout_manager (ClutterBox           *self,
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "layout-manager");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
 }
 
 static void
@@ -492,6 +496,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
                                CLUTTER_TYPE_LAYOUT_MANAGER,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT);
+  obj_props[PROP_LAYOUT_MANAGER] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_LAYOUT_MANAGER,
                                    pspec);
@@ -510,6 +515,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
                                     P_("The background color of the box"),
                                     &default_box_color,
                                     CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
   /**
@@ -524,6 +530,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
                                 P_("Whether the background color is set"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COLOR_SET] = pspec;
   g_object_class_install_property (gobject_class, PROP_COLOR_SET, pspec);
 }
 
@@ -967,8 +974,8 @@ clutter_box_set_color (ClutterBox         *box,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
 
-  g_object_notify (G_OBJECT (box), "color-set");
-  g_object_notify (G_OBJECT (box), "color");
+  _clutter_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
+  _clutter_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
 }
 
 /**

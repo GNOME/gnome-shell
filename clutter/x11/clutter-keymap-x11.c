@@ -73,8 +73,12 @@ enum
 {
   PROP_0,
 
-  PROP_BACKEND
+  PROP_BACKEND,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterKeymapX11, clutter_keymap_x11, G_TYPE_OBJECT);
 
@@ -325,6 +329,7 @@ clutter_keymap_x11_class_init (ClutterKeymapX11Class *klass)
                                CLUTTER_TYPE_BACKEND,
                                CLUTTER_PARAM_WRITABLE |
                                G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_BACKEND] = pspec;
   g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
 }
 

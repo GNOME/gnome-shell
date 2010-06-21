@@ -38,8 +38,12 @@ enum
 
   PROP_ACTOR,
   PROP_NAME,
-  PROP_ENABLED
+  PROP_ENABLED,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_ABSTRACT_TYPE (ClutterActorMeta,
                         clutter_actor_meta,
@@ -161,6 +165,7 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
                                P_("The actor attached to the meta"),
                                CLUTTER_TYPE_ACTOR,
                                CLUTTER_PARAM_READABLE);
+  obj_props[PROP_ACTOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
 
   /**
@@ -175,6 +180,7 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
                                P_("The name of the meta"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NAME] = pspec;
   g_object_class_install_property (gobject_class, PROP_NAME, pspec);
 
   /**
@@ -189,6 +195,7 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
                                 P_("Whether the meta is enabled"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ENABLED] = pspec;
   g_object_class_install_property (gobject_class, PROP_ENABLED, pspec);
 }
 
@@ -225,7 +232,7 @@ clutter_actor_meta_set_name (ClutterActorMeta *meta,
   g_free (meta->priv->name);
   meta->priv->name = g_strdup (name);
 
-  g_object_notify (G_OBJECT (meta), "name");
+  _clutter_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_NAME]);
 }
 
 /**
@@ -271,7 +278,7 @@ clutter_actor_meta_set_enabled (ClutterActorMeta *meta,
 
   meta->priv->is_enabled = is_enabled;
 
-  g_object_notify (G_OBJECT (meta), "enabled");
+  _clutter_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_ENABLED]);
 }
 
 /**

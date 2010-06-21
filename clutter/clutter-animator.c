@@ -185,8 +185,12 @@ enum
   PROP_0,
 
   PROP_DURATION,
-  PROP_TIMELINE
+  PROP_TIMELINE,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void clutter_scriptable_init (ClutterScriptableIface *iface);
 
@@ -1788,6 +1792,7 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
                              0, G_MAXUINT,
                              2000,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DURATION] = pspec;
   g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
 
   /**
@@ -1803,6 +1808,7 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
                                P_("The timeline of the animation"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TIMELINE] = pspec;
   g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);
 }
 

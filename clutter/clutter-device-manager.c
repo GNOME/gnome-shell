@@ -58,8 +58,12 @@ enum
 {
   PROP_0,
 
-  PROP_BACKEND
+  PROP_BACKEND,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -130,6 +134,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                                CLUTTER_TYPE_BACKEND,
                                CLUTTER_PARAM_READWRITE |
                                G_PARAM_CONSTRUCT_ONLY);
+  obj_props[PROP_BACKEND] = pspec;
   g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
 
   /**

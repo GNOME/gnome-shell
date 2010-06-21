@@ -546,8 +546,12 @@ enum
 
   PROP_ACTIONS,
   PROP_CONSTRAINTS,
-  PROP_EFFECT
+  PROP_EFFECT,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -1013,7 +1017,7 @@ clutter_actor_real_map (ClutterActor *self)
   /* notify on parent mapped before potentially mapping
    * children, so apps see a top-down notification.
    */
-  g_object_notify (G_OBJECT (self), "mapped");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
   if (CLUTTER_IS_CONTAINER (self))
     clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
@@ -1069,7 +1073,7 @@ clutter_actor_real_unmap (ClutterActor *self)
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
    */
-  g_object_notify (G_OBJECT (self), "mapped");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
   /* relinquish keyboard focus if we were unmapped while owning it */
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
@@ -1180,13 +1184,13 @@ clutter_actor_show (ClutterActor *self)
   if (!priv->show_on_set_parent && !priv->parent_actor)
     {
       priv->show_on_set_parent = TRUE;
-      g_object_notify (G_OBJECT (self), "show-on-set-parent");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SHOW_ON_SET_PARENT]);
     }
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       g_signal_emit (self, actor_signals[SHOW], 0);
-      g_object_notify (G_OBJECT (self), "visible");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
     }
 
   if (priv->parent_actor)
@@ -1270,13 +1274,13 @@ clutter_actor_hide (ClutterActor *self)
   if (priv->show_on_set_parent && !priv->parent_actor)
     {
       priv->show_on_set_parent = FALSE;
-      g_object_notify (G_OBJECT (self), "show-on-set-parent");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SHOW_ON_SET_PARENT]);
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       g_signal_emit (self, actor_signals[HIDE], 0);
-      g_object_notify (G_OBJECT (self), "visible");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
     }
 
   if (priv->parent_actor)
@@ -1368,7 +1372,7 @@ clutter_actor_realize (ClutterActor *self)
   CLUTTER_NOTE (ACTOR, "Realizing actor '%s'", get_actor_debug_name (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-  g_object_notify (G_OBJECT (self), "realized");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
 
   g_signal_emit (self, actor_signals[REALIZE], 0);
 
@@ -1485,7 +1489,7 @@ clutter_actor_unrealize_not_hiding (ClutterActor *self)
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
-  g_object_notify (G_OBJECT (self), "realized");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
 }
 
 /*
@@ -1673,15 +1677,15 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
    */
   if (priv->needs_allocation)
     {
-      g_object_notify (obj, "x");
-      g_object_notify (obj, "y");
-      g_object_notify (obj, "width");
-      g_object_notify (obj, "height");
+      _clutter_notify_by_pspec (obj, obj_props[PROP_X]);
+      _clutter_notify_by_pspec (obj, obj_props[PROP_Y]);
+      _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+      _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
   else if (priv->needs_width_request || priv->needs_height_request)
     {
-      g_object_notify (obj, "width");
-      g_object_notify (obj, "height");
+      _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+      _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
   else
     {
@@ -1694,16 +1698,16 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
       heightu = priv->allocation.y2 - priv->allocation.y1;
 
       if (xu != old->x1)
-        g_object_notify (obj, "x");
+        _clutter_notify_by_pspec (obj, obj_props[PROP_X]);
 
       if (yu != old->y1)
-        g_object_notify (obj, "y");
+        _clutter_notify_by_pspec (obj, obj_props[PROP_Y]);
 
       if (widthu != (old->x2 - old->x1))
-        g_object_notify (obj, "width");
+        _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
 
       if (heightu != (old->y2 - old->y1))
-        g_object_notify (obj, "height");
+        _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
 
   g_object_thaw_notify (obj);
@@ -1736,7 +1740,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
 
   if (x1_changed || y1_changed || x2_changed || y2_changed || flags_changed)
     {
-      g_object_notify (G_OBJECT (self), "allocation");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
 
       /* we also emit the ::allocation-changed signal for people
        * that wish to track the allocation flags
@@ -2757,17 +2761,17 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       priv->rxang = angle;
-      g_object_notify (G_OBJECT (self), "rotation-angle-x");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_X]);
       break;
 
     case CLUTTER_Y_AXIS:
       priv->ryang = angle;
-      g_object_notify (G_OBJECT (self), "rotation-angle-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Y]);
       break;
 
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
-      g_object_notify (G_OBJECT (self), "rotation-angle-z");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Z]);
       break;
     }
 
@@ -3482,6 +3486,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_X] = pspec;
   g_object_class_install_property (object_class, PROP_X, pspec);
 
   /**
@@ -3497,6 +3502,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y] = pspec;
   g_object_class_install_property (object_class, PROP_Y, pspec);
 
   /**
@@ -3512,6 +3518,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_WIDTH] = pspec;
   g_object_class_install_property (object_class, PROP_WIDTH, pspec);
   /**
    * ClutterActor:height:
@@ -3526,6 +3533,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_HEIGHT] = pspec;
   g_object_class_install_property (object_class, PROP_HEIGHT, pspec);
 
   /**
@@ -3544,6 +3552,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FIXED_X] = pspec;
   g_object_class_install_property (object_class, PROP_FIXED_X, pspec);
 
   /**
@@ -3562,6 +3571,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FIXED_Y] = pspec;
   g_object_class_install_property (object_class, PROP_FIXED_Y, pspec);
 
   /**
@@ -3578,6 +3588,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    "for the actor"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_FIXED_POSITION_SET] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_FIXED_POSITION_SET,
                                    pspec);
@@ -3600,6 +3611,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MIN_WIDTH] = pspec;
   g_object_class_install_property (object_class, PROP_MIN_WIDTH, pspec);
 
   /**
@@ -3619,6 +3631,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MIN_HEIGHT] = pspec;
   g_object_class_install_property (object_class, PROP_MIN_HEIGHT, pspec);
 
   /**
@@ -3638,6 +3651,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NATURAL_WIDTH] = pspec;
   g_object_class_install_property (object_class, PROP_NATURAL_WIDTH, pspec);
 
   /**
@@ -3657,6 +3671,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               0.0, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NATURAL_HEIGHT] = pspec;
   g_object_class_install_property (object_class, PROP_NATURAL_HEIGHT, pspec);
 
   /**
@@ -3672,6 +3687,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether to use the min-width property"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MIN_WIDTH_SET] = pspec;
   g_object_class_install_property (object_class, PROP_MIN_WIDTH_SET, pspec);
 
   /**
@@ -3687,6 +3703,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether to use the min-height property"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_MIN_HEIGHT_SET] = pspec;
   g_object_class_install_property (object_class, PROP_MIN_HEIGHT_SET, pspec);
 
   /**
@@ -3702,6 +3719,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether to use the natural-width property"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NATURAL_WIDTH_SET] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_NATURAL_WIDTH_SET,
                                    pspec);
@@ -3719,6 +3737,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether to use the natural-height property"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NATURAL_HEIGHT_SET] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_NATURAL_HEIGHT_SET,
                                    pspec);
@@ -3738,6 +3757,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The actor's allocation"),
                               CLUTTER_TYPE_ACTOR_BOX,
                               CLUTTER_PARAM_READABLE);
+  obj_props[PROP_ALLOCATION] = pspec;
   g_object_class_install_property (object_class, PROP_ALLOCATION, pspec);
 
   /**
@@ -3795,6 +3815,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_TYPE_REQUEST_MODE,
                              CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_REQUEST_MODE] = pspec;
   g_object_class_install_property (object_class, PROP_REQUEST_MODE, pspec);
 
   /**
@@ -3810,6 +3831,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DEPTH] = pspec;
   g_object_class_install_property (object_class, PROP_DEPTH, pspec);
 
   /**
@@ -3824,6 +3846,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              0, 255,
                              255,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OPACITY] = pspec;
   g_object_class_install_property (object_class, PROP_OPACITY, pspec);
 
   /**
@@ -3838,6 +3861,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor is visible or not"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_VISIBLE] = pspec;
   g_object_class_install_property (object_class, PROP_VISIBLE, pspec);
 
   /**
@@ -3853,6 +3877,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor will be painted"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_MAPPED] = pspec;
   g_object_class_install_property (object_class, PROP_MAPPED, pspec);
 
   /**
@@ -3867,6 +3892,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor has been realized"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_REALIZED] = pspec;
   g_object_class_install_property (object_class, PROP_REALIZED, pspec);
 
   /**
@@ -3883,6 +3909,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor is reactive to events"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_REACTIVE] = pspec;
   g_object_class_install_property (object_class, PROP_REACTIVE, pspec);
 
   /**
@@ -3895,6 +3922,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor has a clip set"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_HAS_CLIP] = pspec;
   g_object_class_install_property (object_class, PROP_HAS_CLIP, pspec);
 
   /**
@@ -3910,6 +3938,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The clip region for the actor"),
                               CLUTTER_TYPE_GEOMETRY,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CLIP] = pspec;
   g_object_class_install_property (object_class, PROP_CLIP, pspec);
 
   /**
@@ -3924,6 +3953,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                P_("Name of the actor"),
                                NULL,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_NAME] = pspec;
   g_object_class_install_property (object_class, PROP_NAME, pspec);
 
   /**
@@ -3939,6 +3969,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SCALE_X] = pspec;
   g_object_class_install_property (object_class, PROP_SCALE_X, pspec);
 
   /**
@@ -3954,6 +3985,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                0.0, G_MAXDOUBLE,
                                1.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SCALE_Y] = pspec;
   g_object_class_install_property (object_class, PROP_SCALE_Y, pspec);
 
   /**
@@ -3969,6 +4001,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SCALE_CENTER_X] = pspec;
   g_object_class_install_property (object_class, PROP_SCALE_CENTER_X, pspec);
 
   /**
@@ -3984,6 +4017,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0.0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SCALE_CENTER_Y] = pspec;
   g_object_class_install_property (object_class, PROP_SCALE_CENTER_Y, pspec);
 
   /**
@@ -3999,6 +4033,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_TYPE_GRAVITY,
                              CLUTTER_GRAVITY_NONE,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SCALE_GRAVITY] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_SCALE_GRAVITY,
                                    pspec);
@@ -4016,6 +4051,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                -G_MAXDOUBLE, G_MAXDOUBLE,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_ANGLE_X] = pspec;
   g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_X, pspec);
 
   /**
@@ -4031,6 +4067,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                -G_MAXDOUBLE, G_MAXDOUBLE,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_ANGLE_Y] = pspec;
   g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_Y, pspec);
 
   /**
@@ -4046,6 +4083,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                -G_MAXDOUBLE, G_MAXDOUBLE,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_ANGLE_Z] = pspec;
   g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_Z, pspec);
 
   /**
@@ -4060,6 +4098,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The rotation center on the X axis"),
                               CLUTTER_TYPE_VERTEX,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_CENTER_X] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_ROTATION_CENTER_X,
                                    pspec);
@@ -4076,6 +4115,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The rotation center on the Y axis"),
                               CLUTTER_TYPE_VERTEX,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_CENTER_Y] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_ROTATION_CENTER_Y,
                                    pspec);
@@ -4092,6 +4132,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The rotation center on the Z axis"),
                               CLUTTER_TYPE_VERTEX,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_CENTER_Z] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_ROTATION_CENTER_Z,
                                    pspec);
@@ -4109,6 +4150,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_TYPE_GRAVITY,
                              CLUTTER_GRAVITY_NONE,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_ROTATION_CENTER_Z_GRAVITY,
                                    pspec);
@@ -4127,6 +4169,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANCHOR_X] = pspec;
   g_object_class_install_property (object_class, PROP_ANCHOR_X, pspec);
 
   /**
@@ -4143,6 +4186,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               -G_MAXFLOAT, G_MAXFLOAT,
                               0,
                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANCHOR_Y] = pspec;
   g_object_class_install_property (object_class, PROP_ANCHOR_Y, pspec);
 
   /**
@@ -4158,6 +4202,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_TYPE_GRAVITY,
                              CLUTTER_GRAVITY_NONE,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANCHOR_GRAVITY] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_ANCHOR_GRAVITY, pspec);
 
@@ -4176,6 +4221,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                 P_("Whether the actor is shown when parented"),
                                 TRUE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_SHOW_ON_SET_PARENT] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_SHOW_ON_SET_PARENT,
                                    pspec);
@@ -4197,6 +4243,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    "actor's allocation"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CLIP_TO_ALLOCATION] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_CLIP_TO_ALLOCATION,
                                    pspec);
@@ -4207,6 +4254,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_TYPE_TEXT_DIRECTION,
                              CLUTTER_TEXT_DIRECTION_LTR,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_TEXT_DIRECTION] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_TEXT_DIRECTION,
                                    pspec);
@@ -4225,6 +4273,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    "of an input device"),
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
+  obj_props[PROP_HAS_POINTER] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_HAS_POINTER,
                                    pspec);
@@ -4241,6 +4290,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                P_("Adds an action to the actor"),
                                CLUTTER_TYPE_ACTION,
                                CLUTTER_PARAM_WRITABLE);
+  obj_props[PROP_ACTIONS] = pspec;
   g_object_class_install_property (object_class, PROP_ACTIONS, pspec);
 
   /**
@@ -4255,6 +4305,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                P_("Adds a constraint to the actor"),
                                CLUTTER_TYPE_CONSTRAINT,
                                CLUTTER_PARAM_WRITABLE);
+  obj_props[PROP_CONSTRAINTS] = pspec;
   g_object_class_install_property (object_class, PROP_CONSTRAINTS, pspec);
 
   /**
@@ -4269,6 +4320,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                "Add an effect to be applied on the actor",
                                CLUTTER_TYPE_EFFECT,
                                CLUTTER_PARAM_WRITABLE);
+  obj_props[PROP_EFFECT] = pspec;
   g_object_class_install_property (object_class, PROP_EFFECT, pspec);
 
   /**
@@ -5670,7 +5722,7 @@ clutter_actor_set_fixed_position_set (ClutterActor *self,
     return;
 
   self->priv->position_set = is_set != FALSE;
-  g_object_notify (G_OBJECT (self), "fixed-position-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIXED_POSITION_SET]);
 
   clutter_actor_queue_relayout (self);
 }
@@ -5732,7 +5784,7 @@ clutter_actor_set_min_width (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_min_width = min_width;
-  g_object_notify (G_OBJECT (self), "min-width");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH]);
   clutter_actor_set_min_width_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -5767,7 +5819,7 @@ clutter_actor_set_min_height (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_min_height = min_height;
-  g_object_notify (G_OBJECT (self), "min-height");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT]);
   clutter_actor_set_min_height_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -5802,7 +5854,7 @@ clutter_actor_set_natural_width (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_natural_width = natural_width;
-  g_object_notify (G_OBJECT (self), "natural-width");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH]);
   clutter_actor_set_natural_width_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -5837,7 +5889,7 @@ clutter_actor_set_natural_height (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_natural_height = natural_height;
-  g_object_notify (G_OBJECT (self), "natural-height");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT]);
   clutter_actor_set_natural_height_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -5860,7 +5912,7 @@ clutter_actor_set_min_width_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->min_width_set = use_min_width != FALSE;
-  g_object_notify (G_OBJECT (self), "min-width-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -5880,7 +5932,7 @@ clutter_actor_set_min_height_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->min_height_set = use_min_height != FALSE;
-  g_object_notify (G_OBJECT (self), "min-height-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -5900,7 +5952,7 @@ clutter_actor_set_natural_width_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->natural_width_set = use_natural_width != FALSE;
-  g_object_notify (G_OBJECT (self), "natural-width-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -5920,7 +5972,7 @@ clutter_actor_set_natural_height_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->natural_height_set = use_natural_height != FALSE;
-  g_object_notify (G_OBJECT (self), "natural-height-set");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -5958,7 +6010,7 @@ clutter_actor_set_request_mode (ClutterActor       *self,
   priv->needs_width_request = TRUE;
   priv->needs_height_request = TRUE;
 
-  g_object_notify (G_OBJECT (self), "request-mode");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REQUEST_MODE]);
 
   clutter_actor_queue_relayout (self);
 }
@@ -6602,10 +6654,10 @@ clutter_actor_set_scale (ClutterActor *self,
   g_object_freeze_notify (G_OBJECT (self));
 
   priv->scale_x = scale_x;
-  g_object_notify (G_OBJECT (self), "scale-x");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_X]);
 
   priv->scale_y = scale_y;
-  g_object_notify (G_OBJECT (self), "scale-y");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_Y]);
 
   clutter_actor_queue_redraw (self);
 
@@ -6644,10 +6696,10 @@ clutter_actor_set_scale_full (ClutterActor *self,
   clutter_actor_set_scale (self, scale_x, scale_y);
 
   if (priv->scale_center.is_fractional)
-    g_object_notify (G_OBJECT (self), "scale-gravity");
+    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
 
-  g_object_notify (G_OBJECT (self), "scale-center-x");
-  g_object_notify (G_OBJECT (self), "scale-center-y");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
 
   clutter_anchor_coord_set_units (&priv->scale_center, center_x, center_y, 0);
 
@@ -6690,9 +6742,9 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
 
       clutter_actor_set_scale (self, scale_x, scale_y);
 
-      g_object_notify (G_OBJECT (self), "scale-gravity");
-      g_object_notify (G_OBJECT (self), "scale-center-x");
-      g_object_notify (G_OBJECT (self), "scale-center-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
 
       clutter_anchor_coord_set_gravity (&priv->scale_center, gravity);
 
@@ -6798,7 +6850,7 @@ clutter_actor_set_opacity (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      g_object_notify (G_OBJECT (self), "opacity");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
     }
 }
 
@@ -6904,7 +6956,7 @@ clutter_actor_set_name (ClutterActor *self,
   g_free (self->priv->name);
   self->priv->name = g_strdup (name);
 
-  g_object_notify (G_OBJECT (self), "name");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NAME]);
 }
 
 /**
@@ -6983,7 +7035,7 @@ clutter_actor_set_depth (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      g_object_notify (G_OBJECT (self), "depth");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
     }
 }
 
@@ -7049,19 +7101,19 @@ clutter_actor_set_rotation (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       clutter_anchor_coord_set_units (&priv->rx_center, x, y, z);
-      g_object_notify (G_OBJECT (self), "rotation-center-x");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_X]);
       break;
 
     case CLUTTER_Y_AXIS:
       clutter_anchor_coord_set_units (&priv->ry_center, x, y, z);
-      g_object_notify (G_OBJECT (self), "rotation-center-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Y]);
       break;
 
     case CLUTTER_Z_AXIS:
       if (priv->rz_center.is_fractional)
-        g_object_notify (G_OBJECT (self), "rotation-center-z-gravity");
+        _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
       clutter_anchor_coord_set_units (&priv->rz_center, x, y, z);
-      g_object_notify (G_OBJECT (self), "rotation-center-z");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
       break;
     }
 
@@ -7102,8 +7154,8 @@ clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
       clutter_actor_set_rotation_internal (self, CLUTTER_Z_AXIS, angle);
 
       clutter_anchor_coord_set_gravity (&priv->rz_center, gravity);
-      g_object_notify (G_OBJECT (self), "rotation-center-z-gravity");
-      g_object_notify (G_OBJECT (self), "rotation-center-z");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
 
       g_object_thaw_notify (G_OBJECT (self));
     }
@@ -7225,8 +7277,8 @@ clutter_actor_set_clip (ClutterActor *self,
 
   clutter_actor_queue_redraw (self);
 
-  g_object_notify (G_OBJECT (self), "has-clip");
-  g_object_notify (G_OBJECT (self), "clip");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP]);
 }
 
 /**
@@ -7247,7 +7299,7 @@ clutter_actor_remove_clip (ClutterActor *self)
 
   clutter_actor_queue_redraw (self);
 
-  g_object_notify (G_OBJECT (self), "has-clip");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
 }
 
 /**
@@ -7831,7 +7883,7 @@ clutter_actor_set_reactive (ClutterActor *actor,
   else
     CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 
-  g_object_notify (G_OBJECT (actor), "reactive");
+  _clutter_notify_by_pspec (G_OBJECT (actor), obj_props[PROP_REACTIVE]);
 }
 
 /**
@@ -7913,17 +7965,17 @@ clutter_actor_set_anchor_point (ClutterActor *self,
                                   NULL);
 
   if (priv->anchor.is_fractional)
-    g_object_notify (G_OBJECT (self), "anchor-gravity");
+    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
 
   if (old_anchor_x != anchor_x)
     {
-      g_object_notify (G_OBJECT (self), "anchor-x");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
       changed = TRUE;
     }
 
   if (old_anchor_y != anchor_y)
     {
-      g_object_notify (G_OBJECT (self), "anchor-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
       changed = TRUE;
     }
 
@@ -8075,9 +8127,9 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
     {
       clutter_anchor_coord_set_gravity (&self->priv->anchor, gravity);
 
-      g_object_notify (G_OBJECT (self), "anchor-gravity");
-      g_object_notify (G_OBJECT (self), "anchor-x");
-      g_object_notify (G_OBJECT (self), "anchor-y");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
     }
 }
 
@@ -10383,16 +10435,16 @@ clutter_actor_set_flags (ClutterActor      *self,
   visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
 
   if (reactive_set != was_reactive_set)
-    g_object_notify (obj, "reactive");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
 
   if (realized_set != was_realized_set)
-    g_object_notify (obj, "realized");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
 
   if (mapped_set != was_mapped_set)
-    g_object_notify (obj, "mapped");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
 
   if (visible_set != was_visible_set)
-    g_object_notify (obj, "visible");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
 
   g_object_thaw_notify (obj);
   g_object_unref (obj);
@@ -10443,16 +10495,16 @@ clutter_actor_unset_flags (ClutterActor      *self,
   visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
 
   if (reactive_set != was_reactive_set)
-    g_object_notify (obj, "reactive");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
 
   if (realized_set != was_realized_set)
-    g_object_notify (obj, "realized");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
 
   if (mapped_set != was_mapped_set)
-    g_object_notify (obj, "mapped");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
 
   if (visible_set != was_visible_set)
-    g_object_notify (obj, "visible");
+    _clutter_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
 
   g_object_thaw_notify (obj);
 }
@@ -10560,7 +10612,7 @@ clutter_actor_set_text_direction (ClutterActor         *self,
        * the text direction; see clutter_text_direction_changed_cb()
        * inside clutter-text.c
        */
-      g_object_notify (G_OBJECT (self), "text-direction");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT_DIRECTION]);
 
       /* if this is a container we need to recurse */
       if (CLUTTER_IS_CONTAINER (self))
@@ -10586,7 +10638,7 @@ _clutter_actor_set_has_pointer (ClutterActor *self,
     {
       priv->has_pointer = has_pointer;
 
-      g_object_notify (G_OBJECT (self), "has-pointer");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_POINTER]);
     }
 }
 
@@ -10811,7 +10863,7 @@ clutter_actor_add_action (ClutterActor  *self,
 
   _clutter_meta_group_add_meta (priv->actions, CLUTTER_ACTOR_META (action));
 
-  g_object_notify (G_OBJECT (self), "actions");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -10872,7 +10924,7 @@ clutter_actor_remove_action (ClutterActor  *self,
 
   _clutter_meta_group_remove_meta (priv->actions, CLUTTER_ACTOR_META (action));
 
-  g_object_notify (G_OBJECT (self), "actions");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -10906,7 +10958,7 @@ clutter_actor_remove_action_by_name (ClutterActor *self,
 
   _clutter_meta_group_remove_meta (priv->actions, meta);
 
-  g_object_notify (G_OBJECT (self), "actions");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -11017,7 +11069,7 @@ clutter_actor_add_constraint (ClutterActor      *self,
   _clutter_meta_group_add_meta (priv->constraints,
                                 CLUTTER_ACTOR_META (constraint));
 
-  g_object_notify (G_OBJECT (self), "constraints");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
 
 /**
@@ -11079,7 +11131,7 @@ clutter_actor_remove_constraint (ClutterActor      *self,
   _clutter_meta_group_remove_meta (priv->constraints,
                                    CLUTTER_ACTOR_META (constraint));
 
-  g_object_notify (G_OBJECT (self), "constraints");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
 
 /**
@@ -11216,7 +11268,7 @@ clutter_actor_set_clip_to_allocation (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      g_object_notify (G_OBJECT (self), "clip-to-allocation");
+      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP_TO_ALLOCATION]);
     }
 }
 
@@ -11272,7 +11324,7 @@ clutter_actor_add_effect (ClutterActor  *self,
 
   clutter_actor_queue_redraw (self);
 
-  g_object_notify (G_OBJECT (self), "effect");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
 }
 
 /**
@@ -11335,7 +11387,7 @@ clutter_actor_remove_effect (ClutterActor  *self,
 
   clutter_actor_queue_redraw (self);
 
-  g_object_notify (G_OBJECT (self), "effect");
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
 }
 
 /**

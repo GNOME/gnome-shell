@@ -72,8 +72,12 @@ enum
   PROP_0,
 
   PROP_OPACITY_START,
-  PROP_OPACITY_END
+  PROP_OPACITY_END,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 static void 
 alpha_notify_foreach (ClutterBehaviour *behaviour,
@@ -182,6 +186,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                              0, 255,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OPACITY_START] = pspec;
   g_object_class_install_property (gobject_class, PROP_OPACITY_START, pspec);
 
   /**
@@ -197,6 +202,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                              0, 255,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OPACITY_END] = pspec;
   g_object_class_install_property (gobject_class, PROP_OPACITY_END, pspec);
 
   behave_class->alpha_notify = clutter_behaviour_alpha_notify;
@@ -265,14 +271,14 @@ clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
     {
       priv->opacity_start = opacity_start;
 
-      g_object_notify (G_OBJECT (behaviour), "opacity-start");
+      _clutter_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_START]);
     }
 
   if (priv->opacity_end != opacity_end)
     {
       priv->opacity_end = opacity_end;
 
-      g_object_notify (G_OBJECT (behaviour), "opacity-end");
+      _clutter_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (behaviour));

@@ -108,8 +108,12 @@ enum
   PROP_0,
 
   PROP_DESCRIPTION,
-  PROP_LENGTH
+  PROP_LENGTH,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 typedef struct _ClutterPathNodeFull ClutterPathNodeFull;
 
@@ -196,6 +200,7 @@ clutter_path_class_init (ClutterPathClass *klass)
                                "SVG-style description of the path",
                                "",
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DESCRIPTION] = pspec;
   g_object_class_install_property (gobject_class, PROP_DESCRIPTION, pspec);
 
   pspec = g_param_spec_uint ("length",
@@ -204,6 +209,7 @@ clutter_path_class_init (ClutterPathClass *klass)
                              "of the path.",
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READABLE);
+  obj_props[PROP_LENGTH] = pspec;
   g_object_class_install_property (gobject_class, PROP_LENGTH, pspec);
 
   g_type_class_add_private (klass, sizeof (ClutterPathPrivate));

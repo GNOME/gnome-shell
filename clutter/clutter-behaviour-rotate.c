@@ -78,8 +78,12 @@ enum
   PROP_DIRECTION,
   PROP_CENTER_X,
   PROP_CENTER_Y,
-  PROP_CENTER_Z
+  PROP_CENTER_Z,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 typedef struct {
   gdouble angle;
@@ -275,6 +279,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_START] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_ANGLE_START,
                                    pspec);
@@ -292,6 +297,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                0.0, 360.0,
                                0.0,
                                CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_ANGLE_END] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_ANGLE_END,
                                    pspec);
@@ -309,6 +315,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                              CLUTTER_TYPE_ROTATE_AXIS,
                              CLUTTER_Z_AXIS,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_AXIS] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_AXIS,
                                    pspec);
@@ -326,6 +333,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                              CLUTTER_TYPE_ROTATE_DIRECTION,
                              CLUTTER_ROTATE_CW,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DIRECTION] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_DIRECTION,
                                    pspec);
@@ -343,6 +351,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CENTER_X] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_CENTER_X,
                                    pspec);
@@ -360,6 +369,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CENTER_Y] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_CENTER_Y,
                                    pspec);
@@ -377,6 +387,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                             -G_MAXINT, G_MAXINT,
                             0,
                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_CENTER_Z] = pspec;
   g_object_class_install_property (gobject_class,
                                    PROP_CENTER_Z,
                                    pspec);
@@ -475,7 +486,7 @@ clutter_behaviour_rotate_set_axis (ClutterBehaviourRotate *rotate,
     {
       priv->axis = axis;
 
-      g_object_notify (G_OBJECT (rotate), "axis");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_AXIS]);
     }
 }
 
@@ -521,7 +532,7 @@ clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
     {
       priv->direction = direction;
 
-      g_object_notify (G_OBJECT (rotate), "direction");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_DIRECTION]);
     }
 }
 
@@ -581,14 +592,14 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
     {
       priv->angle_start = clamp_angle (angle_start);
 
-      g_object_notify (G_OBJECT (rotate), "angle-start");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_START]);
     }
 
   if (priv->angle_end != angle_end)
     {
       priv->angle_end = clamp_angle (angle_end);
 
-      g_object_notify (G_OBJECT (rotate), "angle-end");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (rotate));
@@ -623,19 +634,19 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
   if (priv->center_x != x)
     {
       priv->center_x = x;
-      g_object_notify (G_OBJECT (rotate), "center-x");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_X]);
     }
 
   if (priv->center_y != y)
     {
       priv->center_y = y;
-      g_object_notify (G_OBJECT (rotate), "center-y");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Y]);
     }
 
   if (priv->center_z != z)
     {
       priv->center_z = z;
-      g_object_notify (G_OBJECT (rotate), "center-z");
+      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Z]);
     }
 
   g_object_thaw_notify (G_OBJECT (rotate));

@@ -85,8 +85,12 @@ enum
   PROP_LOOP,
   PROP_DELAY,
   PROP_DURATION,
-  PROP_DIRECTION
+  PROP_DIRECTION,
+
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -259,6 +263,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                 "Should the timeline automatically restart",
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_LOOP] = pspec;
   g_object_class_install_property (object_class, PROP_LOOP, pspec);
 
   /**
@@ -275,6 +280,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DELAY] = pspec;
   g_object_class_install_property (object_class, PROP_DELAY, pspec);
 
   /**
@@ -291,6 +297,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                              0, G_MAXUINT,
                              1000,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DURATION] = pspec;
   g_object_class_install_property (object_class, PROP_DURATION, pspec);
 
   /**
@@ -307,6 +314,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                              CLUTTER_TYPE_TIMELINE_DIRECTION,
                              CLUTTER_TIMELINE_FORWARD,
                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_DIRECTION] = pspec;
   g_object_class_install_property (object_class, PROP_DIRECTION, pspec);
 
   /**
@@ -812,7 +820,7 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
     {
       timeline->priv->loop = loop;
 
-      g_object_notify (G_OBJECT (timeline), "loop");
+      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_LOOP]);
     }
 }
 
@@ -1037,7 +1045,7 @@ clutter_timeline_set_delay (ClutterTimeline *timeline,
   if (priv->delay != msecs)
     {
       priv->delay = msecs;
-      g_object_notify (G_OBJECT (timeline), "delay");
+      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DELAY]);
     }
 }
 
@@ -1089,7 +1097,7 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
     {
       priv->duration = msecs;
 
-      g_object_notify (G_OBJECT (timeline), "duration");
+      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DURATION]);
     }
 }
 
@@ -1162,7 +1170,7 @@ clutter_timeline_set_direction (ClutterTimeline          *timeline,
       if (priv->elapsed_time == 0)
         priv->elapsed_time = priv->duration;
 
-      g_object_notify (G_OBJECT (timeline), "direction");
+      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DIRECTION]);
     }
 }
 
