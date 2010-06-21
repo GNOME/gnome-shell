@@ -112,6 +112,8 @@ clutter_backend_x11_xsettings_notify (const char       *name,
   if (name == NULL || *name == '\0')
     return;
 
+  g_object_freeze_notify (G_OBJECT (settings));
+
   for (i = 0; i < _n_clutter_settings_map; i++)
     {
       if (g_strcmp0 (name, CLUTTER_SETTING_X11_NAME (i)) == 0)
@@ -163,6 +165,8 @@ clutter_backend_x11_xsettings_notify (const char       *name,
           break;
         }
     }
+
+  g_object_thaw_notify (G_OBJECT (settings));
 }
 
 gboolean
