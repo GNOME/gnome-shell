@@ -44,6 +44,7 @@
 #include "clutter-id-pool.h"
 #include "clutter-layout-manager.h"
 #include "clutter-master-clock.h"
+#include "clutter-settings.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
@@ -171,6 +172,8 @@ struct _ClutterMainContext
   gulong redraw_count;
 
   GList *repaint_funcs;
+
+  ClutterSettings *settings;
 };
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())

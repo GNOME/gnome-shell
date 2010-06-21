@@ -87,6 +87,7 @@
 #include "clutter-score.h"
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
+#include "clutter-settings.h"
 #include "clutter-shader.h"
 #include "clutter-shader-effect.h"
 #include "clutter-shader-types.h"

@@ -60,24 +60,19 @@ G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
 struct _ClutterBackendPrivate
 {
-  /* settings */
-  guint double_click_time;
-  guint double_click_distance;
-
-  gdouble resolution;
-
-  gfloat units_per_em;
-  gint32 units_serial;
-
   cairo_font_options_t *font_options;
 
   gchar *font_name;
+
+  gfloat units_per_em;
+  gint32 units_serial;
 };
 
 enum
 {
   RESOLUTION_CHANGED,
   FONT_CHANGED,
+  SETTINGS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -87,7 +82,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static void
 clutter_backend_dispose (GObject *gobject)
 {
-  ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
   ClutterMainContext *clutter_context;
 
   clutter_context = _clutter_context_get_default ();
@@ -101,9 +96,9 @@ clutter_backend_dispose (GObject *gobject)
       clutter_context->events_queue = NULL;
     }
 
-  g_free (priv->font_name);
+  g_free (backend->priv->font_name);
 
-  clutter_backend_set_font_options (CLUTTER_BACKEND (gobject), NULL);
+  clutter_backend_set_font_options (backend, NULL);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
@@ -166,11 +161,22 @@ static void
 clutter_backend_real_resolution_changed (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv = backend->priv;
+  ClutterMainContext *context;
+  ClutterSettings *settings;
+  gint dpi;
+
+  context = _clutter_context_get_default ();
+
+  settings = clutter_settings_get_default ();
+  g_object_get (settings, "font-dpi", &dpi, NULL);
+
+  if (context->font_map != NULL)
+    cogl_pango_font_map_set_resolution (context->font_map, dpi / 1024.0);
 
   priv->units_per_em = get_units_per_em (backend, NULL);
   priv->units_serial += 1;
 
-  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", priv->units_per_em);
 }
 
 static void
@@ -181,7 +187,7 @@ clutter_backend_real_font_changed (ClutterBackend *backend)
   priv->units_per_em = get_units_per_em (backend, NULL);
   priv->units_serial += 1;
 
-  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", priv->units_per_em);
 }
 
 static void
@@ -211,6 +217,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  backend_signals[SETTINGS_CHANGED] =
+    g_signal_new (I_("settings-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterBackendClass, settings_changed),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
   klass->resolution_changed = clutter_backend_real_resolution_changed;
   klass->font_changed = clutter_backend_real_font_changed;
 }
@@ -221,8 +236,6 @@ clutter_backend_init (ClutterBackend *backend)
   ClutterBackendPrivate *priv;
 
   priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE (backend);
-
-  priv->resolution = -1.0;
 
   priv->units_per_em = -1.0;
   priv->units_serial = 1;
@@ -531,14 +544,16 @@ clutter_get_default_backend (void)
  * verify whether it's a double click event or not.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:double-click-time instead
  */
 void
 clutter_backend_set_double_click_time (ClutterBackend *backend,
                                        guint           msec)
 {
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  ClutterSettings *settings = clutter_settings_get_default ();
 
-  backend->priv->double_click_time = msec;
+  g_object_set (settings, "double-click-time", msec, NULL);
 }
 
 /**
@@ -551,13 +566,18 @@ clutter_backend_set_double_click_time (ClutterBackend *backend,
  * Return value: a time in milliseconds
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:double-click-time instead
  */
 guint
 clutter_backend_get_double_click_time (ClutterBackend *backend)
 {
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+  ClutterSettings *settings = clutter_settings_get_default ();
+  gint retval;
 
-  return backend->priv->double_click_time;
+  g_object_get (settings, "double-click-time", &retval, NULL);
+
+  return retval;
 }
 
 /**
@@ -568,14 +588,16 @@ clutter_backend_get_double_click_time (ClutterBackend *backend)
  * Sets the maximum distance used to verify a double click event.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:double-click-distance instead
  */
 void
 clutter_backend_set_double_click_distance (ClutterBackend *backend,
                                            guint           distance)
 {
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-  
-  backend->priv->double_click_distance = distance;
+  ClutterSettings *settings = clutter_settings_get_default ();
+
+  g_object_set (settings, "double-click-distance", distance, NULL);
 }
 
 /**
@@ -587,13 +609,18 @@ clutter_backend_set_double_click_distance (ClutterBackend *backend,
  * Return value: a distance, in pixels.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:double-click-distance instead
  */
 guint
 clutter_backend_get_double_click_distance (ClutterBackend *backend)
 {
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+  ClutterSettings *settings = clutter_settings_get_default ();
+  gint retval;
 
-  return backend->priv->double_click_distance;
+  g_object_get (settings, "double-click-distance", &retval, NULL);
+
+  return retval;
 }
 
 /**
@@ -610,26 +637,25 @@ clutter_backend_get_double_click_distance (ClutterBackend *backend)
  * Applications should never need to call this function.
  *
  * Since: 0.4
+ *
+ * Deprecated: Use #ClutterSettings:font-dpi instead
  */
 void
 clutter_backend_set_resolution (ClutterBackend *backend,
                                 gdouble         dpi)
 {
-  ClutterBackendPrivate *priv;
+  ClutterSettings *settings;
+  gint resolution;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
-  priv = backend->priv;
-
   if (dpi < 0)
-    dpi = -1.0;
+    resolution = -1;
+  else
+    resolution = dpi * 1024;
 
-  priv->resolution = dpi;
-
-  if (CLUTTER_CONTEXT ()->font_map)
-    cogl_pango_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map, dpi);
-
-  g_signal_emit (backend, backend_signals[RESOLUTION_CHANGED], 0);
+  settings = clutter_settings_get_default ();
+  g_object_set (settings, "font-dpi", resolution, NULL);
 }
 
 /**
@@ -647,9 +673,15 @@ clutter_backend_set_resolution (ClutterBackend *backend,
 gdouble
 clutter_backend_get_resolution (ClutterBackend *backend)
 {
+  ClutterSettings *settings;
+  gint resolution;
+
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
 
-  return backend->priv->resolution;
+  settings = clutter_settings_get_default ();
+  g_object_get (settings, "font-dpi", &resolution, NULL);
+
+  return resolution / 1024.0;
 }
 
 /**
@@ -670,7 +702,7 @@ clutter_backend_get_resolution (ClutterBackend *backend)
  * Since: 0.8
  */
 void
-clutter_backend_set_font_options (ClutterBackend       *backend,
+clutter_backend_set_font_options (ClutterBackend             *backend,
                                   const cairo_font_options_t *options)
 {
   ClutterBackendPrivate *priv;
@@ -742,25 +774,16 @@ clutter_backend_get_font_options (ClutterBackend *backend)
  * be parsed by the pango_font_description_from_string() function.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:font-name instead
  */
 void
 clutter_backend_set_font_name (ClutterBackend *backend,
                                const gchar    *font_name)
 {
-  ClutterBackendPrivate *priv;
+  ClutterSettings *settings = clutter_settings_get_default ();
 
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-
-  priv = backend->priv;
-
-  g_free (priv->font_name);
-
-  if (font_name == NULL || *font_name == '\0')
-    priv->font_name = g_strdup (DEFAULT_FONT_NAME);
-  else
-    priv->font_name = g_strdup (font_name);
-
-  g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
+  g_object_set (settings, "font-name", font_name, NULL);
 }
 
 /**
@@ -774,25 +797,26 @@ clutter_backend_set_font_name (ClutterBackend *backend,
  *   owned by the #ClutterBackend and should never be modified or freed
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.4: Use #ClutterSettings:font-name instead
  */
 G_CONST_RETURN gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv;
+  ClutterSettings *settings;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
 
   priv = backend->priv;
 
-  if (G_LIKELY (priv->font_name))
-    return priv->font_name;
+  settings = clutter_settings_get_default ();
 
-  /* if we have never been called then we need to set the
-   * default font and update everything that relies on the
-   * ::font-changed signal
+  /* XXX yuck. but we return a const pointer, so we need to
+   * store it in the backend
    */
-  priv->font_name = g_strdup (DEFAULT_FONT_NAME);
-  g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
+  g_free (priv->font_name);
+  g_object_get (settings, "font-name", &priv->font_name, NULL);
 
   return priv->font_name;
 }
