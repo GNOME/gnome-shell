@@ -30,6 +30,8 @@
 
 #include "clutter-x11.h"
 
+#include "xsettings/xsettings-client.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_X11                (clutter_backend_x11_get_type ())
@@ -83,6 +85,8 @@ struct _ClutterBackendX11
   Time last_event_time;
 
   ClutterDeviceManager *device_manager;
+
+  XSettingsClient *xsettings;
 };
 
 struct _ClutterBackendX11Class

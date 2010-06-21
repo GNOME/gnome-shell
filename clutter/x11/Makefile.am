@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)                         \
 	-I$(top_srcdir)/clutter 	        \
 	-I$(top_srcdir)/clutter/cogl 	        \
+	-I$(srcdir)/xsettings			\
 	-I$(top_builddir)/clutter 	        \
 	-I$(top_builddir)/clutter/cogl 	        \
 	$(CLUTTER_CFLAGS)                       \
@@ -44,9 +45,14 @@ libclutter_x11_la_SOURCES = \
 	$(srcdir)/clutter-event-x11.c 		\
 	$(srcdir)/clutter-input-device-x11.h 	\
 	$(srcdir)/clutter-input-device-x11.c 	\
+	$(srcdir)/clutter-settings-x11.h	\
 	$(srcdir)/clutter-stage-x11.h 		\
 	$(srcdir)/clutter-stage-x11.c 		\
         $(srcdir)/clutter-x11-texture-pixmap.c 	\
+	$(srcdir)/xsettings/xsettings-client.c	\
+	$(srcdir)/xsettings/xsettings-client.h	\
+	$(srcdir)/xsettings/xsettings-common.c	\
+	$(srcdir)/xsettings/xsettings-common.h	\
 	clutter-x11-enum-types.h 		\
 	clutter-x11-enum-types.c 		\
 	$(NULL)

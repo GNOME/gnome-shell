@@ -40,8 +40,11 @@
 #include "clutter-backend-x11.h"
 #include "clutter-device-manager-x11.h"
 #include "clutter-input-device-x11.h"
+#include "clutter-settings-x11.h"
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
+
+#include "xsettings/xsettings-common.h"
 
 #include <X11/extensions/Xcomposite.h>
 
@@ -96,6 +99,71 @@ static gboolean clutter_synchronise = FALSE;
 /* X error trap */
 static int TrappedErrorCode = 0;
 static int (* old_error_handler) (Display *, XErrorEvent *);
+
+static void
+clutter_backend_x11_xsettings_notify (const char       *name,
+                                      XSettingsAction   action,
+                                      XSettingsSetting *setting,
+                                      void             *cb_data)
+{
+  ClutterSettings *settings = clutter_settings_get_default ();
+  gint i;
+
+  if (name == NULL || *name == '\0')
+    return;
+
+  for (i = 0; i < _n_clutter_settings_map; i++)
+    {
+      if (g_strcmp0 (name, CLUTTER_SETTING_X11_NAME (i)) == 0)
+        {
+          GValue value = { 0, };
+
+          switch (setting->type)
+            {
+            case XSETTINGS_TYPE_INT:
+              g_value_init (&value, G_TYPE_INT);
+              g_value_set_int (&value, setting->data.v_int);
+              break;
+
+            case XSETTINGS_TYPE_STRING:
+              g_value_init (&value, G_TYPE_STRING);
+              g_value_set_string (&value, setting->data.v_string);
+              break;
+
+            case XSETTINGS_TYPE_COLOR:
+              {
+                ClutterColor color;
+
+                color.red   = (guint8) ((float) setting->data.v_color.red
+                            / 65535.0 * 255);
+                color.green = (guint8) ((float) setting->data.v_color.green
+                            / 65535.0 * 255);
+                color.blue  = (guint8) ((float) setting->data.v_color.blue
+                            / 65535.0 * 255);
+                color.alpha = (guint8) ((float) setting->data.v_color.alpha
+                            / 65535.0 * 255);
+
+                g_value_init (&value, G_TYPE_BOXED);
+                clutter_value_set_color (&value, &color);
+              }
+              break;
+            }
+
+          CLUTTER_NOTE (BACKEND,
+                        "Mapping XSETTING '%s' to 'ClutterSettings:%s'",
+                        CLUTTER_SETTING_X11_NAME (i),
+                        CLUTTER_SETTING_PROPERTY (i));
+
+          g_object_set_property (G_OBJECT (settings),
+                                 CLUTTER_SETTING_PROPERTY (i),
+                                 &value);
+
+          g_value_unset (&value);
+
+          break;
+        }
+    }
+}
 
 gboolean
 clutter_backend_x11_pre_parse (ClutterBackend  *backend,
@@ -194,6 +262,14 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
                       "backend", backend_x11,
                       NULL);
 
+      /* create XSETTINGS client */
+      backend_x11->xsettings =
+        _clutter_xsettings_client_new (backend_x11->xdpy,
+                                       backend_x11->xscreen_num,
+                                       clutter_backend_x11_xsettings_notify,
+                                       NULL,
+                                       backend_x11);
+
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
 
@@ -281,6 +357,8 @@ clutter_backend_x11_finalize (GObject *gobject)
 
   g_free (backend_x11->display_name);
 
+  xsettings_client_destroy (backend_x11->xsettings);
+
   XCloseDisplay (backend_x11->xdpy);
 
   if (backend_singleton)
@@ -344,6 +422,8 @@ gboolean
 clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
                                   XEvent *xevent)
 {
+  xsettings_client_process_event (backend_x11->xsettings, xevent);
+
   return FALSE;
 }
 
@@ -388,13 +468,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 static void
 clutter_backend_x11_init (ClutterBackendX11 *backend_x11)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (backend_x11);
-
-  /* FIXME: get from xsettings */
-  clutter_backend_set_double_click_time (backend, 250);
-  clutter_backend_set_double_click_distance (backend, 5);
-  clutter_backend_set_resolution (backend, 96.0);
-
   backend_x11->last_event_time = CurrentTime;
 }
 
