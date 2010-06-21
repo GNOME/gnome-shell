@@ -361,7 +361,7 @@ clutter_backend_x11_finalize (GObject *gobject)
 
   g_free (backend_x11->display_name);
 
-  xsettings_client_destroy (backend_x11->xsettings);
+  _clutter_xsettings_client_destroy (backend_x11->xsettings);
 
   XCloseDisplay (backend_x11->xdpy);
 
@@ -426,7 +426,7 @@ gboolean
 clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
                                   XEvent *xevent)
 {
-  xsettings_client_process_event (backend_x11->xsettings, xevent);
+  _clutter_xsettings_client_process_event (backend_x11->xsettings, xevent);
 
   return FALSE;
 }
