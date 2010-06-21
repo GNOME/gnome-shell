@@ -12,6 +12,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
         -DCLUTTER_COMPILATION \
+	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(MAINTAINER_CFLAGS)

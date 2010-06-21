@@ -5,6 +5,7 @@ NULL =
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterX11\"           \
         -DCLUTTER_COMPILATION                   \
+	-DCOGL_ENABLE_EXPERIMENTAL_API          \
 	-I$(top_srcdir)                         \
 	-I$(top_srcdir)/clutter 	        \
 	-I$(top_srcdir)/clutter/cogl 	        \
