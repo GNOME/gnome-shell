@@ -38,6 +38,9 @@ extern UProfContext *_cogl_uprof_context;
 #define COGL_TIMER_START     UPROF_TIMER_START
 #define COGL_TIMER_STOP      UPROF_TIMER_STOP
 
+void
+_cogl_profile_trace_message (const char *format, ...);
+
 #else
 
 #define COGL_STATIC_TIMER(A,B,C,D,E) extern void _cogl_dummy_decl (void)
@@ -47,6 +50,7 @@ extern UProfContext *_cogl_uprof_context;
 #define COGL_TIMER_START(A,B) G_STMT_START{ (void)0; }G_STMT_END
 #define COGL_TIMER_STOP(A,B) G_STMT_START{ (void)0; }G_STMT_END
 
+#define _cogl_profile_trace_message g_message
 
 #endif
 

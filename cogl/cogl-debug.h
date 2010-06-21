@@ -24,6 +24,8 @@
 #ifndef __COGL_DEBUG_H__
 #define __COGL_DEBUG_H__
 
+#include "cogl-profile.h"
+
 #include <glib.h>
 
 G_BEGIN_DECLS
@@ -59,17 +61,17 @@ typedef enum {
 #ifdef COGL_ENABLE_DEBUG
 
 #ifdef __GNUC__
-#define COGL_NOTE(type,x,a...)                      G_STMT_START { \
-        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {   \
-          g_message ("[" #type "] " G_STRLOC ": " x, ##a);         \
+#define COGL_NOTE(type,x,a...)                      G_STMT_START {            \
+        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {              \
+          _cogl_profile_trace_message ("[" #type "] " G_STRLOC " & " x, ##a); \
         }                                           } G_STMT_END
 
 #else
-#define COGL_NOTE(type,...)                         G_STMT_START { \
-        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {   \
-          char *_fmt = g_strdup_printf (__VA_ARGS__);              \
-          g_message ("[" #type "] " G_STRLOC ": %s", _fmt);        \
-          g_free (_fmt);                                           \
+#define COGL_NOTE(type,...)                         G_STMT_START {            \
+        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {              \
+          char *_fmt = g_strdup_printf (__VA_ARGS__);                         \
+          _cogl_profile_trace_message ("[" #type "] " G_STRLOC " & %s", _fmt);\
+          g_free (_fmt);                                                      \
         }                                           } G_STMT_END
 
 #endif /* __GNUC__ */
