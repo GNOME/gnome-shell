@@ -89,8 +89,9 @@ struct _ClutterDragActionPrivate
   gfloat transformed_press_x;
   gfloat transformed_press_y;
 
-  guint emit_delayed_press : 1;
-  guint in_drag            : 1;
+  guint emit_delayed_press    : 1;
+  guint in_drag               : 1;
+  guint motion_events_enabled : 1;
 };
 
 enum
@@ -126,6 +127,9 @@ emit_drag_begin (ClutterDragAction *action,
                  ClutterEvent      *event)
 {
   ClutterDragActionPrivate *priv = action->priv;
+
+  priv->motion_events_enabled = clutter_get_motion_events_enabled ();
+  clutter_set_motion_events_enabled (FALSE);
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
                  actor,
@@ -218,6 +222,8 @@ emit_drag_end (ClutterDragAction *action,
       g_signal_handler_disconnect (priv->stage, priv->capture_id);
       priv->capture_id = 0;
     }
+
+  clutter_set_motion_events_enabled (priv->motion_events_enabled);
 
   priv->in_drag = FALSE;
 }
