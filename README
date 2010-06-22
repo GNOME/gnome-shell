@@ -290,8 +290,8 @@ features).
 Release Notes for Clutter 1.4
 -------------------------------------------------------------------------------
 
-* ClutterLayoutManager sub-classes should chain up to the parent class's
-  implementation.
+* ClutterLayoutManager sub-classes overriding the set_container() virtual
+  function should chain up to the parent class's implementation.
 
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
