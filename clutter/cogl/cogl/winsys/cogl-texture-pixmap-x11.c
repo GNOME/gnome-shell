@@ -411,7 +411,7 @@ try_create_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap,
                        gboolean mipmap)
 {
   Display *dpy;
-  GLXFBConfig fb_config;
+  GLXFBConfig fb_config = NULL;
   int attribs[7];
   int i = 0;
   GLenum target;
