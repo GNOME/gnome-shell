@@ -464,8 +464,13 @@ StTooltip {
     padding: 30px 10px 10px 20px;
 }
 
+#dashAppSearchResults {
+    padding: 8px 0px;
+}
+
+.dash-search-statustext,
 .dash-search-section-header {
-    padding: 6px 0px;
+    padding: 4px 0px;
     spacing: 4px;
 }
 

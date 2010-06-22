@@ -18,9 +18,11 @@ const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
+const Params = imports.misc.params;
 
 const APPICON_SIZE = 48;
 const WELL_MAX_COLUMNS = 8;
+const WELL_MAX_SEARCH_ROWS = 1;
 const MENU_POPUP_TIMEOUT = 600;
 
 function AlphabeticalView() {
@@ -30,7 +32,7 @@ function AlphabeticalView() {
 AlphabeticalView.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
-        this._grid = new WellGrid(true);
+        this._grid = new WellGrid();
         this._appSystem = Shell.AppSystem.get_default();
         this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
     },
@@ -220,105 +222,36 @@ AppSearchResultDisplay.prototype = {
 
     _init: function (provider) {
         Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this._spacing = 0;
+        this._grid = new WellGrid({ rowLimit: WELL_MAX_SEARCH_ROWS });
         this.actor = new St.Bin({ name: 'dashAppSearchResults',
                                   x_align: St.Align.START });
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-        let container = new Shell.GenericContainer();
-        this._container = container;
-        this.actor.set_child(container);
-        container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        container.connect('allocate', Lang.bind(this, this._allocate));
-    },
-
-    _getPreferredWidth: function (actor, forHeight, alloc) {
-        let children = actor.get_children();
-
-        for (let i = 0; i < children.length; i++) {
-            let [minSize, natSize] = children[i].get_preferred_width(forHeight);
-            alloc.natural_size += natSize;
-        }
-    },
-
-    _getPreferredHeight: function (actor, forWidth, alloc) {
-        let children = actor.get_children();
-
-        for (let i = 0; i < children.length; i++) {
-            let [minSize, natSize] = children[i].get_preferred_height(forWidth);
-            if (minSize > alloc.min_size)
-                alloc.min_size = minSize;
-            if (natSize > alloc.natural_size)
-                alloc.natural_size = natSize;
-        }
-    },
-
-    _allocate: function (actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-
-        let children = actor.get_children();
-
-        let x = 0;
-        let i;
-        for (i = 0; i < children.length; i++) {
-            let child = children[i];
-            let childBox = new Clutter.ActorBox();
-
-            let [minWidth, minHeight, natWidth, natHeight] = child.get_preferred_size();
-
-            if (x + natWidth > availWidth) {
-                actor.set_skip_paint(child, true);
-                continue;
-            }
-
-            let yPadding = Math.max(0, availHeight - natHeight);
-
-            childBox.x1 = x;
-            childBox.x2 = childBox.x1 + natWidth;
-            childBox.y1 = Math.floor(yPadding / 2);
-            childBox.y2 = availHeight - childBox.y1;
-
-            x = childBox.x2 + this._spacing;
-
-            child.allocate(childBox, flags);
-            actor.set_skip_paint(child, false);
-        }
-    },
-
-    _onStyleChanged: function () {
-        let themeNode = this.actor.get_theme_node();
-        let [success, len] = themeNode.get_length('spacing', false);
-        if (success)
-            this._spacing = len;
-        this._container.queue_relayout();
+        this.actor.set_child(this._grid.actor);
     },
 
     renderResults: function(results, terms) {
         let appSys = Shell.AppSystem.get_default();
-        for (let i = 0; i < results.length && i < WELL_MAX_COLUMNS; i++) {
+        let maxItems = WELL_MAX_SEARCH_ROWS * WELL_MAX_COLUMNS;
+        for (let i = 0; i < results.length && i < maxItems; i++) {
             let result = results[i];
             let app = appSys.get_app(result);
             let display = new AppWellIcon(app);
-            this._container.add_actor(display.actor);
+            this._grid.addItem(display.actor);
         }
     },
 
     clear: function () {
-        this._container.get_children().forEach(function (actor) { actor.destroy(); });
+        this._grid.removeAll();
         this.selectionIndex = -1;
     },
 
     getVisibleResultCount: function() {
-        let nChildren = this._container.get_children().length;
-        return nChildren - this._container.get_n_skip_paint();
+        return this._grid.visibleItemsCount();
     },
 
     selectIndex: function (index) {
         let nVisible = this.getVisibleResultCount();
-        let children = this._container.get_children();
         if (this.selectionIndex >= 0) {
-            let prevActor = children[this.selectionIndex];
+            let prevActor = this._grid.getItemAtIndex(this.selectionIndex);
             prevActor._delegate.setSelected(false);
         }
         this.selectionIndex = -1;
@@ -326,7 +259,7 @@ AppSearchResultDisplay.prototype = {
             return false;
         else if (index < 0)
             return false;
-        let targetActor = children[index];
+        let targetActor = this._grid.getItemAtIndex(index);
         targetActor._delegate.setSelected(true);
         this.selectionIndex = index;
         return true;
@@ -335,8 +268,7 @@ AppSearchResultDisplay.prototype = {
     activateSelected: function() {
         if (this.selectionIndex < 0)
             return;
-        let children = this._container.get_children();
-        let targetActor = children[this.selectionIndex];
+        let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
         this.provider.activateResult(targetActor._delegate.app.get_id());
     }
 };
@@ -831,12 +763,15 @@ AppIconMenu.prototype = {
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
 
-function WellGrid() {
-    this._init();
+function WellGrid(params) {
+    this._init(params);
 }
 
 WellGrid.prototype = {
-    _init: function() {
+    _init: function(params) {
+        params = Params.parse(params, { rowLimit: null });
+        this._rowLimit = params.rowLimit;
+
         this.actor = new St.BoxLayout({ name: 'dashAppWell', vertical: true });
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
@@ -869,6 +804,8 @@ WellGrid.prototype = {
             nRows = Math.ceil(children.length / nColumns);
         else
             nRows = 0;
+        if (this._rowLimit)
+            nRows = Math.min(nRows, this._rowLimit);
         let totalSpacing = Math.max(0, nRows - 1) * this._spacing;
         let height = nRows * this._item_size + totalSpacing;
         alloc.min_size = height;
@@ -887,6 +824,7 @@ WellGrid.prototype = {
         let x = box.x1 + overallPaddingX;
         let y = box.y1;
         let columnIndex = 0;
+        let rowIndex = 0;
         for (let i = 0; i < children.length; i++) {
             let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight]
                 = children[i].get_preferred_size();
@@ -907,11 +845,18 @@ WellGrid.prototype = {
             childBox.y1 = Math.floor(y + childYSpacing);
             childBox.x2 = childBox.x1 + width;
             childBox.y2 = childBox.y1 + height;
-            children[i].allocate(childBox, flags);
+
+            if (this._rowLimit && rowIndex >= this._rowLimit) {
+                this._grid.set_skip_paint(children[i], true);
+            } else {
+                children[i].allocate(childBox, flags);
+                this._grid.set_skip_paint(children[i], false);
+            }
 
             columnIndex++;
             if (columnIndex == nColumns) {
                 columnIndex = 0;
+                rowIndex++;
             }
 
             if (columnIndex == 0) {
@@ -958,6 +903,14 @@ WellGrid.prototype = {
 
     addItem: function(actor) {
         this._grid.add_actor(actor);
+    },
+
+    getItemAtIndex: function(index) {
+        return this._grid.get_children()[index];
+    },
+
+    visibleItemsCount: function() {
+        return this._grid.get_children().length - this._grid.get_n_skip_paint();
     }
 };
 
