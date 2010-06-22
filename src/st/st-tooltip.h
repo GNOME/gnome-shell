@@ -48,14 +48,14 @@ typedef struct _StTooltipClass         StTooltipClass;
 struct _StTooltip
 {
   /*< private >*/
-  StBin parent_instance;
+  StWidget parent_instance;
 
   StTooltipPrivate *priv;
 };
 
 struct _StTooltipClass
 {
-  StBinClass parent_class;
+  StWidgetClass parent_class;
 };
 
 GType st_tooltip_get_type (void) G_GNUC_CONST;
@@ -63,8 +63,6 @@ GType st_tooltip_get_type (void) G_GNUC_CONST;
 G_CONST_RETURN gchar *st_tooltip_get_label (StTooltip   *tooltip);
 void                  st_tooltip_set_label (StTooltip   *tooltip,
                                             const gchar *text);
-void                  st_tooltip_show      (StTooltip   *tooltip);
-void                  st_tooltip_hide      (StTooltip   *tooltip);
 
 void                            st_tooltip_set_tip_area (StTooltip             *tooltip,
                                                          const ClutterGeometry *area);

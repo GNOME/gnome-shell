@@ -92,12 +92,15 @@ StScrollBar StButton#vhandle:hover
     background-color: #292929;
 }
 
-StTooltip {
-    border: 1px solid rgba(79,111,173,0.9);
+StTooltip StLabel {
+    border: 1px solid rgba(79,111,173,1);
     border-radius: 5px;
     padding: 4px;
     background-color: rgba(79,111,173,0.9);
     color: #ffffff;
+    font-size: 0.8em;
+    font-weight: normal;
+    text-align: center;
 }
 
 /* PopupMenu */

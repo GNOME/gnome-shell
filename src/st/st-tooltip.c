@@ -41,6 +41,7 @@
 #include "st-tooltip.h"
 
 #include "st-widget.h"
+#include "st-label.h"
 #include "st-private.h"
 
 enum
@@ -56,7 +57,7 @@ enum
 
 struct _StTooltipPrivate
 {
-  ClutterActor    *label;
+  StLabel         *label;
 
   gfloat           arrow_offset;
   gboolean         actor_below;
@@ -67,6 +68,10 @@ struct _StTooltipPrivate
 extern gfloat st_slow_down_factor;
 
 G_DEFINE_TYPE (StTooltip, st_tooltip, ST_TYPE_WIDGET);
+
+static void st_tooltip_show (ClutterActor *self);
+static void st_tooltip_show_all (ClutterActor *self);
+static void st_tooltip_hide_all (ClutterActor *self);
 
 static void
 st_tooltip_set_property (GObject      *gobject,
@@ -102,7 +107,7 @@ st_tooltip_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_LABEL:
-      g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->label)));
+      g_value_set_string (value, st_label_get_text (priv->label));
       break;
 
     case PROP_TIP_AREA:
@@ -113,29 +118,6 @@ st_tooltip_get_property (GObject    *gobject,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
-}
-
-static void
-st_tooltip_style_changed (StWidget *self)
-{
-  StTooltipPrivate *priv;
-  StThemeNode *theme_node;
-  ClutterColor color;
-  const PangoFontDescription *font;
-  gchar *font_string;
-
-  priv = ST_TOOLTIP (self)->priv;
-  theme_node = st_widget_get_theme_node (self);
-
-  st_theme_node_get_foreground_color (theme_node, &color);
-  clutter_text_set_color (CLUTTER_TEXT (priv->label), &color);
-
-  font = st_theme_node_get_font (theme_node);
-  font_string = pango_font_description_to_string (font);
-  clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
-  g_free (font_string);
-
-  ST_WIDGET_CLASS (st_tooltip_parent_class)->style_changed (self);
 }
 
 static void
@@ -159,13 +141,10 @@ st_tooltip_get_preferred_width (ClutterActor *self,
       label_height = -1;
     }
 
-  if (priv->label)
-    {
-      clutter_actor_get_preferred_width (priv->label,
-                                         label_height,
-                                         min_width_p,
-                                         natural_width_p);
-    }
+  clutter_actor_get_preferred_width (CLUTTER_ACTOR (priv->label),
+                                     label_height,
+                                     min_width_p,
+                                     natural_width_p);
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
@@ -182,19 +161,10 @@ st_tooltip_get_preferred_height (ClutterActor *self,
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
 
-  if (priv->label)
-    {
-      clutter_actor_get_preferred_height (priv->label,
-                                          for_width,
-                                          &min_label_h,
-                                          &natural_label_h);
-    }
-  else
-    {
-      min_label_h = 0;
-      natural_label_h = 0;
-    }
-
+  clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->label),
+                                      for_width,
+                                      &min_label_h,
+                                      &natural_label_h);
   if (min_height_p)
     *min_height_p = min_label_h;
 
@@ -223,12 +193,9 @@ st_tooltip_allocate (ClutterActor          *self,
   child_box.x2 = (box->x2 - box->x1);
   child_box.y2 = (box->y2 - box->y1);
 
-  if (priv->label)
-    {
-      child_box = content_box;
+  child_box = content_box;
 
-      clutter_actor_allocate (priv->label, &child_box, flags);
-    }
+  clutter_actor_allocate (CLUTTER_ACTOR (priv->label), &child_box, flags);
 }
 
 static void
@@ -236,7 +203,9 @@ st_tooltip_paint (ClutterActor *self)
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
 
-  clutter_actor_paint (priv->label);
+  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->paint (self);
+
+  clutter_actor_paint (CLUTTER_ACTOR (priv->label));
 }
 
 static void
@@ -246,7 +215,7 @@ st_tooltip_map (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->map (self);
 
-  clutter_actor_map (priv->label);
+  clutter_actor_map (CLUTTER_ACTOR (priv->label));
 }
 
 static void
@@ -256,7 +225,7 @@ st_tooltip_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->unmap (self);
 
-  clutter_actor_unmap (priv->label);
+  clutter_actor_unmap (CLUTTER_ACTOR (priv->label));
 }
 
 static void
@@ -266,7 +235,7 @@ st_tooltip_dispose (GObject *self)
 
   if (priv->label)
     {
-      clutter_actor_destroy (priv->label);
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->label));
       priv->label = NULL;
     }
 
@@ -278,7 +247,6 @@ st_tooltip_class_init (StTooltipClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StTooltipPrivate));
@@ -293,8 +261,9 @@ st_tooltip_class_init (StTooltipClass *klass)
   actor_class->paint = st_tooltip_paint;
   actor_class->map = st_tooltip_map;
   actor_class->unmap = st_tooltip_unmap;
-
-  widget_class->style_changed = st_tooltip_style_changed;
+  actor_class->show = st_tooltip_show;
+  actor_class->show_all = st_tooltip_show_all;
+  actor_class->hide_all = st_tooltip_hide_all;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -315,11 +284,7 @@ st_tooltip_init (StTooltip *tooltip)
 {
   tooltip->priv = ST_TOOLTIP_GET_PRIVATE (tooltip);
 
-  tooltip->priv->label = g_object_new (CLUTTER_TYPE_TEXT,
-                                       "line-alignment", PANGO_ALIGN_CENTER,
-                                       "ellipsize", PANGO_ELLIPSIZE_END,
-                                       "use-markup", TRUE,
-                                       NULL);
+  tooltip->priv->label = ST_LABEL (st_label_new (NULL));
 
   tooltip->priv->tip_area = NULL;
 
@@ -417,7 +382,7 @@ st_tooltip_get_label (StTooltip *tooltip)
 {
   g_return_val_if_fail (ST_IS_TOOLTIP (tooltip), NULL);
 
-  return clutter_text_get_text (CLUTTER_TEXT (tooltip->priv->label));
+  return st_label_get_text (tooltip->priv->label);
 }
 
 /**
@@ -437,32 +402,18 @@ st_tooltip_set_label (StTooltip   *tooltip,
 
   priv = tooltip->priv;
 
-  clutter_text_set_text (CLUTTER_TEXT (priv->label), text);
+  st_label_set_text (priv->label, text);
 
   g_object_notify (G_OBJECT (tooltip), "label");
 }
 
-/**
- * st_tooltip_show:
- * @tooltip: a #StTooltip
- *
- * Show the tooltip relative to the associated widget.
- */
-void
-st_tooltip_show (StTooltip *tooltip)
+static void
+st_tooltip_show (ClutterActor *self)
 {
-  StTooltipPrivate *priv;
+  StTooltip *tooltip = ST_TOOLTIP (self);
   ClutterActor *parent;
   ClutterActor *stage;
-  ClutterActor *self = CLUTTER_ACTOR (tooltip);
-  ClutterAnimation *animation;
 
-  /* make sure we're not currently already animating (e.g. hiding) */
-  animation = clutter_actor_get_animation (CLUTTER_ACTOR (tooltip));
-  if (animation)
-    clutter_animation_completed (animation);
-
-  priv = tooltip->priv;
   parent = clutter_actor_get_parent (self);
   stage = clutter_actor_get_stage (self);
 
@@ -491,59 +442,22 @@ st_tooltip_show (StTooltip *tooltip)
 
   /* finally show the tooltip... */
   CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->show (self);
-
-  /* and give it some bounce! */
-  g_object_set (G_OBJECT (self),
-                "scale-center-x", priv->arrow_offset,
-                "scale-center-y", (priv->actor_below) ? clutter_actor_get_height (self) : 0,
-                NULL);
-  clutter_actor_set_scale (self, 0.0, 0.0);
-  clutter_actor_animate (self, CLUTTER_EASE_OUT_ELASTIC,
-                         500,
-                         "scale-x", 1.0,
-                         "scale-y", 1.0,
-                         NULL);
 }
 
 static void
-st_tooltip_hide_complete (ClutterAnimation *animation,
-                          ClutterActor     *actor)
+st_tooltip_show_all (ClutterActor *self)
 {
-  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->hide (actor);
-  g_signal_handlers_disconnect_by_func (actor,
-                                        st_tooltip_hide_complete,
-                                        actor);
+  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->show_all (self);
+
+  clutter_actor_show_all (CLUTTER_ACTOR (ST_TOOLTIP (self)->priv->label));
 }
 
-/**
- * st_tooltip_hide:
- * @tooltip: a #StTooltip
- *
- * Hide the tooltip
- */
-void
-st_tooltip_hide (StTooltip *tooltip)
+static void
+st_tooltip_hide_all (ClutterActor *self)
 {
-  ClutterAnimation *animation;
+  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->hide_all (self);
 
-  g_return_if_fail (ST_TOOLTIP (tooltip));
-
-  /* make sure we're not currently already animating (e.g. hiding) */
-  animation = clutter_actor_get_animation (CLUTTER_ACTOR (tooltip));
-  if (animation)
-    clutter_animation_completed (animation);
-
-  g_object_set (G_OBJECT (tooltip),
-                "scale-center-x", tooltip->priv->arrow_offset,
-                NULL);
-  animation =
-    clutter_actor_animate (CLUTTER_ACTOR (tooltip), CLUTTER_EASE_IN_SINE,
-                           (guint)(150 * st_slow_down_factor),
-                           "scale-x", 0.0,
-                           "scale-y", 0.0,
-                           NULL);
-  g_signal_connect (animation, "completed",
-                    G_CALLBACK (st_tooltip_hide_complete), tooltip);
+  clutter_actor_hide_all (CLUTTER_ACTOR (ST_TOOLTIP (self)->priv->label));
 }
 
 /**
