@@ -280,6 +280,7 @@ _st_set_text_from_style (ClutterText *text,
   PangoAttrList *attribs;
   const PangoFontDescription *font;
   gchar *font_string;
+  StTextAlign align;
 
   st_theme_node_get_foreground_color (theme_node, &color);
   clutter_text_set_color (text, &color);
@@ -309,6 +310,15 @@ _st_set_text_from_style (ClutterText *text,
   clutter_text_set_attributes (text, attribs);
 
   pango_attr_list_unref (attribs);
+
+  align = st_theme_node_get_text_align (theme_node);
+  if(align == ST_TEXT_ALIGN_JUSTIFY) {
+    clutter_text_set_justify (text, TRUE);
+    clutter_text_set_line_alignment (text, PANGO_ALIGN_LEFT);
+  } else {
+    clutter_text_set_justify (text, FALSE);
+    clutter_text_set_line_alignment (text, (PangoAlignment) align);
+  }
 }
 
 gboolean

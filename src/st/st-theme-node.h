@@ -59,6 +59,13 @@ typedef enum {
 } StTextDecoration;
 
 typedef enum {
+    ST_TEXT_ALIGN_LEFT = PANGO_ALIGN_LEFT,
+    ST_TEXT_ALIGN_CENTER = PANGO_ALIGN_CENTER,
+    ST_TEXT_ALIGN_RIGHT = PANGO_ALIGN_RIGHT,
+    ST_TEXT_ALIGN_JUSTIFY
+} StTextAlign;
+
+typedef enum {
   ST_GRADIENT_NONE,
   ST_GRADIENT_VERTICAL,
   ST_GRADIENT_HORIZONTAL,
@@ -148,6 +155,8 @@ int    st_theme_node_get_max_height    (StThemeNode  *node);
 int    st_theme_node_get_transition_duration (StThemeNode *node);
 
 StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
+
+StTextAlign st_theme_node_get_text_align (StThemeNode *node);
 
 /* Font rule processing is pretty complicated, so we just hardcode it
  * under the standard font/font-family/font-size/etc names. This means

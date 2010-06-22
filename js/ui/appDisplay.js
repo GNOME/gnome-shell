@@ -456,7 +456,6 @@ AppIcon.prototype = {
         box.add(this.icon, { expand: true, x_fill: false, y_fill: false });
 
         this._name = new St.Label({ text: this.app.get_name() });
-        this._name.clutter_text.line_alignment = Pango.Alignment.CENTER;
         box.add_actor(this._name);
     }
 };

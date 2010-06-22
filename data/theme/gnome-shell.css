@@ -553,6 +553,7 @@ StTooltip {
     height: 70px;
     font-size: 10px;
     transition-duration: 100;
+    text-align: center;
 }
 
 .app-well-app.running {
