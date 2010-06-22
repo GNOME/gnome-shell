@@ -18,7 +18,7 @@ Clutter currently requires:
 
 Clutter also has optional dependencies:
 
-  • JSON-GLib >= 0.8 (optional, see --with-json below)
+  • JSON-GLib >= 0.10 (optional, see --with-json below)
   • GDK-Pixbuf >= 2.0 (optional, see --with-imagebackend below)
 
 On X11, Clutter depends on the following extensions
