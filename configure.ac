@@ -88,6 +88,7 @@ CLUTTER_LT_LDFLAGS="-version-info $CLUTTER_LT_VERSION"
 
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)
+AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================
 
@@ -105,6 +106,21 @@ AC_HEADER_STDC
 AM_PATH_GLIB_2_0([2.18.0], [have_glib=yes], [have_glib=no],
                  [gobject gthread gmodule-no-export])
 AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
+
+# Check for -Bsymbolic-functions to avoid intra-library PLT jumps
+clutter_LDFLAGS="${LDFLAGS}"
+AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
+LDFLAGS=-Wl,-Bsymbolic-functions
+AC_TRY_LINK([], [int main (void) { return 0; }],
+            [
+              CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions
+              AC_MSG_RESULT([yes])
+            ],
+            [
+              CLUTTER_LINK_FLAGS=
+              AC_MSG_RESULT([no])
+            ])
+LDFLAGS="${clutter_LDFLAGS}"
 
 dnl ========================================================================
 

@@ -285,6 +285,7 @@ nodist_libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(built_source_h)
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+	$(CLUTTER_LINK_FLAGS) \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
 	-export-dynamic \
@@ -293,9 +294,7 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(win32_resources_ldflag) \
 	$(NULL)
 
-lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)
-
-EXTRA_LTLIBRARIES = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+lib_LTLIBRARIES = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
