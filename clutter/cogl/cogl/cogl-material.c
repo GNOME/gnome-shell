@@ -6624,7 +6624,7 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       CoglMaterialLayer *authority =
         _cogl_material_layer_get_authority (layer,
                                             COGL_MATERIAL_LAYER_STATE_TEXTURE);
-      CoglHandle texture;
+      CoglHandle texture = NULL;
       GLuint     gl_texture;
       GLenum     gl_target;
 
@@ -6666,6 +6666,7 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
             GE (glBindTexture (gl_target, gl_texture));
           unit->gl_texture = gl_texture;
         }
+
       unit->is_foreign = _cogl_texture_is_foreign (texture);
 
       /* Disable the previous target if it was different and it's
@@ -6989,7 +6990,7 @@ _cogl_material_flush_gl_state (CoglHandle handle,
   CoglMaterial    *material = COGL_MATERIAL (handle);
   unsigned long    materials_difference;
   int              n_layers;
-  unsigned long   *layer_differences;
+  unsigned long   *layer_differences = NULL;
   int              i;
   CoglTextureUnit *unit1;
 
