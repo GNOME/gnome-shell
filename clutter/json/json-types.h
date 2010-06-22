@@ -44,6 +44,12 @@ G_BEGIN_DECLS
 #define JSON_TYPE_OBJECT        (json_object_get_type ())
 #define JSON_TYPE_ARRAY         (json_array_get_type ())
 
+#define JSON_NODE_HOLDS(node,type)      (JSON_NODE_TYPE (node) == (type))
+#define JSON_NODE_HOLDS_VALUE(node)     (JSON_NODE_HOLDS (node, JSON_NODE_VALUE))
+#define JSON_NODE_HOLDS_ARRAY(node)     (JSON_NODE_HOLDS (node, JSON_NODE_ARRAY))
+#define JSON_NODE_HOLDS_OBJECT(node)    (JSON_NODE_HOLDS (node, JSON_NODE_OBJECT))
+#define JSON_NODE_HOLDS_NULL(node)      (JSON_NODE_HOLDS (node, JSON_NODE_NULL))
+
 /**
  * JsonNode:
  * @type: the type of node
