@@ -9,6 +9,7 @@
 /test-cogl-offscreen
 /test-cogl-pixel-buffer
 /test-cogl-premult
+/test-cogl-texture-pixmap-x11
 /test-color-hls-roundtrip
 /test-conformance
 /test-conformance-results.xml
