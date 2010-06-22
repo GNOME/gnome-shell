@@ -225,7 +225,7 @@ get_fbconfig_for_depth (unsigned int depth,
                         GLXFBConfig *fbconfig_ret,
                         gboolean *can_mipmap_ret)
 {
-  GLXFBConfig *fbconfigs, ret = None;
+  GLXFBConfig *fbconfigs, ret = NULL;
   int          n_elements, i, found;
   Display     *dpy;
   int          db, stencil, alpha, mipmap, rgba, value;
