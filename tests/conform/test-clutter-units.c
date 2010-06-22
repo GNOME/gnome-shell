@@ -8,21 +8,23 @@ test_units_cache (TestConformSimpleFixture *fixture,
                   gconstpointer data)
 {
   ClutterUnits units;
+  ClutterSettings *settings;
   ClutterBackend *backend;
   gfloat pixels;
-  gdouble dpi;
+  gint dpi;
 
   backend = clutter_get_default_backend ();
+  settings = clutter_settings_get_default ();
 
   dpi = clutter_backend_get_resolution (backend);
 
   clutter_units_from_em (&units, 1.0);
   pixels = clutter_units_to_pixels (&units);
 
-  clutter_backend_set_resolution (backend, dpi + 10);
+  g_object_set (settings, "font-dpi", ((dpi + 10) * 1024), NULL);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), !=, pixels);
 
-  clutter_backend_set_resolution (backend, dpi);
+  g_object_set (settings, "font-dpi", (dpi * 1024), NULL);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), ==, pixels);
 }
 
