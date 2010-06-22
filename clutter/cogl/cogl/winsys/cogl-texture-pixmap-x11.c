@@ -220,18 +220,19 @@ _cogl_texture_pixmap_x11_filter (XEvent *event, gpointer data)
 
 #ifdef COGL_HAS_GLX_SUPPORT
 
-static void
+static gboolean
 get_fbconfig_for_depth (unsigned int depth,
                         GLXFBConfig *fbconfig_ret,
                         gboolean *can_mipmap_ret)
 {
-  GLXFBConfig *fbconfigs, ret = NULL;
-  int          n_elements, i, found;
+  GLXFBConfig *fbconfigs;
+  int          n_elements, i;
   Display     *dpy;
   int          db, stencil, alpha, mipmap, rgba, value;
   int          spare_cache_slot = 0;
+  gboolean     found = FALSE;
 
-  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctxt, FALSE);
 
   /* Check if we've already got a cached config for this depth */
   for (i = 0; i < COGL_WINSYS_N_CACHED_CONFIGS; i++)
@@ -241,7 +242,7 @@ get_fbconfig_for_depth (unsigned int depth,
       {
         *fbconfig_ret = ctxt->winsys.glx_cached_configs[i].fb_config;
         *can_mipmap_ret = ctxt->winsys.glx_cached_configs[i].can_mipmap;
-        return;
+        return ctxt->winsys.glx_cached_configs[i].found;
       }
 
   dpy = _cogl_xlib_get_display ();
@@ -253,8 +254,6 @@ get_fbconfig_for_depth (unsigned int depth,
   stencil = G_MAXSHORT;
   mipmap  = 0;
   rgba    = 0;
-
-  found = n_elements;
 
   for (i = 0; i < n_elements; i++)
     {
@@ -340,21 +339,20 @@ get_fbconfig_for_depth (unsigned int depth,
           mipmap =  value;
         }
 
-      found = i;
+      *fbconfig_ret = fbconfigs[i];
+      *can_mipmap_ret = mipmap;
+      found = TRUE;
     }
-
-  if (found != n_elements)
-    ret = fbconfigs[found];
 
   if (n_elements)
     XFree (fbconfigs);
 
   ctxt->winsys.glx_cached_configs[spare_cache_slot].depth = depth;
-  ctxt->winsys.glx_cached_configs[spare_cache_slot].fb_config = ret;
+  ctxt->winsys.glx_cached_configs[spare_cache_slot].found = found;
+  ctxt->winsys.glx_cached_configs[spare_cache_slot].fb_config = *fbconfig_ret;
   ctxt->winsys.glx_cached_configs[spare_cache_slot].can_mipmap = mipmap;
 
-  *fbconfig_ret = ret;
-  *can_mipmap_ret = mipmap;
+  return found;
 }
 
 static gboolean
@@ -411,7 +409,10 @@ try_create_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap,
                        gboolean mipmap)
 {
   Display *dpy;
-  GLXFBConfig fb_config = NULL;
+  /* We have to initialize this *opaque* variable because gcc tries to
+   * be too smart for its own good and warns that the variable may be
+   * used uninitialized otherwise. */
+  GLXFBConfig fb_config = (GLXFBConfig)0;
   int attribs[7];
   int i = 0;
   GLenum target;
@@ -428,10 +429,8 @@ try_create_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap,
 
   dpy = _cogl_xlib_get_display ();
 
-  get_fbconfig_for_depth (tex_pixmap->depth, &fb_config,
-                          &tex_pixmap->glx_can_mipmap);
-
-  if (!fb_config)
+  if (!get_fbconfig_for_depth (tex_pixmap->depth, &fb_config,
+                               &tex_pixmap->glx_can_mipmap))
     {
       COGL_NOTE (TEXTURE_PIXMAP, "No suitable FBConfig found for depth %i",
                  tex_pixmap->depth);
