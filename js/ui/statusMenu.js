@@ -11,6 +11,7 @@ const _ = Gettext.gettext;
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
+const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
@@ -23,10 +24,10 @@ function StatusMenuButton() {
 }
 
 StatusMenuButton.prototype = {
-    __proto__: Panel.PanelMenuButton.prototype,
+    __proto__: PanelMenu.Button.prototype,
 
     _init: function() {
-        Panel.PanelMenuButton.prototype._init.call(this, St.Align.START);
+        PanelMenu.Button.prototype._init.call(this, St.Align.START);
         let box = new St.BoxLayout({ name: 'panelStatusMenu' });
         this.actor.set_child(box);
 

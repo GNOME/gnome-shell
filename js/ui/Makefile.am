@@ -23,6 +23,7 @@ dist_jsui_DATA =		\
 	notificationDaemon.js   \
 	overview.js		\
 	panel.js		\
+	panelMenu.js		\
 	placeDisplay.js		\
 	popupMenu.js		\
 	runDialog.js		\

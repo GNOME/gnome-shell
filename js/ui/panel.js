@@ -21,6 +21,8 @@ const BoxPointer = imports.ui.boxpointer;
 const Calendar = imports.ui.calendar;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
+const PanelMenu = imports.ui.panelMenu;
+const StatusMenu = imports.ui.statusMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -176,38 +178,6 @@ TextShadower.prototype = {
     }
 };
 
-function PanelMenuButton(menuAlignment) {
-    this._init(menuAlignment);
-}
-
-PanelMenuButton.prototype = {
-    _init: function(menuAlignment) {
-        this.actor = new St.Bin({ style_class: 'panel-button',
-                                  reactive: true,
-                                  x_fill: true,
-                                  y_fill: false,
-                                  track_hover: true });
-        this.actor._delegate = this;
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.menu = new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, /* FIXME */ 0);
-        this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
-        Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
-                                                affectsStruts: false });
-        this.menu.actor.hide();
-    },
-
-    _onButtonPress: function(actor, event) {
-        this.menu.toggle();
-    },
-
-    _onOpenStateChanged: function(menu, open) {
-        if (open)
-            this.actor.add_style_pseudo_class('pressed');
-        else
-            this.actor.remove_style_pseudo_class('pressed');
-    }
-};
-
 /**
  * AppMenuButton:
  *
@@ -221,10 +191,10 @@ function AppMenuButton() {
 }
 
 AppMenuButton.prototype = {
-    __proto__: PanelMenuButton.prototype,
+    __proto__: PanelMenu.Button.prototype,
 
     _init: function() {
-        PanelMenuButton.prototype._init.call(this, St.Align.START);
+        PanelMenu.Button.prototype._init.call(this, St.Align.START);
         this._metaDisplay = global.screen.get_display();
 
         this._focusedApp = null;
@@ -510,10 +480,10 @@ function ClockButton() {
 }
 
 ClockButton.prototype = {
-    __proto__: PanelMenuButton.prototype,
+    __proto__: PanelMenu.Button.prototype,
 
     _init: function() {
-        PanelMenuButton.prototype._init.call(this, St.Align.START);
+        PanelMenu.Button.prototype._init.call(this, St.Align.START);
         this.menu.addAction(_("Preferences"), Lang.bind(this, this._onPrefs));
 
         this._clock = new St.Label();
@@ -847,9 +817,6 @@ Panel.prototype = {
             }));
         this._traymanager.manage_stage(global.stage);
 
-        // We need to do this here to avoid a circular import with
-        // prototype dependencies.
-        let StatusMenu = imports.ui.statusMenu;
         this._statusmenu = new StatusMenu.StatusMenuButton();
         this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
