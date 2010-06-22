@@ -280,15 +280,6 @@ Or, better, commit locally and use `git format-patch` to generate a patch
 containing authorship details, so that members of the Clutter development
 team can credit your contribution properly.
 
-When attaching a patch to Bugzilla you should also toggle the
-'copyright-waived' attachment flag, after reading the Copyright Waiver notice
-here:
-
-  http://bugzilla.openedhand.com/waiver.html
-
-If you do not intend to waive your copyright you should contact the Clutter
-development team to arrange a suitable solution.
-
 RELEASE NOTES
 -------------------------------------------------------------------------------
 
