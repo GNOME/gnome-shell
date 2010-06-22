@@ -74,8 +74,8 @@ typedef struct
   int               active_texture_unit;
 
   /* Materials */
-  CoglHandle        simple_material;
-  CoglHandle	    source_material;
+  CoglMaterial     *simple_material;
+  CoglMaterial     *source_material;
   GString          *arbfp_source_buffer;
 
   int               legacy_state_set;
@@ -93,7 +93,7 @@ typedef struct
   GArray           *polygon_vertices;
 
   /* Some simple caching, to minimize state changes... */
-  CoglHandle	    current_material;
+  CoglMaterial     *current_material;
   unsigned long     current_material_changes_since_flush;
   gboolean          current_material_skip_gl_color;
 
@@ -130,7 +130,7 @@ typedef struct
 
   /* Primitives */
   CoglHandle        current_path;
-  CoglHandle        stencil_material;
+  CoglMaterial     *stencil_material;
 
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
      out of a vertex array of quads */
@@ -140,7 +140,7 @@ typedef struct
 
   gboolean          in_begin_gl_block;
 
-  CoglHandle        texture_download_material;
+  CoglMaterial     *texture_download_material;
 
   CoglAtlas        *atlas;
   CoglHandle        atlas_texture;

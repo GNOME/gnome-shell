@@ -43,6 +43,11 @@ G_BEGIN_DECLS
  * blended together.
  */
 
+typedef struct _CoglMaterial	      CoglMaterial;
+typedef struct _CoglMaterialLayer     CoglMaterialLayer;
+
+#define COGL_MATERIAL(OBJECT) ((CoglMaterial *)OBJECT)
+
 /**
  * CoglMaterialFilter:
  * @COGL_MATERIAL_FILTER_NEAREST: Measuring in manhatten distance from the,
@@ -122,16 +127,16 @@ typedef enum {
  *
  * Allocates and initializes a blank white material
  *
- * Return value: a handle to the new material
+ * Return value: a pointer to a new #CoglMaterial
  */
-CoglHandle
+CoglMaterial *
 cogl_material_new (void);
 
 /**
  * cogl_material_copy:
- * @source: the handle for the material to copy
+ * @source: a #CoglMaterial object to copy
  *
- * Creates a new material handle with the configuration copied from the
+ * Creates a new material with the configuration copied from the
  * source material.
  *
  * We would strongly advise developers to always aim to use
@@ -140,39 +145,39 @@ cogl_material_new (void);
  * keep track of a materials ancestry which we may use to help minimize GPU
  * state changes.
  *
- * Returns: a handle to the new material
+ * Returns: a pointer to the newly allocated #CoglMaterial
  *
  * Since: 1.2
  */
-CoglHandle
-cogl_material_copy (CoglHandle source);
+CoglMaterial *
+cogl_material_copy (CoglMaterial *source);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
 /**
  * cogl_material_ref:
- * @handle: a @CoglHandle.
+ * @material: a #CoglMaterial object.
  *
- * Increment the reference count for a cogl material.
+ * Increment the reference count for a #CoglMaterial.
  *
- * Return value: the @handle.
+ * Return value: the @material.
  *
  * Since: 1.0
  *
- * Deprecated: 1.2: Use cogl_handle_ref() instead
+ * Deprecated: 1.2: Use cogl_object_ref() instead
  */
 CoglHandle
 cogl_material_ref (CoglHandle handle) G_GNUC_DEPRECATED;
 
 /**
  * cogl_material_unref:
- * @handle: a @CoglHandle.
+ * @material: a #CoglMaterial object.
  *
- * Decrement the reference count for a cogl material.
+ * Decrement the reference count for a #CoglMaterial.
  *
  * Since: 1.0
  *
- * Deprecated: 1.2: Use cogl_handle_unref() instead
+ * Deprecated: 1.2: Use cogl_object_unref() instead
  */
 void
 cogl_material_unref (CoglHandle handle) G_GNUC_DEPRECATED;
@@ -193,7 +198,7 @@ cogl_is_material (CoglHandle handle);
 
 /**
  * cogl_material_set_color:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @color: The components of the color
  *
  * Sets the basic color of the material, used when no lighting is enabled.
@@ -208,12 +213,12 @@ cogl_is_material (CoglHandle handle);
  * Since: 1.0
  */
 void
-cogl_material_set_color (CoglHandle       material,
+cogl_material_set_color (CoglMaterial    *material,
                          const CoglColor *color);
 
 /**
  * cogl_material_set_color4ub:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @red: The red component
  * @green: The green component
  * @blue: The blue component
@@ -226,15 +231,15 @@ cogl_material_set_color (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_set_color4ub (CoglHandle material,
-			    guint8     red,
-                            guint8     green,
-                            guint8     blue,
-                            guint8     alpha);
+cogl_material_set_color4ub (CoglMaterial *material,
+			    guint8        red,
+                            guint8        green,
+                            guint8        blue,
+                            guint8        alpha);
 
 /**
  * cogl_material_set_color4f:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @red: The red component
  * @green: The green component
  * @blue: The blue component
@@ -247,15 +252,15 @@ cogl_material_set_color4ub (CoglHandle material,
  * Since: 1.0
  */
 void
-cogl_material_set_color4f (CoglHandle material,
-                           float      red,
-                           float      green,
-                           float      blue,
-                           float      alpha);
+cogl_material_set_color4f (CoglMaterial *material,
+                           float         red,
+                           float         green,
+                           float         blue,
+                           float         alpha);
 
 /**
  * cogl_material_get_color:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @color: (out): The location to store the color
  *
  * Retrieves the current material color.
@@ -263,12 +268,12 @@ cogl_material_set_color4f (CoglHandle material,
  * Since: 1.0
  */
 void
-cogl_material_get_color (CoglHandle  material,
-                         CoglColor  *color);
+cogl_material_get_color (CoglMaterial *material,
+                         CoglColor    *color);
 
 /**
  * cogl_material_set_ambient:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @ambient: The components of the desired ambient color
  *
  * Sets the material's ambient color, in the standard OpenGL lighting
@@ -283,12 +288,12 @@ cogl_material_get_color (CoglHandle  material,
  * Since: 1.0
  */
 void
-cogl_material_set_ambient (CoglHandle       material,
+cogl_material_set_ambient (CoglMaterial    *material,
 			   const CoglColor *ambient);
 
 /**
  * cogl_material_get_ambient:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @ambient: The location to store the ambient color
  *
  * Retrieves the current ambient color for @material
@@ -296,12 +301,12 @@ cogl_material_set_ambient (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_get_ambient (CoglHandle  material,
-                           CoglColor  *ambient);
+cogl_material_get_ambient (CoglMaterial *material,
+                           CoglColor    *ambient);
 
 /**
  * cogl_material_set_diffuse:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @diffuse: The components of the desired diffuse color
  *
  * Sets the material's diffuse color, in the standard OpenGL lighting
@@ -313,12 +318,12 @@ cogl_material_get_ambient (CoglHandle  material,
  * Since: 1.0
  */
 void
-cogl_material_set_diffuse (CoglHandle       material,
+cogl_material_set_diffuse (CoglMaterial    *material,
 			   const CoglColor *diffuse);
 
 /**
  * cogl_material_get_diffuse:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @diffuse: The location to store the diffuse color
  *
  * Retrieves the current diffuse color for @material
@@ -326,12 +331,12 @@ cogl_material_set_diffuse (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_get_diffuse (CoglHandle  material,
-                           CoglColor  *diffuse);
+cogl_material_get_diffuse (CoglMaterial *material,
+                           CoglColor    *diffuse);
 
 /**
  * cogl_material_set_ambient_and_diffuse:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @color: The components of the desired ambient and diffuse colors
  *
  * Conveniently sets the diffuse and ambient color of @material at the same
@@ -344,12 +349,12 @@ cogl_material_get_diffuse (CoglHandle  material,
  * Since: 1.0
  */
 void
-cogl_material_set_ambient_and_diffuse (CoglHandle       material,
+cogl_material_set_ambient_and_diffuse (CoglMaterial    *material,
 				       const CoglColor *color);
 
 /**
  * cogl_material_set_specular:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @specular: The components of the desired specular color
  *
  * Sets the material's specular color, in the standard OpenGL lighting
@@ -361,12 +366,12 @@ cogl_material_set_ambient_and_diffuse (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_set_specular (CoglHandle       material,
+cogl_material_set_specular (CoglMaterial    *material,
 			    const CoglColor *specular);
 
 /**
  * cogl_material_get_specular:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @specular: The location to store the specular color
  *
  * Retrieves the materials current specular color.
@@ -374,12 +379,12 @@ cogl_material_set_specular (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_get_specular (CoglHandle  material,
-                            CoglColor  *specular);
+cogl_material_get_specular (CoglMaterial *material,
+                            CoglColor    *specular);
 
 /**
  * cogl_material_set_shininess:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @shininess: The desired shininess; range: [0.0, 1.0]
  *
  * Sets the materials shininess, in the standard OpenGL lighting model,
@@ -391,12 +396,12 @@ cogl_material_get_specular (CoglHandle  material,
  * Since: 1.0
  */
 void
-cogl_material_set_shininess (CoglHandle material,
-			     float      shininess);
+cogl_material_set_shininess (CoglMaterial *material,
+			     float         shininess);
 
 /**
  * cogl_material_get_shininess:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  *
  * Retrieves the materials current emission color.
  *
@@ -405,11 +410,11 @@ cogl_material_set_shininess (CoglHandle material,
  * Since: 1.0
  */
 float
-cogl_material_get_shininess (CoglHandle material);
+cogl_material_get_shininess (CoglMaterial *material);
 
 /**
  * cogl_material_set_emission:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @emission: The components of the desired emissive color
  *
  * Sets the material's emissive color, in the standard OpenGL lighting
@@ -421,12 +426,12 @@ cogl_material_get_shininess (CoglHandle material);
  * Since: 1.0
  */
 void
-cogl_material_set_emission (CoglHandle       material,
+cogl_material_set_emission (CoglMaterial    *material,
 			    const CoglColor *emission);
 
 /**
  * cogl_material_get_emission:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @emission: The location to store the emission color
  *
  * Retrieves the materials current emission color.
@@ -434,8 +439,8 @@ cogl_material_set_emission (CoglHandle       material,
  * Since: 1.0
  */
 void
-cogl_material_get_emission (CoglHandle material,
-                            CoglColor *emission);
+cogl_material_get_emission (CoglMaterial *material,
+                            CoglColor    *emission);
 
 /**
  * CoglMaterialAlphaFunc:
@@ -472,7 +477,7 @@ typedef enum {
 
 /**
  * cogl_material_set_alpha_test_function:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @alpha_func: A @CoglMaterialAlphaFunc constant
  * @alpha_reference: A reference point that the chosen alpha function uses
  *   to compare incoming fragments to.
@@ -488,13 +493,13 @@ typedef enum {
  * Since: 1.0
  */
 void
-cogl_material_set_alpha_test_function (CoglHandle            material,
+cogl_material_set_alpha_test_function (CoglMaterial         *material,
 				       CoglMaterialAlphaFunc alpha_func,
 				       float                 alpha_reference);
 
 /**
  * cogl_material_set_blend:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *   describing the desired blend function.
  * @error: return location for a #GError that may report lack of driver
@@ -577,13 +582,13 @@ cogl_material_set_alpha_test_function (CoglHandle            material,
  * Since: 1.0
  */
 gboolean
-cogl_material_set_blend (CoglHandle  material,
-                         const char *blend_string,
-                         GError    **error);
+cogl_material_set_blend (CoglMaterial *material,
+                         const char   *blend_string,
+                         GError      **error);
 
 /**
  * cogl_material_set_blend_constant:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @constant_color: The constant color you want
  *
  * When blending is setup to reference a CONSTANT blend factor then
@@ -592,12 +597,12 @@ cogl_material_set_blend (CoglHandle  material,
  * Since: 1.0
  */
 void
-cogl_material_set_blend_constant (CoglHandle material,
+cogl_material_set_blend_constant (CoglMaterial *material,
                                   const CoglColor *constant_color);
 
 /**
  * cogl_material_set_layer:
- * @material: A #CoglHandle for a material object
+ * @material: A #CoglMaterial object
  * @layer_index: the index of the layer
  * @texture: a #CoglHandle for the layer object
  *
@@ -615,25 +620,25 @@ cogl_material_set_blend_constant (CoglHandle material,
  * Since: 1.0
  */
 void
-cogl_material_set_layer (CoglHandle material,
-			 int        layer_index,
-			 CoglHandle texture);
+cogl_material_set_layer (CoglMaterial *material,
+			 int           layer_index,
+			 CoglHandle    texture);
 
 /**
  * cogl_material_remove_layer:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @layer_index: Specifies the layer you want to remove
  *
  * This function removes a layer from your material
  */
 void
-cogl_material_remove_layer (CoglHandle material,
-			    int        layer_index);
+cogl_material_remove_layer (CoglMaterial *material,
+			    int           layer_index);
 
 
 /**
  * cogl_material_set_layer_combine:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @layer_index: Specifies the layer you want define a combine function for
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *    describing the desired texture combine function.
@@ -724,14 +729,14 @@ cogl_material_remove_layer (CoglHandle material,
  * Since: 1.0
  */
 gboolean
-cogl_material_set_layer_combine (CoglHandle   material,
-				 int          layer_index,
-				 const char  *blend_string,
-                                 GError     **error);
+cogl_material_set_layer_combine (CoglMaterial *material,
+				 int           layer_index,
+				 const char   *blend_string,
+                                 GError      **error);
 
 /**
  * cogl_material_set_layer_combine_constant:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @layer_index: Specifies the layer you want to specify a constant used
  *               for texture combining
  * @constant: The constant color you want
@@ -742,13 +747,13 @@ cogl_material_set_layer_combine (CoglHandle   material,
  * Since: 1.0
  */
 void
-cogl_material_set_layer_combine_constant (CoglHandle       material,
+cogl_material_set_layer_combine_constant (CoglMaterial    *material,
                                           int              layer_index,
                                           const CoglColor *constant);
 
 /**
  * cogl_material_set_layer_matrix:
- * @material: A CoglMaterial object
+ * @material: A #CoglMaterial object
  * @layer_index: the index for the layer inside @material
  * @matrix: the transformation matrix for the layer
  *
@@ -756,28 +761,37 @@ cogl_material_set_layer_combine_constant (CoglHandle       material,
  * and rotate a single layer of a material used to fill your geometry.
  */
 void
-cogl_material_set_layer_matrix (CoglHandle        material,
-                                int               layer_index,
-                                const CoglMatrix *matrix);
+cogl_material_set_layer_matrix (CoglMaterial     *material,
+				int               layer_index,
+				const CoglMatrix *matrix);
 
 /**
  * cogl_material_get_layers:
- * @material: a #CoglHandle for a material
+ * @material: A #CoglMaterial object
  *
- * This function lets you access a materials internal list of layers
+ * This function lets you access a material's internal list of layers
  * for iteration.
  *
- * Return value: (element-type Handle) (transfer none): A list of
- *   #CoglHandle<!-- -->'s that can be passed to the  cogl_material_layer_*
- *   functions. The list is owned by COGL and it  should not be modified or
- *   freed
+ * <note>You should avoid using this API if possible since it was only
+ * made public by mistake and will be deprecated when we have
+ * suitable alternative.</note>
+ *
+ * <note>It's important to understand that the list returned may not
+ * remain valid if you modify the material or any of the layers in any
+ * way and so you would have to re-get the list in that
+ * situation.</note>
+ *
+ * Return value: (element-type CoglMaterialLayer) (transfer none): A
+ *    list of #CoglMaterialLayer<!-- -->'s that can be passed to the
+ *    cogl_material_layer_* functions. The list is owned by Cogl and it
+ *    should not be modified or freed
  */
 G_CONST_RETURN GList *
-cogl_material_get_layers (CoglHandle material);
+cogl_material_get_layers (CoglMaterial *material);
 
 /**
  * cogl_material_get_n_layers:
- * @material: a #CoglHandle for a material
+ * @material: A #CoglMaterial object
  *
  * Retrieves the number of layers defined for the given @material
  *
@@ -786,7 +800,7 @@ cogl_material_get_layers (CoglHandle material);
  * Since: 1.0
  */
 int
-cogl_material_get_n_layers (CoglHandle material);
+cogl_material_get_n_layers (CoglMaterial *material);
 
 /**
  * CoglMaterialLayerType:
@@ -805,7 +819,7 @@ typedef enum {
 
 /**
  * cogl_material_layer_get_type:
- * @layer: A #CoglHandle for a material layer
+ * @layer: A #CoglMaterialLayer object
  *
  * Retrieves the type of the layer
  *
@@ -817,11 +831,11 @@ typedef enum {
  * Return value: the type of the layer
  */
 CoglMaterialLayerType
-cogl_material_layer_get_type (CoglHandle layer);
+cogl_material_layer_get_type (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_texture:
- * @layer: A #CoglHandle for a material layer
+ * @layer: A #CoglMaterialLayer object
  *
  * Extracts a texture handle for a specific layer.
  *
@@ -834,7 +848,7 @@ cogl_material_layer_get_type (CoglHandle layer);
  * Return value: a #CoglHandle for the texture inside the layer
  */
 CoglHandle
-cogl_material_layer_get_texture (CoglHandle layer);
+cogl_material_layer_get_texture (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_min_filter:
@@ -845,22 +859,22 @@ cogl_material_layer_get_texture (CoglHandle layer);
  * Return value: the current downscaling filter
  */
 CoglMaterialFilter
-cogl_material_layer_get_min_filter (CoglHandle layer);
+cogl_material_layer_get_min_filter (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_mag_filter:
- * @layer: a #CoglHandle for a material layer
+ * @layer: A #CoglMaterialLayer object
  *
  * Queries the currently set downscaling filter for a material later
  *
  * Return value: the current downscaling filter
  */
 CoglMaterialFilter
-cogl_material_layer_get_mag_filter (CoglHandle layer);
+cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_set_layer_filters:
- * @material: a #CoglHandle to a material.
+ * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
  * @min_filter: the filter used when scaling a texture down.
  * @mag_filter: the filter used when magnifying a texture.
@@ -869,14 +883,14 @@ cogl_material_layer_get_mag_filter (CoglHandle layer);
  * drawn at other scales than 100%.
  */
 void
-cogl_material_set_layer_filters (CoglHandle         material,
+cogl_material_set_layer_filters (CoglMaterial      *material,
                                  int                layer_index,
                                  CoglMaterialFilter min_filter,
                                  CoglMaterialFilter mag_filter);
 
 /**
  * cogl_material_set_layer_wrap_mode_s:
- * @material: a #CoglHandle to a material.
+ * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
  * @mode: the new wrap mode
  *
@@ -885,13 +899,13 @@ cogl_material_set_layer_filters (CoglHandle         material,
  * Since: 1.4
  */
 void
-cogl_material_set_layer_wrap_mode_s (CoglHandle           material,
+cogl_material_set_layer_wrap_mode_s (CoglMaterial        *material,
                                      int                  layer_index,
                                      CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_set_layer_wrap_mode_t:
- * @material: a #CoglHandle to a material.
+ * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
  * @mode: the new wrap mode
  *
@@ -900,13 +914,13 @@ cogl_material_set_layer_wrap_mode_s (CoglHandle           material,
  * Since: 1.4
  */
 void
-cogl_material_set_layer_wrap_mode_t (CoglHandle           material,
+cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                      int                  layer_index,
                                      CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_set_layer_wrap_mode:
- * @material: a #CoglHandle to a material.
+ * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
  * @mode: the new wrap mode
  *
@@ -918,31 +932,31 @@ cogl_material_set_layer_wrap_mode_t (CoglHandle           material,
  * Since: 1.4
  */
 void
-cogl_material_set_layer_wrap_mode (CoglHandle           material,
+cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
                                    int                  layer_index,
                                    CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_layer_get_wrap_mode_s:
- * @layer: a #CoglHandle to a material mayer.
+ * @layer: A #CoglMaterialLayer object
  *
  * Gets the wrap mode for the 's' coordinate of texture lookups on this layer.
  *
  * Since: 1.4
  */
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_s (CoglHandle layer);
+cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_wrap_mode_t:
- * @layer: a #CoglHandle to a material mayer.
+ * @layer: A #CoglMaterialLayer object
  *
  * Gets the wrap mode for the 't' coordinate of texture lookups on this layer.
  *
  * Since: 1.4
  */
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_t (CoglHandle layer);
+cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer);
 
 
 /* XXX: should this be CoglMaterialDepthTestFunction?
@@ -995,7 +1009,7 @@ typedef enum
 
 /**
  * cogl_material_set_depth_test_enabled:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  * @enable: The enable state you want
  *
  * Enables or disables depth testing according to the value of
@@ -1014,12 +1028,12 @@ typedef enum
  * Since: 1.4
  */
 void
-cogl_material_set_depth_test_enabled (CoglHandle handle,
+cogl_material_set_depth_test_enabled (CoglMaterial *material,
                                       gboolean enable);
 
 /**
  * cogl_material_get_depth_test_enabled:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  *
  * Gets the current depth test enabled state as previously set by
  * cogl_material_set_depth_test_enabled().
@@ -1028,11 +1042,11 @@ cogl_material_set_depth_test_enabled (CoglHandle handle,
  * Since: 1.4
  */
 gboolean
-cogl_material_get_depth_test_enabled (CoglHandle handle);
+cogl_material_get_depth_test_enabled (CoglMaterial *material);
 
 /**
  * cogl_material_set_depth_writing_enabled:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  * @enable: The enable state you want
  *
  * Enables or disables depth buffer writing according to the value of
@@ -1046,12 +1060,12 @@ cogl_material_get_depth_test_enabled (CoglHandle handle);
  * Since: 1.4
  */
 void
-cogl_material_set_depth_writing_enabled (CoglHandle handle,
+cogl_material_set_depth_writing_enabled (CoglMaterial *material,
                                          gboolean enable);
 
 /**
  * cogl_material_get_depth_writing_enabled:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  *
  * Gets the depth writing enable state as set by the corresponding
  * cogl_material_set_depth_writing_enabled.
@@ -1060,11 +1074,11 @@ cogl_material_set_depth_writing_enabled (CoglHandle handle,
  * Since: 1.4
  */
 gboolean
-cogl_material_get_depth_writing_enabled (CoglHandle handle);
+cogl_material_get_depth_writing_enabled (CoglMaterial *material);
 
 /**
  * cogl_material_set_depth_test_function:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  * @function: The #CoglDepthTestFunction to set
  *
  * Sets the #CoglDepthTestFunction used to compare the depth value of
@@ -1074,12 +1088,12 @@ cogl_material_get_depth_writing_enabled (CoglHandle handle);
  * Since: 1.4
  */
 void
-cogl_material_set_depth_test_function (CoglHandle handle,
+cogl_material_set_depth_test_function (CoglMaterial *material,
                                        CoglDepthTestFunction function);
 
 /**
  * cogl_material_get_depth_test_function:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  *
  * Gets the current depth test enable state as previously set via
  * cogl_material_set_depth_test_enabled().
@@ -1088,11 +1102,11 @@ cogl_material_set_depth_test_function (CoglHandle handle,
  * Since: 1.4
  */
 CoglDepthTestFunction
-cogl_material_get_depth_test_function (CoglHandle handle);
+cogl_material_get_depth_test_function (CoglMaterial *material);
 
 /**
  * cogl_material_set_depth_range:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  * @near_val: The near component of the desired depth range which will be
  * clamped to the range [0, 1]
  * @far_val: The far component of the desired depth range which will be
@@ -1126,14 +1140,14 @@ cogl_material_get_depth_test_function (CoglHandle handle);
  * Since: 1.4
  */
 gboolean
-cogl_material_set_depth_range (CoglHandle handle,
+cogl_material_set_depth_range (CoglMaterial *material,
                                float near_val,
                                float far_val,
                                GError **error);
 
 /**
  * cogl_material_get_depth_range_mapping:
- * @handle: A CoglMaterial handle
+ * @material: A #CoglMaterial object
  * @near_val: A pointer to store the near component of the depth range
  * @far_val: A pointer to store the far component of the depth range
  *
@@ -1144,7 +1158,7 @@ cogl_material_set_depth_range (CoglHandle handle,
  * Since: 1.4
  */
 void
-cogl_material_get_depth_range (CoglHandle handle,
+cogl_material_get_depth_range (CoglMaterial *material,
                                float *near_val,
                                float *far_val);
 
