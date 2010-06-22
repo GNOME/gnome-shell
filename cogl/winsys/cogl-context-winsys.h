@@ -60,6 +60,7 @@ typedef struct
 {
   /* This will be -1 if there is no cached config in this slot */
   int depth;
+  gboolean found;
   GLXFBConfig fb_config;
   gboolean can_mipmap;
 } CoglWinsysCachedConfig;
