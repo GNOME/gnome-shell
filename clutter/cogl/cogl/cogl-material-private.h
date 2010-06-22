@@ -35,10 +35,6 @@
 
 #include <glib.h>
 
-typedef struct _CoglMaterial	      CoglMaterial;
-typedef struct _CoglMaterialLayer     CoglMaterialLayer;
-
-
 /*
  * cogl-material.c owns the GPU's texture unit state so we have some
  * private structures for describing the current state of a texture
@@ -240,7 +236,7 @@ struct _CoglMaterialLayer
    */
 
   /* the parent in terms of class hierarchy */
-  CoglHandleObject   _parent;
+  CoglObject         _parent;
 
   /* Some layers have a material owner, which is to say that the layer
    * is referenced in that materials->layer_differences list.  A layer
@@ -460,7 +456,7 @@ struct _CoglMaterial
    */
 
   /* the parent in terms of class hierarchy */
-  CoglHandleObject _parent;
+  CoglObject       _parent;
 
   /* We need to track if a material is referenced in the journal
    * because we can't allow modification to these materials without
@@ -645,10 +641,10 @@ _cogl_material_init_default_layers (void);
  */
 
 gboolean
-_cogl_material_get_real_blend_enabled (CoglHandle handle);
+_cogl_material_get_real_blend_enabled (CoglMaterial *material);
 
 gboolean
-_cogl_material_layer_has_user_matrix (CoglHandle layer_handle);
+_cogl_material_layer_has_user_matrix (CoglMaterialLayer *layer);
 
 /*
  * Calls the pre_paint method on the layer texture if there is
@@ -656,7 +652,7 @@ _cogl_material_layer_has_user_matrix (CoglHandle layer_handle);
  * filter settings.
  */
 void
-_cogl_material_layer_pre_paint (CoglHandle layer_handler);
+_cogl_material_layer_pre_paint (CoglMaterialLayer *layerr);
 
 /*
  * CoglMaterialFlushFlag:
@@ -765,43 +761,43 @@ _cogl_get_n_args_for_combine_func (GLint func);
 
 
 void
-_cogl_material_get_colorubv (CoglHandle  handle,
-                             guint8     *color);
+_cogl_material_get_colorubv (CoglMaterial *material,
+                             guint8       *color);
 
 void
-_cogl_material_flush_gl_state (CoglHandle material,
+_cogl_material_flush_gl_state (CoglMaterial *material,
                                gboolean skip_gl_state);
 
 gboolean
-_cogl_material_equal (CoglHandle material0_handle,
-                      CoglHandle material1_handle,
+_cogl_material_equal (CoglMaterial *material0,
+                      CoglMaterial *material1,
                       gboolean skip_gl_color);
 
-CoglHandle
-_cogl_material_journal_ref (CoglHandle material_handle);
+CoglMaterial *
+_cogl_material_journal_ref (CoglMaterial *material);
 
 void
-_cogl_material_journal_unref (CoglHandle material_handle);
+_cogl_material_journal_unref (CoglMaterial *material);
 
 /* TODO: These should be made public once we add support for 3D
    textures in Cogl */
 void
-_cogl_material_set_layer_wrap_mode_r (CoglHandle material,
+_cogl_material_set_layer_wrap_mode_r (CoglMaterial *material,
                                       int layer_index,
                                       CoglMaterialWrapMode mode);
 
 CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_r (CoglHandle layer);
+_cogl_material_layer_get_wrap_mode_r (CoglMaterialLayer *layer);
 
 void
-_cogl_material_set_user_program (CoglHandle handle,
+_cogl_material_set_user_program (CoglMaterial *material,
                                  CoglHandle program);
 
 void
 _cogl_material_texture_storage_change_notify (CoglHandle texture);
 
 void
-_cogl_material_apply_legacy_state (CoglHandle handle);
+_cogl_material_apply_legacy_state (CoglMaterial *material);
 
 void
 _cogl_gl_use_program_wrapper (GLuint program);
@@ -811,18 +807,18 @@ _cogl_material_apply_overrides (CoglMaterial *material,
                                 CoglMaterialFlushOptions *options);
 
 CoglMaterialBlendEnable
-_cogl_material_get_blend_enabled (CoglHandle handle);
+_cogl_material_get_blend_enabled (CoglMaterial *material);
 
 void
-_cogl_material_set_blend_enabled (CoglHandle handle,
+_cogl_material_set_blend_enabled (CoglMaterial *material,
                                   CoglMaterialBlendEnable enable);
 
 void
-_cogl_material_set_static_breadcrumb (CoglHandle handle,
+_cogl_material_set_static_breadcrumb (CoglMaterial *material,
                                       const char *breadcrumb);
 
 unsigned long
-_cogl_material_get_age (CoglHandle handle);
+_cogl_material_get_age (CoglMaterial *material);
 
 CoglMaterial *
 _cogl_material_get_authority (CoglMaterial *material,

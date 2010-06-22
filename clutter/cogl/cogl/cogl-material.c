@@ -32,7 +32,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
-#include "cogl-handle.h"
+#include "cogl-object.h"
 
 #include "cogl-material-private.h"
 #include "cogl-texture-private.h"
@@ -77,7 +77,6 @@
 #define GL_CLAMP_TO_BORDER 0x812d
 #endif
 
-#define COGL_MATERIAL(X) ((CoglMaterial *)(X))
 #define COGL_MATERIAL_LAYER(X) ((CoglMaterialLayer *)(X))
 
 typedef gboolean (*CoglMaterialStateComparitor) (CoglMaterial *authority0,
@@ -105,8 +104,8 @@ static const CoglMaterialBackend *backends[COGL_MATERIAL_N_BACKENDS];
 #include "cogl-material-fixed-private.h"
 #endif
 
-COGL_HANDLE_DEFINE (Material, material);
-COGL_HANDLE_DEFINE (MaterialLayer, material_layer);
+COGL_OBJECT_DEFINE (Material, material);
+COGL_OBJECT_DEFINE (MaterialLayer, material_layer);
 
 static void
 texture_unit_init (CoglTextureUnit *unit, int index_)
@@ -128,7 +127,7 @@ static void
 texture_unit_free (CoglTextureUnit *unit)
 {
   if (unit->layer)
-    cogl_handle_unref (unit->layer);
+    cogl_object_unref (unit->layer);
   _cogl_matrix_stack_destroy (unit->matrix_stack);
 }
 
@@ -389,7 +388,7 @@ _cogl_material_init_default_material (void)
   depth_state->depth_range_near = 0;
   depth_state->depth_range_far = 1;
 
-  ctx->default_material = _cogl_material_handle_new (material);
+  ctx->default_material = _cogl_material_object_new (material);
 }
 
 static void
@@ -416,7 +415,7 @@ _cogl_material_unparent (CoglMaterial *material)
   else
     parent->children = g_list_remove (parent->children, material);
 
-  cogl_handle_unref (parent);
+  cogl_object_unref (parent);
 
   material->parent = NULL;
 }
@@ -453,7 +452,7 @@ recursively_free_layer_caches (CoglMaterial *material)
 static void
 _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
 {
-  cogl_handle_ref (parent);
+  cogl_object_ref (parent);
 
   if (material->parent)
     _cogl_material_unparent (material);
@@ -486,13 +485,12 @@ _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
 
 /* XXX: Always have an eye out for opportunities to lower the cost of
  * cogl_material_copy. */
-CoglHandle
-cogl_material_copy (CoglHandle handle)
+CoglMaterial *
+cogl_material_copy (CoglMaterial *src)
 {
-  CoglMaterial *src = COGL_MATERIAL (handle);
   CoglMaterial *material = g_slice_new (CoglMaterial);
 
-  cogl_handle_ref (handle);
+  cogl_object_ref (src);
 
   material->_parent = src->_parent;
 
@@ -531,35 +529,34 @@ cogl_material_copy (CoglHandle handle)
 
   _cogl_material_set_parent (material, src);
 
-  return _cogl_material_handle_new (material);
+  return _cogl_material_object_new (material);
 }
 
 /* XXX: we should give this more thought before making anything like
  * this API public! */
-CoglHandle
-_cogl_material_weak_copy (CoglHandle handle)
+CoglMaterial *
+_cogl_material_weak_copy (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-  CoglHandle copy;
+  CoglMaterial *copy;
   CoglMaterial *copy_material;
 
   /* If we make a public API we might want want to allow weak copies
    * of weak material? */
-  g_return_val_if_fail (!material->is_weak, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (!material->is_weak, NULL);
 
-  copy = cogl_material_copy (handle);
+  copy = cogl_material_copy (material);
   copy_material = COGL_MATERIAL (copy);
   copy_material->is_weak = TRUE;
 
   return copy;
 }
 
-CoglHandle
+CoglMaterial *
 cogl_material_new (void)
 {
-  CoglHandle new;
+  CoglMaterial *new;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   new = cogl_material_copy (ctx->default_material);
   _cogl_material_set_static_breadcrumb (new, "new");
@@ -591,7 +588,7 @@ _cogl_material_free (CoglMaterial *material)
   if (material->differences & COGL_MATERIAL_STATE_LAYERS)
     {
       g_list_foreach (material->layer_differences,
-                      (GFunc)cogl_handle_unref, NULL);
+                      (GFunc)cogl_object_unref, NULL);
       g_list_free (material->layer_differences);
     }
 
@@ -599,11 +596,9 @@ _cogl_material_free (CoglMaterial *material)
 }
 
 gboolean
-_cogl_material_get_real_blend_enabled (CoglHandle handle)
+_cogl_material_get_real_blend_enabled (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   return material->real_blend_enable;
 }
@@ -718,11 +713,10 @@ _cogl_material_update_layers_cache (CoglMaterial *material)
  * layer_index instead. */
 
 void
-_cogl_material_foreach_layer (CoglHandle handle,
+_cogl_material_foreach_layer (CoglMaterial *material,
                               CoglMaterialLayerCallback callback,
                               void *user_data)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
   int n_layers;
@@ -786,13 +780,12 @@ layer_has_alpha_cb (CoglMaterialLayer *layer, void *data)
   return TRUE;
 }
 
-static CoglHandle
-_cogl_material_get_user_program (CoglHandle handle)
+static CoglMaterial *
+_cogl_material_get_user_program (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), COGL_INVALID_HANDLE);
+  g_return_val_if_fail (cogl_is_material (material), NULL);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_USER_SHADER);
@@ -958,7 +951,7 @@ _cogl_material_copy_differences (CoglMaterial *dest,
           dest->layer_differences)
         {
           g_list_foreach (dest->layer_differences,
-                          (GFunc)cogl_handle_unref,
+                          (GFunc)cogl_object_unref,
                           NULL);
           g_list_free (dest->layer_differences);
         }
@@ -974,7 +967,7 @@ _cogl_material_copy_differences (CoglMaterial *dest,
            * originals instead. */
           CoglMaterialLayer *copy = _cogl_material_layer_copy (l->data);
           _cogl_material_add_layer_difference (dest, copy, FALSE);
-          cogl_handle_unref (copy);
+          cogl_object_unref (copy);
         }
     }
 
@@ -1249,7 +1242,7 @@ _cogl_material_add_layer_difference (CoglMaterial *material,
   g_return_if_fail (layer->owner == NULL);
 
   layer->owner = material;
-  cogl_handle_ref ((CoglHandle)layer);
+  cogl_object_ref (layer);
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the material has no dependants so it may be modified.
@@ -1290,7 +1283,7 @@ _cogl_material_remove_layer_difference (CoglMaterial *material,
                                     NULL);
 
   layer->owner = NULL;
-  cogl_handle_unref ((CoglHandle)layer);
+  cogl_object_unref (layer);
 
   material->differences |= COGL_MATERIAL_STATE_LAYERS;
 
@@ -1568,7 +1561,7 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
     {
       CoglMaterialLayer *new = _cogl_material_layer_copy (layer);
       _cogl_material_add_layer_difference (required_owner, new, FALSE);
-      cogl_handle_unref (new);
+      cogl_object_unref (new);
       layer = new;
       goto init_layer_state;
     }
@@ -1623,11 +1616,11 @@ _cogl_material_layer_prune_redundant_ancestry (CoglMaterialLayer *layer)
   if (new_parent != layer->parent)
     {
       CoglMaterialLayer *old_parent = layer->parent;
-      layer->parent = cogl_handle_ref (new_parent);
+      layer->parent = cogl_object_ref (new_parent);
       /* Note: the old parent may indirectly be keeping
          the new parent alive so we have to ref the new
          parent before unrefing the old */
-      cogl_handle_unref (old_parent);
+      cogl_object_unref (old_parent);
     }
 }
 
@@ -1863,7 +1856,7 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   _cogl_material_add_layer_difference (material, layer, TRUE);
 
-  cogl_handle_unref (layer);
+  cogl_object_unref (layer);
 
   return layer;
 }
@@ -1897,9 +1890,9 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
    */
   if (layer_parent->index == layer->index && layer_parent->owner == NULL)
     {
-      cogl_handle_ref (layer_parent);
+      cogl_object_ref (layer_parent);
       link->data = layer->parent;
-      cogl_handle_unref (layer);
+      cogl_object_unref (layer);
       recursively_free_layer_caches (layers_authority);
       return;
     }
@@ -2038,15 +2031,13 @@ changed:
 }
 
 static void
-_cogl_material_set_layer_gl_texture_slice (CoglHandle handle,
+_cogl_material_set_layer_gl_texture_slice (CoglMaterial *material,
                                            int layer_index,
                                            CoglHandle texture,
                                            GLuint slice_gl_texture,
                                            GLenum slice_gl_target)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
   /* GL texture overrides can only be set in association with a parent
    * CoglTexture */
   g_return_if_fail (cogl_is_texture (texture));
@@ -2067,13 +2058,11 @@ _cogl_material_set_layer_gl_texture_slice (CoglHandle handle,
  * hooks defined to receive these snippets.
  */
 void
-cogl_material_set_layer (CoglHandle handle,
+cogl_material_set_layer (CoglMaterial *material,
 			 int layer_index,
 			 CoglHandle texture)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
   g_return_if_fail (texture == COGL_INVALID_HANDLE ||
                     cogl_is_texture (texture));
 
@@ -2214,18 +2203,17 @@ internal_to_public_wrap_mode (CoglMaterialWrapModeInternal internal_mode)
 }
 
 void
-cogl_material_set_layer_wrap_mode_s (CoglHandle handle,
+cogl_material_set_layer_wrap_mode_s (CoglMaterial *material,
                                      int layer_index,
                                      CoglMaterialWrapMode mode)
 {
-  CoglMaterial                *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer           *layer;
   CoglMaterialLayer           *authority;
   CoglMaterialWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2246,18 +2234,17 @@ cogl_material_set_layer_wrap_mode_s (CoglHandle handle,
 }
 
 void
-cogl_material_set_layer_wrap_mode_t (CoglHandle           handle,
+cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                      int                  layer_index,
                                      CoglMaterialWrapMode mode)
 {
-  CoglMaterial                *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer           *layer;
   CoglMaterialLayer           *authority;
   CoglMaterialWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2280,18 +2267,17 @@ cogl_material_set_layer_wrap_mode_t (CoglHandle           handle,
 /* TODO: this should be made public once we add support for 3D
    textures in Cogl */
 void
-_cogl_material_set_layer_wrap_mode_r (CoglHandle           handle,
+_cogl_material_set_layer_wrap_mode_r (CoglMaterial        *material,
                                       int                  layer_index,
                                       CoglMaterialWrapMode mode)
 {
-  CoglMaterial                *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer           *layer;
   CoglMaterialLayer           *authority;
   CoglMaterialWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2312,18 +2298,17 @@ _cogl_material_set_layer_wrap_mode_r (CoglHandle           handle,
 }
 
 void
-cogl_material_set_layer_wrap_mode (CoglHandle           handle,
+cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
                                    int                  layer_index,
                                    CoglMaterialWrapMode mode)
 {
-  CoglMaterial                *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer           *layer;
   CoglMaterialLayer           *authority;
   CoglMaterialWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2347,13 +2332,12 @@ cogl_material_set_layer_wrap_mode (CoglHandle           handle,
 
 /* FIXME: deprecate this API */
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_s (CoglHandle handle)
+cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer     *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -2363,12 +2347,11 @@ cogl_material_layer_get_wrap_mode_s (CoglHandle handle)
 }
 
 CoglMaterialWrapMode
-cogl_material_get_layer_wrap_mode_s (CoglHandle handle, int layer_index)
+cogl_material_get_layer_wrap_mode_s (CoglMaterial *material, int layer_index)
 {
-  CoglMaterial          *material = COGL_MATERIAL (handle);
-  CoglMaterialLayer     *layer;
+  CoglMaterialLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2379,18 +2362,17 @@ cogl_material_get_layer_wrap_mode_s (CoglHandle handle, int layer_index)
   layer = _cogl_material_get_layer (material, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  return cogl_material_layer_get_wrap_mode_s ((CoglHandle)layer);
+  return cogl_material_layer_get_wrap_mode_s (layer);
 }
 
 /* FIXME: deprecate this API */
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_t (CoglHandle handle)
+cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer     *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -2400,12 +2382,11 @@ cogl_material_layer_get_wrap_mode_t (CoglHandle handle)
 }
 
 CoglMaterialWrapMode
-cogl_material_get_layer_wrap_mode_t (CoglHandle handle, int layer_index)
+cogl_material_get_layer_wrap_mode_t (CoglMaterial *material, int layer_index)
 {
-  CoglMaterial          *material = COGL_MATERIAL (handle);
-  CoglMaterialLayer     *layer;
+  CoglMaterialLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -2416,13 +2397,12 @@ cogl_material_get_layer_wrap_mode_t (CoglHandle handle, int layer_index)
   layer = _cogl_material_get_layer (material, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  return cogl_material_layer_get_wrap_mode_t ((CoglHandle)layer);
+  return cogl_material_layer_get_wrap_mode_t (layer);
 }
 
 CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_r (CoglHandle handle)
+_cogl_material_layer_get_wrap_mode_r (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority =
     _cogl_material_layer_get_authority (layer, change);
@@ -2432,12 +2412,11 @@ _cogl_material_layer_get_wrap_mode_r (CoglHandle handle)
 
 /* TODO: make this public when we expose 3D textures. */
 CoglMaterialWrapMode
-_cogl_material_get_layer_wrap_mode_r (CoglHandle handle, int layer_index)
+_cogl_material_get_layer_wrap_mode_r (CoglMaterial *material, int layer_index)
 {
-  CoglMaterial      *material = COGL_MATERIAL (handle);
   CoglMaterialLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -3095,12 +3074,10 @@ simple_property_equal (CoglMaterial *material0,
  * False positives aren't allowed.
  */
 gboolean
-_cogl_material_equal (CoglHandle handle0,
-                      CoglHandle handle1,
+_cogl_material_equal (CoglMaterial *material0,
+                      CoglMaterial *material1,
                       gboolean skip_gl_color)
 {
-  CoglMaterial  *material0 = COGL_MATERIAL (handle0);
-  CoglMaterial  *material1 = COGL_MATERIAL (handle1);
   unsigned long  materials_difference;
 
   if (material0 == material1)
@@ -3182,13 +3159,12 @@ _cogl_material_equal (CoglHandle handle0,
 }
 
 void
-cogl_material_get_color (CoglHandle  handle,
-                         CoglColor  *color)
+cogl_material_get_color (CoglMaterial *material,
+                         CoglColor    *color)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_COLOR);
@@ -3198,10 +3174,9 @@ cogl_material_get_color (CoglHandle  handle,
 
 /* This is used heavily by the cogl journal when logging quads */
 void
-_cogl_material_get_colorubv (CoglHandle  handle,
-                             guint8     *color)
+_cogl_material_get_colorubv (CoglMaterial *material,
+                             guint8       *color)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_COLOR);
 
@@ -3223,11 +3198,11 @@ _cogl_material_prune_redundant_ancestry (CoglMaterial *material)
   if (new_parent != material->parent)
     {
       CoglMaterial *old_parent = material->parent;
-      material->parent = cogl_handle_ref (new_parent);
+      material->parent = cogl_object_ref (new_parent);
       /* Note: the old parent may indirectly be keeping
          the new parent alive so we have to ref the new
          parent before unrefing the old */
-      cogl_handle_unref (old_parent);
+      cogl_object_unref (old_parent);
     }
 }
 
@@ -3259,14 +3234,13 @@ _cogl_material_update_authority (CoglMaterial *material,
 }
 
 void
-cogl_material_set_color (CoglHandle       handle,
+cogl_material_set_color (CoglMaterial    *material,
 			 const CoglColor *color)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_COLOR;
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3289,7 +3263,7 @@ cogl_material_set_color (CoglHandle       handle,
 }
 
 void
-cogl_material_set_color4ub (CoglHandle handle,
+cogl_material_set_color4ub (CoglMaterial *material,
 			    guint8 red,
                             guint8 green,
                             guint8 blue,
@@ -3297,11 +3271,11 @@ cogl_material_set_color4ub (CoglHandle handle,
 {
   CoglColor color;
   cogl_color_set_from_4ub (&color, red, green, blue, alpha);
-  cogl_material_set_color (handle, &color);
+  cogl_material_set_color (material, &color);
 }
 
 void
-cogl_material_set_color4f (CoglHandle handle,
+cogl_material_set_color4f (CoglMaterial *material,
 			   float red,
                            float green,
                            float blue,
@@ -3309,16 +3283,15 @@ cogl_material_set_color4f (CoglHandle handle,
 {
   CoglColor color;
   cogl_color_set_from_4f (&color, red, green, blue, alpha);
-  cogl_material_set_color (handle, &color);
+  cogl_material_set_color (material, &color);
 }
 
 CoglMaterialBlendEnable
-_cogl_material_get_blend_enabled (CoglHandle handle)
+_cogl_material_get_blend_enabled (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);;
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_BLEND_ENABLE);
@@ -3333,14 +3306,13 @@ _cogl_material_blend_enable_equal (CoglMaterial *authority0,
 }
 
 void
-_cogl_material_set_blend_enabled (CoglHandle handle,
+_cogl_material_set_blend_enabled (CoglMaterial *material,
                                   CoglMaterialBlendEnable enable)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_BLEND_ENABLE;
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
   g_return_if_fail (enable > 1 &&
                     "don't pass TRUE or FALSE to _set_blend_enabled!");
 
@@ -3365,13 +3337,12 @@ _cogl_material_set_blend_enabled (CoglHandle handle,
 }
 
 void
-cogl_material_get_ambient (CoglHandle  handle,
-                           CoglColor  *ambient)
+cogl_material_get_ambient (CoglMaterial *material,
+                           CoglColor    *ambient)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
@@ -3381,15 +3352,14 @@ cogl_material_get_ambient (CoglHandle  handle,
 }
 
 void
-cogl_material_set_ambient (CoglHandle handle,
+cogl_material_set_ambient (CoglMaterial *material,
 			   const CoglColor *ambient)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
   CoglMaterial *authority;
   CoglMaterialLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3417,13 +3387,12 @@ cogl_material_set_ambient (CoglHandle handle,
 }
 
 void
-cogl_material_get_diffuse (CoglHandle  handle,
-                           CoglColor  *diffuse)
+cogl_material_get_diffuse (CoglMaterial *material,
+                           CoglColor    *diffuse)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
@@ -3433,15 +3402,14 @@ cogl_material_get_diffuse (CoglHandle  handle,
 }
 
 void
-cogl_material_set_diffuse (CoglHandle handle,
+cogl_material_set_diffuse (CoglMaterial *material,
 			   const CoglColor *diffuse)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
   CoglMaterial *authority;
   CoglMaterialLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3470,20 +3438,20 @@ cogl_material_set_diffuse (CoglHandle handle,
 }
 
 void
-cogl_material_set_ambient_and_diffuse (CoglHandle handle,
+cogl_material_set_ambient_and_diffuse (CoglMaterial *material,
 				       const CoglColor *color)
 {
-  cogl_material_set_ambient (handle, color);
-  cogl_material_set_diffuse (handle, color);
+  cogl_material_set_ambient (material, color);
+  cogl_material_set_diffuse (material, color);
 }
 
 void
-cogl_material_get_specular (CoglHandle  handle,
-                            CoglColor  *specular)
+cogl_material_get_specular (CoglMaterial *material,
+                            CoglColor    *specular)
 {
-  CoglMaterial *authority = COGL_MATERIAL (handle);
+  CoglMaterial *authority = material;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   while (!(authority->differences & COGL_MATERIAL_STATE_LIGHTING))
     authority = authority->parent;
@@ -3493,14 +3461,13 @@ cogl_material_get_specular (CoglHandle  handle,
 }
 
 void
-cogl_material_set_specular (CoglHandle handle, const CoglColor *specular)
+cogl_material_set_specular (CoglMaterial *material, const CoglColor *specular)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
   CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
   CoglMaterialLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3528,12 +3495,11 @@ cogl_material_set_specular (CoglHandle handle, const CoglColor *specular)
 }
 
 float
-cogl_material_get_shininess (CoglHandle handle)
+cogl_material_get_shininess (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), 0);
+  g_return_val_if_fail (cogl_is_material (material), 0);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
@@ -3542,15 +3508,14 @@ cogl_material_get_shininess (CoglHandle handle)
 }
 
 void
-cogl_material_set_shininess (CoglHandle handle,
+cogl_material_set_shininess (CoglMaterial *material,
 			     float shininess)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
   CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
   CoglMaterialLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   if (shininess < 0.0 || shininess > 1.0)
     {
@@ -3581,13 +3546,12 @@ cogl_material_set_shininess (CoglHandle handle,
 }
 
 void
-cogl_material_get_emission (CoglHandle  handle,
-                            CoglColor  *emission)
+cogl_material_get_emission (CoglMaterial *material,
+                            CoglColor    *emission)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
@@ -3597,14 +3561,13 @@ cogl_material_get_emission (CoglHandle  handle,
 }
 
 void
-cogl_material_set_emission (CoglHandle handle, const CoglColor *emission)
+cogl_material_set_emission (CoglMaterial *material, const CoglColor *emission)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
   CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
   CoglMaterialLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3632,16 +3595,15 @@ cogl_material_set_emission (CoglHandle handle, const CoglColor *emission)
 }
 
 void
-cogl_material_set_alpha_test_function (CoglHandle handle,
+cogl_material_set_alpha_test_function (CoglMaterial *material,
 				       CoglMaterialAlphaFunc alpha_func,
 				       float alpha_reference)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_ALPHA_FUNC;
   CoglMaterial *authority;
   CoglMaterialAlphaFuncState *alpha_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3759,11 +3721,10 @@ setup_blend_state (CoglBlendStringStatement *statement,
 }
 
 gboolean
-cogl_material_set_blend (CoglHandle handle,
+cogl_material_set_blend (CoglMaterial *material,
                          const char *blend_description,
                          GError **error)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
   CoglMaterial *authority;
   CoglBlendStringStatement statements[2];
@@ -3773,7 +3734,7 @@ cogl_material_set_blend (CoglHandle handle,
   int count;
   CoglMaterialBlendState *blend_state;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   count =
     _cogl_blend_string_compile (blend_description,
@@ -3855,16 +3816,15 @@ cogl_material_set_blend (CoglHandle handle,
 }
 
 void
-cogl_material_set_blend_constant (CoglHandle handle,
+cogl_material_set_blend_constant (CoglMaterial *material,
                                   const CoglColor *constant_color)
 {
 #ifndef HAVE_COGL_GLES
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
   CoglMaterial *authority;
   CoglMaterialBlendState *blend_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3896,14 +3856,13 @@ cogl_material_set_blend_constant (CoglHandle handle,
  * processing.
  */
 void
-_cogl_material_set_user_program (CoglHandle handle,
+_cogl_material_set_user_program (CoglMaterial *material,
                                  CoglHandle program)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_USER_SHADER;
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3951,15 +3910,14 @@ _cogl_material_set_user_program (CoglHandle handle,
 }
 
 void
-cogl_material_set_depth_test_enabled (CoglHandle handle,
+cogl_material_set_depth_test_enabled (CoglMaterial *material,
                                       gboolean enable)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
   CoglMaterial *authority;
   CoglMaterialDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -3981,12 +3939,11 @@ cogl_material_set_depth_test_enabled (CoglHandle handle,
 }
 
 gboolean
-cogl_material_get_depth_test_enabled (CoglHandle handle)
+cogl_material_get_depth_test_enabled (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
@@ -3995,15 +3952,14 @@ cogl_material_get_depth_test_enabled (CoglHandle handle)
 }
 
 void
-cogl_material_set_depth_writing_enabled (CoglHandle handle,
+cogl_material_set_depth_writing_enabled (CoglMaterial *material,
                                          gboolean enable)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
   CoglMaterial *authority;
   CoglMaterialDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -4025,12 +3981,11 @@ cogl_material_set_depth_writing_enabled (CoglHandle handle,
 }
 
 gboolean
-cogl_material_get_depth_writing_enabled (CoglHandle handle)
+cogl_material_get_depth_writing_enabled (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), TRUE);
+  g_return_val_if_fail (cogl_is_material (material), TRUE);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
@@ -4039,15 +3994,14 @@ cogl_material_get_depth_writing_enabled (CoglHandle handle)
 }
 
 void
-cogl_material_set_depth_test_function (CoglHandle handle,
+cogl_material_set_depth_test_function (CoglMaterial *material,
                                        CoglDepthTestFunction function)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
   CoglMaterial *authority;
   CoglMaterialDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -4069,12 +4023,11 @@ cogl_material_set_depth_test_function (CoglHandle handle,
 }
 
 CoglDepthTestFunction
-cogl_material_get_depth_test_function (CoglHandle handle)
+cogl_material_get_depth_test_function (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle),
+  g_return_val_if_fail (cogl_is_material (material),
                         COGL_DEPTH_TEST_FUNCTION_LESS);
 
   authority =
@@ -4085,18 +4038,17 @@ cogl_material_get_depth_test_function (CoglHandle handle)
 
 
 gboolean
-cogl_material_set_depth_range (CoglHandle handle,
+cogl_material_set_depth_range (CoglMaterial *material,
                                float near_val,
                                float far_val,
                                GError **error)
 {
 #ifndef COGL_HAS_GLES
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
   CoglMaterial *authority;
   CoglMaterialDepthState *depth_state;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   authority = _cogl_material_get_authority (material, state);
 
@@ -4128,14 +4080,13 @@ cogl_material_set_depth_range (CoglHandle handle,
 }
 
 void
-cogl_material_get_depth_range (CoglHandle handle,
+cogl_material_get_depth_range (CoglMaterial *material,
                                float *near_val,
                                float *far_val)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
@@ -4145,11 +4096,9 @@ cogl_material_get_depth_range (CoglHandle handle,
 }
 
 unsigned long
-_cogl_material_get_age (CoglHandle handle)
+_cogl_material_get_age (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
-  g_return_val_if_fail (cogl_is_material (handle), 0);
+  g_return_val_if_fail (cogl_is_material (material), 0);
 
   return material->age;
 }
@@ -4160,7 +4109,7 @@ _cogl_material_layer_copy (CoglMaterialLayer *src)
   CoglMaterialLayer *layer = g_slice_new (CoglMaterialLayer);
   int i;
 
-  cogl_handle_ref ((CoglHandle)src);
+  cogl_object_ref (src);
 
   layer->_parent = src->_parent;
   layer->owner = NULL;
@@ -4183,7 +4132,7 @@ _cogl_material_layer_copy (CoglMaterialLayer *src)
   for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
     layer->backend_priv[i] = NULL;
 
-  return _cogl_material_layer_handle_new (layer);
+  return _cogl_material_layer_object_new (layer);
 }
 
 static void
@@ -4210,7 +4159,7 @@ _cogl_material_layer_unparent (CoglMaterialLayer *layer)
   else
     parent->children = g_list_remove (parent->children, layer);
 
-  cogl_handle_unref (parent);
+  cogl_object_unref (parent);
 }
 
 static void
@@ -4316,7 +4265,7 @@ _cogl_material_init_default_layers (void)
 
   cogl_matrix_init_identity (&big_state->matrix);
 
-  ctx->default_layer_0 = _cogl_material_layer_handle_new (layer);
+  ctx->default_layer_0 = _cogl_material_layer_object_new (layer);
 
   /* TODO: we should make default_layer_n comprise of two
    * descendants of default_layer_0:
@@ -4431,12 +4380,11 @@ setup_texture_combine_state (CoglBlendStringStatement *statement,
 }
 
 gboolean
-cogl_material_set_layer_combine (CoglHandle handle,
+cogl_material_set_layer_combine (CoglMaterial *material,
 				 int layer_index,
 				 const char *combine_description,
                                  GError **error)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_COMBINE;
   CoglMaterialLayer *authority;
   CoglMaterialLayer *layer;
@@ -4447,7 +4395,7 @@ cogl_material_set_layer_combine (CoglHandle handle,
   GError *internal_error = NULL;
   int count;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material (material), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -4545,17 +4493,16 @@ changed:
 }
 
 void
-cogl_material_set_layer_combine_constant (CoglHandle handle,
+cogl_material_set_layer_combine_constant (CoglMaterial *material,
 				          int layer_index,
                                           const CoglColor *constant_color)
 {
-  CoglMaterial          *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
   CoglMaterialLayer     *layer;
   CoglMaterialLayer     *authority;
   CoglMaterialLayer     *new;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -4626,17 +4573,16 @@ changed:
 }
 
 void
-cogl_material_set_layer_matrix (CoglHandle handle,
+cogl_material_set_layer_matrix (CoglMaterial *material,
 				int layer_index,
                                 const CoglMatrix *matrix)
 {
-  CoglMaterial          *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_USER_MATRIX;
   CoglMaterialLayer     *layer;
   CoglMaterialLayer     *authority;
   CoglMaterialLayer     *new;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -4693,14 +4639,13 @@ cogl_material_set_layer_matrix (CoglHandle handle,
 }
 
 void
-cogl_material_remove_layer (CoglHandle handle, int layer_index)
+cogl_material_remove_layer (CoglMaterial *material, int layer_index)
 {
-  CoglMaterial	       *material = COGL_MATERIAL (handle);
   CoglMaterial         *authority;
   CoglMaterialLayerInfo layer_info;
   int                   i;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
@@ -4761,11 +4706,9 @@ prepend_layer_to_list_cb (CoglMaterialLayer *layer,
  * then the list may become invalid.
  */
 const GList *
-cogl_material_get_layers (CoglHandle handle)
+cogl_material_get_layers (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
-  g_return_val_if_fail (cogl_is_material (handle), NULL);
+  g_return_val_if_fail (cogl_is_material (material), NULL);
 
   if (!material->deprecated_get_layers_list_dirty)
     g_list_free (material->deprecated_get_layers_list);
@@ -4784,12 +4727,11 @@ cogl_material_get_layers (CoglHandle handle)
 }
 
 int
-cogl_material_get_n_layers (CoglHandle handle)
+cogl_material_get_n_layers (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
   CoglMaterial *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), 0);
+  g_return_val_if_fail (cogl_is_material (material), 0);
 
   authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
@@ -4800,7 +4742,7 @@ cogl_material_get_n_layers (CoglHandle handle)
 /* FIXME: deprecate and replace with
  * cogl_material_get_layer_type() instead. */
 CoglMaterialLayerType
-cogl_material_layer_get_type (CoglHandle layer_handle)
+cogl_material_layer_get_type (CoglMaterialLayer *layer)
 {
   return COGL_MATERIAL_LAYER_TYPE_TEXTURE;
 }
@@ -4808,23 +4750,20 @@ cogl_material_layer_get_type (CoglHandle layer_handle)
 /* FIXME: deprecate and replace with
  * cogl_material_get_layer_texture() instead. */
 CoglHandle
-cogl_material_layer_get_texture (CoglHandle handle)
+cogl_material_layer_get_texture (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
-
-  g_return_val_if_fail (cogl_is_material_layer (handle),
+  g_return_val_if_fail (cogl_is_material_layer (layer),
 			COGL_INVALID_HANDLE);
 
   return _cogl_material_layer_get_texture (layer);
 }
 
 gboolean
-_cogl_material_layer_has_user_matrix (CoglHandle handle)
+_cogl_material_layer_has_user_matrix (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (handle), FALSE);
+  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
 
   authority =
     _cogl_material_layer_get_authority (layer,
@@ -4848,9 +4787,8 @@ _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
 }
 
 void
-_cogl_material_layer_pre_paint (CoglHandle handle)
+_cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayer *texture_authority;
 
   texture_authority =
@@ -4876,12 +4814,11 @@ _cogl_material_layer_pre_paint (CoglHandle handle)
 }
 
 CoglMaterialFilter
-cogl_material_layer_get_min_filter (CoglHandle handle)
+cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (handle), 0);
+  g_return_val_if_fail (cogl_is_material_layer (layer), 0);
 
   authority =
     _cogl_material_layer_get_authority (layer,
@@ -4891,12 +4828,11 @@ cogl_material_layer_get_min_filter (CoglHandle handle)
 }
 
 CoglMaterialFilter
-cogl_material_layer_get_mag_filter (CoglHandle handle)
+cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (handle);
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (handle), 0);
+  g_return_val_if_fail (cogl_is_material_layer (layer), 0);
 
   authority =
     _cogl_material_layer_get_authority (layer,
@@ -4906,18 +4842,17 @@ cogl_material_layer_get_mag_filter (CoglHandle handle)
 }
 
 void
-cogl_material_set_layer_filters (CoglHandle         handle,
+cogl_material_set_layer_filters (CoglMaterial      *material,
                                  int                layer_index,
                                  CoglMaterialFilter min_filter,
                                  CoglMaterialFilter mag_filter)
 {
-  CoglMaterial          *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_FILTERS;
   CoglMaterialLayer     *layer;
   CoglMaterialLayer     *authority;
   CoglMaterialLayer     *new;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_material (material));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -5492,9 +5427,9 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
     }
 
-  cogl_handle_ref (layer);
-  if (unit->layer != COGL_INVALID_HANDLE)
-    cogl_handle_unref (unit->layer);
+  cogl_object_ref (layer);
+  if (unit->layer != NULL)
+    cogl_object_unref (unit->layer);
   unit->layer = layer;
   unit->layer_changes_since_flush = 0;
 
@@ -5761,10 +5696,9 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
  *    isn't ideal, and can't be used with CoglVertexBuffers.
  */
 void
-_cogl_material_flush_gl_state (CoglHandle handle,
+_cogl_material_flush_gl_state (CoglMaterial *material,
                                gboolean skip_gl_color)
 {
-  CoglMaterial    *material = COGL_MATERIAL (handle);
   unsigned long    materials_difference;
   int              n_layers;
   unsigned long   *layer_differences = NULL;
@@ -5895,10 +5829,10 @@ _cogl_material_flush_gl_state (CoglHandle handle,
    * XXX: The issue should largely go away when we switch to using
    * weak materials for overrides.
    */
-  cogl_handle_ref (handle);
-  if (ctx->current_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (ctx->current_material);
-  ctx->current_material = handle;
+  cogl_object_ref (material);
+  if (ctx->current_material != NULL)
+    cogl_object_unref (ctx->current_material);
+  ctx->current_material = material;
   ctx->current_material_changes_since_flush = 0;
   ctx->current_material_skip_gl_color = skip_gl_color;
 
@@ -5928,27 +5862,22 @@ _cogl_material_flush_gl_state (CoglHandle handle,
 /* While a material is referenced by the Cogl journal we can not allow
  * modifications, so this gives us a mechanism to track journal
  * references separately */
-CoglHandle
-_cogl_material_journal_ref (CoglHandle material_handle)
+CoglMaterial *
+_cogl_material_journal_ref (CoglMaterial *material)
 {
-  CoglMaterial *material = COGL_MATERIAL (material_handle);
-
   material->journal_ref_count++;
-  cogl_handle_ref (material_handle);
-  return material_handle;
+  return cogl_object_ref (material);
 }
 
 void
-_cogl_material_journal_unref (CoglHandle material_handle)
+_cogl_material_journal_unref (CoglMaterial *material)
 {
-  CoglMaterial *material =
-    _cogl_material_pointer_from_handle (material_handle);
   material->journal_ref_count--;
-  cogl_handle_unref (material_handle);
+  cogl_object_unref (material);
 }
 
 void
-_cogl_material_apply_legacy_state (CoglHandle handle)
+_cogl_material_apply_legacy_state (CoglMaterial *material)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -5960,18 +5889,16 @@ _cogl_material_apply_legacy_state (CoglHandle handle)
    */
 
   if (ctx->current_program)
-    _cogl_material_set_user_program (handle, ctx->current_program);
+    _cogl_material_set_user_program (material, ctx->current_program);
 
   if (ctx->legacy_depth_test_enabled)
-    cogl_material_set_depth_test_enabled (handle, TRUE);
+    cogl_material_set_depth_test_enabled (material, TRUE);
 }
 
 void
-_cogl_material_set_static_breadcrumb (CoglHandle handle,
+_cogl_material_set_static_breadcrumb (CoglMaterial *material,
                                       const char *breadcrumb)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-
   material->has_static_breadcrumb = TRUE;
   material->static_breadcrumb = breadcrumb;
 }
