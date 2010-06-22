@@ -7165,7 +7165,7 @@ void
 _cogl_material_journal_unref (CoglHandle material_handle)
 {
   CoglMaterial *material =
-    material = _cogl_material_pointer_from_handle (material_handle);
+    _cogl_material_pointer_from_handle (material_handle);
   material->journal_ref_count--;
   cogl_handle_unref (material_handle);
 }
