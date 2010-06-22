@@ -38,6 +38,15 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'gnome-power-manager': 'battery'
 };
 
+/* Holds constructors for shell-implemented SystemStatusButtons
+ * example:
+ * const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
+ *     'network': imports.ui.network.NMApplet
+ * };
+ */
+const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
+};
+
 const CLOCK_FORMAT_KEY        = 'format';
 const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
@@ -797,15 +806,29 @@ Panel.prototype = {
                                            '^([^ ]*/)?indicator-application-service$']});
         p.run();
 
-        // The tray icons live in trayBox within trayContainer.
+        // System status applets live in statusBox, while legacy tray icons
+        // live in trayBox
         // The trayBox is hidden when there are no tray icons.
-        let trayContainer = new St.Bin({ y_align: St.Align.MIDDLE });
-        this._rightBox.add(trayContainer);
-        let trayBox = new St.BoxLayout({ name: 'statusTray' });
+        let statusBox = new St.BoxLayout({ name: 'statusTray' });
+        let trayBox = new St.BoxLayout({ name: 'legacyTray' });
         this._trayBox = trayBox;
+        this._statusBox = statusBox;
 
         trayBox.hide();
-        trayContainer.add_actor(trayBox);
+        this._rightBox.add(trayBox);
+        this._rightBox.add(statusBox);
+
+        for (let i = 0; i < STANDARD_TRAY_ICON_ORDER.length; i++) {
+            let role = STANDARD_TRAY_ICON_ORDER[i];
+            let constructor = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role];
+            if (!constructor) {
+                // This icon is not implemented (this is a bug)
+                continue;
+            }
+            let indicator = new constructor();
+            statusBox.add(indicator.actor);
+            this._menus.addMenu(indicator.menu);
+        }
 
         this._traymanager = new Shell.TrayManager();
         this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -869,6 +892,11 @@ Panel.prototype = {
             // Unknown icons go first in undefined order
             this._trayBox.insert_actor(icon, 0);
         } else {
+            if (STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role]) {
+                // This icon is legacy, and replaced by a Shell version
+                // Hide it
+                return;
+            }
             icon._role = role;
             // Figure out the index in our well-known order for this icon
             let position = STANDARD_TRAY_ICON_ORDER.indexOf(role);
