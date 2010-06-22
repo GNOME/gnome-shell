@@ -66,12 +66,12 @@ The official Clutter website is:
 The API reference for the latest stable release and unstable developers
 snapshot are available at:
 
-   http://www.clutter-project.org/docs/clutter/stable/
-   http://www.clutter-project.org/docs/clutter/unstable/
+   http://docs.clutter-project.org/docs/clutter/stable/
+   http://docs.clutter-project.org/docs/clutter/unstable/
 
 New releases of Clutter are available at:
 
-   http://www.clutter-project.org/sources/clutter/
+   http://source.clutter-project.org/sources/clutter/
 
 The Clutter blog is at:
 
@@ -81,13 +81,13 @@ To subscribe to the Clutter mailing list, send an email to:
 
    clutter+subscribe@o-hand.com
 
-The official mailing list archive is:
+The official mailing list archive is available at:
 
-   http://lists.o-hand.com/clutter/
+   http://lists.clutter-project.org/
 
 New bug page on Bugzilla:
 
-   http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
+   http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
@@ -242,7 +242,7 @@ BUGS
 
 Bugs should be reported to the Clutter Bugzilla at:
 
-  http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
+  http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
 
 You will need a Bugzilla account.
 
