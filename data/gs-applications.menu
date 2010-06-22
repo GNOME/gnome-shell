@@ -32,7 +32,10 @@
 		<OnlyUnallocated/>
 		<Include>
 			<And>
-				<Not><Category>Core</Category></Not>
+				<Or>
+					<Category>Documentation</Category>
+					<Not><Category>Core</Category></Not>
+				</Or>
 				<Not><Category>Settings</Category></Not>
 				<Not><Category>Screensaver</Category></Not>
 			</And>
