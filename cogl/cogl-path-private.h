@@ -25,6 +25,7 @@
 #define __COGL_PATH_PRIVATE_H
 
 #include "cogl-handle.h"
+#include "cogl-path.h"
 
 #define COGL_PATH(tex) ((CoglPath *)(tex))
 
@@ -68,6 +69,8 @@ struct _CoglPath
 struct _CoglPathData
 {
   unsigned int      ref_count;
+
+  CoglPathFillRule  fill_rule;
 
   GArray           *path_nodes;
 
