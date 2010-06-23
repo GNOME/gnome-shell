@@ -20,7 +20,14 @@ assertEquals("%s", "%%s".format('foo'));
 assertEquals("%%s", "%%%%s".format('foo'));
 assertEquals("foo 5", "%s %d".format('foo', 5));
 assertEquals("8", "%d".format(8));
+assertEquals("f", "%x".format(15));
 assertEquals("2.58 6.96", "%f %.2f".format(2.58, 6.958));
+
+// Test field width
+assertEquals("007  foo", "%03d %4s".format(7, 'foo'));
+assertEquals(" 2.58 06.96", "%5f %05.2f".format(2.58, 6.958));
+assertEquals("cafe", "%2x".format(0xcafe));
+assertEquals("foo", "%0s".format('foo'));
 
 // Precision is only allowed for %f
 assertRaises(function() { "%.2d".format(5.21) });
