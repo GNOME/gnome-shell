@@ -1,6 +1,6 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=${exec_prefix}/libdir
+libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 apiversion=@CLUTTER_API_VERSION@
