@@ -1941,8 +1941,8 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
   if (layer_parent->index == layer->index && layer_parent->owner == NULL)
     {
       cogl_handle_ref (layer_parent);
-      cogl_handle_unref (layer);
       link->data = layer->parent;
+      cogl_handle_unref (layer);
       recursively_free_layer_caches (layers_authority);
       return;
     }
