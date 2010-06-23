@@ -507,14 +507,14 @@ Magnifier.prototype = {
    },
 
     _updateShowHide: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setActive(gConf.get_bool(SHOW_KEY));
     },
 
     _updateScreenPosition: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = Shell.GConf.get_default();
+            let gConf = GConf.Client.get_default();
             let position = gConf.get_int(SCREEN_POSITION_KEY);
             this._zoomRegions[0].setScreenPosition(position);
             if (position != ScreenPosition.FULL_SCREEN)
@@ -525,7 +525,7 @@ Magnifier.prototype = {
     _updateMagFactor: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = Shell.GConf.get_default();
+            let gConf = GConf.Client.get_default();
             // Mag factor is accurate to two decimal places.
             let magFactor = parseFloat(gConf.get_float(MAG_FACTOR_KEY).toFixed(2));
             this._zoomRegions[0].setMagFactor(magFactor, magFactor);
@@ -535,7 +535,7 @@ Magnifier.prototype = {
     _updateLensMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = Shell.GConf.get_default();
+            let gConf = GConf.Client.get_default();
             this._zoomRegions[0].setLensMode(gConf.get_bool(LENS_MODE_KEY));
         }
     },
@@ -543,7 +543,7 @@ Magnifier.prototype = {
     _updateClampMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = Shell.GConf.get_default();
+            let gConf = GConf.Client.get_default();
             this._zoomRegions[0].setClampScrollingAtEdges(
                 !gConf.get_bool(CLAMP_MODE_KEY)
             );
@@ -553,7 +553,7 @@ Magnifier.prototype = {
     _updateMouseTrackingMode: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
-            let gConf = Shell.GConf.get_default();
+            let gConf = GConf.Client.get_default();
             this._zoomRegions[0].setMouseTrackingMode(
                 gConf.get_int(MOUSE_TRACKING_KEY)
             );
@@ -561,32 +561,32 @@ Magnifier.prototype = {
     },
 
     _updateShowCrosshairs: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsVisible(gConf.get_bool(SHOW_CROSS_HAIRS_KEY));
     },
 
     _updateCrosshairsThickness: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsThickness(gConf.get_int(CROSS_HAIRS_THICKNESS_KEY));
     },
 
     _updateCrosshairsColor: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsColor(gConf.get_string(CROSS_HAIRS_COLOR_KEY));
     },
 
     _updateCrosshairsOpacity: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsOpacity(gConf.get_int(CROSS_HAIRS_OPACITY_KEY));
     },
 
     _updateCrosshairsLength: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsLength(gConf.get_int(CROSS_HAIRS_LENGTH_KEY));
     },
 
     _updateCrosshairsClip: function() {
-        let gConf = Shell.GConf.get_default();
+        let gConf = GConf.Client.get_default();
         this.setCrosshairsClip(gConf.get_bool(CROSS_HAIRS_CLIP_KEY));
     }
 };
