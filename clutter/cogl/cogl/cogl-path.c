@@ -169,6 +169,10 @@ _cogl_path_stroke_nodes (void)
 
   _cogl_material_flush_gl_state (source, FALSE);
 
+  /* Disable all client texture coordinate arrays */
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
+
   while (path_start < data->path_nodes->len)
     {
       CoglPathNode *node = &g_array_index (data->path_nodes, CoglPathNode,
