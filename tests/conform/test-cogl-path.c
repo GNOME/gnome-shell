@@ -147,6 +147,35 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_path_rectangle (BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
   draw_path_at (9, 0);
 
+  /* Draw a clockwise outer path */
+  cogl_path_move_to (0, 0);
+  cogl_path_line_to (BLOCK_SIZE, 0);
+  cogl_path_line_to (BLOCK_SIZE, BLOCK_SIZE);
+  cogl_path_line_to (0, BLOCK_SIZE);
+  cogl_path_close ();
+  /* Add a clockwise sub path in the upper left quadrant */
+  cogl_path_move_to (0, 0);
+  cogl_path_line_to (BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (0, BLOCK_SIZE / 2);
+  cogl_path_close ();
+  /* Add a counter-clockwise sub path in the upper right quadrant */
+  cogl_path_move_to (BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (BLOCK_SIZE, BLOCK_SIZE / 2);
+  cogl_path_line_to (BLOCK_SIZE, 0);
+  cogl_path_close ();
+  /* Retain the path for the next test */
+  path_a = cogl_handle_ref (cogl_get_path ());
+  draw_path_at (10, 0);
+
+  /* Draw the same path again with the other fill rule */
+  cogl_set_path (path_a);
+  cogl_path_set_fill_rule (COGL_PATH_FILL_RULE_NON_ZERO);
+  draw_path_at (11, 0);
+
+  cogl_handle_unref (path_a);
+
   verify_block (0, 0, 0x8 /* bottom right */);
   verify_block (1, 0, 0xf /* all of them */);
   verify_block (2, 0, 0x8 /* bottom right */);
@@ -157,6 +186,8 @@ on_paint (ClutterActor *actor, TestState *state)
   verify_block (7, 0, 0x9 /* top_left and bottom right */);
   verify_block (8, 0, 0xe /* all but top left */);
   verify_block (9, 0, 0x7 /* all but bottom right */);
+  verify_block (10, 0, 0xc /* bottom two */);
+  verify_block (11, 0, 0xd /* all but top right */);
 
   /* Comment this out if you want visual feedback of what this test
    * paints.
