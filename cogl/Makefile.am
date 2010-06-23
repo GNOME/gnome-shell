@@ -49,6 +49,8 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
 
+EXTRA_DIST += cogl-defines.h.in
+
 # public headers
 cogl_public_h = \
 	$(srcdir)/cogl-object.h 		\
