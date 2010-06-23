@@ -447,7 +447,7 @@ Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
     _init: function(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
-        MessageTray.Source.prototype._init.call(this, targetId);
+        MessageTray.Source.prototype._init.call(this, targetId, targetId);
 
         this._accountPath = accountPath;
 
@@ -460,13 +460,12 @@ Source.prototype = {
         this._targetHandleType = targetHandleType;
         this._targetId = targetId;
 
-        this.name = this._targetId;
         if (targetHandleType == Telepathy.HandleType.CONTACT) {
             let aliasing = new Telepathy.ConnectionAliasing(DBus.session, connName, connPath);
             aliasing.RequestAliasesRemote([this._targetHandle], Lang.bind(this,
                 function (aliases, err) {
                     if (aliases && aliases.length)
-                        this.name = aliases[0];
+                        this.title = aliases[0];
                 }));
         }
 
@@ -579,7 +578,7 @@ Notification.prototype = {
     __proto__:  MessageTray.Notification.prototype,
 
     _init: function(id, source) {
-        MessageTray.Notification.prototype._init.call(this, id, source, source.name);
+        MessageTray.Notification.prototype._init.call(this, id, source, source.title);
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
@@ -594,7 +593,7 @@ Notification.prototype = {
         if (asTitle)
             this.update(text);
         else
-            this.update(this.source.name, text);
+            this.update(this.source.title, text);
         this._append(text, 'chat-received');
     },
 

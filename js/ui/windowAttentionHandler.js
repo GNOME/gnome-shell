@@ -92,7 +92,7 @@ Source.prototype = {
     __proto__ : MessageTray.Source.prototype,
 
     _init: function(sourceId, app, window) {
-        MessageTray.Source.prototype._init.call(this, sourceId);
+        MessageTray.Source.prototype._init.call(this, sourceId, app.get_name());
         this._window = window;
         this._app = app;
     },

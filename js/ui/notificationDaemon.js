@@ -80,6 +80,15 @@ const rewriteRules = {
           replacement: '$2 &lt;$1&gt;' }
     ]
 };
+
+// The notification spec stipulates using formal names for the appName the applications
+// pass in. However, not all applications do that. Here is a list of the offenders we
+// encountered so far.
+const appNameMap = {
+    'evolution-mail-notification': 'Evolution Mail',
+    'rhythmbox': 'Rhythmbox'
+};
+
 function NotificationDaemon() {
     this._init();
 }
@@ -157,7 +166,8 @@ NotificationDaemon.prototype = {
         // from this app or if all notifications from this app have
         // been acknowledged.
         if (source == null) {
-            source = new Source(this._sourceId(appName), icon, hints);
+            let title = appNameMap[appName] || appName;
+            source = new Source(this._sourceId(appName), title, icon, hints);
             Main.messageTray.add(source);
 
             source.connect('clicked', Lang.bind(this,
@@ -278,15 +288,15 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
-function Source(sourceId, icon, hints) {
-    this._init(sourceId, icon, hints);
+function Source(sourceId, title, icon, hints) {
+    this._init(sourceId, title, icon, hints);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(sourceId, icon, hints) {
-        MessageTray.Source.prototype._init.call(this, sourceId);
+    _init: function(sourceId, title, icon, hints) {
+        MessageTray.Source.prototype._init.call(this, sourceId, title);
 
         this.app = null;
         this._openAppRequested = false;

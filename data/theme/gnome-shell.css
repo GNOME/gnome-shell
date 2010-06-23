@@ -891,12 +891,27 @@ StTooltip {
  * pseudo-class we could fix that...
  */
 #summary-mode {
-    spacing: 6px;
+    spacing: 4px;
     padding: 2px 0px 0px 4px;
 }
 
-.summary-icon  {
-    padding: 0px 4px 2px 0px;
+.summary-source-button  {
+    padding: 0px 2px 0px 2px;
+    border: 1px solid transparent;
+}
+
+.summary-source-button:hover {
+    border: 1px solid #ffffff;
+}
+
+.summary-source {
+    spacing: 4px;
+}
+
+.source-title {
+    font: 12px sans-serif;
+    font-weight: bold;
+    color: white;
 }
 
 .calendar-calendarweek {

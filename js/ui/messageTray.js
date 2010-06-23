@@ -20,6 +20,8 @@ const HIDE_TIMEOUT = 0.2;
 
 const ICON_SIZE = 24;
 
+const MAX_SOURCE_TITLE_WIDTH = 180;
+
 const State = {
     HIDDEN:  0,
     SHOWING: 1,
@@ -352,14 +354,14 @@ Notification.prototype = {
 };
 Signals.addSignalMethods(Notification.prototype);
 
-function Source(id, createIcon) {
-    this._init(id, createIcon);
+function Source(id, title, createIcon) {
+    this._init(id, title, createIcon);
 }
 
 Source.prototype = {
-    _init: function(id, createIcon) {
+    _init: function(id, title, createIcon) {
         this.id = id;
-        this.text = null;
+        this.title = title;
         if (createIcon)
             this.createIcon = createIcon;
     },
@@ -397,6 +399,144 @@ Source.prototype = {
 };
 Signals.addSignalMethods(Source.prototype);
 
+function SummaryItem(source, minTitleWidth) {
+    this._init(source, minTitleWidth);
+}
+
+SummaryItem.prototype = {
+    _init: function(source, minTitleWidth) {
+        this.source = source;
+        // The message tray items should all be the same width when expanded. Because the only variation is introduced by the width of the title,
+        // we pass in the desired minimum title width, which is the maximum title width of the items which are currently in the tray. If the width
+        // of the title of this item is greater (up to MAX_SOURCE_TITLE_WIDTH), then that width will be used, and the width of all the other items
+        // in the message tray will be readjusted.
+        this._minTitleWidth = minTitleWidth;
+        this.actor = new St.Button({ style_class: 'summary-source-button',
+                                     reactive: true,
+                                     track_hover: true });
+
+        this._sourceBox = new  Shell.GenericContainer({ style_class: 'summary-source',
+                                                        reactive: true });
+        this._sourceBox.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this._sourceBox.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this._sourceBox.connect('allocate', Lang.bind(this, this._allocate));
+
+        this._sourceIcon = source.createIcon(ICON_SIZE);
+        this._sourceTitleBin = new St.Bin({ y_align: St.Align.MIDDLE, x_fill: true });
+        this._sourceTitle = new St.Label({ style_class: 'source-title',
+                                           text: source.title });
+        this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._sourceTitleBin.child = this._sourceTitle;
+
+        this._sourceBox.add_actor(this._sourceIcon);
+        this._sourceBox.add_actor(this._sourceTitleBin);
+        this._widthFraction = 0;
+        this.actor.child = this._sourceBox;
+    },
+
+    getTitleNaturalWidth: function() {
+        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] =
+            this._sourceTitleBin.get_preferred_width(-1);
+        return Math.min(sourceTitleBinNaturalWidth, MAX_SOURCE_TITLE_WIDTH);
+    },
+
+    setMinTitleWidth: function(minTitleWidth) {
+        this._minTitleWidth = minTitleWidth;
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [found, spacing] = this._sourceBox.get_theme_node().get_length('spacing', false);
+        if (!found)
+            spacing = 0;
+        let [sourceIconMinWidth, sourceIconNaturalWidth] = this._sourceIcon.get_preferred_width(forHeight);
+        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] =
+            this._sourceTitleBin.get_preferred_width(forHeight);
+        let minWidth = sourceIconNaturalWidth +
+                       (this._widthFraction > 0 ? spacing : 0) +
+                       this._widthFraction * Math.min(Math.max(sourceTitleBinNaturalWidth, this._minTitleWidth),
+                                                      MAX_SOURCE_TITLE_WIDTH);
+        alloc.min_size = minWidth;
+        alloc.natural_size = minWidth;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [sourceIconMinHeight, sourceIconNaturalHeight] = this._sourceIcon.get_preferred_height(forWidth);
+        alloc.min_size = sourceIconNaturalHeight;
+        alloc.natural_size = sourceIconNaturalHeight;
+    },
+
+    _allocate: function (actor, box, flags) {
+        let width = box.x2 - box.x1;
+        let height = box.y2 - box.y1;
+
+        let [sourceIconMinWidth, sourceIconNaturalWidth] = this._sourceIcon.get_preferred_width(-1);
+        let [sourceIconMinHeight, sourceIconNaturalHeight] = this._sourceIcon.get_preferred_height(-1);
+
+        let iconBox = new Clutter.ActorBox();
+        iconBox.x1 = 0;
+        iconBox.y1 = 0;
+        iconBox.x2 = sourceIconNaturalWidth;
+        iconBox.y2 = sourceIconNaturalHeight;
+
+        this._sourceIcon.allocate(iconBox, flags);
+
+        let [found, spacing] = this._sourceBox.get_theme_node().get_length('spacing', false);
+        if (!found)
+            spacing = 0;
+
+        let titleBox = new Clutter.ActorBox();
+        if (width > sourceIconNaturalWidth + spacing) {
+            titleBox.x1 = iconBox.x2 + spacing;
+            titleBox.x2 = width;
+        } else {
+            titleBox.x1 = iconBox.x2;
+            titleBox.x2 = iconBox.x2;
+        }
+        titleBox.y1 = 0;
+        titleBox.y2 = height;
+
+        this._sourceTitleBin.allocate(titleBox, flags);
+
+        this._sourceTitleBin.set_clip(0, 0, titleBox.x2 - titleBox.x1, height);
+    },
+
+    expand: function() {
+        // this._adjustEllipsization replaces some text with the dots at the end of the animation,
+        // and then we replace the dots with the text before we begin the animation to collapse
+        // the title. These changes are not noticeable at the speed with which we do the animation,
+        // while animating in the ellipsized mode does not look good.
+        Tweener.addTween(this,
+                         { widthFraction: 1,
+                           time: ANIMATION_TIME,
+                           transition: 'linear',
+                           onComplete: this._adjustEllipsization,
+                           onCompleteScope: this });
+    },
+
+    collapse: function() {
+        this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        Tweener.addTween(this,
+                         { widthFraction: 0,
+                           time: ANIMATION_TIME,
+                           transition: 'linear' });
+    },
+
+    _adjustEllipsization: function() {
+        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] = this._sourceTitleBin.get_preferred_width(-1);
+        if (sourceTitleBinNaturalWidth > MAX_SOURCE_TITLE_WIDTH)
+            this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+    },
+
+    set widthFraction(widthFraction) {
+        this._widthFraction = widthFraction;
+        this._sourceBox.queue_relayout();
+    },
+
+    get widthFraction() {
+        return this._widthFraction;
+    }
+};
+
 function MessageTray() {
     this._init();
 }
@@ -430,9 +570,8 @@ MessageTray.prototype = {
         this.actor.add_actor(this._summaryNotificationBin);
         this._summaryNotificationBin.lower_bottom();
         this._summaryNotificationBin.hide();
-        this._summaryNotificationBin.connect('notify::hover', Lang.bind(this, this._onSummaryNotificationHoverChanged));
         this._summaryNotification = null;
-        this._hoverSource = null;
+        this._clickedSummaryItem = null;
 
         this._trayState = State.HIDDEN;
         this._trayLeftTimeoutId = 0;
@@ -467,8 +606,8 @@ MessageTray.prototype = {
                 this._updateState();
             }));
 
-        this._sources = {};
-        this._icons = {};
+        this._summaryItems = {};
+        this._longestSummaryItem = null;
     },
 
     _setSizePosition: function() {
@@ -485,7 +624,7 @@ MessageTray.prototype = {
     },
 
     contains: function(source) {
-        return this._sources.hasOwnProperty(source.id);
+        return this._summaryItems.hasOwnProperty(source.id);
     },
 
     add: function(source) {
@@ -494,23 +633,33 @@ MessageTray.prototype = {
             return;
         }
 
-        let iconBox = new St.Clickable({ style_class: 'summary-icon',
-                                         reactive: true });
-        iconBox.child = source.createIcon(ICON_SIZE);
-        this._summary.insert_actor(iconBox, 0);
+        let minTitleWidth = (this._longestSummaryItem ? this._longestSummaryItem.getTitleNaturalWidth() : 0);
+        let summaryItem = new SummaryItem(source, minTitleWidth);
+
+        this._summary.insert_actor(summaryItem.actor, 0);
         this._summaryNeedsToBeShown = true;
-        this._icons[source.id] = iconBox;
-        this._sources[source.id] = source;
+
+        let newItemTitleWidth = summaryItem.getTitleNaturalWidth();
+        if (newItemTitleWidth > minTitleWidth) {
+            for (sourceId in this._summaryItems) {
+                this._summaryItems[sourceId].setMinTitleWidth(newItemTitleWidth);
+            }
+            summaryItem.setMinTitleWidth(newItemTitleWidth);
+            this._longestSummaryItem = summaryItem;
+        }
+
+        this._summaryItems[source.id] = summaryItem;
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
-        iconBox.connect('notify::hover', Lang.bind(this,
+        summaryItem.actor.connect('notify::hover', Lang.bind(this,
             function () {
-                this._onSourceHoverChanged(source, iconBox.hover);
+                this._onSummaryItemHoverChanged(summaryItem);
             }));
-        iconBox.connect('clicked', Lang.bind(this,
+
+        summaryItem.actor.connect('clicked', Lang.bind(this,
             function () {
-                source.clicked();
+                this._onSummaryItemClicked(summaryItem);
             }));
 
         source.connect('destroy', Lang.bind(this,
@@ -531,13 +680,28 @@ MessageTray.prototype = {
         }
         this._notificationQueue = newNotificationQueue;
 
-        this._summary.remove_actor(this._icons[source.id]);
+        this._summary.remove_actor(this._summaryItems[source.id].actor);
         if (this._summary.get_children().length > 0)
             this._summaryNeedsToBeShown = true;
         else
             this._summaryNeedsToBeShown = false;
-        delete this._icons[source.id];
-        delete this._sources[source.id];
+
+        delete this._summaryItems[source.id];
+        if (this._longestSummaryItem.source == source) {
+
+            let maxTitleWidth = 0;
+            this._longestSummaryItem = null;
+            for (sourceId in this._summaryItems) {
+                let summaryItem = this._summaryItems[sourceId];
+                if (summaryItem.getTitleNaturalWidth() > maxTitleWidth) {
+                    maxTitleWidth = summaryItem.getTitleNaturalWidth();
+                    this._longestSummaryItem = summaryItem;
+                }
+            }
+            for (sourceId in this._summaryItems) {
+                this._summaryItems[sourceId].setMinTitleWidth(maxTitleWidth);
+            }
+        }
 
         let needUpdate = false;
 
@@ -549,8 +713,8 @@ MessageTray.prototype = {
             this._notificationRemoved = true;
             needUpdate = true;
         }
-        if (this._hoverSource == source) {
-            this._hoverSource = null;
+        if (this._clickedSummaryItem && this._clickedSummaryItem.source == source) {
+            this._clickedSummaryItem = null;
             needUpdate = true;
         }
 
@@ -559,9 +723,9 @@ MessageTray.prototype = {
     },
 
     removeSourceByApp: function(app) {
-        for (let source in this._sources)
-            if (this._sources[source].app == app)
-                this.removeSource(this._sources[source]);
+        for (let sourceId in this._summaryItems)
+            if (this._summaryItems[sourceId].source.app == app)
+                this.removeSource(this._summaryItems[sourceId].source);
     },
 
     removeNotification: function(notification) {
@@ -581,7 +745,9 @@ MessageTray.prototype = {
     },
 
     getSource: function(id) {
-        return this._sources[id];
+        if (this._summaryItems[id])
+            return this._summaryItems[id].source;
+        return null;
     },
 
     _getNotification: function(id, source) {
@@ -626,37 +792,20 @@ MessageTray.prototype = {
         this._updateState();
     },
 
-    _onSourceHoverChanged: function(source, hover) {
-        if (!source.notification)
-            return;
-
-        if (this._summaryNotificationTimeoutId != 0) {
-            Mainloop.source_remove(this._summaryNotificationTimeoutId);
-            this._summaryNotificationTimeoutId = 0;
-        }
-
-        if (hover) {
-            this._hoverSource = source;
-            this._updateState();
-        } else if (this._hoverSource == source) {
-            let timeout = HIDE_TIMEOUT * 1000;
-            this._summaryNotificationTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onSourceHoverChangedTimeout, source));
-        }
+    _onSummaryItemHoverChanged: function(summaryItem) {
+        if (summaryItem.actor.hover)
+            summaryItem.expand();
+        else
+            summaryItem.collapse();
     },
 
-    _onSourceHoverChangedTimeout: function(source) {
-        this._summaryNotificationTimeoutId = 0;
-        if (this._hoverSource == source) {
-            this._hoverSource = null;
-            this._updateState();
-        }
-    },
+    _onSummaryItemClicked: function(summaryItem) {
+        if (!this._clickedSummaryItem || this._clickedSummaryItem != summaryItem)
+            this._clickedSummaryItem = summaryItem
+        else
+            this._clickedSummaryItem = null;
 
-    _onSummaryNotificationHoverChanged: function() {
-        if (!this._summaryNotification)
-            return;
-        this._onSourceHoverChanged(this._summaryNotification.source,
-                                   this._summaryNotificationBin.hover);
+        this._updateState();
     },
 
     _onSummaryHoverChanged: function() {
@@ -731,12 +880,12 @@ MessageTray.prototype = {
         }
 
         // Summary notification
-        let haveSummaryNotification = this._hoverSource != null;
+        let haveSummaryNotification = this._clickedSummaryItem != null;
         let summaryNotificationIsMainNotification = (haveSummaryNotification &&
-                                                     this._hoverSource.notification == this._notification);
+                                                     this._clickedSummaryItem.source.notification == this._notification);
         let canShowSummaryNotification = this._summaryState == State.SHOWN;
         let wrongSummaryNotification = (haveSummaryNotification &&
-                                        this._summaryNotification != this._hoverSource.notification);
+                                        this._summaryNotification != this._clickedSummaryItem.source.notification);
 
         if (this._summaryNotificationState == State.HIDDEN) {
             if (haveSummaryNotification && !summaryNotificationIsMainNotification && canShowSummaryNotification)
@@ -929,7 +1078,7 @@ MessageTray.prototype = {
     },
 
     _showSummaryNotification: function() {
-        this._summaryNotification = this._hoverSource.notification;
+        this._summaryNotification = this._clickedSummaryItem.source.notification;
 
         let index = this._notificationQueue.indexOf(this._summaryNotification);
         if (index != -1)
@@ -962,6 +1111,9 @@ MessageTray.prototype = {
     },
 
     _hideSummaryNotification: function() {
+        // Unset this._clickedSummaryItem if we are no longer showing the summary
+        if (this._summaryState != State.SHOWN)
+            this._clickedSummaryItem = null;
         this._summaryNotification.popIn();
 
         this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.HIDDEN,
