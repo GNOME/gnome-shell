@@ -42,7 +42,6 @@ libclutter_cogl_driver_la_SOURCES += \
 endif
 
 EXTRA_DIST = \
-	cogl-defines.h.in \
 	stringify.sh \
 	cogl-fixed-vertex-shader.glsl \
 	cogl-fixed-fragment-shader.glsl
