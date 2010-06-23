@@ -103,6 +103,35 @@ _cogl_path_modify (CoglPath *path)
     }
 }
 
+void
+cogl_path_set_fill_rule (CoglPathFillRule fill_rule)
+{
+  CoglPath *path;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  path = COGL_PATH (ctx->current_path);
+
+  if (path->data->fill_rule != fill_rule)
+    {
+      _cogl_path_modify (path);
+
+      path->data->fill_rule = fill_rule;
+    }
+}
+
+CoglPathFillRule
+cogl_path_get_fill_rule (void)
+{
+  CoglPath *path;
+
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  path = COGL_PATH (ctx->current_path);
+
+  return path->data->fill_rule;
+}
+
 static void
 _cogl_path_add_node (gboolean new_sub_path,
 		     float x,
@@ -945,6 +974,7 @@ _cogl_path_new (void)
   data = path->data = g_slice_new (CoglPathData);
 
   data->ref_count = 1;
+  data->fill_rule = COGL_PATH_FILL_RULE_EVEN_ODD;
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
   data->vbo = COGL_INVALID_HANDLE;
@@ -1400,6 +1430,14 @@ _cogl_path_build_vbo (CoglPath *path)
   _cogl_path_tesselator_allocate_indices_array (&tess);
 
   tess.glu_tess = gluNewTess ();
+
+  if (data->fill_rule == COGL_PATH_FILL_RULE_EVEN_ODD)
+    gluTessProperty (tess.glu_tess, GLU_TESS_WINDING_RULE,
+                     GLU_TESS_WINDING_ODD);
+  else
+    gluTessProperty (tess.glu_tess, GLU_TESS_WINDING_RULE,
+                     GLU_TESS_WINDING_NONZERO);
+
   /* All vertices are on the xy-plane */
   gluTessNormal (tess.glu_tess, 0.0, 0.0, 1.0);
 

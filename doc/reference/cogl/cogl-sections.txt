@@ -181,6 +181,9 @@ cogl_path_round_rectangle
 cogl_path_ellipse
 
 <SUBSECTION>
+CoglPathFillRule
+cogl_path_set_fill_rule
+cogl_path_get_fill_rule
 cogl_path_fill
 cogl_path_fill_preserve
 cogl_path_stroke

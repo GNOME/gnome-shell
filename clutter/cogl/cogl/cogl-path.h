@@ -54,6 +54,48 @@ G_BEGIN_DECLS
 typedef struct _CoglPath CoglPath;
 
 /**
+ * CoglPathFillRule:
+ * @COGL_PATH_FILL_RULE_NON_ZERO: Each time the line crosses an edge of
+ * the path from left to right one is added to a counter and each time
+ * it crosses from right to left the counter is decremented. If the
+ * counter is non-zero then the point will be filled. See <xref
+ * linkend="fill-rule-non-zero"/>.
+ * @COGL_PATH_FILL_RULE_EVEN_ODD: If the line crosses an edge of the
+ * path an odd number of times then the point will filled, otherwise
+ * it won't. See <xref linkend="fill-rule-even-odd"/>.
+ *
+ * #CoglPathFillRule is used to determine how a path is filled. There
+ * are two options - 'non-zero' and 'even-odd'. To work out whether any
+ * point will be filled imagine drawing an infinetely long line in any
+ * direction from that point. The number of times and the direction
+ * that the edges of the path crosses this line determines whether the
+ * line is filled as described below. Any open sub paths are treated
+ * as if there was an extra line joining the first point and the last
+ * point.
+ *
+ * The default fill rule is %COGL_PATH_FILL_RULE_EVEN_ODD. The fill
+ * rule is attached to the current path so preserving a path with
+ * cogl_get_path() also preserves the fill rule. Calling
+ * cogl_path_new() resets the current fill rule to the default.
+ *
+ * <figure id="fill-rule-non-zero">
+ *   <title>Example of filling various paths using the non-zero rule</title>
+ *   <graphic fileref="fill-rule-non-zero.png" format="PNG"/>
+ * </figure>
+ *
+ * <figure id="fill-rule-even-odd">
+ *   <title>Example of filling various paths using the even-odd rule</title>
+ *   <graphic fileref="fill-rule-even-odd.png" format="PNG"/>
+ * </figure>
+ *
+ * Since: 1.4
+ */
+typedef enum {
+  COGL_PATH_FILL_RULE_NON_ZERO,
+  COGL_PATH_FILL_RULE_EVEN_ODD
+} CoglPathFillRule;
+
+/**
  * cogl_is_path:
  * @handle: A CoglHandle
  *
@@ -66,27 +108,39 @@ gboolean
 cogl_is_path (CoglHandle handle);
 
 /**
+ * cogl_path_set_fill_rule:
+ * @fill_rule: The new fill rule.
+ *
+ * Sets the fill rule of the current path to @fill_rule. This will
+ * affect how the path is filled when cogl_path_fill() is later
+ * called. Note that the fill rule state is attached to the path so
+ * calling cogl_get_path() will preserve the fill rule and calling
+ * cogl_path_new() will reset the fill rule back to the default.
+ *
+ * Since: 1.4
+ */
+void
+cogl_path_set_fill_rule (CoglPathFillRule fill_rule);
+
+/**
+ * cogl_path_get_fill_rule:
+ *
+ * Return value: the fill rule that is used for the current path.
+ *
+ * Since: 1.4
+ */
+CoglPathFillRule
+cogl_path_get_fill_rule (void);
+
+/**
  * cogl_path_fill:
  *
  * Fills the interior of the constructed shape using the current
  * drawing color. The current path is then cleared. To use the path
  * again, call cogl_path_fill_preserve() instead.
  *
- * The interior of the shape is determined using the 'even-odd'
- * rule. Any open sub-paths are treated as if there is an extra line
- * joining the last point and first point. You can work out whether
- * any point in the stage will be filled if you imagine drawing an
- * infinitely long line in any direction from that point and then
- * counting the number times it crosses a line in the path. If the
- * number is odd it will be filled, otherwise it will not.
- *
- * See <xref linkend="fill-rule"/> for a demonstration of the fill
- * rule.
- *
- * <figure id="fill-rule">
- *   <title>Example of filling various paths</title>
- *   <graphic fileref="fill-rule.png" format="PNG"/>
- * </figure>
+ * The interior of the shape is determined using the fill rule of the
+ * path. See %CoglPathFillRule for details.
  **/
 void
 cogl_path_fill (void);
@@ -129,7 +183,9 @@ cogl_path_stroke_preserve (void);
 /**
  * cogl_path_new:
  *
- * Clears the current path and starts a new one.
+ * Clears the current path and starts a new one. Creating a new path
+ * also resets the fill rule to the default which is
+ * %COGL_PATH_FILL_RULE_EVEN_ODD.
  *
  * Since: 1.0
  */
