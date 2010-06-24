@@ -801,7 +801,7 @@ MessageTray.prototype = {
 
     _onSummaryItemClicked: function(summaryItem) {
         if (!this._clickedSummaryItem || this._clickedSummaryItem != summaryItem)
-            this._clickedSummaryItem = summaryItem
+            this._clickedSummaryItem = summaryItem;
         else
             this._clickedSummaryItem = null;
 
