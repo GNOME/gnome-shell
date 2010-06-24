@@ -440,7 +440,7 @@ clutter_state_new_frame (ClutterTimeline *timeline,
  * @target_state_name: the state to transition to
  * @animate: whether we should animate the transition or not
  *
- * Change the current state of #ClutterState to @target__name
+ * Change the current state of #ClutterState to @target_state_name
  *
  * If @animate is %FALSE, the state transition will happen immediately;
  * otherwise, the state transition will be animated over the duration
@@ -466,13 +466,8 @@ clutter_state_change (ClutterState *state,
 
   priv = state->priv;
 
-  if (target_state_name == NULL)
-    target_state_name = "default";
-
-  target_state_name = g_intern_string (target_state_name);
-
-  if (priv->target_state_name == NULL)
-    priv->target_state_name = g_intern_static_string ("default");
+  if (target_state_name != NULL)
+    target_state_name = g_intern_string (target_state_name);
 
   if (target_state_name == priv->target_state_name)
     {
@@ -626,14 +621,15 @@ get_property_from_object (GObject     *gobject,
  * For instance, the code below:
  *
  * |[
- *   clutter_state_set (state, "default", "hover",
+ *   clutter_state_set (state, NULL, "hover",
  *                      button, "opacity", 255, CLUTTER_LINEAR,
  *                      button, "scale-x", 1.2, CLUTTER_EASE_OUT_CUBIC,
  *                      button, "scale-y", 1.2, CLUTTER_EASE_OUT_CUBIC,
  *                      NULL);
  * ]|
  *
- * will create a transition between the "default" and "hover" state; the
+ * will create a transition from any state (a @source_state_name of NULL is
+ * treated as a wildcard) and a state named "hover"; the
  * <emphasis>button</emphasis> object will have the #ClutterActor:opacity
  * property animated to a value of 255 using %CLUTTER_LINEAR as the animation
  * mode, and the #ClutterActor:scale-x and #ClutterActor:scale-y properties
@@ -808,16 +804,13 @@ clutter_state_get_state (ClutterState *state,
 
   if (state_name == NULL)
     {
-      if (force_creation)
-        state_name = g_intern_static_string ("default");
-      else
-        return NULL;
+      return NULL;
     }
   else
     state_name = g_intern_string (state_name);
 
   retval = g_hash_table_lookup (priv->states, state_name);
-  if (retval == NULL)
+  if (retval == NULL && force_creation)
     {
       retval = state_new (state, state_name);
       g_hash_table_insert (priv->states, (gpointer) state_name, retval);
@@ -876,7 +869,7 @@ clutter_state_set_key (ClutterState  *state,
   if (pspec == NULL)
     return state;
 
-  source_state = clutter_state_get_state (state, source_state_name, FALSE);
+  source_state = clutter_state_get_state (state, source_state_name, TRUE);
   target_state = clutter_state_get_state (state, target_state_name, TRUE);
 
   property_name = g_intern_string (property_name);
@@ -1132,7 +1125,7 @@ clutter_state_class_init (ClutterStateClass *klass)
   pspec = g_param_spec_string ("target-state",
                                "Target State",
                                "Currently set state",
-                               "default",
+                               NULL,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TARGET_STATE, pspec);
 
@@ -1203,8 +1196,7 @@ clutter_state_get_animator (ClutterState *state,
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
 
   source_state_name = g_intern_string (source_state_name);
-  if (source_state_name == g_intern_static_string ("default") ||
-      source_state_name == g_intern_static_string (""))
+  if (source_state_name == g_intern_static_string (""))
     source_state_name = NULL;
 
   target_state_name = g_intern_string (target_state_name);
@@ -1533,13 +1525,11 @@ clutter_state_set_duration (ClutterState *state,
   g_return_if_fail (CLUTTER_IS_STATE (state));
 
   source_state_name = g_intern_string (source_state_name);
-  if (source_state_name == g_intern_static_string ("default") ||
-      source_state_name == g_intern_static_string (""))
+  if (source_state_name == g_intern_static_string (""))
     source_state_name = NULL;
 
   target_state_name = g_intern_string (target_state_name);
-  if (target_state_name == g_intern_static_string ("default") ||
-      target_state_name == g_intern_static_string (""))
+  if (target_state_name == g_intern_static_string (""))
     target_state_name = NULL;
 
   if (target_state_name == NULL)
@@ -1591,13 +1581,11 @@ clutter_state_get_duration (ClutterState *state,
   g_return_val_if_fail (CLUTTER_IS_STATE (state), 0);
 
   source_state_name = g_intern_string (source_state_name);
-  if (source_state_name == g_intern_static_string ("default") ||
-      source_state_name == g_intern_static_string (""))
+  if (source_state_name == g_intern_static_string (""))
     source_state_name = NULL;
 
   target_state_name = g_intern_string (target_state_name);
-  if (target_state_name == g_intern_static_string ("default") ||
-      target_state_name == g_intern_static_string (""))
+  if (target_state_name == g_intern_static_string (""))
     target_state_name = NULL;
 
   if (target_state_name == NULL)
@@ -1700,7 +1688,7 @@ parse_state_transition (JsonArray *array,
     }
 
   source_name = json_object_get_string_member (object, "source");
-  source_state = clutter_state_get_state (clos->state, source_name, FALSE);
+  source_state = clutter_state_get_state (clos->state, source_name, TRUE);
 
   target_name = json_object_get_string_member (object, "target");
   target_state = clutter_state_get_state (clos->state, target_name, TRUE);

@@ -45,6 +45,7 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   keys = clutter_state_get_keys (CLUTTER_STATE (state), "base", "clicked",
                                  clutter_script_get_object (script, "rect"),
                                  "opacity");
+  
   g_assert (keys != NULL);
   g_assert_cmpint (g_list_length (keys), ==, 1);
 
@@ -54,6 +55,10 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_assert_cmpstr (clutter_state_key_get_property_name (state_key), ==, "opacity");
 
   g_list_free (keys);
+  keys = clutter_state_get_keys (CLUTTER_STATE (state), NULL, NULL, NULL, NULL);
+  g_assert_cmpint (g_list_length (keys), ==, 2);
+  g_list_free (keys);
+
 
   g_object_unref (script);
 }
