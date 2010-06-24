@@ -110,7 +110,7 @@ test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
-test_conformance_LDFLAGS = -rdynamic
+test_conformance_LDFLAGS = -export-dynamic
 
 .PHONY: test
 .PHONY: test-report test-report-normal test-report-disable-npots
