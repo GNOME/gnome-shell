@@ -2658,7 +2658,9 @@ clutter_actor_paint (ClutterActor *self)
 
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
-  if (G_LIKELY (context->pick_mode == CLUTTER_PICK_NONE) &&
+  if (context->pick_mode == CLUTTER_PICK_NONE &&
+      /* ignore top-levels, since they might be transparent */
+      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
       /* If the actor is being painted from a clone then check the
          clone's opacity instead */
       (priv->opacity_parent ? priv->opacity_parent->priv : priv)->opacity == 0)
