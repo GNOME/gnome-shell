@@ -81,9 +81,10 @@
  *    &ast; mask of the key event. the returned value can be directly
  *    &ast; used to signal that the actor has handled the event.
  *    &ast;/
- *   return clutter_binding_pool_activate (pool, G_OBJECT (actor),
+ *   return clutter_binding_pool_activate (pool,
  *                                         key_event-&gt;keyval,
- *                                         key_event-&gt;modifier_state);
+ *                                         key_event-&gt;modifier_state,
+ *                                         G_OBJECT (actor));
  * ]|
  *
  * The clutter_binding_pool_activate() function will return %FALSE if
