@@ -116,6 +116,10 @@ void meta_core_user_focus   (Display *xdisplay,
                              Window   frame_xwindow,
                              guint32  timestamp);
 
+void meta_core_lower_beneath_focus_window (Display *xdisplay,
+                                           Window   xwindow,
+                                           guint32  timestamp);
+
 void meta_core_minimize         (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_toggle_maximize  (Display *xdisplay,

@@ -28,6 +28,7 @@
 #include "frame-private.h"
 #include "workspace-private.h"
 #include "prefs.h"
+#include "errors.h"
 
 /* Looks up the MetaWindow representing the frame of the given X window.
  * Used as a helper function by a bunch of the functions below.
@@ -314,6 +315,40 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
   meta_workspace_focus_default_window (window->screen->active_workspace,
                                        NULL,
                                        timestamp);
+}
+
+void
+meta_core_lower_beneath_focus_window (Display *xdisplay,
+                                      Window   xwindow,
+                                      guint32  timestamp)
+{
+  XWindowChanges changes;
+  MetaDisplay *display;
+  MetaScreen *screen;
+  MetaWindow *focus_window;
+
+  display = meta_display_for_x_display (xdisplay);
+  screen = meta_display_screen_for_xwindow (display, xwindow);
+  focus_window = meta_stack_get_top (screen->stack);
+
+  if (focus_window == NULL)
+    return;
+
+  changes.stack_mode = Below;
+  changes.sibling = focus_window->frame ? focus_window->frame->xwindow
+                                        : focus_window->xwindow;
+
+  meta_stack_tracker_record_lower_below (screen->stack_tracker,
+                                         xwindow,
+                                         changes.sibling,
+                                         XNextRequest (screen->display->xdisplay));
+
+  meta_error_trap_push (display);
+  XConfigureWindow (xdisplay,
+                    xwindow,
+                    CWSibling | CWStackMode,
+                    &changes);
+  meta_error_trap_pop (display, FALSE);
 }
 
 void

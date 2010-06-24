@@ -104,6 +104,7 @@ static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
 static gboolean resize_with_right_button = FALSE;
+static gboolean side_by_side_tiling = FALSE;
 static gboolean force_fullscreen = TRUE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
@@ -420,6 +421,11 @@ static MetaBoolPreference preferences_bool[] =
     { "/apps/metacity/general/resize_with_right_button",
       META_PREF_RESIZE_WITH_RIGHT_BUTTON,
       &resize_with_right_button,
+      FALSE,
+    },
+    { "/apps/metacity/general/side_by_side_tiling",
+      META_PREF_SIDE_BY_SIDE_TILING,
+      &side_by_side_tiling,
       FALSE,
     },
     { "/apps/mutter/general/live_hidden_windows",
@@ -2004,6 +2010,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_RESIZE_WITH_RIGHT_BUTTON:
       return "RESIZE_WITH_RIGHT_BUTTON";
 
+    case META_PREF_SIDE_BY_SIDE_TILING:
+      return "SIDE_BY_SIDE_TILING";
+
     case META_PREF_FORCE_FULLSCREEN:
       return "FORCE_FULLSCREEN";
 
@@ -2912,6 +2921,12 @@ gboolean
 meta_prefs_get_gnome_animations ()
 {
   return gnome_animations;
+}
+
+gboolean
+meta_prefs_get_side_by_side_tiling ()
+{
+  return side_by_side_tiling;
 }
 
 MetaKeyBindingAction
