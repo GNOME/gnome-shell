@@ -6824,6 +6824,13 @@ clutter_actor_get_paint_opacity_internal (ClutterActor *self)
   ClutterActorPrivate *priv = self->priv;
   ClutterActor *parent;
 
+  /* override the top-level opacity to always be 255; even in
+   * case of ClutterStage:use-alpha being TRUE we want the rest
+   * of the scene to be painted
+   */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    return 255;
+
   if (priv->opacity_parent != NULL)
     return clutter_actor_get_paint_opacity_internal (priv->opacity_parent);
 
