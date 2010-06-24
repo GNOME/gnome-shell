@@ -504,7 +504,7 @@ message_translate (ClutterBackend *backend,
     case WM_MOUSEWHEEL:
       stage_win32->scroll_pos += (SHORT) HIWORD (msg->wParam);
 
-      if (abs (stage_win32->scroll_pos) >= WHEEL_DELTA)
+      while (abs (stage_win32->scroll_pos) >= WHEEL_DELTA)
         {
           ClutterEvent *event = clutter_event_new (CLUTTER_SCROLL);
           POINT pt;
