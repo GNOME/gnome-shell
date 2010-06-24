@@ -201,15 +201,30 @@ get_modifier_state (WPARAM wparam)
   return ret;
 }
 
+static void
+take_and_queue_event (ClutterEvent *event)
+{
+  ClutterMainContext *clutter_context;
+
+  clutter_context = _clutter_context_get_default ();
+
+  /* The event is added directly to the queue instead of using
+     clutter_event_put so that it can avoid a copy. This takes
+     ownership of the event */
+  g_queue_push_head (clutter_context->events_queue, event);
+}
+
 static inline void
 make_button_event (const MSG *msg,
-                   ClutterEvent *event,
+                   ClutterStage *stage,
 		   int button,
                    int click_count,
                    gboolean release,
                    ClutterInputDevice *device)
 {
-  event->type = release ? CLUTTER_BUTTON_RELEASE : CLUTTER_BUTTON_PRESS;
+  ClutterEvent *event = clutter_event_new (release ?
+                                           CLUTTER_BUTTON_RELEASE :
+                                           CLUTTER_BUTTON_PRESS);
   event->button.time = msg->time;
   event->button.x = GET_X_LPARAM (msg->lParam);
   event->button.y = GET_Y_LPARAM (msg->lParam);
@@ -217,6 +232,9 @@ make_button_event (const MSG *msg,
   event->button.button = button;
   event->button.click_count = click_count;
   event->button.device = device;
+  event->any.stage = stage;
+
+  take_and_queue_event (event);
 }
 
 /**
@@ -325,9 +343,8 @@ get_key_modifier_state (const BYTE *key_states)
   return ret;
 }
 
-static gboolean
+static void
 message_translate (ClutterBackend *backend,
-		   ClutterEvent   *event,
 		   const MSG      *msg,
 		   gboolean       *call_def_window_proc)
 {
@@ -337,7 +354,6 @@ message_translate (ClutterBackend *backend,
   ClutterInputDevice   *core_pointer, *core_keyboard;
   ClutterStage         *stage;
   ClutterStageWindow   *impl;
-  gboolean              res;
 
   backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
 
@@ -345,19 +361,15 @@ message_translate (ClutterBackend *backend,
   stage = clutter_win32_get_stage_from_window (msg->hwnd);
 
   if (stage == NULL)
-    return FALSE;
+    return;
   impl        = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
-
-  event->any.stage = stage;
 
   manager = clutter_device_manager_get_default ();
   core_pointer =
     clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
   core_keyboard =
     clutter_device_manager_get_core_device (manager, CLUTTER_KEYBOARD_DEVICE);
-
-  res = TRUE;
 
   switch (msg->message)
     {
@@ -379,7 +391,6 @@ message_translate (ClutterBackend *backend,
 	    clutter_actor_set_size (CLUTTER_ACTOR (stage),
 				    new_width, new_height);
 	}
-      res = FALSE;
       break;
 
     case WM_SHOWWINDOW:
@@ -387,166 +398,197 @@ message_translate (ClutterBackend *backend,
 	clutter_stage_win32_map (stage_win32);
       else
 	clutter_stage_win32_unmap (stage_win32);
-      res = FALSE;
       break;
 
     case WM_ACTIVATE:
       if (msg->wParam == WA_INACTIVE)
-	{
-	  if (stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED)
-	    {
-	      stage_win32->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
+        {
+          if (stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED)
+            {
+              ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
 
-	      event->type = CLUTTER_STAGE_STATE;
-	      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	      event->stage_state.new_state = stage_win32->state;
-	    }
-	  else
-	    res = FALSE;
-	  break;
-	}
-      else
-	{
-	  if (!(stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED))
-	    {
-	      stage_win32->state |= CLUTTER_STAGE_STATE_ACTIVATED;
+              stage_win32->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
 
-	      event->type = CLUTTER_STAGE_STATE;
-	      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	      event->stage_state.new_state = stage_win32->state;
-	    }
-	  else
-	    res = FALSE;
-	}
+              event->any.stage = stage;
+              event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+              event->stage_state.new_state = stage_win32->state;
+
+              take_and_queue_event (event);
+            }
+        }
+      else if (!(stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED))
+        {
+          ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
+
+          stage_win32->state |= CLUTTER_STAGE_STATE_ACTIVATED;
+
+          event->any.stage = stage;
+          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+          event->stage_state.new_state = stage_win32->state;
+
+          take_and_queue_event (event);
+        }
       break;
 
     case WM_PAINT:
       CLUTTER_NOTE (MULTISTAGE, "expose for stage:%p, redrawing", stage);
       clutter_redraw (stage);
-      res = FALSE;
       break;
 
     case WM_DESTROY:
-      CLUTTER_NOTE (EVENT, "WM_DESTROY");
-      event->type = CLUTTER_DESTROY_NOTIFY;
+      {
+        ClutterEvent *event = clutter_event_new (CLUTTER_DESTROY_NOTIFY);
+
+        CLUTTER_NOTE (EVENT, "WM_DESTROY");
+
+        event->any.stage = stage;
+
+        take_and_queue_event (event);
+      }
       break;
 
     case WM_CLOSE:
-      CLUTTER_NOTE (EVENT, "WM_CLOSE");
-      event->type = CLUTTER_DELETE;
-      /* The default window proc will destroy the window so we want to
-	 prevent this to allow applications to optionally destroy the
-	 window themselves */
-      if (call_def_window_proc)
-	*call_def_window_proc = FALSE;
+      {
+        ClutterEvent *event = clutter_event_new (CLUTTER_DELETE);
+
+        CLUTTER_NOTE (EVENT, "WM_CLOSE");
+
+        event->any.stage = stage;
+
+        take_and_queue_event (event);
+
+        /* The default window proc will destroy the window so we want to
+           prevent this to allow applications to optionally destroy the
+           window themselves */
+        if (call_def_window_proc)
+          *call_def_window_proc = FALSE;
+      }
       break;
 
     case WM_LBUTTONDOWN:
-      make_button_event (msg, event, 1, 1, FALSE, core_pointer);
+      make_button_event (msg, stage, 1, 1, FALSE, core_pointer);
       break;
 
     case WM_MBUTTONDOWN:
-      make_button_event (msg, event, 2, 1, FALSE, core_pointer);
+      make_button_event (msg, stage, 2, 1, FALSE, core_pointer);
       break;
 
     case WM_RBUTTONDOWN:
-      make_button_event (msg, event, 3, 1, FALSE, core_pointer);
+      make_button_event (msg, stage, 3, 1, FALSE, core_pointer);
       break;
 
     case WM_LBUTTONUP:
-      make_button_event (msg, event, 1, 1, TRUE, core_pointer);
+      make_button_event (msg, stage, 1, 1, TRUE, core_pointer);
       break;
 
     case WM_MBUTTONUP:
-      make_button_event (msg, event, 2, 1, TRUE, core_pointer);
+      make_button_event (msg, stage, 2, 1, TRUE, core_pointer);
       break;
 
     case WM_RBUTTONUP:
-      make_button_event (msg, event, 3, 1, TRUE, core_pointer);
+      make_button_event (msg, stage, 3, 1, TRUE, core_pointer);
       break;
 
     case WM_LBUTTONDBLCLK:
-      make_button_event (msg, event, 1, 2, FALSE, core_pointer);
+      make_button_event (msg, stage, 1, 2, FALSE, core_pointer);
       break;
 
     case WM_MBUTTONDBLCLK:
-      make_button_event (msg, event, 2, 2, FALSE, core_pointer);
+      make_button_event (msg, stage, 2, 2, FALSE, core_pointer);
       break;
 
     case WM_RBUTTONDBLCLK:
-      make_button_event (msg, event, 3, 2, FALSE, core_pointer);
+      make_button_event (msg, stage, 3, 2, FALSE, core_pointer);
       break;
 
     case WM_MOUSEWHEEL:
       stage_win32->scroll_pos += (SHORT) HIWORD (msg->wParam);
 
-      event->type = CLUTTER_SCROLL;
-      event->scroll.time = msg->time;
-      event->scroll.modifier_state = get_modifier_state (LOWORD (msg->wParam));
-      event->scroll.device = core_pointer;
-
-      /* conversion to window coordinates is required */
-      {
-	POINT pt = { GET_X_LPARAM (msg->lParam), GET_Y_LPARAM (msg->lParam) };
-	ScreenToClient (msg->hwnd, &pt);
-	event->scroll.x = pt.x;
-	event->scroll.y = pt.y;
-      }
-
-      if (stage_win32->scroll_pos >= WHEEL_DELTA)
-	{
-	  event->scroll.direction = CLUTTER_SCROLL_UP;
-	  stage_win32->scroll_pos -= WHEEL_DELTA;
-	}
-      else if (stage_win32->scroll_pos <= -WHEEL_DELTA)
-	{
-	  event->scroll.direction = CLUTTER_SCROLL_DOWN;
-	  stage_win32->scroll_pos += WHEEL_DELTA;
-	}
-      else
-	res = FALSE;
-      break;
-
-    case WM_MOUSEMOVE:
-      event->type = CLUTTER_MOTION;
-      event->motion.time = msg->time;
-      event->motion.x = GET_X_LPARAM (msg->lParam);
-      event->motion.y = GET_Y_LPARAM (msg->lParam);
-      event->motion.modifier_state = get_modifier_state (msg->wParam);
-      event->motion.device = core_pointer;
-
-      /* We need to start tracking when the mouse enters the stage if
-         we're not already */
-      if (!stage_win32->tracking_mouse)
+      if (abs (stage_win32->scroll_pos) >= WHEEL_DELTA)
         {
-          TRACKMOUSEEVENT tmevent;
+          ClutterEvent *event = clutter_event_new (CLUTTER_SCROLL);
+          POINT pt;
 
-          tmevent.cbSize = sizeof (tmevent);
-          tmevent.dwFlags = TME_LEAVE;
-          tmevent.hwndTrack = stage_win32->hwnd;
-          TrackMouseEvent (&tmevent);
+          event->scroll.time = msg->time;
+          event->scroll.modifier_state =
+            get_modifier_state (LOWORD (msg->wParam));
+          event->scroll.device = core_pointer;
+          event->any.stage = stage;
 
-          /* we entered the stage */
-          _clutter_input_device_set_stage (event->motion.device, stage);
+          /* conversion to window coordinates is required */
+          pt.x = GET_X_LPARAM (msg->lParam);
+          pt.y = GET_Y_LPARAM (msg->lParam);
+          ScreenToClient (msg->hwnd, &pt);
+          event->scroll.x = pt.x;
+          event->scroll.y = pt.y;
 
-          stage_win32->tracking_mouse = TRUE;
+          if (stage_win32->scroll_pos > 0)
+            {
+              event->scroll.direction = CLUTTER_SCROLL_UP;
+              stage_win32->scroll_pos -= WHEEL_DELTA;
+            }
+          else
+            {
+              event->scroll.direction = CLUTTER_SCROLL_DOWN;
+              stage_win32->scroll_pos += WHEEL_DELTA;
+            }
+
+          take_and_queue_event (event);
         }
       break;
 
+    case WM_MOUSEMOVE:
+      {
+        ClutterEvent *event = clutter_event_new (CLUTTER_MOTION);
+
+        event->motion.time = msg->time;
+        event->motion.x = GET_X_LPARAM (msg->lParam);
+        event->motion.y = GET_Y_LPARAM (msg->lParam);
+        event->motion.modifier_state = get_modifier_state (msg->wParam);
+        event->motion.device = core_pointer;
+        event->any.stage = stage;
+
+        /* We need to start tracking when the mouse enters the stage if
+           we're not already */
+        if (!stage_win32->tracking_mouse)
+          {
+            TRACKMOUSEEVENT tmevent;
+
+            tmevent.cbSize = sizeof (tmevent);
+            tmevent.dwFlags = TME_LEAVE;
+            tmevent.hwndTrack = stage_win32->hwnd;
+            TrackMouseEvent (&tmevent);
+
+            /* we entered the stage */
+            _clutter_input_device_set_stage (event->motion.device, stage);
+
+            stage_win32->tracking_mouse = TRUE;
+          }
+
+        take_and_queue_event (event);
+      }
+      break;
+
     case WM_MOUSELEAVE:
-      event->crossing.type = CLUTTER_LEAVE;
-      event->crossing.time = msg->time;
-      event->crossing.x = msg->pt.x;
-      event->crossing.y = msg->pt.y;
-      event->crossing.device = core_pointer;
+      {
+        ClutterEvent *event = clutter_event_new (CLUTTER_LEAVE);
 
-      /* we left the stage */
-      _clutter_input_device_set_stage (event->crossing.device, NULL);
+        event->crossing.time = msg->time;
+        event->crossing.x = msg->pt.x;
+        event->crossing.y = msg->pt.y;
+        event->crossing.device = core_pointer;
+        event->any.stage = stage;
 
-      /* When we get a leave message the mouse tracking is
-         automatically cancelled so we'll need to start it again when
-         the mouse next enters the window */
-      stage_win32->tracking_mouse = FALSE;
+        /* we left the stage */
+        _clutter_input_device_set_stage (event->crossing.device, NULL);
+
+        /* When we get a leave message the mouse tracking is
+           automatically cancelled so we'll need to start it again when
+           the mouse next enters the window */
+        stage_win32->tracking_mouse = FALSE;
+
+        take_and_queue_event (event);
+      }
       break;
 
     case WM_KEYDOWN:
@@ -554,6 +596,7 @@ message_translate (ClutterBackend *backend,
     case WM_SYSKEYDOWN:
     case WM_SYSKEYUP:
       {
+        ClutterEvent *event = clutter_event_new (CLUTTER_EVENT_NONE);
 	int scan_code = (msg->lParam >> 16) & 0xff;
 	int min = 0, max = CLUTTER_WIN32_KEY_MAP_SIZE, mid;
 	BYTE key_states[256];
@@ -627,6 +670,9 @@ message_translate (ClutterBackend *backend,
 	event->key.modifier_state = get_key_modifier_state (key_states);
 	event->key.hardware_keycode = scan_code;
         event->key.device = core_keyboard;
+        event->any.stage = stage;
+
+        take_and_queue_event (event);
       }
       break;
 
@@ -649,17 +695,8 @@ message_translate (ClutterBackend *backend,
             *call_def_window_proc = FALSE;
           _clutter_stage_win32_update_cursor (stage_win32);
         }
-
-      res = FALSE;
-      break;
-
-    default:
-      /* ignore every other message */
-      res = FALSE;
       break;
     }
-
-  return res;
 }
 
 LRESULT CALLBACK
@@ -676,11 +713,7 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
     {
       ClutterBackendWin32 *backend_win32 = stage_win32->backend;
       MSG msg;
-      ClutterEvent *event;
-      ClutterMainContext *clutter_context;
       DWORD message_pos = GetMessagePos ();
-
-      clutter_context = _clutter_context_get_default ();
 
       msg.hwnd = hwnd;
       msg.message = umsg;
@@ -692,14 +725,8 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
       msg.pt.x = (SHORT) LOWORD (message_pos);
       msg.pt.y = (SHORT) HIWORD (message_pos);
 
-      event = clutter_event_new (CLUTTER_NOTHING);
-	  
-      if (message_translate (CLUTTER_BACKEND (backend_win32), event,
-			     &msg, &call_def_window_proc))
-	/* push directly here to avoid copy of queue_put */
-	g_queue_push_head (clutter_context->events_queue, event);
-      else
-	clutter_event_free (event);
+      message_translate (CLUTTER_BACKEND (backend_win32),
+                         &msg, &call_def_window_proc);
     }
 
   if (call_def_window_proc)
