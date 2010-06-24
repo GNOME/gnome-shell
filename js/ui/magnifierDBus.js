@@ -267,7 +267,7 @@ ShellMagnifier.prototype = {
      * @color:   Unsigned int of the form rrggbbaa.
      */
      setCrosswireColor: function(color) {
-        Main.magnifier.setCrosshairsColor('#' + color.toString(16));
+        Main.magnifier.setCrosshairsColor('#%08x'.format(color));
      },
 
     /**
