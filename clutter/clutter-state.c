@@ -25,8 +25,11 @@
  * SECTION:clutter-state
  * @short_description: State machine with animated transitions
  *
- * #ClutterState controls the tweening of properties on multiple
- * actors between a set of named states.
+ * #ClutterState is an object controlling the tweening of properties on
+ * multiple actors between a set of named states. #ClutterStateKey<!-- -->s
+ * define how the properties are animated. If the source_state_name for a key
+ * is NULL it is used for transition to the target state unless a specific key
+ * exists for transitioning from the current state to the requested state.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -822,7 +825,9 @@ clutter_state_get_state (ClutterState *state,
 /**
  * clutter_state_set_key:
  * @state: a #ClutterState instance.
- * @source_state_name: the source transition to specify transition for
+ * @source_state_name: the source transition to specify transition for or NULL
+ *   to specify the default fallback when a more specific source_state doesn't
+ *   exist.
  * @target_state_name: the name of the transition to set a key value for.
  * @object: the #GObject to set a key for
  * @property_name: the property to set a key for
