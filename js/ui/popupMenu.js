@@ -429,17 +429,45 @@ PopupMenuManager.prototype = {
         this._delayedMenus = [];
     },
 
-    addMenu: function(menu, noGrab) {
-        this._menus.push(menu);
-        menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState));
-        menu.connect('activate', Lang.bind(this, this._onMenuActivated));
+    addMenu: function(menu, noGrab, position) {
+        let menudata = {
+            menu:              menu,
+            openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),
+            activateId:        menu.connect('activate', Lang.bind(this, this._onMenuActivated)),
+            enterId:           0,
+            buttonPressId:     0
+        };
 
         let source = menu.sourceActor;
         if (source) {
-            source.connect('enter-event', Lang.bind(this, this._onMenuSourceEnter, menu));
+            menudata.enterId = source.connect('enter-event', Lang.bind(this, this._onMenuSourceEnter, menu));
             if (!noGrab)
-                source.connect('button-press-event', Lang.bind(this, this._onMenuSourcePress, menu));
+                menudata.buttonPressId = source.connect('button-press-event', Lang.bind(this, this._onMenuSourcePress, menu));
         }
+
+        if (position == undefined)
+            this._menus.push(menudata);
+        else
+            this._menus.splice(position, 0, menudata);
+    },
+
+    removeMenu: function(menu) {
+        if (menu == this._activeMenu)
+            this._closeMenu();
+        let position = this._findMenu(menu);
+        if (position == -1) // not a menu we manage
+            return;
+
+        let menudata = this._menus[position];
+        menu.disconnect(menudata.openStateChangeId);
+        menu.disconnect(menudata.activateId);
+
+        if (menudata.enterId)
+            menu.sourceActor.disconnect(menudata.enterId);
+        if (menudata.buttonPressId)
+            menu.sourceActor.disconnect(menudata.buttonPressId);
+
+        this._menus.splice(position, 1);
     },
 
     grab: function() {
@@ -505,11 +533,20 @@ PopupMenuManager.prototype = {
     _eventIsOnAnyMenuSource: function(event) {
         let src = event.get_source();
         for (let i = 0; i < this._menus.length; i++) {
-            let menu = this._menus[i];
+            let menu = this._menus[i].menu;
             if (menu.sourceActor && menu.sourceActor.contains(src))
                 return true;
         }
         return false;
+    },
+
+    _findMenu: function(item) {
+        for (let i = 0; i < this._menus.length; i++) {
+            let menudata = this._menus[i];
+            if (item == menudata.menu)
+                return i;
+        }
+        return -1;
     },
 
     _onEventCapture: function(actor, event) {
@@ -542,7 +579,8 @@ PopupMenuManager.prototype = {
                    && (event.get_key_symbol() == Clutter.Left
                        || event.get_key_symbol() == Clutter.Right)) {
             let direction = event.get_key_symbol() == Clutter.Right ? 1 : -1;
-            let next = findNextInCycle(this._menus, this._activeMenu, direction);
+            let pos = this._findMenu(this._activeMenu);
+            let next = this._menus[mod(pos + direction, this._menus.length)].menu;
             if (next != this._activeMenu) {
                 this._activeMenu.close();
                 next.open();
