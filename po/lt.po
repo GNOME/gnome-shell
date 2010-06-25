@@ -1,0 +1,533 @@
+# Lithuanian translation for gnome-shell.
+# Copyright (C) 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Žygimantas Beručka <zygis@gnome.org>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2010-06-24 17:17+0000\n"
+"PO-Revision-Date: 2010-06-25 20:27+0300\n"
+"Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
+"Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Langų valdymas ir programų paleidimas"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Laikrodis"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "Derinti skydelio laikrodį"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Suteikia prieigą prie vidinio derinimo ir stebėjimo įrankių, naudojant "
+"Alt-F2 dialogą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "Pasirinktinis laikrodžio formatas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Įjungti vidinius, Alt-F2 klavišų pagalba pasiekiamus įrankius, naudingus "
+"programuotojams ir bandytojams "
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "Failų plėtinys, naudojamas įrašyti ekrano vaizdo įrašą"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "Kadrų dažnis, naudojamas norint įrašyti ekrano vaizdo įrašą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"GNOME Shell plėtiniai turi uuid savybę. Šiame rakte nurodyti plėtiniai, "
+"kurie neturėtų būti įkelti."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "Komandų (Alt-F2) dialogo retrospektyva"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "Valandų formatas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"Jei reikšmė teigiama ir formatas yra „12-hour“ ar „24-hour“, laikrodyje "
+"šalia laiko rodyti ir datą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"Jei reikšmė teigiama ir formatas yra „12-hour“ ar „24-hour“, laikrodyje "
+"rodyti ir sekundes."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Jeigu reikšmė teigiama, kalendoriuje rodyti ISO savaičių datą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Mėgstamų programų darbastalio failų ID sąrašas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "Apžvalginės darbo erdvės peržiūros veiksena"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"Nurodo GStreamer konvejerį, naudojamą įrašams koduoti. Jame naudojama gst-"
+"launch naudojama sintaksė. Konvejeryje turėtų būti neprijungtas apjungiantis "
+"elementas, kuriame įrašomas vaizdo įrašas. Paprastai jame yra neprijungtas "
+"šaltinio elementas; išvestis iš to elemento bus įrašyta į išvesties failą. "
+"Tačiau konvejeris taip pat gali pasirūpinti savo paties išvestimi – tai gali "
+"būti panaudota norint perduoti išvestį icecast serveriui per shout2send ar "
+"pan. elementą. Kai reikšmė nenustatyta ar nustatyta tuščia reikšmė, "
+"naudojamas numatytasis konvejeris. Šiuo metu tai yra „videorate ! theoraenc "
+"! oggmux“, o įrašoma į Ogg Theora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "Rodyti datą laikrodyje"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "Rodyti savaitės dienas kalendoriuje"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "Rodyti laiką su sekundėmis"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programos, atitinkančios šiuos identifikatorius, bus rodomos mėgstamų "
+"srityje."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Įrašytų ekrano vaizdo įrašų failų vardas bus unikalus, sudaromas "
+"atsižvelgiant į dabartinę datą ir naudojantis šį plėtinį. Rašant į kitą "
+"konteinerio formatą jį reikėtų pakeisti."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"GNOME Shell ekranų įrašymo programa sukurto ekrano įrašo kadrų dažnis "
+"kadrais per sekundę."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Gstreamer konvejeris, naudojamas užkoduojant ekrano vaizdo įrašą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"Apžvalgoje pasirinkta darbo erdvės peržiūros veiksena. Galimos reikšmės yra "
+"„single“ ir „grid“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Apvalkalas paprastai stebi aktyvias programas siekiant pateikti dažniausiai "
+"naudojamas (pvz., leistukuose). Nors šie duomenys konfidencialiai saugomi, "
+"jei norite, saugumo sumetimais galite šią funkciją išjungti. Atminkite, kad "
+"tai padarius jau įrašyti duomenys jau nebus įrašyti."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"Šis raktas nurodo skydelio laikrodžio naudojamą formatą, kuomet formato "
+"raktas nustatytas į reikšmę „custom“. Norėdami gauti konkretų formatą, "
+"galite naudoti konvertavimo simbolius, kuriuos priima funkcija strftime(). "
+"Daugiau informacijos galite rasti strftime() žinyne."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"Šis raktas nurodo skydelio laikrodžio naudojamą valandų formatą. Galimos "
+"reikšmės: „12-hour“, „24-hour“, „unix“ ir „custom“. Jei nustatyta „unix“, "
+"laikrodis rodys laiką sekundėmis nuo Epochos, tai yra 1970-01-01. Jei "
+"nustatyta „custom“, laikrodis rodys laiką atsižvelgiant į custom_format "
+"rakte nurodytą formatą. Atminkite, kad nustačius „unix“ arba „custom“ yra "
+"nepaisoma show_date ir show_seconds raktų."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+msgid "Uuids of extensions to disable"
+msgstr "Išjungtinų plėtinių UUID."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "Ar rinkti statistinę informaciją apie programų naudojimą"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Laikrodžio formatas"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Laikrodžio nustatymai"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Skydelio ekranas"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Rodyti seku_ndes"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Rodyti _datą"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12 valandų formatas"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24 valandų formatas"
+
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
+msgid "APPLICATIONS"
+msgstr "PROGRAMOS"
+
+#: ../js/ui/appDisplay.js:420
+msgid "PREFERENCES"
+msgstr "NUSTATYMAI"
+
+#: ../js/ui/appDisplay.js:726
+msgid "New Window"
+msgstr "Naujas langas"
+
+#: ../js/ui/appDisplay.js:730
+msgid "Remove from Favorites"
+msgstr "Pašalinti iš mėgstamų"
+
+#: ../js/ui/appDisplay.js:731
+msgid "Add to Favorites"
+msgstr "Pridėti prie mėgstamų"
+
+#: ../js/ui/appDisplay.js:1038
+msgid "Drag here to add favorites"
+msgstr "Vilkite čia norėdami pridėti prie mėgstamų"
+
+#: ../js/ui/appFavorites.js:88
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s buvo pridėta prie jūsų mėgstamų."
+
+#: ../js/ui/appFavorites.js:106
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s buvo pašalinta iš jūsų mėgstamų."
+
+#: ../js/ui/dash.js:146
+msgid "Find"
+msgstr "Ieškoti"
+
+#: ../js/ui/dash.js:465
+msgid "Searching..."
+msgstr "Ieškoma..."
+
+#: ../js/ui/dash.js:479
+msgid "No matching results."
+msgstr "Nerasta atitikmenų."
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
+msgid "PLACES & DEVICES"
+msgstr "VIETOS ir ĮRENGINIAI"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
+msgid "RECENT ITEMS"
+msgstr "PASKUTINIEJI ELEMENTAI"
+
+#: ../js/ui/lookingGlass.js:471
+msgid "No extensions installed"
+msgstr "Nėra įdiegtų plėtinių"
+
+#: ../js/ui/lookingGlass.js:508
+msgid "Enabled"
+msgstr "Įjungta"
+
+#: ../js/ui/lookingGlass.js:510
+msgid "Disabled"
+msgstr "Išjungta"
+
+#: ../js/ui/lookingGlass.js:512
+msgid "Error"
+msgstr "Klaida"
+
+#: ../js/ui/lookingGlass.js:514
+msgid "Out of date"
+msgstr "Pasenęs"
+
+#: ../js/ui/lookingGlass.js:539
+msgid "View Source"
+msgstr "Žiūrėti šaltinį"
+
+#: ../js/ui/lookingGlass.js:545
+msgid "Web Page"
+msgstr "Tinklalapis"
+
+#: ../js/ui/overview.js:165
+msgid "Undo"
+msgstr "Atšaukti"
+
+#: ../js/ui/panel.js:519
+msgid "Preferences"
+msgstr "Nustatymai"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:605
+msgid "%a %b %e, %R:%S"
+msgstr "%a %b %e, %R:%S"
+
+#: ../js/ui/panel.js:606
+msgid "%a %b %e, %R"
+msgstr "%a %b %e, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:610
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/panel.js:611
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:618
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %b %e, %l:%M:%S %p"
+
+#: ../js/ui/panel.js:619
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %b %e, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:623
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/panel.js:624
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:762
+msgid "Activities"
+msgstr "Apžvalga"
+
+#: ../js/ui/placeDisplay.js:109
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Nepavyko atjungti „%s“"
+
+#: ../js/ui/placeDisplay.js:112
+msgid "Retry"
+msgstr "Bandyti dar kartą"
+
+#: ../js/ui/placeDisplay.js:157
+msgid "Connect to..."
+msgstr "Prisijungti prie..."
+
+#: ../js/ui/runDialog.js:234
+msgid "Please enter a command:"
+msgstr "Įveskite komandą:"
+
+#: ../js/ui/runDialog.js:379
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Nepavyko paleisti „%s“:"
+
+#: ../js/ui/statusMenu.js:91
+msgid "Available"
+msgstr "Esu"
+
+#: ../js/ui/statusMenu.js:95
+msgid "Busy"
+msgstr "Užsiėmęs (-usi)"
+
+#: ../js/ui/statusMenu.js:99
+msgid "Invisible"
+msgstr "Nematomas (-a)"
+
+#: ../js/ui/statusMenu.js:106
+msgid "Account Information..."
+msgstr "Paskyros informacija..."
+
+#: ../js/ui/statusMenu.js:110
+msgid "System Preferences..."
+msgstr "Sistemos nustatymai..."
+
+#: ../js/ui/statusMenu.js:117
+msgid "Lock Screen"
+msgstr "Užrakinti ekraną"
+
+#: ../js/ui/statusMenu.js:121
+msgid "Switch User"
+msgstr "Keisti naudotoją"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Log Out..."
+msgstr "Atsijungti ..."
+
+#: ../js/ui/statusMenu.js:130
+msgid "Shut Down..."
+msgstr "Išjungti..."
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s buvo paleista"
+
+#: ../js/ui/windowAttentionHandler.js:49
+#, c-format
+msgid "'%s' is ready"
+msgstr "„%s“ yra pasirengusi"
+
+#: ../js/ui/workspacesView.js:237
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"Negalima pridėti naujos darbo erdvės, kadangi buvo pasiektas didžiausias "
+"galimas darbo erdvių skaičius."
+
+#: ../js/ui/workspacesView.js:254
+msgid "Can't remove the first workspace."
+msgstr "Nepavyko pašalinti pirmosios darbo erdvės."
+
+#: ../src/shell-global.c:1039
+msgid "Less than a minute ago"
+msgstr "Mažiau nei prieš minutę"
+
+#: ../src/shell-global.c:1043
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "prieš %d minutę"
+msgstr[1] "prieš %d minutes"
+msgstr[2] "prieš %d minučių"
+
+#: ../src/shell-global.c:1048
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "prieš %d valandą"
+msgstr[1] "prieš %d valandas"
+msgstr[2] "prieš %d valandų"
+
+#: ../src/shell-global.c:1053
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "prieš %d dieną"
+msgstr[1] "prieš %d dienas"
+msgstr[2] "prieš %d dienų"
+
+#: ../src/shell-global.c:1058
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "prieš %d savaitę"
+msgstr[1] "prieš %d savaites"
+msgstr[2] "prieš %d savaičių"
+
+#: ../src/shell-uri-util.c:89
+msgid "Home Folder"
+msgstr "Namų aplankas"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:104
+msgid "File System"
+msgstr "Failų sistema"
+
+#: ../src/shell-uri-util.c:250
+msgid "Search"
+msgstr "Ieškoti"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
