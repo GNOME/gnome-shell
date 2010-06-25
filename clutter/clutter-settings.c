@@ -133,15 +133,17 @@ settings_update_font_options (ClutterSettings *self)
   cairo_font_options_set_antialias (options, antialias_mode);
 
   CLUTTER_NOTE (BACKEND, "New font options:\n"
+                " - font-name:  %s\n"
                 " - antialias:  %d\n"
                 " - hinting:    %d\n"
                 " - hint-style: %s\n"
                 " - rgba:       %s\n"
                 " - dpi:        %.2f",
+                self->font_name != NULL ? self->font_name : DEFAULT_FONT_NAME,
                 self->xft_antialias,
                 self->xft_hinting,
-                self->xft_hint_style,
-                self->xft_rgba,
+                self->xft_hint_style != NULL ? self->font_name : "<null>",
+                self->xft_rgba != NULL ? self->xft_rgba : "<null>",
                 self->resolution);
 
   clutter_backend_set_font_options (self->backend, options);
