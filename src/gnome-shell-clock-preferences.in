@@ -16,7 +16,6 @@ progName="`basename $0`"
 localeDir="@localedir@"
 uiFile="$uiDir/clock-preferences.ui"
 export GJS_PATH="$jsDir"
-export GSETTINGS_BACKEND="gconf"
 export GSETTINGS_SCHEMA_DIR="$schemaDir"
 
 @GJS_CONSOLE@ -c "const ClockPreferences = imports.prefs.clockPreferences;

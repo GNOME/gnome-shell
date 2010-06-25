@@ -48,8 +48,8 @@ fi
 #
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, gconf, GL, gnome-menus, gstreamer, gtk, libffi,
-# libgnomeui, librsvg, libwnck, python, readline, spidermonkey
-# ({mozilla,firefox,xulrunner}-js), xdamage
+# libgnomeui, librsvg, libwnck, libxml2, python, readline,
+# spidermonkey ({mozilla,firefox,xulrunner}-js), xdamage
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -79,7 +79,7 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
     automake bison flex git-core gnome-common gtk-doc-tools \
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
     libgnome-menu-dev libgnome-desktop-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
-    libreadline5-dev mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
+    libreadline5-dev libxml2-dev mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
@@ -101,9 +101,9 @@ if test x$system = xFedora ; then
     automake bison flex git gnome-common gnome-doc-utils intltool \
     libtool pkgconfig \
     dbus-glib-devel GConf2-devel gnome-menus-devel gnome-python2-gconf gtk2-devel libffi-devel \
-    gnome-desktop-devel librsvg2-devel libwnck-devel mesa-libGL-devel python-devel pygobject2 \
-    readline-devel xulrunner-devel libXdamage-devel libcroco-devel \
-    gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
+    gnome-desktop-devel librsvg2-devel libwnck-devel mesa-libGL-devel \
+    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel \
+    libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
     glx-utils xorg-x11-server-Xephyr gnome-terminal zenity \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then

@@ -21,6 +21,23 @@
     <branch repo="git.gnome.org" module="glib"/>
   </autotools>
 
+  <tarball id="vala" version="0.9.2" autogenargs="--enable-vapigen">
+    <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.9/vala-0.9.2.tar.bz2"
+            hash="sha256:22e1e224790663929f5df8b0611bd4928c065a8354ee7cdd2c97b6b37ed33c1d"
+            md5sum="583f2c46da49f54e4f639eb706475abe" size="2358061"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </tarball>
+
+  <autotools id="libgee">
+    <branch repo="git.gnome.org" module="libgee"/>
+    <dependencies>
+      <dep package="vala"/>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="atk">
     <branch repo="git.gnome.org" module="atk"/>
     <dependencies>
@@ -84,6 +101,16 @@
     </after>
   </autotools>
 
+  <autotools id="dconf">
+    <branch repo="git.gnome.org" module="dconf"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="libgee"/>
+      <dep package="vala"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch repo="git.gnome.org" module="gconf"/>
     <dependencies>
@@ -108,6 +135,7 @@
         <dep package="gobject-introspection"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
+        <dep package="dconf"/>
         <dep package="gconf"/>
         <dep package="glib"/>
     </dependencies>
