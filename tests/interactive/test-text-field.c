@@ -2,8 +2,6 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
-#define FONT "Mono Bold 14px"
-
 static void
 on_entry_paint (ClutterActor *actor,
                 gpointer      data)
@@ -217,7 +215,6 @@ create_label (const ClutterColor *color,
 
   clutter_actor_set_width (retval, 200);
 
-  clutter_text_set_font_name (CLUTTER_TEXT (retval), FONT);
   clutter_text_set_color (CLUTTER_TEXT (retval), color);
   clutter_text_set_markup (CLUTTER_TEXT (retval), text);
   clutter_text_set_editable (CLUTTER_TEXT (retval), FALSE);
@@ -234,7 +231,7 @@ create_entry (const ClutterColor *color,
               gunichar            password_char,
               gint                max_length)
 {
-  ClutterActor *retval = clutter_text_new_full (FONT, text, color);
+  ClutterActor *retval = clutter_text_new_full (NULL, text, color);
   ClutterColor selection = { 0, };
 
   clutter_actor_set_width (retval, 200);
@@ -280,8 +277,8 @@ test_text_field_main (gint    argc,
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &background_color);
 
-  clutter_units_em_for_font (&h_padding, FONT, 2.0); /* 2em */
-  clutter_units_em_for_font (&v_padding, FONT, 3.0); /* 3em */
+  clutter_units_em_for_font (&h_padding, NULL, 2.0); /* 2em */
+  clutter_units_em_for_font (&v_padding, NULL, 3.0); /* 3em */
 
   g_print ("padding: h:%.2f px, v:%.2f px\n",
            clutter_units_to_pixels (&h_padding),
