@@ -402,6 +402,7 @@ clutter_state_new_frame (ClutterTimeline *timeline,
         {
           if (key->source_state != NULL &&
               key->source_state->name != NULL &&
+              priv->source_state_name != NULL && 
               g_str_equal (priv->source_state_name, key->source_state->name))
             {
               found_specific = TRUE;
