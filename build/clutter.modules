@@ -118,12 +118,22 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gdk-pixbuf">
+    <branch repo="git.gnome.org"
+            module="gdk-pixbuf"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gtk+">
     <branch repo="git.gnome.org"
             module="gtk+"
             revision="master"/>
     <dependencies>
       <dep package="glib"/>
+      <dep package="gdk-pixbuf"/>
       <dep package="atk"/>
       <dep package="cairo"/>
       <dep package="pango"/>
@@ -157,7 +167,7 @@
       <dep package="glib"/>
       <dep package="cairo"/>
       <dep package="pango"/>
-      <dep package="gtk+"/>
+      <dep package="gdk-pixbuf"/>
       <dep package="gobject-introspection"/>
       <dep package="gir-repository"/>
       <dep package="json-glib"/>
