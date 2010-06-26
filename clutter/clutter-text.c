@@ -2479,6 +2479,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * The font to be used by the #ClutterText, as a string
    * that can be parsed by pango_font_description_from_string().
    *
+   * If set to %NULL, the default system font will be used instead.
+   *
    * Since: 1.0
    */
   pspec = g_param_spec_string ("font-name",
@@ -3768,7 +3770,7 @@ clutter_text_get_font_name (ClutterText *text)
 /**
  * clutter_text_set_font_name:
  * @self: a #ClutterText
- * @font_name: a font name, or %NULL to set the default font name
+ * @font_name: (allow-none): a font name, or %NULL to set the default font name
  *
  * Sets the font used by a #ClutterText. The @font_name string
  * must either be %NULL, which means that the font name from the
