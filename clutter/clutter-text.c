@@ -140,6 +140,7 @@ struct _ClutterTextPrivate
   guint in_select_drag      : 1;
   guint cursor_color_set    : 1;
   guint preedit_set         : 1;
+  guint is_default_font     : 1;
 
   /* current cursor position */
   gint position;
@@ -440,9 +441,63 @@ clutter_text_dirty_cache (ClutterText *text)
       }
 }
 
+/*
+ * clutter_text_set_font_description_internal:
+ * @self: a #ClutterText
+ * @desc: a #PangoFontDescription
+ *
+ * Sets @desc as the font description to be used by the #ClutterText
+ * actor. The font description ownership is transferred to @self so
+ * the #PangoFontDescription must not be freed after this function
+ *
+ * This function will also set the :font-name field as a side-effect
+ *
+ * This function will evict the layout cache, and queue a relayout if
+ * the #ClutterText actor has contents.
+ */
+static inline void
+clutter_text_set_font_description_internal (ClutterText          *self,
+                                            PangoFontDescription *desc)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  if (priv->font_desc == desc)
+    return;
+
+  if (priv->font_desc != NULL)
+    pango_font_description_free (priv->font_desc);
+
+  priv->font_desc = desc;
+
+  /* update the font name string we use */
+  g_free (priv->font_name);
+  priv->font_name = pango_font_description_to_string (priv->font_desc);
+
+  clutter_text_dirty_cache (self);
+
+  if (priv->text && priv->text[0] != '\0')
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  g_object_notify (G_OBJECT (self), "font-description");
+}
+
 static void
 clutter_text_font_changed_cb (ClutterText *text)
 {
+  if (text->priv->is_default_font)
+    {
+      const gchar *font_name;
+      PangoFontDescription *font_desc;
+
+      font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+      CLUTTER_NOTE (ACTOR, "Text[%p]: default font changed to '%s'",
+                    text,
+                    font_name);
+
+      font_desc = pango_font_description_from_string (font_name);
+      clutter_text_set_font_description_internal (text, font_desc);
+    }
+
   clutter_text_dirty_cache (text);
   clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
 }
@@ -3039,6 +3094,7 @@ clutter_text_init (ClutterText *self)
   font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
   priv->font_name = g_strdup (font_name);
   priv->font_desc = pango_font_description_from_string (font_name);
+  priv->is_default_font = TRUE;
 
   priv->position = -1;
   priv->selection_bound = -1;
@@ -3645,46 +3701,6 @@ clutter_text_get_selection_color (ClutterText  *self,
   *color = priv->selection_color;
 }
 
-/*
- * clutter_text_set_font_description_internal:
- * @self: a #ClutterText
- * @desc: a #PangoFontDescription
- *
- * Sets @desc as the font description to be used by the #ClutterText
- * actor. The font description ownership is transferred to @self so
- * the #PangoFontDescription must not be freed after this function
- *
- * This function will also set the :font-name field as a side-effect
- *
- * This function will evict the layout cache, and queue a relayout if
- * the #ClutterText actor has contents.
- */
-static inline void
-clutter_text_set_font_description_internal (ClutterText          *self,
-                                            PangoFontDescription *desc)
-{
-  ClutterTextPrivate *priv = self->priv;
-
-  if (priv->font_desc == desc)
-    return;
-
-  if (priv->font_desc != NULL)
-    pango_font_description_free (priv->font_desc);
-
-  priv->font_desc = desc;
-
-  /* update the font name string we use */
-  g_free (priv->font_name);
-  priv->font_name = pango_font_description_to_string (priv->font_desc);
-
-  clutter_text_dirty_cache (self);
-
-  if (priv->text && priv->text[0] != '\0')
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
-
-  g_object_notify (G_OBJECT (self), "font-description");
-}
-
 /**
  * clutter_text_set_font_description:
  * @self: a #ClutterText
@@ -3774,12 +3790,18 @@ clutter_text_set_font_name (ClutterText *self,
 {
   ClutterTextPrivate *priv;
   PangoFontDescription *desc;
+  gboolean is_default_font;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   /* get the default font name from the backend */
   if (!font_name || font_name[0] == '\0')
-    font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+    {
+      font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+      is_default_font = TRUE;
+    }
+  else
+    is_default_font = FALSE;
 
   priv = self->priv;
 
@@ -3797,6 +3819,7 @@ clutter_text_set_font_name (ClutterText *self,
 
   /* this will set the font_name field as well */
   clutter_text_set_font_description_internal (self, desc);
+  priv->is_default_font = is_default_font;
 
   g_object_notify (G_OBJECT (self), "font-name");
 }
