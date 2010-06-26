@@ -238,6 +238,7 @@ na_tray_child_new (GdkScreen *screen,
   gboolean visual_has_alpha;
   GdkColormap *colormap;
   gboolean new_colormap;
+  int red_prec, green_prec, blue_prec, depth;
   int result;
 
   g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
@@ -283,7 +284,11 @@ na_tray_child_new (GdkScreen *screen,
 
   /* We have alpha if the visual has something other than red, green,
    * and blue */
-  visual_has_alpha = visual->red_prec + visual->blue_prec + visual->green_prec < visual->depth;
+  gdk_visual_get_red_pixel_details (visual, NULL, NULL, &red_prec);
+  gdk_visual_get_green_pixel_details (visual, NULL, NULL, &green_prec);
+  gdk_visual_get_blue_pixel_details (visual, NULL, NULL, &blue_prec);
+  depth = gdk_visual_get_depth (visual);
+  visual_has_alpha = red_prec + blue_prec + green_prec < depth;
   child->has_alpha = (visual_has_alpha &&
 		      gdk_display_supports_composite (gdk_screen_get_display (screen)));
 
