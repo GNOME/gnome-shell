@@ -43,8 +43,6 @@
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
-static void meta_frames_class_init (MetaFramesClass *klass);
-static void meta_frames_init       (MetaFrames      *frames);
 static void meta_frames_destroy    (GtkObject       *object);
 static void meta_frames_finalize   (GObject         *object);
 static void meta_frames_style_set  (GtkWidget       *widget,
@@ -108,32 +106,7 @@ static void invalidate_all_caches (MetaFrames *frames);
 static void invalidate_whole_window (MetaFrames *frames,
                                      MetaUIFrame *frame);
 
-static GtkWidgetClass *parent_class = NULL;
-
-GType
-meta_frames_get_type (void)
-{
-  static GType frames_type = 0;
-
-  if (!frames_type)
-    {
-      static const GtkTypeInfo frames_info =
-      {
-        "MetaFrames",
-        sizeof (MetaFrames),
-        sizeof (MetaFramesClass),
-        (GtkClassInitFunc) meta_frames_class_init,
-        (GtkObjectInitFunc) meta_frames_init,
-        /* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      frames_type = gtk_type_unique (GTK_TYPE_WINDOW, &frames_info);
-    }
-
-  return frames_type;
-}
+G_DEFINE_TYPE (MetaFrames, meta_frames, GTK_TYPE_WINDOW);
 
 static GObject *
 meta_frames_constructor (GType                  gtype,
@@ -143,7 +116,7 @@ meta_frames_constructor (GType                  gtype,
   GObject *object;
   GObjectClass *gobject_class;
 
-  gobject_class = G_OBJECT_CLASS (parent_class);
+  gobject_class = G_OBJECT_CLASS (meta_frames_parent_class);
   object = gobject_class->constructor (gtype, n_properties, properties);
 
   g_object_set (object,
@@ -163,8 +136,6 @@ meta_frames_class_init (MetaFramesClass *class)
   gobject_class = G_OBJECT_CLASS (class);
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-
-  parent_class = g_type_class_peek_parent (class);
 
   gobject_class->constructor = meta_frames_constructor;
   gobject_class->finalize = meta_frames_finalize;
@@ -275,7 +246,7 @@ meta_frames_destroy (GtkObject *object)
     }
   g_slist_free (winlist);
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  GTK_OBJECT_CLASS (meta_frames_parent_class)->destroy (object);
 }
 
 static void
@@ -297,7 +268,7 @@ meta_frames_finalize (GObject *object)
   g_hash_table_destroy (frames->frames);
   g_hash_table_destroy (frames->cache);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_frames_parent_class)->finalize (object);
 }
 
 typedef struct
@@ -467,7 +438,7 @@ meta_frames_style_set  (GtkWidget *widget,
   g_hash_table_foreach (frames->frames,
                         reattach_style_func, frames);
 
-  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (meta_frames_parent_class)->style_set (widget, prev_style);
 }
 
 static void
@@ -705,15 +676,15 @@ meta_frames_unmanage_window (MetaFrames *frames,
 static void
 meta_frames_realize (GtkWidget *widget)
 {
-  if (GTK_WIDGET_CLASS (parent_class)->realize)
-    GTK_WIDGET_CLASS (parent_class)->realize (widget);
+  if (GTK_WIDGET_CLASS (meta_frames_parent_class)->realize)
+    GTK_WIDGET_CLASS (meta_frames_parent_class)->realize (widget);
 }
 
 static void
 meta_frames_unrealize (GtkWidget *widget)
 {
-  if (GTK_WIDGET_CLASS (parent_class)->unrealize)
-    GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+  if (GTK_WIDGET_CLASS (meta_frames_parent_class)->unrealize)
+    GTK_WIDGET_CLASS (meta_frames_parent_class)->unrealize (widget);
 }
 
 static MetaUIFrame*

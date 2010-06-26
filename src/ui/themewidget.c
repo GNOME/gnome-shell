@@ -26,8 +26,6 @@
 
 #include "gtk-compat.h"
 
-static void meta_area_class_init   (MetaAreaClass  *klass);
-static void meta_area_init         (MetaArea       *area);
 static void meta_area_size_request (GtkWidget      *widget,
                                     GtkRequisition *req);
 static gint meta_area_expose       (GtkWidget      *widget,
@@ -35,32 +33,7 @@ static gint meta_area_expose       (GtkWidget      *widget,
 static void meta_area_finalize     (GObject        *object);
 
 
-static GtkMiscClass *parent_class;
-
-GType
-meta_area_get_type (void)
-{
-  static GType area_type = 0;
-
-  if (!area_type)
-    {
-      static const GtkTypeInfo area_info =
-      {
-	"MetaArea",
-	sizeof (MetaArea),
-	sizeof (MetaAreaClass),
-	(GtkClassInitFunc) meta_area_class_init,
-	(GtkObjectInitFunc) meta_area_init,
-	/* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      area_type = gtk_type_unique (GTK_TYPE_MISC, &area_info);
-    }
-
-  return area_type;
-}
+G_DEFINE_TYPE (MetaArea, meta_area, GTK_TYPE_MISC);
 
 static void
 meta_area_class_init (MetaAreaClass *class)
@@ -71,7 +44,6 @@ meta_area_class_init (MetaAreaClass *class)
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  parent_class = g_type_class_peek (gtk_misc_get_type ());
 
   gobject_class->finalize = meta_area_finalize;
 
@@ -90,7 +62,7 @@ meta_area_new (void)
 {
   MetaArea *area;
   
-  area = gtk_type_new (META_TYPE_AREA);
+  area = g_object_new (META_TYPE_AREA, NULL);
   
   return GTK_WIDGET (area);
 }
@@ -105,7 +77,7 @@ meta_area_finalize (GObject *object)
   if (area->dnotify)
     (* area->dnotify) (area->user_data);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_area_parent_class)->finalize (object);
 }
 
 static gint
