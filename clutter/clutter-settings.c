@@ -151,6 +151,14 @@ settings_update_font_options (ClutterSettings *self)
 }
 
 static void
+settings_update_font_name (ClutterSettings *self)
+{
+  CLUTTER_NOTE (BACKEND, "New font-name: %s", self->font_name);
+
+  g_signal_emit_by_name (self->backend, "font-changed");
+}
+
+static void
 settings_update_resolution (ClutterSettings *self)
 {
   CLUTTER_NOTE (BACKEND, "New resolution: %.2f", self->resolution);
@@ -195,7 +203,7 @@ clutter_settings_set_property (GObject      *gobject,
     case PROP_FONT_NAME:
       g_free (self->font_name);
       self->font_name = g_value_dup_string (value);
-      settings_update_font_options (self);
+      settings_update_font_name (self);
       break;
 
     case PROP_FONT_ANTIALIAS:
