@@ -31,7 +31,7 @@
 #include <clutter/glx/clutter-glx.h>
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
-#include <gdk/gdkregion.h>
+#include <gdk/gdk.h>
 
 G_BEGIN_DECLS
 
