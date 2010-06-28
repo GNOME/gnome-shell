@@ -593,7 +593,7 @@ cogl_material_set_blend (CoglHandle  material,
  */
 void
 cogl_material_set_blend_constant (CoglHandle material,
-                                  CoglColor *constant_color);
+                                  const CoglColor *constant_color);
 
 /**
  * cogl_material_set_layer:
@@ -742,9 +742,9 @@ cogl_material_set_layer_combine (CoglHandle   material,
  * Since: 1.0
  */
 void
-cogl_material_set_layer_combine_constant (CoglHandle  material,
-                                          int         layer_index,
-                                          CoglColor  *constant);
+cogl_material_set_layer_combine_constant (CoglHandle       material,
+                                          int              layer_index,
+                                          const CoglColor *constant);
 
 /**
  * cogl_material_set_layer_matrix:
@@ -756,9 +756,9 @@ cogl_material_set_layer_combine_constant (CoglHandle  material,
  * and rotate a single layer of a material used to fill your geometry.
  */
 void
-cogl_material_set_layer_matrix (CoglHandle  material,
-				int         layer_index,
-				CoglMatrix *matrix);
+cogl_material_set_layer_matrix (CoglHandle        material,
+                                int               layer_index,
+                                const CoglMatrix *matrix);
 
 /**
  * cogl_material_get_layers:

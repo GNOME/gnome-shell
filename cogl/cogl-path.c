@@ -746,7 +746,7 @@ cogl_path_line (float x_1,
 }
 
 void
-cogl_path_polyline (float *coords,
+cogl_path_polyline (const float *coords,
 	            int num_points)
 {
   int c = 0;
@@ -758,7 +758,7 @@ cogl_path_polyline (float *coords,
 }
 
 void
-cogl_path_polygon (float *coords,
+cogl_path_polygon (const float *coords,
 	           int    num_points)
 {
   cogl_path_polyline (coords, num_points);

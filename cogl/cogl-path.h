@@ -303,8 +303,8 @@ cogl_path_line (float x_1,
  * be constructed.
  **/
 void
-cogl_path_polyline (float *coords,
-                    int    num_points);
+cogl_path_polyline (const float *coords,
+                    int          num_points);
 
 
 /**
@@ -322,8 +322,8 @@ cogl_path_polyline (float *coords,
  * fashion for the rest of the vertices.
  **/
 void
-cogl_path_polygon (float *coords,
-                   int    num_points);
+cogl_path_polygon (const float *coords,
+                   int          num_points);
 
 
 /**
