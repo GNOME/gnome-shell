@@ -25,11 +25,56 @@
 /**
  * SECTION:clutter-bind-constraint
  * @Title: ClutterBindConstraint
- * @Short_Description: A constraint binding the position of an actor
+ * @Short_Description: A constraint binding the position or size of an actor
  *
- * #ClutterBindConstraint is a #ClutterConstraint that binds the position of
- * the #ClutterActor to which it is applied to the the position of another
- * #ClutterActor.
+ * #ClutterBindConstraint is a #ClutterConstraint that binds the
+ * position or the size of the #ClutterActor to which it is applied
+ * to the the position or the size of another #ClutterActor, or
+ * "source".
+ *
+ * An offset can be applied to the constraint, to avoid overlapping. The offset
+ * can also be animated. For instance, the following code will set up three
+ * actors to be bound to the same origin:
+ *
+ * |[
+ * /&ast; source &ast;/
+ * rect[0] = clutter_rectangle_new_with_color (&amp;red_color);
+ * clutter_actor_set_position (rect[0], x_pos, y_pos);
+ * clutter_actor_set_size (rect[0], 100, 100);
+ *
+ * /&ast; second rectangle &ast;/
+ * rect[1] = clutter_rectangle_new_with_color (&amp;green_color);
+ * clutter_actor_set_size (rect[1], 100, 100);
+ * clutter_actor_set_opacity (rect[1], 0);
+ *
+ * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
+ * clutter_actor_add_constraint_with_name (rect[1], "green-x", constraint);
+ * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
+ * clutter_actor_add_constraint_with_name (rect[1], "green-y", constraint);
+ *
+ * /&ast; third rectangle &ast;/
+ * rect[2] = clutter_rectangle_new_with_color (&amp;blue_color);
+ * clutter_actor_set_size (rect[2], 100, 100);
+ * clutter_actor_set_opacity (rect[2], 0);
+ *
+ * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
+ * clutter_actor_add_constraint_with_name (rect[2], "blue-x", constraint);
+ * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
+ * ]|
+ *
+ * The following code animates the second and third rectangles to "expand"
+ * them horizontally from underneath the first rectangle:
+ *
+ * |[
+ * clutter_actor_animate (rect[1], CLUTTER_EASE_OUT_CUBIC, 250,
+ *                        "@constraints.green-x.offset", 100.0,
+ *                        "opacity", 255,
+ *                        NULL);
+ * clutter_actor_animate (rect[2], CLUTTER_EASE_OUT_CUBIC, 250,
+ *                        "@constraints.blue-x.offset", 200.0,
+ *                        "opacity", 255,
+ *                        NULL);
+ * ]|
  *
  * #ClutterBindConstraint is available since Clutter 1.4
  */
@@ -79,8 +124,9 @@ G_DEFINE_TYPE (ClutterBindConstraint,
                CLUTTER_TYPE_CONSTRAINT);
 
 static void
-update_actor_position (ClutterBindConstraint *bind)
+update_actor_coords (ClutterBindConstraint *bind)
 {
+  gfloat source_width, source_height;
   ClutterVertex source_position;
   ClutterActor *actor;
 
@@ -97,6 +143,7 @@ update_actor_position (ClutterBindConstraint *bind)
   source_position.x = clutter_actor_get_x (bind->source);
   source_position.y = clutter_actor_get_y (bind->source);
   source_position.z = clutter_actor_get_depth (bind->source);
+  clutter_actor_get_size (bind->source, &source_width, &source_height);
 
   switch (bind->coordinate)
     {
@@ -111,20 +158,32 @@ update_actor_position (ClutterBindConstraint *bind)
     case CLUTTER_BIND_Z:
       clutter_actor_set_depth (actor, source_position.z + bind->offset);
       break;
+
+    case CLUTTER_BIND_WIDTH:
+      clutter_actor_set_width (actor, source_width + bind->offset);
+      break;
+
+    case CLUTTER_BIND_HEIGHT:
+      clutter_actor_set_height (actor, source_height + bind->offset);
+      break;
     }
 }
 
 static void
-source_position_changed (GObject               *gobject,
-                         GParamSpec            *pspec,
-                         ClutterBindConstraint *bind)
+source_allocation_changed (ClutterActor           *source,
+                           const ClutterActorBox  *allocation,
+                           ClutterAllocationFlags  flags,
+                           ClutterBindConstraint  *bind)
 {
-  if (strcmp (pspec->name, "x") == 0 ||
-      strcmp (pspec->name, "y") == 0 ||
-      strcmp (pspec->name, "depth") == 0)
-    {
-      update_actor_position (bind);
-    }
+  update_actor_coords (bind);
+}
+
+static void
+source_depth_changed (GObject               *gobject,
+                      GParamSpec            *pspec,
+                      ClutterBindConstraint *bind)
+{
+  update_actor_coords (bind);
 }
 
 static void
@@ -308,21 +367,27 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
                                             G_CALLBACK (source_destroyed),
                                             constraint);
       g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_position_changed),
+                                            G_CALLBACK (source_allocation_changed),
+                                            constraint);
+      g_signal_handlers_disconnect_by_func (old_source,
+                                            G_CALLBACK (source_depth_changed),
                                             constraint);
     }
 
   constraint->source = source;
   if (constraint->source != NULL)
     {
-      g_signal_connect (constraint->source, "notify",
-                        G_CALLBACK (source_position_changed),
+      g_signal_connect (constraint->source, "allocation-changed",
+                        G_CALLBACK (source_allocation_changed),
+                        constraint);
+      g_signal_connect (constraint->source, "notify::depth",
+                        G_CALLBACK (source_depth_changed),
                         constraint);
       g_signal_connect (constraint->source, "destroy",
                         G_CALLBACK (source_destroyed),
                         constraint);
 
-      update_actor_position (constraint);
+      update_actor_coords (constraint);
     }
 
   g_object_notify (G_OBJECT (constraint), "source");
@@ -366,7 +431,7 @@ clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
 
   constraint->coordinate = coordinate;
 
-  update_actor_position (constraint);
+  update_actor_coords (constraint);
 
   g_object_notify (G_OBJECT (constraint), "coordinate");
 }
@@ -410,7 +475,7 @@ clutter_bind_constraint_set_offset (ClutterBindConstraint *constraint,
 
   constraint->offset = offset;
 
-  update_actor_position (constraint);
+  update_actor_coords (constraint);
 
   g_object_notify (G_OBJECT (constraint), "offset");
 }

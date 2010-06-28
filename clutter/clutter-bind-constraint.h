@@ -52,15 +52,19 @@ typedef struct _ClutterBindConstraint   ClutterBindConstraint;
  * @CLUTTER_BIND_X: Bind the X coordinate
  * @CLUTTER_BIND_Y: Bind the Y coordinate
  * @CLUTTER_BIND_Z: Bind the Z coordinate
+ * @CLUTTER_BIND_WIDTH: Bind the width
+ * @CLUTTER_BIND_HEIGHT: Bidng the height
  *
- * Specifies which coordinate should be used in a binding
+ * Specifies which property should be used in a binding
  *
  * Since: 1.4
  */
 typedef enum { /*< prefix=CLUTTER_BIND >*/
   CLUTTER_BIND_X,
   CLUTTER_BIND_Y,
-  CLUTTER_BIND_Z
+  CLUTTER_BIND_Z,
+  CLUTTER_BIND_WIDTH,
+  CLUTTER_BIND_HEIGHT
 } ClutterBindCoordinate;
 
 GType clutter_bind_constraint_get_type (void) G_GNUC_CONST;
