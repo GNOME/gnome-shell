@@ -160,9 +160,19 @@ SearchEntry.prototype = {
             }));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
+        global.stage.connect('notify::key-focus', Lang.bind(this, this._updateCursorVisibility));
+
         this.pane = null;
 
         this._capturedEventId = 0;
+    },
+
+    _updateCursorVisibility: function() {
+        let focus = global.stage.get_key_focus();
+        if (focus == global.stage || focus == this.entry)
+            this.entry.set_cursor_visible(true);
+        else
+            this.entry.set_cursor_visible(false);
     },
 
     show: function() {
