@@ -87,6 +87,7 @@ struct _ClutterBackendX11
   ClutterDeviceManager *device_manager;
 
   XSettingsClient *xsettings;
+  Window xsettings_xwin;
 };
 
 struct _ClutterBackendX11Class

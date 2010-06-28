@@ -101,6 +101,51 @@ static gboolean clutter_synchronise = FALSE;
 static int TrappedErrorCode = 0;
 static int (* old_error_handler) (Display *, XErrorEvent *);
 
+static ClutterX11FilterReturn
+xsettings_filter (XEvent       *xevent,
+                  ClutterEvent *event,
+                  gpointer      data)
+{
+  ClutterBackendX11 *backend_x11 = data;
+
+  if (_clutter_xsettings_client_process_event (backend_x11->xsettings, xevent))
+    return CLUTTER_X11_FILTER_REMOVE;
+  else
+    return CLUTTER_X11_FILTER_CONTINUE;
+}
+
+static Bool
+clutter_backend_x11_xsettings_watch (Window  window,
+                                     Bool    is_start,
+                                     long    mask,
+                                     void   *cb_data)
+{
+  ClutterBackendX11 *backend_x11 = cb_data;
+
+  if (is_start)
+    {
+      backend_x11->xsettings_xwin = window;
+      if (!backend_x11->xsettings_xwin)
+        return False;
+
+      clutter_x11_add_filter (xsettings_filter, backend_x11);
+
+      CLUTTER_NOTE (BACKEND, "Added filter on XSettings manager window 0x%x",
+                    (unsigned int) backend_x11->xsettings_xwin);
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "Removed filter on XSettings manager window 0x%x",
+                    (unsigned int) backend_x11->xsettings_xwin);
+
+      clutter_x11_remove_filter (xsettings_filter, backend_x11);
+
+      backend_x11->xsettings_xwin = None;
+    }
+
+  return True;
+}
+
 static void
 clutter_backend_x11_xsettings_notify (const char       *name,
                                       XSettingsAction   action,
@@ -276,7 +321,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
         _clutter_xsettings_client_new (backend_x11->xdpy,
                                        backend_x11->xscreen_num,
                                        clutter_backend_x11_xsettings_notify,
-                                       NULL,
+                                       clutter_backend_x11_xsettings_watch,
                                        backend_x11);
 
       if (clutter_synchronise)
@@ -431,8 +476,6 @@ gboolean
 clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
                                   XEvent *xevent)
 {
-  _clutter_xsettings_client_process_event (backend_x11->xsettings, xevent);
-
   return FALSE;
 }
 
