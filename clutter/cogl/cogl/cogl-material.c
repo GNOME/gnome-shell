@@ -3899,7 +3899,7 @@ cogl_material_set_blend (CoglHandle handle,
 
 void
 cogl_material_set_blend_constant (CoglHandle handle,
-                                  CoglColor *constant_color)
+                                  const CoglColor *constant_color)
 {
 #ifndef HAVE_COGL_GLES
   CoglMaterial *material = COGL_MATERIAL (handle);
@@ -4590,7 +4590,7 @@ changed:
 void
 cogl_material_set_layer_combine_constant (CoglHandle handle,
 				          int layer_index,
-                                          CoglColor *constant_color)
+                                          const CoglColor *constant_color)
 {
   CoglMaterial          *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
@@ -4671,7 +4671,7 @@ changed:
 void
 cogl_material_set_layer_matrix (CoglHandle handle,
 				int layer_index,
-				CoglMatrix *matrix)
+                                const CoglMatrix *matrix)
 {
   CoglMaterial          *material = COGL_MATERIAL (handle);
   CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_USER_MATRIX;
