@@ -3119,7 +3119,7 @@ clutter_text_init (ClutterText *self)
 
   priv->font_changed_id =
     g_signal_connect_swapped (clutter_get_default_backend (),
-                              "font-changed",
+                              "settings-changed",
                               G_CALLBACK (clutter_text_font_changed_cb),
                               self);
 
