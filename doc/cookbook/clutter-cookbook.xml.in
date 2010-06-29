@@ -17,7 +17,7 @@
     </author>
 
     <copyright>
-      <year>2009</year>
+      <year>2009, 2010</year>
       <holder>Intel Corporation</holder>
     </copyright>
 
@@ -390,13 +390,48 @@ on_paint (ClutterActor *actor)
     <title>Events</title>
 
     <epigraph>
-      <attribution></attribution>
-      <para></para>
+      <attribution>The Tenth Doctor (David Tennant)</attribution>
+      <para>Crossing into established events is strictly forbidden. Except for
+      cheap tricks.</para>
     </epigraph>
 
     <section id="events-introduction">
       <title>Introduction</title>
-      <para>introduction</para>
+      <para>Once you have set up a scene on the stage, in order to respond
+      to user interaction you will have to handle events coming from the
+      underlying platform.</para>
+
+      <para>Events are relayed to actors by Clutter in form of
+      <emphasis>signals</emphasis>; signals are a facility provided by the
+      GObject framework to call functions depending on a unique name. A signal
+      can be thought as a message that an object instance broadcasts to various
+      listener functions.</para>
+
+      <para>There are various events that Clutter will handle: mostly, they
+      deal with input devices, like a mouse pointer or a keyboard; but they can
+      also come from the windowing system, like the
+      <emphasis>delete-event</emphasis> signal that is emitted when the user
+      closes the window of the stage.</para>
+
+      <para>Each event has a particular <emphasis>source</emphasis>, that is
+      the actor that received the event. The event handling sequence is divided
+      in two phases:</para>
+
+      <orderedlist>
+        <listitem><para>the <emphasis>capture</emphasis> phase, which consists
+        in an emission of the <emphasis>captured-event</emphasis> signal
+        starting from the stage to, following the parent-child relationship,
+        the source of the event;</para></listitem>
+        <listitem><para>the <emphasis>bubble</emphasis> phase, which consists
+        in an emission of the <emphasis>event</emphasis> signal starting from
+        the the source of the event to, following the parent-child
+        relationship, the stage.</para></listitem>
+      </orderedlist>
+
+      <para>At any point during the event emission sequence a handler of either
+      the captured-event or the event signals can stop it, by returning a value
+      of TRUE, which means that the event has been handled. If an event hasn't
+      been handled, FALSE should be returned instead.</para>
     </section>
 
     <section id="events-handling-key-events">
