@@ -44,4 +44,6 @@ else
         ACLOCAL="${ACLOCAL-aclocal} $ACLOCAL_FLAGS" autoreconf -v --install || exit $?
 fi
 
-./configure "$@" && echo "Now type 'make' to compile $PROJECT."
+if test -z "$NOCONFIGURE"; then
+        ./configure "$@" && echo "Now type 'make' to compile $PROJECT."
+fi
