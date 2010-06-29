@@ -543,30 +543,119 @@ cairo_destroy (cr);
 
     </section>
 
-<!--
     <section id="textures-aspect-ratio">
-      <title>Maintaining the aspect ratio when loading a texture</title>
+      <title>Maintaining the aspect ratio when loading an
+      image into a texture</title>
 
       <section>
         <title>Problem</title>
 
-        <para>You want to maintain the aspect ratio of a texture.</para>
+        <para>You want want to load an image into a texture
+        and scale it, while retaining the underlying image's aspect ratio.</para>
       </section>
 
       <section>
         <title>Solution</title>
 
-        <para></para>
+        <para>Set the texture to keep the aspect ratio of the
+        underlying image (so it doesn't distort when it's scaled); use
+        the actor's request-mode property to set the correct
+        geometry management (see the discussion section); then
+        resize the texture along one dimension (height or width).
+        Now, when an image is loaded into the texture, the image is
+        scaled to fit the set height or width; the other dimension
+        is automatically scaled by the same factor so the image fits
+        the texture:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+ClutterActor *texture;
+texture = clutter_texture_new ();
+
+clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (texture), TRUE);
+
+/*
+ * this setting means the height of the scaled image is based on its width;
+ * it's not strictly necessary to set this, as this is the default
+ */
+clutter_actor_set_request_mode (texture, CLUTTER_REQUEST_HEIGHT_FOR_WIDTH);
+
+/* set the width, which causes height to be scaled by the same factor */
+clutter_actor_set_width (texture, 300);
+
+clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                               "/path/to/image.jpg",
+                               NULL);
+]]>
+          </programlisting>
+        </informalexample>
       </section>
 
       <section>
         <title>Discussion</title>
 
-        <para></para>
+        <para>The request mode for an actor determines how
+        geometry requisition is performed; in this case, this
+        includes how scaling is applied if you change the actor's
+        width or height. There are two possible values for
+        request-mode:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>If set to <emphasis>CLUTTER_REQUEST_HEIGHT_FOR_WIDTH</emphasis>
+            (the default), changing the width causes the height
+            to be scaled by the same factor as the width.</para>
+          </listitem>
+          <listitem>
+            <para>If set to <emphasis>CLUTTER_REQUEST_WIDTH_FOR_HEIGHT</emphasis>,
+            changing the height causes the width to be scaled by the
+            same factor as the height.</para>
+          </listitem>
+        </orderedlist>
+
+        <para>In the example above, the texture is set to keep its
+        aspect ratio then fixed to a width of 300 pixels; the
+        request-mode is set to CLUTTER_REQUEST_HEIGHT_FOR_WIDTH. If a
+        standard, photo-sized image in landscape orientation were
+        loaded into it (2848 pixels wide x 2136 high), it would be scaled
+        down to 300 pixels wide; then, its height would be scaled by the
+        same factor as the width (i.e. scaled down to 225 pixels).</para>
+
+        <para>With request-mode set to CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
+        you would get the same effect by setting the height first;
+        then, computation of the width for the scaled image would be
+        based on the scaling factor applied to its height instead.</para>
+
+        <para>You can work out which side of the source image is longest using
+        clutter_texture_base_size() to get its width and height. This can
+        be useful when trying to scale images with different orientations
+        to fit into uniform rows or columns:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+gint width;
+gint height;
+
+clutter_texture_get_base_size (CLUTTER_TEXTURE (texture), &width, &height);
+]]>
+          </programlisting>
+        </informalexample>
+
+        <para>Note that if you explicitly set the size (both width and height)
+        of a texture with clutter_actor_set_size() (or
+        with clutter_actor_set_width() and clutter_actor_set_height()), any
+        image loaded into the texture is automatically stretched/shrunk to
+        fit the texture. This is the case regardless of any other settings
+        (like whether to keep aspect ratio).</para>
+
+        <para>Also note that a texture won't try to fit itself inside the bounds of
+        its parent container: so if it's bigger than its container, only part
+        of it may be visible.</para>
       </section>
 
     </section>
--->
 
   </chapter> <!-- textures }}} -->
 
