@@ -575,7 +575,7 @@ clutter_event_get_device (ClutterEvent *event)
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      device = event->scroll.device;
+      device = event->key.device;
       break;
     }
 

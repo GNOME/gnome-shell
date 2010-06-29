@@ -667,7 +667,7 @@ event_translate (ClutterBackend *backend,
       event->key.type = event->type = CLUTTER_KEY_PRESS;
       event->key.device =
         clutter_device_manager_get_core_device (manager,
-                                                CLUTTER_POINTER_DEVICE);
+                                                CLUTTER_KEYBOARD_DEVICE);
 
       translate_key_event (backend, event, xevent);
 
