@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
-<!ENTITY appurl "http://clutter-project.org">
-<!ENTITY docurl "http://clutter-project.org/docs/">
+<!ENTITY appurl "http://www.clutter-project.org">
+<!ENTITY docurl "http://docs.clutter-project.org/docs/clutter-cookbook">
 <!ENTITY author_mail "ebassi@linux.intel.com">
 <!ENTITY apiversion "@CLUTTER_API_VERSION@">
 ]>
@@ -85,7 +85,7 @@
       <title>About Clutter</title>
 
       <para>Clutter is an free and open source software library for creating
-      fast, visually rich and animated graphical user interfaces.</para>
+      portable, dynamic, compelling and fast graphical user interfaces.</para>
 
       <para>Clutter uses OpenGL (and, optionally, OpenGL ES on mobile and
       embedded platforms) for rendering the user interface elements, but
@@ -106,6 +106,16 @@
       <para>The latest version is always available at
       <ulink url="&docurl;">&docurl;</ulink>.</para>
 
+    </section>
+
+    <section>
+      <title>Acknowledgments</title>
+
+      <para>This book has been written taking the inspiration from the Perl
+      Cookbook, authored by Tom Christiansen and Nathan Torkington.</para>
+
+      <para>Various recipes throughout the book have been written by Elliot
+      Smith.</para>
     </section>
 
     <section>
