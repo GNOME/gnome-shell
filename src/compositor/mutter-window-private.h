@@ -3,9 +3,11 @@
 #ifndef MUTTER_WINDOW_PRIVATE_H
 #define MUTTER_WINDOW_PRIVATE_H
 
+#include <config.h>
+
 #include <X11/extensions/Xdamage.h>
-#include <gdk/gdk.h>
 #include "compositor-mutter.h"
+#include "region.h"
 
 MutterWindow *mutter_window_new (MetaWindow *window);
 
@@ -37,12 +39,12 @@ void     mutter_window_update_opacity          (MutterWindow       *cw);
 void     mutter_window_mapped                  (MutterWindow       *cw);
 void     mutter_window_unmapped                (MutterWindow       *cw);
 
-GdkRegion *mutter_window_get_obscured_region   (MutterWindow       *cw);
+MetaRegion *mutter_window_get_obscured_region  (MutterWindow       *cw);
 
 void mutter_window_set_visible_region          (MutterWindow       *cw,
-                                                GdkRegion          *visible_region);
+                                                MetaRegion         *visible_region);
 void mutter_window_set_visible_region_beneath  (MutterWindow       *cw,
-                                                GdkRegion          *beneath_region);
+                                                MetaRegion         *beneath_region);
 void mutter_window_reset_visible_regions       (MutterWindow       *cw);
 
 void mutter_window_effect_completed (MutterWindow *actor,

@@ -1,10 +1,13 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include <config.h>
+
 #define _ISOC99_SOURCE /* for roundf */
 #include <math.h>
 
 #include "mutter-window-private.h"
 #include "mutter-window-group.h"
+#include "region.h"
 
 struct _MutterWindowGroupClass
 {
@@ -99,7 +102,7 @@ static void
 mutter_window_group_paint (ClutterActor *actor)
 {
   MutterWindowGroup *window_group = MUTTER_WINDOW_GROUP (actor);
-  GdkRegion *visible_region;
+  MetaRegion *visible_region;
   GdkRectangle screen_rect = { 0 };
   GList *children, *l;
 
@@ -116,7 +119,7 @@ mutter_window_group_paint (ClutterActor *actor)
    * optimization, however.)
    */
   meta_screen_get_size (window_group->screen, &screen_rect.width, &screen_rect.height);
-  visible_region = gdk_region_rectangle (&screen_rect);
+  visible_region = meta_region_new_from_rectangle (&screen_rect);
 
   for (l = children; l; l = l->next)
     {
@@ -132,22 +135,22 @@ mutter_window_group_paint (ClutterActor *actor)
         continue;
 
       /* Temporarily move to the coordinate system of the actor */
-      gdk_region_offset (visible_region, - x, - y);
+      meta_region_translate (visible_region, - x, - y);
 
       mutter_window_set_visible_region (cw, visible_region);
 
       if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (cw)) == 0xff)
         {
-          GdkRegion *obscured_region = mutter_window_get_obscured_region (cw);
+          MetaRegion *obscured_region = mutter_window_get_obscured_region (cw);
           if (obscured_region)
-            gdk_region_subtract (visible_region, obscured_region);
+            meta_region_subtract (visible_region, obscured_region);
         }
 
       mutter_window_set_visible_region_beneath (cw, visible_region);
-      gdk_region_offset (visible_region, x, y);
+      meta_region_translate (visible_region, x, y);
     }
 
-  gdk_region_destroy (visible_region);
+  meta_region_destroy (visible_region);
 
   CLUTTER_ACTOR_CLASS (mutter_window_group_parent_class)->paint (actor);
 

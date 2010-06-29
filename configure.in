@@ -143,6 +143,7 @@ case "$with_gtk" in
   3.0) GTK_API_VERSION=3.0
        GTK_MIN_VERSION=2.90
        CANBERRA_GTK=libcanberra-gtk3
+       AC_DEFINE(USE_CAIRO_REGION, 1, [Use cairo_region_t instead of GdkRegion])
        ;;
 esac
 

@@ -71,7 +71,7 @@ struct _MutterShapedTexturePrivate
   CoglHandle material_workaround;
 #endif
 
-  GdkRegion *clip_region;
+  MetaRegion *clip_region;
 
   guint mask_width, mask_height;
 
@@ -300,7 +300,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   ClutterActorBox alloc;
   CoglHandle material;
 
-  if (priv->clip_region && gdk_region_empty (priv->clip_region))
+  if (priv->clip_region && meta_region_is_empty (priv->clip_region))
     return;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
@@ -387,7 +387,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 #     define MAX_RECTS 16
 
       /* Would be nice to be able to check the number of rects first */
-      gdk_region_get_rectangles (priv->clip_region, &rects, &n_rects);
+      meta_region_get_rectangles (priv->clip_region, &rects, &n_rects);
       if (n_rects > MAX_RECTS)
 	{
 	  g_free (rects);
@@ -557,7 +557,7 @@ mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
  */
 void
 mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
-				       GdkRegion           *clip_region)
+				       MetaRegion          *clip_region)
 {
   MutterShapedTexturePrivate *priv;
 
@@ -567,7 +567,7 @@ mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
 
   if (priv->clip_region)
     {
-      gdk_region_destroy (priv->clip_region);
+      meta_region_destroy (priv->clip_region);
       priv->clip_region = NULL;
     }
 

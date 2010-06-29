@@ -455,11 +455,11 @@ meta_preview_get_mini_icon (void)
   return default_icon;
 }
 
-GdkRegion *
+MetaRegion *
 meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint new_window_height)
 {
   GdkRectangle xrect;
-  GdkRegion *corners_xregion, *window_xregion;
+  MetaRegion *corners_xregion, *window_xregion;
   gint flags;
   MetaFrameLayout *fgeom;
   MetaFrameStyle *frame_style;
@@ -468,14 +468,14 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
 
   flags = (META_PREVIEW (preview)->flags);
 
-  window_xregion = gdk_region_new ();
+  window_xregion = meta_region_new ();
 
   xrect.x = 0;
   xrect.y = 0;
   xrect.width = new_window_width;
   xrect.height = new_window_height;
 
-  gdk_region_union_with_rect (window_xregion, &xrect);
+  meta_region_union_rectangle (window_xregion, &xrect);
 
   if (preview->theme == NULL)
     return window_xregion;
@@ -486,7 +486,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
 
   fgeom = frame_style->layout;
 
-  corners_xregion = gdk_region_new ();
+  corners_xregion = meta_region_new ();
 
   if (fgeom->top_left_corner_rounded_radius != 0)
     {
@@ -503,7 +503,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          gdk_region_union_with_rect (corners_xregion, &xrect);
+          meta_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -521,7 +521,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          gdk_region_union_with_rect (corners_xregion, &xrect);
+          meta_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -539,7 +539,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          gdk_region_union_with_rect (corners_xregion, &xrect);
+          meta_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -557,12 +557,12 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          gdk_region_union_with_rect (corners_xregion, &xrect);
+          meta_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
-  gdk_region_subtract (window_xregion, corners_xregion);
-  gdk_region_destroy (corners_xregion);
+  meta_region_subtract (window_xregion, corners_xregion);
+  meta_region_destroy (corners_xregion);
 
   return window_xregion;
 }

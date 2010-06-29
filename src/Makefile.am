@@ -44,6 +44,7 @@ mutter_SOURCES= 				\
 	include/compositor.h			\
 	include/mutter-plugin.h			\
 	include/mutter-window.h			\
+	include/region.h			\
 	include/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\
