@@ -82,7 +82,6 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static void
 clutter_backend_dispose (GObject *gobject)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
   ClutterMainContext *clutter_context;
 
   clutter_context = _clutter_context_get_default ();
@@ -96,12 +95,18 @@ clutter_backend_dispose (GObject *gobject)
       clutter_context->events_queue = NULL;
     }
 
-  g_free (backend->priv->font_name);
-  backend->priv->font_name = NULL;
+  G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
+}
 
+static void
+clutter_backend_finalize (GObject *gobject)
+{
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
+
+  g_free (backend->priv->font_name);
   clutter_backend_set_font_options (backend, NULL);
 
-  G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (clutter_backend_parent_class)->finalize (gobject);
 }
 
 static gfloat
@@ -197,6 +202,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->dispose = clutter_backend_dispose;
+  gobject_class->finalize = clutter_backend_finalize;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
 
