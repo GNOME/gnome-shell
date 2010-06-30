@@ -1,8 +1,8 @@
 HTML_DIR = $(datadir)/gtk-doc/html
 TARGET_DIR = $(HTML_DIR)/clutter-cookbook
 
-HTML_FILES = $(srcdir)/html/*.html
-IMAGE_FILES = $(srcdir)/images/*.png
+HTML_FILES = html/*.html
+IMAGE_FILES = images/*.png
 
 EXTRA_DIST = clutter-cookbook.xml.in
 
@@ -12,19 +12,19 @@ CLEANFILES = \
 
 pdf-build.stamp: clutter-cookbook.xml
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
-	$(JW) -b pdf $(srcdir)/clutter-cookbook.xml \
-	&& mv -f $(srcdir)/clutter-cookbook.pdf clutter-cookbook-@CLUTTER_API_VERSION@.pdf \
+	$(JW) -b pdf $(top_builddir)/doc/cookbook/clutter-cookbook.xml \
+	&& mv -f clutter-cookbook.pdf clutter-cookbook-@CLUTTER_API_VERSION@.pdf \
 	&& echo timestamp > $(@F)
 
 html-build.stamp: clutter-cookbook.xml
 	$(mkinstalldirs) html \
-	&& $(XSLTPROC) --nonet --xinclude -o $(srcdir)/html/ \
+	&& $(XSLTPROC) --nonet --xinclude -o html \
 		--path $(top_srcdir)/doc/common \
-		--path $(srcdir) \
+		--path . \
 		--stringparam gtkdoc.bookname "clutter-cookbook" \
 		--stringparam gtkdoc.version @CLUTTER_API_VERSION@ \
-		$(srcdir)/ref-html-style.xsl \
-	$(srcdir)/clutter-cookbook.xml \
+		ref-html-style.xsl \
+	$(top_builddir)/doc/cookbook/clutter-cookbook.xml \
 	&& echo timestamp > $(@F)
 
 if ENABLE_PDFS
@@ -47,22 +47,22 @@ clean-local:
 uninstall-local:
 
 install-data-local:
-	installfiles=`echo $(srcdir)/html/*`; \
-	if test "$$installfiles" = '$(srcdir)/html/*'; \
+	installfiles=`echo ./html/*`; \
+	if test "$$installfiles" = './html/*'; \
 	then echo '-- Nothing to install' ; \
 	else \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-	  for file in `ls $(srcdir)/$(HTML_FILES)`; do \
+	  for file in `ls $(HTML_FILES)`; do \
 	    if [ -f $$file ]; then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/$$basefile; \
 	    fi \
 	  done; \
 	fi; \
-	if [ -d $(srcdir)/images ]; \
+	if [ -d ./images ]; \
 	then \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
-	  for file in `ls $(srcdir)/$(IMAGE_FILES)`; do \
+	  for file in `ls $(IMAGE_FILES)`; do \
 	    if [ -f $$file ]; \
 	    then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
@@ -71,6 +71,6 @@ install-data-local:
 	  done; \
 	fi; \
 	$(INSTALL_DATA) $(top_srcdir)/doc/common/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
-	$(INSTALL_DATA) $(srcdir)/html/clutter-cookbook.devhelp	$(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
+	$(INSTALL_DATA) clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc

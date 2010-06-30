@@ -12,19 +12,19 @@ CLEANFILES = \
 
 pdf-build.stamp: clutter-manual.xml
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
-	$(JW) -b pdf $(srcdir)/clutter-manual.xml \
+	$(JW) -b pdf $(top_builddir)/doc/manual/clutter-manual.xml \
 	&& mv -f $(srcdir)/clutter-manual.pdf clutter-manual-@CLUTTER_API_VERSION@.pdf \
 	&& echo timestamp > $(@F)
 
 html-build.stamp: clutter-manual.xml
 	$(mkinstalldirs) html \
-	&& $(XSLTPROC) --nonet --xinclude -o $(srcdir)/html/ \
+	&& $(XSLTPROC) --nonet --xinclude -o html/ \
 		--path $(top_srcdir)/doc/common \
-		--path $(srcdir) \
+		--path . \
 		--stringparam gtkdoc.bookname "clutter-manual" \
 		--stringparam gtkdoc.version @CLUTTER_API_VERSION@ \
 		$(srcdir)/ref-html-style.xsl \
-	$(srcdir)/clutter-manual.xml \
+	$(top_builddir)/doc/manual/clutter-manual.xml \
 	&& echo timestamp > $(@F)
 
 if ENABLE_PDFS
