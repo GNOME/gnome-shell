@@ -462,7 +462,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  *   omg!1!ponies
  * ]|
  *
- * <note>If no unit is specified, pixels are assumed.</note>
+ * <note><para>If no unit is specified, pixels are assumed.</para></note>
  *
  * Return value: %TRUE if the string was successfully parsed,
  *   and %FALSE otherwise

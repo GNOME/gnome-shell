@@ -230,10 +230,10 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    *
    * The alignment factor, as a normalized value between 0.0 and 1.0
    *
-   * The #ClutterAlignConstraint:factor depends on the
-   * #ClutterAlignConstraint:align-axis value: with %CLUTTER_ALIGN_X_AXIS,
-   * 0.0 means left and 1.0 means right; with %CLUTTER_ALIGN_Y_AXIS, 0.0
-   * means top and 1.0 means bottom
+   * The factor depends on the #ClutterAlignConstraint:align-axis property:
+   * with an align-axis value of %CLUTTER_ALIGN_X_AXIS, 0.0 means left and
+   * 1.0 means right; with a value of %CLUTTER_ALIGN_Y_AXIS, 0.0 means top
+   * and 1.0 means bottom.
    *
    * Since: 1.4
    */
@@ -263,8 +263,8 @@ clutter_align_constraint_init (ClutterAlignConstraint *self)
  * @factor: the alignment factor, between 0.0 and 1.0
  *
  * Creates a new constraint, aligning a #ClutterActor's position with
- * regards of the size of the actor to @source, with the given alignment
- * @factor
+ * regards of the size of the actor to @source, with the given
+ * alignment @factor
  *
  * Return value: the newly created #ClutterAlignConstraint
  *

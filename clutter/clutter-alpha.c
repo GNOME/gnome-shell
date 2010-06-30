@@ -27,8 +27,7 @@
 
 /**
  * SECTION:clutter-alpha
- * @short_description: A class for calculating an alpha value as a function
- * of time.
+ * @short_description: A class for calculating a value as a function of time
  *
  * #ClutterAlpha is a class for calculating an floating point value
  * dependent only on the position of a #ClutterTimeline.

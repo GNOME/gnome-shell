@@ -8669,10 +8669,10 @@ clutter_animatable_iface_init (ClutterAnimatableIface *iface)
  * nature of the operation. In general the error grows when the skewing
  * of the actor rectangle on screen increases.
  *
- * Note: This function is fairly computationally intensive.
+ * <note><para>This function can be computationally intensive.</para></note>
  *
- * Note: This function only works when the allocation is up-to-date,
- * i.e. inside of paint()
+ * <note><para>This function only works when the allocation is up-to-date,
+ * i.e. inside of paint().</para></note>
  *
  * Return value: %TRUE if conversion was successful.
  *
@@ -10582,12 +10582,12 @@ clutter_actor_get_text_direction (ClutterActor *self)
  *      &ast; the internal flag being set on a child of MyActor
  *      &ast;/
  *
- *     /&ast; internal child: a background texture &ast;/
+ *     /&ast; internal child - a background texture &ast;/
  *     self->priv->background_tex = clutter_texture_new ();
  *     clutter_actor_set_parent (self->priv->background_tex,
  *                               CLUTTER_ACTOR (self));
  *
- *     /&ast; internal child: a label &ast;/
+ *     /&ast; internal child - a label &ast;/
  *     self->priv->label = clutter_text_new ();
  *     clutter_actor_set_parent (self->priv->label,
  *                               CLUTTER_ACTOR (self));
