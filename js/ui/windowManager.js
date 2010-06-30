@@ -2,9 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const AltTab = imports.ui.altTab;

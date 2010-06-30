@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
 const Gettext_gtk20 = imports.gettext.domain('gtk20');
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;

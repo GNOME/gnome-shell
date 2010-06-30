@@ -4,8 +4,6 @@ const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
 

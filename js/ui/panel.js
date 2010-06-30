@@ -1,23 +1,17 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
-const GConf = imports.gi.GConf;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
-const DBus = imports.dbus;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
-const BoxPointer = imports.ui.boxpointer;
 const Calendar = imports.ui.calendar;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;

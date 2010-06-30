@@ -10,7 +10,6 @@ const _ = Gettext.gettext;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
-const Panel = imports.ui.panel;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 

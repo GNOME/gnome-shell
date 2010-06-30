@@ -1,9 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const DBus = imports.dbus;
 const GConf = imports.gi.GConf;
-const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;

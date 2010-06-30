@@ -1,9 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const DBus = imports.dbus;
-const Lang = imports.lang;
-const Shell = imports.gi.Shell;
-const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 

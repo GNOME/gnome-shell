@@ -1,9 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
-const Meta = imports.gi.Meta;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 

@@ -1,15 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const DND = imports.ui.dnd;

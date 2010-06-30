@@ -1,9 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
-const Pango = imports.gi.Pango;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
@@ -15,7 +12,6 @@ const _ = Gettext.gettext;
 
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
-const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;

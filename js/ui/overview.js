@@ -1,19 +1,13 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const AppDisplay = imports.ui.appDisplay;
-const DocDisplay = imports.ui.docDisplay;
-const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;

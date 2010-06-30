@@ -1,15 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Search = imports.ui.search;
-const Main = imports.ui.main;
 
 const THUMBNAIL_ICON_MARGIN = 2;
 

@@ -1,10 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const St = imports.gi.St;
@@ -15,7 +12,6 @@ const AppDisplay = imports.ui.appDisplay;
 const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
 const PlaceDisplay = imports.ui.placeDisplay;
-const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Search = imports.ui.search;
