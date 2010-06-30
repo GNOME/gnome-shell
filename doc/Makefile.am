@@ -5,7 +5,7 @@ SUBDIRS += reference
 endif
 
 if ENABLE_DOCS
-SUBDIRS += common cookbook manual
+SUBDIRS += common cookbook
 endif
 
 DIST_SUBDIRS = reference common cookbook manual
