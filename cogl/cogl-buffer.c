@@ -68,10 +68,8 @@
 
 #endif
 
-void cogl_buffer_unmap_EXP (CoglBuffer *buffer);
-
 gboolean
-cogl_is_buffer_EXP (const void *object)
+cogl_is_buffer (const void *object)
 {
   CoglObject *obj = (CoglObject *)object;
 
@@ -177,7 +175,7 @@ _cogl_buffer_bind (CoglBuffer *buffer,
 }
 
 unsigned int
-cogl_buffer_get_size_EXP (CoglBuffer *buffer)
+cogl_buffer_get_size (CoglBuffer *buffer)
 {
   if (!cogl_is_buffer (buffer))
     return 0;
@@ -186,8 +184,8 @@ cogl_buffer_get_size_EXP (CoglBuffer *buffer)
 }
 
 void
-cogl_buffer_set_usage_hint_EXP (CoglBuffer *buffer,
-                                CoglBufferUsageHint hint)
+cogl_buffer_set_usage_hint (CoglBuffer *buffer,
+                            CoglBufferUsageHint hint)
 {
   if (!cogl_is_buffer (buffer))
     return;
@@ -199,7 +197,7 @@ cogl_buffer_set_usage_hint_EXP (CoglBuffer *buffer,
 }
 
 CoglBufferUsageHint
-cogl_buffer_get_usage_hint_EXP (CoglBuffer *buffer)
+cogl_buffer_get_usage_hint (CoglBuffer *buffer)
 {
   if (!cogl_is_buffer (buffer))
     return FALSE;
@@ -208,8 +206,8 @@ cogl_buffer_get_usage_hint_EXP (CoglBuffer *buffer)
 }
 
 void
-cogl_buffer_set_update_hint_EXP (CoglBuffer *buffer,
-                                 CoglBufferUpdateHint hint)
+cogl_buffer_set_update_hint (CoglBuffer *buffer,
+                             CoglBufferUpdateHint hint)
 {
   if (!cogl_is_buffer (buffer))
     return;
@@ -221,7 +219,7 @@ cogl_buffer_set_update_hint_EXP (CoglBuffer *buffer,
 }
 
 CoglBufferUpdateHint
-cogl_buffer_get_update_hint_EXP (CoglBuffer *buffer)
+cogl_buffer_get_update_hint (CoglBuffer *buffer)
 {
   if (!cogl_is_buffer (buffer))
     return FALSE;
@@ -230,8 +228,8 @@ cogl_buffer_get_update_hint_EXP (CoglBuffer *buffer)
 }
 
 guint8 *
-cogl_buffer_map_EXP (CoglBuffer      *buffer,
-                     CoglBufferAccess access)
+cogl_buffer_map (CoglBuffer      *buffer,
+                 CoglBufferAccess access)
 {
   if (!cogl_is_buffer (buffer))
     return NULL;
@@ -244,7 +242,7 @@ cogl_buffer_map_EXP (CoglBuffer      *buffer,
 }
 
 void
-cogl_buffer_unmap_EXP (CoglBuffer *buffer)
+cogl_buffer_unmap (CoglBuffer *buffer)
 {
   if (!cogl_is_buffer (buffer))
     return;
@@ -256,10 +254,10 @@ cogl_buffer_unmap_EXP (CoglBuffer *buffer)
 }
 
 gboolean
-cogl_buffer_set_data_EXP (CoglBuffer   *buffer,
-                          gsize         offset,
-                          const guint8 *data,
-                          gsize         size)
+cogl_buffer_set_data (CoglBuffer   *buffer,
+                      gsize         offset,
+                      const guint8 *data,
+                      gsize         size)
 {
   if (!cogl_is_buffer (buffer))
     return FALSE;

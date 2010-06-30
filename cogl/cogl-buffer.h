@@ -45,11 +45,26 @@ G_BEGIN_DECLS
  * OpenGL implementation allows it, COGL will use Pixel Buffer Objects.
  */
 
+/* All of the cogl-buffer API is currently experimental so we suffix
+ * the actual symbols with _EXP so if somone is monitoring for ABI
+ * changes it will hopefully be clearer to them what's going on if any
+ * of the symbols dissapear at a later date.
+ */
+#define cogl_is_buffer  cogl_is_buffer_EXP
+#define cogl_buffer_get_size cogl_buffer_get_size_EXP
+#define cogl_buffer_set_usage_hint cogl_buffer_set_usage_hint_EXP
+#define cogl_buffer_get_usage_hint cogl_buffer_get_usage_hint_EXP
+#define cogl_buffer_set_update_hint cogl_buffer_set_update_hint_EXP
+#define cogl_buffer_get_update_hint cogl_buffer_get_update_hint_EXP
+#define cogl_buffer_map cogl_buffer_map_EXP
+#define cogl_buffer_unmap cogl_buffer_unmap_EXP
+#define cogl_buffer_set_data cogl_buffer_set_data_EXP
+
 typedef struct _CoglBuffer CoglBuffer;
 
 /**
  * cogl_is_buffer:
- * @handle: a #CoglHandle to test
+ * @buffer: a buffer object
  *
  * Checks whether @buffer is a buffer object.
  *
@@ -59,7 +74,7 @@ typedef struct _CoglBuffer CoglBuffer;
  * Stability: Unstable
  */
 gboolean
-cogl_is_buffer (CoglHandle handle);
+cogl_is_buffer (const void *object);
 
 /**
  * cogl_buffer_get_size:
@@ -235,54 +250,6 @@ cogl_buffer_set_data (CoglBuffer  *buffer,
                       gsize        offset,
                       const guint8 *data,
                       gsize        size);
-
-/* the functions above are experimental, the actual symbols are suffixed by
- * _EXP so we can ensure ABI compatibility and leave the cogl_buffer namespace
- * free for future use. A bunch of defines translates the symbols documented
- * above into the real symbols */
-
-gboolean
-cogl_is_buffer_EXP (const void *object);
-
-unsigned int
-cogl_buffer_get_size_EXP (CoglBuffer *buffer);
-
-void
-cogl_buffer_set_usage_hint_EXP (CoglBuffer         *buffer,
-                                CoglBufferUsageHint hint);
-
-CoglBufferUsageHint
-cogl_buffer_get_usage_hint_EXP (CoglBuffer *buffer);
-
-void
-cogl_buffer_set_update_hint_EXP (CoglBuffer          *buffer,
-                                 CoglBufferUpdateHint hint);
-
-CoglBufferUpdateHint
-cogl_buffer_get_update_hint_EXP (CoglBuffer *buffer);
-
-guint8 *
-cogl_buffer_map_EXP (CoglBuffer      *buffer,
-                     CoglBufferAccess access);
-
-void
-cogl_buffer_unmap_EXP (CoglBuffer *buffer);
-
-gboolean
-cogl_buffer_set_data_EXP (CoglBuffer   *buffer,
-                          gsize         offset,
-                          const guint8 *data,
-                          gsize         size);
-
-#define cogl_is_buffer  cogl_is_buffer_EXP
-#define cogl_buffer_get_size cogl_buffer_get_size_EXP
-#define cogl_buffer_set_usage_hint cogl_buffer_set_usage_hint_EXP
-#define cogl_buffer_get_usage_hint cogl_buffer_get_usage_hint_EXP
-#define cogl_buffer_set_update_hint cogl_buffer_set_update_hint_EXP
-#define cogl_buffer_get_update_hint cogl_buffer_get_update_hint_EXP
-#define cogl_buffer_map cogl_buffer_map_EXP
-#define cogl_buffer_unmap cogl_buffer_unmap_EXP
-#define cogl_buffer_set_data cogl_buffer_set_data_EXP
 
 G_END_DECLS
 

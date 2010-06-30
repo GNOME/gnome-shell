@@ -28,6 +28,20 @@
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
+/* All of the cogl-texture-pixmap-x11 API is currently experimental so
+ * we suffix the actual symbols with _EXP so if somone is monitoring
+ * for ABI changes it will hopefully be clearer to them what's going
+ * on if any of the symbols dissapear at a later date.
+ */
+#define cogl_texture_pixmap_x11_new cogl_texture_pixmap_x11_new_EXP
+#define cogl_texture_pixmap_x11_update_area \
+  cogl_texture_pixmap_x11_update_area_EXP
+#define cogl_texture_pixmap_x11_is_using_tfp_extension \
+  cogl_texture_pixmap_x11_is_using_tfp_extension_EXP
+#define cogl_texture_pixmap_x11_set_damage_object \
+  cogl_texture_pixmap_x11_set_damage_object_EXP
+#define cogl_is_texture_pixmap_x11 cogl_is_texture_pixmap_x11_EXP
+
 typedef enum
 {
   COGL_TEXTURE_PIXMAP_X11_DAMAGE_RAW_RECTANGLES,
@@ -128,48 +142,6 @@ cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
  */
 gboolean
 cogl_is_texture_pixmap_x11 (CoglHandle handle);
-
-/* All of the cogl-texture-pixmap-x11 API is currently experimental so
-   we suffix the actual symbols with _EXP to ensure ABI
-   compatibility. A bunch of defines translates the symbols documented
-   above into the real symbols */
-
-CoglHandle
-cogl_texture_pixmap_x11_new_EXP (guint32 pixmap,
-                                 gboolean automatic_updates);
-
-#define cogl_texture_pixmap_x11_new cogl_texture_pixmap_x11_new_EXP
-
-void
-cogl_texture_pixmap_x11_update_area_EXP (CoglHandle handle,
-                                         int x,
-                                         int y,
-                                         int width,
-                                         int height);
-
-#define cogl_texture_pixmap_x11_update_area \
-  cogl_texture_pixmap_x11_update_area_EXP
-
-gboolean
-cogl_texture_pixmap_x11_is_using_tfp_extension_EXP (CoglHandle handle);
-
-#define cogl_texture_pixmap_x11_is_using_tfp_extension \
-  cogl_texture_pixmap_x11_is_using_tfp_extension_EXP
-
-gboolean
-cogl_is_texture_pixmap_x11_EXP (CoglHandle handle);
-
-#define cogl_is_texture_pixmap_x11 \
-  cogl_is_texture_pixmap_x11_EXP
-
-void
-cogl_texture_pixmap_x11_set_damage_object_EXP (CoglHandle handle,
-                                               guint32 damage,
-                                               CoglTexturePixmapX11ReportLevel
-                                                                  report_level);
-
-#define cogl_texture_pixmap_x11_set_damage_object \
-  cogl_texture_pixmap_x11_set_damage_object_EXP
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
