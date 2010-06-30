@@ -35,7 +35,7 @@ CLEANFILES = $(pcfiles)
 
 DISTCLEANFILES = doltcompile doltlibtool
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-docs --enable-maintainer-flags
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags
 
 # Extra clean files so that maintainer-clean removes *everything*
 MAINTAINERCLEANFILES = 	\
