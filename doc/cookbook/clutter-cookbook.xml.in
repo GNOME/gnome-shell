@@ -3,18 +3,31 @@
                "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY appurl "http://www.clutter-project.org">
 <!ENTITY docurl "http://docs.clutter-project.org/docs/clutter-cookbook">
-<!ENTITY author_mail "ebassi@linux.intel.com">
+<!ENTITY license_url "http://creativecommons.org/licenses/by-nc-sa/2.0/uk/">
+<!ENTITY ebassi_mail "ebassi@linux.intel.com">
+<!ENTITY elliot_mail "elliot.smith@intel.com">
 <!ENTITY apiversion "@CLUTTER_API_VERSION@">
 ]>
 
 <book lang="en">
 
   <bookinfo> <!-- {{{ -->
-    <author>
-      <firstname>Emmanuele</firstname>
-      <surname>Bassi</surname>
-      <address><email>&author_mail;</email></address>
-    </author>
+
+    <authorgroup>
+
+      <author>
+        <firstname>Emmanuele</firstname>
+        <surname>Bassi</surname>
+        <address><email>&ebassi_mail;</email></address>
+      </author>
+
+      <author>
+        <firstname>Elliot</firstname>
+        <surname>Smith</surname>
+        <address><email>&elliot_mail;</email></address>
+      </author>
+
+    </authorgroup>
 
     <copyright>
       <year>2009, 2010</year>
@@ -22,11 +35,10 @@
     </copyright>
 
     <legalnotice>
-      <para>This document is distributed under the terms of the GNU General
-      Public License as published by the Free Software Foundation; either
-      version 2 of the License, or (at your option) any later version. A copy
-      of this license can be found in the file COPYING included with the
-      source code of this program.</para>
+      <para>Permission is granted to copy, distribute and/or modify this
+      document under the terms of the <ulink url="&license_url">Creative
+      Commons Attribution-Non-Commercial-Share Alike 2.0 UK: England &amp;
+      Wales</ulink> as published by Creative Commons.</para>
     </legalnotice>
 
     <title>The Clutter Cookbook</title>
@@ -114,8 +126,6 @@
       <para>This book has been written taking the inspiration from the Perl
       Cookbook, authored by Tom Christiansen and Nathan Torkington.</para>
 
-      <para>Various recipes throughout the book have been written by Elliot
-      Smith.</para>
     </section>
 
     <section>

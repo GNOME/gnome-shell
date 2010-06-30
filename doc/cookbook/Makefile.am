@@ -2,9 +2,9 @@ HTML_DIR = $(datadir)/gtk-doc/html
 TARGET_DIR = $(HTML_DIR)/clutter-cookbook
 
 HTML_FILES = html/*.html
-IMAGE_FILES = images/*.png
+IMAGE_FILES = images/clutter-logo.png
 
-EXTRA_DIST = clutter-cookbook.xml.in
+EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES)
 
 CLEANFILES = \
 	pdf-build.stamp \
@@ -71,6 +71,6 @@ install-data-local:
 	  done; \
 	fi; \
 	$(INSTALL_DATA) $(top_srcdir)/doc/common/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
-	$(INSTALL_DATA) clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
+	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc
