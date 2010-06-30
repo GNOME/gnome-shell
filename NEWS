@@ -1,3 +1,105 @@
+Clutter 1.3.6 (30/06/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.34.
+
+    » Provide a fallback on GLX if the MESA_copy_sub_buffer extension is not
+      available, by using EXT_framebuffer_blit. Both mechanisms are also
+      throttled to avoid taking all resources when using them in a compositor
+      like Mutter.
+
+    » Use (and cache) fragment shaders instead of texture combiners inside
+      Cogl materials. Cogl will automatically fall back from GLSL to ARBfp
+      to fixed functions depending on the level of support of the underlying
+      GL implementation.
+
+    » Implement a new design for materials; this allows scaling up the
+      number of materials in a scene, and also makes copying materials
+      less expensive.
+
+    » Make Cogl materials responsible for depth testing, and add new
+      experimental API.
+
+    » Use the (modified) GLU tesselator to draw paths to a vertex buffer
+      object instead of using the stencil buffer, or the scanline rasterizer
+      on platforms without a stencil buffer.
+
+    » Add ClutterDeformEffect, a base class for effects that deform an
+      actor's geometry when painting it; ClutterPageTurnEffect is an
+      implementation of a "page curl" deformation using the DeformEffect
+      API.
+
+    » Always use scissoring when clipping, to reduce the amount of buffer
+      that has to be cleared.
+
+    » Allow ClutterShaderEffect sub-classes to use vertex shaders by setting
+      a constructor property; the default remains fragment shader.
+
+    » Remove the button of the press event from the DragAction::drag-begin
+      and DragAction::drag-end signals. This is an API break from 1.3.4.
+
+    » Do not promote clipped redraws to full redraws.
+
+    » Improve the consistency of the default state name in ClutterState,
+      both in the API and in the serialization format.
+
+    » Fix a rounding error with the Text layout size.
+
+    » Add utility functions for CoglMatrix and CoglColor.
+
+    » Avoid a re-allocation cycle warning when resizing the surface of
+      a CairoTexture actor from within the allocate() implementation.
+
+    » Do not add the GL libraries for the EGL X11 backend.
+
+    » Add more checks for size of data passed to the shader types GValue
+      functions.
+
+    » Add width and height to the BindConstraint.
+
+    » Parse actions, constraints and effects inside an actor definition
+      for ClutterScript.
+
+    » Merge the code of native and x11 backends for EGL into a single
+      backend; also allow creating GL context with the EGL backend.
+
+    » Use XSETTINGS to set up the backend configuration options, like
+      the font name, resolution, font options and double click options,
+      on X11; this also allows ClutterText actors created using the
+      default font name to be updated when the font name and options
+      change; similarly, this allows ClutterUnits to be updated when
+      the screen resolution changes.
+
+    » Implement the texture_from_pixmap extension support inside Cogl
+      itself, and unify ClutterX11TexturePixmap and ClutterGLXTexturePixmap.
+
+    » Documentation improvements in the API reference and in the cookbook.
+
+    » Use the -Bsymbolic-functions linker option on supported platforms
+      to avoid intra-library PLT jumps.
+
+    » Fix painting transparent stages on X11 using the :use-alpha property
+      of ClutterStage.
+
+    » Fix emission of scroll events on Windows.
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Øyvind Kolås
+  Damien Lespiau
+  Elliot Smith
+  Chris Lord
+  Johan Bilien
+  Richard Hughes
+  Adel Gadllah
+  Alejandro Piñeiro
+  Colin Walters
+  Dan Winship
+  Kristian Høgsberg
+  Sunil Sadasivan
+
 Clutter 1.3.4 (07/06/2010)
 ===============================================================================
 
