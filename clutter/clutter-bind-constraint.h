@@ -74,7 +74,7 @@ ClutterConstraint *   clutter_bind_constraint_new            (ClutterActor      
                                                               gfloat                 offset);
 
 void                  clutter_bind_constraint_set_source     (ClutterBindConstraint *constraint,
-                                                              ClutterActor          *actor);
+                                                              ClutterActor          *source);
 ClutterActor *        clutter_bind_constraint_get_source     (ClutterBindConstraint *constraint);
 void                  clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
                                                               ClutterBindCoordinate  coordinate);

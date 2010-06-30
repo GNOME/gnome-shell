@@ -68,15 +68,15 @@ ClutterConstraint *clutter_align_constraint_new            (ClutterActor        
                                                             ClutterAlignAxis        axis,
                                                             gfloat                  factor);
 
-void               clutter_align_constraint_set_source     (ClutterAlignConstraint *constraint,
+void               clutter_align_constraint_set_source     (ClutterAlignConstraint *align,
                                                             ClutterActor           *source);
-ClutterActor *     clutter_align_constraint_get_source     (ClutterAlignConstraint *constraint);
-void               clutter_align_constraint_set_align_axis (ClutterAlignConstraint *constraint,
-                                                            ClutterAlignAxis        align_axis);
-ClutterAlignAxis   clutter_align_constraint_get_align_axis (ClutterAlignConstraint *constraint);
-void               clutter_align_constraint_set_factor     (ClutterAlignConstraint *constraint,
+ClutterActor *     clutter_align_constraint_get_source     (ClutterAlignConstraint *align);
+void               clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
+                                                            ClutterAlignAxis        axis);
+ClutterAlignAxis   clutter_align_constraint_get_align_axis (ClutterAlignConstraint *align);
+void               clutter_align_constraint_set_factor     (ClutterAlignConstraint *align,
                                                             gfloat                  factor);
-gfloat             clutter_align_constraint_get_factor     (ClutterAlignConstraint *constraint);
+gfloat             clutter_align_constraint_get_factor     (ClutterAlignConstraint *align);
 
 G_END_DECLS
 

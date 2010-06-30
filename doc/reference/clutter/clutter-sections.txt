@@ -2450,3 +2450,15 @@ CLUTTER_IS_PAGE_TURN_EFFECT
 <SUBSECTION Private>
 clutter_page_turn_effect_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-settings</FILE>
+ClutterSettings
+clutter_settings_get_default
+<SUBSECTION Standard>
+CLUTTER_TYPE_SETTINGS
+CLUTTER_SETTINGS
+CLUTTER_IS_SETTINGS
+<SUBSECTION Private>
+clutter_settings_get_type
+</SECTION>
