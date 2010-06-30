@@ -1052,7 +1052,6 @@ cogl_material_set_depth_writing_enabled (CoglHandle handle,
 /**
  * cogl_material_get_depth_writing_enabled:
  * @handle: A CoglMaterial handle
- * Since: 1.4
  *
  * Gets the depth writing enable state as set by the corresponding
  * cogl_material_set_depth_writing_enabled.
