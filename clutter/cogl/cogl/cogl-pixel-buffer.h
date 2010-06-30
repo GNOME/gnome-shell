@@ -36,6 +36,19 @@
 
 G_BEGIN_DECLS
 
+/* All of the cogl-pixel-buffer API is currently experimental so we
+ * suffix the actual symbols with _EXP so if somone is monitoring for
+ * ABI changes it will hopefully be clearer to them what's going on if
+ * any of the symbols dissapear at a later date.
+ */
+
+#define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
+#define cogl_pixel_buffer_new_for_size cogl_pixel_buffer_new_for_size_EXP
+#define cogl_is_pixel_buffer cogl_is_pixel_buffer_EXP
+#if 0
+#define cogl_pixel_buffer_set_region cogl_pixel_buffer_set_region_EXP
+#endif
+
 /**
  * cogl_pixel_buffer_new:
  * @size: size of the buffer in bytes
@@ -124,40 +137,6 @@ cogl_pixel_buffer_set_region (CoglHandle    buffer,
                               unsigned int  src_rowstride,
                               unsigned int  dst_x,
                               unsigned int  dst_y);
-#endif
-
-/* the functions above are experimental, the actual symbols are suffixed by
- * _EXP so we can ensure ABI compatibility and leave the cogl_buffer namespace
- * free for future use. A bunch of defines translates the symbols documented
- * above into the real symbols */
-
-CoglHandle
-cogl_pixel_buffer_new_EXP (unsigned int size);
-
-CoglHandle
-cogl_pixel_buffer_new_for_size_EXP (unsigned int    width,
-                                    unsigned int    height,
-                                    CoglPixelFormat format,
-                                    unsigned int   *stride);
-gboolean
-cogl_is_pixel_buffer_EXP (CoglHandle handle);
-
-#if 0
-gboolean
-cogl_pixel_buffer_set_region_EXP (CoglHandle   buffer,
-                                  guint8      *data,
-                                  unsigned int src_width,
-                                  unsigned int src_height,
-                                  unsigned int src_rowstride,
-                                  unsigned int dst_x,
-                                  unsigned int dst_y);
-#endif
-
-#define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
-#define cogl_pixel_buffer_new_for_size cogl_pixel_buffer_new_for_size_EXP
-#define cogl_is_pixel_buffer cogl_is_pixel_buffer_EXP
-#if 0
-#define cogl_pixel_buffer_set_region cogl_pixel_buffer_set_region_EXP
 #endif
 
 G_END_DECLS

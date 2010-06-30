@@ -44,6 +44,28 @@ G_BEGIN_DECLS
  * component float vectors.
  */
 
+/* All of the cogl-vector API is currently experimental so we
+ * suffix the actual symbols with _EXP so if somone is monitoring for
+ * ABI changes it will hopefully be clearer to them what's going on if
+ * any of the symbols dissapear at a later date.
+ */
+#define cogl_vector3_init cogl_vector3_init_EXP
+#define cogl_vector3_init_zero cogl_vector3_init_zero_EXP
+#define cogl_vector3_equal cogl_vector3_equal_EXP
+#define cogl_vector3_equal_with_epsilon cogl_vector3_equal_with_epsilon_EXP
+#define cogl_vector3_copy cogl_vector3_copy_EXP
+#define cogl_vector3_free cogl_vector3_free_EXP
+#define cogl_vector3_invert cogl_vector3_invert_EXP
+#define cogl_vector3_add cogl_vector3_add_EXP
+#define cogl_vector3_subtract cogl_vector3_subtract_EXP
+#define cogl_vector3_multiply_scalar cogl_vector3_multiply_scalar_EXP
+#define cogl_vector3_divide_scalar cogl_vector3_divide_scalar_EXP
+#define cogl_vector3_normalize cogl_vector3_normalize_EXP
+#define cogl_vector3_magnitude cogl_vector3_magnitude_EXP
+#define cogl_vector3_cross_product cogl_vector3_cross_product_EXP
+#define cogl_vector3_dot_product cogl_vector3_dot_product_EXP
+#define cogl_vector3_distance cogl_vector3_distance_EXP
+
 typedef struct
 {
   /* FIXME: add sse alignment constraint? */

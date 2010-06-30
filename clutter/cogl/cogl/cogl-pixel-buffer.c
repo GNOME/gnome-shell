@@ -84,62 +84,10 @@ cogl_pixel_buffer_vtable;
 static const CoglBufferVtable
 cogl_malloc_pixel_buffer_vtable;
 
-/* we don't want to use the stock COGL_HANDLE_DEFINE * for 2 reasons:
- *   - it defines already deprecated symbols
- *   - we want to suffix the public symbols by _EXP */
-
-#define COGL_HANDLE_DEFINE_EXP(TypeName, type_name)             \
-								\
-static CoglHandleClass _cogl_##type_name##_class;               \
-								\
-GQuark                                                          \
-_cogl_handle_##type_name##_get_type (void)                      \
-{                                                               \
-  static GQuark type = 0;                                       \
-  if (!type)                                                    \
-    type = g_quark_from_static_string ("Cogl"#TypeName);        \
-  return type;                                                  \
-}                                                               \
-								\
-static CoglHandle						\
-_cogl_##type_name##_handle_new (Cogl##TypeName *new_obj)	\
-{				                                \
-  CoglHandleObject *obj = (CoglHandleObject *)&new_obj->_parent;\
-  obj->ref_count = 1;                                           \
-								\
-  obj->klass = &_cogl_##type_name##_class;                      \
-  if (!obj->klass->type)                                        \
-    {                                                           \
-      obj->klass->type = _cogl_handle_##type_name##_get_type ();\
-      obj->klass->virt_free = _cogl_##type_name##_free;         \
-    }                                                           \
-								\
-  _COGL_HANDLE_DEBUG_NEW (TypeName, obj);                       \
-  return (CoglHandle) new_obj;			                \
-}								\
-								\
-Cogl##TypeName *						\
-_cogl_##type_name##_pointer_from_handle (CoglHandle handle)	\
-{								\
-  return (Cogl##TypeName *) handle;				\
-}								\
-								\
-gboolean							\
-cogl_is_##type_name##_EXP (CoglHandle handle)		        \
-{                                                               \
-  CoglHandleObject *obj = (CoglHandleObject *)handle;           \
-                                                                \
-  if (handle == COGL_INVALID_HANDLE)                            \
-    return FALSE;                                               \
-                                                                \
-  return (obj->klass->type ==                                   \
-          _cogl_handle_##type_name##_get_type ());              \
-}
-
-COGL_HANDLE_DEFINE_EXP(PixelBuffer, pixel_buffer)
+COGL_HANDLE_DEFINE (PixelBuffer, pixel_buffer)
 
 CoglHandle
-cogl_pixel_buffer_new_EXP (unsigned int size)
+cogl_pixel_buffer_new (unsigned int size)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
@@ -180,10 +128,10 @@ cogl_pixel_buffer_new_EXP (unsigned int size)
 }
 
 CoglHandle
-cogl_pixel_buffer_new_for_size_EXP (unsigned int    width,
-                                    unsigned int    height,
-                                    CoglPixelFormat format,
-                                    unsigned int   *rowstride)
+cogl_pixel_buffer_new_for_size (unsigned int    width,
+                                unsigned int    height,
+                                CoglPixelFormat format,
+                                unsigned int   *rowstride)
 {
   CoglHandle buffer;
   CoglPixelBuffer *pixel_buffer;
@@ -193,13 +141,13 @@ cogl_pixel_buffer_new_for_size_EXP (unsigned int    width,
   if (G_UNLIKELY (format == COGL_PIXEL_FORMAT_ANY))
     return COGL_INVALID_HANDLE;
 
-  /* for now we fallback to cogl_pixel_buffer_new_EXP, later, we could ask
+  /* for now we fallback to cogl_pixel_buffer_new, later, we could ask
    * libdrm a tiled buffer for instance */
   stride = width * _cogl_get_format_bpp (format);
   if (rowstride)
     *rowstride = stride;
 
-  buffer = cogl_pixel_buffer_new_EXP (height * stride);
+  buffer = cogl_pixel_buffer_new (height * stride);
   if (G_UNLIKELY (buffer == COGL_INVALID_HANDLE))
     return COGL_INVALID_HANDLE;
 
@@ -316,13 +264,13 @@ _cogl_pixel_buffer_set_data (CoglBuffer   *buffer,
 
 #if 0
 gboolean
-cogl_pixel_buffer_set_region_EXP (CoglHandle   buffer,
-                                  guint8      *data,
-                                  unsigned int src_width,
-                                  unsigned int src_height,
-                                  unsigned int src_rowstride,
-                                  unsigned int dst_x,
-                                  unsigned int dst_y)
+cogl_pixel_buffer_set_region (CoglHandle   buffer,
+                              guint8      *data,
+                              unsigned int src_width,
+                              unsigned int src_height,
+                              unsigned int src_rowstride,
+                              unsigned int dst_x,
+                              unsigned int dst_y)
 {
   if (!cogl_is_pixel_buffer (buffer))
     return FALSE;
