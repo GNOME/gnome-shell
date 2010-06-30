@@ -76,17 +76,17 @@
  *     function called my_sine_alpha(). The defined #ClutterAlpha
  *     instance can be reused in multiple #ClutterBehaviour
  *     definitions or for #ClutterAnimation definitions.</para>
- *     <programlisting>
- *  {
- *    "id" : "sine-alpha",
- *    "timeline" : {
- *      "id" : "sine-timeline",
- *      "duration" : 500,
- *      "loop" : true
- *    },
- *    "function" : "my_sine_alpha"
- *  }
- *     </programlisting>
+ *     <programlisting><![CDATA[
+ * {
+ *   "id" : "sine-alpha",
+ *   "timeline" : {
+ *     "id" : "sine-timeline",
+ *     "duration" : 500,
+ *     "loop" : true
+ *   },
+ *   "function" : "my_sine_alpha"
+ * }
+ *    ]]></programlisting>
  *   </example>
  *   <para>For the way to define the #ClutterAlpha:mode property
  *   inside a ClutterScript fragment, see <link

@@ -39,16 +39,15 @@ MKTMPL_OPTIONS=
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
 FIXXREF_OPTIONS=\
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
-	--extra-dir=$(GDPIXBUF_PREFIX)/share/gtk-doc/html/gdk-pixbuf \
-	--extra-dir=$(top_srcdir)/doc/reference/clutter/html
+	--extra-dir=$(GDPIXBUF_PREFIX)/share/gtk-doc/html/gdk-pixbuf
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=\
-	$(top_srcdir)/clutter/cogl/cogl/*.h
-CFILE_GLOB=\
-	$(top_srcdir)/clutter/cogl/cogl/*.c
+	$(top_srcdir)/clutter/cogl/cogl/*.h \
+	$(top_builddir)/clutter/cogl/cogl/*.h
+CFILE_GLOB=$(top_srcdir)/clutter/cogl/cogl/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -85,6 +84,7 @@ IGNORE_HFILES=\
 	cogl-util.h 				\
 	cogl-vertex-buffer-private.h 		\
 	driver 					\
+	tesselator				\
 	winsys
 
 EXTRA_HFILES=
@@ -113,7 +113,7 @@ expand_content_files = \
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl $(CLUTTER_CFLAGS)
+INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl -I$(top_builddir)/clutter/cogl $(CLUTTER_CFLAGS)
 GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.

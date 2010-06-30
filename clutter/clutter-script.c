@@ -47,7 +47,7 @@
  *
  * A simple object might be defined as:
  *
- * |[
+ * <informalexample><programlisting><![CDATA[
  * {
  *   "id"     : "red-button",
  *   "type"   : "ClutterRectangle",
@@ -55,7 +55,7 @@
  *   "height" : 100,
  *   "color"  : "&num;ff0000ff"
  * }
- * ]|
+ * ]]></programlisting></informalexample>
  *
  * This will produce a red #ClutterRectangle, 100x100 pixels wide, and
  * with a ClutterScript id of "red-button"; it can be retrieved by calling:
@@ -78,7 +78,7 @@
  * Behaviours and timelines can also be defined inside a UI definition
  * buffer:
  *
- * |[
+ * <informalexample><programlisting><![CDATA[
  * {
  *   "id"          : "rotate-behaviour",
  *   "type"        : "ClutterBehaviourRotate",
@@ -90,25 +90,25 @@
  *     "mode"     : "easeInSine"
  *   }
  * }
- * ]|
+ * ]]></programlisting></informalexample>
  *
  * And then to apply a defined behaviour to an actor defined inside the
  * definition of an actor, the "behaviour" member can be used:
  *
- * |[
+ * <informalexample><programlisting><![CDATA[
  * {
  *   "id" : "my-rotating-actor",
  *   "type" : "ClutterTexture",
  *   ...
  *   "behaviours" : [ "rotate-behaviour" ]
  * }
- * ]|
+ * ]]></programlisting></informalexample>
  *
  * A #ClutterAlpha belonging to a #ClutterBehaviour can only be defined
  * implicitly like in the example above, or explicitly by setting the
  * "alpha" property to point to a previously defined #ClutterAlpha, e.g.:
  *
- * |[
+ * <informalexample><programlisting><![CDATA[
  * {
  *   "id"          : "rotate-behaviour",
  *   "type"        : "ClutterBehaviourRotate",
@@ -127,7 +127,7 @@
  *     "function" : "custom_sine_alpha"
  *   }
  * }
- * ]|
+ * ]]></programlisting></informalexample>
  *
  * Implicitely defined #ClutterAlpha<!-- -->s and #ClutterTimeline<!-- -->s
  * can omit the <varname>id</varname> member, as well as the
@@ -139,7 +139,7 @@
  * then autoconnected to their respective signals using the
  * clutter_script_connect_signals() function:
  *
- * |[
+ * <informalexample><programlisting><![CDATA[
  *   ...
  *   "signals" : [
  *     { "name" : "button-press-event", "handler" : "on_button_press" },
@@ -150,7 +150,7 @@
  *     },
  *   ],
  *   ...
- * ]|
+ * ]]></programlisting></informalexample>
  *
  * Signal handler definitions must have a "name" and a "handler" members;
  * they can also have the "after" and "swapped" boolean members (for the

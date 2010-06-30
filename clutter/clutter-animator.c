@@ -64,7 +64,7 @@
  *   which allows describing the key frames for objects.</para>
  *   <para>The "properties" property has the following syntax:</para>
  *   <informalexample>
- *     <programlisting>
+ *     <programlisting><![CDATA[
  *  {
  *    "properties" : [
  *      {
@@ -77,7 +77,7 @@
  *        ]
  *    ]
  *  }
- *     </programlisting>
+ *     ]]></programlisting>
  *   </informalexample>
  *   <example id="ClutterAnimator-script-example">
  *     <title>ClutterAnimator definition</title>
@@ -88,7 +88,7 @@
  *     from its current position to the 100, 100 position in 20 percent
  *     of the duration of the animation; the second will using a cubic
  *     easing to move the actor to the 200, 200 coordinates.</para>
- *     <programlisting>
+ *     <programlisting><![CDATA[
  *  {
  *    "type" : "ClutterAnimator",
  *    "duration" : 1000,
@@ -113,7 +113,7 @@
  *      }
  *    ]
  *  }
- *     </programlisting>
+ *     ]]></programlisting>
  *   </example>
  * </refsect2>
  *

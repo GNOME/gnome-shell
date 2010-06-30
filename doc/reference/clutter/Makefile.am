@@ -48,6 +48,7 @@ FIXXREF_OPTIONS=\
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=$(top_srcdir)/clutter/*.h \
+	$(top_builddir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
 	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \

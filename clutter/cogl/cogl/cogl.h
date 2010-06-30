@@ -258,10 +258,10 @@ cogl_frustum (float left,
  * @right: The coordinate for the right clipping plane
  * @bottom: The coordinate for the bottom clipping plane
  * @top: The coordinate for the top clipping plane
- * @near: The <b>distance</b> to the near clipping plane (negative if
- *        the plane is behind the viewer)
- * @far: The <b>distance</b> for the far clipping plane (negative if
- *       the plane is behind the viewer)
+ * @near: The <emphasis>distance</emphasis> to the near clipping
+ *   plane (negative if the plane is behind the viewer)
+ * @far: The <emphasis>distance</emphasis> for the far clipping
+ *   plane (negative if the plane is behind the viewer)
  *
  * Replaces the current projection matrix with an orthographic projection
  * matrix. See <xref linkend="cogl-ortho-matrix"/> to see how the matrix is
@@ -272,7 +272,7 @@ cogl_frustum (float left,
  *   <graphic fileref="cogl_ortho.png" format="PNG"/>
  * </figure>
  *
- * <note>cogl_ortho copies the arguments from OpenGL's glOrtho even
+ * <note>This function copies the arguments from OpenGL's glOrtho() even
  * though they are unnecessarily confusing due to the z near and z far
  * arguments actually being a "distance" from the origin, where
  * negative values are behind the viewer, instead of coordinates for
