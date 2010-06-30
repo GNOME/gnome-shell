@@ -97,6 +97,7 @@ clutter_backend_dispose (GObject *gobject)
     }
 
   g_free (backend->priv->font_name);
+  backend->priv->font_name = NULL;
 
   clutter_backend_set_font_options (backend, NULL);
 
