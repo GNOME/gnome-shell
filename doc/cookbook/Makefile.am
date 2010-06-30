@@ -18,7 +18,7 @@ pdf-build.stamp: clutter-cookbook.xml
 
 html-build.stamp: clutter-cookbook.xml
 	$(mkinstalldirs) html \
-	&& $(XSLTPROC) --nonet --xinclude -o html \
+	&& $(XSLTPROC) --nonet --xinclude -o ./html/ \
 		--path $(top_srcdir)/doc/common \
 		--path . \
 		--stringparam gtkdoc.bookname "clutter-cookbook" \
