@@ -188,3 +188,8 @@ cogl_bitmap_new_from_file (const char  *filename,
   return _cogl_bitmap_object_new (ret);
 }
 
+GQuark
+cogl_bitmap_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-bitmap-error-quark");
+}

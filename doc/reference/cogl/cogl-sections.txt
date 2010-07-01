@@ -198,6 +198,8 @@ cogl_path_stroke_preserve
 cogl_bitmap_new_from_file
 cogl_bitmap_get_size_from_file
 cogl_is_bitmap
+CoglBitmapError
+COGL_BITMAP_ERROR
 </SECTION>
 
 <SECTION>

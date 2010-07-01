@@ -77,22 +77,6 @@ _cogl_bitmap_premult (CoglBitmap *dst_bmp)
 
 #ifdef USE_QUARTZ
 
-/* lacking GdkPixbuf and other useful GError domains, define one of our own */
-
-#define COGL_BITMAP_ERROR cogl_bitmap_error_quark ()
-
-typedef enum {
-  COGL_BITMAP_ERROR_FAILED,
-  COGL_BITMAP_ERROR_UNKNOWN_TYPE,
-  COGL_BITMAP_ERROR_CORRUPT_IMAGE
-} CoglBitmapError;
-
-GQuark
-cogl_bitmap_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-bitmap-error-quark");
-}
-
 gboolean
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
