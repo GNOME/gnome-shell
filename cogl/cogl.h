@@ -38,7 +38,6 @@
 #include <cogl/cogl-fixed.h>
 #include <cogl/cogl-material.h>
 #include <cogl/cogl-matrix.h>
-#include <cogl/cogl-vector.h>
 #include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-primitives.h>
 #include <cogl/cogl-path.h>
