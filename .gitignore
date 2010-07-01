@@ -38,6 +38,7 @@ depcomp
 /doc/cookbook/html
 /doc/cookbook/*.stamp
 /doc/cookbook/clutter-cookbook.xml
+/doc/cookbook/clutter-cookbook.html
 /doc/manual/*.pdf
 /doc/manual/html
 /doc/manual/*.stamp

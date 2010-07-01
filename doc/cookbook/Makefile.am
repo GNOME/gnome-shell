@@ -12,6 +12,19 @@ XML_FILES = \
 	textures.xml		\
 	$(NULL)
 
+XSLTOPTS = \
+	--stringparam html.stylesheet style.css 		\
+	--stringparam  chapter.autolabel 1 			\
+	--stringparam  appendix.autolabel 1 			\
+	--stringparam  section.autolabel 1 			\
+	--stringparam gtkdoc.bookname "clutter-cookbook" 	\
+	--stringparam gtkdoc.version @CLUTTER_API_VERSION@ 	\
+	--path $(top_srcdir)/doc/common				\
+	--xinclude
+
+XSL_BASE_URI  = http://docbook.sourceforge.net/release/xsl/current
+XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
+
 HTML_FILES = html/*.html
 IMAGE_FILES = images/clutter-logo.png
 
@@ -28,18 +41,13 @@ pdf-build.stamp: clutter-cookbook.xml
 	&& echo timestamp > $(@F)
 
 html-build.stamp: clutter-cookbook.xml
-	$(mkinstalldirs) html \
-	&& $(XSLTPROC) --nonet --xinclude -o ./html/ \
-		--path $(top_srcdir)/doc/common \
-		--path . \
-		--stringparam gtkdoc.bookname "clutter-cookbook" \
-		--stringparam gtkdoc.version @CLUTTER_API_VERSION@ \
-		ref-html-style.xsl \
-	$(top_builddir)/doc/cookbook/clutter-cookbook.xml \
-	&& echo timestamp > $(@F)
+	$(XSLTPROC) $(XSLTOPTS) -o clutter-cookbook.html $(XSL_XHTML_URI) $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
+	$(XSLTPROC) $(XSLTOPTS) -o html/ ref-html-style.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
+	echo timestamp > $(@F)
 
 if ENABLE_PDFS
-pdf_target = pdf-build.stamp
+#pdf_target = pdf-build.stamp
+pdf_target =
 else
 pdf_target =
 endif
