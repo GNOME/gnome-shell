@@ -159,13 +159,6 @@ _cogl_texture_2d_free (CoglTexture2D *tex_2d)
 }
 
 static gboolean
-_cogl_texture_2d_is_pot (unsigned int num)
-{
-  /* Make sure there is only one bit set */
-  return (num & (num - 1)) == 0;
-}
-
-static gboolean
 _cogl_texture_2d_can_create (unsigned int width,
                              unsigned int height,
                              CoglPixelFormat internal_format)
@@ -183,8 +176,8 @@ _cogl_texture_2d_can_create (unsigned int width,
   /* If NPOT textures aren't supported then the size must be a power
      of two */
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
-      (!_cogl_texture_2d_is_pot (width) ||
-       !_cogl_texture_2d_is_pot (height)))
+      (!_cogl_util_is_pot (width) ||
+       !_cogl_util_is_pot (height)))
     return FALSE;
 
   _cogl_pixel_format_to_gl (internal_format,
