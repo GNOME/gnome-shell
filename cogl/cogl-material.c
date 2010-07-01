@@ -490,8 +490,6 @@ cogl_material_copy (CoglMaterial *src)
 {
   CoglMaterial *material = g_slice_new (CoglMaterial);
 
-  cogl_object_ref (src);
-
   material->_parent = src->_parent;
 
   material->is_weak = FALSE;
