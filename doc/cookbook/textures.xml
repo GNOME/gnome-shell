@@ -1,0 +1,483 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<chapter id="textures">
+  <title>Textures</title>
+
+  <epigraph>
+    <attribution>the author of the epigraph</attribution>
+    <para>a short epigraph</para>
+  </epigraph>
+
+  <section id="textures-introduction">
+    <title>Introduction</title>
+
+    <para>introduction</para>
+  </section>
+
+  <section id="textures-drawing-with-cairo">
+    <title>Drawing 2D graphics onto a texture</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to draw 2D graphics inside a Clutter application.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Create a ClutterCairoTexture, then draw onto the Cairo context
+      it wraps using the Cairo API:</para>
+
+      <informalexample>
+        <programlisting>
+ClutterActor *texture;
+cairo_t *cr;
+
+guint width, height;
+width = 800;
+height = 600;
+
+texture = clutter_cairo_texture_new (width, height);
+
+cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (texture));
+
+/*
+ * write onto the Cairo context cr using the Cairo API;
+ * see <ulink url="http://cairographics.org/manual/">the Cairo API reference</ulink> for details
+ */
+cairo_move_to (cr, 0, 0);
+cairo_line_to (cr, 800, 600);
+cairo_stroke (cr);
+
+/* does the actual drawing onto the texture */
+cairo_destroy (cr);
+        </programlisting>
+      </informalexample>
+
+      <para>Here's a <ulink url="http://cairographics.org/tutorial/">useful
+      Cairo tutorial</ulink> if you want to learn more about the Cairo API
+      itself.</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>A ClutterCairoTexture is a standard ClutterActor, so it can be
+      added to ClutterContainers (e.g. a ClutterStage or ClutterGroup),
+      animated, resized etc. in the usual ways.</para>
+
+      <para>Other useful operations:</para>
+
+      <itemizedlist>
+
+        <listitem>
+          <para><emphasis>To draw on part of the texture:</emphasis>
+          use <function>clutter_cairo_texture_create_region</function> to
+          retrieve a Cairo context for the region you want to draw on.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>To clear existing content from a texture:</emphasis>
+          use <function>clutter_cairo_texture_clear</function>.</para>
+
+          <para>You may need to do this as the texture reuses the same
+          Cairo context each time you call
+          <function>clutter_cairo_texture_create</function> or
+          <function>clutter_cairo_texture_create_region</function>.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>To resize the Cairo context wrapped
+          by a texture</emphasis>, use
+          <function>clutter_cairo_texture_set_surface_size</function>.</para>
+        </listitem>
+
+      </itemizedlist>
+
+      <section>
+        <title>Drawing pages from a PDF onto a ClutterCairoContext</title>
+
+        <para>Other libraries may provide an API for writing onto a
+        Cairo context; you can make use of these APIs on the exposed
+        Cairo context of a ClutterCairoTexture. For example, you
+        can use the poppler-glib API to display pages
+        from a PopplerDocument inside a Clutter application:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+#include <poppler/glib/poppler.h>
+
+/* snipped setup code (as above) */
+
+/*
+ * cast to CLUTTER_CAIRO_TEXTURE, as the functions
+ * used below require that type
+ */
+ClutterCairoTexture *cc_texture = CLUTTER_CAIRO_TEXTURE (texture);
+
+clutter_cairo_texture_clear (cc_texture);
+
+gchar *file_uri = "file:///path/to/file.pdf";
+guint page_num = 0;
+double page_width, page_height;
+
+PopplerDocument *doc;
+PopplerPage *page;
+GError *error = NULL;
+
+doc = poppler_document_new_from_file (file_uri, NULL, &error);
+
+page = poppler_document_get_page (doc, page_num);
+
+poppler_page_get_size (page, &page_width, &page_height);
+
+cr = clutter_cairo_texture_create (cc_texture);
+
+/* render the page to the context */
+poppler_page_render (page, cr);
+
+cairo_destroy (cr);
+]]>
+          </programlisting>
+        </informalexample>
+
+        <para>Note that if the page is larger than the Cairo context,
+        some of it might not be visible. Similarly, if the ClutterCairoTexture
+        is larger than the stage, some of that might not be visible. So you
+        may need to do some work to make the ClutterCairoTexture fit
+        inside the stage properly (e.g. resize the stage), and/or some work
+        to make the PDF page sit inside the Cairo context (e.g. scale the PDF
+        page or put it inside a scrollable actor).</para>
+
+      </section>
+
+    </section>
+
+  </section>
+
+  <section id="textures-aspect-ratio">
+    <title>Maintaining the aspect ratio when loading an
+    image into a texture</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want want to load an image into a texture
+      and scale it, while retaining the underlying image's aspect ratio.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Set the texture to keep the aspect ratio of the
+      underlying image (so it doesn't distort when it's scaled); use
+      the actor's request-mode property to set the correct
+      geometry management (see the discussion section); then
+      resize the texture along one dimension (height or width).
+      Now, when an image is loaded into the texture, the image is
+      scaled to fit the set height or width; the other dimension
+      is automatically scaled by the same factor so the image fits
+      the texture:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterActor *texture;
+texture = clutter_texture_new ();
+
+clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (texture), TRUE);
+
+/*
+ * this setting means the height of the scaled image is based on its width;
+ * it's not strictly necessary to set this, as this is the default
+ */
+clutter_actor_set_request_mode (texture, CLUTTER_REQUEST_HEIGHT_FOR_WIDTH);
+
+/* set the width, which causes height to be scaled by the same factor */
+clutter_actor_set_width (texture, 300);
+
+clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                               "/path/to/image.jpg",
+                               NULL);
+]]>
+        </programlisting>
+      </informalexample>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>The request mode for an actor determines how
+      geometry requisition is performed; in this case, this
+      includes how scaling is applied if you change the actor's
+      width or height. There are two possible values for
+      request-mode:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>If set to <emphasis>CLUTTER_REQUEST_HEIGHT_FOR_WIDTH</emphasis>
+          (the default), changing the width causes the height
+          to be scaled by the same factor as the width.</para>
+        </listitem>
+        <listitem>
+          <para>If set to <emphasis>CLUTTER_REQUEST_WIDTH_FOR_HEIGHT</emphasis>,
+          changing the height causes the width to be scaled by the
+          same factor as the height.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>In the example above, the texture is set to keep its
+      aspect ratio then fixed to a width of 300 pixels; the
+      request-mode is set to CLUTTER_REQUEST_HEIGHT_FOR_WIDTH. If a
+      standard, photo-sized image in landscape orientation were
+      loaded into it (2848 pixels wide x 2136 high), it would be scaled
+      down to 300 pixels wide; then, its height would be scaled by the
+      same factor as the width (i.e. scaled down to 225 pixels).</para>
+
+      <para>With request-mode set to CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
+      you would get the same effect by setting the height first;
+      then, computation of the width for the scaled image would be
+      based on the scaling factor applied to its height instead.</para>
+
+      <para>You can work out which side of the source image is longest using
+      clutter_texture_base_size() to get its width and height. This can
+      be useful when trying to scale images with different orientations
+      to fit into uniform rows or columns:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+gint width;
+gint height;
+
+clutter_texture_get_base_size (CLUTTER_TEXTURE (texture), &width, &height);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Note that if you explicitly set the size (both width and height)
+      of a texture with clutter_actor_set_size() (or
+      with clutter_actor_set_width() and clutter_actor_set_height()), any
+      image loaded into the texture is automatically stretched/shrunk to
+      fit the texture. This is the case regardless of any other settings
+      (like whether to keep aspect ratio).</para>
+
+      <para>Also note that a texture won't try to fit itself inside the bounds of
+      its parent container: so if it's bigger than its container, only part
+      of it may be visible.</para>
+    </section>
+
+  </section>
+
+  <section id="textures-image-loading">
+    <title>Loading image data into a texture</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to display an image inside a Clutter
+      application.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Create a ClutterTexture directly from an image file:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterActor *texture;
+GError *error = NULL;
+gchar *image_path = "/path/to/image";
+
+texture = clutter_texture_new_from_file (image_path, &error);
+
+if (error != NULL)
+  {
+    // handle error
+  }
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Or create a texture and set its source to an image
+      file:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterActor *texture;
+GError *error = NULL;
+gchar *image_path = "/path/to/image";
+gboolean loaded;
+
+texture = clutter_texture_new ();
+
+/*
+ * returns FALSE if file could not be loaded or texture
+ * could not be set from image data in the file
+ */
+loaded = clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                                        image_path,
+                                        &error);
+
+if (error != NULL)
+  {
+    // handle error
+  }
+]]>
+        </programlisting>
+      </informalexample>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Bear the following in mind when loading images into a
+      texture:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>An image load may fail if:
+            <itemizedlist>
+              <listitem>
+                <para>The file does not exist.</para>
+              </listitem>
+              <listitem>
+                <para>The image format is unsupported: most of the
+                common bitmap formats (PNG, JPEG, BMP, GIF, TIFF, XPM)
+                are supported, but more exotic ones may not be.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </listitem>
+        <listitem>
+          <para>Whether you're creating a texture from an image file,
+          or loading an image from a file into an existing texture,
+          you should specify the filesystem path to the file, rather
+          than a URI.</para>
+        </listitem>
+      </itemizedlist>
+
+      <section>
+        <title>Synchronous vs. asynchronous image loading</title>
+
+        <para>The code examples above show the simplest approach:
+        loading an image into a texture synchronously. This means that
+        the application waits for each image to be loaded before continuing;
+        which is acceptable in this case, but may not be when
+        loading images into multiple textures.</para>
+
+        <para>Another approach is to load data into textures
+        asynchronously. This requires some extra set up in your code:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Call g_thread_init() (from the GLib library) prior
+            to calling clutter_init(), so that a local thread is used
+            to load the file, rather than the main loop. (Note that
+            this is not necessary if you're using GLib version >= 2.24,
+            since GObject initializes threading with the type system.)</para>
+          </listitem>
+          <listitem>
+            <para>Set the texture to load data asynchronously.</para>
+          </listitem>
+          <listitem>
+            <para>Connect a callback to the texture's load-finished
+            signal to handle any errors which occur during loading,
+            and/or to do extra work if data loads successfully.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>The code below shows how to put these together:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+/* callback to invoke when a texture finishes loading image data */
+static void
+_load_finished_cb (ClutterTexture *texture,
+                 gpointer        error,
+                 gpointer        user_data)
+{
+  GError *err = error;
+  const gchar *image_path = user_data;
+
+  if (err != NULL)
+    g_warning ("Could not load image from file %s; message: %s",
+               image_path,
+               err->message);
+  else
+    g_debug ("Image loaded from %s", image_path);
+}
+
+int
+main (int argc, char *argv[])
+{
+  /* initialize GLib's default threading implementation */
+  g_thread_init (NULL);
+
+  clutter_init (&argc, &argv);
+
+  /* ... get stage etc. */
+
+  ClutterActor *texture;
+  GError *error = NULL;
+
+  texture = clutter_texture_new ();
+
+  /* load data asynchronously */
+  clutter_texture_set_load_async (CLUTTER_TEXTURE (texture), TRUE);
+
+  /* connect a callback to the "load-finished" signal */
+  g_signal_connect (texture,
+                    "load-finished",
+                     G_CALLBACK (_load_finished_cb),
+                    image_path);
+
+  /* load the image from a file */
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                                 image_path,
+                                 &error);
+
+  /* ... clutter_main () etc. */
+}
+]]>
+          </programlisting>
+        </informalexample>
+
+      </section>
+
+      <section>
+        <title>Other ways to load image data into a texture</title>
+
+        <para>While it's useful to load image data into a texture directly
+        from a file, there are occasions where you may have image data
+        in some other (non-file) format:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Various GNOME libraries provide image data in GdkPixbuf
+            structures; clutter-gtk has functions for
+            creating or setting a texture from a GdkPixbuf:
+            gtk_clutter_texture_new_from_pixbuf()
+            and gtk_clutter_texture_set_from_pixbuf() respectively.</para>
+          </listitem>
+          <listitem>
+            <para>If you have raw RGB or YUV pixel data, ClutterTexture has
+            clutter_texture_set_from_rgb_data() and
+            clutter_texture_set_from_yuv_data() methods for loading it.</para>
+          </listitem>
+        </itemizedlist>
+
+      </section>
+
+    </section>
+  </section>
+
+</chapter>

@@ -1,0 +1,42 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<chapter id="animations">
+  <title>Animations</title>
+
+  <epigraph>
+    <attribution>the author of the epigraph</attribution>
+    <para>a short epigraph</para>
+  </epigraph>
+
+  <section id="animations-introduction">
+    <title>Introduction</title>
+
+    <para>introduction</para>
+  </section>
+
+  <section>
+    <title>Inverting Animations</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to have an animation exactly mirroring another one
+      that you just played.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>...</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>...</para>
+    </section>
+
+  </section>
+
+</chapter>

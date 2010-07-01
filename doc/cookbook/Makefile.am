@@ -1,10 +1,21 @@
+NULL =
+
 HTML_DIR = $(datadir)/gtk-doc/html
 TARGET_DIR = $(HTML_DIR)/clutter-cookbook
+
+XML_FILES = \
+	actors.xml		\
+	animations.xml		\
+	events.xml		\
+	introduction.xml	\
+	recipe-template.xml	\
+	textures.xml		\
+	$(NULL)
 
 HTML_FILES = html/*.html
 IMAGE_FILES = images/clutter-logo.png
 
-EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES)
+EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
 
 CLEANFILES = \
 	pdf-build.stamp \
