@@ -58,14 +58,14 @@
       <informalexample>
         <programlisting>
 g_signal_connect (actor, "notify::x",
-                G_CALLBACK (on_x_changed),
-                NULL);
+                  G_CALLBACK (on_x_changed),
+                  NULL);
 g_signal_connect (actor, "notify::height",
-                G_CALLBACK (on_height_changed),
-                NULL);
+                  G_CALLBACK (on_height_changed),
+                  NULL);
 g_signal_connect (actor, "notify::depth",
-                G_CALLBACK (on_depth_changed),
-                NULL);
+                  G_CALLBACK (on_depth_changed),
+                  NULL);
         </programlisting>
       </informalexample>
 
@@ -76,8 +76,8 @@ g_signal_connect (actor, "notify::depth",
       <informalexample>
         <programlisting>
 g_signal_connect (actor, "allocation-changed",
-                G_CALLBACK (on_allocation_changed),
-                NULL);
+                  G_CALLBACK (on_allocation_changed),
+                  NULL);
         </programlisting>
       </informalexample>
 
@@ -87,8 +87,8 @@ g_signal_connect (actor, "allocation-changed",
         <programlisting>
 void
 on_notify (GObject    *gobject,
-         GParamSpec *pspec,
-         gpointer    user_data);
+           GParamSpec *pspec,
+           gpointer    user_data);
         </programlisting>
       </informalexample>
 
@@ -99,9 +99,9 @@ on_notify (GObject    *gobject,
         <programlisting>
 void
 on_allocation_changed (ClutterActor           *actor,
-                     const ClutterActorBox  *allocation,
-                     ClutterAllocationFlags  flags,
-                     gpointer                user_data);
+                       const ClutterActorBox  *allocation,
+                       ClutterAllocationFlags  flags,
+                       gpointer                user_data);
         </programlisting>
       </informalexample>
 
@@ -122,15 +122,15 @@ on_allocation_changed (ClutterActor           *actor,
         <programlisting>
 void
 on_x_changed (GObject    *gobject,
-            GParamSpec *pspec,
-            gpointer    user_data)
+              GParamSpec *pspec,
+              gpointer    user_data)
 {
-gint x_value = 0;
+  gint x_value = 0;
 
-/* Round the X coordinate to the nearest pixel */
-x_value = floorf (clutter_actor_get_x (CLUTTER_ACTOR (gobject))) + 0.5;
+  /* Round the X coordinate to the nearest pixel */
+  x_value = floorf (clutter_actor_get_x (CLUTTER_ACTOR (gobject))) + 0.5;
 
-g_print ("The new X coordinate is '%d' pixels\n", x_value);
+  g_print ("The new X coordinate is '%d' pixels\n", x_value);
 }
         </programlisting>
       </informalexample>
@@ -143,17 +143,15 @@ g_print ("The new X coordinate is '%d' pixels\n", x_value);
         <programlisting>
 void
 on_allocation_changed (ClutterActor           *actor,
-                     const ClutterActorBox  *allocation,
-                     ClutterAllocationFlags  flags,
-                     gpointer                user_data)
+                       const ClutterActorBox  *allocation,
+                       ClutterAllocationFlags  flags,
+                       gpointer                user_data)
 {
-ClutterActor *actor = CLUTTER_ACTOR (gobject);
-
-g_print ("The bounding box is now: (%.2f, %.2f) (%.2f x %.2f)\n",
-         clutter_actor_box_get_x (allocation),
-         clutter_actor_box_get_y (allocation),
-         clutter_actor_box_get_width (allocation),
-         clutter_actor_box_get_height (allocation));
+  g_print ("The bounding box is now: (%.2f, %.2f) (%.2f x %.2f)\n",
+           clutter_actor_box_get_x (allocation),
+           clutter_actor_box_get_y (allocation),
+           clutter_actor_box_get_width (allocation),
+           clutter_actor_box_get_height (allocation));
 }
         </programlisting>
       </informalexample>
@@ -243,9 +241,9 @@ void on_paint (ClutterActor *actor, gpointer user_data);
 void
 on_paint (ClutterActor *actor)
 {
-do_my_paint (actor);
+  do_my_paint (actor);
 
-g_signal_stop_emission_by_name (actor, "paint");
+  g_signal_stop_emission_by_name (actor, "paint");
 }
         </programlisting>
       </informalexample>
