@@ -83,7 +83,12 @@ update_actor_position (ClutterAlignConstraint *align)
 {
   gfloat source_width, source_height;
   gfloat actor_width, actor_height;
+  gfloat source_x, source_y;
+  gfloat new_position;
   ClutterActor *actor;
+
+  if (align->source == NULL)
+    return;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (align)))
     return;
@@ -92,34 +97,33 @@ update_actor_position (ClutterAlignConstraint *align)
   if (actor == NULL)
     return;
 
-  if (align->source == NULL)
-    return;
-
+  clutter_actor_get_position (align->source, &source_x, &source_y);
   clutter_actor_get_size (align->source, &source_width, &source_height);
   clutter_actor_get_size (actor, &actor_width, &actor_height);
 
   switch (align->align_axis)
     {
     case CLUTTER_ALIGN_X_AXIS:
-      clutter_actor_set_x (actor, (source_width - actor_width) * align->factor);
+      new_position = ((source_width - actor_width) + source_x)
+                   * align->factor;
+      clutter_actor_set_x (actor, new_position);
       break;
 
     case CLUTTER_ALIGN_Y_AXIS:
-      clutter_actor_set_y (actor, (source_height - actor_height) * align->factor);
+      new_position = ((source_height - actor_height) + source_y)
+                   * align->factor;
+      clutter_actor_set_y (actor, new_position);
       break;
     }
 }
 
 static void
-source_position_changed (GObject                *gobject,
-                         GParamSpec             *pspec,
+source_position_changed (ClutterActor           *actor,
+                         const ClutterActorBox  *allocation,
+                         ClutterAllocationFlags  flags,
                          ClutterAlignConstraint *align)
 {
-  if (strcmp (pspec->name, "width") == 0 ||
-      strcmp (pspec->name, "height") == 0)
-    {
-      update_actor_position (align);
-    }
+  update_actor_position (align);
 }
 
 static void
@@ -320,7 +324,7 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
 
   if (align->source != NULL)
     {
-      g_signal_connect (align->source, "notify",
+      g_signal_connect (align->source, "allocation-changed",
                         G_CALLBACK (source_position_changed),
                         align);
       g_signal_connect (align->source, "destroy",
