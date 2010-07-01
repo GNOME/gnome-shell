@@ -206,6 +206,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_sub_texture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_pixel_array);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_rectangle);
+  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_3d);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_wrap_modes);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_pixmap_x11);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_get_set_data);

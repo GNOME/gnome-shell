@@ -114,6 +114,7 @@
 /test-cogl-depth-test
 /test-cogl-pixel-array
 /test-cogl-texture-get-set-data
+/test-cogl-texture-3d
 /wrappers
 /*-report.xml
 /*-report.html
