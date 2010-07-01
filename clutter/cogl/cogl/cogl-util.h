@@ -60,4 +60,12 @@ cogl_util_float_signbit (float x)
    negative numbers. */
 #define COGL_UTIL_NEARBYINT(x) ((int) ((x) < 0.0f ? (x) - 0.5f : (x) + 0.5f))
 
+/* Returns whether the given integer is a power of two */
+static inline gboolean
+_cogl_util_is_pot (unsigned int num)
+{
+  /* Make sure there is only one bit set */
+  return (num & (num - 1)) == 0;
+}
+
 #endif /* __COGL_UTIL_H */
