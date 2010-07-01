@@ -68,6 +68,11 @@
 #define glUseProgram ctx->drv.pf_glUseProgram
 #endif
 
+/* This might not be defined on GLES */
+#ifndef GL_TEXTURE_3D
+#define GL_TEXTURE_3D                           0x806F
+#endif
+
 typedef struct _CoglMaterialBackendARBfpPrivate
 {
   CoglMaterial *authority_cache;
@@ -415,6 +420,8 @@ gl_target_to_arbfp_string (GLenum gl_target)
   else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
     return "RECT";
 #endif
+  else if (gl_target == GL_TEXTURE_3D)
+    return "3D";
   else
     return "2D";
 }

@@ -68,6 +68,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-pixel-array.h		\
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
+	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-types.h 			\
 	$(srcdir)/cogl-vertex-buffer.h 		\
 	$(srcdir)/cogl.h			\
@@ -132,11 +133,13 @@ cogl_sources_c = \
 	$(srcdir)/cogl-texture-private.h		\
 	$(srcdir)/cogl-texture-2d-private.h             \
 	$(srcdir)/cogl-texture-2d-sliced-private.h 	\
+	$(srcdir)/cogl-texture-3d-private.h             \
 	$(srcdir)/cogl-texture-driver.h			\
 	$(srcdir)/cogl-sub-texture.c                    \
 	$(srcdir)/cogl-texture.c			\
 	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
+	$(srcdir)/cogl-texture-3d.c                     \
 	$(srcdir)/cogl-texture-rectangle-private.h      \
 	$(srcdir)/cogl-texture-rectangle.c              \
 	$(srcdir)/cogl-atlas.h                          \
