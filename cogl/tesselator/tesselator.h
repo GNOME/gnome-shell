@@ -40,25 +40,25 @@ typedef struct GLUtesselator GLUtesselator;
 
 #define GLU_TESS_MAX_COORD 1.0e150
 
-GLAPI void GLAPIENTRY gluBeginPolygon (GLUtesselator* tess);
-GLAPI void GLAPIENTRY gluDeleteTess (GLUtesselator* tess);
-GLAPI void GLAPIENTRY gluEndPolygon (GLUtesselator* tess);
+void gluBeginPolygon (GLUtesselator* tess);
+void gluDeleteTess (GLUtesselator* tess);
+void gluEndPolygon (GLUtesselator* tess);
 
-typedef void (GLAPIENTRYP _GLUfuncptr)();
+typedef void (_GLUfuncptr)();
 
-GLAPI void GLAPIENTRY gluGetTessProperty (GLUtesselator* tess, GLenum which, GLdouble* data);
+void gluGetTessProperty (GLUtesselator* tess, GLenum which, double* data);
 
-GLAPI GLUtesselator* GLAPIENTRY gluNewTess (void);
-GLAPI void GLAPIENTRY gluNextContour (GLUtesselator* tess, GLenum type);
+GLUtesselator *gluNewTess (void);
+void gluNextContour (GLUtesselator* tess, GLenum type);
 
-GLAPI void GLAPIENTRY gluTessBeginContour (GLUtesselator* tess);
-GLAPI void GLAPIENTRY gluTessBeginPolygon (GLUtesselator* tess, GLvoid* data);
-GLAPI void GLAPIENTRY gluTessCallback (GLUtesselator* tess, GLenum which, _GLUfuncptr CallBackFunc);
-GLAPI void GLAPIENTRY gluTessEndContour (GLUtesselator* tess);
-GLAPI void GLAPIENTRY gluTessEndPolygon (GLUtesselator* tess);
-GLAPI void GLAPIENTRY gluTessNormal (GLUtesselator* tess, GLdouble valueX, GLdouble valueY, GLdouble valueZ);
-GLAPI void GLAPIENTRY gluTessProperty (GLUtesselator* tess, GLenum which, GLdouble data);
-GLAPI void GLAPIENTRY gluTessVertex (GLUtesselator* tess, GLdouble *location, GLvoid* data);
+void gluTessBeginContour (GLUtesselator* tess);
+void gluTessBeginPolygon (GLUtesselator* tess, GLvoid* data);
+void gluTessCallback (GLUtesselator* tess, GLenum which, _GLUfuncptr CallBackFunc);
+void gluTessEndContour (GLUtesselator* tess);
+void gluTessEndPolygon (GLUtesselator* tess);
+void gluTessNormal (GLUtesselator* tess, double valueX, double valueY, double valueZ);
+void gluTessProperty (GLUtesselator* tess, GLenum which, double data);
+void gluTessVertex (GLUtesselator* tess, double *location, GLvoid* data);
 
 /* ErrorCode */
 #define GLU_INVALID_ENUM                   100900

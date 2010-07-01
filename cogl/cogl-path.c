@@ -1310,7 +1310,7 @@ _cogl_path_tesselator_end (CoglPathTesselator *tess)
 }
 
 static void
-_cogl_path_tesselator_combine (GLdouble coords[3],
+_cogl_path_tesselator_combine (double coords[3],
                                void *vertex_data[4],
                                GLfloat weight[4],
                                void **out_data,
@@ -1461,7 +1461,7 @@ _cogl_path_build_vbo (CoglPath *path)
 
       for (i = 0; i < node->path_size; i++)
         {
-          GLdouble vertex[3] = { node[i].x, node[i].y, 0.0 };
+          double vertex[3] = { node[i].x, node[i].y, 0.0 };
           gluTessVertex (tess.glu_tess, vertex,
                          GINT_TO_POINTER (i + path_start));
         }

@@ -24,3 +24,17 @@
    that the tesselator code can still #include <GL/glu.h> */
 
 #include "../tesselator.h"
+
+/* These aren't defined on GLES and we don't really want the
+   tesselator code to use them but we're also trying to avoid
+   modifying the C files so we just force them to be empty here */
+
+#undef GLAPI
+#define GLAPI
+
+#undef GLAPIENTRY
+#define GLAPIENTRY
+
+/* GLES doesn't define a GLdouble type so lets just force it to a
+   regular double */
+#define GLdouble double
