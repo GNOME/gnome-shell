@@ -258,16 +258,16 @@ clutter_texture_get_base_size (CLUTTER_TEXTURE (texture), &width, &height);
         </programlisting>
       </informalexample>
 
-      <para>Note that if you explicitly set the size (both width and height)
+      <note><para>If you explicitly set the size (both width and height)
       of a texture with clutter_actor_set_size() (or
       with clutter_actor_set_width() and clutter_actor_set_height()), any
       image loaded into the texture is automatically stretched/shrunk to
       fit the texture. This is the case regardless of any other settings
-      (like whether to keep aspect ratio).</para>
+      (like whether to keep aspect ratio).</para></note>
 
-      <para>Also note that a texture won't try to fit itself inside the bounds of
-      its parent container: so if it's bigger than its container, only part
-      of it may be visible.</para>
+      <note><para>Since a texture can scale down its contents, its minimum
+      preferred size is 0.</para></note>
+
     </section>
 
   </section>
@@ -469,9 +469,9 @@ main (int argc, char *argv[])
             and gtk_clutter_texture_set_from_pixbuf() respectively.</para>
           </listitem>
           <listitem>
-            <para>If you have raw RGB or YUV pixel data, ClutterTexture has
-            clutter_texture_set_from_rgb_data() and
-            clutter_texture_set_from_yuv_data() methods for loading it.</para>
+            <para>If you have raw RGB pixel data, ClutterTexture also has
+            the clutter_texture_set_from_rgb_data() method for loading
+            it.</para>
           </listitem>
         </itemizedlist>
 
