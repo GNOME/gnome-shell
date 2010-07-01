@@ -11,7 +11,7 @@
 
 <book lang="en">
 
-  <bookinfo> <!-- {{{ -->
+  <bookinfo>
 
     <authorgroup>
 
@@ -43,9 +43,9 @@
 
     <title>The Clutter Cookbook</title>
     <releaseinfo>for Clutter &apiversion;</releaseinfo>
-  </bookinfo> <!-- }}} -->
+  </bookinfo>
 
-  <chapter id="introduction"> <!-- {{{ -->
+  <chapter id="introduction">
     <title>Preface</title>
 
     <epigraph>
@@ -141,9 +141,9 @@
       <para>Binaries for Microsoft Windows are also available.</para>
     </section>
 
-  </chapter> <!-- introduction }}} -->
+  </chapter>
 
-  <chapter id="actors"> <!-- actors {{{ -->
+  <chapter id="actors">
     <title>Actors</title>
 
     <epigraph>
@@ -179,7 +179,7 @@
 
     </section>
 
-    <section id="actors-allocation-notify"> <!-- {{{ -->
+    <section id="actors-allocation-notify">
       <title>Knowing when an actor position or size change</title>
 
       <section>
@@ -313,9 +313,9 @@ on_allocation_changed (ClutterActor           *actor,
 
       </section>
 
-    </section> <!-- recipe 1 }}} -->
+    </section>
 
-    <section id="actors-paint-wrappers"> <!-- {{{ -->
+    <section id="actors-paint-wrappers">
       <title>Overriding the paint sequence</title>
 
       <section>
@@ -334,9 +334,7 @@ on_allocation_changed (ClutterActor           *actor,
 
         <informalexample>
           <programlisting>
-g_signal_connect (actor, "paint",
-                  G_CALLBACK (on_paint),
-                  NULL);
+g_signal_connect (actor, "paint", G_CALLBACK (on_paint), NULL);
           </programlisting>
         </informalexample>
 
@@ -346,9 +344,7 @@ g_signal_connect (actor, "paint",
 
         <informalexample>
           <programlisting>
-g_signal_connect_after (actor, "paint",
-                        G_CALLBACK (on_paint_after),
-                        NULL);
+g_signal_connect_after (actor, "paint", G_CALLBACK (on_paint_after), NULL);
           </programlisting>
         </informalexample>
 
@@ -356,9 +352,7 @@ g_signal_connect_after (actor, "paint",
 
         <informalexample>
           <programlisting>
-void
-on_paint (ClutterActor *actor,
-          gpointer      user_data);
+void on_paint (ClutterActor *actor, gpointer user_data);
           </programlisting>
         </informalexample>
 
@@ -402,9 +396,9 @@ on_paint (ClutterActor *actor)
         the actor from running.</para>
       </section>
 
-    </section> <!-- }}} -->
+    </section>
 
-  </chapter> <!-- actors }}} -->
+  </chapter>
 
   <chapter id="events">
     <title>Events</title>
@@ -494,10 +488,7 @@ on_paint (ClutterActor *actor)
 
           <informalexample>
             <programlisting>
-g_signal_connect (actor,
-                  "key-press-event",
-                  G_CALLBACK (_key_press_cb),
-                  NULL);
+g_signal_connect (actor, "key-press-event", G_CALLBACK (_key_press_cb), NULL);
             </programlisting>
           </informalexample>
 
@@ -508,7 +499,7 @@ g_signal_connect (actor,
 
           <informalexample>
             <programlisting>
-static void
+static gboolean
 _key_press_cb (ClutterActor *actor,
                ClutterEvent *event,
                gpointer      user_data)
@@ -533,7 +524,13 @@ _key_press_cb (ClutterActor *actor,
           g_debug ("Up pressed");
           break;
         }
+
+      /* The event was handled, and the emission should stop */
+      return TRUE;
     }
+
+  /* The event was not handled, and the emission should continue */
+  return FALSE;
 }
             </programlisting>
           </informalexample>
@@ -570,7 +567,10 @@ _key_press_cb (ClutterActor *actor,
           <informalexample>
             <programlisting>
 ClutterBindingPool *binding_pool;
-binding_pool = clutter_binding_pool_get_for_class (CLUTTER_STAGE_GET_CLASS (stage));
+GObjectClass *stage_class;
+
+stage_class = CLUTTER_STAGE_GET_CLASS (stage);
+binding_pool = clutter_binding_pool_get_for_class (stage_class);
             </programlisting>
           </informalexample>
 
@@ -1214,7 +1214,7 @@ main (int argc, char *argv[])
       </section>
     </section>
 
-  </chapter> <!-- textures }}} -->
+  </chapter>
 
 <!--
   <chapter id="animations">
@@ -1258,13 +1258,13 @@ main (int argc, char *argv[])
   </chapter>
 -->
 
-  <appendix id="contributing"> <!-- contributing {{{ -->
+  <appendix id="contributing">
     <title>Contributing to this document</title>
 
     <para>This document is written in Docbook XML. The source file for this
     document is located in the subdirectory "doc/cookbook" of the source
     directory of Clutter.</para>
-  </appendix> <!-- contributing }}} -->
+  </appendix>
 
 <!--
     <section id="recipe">
