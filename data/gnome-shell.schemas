@@ -43,5 +43,24 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/windows/side_by_side_tiling</key>
+        <applyto>/desktop/gnome/shell/windows/side_by_side_tiling</applyto>
+        <owner>gnome-shell</owner>
+        <type>bool</type>
+        <default>true</default>
+        <locale name="C">
+          <short>enable side-by-side tiling when dropping windows on screen edges</short>
+          <long>
+             If enabled, dropping windows on screen edges maximizes them
+             vertically and resizes them horizontally to cover half of the
+             available area.
+
+             This key overrides /apps/metacity/general/side_by_side_tiling when
+             running GNOME Shell.
+          </long>
+        </locale>
+      </schema>
+
   </schemalist>
 </gconfschemafile>
