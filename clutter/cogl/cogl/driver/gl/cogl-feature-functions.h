@@ -344,6 +344,20 @@ COGL_FEATURE_FUNCTION (void, glBlendColor,
                         GLclampf              alpha))
 COGL_FEATURE_END ()
 
+COGL_FEATURE_BEGIN (texture_3d, 1, 2,
+                    "\0",
+                    "\0",
+                    COGL_FEATURE_TEXTURE_3D,
+                    0)
+COGL_FEATURE_FUNCTION (void, glTexImage3D,
+                       (GLenum target, GLint level,
+                        GLint internalFormat,
+                        GLsizei width, GLsizei height,
+                        GLsizei depth, GLint border,
+                        GLenum format, GLenum type,
+                        const GLvoid *pixels))
+COGL_FEATURE_END ()
+
 /* Available in GL 1.3 or the multitexture extension. These are
    required */
 COGL_FEATURE_BEGIN (multitexture, 1, 3,

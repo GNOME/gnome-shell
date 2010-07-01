@@ -128,6 +128,10 @@ struct _CoglGles2WrapperTexEnv
   GLfloat   texture_combine_constant[4];
 
   GLboolean point_sprite_coords;
+
+  /* Texture target that was last enabled for this unit. This assumes
+     that there can only be one target enabled per unit */
+  GLenum    texture_target;
 };
 
 /* NB: We get a copy of this for each fragment/vertex

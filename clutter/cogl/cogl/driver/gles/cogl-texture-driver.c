@@ -48,6 +48,16 @@
 
 #include "cogl-gles2-wrapper.h"
 
+#define glTexImage3D ctx->drv.pf_glTexImage3D
+#define glTexSubImage3D ctx->drv.pf_glTexSubImage3D
+
+#ifndef GL_TEXTURE_3D
+#define GL_TEXTURE_3D 0x806F
+#endif
+#ifndef GL_MAX_3D_TEXTURE_SIZE_OES
+#define GL_MAX_3D_TEXTURE_SIZE_OES 0x8073
+#endif
+
 void
 _cogl_texture_driver_gen (GLenum   gl_target,
                           GLsizei  n,
@@ -63,15 +73,15 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 
       switch (gl_target)
         {
-      case GL_TEXTURE_2D:
-        /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
-        GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
-        break;
+        case GL_TEXTURE_2D:
+        case GL_TEXTURE_3D:
+          /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
+          GE( glTexParameteri (gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
+          break;
 
-      default:
-        g_assert_not_reached();
+        default:
+          g_assert_not_reached();
         }
-
     }
 }
 
@@ -192,6 +202,97 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
     g_free (bmp.data);
 }
 
+void
+_cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
+                                      GLuint       gl_handle,
+                                      gboolean     is_foreign,
+                                      GLint        height,
+                                      GLint        depth,
+                                      CoglBitmap  *source_bmp,
+                                      GLint        internal_gl_format,
+                                      GLuint       source_gl_format,
+                                      GLuint       source_gl_type)
+{
+  int bpp = _cogl_get_format_bpp (source_bmp->format);
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+
+  /* If the rowstride or image height can't be specified with just
+     GL_ALIGNMENT alone then we need to copy the bitmap because there
+     is no GL_ROW_LENGTH */
+  if (source_bmp->rowstride / bpp != source_bmp->width ||
+      height != source_bmp->height / depth)
+    {
+      int image_height = source_bmp->height / depth;
+      int i;
+
+      _cogl_texture_driver_prep_gl_for_pixels_upload (source_bmp->width * bpp,
+                                                      bpp);
+
+      /* Initialize the texture with empty data and then upload each
+         image with a sub-region update */
+
+      GE( glTexImage3D (gl_target,
+                        0, /* level */
+                        internal_gl_format,
+                        source_bmp->width,
+                        height,
+                        depth,
+                        0,
+                        source_gl_format,
+                        source_gl_type,
+                        NULL) );
+
+      for (i = 0; i < depth; i++)
+        {
+          CoglBitmap bmp = *source_bmp;
+
+          bmp.rowstride = bpp * bmp.width;
+          bmp.height = height;
+          bmp.data = g_malloc (bmp.rowstride * bmp.height);
+
+          _cogl_bitmap_copy_subregion (source_bmp,
+                                       &bmp,
+                                       0, image_height * i,
+                                       0, 0,
+                                       bmp.width,
+                                       bmp.height);
+
+          GE( glTexSubImage3D (gl_target,
+                               0, /* level */
+                               0, /* xoffset */
+                               0, /* yoffset */
+                               i, /* zoffset */
+                               bmp.width, /* width */
+                               height, /* height */
+                               1, /* depth */
+                               source_gl_format,
+                               source_gl_type,
+                               bmp.data) );
+
+          g_free (bmp.data);
+        }
+    }
+  else
+    {
+      _cogl_texture_driver_prep_gl_for_pixels_upload (source_bmp->rowstride,
+                                                      bpp);
+
+      GE( glTexImage3D (gl_target,
+                        0, /* level */
+                        internal_gl_format,
+                        source_bmp->width,
+                        height,
+                        depth,
+                        0,
+                        source_gl_format,
+                        source_gl_type,
+                        source_bmp->data) );
+    }
+}
+
 /* NB: GLES doesn't support glGetTexImage2D, so cogl-texture will instead
  * fallback to a generic render + readpixels approach to downloading
  * texture data. (See _cogl_texture_draw_and_read() ) */
@@ -202,6 +303,24 @@ _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
                                        guint8 *dest)
 {
   return FALSE;
+}
+
+gboolean
+_cogl_texture_driver_size_supported_3d (GLenum gl_target,
+                                        GLenum gl_format,
+                                        GLenum gl_type,
+                                        int    width,
+                                        int    height,
+                                        int    depth)
+{
+  GLint max_size;
+
+  /* GLES doesn't support a proxy texture target so let's at least
+     check whether the size is greater than
+     GL_MAX_3D_TEXTURE_SIZE_OES */
+  GE( glGetIntegerv (GL_MAX_3D_TEXTURE_SIZE_OES, &max_size) );
+
+  return width <= max_size && height <= max_size && depth <= max_size;
 }
 
 gboolean

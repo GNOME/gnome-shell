@@ -264,6 +264,9 @@ cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
             int arg, n_args;
             GLenum func;
 
+            if (tex_env_a->texture_target != tex_env_b->texture_target)
+              return FALSE;
+
             if (tex_env_a->point_sprite_coords !=
                 tex_env_b->point_sprite_coords)
               return FALSE;
@@ -407,7 +410,12 @@ cogl_gles2_add_texture_lookup (int unit,
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  g_string_append_printf (shader_source, "texture2D (texture_unit[%d], ", unit);
+  if (w->settings.tex_env[unit].texture_target == GL_TEXTURE_3D_OES)
+    g_string_append_printf (shader_source, "texture3D (texture_unit[%d], ",
+                            unit);
+  else
+    g_string_append_printf (shader_source, "texture2D (texture_unit[%d], ",
+                            unit);
 
   /* If point sprite coord generation is being used then divert to the
      built-in varying var for that instead of the texture
@@ -1476,12 +1484,19 @@ _cogl_wrap_glEnable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
+    case GL_TEXTURE_3D_OES:
       if (!COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units,
                                                w->active_texture_unit))
         {
           COGL_GLES2_TEXTURE_UNIT_SET_ENABLED (w->settings.texture_units,
                                                w->active_texture_unit,
                                                TRUE);
+          w->settings_dirty = TRUE;
+        }
+      /* Keep track of the last enabled texture unit */
+      if (w->settings.tex_env[w->active_texture_unit].texture_target != cap)
+        {
+          w->settings.tex_env[w->active_texture_unit].texture_target = cap;
           w->settings_dirty = TRUE;
         }
       break;
@@ -1507,8 +1522,12 @@ _cogl_wrap_glDisable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
+    case GL_TEXTURE_3D_OES:
+      /* If this was the last enabled texture target then we'll
+         completely disable the unit */
       if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units,
-                                              w->active_texture_unit))
+                                              w->active_texture_unit) &&
+          w->settings.tex_env[w->active_texture_unit].texture_target == cap)
         {
           COGL_GLES2_TEXTURE_UNIT_SET_ENABLED (w->settings.texture_units,
                                                w->active_texture_unit,

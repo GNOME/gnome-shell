@@ -88,6 +88,24 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_type);
 
 /*
+ * Replaces the contents of the GL texture with the entire bitmap. The
+ * width of the texture is inferred from the bitmap. The height and
+ * depth of the texture is given directly. The 'image_height' (which
+ * is the number of rows between images) is inferred by dividing the
+ * height of the bitmap by the depth.
+ */
+void
+_cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
+                                      GLuint       gl_handle,
+                                      gboolean     is_foreign,
+                                      GLint        height,
+                                      GLint        depth,
+                                      CoglBitmap  *source_bmp,
+                                      GLint        internal_gl_format,
+                                      GLuint       source_gl_format,
+                                      GLuint       source_gl_type);
+
+/*
  * This sets up the glPixelStore state for an download to a destination with
  * the same size, and with no offset.
  */
@@ -130,6 +148,14 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
 			             GLenum gl_type,
 			             int    width,
 			             int    height);
+
+gboolean
+_cogl_texture_driver_size_supported_3d (GLenum gl_target,
+                                        GLenum gl_format,
+                                        GLenum gl_type,
+                                        int    width,
+                                        int    height,
+                                        int    depth);
 
 /*
  * This driver abstraction is needed because GLES doesn't support setting

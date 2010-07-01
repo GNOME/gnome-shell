@@ -47,6 +47,7 @@
 #include <math.h>
 
 #define glGenerateMipmap ctx->drv.pf_glGenerateMipmap
+#define glTexImage3D ctx->drv.pf_glTexImage3D
 
 void
 _cogl_texture_driver_gen (GLenum   gl_target,
@@ -65,20 +66,22 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 
       switch (gl_target)
         {
-      case GL_TEXTURE_2D:
-        /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
-        GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
-        break;
+        case GL_TEXTURE_2D:
+        case GL_TEXTURE_3D:
+          /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
+          GE( glTexParameteri (gl_target,
+                               GL_TEXTURE_MIN_FILTER,
+                               GL_LINEAR) );
+          break;
 
-      case GL_TEXTURE_RECTANGLE_ARB:
-        /* Texture rectangles already default to GL_LINEAR so nothing
-           needs to be done */
-        break;
+        case GL_TEXTURE_RECTANGLE_ARB:
+          /* Texture rectangles already default to GL_LINEAR so nothing
+             needs to be done */
+          break;
 
-      default:
-        g_assert_not_reached();
+        default:
+          g_assert_not_reached();
         }
-
     }
 }
 
@@ -86,6 +89,7 @@ _cogl_texture_driver_gen (GLenum   gl_target,
  * source buffer */
 static void
 prep_gl_for_pixels_upload_full (int pixels_rowstride,
+                                int image_height,
                                 int pixels_src_x,
                                 int pixels_src_y,
                                 int pixels_bpp)
@@ -95,6 +99,9 @@ prep_gl_for_pixels_upload_full (int pixels_rowstride,
   GE( glPixelStorei (GL_UNPACK_SKIP_PIXELS, pixels_src_x) );
   GE( glPixelStorei (GL_UNPACK_SKIP_ROWS, pixels_src_y) );
 
+  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+    GE( glPixelStorei (GL_UNPACK_IMAGE_HEIGHT, image_height) );
+
   _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
 }
 
@@ -102,13 +109,14 @@ void
 _cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
                                                 int pixels_bpp)
 {
-  prep_gl_for_pixels_upload_full (pixels_rowstride, 0, 0, pixels_bpp);
+  prep_gl_for_pixels_upload_full (pixels_rowstride, 0, 0, 0, pixels_bpp);
 }
 
 /* OpenGL - unlike GLES - can download pixel data into a sub region of
  * a larger destination buffer */
 static void
 prep_gl_for_pixels_download_full (int pixels_rowstride,
+                                  int image_height,
                                   int pixels_src_x,
                                   int pixels_src_y,
                                   int pixels_bpp)
@@ -118,6 +126,9 @@ prep_gl_for_pixels_download_full (int pixels_rowstride,
   GE( glPixelStorei (GL_PACK_SKIP_PIXELS, pixels_src_x) );
   GE( glPixelStorei (GL_PACK_SKIP_ROWS, pixels_src_y) );
 
+  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+    GE( glPixelStorei (GL_PACK_IMAGE_HEIGHT, image_height) );
+
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
 }
 
@@ -125,7 +136,7 @@ void
 _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
                                                   int pixels_bpp)
 {
-  prep_gl_for_pixels_download_full (pixels_rowstride, 0, 0, pixels_bpp);
+  prep_gl_for_pixels_download_full (pixels_rowstride, 0, 0, 0, pixels_bpp);
 }
 
 void
@@ -146,6 +157,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (source_bmp->rowstride,
+                                  0,
                                   src_x,
                                   src_y,
                                   bpp);
@@ -172,13 +184,47 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   int bpp = _cogl_get_format_bpp (source_bmp->format);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, bpp);
+  prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, 0, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   GE( glTexImage2D (gl_target, 0,
                     internal_gl_format,
                     source_bmp->width, source_bmp->height,
+                    0,
+                    source_gl_format,
+                    source_gl_type,
+                    source_bmp->data) );
+}
+
+void
+_cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
+                                      GLuint       gl_handle,
+                                      gboolean     is_foreign,
+                                      GLint        height,
+                                      GLint        depth,
+                                      CoglBitmap  *source_bmp,
+                                      GLint        internal_gl_format,
+                                      GLuint       source_gl_format,
+                                      GLuint       source_gl_type)
+{
+  int bpp = _cogl_get_format_bpp (source_bmp->format);
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Setup gl alignment to match rowstride and top-left corner */
+  prep_gl_for_pixels_upload_full (source_bmp->rowstride,
+                                  source_bmp->height / depth,
+                                  0, 0, bpp);
+
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+
+  GE( glTexImage3D (gl_target,
+                    0, /* level */
+                    internal_gl_format,
+                    source_bmp->width,
+                    height,
+                    depth,
                     0,
                     source_gl_format,
                     source_gl_type,
@@ -197,6 +243,36 @@ _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
                      dest_gl_type,
                      (GLvoid *)dest));
   return TRUE;
+}
+
+gboolean
+_cogl_texture_driver_size_supported_3d (GLenum gl_target,
+                                        GLenum gl_format,
+                                        GLenum gl_type,
+                                        int    width,
+                                        int    height,
+                                        int    depth)
+{
+  GLenum proxy_target;
+  GLint new_width = 0;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (gl_target == GL_TEXTURE_3D)
+    proxy_target = GL_PROXY_TEXTURE_3D;
+  else
+    /* Unknown target, assume it's not supported */
+    return FALSE;
+
+  /* Proxy texture allows for a quick check for supported size */
+  GE( glTexImage3D (proxy_target, 0, GL_RGBA,
+                    width, height, depth, 0 /* border */,
+                    gl_format, gl_type, NULL) );
+
+  GE( glGetTexLevelParameteriv (proxy_target, 0,
+                                GL_TEXTURE_WIDTH, &new_width) );
+
+  return new_width != 0;
 }
 
 gboolean
