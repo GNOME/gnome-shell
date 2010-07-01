@@ -94,6 +94,38 @@ cogl_bitmap_get_size_from_file (const char *filename,
 gboolean
 cogl_is_bitmap (CoglHandle handle);
 
+/**
+ * COGL_BITMAP_ERROR:
+ *
+ * #GError domain for bitmap errors.
+ *
+ * Since: 1.4
+ */
+#define COGL_BITMAP_ERROR (cogl_bitmap_error_quark ())
+
+/**
+ * CoglBitmapError:
+ * @COGL_BITMAP_ERROR_FAILED: Generic failure code, something went
+ *   wrong.
+ * @COGL_ERROR_UNKNOWN_TYPE: Unknown image type.
+ * @COGL_ERROR_CORRUPT_IMAGE: An image file was broken somehow.
+ *
+ * Error codes that can be thrown when performing bitmap
+ * operations. Note that gdk_pixbuf_new_from_file() can also throw
+ * errors directly from the underlying image loading library. For
+ * example, if GdkPixbuf is used then errors #GdkPixbufError<!-- -->s
+ * will be used directly.
+ *
+ * Since: 1.4
+ */
+typedef enum {
+  COGL_BITMAP_ERROR_FAILED,
+  COGL_BITMAP_ERROR_UNKNOWN_TYPE,
+  COGL_BITMAP_ERROR_CORRUPT_IMAGE
+} CoglBitmapError;
+
+GQuark cogl_bitmap_error_quark (void);
+
 G_END_DECLS
 
 #endif /* __COGL_BITMAP_H__ */
