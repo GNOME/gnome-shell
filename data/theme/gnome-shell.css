@@ -214,7 +214,7 @@ StTooltip StLabel {
     transition-duration: 100;
 }
 
-.panel-button:active, .panel-button:checked, .panel-button:pressed {
+.panel-button:active, .panel-button:checked, .panel-button:pressed, .panel-button:focus {
     background-gradient-direction: vertical;
     background-gradient-start: #3c3c3c;
     background-gradient-end: #131313;

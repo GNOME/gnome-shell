@@ -18,6 +18,7 @@ nobase_dist_js_DATA = 	\
 	ui/boxpointer.js	\
 	ui/calendar.js		\
 	ui/chrome.js		\
+	ui/ctrlAltTab.js	\
 	ui/dash.js		\
 	ui/dnd.js		\
 	ui/docDisplay.js	\

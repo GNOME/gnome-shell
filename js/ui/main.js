@@ -17,8 +17,11 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const Chrome = imports.ui.chrome;
+const CtrlAltTab = imports.ui.ctrlAltTab;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const MessageTray = imports.ui.messageTray;
@@ -50,6 +53,7 @@ let messageTray = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let telepathyClient = null;
+let ctrlAltTabManager = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -136,6 +140,9 @@ function start() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
     panel.startStatusArea();
+
+    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
+    ctrlAltTabManager.addGroup(panel.actor, _("Panel"), 'gnome-panel');
 
     _startDate = new Date();
 
@@ -330,6 +337,14 @@ function _globalKeyPressHandler(actor, event) {
         case Meta.KeyBindingAction.COMMAND_2:
             getRunDialog().open();
             return true;
+        case Meta.KeyBindingAction.SWITCH_PANELS:
+            // Only intercept this when we're in the overview, and don't
+            // intercept it if something beyond that (like, say, the
+            // ctrl-alt-tab popup!) is visible
+            if (overview.visible && modalCount == 1) {
+                ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
+                return true;
+            }
     }
 
     return false;
