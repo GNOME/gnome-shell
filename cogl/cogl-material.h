@@ -942,6 +942,8 @@ cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
  *
  * Gets the wrap mode for the 's' coordinate of texture lookups on this layer.
  *
+ * Return value: the wrap mode value for the s coordinate.
+ *
  * Since: 1.4
  */
 CoglMaterialWrapMode
@@ -952,6 +954,8 @@ cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer);
  * @layer: A #CoglMaterialLayer object
  *
  * Gets the wrap mode for the 't' coordinate of texture lookups on this layer.
+ *
+ * Return value: the wrap mode value for the t coordinate.
  *
  * Since: 1.4
  */
