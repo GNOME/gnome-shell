@@ -29,12 +29,15 @@
 #include "config.h"
 #endif
 
+#include "cogl-material-private.h"
+
+#ifdef COGL_MATERIAL_BACKEND_GLSL
+
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
-#include "cogl-material-private.h"
 #ifndef HAVE_COGL_GLES
 #include "cogl-program.h"
 #endif
@@ -120,4 +123,6 @@ const CoglMaterialBackend _cogl_material_glsl_backend =
   NULL, /* layer_state_change_notify */
   NULL, /* free_priv */
 };
+
+#endif /* COGL_MATERIAL_BACKEND_GLSL */
 

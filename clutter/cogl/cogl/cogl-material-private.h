@@ -28,6 +28,8 @@
 #ifndef __COGL_MATERIAL_PRIVATE_H
 #define __COGL_MATERIAL_PRIVATE_H
 
+#include "cogl.h"
+
 #include "cogl-material.h"
 #include "cogl-matrix.h"
 #include "cogl-matrix-stack.h"

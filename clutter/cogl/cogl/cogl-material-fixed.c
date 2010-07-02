@@ -29,12 +29,15 @@
 #include "config.h"
 #endif
 
+#include "cogl-material-private.h"
+
+#ifdef COGL_MATERIAL_BACKEND_FIXED
+
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
-#include "cogl-material-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-profile.h"
@@ -198,4 +201,6 @@ const CoglMaterialBackend _cogl_material_fixed_backend =
   NULL, /* layer_change_notify */
   NULL /* free_priv */
 };
+
+#endif /* COGL_MATERIAL_BACKEND_FIXED */
 
