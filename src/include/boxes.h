@@ -24,8 +24,10 @@
 #ifndef META_BOXES_H
 #define META_BOXES_H
 
-#include <glib.h>
+#include <glib-object.h>
 #include "common.h"
+
+#define META_TYPE_RECTANGLE            (meta_rectangle_get_type ())
 
 typedef struct _MetaRectangle MetaRectangle;
 struct _MetaRectangle
@@ -69,6 +71,11 @@ struct _MetaEdge
   MetaSide side_type;
   MetaEdgeType  edge_type;
 };
+
+GType meta_rectangle_get_type (void);
+
+MetaRectangle *meta_rectangle_copy (const MetaRectangle *rect);
+void           meta_rectangle_free (MetaRectangle       *rect);
 
 /* Output functions -- note that the output buffer had better be big enough:
  *   rect_to_string:   RECT_LENGTH

@@ -30,6 +30,35 @@
 #include "util.h"
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
+/* It would make sense to use GSlice here, but until we clean up the
+ * rest of this file and the internal API to use these functions, we
+ * leave it using g_malloc()/g_free() for consistency.
+ */
+
+MetaRectangle *
+meta_rectangle_copy (const MetaRectangle *rect)
+{
+  return g_memdup (rect, sizeof (MetaRectangle));
+}
+
+void
+meta_rectangle_free (MetaRectangle *rect)
+{
+  g_free (rect);
+}
+
+GType
+meta_rectangle_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("MetaRectangle"),
+					    (GBoxedCopyFunc) meta_rectangle_copy,
+					    (GBoxedFreeFunc) meta_rectangle_free);
+  return type_id;
+}
+
 char*
 meta_rectangle_to_string (const MetaRectangle *rect,
                           char                *output)
