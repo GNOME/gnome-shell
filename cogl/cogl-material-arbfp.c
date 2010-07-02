@@ -29,12 +29,15 @@
 #include "config.h"
 #endif
 
+#include "cogl-material-private.h"
+
+#ifdef COGL_MATERIAL_BACKEND_ARBFP
+
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
-#include "cogl-material-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-journal-private.h"
@@ -1026,4 +1029,6 @@ const CoglMaterialBackend _cogl_material_arbfp_backend =
   _cogl_material_backend_arbfp_free_priv,
   NULL
 };
+
+#endif /* COGL_MATERIAL_BACKEND_ARBFP */
 
