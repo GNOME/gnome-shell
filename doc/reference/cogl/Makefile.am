@@ -94,6 +94,8 @@ EXTRA_HFILES=
 HTML_IMAGES = \
 	fill-rule-non-zero.png \
 	fill-rule-even-odd.png \
+	quad-indices-order.png \
+	quad-indices-triangles.png \
 	cogl_ortho.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
@@ -125,4 +127,6 @@ include $(top_srcdir)/gtk-doc.make
 EXTRA_DIST += \
 	fill-rule-non-zero.png \
 	fill-rule-even-odd.png \
+	quad-indices-triangles.png \
+	quad-indices-order.png \
 	cogl_ortho.png
