@@ -54,9 +54,9 @@ static void completed (ClutterState *state,
                        gpointer      data)
 {
   g_print ("Completed transitioning to state: %s\n",
-           clutter_state_get_target_state (state));
+           clutter_state_get_state (state));
 
-  if (g_str_equal (clutter_state_get_target_state (state), "right"))
+  if (g_str_equal (clutter_state_get_state (state), "right"))
     {
       /* skip straight to left state when reaching right */
       clutter_state_change (state, "left", FALSE);

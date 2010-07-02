@@ -118,7 +118,7 @@ enum
 {
   PROP_0,
   PROP_DURATION,
-  PROP_TARGET_STATE
+  PROP_STATE
 };
 
 enum
@@ -172,9 +172,9 @@ sort_props_func (gconstpointer a,
   return pa->object - pb->object;
 }
 
-static State * clutter_state_get_state (ClutterState *state,
-                                        const gchar  *state_name,
-                                        gboolean      force_creation);
+static State * clutter_state_fetch_state (ClutterState *state,
+                                          const gchar  *state_name,
+                                          gboolean      force_creation);
 static void object_disappeared (gpointer data,
                                 GObject *where_the_object_was);
 
@@ -261,7 +261,7 @@ clutter_state_remove_key_internal (ClutterState *this,
   property_name = g_intern_string (property_name);
 
   if (source_state_name)
-    source_state = clutter_state_get_state (this, source_state_name, FALSE);
+    source_state = clutter_state_fetch_state (this, source_state_name, FALSE);
 
   if (target_state_name != NULL)
     state_list = g_list_append (NULL, (gpointer) target_state_name);
@@ -271,7 +271,7 @@ clutter_state_remove_key_internal (ClutterState *this,
   for (s = state_list; s != NULL; s = s->next)
     {
       State *target_state;
-      target_state = clutter_state_get_state (this, s->data, FALSE);
+      target_state = clutter_state_fetch_state (this, s->data, FALSE);
 
       if (target_state)
         {
@@ -488,14 +488,14 @@ clutter_state_change (ClutterState *state,
   priv->source_state_name = priv->target_state_name;
   priv->target_state_name = target_state_name;
 
-  g_object_notify (G_OBJECT (state), "target-state");
+  g_object_notify (G_OBJECT (state), "state");
 
   duration = clutter_state_get_duration (state,
                                          priv->source_state_name,
                                          priv->target_state_name);
   clutter_timeline_set_duration (priv->timeline, duration);
 
-  new_state = clutter_state_get_state (state, target_state_name, FALSE);
+  new_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (new_state == NULL)
     {
       g_warning ("State '%s' not found", target_state_name);
@@ -783,25 +783,23 @@ clutter_state_set_key_internal (ClutterState    *state,
 }
 
 /*
- * clutter_state_get_state:
+ * clutter_state_fetch_state:
  * @state: a #ClutterState
  * @state_name: the name of the state to be retrieved
- * @force_creation: %TRUE if the state should be forcibly created
- *   if not found
+ * @create: %TRUE if the state should be instantiated if not found
  *
  * Retrieves the #State structure for @state_name inside the given
  * #ClutterState instance
  *
- * If @state_name is %NULL and @force_creation is %TRUE then the
- * #State for the default state name will be returned; if @force_creation
- * is %FALSE then %NULL will be returned
+ * If @state_name is %NULL and @create is %TRUE then NULL will
+ * be returned.
  *
  * Return value: a #State structure for the given name, or %NULL
  */
 static State *
-clutter_state_get_state (ClutterState *state,
-                         const gchar  *state_name,
-                         gboolean      force_creation)
+clutter_state_fetch_state (ClutterState *state,
+                           const gchar  *state_name,
+                           gboolean      create)
 {
   ClutterStatePrivate *priv = state->priv;
   State *retval;
@@ -814,7 +812,7 @@ clutter_state_get_state (ClutterState *state,
     state_name = g_intern_string (state_name);
 
   retval = g_hash_table_lookup (priv->states, state_name);
-  if (retval == NULL && force_creation)
+  if (retval == NULL && create)
     {
       retval = state_new (state, state_name);
       g_hash_table_insert (priv->states, (gpointer) state_name, retval);
@@ -875,8 +873,8 @@ clutter_state_set_key (ClutterState  *state,
   if (pspec == NULL)
     return state;
 
-  source_state = clutter_state_get_state (state, source_state_name, TRUE);
-  target_state = clutter_state_get_state (state, target_state_name, TRUE);
+  source_state = clutter_state_fetch_state (state, source_state_name, TRUE);
+  target_state = clutter_state_fetch_state (state, target_state_name, TRUE);
 
   property_name = g_intern_string (property_name);
   state_key = clutter_state_key_new (target_state,
@@ -963,13 +961,13 @@ clutter_state_get_keys (ClutterState *state,
     state_list = clutter_state_get_states (state);
 
   if (source_state_name)
-    source_state = clutter_state_get_state (state, source_state_name, FALSE);
+    source_state = clutter_state_fetch_state (state, source_state_name, FALSE);
 
   for (s = state_list; s != NULL; s = s->next)
     {
       State *target_state;
 
-      target_state = clutter_state_get_state (state, s->data, FALSE);
+      target_state = clutter_state_fetch_state (state, s->data, FALSE);
       if (target_state != NULL)
         {
           GList *k;
@@ -1058,7 +1056,7 @@ clutter_state_set_property (GObject      *object,
 
   switch (prop_id)
     {
-      case PROP_TARGET_STATE:
+      case PROP_STATE:
         clutter_state_change (state, g_value_get_string (value), TRUE);
         break;
       case PROP_DURATION:
@@ -1078,9 +1076,9 @@ clutter_state_get_property (GObject    *object,
   ClutterState *state = CLUTTER_STATE (object);
   switch (prop_id)
     {
-      case PROP_TARGET_STATE:
+      case PROP_STATE:
         g_value_set_string (value,
-                            clutter_state_get_target_state (state));
+                            clutter_state_get_state (state));
         break;
       case PROP_DURATION:
         g_value_set_uint (value, state->priv->duration);
@@ -1121,19 +1119,19 @@ clutter_state_class_init (ClutterStateClass *klass)
                   G_TYPE_NONE, 0);
 
   /**
-   * ClutterState:target-state:
+   * ClutterState:state:
    *
    * The currently set target state, setting it causes the
    * state machine to transition to the new state, use
-   * clutter_state_change() directly to directly jump to
-   * a state.
+   * clutter_state_change() with a final FALSE argument to
+   * change state without a transition.
    */
-  pspec = g_param_spec_string ("target-state",
-                               "Target State",
-                               "Currently set state",
+  pspec = g_param_spec_string ("state",
+                               "State",
+                               "Currently set state, (transition to this state might not be complete)",
                                NULL,
                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TARGET_STATE, pspec);
+  g_object_class_install_property (gobject_class, PROP_STATE, pspec);
 
   /**
    * ClutterState:duration:
@@ -1207,7 +1205,7 @@ clutter_state_get_animator (ClutterState *state,
 
   target_state_name = g_intern_string (target_state_name);
 
-  target_state = clutter_state_get_state (state, target_state_name, FALSE);
+  target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (target_state == NULL)
     return NULL;
   
@@ -1258,7 +1256,7 @@ clutter_state_set_animator (ClutterState    *state,
   source_state_name = g_intern_string (source_state_name);
   target_state_name = g_intern_string (target_state_name);
 
-  target_state = clutter_state_get_state (state, target_state_name, FALSE);
+  target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (target_state == NULL)
     return;
   
@@ -1544,7 +1542,7 @@ clutter_state_set_duration (ClutterState *state,
       return;
     }
 
-  target_state = clutter_state_get_state (state, target_state_name, FALSE);
+  target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (target_state != NULL)
     {
       if (source_state_name != NULL)
@@ -1597,7 +1595,7 @@ clutter_state_get_duration (ClutterState *state,
   if (target_state_name == NULL)
     return state->priv->duration;
 
-  target_state = clutter_state_get_state (state, target_state_name, FALSE);
+  target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (target_state != NULL)
     {
       if (source_state_name)
@@ -1615,12 +1613,12 @@ clutter_state_get_duration (ClutterState *state,
 }
 
 /**
- * clutter_state_get_target_state:
+ * clutter_state_get_state:
  * @state: a #ClutterState
  *
  * Queries the currently set target state.
  *
- * During a transition this function will also return the current target.
+ * During a transition this function will return the target of the transition.
  *
  * This function is useful when called from handlers of the
  * #ClutterState::completed signal.
@@ -1631,7 +1629,7 @@ clutter_state_get_duration (ClutterState *state,
  * Since: 1.4
  */
 G_CONST_RETURN gchar *
-clutter_state_get_target_state (ClutterState *state)
+clutter_state_get_state (ClutterState *state)
 {
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
 
@@ -1694,10 +1692,10 @@ parse_state_transition (JsonArray *array,
     }
 
   source_name = json_object_get_string_member (object, "source");
-  source_state = clutter_state_get_state (clos->state, source_name, TRUE);
+  source_state = clutter_state_fetch_state (clos->state, source_name, TRUE);
 
   target_name = json_object_get_string_member (object, "target");
-  target_state = clutter_state_get_state (clos->state, target_name, TRUE);
+  target_state = clutter_state_fetch_state (clos->state, target_name, TRUE);
 
   if (json_object_has_member (object, "duration"))
     {
