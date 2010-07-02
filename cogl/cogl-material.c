@@ -5905,3 +5905,168 @@ _cogl_material_set_static_breadcrumb (CoglMaterial *material,
   material->static_breadcrumb = breadcrumb;
 }
 
+typedef struct
+{
+  int parent_id;
+  int *material_id_ptr;
+  GString *graph;
+  int indent;
+} PrintDebugState;
+
+static gboolean
+dump_layer_cb (CoglMaterialLayer *layer, void *data)
+{
+  PrintDebugState *state = data;
+  int material_id = *state->material_id_ptr;
+
+  g_string_append_printf (state->graph,
+                          "%*sstate%d -> layer_ref%d [weight=200];\n",
+                          state->indent, "",
+                          material_id,
+                          material_id);
+  g_string_append_printf (state->graph,
+                          "%*slayer_ref%d [label=\"addr=0x%p\" "
+                          "shape=box color=blue];\n",
+                          state->indent, "",
+                          material_id,
+                          layer);
+
+  return TRUE;
+}
+
+static gboolean
+dump_material_cb (CoglMaterial *material, void *user_data)
+{
+  PrintDebugState *state = user_data;
+  int material_id = *state->material_id_ptr;
+  PrintDebugState state_out;
+  GString *changes_label;
+  gboolean changes = FALSE;
+  gboolean layers = FALSE;
+
+  if (state->parent_id >= 0)
+    g_string_append_printf (state->graph, "%*smaterial%d -> material%d;\n",
+                            state->indent, "",
+                            state->parent_id,
+                            material_id);
+
+  g_string_append_printf (state->graph,
+                          "%*smaterial%d [label=\"addr=0x%p\\n"
+                          "ref count=%d\\n"
+                          "breadcrumb=\\\"%s\\\"\" color=\"red\"];\n",
+                          state->indent, "",
+                          material_id,
+                          material,
+                          COGL_OBJECT (material)->ref_count,
+                          material->has_static_breadcrumb ?
+                          material->static_breadcrumb : "NULL");
+
+  changes_label = g_string_new ("");
+  g_string_append_printf (changes_label,
+                          "%*smaterial%d -> state%d [weight=100];\n"
+                          "%*sstate%d [shape=box label=\"",
+                          state->indent, "",
+                          material_id,
+                          material_id,
+                          state->indent, "",
+                          material_id);
+
+
+  if (material->differences & COGL_MATERIAL_STATE_COLOR)
+    {
+      changes = TRUE;
+      g_string_append_printf (changes_label,
+                              "\\lcolor=0x%02X%02X%02X%02X\\n",
+                              cogl_color_get_red_byte (&material->color),
+                              cogl_color_get_green_byte (&material->color),
+                              cogl_color_get_blue_byte (&material->color),
+                              cogl_color_get_alpha_byte (&material->color));
+    }
+
+  if (material->differences & COGL_MATERIAL_STATE_BLEND)
+    {
+      changes = TRUE;
+      const char *blend_enable_name;
+      switch (material->blend_enable)
+        {
+        case COGL_MATERIAL_BLEND_ENABLE_AUTOMATIC:
+          blend_enable_name = "AUTO";
+          break;
+        case COGL_MATERIAL_BLEND_ENABLE_ENABLED:
+          blend_enable_name = "ENABLED";
+          break;
+        case COGL_MATERIAL_BLEND_ENABLE_DISABLED:
+          blend_enable_name = "DISABLED";
+          break;
+        default:
+          blend_enable_name = "UNKNOWN";
+        }
+      g_string_append_printf (changes_label,
+                              "\\lblend=%s\\n",
+                              blend_enable_name);
+    }
+
+  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+    {
+      changes = TRUE;
+      layers = TRUE;
+      g_string_append_printf (changes_label, "\\ln_layers=%d\\n",
+                              material->n_layers);
+    }
+
+  if (changes)
+    {
+      g_string_append_printf (changes_label, "\"];\n");
+      g_string_append (state->graph, changes_label->str);
+      g_string_free (changes_label, TRUE);
+    }
+
+  if (layers)
+    _cogl_material_foreach_layer (material, dump_layer_cb, state);
+
+  state_out.parent_id = material_id;
+
+  state_out.material_id_ptr = state->material_id_ptr;
+  (*state_out.material_id_ptr)++;
+
+  state_out.graph = state->graph;
+  state_out.indent = state->indent + 2;
+
+  _cogl_material_foreach_child (material,
+                                dump_material_cb,
+                                &state_out);
+
+  return TRUE;
+}
+
+void
+_cogl_debug_dump_materials_dot_file (const char *filename)
+{
+  PrintDebugState state;
+  int material_id = 0;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!ctx->default_material)
+    return;
+
+  state.graph = g_string_new ("");
+  g_string_append_printf (state.graph, "digraph {\n");
+
+  state.parent_id = -1;
+  state.material_id_ptr = &material_id;
+
+  state.indent = 0;
+
+  dump_material_cb (ctx->default_material, &state);
+
+  g_string_append_printf (state.graph, "}\n");
+
+  if (filename)
+    g_file_set_contents (filename, state.graph->str, -1, NULL);
+  else
+    g_print ("%s", state.graph->str);
+
+  g_string_free (state.graph, TRUE);
+}
+
