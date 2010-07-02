@@ -104,14 +104,14 @@ update_actor_position (ClutterAlignConstraint *align)
   switch (align->align_axis)
     {
     case CLUTTER_ALIGN_X_AXIS:
-      new_position = ((source_width - actor_width) + source_x)
-                   * align->factor;
+      new_position = ((source_width - actor_width) * align->factor)
+                   + source_x;
       clutter_actor_set_x (actor, new_position);
       break;
 
     case CLUTTER_ALIGN_Y_AXIS:
-      new_position = ((source_height - actor_height) + source_y)
-                   * align->factor;
+      new_position = ((source_height - actor_height) * align->factor)
+                   + source_y;
       clutter_actor_set_y (actor, new_position);
       break;
     }
