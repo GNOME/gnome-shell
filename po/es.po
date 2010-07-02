@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-06-22 21:09+0000\n"
-"PO-Revision-Date: 2010-06-28 20:56+0200\n"
+"POT-Creation-Date: 2010-06-28 18:57+0000\n"
+"PO-Revision-Date: 2010-07-02 08:59+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -132,6 +132,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
+"Las aplicaciones correspondientes con esos identificadores se mostrarán en "
+"el área de favoritos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
@@ -139,12 +141,17 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
+"El nombre de archivo para los «screencast» será un nombre de archivo único "
+"basado en la fecha actual y usará esta extensión. Se debería cambiar al "
+"grabar en otro formato contenedor diferente."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
+"La tasa de fotogramas de la grabación resultante grabada por el grabador de "
+"«screencast» de GNOME Shell, en fotogramas por segundo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -155,6 +162,8 @@ msgid ""
 "The selected workspace view mode in the overview. Supported values are "
 "\"single\" and \"grid\"."
 msgstr ""
+"El modo de vista del área de trabajo seleccionada en la vista general. Los "
+"valores soportados son «single» (sencillo) y «grid» (rejilla)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
@@ -171,6 +180,11 @@ msgid ""
 "() to obtain a specific format. See the strftime() manual for more "
 "information."
 msgstr ""
+"Esta clave especifica el formato usado por el reloj del panel cuando la "
+"clave del formato se establece a «custom» (personalizado). Puede usar "
+"especificadores de conversión que entienda strftime() para obtener un "
+"formato específico. Consulte el manual de strftime() para obtener más "
+"información."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
@@ -228,19 +242,19 @@ msgstr "APLICACIONES"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:725
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:729
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:731
+#: ../js/ui/appDisplay.js:730
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:1038
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
