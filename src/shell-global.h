@@ -51,6 +51,7 @@ void shell_global_grab_dbus_service (ShellGlobal *global);
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NONREACTIVE,
   SHELL_STAGE_INPUT_MODE_NORMAL,
+  SHELL_STAGE_INPUT_MODE_FOCUSED,
   SHELL_STAGE_INPUT_MODE_FULLSCREEN
 } ShellStageInputMode;
 

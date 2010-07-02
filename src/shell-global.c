@@ -3,7 +3,9 @@
 #include "config.h"
 
 #include "shell-global-private.h"
+#include "shell-enum-types.h"
 #include "shell-perf-log.h"
+#include "shell-window-tracker.h"
 #include "shell-wm.h"
 
 #include "display.h"
@@ -74,6 +76,7 @@ enum {
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
+  PROP_STAGE_INPUT_MODE,
   PROP_WINDOW_GROUP,
   PROP_WINDOW_MANAGER,
   PROP_SETTINGS,
@@ -90,8 +93,14 @@ shell_global_set_property(GObject         *object,
                           const GValue    *value,
                           GParamSpec      *pspec)
 {
+  ShellGlobal *global = SHELL_GLOBAL (object);
+
   switch (prop_id)
     {
+    case PROP_STAGE_INPUT_MODE:
+      shell_global_set_stage_input_mode (global, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -135,6 +144,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_STAGE:
       g_value_set_object (value, mutter_plugin_get_stage (global->plugin));
+      break;
+    case PROP_STAGE_INPUT_MODE:
+      g_value_set_enum (value, global->input_mode);
       break;
     case PROP_WINDOW_GROUP:
       g_value_set_object (value, mutter_plugin_get_window_group (global->plugin));
@@ -255,6 +267,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
+                                   PROP_STAGE_INPUT_MODE,
+                                   g_param_spec_enum ("stage-input-mode",
+                                                      "Stage input mode",
+                                                      "The stage input mode",
+                                                      SHELL_TYPE_STAGE_INPUT_MODE,
+                                                      SHELL_STAGE_INPUT_MODE_NORMAL,
+                                                      G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class,
                                    PROP_WINDOW_GROUP,
                                    g_param_spec_object ("window-group",
                                                         "Window Group",
@@ -341,6 +361,32 @@ shell_global_get (void)
   return the_object;
 }
 
+static void
+focus_window_changed (MetaDisplay *display,
+                      GParamSpec  *param,
+                      gpointer     user_data)
+{
+  ShellGlobal *global = user_data;
+
+  if (global->input_mode == SHELL_STAGE_INPUT_MODE_FOCUSED &&
+      meta_display_get_focus_window (display) != NULL)
+    shell_global_set_stage_input_mode (global, SHELL_STAGE_INPUT_MODE_NORMAL);
+}
+
+static void
+shell_global_focus_stage (ShellGlobal *global)
+{
+  Display *xdpy;
+  ClutterActor *stage;
+  Window xstage;
+
+  stage = mutter_plugin_get_stage (global->plugin);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xdpy = mutter_plugin_get_xdisplay (global->plugin);
+  XSetInputFocus (xdpy, xstage, RevertToPointerRoot,
+                  shell_global_get_current_time (global));
+}
+
 /**
  * shell_global_set_stage_input_mode:
  * @global: the #ShellGlobal
@@ -354,6 +400,12 @@ shell_global_get (void)
  * shell_global_set_stage_input_region() but passes through clicks
  * outside that region. When it is %SHELL_STAGE_INPUT_MODE_FULLSCREEN,
  * the stage absorbs all input.
+ *
+ * When the input mode is %SHELL_STAGE_INPUT_MODE_FOCUSED, the pointer
+ * is handled as with %SHELL_STAGE_INPUT_MODE_NORMAL, but additionally
+ * the stage window has the keyboard focus. If the stage loses the
+ * focus (eg, because the user clicked into a window) the input mode
+ * will revert to %SHELL_STAGE_INPUT_MODE_NORMAL.
  *
  * Note that whenever a mutter-internal Gtk widget has a pointer grab,
  * the shell behaves as though it was in
@@ -373,7 +425,14 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
   else
     mutter_plugin_set_stage_input_region (global->plugin, global->input_region);
 
-  global->input_mode = mode;
+  if (mode == SHELL_STAGE_INPUT_MODE_FOCUSED)
+    shell_global_focus_stage (global);
+
+  if (mode != global->input_mode)
+    {
+      global->input_mode = mode;
+      g_object_notify (G_OBJECT (global), "stage-input-mode");
+    }
 }
 
 /**
@@ -535,6 +594,8 @@ _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)
 {
   ClutterActor *stage;
+  MetaScreen *screen;
+  MetaDisplay *display;
 
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
@@ -563,6 +624,11 @@ _shell_global_set_plugin (ShellGlobal  *global,
                                "clutter.stagePaintDone",
                                "End of stage page repaint",
                                "");
+
+  screen = mutter_plugin_get_screen (global->plugin);
+  display = meta_screen_get_display (screen);
+  g_signal_connect (display, "notify::focus-window",
+                    G_CALLBACK (focus_window_changed), global);
 }
 
 void
