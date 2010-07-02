@@ -439,6 +439,14 @@ AppMenuButton.prototype = {
             this._stopAnimation();
         }
 
+        if (!focusedApp) {
+            // If the app has just lost focus to the panel, pretend
+            // nothing happened; otherwise you can't keynav to the
+            // app menu.
+            if (global.stage_input_mode == Shell.StageInputMode.FOCUSED)
+                return;
+        }
+
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
