@@ -81,8 +81,8 @@ void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta,
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
 
 GSList       *shell_global_get_monitors        (ShellGlobal  *global);
-GdkRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
-GdkRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
+MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
+MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
 void shell_global_get_pointer (ShellGlobal         *global,
                                int                 *x,

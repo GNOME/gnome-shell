@@ -1141,7 +1141,7 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
  *
  * Gets a list of the bounding boxes of the active screen's monitors.
  *
- * Return value: (transfer full) (element-type GdkRectangle): a list
+ * Return value: (transfer full) (element-type Meta.Rectangle): a list
  * of monitor bounding boxes.
  */
 GSList *
@@ -1152,17 +1152,11 @@ shell_global_get_monitors (ShellGlobal *global)
   MetaRectangle rect;
   int i;
 
-  g_assert (sizeof (MetaRectangle) == sizeof (GdkRectangle) &&
-            G_STRUCT_OFFSET (MetaRectangle, x) == G_STRUCT_OFFSET (GdkRectangle, x) &&
-            G_STRUCT_OFFSET (MetaRectangle, y) == G_STRUCT_OFFSET (GdkRectangle, y) &&
-            G_STRUCT_OFFSET (MetaRectangle, width) == G_STRUCT_OFFSET (GdkRectangle, width) &&
-            G_STRUCT_OFFSET (MetaRectangle, height) == G_STRUCT_OFFSET (GdkRectangle, height));
-
   for (i = meta_screen_get_n_monitors (screen) - 1; i >= 0; i--)
     {
       meta_screen_get_monitor_geometry (screen, i, &rect);
       monitors = g_slist_prepend (monitors,
-                                  g_boxed_copy (GDK_TYPE_RECTANGLE, &rect));
+                                  meta_rectangle_copy (&rect));
     }
   return monitors;
 }
@@ -1176,11 +1170,12 @@ shell_global_get_monitors (ShellGlobal *global)
  *
  * Return value: the bounding box of the primary monitor
  */
-GdkRectangle *
+MetaRectangle *
 shell_global_get_primary_monitor (ShellGlobal  *global)
 {
   GdkScreen *screen = shell_global_get_gdk_screen (global);
-  GdkRectangle rect;
+  GdkRectangle gdk_rect;
+  MetaRectangle rect;
   gint primary = 0;
 
   /* gdk_screen_get_primary_monitor is only present in gtk-2.20+
@@ -1211,9 +1206,13 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
   primary = gdk_screen_get_primary_monitor (screen);
 #endif
 
-  gdk_screen_get_monitor_geometry (screen, primary, &rect);
+  gdk_screen_get_monitor_geometry (screen, primary, &gdk_rect);
+  rect.x = gdk_rect.x;
+  rect.y = gdk_rect.y;
+  rect.width = gdk_rect.width;
+  rect.height = gdk_rect.height;
 
-  return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+  return meta_rectangle_copy (&rect);
 }
 
 /**
@@ -1225,7 +1224,7 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
  *
  * Return value: the bounding box of the focus monitor
  */
-GdkRectangle *
+MetaRectangle *
 shell_global_get_focus_monitor (ShellGlobal  *global)
 {
   MetaScreen *screen = shell_global_get_screen (global);
@@ -1247,12 +1246,12 @@ shell_global_get_focus_monitor (ShellGlobal  *global)
           if (rect.x <= wrect.x && rect.y <= wrect.y &&
               rect.x + rect.width > wrect.x &&
               rect.y + rect.height > wrect.y)
-            return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+            return meta_rectangle_copy (&rect);
         }
     }
 
   meta_screen_get_monitor_geometry (screen, 0, &rect);
-  return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+  return meta_rectangle_copy (&rect);
 }
 
 /**
