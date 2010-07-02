@@ -1682,7 +1682,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
                 COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
               options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
             }
-          if (_cogl_material_layer_get_wrap_mode_p (layer) ==
+          if (cogl_material_layer_get_wrap_mode_p (layer) ==
               COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
             {
               options.wrap_mode_overrides.values[i].p =
