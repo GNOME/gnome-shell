@@ -421,27 +421,20 @@ cogl_vertex_buffer_unref (CoglHandle handle) G_GNUC_DEPRECATED;
  *
  * 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 ... etc
  *
- * For example, if you submit vertices for a quad like this:
+ * For example, if you submit vertices for a quad like like that shown
+ * in <xref linkend="quad-indices-order"/> then you can request 6
+ * indices to render two triangles like those shown in <xref
+ * linkend="quad-indices-triangles"/>.
  *
- * |[
- *    0        3
- *     ########
- *     #      #
- *     #      #
- *     ########
- *    1        2
- * ]|
+ * <figure id="quad-indices-order">
+ *   <title>Example of vertices submitted to form a quad</title>
+ *   <graphic fileref="quad-indices-order.png" format="PNG"/>
+ * </figure>
  *
- * Then you can request 6 indices to render two triangles like this:
- *
- * |[
- *    0           0        3
- *     ##          ########
- *     # ##          ##   #
- *     #   ##          ## #
- *     ########          ##
- *    1        2           2
- * ]|
+ * <figure id="quad-indices-triangles">
+ *   <title>Illustration of the triangle indices that will be generated</title>
+ *   <graphic fileref="quad-indices-triangles.png" format="PNG"/>
+ * </figure>
  *
  * Returns: A %CoglHandle containing the indices. The handled is
  * owned by Cogl and should not be modified or unref'd.
