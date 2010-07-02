@@ -814,16 +814,6 @@ _cogl_material_journal_ref (CoglMaterial *material);
 void
 _cogl_material_journal_unref (CoglMaterial *material);
 
-/* TODO: These should be made public once we add support for 3D
-   textures in Cogl */
-void
-_cogl_material_set_layer_wrap_mode_p (CoglMaterial *material,
-                                      int layer_index,
-                                      CoglMaterialWrapMode mode);
-
-CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
-
 void
 _cogl_material_set_user_program (CoglMaterial *material,
                                  CoglHandle program);

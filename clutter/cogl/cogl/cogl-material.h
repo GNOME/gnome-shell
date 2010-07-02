@@ -998,15 +998,32 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                      CoglMaterialWrapMode mode);
 
 /**
+ * cogl_material_set_layer_wrap_mode_p:
+ * @material: A #CoglMaterial object
+ * @layer_index: the layer number to change.
+ * @mode: the new wrap mode
+ *
+ * Sets the wrap mode for the 'p' coordinate of texture lookups on
+ * this layer. 'p' is the third coordinate.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
+                                     int                  layer_index,
+                                     CoglMaterialWrapMode mode);
+
+/**
  * cogl_material_set_layer_wrap_mode:
  * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
  * @mode: the new wrap mode
  *
- * Sets the wrap mode for both coordinates of texture lookups on this
- * layer. This is equivalent to calling
- * cogl_material_set_layer_wrap_mode_s() and
- * cogl_material_set_layer_wrap_mode_t() separately.
+ * Sets the wrap mode for all three coordinates of texture lookups on
+ * this layer. This is equivalent to calling
+ * cogl_material_set_layer_wrap_mode_s(),
+ * cogl_material_set_layer_wrap_mode_t() and
+ * cogl_material_set_layer_wrap_mode_p() separately.
  *
  * Since: 1.4
  */
@@ -1041,6 +1058,19 @@ cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer);
 CoglMaterialWrapMode
 cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer);
 
+/**
+ * cogl_material_layer_get_wrap_mode_p:
+ * @layer: A #CoglMaterialLayer object
+ *
+ * Gets the wrap mode for the 'p' coordinate of texture lookups on
+ * this layer. 'p' is the third coordinate.
+ *
+ * Return value: the wrap mode value for the p coordinate.
+ *
+ * Since: 1.4
+ */
+CoglMaterialWrapMode
+cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 
 /* XXX: should this be CoglMaterialDepthTestFunction?
  * It makes it very verbose but would be consistent with

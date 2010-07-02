@@ -2356,8 +2356,6 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                        authority->wrap_mode_p);
 }
 
-/* TODO: this should be made public once we add support for 3D
-   textures in Cogl */
 /* The rationale for naming the third texture coordinate 'p' instead
    of OpenGL's usual 'r' is that 'r' conflicts with the usual naming
    of the 'red' component when treating a vector as a color. Under
@@ -2371,9 +2369,9 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
    the w component conflicts with the w component of a position
    vertex.  */
 void
-_cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
-                                      int                  layer_index,
-                                      CoglMaterialWrapMode mode)
+cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
+                                     int                  layer_index,
+                                     CoglMaterialWrapMode mode)
 {
   CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer           *layer;
@@ -2505,7 +2503,7 @@ cogl_material_get_layer_wrap_mode_t (CoglMaterial *material, int layer_index)
 }
 
 CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
+cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
 {
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority =
@@ -2514,9 +2512,8 @@ _cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
   return internal_to_public_wrap_mode (authority->wrap_mode_p);
 }
 
-/* TODO: make this public when we expose 3D textures. */
 CoglMaterialWrapMode
-_cogl_material_get_layer_wrap_mode_p (CoglMaterial *material, int layer_index)
+cogl_material_get_layer_wrap_mode_p (CoglMaterial *material, int layer_index)
 {
   CoglMaterialLayer *layer;
 
@@ -2530,7 +2527,7 @@ _cogl_material_get_layer_wrap_mode_p (CoglMaterial *material, int layer_index)
    * material. */
   layer = _cogl_material_get_layer (material, layer_index);
 
-  return _cogl_material_layer_get_wrap_mode_p (layer);
+  return cogl_material_layer_get_wrap_mode_p (layer);
 }
 
 static void
