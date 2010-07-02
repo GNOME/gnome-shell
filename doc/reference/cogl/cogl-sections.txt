@@ -151,15 +151,17 @@ cogl_clip_stack_restore
 <SECTION>
 <FILE>cogl-primitives</FILE>
 <TITLE>Primitives</TITLE>
-<SUBSECTION>
 cogl_rectangle
 cogl_rectangles
 cogl_rectangle_with_texture_coords
 cogl_rectangles_with_texture_coords
 cogl_rectangle_with_multitexture_coords
 cogl_polygon
+</SECTION>
 
-<SUBSECTION>
+<SECTION>
+<FILE>cogl-paths</FILE>
+<TITLE>Path Primitives</TITLE>
 cogl_is_path
 cogl_path_new
 cogl_get_path
