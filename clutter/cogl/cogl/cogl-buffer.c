@@ -68,15 +68,37 @@
 
 #endif
 
+/* XXX:
+ * The CoglHandle macros don't support any form of inheritance, so for
+ * now we implement the CoglObject support for the CoglBuffer
+ * abstract class manually.
+ */
+
+void
+_cogl_buffer_register_buffer_type (GQuark type)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->buffer_types = g_slist_prepend (ctx->buffer_types,
+                                       GINT_TO_POINTER (type));
+}
+
 gboolean
 cogl_is_buffer (const void *object)
 {
-  CoglObject *obj = (CoglObject *)object;
+  const CoglHandleObject *obj = object;
+  GSList *l;
 
-  if (obj == NULL)
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (object == NULL)
     return FALSE;
 
-  return obj->klass->type == _cogl_handle_pixel_buffer_get_type ();
+  for (l = ctx->buffer_types; l; l = l->next)
+    if (GPOINTER_TO_INT (l->data) == obj->klass->type)
+      return TRUE;
+
+  return FALSE;
 }
 
 void

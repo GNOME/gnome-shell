@@ -167,6 +167,10 @@ typedef struct
      cogl_is_texture */
   GSList           *texture_types;
 
+  /* List of types that will be considered a subclass of CoglBuffer in
+     cogl_is_buffer */
+  GSList           *buffer_types;
+
   CoglContextDriver drv;
   CoglContextWinsys winsys;
 } CoglContext;
