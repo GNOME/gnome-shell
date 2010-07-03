@@ -87,8 +87,8 @@ cogl_malloc_pixel_array_vtable;
 
 COGL_BUFFER_DEFINE (PixelArray, pixel_array)
 
-CoglPixelArray *
-cogl_pixel_array_new (unsigned int size)
+static CoglPixelArray *
+_cogl_pixel_array_new (unsigned int size)
 {
   CoglPixelArray *pixel_array = g_slice_new0 (CoglPixelArray);
   CoglBuffer *buffer = COGL_BUFFER (pixel_array);
@@ -148,7 +148,7 @@ cogl_pixel_array_new_with_size (unsigned int    width,
   if (rowstride)
     *rowstride = stride;
 
-  buffer = cogl_pixel_array_new (height * stride);
+  buffer = _cogl_pixel_array_new (height * stride);
   if (G_UNLIKELY (buffer == COGL_INVALID_HANDLE))
     return COGL_INVALID_HANDLE;
 
