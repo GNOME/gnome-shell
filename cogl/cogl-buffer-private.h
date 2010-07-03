@@ -22,6 +22,7 @@
  *
  * Authors:
  *   Damien Lespiau <damien.lespiau@intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 #ifndef __COGL_BUFFER_PRIVATE_H__
@@ -50,15 +51,15 @@ typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable
 {
-  guint8 * (* map)          (CoglBuffer       *buffer,
-                             CoglBufferAccess  access);
+  guint8 * (* map) (CoglBuffer       *buffer,
+                    CoglBufferAccess  access);
 
-  void     (* unmap)        (CoglBuffer *buffer);
+  void (* unmap) (CoglBuffer *buffer);
 
-  gboolean (* set_data)     (CoglBuffer   *buffer,
-                             unsigned int  offset,
-                             const guint8 *data,
-                             unsigned int  size);
+  gboolean (* set_data) (CoglBuffer   *buffer,
+                         unsigned int  offset,
+                         const guint8 *data,
+                         unsigned int  size);
 };
 
 typedef enum _CoglBufferFlags
@@ -102,21 +103,28 @@ _cogl_buffer_register_buffer_type (GQuark type);
    _cogl_buffer_register_buffer_type (_cogl_object_                     \
                                       ## type_name ## _get_type ()))
 
+void
+_cogl_buffer_initialize (CoglBuffer          *buffer,
+                         unsigned int         size,
+                         CoglBufferUsageHint  usage_hint,
+                         CoglBufferUpdateHint update_hint);
 
-void    _cogl_buffer_initialize         (CoglBuffer          *buffer,
-                                         unsigned int         size,
-                                         CoglBufferUsageHint  usage_hint,
-                                         CoglBufferUpdateHint update_hint);
-void    _cogl_buffer_fini               (CoglBuffer *buffer);
+void
+_cogl_buffer_fini (CoglBuffer *buffer);
+
+void
+_cogl_buffer_bind (CoglBuffer *buffer,
+                   GLenum      target);
 
 CoglBufferUsageHint
 _cogl_buffer_get_usage_hint (CoglBuffer *buffer);
 
-void    _cogl_buffer_bind               (CoglBuffer *buffer,
-                                         GLenum      target);
-GLenum  _cogl_buffer_access_to_gl_enum  (CoglBufferAccess access);
-GLenum  _cogl_buffer_hints_to_gl_enum   (CoglBufferUsageHint  usage_hint,
-                                         CoglBufferUpdateHint update_hint);
+GLenum
+_cogl_buffer_access_to_gl_enum (CoglBufferAccess access);
+
+GLenum
+_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
+                               CoglBufferUpdateHint update_hint);
 
 G_END_DECLS
 
