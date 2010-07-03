@@ -157,7 +157,7 @@ _cogl_##type_name##_pointer_from_handle (CoglHandle handle)     \
 }                                                               \
                                                                 \
 gboolean                                                        \
-cogl_is_##type_name (CoglHandle object)                         \
+cogl_is_##type_name (void *object)                              \
 {                                                               \
   CoglObject *obj = object;                                     \
                                                                 \
