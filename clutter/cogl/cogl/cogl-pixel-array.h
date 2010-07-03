@@ -53,22 +53,6 @@ G_BEGIN_DECLS
 typedef struct _CoglPixelArray CoglPixelArray;
 
 /**
- * cogl_pixel_array_new:
- * @size: size of the array in bytes
- *
- * Creates a new array to store pixel data. You can create a new texture from
- * this array using cogl_texture_new_from_buffer().
- *
- * Return value: a #CoglPixelArray representing the newly created array or
- *               %NULL on failure
- *
- * Since: 1.2
- * Stability: Unstable
- */
-CoglPixelArray *
-cogl_pixel_array_new (unsigned int size);
-
-/**
  * cogl_pixel_array_new_with_size:
  * @width: width of the pixel array in pixels
  * @height: height of the pixel array in pixels

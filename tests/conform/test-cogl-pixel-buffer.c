@@ -62,8 +62,13 @@ create_map_tile (TestTile *tile)
   CoglHandle buffer;
   guchar *map;
   guint i;
+  unsigned int stride = 0;
+  guint8 *line;
 
-  buffer = cogl_pixel_array_new (TILE_SIZE * TILE_SIZE * 4);
+  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
+                                           TILE_SIZE,
+                                           COGL_PIXEL_FORMAT_RGBA_8888,
+                                           &stride);
 
   g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
@@ -76,8 +81,12 @@ create_map_tile (TestTile *tile)
   map = cogl_buffer_map (buffer, COGL_BUFFER_ACCESS_WRITE);
   g_assert (map);
 
-  for (i = 0; i < TILE_SIZE * TILE_SIZE * 4; i += 4)
-      memcpy (map + i, &tile->color, 4);
+  line = g_alloca (TILE_SIZE * 4);
+  for (i = 0; i < TILE_SIZE; i += 4)
+    memcpy (line + i, &tile->color, 4);
+
+  for (i = 0; i < TILE_SIZE; i++)
+    memcpy (map + stride, line, 4);
 
   cogl_buffer_unmap (buffer);
 
@@ -95,10 +104,10 @@ create_set_region_tile (TestTile *tile)
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_array_new_for_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &rowstride);
+  buffer = cogl_pixel_array_with_size (TILE_SIZE,
+                                       TILE_SIZE,
+                                       COGL_PIXEL_FORMAT_RGBA_8888,
+                                       &rowstride);
 
   g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
@@ -143,26 +152,21 @@ create_set_data_tile (TestTile *tile)
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_array_new_for_size (TILE_SIZE,
-                                          TILE_SIZE,
-                                          COGL_PIXEL_FORMAT_RGBA_8888,
-                                          &rowstride);
+  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
+                                           TILE_SIZE,
+                                           COGL_PIXEL_FORMAT_RGBA_8888,
+                                           &rowstride);
 
   g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
   g_assert_cmpint (cogl_buffer_get_size (buffer), ==, rowstride * TILE_SIZE);
-
-  /* while at it, set/get the hint */
-  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_TEXTURE);
-  g_assert_cmpint (cogl_buffer_get_usage_hint (buffer),
-                   ==,
-                   COGL_BUFFER_USAGE_HINT_TEXTURE);
 
   /* create a buffer with the data we want to copy to the buffer */
   data = g_malloc (TILE_SIZE * TILE_SIZE * 4);
   for (i = 0; i < TILE_SIZE * TILE_SIZE * 4; i += 4)
       memcpy (data + i, &tile->color, 4);
 
+  /* FIXME: this doesn't consider the rowstride */
   res = cogl_buffer_set_data (buffer, 0, data, TILE_SIZE * TILE_SIZE * 4);
   g_assert (res);
 
