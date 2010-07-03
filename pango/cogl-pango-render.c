@@ -139,6 +139,8 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
   cogl_material_set_layer_combine (priv->glyph_material, 0, /* layer */
                                    "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
                                    NULL);
+  cogl_material_set_layer_wrap_mode (priv->glyph_material, 0,
+                                     COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
 
   priv->solid_material = cogl_material_new ();
 
