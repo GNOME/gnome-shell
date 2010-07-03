@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  */
 
 #define cogl_pixel_array_new cogl_pixel_array_new_EXP
-#define cogl_pixel_array_new_for_size cogl_pixel_array_new_for_size_EXP
+#define cogl_pixel_array_new_with_size cogl_pixel_array_new_with_size_EXP
 #define cogl_is_pixel_array cogl_is_pixel_array_EXP
 #if 0
 #define cogl_pixel_array_set_region cogl_pixel_array_set_region_EXP
@@ -69,7 +69,7 @@ CoglPixelArray *
 cogl_pixel_array_new (unsigned int size);
 
 /**
- * cogl_pixel_array_new_for_size:
+ * cogl_pixel_array_new_with_size:
  * @width: width of the pixel array in pixels
  * @height: height of the pixel array in pixels
  * @format: the format of the pixels the array will store
@@ -91,10 +91,10 @@ cogl_pixel_array_new (unsigned int size);
  * Stability: Unstable
  */
 CoglPixelArray *
-cogl_pixel_array_new_for_size (unsigned int     width,
-                               unsigned int     height,
-                               CoglPixelFormat  format,
-                               unsigned int    *stride);
+cogl_pixel_array_new_with_size (unsigned int     width,
+                                unsigned int     height,
+                                CoglPixelFormat  format,
+                                unsigned int    *stride);
 
 /**
  * cogl_is_pixel_array:
