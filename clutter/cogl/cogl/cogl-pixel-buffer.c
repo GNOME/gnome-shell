@@ -41,7 +41,7 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
-#include "cogl-handle.h"
+#include "cogl-object.h"
 #include "cogl-pixel-buffer-private.h"
 #include "cogl-pixel-buffer.h"
 
@@ -84,9 +84,9 @@ cogl_pixel_buffer_vtable;
 static const CoglBufferVtable
 cogl_malloc_pixel_buffer_vtable;
 
-COGL_HANDLE_DEFINE (PixelBuffer, pixel_buffer)
+COGL_OBJECT_DEFINE (PixelBuffer, pixel_buffer)
 
-CoglHandle
+CoglPixelBuffer *
 cogl_pixel_buffer_new (unsigned int size)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
@@ -124,16 +124,16 @@ cogl_pixel_buffer_new (unsigned int size)
   pixel_buffer->flags = COGL_PIXEL_BUFFER_FLAG_NONE;
 
   /* return COGL_INVALID_HANDLE; */
-  return _cogl_pixel_buffer_handle_new (pixel_buffer);
+  return _cogl_pixel_buffer_object_new (pixel_buffer);
 }
 
-CoglHandle
+CoglPixelBuffer *
 cogl_pixel_buffer_new_for_size (unsigned int    width,
                                 unsigned int    height,
                                 CoglPixelFormat format,
                                 unsigned int   *rowstride)
 {
-  CoglHandle buffer;
+  CoglPixelBuffer *buffer;
   CoglPixelBuffer *pixel_buffer;
   unsigned int stride;
 
@@ -264,13 +264,13 @@ _cogl_pixel_buffer_set_data (CoglBuffer   *buffer,
 
 #if 0
 gboolean
-cogl_pixel_buffer_set_region (CoglHandle   buffer,
-                              guint8      *data,
-                              unsigned int src_width,
-                              unsigned int src_height,
-                              unsigned int src_rowstride,
-                              unsigned int dst_x,
-                              unsigned int dst_y)
+cogl_pixel_buffer_set_region (CoglPixelBuffer *buffer,
+                              guint8          *data,
+                              unsigned int     src_width,
+                              unsigned int     src_height,
+                              unsigned int     src_rowstride,
+                              unsigned int     dst_x,
+                              unsigned int     dst_y)
 {
   if (!cogl_is_pixel_buffer (buffer))
     return FALSE;
