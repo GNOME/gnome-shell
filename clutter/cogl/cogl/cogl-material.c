@@ -1199,6 +1199,10 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       _cogl_material_foreach_child (material,
                                     reparent_strong_children_cb,
                                     new_authority);
+
+      /* The children will keep the new authority alive so drop the
+       * reference we got when copying... */
+      cogl_object_unref (new_authority);
     }
 
   /* At this point we know we have a material with no strong
