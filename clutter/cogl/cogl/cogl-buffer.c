@@ -42,7 +42,7 @@
 #include "cogl-util.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
-#include "cogl-pixel-buffer-private.h"
+#include "cogl-pixel-array-private.h"
 
 /*
  * GL/GLES compatibility defines for the buffer API:

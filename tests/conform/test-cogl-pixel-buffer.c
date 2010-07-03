@@ -63,9 +63,9 @@ create_map_tile (TestTile *tile)
   guchar *map;
   guint i;
 
-  buffer = cogl_pixel_buffer_new (TILE_SIZE * TILE_SIZE * 4);
+  buffer = cogl_pixel_array_new (TILE_SIZE * TILE_SIZE * 4);
 
-  g_assert (cogl_is_pixel_buffer (buffer));
+  g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
 
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
@@ -95,12 +95,12 @@ create_set_region_tile (TestTile *tile)
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_buffer_new_for_size (TILE_SIZE,
+  buffer = cogl_pixel_array_new_for_size (TILE_SIZE,
                                            TILE_SIZE,
                                            COGL_PIXEL_FORMAT_RGBA_8888,
                                            &rowstride);
 
-  g_assert (cogl_is_pixel_buffer (buffer));
+  g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
 
   /* while at it, set/get the hint */
@@ -112,7 +112,7 @@ create_set_region_tile (TestTile *tile)
   for (i = 0; i < TILE_SIZE * TILE_SIZE * 4; i += 4)
       memcpy (data + i, &tile->color, 4);
 
-  cogl_pixel_buffer_set_region (buffer,
+  cogl_pixel_array_set_region (buffer,
                                 data,
                                 TILE_SIZE, TILE_SIZE,
                                 TILE_SIZE,
@@ -143,12 +143,12 @@ create_set_data_tile (TestTile *tile)
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_buffer_new_for_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &rowstride);
+  buffer = cogl_pixel_array_new_for_size (TILE_SIZE,
+                                          TILE_SIZE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888,
+                                          &rowstride);
 
-  g_assert (cogl_is_pixel_buffer (buffer));
+  g_assert (cogl_is_pixel_array (buffer));
   g_assert (cogl_is_buffer (buffer));
   g_assert_cmpint (cogl_buffer_get_size (buffer), ==, rowstride * TILE_SIZE);
 
@@ -263,8 +263,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_pixel_buffer (TestConformSimpleFixture *fixture,
-			gconstpointer             data)
+test_cogl_pixel_array (TestConformSimpleFixture *fixture,
+		       gconstpointer             data)
 {
   TestState state;
   guint idle_source;
