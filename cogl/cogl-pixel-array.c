@@ -129,10 +129,10 @@ cogl_pixel_array_new (unsigned int size)
 }
 
 CoglPixelArray *
-cogl_pixel_array_new_for_size (unsigned int    width,
-                               unsigned int    height,
-                               CoglPixelFormat format,
-                               unsigned int   *rowstride)
+cogl_pixel_array_new_with_size (unsigned int    width,
+                                unsigned int    height,
+                                CoglPixelFormat format,
+                                unsigned int   *rowstride)
 {
   CoglPixelArray *buffer;
   CoglPixelArray *pixel_array;
