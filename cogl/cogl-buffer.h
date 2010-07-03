@@ -91,50 +91,6 @@ unsigned int
 cogl_buffer_get_size (CoglBuffer *buffer);
 
 /**
- * CoglBufferUsageHint:
- * @COGL_BUFFER_USAGE_HINT_TEXTURE: the buffer will be used as a source data
- *   for a texture
- *
- * The usage hint on a buffer allows the user to give some clue on how the
- * buffer will be used.
- *
- * Since: 1.2
- * Stability: Unstable
- */
-typedef enum { /*< prefix=COGL_BUFFER_USAGE_HINT >*/
-  COGL_BUFFER_USAGE_HINT_TEXTURE,
-} CoglBufferUsageHint;
-
-/**
- * cogl_buffer_set_usage_hint:
- * @buffer: a buffer object
- * @hint: the new hint
- *
- * Sets the usage hint on a buffer. See #CoglBufferUsageHint for a description
- * of the available hints.
- *
- * Since: 1.2
- * Stability: Unstable
- */
-void
-cogl_buffer_set_usage_hint (CoglBuffer         *buffer,
-                            CoglBufferUsageHint hint);
-
-/**
- * cogl_buffer_get_usage_hint:
- * @buffer: a buffer object
- *
- * Retrieves the usage hint set using cogl_buffer_set_usage_hint()
- *
- * Return value: the #CoglBufferUsageHint currently used by the buffer
- *
- * Since: 1.2
- * Stability: Unstable
- */
-CoglBufferUsageHint
-cogl_buffer_get_usage_hint (CoglBuffer *buffer);
-
-/**
  * CoglBufferUpdateHint:
  * @COGL_BUFFER_UPDATE_HINT_STATIC: the buffer will not change over time
  * @COGL_BUFFER_UPDATE_HINT_DYNAMIC: the buffer will change from time to time

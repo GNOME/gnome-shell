@@ -68,6 +68,11 @@ typedef enum _CoglBufferFlags
   COGL_BUFFER_FLAG_MAPPED        = 1UL << 1
 } CoglBufferFlags;
 
+typedef enum {
+  COGL_BUFFER_USAGE_HINT_TEXTURE,
+  COGL_BUFFER_USAGE_HINT_VERTICES
+} CoglBufferUsageHint;
+
 struct _CoglBuffer
 {
   CoglObject              _parent;
@@ -103,6 +108,10 @@ void    _cogl_buffer_initialize         (CoglBuffer          *buffer,
                                          CoglBufferUsageHint  usage_hint,
                                          CoglBufferUpdateHint update_hint);
 void    _cogl_buffer_fini               (CoglBuffer *buffer);
+
+CoglBufferUsageHint
+_cogl_buffer_get_usage_hint (CoglBuffer *buffer);
+
 void    _cogl_buffer_bind               (CoglBuffer *buffer,
                                          GLenum      target);
 GLenum  _cogl_buffer_access_to_gl_enum  (CoglBufferAccess access);
