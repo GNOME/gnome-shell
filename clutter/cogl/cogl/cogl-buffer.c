@@ -206,28 +206,6 @@ cogl_buffer_get_size (CoglBuffer *buffer)
 }
 
 void
-cogl_buffer_set_usage_hint (CoglBuffer *buffer,
-                            CoglBufferUsageHint hint)
-{
-  if (!cogl_is_buffer (buffer))
-    return;
-
-  if (G_UNLIKELY (hint > COGL_BUFFER_USAGE_HINT_TEXTURE))
-    hint = COGL_BUFFER_USAGE_HINT_TEXTURE;
-
-  buffer->usage_hint = hint;
-}
-
-CoglBufferUsageHint
-cogl_buffer_get_usage_hint (CoglBuffer *buffer)
-{
-  if (!cogl_is_buffer (buffer))
-    return FALSE;
-
-  return buffer->usage_hint;
-}
-
-void
 cogl_buffer_set_update_hint (CoglBuffer *buffer,
                              CoglBufferUpdateHint hint)
 {

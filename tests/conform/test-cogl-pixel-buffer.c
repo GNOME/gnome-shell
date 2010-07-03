@@ -68,11 +68,6 @@ create_map_tile (TestTile *tile)
   g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
 
-  /* while at it, set/get the hints */
-  cogl_buffer_set_usage_hint (buffer, COGL_BUFFER_USAGE_HINT_TEXTURE);
-  g_assert_cmpint (cogl_buffer_get_usage_hint (buffer),
-                   ==,
-                   COGL_BUFFER_USAGE_HINT_TEXTURE);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
   g_assert_cmpint (cogl_buffer_get_update_hint (buffer),
             ==,
