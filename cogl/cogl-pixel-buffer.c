@@ -84,7 +84,7 @@ cogl_pixel_buffer_vtable;
 static const CoglBufferVtable
 cogl_malloc_pixel_buffer_vtable;
 
-COGL_OBJECT_DEFINE (PixelBuffer, pixel_buffer)
+COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
 CoglPixelBuffer *
 cogl_pixel_buffer_new (unsigned int size)
