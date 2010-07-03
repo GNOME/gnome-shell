@@ -542,18 +542,18 @@ Source.prototype = {
         let msg, notify;
 
         if (presence == Telepathy.ConnectionPresenceType.AVAILABLE) {
-            msg = _("%s is online.").format(this.name);
+            msg = _("%s is online.").format(this.title);
             notify = (this._presence == Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.OFFLINE ||
                    presence == Telepathy.ConnectionPresenceType.EXTENDED_AWAY) {
             presence = Telepathy.ConnectionPresenceType.OFFLINE;
-            msg = _("%s is offline.").format(this.name);
+            msg = _("%s is offline.").format(this.title);
             notify = (this._presence != Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.AWAY) {
-            msg = _("%s is away.").format(this.name);
+            msg = _("%s is away.").format(this.title);
             notify = false;
         } else if (presence == Telepathy.ConnectionPresenceType.BUSY) {
-            msg = _("%s is busy.").format(this.name);
+            msg = _("%s is busy.").format(this.title);
             notify = false;
         } else
             return;
