@@ -52,7 +52,7 @@
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-buffer.h>
-#include <cogl/cogl-pixel-buffer.h>
+#include <cogl/cogl-pixel-array.h>
 #include <cogl/cogl-vector.h>
 #endif
 

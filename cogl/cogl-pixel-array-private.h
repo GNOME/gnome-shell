@@ -22,10 +22,11 @@
  *
  * Authors:
  *   Damien Lespiau <damien.lespiau@intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_PIXEL_BUFFER_PRIVATE_H__
-#define __COGL_PIXEL_BUFFER_PRIVATE_H__
+#ifndef __COGL_PIXEL_ARRAY_PRIVATE_H__
+#define __COGL_PIXEL_ARRAY_PRIVATE_H__
 
 #include "cogl-handle.h"
 #include "cogl-buffer-private.h"
@@ -34,28 +35,28 @@
 
 G_BEGIN_DECLS
 
-#define COGL_PIXEL_BUFFER(buffer)     ((CoglPixelBuffer *)(buffer))
+#define COGL_PIXEL_ARRAY(array)     ((CoglPixelArray *)(array))
 
-#define COGL_PIXEL_BUFFER_SET_FLAG(buffer, flag) \
-  ((buffer)->flags |= (COGL_PIXEL_BUFFER_FLAG_ ## flag))
+#define COGL_PIXEL_ARRAY_SET_FLAG(array, flag) \
+  ((array)->flags |= (COGL_PIXEL_ARRAY_FLAG_ ## flag))
 
-#define COGL_PIXEL_BUFFER_CLEAR_FLAG(buffer, flag) \
-  ((buffer)->flags &= ~(COGL_PIXEL_BUFFER_FLAG_ ## flag))
+#define COGL_PIXEL_ARRAY_CLEAR_FLAG(array, flag) \
+  ((array)->flags &= ~(COGL_PIXEL_ARRAY_FLAG_ ## flag))
 
-#define COGL_PIXEL_BUFFER_FLAG_IS_SET(buffer, flag) \
-  ((buffer)->flags & (COGL_PIXEL_BUFFER_FLAG_ ## flag))
+#define COGL_PIXEL_ARRAY_FLAG_IS_SET(array, flag) \
+  ((array)->flags & (COGL_PIXEL_ARRAY_FLAG_ ## flag))
 
-typedef enum _CoglPixelBufferFlags
+typedef enum _CoglPixelArrayFlags
 {
-  COGL_PIXEL_BUFFER_FLAG_NONE = 0,
-  COGL_PIXEL_BUFFER_FLAG_STORE_CREATED = 1 << 0,
-} CoglPixelBufferFlags;
+  COGL_PIXEL_ARRAY_FLAG_NONE = 0,
+  COGL_PIXEL_ARRAY_FLAG_STORE_CREATED = 1 << 0,
+} CoglPixelArrayFlags;
 
-struct _CoglPixelBuffer
+struct _CoglPixelArray
 {
   CoglBuffer            _parent;
 
-  CoglPixelBufferFlags  flags;
+  CoglPixelArrayFlags  flags;
 
   GLenum                gl_target;
   CoglPixelFormat       format;
@@ -66,8 +67,8 @@ struct _CoglPixelBuffer
 };
 
 GQuark
-_cogl_handle_pixel_buffer_get_type (void);
+_cogl_handle_pixel_array_get_type (void);
 
 G_END_DECLS
 
-#endif /* __COGL_PIXEL_BUFFER_PRIVATE_H__ */
+#endif /* __COGL_PIXEL_ARRAY_PRIVATE_H__ */
