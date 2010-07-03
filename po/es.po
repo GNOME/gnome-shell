@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-06-28 18:57+0000\n"
-"PO-Revision-Date: 2010-07-02 08:59+0200\n"
+"POT-Creation-Date: 2010-07-02 06:59+0000\n"
+"PO-Revision-Date: 2010-07-03 12:50+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "Hour format"
@@ -101,7 +101,7 @@ msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Overview workspace view mode"
-msgstr ""
+msgstr "Modo de visualización de la vista previa del área de trabajo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
@@ -234,7 +234,7 @@ msgid "_24 hour format"
 msgstr "Formato _24 horas"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:777
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
@@ -272,23 +272,23 @@ msgstr "Se ha quitado %s de sus favoritos."
 msgid "Find"
 msgstr "Buscar"
 
-#: ../js/ui/dash.js:465
+#: ../js/ui/dash.js:475
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/dash.js:479
+#: ../js/ui/dash.js:489
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:796 ../js/ui/placeDisplay.js:552
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:803 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
