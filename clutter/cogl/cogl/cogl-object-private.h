@@ -26,6 +26,9 @@
 #ifndef __COGL_OBJECT_PRIVATE_H
 #define __COGL_OBJECT_PRIVATE_H
 
+#include <glib.h>
+
+#include "cogl-types.h"
 #include "cogl-object.h"
 
 /* For compatability until all components have been converted */
