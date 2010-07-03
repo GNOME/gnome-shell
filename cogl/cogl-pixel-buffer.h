@@ -49,6 +49,8 @@ G_BEGIN_DECLS
 #define cogl_pixel_buffer_set_region cogl_pixel_buffer_set_region_EXP
 #endif
 
+typedef struct _CoglPixelBuffer CoglPixelBuffer;
+
 /**
  * cogl_pixel_buffer_new:
  * @size: size of the buffer in bytes
@@ -56,13 +58,13 @@ G_BEGIN_DECLS
  * Creates a new buffer to store pixel data. You can create a new texture from
  * this buffer using cogl_texture_new_from_buffer().
  *
- * Return value: a #CoglHandle representing the newly created buffer or
- *               %COGL_INVALID_HANDLE on failure
+ * Return value: a #CoglPixelBuffer representing the newly created buffer or
+ *               %NULL on failure
  *
  * Since: 1.2
  * Stability: Unstable
  */
-CoglHandle
+CoglPixelBuffer *
 cogl_pixel_buffer_new (unsigned int size);
 
 /**
@@ -81,13 +83,13 @@ cogl_pixel_buffer_new (unsigned int size);
  * buffers are likely to have a stride larger than width * bytes_per_pixel. The
  * user must take the stride into account when writing into it.</note>
  *
- * Return value: a #CoglHandle representing the newly created buffer or
- *               %COGL_INVALID_HANDLE on failure
+ * Return value: a #CoglPixelBuffer representing the newly created buffer or
+ *               %NULL on failure
  *
  * Since: 1.2
  * Stability: Unstable
  */
-CoglHandle
+CoglPixelBuffer *
 cogl_pixel_buffer_new_for_size (unsigned int     width,
                                 unsigned int     height,
                                 CoglPixelFormat  format,
@@ -95,7 +97,7 @@ cogl_pixel_buffer_new_for_size (unsigned int     width,
 
 /**
  * cogl_is_pixel_buffer:
- * @handle: a #CoglHandle to test
+ * @object: a #CoglObject to test
  *
  * Checks whether @handle is a pixel buffer.
  *
@@ -106,7 +108,7 @@ cogl_pixel_buffer_new_for_size (unsigned int     width,
  * Stability: Unstable
  */
 gboolean
-cogl_is_pixel_buffer (CoglHandle handle);
+cogl_is_pixel_buffer (void *object);
 
 #if 0
 /*

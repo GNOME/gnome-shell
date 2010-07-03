@@ -51,7 +51,7 @@ typedef enum _CoglPixelBufferFlags
   COGL_PIXEL_BUFFER_FLAG_STORE_CREATED = 1 << 0,
 } CoglPixelBufferFlags;
 
-typedef struct _CoglPixelBuffer
+struct _CoglPixelBuffer
 {
   CoglBuffer            _parent;
 
@@ -63,7 +63,7 @@ typedef struct _CoglPixelBuffer
   unsigned int          height;
   unsigned int          stride;
 
-} CoglPixelBuffer;
+};
 
 GQuark
 _cogl_handle_pixel_buffer_get_type (void);

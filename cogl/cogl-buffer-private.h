@@ -29,7 +29,8 @@
 
 #include <glib.h>
 
-#include "cogl-handle.h"
+#include "cogl.h"
+#include "cogl-object.h"
 #include "cogl-buffer.h"
 
 G_BEGIN_DECLS
@@ -69,7 +70,7 @@ typedef enum _CoglBufferFlags
 
 struct _CoglBuffer
 {
-  CoglHandleObject        _parent;
+  CoglObject              _parent;
   const CoglBufferVtable *vtable;
 
   CoglBufferFlags         flags;
