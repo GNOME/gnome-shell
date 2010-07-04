@@ -32,6 +32,7 @@
 #define __COGL_VERTEX_BUFFER_H__
 
 #include <glib.h>
+#include <cogl/cogl-defines.h>
 #include <cogl/cogl-types.h>
 
 G_BEGIN_DECLS
