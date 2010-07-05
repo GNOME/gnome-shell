@@ -98,6 +98,7 @@ _cogl_pixel_array_new (unsigned int size)
   /* parent's constructor */
   _cogl_buffer_initialize (buffer,
                            size,
+                           COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
                            COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
@@ -181,16 +182,16 @@ _cogl_pixel_array_map (CoglBuffer       *buffer,
                        CoglBufferMapHint hints)
 {
   CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
-  GLenum gl_target;
   guint8 *data;
+  CoglBufferBindTarget target;
+  GLenum gl_target;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  /* we determine the target lazily, on the first map */
-  gl_target = GL_PIXEL_UNPACK_BUFFER;
-  pixel_array->gl_target = gl_target;
+  target = _cogl_buffer_get_last_bind_target (buffer);
+  _cogl_buffer_bind (buffer, target);
 
-  _cogl_buffer_bind (buffer, gl_target);
+  gl_target = _cogl_buffer_get_last_gl_target (buffer);
 
   /* create an empty store if we don't have one yet. creating the store
    * lazily allows the user of the CoglBuffer to set a hint before the
@@ -211,7 +212,7 @@ _cogl_pixel_array_map (CoglBuffer       *buffer,
   if (data)
     COGL_BUFFER_SET_FLAG (buffer, MAPPED);
 
-  _cogl_buffer_bind (NULL, gl_target);
+  _cogl_buffer_unbind (buffer);
 
   return data;
 }
@@ -219,16 +220,17 @@ _cogl_pixel_array_map (CoglBuffer       *buffer,
 static void
 _cogl_pixel_array_unmap (CoglBuffer *buffer)
 {
-  CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
+  CoglBufferBindTarget target;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_buffer_bind (buffer, pixel_array->gl_target);
+  target = _cogl_buffer_get_last_bind_target (buffer);
+  _cogl_buffer_bind (buffer, target);
 
-  GE( glUnmapBuffer (pixel_array->gl_target) );
+  GE( glUnmapBuffer (_cogl_buffer_get_last_gl_target (buffer)) );
   COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
 
-  _cogl_buffer_bind (NULL, pixel_array->gl_target);
+  _cogl_buffer_unbind (buffer);
 }
 
 static gboolean
@@ -238,19 +240,22 @@ _cogl_pixel_array_set_data (CoglBuffer   *buffer,
                             unsigned int  size)
 {
   CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
+  CoglBufferBindTarget target;
+  GLenum gl_target;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  pixel_array->gl_target = GL_PIXEL_UNPACK_BUFFER;
+  target = _cogl_buffer_get_last_bind_target (buffer);
+  _cogl_buffer_bind (buffer, target);
 
-  _cogl_buffer_bind (buffer, pixel_array->gl_target);
+  gl_target = _cogl_buffer_get_last_gl_target (buffer);
 
   /* create an empty store if we don't have one yet. creating the store
    * lazily allows the user of the CoglBuffer to set a hint before the
    * store is created. */
   if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED))
     {
-      GE( glBufferData (pixel_array->gl_target,
+      GE( glBufferData (gl_target,
                         buffer->size,
                         NULL,
                         _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
@@ -258,9 +263,9 @@ _cogl_pixel_array_set_data (CoglBuffer   *buffer,
       COGL_PIXEL_ARRAY_SET_FLAG (pixel_array, STORE_CREATED);
     }
 
-  GE( glBufferSubData (pixel_array->gl_target, offset, size, data) );
+  GE( glBufferSubData (gl_target, offset, size, data) );
 
-  _cogl_buffer_bind (NULL, pixel_array->gl_target);
+  _cogl_buffer_unbind (buffer);
 
   return TRUE;
 }

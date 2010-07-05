@@ -581,9 +581,10 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
       bitmap.format = format;
       bitmap.rowstride = rowstride;
 
-      _cogl_buffer_bind (cogl_buffer, GL_PIXEL_UNPACK_BUFFER);
+      _cogl_buffer_bind (cogl_buffer,
+                         COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
       texture =  cogl_texture_new_from_bitmap (&bitmap, flags, internal_format);
-      _cogl_buffer_bind (NULL, GL_PIXEL_UNPACK_BUFFER);
+      _cogl_buffer_unbind (cogl_buffer);
     }
   else
 #endif

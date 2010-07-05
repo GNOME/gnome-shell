@@ -58,7 +58,6 @@ struct _CoglPixelArray
 
   CoglPixelArrayFlags  flags;
 
-  GLenum                gl_target;
   CoglPixelFormat       format;
   unsigned int          width;
   unsigned int          height;

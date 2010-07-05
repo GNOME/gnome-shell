@@ -59,14 +59,24 @@
 #define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
 #define glMapBuffer ctx->drv.pf_glMapBuffer
 #define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
-#ifndef GL_ARRAY_BUFFER
-#define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
-#endif
 
 #elif defined (HAVE_COGL_GLES2)
 
 #include "../gles/cogl-gles2-wrapper.h"
 
+#endif
+
+#ifndef GL_PIXEL_PACK_BUFFER
+#define GL_PIXEL_PACK_BUFFER 0x88EB
+#endif
+#ifndef GL_PIXEL_UNPACK_BUFFER
+#define GL_PIXEL_UNPACK_BUFFER 0x88EC
+#endif
+#ifndef GL_ARRAY_BUFFER
+#define GL_ARRAY_BUFFER 0x8892
+#endif
+#ifndef GL_ELEMENT_ARRAY_BUFFER
+#define GL_ARRAY_BUFFER 0x8893
 #endif
 
 /* XXX:
@@ -105,6 +115,7 @@ cogl_is_buffer (const void *object)
 void
 _cogl_buffer_initialize (CoglBuffer           *buffer,
                          unsigned int          size,
+                         CoglBufferBindTarget  default_target,
                          CoglBufferUsageHint   usage_hint,
                          CoglBufferUpdateHint  update_hint)
 {
@@ -112,6 +123,7 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
 
   buffer->flags       = COGL_BUFFER_FLAG_NONE;
   buffer->size        = size;
+  buffer->last_target = default_target;
   buffer->usage_hint  = usage_hint;
   buffer->update_hint = update_hint;
   buffer->data        = NULL;
@@ -124,6 +136,30 @@ _cogl_buffer_fini (CoglBuffer *buffer)
     cogl_buffer_unmap (buffer);
 }
 
+GLenum
+_cogl_buffer_get_last_gl_target (CoglBuffer *buffer)
+{
+  switch (buffer->last_target)
+    {
+      case COGL_BUFFER_BIND_TARGET_PIXEL_PACK:
+        return GL_PIXEL_PACK_BUFFER;
+      case COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK:
+        return GL_PIXEL_UNPACK_BUFFER;
+      case COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY:
+        return GL_ARRAY_BUFFER;
+      case COGL_BUFFER_BIND_TARGET_VERTEX_INDICES_ARRAY:
+        return GL_ELEMENT_ARRAY_BUFFER;
+      default:
+        g_return_val_if_reached (COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
+    }
+}
+
+CoglBufferBindTarget
+_cogl_buffer_get_last_bind_target (CoglBuffer *buffer)
+{
+  return buffer->last_target;
+}
+
 /* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map
  * VBOs for write only, we don't support that in CoglBuffer */
 #if defined (COGL_HAS_GLES)
@@ -132,6 +168,7 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 {
   return 0;
 }
+
 #else
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
@@ -174,27 +211,46 @@ _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
 #endif
 
 void
-_cogl_buffer_bind (CoglBuffer *buffer,
-                   GLenum      target)
+_cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Don't bind again an already bound pbo */
-  if (ctx->current_pbo == buffer)
-    return;
+  g_return_if_fail (buffer != NULL);
 
-  if (buffer && COGL_BUFFER_FLAG_IS_SET (buffer, BUFFER_OBJECT))
+  /* Don't allow binding the buffer to multiple targets at the same time */
+  g_return_if_fail (ctx->current_buffer[buffer->last_target] != buffer);
+
+  /* Don't allow nesting binds to the same target */
+  g_return_if_fail (ctx->current_buffer[target] == NULL);
+
+  buffer->last_target = target;
+
+  if (COGL_BUFFER_FLAG_IS_SET (buffer, BUFFER_OBJECT))
     {
-      GE( glBindBuffer (target, buffer->gl_handle) );
-    }
-  else if (buffer == NULL &&
-           ctx->current_pbo &&
-           COGL_BUFFER_FLAG_IS_SET (ctx->current_pbo, BUFFER_OBJECT))
-    {
-      GE( glBindBuffer (target, 0) );
+      GLenum gl_target = _cogl_buffer_get_last_gl_target (buffer);
+      GE( glBindBuffer (gl_target, buffer->gl_handle) );
     }
 
-  ctx->current_pbo = buffer;
+  ctx->current_buffer[target] = buffer;
+}
+
+void
+_cogl_buffer_unbind (CoglBuffer *buffer)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (buffer != NULL);
+
+  /* the unbind should pair up with a previous bind */
+  g_return_if_fail (ctx->current_buffer[buffer->last_target] == buffer);
+
+  if (COGL_BUFFER_FLAG_IS_SET (buffer, BUFFER_OBJECT))
+    {
+      GLenum gl_target = _cogl_buffer_get_last_gl_target (buffer);
+      GE( glBindBuffer (gl_target, 0) );
+    }
+
+  ctx->current_buffer[buffer->last_target] = NULL;
 }
 
 unsigned int
