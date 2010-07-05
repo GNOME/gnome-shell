@@ -111,4 +111,5 @@
 /test-cogl-object
 /test-script-layout-property
 /test-cogl-depth-test
+/test-cogl-pixel-array
 /wrappers
