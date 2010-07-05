@@ -52,7 +52,8 @@ typedef struct _CoglBufferVtable CoglBufferVtable;
 struct _CoglBufferVtable
 {
   guint8 * (* map) (CoglBuffer       *buffer,
-                    CoglBufferAccess  access);
+                    CoglBufferAccess  access,
+                    CoglBufferMapHint hints);
 
   void (* unmap) (CoglBuffer *buffer);
 
