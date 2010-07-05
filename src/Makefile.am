@@ -210,8 +210,12 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-I $(srcdir)				\
-		-o $@
+		-o $@.tmp &&				\
+	$(PYTHON) $(srcdir)/fix-meta-rectangle.py $@.tmp $@.tmp2 &&	\
+	rm $@.tmp &&							\
+	mv $@.tmp2 $@
 CLEANFILES += Shell-0.1.gir
+EXTRA_DIST += fix-meta-rectangle.py
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
