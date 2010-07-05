@@ -9,7 +9,7 @@ AUTOMAKE_OPTIONS = 1.6
 # of using the various options.
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=clutter
+DOC_MODULE=cally
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
@@ -18,18 +18,18 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR=../../../clutter
+DOC_SOURCE_DIR=../../../clutter/cally
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=--type-init-func="clutter_base_init()"
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
-SCAN_OPTIONS=--deprecated-guards="CLUTTER_DISABLE_DEPRECATED"
+SCAN_OPTIONS=--deprecated-guards="CALLY_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
-MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=clutter
+MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=cally
 
 # Extra options to supply to gtkdoc-mktmpl
 # e.g. MKTMPL_OPTIONS=--only-section-tmpl
@@ -39,6 +39,7 @@ MKTMPL_OPTIONS=
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
 FIXXREF_OPTIONS=\
 	--extra-dir=../cogl/html \
+	--extra-dir=../clutter/html \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/gobject \
 	--extra-dir=$(CAIRO_PREFIX)/share/gtk-doc/html/cairo \
@@ -47,96 +48,27 @@ FIXXREF_OPTIONS=\
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/clutter/*.h \
-	$(top_builddir)/clutter/*.h \
-	$(top_srcdir)/clutter/x11/clutter-x11.h \
-	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/egl/clutter-egl.h \
-	$(top_srcdir)/clutter/win32/clutter-win32.h
-CFILE_GLOB=$(top_srcdir)/clutter/*.c \
-	$(top_srcdir)/clutter/x11/*.c \
-	$(top_srcdir)/clutter/glx/*.c \
-	$(top_srcdir)/clutter/win32/*.c \
-	$(top_srcdir)/clutter/egl/*.c
+HFILE_GLOB=$(top_srcdir)/clutter/cally/*.h $(top_builddir)/clutter/cally/*.h
+CFILE_GLOB=$(top_srcdir)/clutter/cally/*.c $(top_builddir)/clutter/cally/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=\
-	clutter.h 			\
-	clutter-actor-meta-private.h	\
-        clutter-bezier.h 		\
-	clutter-debug.h 		\
-	clutter-deprecated.h 		\
-	clutter-enum-types.h 		\
-	clutter-id-pool.h 		\
-	clutter-json.h 			\
-	clutter-keysyms.h 		\
-	clutter-keysyms-table.h 	\
-	clutter-marshal.h 		\
-	clutter-master-clock.h 		\
-	clutter-model-private.h 	\
-	clutter-private.h 		\
-	clutter-profile.h		\
-	clutter-script-private.h 	\
-	clutter-stage-window.h 		\
-	clutter-timeout-interval.h 	\
-	cally				\
-	cogl 				\
-	egl 				\
-	fruity				\
-	glx 				\
-	json 				\
-	osx 				\
-	x11 				\
-	win32
+IGNORE_HFILES=cally-actor-private.h
 
-EXTRA_HFILES=\
-        $(top_srcdir)/clutter/x11/clutter-x11.h \
-	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/egl/clutter-egl.h \
-	$(top_srcdir)/clutter/win32/clutter-win32.h
+EXTRA_HFILES=
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
-HTML_IMAGES=\
-	actor-box.png \
-	animator-key-frames.png \
-	bin-layout.png \
-	box-layout.png \
-        easing-modes.png \
-	event-flow.png \
-	flow-layout-horizontal.png \
-	flow-layout-vertical.png \
-	path-alpha-func.png
+HTML_IMAGES=
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
-content_files= \
-	glossary.xml \
-	subclassing-ClutterActor.xml \
-        clutter-animation-tutorial.xml \
-	creating-behaviours.xml \
-	clutter-overview.xml \
-	building-clutter.xml \
-	running-clutter.xml \
-	migrating-ClutterEffect.xml \
-	migrating-ClutterPath.xml
+content_files=
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
 # e.g. expand_content_files=running.sgml
-expand_content_files= \
-	glossary.xml \
-	subclassing-ClutterActor.xml \
-        clutter-animation-tutorial.xml \
-	creating-behaviours.xml \
-	clutter-overview.xml \
-	building-clutter.xml \
-	running-clutter.xml \
-	migrating-ClutterEffect.xml \
-	migrating-ClutterPath.xml
+expand_content_files=
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
@@ -152,15 +84,4 @@ include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-EXTRA_DIST += \
-	actor-box.png \
-	animator-key-frames.png \
-	animator-key-frames.svg \
-	bin-layout.png \
-	box-layout.png \
-        easing-modes.png \
-        easing-modes.svg \
-	event-flow.png \
-	flow-layout-horizontal.png \
-	flow-layout-vertical.png \
-	path-alpha-func.png
+#EXTRA_DIST +=
