@@ -57,6 +57,7 @@ cogl_create_context (void)
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   unsigned long  enable_flags = 0;
   CoglHandle window_buffer;
+  int i;
 
   if (_context != NULL)
     return FALSE;
@@ -148,6 +149,9 @@ cogl_create_context (void)
 
   _context->legacy_depth_test_enabled = FALSE;
 
+  for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)
+    _context->current_buffer[i] = NULL;
+
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
   window_buffer = _cogl_onscreen_new ();
@@ -203,8 +207,6 @@ cogl_create_context (void)
 
   _context->atlas = NULL;
   _context->atlas_texture = COGL_INVALID_HANDLE;
-
-  _context->current_pbo = NULL;
 
   return TRUE;
 }

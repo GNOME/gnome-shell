@@ -118,9 +118,7 @@ typedef struct
 
   gboolean              legacy_depth_test_enabled;
 
-  /* PBOs */
-  /* This can be used to check if a pbo is bound */
-  CoglBuffer       *current_pbo;
+  CoglBuffer       *current_buffer[COGL_BUFFER_BIND_TARGET_COUNT];
 
   /* Framebuffers */
   GSList           *framebuffer_stack;

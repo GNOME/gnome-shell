@@ -75,10 +75,21 @@ typedef enum {
   COGL_BUFFER_USAGE_HINT_VERTICES
 } CoglBufferUsageHint;
 
+typedef enum {
+  COGL_BUFFER_BIND_TARGET_PIXEL_PACK,
+  COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
+  COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY,
+  COGL_BUFFER_BIND_TARGET_VERTEX_INDICES_ARRAY,
+
+  COGL_BUFFER_BIND_TARGET_COUNT
+} CoglBufferBindTarget;
+
 struct _CoglBuffer
 {
   CoglObject              _parent;
   const CoglBufferVtable *vtable;
+
+  CoglBufferBindTarget    last_target;
 
   CoglBufferFlags         flags;
 
@@ -107,6 +118,7 @@ _cogl_buffer_register_buffer_type (GQuark type);
 void
 _cogl_buffer_initialize (CoglBuffer          *buffer,
                          unsigned int         size,
+                         CoglBufferBindTarget default_target,
                          CoglBufferUsageHint  usage_hint,
                          CoglBufferUpdateHint update_hint);
 
@@ -115,10 +127,19 @@ _cogl_buffer_fini (CoglBuffer *buffer);
 
 void
 _cogl_buffer_bind (CoglBuffer *buffer,
-                   GLenum      target);
+                   CoglBufferBindTarget target);
+
+void
+_cogl_buffer_unbind (CoglBuffer *buffer);
 
 CoglBufferUsageHint
 _cogl_buffer_get_usage_hint (CoglBuffer *buffer);
+
+GLenum
+_cogl_buffer_get_last_gl_target (CoglBuffer *buffer);
+
+CoglBufferBindTarget
+_cogl_buffer_get_last_bind_target (CoglBuffer *buffer);
 
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access);
