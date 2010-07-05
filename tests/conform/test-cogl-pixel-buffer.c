@@ -82,11 +82,11 @@ create_map_tile (TestTile *tile)
   g_assert (map);
 
   line = g_alloca (TILE_SIZE * 4);
-  for (i = 0; i < TILE_SIZE; i += 4)
+  for (i = 0; i < TILE_SIZE * 4; i += 4)
     memcpy (line + i, &tile->color, 4);
 
   for (i = 0; i < TILE_SIZE; i++)
-    memcpy (map + stride, line, 4);
+    memcpy (map + stride * i, line, TILE_SIZE * 4);
 
   cogl_buffer_unmap (buffer);
 
