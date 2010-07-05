@@ -29,7 +29,7 @@
  * @see_also: #ClutterActor
  *
  * #CallyActor implements the required ATK interfaces of #ClutterActor
- * exposing the common elements on each ClutterActor (position, extents, etc).
+ * exposing the common elements on each actor (position, extents, etc).
  */
 
 /*
@@ -114,7 +114,7 @@
 
 typedef struct _CallyActorActionInfo CallyActorActionInfo;
 
-/**
+/*< private >
  * CallyActorActionInfo:
  * @name: name of the action
  * @description: description of the action
@@ -238,8 +238,17 @@ struct _CallyActorPrivate
   GList *children;
 };
 
-
-AtkObject*
+/**
+ * cally_actor_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyActor for the given @actor
+ *
+ * Return value: the newly created #CallyActor
+ *
+ * Since: 1.4
+ */
+AtkObject *
 cally_actor_new (ClutterActor *actor)
 {
   gpointer   object;
@@ -889,7 +898,7 @@ _is_actor_on_screen (ClutterActor *actor)
   return TRUE;
 }
 
-/**
+/*
  *
  * This gets the top level origin, it is, the position of the stage in
  * the global screen. You can see it as the absolute display position
@@ -898,7 +907,7 @@ _is_actor_on_screen (ClutterActor *actor)
  * FIXME: only the case with x11 is implemented, other backends are
  * required
  *
- **/
+ */
 static void
 _get_top_level_origin (ClutterActor *actor,
                        gint         *x,
@@ -1116,14 +1125,14 @@ cally_actor_action_get_keybinding (AtkAction *action,
 
 /* Misc functions */
 
-/**
+/*
  * Checks if the parent actor, and his parent, etc is all visible
  * Used to check the showing property
  *
  * FIXME: the same functionality is implemented on clutter since version 0.8.4
  * by clutter_actor_get_paint_visibility, so we should change this function
  * if a clutter version update is made
- **/
+ */
 static gboolean
 _cally_actor_all_parents_visible (ClutterActor *actor)
 {
@@ -1352,23 +1361,24 @@ _cally_actor_release_action (CallyActor *cally_actor)
 
 /**
  * cally_actor_add_action:
+ * @cally_actor: a #CallyActor
  * @action_name: the action name
  * @action_description: the action description
  * @action_keybinding: the action keybinding
  * @action_func: the callback of the action, to be executed with do_action
  *
- * Adds a new action to be accessed with the AtkAction interface.
+ * Adds a new action to be accessed with the #AtkAction interface.
  *
  * Return value: added action id, or 0 if failure
  *
- * Since: 1.2
+ * Since: 1.4
  */
 guint
-cally_actor_add_action (CallyActor   *cally_actor,
-                        const gchar *action_name,
-                        const gchar *action_description,
-                        const gchar *action_keybinding,
-                        CallyActionFunc action_func)
+cally_actor_add_action (CallyActor      *cally_actor,
+                        const gchar     *action_name,
+                        const gchar     *action_description,
+                        const gchar     *action_keybinding,
+                        CallyActionFunc  action_func)
 {
   CallyActorActionInfo *info = NULL;
   CallyActorPrivate    *priv = NULL;
@@ -1404,17 +1414,18 @@ cally_actor_add_action (CallyActor   *cally_actor,
 
 /**
  * cally_actor_remove_action:
+ * @cally_actor: a #CallyActor
  * @action_id: the action id
  *
- * Removes a action, using the @action_id returned by cally_actor_add_action
+ * Removes a action, using the @action_id returned by cally_actor_add_action()
  *
- * Return value: TRUE if the operation was succesful, FALSE otherwise
+ * Return value: %TRUE if the operation was succesful, %FALSE otherwise
  *
- * Since: 1.2
+ * Since: 1.4
  */
 gboolean
 cally_actor_remove_action (CallyActor *cally_actor,
-                           gint       action_id)
+                           gint        action_id)
 {
   GList            *list_node = NULL;
   CallyActorPrivate *priv      = NULL;
@@ -1435,18 +1446,19 @@ cally_actor_remove_action (CallyActor *cally_actor,
 }
 
 /**
- * cally_actor_remove_action:
- * @action_name: the name of the action
+ * cally_actor_remove_action_by_name:
+ * @cally_actor: a #CallyActor
+ * @action_name: the name of the action to remove
  *
- * Removes a action, using the @action_name used when the action was added
- * with cally_actor_add_action
+ * Removes an action, using the @action_name used when the action was added
+ * with cally_actor_add_action()
  *
- * Return value: TRUE if the operation was succesful, FALSE otherwise
+ * Return value: %TRUE if the operation was succesful, %FALSE otherwise
  *
- * Since: 1.2
+ * Since: 1.4
  */
 gboolean
-cally_actor_remove_action_by_name (CallyActor   *cally_actor,
+cally_actor_remove_action_by_name (CallyActor  *cally_actor,
                                    const gchar *action_name)
 {
   GList            *node         = NULL;

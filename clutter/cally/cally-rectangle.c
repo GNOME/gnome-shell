@@ -21,11 +21,11 @@
  */
 
 /**
- * SECTION:callyclutterrectangle
+ * SECTION:cally-rectangle
  * @short_description: Implementation of the ATK interfaces for a #ClutterRectangle
  * @see_also: #ClutterRectangle
  *
- * #CallyClutterRectangle implements the required ATK interfaces of #ClutterRectangle
+ * #CallyRectangle implements the required ATK interfaces of #ClutterRectangle
  *
  * In particular it sets a proper role for the rectangle.
  */

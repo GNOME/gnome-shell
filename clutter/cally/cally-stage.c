@@ -21,11 +21,12 @@
  */
 
 /**
- * SECTION:callystage
+ * SECTION:cally-stage
+ * @Title: CallyStage
  * @short_description: Implementation of the ATK interfaces for a #ClutterStage
  * @see_also: #ClutterStage
  *
- * #CallyStage implements the required ATK interfaces of #ClutterStage
+ * #CallyStage implements the required ATK interfaces for #ClutterStage
  *
  */
 

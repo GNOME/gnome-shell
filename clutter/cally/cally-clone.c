@@ -21,16 +21,53 @@
  */
 
 /**
- * SECTION:callyclutterclone
+ * SECTION:cally-clone
+ * @Title: CallyClone
  * @short_description: Implementation of the ATK interfaces for a #ClutterClone
  * @see_also: #ClutterClone
  *
- * #CallyClutterClone implements the required ATK interfaces of #ClutterClone
+ * #CallyClone implements the required ATK interfaces of #ClutterClone
  *
  * In particular it sets a proper role for the clone, as just a image,
  * as it is the sanest and simplest approach.
+ */
+
+/* Design rationale for CallyClone:
  *
- * Check http://lists.o-hand.com/clutter/3797.html for more information
+ * In the old times, it was just ClutterCloneTexture. So, from a a11y POV
+ * CallyCloneTexture was just another image, like ClutterTexture, and if
+ * it was a clone was irrevelant. So on cally-0.8, CallyCloneTexture
+ * expose a object with role ATK_ROLE_IMAGE. But now, ClutterClone is more
+ * general. You can clone any object, including groups, and made things
+ * like have one text entry, and a clone with different properties in the
+ * same window, updated both at once.
+ *
+ * The question is if the idea is have a ClutterClone as a "first-class"
+ * citizen inside the stage hierarchy (full clone), or it is just supposed
+ * to be a mirror image of the original object.
+ *
+ * In the case of the a11y POV this would mean that if the text changes on
+ * the source, the clone should emit as well the text-changing signals.
+ *
+ * As ClutterClone smartly just paint the same object with different
+ * parameters, this would mean that it should be the cally object the one
+ * that should replicate the source clutter hierarchy to do that,
+ * something that just sound crazy.
+ *
+ * Taking into account that:
+ *
+ * - ClutterClone doesn't re-emit mirrored signals from the source 
+ *   I think that likely the answer would be "yes, it is just a
+ *   mirrored image, not a real full clone".
+ *
+ * - You can't interact directly with the clone (ie: focus, and so on).
+ *   Its basic usage (right now) is clone textures.
+ *
+ * Any other solution could be overwhelming.
+ *
+ * I think that the final solution would be that ClutterClone from the
+ * a11y POV should still be managed as a image (with the proper properties,
+ * position, size, etc.).
  */
 
 #include "cally-clone.h"

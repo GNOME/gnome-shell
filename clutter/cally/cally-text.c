@@ -29,13 +29,13 @@
  * @short_description: Implementation of the ATK interfaces for a #ClutterText
  * @see_also: #ClutterText
  *
- * #CallyClutterText implements the required ATK interfaces of
+ * #CallyText implements the required ATK interfaces of
  * #ClutterText, #AtkText and #AtkEditableText
  *
  *
  */
 
-/**
+/*
  * IMPLEMENTATION NOTES:
  *
  * * AtkText: There are still some methods not implemented yet:

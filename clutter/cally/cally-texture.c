@@ -21,11 +21,12 @@
  */
 
 /**
- * SECTION:callycluttertexture
+ * SECTION:cally-texture
+ * @Title: CallyTexture
  * @short_description: Implementation of the ATK interfaces for a #ClutterTexture
  * @see_also: #ClutterTexture
  *
- * #CallyClutterTexture implements the required ATK interfaces of #ClutterTexture
+ * #CallyTexture implements the required ATK interfaces of #ClutterTexture
  *
  * In particular it sets a proper role for the texture.
  */

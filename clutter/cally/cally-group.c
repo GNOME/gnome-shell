@@ -24,14 +24,17 @@
  */
 
 /**
- * SECTION:callycluttergroup
+ * SECTION:cally-group
+ * @Title: CallyGroup
  * @short_description: Implementation of the ATK interfaces for a #ClutterGroup
  * @see_also: #ClutterGroup
  *
  * #CallyClutterGroup implements the required ATK interfaces of #ClutterGroup
  * In particular it exposes:
+ *
  * <itemizedlist>
- * <listitem>Each of the Clutter actors contained in the Clutter Group.</listitem>
+ *   <listitem><simpara>Each of the Clutter actors contained in the
+ *   Group.</simpara></listitem>
  * </itemizedlist>
  */
 
@@ -65,7 +68,17 @@ cally_group_init (CallyGroup      *group)
   /* nothing to do yet */
 }
 
-AtkObject*
+/**
+ * cally_group_new:
+ * @actor: a #ClutterGroup
+ *
+ * Creates a #CallyGroup for @actor
+ *
+ * Return value: the newly created #CallyGroup
+ *
+ * Since: 1.4
+ */
+AtkObject *
 cally_group_new (ClutterActor *actor)
 {
   GObject   *object     = NULL;
