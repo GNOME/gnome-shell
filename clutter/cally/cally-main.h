@@ -4,6 +4,10 @@
  *
  * Author: Alejandro Piñeiro Iglesias <apinheiro@igalia.com>
  *
+ * Some parts are based on GailWidget from GAIL
+ * GAIL - The GNOME Accessibility Implementation Library
+ * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,23 +22,18 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CALLY_H__
-#define __CALLY_H__
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
-#define __CALLY_H_INSIDE__
+#ifndef __CALLY_MAIN_H__
+#define __CALLY_MAIN_H__
 
-#include "cally-actor.h"
-#include "cally-clone.h"
-#include "cally-factory.h"
-#include "cally-group.h"
-#include "cally-main.h"
-#include "cally-rectangle.h"
-#include "cally-root.h"
-#include "cally-stage.h"
-#include "cally-text.h"
-#include "cally-texture.h"
-#include "cally-util.h"
+G_BEGIN_DECLS
 
-#undef __CALLY_H_INSIDE__
+gboolean cally_get_cally_initialized (void);
+gboolean cally_accessibility_init    (void);
 
-#endif /* __CALLY_H__ */
+G_END_DECLS
+
+#endif /* __CALLY_MAIN_H__ */

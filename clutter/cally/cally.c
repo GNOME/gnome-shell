@@ -20,6 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "cally.h"
 
 #include "cally-actor.h"
@@ -33,7 +37,10 @@
 #include "cally-factory.h"
 #include "cally-util.h"
 
+#include "clutter.h"
+
 #include "clutter-debug.h"
+#include "clutter-private.h"
 
 static int cally_initialized = FALSE;
 

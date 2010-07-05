@@ -15,15 +15,18 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
 #ifndef __CALLY_RECTANGLE_H__
 #define __CALLY_RECTANGLE_H__
 
-#include "cally-actor.h"
+#include <cally/cally-actor.h>
+#include <clutter/clutter-rectangle.h>
 
 G_BEGIN_DECLS
 
@@ -34,28 +37,44 @@ G_BEGIN_DECLS
 #define CALLY_IS_RECTANGLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CALLY_TYPE_RECTANGLE))
 #define CALLY_RECTANGLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CALLY_TYPE_RECTANGLE, CallyRectangleClass))
 
-
 typedef struct _CallyRectangle         CallyRectangle;
 typedef struct _CallyRectangleClass    CallyRectangleClass;
 typedef struct _CallyRectanglePrivate  CallyRectanglePrivate;
 
+/**
+ * CallyRectangle:
+ *
+ * The <structname>CallyRectangle</structname> structure contains only private
+ * data and should be accessed using the provided API
+ *
+ * Since: 1.4
+ */
 struct _CallyRectangle
 {
+  /*< private >*/
   CallyActor parent;
 
-  /* < private > */
   CallyRectanglePrivate *priv;
 };
 
+/**
+ * CallyRectangleClass:
+ *
+ * The <structname>CallyRectangleClass</structname> structure contains
+ * only private data
+ *
+ * Since: 1.4
+ */
 struct _CallyRectangleClass
 {
+  /*< private >*/
   CallyActorClass parent_class;
 
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[8];
 };
 
-GType      cally_rectangle_get_type (void);
+GType      cally_rectangle_get_type (void) G_GNUC_CONST;
 AtkObject* cally_rectangle_new      (ClutterActor *actor);
 
 G_END_DECLS

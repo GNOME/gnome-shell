@@ -15,47 +15,66 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
 #ifndef __CALLY_TEXT_H__
 #define __CALLY_TEXT_H__
 
-#include "cally-actor.h"
+#include <cally/cally-actor.h>
+#include <clutter/clutter-text.h>
 
 G_BEGIN_DECLS
 
-#define CALLY_TYPE_TEXT           (cally_text_get_type ())
-#define CALLY_TEXT(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), CALLY_TYPE_TEXT, CallyText))
-#define CALLY_TEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), CALLY_TYPE_TEXT, CallyTextClass))
-#define CALLY_IS_TEXT(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CALLY_TYPE_TEXT))
-#define CALLY_IS_TEXT_CLASS(klass)(G_TYPE_CHECK_CLASS_TYPE ((klass), CALLY_TYPE_TEXT))
-#define CALLY_TEXT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), CALLY_TYPE_TEXT, CallyTextClass))
+#define CALLY_TYPE_TEXT                 (cally_text_get_type ())
+#define CALLY_TEXT(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CALLY_TYPE_TEXT, CallyText))
+#define CALLY_TEXT_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), CALLY_TYPE_TEXT, CallyTextClass))
+#define CALLY_IS_TEXT(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CALLY_TYPE_TEXT))
+#define CALLY_IS_TEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), CALLY_TYPE_TEXT))
+#define CALLY_TEXT_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), CALLY_TYPE_TEXT, CallyTextClass))
 
+typedef struct _CallyText               CallyText;
+typedef struct _CallyTextClass          CallyTextClass;
+typedef struct _CallyTextPrivate        CallyTextPrivate;
 
-typedef struct _CallyText         CallyText;
-typedef struct _CallyTextClass    CallyTextClass;
-typedef struct _CallyTextPrivate  CallyTextPrivate;
-
+/**
+ * CallyText:
+ *
+ * The <structname>CallyText</structname> structure contains only private
+ * data and should be accessed using the provided API
+ *
+ * Since: 1.4
+ */
 struct _CallyText
 {
+  /*< private >*/
   CallyActor parent;
 
-  /* < private > */
   CallyTextPrivate *priv;
 };
 
+/**
+ * CallyTextClass:
+ *
+ * The <structname>CallyTextClass</structname> structure contains only
+ * private data
+ *
+ * Since: 1.4
+ */
 struct _CallyTextClass
 {
+  /*< private >*/
   CallyActorClass parent_class;
 
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[8];
 };
 
-GType      cally_text_get_type (void);
+GType      cally_text_get_type (void) G_GNUC_CONST;
 AtkObject* cally_text_new      (ClutterActor *actor);
 
 G_END_DECLS

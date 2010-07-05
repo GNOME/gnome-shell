@@ -18,15 +18,18 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
 #ifndef __CALLY_GROUP_H__
 #define __CALLY_GROUP_H__
 
-#include "cally-actor.h"
+#include <cally/cally-actor.h>
+#include <clutter/clutter-group.h>
 
 G_BEGIN_DECLS
 
@@ -41,23 +44,40 @@ typedef struct _CallyGroup        CallyGroup;
 typedef struct _CallyGroupClass   CallyGroupClass;
 typedef struct _CallyGroupPrivate CallyGroupPrivate;
 
+/**
+ * CallyGroup:
+ *
+ * The <structname>CallyGroup</structname> structure contains only
+ * private data and should be accessed using the provided API
+ *
+ * Since: 1.4
+ */
 struct _CallyGroup
 {
+  /*< private >*/
   CallyActor parent;
 
-  /* < private > */
   CallyGroupPrivate *priv;
 };
 
+/**
+ * CallyGroupClass:
+ *
+ * The <structname>CallyGroupClass</structname> structure contains only
+ * private data
+ *
+ * Since: 1.4
+ */
 struct _CallyGroupClass
 {
+  /*< private >*/
   CallyActorClass parent_class;
 
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[8];
 };
 
-GType      cally_group_get_type (void);
+GType      cally_group_get_type (void) G_GNUC_CONST;
 AtkObject* cally_group_new      (ClutterActor *actor);
 
 G_END_DECLS

@@ -64,8 +64,14 @@
  *     See details on bug CB#1734
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "cally-text.h"
 #include "cally-actor-private.h"
+
+#include "clutter-main.h"
 
 static void cally_text_class_init (CallyTextClass *klass);
 static void cally_text_init       (CallyText *cally_text);

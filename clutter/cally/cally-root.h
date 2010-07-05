@@ -15,10 +15,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
 #ifndef __CALLY_ROOT_H__
 #define __CALLY_ROOT_H__
@@ -38,26 +40,42 @@ typedef struct _CallyRoot        CallyRoot;
 typedef struct _CallyRootClass   CallyRootClass;
 typedef struct _CallyRootPrivate CallyRootPrivate;
 
+/**
+ * CallyRoot:
+ *
+ * The <structname>CallyRoot</structname> structure contains only private
+ * data and should be accessed using the provided API
+ *
+ * Since: 1.4
+ */
 struct _CallyRoot
 {
+  /*< private >*/
   AtkGObjectAccessible parent;
 
-  /* < private > */
   CallyRootPrivate *priv;
 };
 
+/**
+ * CallyRootClass:
+ *
+ * The <structname>CallyRootClass</structname> structure contains only
+ * private data
+ *
+ * Since: 1.4
+ */
 struct _CallyRootClass
 {
+  /*< private >*/
   AtkGObjectAccessibleClass parent_class;
 
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[16];
 };
 
 
-GType      cally_root_get_type (void);
+GType      cally_root_get_type (void) G_GNUC_CONST;
 AtkObject *cally_root_new      (void);
-
 
 G_END_DECLS
 

@@ -19,16 +19,18 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cally/cally.h> can be included directly."
+#endif
 
 #ifndef __CALLY_ACTOR_H__
 #define __CALLY_ACTOR_H__
 
 #include <atk/atk.h>
-#include <clutter/clutter.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 
@@ -47,23 +49,47 @@ typedef struct _CallyActorPrivate    CallyActorPrivate;
  * CallyActionFunc:
  * @cally_actor: a #CallyActor
  *
- * Action func, to be used on AtkAction implementation as a individual
+ * Action function, to be used on #AtkAction implementations as a individual
  * action
+ *
+ * Since: 1.4
  */
-typedef void (*CallyActionFunc) (CallyActor *cally_actor);
+typedef void (* CallyActionFunc) (CallyActor *cally_actor);
 
+/**
+ * CallyActor:
+ *
+ * The <structname>CallyActor</structname> structure contains only private
+ * data and should be accessed using the provided API
+ *
+ * Since: 1.4
+ */
 struct _CallyActor
 {
+  /*< private >*/
   AtkGObjectAccessible parent;
 
-  /* < private > */
   CallyActorPrivate *priv;
 };
 
+/**
+ * CallyActorClass:
+ * @notify_clutter: FIXME
+ * @focus_clutter: FIXME
+ * @add_actor: FIXME
+ * @remove_actor: FIXME
+ *
+ * The <structname>CallyActorClass</structname> structure contains only
+ * private data
+ *
+ * Since: 1.4
+ */
 struct _CallyActorClass
 {
+  /*< private >*/
   AtkGObjectAccessibleClass parent_class;
 
+  /*< public >*/
   /* Signal handler for notify signal on Clutter Actor */
   void     (*notify_clutter) (GObject    *object,
                               GParamSpec *pspec);
@@ -82,12 +108,13 @@ struct _CallyActorClass
                               ClutterActor *actor,
                               gpointer      data);
 
+  /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[32];
 };
 
 
-GType      cally_actor_get_type              (void);
+GType      cally_actor_get_type              (void) G_GNUC_CONST;
 
 AtkObject* cally_actor_new                   (ClutterActor *actor);
 guint      cally_actor_add_action            (CallyActor   *cally_actor,

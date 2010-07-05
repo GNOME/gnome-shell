@@ -53,7 +53,7 @@ CFILE_GLOB=$(top_srcdir)/clutter/cally/*.c $(top_builddir)/clutter/cally/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=cally-actor-private.h
+IGNORE_HFILES=cally-actor-private.h cally.h
 
 EXTRA_HFILES=
 

@@ -1,8 +1,12 @@
 /* CALLY - The Clutter Accessibility Implementation Library
  *
- * Copyright (C) 2009 Igalia, S.L.
+ * Copyright (C) 2008 Igalia, S.L.
  *
  * Author: Alejandro Piñeiro Iglesias <apinheiro@igalia.com>
+ *
+ * Some parts are based on GailWidget from GAIL
+ * GAIL - The GNOME Accessibility Implementation Library
+ * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,10 +19,9 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef __CALLY_ACTOR_PRIVATE_H__
 #define __CALLY_ACTOR_PRIVATE_H__
 

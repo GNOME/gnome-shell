@@ -23,6 +23,7 @@ cally_h_sources = 		cally.h			\
 				cally-actor.h		\
 				cally-factory.h		\
 				cally-group.h    	\
+				cally-main.h		\
 				cally-rectangle.h	\
 				cally-root.h		\
 				cally-stage.h		\

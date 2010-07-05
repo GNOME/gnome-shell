@@ -2,12 +2,12 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
+
 apiversion=@CLUTTER_API_VERSION@
+winsys=@CLUTTER_WINSYS@
+soname_infix=@CLUTTER_SONAME_INFIX@
+cogl_driver=@COGL_DRIVER@
 requires=@CLUTTER_REQUIRES@
-backend=@COGL_WINSYS@ #only kept for backward compatability
-winsys=@COGL_WINSYS@
-cogl=@COGL_DRIVER@ #only kept for backward compatability
-driver=@COGL_DRIVER@
 
 Name: Cally
 Description: Clutter Accessibility Implementation Library
