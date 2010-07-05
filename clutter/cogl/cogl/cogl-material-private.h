@@ -903,13 +903,13 @@ _cogl_material_layer_get_authority (CoglMaterialLayer *layer,
 CoglHandle
 _cogl_material_layer_get_texture (CoglMaterialLayer *layer);
 
-typedef gboolean (*CoglMaterialLayerCallback) (CoglMaterialLayer *layer,
-                                               void *user_data);
+typedef gboolean (*CoglMaterialInternalLayerCallback) (CoglMaterialLayer *layer,
+                                                       void *user_data);
 
 void
-_cogl_material_foreach_layer (CoglMaterial *material,
-                              CoglMaterialLayerCallback callback,
-                              void *user_data);
+_cogl_material_foreach_layer_internal (CoglMaterial *material,
+                                       CoglMaterialInternalLayerCallback callback,
+                                       void *user_data);
 
 int
 _cogl_material_layer_get_unit_index (CoglMaterialLayer *layer);
