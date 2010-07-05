@@ -1348,6 +1348,39 @@ cogl_material_get_depth_range (CoglMaterial *material,
                                float *near_val,
                                float *far_val);
 
+/**
+ * CoglMaterialLayerCallback:
+ * @material: The #CoglMaterial whos layers are being iterated
+ * @layer_index: The current layer index
+ * @user_data: The private data passed to cogl_material_foreach_layer()
+ *
+ * The callback prototype used with cogl_material_foreach_layer() for
+ * iterating all the layers of a @material.
+ *
+ * Since: 1.4
+ * Stability: Unstable
+ */
+typedef gboolean (*CoglMaterialLayerCallback) (CoglMaterial *material,
+                                               int layer_index,
+                                               void *user_data);
+
+/**
+ * cogl_material_foreach_layer:
+ * @material: A #CoglMaterial object
+ * @callback: A #CoglMaterialLayerCallback to be called for each layer
+ *            index
+ * @user_data: Private data that will be passed to the callback
+ *
+ * Iterates all the layer indices of the given @material.
+ *
+ * Since: 1.4
+ * Stability: Unstable
+ */
+void
+cogl_material_foreach_layer (CoglMaterial *material,
+                             CoglMaterialLayerCallback callback,
+                             void *user_data);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS

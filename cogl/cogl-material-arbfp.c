@@ -226,17 +226,17 @@ find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
         g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
       state.i = 0;
       state.layers = authority0_layers;
-      _cogl_material_foreach_layer (authority0,
-                                    add_layer_to_array_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (authority0,
+                                             add_layer_to_array_cb,
+                                             &state);
 
       authority1_layers =
         g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
       state.i = 0;
       state.layers = authority1_layers;
-      _cogl_material_foreach_layer (authority1,
-                                    add_layer_to_array_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (authority1,
+                                             add_layer_to_array_cb,
+                                             &state);
 
       if (layers_arbfp_would_differ (authority0_layers, authority1_layers,
                                      n_layers))

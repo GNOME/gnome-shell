@@ -833,9 +833,9 @@ _cogl_material_flush_common_gl_state (CoglMaterial  *material,
 
   state.i = 0;
   state.layer_differences = layer_differences;
-  _cogl_material_foreach_layer (material,
-                                flush_layers_common_gl_state_cb,
-                                &state);
+  _cogl_material_foreach_layer_internal (material,
+                                         flush_layers_common_gl_state_cb,
+                                         &state);
 
   /* Disable additional texture units that may have previously been in use.. */
   for (; state.i < ctx->texture_units->len; state.i++)
@@ -1115,9 +1115,9 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
       memset (layer_differences, 0, sizeof (layer_differences));
       state.i = 0;
       state.layer_differences = layer_differences;
-      _cogl_material_foreach_layer (material,
-                                    compare_layer_differences_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (material,
+                                             compare_layer_differences_cb,
+                                             &state);
     }
 
   /* First flush everything that's the same regardless of which
@@ -1178,9 +1178,9 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
       state.layer_differences = layer_differences;
       state.error_adding_layer = FALSE;
       state.added_layer = FALSE;
-      _cogl_material_foreach_layer (material,
-                                    backend_add_layer_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (material,
+                                             backend_add_layer_cb,
+                                             &state);
 
       if (G_UNLIKELY (state.error_adding_layer))
         continue;

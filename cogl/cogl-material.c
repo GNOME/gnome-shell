@@ -676,14 +676,12 @@ _cogl_material_update_layers_cache (CoglMaterial *material)
   g_warn_if_reached ();
 }
 
-/* TODO: add public cogl_material_foreach_layer but instead of passing
- * a CoglMaterialLayer pointer to the callback we should pass a
- * layer_index instead. */
-
+/* XXX: Be carefull when using this API that the callback given doesn't result
+ * in the layer cache being invalidated during the iteration! */
 void
-_cogl_material_foreach_layer (CoglMaterial *material,
-                              CoglMaterialLayerCallback callback,
-                              void *user_data)
+_cogl_material_foreach_layer_internal (CoglMaterial *material,
+                                       CoglMaterialInternalLayerCallback callback,
+                                       void *user_data)
 {
   CoglMaterial *authority =
     _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
@@ -698,7 +696,53 @@ _cogl_material_foreach_layer (CoglMaterial *material,
   _cogl_material_update_layers_cache (authority);
 
   for (i = 0, cont = TRUE; i < n_layers && cont == TRUE; i++)
-    cont = callback (authority->layers_cache[i], user_data);
+    {
+      g_return_if_fail (authority->layers_cache_dirty == FALSE);
+      cont = callback (authority->layers_cache[i], user_data);
+    }
+}
+
+typedef struct
+{
+  int i;
+  int *indices;
+} AppendLayerIndexState;
+
+static gboolean
+append_layer_index_cb (CoglMaterialLayer *layer,
+                       void *user_data)
+{
+  AppendLayerIndexState *state = user_data;
+  state->indices[state->i++] = layer->index;
+  return TRUE;
+}
+
+void
+cogl_material_foreach_layer (CoglMaterial *material,
+                             CoglMaterialLayerCallback callback,
+                             void *user_data)
+{
+  CoglMaterial *authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
+  AppendLayerIndexState state;
+  gboolean cont;
+  int i;
+
+  /* XXX: We don't know what the user is going to want to do to the layers
+   * but any modification of layers can result in the layer graph changing
+   * which could confuse _cogl_material_foreach_layer_internal(). We first
+   * get a list of layer indices which will remain valid so long as the
+   * user doesn't remove layers. */
+
+  state.i = 0;
+  state.indices = g_alloca (authority->n_layers * sizeof (int));
+
+  _cogl_material_foreach_layer_internal (material,
+                                         append_layer_index_cb,
+                                         &state);
+
+  for (i = 0, cont = TRUE; i < authority->n_layers && cont; i++)
+    cont = callback (material, state.indices[i], user_data);
 }
 
 static gboolean
@@ -872,9 +916,9 @@ _cogl_material_needs_blending_enabled (CoglMaterial    *material,
        * To start with that's defined by the material color which
        * must be fully opaque if we got this far. */
       gboolean has_alpha = FALSE;
-      _cogl_material_foreach_layer (material,
-                                    layer_has_alpha_cb,
-                                    &has_alpha);
+      _cogl_material_foreach_layer_internal (material,
+                                             layer_has_alpha_cb,
+                                             &has_alpha);
       if (has_alpha)
         return TRUE;
     }
@@ -1393,9 +1437,9 @@ _cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
   state.keep_n = n;
   state.current_pos = 0;
   state.needs_pruning = FALSE;
-  _cogl_material_foreach_layer (material,
-                                update_prune_layers_info_cb,
-                                &state);
+  _cogl_material_foreach_layer_internal (material,
+                                         update_prune_layers_info_cb,
+                                         &state);
 
   material->n_layers = n;
 
@@ -1814,7 +1858,7 @@ _cogl_material_get_layer_info (CoglMaterial *material,
   int n_layers = material->n_layers;
   int i;
 
-  /* FIXME: _cogl_material_foreach_layer now calls
+  /* FIXME: _cogl_material_foreach_layer_internal now calls
    * _cogl_material_update_layers_cache anyway so this codepath is
    * pointless! */
   if (layer_info->ignore_shift_layers_if_found &&
@@ -1827,9 +1871,9 @@ _cogl_material_get_layer_info (CoglMaterial *material,
        * necessarily have to iterate all the layers of the material we
        * use a foreach_layer callback instead of updating the cache
        * and iterating that as below. */
-      _cogl_material_foreach_layer (material,
-                                    update_layer_info_cb,
-                                    layer_info);
+      _cogl_material_foreach_layer_internal (material,
+                                             update_layer_info_cb,
+                                             layer_info);
       return;
     }
 
@@ -2743,9 +2787,9 @@ _cogl_material_apply_overrides (CoglMaterial *material,
       state.material = material;
       state.fallback_layers = options->fallback_layers;
 
-      _cogl_material_foreach_layer (material,
-                                    fallback_layer_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (material,
+                                             fallback_layer_cb,
+                                             &state);
     }
 
   if (options->flags & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
@@ -2756,13 +2800,13 @@ _cogl_material_apply_overrides (CoglMaterial *material,
 
       /* NB: we are overriding the first layer, but we don't know
        * the user's given layer_index, which is why we use
-       * _cogl_material_foreach_layer() here even though we know
+       * _cogl_material_foreach_layer_internal() here even though we know
        * there's only one layer. */
       state.material = material;
       state.gl_texture = options->layer0_override_texture;
-      _cogl_material_foreach_layer (material,
-                                    override_layer_texture_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (material,
+                                             override_layer_texture_cb,
+                                             &state);
     }
 
   if (options->flags & COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES)
@@ -2772,9 +2816,9 @@ _cogl_material_apply_overrides (CoglMaterial *material,
       state.material = material;
       state.wrap_mode_overrides = &options->wrap_mode_overrides;
       state.i = 0;
-      _cogl_material_foreach_layer (material,
-                                    apply_wrap_mode_overrides_cb,
-                                    &state);
+      _cogl_material_foreach_layer_internal (material,
+                                             apply_wrap_mode_overrides_cb,
+                                             &state);
     }
 }
 
@@ -5074,9 +5118,9 @@ cogl_material_get_layers (CoglMaterial *material)
 
   material->deprecated_get_layers_list = NULL;
 
-  _cogl_material_foreach_layer (material,
-                                prepend_layer_to_list_cb,
-                                &material->deprecated_get_layers_list);
+  _cogl_material_foreach_layer_internal (material,
+                                         prepend_layer_to_list_cb,
+                                         &material->deprecated_get_layers_list);
   material->deprecated_get_layers_list =
     g_list_reverse (material->deprecated_get_layers_list);
 
@@ -5550,7 +5594,7 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
     }
 
   if (layers)
-    _cogl_material_foreach_layer (material, dump_layer_ref_cb, state);
+    _cogl_material_foreach_layer_internal (material, dump_layer_ref_cb, state);
 
   state_out.parent_id = material_id;
 
