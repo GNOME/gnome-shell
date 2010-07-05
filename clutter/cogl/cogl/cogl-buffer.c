@@ -132,8 +132,7 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
 void
 _cogl_buffer_fini (CoglBuffer *buffer)
 {
-  if (COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
-    cogl_buffer_unmap (buffer);
+  g_return_if_fail (!COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED));
 }
 
 GLenum

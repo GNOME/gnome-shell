@@ -191,7 +191,8 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * new buffer to map.
  *
  * The behaviour is undefined if you access the buffer in a way
- * conflicting with the @access mask you pass.
+ * conflicting with the @access mask you pass. It is also an error to
+ * release your last reference while the buffer is mapped.
  *
  * Return value: A pointer to the mapped memory or %NULL is the call fails
  *
