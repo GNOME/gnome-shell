@@ -534,6 +534,9 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -Werror -ansi"
 fi
 
+# For fix-meta-rectangle.py
+AM_PATH_PYTHON([2.5])
+
 # Use gnome-doc-utils:
 GNOME_DOC_INIT([0.8.0])
 
