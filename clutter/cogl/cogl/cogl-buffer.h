@@ -22,6 +22,7 @@
  *
  * Authors:
  *   Damien Lespiau <damien.lespiau@intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
@@ -157,12 +158,40 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
                                  COGL_BUFFER_ACCESS_WRITE
 } CoglBufferAccess;
 
+
+/**
+ * CoglBufferMapHint:
+ * COGL_BUFFER_MAP_HINT_DISCARD: Tells Cogl that you plan to replace
+ *                               all the buffer's contents.
+ *
+ * Hints to Cogl about how you are planning to modify the data once it
+ * is mapped.
+ *
+ * Since: 1.4
+ * Stability: Unstable
+ */
+typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
+    COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0
+} CoglBufferMapHint;
+
 /**
  * cogl_buffer_map:
  * @buffer: a buffer object
- * @access: how the mapped buffer will by use by the application
+ * @access: how the mapped buffer will be used by the application
+ * @hints: A mask of #CoglBufferMapHint<!-- -->s that tell Cogl how
+ *        the data will be modified once mapped.
  *
  * Maps the buffer into the application address space for direct access.
+ *
+ * It is strongly recommended that you pass
+ * %COGL_BUFFER_MAP_HINT_DISCARD as a hint if you are going to replace
+ * all the buffer's data. This way if the buffer is currently being
+ * used by the GPU then the driver won't have to stall the CPU and
+ * wait for the hardware to finish because it can instead allocate a
+ * new buffer to map.
+ *
+ * The behaviour is undefined if you access the buffer in a way
+ * conflicting with the @access mask you pass.
  *
  * Return value: A pointer to the mapped memory or %NULL is the call fails
  *
@@ -170,8 +199,9 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * Stability: Unstable
  */
 guint8 *
-cogl_buffer_map (CoglBuffer      *buffer,
-                 CoglBufferAccess access);
+cogl_buffer_map (CoglBuffer        *buffer,
+                 CoglBufferAccess   access,
+                 CoglBufferMapHint  hints);
 
 /**
  * cogl_buffer_unmap:

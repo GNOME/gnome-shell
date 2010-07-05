@@ -22,6 +22,7 @@
  *
  * Authors:
  *   Damien Lespiau <damien.lespiau@intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 /* For an overview of the functionality implemented here, please see
@@ -228,8 +229,9 @@ cogl_buffer_get_update_hint (CoglBuffer *buffer)
 }
 
 guint8 *
-cogl_buffer_map (CoglBuffer      *buffer,
-                 CoglBufferAccess access)
+cogl_buffer_map (CoglBuffer        *buffer,
+                 CoglBufferAccess   access,
+                 CoglBufferMapHint  hints)
 {
   if (!cogl_is_buffer (buffer))
     return NULL;
@@ -237,7 +239,7 @@ cogl_buffer_map (CoglBuffer      *buffer,
   if (COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
     return buffer->data;
 
-  buffer->data = buffer->vtable->map (buffer, access);
+  buffer->data = buffer->vtable->map (buffer, access, hints);
   return buffer->data;
 }
 

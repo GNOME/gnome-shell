@@ -177,7 +177,8 @@ _cogl_pixel_array_free (CoglPixelArray *buffer)
 #if !defined (COGL_HAS_GLES)
 static guint8 *
 _cogl_pixel_array_map (CoglBuffer       *buffer,
-                       CoglBufferAccess  access)
+                       CoglBufferAccess  access,
+                       CoglBufferMapHint hints)
 {
   CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
   GLenum gl_target;
@@ -194,7 +195,8 @@ _cogl_pixel_array_map (CoglBuffer       *buffer,
   /* create an empty store if we don't have one yet. creating the store
    * lazily allows the user of the CoglBuffer to set a hint before the
    * store is created. */
-  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED))
+  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED) ||
+      (hints & COGL_BUFFER_MAP_HINT_DISCARD))
     {
       GE( glBufferData (gl_target,
                         buffer->size,
@@ -294,7 +296,8 @@ static const CoglBufferVtable cogl_pixel_array_vtable =
 
 static guint8 *
 _cogl_malloc_pixel_array_map (CoglBuffer       *buffer,
-                              CoglBufferAccess  access)
+                              CoglBufferAccess  access,
+                              CoglBufferMapHint hints)
 {
   COGL_BUFFER_SET_FLAG (buffer, MAPPED);
   return buffer->data;

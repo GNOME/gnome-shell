@@ -78,7 +78,9 @@ create_map_tile (TestTile *tile)
             ==,
             COGL_BUFFER_UPDATE_HINT_DYNAMIC);
 
-  map = cogl_buffer_map (buffer, COGL_BUFFER_ACCESS_WRITE);
+  map = cogl_buffer_map (buffer,
+                         COGL_BUFFER_ACCESS_WRITE,
+                         COGL_BUFFER_MAP_HINT_DISCARD);
   g_assert (map);
 
   line = g_alloca (TILE_SIZE * 4);
