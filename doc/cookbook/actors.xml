@@ -226,7 +226,7 @@ void on_paint (ClutterActor *actor, gpointer user_data);
       <para>Whenever an Actor is going to be painted it will be positioned in
       a new frame of reference according to the list of transformations
       (scaling, rotation and additional translations). After that, the "paint"
-      signal will be emitted.</para>d
+      signal will be emitted.</para>
 
       <para>The "paint" signal is defined as <emphasis>run-last</emphasis>,
       that is the signal handlers connected to it using
