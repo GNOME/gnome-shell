@@ -1407,7 +1407,8 @@ clutter_animator_remove_key_internal (ClutterAnimator *animator,
 
   priv = animator->priv;
 
-  for (k = priv->score; k != NULL; k = k?k->next:NULL)
+again:
+  for (k = priv->score; k != NULL; k = k->next)
     {
       ClutterAnimatorKey *key = k->data;
 
@@ -1439,8 +1440,8 @@ clutter_animator_remove_key_internal (ClutterAnimator *animator,
                   next_key->ease_in = key->ease_in;
                 }
             }
-
-          k = priv->score = g_list_remove (priv->score, key);
+          priv->score = g_list_remove (priv->score, key);
+          goto again;
         }
     }
 
@@ -1449,7 +1450,7 @@ clutter_animator_remove_key_internal (ClutterAnimator *animator,
       GHashTableIter iter;
       gpointer key, value;
 
-again:
+again2:
       g_hash_table_iter_init (&iter, priv->properties);
       while (g_hash_table_iter_next (&iter, &key, &value))
         {
@@ -1457,7 +1458,7 @@ again:
           if (prop_actor_key->object == object)
             {
               g_hash_table_remove (priv->properties, key);
-              goto again;
+              goto again2;
             }
         }
     }
