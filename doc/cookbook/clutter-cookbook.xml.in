@@ -50,7 +50,7 @@
     <title>Contributing to this document</title>
 
     <para>This document is written in
-    <link url="http://docbook.org/">Docbook XML</link>. The source files
+    <ulink url="http://docbook.org/">Docbook XML</ulink>. The source files
     for this document are located in the subdirectory
     <filename>doc/cookbook</filename> inside the Clutter source directory.</para>
 
