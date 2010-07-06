@@ -49,9 +49,60 @@
   <appendix id="contributing">
     <title>Contributing to this document</title>
 
-    <para>This document is written in Docbook XML. The source file for this
-    document is located in the subdirectory "doc/cookbook" of the source
-    directory of Clutter.</para>
+    <para>This document is written in
+    <link url="http://docbook.org/">Docbook XML</link>. The source files
+    for this document are located in the subdirectory
+    <filename>doc/cookbook</filename> inside the Clutter source directory.</para>
+
+    <para>To maintain some degree of consistency, try to stick to the
+    following broad guidelines about how to write Docbook for this
+    cookbook:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>If adding a new recipe, use the
+        <filename>recipe-template.xml</filename> XML file as a basis.
+        You can find it in the <filename>&lt;clutter_source&gt;/doc/cookbook/</filename>
+        directory.</para>
+      </listitem>
+      <listitem>
+        <para>Try to indent your XML sensibly using 2 spaces per level
+        (we're not too strict, but some indentation helps reading
+        the source).</para>
+      </listitem>
+      <listitem>
+        <para>Stick to a column width of around 80 characters.</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;filename&gt; element for file
+        and directory names.</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;property&gt; element for property names
+        (e.g. GObject properties).</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;type&gt; element for GObject class
+        names.</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;constant&gt; element for C defines.</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;keycap&gt; element for keys, where
+        you are referring to what's actually printed on the key, e.g.
+        <keycap>Shift</keycap>. If you're referring to the key some
+        other way (e.g. "the Control key"), don't use
+        &lt;keycap&gt;.</para>
+      </listitem>
+      <listitem>
+        <para>Use the &lt;function&gt; element for functions;
+        the style adopted is to give the function name followed by
+        empty brackets, e.g. <function>clutter_actor_set_size()</function>.
+        </para>
+      </listitem>
+    </itemizedlist>
+
   </appendix>
 
 </book>

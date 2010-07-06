@@ -23,7 +23,7 @@
     with the others: it can be the parent of another actor, or a child of
     another actor.</para>
 
-    <note><para>The Stage is an actor that can have children but cannot have
+    <note><para>The stage is an actor that can have children but cannot have
     any parent.</para></note>
 
     <para>Actors have different attributes: a position, a size, a
@@ -38,7 +38,7 @@
   </section>
 
   <section id="actors-allocation-notify">
-    <title>Knowing when an actor position or size change</title>
+    <title>Knowing when an actor's position or size changes</title>
 
     <section>
       <title>Problem</title>
@@ -112,7 +112,9 @@ on_allocation_changed (ClutterActor           *actor,
 
       <para>Any change the position and size of an actor will cause a
       change in the allocation of the actor itself. This will update the
-      values of the :x, :y, :width and :height properties as well.</para>
+      values of the <property>x</property>, <property>y</property>,
+      <property>width</property> and <property>height</property>
+      properties as well.</para>
 
       <para>The first technique allows a greater deal of granularity,
       allowing you to know what exactly changed. Inside the callback
@@ -159,12 +161,13 @@ on_allocation_changed (ClutterActor           *actor,
       <para>All actors will update these properties when their size
       or position change.</para>
 
-      <para>Note that the Stage, on the other hand, will not notify on
-      position changes, so it is not possible to use the :x and :y
+      <para>Note that the stage, on the other hand, will not notify on
+      position changes, so it is not possible to use the
+      <property>x</property> and <property>y</property>
       properties to know that the platform-specific window embedding the
       stage has been moved &mdash; if the platform supports a windowing
       system. In order to achieve that you will have to use backend-specific
-      API to extract the surface used by the Stage and then platform-specific
+      API to extract the surface used by the stage and then platform-specific
       API to retrieve its coordinates.</para>
 
     </section>
@@ -218,12 +221,12 @@ void on_paint (ClutterActor *actor, gpointer user_data);
       <title>Discussion</title>
 
       <para>The paint cycle in Clutter works its way recursively from the
-      Stage through every child.</para>
+      stage through every child.</para>
 
       <para>Whenever an Actor is going to be painted it will be positioned in
       a new frame of reference according to the list of transformations
-      (scaling, rotation and additional traslations). After that, the "paint"
-      signal will be emitted.</para>
+      (scaling, rotation and additional translations). After that, the "paint"
+      signal will be emitted.</para>d
 
       <para>The "paint" signal is defined as <emphasis>run-last</emphasis>,
       that is the signal handlers connected to it using
@@ -255,4 +258,3 @@ on_paint (ClutterActor *actor)
   </section>
 
 </chapter>
-

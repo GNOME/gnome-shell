@@ -27,8 +27,8 @@
     <section>
       <title>Solution</title>
 
-      <para>Create a ClutterCairoTexture, then draw onto the Cairo context
-      it wraps using the Cairo API:</para>
+      <para>Create a <type>ClutterCairoTexture</type>, then draw onto
+      the Cairo context it wraps using the Cairo API:</para>
 
       <informalexample>
         <programlisting>
@@ -64,9 +64,11 @@ cairo_destroy (cr);
     <section>
       <title>Discussion</title>
 
-      <para>A ClutterCairoTexture is a standard ClutterActor, so it can be
-      added to ClutterContainers (e.g. a ClutterStage or ClutterGroup),
-      animated, resized etc. in the usual ways.</para>
+      <para>A <type>ClutterCairoTexture</type> is a standard
+      <type>ClutterActor</type>, so it can be added to a
+      <type>ClutterContainer</type> (e.g. a <type>ClutterStage</type>
+      or <type>ClutterGroup</type>), animated, resized etc. in the
+      usual ways.</para>
 
       <para>Other useful operations:</para>
 
@@ -74,24 +76,24 @@ cairo_destroy (cr);
 
         <listitem>
           <para><emphasis>To draw on part of the texture:</emphasis>
-          use <function>clutter_cairo_texture_create_region</function> to
+          use <function>clutter_cairo_texture_create_region()</function> to
           retrieve a Cairo context for the region you want to draw on.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>To clear existing content from a texture:</emphasis>
-          use <function>clutter_cairo_texture_clear</function>.</para>
+          use <function>clutter_cairo_texture_clear()</function>.</para>
 
           <para>You may need to do this as the texture reuses the same
           Cairo context each time you call
-          <function>clutter_cairo_texture_create</function> or
-          <function>clutter_cairo_texture_create_region</function>.</para>
+          <function>clutter_cairo_texture_create()</function> or
+          <function>clutter_cairo_texture_create_region()</function>.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>To resize the Cairo context wrapped
           by a texture</emphasis>, use
-          <function>clutter_cairo_texture_set_surface_size</function>.</para>
+          <function>clutter_cairo_texture_set_surface_size()</function>.</para>
         </listitem>
 
       </itemizedlist>
@@ -145,10 +147,11 @@ cairo_destroy (cr);
         </informalexample>
 
         <para>Note that if the page is larger than the Cairo context,
-        some of it might not be visible. Similarly, if the ClutterCairoTexture
-        is larger than the stage, some of that might not be visible. So you
-        may need to do some work to make the ClutterCairoTexture fit
-        inside the stage properly (e.g. resize the stage), and/or some work
+        some of it might not be visible. Similarly, if the
+        <type>ClutterCairoTexture</type> is larger than the stage,
+        some of that might not be visible. So you
+        may need to do some work to make the <type>ClutterCairoTexture</type>
+        fit inside the stage properly (e.g. resize the stage), and/or some work
         to make the PDF page sit inside the Cairo context (e.g. scale the PDF
         page or put it inside a scrollable actor).</para>
 
@@ -174,8 +177,8 @@ cairo_destroy (cr);
 
       <para>Set the texture to keep the aspect ratio of the
       underlying image (so it doesn't distort when it's scaled); use
-      the actor's request-mode property to set the correct
-      geometry management (see the discussion section); then
+      the actor's <property>request-mode</property> property to set
+      the correct geometry management (see the discussion section); then
       resize the texture along one dimension (height or width).
       Now, when an image is loaded into the texture, the image is
       scaled to fit the set height or width; the other dimension
@@ -210,20 +213,20 @@ clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
     <section>
       <title>Discussion</title>
 
-      <para>The request mode for an actor determines how
-      geometry requisition is performed; in this case, this
+      <para>The <property>request-mode</property> for an actor
+      determines how geometry requisition is performed; in this case, this
       includes how scaling is applied if you change the actor's
       width or height. There are two possible values for
       request-mode:</para>
 
       <orderedlist>
         <listitem>
-          <para>If set to <emphasis>CLUTTER_REQUEST_HEIGHT_FOR_WIDTH</emphasis>
+          <para>If set to <constant>CLUTTER_REQUEST_HEIGHT_FOR_WIDTH</constant>
           (the default), changing the width causes the height
           to be scaled by the same factor as the width.</para>
         </listitem>
         <listitem>
-          <para>If set to <emphasis>CLUTTER_REQUEST_WIDTH_FOR_HEIGHT</emphasis>,
+          <para>If set to <constant>CLUTTER_REQUEST_WIDTH_FOR_HEIGHT</constant>,
           changing the height causes the width to be scaled by the
           same factor as the height.</para>
         </listitem>
@@ -231,21 +234,22 @@ clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
 
       <para>In the example above, the texture is set to keep its
       aspect ratio then fixed to a width of 300 pixels; the
-      request-mode is set to CLUTTER_REQUEST_HEIGHT_FOR_WIDTH. If a
-      standard, photo-sized image in landscape orientation were
+      request-mode is set to <constant>CLUTTER_REQUEST_HEIGHT_FOR_WIDTH</constant>.
+      If a standard, photo-sized image in landscape orientation were
       loaded into it (2848 pixels wide x 2136 high), it would be scaled
       down to 300 pixels wide; then, its height would be scaled by the
       same factor as the width (i.e. scaled down to 225 pixels).</para>
 
-      <para>With request-mode set to CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
+      <para>With request-mode set to
+      <constant>CLUTTER_REQUEST_WIDTH_FOR_HEIGHT</constant>,
       you would get the same effect by setting the height first;
       then, computation of the width for the scaled image would be
       based on the scaling factor applied to its height instead.</para>
 
       <para>You can work out which side of the source image is longest using
-      clutter_texture_base_size() to get its width and height. This can
-      be useful when trying to scale images with different orientations
-      to fit into uniform rows or columns:</para>
+      <function>clutter_texture_base_size()</function> to get its
+      width and height. This can be useful when trying to scale images
+      with different orientations to fit into uniform rows or columns:</para>
 
       <informalexample>
         <programlisting>
@@ -259,8 +263,9 @@ clutter_texture_get_base_size (CLUTTER_TEXTURE (texture), &width, &height);
       </informalexample>
 
       <note><para>If you explicitly set the size (both width and height)
-      of a texture with clutter_actor_set_size() (or
-      with clutter_actor_set_width() and clutter_actor_set_height()), any
+      of a texture with <function>clutter_actor_set_size()</function> (or
+      with <function>clutter_actor_set_width()</function> and
+      <function>clutter_actor_set_height()</function>), any
       image loaded into the texture is automatically stretched/shrunk to
       fit the texture. This is the case regardless of any other settings
       (like whether to keep aspect ratio).</para></note>
@@ -285,7 +290,8 @@ clutter_texture_get_base_size (CLUTTER_TEXTURE (texture), &width, &height);
     <section>
       <title>Solution</title>
 
-      <para>Create a ClutterTexture directly from an image file:</para>
+      <para>Create a <type>ClutterTexture</type> directly from an
+      image file:</para>
 
       <informalexample>
         <programlisting>
@@ -378,11 +384,12 @@ if (error != NULL)
 
         <itemizedlist>
           <listitem>
-            <para>Call g_thread_init() (from the GLib library) prior
-            to calling clutter_init(), so that a local thread is used
-            to load the file, rather than the main loop. (Note that
-            this is not necessary if you're using GLib version >= 2.24,
-            since GObject initializes threading with the type system.)</para>
+            <para>Call <function>g_thread_init()</function> (from the
+            GLib library) prior to calling <function>clutter_init()</function>,
+            so that a local thread is used to load the file, rather
+            than the main loop. (Note that this is not necessary if
+            you're using GLib version >= 2.24, since GObject
+            initializes threading with the type system.)</para>
           </listitem>
           <listitem>
             <para>Set the texture to load data asynchronously.</para>
@@ -462,16 +469,18 @@ main (int argc, char *argv[])
 
         <itemizedlist>
           <listitem>
-            <para>Various GNOME libraries provide image data in GdkPixbuf
-            structures; clutter-gtk has functions for
-            creating or setting a texture from a GdkPixbuf:
-            gtk_clutter_texture_new_from_pixbuf()
-            and gtk_clutter_texture_set_from_pixbuf() respectively.</para>
+            <para>Various GNOME libraries provide image data in
+            <type>GdkPixbuf</type> structures; clutter-gtk has
+            functions for creating or setting a texture from a
+            <type>GdkPixbuf</type>:
+            <function>gtk_clutter_texture_new_from_pixbuf()</function>
+            and <function>gtk_clutter_texture_set_from_pixbuf()</function>
+            respectively.</para>
           </listitem>
           <listitem>
-            <para>If you have raw RGB pixel data, ClutterTexture also has
-            the clutter_texture_set_from_rgb_data() method for loading
-            it.</para>
+            <para>If you have raw RGB pixel data, <type>ClutterTexture</type>
+            also has a <function>clutter_texture_set_from_rgb_data()</function>
+            function for loading it.</para>
           </listitem>
         </itemizedlist>
 
