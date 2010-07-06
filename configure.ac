@@ -375,46 +375,48 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
             AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
-            AC_CHECK_HEADERS([GLES/egl.h],
-                             [],
-                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
             PKG_CHECK_EXISTS([glesv1_cm],
-              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv1_cm"],
+              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv1_cm"
+               NEED_SEPARATE_EGL=yes
+              ],
               [
-                # check for upper/lower case libgles_em
-                # The powervr sdk uses lower case.
+                AC_CHECK_HEADERS([$clutter_gl_header],
+                                 [],
+                                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+                # Check for a GLES 1.x Common Profile library with/without EGL.
+                #
+                # Note: historically GLES 1 libraries shipped with the
+                # EGL and GLES symbols all bundled in one library. Now
+                # the Khronos Implementers Guide defines two naming
+                # schemes: -lGLES_CM should be used for a library that
+                # bundles the GLES and EGL API together and -lGLESv1_CM
+                # would be used for a standalone GLES API.
                 AC_CHECK_LIB(GLES_CM, [eglInitialize],
-                             [HAVE_LIBGLES=yes],
-                             [HAVE_LIBGLES=no])
-
-                AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
-                      [
-                        AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
-                                     [HAVE_LIBGLES=yes],
-                                     [HAVE_LIBGLES=no])
-
-                        AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                              [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"],
-                              [
-                                AC_CHECK_LIB(gles_cm, [eglInitialize],
-                                             [HAVE_LIBGLES=yes],
-                                             [HAVE_LIBGLES=no])
-
-                                AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
-                                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lgles_cm"],
-                                      [
-                                        AC_MSG_ERROR([GLES library not found and egl backend requested.])
-                                      ]
-                                )
-                              ]
-                        )
-                      ]
-                     )
+                  [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
+                  [
+                    AC_CHECK_LIB(GLESv1_CM, [glFlush],
+                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"
+                       NEED_SEPARATE_EGL=yes
+                      ],
+                      [AC_MSG_ERROR([Unable to locate required GLES 1.x Common Profile library])])
+                  ])
               ])
 
-            PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"])
+            AS_IF([test "x$NEED_SEPARATE_EGL" = "xyes"],
+              [
+                PKG_CHECK_EXISTS([egl],
+                  [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"],
+                  [
+                    AC_CHECK_HEADERS([GLES/egl.h],
+                                     [],
+                                     [AC_MSG_ERROR([Unable to locate required EGL headers])])
+
+                    AC_CHECK_LIB(EGL, [eglInitialize],
+                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"],
+                      [AC_MSG_ERROR([Unable to locate required EGL library])])
+                  ])
+              ])
           ],
 
           [2*],
@@ -425,8 +427,14 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
             PKG_CHECK_EXISTS([glesv2],
-                             [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
-                             [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2"])
+              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
+              [
+                AC_CHECK_HEADERS([$clutter_gl_header],
+                                 [],
+                                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+                FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2"
+              ])
 
             PKG_CHECK_EXISTS([egl],
               [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"],
@@ -434,6 +442,11 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
                 AC_CHECK_HEADERS([EGL/egl.h],
                                  [],
                                  [AC_MSG_ERROR([Unable to locate required EGL headers])])
+
+                AC_CHECK_LIB(EGL, [eglInitialize],
+                  [FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"],
+                  [AC_MSG_ERROR([Unable to locate required EGL library])])
+
                 FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"
               ]
               )
@@ -492,12 +505,7 @@ done;
 
 AC_SUBST(COGL_DEFINES)
 
-# at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
-AC_CHECK_HEADERS([$clutter_gl_header],
-                 [],
-                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
 CLUTTER_GL_HEADER=$clutter_gl_header
 
 
