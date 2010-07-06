@@ -492,6 +492,9 @@ cogl_get_features (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_PBOS))
+    ctx->feature_flags &= ~COGL_FEATURE_PBOS;
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
 
