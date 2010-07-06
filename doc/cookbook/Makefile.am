@@ -26,6 +26,7 @@ XSL_BASE_URI  = http://docbook.sourceforge.net/release/xsl/current
 XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 
 HTML_FILES = html/*.html
+CSS_FILES = html/*.css
 IMAGE_FILES = images/clutter-logo.png
 
 EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
@@ -72,7 +73,7 @@ install-data-local:
 	then echo '-- Nothing to install' ; \
 	else \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-	  for file in `ls $(HTML_FILES)`; do \
+	  for file in `ls $(HTML_FILES) $(CSS_FILES)`; do \
 	    if [ -f $$file ]; then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/$$basefile; \
