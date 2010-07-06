@@ -138,14 +138,14 @@ _key_press_cb (ClutterActor *actor,
           </programlisting>
         </informalexample>
 
-        <para>Note that Clutter provides a range of key value definitions
+        <note><para>Clutter provides a range of key value definitions
         (like <constant>CLUTTER_Up</constant>, used above). These are
         generated from the list in the
         <ulink url="http://cgit.freedesktop.org/xorg/proto/x11proto/plain/keysymdef.h">X.Org source code</ulink>
         (replace "XK" with "CLUTTER" in the definitions there to get the
         CLUTTER equivalents; alternatively, look at the
         <filename>clutter-keysyms.h</filename> header file for the
-        list).</para>
+        list).</para></note>
 
         <para><constant>CLUTTER_SHIFT_MASK</constant>,
         <constant>CLUTTER_CONTROL_MASK</constant> and other modifiers are

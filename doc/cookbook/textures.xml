@@ -146,14 +146,14 @@ cairo_destroy (cr);
           </programlisting>
         </informalexample>
 
-        <para>Note that if the page is larger than the Cairo context,
+        <note><para>If the page is larger than the Cairo context,
         some of it might not be visible. Similarly, if the
         <type>ClutterCairoTexture</type> is larger than the stage,
         some of that might not be visible. So you
         may need to do some work to make the <type>ClutterCairoTexture</type>
         fit inside the stage properly (e.g. resize the stage), and/or some work
         to make the PDF page sit inside the Cairo context (e.g. scale the PDF
-        page or put it inside a scrollable actor).</para>
+        page or put it inside a scrollable actor).</para></note>
 
       </section>
 
