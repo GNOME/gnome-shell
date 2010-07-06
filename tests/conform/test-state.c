@@ -79,7 +79,11 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
 
   clutter_state_remove_key (CLUTTER_STATE (state), NULL, "clicked", NULL, NULL);
   states = clutter_state_get_states (CLUTTER_STATE (state));
-  g_assert_cmpint (g_list_length (states), ==, 1);
+
+  /* removing the "clicked" state, will also cause the "base" state to be removed
+   * since in the .json there is no default source state
+   */
+  g_assert_cmpint (g_list_length (states), ==, 0);
   g_list_free (states);
 
   g_object_unref (script);
