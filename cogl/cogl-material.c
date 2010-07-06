@@ -2935,6 +2935,24 @@ _cogl_material_depth_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
+_cogl_material_fog_state_equal (CoglMaterial *authority0,
+                                CoglMaterial *authority1)
+{
+  CoglMaterialFogState *fog_state0 = &authority0->big_state->fog_state;
+  CoglMaterialFogState *fog_state1 = &authority1->big_state->fog_state;
+
+  if (fog_state0->enabled == fog_state1->enabled &&
+      cogl_color_equal (&fog_state0->color, &fog_state1->color) &&
+      fog_state0->mode == fog_state1->mode &&
+      fog_state0->density == fog_state1->density &&
+      fog_state0->z_near == fog_state1->z_near &&
+      fog_state0->z_far == fog_state1->z_far)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+static gboolean
 _cogl_material_layers_equal (CoglMaterial *authority0,
                              CoglMaterial *authority1)
 {
@@ -3149,6 +3167,12 @@ _cogl_material_equal (CoglMaterial *material0,
                               materials_difference,
                               COGL_MATERIAL_STATE_DEPTH,
                               _cogl_material_depth_state_equal))
+    return FALSE;
+
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_FOG,
+                              _cogl_material_fog_state_equal))
     return FALSE;
 
   if (!simple_property_equal (material0, material1,
@@ -4095,6 +4119,41 @@ cogl_material_get_depth_range (CoglMaterial *material,
 
   *near_val = authority->big_state->depth_state.depth_range_near;
   *far_val = authority->big_state->depth_state.depth_range_far;
+}
+
+static void
+_cogl_material_set_fog_state (CoglMaterial *material,
+                              const CoglMaterialFogState *fog_state)
+{
+  CoglMaterialState state = COGL_MATERIAL_STATE_FOG;
+  CoglMaterial *authority;
+  CoglMaterialFogState *current_fog_state;
+
+  g_return_if_fail (cogl_is_material (material));
+
+  authority = _cogl_material_get_authority (material, state);
+
+  current_fog_state = &authority->big_state->fog_state;
+
+  if (current_fog_state->enabled == fog_state->enabled &&
+      cogl_color_equal (&current_fog_state->color, &fog_state->color) &&
+      current_fog_state->mode == fog_state->mode &&
+      current_fog_state->density == fog_state->density &&
+      current_fog_state->z_near == fog_state->z_near &&
+      current_fog_state->z_far == fog_state->z_far)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the material has no dependants so it may be modified.
+   * - If the material isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_material_pre_change_notify (material, state, NULL);
+
+  material->big_state->fog_state = *fog_state;
+
+  _cogl_material_update_authority (material, authority, state,
+                                   _cogl_material_fog_state_equal);
 }
 
 unsigned long
@@ -5895,6 +5954,9 @@ _cogl_material_apply_legacy_state (CoglMaterial *material)
 
   if (ctx->legacy_depth_test_enabled)
     cogl_material_set_depth_test_enabled (material, TRUE);
+
+  if (ctx->legacy_fog_state.enabled)
+    _cogl_material_set_fog_state (material, &ctx->legacy_fog_state);
 }
 
 void

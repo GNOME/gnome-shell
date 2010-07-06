@@ -186,6 +186,54 @@ static gboolean
 _cogl_material_backend_fixed_end (CoglMaterial *material,
                                   unsigned long materials_difference)
 {
+  if (materials_difference & COGL_MATERIAL_STATE_FOG)
+    {
+      CoglMaterial *authority =
+        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_FOG);
+      CoglMaterialFogState *fog_state = &authority->big_state->fog_state;
+
+      if (fog_state->enabled)
+        {
+          GLfloat fogColor[4];
+          GLenum gl_mode = GL_LINEAR;
+
+          fogColor[0] = cogl_color_get_red_float (&fog_state->color);
+          fogColor[1] = cogl_color_get_green_float (&fog_state->color);
+          fogColor[2] = cogl_color_get_blue_float (&fog_state->color);
+          fogColor[3] = cogl_color_get_alpha_float (&fog_state->color);
+
+          GE (glEnable (GL_FOG));
+
+          GE (glFogfv (GL_FOG_COLOR, fogColor));
+
+#if HAVE_COGL_GLES
+          switch (fog_state->mode)
+            {
+            case COGL_FOG_MODE_LINEAR:
+              gl_mode = GL_LINEAR;
+              break;
+            case COGL_FOG_MODE_EXPONENTIAL:
+              gl_mode = GL_EXP;
+              break;
+            case COGL_FOG_MODE_EXPONENTIAL_SQUARED:
+              gl_mode = GL_EXP2;
+              break;
+            }
+#endif
+          /* TODO: support other modes for GLES2 */
+
+          /* NB: GLES doesn't have glFogi */
+          GE (glFogf (GL_FOG_MODE, gl_mode));
+          GE (glHint (GL_FOG_HINT, GL_NICEST));
+
+          GE (glFogf (GL_FOG_DENSITY, fog_state->density));
+          GE (glFogf (GL_FOG_START, fog_state->z_near));
+          GE (glFogf (GL_FOG_END, fog_state->z_far));
+        }
+      else
+        GE (glDisable (GL_FOG));
+    }
+
   return TRUE;
 }
 

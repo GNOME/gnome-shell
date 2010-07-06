@@ -84,7 +84,6 @@ cogl_create_context (void)
   _cogl_material_init_default_layers ();
 
   _context->enable_flags = 0;
-  _context->fog_enabled = FALSE;
 
   _context->enable_backface_culling = FALSE;
   _context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
@@ -104,6 +103,8 @@ cogl_create_context (void)
    * active by default... */
   _context->active_texture_unit = 1;
   GE (glActiveTexture (GL_TEXTURE1));
+
+  _context->legacy_fog_state.enabled = FALSE;
 
   _context->simple_material = cogl_material_new ();
   _context->source_material = NULL;

@@ -332,8 +332,9 @@ typedef enum _CoglMaterialState
   COGL_MATERIAL_STATE_BLEND             = 1L<<5,
   COGL_MATERIAL_STATE_USER_SHADER       = 1L<<6,
   COGL_MATERIAL_STATE_DEPTH             = 1L<<7,
+  COGL_MATERIAL_STATE_FOG               = 1L<<8,
 
-  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<8,
+  COGL_MATERIAL_STATE_REAL_BLEND_ENABLE = 1L<<9,
 
   COGL_MATERIAL_STATE_ALL_SPARSE =
     COGL_MATERIAL_STATE_COLOR |
@@ -343,7 +344,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_ALPHA_FUNC |
     COGL_MATERIAL_STATE_BLEND |
     COGL_MATERIAL_STATE_USER_SHADER |
-    COGL_MATERIAL_STATE_DEPTH,
+    COGL_MATERIAL_STATE_DEPTH |
+    COGL_MATERIAL_STATE_FOG,
 
   COGL_MATERIAL_STATE_AFFECTS_BLENDING =
     COGL_MATERIAL_STATE_COLOR |
@@ -358,7 +360,8 @@ typedef enum _CoglMaterialState
     COGL_MATERIAL_STATE_ALPHA_FUNC |
     COGL_MATERIAL_STATE_BLEND |
     COGL_MATERIAL_STATE_USER_SHADER |
-    COGL_MATERIAL_STATE_DEPTH
+    COGL_MATERIAL_STATE_DEPTH |
+    COGL_MATERIAL_STATE_FOG
 
 } CoglMaterialState;
 
@@ -422,11 +425,22 @@ typedef struct
 
 typedef struct
 {
+  gboolean        enabled;
+  CoglColor       color;
+  CoglFogMode     mode;
+  float           density;
+  float           z_near;
+  float           z_far;
+} CoglMaterialFogState;
+
+typedef struct
+{
   CoglMaterialLightingState lighting_state;
   CoglMaterialAlphaFuncState alpha_state;
   CoglMaterialBlendState blend_state;
   CoglHandle user_program;
   CoglMaterialDepthState depth_state;
+  CoglMaterialFogState fog_state;
 } CoglMaterialBigState;
 
 typedef enum

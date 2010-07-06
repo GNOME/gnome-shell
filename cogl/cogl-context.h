@@ -56,7 +56,6 @@ typedef struct
 
   /* Enable cache */
   unsigned long     enable_flags;
-  gboolean          fog_enabled;
 
   gboolean          enable_backface_culling;
   CoglFrontWinding  flushed_front_winding;
@@ -72,6 +71,8 @@ typedef struct
 
   GArray           *texture_units;
   int               active_texture_unit;
+
+  CoglMaterialFogState legacy_fog_state;
 
   /* Materials */
   CoglMaterial     *simple_material;
