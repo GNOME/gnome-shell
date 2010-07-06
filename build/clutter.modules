@@ -52,6 +52,7 @@
     </dependencies>
   </autotools>
 
+<!--
   <autotools id="libXft" supports-non-srcdir-builds="no">
     <branch repo="git.freedesktop.org"
             module="xorg/lib/libXft" checkoutdir="libXft" />
@@ -59,6 +60,7 @@
       <dep package="fontconfig"/>
     </dependencies>
   </autotools>
+-->
 
   <autotools id="gtk-doc">
     <branch repo="git.gnome.org"
