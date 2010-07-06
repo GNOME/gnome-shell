@@ -183,7 +183,7 @@
 
 #define glVertexAttribPointer ctx->drv.pf_glVertexAttribPointer
 #define glEnableVertexAttribArray ctx->drv.pf_glEnableVertexAttribArray
-#define glDisableVertexAttribArray ctx->drv.pf_glEnableVertexAttribArray
+#define glDisableVertexAttribArray ctx->drv.pf_glDisableVertexAttribArray
 #define MAY_HAVE_PROGRAMABLE_GL
 
 #elif defined (HAVE_COGL_GLES2)
