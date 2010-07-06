@@ -136,8 +136,6 @@ static AtkAttributeSet*      cally_text_get_run_attributes       (AtkText *text,
 static void                  _cally_text_get_selection_bounds    (ClutterText *clutter_text,
                                                                   gint        *start_offset,
                                                                   gint        *end_offset);
-static void                  _cally_text_text_changed_cb         (ClutterText *clutter_text,
-                                                                  gpointer     data);
 static void                  _cally_text_insert_text_cb          (ClutterText *clutter_text,
                                                                   gchar       *new_text,
                                                                   gint         new_text_length,
@@ -306,9 +304,6 @@ cally_text_real_initialize(AtkObject *obj,
   cally_text->priv->cursor_position = clutter_text_get_cursor_position (clutter_text);
   cally_text->priv->selection_bound = clutter_text_get_selection_bound (clutter_text);
 
-  g_signal_connect (clutter_text, "text-changed",
-                    G_CALLBACK (_cally_text_text_changed_cb),
-                    cally_text);
   g_signal_connect (clutter_text, "insert-text",
                     G_CALLBACK (_cally_text_insert_text_cb),
                     cally_text);
@@ -400,8 +395,6 @@ cally_text_get_text (AtkText *text,
                      gint end_offset)
 {
   ClutterActor *actor = NULL;
-
-  g_return_val_if_fail (CALLY_IS_TEXT (text), NULL);
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* Object is defunct */
@@ -761,17 +754,6 @@ _cally_text_get_selection_bounds   (ClutterText *clutter_text,
       *start_offset = selection_bound;
       *end_offset = pos;
     }
-}
-
-static void
-_cally_text_text_changed_cb (ClutterText *clutter_text,
-                             gpointer data)
-{
-  CallyText *cally_text = NULL;
-
-  g_return_if_fail (CALLY_IS_TEXT (data));
-
-  cally_text = CALLY_TEXT (data);
 }
 
 static void
