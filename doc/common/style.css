@@ -1,6 +1,6 @@
-/* 
+/*
    Generic XHTML / DocBook XHTML CSS Stylesheet.
-   
+
    Browser wrangling and typographic design by
       Oyvind Kolas / pippin@gimp.org
 
@@ -42,7 +42,7 @@
 
 body {
   font-family: Verdana, Sans, sans-serif;
- 
+
   min-width: 640px;
   width: 80%;
   margin:  0em auto;
@@ -120,7 +120,7 @@ h6 {
   padding-top: 256px;
 /*  background-image: url("images/clutter-logo.png"); */
   background-position: right top;
-  float: right; 
+  float: right;
   margin-top: -256px;
   padding-right: 50px;
   margin-left: 50px;
@@ -243,7 +243,7 @@ div.legalnotice p.legalnotice-title {
 p {
   line-height: 1.5em;
   margin-top: 0em;
-  
+
 }
 
 dl {
@@ -297,7 +297,7 @@ p a[id] {
   padding: 0px;
   display: inline;
   background-image: none;
-} 
+}
 
 a {
   text-decoration: underline;
@@ -339,10 +339,10 @@ div.table p.title b{
     font-weight: normal;
 }
 
-.mediaobject .caption, 
+.mediaobject .caption,
 .mediaobject .caption p  {
   text-align: center;
-  font-size: 80%;  
+  font-size: 80%;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
@@ -368,6 +368,10 @@ div.table p.title b{
 
 span.application {
   font-style: italic;
+}
+
+span.property, span.type {
+  font-family: monospace;
 }
 
 .programlisting {
@@ -607,7 +611,7 @@ b.keycap,
 .keycap {
   border: 1px solid;
 }
-  
+
 
 div.navheader, div.heading{
   border-bottom: 1px solid;
@@ -681,7 +685,7 @@ hr {
   background-color: #8bd12e;
 }
 
-.glossary dl dt, 
+.glossary dl dt,
 .variablelist dl dt,
 .variablelist dl dt span.term {
   color: #044;
@@ -770,8 +774,8 @@ h6,
 h7{
 }
 
-div.preface .titlepage .title, 
-div.colophon .title, 
+div.preface .titlepage .title,
+div.colophon .title,
 div.chapter .titlepage .title {
   background-image: url("images/title-bg.png");
   background-position: bottom;
@@ -938,7 +942,7 @@ table {
 .tip,
 .note {
    background: #91ae35;
-   color: #fff;   
+   color: #fff;
    padding: 20px;
    margin: 20px;
 }
@@ -949,11 +953,11 @@ table {
    margin: 0em;
    font-size: 2em;
    font-weight: bold;
-   color: #fff;   
+   color: #fff;
 }
 
 .tip a,
 .note a {
-   color: #fff;   
+   color: #fff;
    text-decoration: underline;
 }
