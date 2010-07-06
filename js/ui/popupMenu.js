@@ -221,7 +221,8 @@ PopupImageMenuItem.prototype = {
         this.actor.set_child(box);
         this._imageBin = new St.Bin({ width: this._size, height: this._size });
         box.add(this._imageBin, { y_fill: false });
-        box.add(new St.Label({ text: text }), { expand: true });
+        this.label = new St.Label({ text: text });
+        box.add(this.label, { expand: true });
 
         if (!alwaysShowImage) {
             let settings = Gtk.Settings.get_default();
@@ -245,6 +246,11 @@ PopupImageMenuItem.prototype = {
             this._imageBin.set_child(img);
             this._imageBin.show();
         }
+    },
+    
+    setIcon: function(name) {
+        this._iconName = name;
+        this._onMenuImagesChanged();
     }
 };
 
