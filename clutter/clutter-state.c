@@ -276,22 +276,27 @@ clutter_state_remove_key_internal (ClutterState *this,
       if (target_state)
         {
           GList *k;
-
-          for (k = target_state->keys; k != NULL; k = k?k->next:NULL)
+again:
+          for (k = target_state->keys; k != NULL; k = k->next)
             {
               ClutterStateKey *key = k->data;
 
-              if ((object == NULL || (object == key->object)) &&
-                  (source_state == NULL ||
-                   (source_state == key->source_state)) &&
-                  (property_name == NULL ||
-                   ((property_name == key->property_name))))
+              if (   (object == NULL        || (object == key->object))
+                  && (source_state == NULL  || (source_state == key->source_state))
+                  && (property_name == NULL || ((property_name == key->property_name))))
                 {
-                  k = target_state->keys =
-                    g_list_remove (target_state->keys, key);
+                  target_state->keys = g_list_remove (target_state->keys, key);
+
+                  if (target_state->keys == NULL)
+                    {
+                      /* no more keys, so remove this state */
+                      clutter_state_remove_key (this, s->data, NULL, NULL, NULL);
+                      g_hash_table_remove (this->priv->states, s->data);
+                    }
 
                   key->is_inert = is_inert;
                   clutter_state_key_free (key);
+                  goto again;
                 }
             }
         }
@@ -911,7 +916,6 @@ GList *
 clutter_state_get_states (ClutterState *state)
 {
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
-
   return g_hash_table_get_keys (state->priv->states);
 }
 

@@ -60,5 +60,27 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_list_free (keys);
 
 
+
+  clutter_state_set (CLUTTER_STATE (state), "base", "clicked", state, "state", CLUTTER_LINEAR, "foo", NULL);
+
+  keys = clutter_state_get_keys (CLUTTER_STATE (state), "base", "clicked",
+                                 NULL, NULL);
+  
+  g_assert (keys != NULL);
+  g_assert_cmpint (g_list_length (keys), ==, 2);
+  g_list_free (keys);
+
+  keys = clutter_state_get_keys (CLUTTER_STATE (state), NULL, NULL,
+                                 NULL, NULL);
+
+  states = clutter_state_get_states (CLUTTER_STATE (state));
+  g_assert_cmpint (g_list_length (states), ==, 2);
+  g_list_free (states);
+
+  clutter_state_remove_key (CLUTTER_STATE (state), NULL, "clicked", NULL, NULL);
+  states = clutter_state_get_states (CLUTTER_STATE (state));
+  g_assert_cmpint (g_list_length (states), ==, 1);
+  g_list_free (states);
+
   g_object_unref (script);
 }
