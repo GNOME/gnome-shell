@@ -63,6 +63,17 @@ cally_texture_init (CallyTexture *texture)
   /* nothing to do yet */
 }
 
+/**
+ * cally_texture_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyTexture for the given @actor. @actor must be
+ * a #ClutterTexture.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_texture_new (ClutterActor *actor)
 {

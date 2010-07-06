@@ -10,8 +10,10 @@
     <releaseinfo>for Clutter &version;</releaseinfo>
 
     <copyright>
+      <year>2008</year>
+      <year>2009</year>
       <year>2010</year>
-      <holder>Intel Corporation</holder>
+      <holder>Igalia S.L.</holder>
     </copyright>
 
     <legalnotice>
@@ -37,6 +39,8 @@
     </legalnotice>
   </bookinfo>
 
+  <xi:include href="xml/cally-overview.xml"/>
+
   <part id="callybase">
     <title>Cally Reference</title>
 
@@ -44,6 +48,7 @@
       <title>Base Classes</title>
 
       <xi:include href="xml/cally-actor.xml"/>
+      <xi:include href="xml/cally-group.xml"/>
       <xi:include href="xml/cally-stage.xml"/>
       <xi:include href="xml/cally-texture.xml"/>
       <xi:include href="xml/cally-rectangle.xml"/>

@@ -28,6 +28,11 @@
  *
  * #CallyStage implements the required ATK interfaces for #ClutterStage
  *
+ * Some implementation details: at this moment #CallyStage is used as
+ * the most similar Window object in this toolkit (ie: emitting window
+ * related signals), although the real purpose of #ClutterStage is
+ * being a canvas. Anyway, this is required for applications using
+ * just clutter, or directly #ClutterStage
  */
 
 #include "cally-stage.h"
@@ -88,6 +93,18 @@ cally_stage_class_init (CallyStageClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (CallyStagePrivate));
 
+  /**
+   * CallyStage::activate:
+   * @cally_actor: the object which received the signal
+   *
+   * The ::activate signal is emitted when the stage receives the key
+   * focus from the underlying window system.
+   *
+   * Toolkit implementation note: it is used when anyone adds a global
+   * event listener to "window:activate"
+   *
+   * Since: 1.4
+   */
   cally_stage_signals [ACTIVATE] =
     g_signal_new ("activate",
                   G_TYPE_FROM_CLASS (klass),
@@ -96,6 +113,18 @@ cally_stage_class_init (CallyStageClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * CallyStage::create:
+   * @cally_actor: the object which received the signal
+   *
+   * The ::create signal is emitted when the stage is created.
+   *
+   * Toolkit implementation note: it is used when anyone adds a global
+   * event listener to "window:create"
+   *
+   * Since: 1.4
+   */
   cally_stage_signals [CREATE] =
     g_signal_new ("create",
                   G_TYPE_FROM_CLASS (klass),
@@ -104,6 +133,19 @@ cally_stage_class_init (CallyStageClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * CallyStage::deactivate:
+   * @cally_actor: the object which received the signal
+   *
+   * The ::deactivate signal is emitted when the stage loses key focus
+   * from the underlying window system.
+   *
+   * Toolkit implementation note: it is used when anyone adds a global
+   * event listener to "window:deactivate"
+   *
+   * Since: 1.4
+   */
   cally_stage_signals [DEACTIVATE] =
     g_signal_new ("deactivate",
                   G_TYPE_FROM_CLASS (klass),
@@ -112,6 +154,18 @@ cally_stage_class_init (CallyStageClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * CallyStage::destroy:
+   * @cally_actor: the object which received the signal
+   *
+   * The ::destroy signal is emitted when the stage is destroyed.
+   *
+   * Toolkit implementation note: it is used when anyone adds a global
+   * event listener to "window:destroy"
+   *
+   * Since: 1.4
+   */
   cally_stage_signals [DESTROY] =
     g_signal_new ("destroy",
                   G_TYPE_FROM_CLASS (klass),
@@ -132,6 +186,17 @@ cally_stage_init (CallyStage *cally_stage)
   priv->active = FALSE;
 }
 
+/**
+ * cally_stage_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyStage for the given @actor. @actor should be a
+ * #ClutterStage.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_stage_new (ClutterActor *actor)
 {

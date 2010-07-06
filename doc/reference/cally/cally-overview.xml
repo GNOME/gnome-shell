@@ -1,0 +1,74 @@
+<part id="clutter-overview">
+  <partinfo>
+    <author>
+      <firstname>Alejandro</firstname>
+      <surname>Piñeiro Iglesias</surname>
+      <affiliation>
+        <address>
+          <email>apinheiro@igalia.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </partinfo>
+
+  <title>Overview</title>
+
+  <partintro>
+
+    <para>Cally (Clutter Accessibility Implementation Library) is the
+    Clutter implementation of the ATK interfaces. You can see as the
+    Clutter equivalent of GAIL, which provides accessibility support
+    for GTK+ and other GNOME related libraries.</para>
+
+    <para>This implementation expose Clutter actors to accessibility
+    tools like Orca. This allows not only writing accessible user
+    interfaces, but also allows testing and verification frameworks
+    based on accessibility technologies to inspect and test a Clutter
+    scene graph.</para>
+
+    <para>This reference manual defines the different APIs defined in
+    Cally. Anyway take into account that the most common use of case
+    Cally is transparent to the user, as the different accessibility
+    tools are intended to use the abstract ATK interfaces, and *not
+    directly* Cally, so this tools can communicate with applications
+    using different toolkits, like GTK+, Java, Clutter, etc. </para>
+
+    <para>The purpose of this reference is allow to extend Cally
+    functionality in any Clutter-based widget toolkit. Clutter is more
+    low-level that other toolkits like GTK+, and some toolkits have
+    started to appear based on Clutter: MX, Shell Toolkit, Candies,
+    Glitter, etc. This means that it is really likely that these
+    libraries will require extra accessibility support.</para>
+
+    <para>GAIL used a different approach, being a almost-pure-opaque
+    implementation of the ATK interfaces. So you can't extend it
+    directly. You need to use GObject and ATK mechanisms, like
+    run-time anonymous inheritance, to extend it. Although valid to
+    some custom cases, it showed to be really problematic and hacky in
+    wider approaches, like HAIL(Hildon Accessibility Implementation
+    Library). As explained, Clutter is more likely to be extended, so
+    these issues would arise sooner.</para>
+
+    <para>Part of the accessibility support is implemented on Clutter,
+    like the initialization code, and the method to obtain the
+    accessibility object for each Clutter object. In the same way, to
+    make it easier, and to allow access to Clutter object private
+    data, it would be really likely that the accessibility support
+    would be implemented directly on some Clutter objects</para>
+
+    <para>Check the next clutter methods for more information:</para>
+    <variablelist>
+      <varlistentry>
+        <term>clutter_actor_get_accessible()</term>
+        <listitem>Virtual method to obtain the accessibility object of a
+          clutter actor</listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>clutter_get_accessibility_enabled()</term>
+        <listitem>Method to check if accessibility is enabled.</listitem>
+      </varlistentry>
+    </variablelist>
+
+  </partintro>
+
+</part>

@@ -29,6 +29,22 @@
 #include <glib-object.h>
 #include <atk/atkobject.h>
 
+/**
+ * CALLY_ACCESSIBLE_FACTORY:
+ * @type: GType of the accessible which is created by the factory
+ * @type_as_function: prefix of the accessible object methods
+ * @opt_create_accessible: method to instantiate the accessibility object
+ *
+ * Defines a new #AtkObjectFactory factory to create accessible
+ * objects of a specific GType. It defines the factory GType and also
+ * overrides the proper #AtkObjectFactory methods.
+ *
+ * It assumes that the accessibility object provides a
+ * @opt_create_accessible method in order to create the accessibility
+ * object. It returns a @type GType object.
+ *
+ * Since: 1.4
+ */
 #define CALLY_ACCESSIBLE_FACTORY(type, type_as_function, opt_create_accessible)	\
 										\
 static GType									\
@@ -83,6 +99,16 @@ type_as_function ## _factory_get_type (void)					\
   return t;									\
 }
 
+/**
+ * CALLY_ACTOR_SET_FACTORY:
+ * @widget_type: GType of the clutter actor
+ * @type_as_function: prefix of the accessible object methods
+ *
+ * Sets the #AtkObjectFactory to be used in order to instantiate
+ * accessibility objects for the actor which GType is @widget_type.
+ *
+ * Since: 1.4
+ */
 #define CALLY_ACTOR_SET_FACTORY(widget_type, type_as_function)			\
 	atk_registry_set_factory_type (atk_get_default_registry (),		\
 				       widget_type,				\

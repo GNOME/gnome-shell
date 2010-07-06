@@ -20,6 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:cally
+ * @Title: Cally
+ * @short_description: Cally initialization methods.
+ *
+ * Cally initialization methods.
+ *
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -54,7 +63,7 @@ CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_RECTANGLE, cally_rectangle, cally_rectangle
 CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_CLONE, cally_clone, cally_clone_new)
 
 /**
- * cally_acccessibility_init:
+ * cally_accessibility_init:
  *
  * Initializes the accessibility support.
  *

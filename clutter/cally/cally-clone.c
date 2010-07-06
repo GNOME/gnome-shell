@@ -102,6 +102,17 @@ cally_clone_init (CallyClone *clone)
   /* nothing to do yet */
 }
 
+/**
+ * cally_clone_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyClone for the given @actor. @actor must be a
+ * #ClutterClone.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_clone_new (ClutterActor *actor)
 {

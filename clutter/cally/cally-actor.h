@@ -74,10 +74,10 @@ struct _CallyActor
 
 /**
  * CallyActorClass:
- * @notify_clutter: FIXME
- * @focus_clutter: FIXME
- * @add_actor: FIXME
- * @remove_actor: FIXME
+ * @notify_clutter: Signal handler for notify signal on Clutter actor
+ * @focus_clutter: Signal handler for key-focus-in and key-focus-out signal on Clutter actor
+ * @add_actor: Signal handler for actor-added signal on ClutterContainer interface
+ * @remove_actor: Signal handler for actor-added signal on ClutterContainer interface
  *
  * The <structname>CallyActorClass</structname> structure contains only
  * private data

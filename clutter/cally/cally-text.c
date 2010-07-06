@@ -269,6 +269,17 @@ cally_text_finalize   (GObject *obj)
   G_OBJECT_CLASS (cally_text_parent_class)->finalize (obj);
 }
 
+/**
+ * cally_text_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyText for the given @actor. @actor must be a
+ * #ClutterText.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_text_new (ClutterActor *actor)
 {

@@ -22,7 +22,7 @@
 
 /**
  * SECTION:cally-root
- * @short_description: Root object for the CALLY toolkit
+ * @short_description: Root object for the Cally toolkit
  * @see_also: #ClutterStage
  *
  * #CallyRoot is the root object of the accessibility tree-like
@@ -105,6 +105,15 @@ cally_root_init (CallyRoot      *root)
   root->priv->stage_removed_id = 0;
 }
 
+/**
+ * cally_root_new:
+ *
+ * Creates a new #CallyRoot object.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_root_new (void)
 {

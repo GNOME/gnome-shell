@@ -244,7 +244,7 @@ struct _CallyActorPrivate
  *
  * Creates a new #CallyActor for the given @actor
  *
- * Return value: the newly created #CallyActor
+ * Return value: the newly created #AtkObject
  *
  * Since: 1.4
  */

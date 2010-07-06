@@ -62,6 +62,17 @@ cally_rectangle_init (CallyRectangle *rectangle)
   /* nothing to do yet */
 }
 
+/**
+ * cally_rectangle_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #CallyRectangle for the given @actor. @actor must be
+ * a #ClutterRectangle.
+ *
+ * Return value: the newly created #AtkObject
+ *
+ * Since: 1.4
+ */
 AtkObject*
 cally_rectangle_new (ClutterActor *actor)
 {
