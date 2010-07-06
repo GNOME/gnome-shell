@@ -108,10 +108,13 @@ xsettings_filter (XEvent       *xevent,
 {
   ClutterBackendX11 *backend_x11 = data;
 
-  if (_clutter_xsettings_client_process_event (backend_x11->xsettings, xevent))
-    return CLUTTER_X11_FILTER_REMOVE;
-  else
-    return CLUTTER_X11_FILTER_CONTINUE;
+  _clutter_xsettings_client_process_event (backend_x11->xsettings, xevent);
+
+  /* we always want the rest of the stack to get XSettings events, even
+   * if Clutter already handled them
+   */
+
+  return CLUTTER_X11_FILTER_CONTINUE;
 }
 
 static Bool
