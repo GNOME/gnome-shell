@@ -61,6 +61,8 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
    */
   NSOpenGLPixelFormatAttribute attrs[] = {
     NSOpenGLPFADoubleBuffer,
+    NSOpenGLPFADepthSize, 24,
+    NSOpenGLPFAStencilSize, 8,
     0
   };
   self->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
