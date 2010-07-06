@@ -61,6 +61,7 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "rectangles", COGL_DEBUG_RECTANGLES },
   { "disable-batching", COGL_DEBUG_DISABLE_BATCHING },
   { "disable-vbos", COGL_DEBUG_DISABLE_VBOS },
+  { "disable-pbos", COGL_DEBUG_DISABLE_PBOS },
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
   { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE },
   { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS },
@@ -117,6 +118,7 @@ _cogl_parse_debug_string (const char *value,
       OPT ("rectangles:", "add wire outlines for all rectangular geometry");
       OPT ("disable-batching:", "disable the journal batching");
       OPT ("disable-vbos:", "disable use of OpenGL vertex buffer objects");
+      OPT ("disable-pbos:", "disable use of OpenGL pixel buffer objects");
       OPT ("disable-software-transform",
            "use the GPU to transform rectangular geometry");
       OPT ("dump-atlas-image:", "dump atlas changes to an image file");
