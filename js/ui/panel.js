@@ -341,10 +341,8 @@ AppMenuButton.prototype = {
             this._stopAnimation(true);
             return false;
         }
-        if (this._animationStep < 0 || this._animationStep > 1) {
-            this._direction = -this._direction;
-            this._animationStep += 2 * this._direction;
-        }
+        if (this._animationStep > 1)
+            this._animationStep = 1;
         this._clipWidth = this._label.actor.width - (this._label.actor.width - AppDisplay.APPICON_SIZE / 2) * (1 - this._animationStep);
         if (this.actor.get_direction() == St.TextDirection.LTR) {
             this._label.actor.set_clip(0, 0, this._clipWidth + this._shadow.width, this.actor.height);
