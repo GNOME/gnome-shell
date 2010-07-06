@@ -9,6 +9,8 @@
       href="git://git.gnome.org/"/>
   <repository type="git" name="git.moblin.org"
       href="git://git.moblin.org"/>
+  <repository type="tarball" name="cairo.org"
+      href="http://cairographics.org/"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -46,27 +48,56 @@
     </dependencies>
   </autotools>
 
+  <autotools id="pixman" autogenargs="--disable-gtk">
+    <branch module="releases/pixman-0.18.2.tar.gz" version="0.18.2"
+            repo="cairo.org"
+            hash="sha256:80aee833b429d105d2c7593ef96993da04441b3b747084f1f3bfd7be594e1c45"
+            md5sum="5d1378fa61610dd5d3c7e0111b2c5253" size="510704">
+    </branch>
+  </autotools>
+
+  <autotools id="cairo">
+    <branch module="snapshots/cairo-1.9.10.tar.gz" version="1.9.10"
+            repo="cairo.org"
+            hash="sha256:0341190e16e40670503fb2bd815692ebbe66a2843241c3d8e02f75bfb1b76ff4"
+            md5sum="737d533e15302ae355ff9a3cf16bc467" size="23153906">
+    </branch>
+    <dependencies>
+      <dep package="pixman"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="pango">
     <branch repo="git.gnome.org" module="pango"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="cairo"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gdk-pixbuf">
+    <branch repo="git.gnome.org" module="gdk-pixbuf"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="gobject-introspection"/>
     </dependencies>
   </autotools>
 
-  <autotools id="gtk+">
-    <branch repo="git.gnome.org" module="gtk+"/>
+  <autotools id="gtk3">
+    <branch checkoutdir="gtk3" repo="git.gnome.org" module="gtk+"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="pango"/>
       <dep package="atk"/>
+      <dep package="gdk-pixbuf"/>
     </dependencies>
   </autotools>
 
-  <autotools id="gir-repository" autogenargs="--with-skipped-gir-modules=Gst,Poppler,WebKit,GSSDP,Unique,GMenu,Wnck,GooCanvas,Notify,GnomeKeyring">
-    <branch repo="git.gnome.org" module="gir-repository"/>
+  <autotools id="gtk-engines-3">
+    <branch repo="git.gnome.org" module="gtk-engines"/>
     <dependencies>
-        <dep package="gobject-introspection"/>
+      <dep package="gtk3"/>
     </dependencies>
   </autotools>
 
@@ -75,9 +106,6 @@
     <dependencies>
         <dep package="gobject-introspection"/>
     </dependencies>
-    <after>
-      <dep package="gir-repository"/>
-    </after>
   </autotools>
 
   <autotools id="json-glib">
@@ -85,9 +113,6 @@
     <dependencies>
         <dep package="gobject-introspection"/>
     </dependencies>
-    <after>
-      <dep package="gir-repository"/>
-    </after>
   </autotools>
 
   <autotools id="clutter">
@@ -95,11 +120,8 @@
     <dependencies>
         <dep package="json-glib"/>
         <dep package="gobject-introspection"/>
+        <dep package="pango"/>
     </dependencies>
-    <after>
-      <dep package="gir-repository"/>
-      <dep package="pango"/>
-    </after>
   </autotools>
 
   <autotools id="dconf">
@@ -119,15 +141,29 @@
     </dependencies>
   </autotools>
 
-  <autotools id="mutter" autogenargs="--with-clutter">
+  <autotools id="mutter" autogenargs="--with-gtk=3.0">
     <branch repo="git.gnome.org" module="mutter"/>
     <dependencies>
       <dep package="clutter"/>
       <dep package="gconf"/>
+      <dep package="gtk3"/>
     </dependencies>
-    <after>
-      <dep package="gtk+"/>
-    </after>
+  </autotools>
+
+  <autotools id="librsvg" supports-non-srcdir-builds="no">
+    <branch repo="git.gnome.org" module="librsvg"/>
+    <dependencies>
+      <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-desktop-3">
+    <branch repo="git.gnome.org" checkoutdir="gnome-desktop-3" module="gnome-desktop"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gtk3"/>
+      <dep package="gconf"/>
+    </dependencies>
   </autotools>
 
   <autotools id="gnome-shell">
@@ -139,20 +175,26 @@
         <dep package="dconf"/>
         <dep package="gconf"/>
         <dep package="glib"/>
+        <dep package="gnome-desktop-3"/>
     </dependencies>
   </autotools>
 
+  <!-- This doesn't actually use gir-repository anymore,
+       kept just for compatibility to avoid having everyone
+       change their ~/.jhbuildrc -->
   <metamodule id="gnome-shell-using-gir-repository">
     <dependencies>
-        <dep package="gir-repository"/>
-        <dep package="gnome-shell"/>
+      <dep package="librsvg"/>
+      <dep package="gtk-engines-3"/>
+      <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
 
   <metamodule id="gnome-shell-full">
     <dependencies>
-        <dep package="gtk+"/>
-        <dep package="gnome-shell"/>
+      <dep package="librsvg"/>
+      <dep package="gtk-engines-3"/>
+      <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
 
