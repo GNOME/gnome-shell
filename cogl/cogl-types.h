@@ -219,7 +219,10 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
 /**
  * CoglFeatureFlags:
  * @COGL_FEATURE_TEXTURE_RECTANGLE: ARB_texture_rectangle support
- * @COGL_FEATURE_TEXTURE_NPOT: ARB_texture_non_power_of_two support
+ * @COGL_FEATURE_TEXTURE_NPOT: Non power of two textures are supported
+ *    by the hardware. This is a equivalent to the
+ *    %COGL_FEATURE_TEXTURE_NPOT_BASIC, %COGL_FEATURE_TEXTURE_NPOT_MIPMAP
+ *    and %COGL_FEATURE_TEXTURE_NPOT_REPEAT features combined.
  * @COGL_FEATURE_TEXTURE_YUV: ycbcr conversion support
  * @COGL_FEATURE_TEXTURE_READ_PIXELS: glReadPixels() support
  * @COGL_FEATURE_SHADERS_GLSL: GLSL support
@@ -234,6 +237,17 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  *     %COGL_INDICES_TYPE_UNSIGNED_INT is supported in
  *     cogl_vertex_buffer_indices_new().
  * @COGL_FEATURE_DEPTH_RANGE: cogl_material_set_depth_range() support
+ * @COGL_FEATURE_TEXTURE_NPOT_BASIC: The hardware supports non power
+ *     of two textures, but you also need to check the
+ *     %COGL_FEATURE_TEXTURE_NPOT_MIPMAP and %COGL_FEATURE_TEXTURE_NPOT_REPEAT
+ *     features to know if the hardware supports npot texture mipmaps
+ *     or repeat modes other than
+ *     %COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE respectively.
+ * @COGL_FEATURE_TEXTURE_NPOT_MIPMAP: Mipmapping is supported in
+ *     conjuntion with non power of two textures.
+ * @COGL_FEATURE_TEXTURE_NPOT_REPEAT: Repeat modes other than
+ *     %COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE are supported by the
+ *     hardware.
  *
  * Flags for the supported features.
  *
@@ -254,7 +268,10 @@ typedef enum
   COGL_FEATURE_VBOS		      = (1 << 11),
   COGL_FEATURE_PBOS		      = (1 << 12),
   COGL_FEATURE_UNSIGNED_INT_INDICES   = (1 << 13),
-  COGL_FEATURE_DEPTH_RANGE            = (1 << 14)
+  COGL_FEATURE_DEPTH_RANGE            = (1 << 14),
+  COGL_FEATURE_TEXTURE_NPOT_BASIC     = (1 << 15),
+  COGL_FEATURE_TEXTURE_NPOT_MIPMAP    = (1 << 16),
+  COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 << 17)
 } CoglFeatureFlags;
 
 /**

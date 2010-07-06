@@ -80,3 +80,13 @@ COGL_FEATURE_BEGIN (element_index_uint, 255, 255,
                     COGL_FEATURE_UNSIGNED_INT_INDICES,
                     0)
 COGL_FEATURE_END ()
+
+COGL_FEATURE_BEGIN (texture_npot, 255, 255,
+                    "OES\0",
+                    "texture_npot\0",
+                    COGL_FEATURE_TEXTURE_NPOT |
+                    COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                    COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                    COGL_FEATURE_TEXTURE_NPOT_REPEAT,
+                    0)
+COGL_FEATURE_END ()

@@ -199,7 +199,10 @@ _cogl_features_init (void)
 #ifdef HAVE_CLUTTER_OSX
       if (really_enable_npot ())
 #endif
-        flags |= COGL_FEATURE_TEXTURE_NPOT;
+        flags |= COGL_FEATURE_TEXTURE_NPOT
+          | COGL_FEATURE_TEXTURE_NPOT_BASIC
+          | COGL_FEATURE_TEXTURE_NPOT_MIPMAP
+          | COGL_FEATURE_TEXTURE_NPOT_REPEAT;
     }
 
 #ifdef GL_YCBCR_MESA
