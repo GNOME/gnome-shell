@@ -100,6 +100,9 @@ _cogl_features_init (void)
 
 #ifdef HAVE_COGL_GLES2
   flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
+  /* Note GLES 2 core doesn't support mipmaps for npot textures or
+   * repeat modes other than CLAMP_TO_EDGE. */
+  flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
 #endif
 
   flags |= COGL_FEATURE_VBOS;
