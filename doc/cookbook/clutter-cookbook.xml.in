@@ -101,6 +101,10 @@
         empty brackets, e.g. <function>clutter_actor_set_size()</function>.
         </para>
       </listitem>
+      <listitem>
+        <para>Use the &lt;note&gt; element for asides which might
+        otherwise interrupt the flow of the recipe.</para>
+      </listitem>
     </itemizedlist>
 
   </appendix>
