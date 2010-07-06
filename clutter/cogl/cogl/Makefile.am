@@ -170,7 +170,8 @@ libclutter_cogl_la_LIBADD = \
 	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la \
 	$(top_builddir)/clutter/cogl/cogl/tesselator/libtesselator.la
 
-libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
+libclutter_cogl_la_SOURCES = $(cogl_sources_c)
+nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
 
 if SUPPORT_XLIB
 cogl_public_h += \
@@ -213,12 +214,11 @@ EXTRA_DIST += stb_image.c
 cogl_headers = \
 	$(cogl_public_h) \
 	$(srcdir)/cogl-deprecated.h \
-	cogl-enum-types.h \
 	$(NULL)
 
 coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglinclude_HEADERS = $(cogl_headers)
-nodist_coglinclude_HEADERS = cogl-defines.h
+nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
 if HAVE_INTROSPECTION
 Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
@@ -233,7 +233,7 @@ Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
 		--libtool="$(top_builddir)/libtool" \
 		--pkg gobject-2.0 \
 		--output $@ \
-		$(cogl_headers)
+		$(cogl_headers) cogl-enum-types.h
 
 BUILT_GIRSOURCES = Cogl-@CLUTTER_API_VERSION@.gir
 
