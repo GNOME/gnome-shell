@@ -148,6 +148,7 @@ gdouble               clutter_state_key_get_post_delay        (const ClutterStat
 gulong                clutter_state_key_get_mode              (const ClutterStateKey *state_key);
 void                  clutter_state_key_get_value             (const ClutterStateKey *state_key,
                                                                GValue                *value);
+GType                 clutter_state_key_get_property_type     (const ClutterStateKey *key);
 GObject *             clutter_state_key_get_object            (const ClutterStateKey *state_key);
 G_CONST_RETURN gchar *clutter_state_key_get_property_name     (const ClutterStateKey *state_key);
 G_CONST_RETURN gchar *clutter_state_key_get_source_state_name (const ClutterStateKey *state_key);

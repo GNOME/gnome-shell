@@ -2250,6 +2250,8 @@ clutter_align_constraint_get_type
 ClutterState
 ClutterStateClass
 clutter_state_new
+clutter_state_change
+clutter_state_get_state
 clutter_state_set
 clutter_state_set_key
 clutter_state_set_duration
@@ -2260,19 +2262,18 @@ clutter_state_remove_key
 clutter_state_get_timeline
 clutter_state_set_animator
 clutter_state_get_animator
-clutter_state_get_state
-clutter_state_change
 
 <SUBSECTION>
 ClutterStateKey
-clutter_state_key_get_pre_delay
-clutter_state_key_get_post_delay
-clutter_state_key_get_mode
-clutter_state_key_get_value
-clutter_state_key_get_object
-clutter_state_key_get_property_name
 clutter_state_key_get_source_state_name
 clutter_state_key_get_target_state_name
+clutter_state_key_get_object
+clutter_state_key_get_property_name
+clutter_state_key_get_mode
+clutter_state_key_get_value
+clutter_state_key_get_property_type
+clutter_state_key_get_pre_delay
+clutter_state_key_get_post_delay
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_STATE

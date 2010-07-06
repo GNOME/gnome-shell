@@ -1504,6 +1504,28 @@ clutter_state_key_get_target_state_name (const ClutterStateKey *state_key)
 }
 
 /**
+ * clutter_state_key_get_property_type:
+ * @key: a #ClutterStateKey
+ *
+ * Retrieves the #GType of the property a key applies to
+ *
+ * You can use this type to initialize the #GValue to pass to
+ * clutter_state_key_get_value()
+ *
+ * Return value: the #GType of the property
+ *
+ * Since: 1.4
+ */
+GType
+clutter_state_key_get_property_type (const ClutterStateKey *key)
+{
+  g_return_val_if_fail (key != NULL, G_TYPE_INVALID);
+
+  return G_VALUE_TYPE (&key->value);
+}
+
+
+/**
  * clutter_state_set_duration:
  * @state: a #ClutterState
  * @source_state_name: (allow-none): the name of the source state, or %NULL
