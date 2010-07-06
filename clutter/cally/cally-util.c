@@ -50,10 +50,6 @@
 #include "cally-root.h"
 #include "cally-stage.h"
 
-#ifdef HAVE_CLUTTER_X11
-#include <X11/extensions/XKB.h>
-#endif
-
 static void cally_util_class_init (CallyUtilClass	*klass);
 static void cally_util_init       (CallyUtil *cally_util);
 

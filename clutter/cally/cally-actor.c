@@ -103,7 +103,7 @@
 
 #include <clutter/clutter.h>
 
-#ifdef HAVE_CLUTTER_X11
+#ifdef HAVE_CLUTTER_GLX
 #include <clutter/x11/clutter-x11.h>
 #endif
 
@@ -917,7 +917,7 @@ _get_top_level_origin (ClutterActor *actor,
   *x = 0;
   *y = 0;
 
-#ifdef HAVE_CLUTTER_X11
+#ifdef HAVE_CLUTTER_GLX
   ClutterActor *stage      = NULL;
   Display      *display    = NULL;
   Window        root_window;
