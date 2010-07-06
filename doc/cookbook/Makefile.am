@@ -43,6 +43,7 @@ pdf-build.stamp: clutter-cookbook.xml
 html-build.stamp: clutter-cookbook.xml
 	$(XSLTPROC) $(XSLTOPTS) -o clutter-cookbook.html $(XSL_XHTML_URI) $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
 	$(XSLTPROC) $(XSLTOPTS) -o html/ ref-html-style.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
+  cp $(top_srcdir)/doc/common/style.css html/ && \
 	echo timestamp > $(@F)
 
 if ENABLE_PDFS
@@ -89,7 +90,6 @@ install-data-local:
 	    fi \
 	  done; \
 	fi; \
-	$(INSTALL_DATA) $(top_srcdir)/doc/common/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
 	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc
