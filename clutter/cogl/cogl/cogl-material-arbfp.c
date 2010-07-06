@@ -250,7 +250,7 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
     return FALSE;
 
   /* TODO: support fog */
-  if (ctx->fog_enabled)
+  if (ctx->legacy_fog_state.enabled)
     return FALSE;
 
   /* Note: we allocate ARBfp private state for both the given material

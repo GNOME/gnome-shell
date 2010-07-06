@@ -576,48 +576,17 @@ cogl_set_fog (const CoglColor *fog_color,
               float            z_near,
               float            z_far)
 {
-  GLfloat fogColor[4];
-  GLenum gl_mode = GL_LINEAR;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* The cogl journal doesn't currently track fog state changes */
-  _cogl_journal_flush ();
+  if (ctx->legacy_fog_state.enabled == FALSE)
+    ctx->legacy_state_set++;
 
-  fogColor[0] = cogl_color_get_red_float (fog_color);
-  fogColor[1] = cogl_color_get_green_float (fog_color);
-  fogColor[2] = cogl_color_get_blue_float (fog_color);
-  fogColor[3] = cogl_color_get_alpha_float (fog_color);
-
-  glEnable (GL_FOG);
-
-  glFogfv (GL_FOG_COLOR, fogColor);
-
-#if HAVE_COGL_GLES
-  switch (mode)
-    {
-    case COGL_FOG_MODE_LINEAR:
-      gl_mode = GL_LINEAR;
-      break;
-    case COGL_FOG_MODE_EXPONENTIAL:
-      gl_mode = GL_EXP;
-      break;
-    case COGL_FOG_MODE_EXPONENTIAL_SQUARED:
-      gl_mode = GL_EXP2;
-      break;
-    }
-#endif
-  /* TODO: support other modes for GLES2 */
-
-  /* NB: GLES doesn't have glFogi */
-  glFogf (GL_FOG_MODE, gl_mode);
-  glHint (GL_FOG_HINT, GL_NICEST);
-
-  glFogf (GL_FOG_DENSITY, (GLfloat) density);
-  glFogf (GL_FOG_START, (GLfloat) z_near);
-  glFogf (GL_FOG_END, (GLfloat) z_far);
-
-  ctx->fog_enabled = TRUE;
+  ctx->legacy_fog_state.enabled = TRUE;
+  ctx->legacy_fog_state.color = *fog_color;
+  ctx->legacy_fog_state.mode = mode;
+  ctx->legacy_fog_state.density = density;
+  ctx->legacy_fog_state.z_near = z_near;
+  ctx->legacy_fog_state.z_far = z_far;
 }
 
 void
@@ -625,11 +594,10 @@ cogl_disable_fog (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Currently the journal can't track changes to fog state... */
-  _cogl_journal_flush ();
+  if (ctx->legacy_fog_state.enabled == TRUE)
+    ctx->legacy_state_set--;
 
-  glDisable (GL_FOG);
-  ctx->fog_enabled = FALSE;
+  ctx->legacy_fog_state.enabled = FALSE;
 }
 
 void
