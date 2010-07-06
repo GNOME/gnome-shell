@@ -87,7 +87,7 @@ typedef enum {
 struct _CoglBuffer
 {
   CoglObject              _parent;
-  const CoglBufferVtable *vtable;
+  CoglBufferVtable        vtable;
 
   CoglBufferBindTarget    last_target;
 
@@ -118,6 +118,7 @@ _cogl_buffer_register_buffer_type (GQuark type);
 void
 _cogl_buffer_initialize (CoglBuffer          *buffer,
                          unsigned int         size,
+                         gboolean             use_malloc,
                          CoglBufferBindTarget default_target,
                          CoglBufferUsageHint  usage_hint,
                          CoglBufferUpdateHint update_hint);
@@ -134,12 +135,6 @@ _cogl_buffer_unbind (CoglBuffer *buffer);
 
 CoglBufferUsageHint
 _cogl_buffer_get_usage_hint (CoglBuffer *buffer);
-
-GLenum
-_cogl_buffer_get_last_gl_target (CoglBuffer *buffer);
-
-CoglBufferBindTarget
-_cogl_buffer_get_last_bind_target (CoglBuffer *buffer);
 
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access);

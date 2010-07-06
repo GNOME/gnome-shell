@@ -92,36 +92,22 @@ _cogl_pixel_array_new (unsigned int size)
 {
   CoglPixelArray *pixel_array = g_slice_new0 (CoglPixelArray);
   CoglBuffer *buffer = COGL_BUFFER (pixel_array);
+  gboolean use_malloc;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  if (!cogl_features_available (COGL_FEATURE_PBOS))
+    use_malloc = TRUE;
+  else
+    use_malloc = FALSE;
 
   /* parent's constructor */
   _cogl_buffer_initialize (buffer,
                            size,
+                           use_malloc,
                            COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
                            COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
-
-/* malloc version only for GLES */
-#if !defined (COGL_HAS_GLES)
-  if (cogl_features_available (COGL_FEATURE_PBOS))
-    {
-      /* PBOS */
-      buffer->vtable = &cogl_pixel_array_vtable;
-
-      GE( glGenBuffers (1, &buffer->gl_handle) );
-      COGL_BUFFER_SET_FLAG (buffer, BUFFER_OBJECT);
-    }
-  else
-#endif
-    {
-      /* malloc fallback subclass */
-      buffer->vtable = &cogl_malloc_pixel_array_vtable;
-
-      /* create the buffer here as there's no point for a lazy allocation in
-       * the malloc case */
-      buffer->data = g_malloc (size);
-    }
 
   pixel_array->flags = COGL_PIXEL_ARRAY_FLAG_NONE;
 
@@ -175,158 +161,3 @@ _cogl_pixel_array_free (CoglPixelArray *buffer)
   g_slice_free (CoglPixelArray, buffer);
 }
 
-#if !defined (COGL_HAS_GLES)
-static guint8 *
-_cogl_pixel_array_map (CoglBuffer       *buffer,
-                       CoglBufferAccess  access,
-                       CoglBufferMapHint hints)
-{
-  CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
-  guint8 *data;
-  CoglBufferBindTarget target;
-  GLenum gl_target;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  target = _cogl_buffer_get_last_bind_target (buffer);
-  _cogl_buffer_bind (buffer, target);
-
-  gl_target = _cogl_buffer_get_last_gl_target (buffer);
-
-  /* create an empty store if we don't have one yet. creating the store
-   * lazily allows the user of the CoglBuffer to set a hint before the
-   * store is created. */
-  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED) ||
-      (hints & COGL_BUFFER_MAP_HINT_DISCARD))
-    {
-      GE( glBufferData (gl_target,
-                        buffer->size,
-                        NULL,
-                        _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                                       buffer->update_hint)) );
-      COGL_PIXEL_ARRAY_SET_FLAG (pixel_array, STORE_CREATED);
-    }
-
-  GE_RET( data, glMapBuffer (gl_target,
-                             _cogl_buffer_access_to_gl_enum (access)) );
-  if (data)
-    COGL_BUFFER_SET_FLAG (buffer, MAPPED);
-
-  _cogl_buffer_unbind (buffer);
-
-  return data;
-}
-
-static void
-_cogl_pixel_array_unmap (CoglBuffer *buffer)
-{
-  CoglBufferBindTarget target;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  target = _cogl_buffer_get_last_bind_target (buffer);
-  _cogl_buffer_bind (buffer, target);
-
-  GE( glUnmapBuffer (_cogl_buffer_get_last_gl_target (buffer)) );
-  COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
-
-  _cogl_buffer_unbind (buffer);
-}
-
-static gboolean
-_cogl_pixel_array_set_data (CoglBuffer   *buffer,
-                            unsigned int  offset,
-                            const guint8 *data,
-                            unsigned int  size)
-{
-  CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
-  CoglBufferBindTarget target;
-  GLenum gl_target;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  target = _cogl_buffer_get_last_bind_target (buffer);
-  _cogl_buffer_bind (buffer, target);
-
-  gl_target = _cogl_buffer_get_last_gl_target (buffer);
-
-  /* create an empty store if we don't have one yet. creating the store
-   * lazily allows the user of the CoglBuffer to set a hint before the
-   * store is created. */
-  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED))
-    {
-      GE( glBufferData (gl_target,
-                        buffer->size,
-                        NULL,
-                        _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                                       buffer->update_hint)) );
-      COGL_PIXEL_ARRAY_SET_FLAG (pixel_array, STORE_CREATED);
-    }
-
-  GE( glBufferSubData (gl_target, offset, size, data) );
-
-  _cogl_buffer_unbind (buffer);
-
-  return TRUE;
-}
-
-#if 0
-gboolean
-cogl_pixel_array_set_region (CoglPixelArray *buffer,
-                             guint8          *data,
-                             unsigned int     src_width,
-                             unsigned int     src_height,
-                             unsigned int     src_rowstride,
-                             unsigned int     dst_x,
-                             unsigned int     dst_y)
-{
-  if (!cogl_is_pixel_array (buffer))
-    return FALSE;
-
-  return TRUE;
-}
-#endif
-
-static const CoglBufferVtable cogl_pixel_array_vtable =
-{
-  _cogl_pixel_array_map,
-  _cogl_pixel_array_unmap,
-  _cogl_pixel_array_set_data,
-};
-#endif
-
-/*
- * Fallback path, buffer->data points to a malloc'ed buffer.
- */
-
-static guint8 *
-_cogl_malloc_pixel_array_map (CoglBuffer       *buffer,
-                              CoglBufferAccess  access,
-                              CoglBufferMapHint hints)
-{
-  COGL_BUFFER_SET_FLAG (buffer, MAPPED);
-  return buffer->data;
-}
-
-static void
-_cogl_malloc_pixel_array_unmap (CoglBuffer *buffer)
-{
-  COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
-}
-
-static gboolean
-_cogl_malloc_pixel_array_set_data (CoglBuffer   *buffer,
-                                   unsigned int  offset,
-                                   const guint8 *data,
-                                   unsigned int  size)
-{
-  memcpy (buffer->data + offset, data, size);
-  return TRUE;
-}
-
-static const CoglBufferVtable cogl_malloc_pixel_array_vtable =
-{
-  _cogl_malloc_pixel_array_map,
-  _cogl_malloc_pixel_array_unmap,
-  _cogl_malloc_pixel_array_set_data,
-};
