@@ -535,13 +535,8 @@ cally_util_stage_added_cb (ClutterStageManager *stage_manager,
                            gpointer data)
 {
   GCallback cally_key_snooper_cb = G_CALLBACK (data);
-  AtkObject *cally_stage = NULL;
 
   g_signal_connect (G_OBJECT (stage), "captured-event", cally_key_snooper_cb, NULL);
-
-  cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
-  if (cally_stage != NULL)
-    g_signal_emit_by_name (G_OBJECT(cally_stage), "create", 0);
 }
 
 static void
@@ -551,13 +546,8 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
 {
   GCallback cally_key_snooper_cb = G_CALLBACK (data);
   gint num = 0;
-  AtkObject *cally_stage = NULL;
 
   num = g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
-
-  cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
-  if (cally_stage != NULL)
-    g_signal_emit_by_name (G_OBJECT(cally_stage), "destroy", 0);
 }
 
 static void

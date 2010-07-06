@@ -248,6 +248,7 @@ cally_util_stage_added_cb (ClutterStageManager *stage_manager,
   index = g_slist_index (root->priv->stage_list, cally_stage);
   g_signal_emit_by_name (root, "children_changed::add",
                          index, cally_stage, NULL);
+  g_signal_emit_by_name (cally_stage, "create", 0);
 }
 
 static void
@@ -269,4 +270,5 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
   index = g_slist_index (root->priv->stage_list, cally_stage);
   g_signal_emit_by_name (root, "children_changed::remove",
                          index, cally_stage, NULL);
+  g_signal_emit_by_name (cally_stage, "destroy", 0);
 }
