@@ -32,18 +32,18 @@
   </tarball>
 
   <autotools id="pixman" autogenargs="--disable-gtk">
-    <branch module="releases/pixman-0.14.0.tar.gz" version="0.14.0"
+    <branch module="releases/pixman-0.18.2.tar.gz" version="0.18.2"
             repo="cairo.org"
-            hash="sha256:f0c28f4d512b6c199838dc558746e751763d3e298785af098554a8dcafc53bb4"
-            md5sum="da330524bbd975271974378b1c5e7b5d" size="468269">
+            hash="sha256:80aee833b429d105d2c7593ef96993da04441b3b747084f1f3bfd7be594e1c45"
+            md5sum="5d1378fa61610dd5d3c7e0111b2c5253" size="510704">
     </branch>
   </autotools>
 
-  <autotools id="cairo">
-    <branch module="releases/cairo-1.8.6.tar.gz" version="1.8.6"
+  <autotools id="cairo" autogenargs="--enable-xlib">
+    <branch module="snapshots/cairo-1.9.10.tar.gz" version="1.9.10"
             repo="cairo.org"
-            hash="sha256:93a347af0cecf258be8fb54265b16a0fb16317df4a32896141d2987c30773535"
-            md5sum="4e64139ef6f668df24450f3b81dd0771" size="6616544">
+            hash="sha256:0341190e16e40670503fb2bd815692ebbe66a2843241c3d8e02f75bfb1b76ff4"
+            md5sum="737d533e15302ae355ff9a3cf16bc467" size="23153906">
     </branch>
     <dependencies>
       <dep package="fontconfig"/>
