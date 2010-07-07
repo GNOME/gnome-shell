@@ -92,6 +92,30 @@ send_wmspec_change_state (ClutterBackendX11 *backend_x11,
               (XEvent *)&xclient);
 }
 
+static void
+update_state (ClutterStageX11   *stage_x11,
+              ClutterBackendX11 *backend_x11,
+              Atom              *state,
+              gboolean           add)
+{
+  if (add)
+    {
+      /* FIXME: This wont work if we support more states */
+      XChangeProperty (backend_x11->xdpy,
+                       stage_x11->xwin,
+                       backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
+                       PropModeReplace,
+                       (unsigned char *) state, 1);
+    }
+  else
+    {
+       /* FIXME: This wont work if we support more states */
+       XDeleteProperty (backend_x11->xdpy,
+                        stage_x11->xwin,
+                        backend_x11->atom_NET_WM_STATE);
+    }
+}
+
 void
 clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
                                    gint             new_width,
@@ -436,16 +460,13 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
            * a resize when calling clutter_stage_fullscreen() before showing
            * the stage
            */
-          if (!/*CLUTTER_ACTOR_IS_MAPPED (stage_x11->wrapper)*/ STAGE_X11_IS_MAPPED (stage_x11))
+          if (!STAGE_X11_IS_MAPPED (stage_x11))
             {
               CLUTTER_NOTE (BACKEND, "Fullscreening unmapped stage");
 
-              /* FIXME: This wont work if we support more states */
-              XChangeProperty (backend_x11->xdpy,
-                               stage_x11->xwin,
-                               backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
-                               PropModeReplace,
-                               (unsigned char *) &backend_x11->atom_NET_WM_STATE_FULLSCREEN, 1);
+              update_state (stage_x11, backend_x11,
+                            &backend_x11->atom_NET_WM_STATE_FULLSCREEN,
+                            TRUE);
             }
           else
             {
@@ -469,14 +490,13 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
       if (stage_x11->xwin != None)
         {
-          if (!/*CLUTTER_ACTOR_IS_MAPPED (stage_x11->wrapper)*/ STAGE_X11_IS_MAPPED (stage_x11))
+          if (!STAGE_X11_IS_MAPPED (stage_x11))
             {
               CLUTTER_NOTE (BACKEND, "Un-fullscreening unmapped stage");
 
-              /* FIXME: This wont work if we support more states */
-              XDeleteProperty (backend_x11->xdpy,
-                               stage_x11->xwin, 
-                               backend_x11->atom_NET_WM_STATE);
+              update_state (stage_x11, backend_x11,
+                            &backend_x11->atom_NET_WM_STATE_FULLSCREEN,
+                            FALSE);
             }
           else
             {
