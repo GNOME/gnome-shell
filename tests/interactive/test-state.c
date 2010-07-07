@@ -19,7 +19,7 @@ static gboolean press_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   ClutterState *state = CLUTTER_STATE (user_data);
-  clutter_state_change (state, "right", TRUE);
+  clutter_state_set_state (state, "right");
   return TRUE;
 }
 
@@ -28,7 +28,7 @@ static gboolean release_event (ClutterActor *actor,
                                gpointer      user_data)
 {
   ClutterState *state = CLUTTER_STATE (user_data);
-  clutter_state_change (state, "active", TRUE);
+  clutter_state_set_state (state, "active");
   return TRUE;
 }
 
@@ -37,7 +37,7 @@ static gboolean enter_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   ClutterState *state = CLUTTER_STATE (user_data);
-  clutter_state_change (state, "hover", TRUE);
+  clutter_state_set_state (state, "hover");
   return TRUE;
 }
 
@@ -46,7 +46,7 @@ static gboolean leave_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   ClutterState *state = CLUTTER_STATE (user_data);
-  clutter_state_change (state, "normal", TRUE);
+  clutter_state_set_state (state, "normal");
   return TRUE;
 }
 
@@ -59,7 +59,7 @@ static void completed (ClutterState *state,
   if (g_str_equal (clutter_state_get_state (state), "right"))
     {
       /* skip straight to left state when reaching right */
-      clutter_state_change (state, "left", FALSE);
+      clutter_state_warp_to_state (state, "left");
     }
 }
 
@@ -177,8 +177,9 @@ test_state_main (gint    argc,
   g_signal_connect (layout_state, "completed", G_CALLBACK (completed), NULL);
 
   clutter_actor_show (stage);
-  clutter_state_change (layout_state, "left", FALSE);
-  clutter_state_change (layout_state, "active", TRUE);
+
+  clutter_state_warp_to_state (layout_state, "left");
+  clutter_state_set_state (layout_state, "active");
 
   clutter_main ();
   g_object_unref (layout_state);

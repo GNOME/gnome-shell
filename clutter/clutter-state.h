@@ -91,9 +91,10 @@ GType clutter_state_get_type (void) G_GNUC_CONST;
 ClutterState    *clutter_state_new            (void);
 
 
-ClutterTimeline * clutter_state_change        (ClutterState    *state,
-                                               const gchar     *target_state_name,
-                                               gboolean         animate);
+ClutterTimeline * clutter_state_set_state     (ClutterState    *state,
+                                               const gchar     *target_state_name);
+ClutterTimeline * clutter_state_warp_to_state (ClutterState    *state,
+                                               const gchar     *target_state_name);
 ClutterState *    clutter_state_set_key       (ClutterState    *state,
                                                const gchar     *source_state_name,
                                                const gchar     *target_state_name,

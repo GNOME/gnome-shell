@@ -11,7 +11,7 @@ static gboolean press_event (ClutterActor *actor,
                              gpointer      user_data)
 {
   clutter_grab_pointer (actor);
-  clutter_state_change (state, "end", TRUE);
+  clutter_state_set_state (state, "end");
   return TRUE;
 }
 
@@ -19,7 +19,7 @@ static gboolean release_event (ClutterActor *actor,
                                ClutterEvent *event,
                                gpointer      user_data)
 {
-  clutter_state_change (state, "start", TRUE);
+  clutter_state_set_state (state, "start");
   clutter_ungrab_pointer ();
   return TRUE;
 }
@@ -125,7 +125,7 @@ test_state_animator_main (gint    argc,
   g_object_unref (animator);
 
   clutter_actor_show (stage);
-  clutter_state_change (state, "start", TRUE);
+  clutter_state_set_state (state, "start");
 
   clutter_main ();
   g_object_unref (state);

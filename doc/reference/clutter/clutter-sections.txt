@@ -2250,8 +2250,9 @@ clutter_align_constraint_get_type
 ClutterState
 ClutterStateClass
 clutter_state_new
-clutter_state_change
+clutter_state_set_state
 clutter_state_get_state
+clutter_state_warp_to_state
 clutter_state_set
 clutter_state_set_key
 clutter_state_set_duration

@@ -443,23 +443,7 @@ clutter_state_new_frame (ClutterTimeline *timeline,
 }
 
 
-/**
- * clutter_state_change:
- * @state: a #ClutterState
- * @target_state_name: the state to transition to
- * @animate: whether we should animate the transition or not
- *
- * Change the current state of #ClutterState to @target_state_name
- *
- * If @animate is %FALSE, the state transition will happen immediately;
- * otherwise, the state transition will be animated over the duration
- * set using clutter_state_set_duration()
- *
- * Return value: the #ClutterTimeline that drives the state transition
- *
- * Since: 1.4
- */
-ClutterTimeline *
+static ClutterTimeline *
 clutter_state_change (ClutterState *state,
                       const gchar  *target_state_name,
                       gboolean      animate)
@@ -559,6 +543,47 @@ clutter_state_change (ClutterState *state,
     }
 
   return priv->timeline;
+}
+
+/**
+ * clutter_state_set_state:
+ * @state: a #ClutterState
+ * @target_state_name: the state to transition to
+ *
+ * Change the current state of #ClutterState to @target_state_name
+ *
+ * The state will animate during its transition, see
+ * #clutter_state_warp_to_state for animation-free state switching.
+ *
+ * Return value: the #ClutterTimeline that drives the state transition
+ *
+ * Since: 1.4
+ */
+ClutterTimeline *
+clutter_state_set_state (ClutterState *state,
+                         const gchar  *target_state_name)
+{
+  return clutter_state_change (state, target_state_name, FALSE);
+}
+
+/**
+ * clutter_state_warp_to_state:
+ * @state: a #ClutterState
+ * @target_state_name: the state to transition to
+ *
+ * Change the current state of #ClutterState to @target_state_name
+ *
+ * Change to the specified target state immediately with no animation.
+ *
+ * Return value: the #ClutterTimeline that drives the state transition
+ *
+ * Since: 1.4
+ */
+ClutterTimeline *
+clutter_state_warp_to_state (ClutterState *state,
+                             const gchar  *target_state_name)
+{
+  return clutter_state_change (state, target_state_name, TRUE);
 }
 
 static GParamSpec *
@@ -1061,7 +1086,7 @@ clutter_state_set_property (GObject      *object,
   switch (prop_id)
     {
       case PROP_STATE:
-        clutter_state_change (state, g_value_get_string (value), TRUE);
+        clutter_state_set_state (state, g_value_get_string (value));
         break;
       case PROP_DURATION:
         state->priv->duration = g_value_get_uint (value);
