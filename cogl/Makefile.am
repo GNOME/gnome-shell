@@ -221,7 +221,7 @@ coglinclude_HEADERS = $(cogl_headers)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
 if HAVE_INTROSPECTION
-Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
+Cogl-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) libclutter-cogl.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Cogl --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
