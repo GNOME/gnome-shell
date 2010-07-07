@@ -1455,6 +1455,21 @@ _cogl_get_n_args_for_combine_func (GLint func)
   return 0;
 }
 
+typedef gboolean (*CoglMaterialLayerChildCallback) (CoglMaterialLayer *child,
+                                                    void *user_data);
+
+void
+_cogl_material_layer_foreach_child (CoglMaterialLayer *layer,
+                                    CoglMaterialLayerChildCallback callback,
+                                    void *user_data)
+{
+  if (layer->has_children)
+    {
+      callback (layer->first_child, user_data);
+      g_list_foreach (layer->children, (GFunc)callback, user_data);
+    }
+}
+
 static void
 _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
                                        CoglMaterialLayer *src,
@@ -5970,19 +5985,83 @@ _cogl_material_set_static_breadcrumb (CoglMaterial *material,
 typedef struct
 {
   int parent_id;
-  int *material_id_ptr;
+  int *node_id_ptr;
   GString *graph;
   int indent;
 } PrintDebugState;
 
 static gboolean
-dump_layer_cb (CoglMaterialLayer *layer, void *data)
+dump_layer_cb (CoglMaterialLayer *layer, void *user_data)
 {
-  PrintDebugState *state = data;
-  int material_id = *state->material_id_ptr;
+  PrintDebugState *state = user_data;
+  int layer_id = *state->node_id_ptr;
+  PrintDebugState state_out;
+  GString *changes_label;
+  gboolean changes = FALSE;
+
+  if (state->parent_id >= 0)
+    g_string_append_printf (state->graph, "%*slayer%d -> layer%d;\n",
+                            state->indent, "",
+                            state->parent_id,
+                            layer_id);
 
   g_string_append_printf (state->graph,
-                          "%*sstate%d -> layer_ref%d [weight=200];\n",
+                          "%*slayer%d [label=\"layer=0x%p\\n"
+                          "ref count=%d\" "
+                          "color=\"blue\"];\n",
+                          state->indent, "",
+                          layer_id,
+                          layer,
+                          COGL_OBJECT (layer)->ref_count);
+
+  changes_label = g_string_new ("");
+  g_string_append_printf (changes_label,
+                          "%*slayer%d -> layer_state%d [weight=100];\n"
+                          "%*slayer_state%d [shape=box label=\"",
+                          state->indent, "",
+                          layer_id,
+                          layer_id,
+                          state->indent, "",
+                          layer_id);
+
+  if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE)
+    {
+      changes = TRUE;
+      g_string_append_printf (changes_label,
+                              "\\ltexture=%p\\n",
+                              layer->texture);
+    }
+
+  if (changes)
+    {
+      g_string_append_printf (changes_label, "\"];\n");
+      g_string_append (state->graph, changes_label->str);
+      g_string_free (changes_label, TRUE);
+    }
+
+  state_out.parent_id = layer_id;
+
+  state_out.node_id_ptr = state->node_id_ptr;
+  (*state_out.node_id_ptr)++;
+
+  state_out.graph = state->graph;
+  state_out.indent = state->indent + 2;
+
+  _cogl_material_layer_foreach_child (layer,
+                                      dump_layer_cb,
+                                      &state_out);
+
+  return TRUE;
+}
+
+static gboolean
+dump_layer_ref_cb (CoglMaterialLayer *layer, void *data)
+{
+  PrintDebugState *state = data;
+  int material_id = *state->node_id_ptr;
+
+  g_string_append_printf (state->graph,
+                          "%*smaterial_state%d -> layer_ref%d [weight=200];\n",
                           state->indent, "",
                           material_id,
                           material_id);
@@ -6000,7 +6079,7 @@ static gboolean
 dump_material_cb (CoglMaterial *material, void *user_data)
 {
   PrintDebugState *state = user_data;
-  int material_id = *state->material_id_ptr;
+  int material_id = *state->node_id_ptr;
   PrintDebugState state_out;
   GString *changes_label;
   gboolean changes = FALSE;
@@ -6013,7 +6092,7 @@ dump_material_cb (CoglMaterial *material, void *user_data)
                             material_id);
 
   g_string_append_printf (state->graph,
-                          "%*smaterial%d [label=\"addr=0x%p\\n"
+                          "%*smaterial%d [label=\"material=0x%p\\n"
                           "ref count=%d\\n"
                           "breadcrumb=\\\"%s\\\"\" color=\"red\"];\n",
                           state->indent, "",
@@ -6025,8 +6104,8 @@ dump_material_cb (CoglMaterial *material, void *user_data)
 
   changes_label = g_string_new ("");
   g_string_append_printf (changes_label,
-                          "%*smaterial%d -> state%d [weight=100];\n"
-                          "%*sstate%d [shape=box label=\"",
+                          "%*smaterial%d -> material_state%d [weight=100];\n"
+                          "%*smaterial_state%d [shape=box label=\"",
                           state->indent, "",
                           material_id,
                           material_id,
@@ -6084,12 +6163,12 @@ dump_material_cb (CoglMaterial *material, void *user_data)
     }
 
   if (layers)
-    _cogl_material_foreach_layer (material, dump_layer_cb, state);
+    _cogl_material_foreach_layer (material, dump_layer_ref_cb, state);
 
   state_out.parent_id = material_id;
 
-  state_out.material_id_ptr = state->material_id_ptr;
-  (*state_out.material_id_ptr)++;
+  state_out.node_id_ptr = state->node_id_ptr;
+  (*state_out.node_id_ptr)++;
 
   state_out.graph = state->graph;
   state_out.indent = state->indent + 2;
@@ -6104,7 +6183,10 @@ dump_material_cb (CoglMaterial *material, void *user_data)
 void
 _cogl_debug_dump_materials_dot_file (const char *filename)
 {
-  PrintDebugState state;
+  GString *graph;
+  PrintDebugState layer_state;
+  PrintDebugState material_state;
+  int layer_id = 0;
   int material_id = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -6112,23 +6194,28 @@ _cogl_debug_dump_materials_dot_file (const char *filename)
   if (!ctx->default_material)
     return;
 
-  state.graph = g_string_new ("");
-  g_string_append_printf (state.graph, "digraph {\n");
+  graph = g_string_new ("");
+  g_string_append_printf (graph, "digraph {\n");
 
-  state.parent_id = -1;
-  state.material_id_ptr = &material_id;
+  layer_state.graph = graph;
+  layer_state.parent_id = -1;
+  layer_state.node_id_ptr = &layer_id;
+  layer_state.indent = 0;
+  dump_layer_cb (ctx->default_layer_0, &layer_state);
 
-  state.indent = 0;
+  material_state.graph = graph;
+  material_state.parent_id = -1;
+  material_state.node_id_ptr = &material_id;
+  material_state.indent = 0;
+  dump_material_cb (ctx->default_material, &material_state);
 
-  dump_material_cb (ctx->default_material, &state);
-
-  g_string_append_printf (state.graph, "}\n");
+  g_string_append_printf (graph, "}\n");
 
   if (filename)
-    g_file_set_contents (filename, state.graph->str, -1, NULL);
+    g_file_set_contents (filename, graph->str, -1, NULL);
   else
-    g_print ("%s", state.graph->str);
+    g_print ("%s", graph->str);
 
-  g_string_free (state.graph, TRUE);
+  g_string_free (graph, TRUE);
 }
 
