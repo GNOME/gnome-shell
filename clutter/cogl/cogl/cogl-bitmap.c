@@ -31,6 +31,25 @@
 
 #include <string.h>
 
+struct _CoglBitmap
+{
+  CoglHandleObject         _parent;
+  CoglPixelFormat          format;
+  int                      width;
+  int                      height;
+  int                      rowstride;
+
+  guint8                  *data;
+  CoglBitmapDestroyNotify  destroy_fn;
+  void                    *destroy_fn_data;
+
+  gboolean                 mapped;
+
+  /* If this is non-null then 'data' is ignored and instead it is
+     fetched from this shared bitmap. */
+  CoglBitmap              *shared_bmp;
+};
+
 static void _cogl_bitmap_free (CoglBitmap *bmp);
 
 COGL_OBJECT_DEFINE (Bitmap, bitmap);
@@ -38,8 +57,15 @@ COGL_OBJECT_DEFINE (Bitmap, bitmap);
 static void
 _cogl_bitmap_free (CoglBitmap *bmp)
 {
-  g_free (bmp->data);
-  g_free (bmp);
+  g_assert (!bmp->mapped);
+
+  if (bmp->destroy_fn)
+    bmp->destroy_fn (bmp->data, bmp->destroy_fn_data);
+
+  if (bmp->shared_bmp)
+    cogl_object_unref (bmp->shared_bmp);
+
+  g_slice_free (CoglBitmap, bmp);
 }
 
 int
@@ -83,29 +109,49 @@ _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
   return TRUE;
 }
 
-gboolean
-_cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
-                                         CoglBitmap       *dst_bmp,
+CoglBitmap *
+_cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
                                          CoglPixelFormat   dst_format)
 {
+  CoglPixelFormat src_format = _cogl_bitmap_get_format (bmp);
+  CoglBitmap *dst_bmp;
+
   /* Is base format different (not considering premult status)? */
-  if ((bmp->format & COGL_UNPREMULT_MASK) !=
+  if ((src_format & COGL_UNPREMULT_MASK) !=
       (dst_format & COGL_UNPREMULT_MASK))
     {
       /* Try converting using imaging library */
-      if (!_cogl_bitmap_convert (bmp, dst_bmp, dst_format))
+      if ((dst_bmp = _cogl_bitmap_convert (bmp, dst_format)) == NULL)
         {
           /* ... or try fallback */
-          if (!_cogl_bitmap_fallback_convert (bmp, dst_bmp, dst_format))
-            return FALSE;
+          if ((dst_bmp = _cogl_bitmap_fallback_convert (bmp,
+                                                        dst_format)) == NULL)
+            return NULL;
         }
     }
   else
     {
+      int rowstride = _cogl_bitmap_get_rowstride (bmp);
+      int height = _cogl_bitmap_get_height (bmp);
+      guint8 *data;
+
       /* Copy the bitmap so that we can premultiply in-place */
-      *dst_bmp = *bmp;
-      dst_bmp->data = g_memdup (bmp->data, bmp->rowstride * bmp->height);
+
+      if ((data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)) == NULL)
+        return NULL;
+
+      dst_bmp = _cogl_bitmap_new_from_data (g_memdup (data, height * rowstride),
+                                            src_format,
+                                            _cogl_bitmap_get_width (bmp),
+                                            height,
+                                            rowstride,
+                                            (CoglBitmapDestroyNotify) g_free,
+                                            NULL);
+
+      _cogl_bitmap_unmap (bmp);
     }
+
+  src_format = _cogl_bitmap_get_format (dst_bmp);
 
   /* We only need to do a premult conversion if both formats have an
      alpha channel. If we're converting from RGB to RGBA then the
@@ -113,15 +159,15 @@ _cogl_bitmap_convert_format_and_premult (const CoglBitmap *bmp,
      anything or if we are converting from RGBA to RGB we're losing
      information so either converting or not will be wrong for
      transparent pixels */
-  if ((dst_bmp->format & COGL_A_BIT) == COGL_A_BIT &&
+  if ((src_format & COGL_A_BIT) == COGL_A_BIT &&
       (dst_format & COGL_A_BIT) == COGL_A_BIT &&
       !_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
     {
-      g_free (dst_bmp->data);
-      return FALSE;
+      cogl_object_unref (dst_bmp);
+      return NULL;
     }
 
-  return TRUE;
+  return dst_bmp;
 }
 
 void
@@ -143,14 +189,24 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
   g_assert (src->format == dst->format);
   bpp = _cogl_get_format_bpp (src->format);
 
-  srcdata = src->data + src_y * src->rowstride + src_x * bpp;
-  dstdata = dst->data + dst_y * dst->rowstride + dst_x * bpp;
-
-  for (line=0; line<height; ++line)
+  if ((srcdata = _cogl_bitmap_map (src, COGL_BUFFER_ACCESS_READ, 0)))
     {
-      memcpy (dstdata, srcdata, width * bpp);
-      srcdata += src->rowstride;
-      dstdata += dst->rowstride;
+      if ((dstdata = _cogl_bitmap_map (dst, COGL_BUFFER_ACCESS_WRITE, 0)))
+        {
+          srcdata += src_y * src->rowstride + src_x * bpp;
+          dstdata += dst_y * dst->rowstride + dst_x * bpp;
+
+          for (line=0; line<height; ++line)
+            {
+              memcpy (dstdata, srcdata, width * bpp);
+              srcdata += src->rowstride;
+              dstdata += dst->rowstride;
+            }
+
+          _cogl_bitmap_unmap (dst);
+        }
+
+      _cogl_bitmap_unmap (src);
     }
 }
 
@@ -163,33 +219,135 @@ cogl_bitmap_get_size_from_file (const char *filename,
 }
 
 CoglBitmap *
+_cogl_bitmap_new_from_data (guint8                  *data,
+                            CoglPixelFormat          format,
+                            int                      width,
+                            int                      height,
+                            int                      rowstride,
+                            CoglBitmapDestroyNotify  destroy_fn,
+                            void                    *destroy_fn_data)
+{
+  CoglBitmap *bmp = g_slice_new (CoglBitmap);
+
+  bmp->format = format;
+  bmp->width = width;
+  bmp->height = height;
+  bmp->rowstride = rowstride;
+  bmp->data = data;
+  bmp->destroy_fn = destroy_fn;
+  bmp->destroy_fn_data = destroy_fn_data;
+  bmp->mapped = FALSE;
+  bmp->shared_bmp = NULL;
+
+  return _cogl_bitmap_object_new (bmp);
+}
+
+CoglBitmap *
+_cogl_bitmap_new_shared (CoglBitmap              *shared_bmp,
+                         CoglPixelFormat          format,
+                         int                      width,
+                         int                      height,
+                         int                      rowstride)
+{
+  CoglBitmap *bmp = _cogl_bitmap_new_from_data (NULL, /* data */
+                                                format,
+                                                width,
+                                                height,
+                                                rowstride,
+                                                NULL, /* destroy_fn */
+                                                NULL /* destroy_fn_data */);
+
+  bmp->shared_bmp = cogl_object_ref (shared_bmp);
+
+  return bmp;
+}
+
+CoglBitmap *
 cogl_bitmap_new_from_file (const char  *filename,
                            GError     **error)
 {
-  CoglBitmap   bmp;
-  CoglBitmap  *ret;
+  CoglBitmap *bmp;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  /* Try loading with imaging backend */
-  if (!_cogl_bitmap_from_file (&bmp, filename, error))
+  if ((bmp = _cogl_bitmap_from_file (filename, error)) == NULL)
     {
       /* Try fallback */
-      if (!_cogl_bitmap_fallback_from_file (&bmp, filename))
-	return NULL;
-      else if (error && *error)
-	{
-	  g_error_free (*error);
-	  *error = NULL;
-	}
+      if ((bmp = _cogl_bitmap_fallback_from_file (filename))
+          && error && *error)
+        {
+          g_error_free (*error);
+          *error = NULL;
+        }
     }
 
-  ret = g_memdup (&bmp, sizeof (CoglBitmap));
-  return _cogl_bitmap_object_new (ret);
+  return bmp;
+}
+
+CoglPixelFormat
+_cogl_bitmap_get_format (CoglBitmap *bitmap)
+{
+  return bitmap->format;
+}
+
+void
+_cogl_bitmap_set_format (CoglBitmap *bitmap,
+                         CoglPixelFormat format)
+{
+  bitmap->format = format;
+}
+
+int
+_cogl_bitmap_get_width (CoglBitmap *bitmap)
+{
+  return bitmap->width;
 }
 
 GQuark
 cogl_bitmap_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-bitmap-error-quark");
+}
+
+int
+_cogl_bitmap_get_height (CoglBitmap *bitmap)
+{
+  return bitmap->height;
+}
+
+int
+_cogl_bitmap_get_rowstride (CoglBitmap *bitmap)
+{
+  return bitmap->rowstride;
+}
+
+guint8 *
+_cogl_bitmap_map (CoglBitmap *bitmap,
+                  CoglBufferAccess access,
+                  CoglBufferMapHint hints)
+{
+  /* Divert to another bitmap if this data is shared */
+  if (bitmap->shared_bmp)
+    return _cogl_bitmap_map (bitmap->shared_bmp, access, hints);
+
+  g_assert (!bitmap->mapped);
+  bitmap->mapped = TRUE;
+
+  /* Currently the bitmap is always in regular memory so we can just
+     directly return the pointer */
+  return bitmap->data;
+}
+
+void
+_cogl_bitmap_unmap (CoglBitmap *bitmap)
+{
+  /* Divert to another bitmap if this data is shared */
+  if (bitmap->shared_bmp)
+    return _cogl_bitmap_unmap (bitmap->shared_bmp);
+
+  g_assert (bitmap->mapped);
+  bitmap->mapped = FALSE;
+
+  /* Currently the bitmap is always in regular memory so we don't need
+     to do anything */
 }

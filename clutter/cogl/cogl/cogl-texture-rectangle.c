@@ -278,39 +278,39 @@ _cogl_texture_rectangle_new_with_size (unsigned int     width,
 }
 
 CoglHandle
-_cogl_texture_rectangle_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format)
 {
   CoglTextureRectangle *tex_rect;
-  CoglBitmap           *bmp = (CoglBitmap *)bmp_handle;
-  CoglBitmap            dst_bmp;
-  gboolean              dst_bmp_owner;
+  CoglBitmap           *dst_bmp;
   GLenum                gl_intformat;
   GLenum                gl_format;
   GLenum                gl_type;
 
-  g_return_val_if_fail (bmp_handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
-  internal_format = _cogl_texture_determine_internal_format (bmp->format,
-                                                             internal_format);
+  internal_format =
+    _cogl_texture_determine_internal_format (_cogl_bitmap_get_format (bmp),
+                                             internal_format);
 
-  if (!_cogl_texture_rectangle_can_create (bmp->width, bmp->height,
+  if (!_cogl_texture_rectangle_can_create (_cogl_bitmap_get_width (bmp),
+                                           _cogl_bitmap_get_height (bmp),
                                            internal_format))
     return COGL_INVALID_HANDLE;
 
-  if (!_cogl_texture_prepare_for_upload (bmp,
-                                         internal_format,
-                                         &internal_format,
-                                         &dst_bmp,
-                                         &dst_bmp_owner,
-                                         &gl_intformat,
-                                         &gl_format,
-                                         &gl_type))
+  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
+                                              internal_format,
+                                              &internal_format,
+                                              &gl_intformat,
+                                              &gl_format,
+                                              &gl_type);
+
+  if (dst_bmp == NULL)
     return COGL_INVALID_HANDLE;
 
-  tex_rect = _cogl_texture_rectangle_create_base (bmp->width,
-                                                  bmp->height,
+  tex_rect = _cogl_texture_rectangle_create_base (_cogl_bitmap_get_width (bmp),
+                                                  _cogl_bitmap_get_height (bmp),
                                                   flags,
                                                   internal_format);
 
@@ -318,15 +318,14 @@ _cogl_texture_rectangle_new_from_bitmap (CoglHandle       bmp_handle,
   _cogl_texture_driver_upload_to_gl (GL_TEXTURE_RECTANGLE_ARB,
                                      tex_rect->gl_texture,
                                      FALSE,
-                                     &dst_bmp,
+                                     dst_bmp,
                                      gl_intformat,
                                      gl_format,
                                      gl_type);
 
   tex_rect->gl_format = gl_intformat;
 
-  if (dst_bmp_owner)
-    g_free (dst_bmp.data);
+  cogl_object_unref (dst_bmp);
 
   return _cogl_texture_rectangle_handle_new (tex_rect);
 }
@@ -453,7 +452,7 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
   GLenum                gl_format;
   GLenum                gl_type;
 
-  _cogl_pixel_format_to_gl (bmp->format,
+  _cogl_pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
                             NULL, /* internal format */
                             &gl_format,
                             &gl_type);

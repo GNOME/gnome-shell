@@ -88,7 +88,7 @@ _cogl_handle_texture_3d_get_type (void);
  *   there was an error.
  */
 CoglHandle
-_cogl_texture_3d_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_texture_3d_new_from_bitmap (CoglBitmap      *bmp,
                                   unsigned int     height,
                                   unsigned int     depth,
                                   CoglTextureFlags flags,

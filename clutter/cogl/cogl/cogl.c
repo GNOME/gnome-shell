@@ -617,12 +617,14 @@ cogl_read_pixels (int x,
                   guint8 *pixels)
 {
   CoglFramebuffer *framebuffer;
-  int        framebuffer_height;
-  int        bpp;
-  CoglBitmap bmp;
-  GLenum     gl_intformat;
-  GLenum     gl_format;
-  GLenum     gl_type;
+  int              framebuffer_height;
+  int              bpp;
+  CoglBitmap      *bmp;
+  GLenum           gl_intformat;
+  GLenum           gl_format;
+  GLenum           gl_type;
+  CoglPixelFormat  bmp_format;
+  int              rowstride;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -649,11 +651,8 @@ cogl_read_pixels (int x,
 
   /* Initialise the CoglBitmap */
   bpp = _cogl_get_format_bpp (format);
-  bmp.format = format;
-  bmp.data = pixels;
-  bmp.width = width;
-  bmp.height = height;
-  bmp.rowstride = bpp * width;
+  rowstride = bpp * width;
+  bmp_format = format;
 
   if ((format & COGL_A_BIT))
     {
@@ -667,8 +666,12 @@ cogl_read_pixels (int x,
          it. Eventually we may want to add a way for an application to
          inform Cogl that the framebuffer is not premultiplied in case
          it is being used for some special purpose. */
-      bmp.format |= COGL_PREMULT_BIT;
+      bmp_format |= COGL_PREMULT_BIT;
     }
+
+  bmp = _cogl_bitmap_new_from_data (pixels,
+                                    bmp_format, width, height, rowstride,
+                                    NULL, NULL);
 
   _cogl_pixel_format_to_gl (format, &gl_intformat, &gl_format, &gl_type);
 
@@ -683,33 +686,33 @@ cogl_read_pixels (int x,
 #ifndef COGL_HAS_GL
   if (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE)
     {
-      CoglBitmap tmp_bmp, dst_bmp;
+      CoglBitmap *tmp_bmp, *dst_bmp;
+      guint8 *tmp_data = g_malloc (width * height * 4);
 
-      tmp_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-      tmp_bmp.data = g_malloc (width * height * 4);
-      tmp_bmp.width = width;
-      tmp_bmp.height = height;
-      tmp_bmp.rowstride = 4 * width;
+      tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
+                                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                            width, height, 4 * width,
+                                            (CoglBitmapDestroyNotify) g_free,
+                                            NULL);
 
-      _cogl_texture_driver_prep_gl_for_pixels_download (tmp_bmp.rowstride, 4);
+      _cogl_texture_driver_prep_gl_for_pixels_download (4 * width, 4);
 
       GE( glReadPixels (x, y, width, height,
                         GL_RGBA, GL_UNSIGNED_BYTE,
-                        tmp_bmp.data) );
+                        tmp_data) );
 
       /* CoglBitmap doesn't currently have a way to convert without
          allocating its own buffer so we have to copy the data
          again */
-      if (_cogl_bitmap_convert_format_and_premult (&tmp_bmp,
-                                                   &dst_bmp,
-                                                   bmp.format))
+      if ((dst_bmp = _cogl_bitmap_convert_format_and_premult (tmp_bmp,
+                                                              bmp_format)))
         {
-          _cogl_bitmap_copy_subregion (&dst_bmp,
-                                       &bmp,
+          _cogl_bitmap_copy_subregion (dst_bmp,
+                                       bmp,
                                        0, 0,
                                        0, 0,
-                                       bmp.width, bmp.height);
-          g_free (dst_bmp.data);
+                                       width, height);
+          cogl_object_unref (dst_bmp);
         }
       else
         {
@@ -717,26 +720,26 @@ cogl_read_pixels (int x,
              just have to leave the data initialised */
         }
 
-      g_free (tmp_bmp.data);
+      cogl_object_unref (tmp_bmp);
     }
   else
 #endif
     {
-      _cogl_texture_driver_prep_gl_for_pixels_download (bmp.rowstride, bpp);
+      _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
 
       GE( glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
 
       /* Convert to the premult format specified by the caller
          in-place. This will do nothing if the premult status is already
          correct. */
-      _cogl_bitmap_convert_premult_status (&bmp, format);
+      _cogl_bitmap_convert_premult_status (bmp, format);
     }
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
   if (!cogl_is_offscreen (framebuffer))
     {
-      guint8 *temprow = g_alloca (bmp.rowstride * sizeof (guint8));
+      guint8 *temprow = g_alloca (rowstride * sizeof (guint8));
 
       /* TODO: consider using the GL_MESA_pack_invert extension in the future
        * to avoid this flip... */
@@ -747,15 +750,17 @@ cogl_read_pixels (int x,
           if (y != height - y - 1) /* skip center row */
             {
               memcpy (temprow,
-                      pixels + y * bmp.rowstride, bmp.rowstride);
-              memcpy (pixels + y * bmp.rowstride,
-                      pixels + (height - y - 1) * bmp.rowstride, bmp.rowstride);
-              memcpy (pixels + (height - y - 1) * bmp.rowstride,
+                      pixels + y * rowstride, rowstride);
+              memcpy (pixels + y * rowstride,
+                      pixels + (height - y - 1) * rowstride, rowstride);
+              memcpy (pixels + (height - y - 1) * rowstride,
                       temprow,
-                      bmp.rowstride);
+                      rowstride);
             }
         }
     }
+
+  cogl_object_unref (bmp);
 }
 
 static void

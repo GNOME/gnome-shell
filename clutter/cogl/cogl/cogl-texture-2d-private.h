@@ -65,7 +65,7 @@ _cogl_texture_2d_new_with_size (unsigned int     width,
                                 CoglPixelFormat  internal_format);
 
 CoglHandle
-_cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
                                   CoglTextureFlags flags,
                                   CoglPixelFormat  internal_format);
 

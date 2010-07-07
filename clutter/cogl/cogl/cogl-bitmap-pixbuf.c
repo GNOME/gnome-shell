@@ -55,12 +55,11 @@ _cogl_bitmap_can_premult (CoglPixelFormat format)
   return FALSE;
 }
 
-gboolean
-_cogl_bitmap_convert (const CoglBitmap *bmp,
-		      CoglBitmap       *dst_bmp,
+CoglBitmap *
+_cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat   dst_format)
 {
-  return FALSE;
+  return NULL;
 }
 
 gboolean
@@ -92,12 +91,10 @@ _cogl_bitmap_get_size_from_file (const char *filename,
 }
 
 /* the error does not contain the filename as the caller already has it */
-gboolean
-_cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const char  *filename,
+CoglBitmap *
+_cogl_bitmap_from_file (const char  *filename,
 			GError     **error)
 {
-  g_assert (bmp != NULL);
   g_assert (filename != NULL);
   g_assert (error == NULL || *error == NULL);
 
@@ -110,7 +107,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
       /* doesn't exist, not readable, etc. */
       g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
                    "%s", g_strerror (save_errno));
-      return FALSE;
+      return NULL;
     }
 
   /* Unknown images would be cleanly caught as zero width/height below, but try
@@ -122,7 +119,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
       CFRelease (image_source);
       g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_UNKNOWN_TYPE,
                    "Unknown image type");
-      return FALSE;
+      return NULL;
     }
   CFRelease (type);
 
@@ -137,7 +134,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
       CFRelease (image);
       g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_CORRUPT_IMAGE,
                    "Image has zero width or height");
-      return FALSE;
+      return NULL;
     }
 
   /* allocate buffer big enough to hold pixel data */
@@ -160,13 +157,12 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   CGContextRelease (bitmap_context);
 
   /* store bitmap info */
-  bmp->data = out_data;
-  bmp->format = COGL_PIXEL_FORMAT_ARGB_8888;
-  bmp->width = width;
-  bmp->height = height;
-  bmp->rowstride = rowstride;
-
-  return TRUE;
+  return _cogl_bitmap_new_from_data (out_data,
+                                     COGL_PIXEL_FORMAT_ARGB_8888,
+                                     width, height,
+                                     rowstride,
+                                     (CoglBitmapDestroyNotify) g_free,
+                                     NULL);
 }
 
 #elif defined(USE_GDKPIXBUF)
@@ -184,9 +180,8 @@ _cogl_bitmap_get_size_from_file (const char *filename,
   return FALSE;
 }
 
-gboolean
-_cogl_bitmap_from_file (CoglBitmap   *bmp,
-			const char   *filename,
+CoglBitmap *
+_cogl_bitmap_from_file (const char   *filename,
 			GError      **error)
 {
   GdkPixbuf        *pixbuf;
@@ -205,9 +200,6 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   int               r;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  if (bmp == NULL)
-    return FALSE;
 
   /* Load from file using GdkPixbuf */
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
@@ -272,16 +264,16 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   g_object_unref (pixbuf);
 
   /* Store bitmap info */
-  bmp->data = out_data; /* The stored data the same alignment constraints as a
-                         * gdkpixbuf but stores a full rowstride in the last
-                         * scanline
-                         */
-  bmp->format = pixel_format;
-  bmp->width = width;
-  bmp->height = height;
-  bmp->rowstride = rowstride;
-
-  return TRUE;
+  /* The stored data the same alignment constraints as a gdkpixbuf but
+   * stores a full rowstride in the last scanline
+   */
+  return _cogl_bitmap_new_from_data (out_data,
+                                     pixel_format,
+                                     width,
+                                     height,
+                                     rowstride,
+                                     (CoglBitmapDestroyNotify) g_free,
+                                     NULL);
 }
 
 #else
@@ -302,20 +294,17 @@ _cogl_bitmap_get_size_from_file (const char *filename,
   return TRUE;
 }
 
-gboolean
-_cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const char  *filename,
+CoglBitmap *
+_cogl_bitmap_from_file (const char  *filename,
 			GError     **error)
 {
+  CoglBitmap *bmp;
   int      stb_pixel_format;
   int      width;
   int      height;
   guint8  *pixels;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  if (bmp == NULL)
-    return FALSE;
 
   /* Load from file using stb */
   pixels = stbi_load (filename,
@@ -325,14 +314,15 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
     return FALSE;
 
   /* Store bitmap info */
-  bmp->data = g_memdup (pixels, height * width * 4);
-  bmp->format = COGL_PIXEL_FORMAT_RGBA_8888;
-  bmp->width = width;
-  bmp->height = height;
-  bmp->rowstride = width * 4;
+  bmp = _cogl_bitmap_new_from_data (g_memdup (pixels, height * width * 4),
+                                    COGL_PIXEL_FORMAT_RGBA_8888,
+                                    width, height,
+                                    width * 4,
+                                    (CoglBitmapDestroyNotify) g_free,
+                                    NULL);
 
   free (pixels);
 
-  return TRUE;
+  return bmp;
 }
 #endif

@@ -337,52 +337,61 @@ _cogl_bitmap_fallback_can_premult (CoglPixelFormat format)
   return ((format & COGL_UNORDERED_MASK) == COGL_PIXEL_FORMAT_32);
 }
 
-gboolean
-_cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
-			       CoglBitmap       *dst_bmp,
-			       CoglPixelFormat   dst_format)
+CoglBitmap *
+_cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
+                               CoglPixelFormat  dst_format)
 {
-  guint8  *src;
-  guint8  *dst;
-  int      src_bpp;
-  int      dst_bpp;
-  int      x,y;
-  guint8   temp_rgba[4] = {0,0,0,0};
+  guint8          *src_data;
+  guint8          *dst_data;
+  guint8          *src;
+  guint8          *dst;
+  int              src_bpp;
+  int              dst_bpp;
+  int              src_rowstride;
+  int              dst_rowstride;
+  int              x,y;
+  guint8           temp_rgba[4] = {0,0,0,0};
+  int              width, height;
+  CoglPixelFormat  src_format;
+
+  src_format = _cogl_bitmap_get_format (src_bmp);
+  src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
+  width = _cogl_bitmap_get_width (src_bmp);
+  height = _cogl_bitmap_get_height (src_bmp);
 
   /* Make sure conversion supported */
-  if (!_cogl_bitmap_fallback_can_convert (bmp->format, dst_format))
-    return FALSE;
+  if (!_cogl_bitmap_fallback_can_convert (src_format, dst_format))
+    return NULL;
 
-  src_bpp = _cogl_get_format_bpp (bmp->format);
+  src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  if (src_data == NULL)
+    return NULL;
+
+  src_bpp = _cogl_get_format_bpp (src_format);
   dst_bpp = _cogl_get_format_bpp (dst_format);
 
   /* Initialize destination bitmap */
-  *dst_bmp = *bmp;
-  dst_bmp->rowstride = sizeof(guint8) * dst_bpp * dst_bmp->width;
+  dst_rowstride = sizeof(guint8) * dst_bpp * width;
   /* Copy the premult bit if the new format has an alpha channel */
   if ((dst_format & COGL_A_BIT))
-    dst_bmp->format = ((bmp->format & COGL_PREMULT_BIT) |
-                       (dst_format & COGL_UNPREMULT_MASK));
-  else
-    dst_bmp->format = dst_format;
+    dst_format = ((src_format & COGL_PREMULT_BIT) |
+                  (dst_format & COGL_UNPREMULT_MASK));
 
   /* Allocate a new buffer to hold converted data */
-  dst_bmp->data = g_malloc (sizeof(guint8)
-			    * dst_bmp->height
-			    * dst_bmp->rowstride);
+  dst_data = g_malloc (height * dst_rowstride);
 
   /* FIXME: Optimize */
-  for (y = 0; y < bmp->height; y++)
+  for (y = 0; y < height; y++)
     {
-      src = (guint8*)bmp->data      + y * bmp->rowstride;
-      dst = (guint8*)dst_bmp->data  + y * dst_bmp->rowstride;
+      src = src_data + y * src_rowstride;
+      dst = dst_data + y * dst_rowstride;
 
-      for (x = 0; x < bmp->width; x++)
+      for (x = 0; x < width; x++)
 	{
 	  /* FIXME: Would be nice to at least remove this inner
            * branching, but not sure it can be done without
            * rewriting of the whole loop */
-	  switch (bmp->format & COGL_UNPREMULT_MASK)
+          switch (src_format & COGL_UNPREMULT_MASK)
 	    {
 	    case COGL_PIXEL_FORMAT_G_8:
 	      _cogl_g_to_rgba (src, temp_rgba); break;
@@ -427,26 +436,46 @@ _cogl_bitmap_fallback_convert (const CoglBitmap *bmp,
 	}
     }
 
-  return TRUE;
+  _cogl_bitmap_unmap (src_bmp);
+
+  return _cogl_bitmap_new_from_data (dst_data,
+                                     dst_format,
+                                     width, height, dst_rowstride,
+                                     (CoglBitmapDestroyNotify) g_free,
+                                     NULL);
 }
 
 gboolean
 _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 {
-  guint8  *p;
-  int      x,y;
+  guint8          *p, *data;
+  int              x,y;
+  CoglPixelFormat  format;
+  int              width, height;
+  int              rowstride;
+
+  format = _cogl_bitmap_get_format (bmp);
+  width = _cogl_bitmap_get_width (bmp);
+  height = _cogl_bitmap_get_height (bmp);
+  rowstride = _cogl_bitmap_get_rowstride (bmp);
 
   /* Make sure format supported for un-premultiplication */
-  if (!_cogl_bitmap_fallback_can_unpremult (bmp->format))
+  if (!_cogl_bitmap_fallback_can_unpremult (format))
     return FALSE;
 
-  for (y = 0; y < bmp->height; y++)
-    {
-      p = (guint8*) bmp->data + y * bmp->rowstride;
+  if ((data = _cogl_bitmap_map (bmp,
+                                COGL_BUFFER_ACCESS_READ |
+                                COGL_BUFFER_ACCESS_WRITE,
+                                0)) == NULL)
+    return FALSE;
 
-      if (bmp->format & COGL_AFIRST_BIT)
+  for (y = 0; y < height; y++)
+    {
+      p = (guint8*) data + y * rowstride;
+
+      if (format & COGL_AFIRST_BIT)
         {
-          for (x = 0; x < bmp->width; x++)
+          for (x = 0; x < width; x++)
             {
               if (p[0] == 0)
                 _cogl_unpremult_alpha_0 (p);
@@ -457,7 +486,7 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
         }
       else
         {
-          for (x = 0; x < bmp->width; x++)
+          for (x = 0; x < width; x++)
             {
               if (p[3] == 0)
                 _cogl_unpremult_alpha_0 (p);
@@ -468,7 +497,9 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
         }
     }
 
-  bmp->format &= ~COGL_PREMULT_BIT;
+  _cogl_bitmap_unmap (bmp);
+
+  _cogl_bitmap_set_format (bmp, format & ~COGL_PREMULT_BIT);
 
   return TRUE;
 }
@@ -476,20 +507,34 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 gboolean
 _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
 {
-  guint8  *p;
-  int      x,y;
+  guint8          *p, *data;
+  int              x,y;
+  CoglPixelFormat  format;
+  int              width, height;
+  int              rowstride;
+
+  format = _cogl_bitmap_get_format (bmp);
+  width = _cogl_bitmap_get_width (bmp);
+  height = _cogl_bitmap_get_height (bmp);
+  rowstride = _cogl_bitmap_get_rowstride (bmp);
 
   /* Make sure format supported for un-premultiplication */
-  if (!_cogl_bitmap_fallback_can_premult (bmp->format))
+  if (!_cogl_bitmap_fallback_can_premult (format))
     return FALSE;
 
-  for (y = 0; y < bmp->height; y++)
-    {
-      p = (guint8*) bmp->data + y * bmp->rowstride;
+  if ((data = _cogl_bitmap_map (bmp,
+                                COGL_BUFFER_ACCESS_READ |
+                                COGL_BUFFER_ACCESS_WRITE,
+                                0)) == NULL)
+    return FALSE;
 
-      if (bmp->format & COGL_AFIRST_BIT)
+  for (y = 0; y < height; y++)
+    {
+      p = (guint8*) data + y * rowstride;
+
+      if (format & COGL_AFIRST_BIT)
         {
-          for (x = 0; x < bmp->width; x++)
+          for (x = 0; x < width; x++)
             {
               _cogl_premult_alpha_first (p);
               p += 4;
@@ -497,7 +542,7 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
         }
       else
         {
-          x = bmp->width;
+          x = width;
 
 #ifdef COGL_USE_PREMULT_SSE2
 
@@ -522,14 +567,15 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
         }
     }
 
-  bmp->format |= COGL_PREMULT_BIT;
+  _cogl_bitmap_unmap (bmp);
+
+  _cogl_bitmap_set_format (bmp, format | COGL_PREMULT_BIT);
 
   return TRUE;
 }
 
-gboolean
-_cogl_bitmap_fallback_from_file (CoglBitmap  *bmp,
-				 const char  *filename)
+CoglBitmap *
+_cogl_bitmap_fallback_from_file (const char  *filename)
 {
   /* FIXME: use jpeglib, libpng, etc. manually maybe */
   return FALSE;

@@ -240,12 +240,10 @@ _cogl_texture_determine_internal_format (CoglPixelFormat src_format,
    be set to TRUE. Otherwise dst_bmp will be set to a shallow copy of
    src_bmp. The GLenums needed for uploading are returned */
 
-gboolean
+CoglBitmap *
 _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                                   CoglPixelFormat  dst_format,
                                   CoglPixelFormat *dst_format_out,
-                                  CoglBitmap      *dst_bmp,
-                                  gboolean        *copied_bitmap,
                                   GLenum          *out_glintformat,
                                   GLenum          *out_glformat,
                                   GLenum          *out_gltype);

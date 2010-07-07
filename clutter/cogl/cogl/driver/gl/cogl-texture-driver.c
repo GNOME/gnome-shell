@@ -153,23 +153,30 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_format,
 				             GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
+  guint8 *data;
 
-  /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (source_bmp->rowstride,
-                                  0,
-                                  src_x,
-                                  src_y,
-                                  bpp);
+  if ((data = _cogl_bitmap_map (source_bmp, COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
 
-  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+      /* Setup gl alignment to match rowstride and top-left corner */
+      prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+                                      0,
+                                      src_x,
+                                      src_y,
+                                      bpp);
 
-  GE( glTexSubImage2D (gl_target, 0,
-                       dst_x, dst_y,
-                       width, height,
-                       source_gl_format,
-                       source_gl_type,
-                       source_bmp->data) );
+      _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+
+      GE( glTexSubImage2D (gl_target, 0,
+                           dst_x, dst_y,
+                           width, height,
+                           source_gl_format,
+                           source_gl_type,
+                           data) );
+
+      _cogl_bitmap_unmap (source_bmp);
+    }
 }
 
 void
@@ -181,20 +188,29 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_format,
                                    GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
+  guint8 *data;
 
-  /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (source_bmp->rowstride, 0, 0, 0, bpp);
+  if ((data = _cogl_bitmap_map (source_bmp, COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
 
-  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+      /* Setup gl alignment to match rowstride and top-left corner */
+      prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+                                      0, 0, 0, bpp);
 
-  GE( glTexImage2D (gl_target, 0,
-                    internal_gl_format,
-                    source_bmp->width, source_bmp->height,
-                    0,
-                    source_gl_format,
-                    source_gl_type,
-                    source_bmp->data) );
+      _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+
+      GE( glTexImage2D (gl_target, 0,
+                        internal_gl_format,
+                        _cogl_bitmap_get_width (source_bmp),
+                        _cogl_bitmap_get_height (source_bmp),
+                        0,
+                        source_gl_format,
+                        source_gl_type,
+                        data) );
+
+      _cogl_bitmap_unmap (source_bmp);
+    }
 }
 
 void
@@ -208,27 +224,35 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_format,
                                       GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
+  guint8 *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (source_bmp->rowstride,
-                                  source_bmp->height / depth,
-                                  0, 0, bpp);
+  if ((data = _cogl_bitmap_map (source_bmp, COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
 
-  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+      /* Setup gl alignment to match rowstride and top-left corner */
+      prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+                                      (_cogl_bitmap_get_height (source_bmp) /
+                                       depth),
+                                      0, 0, bpp);
 
-  GE( glTexImage3D (gl_target,
-                    0, /* level */
-                    internal_gl_format,
-                    source_bmp->width,
-                    height,
-                    depth,
-                    0,
-                    source_gl_format,
-                    source_gl_type,
-                    source_bmp->data) );
+      _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+
+      GE( glTexImage3D (gl_target,
+                        0, /* level */
+                        internal_gl_format,
+                        _cogl_bitmap_get_width (source_bmp),
+                        height,
+                        depth,
+                        0,
+                        source_gl_format,
+                        source_gl_type,
+                        data) );
+
+      _cogl_bitmap_unmap (source_bmp);
+    }
 }
 
 gboolean

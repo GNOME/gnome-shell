@@ -82,7 +82,7 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           CoglPixelFormat  format);
 
 CoglHandle
-_cogl_texture_2d_sliced_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format);
 
