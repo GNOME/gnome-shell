@@ -548,7 +548,7 @@ _cogl_journal_flush (void)
   GLuint                journal_vbo;
   gboolean              vbo_fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  CoglHandle            framebuffer;
+  CoglFramebuffer      *framebuffer;
   CoglMatrixStack      *modelview_stack;
   COGL_STATIC_TIMER (flush_timer,
                      "Mainloop", /* parent */

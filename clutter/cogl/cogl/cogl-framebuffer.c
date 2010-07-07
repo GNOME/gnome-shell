@@ -29,6 +29,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
@@ -112,21 +113,21 @@ static void _cogl_framebuffer_free (CoglFramebuffer *framebuffer);
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
-COGL_HANDLE_DEFINE (Onscreen, onscreen);
-COGL_HANDLE_DEFINE (Offscreen, offscreen);
+COGL_OBJECT_DEFINE (Onscreen, onscreen);
+COGL_OBJECT_DEFINE (Offscreen, offscreen);
 
 /* XXX:
- * The CoglHandle macros don't support any form of inheritance, so for
- * now we implement the CoglHandle support for the CoglFramebuffer
+ * The CoglObject macros don't support any form of inheritance, so for
+ * now we implement the CoglObject support for the CoglFramebuffer
  * abstract class manually.
  */
 
 gboolean
-cogl_is_framebuffer (CoglHandle handle)
+cogl_is_framebuffer (void *object)
 {
-  CoglHandleObject *obj = (CoglHandleObject *)handle;
+  CoglHandleObject *obj = object;
 
-  if (handle == COGL_INVALID_HANDLE)
+  if (obj == NULL)
     return FALSE;
 
   return obj->klass->type == _cogl_handle_onscreen_get_type ()
@@ -169,36 +170,30 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 }
 
 int
-_cogl_framebuffer_get_width (CoglHandle handle)
+_cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->width;
 }
 
 int
-_cogl_framebuffer_get_height (CoglHandle handle)
+_cogl_framebuffer_get_height (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->height;
 }
 
 CoglClipState *
-_cogl_framebuffer_get_clip_state (CoglHandle handle)
+_cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
-
   return &framebuffer->clip_state;
 }
 
 void
-_cogl_framebuffer_set_viewport (CoglHandle handle,
+_cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 int x,
                                 int y,
                                 int width,
                                 int height)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (framebuffer->viewport_x == x &&
@@ -219,37 +214,32 @@ _cogl_framebuffer_set_viewport (CoglHandle handle,
 }
 
 int
-_cogl_framebuffer_get_viewport_x (CoglHandle handle)
+_cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->viewport_x;
 }
 
 int
-_cogl_framebuffer_get_viewport_y (CoglHandle handle)
+_cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->viewport_y;
 }
 
 int
-_cogl_framebuffer_get_viewport_width (CoglHandle handle)
+_cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->viewport_width;
 }
 
 int
-_cogl_framebuffer_get_viewport_height (CoglHandle handle)
+_cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->viewport_height;
 }
 
 void
-_cogl_framebuffer_get_viewport4fv (CoglHandle handle, int *viewport)
+_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer, int *viewport)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   viewport[0] = framebuffer->viewport_x;
   viewport[1] = framebuffer->viewport_y;
   viewport[2] = framebuffer->viewport_width;
@@ -257,16 +247,14 @@ _cogl_framebuffer_get_viewport4fv (CoglHandle handle, int *viewport)
 }
 
 CoglMatrixStack *
-_cogl_framebuffer_get_modelview_stack (CoglHandle handle)
+_cogl_framebuffer_get_modelview_stack (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->modelview_stack;
 }
 
 CoglMatrixStack *
-_cogl_framebuffer_get_projection_stack (CoglHandle handle)
+_cogl_framebuffer_get_projection_stack (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (handle);
   return framebuffer->projection_stack;
 }
 
@@ -501,7 +489,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
                               cogl_texture_get_width (texhandle),
                               cogl_texture_get_height (texhandle));
 
-      return _cogl_offscreen_handle_new (offscreen);
+      return _cogl_offscreen_object_new (offscreen);
     }
   else
     {
@@ -552,7 +540,7 @@ _cogl_onscreen_new (void)
                           0xdeadbeef, /* width */
                           0xdeadbeef); /* height */
 
-  return _cogl_onscreen_handle_new (onscreen);
+  return _cogl_onscreen_object_new (onscreen);
 }
 
 static void
@@ -616,21 +604,21 @@ _cogl_free_framebuffer_stack (GSList *stack)
 static void
 _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
 {
-  CoglHandle *entry;
+  CoglFramebuffer **entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   cogl_flush ();
 
-  entry = &ctx->framebuffer_stack->data;
+  entry = (CoglFramebuffer **)&ctx->framebuffer_stack->data;
 
   ctx->dirty_bound_framebuffer = 1;
   ctx->dirty_gl_viewport = 1;
 
   if (framebuffer != COGL_INVALID_HANDLE)
-    cogl_handle_ref (framebuffer);
+    cogl_object_ref (framebuffer);
   if (*entry != COGL_INVALID_HANDLE)
-    cogl_handle_unref (*entry);
+    cogl_object_unref (*entry);
 
   *entry = framebuffer;
 
@@ -644,12 +632,12 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
 }
 
 void
-cogl_set_framebuffer (CoglHandle handle)
+cogl_set_framebuffer (CoglFramebuffer *framebuffer)
 {
-  g_return_if_fail (cogl_is_framebuffer (handle));
+  g_return_if_fail (cogl_is_framebuffer (framebuffer));
 
-  if (_cogl_get_framebuffer () != handle)
-    _cogl_set_framebuffer_real (COGL_FRAMEBUFFER (handle));
+  if (_cogl_get_framebuffer () != framebuffer)
+    _cogl_set_framebuffer_real (framebuffer);
 }
 
 /* XXX: deprecated API */
@@ -664,18 +652,18 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle handle)
   cogl_set_framebuffer (handle);
 }
 
-CoglHandle
+CoglFramebuffer *
 _cogl_get_framebuffer (void)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
   g_assert (ctx->framebuffer_stack);
 
-  return (CoglHandle)ctx->framebuffer_stack->data;
+  return ctx->framebuffer_stack->data;
 }
 
 void
-cogl_push_framebuffer (CoglHandle buffer)
+cogl_push_framebuffer (CoglFramebuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -700,8 +688,8 @@ cogl_push_draw_buffer (void)
 void
 cogl_pop_framebuffer (void)
 {
-  CoglHandle to_pop;
-  CoglHandle to_restore;
+  CoglFramebuffer *to_pop;
+  CoglFramebuffer *to_restore;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -713,7 +701,7 @@ cogl_pop_framebuffer (void)
 
   cogl_flush ();
 
-  cogl_handle_unref (to_pop);
+  cogl_object_unref (to_pop);
   ctx->framebuffer_stack =
     g_slist_remove_link (ctx->framebuffer_stack,
                          ctx->framebuffer_stack);
@@ -733,14 +721,10 @@ cogl_pop_draw_buffer (void)
 }
 
 void
-_cogl_framebuffer_flush_state (CoglHandle handle,
+_cogl_framebuffer_flush_state (CoglFramebuffer *framebuffer,
                                CoglFramebufferFlushFlags flags)
 {
-  CoglFramebuffer *framebuffer;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = COGL_FRAMEBUFFER (handle);
 
   if (cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
       ctx->dirty_bound_framebuffer)
@@ -802,41 +786,34 @@ _cogl_framebuffer_flush_state (CoglHandle handle,
 }
 
 int
-_cogl_framebuffer_get_red_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+  _cogl_framebuffer_init_bits (framebuffer);
 
-  _cogl_framebuffer_init_bits (fb);
-
-  return fb->red_bits;
+  return framebuffer->red_bits;
 }
 
 int
-_cogl_framebuffer_get_green_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+  _cogl_framebuffer_init_bits (framebuffer);
 
-  _cogl_framebuffer_init_bits (fb);
-
-  return fb->green_bits;
+  return framebuffer->green_bits;
 }
 
 int
-_cogl_framebuffer_get_blue_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+  _cogl_framebuffer_init_bits (framebuffer);
 
-  _cogl_framebuffer_init_bits (fb);
-
-  return fb->blue_bits;
+  return framebuffer->blue_bits;
 }
 
 int
-_cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer)
+_cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (framebuffer);
+  _cogl_framebuffer_init_bits (framebuffer);
 
-  _cogl_framebuffer_init_bits (fb);
-
-  return fb->alpha_bits;
+  return framebuffer->alpha_bits;
 }
+

@@ -552,7 +552,7 @@ cogl_get_bitmasks (int *red,
                    int *blue,
                    int *alpha)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
 
   framebuffer = _cogl_get_framebuffer ();
 

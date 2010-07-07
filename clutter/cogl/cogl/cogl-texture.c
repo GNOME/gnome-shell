@@ -953,7 +953,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                              GLuint       target_gl_type)
 {
   int        bpp;
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   int        viewport[4];
   CoglBitmap alpha_bmp;
   CoglHandle prev_source;
