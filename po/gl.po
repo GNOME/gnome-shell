@@ -18,15 +18,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 23:46+0200\n"
-"PO-Revision-Date: 2010-06-03 23:46+0200\n"
+"POT-Creation-Date: 2010-07-07 18:02+0200\n"
+"PO-Revision-Date: 2010-07-07 18:04+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galician <gnome@g11.net>\n"
+"Language-Team: Galician <gnome@g11n.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Lokalize 0.3\n"
 
 #: ../src/core/bell.c:302
@@ -39,12 +39,12 @@ msgid "Unknown window information request: %d"
 msgstr "Petición de información de xanela descoñecida: %d"
 
 #. Translators: %s is a window title
-#: ../src/core/delete.c:95
+#: ../src/core/delete.c:94
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> non está respondendo."
 
-#: ../src/core/delete.c:100
+#: ../src/core/delete.c:99
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -52,25 +52,20 @@ msgstr ""
 "Pode elixir esperar un momento para ver se continúa ou forzar ao aplicativo "
 "a pechar completamente."
 
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:108
 msgid "_Wait"
 msgstr "Espe_rar"
 
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:108
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/delete.c:207
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Ocorreu un fallo ao obter o nome do host: %s\n"
-
-#: ../src/core/display.c:362
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:447
+#: ../src/core/display.c:451
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Fallo ao abrir a pantalla do sistema de xanelas X '%s'\n"
@@ -410,45 +405,45 @@ msgstr ""
 "Estas xanelas non soportan &quot;save current setup&quot; e terán que "
 "reiniciarse manualmente a próxima vez que inicie a sesión."
 
-#: ../src/core/util.c:104
+#: ../src/core/util.c:110
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Fallo ao abrir o rexistro de depuración: %s\n"
 
-#: ../src/core/util.c:114
+#: ../src/core/util.c:120
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Ocorreu un fallo ao facer fdopen() no ficheiro de rexistro %s: %s\n"
 
-#: ../src/core/util.c:120
+#: ../src/core/util.c:126
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Ficheiro de rexistro %s aberto\n"
 
-#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:145 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "O Mutter compilouse sen soporte para o modo detallado\n"
 
-#: ../src/core/util.c:239
+#: ../src/core/util.c:285
 msgid "Window manager: "
 msgstr "Xestor de xanelas: "
 
-#: ../src/core/util.c:391
+#: ../src/core/util.c:433
 msgid "Bug in window manager: "
 msgstr "Erro no xestor de xanelas: "
 
-#: ../src/core/util.c:424
+#: ../src/core/util.c:466
 msgid "Window manager warning: "
 msgstr "Aviso do xestor de xanelas: "
 
-#: ../src/core/util.c:452
+#: ../src/core/util.c:494
 msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
@@ -881,47 +876,47 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1112
 msgid "Close Window"
 msgstr "Pechar a xanela"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1115
 msgid "Window Menu"
 msgstr "Menú da xanela"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1118
 msgid "Minimize Window"
 msgstr "Minimizar a xanela"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1121
 msgid "Maximize Window"
 msgstr "Maximizar a xanela"
 
-#: ../src/ui/frames.c:1151
+#: ../src/ui/frames.c:1124
 msgid "Restore Window"
 msgstr "Restaurar a xanela"
 
-#: ../src/ui/frames.c:1154
+#: ../src/ui/frames.c:1127
 msgid "Roll Up Window"
 msgstr "Pregar a xanela"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1130
 msgid "Unroll Window"
 msgstr "Despregar a xanela"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1133
 msgid "Keep Window On Top"
 msgstr "Manter a xanela na parte superior"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1136
 msgid "Remove Window From Top"
 msgstr "Quitar a xanela da parte superior"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1139
 msgid "Always On Visible Workspace"
 msgstr "Sempre no espazo de traballo visíbel"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1142
 msgid "Put Window On Only One Workspace"
 msgstr "Pór a xanela nun só espazo de traballo"
 
@@ -1031,7 +1026,7 @@ msgstr "Mover a outro _espazo de traballo"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:106
+#: ../src/ui/metaaccellabel.c:75
 msgid "Shift"
 msgstr "Maiús"
 
@@ -1040,7 +1035,7 @@ msgstr "Maiús"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:112
+#: ../src/ui/metaaccellabel.c:81
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1049,7 +1044,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:118
+#: ../src/ui/metaaccellabel.c:87
 msgid "Alt"
 msgstr "Alt"
 
@@ -1058,7 +1053,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:124
+#: ../src/ui/metaaccellabel.c:93
 msgid "Meta"
 msgstr "Meta"
 
@@ -1067,7 +1062,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:130
+#: ../src/ui/metaaccellabel.c:99
 msgid "Super"
 msgstr "Super"
 
@@ -1076,7 +1071,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:136
+#: ../src/ui/metaaccellabel.c:105
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -1085,7 +1080,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:142
+#: ../src/ui/metaaccellabel.c:111
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1094,7 +1089,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:148
+#: ../src/ui/metaaccellabel.c:117
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1103,7 +1098,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:154
+#: ../src/ui/metaaccellabel.c:123
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1112,7 +1107,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:160
+#: ../src/ui/metaaccellabel.c:129
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -1782,157 +1777,153 @@ msgstr "<%s> especificada dúas veces para este tema"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Non se encontrou ningún ficheiro válido para o tema %s\n"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Xanelas"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "_Xanelas"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Xanelas/tirador"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "_Diálogo"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Xanelas/_Diálogo"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "_Diálogo modal"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Xanelas/Diálogo _modal"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "_Utilidade"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Xanelas/_Utilidades"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "_Pantalla de inicio"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Xanelas/_Pantalla de inicio"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "Doca _superior"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Xanelas/_Ancoraxe superior"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "Doca _inferior"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Xanelas/Ancoraxe _inferior"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "Doca _esquerda"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Xanelas/Ancoraxe _esquerda"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "Doca _dereita"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Xanelas/Ancoraxe _dereita"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "_Todas as docas"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Xanelas/_Todas as ancoraxes"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "Es_critorio"
 
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Xanelas/_Escritorio"
-
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Abrir outra destas xanelas"
 
-#: ../src/ui/theme-viewer.c:153
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Este é un botón de demostración cunha icona 'abrir'"
 
-#: ../src/ui/theme-viewer.c:155
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Este é un botón de demostración cunha icona 'saír'"
 
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Esta é unha mensaxe de mostra no diálogo de mostra"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Elemento de menú falso %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Xanela só con bordo"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Xanela de aplicativo normal"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Caixa de diálogo"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Caixa de diálogo modal"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Paleta de utilidades"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Menú desprazado"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Bordo"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Proba de disposición de botóns %d"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para debuxar un marco de xanela"
 
-#: ../src/ui/theme-viewer.c:802
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uso: metacity-theme-viewer [NOMETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:809
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Erro ao cargar o tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:815
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Cargouse o tema \"%s\" en %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:866
 msgid "Normal Title Font"
 msgstr "Tipo de letra de título normal"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:872
 msgid "Small Title Font"
 msgstr "Tipo de letra de título pequena"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:878
 msgid "Large Title Font"
 msgstr "Tipo de letra de título grande"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:883
 msgid "Button Layouts"
 msgstr "Disposición dos botóns"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:888
 msgid "Benchmark"
 msgstr "Banco de probas"
 
-#: ../src/ui/theme-viewer.c:927
+#: ../src/ui/theme-viewer.c:935
 msgid "Window Title Goes Here"
 msgstr "O título da xanela vai aquí"
 
-#: ../src/ui/theme-viewer.c:1031
+#: ../src/ui/theme-viewer.c:1039
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1943,46 +1934,61 @@ msgstr ""
 "marco) e %g segundos de tempo estándar incluíndo recursos do servidor X (%g "
 "milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1258
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "a proba de expresión da posición devolveu TRUE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "a proba de expresión da posición devolveu FALSE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1256
+#: ../src/ui/theme-viewer.c:1264
 msgid "Error was expected but none given"
 msgstr "Esperábase un erro, mais non se deu ningún"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Esperábase un erro %d mais deuse %d"
 
-#: ../src/ui/theme-viewer.c:1264
+#: ../src/ui/theme-viewer.c:1272
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Non se esperaba ningún erro mais devolveuse un: %s"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1276
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "o valor x era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1271
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "o valor y era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1336
+#: ../src/ui/theme-viewer.c:1344
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresións de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/Xanelas/tirador"
+
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/Xanelas/_Diálogo"
+
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/Xanelas/Diálogo _modal"
+
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/Xanelas/_Escritorio"
+
+#~ msgid "Failed to get hostname: %s\n"
+#~ msgstr "Ocorreu un fallo ao obter o nome do host: %s\n"
 
 #~ msgid "Failed to read saved session file %s: %s\n"
 #~ msgstr "Ocorreu un fallo ao ler o ficheiro de sesión gardado %s: %s\n"
@@ -2002,9 +2008,6 @@ msgstr ""
 #~ msgid "Theme file %s did not contain a root <metacity_theme> element"
 #~ msgstr ""
 #~ "O ficheiro de tema %s non contén ningún elemento raíz <metacity_theme>"
-
-#~ msgid "Desktop"
-#~ msgstr "Escritorio"
 
 #~ msgid "Window Management"
 #~ msgstr "Xestión de xanelas"
