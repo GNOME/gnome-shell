@@ -1841,8 +1841,8 @@ _cogl_material_get_layer (CoglMaterial *material,
       /* Since we passed a newly allocated layer we wouldn't expect
        * _set_layer_unit() to have to allocate *another* layer. */
       g_assert (new == layer);
-      layer->index = layer_index;
     }
+  layer->index = layer_index;
 
   for (i = 0; i < layer_info.n_layers_to_shift; i++)
     {
