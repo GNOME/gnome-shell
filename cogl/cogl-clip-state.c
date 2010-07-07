@@ -46,7 +46,7 @@ cogl_clip_push_window_rectangle (int x_offset,
                                  int width,
                                  int height)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
   CoglHandle stack;
 
@@ -133,7 +133,7 @@ cogl_clip_push_rectangle (float x_1,
                           float x_2,
                           float y_2)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
   CoglHandle stack;
   CoglMatrix modelview_matrix;
@@ -178,7 +178,7 @@ cogl_clip_push (float x_offset,
 void
 cogl_clip_push_from_path_preserve (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
   CoglHandle stack;
   CoglMatrix modelview_matrix;
@@ -229,7 +229,7 @@ _cogl_clip_pop_real (CoglClipState *clip_state)
 void
 cogl_clip_pop (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -292,7 +292,7 @@ _cogl_clip_stack_save_real (CoglClipState *clip_state)
 void
 cogl_clip_stack_save (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -328,7 +328,7 @@ _cogl_clip_stack_restore_real (CoglClipState *clip_state)
 void
 cogl_clip_stack_restore (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -368,7 +368,7 @@ _cogl_clip_state_dirty (CoglClipState *clip_state)
 CoglHandle
 _cogl_get_clip_stack (void)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
@@ -382,7 +382,7 @@ _cogl_get_clip_stack (void)
 void
 _cogl_set_clip_stack (CoglHandle handle)
 {
-  CoglHandle framebuffer;
+  CoglFramebuffer *framebuffer;
   CoglClipState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);

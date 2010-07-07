@@ -65,6 +65,8 @@ G_BEGIN_DECLS
  * General utility functions for COGL.
  */
 
+typedef struct _CoglFramebuffer CoglFramebuffer;
+
 /**
  * cogl_get_option_group:
  *
@@ -172,7 +174,7 @@ cogl_get_bitmasks (int *red,
  * Since: 1.4
  */
 int
-_cogl_framebuffer_get_red_bits (CoglHandle framebuffer);
+_cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer);
 
 /*
  * _cogl_framebuffer_get_green_bits:
@@ -185,7 +187,7 @@ _cogl_framebuffer_get_red_bits (CoglHandle framebuffer);
  * Since: 1.4
  */
 int
-_cogl_framebuffer_get_green_bits (CoglHandle framebuffer);
+_cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer);
 
 /*
  * _cogl_framebuffer_get_blue_bits:
@@ -198,7 +200,7 @@ _cogl_framebuffer_get_green_bits (CoglHandle framebuffer);
  * Since: 1.4
  */
 int
-_cogl_framebuffer_get_blue_bits (CoglHandle framebuffer);
+_cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
 
 /*
  * _cogl_framebuffer_get_alpha_bits:
@@ -211,7 +213,7 @@ _cogl_framebuffer_get_blue_bits (CoglHandle framebuffer);
  * Since: 1.4
  */
 int
-_cogl_framebuffer_get_alpha_bits (CoglHandle framebuffer);
+_cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 
 /**
  * cogl_perspective:
@@ -910,8 +912,7 @@ cogl_clip_stack_restore (void) G_GNUC_DEPRECATED;
 
 /**
  * cogl_set_framebuffer:
- * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
- *          offscreen.
+ * @buffer: A #CoglFramebuffer object, either onscreen or offscreen.
  *
  * This redirects all subsequent drawing to the specified framebuffer. This can
  * either be an offscreen buffer created with cogl_offscreen_new_to_texture ()
@@ -920,12 +921,11 @@ cogl_clip_stack_restore (void) G_GNUC_DEPRECATED;
  * Since: 1.2
  */
 void
-cogl_set_framebuffer (CoglHandle buffer);
+cogl_set_framebuffer (CoglFramebuffer *buffer);
 
 /**
  * cogl_push_framebuffer:
- * @buffer: The #CoglHandle of a Cogl framebuffer; either onscreen or
- *          offscreen.
+ * @buffer: A #CoglFramebuffer object, either onscreen or offscreen.
  *
  * Redirects all subsequent drawing to the specified framebuffer. This can
  * either be an offscreen buffer created with cogl_offscreen_new_to_texture ()
@@ -979,7 +979,7 @@ cogl_set_framebuffer (CoglHandle buffer);
  *
  * static void
  * my_init_framebuffer (ClutterStage *stage,
- *                      CoglHandle framebuffer,
+ *                      CoglFramebuffer *framebuffer,
  *                      unsigned int framebuffer_width,
  *                      unsigned int framebuffer_height)
  * {
@@ -1002,7 +1002,7 @@ cogl_set_framebuffer (CoglHandle buffer);
  * Since: 1.2
  */
 void
-cogl_push_framebuffer (CoglHandle buffer);
+cogl_push_framebuffer (CoglFramebuffer *buffer);
 
 /**
  * cogl_pop_framebuffer:

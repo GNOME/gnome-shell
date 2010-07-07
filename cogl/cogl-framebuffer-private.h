@@ -33,9 +33,9 @@ typedef enum _CoglFramebufferType {
   COGL_FRAMEBUFFER_TYPE_OFFSCREEN
 } CoglFramebufferType;
 
-typedef struct
+struct _CoglFramebuffer
 {
-  CoglHandleObject    _parent;
+  CoglObject          _parent;
   CoglFramebufferType  type;
   int                 width;
   int                 height;
@@ -54,7 +54,7 @@ typedef struct
   int                 blue_bits;
   int                 green_bits;
   int                 alpha_bits;
-} CoglFramebuffer;
+};
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
 
@@ -79,40 +79,41 @@ void
 _cogl_framebuffer_state_init (void);
 
 int
-_cogl_framebuffer_get_width (CoglHandle handle);
+_cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
 
 int
-_cogl_framebuffer_get_height (CoglHandle handle);
+_cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
 
 CoglClipState *
-_cogl_framebuffer_get_clip_state (CoglHandle handle);
+_cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer);
 
 void
-_cogl_framebuffer_set_viewport (CoglHandle handle,
+_cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 int x,
                                 int y,
                                 int width,
                                 int height);
 int
-_cogl_framebuffer_get_viewport_x (CoglHandle handle);
+_cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
 
 int
-_cogl_framebuffer_get_viewport_y (CoglHandle handle);
+_cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer);
 
 int
-_cogl_framebuffer_get_viewport_width (CoglHandle handle);
+_cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer);
 
 int
-_cogl_framebuffer_get_viewport_height (CoglHandle handle);
+_cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
 
 void
-_cogl_framebuffer_get_viewport4fv (CoglHandle handle, int *viewport);
+_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
+                                   int *viewport);
 
 CoglMatrixStack *
-_cogl_framebuffer_get_modelview_stack (CoglHandle handle);
+_cogl_framebuffer_get_modelview_stack (CoglFramebuffer *framebuffer);
 
 CoglMatrixStack *
-_cogl_framebuffer_get_projection_stack (CoglHandle handle);
+_cogl_framebuffer_get_projection_stack (CoglFramebuffer *framebuffer);
 
 typedef enum _CoglFramebufferFlushFlags
 {
@@ -124,13 +125,13 @@ typedef enum _CoglFramebufferFlushFlags
 } CoglFramebufferFlushFlags;
 
 void
-_cogl_framebuffer_flush_state (CoglHandle handle,
+_cogl_framebuffer_flush_state (CoglFramebuffer *framebuffer,
                                CoglFramebufferFlushFlags flags);
 
 CoglHandle
 _cogl_onscreen_new (void);
 
-CoglHandle
+CoglFramebuffer *
 _cogl_get_framebuffer (void);
 
 GSList *
