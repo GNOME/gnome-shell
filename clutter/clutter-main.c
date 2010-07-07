@@ -114,6 +114,8 @@
 #include "cogl/cogl.h"
 #include "pango/cogl-pango.h"
 
+#include "cally.h" /* For accessibility support */
+
 /* main context */
 static ClutterMainContext *ClutterCntx       = NULL;
 
@@ -128,6 +130,7 @@ static gboolean clutter_show_fps             = FALSE;
 static gboolean clutter_fatal_warnings       = FALSE;
 static gboolean clutter_disable_mipmap_text  = FALSE;
 static gboolean clutter_use_fuzzy_picking    = FALSE;
+static gboolean clutter_enable_accessibility = TRUE;
 
 static guint clutter_default_fps             = 60;
 
@@ -202,6 +205,24 @@ clutter_get_show_fps (void)
 {
   return clutter_show_fps;
 }
+
+/**
+ * clutter_get_accessibility_enabled:
+ *
+ * Returns whether Clutter has accessibility support enabled.  As
+ * least, a value of TRUE means that there are a proper AtkUtil
+ * implementation available
+ *
+ * Return value: %TRUE if Clutter has accessibility support enabled
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_get_accessibility_enabled (void)
+{
+  return cally_get_cally_initialized ();
+}
+
 
 void
 _clutter_stage_maybe_relayout (ClutterActor *stage)
@@ -1591,6 +1612,10 @@ clutter_init_real (GError **error)
   clutter_is_initialized = TRUE;
   ctx->is_initialized = TRUE;
 
+  /* Initialize a11y */
+  if (clutter_enable_accessibility)
+    cally_accessibility_init ();
+
   return CLUTTER_INIT_SUCCESS;
 }
 
@@ -1622,6 +1647,8 @@ static GOptionEntry clutter_args[] = {
   { "clutter-no-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_profile_cb,
     N_("Clutter profiling flags to unset"), "FLAGS" },
 #endif /* CLUTTER_ENABLE_PROFILE */
+  { "clutter-enable-accessibility", 0, 0, G_OPTION_ARG_NONE, &clutter_enable_accessibility,
+    N_("Enable accessibility"), NULL },
   { NULL, },
 };
 

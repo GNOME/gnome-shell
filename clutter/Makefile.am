@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = cogl $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS)
+SUBDIRS = cogl $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS) cally
 
 if LOCAL_JSON_GLIB
 SUBDIRS += json
@@ -12,7 +12,7 @@ clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
 clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
-DIST_SUBDIRS = glx egl cogl json osx x11 win32 fruity
+DIST_SUBDIRS = glx egl cogl json osx x11 win32 fruity cally
 
 # common definitions
 CLEANFILES =
@@ -39,6 +39,7 @@ endif # SUPPORT_WIN32
 
 INCLUDES = \
 	-I$(top_srcdir) 				\
+	-I$(top_srcdir)/clutter/cally			\
 	-I$(top_srcdir)/clutter/cogl			\
 	-I$(top_srcdir)/clutter/cogl/pango		\
 	-I$(top_srcdir)/clutter				\
@@ -260,13 +261,16 @@ source_h_priv = \
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
+	$(top_builddir)/clutter/cally/libcally.la \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_libadd) \
 	$(CLUTTER_WINSYS_BASE_LIB)
 
+
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+	$(top_builddir)/clutter/cally/libcally.la \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
@@ -289,7 +293,7 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
 	-export-dynamic \
-	-export-symbols-regex "^(clutter|cogl|json).*" \
+	-export-symbols-regex "^(clutter|cogl|cally|json).*" \
 	-rpath $(libdir) \
 	$(win32_resources_ldflag) \
 	$(NULL)
@@ -318,7 +322,7 @@ json_gir_pkg=
 
 # If we are building it, ClutterJson gets the same handling as described
 # for Cogl above
-ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
+ClutterJson-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
 	$(QUIET_GEN) \
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
 	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
@@ -334,7 +338,7 @@ if HAVE_INTROSPECTION
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
 
-Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+Clutter-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
@@ -373,12 +377,36 @@ Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VER
 # until after we've built the shared library. To create the final Cogl.gir
 # that we compile and install, we transfer the shared-library="" line from
 # Clutter.gir to Cogl.gir
-Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
+Cogl-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 	$(QUIET_GEN) \
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
 	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
 
 BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
+
+# Cally depends on Clutter because it exposes Clutter types; for this reason,
+# we cannot build Cally.gir under cally/ and then do the shlib trick we do
+# for Cogl and ClutterJson.
+Cally-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) Clutter-@CLUTTER_API_VERSION@.gir
+	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+		--namespace Cally --nsversion=@CLUTTER_API_VERSION@ \
+		$(INCLUDES) \
+		$(AM_CPPFLAGS) \
+		--c-include='cally/cally.h' \
+		--include=GObject-2.0 \
+		--include=Atk-1.0 \
+		--include=Pango-1.0 \
+		--include=Clutter-1.0 \
+		--library=libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la \
+		--libtool="$(top_builddir)/libtool" \
+		--pkg gobject-2.0 \
+		--pkg atk \
+		--pkg clutter-1.0 \
+		--output $@ \
+		$(top_srcdir)/clutter/cally/*.h \
+		$(top_srcdir)/clutter/cally/*.c
+
+BUILT_GIRSOURCES += Cally-@CLUTTER_API_VERSION@.gir
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.

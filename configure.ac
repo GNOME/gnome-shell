@@ -1025,6 +1025,8 @@ AC_CONFIG_FILES([
         clutter/osx/Makefile
         clutter/win32/Makefile
         clutter/win32/clutter-win32.pc
+        clutter/cally/Makefile
+        clutter/cally/cally.pc
         clutter/cogl/Makefile
         clutter/cogl/cogl/Makefile
         clutter/cogl/cogl/cogl-defines.h
@@ -1036,6 +1038,7 @@ AC_CONFIG_FILES([
         clutter/cogl/pango/Makefile
         clutter/json/Makefile
         tests/Makefile
+        tests/accessibility/Makefile
         tests/conform/Makefile
         tests/conform/test-launcher.sh
         tests/data/Makefile
@@ -1049,6 +1052,8 @@ AC_CONFIG_FILES([
         doc/reference/clutter/clutter-docs.xml
         doc/reference/cogl/Makefile
         doc/reference/cogl/cogl-docs.xml
+        doc/reference/cally/Makefile
+        doc/reference/cally/cally-docs.xml
         doc/common/Makefile
         doc/manual/Makefile
         doc/manual/clutter-manual.xml

@@ -137,6 +137,10 @@
           <listitem><para>Unsets FLAGS from the COGL debugging
           flags.</para></listitem>
         </varlistentry>
+        <varlistentry>
+          <term>--clutter-enable-accessibility</term>
+          <listitem><para>Enables accessibility support.</para></listitem>
+        </varlistentry>
       </variablelist>
 
       <para>The X11 backends also have the following command line

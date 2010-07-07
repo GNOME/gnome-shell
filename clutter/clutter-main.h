@@ -102,6 +102,7 @@ void             clutter_do_event                   (ClutterEvent *event);
 gboolean         clutter_get_debug_enabled          (void);
 gboolean         clutter_get_show_fps               (void);
 gulong           clutter_get_timestamp              (void);
+gboolean         clutter_get_accessibility_enabled  (void);
 
 /* Threading functions */
 void             clutter_threads_init                  (void);
