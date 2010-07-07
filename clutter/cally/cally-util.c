@@ -23,7 +23,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:cally-util
+ * @Title: CallyUtil
+ * @short_description: #AtkUtil implementation
+ * @see_also: #ClutterActor
+ *
+ * #CallyUtil implements #AtkUtil abstract methods. Although it
+ * includes the name "Util" it is in fact one of the most important
+ * interfaces to be implemented in any ATK toolkit implementation.
+
+ * For instance, it defines atk_get_root(), the method that returns
+ * the root object in the hierarchy. Without it, you don't have
+ * available any accessible object.
+ */
+
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
