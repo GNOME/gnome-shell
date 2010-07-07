@@ -80,7 +80,7 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
     automake bison flex git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
-    libwnck-dev libgl1-mesa-devlibreadline5-dev libxml2-dev mesa-common-dev mesa-utils \
+    libwnck-dev libgl1-mesa-dev libreadline5-dev libxml2-dev mesa-common-dev mesa-utils \
     python-dev python-gconf python-gobject xulrunner-dev xserver-xephyr gnome-terminal \
     libcroco3-dev libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
