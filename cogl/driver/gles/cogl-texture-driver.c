@@ -113,47 +113,58 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_format,
 				             GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
-  CoglBitmap slice_bmp;
+  guint8 *data;
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_get_format_bpp (source_format);
+  CoglBitmap *slice_bmp;
+  int rowstride;
 
-  /* NB: GLES doesn't support the GL_UNPACK_ROW_LENGTH, GL_UNPACK_SKIP_PIXELS
-   * or GL_UNPACK_SKIP_ROWS pixel store options so we can't directly source a
-   * sub-region from source_bmp, we need to use a transient bitmap instead. */
+  /* NB: GLES doesn't support the GL_UNPACK_ROW_LENGTH,
+   * GL_UNPACK_SKIP_PIXELS or GL_UNPACK_SKIP_ROWS pixel store options
+   * so we can't directly source a sub-region from source_bmp, we need
+   * to use a transient bitmap instead. */
 
-  /* FIXME: optimize by not copying to intermediate slice bitmap when source
-   * rowstride = bpp * width and the texture image is not sliced */
+  /* FIXME: optimize by not copying to intermediate slice bitmap when
+   * source rowstride = bpp * width and the texture image is not
+   * sliced */
 
   /* Setup temp bitmap for slice subregion */
-  slice_bmp.format = source_bmp->format;
-  slice_bmp.width  = width;
-  slice_bmp.height = height;
-  slice_bmp.rowstride = bpp * slice_bmp.width;
-  slice_bmp.data = g_malloc (slice_bmp.rowstride * slice_bmp.height);
+  rowstride = bpp * width;
+  slice_bmp = _cogl_bitmap_new_from_data (g_malloc (rowstride * height),
+                                          source_format,
+                                          width,
+                                          height,
+                                          rowstride,
+                                          (CoglBitmapDestroyNotify)
+                                          g_free,
+                                          NULL);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  _cogl_texture_driver_prep_gl_for_pixels_upload (slice_bmp.rowstride,
-                                                  bpp);
+  _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
 
   /* Copy subregion data */
   _cogl_bitmap_copy_subregion (source_bmp,
-                               &slice_bmp,
+                               slice_bmp,
                                src_x,
                                src_y,
                                0, 0,
-                               slice_bmp.width,
-                               slice_bmp.height);
+                               width, height);
 
-  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+  if ((data = _cogl_bitmap_map (slice_bmp, COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( glTexSubImage2D (gl_target, 0,
-                       dst_x, dst_y,
-                       width, height,
-                       source_gl_format,
-                       source_gl_type,
-                       slice_bmp.data) );
+      GE( glTexSubImage2D (gl_target, 0,
+                           dst_x, dst_y,
+                           width, height,
+                           source_gl_format,
+                           source_gl_type,
+                           data) );
 
-  /* Free temp bitmap */
-  g_free (slice_bmp.data);
+      _cogl_bitmap_unmap (slice_bmp);
+    }
+
+  cogl_object_unref (slice_bmp);
 }
 
 void
@@ -165,41 +176,53 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_format,
                                    GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
-  CoglBitmap bmp = *source_bmp;
-  gboolean bmp_owner = FALSE;
+  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  int rowstride = _cogl_bitmap_get_rowstride (source_bmp);
+  int bmp_width = _cogl_bitmap_get_width (source_bmp);
+  int bmp_height = _cogl_bitmap_get_height (source_bmp);
+  CoglBitmap *bmp;
+  guint8 *data;
 
   /* If the rowstride can't be specified with just GL_ALIGNMENT alone
      then we need to copy the bitmap because there is no GL_ROW_LENGTH */
-  if (source_bmp->rowstride / bpp != source_bmp->width)
+  if (rowstride / bpp != bmp_width)
     {
-      bmp.rowstride = bpp * bmp.width;
-      bmp.data = g_malloc (bmp.rowstride * bmp.height);
-      bmp_owner = TRUE;
+      bmp = _cogl_bitmap_new_from_data (g_malloc (rowstride * bmp_height),
+                                        _cogl_bitmap_get_format (source_bmp),
+                                        bmp_width,
+                                        bmp_height,
+                                        rowstride,
+                                        (CoglBitmapDestroyNotify) g_free,
+                                        NULL);
 
       _cogl_bitmap_copy_subregion (source_bmp,
-                                   &bmp,
+                                   bmp,
                                    0, 0, 0, 0,
-                                   bmp.width,
-                                   bmp.height);
+                                   bmp_width,
+                                   bmp_height);
     }
+  else
+    bmp = cogl_object_ref (source_bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  _cogl_texture_driver_prep_gl_for_pixels_upload (bmp.rowstride,
-                                                  bpp);
+  _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( glTexImage2D (gl_target, 0,
-                    internal_gl_format,
-                    bmp.width, bmp.height,
-                    0,
-                    source_gl_format,
-                    source_gl_type,
-                    bmp.data) );
+  if ((data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      GE( glTexImage2D (gl_target, 0,
+                        internal_gl_format,
+                        bmp_width, bmp_height,
+                        0,
+                        source_gl_format,
+                        source_gl_type,
+                        data) );
 
-  if (bmp_owner)
-    g_free (bmp.data);
+      _cogl_bitmap_unmap (bmp);
+    }
+
+  cogl_object_unref (bmp);
 }
 
 void
@@ -213,7 +236,11 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_format,
                                       GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (source_bmp->format);
+  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  int rowstride = _cogl_bitmap_get_rowstride (source_bmp);
+  int bmp_width = _cogl_bitmap_get_width (source_bmp);
+  int bmp_height = _cogl_bitmap_get_height (source_bmp);
+  guint8 *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -222,14 +249,14 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   /* If the rowstride or image height can't be specified with just
      GL_ALIGNMENT alone then we need to copy the bitmap because there
      is no GL_ROW_LENGTH */
-  if (source_bmp->rowstride / bpp != source_bmp->width ||
-      height != source_bmp->height / depth)
+  if (rowstride / bpp != bmp_width ||
+      height != bmp_height / depth)
     {
-      int image_height = source_bmp->height / depth;
+      CoglBitmap *bmp;
+      int image_height = bmp_height / depth;
       int i;
 
-      _cogl_texture_driver_prep_gl_for_pixels_upload (source_bmp->width * bpp,
-                                                      bpp);
+      _cogl_texture_driver_prep_gl_for_pixels_upload (bmp_width * bpp, bpp);
 
       /* Initialize the texture with empty data and then upload each
          image with a sub-region update */
@@ -237,7 +264,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
       GE( glTexImage3D (gl_target,
                         0, /* level */
                         internal_gl_format,
-                        source_bmp->width,
+                        bmp_width,
                         height,
                         depth,
                         0,
@@ -245,51 +272,60 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                         source_gl_type,
                         NULL) );
 
+      bmp = _cogl_bitmap_new_from_data (g_malloc (bpp * bmp_width * height),
+                                        _cogl_bitmap_get_format (source_bmp),
+                                        bmp_width,
+                                        height,
+                                        bpp * bmp_width,
+                                        (CoglBitmapDestroyNotify) g_free,
+                                        NULL);
+
       for (i = 0; i < depth; i++)
         {
-          CoglBitmap bmp = *source_bmp;
-
-          bmp.rowstride = bpp * bmp.width;
-          bmp.height = height;
-          bmp.data = g_malloc (bmp.rowstride * bmp.height);
-
           _cogl_bitmap_copy_subregion (source_bmp,
-                                       &bmp,
+                                       bmp,
                                        0, image_height * i,
                                        0, 0,
-                                       bmp.width,
-                                       bmp.height);
+                                       bmp_width,
+                                       bmp_height);
 
-          GE( glTexSubImage3D (gl_target,
-                               0, /* level */
-                               0, /* xoffset */
-                               0, /* yoffset */
-                               i, /* zoffset */
-                               bmp.width, /* width */
-                               height, /* height */
-                               1, /* depth */
-                               source_gl_format,
-                               source_gl_type,
-                               bmp.data) );
+          if ((data = _cogl_bitmap_map (bmp,
+                                        COGL_BUFFER_ACCESS_READ, 0)))
+            {
+              GE( glTexSubImage3D (gl_target,
+                                   0, /* level */
+                                   0, /* xoffset */
+                                   0, /* yoffset */
+                                   i, /* zoffset */
+                                   bmp_width, /* width */
+                                   height, /* height */
+                                   1, /* depth */
+                                   source_gl_format,
+                                   source_gl_type,
+                                   data) );
 
-          g_free (bmp.data);
+              _cogl_bitmap_unmap (bmp);
+            }
         }
+
+      cogl_object_unref (bmp);
     }
-  else
+  else if ((data = _cogl_bitmap_map (source_bmp, COGL_BUFFER_ACCESS_READ, 0)))
     {
-      _cogl_texture_driver_prep_gl_for_pixels_upload (source_bmp->rowstride,
-                                                      bpp);
+      _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
 
       GE( glTexImage3D (gl_target,
                         0, /* level */
                         internal_gl_format,
-                        source_bmp->width,
+                        bmp_width,
                         height,
                         depth,
                         0,
                         source_gl_format,
                         source_gl_type,
-                        source_bmp->data) );
+                        data) );
+
+      _cogl_bitmap_unmap (source_bmp);
     }
 }
 

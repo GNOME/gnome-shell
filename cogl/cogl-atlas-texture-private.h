@@ -57,7 +57,7 @@ GQuark
 _cogl_handle_atlas_texture_get_type (void);
 
 CoglHandle
-_cogl_atlas_texture_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat  internal_format);
 

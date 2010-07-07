@@ -303,54 +303,65 @@ cogl_texture_3d_new_with_size (unsigned int     width,
 }
 
 CoglHandle
-_cogl_texture_3d_new_from_bitmap (CoglHandle       bmp_handle,
+_cogl_texture_3d_new_from_bitmap (CoglBitmap      *bmp,
                                   unsigned int     height,
                                   unsigned int     depth,
                                   CoglTextureFlags flags,
                                   CoglPixelFormat  internal_format,
                                   GError         **error)
 {
-  CoglTexture3D *tex_3d;
-  CoglBitmap    *bmp = (CoglBitmap *) bmp_handle;
-  CoglBitmap     dst_bmp;
-  gboolean       dst_bmp_owner;
-  GLenum         gl_intformat;
-  GLenum         gl_format;
-  GLenum         gl_type;
+  CoglTexture3D   *tex_3d;
+  CoglBitmap      *dst_bmp;
+  CoglPixelFormat  bmp_format;
+  unsigned int     bmp_width;
+  GLenum           gl_intformat;
+  GLenum           gl_format;
+  GLenum           gl_type;
+  guint8          *data;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  internal_format = _cogl_texture_determine_internal_format (bmp->format,
+  bmp_width = _cogl_bitmap_get_width (bmp);
+  bmp_format = _cogl_bitmap_get_format (bmp);
+
+  internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
 
-  if (!_cogl_texture_3d_can_create (bmp->width, height, depth,
+  if (!_cogl_texture_3d_can_create (bmp_width, height, depth,
                                     flags, internal_format,
                                     error))
     return COGL_INVALID_HANDLE;
 
-  if (!_cogl_texture_prepare_for_upload (bmp,
-                                         internal_format,
-                                         &internal_format,
-                                         &dst_bmp,
-                                         &dst_bmp_owner,
-                                         &gl_intformat,
-                                         &gl_format,
-                                         &gl_type))
+  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
+                                              internal_format,
+                                              &internal_format,
+                                              &gl_intformat,
+                                              &gl_format,
+                                              &gl_type);
+
+  if (dst_bmp == NULL)
     {
       g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
                    "Bitmap conversion failed");
       return COGL_INVALID_HANDLE;
     }
 
-  tex_3d = _cogl_texture_3d_create_base (dst_bmp.width, height, depth,
+  tex_3d = _cogl_texture_3d_create_base (bmp_width, height, depth,
                                          flags, internal_format);
 
   /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
      supported we can fallback to using GL_GENERATE_MIPMAP */
-  tex_3d->first_pixel.gl_format = gl_format;
-  tex_3d->first_pixel.gl_type = gl_type;
-  memcpy (tex_3d->first_pixel.data, dst_bmp.data,
-          _cogl_get_format_bpp (dst_bmp.format));
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+      (data = _cogl_bitmap_map (dst_bmp,
+                                COGL_BUFFER_ACCESS_READ, 0)))
+    {
+      tex_3d->first_pixel.gl_format = gl_format;
+      tex_3d->first_pixel.gl_type = gl_type;
+      memcpy (tex_3d->first_pixel.data, data,
+              _cogl_get_format_bpp (_cogl_bitmap_get_format (dst_bmp)));
+
+      _cogl_bitmap_unmap (dst_bmp);
+    }
 
   _cogl_texture_driver_gen (GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
 
@@ -359,15 +370,14 @@ _cogl_texture_3d_new_from_bitmap (CoglHandle       bmp_handle,
                                         FALSE, /* is_foreign */
                                         height,
                                         depth,
-                                        &dst_bmp,
+                                        dst_bmp,
                                         gl_intformat,
                                         gl_format,
                                         gl_type);
 
   tex_3d->gl_format = gl_intformat;
 
-  if (dst_bmp_owner)
-    g_free (dst_bmp.data);
+  cogl_object_unref (dst_bmp);
 
   return _cogl_texture_3d_handle_new (tex_3d);
 }
@@ -384,8 +394,7 @@ cogl_texture_3d_new_from_data (unsigned int      width,
                                const guint8     *data,
                                GError          **error)
 {
-  CoglBitmap bitmap;
-  gboolean bitmap_owned = FALSE;
+  CoglBitmap *bitmap;
   CoglHandle ret;
 
   /* These are considered a programmer errors so we won't set a
@@ -414,42 +423,42 @@ cogl_texture_3d_new_from_data (unsigned int      width,
   if (image_stride % rowstride != 0)
     {
       int z, y;
+      int bmp_rowstride = _cogl_get_format_bpp (format) * width;
+      guint8 *bmp_data = g_malloc (bmp_rowstride * height * depth);
 
-      bitmap.width = width;
-      bitmap.height = depth * height;
-      bitmap.rowstride = _cogl_get_format_bpp (format) * width;
-      bitmap.data = g_malloc (bitmap.rowstride * height * depth);
-      bitmap.format = format;
+      bitmap = _cogl_bitmap_new_from_data (bmp_data,
+                                           format,
+                                           width,
+                                           depth * height,
+                                           bmp_rowstride,
+                                           (CoglBitmapDestroyNotify) g_free,
+                                           NULL /* destroy_fn_data */);
 
       /* Copy all of the images in */
       for (z = 0; z < depth; z++)
         for (y = 0; y < height; y++)
-          memcpy (bitmap.data + (z * bitmap.rowstride * height +
-                                 bitmap.rowstride * y),
+          memcpy (bmp_data + (z * bmp_rowstride * height +
+                              bmp_rowstride * y),
                   data + z * image_stride + rowstride * y,
-                  bitmap.rowstride);
-
-      bitmap_owned = TRUE;
+                  bmp_rowstride);
     }
   else
-    {
-      /* Wrap the data into a bitmap */
-      bitmap.width = width;
-      bitmap.height = image_stride / rowstride * depth;
-      bitmap.data = (guint8 *) data;
-      bitmap.format = format;
-      bitmap.rowstride = rowstride;
-    }
+    bitmap = _cogl_bitmap_new_from_data ((guint8 *) data,
+                                         format,
+                                         width,
+                                         image_stride / rowstride * depth,
+                                         rowstride,
+                                         NULL, /* destroy_fn */
+                                         NULL /* destroy_fn_data */);
 
-  ret = _cogl_texture_3d_new_from_bitmap (&bitmap,
+  ret = _cogl_texture_3d_new_from_bitmap (bitmap,
                                           height,
                                           depth,
                                           flags,
                                           internal_format,
                                           error);
 
-  if (bitmap_owned)
-    g_free (bitmap.data);
+  cogl_object_unref (bitmap);
 
   return ret;
 }
