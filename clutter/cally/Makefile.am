@@ -54,7 +54,9 @@ INCLUDES = \
 	-I$(top_srcdir)		 			\
 	-I$(top_srcdir)/clutter	 			\
 	-I$(top_srcdir)/clutter/cally 			\
-	-I$(top_srcdir)/clutter/cogl
+	-I$(top_srcdir)/clutter/cogl			\
+	-I$(top_builddir)/clutter			\
+	-I$(top_builddir)/clutter/cogl
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Cally\"			\

@@ -48,8 +48,8 @@ FIXXREF_OPTIONS=\
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/clutter/cally/*.h $(top_builddir)/clutter/cally/*.h
-CFILE_GLOB=$(top_srcdir)/clutter/cally/*.c $(top_builddir)/clutter/cally/*.c
+HFILE_GLOB=$(top_srcdir)/clutter/cally/*.h
+CFILE_GLOB=$(top_srcdir)/clutter/cally/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h

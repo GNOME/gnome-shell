@@ -4,7 +4,7 @@ if BUILD_TESTS
 SUBDIRS += conform
 endif
 
-DIST_SUBDIRS = data conform interactive micro-bench tools
+DIST_SUBDIRS = accessibility data conform interactive micro-bench tools
 
 EXTRA_DIST = README
 
