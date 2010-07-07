@@ -114,3 +114,7 @@
 /test-cogl-depth-test
 /test-cogl-pixel-array
 /wrappers
+/*-report.xml
+/*-report.html
+/*-report-npot.xml
+/*-report-npot.html

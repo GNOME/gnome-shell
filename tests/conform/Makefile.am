@@ -113,70 +113,102 @@ test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFI
 
 test_conformance_LDFLAGS = -export-dynamic
 
-.PHONY: test
-.PHONY: test-report test-report-normal test-report-disable-npots
-.PHONY: full-report full-report-normal full-report-disable-npots
-.PHONY: full-report-generate
-
 test: wrappers
 	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) test-conformance-results.xml
+	  ./test-conformance$(EXEEXT) -o test-report.xml
 
 test-verbose: wrappers
 	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) test-conformance-results.xml --verbose
+	  ./test-conformance$(EXEEXT) -o test-report.xml --verbose
 
-test-report-normal: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) test-conformance-results.xml -k \
-	  && ( gtester-report test-conformance-results.xml \
-	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
-	      > test-conformance-results.html ) \
-	  && gnome-open ./test-conformance-results.html
+GTESTER = gtester
+GTESTER_REPORT = gtester-report
 
-test-report-disable-npots: wrappers
-	@../tools/disable-npots.sh \
+# XXX: we could prevent the conformance test suite from running
+#      by simply defining this variable conditionally
+TEST_PROGS = test-conformance
+
+.PHONY: test
+.PHONY: test-report perf-report full-report
+.PHONY: test-report-npot perf-report-npot full-report-npot
+
+# test-report: run tests and generate report
+# perf-report: run tests with -m perf and generate report
+# full-report: like test-report: with -m perf and -m slow
+test-report perf-report full-report:	${TEST_PROGS}
+	@test -z "${TEST_PROGS}" || { \
+	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
+	  case $@ in \
+	  test-report) test_options="-k";; \
+	  perf-report) test_options="-k -m=perf";; \
+	  full-report) test_options="-k -m=perf -m=slow";; \
+	  esac ; \
 	  $(top_srcdir)/tests/conform/run-tests.sh \
-	    ./test-conformance$(EXEEXT) test-conformance-results-dn.xml -k \
-	  && ( gtester-report test-conformance-results-dn.xml \
-	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
-	      > test-conformance-results-dn.html ) \
-	  && gnome-open ./test-conformance-results-dn.html
+	    ./test-conformance$(EXEEXT) \
+	    --verbose \
+	    $$test_options \
+	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
+	  echo '<?xml version="1.0"?>'            > $@.xml ; \
+	  echo '<report-collection>'             >> $@.xml ; \
+	  echo '<info>'                          >> $@.xml ; \
+	  echo '  <package>$(PACKAGE)</package>' >> $@.xml ; \
+	  echo '  <version>$(VERSION)</version>' >> $@.xml ; \
+	  echo '</info>'                         >> $@.xml ; \
+	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
+	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
+	  done ; \
+	  echo >> $@.xml ; \
+	  echo '</report-collection>' >> $@.xml ; \
+	  ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
+	  rm -rf "$$GTESTER_LOGDIR" ; \
+	}
 
-test-report: test-report-normal
-
-full-report-normal: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) test-conformance-results.xml -k -m=slow \
-	  && ( gtester-report test-conformance-results.xml \
-	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
-	      > test-conformance-results.html )
-
-full-report-disable-npots: wrappers
-	@../tools/disable-npots.sh \
+# same as above, but with a wrapper that forcibly disables non-power of
+# two textures
+test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
+	@test -z "${TEST_PROGS}" || { \
+	  $(top_srcdir)/tests/tools/disable-npots.sh ; \
+	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
+	  case $@ in \
+	  test-report-npot) test_options="-k";; \
+	  perf-report-npot) test_options="-k -m=perf";; \
+	  full-report-npot) test_options="-k -m=perf -m=slow";; \
+	  esac ; \
 	  $(top_srcdir)/tests/conform/run-tests.sh \
-	    ./test-conformance$(EXEEXT) test-conformance-results-dn.xml -k -m=slow \
-	  && ( gtester-report test-conformance-results-dn.xml \
-	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
-	      > test-conformance-results-dn.html )
+	    ./test-conformance$(EXEEXT) \
+	    --verbose \
+	    $$test_options \
+	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
+	  echo '<?xml version="1.0"?>'            > $@.xml ; \
+	  echo '<report-collection>'             >> $@.xml ; \
+	  echo '<info>'                          >> $@.xml ; \
+	  echo '  <package>$(PACKAGE)</package>' >> $@.xml ; \
+	  echo '  <version>$(VERSION)</version>' >> $@.xml ; \
+	  echo '</info>'                         >> $@.xml ; \
+	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
+	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
+	  done ; \
+	  echo >> $@.xml ; \
+	  echo '</report-collection>' >> $@.xml ; \
+	  ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
+	  rm -rf "$$GTESTER_LOGDIR" ; \
+	}
 
-XML_REPORTS = test-conformance-results.xml
-HTML_REPORTS = test-conformance-results.html
+XML_REPORTS = \
+	test-report.xml 	\
+	perf-report.xml 	\
+	full-report.xml 	\
+	test-report-npot.xml 	\
+	perf-report-npot.xml 	\
+	full-report-npot.xml
 
-if HAVE_LIBDL
-XML_REPORTS += test-conformance-results-dn.xml
-HTML_REPORTS += test-conformance-results-dn.html
-full-report-generate: full-report-normal full-report-disable-npots
-
-else
-full-report-generate: full-report-normal
-
-endif
-
-full-report: full-report-generate
-	@for x in $(HTML_REPORTS); do \
-		gnome-open "$$x"; \
-	done
+HTML_REPORTS = \
+	test-report.html 	\
+	perf-report.html 	\
+	full-report.html 	\
+	test-report-npot.html 	\
+	perf-report-npot.html 	\
+	full-report-npot.html
 
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
 DISTCLEANFILES = test-launcher.sh
