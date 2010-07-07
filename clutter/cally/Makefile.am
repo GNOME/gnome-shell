@@ -73,8 +73,6 @@ libcallydir=$(includedir)/clutter-@CLUTTER_API_VERSION@/cally
 # unlikely in any real final clutter-based application to use only raw
 # CALLY. In fact, after HAIL experience, probably export GAIL
 # interfaces would be a good idea
-libcally_HEADERS = \
-	$(cally_h_sources)
+libcally_HEADERS = $(cally_h_sources)
 
-libcally_la_LIBADD =     				\
-	$(CLUTTER_LIBS)
+libcally_la_LIBADD = $(CLUTTER_LIBS)
