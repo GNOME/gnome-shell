@@ -211,7 +211,13 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
                                      int    width,
                                      int    height)
 {
-  return TRUE;
+  GLint max_size;
+
+  /* GLES doesn't support a proxy texture target so let's at least
+     check whether the size is greater than GL_MAX_TEXTURE_SIZE */
+  GE( glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_size) );
+
+  return width <= max_size && height <= max_size;
 }
 
 void
