@@ -6,7 +6,7 @@ EXAMPLES				= 	cally-atkcomponent-example 	\
 						cally-atktext-example		\
 						cally-clone-example
 
-common_ldadd			= $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+common_ldadd			= $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 common_sources			= cally-examples-util.c cally-examples-util.h
 
