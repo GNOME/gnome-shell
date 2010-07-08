@@ -68,6 +68,9 @@ struct _CoglTextureVtable
   /* Virtual functions that must be implemented for a texture
      backend */
 
+  /* This should update the specified sub region of the texture with a
+     sub region of the given bitmap. The bitmap will have first been
+     converted to a suitable format for uploading if neccessary. */
   gboolean (* set_region) (CoglTexture    *tex,
                            int             src_x,
                            int             src_y,
@@ -75,11 +78,7 @@ struct _CoglTextureVtable
                            int             dst_y,
                            unsigned int    dst_width,
                            unsigned int    dst_height,
-                           int             width,
-                           int             height,
-                           CoglPixelFormat format,
-                           unsigned int    rowstride,
-                           const guint8   *data);
+                           CoglBitmap     *bitmap);
 
   /* This should copy the image data of the texture into @data. The
      requested format will have been first passed through
@@ -257,5 +256,15 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 
 gboolean
 _cogl_texture_is_foreign (CoglHandle handle);
+
+gboolean
+_cogl_texture_set_region_from_bitmap (CoglHandle    handle,
+                                      int           src_x,
+                                      int           src_y,
+                                      int           dst_x,
+                                      int           dst_y,
+                                      unsigned int  dst_width,
+                                      unsigned int  dst_height,
+                                      CoglBitmap   *bmp);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

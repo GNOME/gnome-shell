@@ -520,79 +520,32 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                 int             dst_y,
                                 unsigned int    dst_width,
                                 unsigned int    dst_height,
-                                int             width,
-                                int             height,
-                                CoglPixelFormat format,
-                                unsigned int    rowstride,
-                                const guint8   *data)
+                                CoglBitmap     *bmp)
 {
   CoglAtlasTexture  *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* If the texture is in the atlas then we need to copy the edge
      pixels to the border */
   if (atlas_tex->in_atlas)
-    {
-      int              bpp;
-      CoglBitmap       source_bmp;
-      CoglBitmap       tmp_bmp;
-      gboolean         tmp_bmp_owner = FALSE;
-      gboolean         success;
+    /* Upload the data ignoring the premult bit */
+    return _cogl_atlas_texture_set_region_with_border (atlas_tex,
+                                                       src_x, src_y,
+                                                       dst_x, dst_y,
+                                                       dst_width, dst_height,
+                                                       bmp->width,
+                                                       bmp->height,
+                                                       bmp->format &
+                                                       ~COGL_PREMULT_BIT,
+                                                       bmp->rowstride,
+                                                       bmp->data);
 
-      /* Check for valid format */
-      if (format == COGL_PIXEL_FORMAT_ANY)
-        return FALSE;
-
-      /* Shortcut out early if the image is empty */
-      if (width == 0 || height == 0)
-        return TRUE;
-
-      /* Init source bitmap */
-      source_bmp.width = width;
-      source_bmp.height = height;
-      source_bmp.format = format;
-      source_bmp.data = (guint8 *)data;
-
-      /* Rowstride from width if none specified */
-      bpp = _cogl_get_format_bpp (format);
-      source_bmp.rowstride = (rowstride == 0) ? width * bpp : rowstride;
-
-      /* Prepare the bitmap so that it will do the premultiplication
-         conversion */
-      _cogl_texture_prepare_for_upload (&source_bmp,
-                                        atlas_tex->format,
-                                        NULL,
-                                        &tmp_bmp,
-                                        &tmp_bmp_owner,
-                                        NULL, NULL, NULL);
-
-      /* Upload the data ignoring the premult bit */
-      success =
-        _cogl_atlas_texture_set_region_with_border (atlas_tex,
-                                                    src_x, src_y,
-                                                    dst_x, dst_y,
-                                                    dst_width, dst_height,
-                                                    tmp_bmp.width,
-                                                    tmp_bmp.height,
-                                                    tmp_bmp.format &
-                                                    ~COGL_PREMULT_BIT,
-                                                    tmp_bmp.rowstride,
-                                                    tmp_bmp.data);
-
-      /* Free data if owner */
-      if (tmp_bmp_owner)
-        g_free (tmp_bmp.data);
-
-      return success;
-    }
   else
     /* Otherwise we can just forward on to the sub texture */
-    return cogl_texture_set_region (atlas_tex->sub_texture,
-                                    src_x, src_y,
-                                    dst_x, dst_y,
-                                    dst_width, dst_height,
-                                    width, height,
-                                    format, rowstride,
-                                    data);
+    return _cogl_texture_set_region_from_bitmap (atlas_tex->sub_texture,
+                                                 src_x, src_y,
+                                                 dst_x, dst_y,
+                                                 dst_width, dst_height,
+                                                 bmp);
 }
 
 static gboolean

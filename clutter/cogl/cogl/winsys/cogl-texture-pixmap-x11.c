@@ -1118,11 +1118,7 @@ _cogl_texture_pixmap_x11_set_region (CoglTexture     *tex,
                                      int              dst_y,
                                      unsigned int     dst_width,
                                      unsigned int     dst_height,
-                                     int              width,
-                                     int              height,
-                                     CoglPixelFormat  format,
-                                     unsigned int     rowstride,
-                                     const guint8    *data)
+                                     CoglBitmap      *bmp)
 {
   /* This doesn't make much sense for texture from pixmap so it's not
      supported */
