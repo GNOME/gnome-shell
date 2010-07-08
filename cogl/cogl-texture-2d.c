@@ -513,7 +513,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   return TRUE;
 }
 
-static int
+static gboolean
 _cogl_texture_2d_get_data (CoglTexture     *tex,
                            CoglPixelFormat  format,
                            unsigned int     rowstride,
@@ -521,103 +521,25 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
 {
   CoglTexture2D   *tex_2d = COGL_TEXTURE_2D (tex);
   int              bpp;
-  int              byte_size;
-  CoglPixelFormat  closest_format;
-  int              closest_bpp;
-  GLenum           closest_gl_format;
-  GLenum           closest_gl_type;
-  CoglBitmap       target_bmp;
-  CoglBitmap       new_bmp;
-  gboolean         success;
-  guint8          *src;
-  guint8          *dst;
-  int              y;
+  GLenum           gl_format;
+  GLenum           gl_type;
 
-  /* Default to internal format if none specified */
-  if (format == COGL_PIXEL_FORMAT_ANY)
-    format = tex_2d->format;
-
-  /* Rowstride from texture width if none specified */
   bpp = _cogl_get_format_bpp (format);
-  if (rowstride == 0)
-    rowstride = tex_2d->width * bpp;
 
-  /* Return byte size if only that requested */
-  byte_size =  tex_2d->height * rowstride;
-  if (data == NULL)
-    return byte_size;
+  _cogl_pixel_format_to_gl (format,
+                            NULL, /* internal format */
+                            &gl_format,
+                            &gl_type);
 
-  closest_format =
-    _cogl_texture_driver_find_best_gl_get_data_format (format,
-                                                       &closest_gl_format,
-                                                       &closest_gl_type);
-  closest_bpp = _cogl_get_format_bpp (closest_format);
-
-  target_bmp.width = tex_2d->width;
-  target_bmp.height = tex_2d->height;
-
-  /* Is the requested format supported? */
-  if (closest_format == format)
-    {
-      /* Target user data directly */
-      target_bmp.format = format;
-      target_bmp.rowstride = rowstride;
-      target_bmp.data = data;
-    }
-  else
-    {
-      /* Target intermediate buffer */
-      target_bmp.format = closest_format;
-      target_bmp.rowstride = target_bmp.width * closest_bpp;
-      target_bmp.data = g_malloc (target_bmp.height * target_bmp.rowstride);
-    }
-
-  _cogl_texture_driver_prep_gl_for_pixels_download (target_bmp.rowstride,
-                                                    closest_bpp);
+  _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    FALSE);
-  if (!_cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
-                                              closest_gl_format,
-                                              closest_gl_type,
-                                              target_bmp.data))
-    {
-      /* XXX: In some cases _cogl_texture_2d_download_from_gl may
-       * fail to read back the texture data; such as for GLES which doesn't
-       * support glGetTexImage, so here we fallback to drawing the texture
-       * and reading the pixels from the framebuffer. */
-      _cogl_texture_draw_and_read (tex, &target_bmp,
-                                   closest_gl_format,
-                                   closest_gl_type);
-    }
-
-  /* Was intermediate used? */
-  if (closest_format != format)
-    {
-      /* Convert to requested format */
-      success = _cogl_bitmap_convert_format_and_premult (&target_bmp,
-                                                         &new_bmp,
-                                                         format);
-
-      /* Free intermediate data and return if failed */
-      g_free (target_bmp.data);
-      if (!success)
-        return 0;
-
-      /* Copy to user buffer */
-      for (y = 0; y < new_bmp.height; ++y)
-        {
-          src = new_bmp.data + y * new_bmp.rowstride;
-          dst = data + y * rowstride;
-          memcpy (dst, src, new_bmp.width);
-        }
-
-      /* Free converted data */
-      g_free (new_bmp.data);
-    }
-
-  return byte_size;
+  return _cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
+                                                gl_format,
+                                                gl_type,
+                                                data);
 }
 
 static CoglPixelFormat

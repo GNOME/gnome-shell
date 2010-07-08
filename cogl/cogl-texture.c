@@ -1084,13 +1084,105 @@ cogl_texture_get_data (CoglHandle       handle,
 		       unsigned int     rowstride,
 		       guint8          *data)
 {
-  CoglTexture *tex;
+  CoglTexture     *tex;
+  int              bpp;
+  int              byte_size;
+  CoglPixelFormat  closest_format;
+  int              closest_bpp;
+  GLenum           closest_gl_format;
+  GLenum           closest_gl_type;
+  CoglBitmap       target_bmp;
+  CoglBitmap       new_bmp;
+  gboolean         success;
+  guint8          *src;
+  guint8          *dst;
+  int              y;
+  int              tex_width;
+  int              tex_height;
 
   if (!cogl_is_texture (handle))
     return FALSE;
 
   tex = COGL_TEXTURE (handle);
 
-  return tex->vtable->get_data (handle, format, rowstride, data);
-}
+  /* Default to internal format if none specified */
+  if (format == COGL_PIXEL_FORMAT_ANY)
+    format = cogl_texture_get_format (handle);
 
+  tex_width = cogl_texture_get_width (handle);
+  tex_height = cogl_texture_get_height (handle);
+
+  /* Rowstride from texture width if none specified */
+  bpp = _cogl_get_format_bpp (format);
+  if (rowstride == 0)
+    rowstride = tex_width * bpp;
+
+  /* Return byte size if only that requested */
+  byte_size = tex_height * rowstride;
+  if (data == NULL)
+    return byte_size;
+
+  closest_format =
+    _cogl_texture_driver_find_best_gl_get_data_format (format,
+                                                       &closest_gl_format,
+                                                       &closest_gl_type);
+  closest_bpp = _cogl_get_format_bpp (closest_format);
+
+  target_bmp.width = tex_width;
+  target_bmp.height = tex_height;
+
+  /* Is the requested format supported? */
+  if (closest_format == format)
+    {
+      /* Target user data directly */
+      target_bmp.format = format;
+      target_bmp.rowstride = rowstride;
+      target_bmp.data = data;
+    }
+  else
+    {
+      /* Target intermediate buffer */
+      target_bmp.format = closest_format;
+      target_bmp.rowstride = target_bmp.width * closest_bpp;
+      target_bmp.data = g_malloc (target_bmp.height * target_bmp.rowstride);
+    }
+
+  if (!tex->vtable->get_data (tex,
+                              target_bmp.format,
+                              target_bmp.rowstride,
+                              target_bmp.data))
+    /* XXX: In some cases _cogl_texture_2d_download_from_gl may fail
+     * to read back the texture data; such as for GLES which doesn't
+     * support glGetTexImage, so here we fallback to drawing the
+     * texture and reading the pixels from the framebuffer. */
+    _cogl_texture_draw_and_read (tex, &target_bmp,
+                                 closest_gl_format,
+                                 closest_gl_type);
+
+  /* Was intermediate used? */
+  if (closest_format != format)
+    {
+      /* Convert to requested format */
+      success = _cogl_bitmap_convert_format_and_premult (&target_bmp,
+                                                         &new_bmp,
+                                                         format);
+
+      /* Free intermediate data and return if failed */
+      g_free (target_bmp.data);
+      if (!success)
+        return 0;
+
+      /* Copy to user buffer */
+      for (y = 0; y < new_bmp.height; ++y)
+        {
+          src = new_bmp.data + y * new_bmp.rowstride;
+          dst = data + y * rowstride;
+          memcpy (dst, src, new_bmp.width);
+        }
+
+      /* Free converted data */
+      g_free (new_bmp.data);
+    }
+
+  return byte_size;
+}

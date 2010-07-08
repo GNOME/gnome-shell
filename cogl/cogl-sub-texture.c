@@ -448,7 +448,7 @@ _cogl_sub_texture_copy_region (guint8 *dst,
     }
 }
 
-static int
+static gboolean
 _cogl_sub_texture_get_data (CoglTexture     *tex,
                             CoglPixelFormat  format,
                             unsigned int     rowstride,
@@ -457,7 +457,7 @@ _cogl_sub_texture_get_data (CoglTexture     *tex,
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
   unsigned int full_rowstride;
   guint8 *full_data;
-  int byte_size, full_size;
+  gboolean ret = TRUE;
   int bpp;
   int full_tex_width, full_tex_height;
 
@@ -466,30 +466,16 @@ _cogl_sub_texture_get_data (CoglTexture     *tex,
      texture_get_sub_data virtual and it can just munge the texture
      coordinates */
 
-  /* Default to internal format if none specified */
-  if (format == COGL_PIXEL_FORMAT_ANY)
-    format = cogl_texture_get_format (sub_tex->full_texture);
-
   full_tex_width = cogl_texture_get_width (sub_tex->full_texture);
   full_tex_height = cogl_texture_get_height (sub_tex->full_texture);
 
-  /* Rowstride from texture width if none specified */
   bpp = _cogl_get_format_bpp (format);
-  if (rowstride == 0)
-    rowstride = sub_tex->sub_width * bpp;
-
-  /* Return byte size if only that requested */
-  byte_size = sub_tex->sub_height * rowstride;
-  if (data == NULL)
-    return byte_size;
 
   full_rowstride = _cogl_get_format_bpp (format) * full_tex_width;
   full_data = g_malloc (full_rowstride * full_tex_height);
 
-  full_size = cogl_texture_get_data (sub_tex->full_texture, format,
-                                     full_rowstride, full_data);
-
-  if (full_size)
+  if (cogl_texture_get_data (sub_tex->full_texture, format,
+                             full_rowstride, full_data))
     _cogl_sub_texture_copy_region (data, full_data,
                                    0, 0,
                                    sub_tex->sub_x,
@@ -500,11 +486,11 @@ _cogl_sub_texture_get_data (CoglTexture     *tex,
                                    full_rowstride,
                                    bpp);
   else
-    byte_size = 0;
+    ret = FALSE;
 
   g_free (full_data);
 
-  return byte_size;
+  return ret;
 }
 
 static CoglPixelFormat

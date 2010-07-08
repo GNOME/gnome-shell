@@ -81,10 +81,15 @@ struct _CoglTextureVtable
                            unsigned int    rowstride,
                            const guint8   *data);
 
-  int (* get_data) (CoglTexture     *tex,
-                    CoglPixelFormat  format,
-                    unsigned int     rowstride,
-                    guint8          *data);
+  /* This should copy the image data of the texture into @data. The
+     requested format will have been first passed through
+     _cogl_texture_driver_find_best_gl_get_data_format so it should
+     always be a format that is valid for GL (ie, no conversion should
+     be necessary). */
+  gboolean (* get_data) (CoglTexture     *tex,
+                         CoglPixelFormat  format,
+                         unsigned int     rowstride,
+                         guint8          *data);
 
   void (* foreach_sub_texture_in_region) (CoglTexture *tex,
                                           float virtual_tx_1,
