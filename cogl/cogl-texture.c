@@ -1060,6 +1060,10 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                                    "RGBA = REPLACE (TEXTURE)",
                                    NULL);
 
+  cogl_material_set_layer_filters (ctx->texture_download_material, 0,
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   COGL_MATERIAL_FILTER_NEAREST);
+
   do_texture_draw_and_read (handle, target_bmp, viewport);
 
   /* Check whether texture has alpha and framebuffer not */
