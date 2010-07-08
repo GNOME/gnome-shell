@@ -97,6 +97,7 @@ static void _cogl_material_add_layer_difference (CoglMaterial *material,
                                                  gboolean inc_n_layers);
 static void handle_automatic_blend_enable (CoglMaterial *material,
                                            CoglMaterialState changes);
+static void recursively_free_layer_caches (CoglMaterial *material);
 
 static const CoglMaterialBackend *backends[COGL_MATERIAL_N_BACKENDS];
 
@@ -294,6 +295,78 @@ _cogl_material_error_quark (void)
   return g_quark_from_static_string ("cogl-material-error-quark");
 }
 
+static void
+_cogl_material_node_init (CoglMaterialNode *node)
+{
+  node->parent = NULL;
+  node->has_children = FALSE;
+}
+
+static void
+_cogl_material_node_set_parent_real (CoglMaterialNode *node,
+                                     CoglMaterialNode *parent,
+                                     CoglMaterialNodeUnparentVFunc unparent)
+{
+  /* NB: the old parent may indirectly be keeping the new parent alive so we
+   * have to ref the new parent before unrefing the old */
+  cogl_object_ref (parent);
+
+  if (node->parent)
+    unparent (node);
+
+  if (G_UNLIKELY (parent->has_children))
+    parent->children = g_list_prepend (parent->children, node);
+  else
+    {
+      parent->has_children = TRUE;
+      parent->first_child = node;
+      parent->children = NULL;
+    }
+
+  node->parent = parent;
+}
+
+static void
+_cogl_material_node_unparent_real (CoglMaterialNode *node)
+{
+  CoglMaterialNode *parent = node->parent;
+
+  if (parent == NULL)
+    return;
+
+  g_return_if_fail (parent->has_children);
+
+  if (parent->first_child == node)
+    {
+      if (parent->children)
+        {
+          parent->first_child = parent->children->data;
+          parent->children =
+            g_list_delete_link (parent->children, parent->children);
+        }
+      else
+        parent->has_children = FALSE;
+    }
+  else
+    parent->children = g_list_remove (parent->children, node);
+
+  cogl_object_unref (parent);
+
+  node->parent = NULL;
+}
+
+void
+_cogl_material_node_foreach_child (CoglMaterialNode *node,
+                                   CoglMaterialNodeChildCallback callback,
+                                   void *user_data)
+{
+  if (node->has_children)
+    {
+      callback (node->first_child, user_data);
+      g_list_foreach (node->children, (GFunc)callback, user_data);
+    }
+}
+
 /*
  * This initializes the first material owned by the Cogl context. All
  * subsequently instantiated materials created via the cogl_material_new()
@@ -325,9 +398,10 @@ _cogl_material_init_default_material (void)
   backends[COGL_MATERIAL_BACKEND_FIXED] = &_cogl_material_fixed_backend;
 #endif
 
+  _cogl_material_node_init (COGL_MATERIAL_NODE (material));
+
   material->is_weak = FALSE;
   material->journal_ref_count = 0;
-  material->parent = NULL;
   material->backend = COGL_MATERIAL_BACKEND_UNDEFINED;
   material->differences = COGL_MATERIAL_STATE_ALL_SPARSE;
 
@@ -400,32 +474,18 @@ _cogl_material_init_default_material (void)
 }
 
 static void
-_cogl_material_unparent (CoglMaterial *material)
+_cogl_material_unparent (CoglMaterialNode *material)
 {
-  CoglMaterial *parent = material->parent;
+  /* Chain up */
+  _cogl_material_node_unparent_real (material);
+}
 
-  if (parent == NULL)
-    return;
-
-  g_return_if_fail (parent->has_children);
-
-  if (parent->first_child == material)
-    {
-      if (parent->children)
-        {
-          parent->first_child = parent->children->data;
-          parent->children =
-            g_list_delete_link (parent->children, parent->children);
-        }
-      else
-        parent->has_children = FALSE;
-    }
-  else
-    parent->children = g_list_remove (parent->children, material);
-
-  cogl_object_unref (parent);
-
-  material->parent = NULL;
+static gboolean
+recursively_free_layer_caches_cb (CoglMaterialNode *node,
+                                  void *user_data)
+{
+  recursively_free_layer_caches (COGL_MATERIAL (node));
+  return TRUE;
 }
 
 /* This recursively frees the layers_cache of a material and all of
@@ -437,8 +497,6 @@ _cogl_material_unparent (CoglMaterial *material)
 static void
 recursively_free_layer_caches (CoglMaterial *material)
 {
-  GList *l;
-
   /* Note: we maintain the invariable that if a material already has a
    * dirty layers_cache then so do all of its descendants. */
   if (material->layers_cache_dirty)
@@ -449,33 +507,18 @@ recursively_free_layer_caches (CoglMaterial *material)
                    material->layers_cache);
   material->layers_cache_dirty = TRUE;
 
-  if (material->has_children)
-    {
-      recursively_free_layer_caches (material->first_child);
-      for (l = material->children; l; l = l->next)
-        recursively_free_layer_caches (l->data);
-    }
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     recursively_free_layer_caches_cb,
+                                     NULL);
 }
 
 static void
 _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
 {
-  cogl_object_ref (parent);
-
-  if (material->parent)
-    _cogl_material_unparent (material);
-
-  material->parent = parent;
-  if (G_UNLIKELY (parent->has_children))
-    parent->children = g_list_prepend (parent->children, material);
-  else
-    {
-      parent->has_children = TRUE;
-      parent->first_child = material;
-      parent->children = NULL;
-    }
-
-  material->parent = parent;
+  /* Chain up */
+  _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (material),
+                                       COGL_MATERIAL_NODE (parent),
+                                       _cogl_material_unparent);
 
   /* Since we just changed the ancestry of the material its cache of
    * layers could now be invalid so free it... */
@@ -483,7 +526,7 @@ _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
     recursively_free_layer_caches (material);
 
   /* If the fragment processing backend is also caching state along
-   * with the material that depends on the materials ancestry then it
+   * with the material that depends on the material's ancestry then it
    * may be notified here...
    */
   if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
@@ -498,15 +541,11 @@ cogl_material_copy (CoglMaterial *src)
 {
   CoglMaterial *material = g_slice_new (CoglMaterial);
 
-  material->_parent = src->_parent;
+  _cogl_material_node_init (COGL_MATERIAL_NODE (material));
 
   material->is_weak = FALSE;
 
   material->journal_ref_count = 0;
-
-  material->parent = NULL;
-
-  material->has_children = FALSE;
 
   material->differences = 0;
 
@@ -582,7 +621,7 @@ _cogl_material_free (CoglMaterial *material)
 {
   _cogl_material_backend_free_priv (material);
 
-  _cogl_material_unparent (material);
+  _cogl_material_unparent (COGL_MATERIAL_NODE (material));
 
   if (material->differences & COGL_MATERIAL_STATE_USER_SHADER &&
       material->big_state->user_program)
@@ -609,14 +648,31 @@ _cogl_material_get_real_blend_enabled (CoglMaterial *material)
   return material->real_blend_enable;
 }
 
+inline CoglMaterial *
+_cogl_material_get_parent (CoglMaterial *material)
+{
+  CoglMaterialNode *parent_node = COGL_MATERIAL_NODE (material)->parent;
+  return COGL_MATERIAL (parent_node);
+}
+
 CoglMaterial *
 _cogl_material_get_authority (CoglMaterial *material,
                               unsigned long difference)
 {
   CoglMaterial *authority = material;
   while (!(authority->differences & difference))
-    authority = authority->parent;
+    authority = _cogl_material_get_parent (authority);
   return authority;
+}
+
+/* XXX: Think twice before making this non static since it is used
+ * heavily and we expect the compiler to inline it...
+ */
+static CoglMaterialLayer *
+_cogl_material_layer_get_parent (CoglMaterialLayer *layer)
+{
+  CoglMaterialNode *parent_node = COGL_MATERIAL_NODE (layer)->parent;
+  return COGL_MATERIAL_LAYER (parent_node);
 }
 
 CoglMaterialLayer *
@@ -625,7 +681,7 @@ _cogl_material_layer_get_authority (CoglMaterialLayer *layer,
 {
   CoglMaterialLayer *authority = layer;
   while (!(authority->differences & difference))
-    authority = authority->parent;
+    authority = _cogl_material_layer_get_parent (authority);
   return authority;
 }
 
@@ -689,7 +745,9 @@ _cogl_material_update_layers_cache (CoglMaterial *material)
    */
 
   layers_found = 0;
-  for (current = material; current->parent; current = current->parent)
+  for (current = material;
+       _cogl_material_get_parent (current);
+       current = _cogl_material_get_parent (current))
     {
       GList *l;
 
@@ -1058,21 +1116,10 @@ _cogl_material_initialize_state (CoglMaterial *dest,
     }
 }
 
-void
-_cogl_material_foreach_child (CoglMaterial *material,
-                              CoglMaterialChildCallback callback,
-                              void *user_data)
-{
-  if (material->has_children)
-    {
-      callback (material->first_child, user_data);
-      g_list_foreach (material->children, (GFunc)callback, user_data);
-    }
-}
-
 static gboolean
-check_if_strong_cb (CoglMaterial *material, void *user_data)
+check_if_strong_cb (CoglMaterialNode *node, void *user_data)
 {
+  CoglMaterial *material = COGL_MATERIAL (node);
   gboolean *has_strong_child = user_data;
 
   if (!material->is_weak)
@@ -1087,16 +1134,17 @@ static gboolean
 has_strong_children (CoglMaterial *material)
 {
   gboolean has_strong_child = FALSE;
-  _cogl_material_foreach_child (material,
-                                check_if_strong_cb,
-                                &has_strong_child);
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     check_if_strong_cb,
+                                     &has_strong_child);
   return has_strong_child;
 }
 
 static gboolean
-reparent_strong_children_cb (CoglMaterial *material,
+reparent_strong_children_cb (CoglMaterialNode *node,
                              void *user_data)
 {
+  CoglMaterial *material = COGL_MATERIAL (node);
   CoglMaterial *parent = user_data;
 
   if (material->is_weak)
@@ -1175,6 +1223,7 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
   if (has_strong_children (material))
     {
       CoglMaterial *new_authority;
+
       COGL_STATIC_COUNTER (material_copy_on_write_counter,
                            "material copy on write counter",
                            "Increments each time a material "
@@ -1183,7 +1232,8 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
 
       COGL_COUNTER_INC (_cogl_uprof_context, material_copy_on_write_counter);
 
-      new_authority = cogl_material_copy (material->parent);
+      new_authority =
+        cogl_material_copy (_cogl_material_get_parent (material));
       _cogl_material_set_static_breadcrumb (new_authority,
                                             "pre_change_notify:copy-on-write");
 
@@ -1204,12 +1254,9 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
 
       /* Reparent the strong children of material to be children of
        * new_authority instead... */
-      new_authority->has_children = FALSE;
-      new_authority->first_child = NULL;
-      new_authority->children = NULL;
-      _cogl_material_foreach_child (material,
-                                    reparent_strong_children_cb,
-                                    new_authority);
+      _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                         reparent_strong_children_cb,
+                                         new_authority);
 
       /* The children will keep the new authority alive so drop the
        * reference we got when copying... */
@@ -1311,7 +1358,8 @@ static void
 _cogl_material_try_reverting_layers_authority (CoglMaterial *authority,
                                                CoglMaterial *old_authority)
 {
-  if (authority->layer_differences == NULL && authority->parent)
+  if (authority->layer_differences == NULL &&
+      _cogl_material_get_parent (authority))
     {
       /* If the previous _STATE_LAYERS authority has the same
        * ->n_layers then we can revert to that being the authority
@@ -1319,7 +1367,7 @@ _cogl_material_try_reverting_layers_authority (CoglMaterial *authority,
       if (!old_authority)
         {
           old_authority =
-            _cogl_material_get_authority (authority->parent,
+            _cogl_material_get_authority (_cogl_material_get_parent (authority),
                                           COGL_MATERIAL_STATE_LAYERS);
         }
 
@@ -1466,21 +1514,6 @@ _cogl_get_n_args_for_combine_func (GLint func)
   return 0;
 }
 
-typedef gboolean (*CoglMaterialLayerChildCallback) (CoglMaterialLayer *child,
-                                                    void *user_data);
-
-void
-_cogl_material_layer_foreach_child (CoglMaterialLayer *layer,
-                                    CoglMaterialLayerChildCallback callback,
-                                    void *user_data)
-{
-  if (layer->has_children)
-    {
-      callback (layer->first_child, user_data);
-      g_list_foreach (layer->children, (GFunc)callback, user_data);
-    }
-}
-
 static void
 _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
                                        CoglMaterialLayer *src,
@@ -1579,7 +1612,8 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
 
   /* Identify the case where the layer is new with no owner or
    * dependants and so we don't need to do anything. */
-  if (layer->has_children == FALSE && layer->owner == NULL)
+  if (COGL_MATERIAL_NODE (layer)->has_children == FALSE &&
+      layer->owner == NULL)
     goto init_layer_state;
 
   /* We only allow a NULL required_owner for new layers */
@@ -1588,7 +1622,8 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
   /* Unlike materials; layers are simply considered immutable once
    * they have dependants - either children or another material owner.
    */
-  if (layer->has_children || layer->owner != required_owner)
+  if (COGL_MATERIAL_NODE (layer)->has_children ||
+      layer->owner != required_owner)
     {
       CoglMaterialLayer *new = _cogl_material_layer_copy (layer);
       _cogl_material_add_layer_difference (required_owner, new, FALSE);
@@ -1629,30 +1664,39 @@ init_layer_state:
   return layer;
 }
 
+static void
+_cogl_material_layer_unparent (CoglMaterialNode *layer)
+{
+  /* Chain up */
+  _cogl_material_node_unparent_real (layer);
+}
+
+static void
+_cogl_material_layer_set_parent (CoglMaterialLayer *layer,
+                                 CoglMaterialLayer *parent)
+{
+  /* Chain up */
+  _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (layer),
+                                       COGL_MATERIAL_NODE (parent),
+                                       _cogl_material_layer_unparent);
+}
+
 /* XXX: This is duplicated logic; the same as for
  * _cogl_material_prune_redundant_ancestry it would be nice to find a
  * way to consolidate these functions! */
 static void
 _cogl_material_layer_prune_redundant_ancestry (CoglMaterialLayer *layer)
 {
-  CoglMaterialLayer *new_parent = layer->parent;
+  CoglMaterialLayer *new_parent = _cogl_material_layer_get_parent (layer);
 
   /* walk up past ancestors that are now redundant and potentially
    * reparent the layer. */
-  while (new_parent->parent &&
+  while (_cogl_material_layer_get_parent (new_parent) &&
          (new_parent->differences | layer->differences) ==
-          layer->differences)
-    new_parent = new_parent->parent;
+         layer->differences)
+    new_parent = _cogl_material_layer_get_parent (new_parent);
 
-  if (new_parent != layer->parent)
-    {
-      CoglMaterialLayer *old_parent = layer->parent;
-      layer->parent = cogl_object_ref (new_parent);
-      /* Note: the old parent may indirectly be keeping
-         the new parent alive so we have to ref the new
-         parent before unrefing the old */
-      cogl_object_unref (old_parent);
-    }
+  _cogl_material_layer_set_parent (layer, new_parent);
 }
 
 /*
@@ -1691,10 +1735,13 @@ _cogl_material_set_layer_unit (CoglMaterial *required_owner,
       /* If the layer we found is currently the authority on the state
        * we are changing see if we can revert to one of our ancestors
        * being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, change);
+            _cogl_material_layer_get_authority (parent, change);
 
           if (old_authority->unit_index == unit_index)
             {
@@ -1909,7 +1956,7 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
   /* Find the GList link that references the empty layer */
   GList *link = g_list_find (layers_authority->layer_differences, layer);
   /* No material directly owns the root node layer so this is safe... */
-  CoglMaterialLayer *layer_parent = layer->parent;
+  CoglMaterialLayer *layer_parent = _cogl_material_layer_get_parent (layer);
   CoglMaterialLayerInfo layer_info;
   CoglMaterial *old_layers_authority;
 
@@ -1922,7 +1969,7 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
   if (layer_parent->index == layer->index && layer_parent->owner == NULL)
     {
       cogl_object_ref (layer_parent);
-      link->data = layer->parent;
+      link->data = _cogl_material_layer_get_parent (layer);
       cogl_object_unref (layer);
       recursively_free_layer_caches (layers_authority);
       return;
@@ -1951,10 +1998,12 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
    * list of layers with indices > layer_index... */
   layer_info.ignore_shift_layers_if_found = TRUE;
 
-  /* We know the default/root material isn't a LAYERS authority so
-   * it's safe to dereference layers_authority->parent. */
+  /* We know the default/root material isn't a LAYERS authority so it's
+   * safe to use the result of _cogl_material_get_parent (layers_authority)
+   * without checking it.
+   */
   old_layers_authority =
-    _cogl_material_get_authority (layers_authority->parent,
+    _cogl_material_get_authority (_cogl_material_get_parent (layers_authority),
                                   COGL_MATERIAL_STATE_LAYERS);
 
   _cogl_material_get_layer_info (old_layers_authority, &layer_info);
@@ -1964,9 +2013,10 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
   if (!layer_info.layer)
     return;
 
-  /* If the layer that would become the authority for layer->index
-   * is layer->parent then we can simply remove the layer difference. */
-  if (layer_info.layer == layer->parent)
+  /* If the layer that would become the authority for layer->index is
+   * _cogl_material_layer_get_parent (layer) then we can simply remove the
+   * layer difference. */
+  if (layer_info.layer == _cogl_material_layer_get_parent (layer))
     {
       _cogl_material_remove_layer_difference (layers_authority, layer, FALSE);
       _cogl_material_try_reverting_layers_authority (layers_authority,
@@ -2014,10 +2064,13 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, change);
+            _cogl_material_layer_get_authority (parent, change);
 
           if (old_authority->texture_overridden == overriden &&
               old_authority->texture == texture &&
@@ -2183,10 +2236,13 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, change);
+            _cogl_material_layer_get_authority (parent, change);
 
           if (old_authority->wrap_mode_s == wrap_mode_s &&
               old_authority->wrap_mode_t == wrap_mode_t &&
@@ -2534,10 +2590,13 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, change);
+            _cogl_material_layer_get_authority (parent, change);
 
           if (old_authority->big_state->point_sprite_coords == enable)
             {
@@ -2787,9 +2846,9 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
 
   g_array_set_size (ctx->material0_nodes, 0);
   g_array_set_size (ctx->material1_nodes, 0);
-  for (node0 = layer0; node0; node0 = node0->parent)
+  for (node0 = layer0; node0; node0 = _cogl_material_layer_get_parent (node0))
     g_array_append_vals (ctx->material0_nodes, &node0, 1);
-  for (node1 = layer1; node1; node1 = node1->parent)
+  for (node1 = layer1; node1; node1 = _cogl_material_layer_get_parent (node1))
     g_array_append_vals (ctx->material1_nodes, &node1, 1);
 
   len0 = ctx->material0_nodes->len;
@@ -2807,7 +2866,7 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
                              CoglMaterialLayer *, len1_index--);
       if (node0 != node1)
         {
-          common_ancestor = node0->parent;
+          common_ancestor = _cogl_material_layer_get_parent (node0);
           break;
         }
     }
@@ -3185,9 +3244,9 @@ _cogl_material_compare_differences (CoglMaterial *material0,
 
   g_array_set_size (ctx->material0_nodes, 0);
   g_array_set_size (ctx->material1_nodes, 0);
-  for (node0 = material0; node0; node0 = node0->parent)
+  for (node0 = material0; node0; node0 = _cogl_material_get_parent (node0))
     g_array_append_vals (ctx->material0_nodes, &node0, 1);
-  for (node1 = material1; node1; node1 = node1->parent)
+  for (node1 = material1; node1; node1 = _cogl_material_get_parent (node1))
     g_array_append_vals (ctx->material1_nodes, &node1, 1);
 
   len0 = ctx->material0_nodes->len;
@@ -3205,7 +3264,7 @@ _cogl_material_compare_differences (CoglMaterial *material0,
                              CoglMaterial *, len1_index--);
       if (node0 != node1)
         {
-          common_ancestor = node0->parent;
+          common_ancestor = _cogl_material_get_parent (node0);
           break;
         }
     }
@@ -3396,24 +3455,16 @@ _cogl_material_get_colorubv (CoglMaterial *material,
 static void
 _cogl_material_prune_redundant_ancestry (CoglMaterial *material)
 {
-  CoglMaterial *new_parent = material->parent;
+  CoglMaterial *new_parent = _cogl_material_get_parent (material);
 
   /* walk up past ancestors that are now redundant and potentially
    * reparent the material. */
-  while (new_parent->parent &&
+  while (_cogl_material_get_parent (new_parent) &&
          (new_parent->differences | material->differences) ==
           material->differences)
-    new_parent = new_parent->parent;
+    new_parent = _cogl_material_get_parent (new_parent);
 
-  if (new_parent != material->parent)
-    {
-      CoglMaterial *old_parent = material->parent;
-      material->parent = cogl_object_ref (new_parent);
-      /* Note: the old parent may indirectly be keeping
-         the new parent alive so we have to ref the new
-         parent before unrefing the old */
-      cogl_object_unref (old_parent);
-    }
+  _cogl_material_set_parent (material, new_parent);
 }
 
 static void
@@ -3424,10 +3475,12 @@ _cogl_material_update_authority (CoglMaterial *material,
 {
   /* If we are the current authority see if we can revert to one of
    * our ancestors being the authority */
-  if (material == authority && authority->parent != NULL)
+  if (material == authority &&
+      _cogl_material_get_parent (authority) != NULL)
     {
+      CoglMaterial *parent = _cogl_material_get_parent (authority);
       CoglMaterial *old_authority =
-        _cogl_material_get_authority (authority->parent, state);
+        _cogl_material_get_authority (parent, state);
 
       if (comparitor (authority, old_authority))
         material->differences &= ~state;
@@ -3659,12 +3712,12 @@ void
 cogl_material_get_specular (CoglMaterial *material,
                             CoglColor    *specular)
 {
-  CoglMaterial *authority = material;
+  CoglMaterial *authority;
 
   g_return_if_fail (cogl_is_material (material));
 
-  while (!(authority->differences & COGL_MATERIAL_STATE_LIGHTING))
-    authority = authority->parent;
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
 
   cogl_color_init_from_4fv (specular,
                             authority->big_state->lighting_state.specular);
@@ -4001,10 +4054,12 @@ cogl_material_set_blend (CoglMaterial *material,
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
-  if (material == authority && authority->parent != NULL)
+  if (material == authority &&
+      _cogl_material_get_parent (authority) != NULL)
     {
+      CoglMaterial *parent = _cogl_material_get_parent (authority);
       CoglMaterial *old_authority =
-        _cogl_material_get_authority (authority->parent, state);
+        _cogl_material_get_authority (parent, state);
 
       if (_cogl_material_blend_state_equal (authority, old_authority))
         material->differences &= ~state;
@@ -4091,10 +4146,12 @@ _cogl_material_set_user_program (CoglMaterial *material,
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
-  if (material == authority && authority->parent != NULL)
+  if (material == authority &&
+      _cogl_material_get_parent (authority) != NULL)
     {
+      CoglMaterial *parent = _cogl_material_get_parent (authority);
       CoglMaterial *old_authority =
-        _cogl_material_get_authority (authority->parent, state);
+        _cogl_material_get_authority (parent, state);
 
       if (old_authority->big_state->user_program == program)
         material->differences &= ~state;
@@ -4354,22 +4411,9 @@ _cogl_material_layer_copy (CoglMaterialLayer *src)
   CoglMaterialLayer *layer = g_slice_new (CoglMaterialLayer);
   int i;
 
-  cogl_object_ref (src);
+  _cogl_material_node_init (COGL_MATERIAL_NODE (layer));
 
-  layer->_parent = src->_parent;
   layer->owner = NULL;
-  layer->parent = src;
-
-  if (src->has_children)
-    src->children = g_list_prepend (src->children, layer);
-  else
-    {
-      src->has_children = TRUE;
-      src->first_child = layer;
-      src->children = NULL;
-    }
-
-  layer->has_children = FALSE;
   layer->index = src->index;
   layer->differences = 0;
   layer->has_big_state = FALSE;
@@ -4377,34 +4421,9 @@ _cogl_material_layer_copy (CoglMaterialLayer *src)
   for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
     layer->backend_priv[i] = NULL;
 
+  _cogl_material_layer_set_parent (layer, src);
+
   return _cogl_material_layer_object_new (layer);
-}
-
-static void
-_cogl_material_layer_unparent (CoglMaterialLayer *layer)
-{
-  CoglMaterialLayer *parent = layer->parent;
-
-  if (parent == NULL)
-    return;
-
-  g_return_if_fail (parent->has_children);
-
-  if (parent->first_child == layer)
-    {
-      if (parent->children)
-        {
-          parent->first_child = parent->children->data;
-          parent->children =
-            g_list_delete_link (parent->children, parent->children);
-        }
-      else
-        parent->has_children = FALSE;
-    }
-  else
-    parent->children = g_list_remove (parent->children, layer);
-
-  cogl_object_unref (parent);
 }
 
 static void
@@ -4412,7 +4431,7 @@ _cogl_material_layer_free (CoglMaterialLayer *layer)
 {
   int i;
 
-  _cogl_material_layer_unparent (layer);
+  _cogl_material_layer_unparent (COGL_MATERIAL_NODE (layer));
 
   /* NB: layers may be used by multiple materials which may be using
    * different backends, therefore we determine which backends to
@@ -4472,7 +4491,8 @@ _cogl_material_init_default_layers (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  layer->has_children = FALSE;
+  _cogl_material_node_init (COGL_MATERIAL_NODE (layer));
+
   layer->index = 0;
 
   for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
@@ -4705,10 +4725,12 @@ cogl_material_set_layer_combine (CoglMaterial *material,
   /* If the original layer we found is currently the authority on
    * the state we are changing see if we can revert to one of our
    * ancestors being the authority. */
-  if (layer == authority && authority->parent != NULL)
+  if (layer == authority &&
+      _cogl_material_layer_get_parent (authority) != NULL)
     {
+      CoglMaterialLayer *parent = _cogl_material_layer_get_parent (authority);
       CoglMaterialLayer *old_authority =
-        _cogl_material_layer_get_authority (authority->parent, state);
+        _cogl_material_layer_get_authority (parent, state);
 
       if (_cogl_material_layer_combine_state_equal (authority,
                                                     old_authority))
@@ -4775,10 +4797,13 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, state);
+            _cogl_material_layer_get_authority (parent, state);
           CoglMaterialLayerBigState *old_big_state = old_authority->big_state;
 
           if (memcmp (old_big_state->texture_combine_constant,
@@ -4854,10 +4879,13 @@ cogl_material_set_layer_matrix (CoglMaterial *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, state);
+            _cogl_material_layer_get_authority (parent, state);
 
           if (cogl_matrix_equal (matrix, &old_authority->big_state->matrix))
             {
@@ -5017,7 +5045,7 @@ _cogl_material_layer_has_user_matrix (CoglMaterialLayer *layer)
                                         COGL_MATERIAL_LAYER_STATE_USER_MATRIX);
 
   /* If the authority is the default material then no, otherwise yes */
-  return authority->parent ? TRUE : FALSE;
+  return _cogl_material_layer_get_parent (authority) ? TRUE : FALSE;
 }
 
 static void
@@ -5094,7 +5122,7 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
                                  CoglMaterialFilter min_filter,
                                  CoglMaterialFilter mag_filter)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_FILTERS;
+  CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_FILTERS;
   CoglMaterialLayer     *layer;
   CoglMaterialLayer     *authority;
   CoglMaterialLayer     *new;
@@ -5111,13 +5139,13 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_material_layer_get_authority (layer, state);
 
   if (authority->min_filter == min_filter &&
       authority->mag_filter == mag_filter)
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, change);
+  new = _cogl_material_layer_pre_change_notify (material, layer, state);
   if (new != layer)
     layer = new;
   else
@@ -5125,15 +5153,18 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
       /* If the original layer we found is currently the authority on
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
-      if (layer == authority && authority->parent != NULL)
+      if (layer == authority &&
+          _cogl_material_layer_get_parent (authority) != NULL)
         {
+          CoglMaterialLayer *parent =
+            _cogl_material_layer_get_parent (authority);
           CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (authority->parent, change);
+            _cogl_material_layer_get_authority (parent, state);
 
           if (old_authority->min_filter == min_filter &&
               old_authority->mag_filter == mag_filter)
             {
-              layer->differences &= ~change;
+              layer->differences &= ~state;
 
               g_assert (layer->owner == material);
               if (layer->differences == 0)
@@ -5153,7 +5184,7 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
    * ourselves if that's true... */
   if (layer != authority)
     {
-      layer->differences |= change;
+      layer->differences |= state;
       _cogl_material_layer_prune_redundant_ancestry (layer);
     }
 }
@@ -6235,8 +6266,9 @@ typedef struct
 } PrintDebugState;
 
 static gboolean
-dump_layer_cb (CoglMaterialLayer *layer, void *user_data)
+dump_layer_cb (CoglMaterialNode *node, void *user_data)
 {
+  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (node);
   PrintDebugState *state = user_data;
   int layer_id = *state->node_id_ptr;
   PrintDebugState state_out;
@@ -6291,9 +6323,9 @@ dump_layer_cb (CoglMaterialLayer *layer, void *user_data)
   state_out.graph = state->graph;
   state_out.indent = state->indent + 2;
 
-  _cogl_material_layer_foreach_child (layer,
-                                      dump_layer_cb,
-                                      &state_out);
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (layer),
+                                     dump_layer_cb,
+                                     &state_out);
 
   return TRUE;
 }
@@ -6320,8 +6352,9 @@ dump_layer_ref_cb (CoglMaterialLayer *layer, void *data)
 }
 
 static gboolean
-dump_material_cb (CoglMaterial *material, void *user_data)
+dump_material_cb (CoglMaterialNode *node, void *user_data)
 {
+  CoglMaterial *material = COGL_MATERIAL (node);
   PrintDebugState *state = user_data;
   int material_id = *state->node_id_ptr;
   PrintDebugState state_out;
@@ -6417,9 +6450,9 @@ dump_material_cb (CoglMaterial *material, void *user_data)
   state_out.graph = state->graph;
   state_out.indent = state->indent + 2;
 
-  _cogl_material_foreach_child (material,
-                                dump_material_cb,
-                                &state_out);
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     dump_material_cb,
+                                     &state_out);
 
   return TRUE;
 }
