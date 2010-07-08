@@ -970,13 +970,12 @@ do_texture_draw_and_read (CoglHandle   handle,
           rect_bmp.data = g_malloc (rect_bmp.rowstride *
                                     rect_bmp.height);
 
-          _cogl_texture_driver_prep_gl_for_pixels_download (rect_bmp.rowstride,
-                                                            bpp);
-          GE( glReadPixels (viewport[0], viewport[1],
+          cogl_read_pixels (viewport[0], viewport[1],
                             rect_bmp.width,
                             rect_bmp.height,
-                            GL_RGBA, GL_UNSIGNED_BYTE,
-                            rect_bmp.data) );
+                            COGL_READ_PIXELS_COLOR_BUFFER,
+                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                            rect_bmp.data);
 
           /* Copy to target bitmap */
           _cogl_bitmap_copy_subregion (&rect_bmp,
@@ -1023,8 +1022,8 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
       viewport[2] <= 0 || viewport[3] <= 0)
     return FALSE;
 
-  /* Setup orthographic projection into current viewport (0,0 in bottom-left
-   * corner to draw the texture upside-down so we match the way glReadPixels
+  /* Setup orthographic projection into current viewport (0,0 in top-left
+   * corner to draw the texture upside-down so we match the way cogl_read_pixels
    * works)
    */
 
@@ -1033,7 +1032,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   _cogl_matrix_stack_load_identity (projection_stack);
   _cogl_matrix_stack_ortho (projection_stack,
                             0, (float)(viewport[2]),
-                            0, (float)(viewport[3]),
+                            (float)(viewport[3]), 0,
                             (float)(0),
                             (float)(100));
 
