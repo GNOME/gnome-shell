@@ -227,6 +227,48 @@ typedef struct
 
 } CoglMaterialLayerBigState;
 
+/* Materials and layers represent their state in a tree structure where
+ * some of the state relating to a given material or layer may actually
+ * be owned by one if is ancestors in the tree. We have a common data
+ * type to track the tree heirachy so we can share code... */
+typedef struct _CoglMaterialNode CoglMaterialNode;
+struct _CoglMaterialNode
+{
+  /* the parent in terms of class hierarchy, so anything inheriting
+   * from CoglMaterialNode also inherits from CoglObject. */
+  CoglObject _parent;
+
+  /* The parent material/layer */
+  CoglMaterialNode *parent;
+
+  /* As an optimization for creating leaf node materials/layers (the
+   * most common) we don't require any list node allocations to link
+   * to a single descendant. */
+  CoglMaterialNode *first_child;
+
+  /* Determines if node->first_child and node->children are
+   * initialized pointers. */
+  gboolean has_children;
+
+  /* Materials and layers are sparse structures defined as a diff
+   * against their parent and may have multiple children which depend
+   * on them to define the values of properties which they don't
+   * change. */
+  GList *children;
+};
+
+#define COGL_MATERIAL_NODE(X) ((CoglMaterialNode *)(X))
+
+typedef void (*CoglMaterialNodeUnparentVFunc) (CoglMaterialNode *node);
+
+typedef gboolean (*CoglMaterialNodeChildCallback) (CoglMaterialNode *child,
+                                                   void *user_data);
+
+void
+_cogl_material_node_foreach_child (CoglMaterialNode *node,
+                                   CoglMaterialNodeChildCallback callback,
+                                   void *user_data);
+
 struct _CoglMaterialLayer
 {
   /* XXX: Please think twice about adding members that *have* be
@@ -243,29 +285,17 @@ struct _CoglMaterialLayer
    * layers or if instead it can go under ->big_state.
    */
 
-  /* the parent in terms of class hierarchy */
-  CoglObject         _parent;
+  /* Layers represent their state in a tree structure where some of
+   * the state relating to a given material or layer may actually be
+   * owned by one if is ancestors in the tree. We have a common data
+   * type to track the tree heirachy so we can share code... */
+  CoglMaterialNode _parent;
 
   /* Some layers have a material owner, which is to say that the layer
    * is referenced in that materials->layer_differences list.  A layer
    * doesn't always have an owner and may simply be an ancestor for
    * other layers that keeps track of some shared state. */
   CoglMaterial      *owner;
-
-  /* Layers are sparse structures defined as a diff against
-   * their parent... */
-  CoglMaterialLayer *parent;
-
-  /* As an optimization for creating leaf node layers (the most
-   * common) we don't require any list node allocations to link
-   * to a single descendant. */
-  CoglMaterialLayer *first_child;
-
-  /* Layers are sparse structures defined as a diff against
-   * their parent and may have multiple children which depend
-   * on them to define the values of properties which they don't
-   * change. */
-  GList             *children;
 
   /* The lowest index is blended first then others on top */
   int	             index;
@@ -315,10 +345,6 @@ struct _CoglMaterialLayer
   CoglMaterialLayerBigState *big_state;
 
   /* bitfields */
-
-  /* Determines if layer->first_child and layer->children are
-   * initialized pointers. */
-  unsigned int          has_children:1;
 
   /* Determines if layer->big_state is valid */
   unsigned int          has_big_state:1;
@@ -481,32 +507,16 @@ struct _CoglMaterial
    * materials or if instead it can go under ->big_state.
    */
 
-  /* the parent in terms of class hierarchy */
-  CoglObject       _parent;
+  /* Layers represent their state in a tree structure where some of
+   * the state relating to a given material or layer may actually be
+   * owned by one if is ancestors in the tree. We have a common data
+   * type to track the tree heirachy so we can share code... */
+  CoglMaterialNode _parent;
 
   /* We need to track if a material is referenced in the journal
    * because we can't allow modification to these materials without
    * flushing the journal first */
   unsigned long    journal_ref_count;
-
-  /* Materials are sparse structures defined as a diff against
-   * their parent. */
-  CoglMaterial    *parent;
-
-  /* As an optimization for creating leaf node materials (the most
-   * common) we don't require any list node allocations to link
-   * to a single descendant.
-   *
-   * Only valid if ->has_children bitfield is set */
-  CoglMaterial    *first_child;
-
-  /* Materials are sparse structures defined as a diff against
-   * their parent and may have multiple children which depend
-   * on them to define the values of properties which they don't
-   * change.
-   *
-   * Only valid if ->has_children bitfield is set */
-  GList           *children;
 
   /* A mask of which sparse state groups are different in this
    * material in comparison to its parent. */
@@ -597,10 +607,6 @@ struct _CoglMaterial
   /* There are many factors that can determine if we need to enable
    * blending, this holds our final decision */
   unsigned int          real_blend_enable:1;
-
-  /* Determines if material->first_child and material->children are
-   * initialized pointers. */
-  unsigned int          has_children:1;
 
   unsigned int          layers_cache_dirty:1;
   unsigned int          deprecated_get_layers_list_dirty:1;
@@ -786,6 +792,9 @@ unsigned int
 _cogl_get_n_args_for_combine_func (GLint func);
 
 
+CoglMaterial *
+_cogl_material_get_parent (CoglMaterial *material);
+
 void
 _cogl_material_get_colorubv (CoglMaterial *material,
                              guint8       *color);
@@ -849,14 +858,6 @@ _cogl_material_get_age (CoglMaterial *material);
 CoglMaterial *
 _cogl_material_get_authority (CoglMaterial *material,
                               unsigned long difference);
-
-typedef gboolean (*CoglMaterialChildCallback) (CoglMaterial *child,
-                                               void *user_data);
-
-void
-_cogl_material_foreach_child (CoglMaterial *material,
-                              CoglMaterialChildCallback callback,
-                              void *user_data);
 
 unsigned long
 _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,

@@ -172,9 +172,12 @@ find_arbfp_authority (CoglMaterial *material)
 
   /* Find the next ancestor after that, that also modifies state
    * affecting arbfp codegen... */
-  if (authority0->parent)
-    authority1 = _cogl_material_get_authority (authority0->parent,
-                                               COGL_MATERIAL_STATE_LAYERS);
+  if (_cogl_material_get_parent (authority0))
+    {
+      authority1 =
+        _cogl_material_get_authority (_cogl_material_get_parent (authority0),
+                                      COGL_MATERIAL_STATE_LAYERS);
+    }
   else
     return authority0;
 
@@ -210,12 +213,13 @@ find_arbfp_authority (CoglMaterial *material)
       /* Find the next ancestor after that, that also modifies state
        * affecting arbfp codegen... */
 
-      if (!authority1->parent)
+      if (!_cogl_material_get_parent (authority1))
         break;
 
       authority0 = authority1;
-      authority1 = _cogl_material_get_authority (authority1->parent,
-                                                 COGL_MATERIAL_STATE_LAYERS);
+      authority1 =
+        _cogl_material_get_authority (_cogl_material_get_parent (authority1),
+                                      COGL_MATERIAL_STATE_LAYERS);
       if (authority1 == authority0)
         break;
     }
@@ -967,9 +971,10 @@ _cogl_material_backend_arbfp_material_pre_change_notify (
 }
 
 static gboolean
-invalidate_arbfp_authority_cache_cb (CoglMaterial *material,
+invalidate_arbfp_authority_cache_cb (CoglMaterialNode *node,
                                      void *user_data)
 {
+  CoglMaterial *material = COGL_MATERIAL (node);
   invalidate_arbfp_authority_cache (material);
   return TRUE;
 }
@@ -982,9 +987,9 @@ _cogl_material_backend_arbfp_material_set_parent_notify (
    * any of its descendants will now be invalid. */
   invalidate_arbfp_authority_cache (material);
 
-  _cogl_material_foreach_child (material,
-                                invalidate_arbfp_authority_cache_cb,
-                                NULL);
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     invalidate_arbfp_authority_cache_cb,
+                                     NULL);
 }
 
 static void
