@@ -21,7 +21,6 @@ typedef struct _TestState
   CoglHandle texture;
   CoglHandle material;
   ClutterGeometry stage_geom;
-  guint frame;
 } TestState;
 
 static void
@@ -139,16 +138,7 @@ on_paint (ClutterActor *actor, TestState *state)
                            0, /* first */
                            3); /* count */
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
-   */
-  if (state->frame >= 2)
-    validate_result (state);
-  else
-    g_usleep (G_USEC_PER_SEC);
-
-  state->frame++;
+  validate_result (state);
 }
 
 static gboolean
@@ -177,8 +167,6 @@ test_cogl_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
     0x00, 0xff, 0x00, 0xff
   };
 
-  state.frame = 0;
-
   stage = clutter_stage_get_default ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_clr);
@@ -190,9 +178,9 @@ test_cogl_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 			  state.stage_geom.height);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
+  /* We force continuous redrawing incase someone comments out the
+   * clutter_main_quit and wants visual feedback for the test since we
+   * wont be doing anything else that will trigger redrawing. */
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);

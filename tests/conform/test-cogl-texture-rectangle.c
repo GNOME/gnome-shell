@@ -8,7 +8,6 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 typedef struct _TestState
 {
   ClutterActor *stage;
-  guint frame;
 } TestState;
 
 static CoglHandle
@@ -198,21 +197,9 @@ validate_result (TestState *state)
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  int frame_num;
-
   draw_frame (state);
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
-   */
-  /* Need to increment frame first because clutter_stage_read_pixels
-     fires a redraw */
-  frame_num = state->frame++;
-  if (frame_num == 2)
-    validate_result (state);
-  else if (frame_num < 2)
-    g_usleep (G_USEC_PER_SEC);
+  validate_result (state);
 }
 
 static gboolean
@@ -256,8 +243,6 @@ test_cogl_texture_rectangle (TestConformSimpleFixture *fixture,
   TestState state;
   guint idle_source;
   guint paint_handler;
-
-  state.frame = 0;
 
   state.stage = clutter_stage_get_default ();
 

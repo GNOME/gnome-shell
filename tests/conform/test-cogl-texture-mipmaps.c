@@ -10,7 +10,7 @@ static const ClutterColor stage_color = { 0x00, 0x00, 0x00, 0xff };
 
 typedef struct _TestState
 {
-  guint frame;
+  guint padding;
 } TestState;
 
 /* Creates a texture where the pixels are evenly divided between
@@ -50,15 +50,6 @@ on_paint (ClutterActor *actor, TestState *state)
   CoglHandle tex;
   CoglHandle material;
   guint8 pixels[8];
-
-  /* XXX:
-   * We haven't always had good luck with GL drivers implementing glReadPixels
-   * reliably and skipping the first two frames improves our chances... */
-  if (state->frame++ <= 2)
-    {
-      g_usleep (G_USEC_PER_SEC);
-      return;
-    }
 
   tex = make_texture ();
   material = cogl_material_new ();
@@ -119,8 +110,6 @@ test_cogl_texture_mipmaps (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *group;
   guint idle_source;
-
-  state.frame = 0;
 
   stage = clutter_stage_get_default ();
 

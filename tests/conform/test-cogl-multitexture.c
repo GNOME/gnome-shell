@@ -15,7 +15,7 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  guint frame;
+  guint padding;
 } TestState;
 
 static void
@@ -111,15 +111,6 @@ on_paint (ClutterActor *actor, TestState *state)
     0.5, 0.5, 1, 1 /* tex1 */
   };
 
-  /* XXX:
-   * We haven't always had good luck with GL drivers implementing glReadPixels
-   * reliably and skipping the first two frames improves our chances... */
-  if (state->frame++ <= 2)
-    {
-      g_usleep (G_USEC_PER_SEC);
-      return;
-    }
-
   tex0 = make_texture (0x00);
   tex1 = make_texture (0x11);
 
@@ -191,8 +182,6 @@ test_cogl_multitexture (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  state.frame = 0;
-
   stage = clutter_stage_get_default ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
@@ -200,9 +189,9 @@ test_cogl_multitexture (TestConformSimpleFixture *fixture,
   group = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
+  /* We force continuous redrawing incase someone comments out the
+   * clutter_main_quit and wants visual feedback for the test since we
+   * wont be doing anything else that will trigger redrawing. */
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);

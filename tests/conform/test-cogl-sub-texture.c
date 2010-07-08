@@ -312,17 +312,12 @@ on_paint (ClutterActor *actor, TestState *state)
 
   draw_frame (state);
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
-   */
-  /* Need to increment frame first because clutter_stage_read_pixels
-     fires a redraw */
+  /* XXX: validate_result calls clutter_stage_read_pixels which will result in
+   * another paint run so to avoid infinite recursion we only aim to validate
+   * the first frame. */
   frame_num = state->frame++;
-  if (frame_num == 2)
+  if (frame_num == 1)
     validate_result (state);
-  else if (frame_num < 2)
-    g_usleep (G_USEC_PER_SEC);
 }
 
 static gboolean

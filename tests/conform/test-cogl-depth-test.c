@@ -26,7 +26,6 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  guint frame;
   ClutterGeometry stage_geom;
 } TestState;
 
@@ -136,12 +135,6 @@ test_depth (TestState *state,
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
-  /* XXX:
-   * We haven't always had good luck with GL drivers implementing glReadPixels
-   * reliably and skipping the first two frames improves our chances... */
-  if (state->frame <= 2)
-    return;
-
   cogl_read_pixels (x_off, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -153,7 +146,6 @@ test_depth (TestState *state,
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  int frame_num;
   CoglMatrix projection_save;
   CoglMatrix identity;
 
@@ -294,18 +286,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_pop_matrix ();
   cogl_set_projection_matrix (&projection_save);
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds: */
-  frame_num = state->frame++;
-  if (frame_num < 2)
-    g_usleep (G_USEC_PER_SEC);
-
-  /* Comment this out if you want visual feedback for what this test paints */
-#if 1
-  if (frame_num == 3)
-    clutter_main_quit ();
-#endif
+  clutter_main_quit ();
 }
 
 static gboolean
@@ -325,8 +306,6 @@ test_cogl_depth_test (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  state.frame = 0;
-
   stage = clutter_stage_get_default ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
@@ -335,9 +314,9 @@ test_cogl_depth_test (TestConformSimpleFixture *fixture,
   group = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
+  /* We force continuous redrawing incase someone comments out the
+   * clutter_main_quit and wants visual feedback for the test since we
+   * wont be doing anything else that will trigger redrawing. */
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);

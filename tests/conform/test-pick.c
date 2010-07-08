@@ -149,7 +149,7 @@ test_pick (TestConformSimpleFixture *fixture,
 
   clutter_actor_show (state.stage);
 
-  g_timeout_add (250, (GSourceFunc) on_timeout, &state);
+  g_idle_add ((GSourceFunc) on_timeout, &state);
 
   clutter_main ();
 

@@ -19,11 +19,8 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 #define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8);
 #define MASK_ALPHA(COLOR) (COLOR & 0xff);
 
-#define SKIP_FRAMES 2
-
 typedef struct _TestState
 {
-  guint frame;
   ClutterGeometry stage_geom;
   CoglHandle passthrough_material;
 } TestState;
@@ -118,12 +115,6 @@ check_texture (TestState *state,
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
-  /* XXX:
-   * We haven't always had good luck with GL drivers implementing glReadPixels
-   * reliably and skipping the first two frames improves our chances... */
-  if (state->frame <= SKIP_FRAMES)
-    return;
-
   cogl_read_pixels (x_off, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -141,13 +132,12 @@ check_texture (TestState *state,
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  int frame_num;
   CoglHandle tex;
   guchar *tex_data;
 
   /* If the user explicitly specifies an unmultiplied internal format then
    * Cogl shouldn't automatically premultiply the given texture data... */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xff00ff80,
@@ -160,7 +150,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user explicitly requests a premultiplied internal format and
    * gives unmultiplied src data then Cogl should always premultiply that
    * for us */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xff00ff80,
@@ -174,7 +164,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * by default Cogl should premultiply the given texture data...
    * (In the future there will be additional Cogl API to control this
    *  behaviour) */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = ANY)\n");
   tex = make_texture (0xff00ff80,
@@ -187,7 +177,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user requests a premultiplied internal texture format and supplies
    * premultiplied source data, Cogl should never modify that source data...
    */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
@@ -201,7 +191,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user requests an unmultiplied internal texture format, but
    * supplies premultiplied source data, then Cogl should always
    * un-premultiply the source data... */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, internal = RGBA_8888)\n");
   tex = make_texture (0x80008080,
@@ -215,7 +205,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * source data then by default Cogl shouldn't modify the source data...
    * (In the future there will be additional Cogl API to control this
    *  behaviour) */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, internal = ANY)\n");
   tex = make_texture (0x80008080,
@@ -229,13 +219,13 @@ on_paint (ClutterActor *actor, TestState *state)
    * Test cogl_texture_set_region() ....
    */
 
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   tex_data = gen_tex_data (0xff00ff80);
   cogl_texture_set_region (tex,
@@ -253,13 +243,13 @@ on_paint (ClutterActor *actor, TestState *state)
   /* Updating a texture region for an unmultiplied texture using premultiplied
    * region data should result in Cogl unmultiplying the given region data...
    */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   tex_data = gen_tex_data (0x80008080);
   cogl_texture_set_region (tex,
@@ -275,14 +265,14 @@ on_paint (ClutterActor *actor, TestState *state)
                  0xff00ff80); /* expected */
 
 
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   tex_data = gen_tex_data (0x80008080);
   cogl_texture_set_region (tex,
@@ -301,14 +291,14 @@ on_paint (ClutterActor *actor, TestState *state)
   /* Updating a texture region for a premultiplied texture using unmultiplied
    * region data should result in Cogl premultiplying the given region data...
    */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
-  if (state->frame > SKIP_FRAMES && g_test_verbose ())
+  if (g_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   tex_data = gen_tex_data (0xff00ff80);
   cogl_texture_set_region (tex,
@@ -323,20 +313,8 @@ on_paint (ClutterActor *actor, TestState *state)
                  tex,
                  0x80008080); /* expected */
 
-
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
-   */
-  frame_num = state->frame++;
-  if (frame_num < SKIP_FRAMES)
-    g_usleep (G_USEC_PER_SEC);
-
   /* Comment this out if you want visual feedback for what this test paints */
-#if 1
-  if (frame_num > SKIP_FRAMES)
-    clutter_main_quit ();
-#endif
+  clutter_main_quit ();
 }
 
 static gboolean
@@ -356,7 +334,6 @@ test_cogl_premult (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  state.frame = 0;
   state.passthrough_material = cogl_material_new ();
   cogl_material_set_blend (state.passthrough_material,
                            "RGBA = ADD (SRC_COLOR, 0)", NULL);
@@ -371,9 +348,9 @@ test_cogl_premult (TestConformSimpleFixture *fixture,
   group = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
+  /* We force continuous redrawing incase someone comments out the
+   * clutter_main_quit and wants visual feedback for the test since we
+   * wont be doing anything else that will trigger redrawing. */
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);

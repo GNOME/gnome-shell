@@ -20,11 +20,8 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 #define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8);
 #define MASK_ALPHA(COLOR) (COLOR & 0xff);
 
-#define SKIP_FRAMES 2
-
 typedef struct _TestState
 {
-  guint frame;
   ClutterGeometry stage_geom;
 } TestState;
 
@@ -45,12 +42,6 @@ check_pixel (TestState *state, int x, int y, guint32 color)
   /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
-
-  /* XXX:
-   * We haven't always had good luck with GL drivers implementing glReadPixels
-   * reliably and skipping the first two frames improves our chances... */
-  if (state->frame <= SKIP_FRAMES)
-    return;
 
   cogl_read_pixels (x_off, y_off, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
@@ -226,8 +217,6 @@ test_invalid_texture_layers_with_constant_colors (TestState *state,
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  int frame_num;
-
   test_invalid_texture_layers (state,
                                0, 0 /* position */
                                );
@@ -238,18 +227,9 @@ on_paint (ClutterActor *actor, TestState *state)
                          2, 0 /* position */
                          );
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
-   */
-  frame_num = state->frame++;
-  if (frame_num < SKIP_FRAMES)
-    g_usleep (G_USEC_PER_SEC);
-
   /* Comment this out if you want visual feedback for what this test paints */
 #if 1
-  if (frame_num > SKIP_FRAMES)
-    clutter_main_quit ();
+  clutter_main_quit ();
 #endif
 }
 
@@ -269,8 +249,6 @@ test_cogl_materials (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *group;
   guint idle_source;
-
-  state.frame = 0;
 
   stage = clutter_stage_get_default ();
 
