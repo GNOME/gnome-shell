@@ -1461,62 +1461,25 @@ _cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
                                     int             dst_y,
                                     unsigned int    dst_width,
                                     unsigned int    dst_height,
-                                    int             width,
-                                    int             height,
-                                    CoglPixelFormat format,
-                                    unsigned int    rowstride,
-                                    const guint8   *data)
+                                    CoglBitmap     *bmp)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-  int                  bpp;
-  CoglBitmap           source_bmp;
-  CoglBitmap           tmp_bmp;
-  gboolean             tmp_bmp_owner = FALSE;
-  GLenum               closest_gl_format;
-  GLenum               closest_gl_type;
+  GLenum               gl_format;
+  GLenum               gl_type;
 
-  /* Check for valid format */
-  if (format == COGL_PIXEL_FORMAT_ANY)
-    return FALSE;
-
-  /* Shortcut out early if the image is empty */
-  if (width == 0 || height == 0)
-    return TRUE;
-
-  /* Init source bitmap */
-  source_bmp.width = width;
-  source_bmp.height = height;
-  source_bmp.format = format;
-  source_bmp.data = (guint8 *)data;
-
-  /* Rowstride from width if none specified */
-  bpp = _cogl_get_format_bpp (format);
-  source_bmp.rowstride = (rowstride == 0) ? width * bpp : rowstride;
-
-  /* Prepare the bitmap so that it will do the premultiplication
-     conversion */
-  _cogl_texture_prepare_for_upload (&source_bmp,
-                                    tex_2ds->format,
-                                    NULL,
-                                    &tmp_bmp,
-                                    &tmp_bmp_owner,
-                                    NULL,
-                                    &closest_gl_format,
-                                    &closest_gl_type);
-
+  _cogl_pixel_format_to_gl (bmp->format,
+                            NULL, /* internal format */
+                            &gl_format,
+                            &gl_type);
 
   /* Send data to GL */
   _cogl_texture_2d_sliced_upload_subregion_to_gl (tex_2ds,
                                                   src_x, src_y,
                                                   dst_x, dst_y,
                                                   dst_width, dst_height,
-                                                  &tmp_bmp,
-                                                  closest_gl_format,
-                                                  closest_gl_type);
-
-  /* Free data if owner */
-  if (tmp_bmp_owner)
-    g_free (tmp_bmp.data);
+                                                  bmp,
+                                                  gl_format,
+                                                  gl_type);
 
   return TRUE;
 }

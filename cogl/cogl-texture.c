@@ -813,6 +813,51 @@ _cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
 }
 
 gboolean
+_cogl_texture_set_region_from_bitmap (CoglHandle    handle,
+                                      int           src_x,
+                                      int           src_y,
+                                      int           dst_x,
+                                      int           dst_y,
+                                      unsigned int  dst_width,
+                                      unsigned int  dst_height,
+                                      CoglBitmap   *bmp)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+  CoglBitmap   tmp_bmp;
+  gboolean     tmp_bmp_owner = FALSE;
+  GLenum       closest_gl_format;
+  GLenum       closest_gl_type;
+  gboolean     ret;
+
+  /* Shortcut out early if the image is empty */
+  if (dst_width == 0 || dst_height == 0)
+    return TRUE;
+
+  /* Prepare the bitmap so that it will do the premultiplication
+     conversion */
+  _cogl_texture_prepare_for_upload (bmp,
+                                    cogl_texture_get_format (handle),
+                                    NULL,
+                                    &tmp_bmp,
+                                    &tmp_bmp_owner,
+                                    NULL,
+                                    &closest_gl_format,
+                                    &closest_gl_type);
+
+  ret = tex->vtable->set_region (handle,
+                                 src_x, src_y,
+                                 dst_x, dst_y,
+                                 dst_width, dst_height,
+                                 &tmp_bmp);
+
+  /* Free data if owner */
+  if (tmp_bmp_owner)
+    g_free (tmp_bmp.data);
+
+  return ret;
+}
+
+gboolean
 cogl_texture_set_region (CoglHandle       handle,
 			 int              src_x,
 			 int              src_y,
@@ -826,21 +871,28 @@ cogl_texture_set_region (CoglHandle       handle,
 			 unsigned int     rowstride,
 			 const guint8    *data)
 {
-  CoglTexture *tex;
+  int              bpp;
+  CoglBitmap       source_bmp;
 
-  if (!cogl_is_texture (handle))
+  /* Check for valid format */
+  if (format == COGL_PIXEL_FORMAT_ANY)
     return FALSE;
 
-  tex = COGL_TEXTURE (handle);
+  /* Init source bitmap */
+  source_bmp.width = width;
+  source_bmp.height = height;
+  source_bmp.format = format;
+  source_bmp.data = (guint8 *) data;
 
-  return tex->vtable->set_region (tex,
-                                  src_x, src_y,
-                                  dst_x, dst_y,
-                                  dst_width, dst_height,
-                                  width, height,
-                                  format,
-                                  rowstride,
-                                  data);
+  /* Rowstride from width if none specified */
+  bpp = _cogl_get_format_bpp (format);
+  source_bmp.rowstride = (rowstride == 0) ? width * bpp : rowstride;
+
+  return _cogl_texture_set_region_from_bitmap (handle,
+                                               src_x, src_y,
+                                               dst_x, dst_y,
+                                               dst_width, dst_height,
+                                               &source_bmp);
 }
 
 /* Reads back the contents of a texture by rendering it to the framebuffer
