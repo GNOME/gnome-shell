@@ -595,7 +595,7 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                     data);
 }
 
-static int
+static gboolean
 _cogl_atlas_texture_get_data (CoglTexture     *tex,
                               CoglPixelFormat  format,
                               unsigned int     rowstride,

@@ -1129,7 +1129,7 @@ _cogl_texture_pixmap_x11_set_region (CoglTexture     *tex,
   return FALSE;
 }
 
-static int
+static gboolean
 _cogl_texture_pixmap_x11_get_data (CoglTexture     *tex,
                                    CoglPixelFormat  format,
                                    unsigned int     rowstride,
