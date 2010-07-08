@@ -109,6 +109,9 @@ struct _ClutterBackendX11Class
                             XEvent            *xevent);
 };
 
+/* platform-specific event data */
+typedef struct _ClutterEventX11 ClutterEventX11;
+
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
 void   _clutter_backend_x11_events_uninit (ClutterBackend *backend);
 
@@ -145,6 +148,15 @@ _clutter_x11_get_device_for_xid (XID id);
 
 void
 _clutter_x11_select_events (Window xwin);
+
+ClutterEventX11 *
+_clutter_event_x11_new (void);
+
+ClutterEventX11 *
+_clutter_event_x11_copy (ClutterEventX11 *event_x11);
+
+void
+_clutter_event_x11_free (ClutterEventX11 *event_x11);
 
 G_END_DECLS
 

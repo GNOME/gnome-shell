@@ -141,6 +141,8 @@ gboolean clutter_x11_get_use_argb_visual (void);
 
 Time clutter_x11_get_current_event_time (void);
 
+gint clutter_x11_event_get_key_group (const ClutterEvent *event);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_X11_H__ */

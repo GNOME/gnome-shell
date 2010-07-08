@@ -54,6 +54,10 @@
 #include <X11/extensions/XInput.h>
 #endif
 
+#ifdef HAVE_XKB
+#include <X11/XKBlib.h>
+#endif
+
 /* XEMBED protocol support for toolkit embedding */
 #define XEMBED_MAPPED                   (1 << 0)
 #define MAX_SUPPORTED_XEMBED_VERSION    1
@@ -84,6 +88,34 @@ struct _ClutterEventSource
   ClutterBackend *backend;
   GPollFD event_poll_fd;
 };
+
+struct _ClutterEventX11
+{
+  /* additional fields for Key events */
+  gint key_group;
+};
+
+ClutterEventX11 *
+_clutter_event_x11_new (void)
+{
+  return g_slice_new0 (ClutterEventX11);
+}
+
+ClutterEventX11 *
+_clutter_event_x11_copy (ClutterEventX11 *event_x11)
+{
+  if (event_x11 != NULL)
+    return g_slice_dup (ClutterEventX11, event_x11);
+
+  return NULL;
+}
+
+void
+_clutter_event_x11_free (ClutterEventX11 *event_x11)
+{
+  if (event_x11 != NULL)
+    g_slice_free (ClutterEventX11, event_x11);
+}
 
 static gboolean clutter_event_prepare  (GSource     *source,
                                         gint        *timeout);
@@ -300,11 +332,29 @@ translate_key_event (ClutterBackend   *backend,
                      ClutterEvent     *event,
                      XEvent           *xevent)
 {
-  char buffer[256+1];
+  ClutterEventX11 *event_x11;
+  char buffer[256 + 1];
   int n;
   
   CLUTTER_NOTE (EVENT, "Translating key %s event",
                 xevent->xany.type == KeyPress ? "press" : "release");
+
+  /* KeyEvents have platform specific data associated to them */
+  event_x11 = _clutter_event_x11_new ();
+  _clutter_event_set_platform_data (event, event_x11);
+
+#ifdef HAVE_XKB
+  event_x11->key_group = XkbGroupForCoreState (xevent->xkey.state);
+
+  CLUTTER_NOTE (EVENT, "Key group: %d (xkb enabled: yes)",
+                event_x11->key_group);
+#else
+  /* we force the key group to 0 */
+  event_x11->key_group = 0;
+
+  CLUTTER_NOTE (EVENT, "Key group: %d (xkb enabled: no)",
+                event_x11->key_group);
+#endif /* HAVE_XKB */
 
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
@@ -326,8 +376,8 @@ translate_key_event (ClutterBackend   *backend,
           (event->key.unicode_value != -2))
         return;
     }
-  
-  event->key.unicode_value = (gunichar)'\0';
+  else
+    event->key.unicode_value = (gunichar)'\0';
 }
 
 static gboolean
@@ -509,7 +559,9 @@ event_translate (ClutterBackend *backend,
           if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) ||
               (stage_x11->xwin_width != xevent->xconfigure.width) ||
               (stage_x11->xwin_height != xevent->xconfigure.height))
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+            {
+              clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+            }
 
           /* If we're fullscreened, we want these variables to
            * represent the size of the window before it was set
@@ -1031,9 +1083,7 @@ events_queue (ClutterBackend *backend)
 	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
-        {
-          clutter_event_free (event);
-        }
+        clutter_event_free (event);
     }
 }
 
@@ -1208,4 +1258,30 @@ clutter_x11_get_current_event_time (void)
   ClutterBackend *backend = clutter_get_default_backend ();
 
   return CLUTTER_BACKEND_X11 (backend)->last_event_time;
+}
+
+/**
+ * clutter_x11_event_get_key_group:
+ * @event: a #ClutterEvent of type %CLUTTER_KEY_PRESS or %CLUTTER_KEY_RELEASE
+ *
+ * Retrieves the group for the modifiers set in @event
+ *
+ * Return value: the group id
+ *
+ * Since: 1.4
+ */
+gint
+clutter_x11_event_get_key_group (const ClutterEvent *event)
+{
+  ClutterEventX11 *event_x11;
+
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
+                        event->type == CLUTTER_KEY_RELEASE, 0);
+
+  event_x11 = _clutter_event_get_platform_data (event);
+  if (event_x11 == NULL)
+    return 0;
+
+  return event_x11->key_group;
 }
