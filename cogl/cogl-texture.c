@@ -1232,7 +1232,7 @@ cogl_texture_get_data (CoglHandle       handle,
         {
           src = new_bmp.data + y * new_bmp.rowstride;
           dst = data + y * rowstride;
-          memcpy (dst, src, new_bmp.width);
+          memcpy (dst, src, new_bmp.width * bpp);
         }
 
       /* Free converted data */
