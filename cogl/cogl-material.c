@@ -2042,7 +2042,7 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
       layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
   layer->texture = texture;
-  layer->texture_overridden = FALSE;
+  layer->texture_overridden = overriden;
   layer->slice_gl_texture = slice_gl_texture;
   layer->slice_gl_target = slice_gl_target;
 
@@ -2651,7 +2651,7 @@ override_layer_texture_cb (CoglMaterialLayer *layer, void *user_data)
   texture = _cogl_material_layer_get_texture (layer);
 
   if (texture != COGL_INVALID_HANDLE)
-    gl_target = cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+    cogl_texture_get_gl_texture (texture, NULL, &gl_target);
   else
     gl_target = GL_TEXTURE_2D;
 
@@ -2736,6 +2736,15 @@ _cogl_material_layer_texture_equal (CoglMaterialLayer *authority0,
 {
   if (authority0->texture != authority1->texture)
     return FALSE;
+
+  if (authority0->texture_overridden != authority1->texture_overridden)
+    return FALSE;
+
+  if (authority0->texture_overridden &&
+      (authority0->slice_gl_texture != authority1->slice_gl_texture ||
+       authority0->slice_gl_target != authority1->slice_gl_target))
+    return FALSE;
+
   return TRUE;
 }
 
@@ -5358,8 +5367,13 @@ _cogl_material_layer_get_texture_info (CoglMaterialLayer *layer,
   *texture = layer->texture;
   if (G_UNLIKELY (*texture == COGL_INVALID_HANDLE))
     *texture = ctx->default_gl_texture_2d_tex;
-  cogl_texture_get_gl_texture (*texture, gl_texture, gl_target);
-  return;
+  if (layer->texture_overridden)
+    {
+      *gl_texture = layer->slice_gl_texture;
+      *gl_target = layer->slice_gl_target;
+    }
+  else
+    cogl_texture_get_gl_texture (*texture, gl_texture, gl_target);
 }
 
 #ifndef HAVE_COGL_GLES
