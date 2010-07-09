@@ -113,6 +113,7 @@
 /test-script-layout-property
 /test-cogl-depth-test
 /test-cogl-pixel-array
+/test-cogl-texture-get-set-data
 /wrappers
 /*-report.xml
 /*-report.html
