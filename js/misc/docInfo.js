@@ -23,7 +23,7 @@ DocInfo.prototype = {
         // We actually used get_modified() instead of get_visited()
         // here, as GtkRecentInfo doesn't updated get_visited()
         // correctly. See http://bugzilla.gnome.org/show_bug.cgi?id=567094
-        this.timestamp = recentInfo.get_modified().getTime() / 1000;
+        this.timestamp = recentInfo.get_modified();
         this.name = recentInfo.get_display_name();
         this._lowerName = this.name.toLowerCase();
         this.uri = recentInfo.get_uri();
