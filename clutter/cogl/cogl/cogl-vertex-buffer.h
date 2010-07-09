@@ -457,6 +457,21 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices);
 gboolean
 cogl_is_vertex_buffer (CoglHandle handle);
 
+/**
+ * cogl_is_vertex_buffer_indices:
+ * @handle: a #CoglHandle
+ *
+ * Checks whether @handle is a handle to the indices for a vertex
+ * buffer object
+ *
+ * Return value: %TRUE if the handle is indices, and %FALSE
+ *   otherwise
+ *
+ * Since: 1.4
+ */
+gboolean
+cogl_is_vertex_buffer_indices (CoglHandle handle);
+
 G_END_DECLS
 
 #endif /* __COGL_VERTEX_BUFFER_H__ */
