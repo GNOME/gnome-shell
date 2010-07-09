@@ -43,6 +43,7 @@
 static void _cogl_shader_free (CoglShader *shader);
 
 COGL_HANDLE_DEFINE (Shader, shader);
+COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (shader);
 
 static void
 _cogl_shader_free (CoglShader *shader)
