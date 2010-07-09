@@ -44,7 +44,7 @@
 
 static void _cogl_texture_2d_free (CoglTexture2D *tex_2d);
 
-COGL_TEXTURE_DEFINE (Texture2D, texture_2d);
+COGL_TEXTURE_INTERNAL_DEFINE (Texture2D, texture_2d);
 
 static const CoglTextureVtable cogl_texture_2d_vtable;
 
@@ -323,7 +323,7 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
 void
 _cogl_texture_2d_externally_modified (CoglHandle handle)
 {
-  if (!cogl_is_texture_2d (handle))
+  if (!_cogl_is_texture_2d (handle))
     return;
 
   COGL_TEXTURE_2D (handle)->mipmaps_dirty = TRUE;

@@ -42,7 +42,7 @@
 
 static void _cogl_sub_texture_free (CoglSubTexture *sub_tex);
 
-COGL_TEXTURE_DEFINE (SubTexture, sub_texture);
+COGL_TEXTURE_INTERNAL_DEFINE (SubTexture, sub_texture);
 
 static const CoglTextureVtable cogl_sub_texture_vtable;
 
@@ -274,7 +274,7 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   /* If the next texture is also a sub texture we can avoid one level
      of indirection by referencing the full texture of that texture
      instead. */
-  if (cogl_is_sub_texture (next_texture))
+  if (_cogl_is_sub_texture (next_texture))
     {
       CoglSubTexture *other_sub_tex =
         _cogl_sub_texture_pointer_from_handle (next_texture);
