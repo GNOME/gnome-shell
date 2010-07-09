@@ -35,7 +35,6 @@
 #include <gmodule.h>
 
 #include "clutter-actor.h"
-#include "clutter-behaviour.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -651,35 +650,6 @@ parse_signals (ClutterScript *script,
   return retval;
 }
 
-static GList *
-parse_behaviours (ObjectInfo *oinfo,
-                  JsonNode   *node)
-{
-  JsonArray *array;
-  GList *retval;
-  guint array_len, i;
-
-  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
-    return NULL;
-
-  retval = oinfo->behaviours;
-
-  array = json_node_get_array (node);
-  array_len = json_array_get_length (array);
-
-  for (i = 0; i < array_len; i++)
-    {
-      JsonNode *child = json_array_get_element (array, i);
-      const gchar *id;
-
-      id = _clutter_script_get_id_from_node (child);
-      if (id)
-        retval = g_list_prepend (retval, g_strdup (id));
-    }
-
-  return g_list_reverse (retval);
-}
-
 static ClutterTimeline *
 construct_timeline (ClutterScript *script,
                     JsonObject    *object)
@@ -981,14 +951,6 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       oinfo->children = parse_children (oinfo, val);
 
       json_object_remove_member (object, "children");
-    }
-
-  if (json_object_has_member (object, "behaviours"))
-    {
-      val = json_object_get_member (object, "behaviours");
-      oinfo->behaviours = parse_behaviours (oinfo, val);
-
-      json_object_remove_member (object, "behaviours");
     }
 
   if (json_object_has_member (object, "signals"))
@@ -1741,46 +1703,6 @@ apply_child_properties (ClutterScript    *script,
 }
 
 static void
-apply_behaviours (ClutterScript *script,
-                  ObjectInfo    *oinfo)
-{
-  ClutterActor *actor = CLUTTER_ACTOR (oinfo->object);
-  GList *l, *unresolved;
-
-  unresolved = NULL;
-  for (l = oinfo->behaviours; l != NULL; l = l->next)
-    {
-      const gchar *name = l->data;
-      ObjectInfo *behaviour_info;
-      GObject *object = NULL;
-
-      behaviour_info = _clutter_script_get_object_info (script, name);
-      if (behaviour_info != NULL)
-        {
-          _clutter_script_construct_object (script, behaviour_info);
-          object = behaviour_info->object;
-        }
-
-      if (object == NULL)
-        {
-          unresolved = g_list_prepend (unresolved, g_strdup (name));
-          continue;
-        }
-
-      CLUTTER_NOTE (SCRIPT, "Applying behaviour '%s' to actor of type '%s'",
-                    name,
-                    g_type_name (G_OBJECT_TYPE (actor)));
-
-      clutter_behaviour_apply (CLUTTER_BEHAVIOUR (object), actor);
-    }
-
-  g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
-  g_list_free (oinfo->behaviours);
-
-  oinfo->behaviours = unresolved;
-}
-
-static void
 add_children (ClutterScript *script,
               ObjectInfo    *oinfo)
 {
@@ -1839,9 +1761,6 @@ _clutter_script_check_unresolved (ClutterScript *script,
   if (oinfo->children != NULL && CLUTTER_IS_CONTAINER (oinfo->object))
     add_children (script, oinfo);
 
-  if (oinfo->behaviours != NULL && CLUTTER_IS_ACTOR (oinfo->object))
-    apply_behaviours (script, oinfo);
-
   /* this is a bit *eugh*, but it allows us to effectively make sure
    * that child and layout properties are parsed and applied to the
    * right child
@@ -1885,7 +1804,7 @@ _clutter_script_check_unresolved (ClutterScript *script,
         }
     }
 
-  if (oinfo->properties || oinfo->children || oinfo->behaviours)
+  if (oinfo->properties || oinfo->children)
     oinfo->has_unresolved = TRUE;
   else
     oinfo->has_unresolved = FALSE;

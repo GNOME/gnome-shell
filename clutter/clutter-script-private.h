@@ -58,7 +58,6 @@ typedef struct {
 
   GList *properties;
   GList *children;
-  GList *behaviours;
   GList *signals;
 
   GType gtype;

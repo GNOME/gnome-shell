@@ -308,9 +308,6 @@ object_info_free (gpointer data)
       g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
       g_list_free (oinfo->children);
 
-      g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
-      g_list_free (oinfo->behaviours);
-
       /* we unref top-level objects and leave the actors alone,
        * unless we are unmerging in which case we have to destroy
        * the actor to unparent them

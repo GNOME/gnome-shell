@@ -291,6 +291,7 @@
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
 #include "clutter-animatable.h"
+#include "clutter-behaviour.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
@@ -8340,6 +8341,40 @@ parse_actor_metas (ClutterScript *script,
   return g_slist_reverse (retval);
 }
 
+static GSList *
+parse_behaviours (ClutterScript *script,
+                  ClutterActor  *actor,
+                  JsonNode      *node)
+{
+  GList *elements, *l;
+  GSList *retval = NULL;
+
+  if (!JSON_NODE_HOLDS_ARRAY (node))
+    return NULL;
+
+  elements = json_array_get_elements (json_node_get_array (node));
+
+  for (l = elements; l != NULL; l = l->next)
+    {
+      JsonNode *element = l->data;
+      const gchar *id = _clutter_script_get_id_from_node (element);
+      GObject *behaviour;
+
+      if (id == NULL || *id == '\0')
+        continue;
+
+      behaviour = clutter_script_get_object (script, id);
+      if (behaviour == NULL)
+        continue;
+
+      retval = g_slist_prepend (retval, behaviour);
+    }
+
+  g_list_free (elements);
+
+  return g_slist_reverse (retval);
+}
+
 static gboolean
 clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
                                  ClutterScript     *script,
@@ -8398,6 +8433,17 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
       else
         g_slice_free (RotationInfo, info);
     }
+  else if (strcmp (name, "behaviours") == 0)
+    {
+      GSList *l;
+
+      l = parse_behaviours (script, actor, node);
+
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, l);
+
+      retval = TRUE;
+    }
   else if (strcmp (name, "actions") == 0 ||
            strcmp (name, "constraints") == 0 ||
            strcmp (name, "effects") == 0)
@@ -8453,6 +8499,26 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
                                   info->center_z);
 
       g_slice_free (RotationInfo, info);
+
+      return;
+    }
+
+  if (strcmp (name, "behaviours") == 0)
+    {
+      GSList *behaviours, *l;
+
+      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
+        return;
+
+      behaviours = g_value_get_pointer (value);
+      for (l = behaviours; l != NULL; l = l->next)
+        {
+          ClutterBehaviour *behaviour = l->data;
+
+          clutter_behaviour_apply (behaviour, actor);
+        }
+
+      g_slist_free (behaviours);
 
       return;
     }
