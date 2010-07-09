@@ -112,6 +112,7 @@ static const CoglMaterialBackend *backends[COGL_MATERIAL_N_BACKENDS];
 #endif
 
 COGL_OBJECT_DEFINE (Material, material);
+COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (material);
 COGL_OBJECT_DEFINE (MaterialLayer, material_layer);
 
 static void

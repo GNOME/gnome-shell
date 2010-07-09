@@ -212,6 +212,7 @@ static void _cogl_vertex_buffer_free (CoglVertexBuffer *buffer);
 static void _cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *buffer_indices);
 
 COGL_HANDLE_DEFINE (VertexBuffer, vertex_buffer);
+COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (vertex_buffer);
 COGL_HANDLE_DEFINE (VertexBufferIndices, vertex_buffer_indices);
 
 CoglHandle

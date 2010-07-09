@@ -115,6 +115,7 @@ static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
 COGL_OBJECT_DEFINE (Onscreen, onscreen);
 COGL_OBJECT_DEFINE (Offscreen, offscreen);
+COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
 
 /* XXX:
  * The CoglObject macros don't support any form of inheritance, so for

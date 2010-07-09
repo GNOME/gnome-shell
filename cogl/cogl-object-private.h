@@ -166,7 +166,9 @@ cogl_is_##type_name (void *object)                              \
                                                                 \
   return (obj->klass->type ==                                   \
           _cogl_object_##type_name##_get_type ());              \
-}                                                               \
+}
+
+#define COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING(type_name)   \
                                                                 \
 void * G_GNUC_DEPRECATED                                        \
 cogl_##type_name##_ref (void *object)                           \
