@@ -1819,9 +1819,13 @@ clutter_text_paint (ClutterActor *self)
     }
 
   clutter_actor_get_allocation_box (self, &alloc);
-  layout = clutter_text_create_layout (text,
-                                       alloc.x2 - alloc.x1,
-                                       alloc.y2 - alloc.y1);
+
+  if (priv->editable && priv->single_line_mode)
+    layout = clutter_text_create_layout (text, -1, -1);
+  else
+    layout = clutter_text_create_layout (text,
+                                         alloc.x2 - alloc.x1,
+                                         alloc.y2 - alloc.y1);
 
   if (priv->editable && priv->cursor_visible)
     clutter_text_ensure_cursor_position (text);
@@ -2016,10 +2020,17 @@ clutter_text_allocate (ClutterActor           *self,
 
   /* Ensure that there is a cached layout with the right width so
    * that we don't need to create the text during the paint run
+   *
+   * if the Text is editable and in single line mode we don't want
+   * to have any limit on the layout size, since the paint will clip
+   * it to the allocation of the actor
    */
-  clutter_text_create_layout (text,
-                              box->x2 - box->x1,
-                              box->y2 - box->y1);
+  if (text->priv->editable && text->priv->single_line_mode)
+    clutter_text_create_layout (text, -1, -1);
+  else
+    clutter_text_create_layout (text,
+                                box->x2 - box->x1,
+                                box->y2 - box->y1);
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_text_parent_class);
   parent_class->allocate (self, box, flags);
@@ -3952,6 +3963,9 @@ clutter_text_get_layout (ClutterText *self)
   gfloat width, height;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
+
+  if (self->priv->editable && self->priv->single_line_mode)
+    return clutter_text_create_layout (self, -1, -1);
 
   clutter_actor_get_size (CLUTTER_ACTOR (self), &width, &height);
 
