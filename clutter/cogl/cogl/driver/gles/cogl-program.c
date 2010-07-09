@@ -41,6 +41,7 @@
 static void _cogl_program_free (CoglProgram *program);
 
 COGL_HANDLE_DEFINE (Program, program);
+COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (program);
 
 static void
 _cogl_program_free (CoglProgram *program)
