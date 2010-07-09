@@ -155,7 +155,7 @@ AC_PATH_PROG(mutter, [mutter])
 AC_SUBST(mutter)
 
 AC_MSG_CHECKING([if mutter was compiled with GTK+-3.0])
-if $PKG_CONFIG --print-requires libmutter-private | grep -q gtk+-3; then
+if $PKG_CONFIG --print-requires libmutter-private | grep gtk+-3 >/dev/null; then
   AC_MSG_RESULT(yes)
 else
   AC_MSG_RESULT(no)
