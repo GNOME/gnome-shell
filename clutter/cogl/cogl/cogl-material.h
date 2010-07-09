@@ -1109,6 +1109,7 @@ typedef enum
  * By default depth testing is disabled.
  *
  * Since: 1.4
+ * Stability: Unstable
  */
 void
 cogl_material_set_depth_test_enabled (CoglMaterial *material,
@@ -1123,6 +1124,7 @@ cogl_material_set_depth_test_enabled (CoglMaterial *material,
  *
  * Returns: The material's current depth test enabled state.
  * Since: 1.4
+ * Stability: Unstable
  */
 gboolean
 cogl_material_get_depth_test_enabled (CoglMaterial *material);
@@ -1141,6 +1143,7 @@ cogl_material_get_depth_test_enabled (CoglMaterial *material);
  * By default depth writing is enabled
  *
  * Since: 1.4
+ * Stability: Unstable
  */
 void
 cogl_material_set_depth_writing_enabled (CoglMaterial *material,
@@ -1155,6 +1158,7 @@ cogl_material_set_depth_writing_enabled (CoglMaterial *material,
  *
  * Returns: The current depth writing enable state
  * Since: 1.4
+ * Stability: Unstable
  */
 gboolean
 cogl_material_get_depth_writing_enabled (CoglMaterial *material);
@@ -1169,6 +1173,7 @@ cogl_material_get_depth_writing_enabled (CoglMaterial *material);
  * depth buffer.
  *
  * Since: 1.4
+ * Stability: Unstable
  */
 void
 cogl_material_set_depth_test_function (CoglMaterial *material,
@@ -1183,6 +1188,7 @@ cogl_material_set_depth_test_function (CoglMaterial *material,
  *
  * Returns: The current depth test enable state.
  * Since: 1.4
+ * Stability: Unstable
  */
 CoglDepthTestFunction
 cogl_material_get_depth_test_function (CoglMaterial *material);
@@ -1221,6 +1227,7 @@ cogl_material_get_depth_test_function (CoglMaterial *material);
  * Returns: %TRUE if driver support is available else %FALSE.
  *
  * Since: 1.4
+ * Stability: Unstable
  */
 gboolean
 cogl_material_set_depth_range (CoglMaterial *material,
@@ -1239,6 +1246,7 @@ cogl_material_set_depth_range (CoglMaterial *material,
  * set with cogl_material_set_depth_range().
  *
  * Since: 1.4
+ * Stability: Unstable
  */
 void
 cogl_material_get_depth_range (CoglMaterial *material,
