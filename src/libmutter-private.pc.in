@@ -6,7 +6,7 @@ libgnome_serverdir=@libexecdir@
 
 Name: libmutter-private
 Description: Mutter internals shared
-Requires: gtk+-2.0
+Requires: gtk+-@GTK_API_VERSION@
 Version: @VERSION@
 Libs: -L${libdir} -lmutter-private
 Cflags: -I${includedir}/mutter
