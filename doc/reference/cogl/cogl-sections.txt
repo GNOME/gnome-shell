@@ -432,6 +432,7 @@ CoglIndicesType
 cogl_vertex_buffer_indices_new
 cogl_vertex_buffer_draw_elements
 cogl_vertex_buffer_indices_get_for_quads
+cogl_is_vertex_buffer_indices
 
 <SUBSECTION Private>
 cogl_vertex_buffer_indices_get_type
