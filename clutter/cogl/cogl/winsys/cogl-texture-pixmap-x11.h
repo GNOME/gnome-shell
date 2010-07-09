@@ -63,7 +63,7 @@ typedef enum
  *
  * Return value: a CoglHandle to a texture
  *
- * Since: 1.2
+ * Since: 1.4
  * Stability: Unstable
  */
 CoglHandle
@@ -82,7 +82,7 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
  * refreshed with the contents of the pixmap that was given to
  * cogl_texture_pixmap_x11_new().
  *
- * Since: 1.2
+ * Since: 1.4
  * Stability: Unstable
  */
 void
@@ -102,7 +102,7 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
  * implemented as zero-copy so it implies the updates are working
  * efficiently.
  *
- * Since: 1.2
+ * Since: 1.4
  * Stability: Unstable
  */
 gboolean
@@ -123,6 +123,9 @@ cogl_texture_pixmap_x11_is_using_tfp_extension (CoglHandle handle);
  *
  * Note that Cogl will subtract from the damage region as it processes
  * damage events.
+ *
+ * Since: 1.4
+ * Stability: Unstable
  */
 void
 cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
@@ -137,7 +140,7 @@ cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
  * Return value: whether @handle points to a CoglTexturePixmapX11
  * instance.
  *
- * Since: 1.2
+ * Since: 1.4
  * Stability: Unstable
  */
 gboolean
