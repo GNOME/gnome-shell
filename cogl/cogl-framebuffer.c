@@ -113,7 +113,7 @@ static void _cogl_framebuffer_free (CoglFramebuffer *framebuffer);
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
-COGL_OBJECT_DEFINE (Onscreen, onscreen);
+COGL_OBJECT_INTERNAL_DEFINE (Onscreen, onscreen);
 COGL_OBJECT_DEFINE (Offscreen, offscreen);
 COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
 
@@ -124,7 +124,7 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
  */
 
 gboolean
-cogl_is_framebuffer (void *object)
+_cogl_is_framebuffer (void *object)
 {
   CoglHandleObject *obj = object;
 
@@ -635,7 +635,7 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
 void
 cogl_set_framebuffer (CoglFramebuffer *framebuffer)
 {
-  g_return_if_fail (cogl_is_framebuffer (framebuffer));
+  g_return_if_fail (_cogl_is_framebuffer (framebuffer));
 
   if (_cogl_get_framebuffer () != framebuffer)
     _cogl_set_framebuffer_real (framebuffer);
@@ -668,7 +668,7 @@ cogl_push_framebuffer (CoglFramebuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_framebuffer (buffer));
+  g_return_if_fail (_cogl_is_framebuffer (buffer));
   g_assert (ctx->framebuffer_stack);
 
   cogl_flush ();

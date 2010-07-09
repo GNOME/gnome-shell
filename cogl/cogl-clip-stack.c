@@ -155,7 +155,7 @@ struct _CoglClipStackEntryPath
 
 static void _cogl_clip_stack_free (CoglClipStack *stack);
 
-COGL_OBJECT_DEFINE (ClipStack, clip_stack);
+COGL_OBJECT_INTERNAL_DEFINE (ClipStack, clip_stack);
 
 #define COGL_CLIP_STACK(stack) ((CoglClipStack *) (stack))
 
@@ -752,7 +752,7 @@ _cogl_clip_stack_copy (CoglClipStack *old_stack)
 {
   CoglClipStack *new_stack;
 
-  if (!cogl_is_clip_stack (old_stack))
+  if (!_cogl_is_clip_stack (old_stack))
     return NULL;
 
   new_stack = _cogl_clip_stack_new ();

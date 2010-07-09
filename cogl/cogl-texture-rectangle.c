@@ -54,7 +54,7 @@
 
 static void _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect);
 
-COGL_TEXTURE_DEFINE (TextureRectangle, texture_rectangle);
+COGL_TEXTURE_INTERNAL_DEFINE (TextureRectangle, texture_rectangle);
 
 static const CoglTextureVtable cogl_texture_rectangle_vtable;
 

@@ -113,7 +113,11 @@ static const CoglMaterialBackend *backends[COGL_MATERIAL_N_BACKENDS];
 
 COGL_OBJECT_DEFINE (Material, material);
 COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (material);
-COGL_OBJECT_DEFINE (MaterialLayer, material_layer);
+/* This type was made deprecated before the cogl_is_material_layer
+   function was ever exposed in the public headers so there's no need
+   to make the cogl_is_material_layer function public. We use INTERNAL
+   so that the cogl_is_* function won't get defined */
+COGL_OBJECT_INTERNAL_DEFINE (MaterialLayer, material_layer);
 
 static void
 texture_unit_init (CoglTextureUnit *unit, int index_)
@@ -2425,7 +2429,7 @@ cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer)
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -2460,7 +2464,7 @@ cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer)
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -5028,7 +5032,7 @@ cogl_material_layer_get_type (CoglMaterialLayer *layer)
 CoglHandle
 cogl_material_layer_get_texture (CoglMaterialLayer *layer)
 {
-  g_return_val_if_fail (cogl_is_material_layer (layer),
+  g_return_val_if_fail (_cogl_is_material_layer (layer),
 			COGL_INVALID_HANDLE);
 
   return _cogl_material_layer_get_texture (layer);
@@ -5039,7 +5043,7 @@ _cogl_material_layer_has_user_matrix (CoglMaterialLayer *layer)
 {
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
 
   authority =
     _cogl_material_layer_get_authority (layer,
@@ -5094,7 +5098,7 @@ cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
 {
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (layer), 0);
+  g_return_val_if_fail (_cogl_is_material_layer (layer), 0);
 
   authority =
     _cogl_material_layer_get_authority (layer,
@@ -5108,7 +5112,7 @@ cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer)
 {
   CoglMaterialLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material_layer (layer), 0);
+  g_return_val_if_fail (_cogl_is_material_layer (layer), 0);
 
   authority =
     _cogl_material_layer_get_authority (layer,

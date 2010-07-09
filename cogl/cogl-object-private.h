@@ -109,7 +109,7 @@ struct _CoglObject
 #define _COGL_HANDLE_DEBUG_UNREF _COGL_OBJECT_DEBUG_UNREF
 #define COGL_HANDLE_DEBUG_FREE COGL_OBJECT_DEBUG_FREE
 
-#define COGL_OBJECT_DEFINE_WITH_CODE(TypeName, type_name, code) \
+#define COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName, type_name, code) \
                                                                 \
 static CoglObjectClass _cogl_##type_name##_class;               \
                                                                 \
@@ -154,18 +154,38 @@ Cogl##TypeName *                                                \
 _cogl_##type_name##_pointer_from_handle (CoglHandle handle)     \
 {                                                               \
   return handle;                                                \
-}                                                               \
-                                                                \
-gboolean                                                        \
-cogl_is_##type_name (void *object)                              \
-{                                                               \
-  CoglObject *obj = object;                                     \
-                                                                \
-  if (object == NULL)                                           \
-    return FALSE;                                               \
-                                                                \
-  return (obj->klass->type ==                                   \
-          _cogl_object_##type_name##_get_type ());              \
+}
+
+#define COGL_OBJECT_DEFINE_WITH_CODE(TypeName, type_name, code)         \
+                                                                        \
+COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName, type_name, code)          \
+                                                                        \
+gboolean                                                                \
+cogl_is_##type_name (void *object)                                      \
+{                                                                       \
+  CoglObject *obj = object;                                             \
+                                                                        \
+  if (object == NULL)                                                   \
+    return FALSE;                                                       \
+                                                                        \
+  return (obj->klass->type ==                                           \
+          _cogl_object_##type_name##_get_type ());                      \
+}
+
+#define COGL_OBJECT_INTERNAL_DEFINE_WITH_CODE(TypeName, type_name, code) \
+                                                                        \
+COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName, type_name, code)          \
+                                                                        \
+gboolean                                                                \
+_cogl_is_##type_name (void *object)                                     \
+{                                                                       \
+  CoglObject *obj = object;                                             \
+                                                                        \
+  if (object == NULL)                                                   \
+    return FALSE;                                                       \
+                                                                        \
+  return (obj->klass->type ==                                           \
+          _cogl_object_##type_name##_get_type ());                      \
 }
 
 #define COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING(type_name)   \
@@ -202,16 +222,32 @@ cogl_##type_name##_unref (void *object)                         \
 #define COGL_OBJECT_DEFINE(TypeName, type_name)                 \
   COGL_OBJECT_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
 
+#define COGL_OBJECT_INTERNAL_DEFINE(TypeName, type_name)         \
+  COGL_OBJECT_INTERNAL_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
+
 /* For temporary compatability */
-#define COGL_HANDLE_DEFINE_WITH_CODE(TypeName, type_name, code) \
-                                                                \
-COGL_OBJECT_DEFINE_WITH_CODE (TypeName, type_name, code)        \
-                                                                \
-static Cogl##TypeName *                                         \
-_cogl_##type_name##_handle_new (CoglHandle handle)              \
-{                                                               \
-  return _cogl_##type_name##_object_new (handle);               \
+#define COGL_HANDLE_INTERNAL_DEFINE_WITH_CODE(TypeName, type_name, code) \
+                                                                         \
+COGL_OBJECT_INTERNAL_DEFINE_WITH_CODE (TypeName, type_name, code)        \
+                                                                         \
+static Cogl##TypeName *                                                  \
+_cogl_##type_name##_handle_new (CoglHandle handle)                       \
+{                                                                        \
+  return _cogl_##type_name##_object_new (handle);                        \
 }
+
+#define COGL_HANDLE_DEFINE_WITH_CODE(TypeName, type_name, code)          \
+                                                                         \
+COGL_OBJECT_DEFINE_WITH_CODE (TypeName, type_name, code)                 \
+                                                                         \
+static Cogl##TypeName *                                                  \
+_cogl_##type_name##_handle_new (CoglHandle handle)                       \
+{                                                                        \
+  return _cogl_##type_name##_object_new (handle);                        \
+}
+
+#define COGL_HANDLE_INTERNAL_DEFINE(TypeName, type_name)        \
+  COGL_HANDLE_INTERNAL_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
 
 #define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
   COGL_HANDLE_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
