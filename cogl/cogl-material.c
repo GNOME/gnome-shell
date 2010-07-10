@@ -1089,6 +1089,13 @@ _cogl_material_copy_differences (CoglMaterial *dest,
               sizeof (CoglMaterialDepthState));
     }
 
+  if (differences & COGL_MATERIAL_STATE_FOG)
+    {
+      memcpy (&big_state->fog_state,
+              &src->big_state->fog_state,
+              sizeof (CoglMaterialFogState));
+    }
+
   if (differences & COGL_MATERIAL_STATE_POINT_SIZE)
     big_state->point_size = src->big_state->point_size;
 
