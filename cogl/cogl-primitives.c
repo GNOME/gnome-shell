@@ -31,6 +31,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
+#include "cogl-material-opengl-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
 

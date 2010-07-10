@@ -37,6 +37,7 @@
 #include "cogl-util.h"
 #include "cogl-context.h"
 #include "cogl-material-private.h"
+#include "cogl-material-opengl-private.h"
 #include "cogl-winsys.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
