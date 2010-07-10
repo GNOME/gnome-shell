@@ -30,6 +30,7 @@
 #endif
 
 #include "cogl-material-private.h"
+#include "cogl-material-opengl-private.h"
 
 #ifdef COGL_MATERIAL_BACKEND_FIXED
 

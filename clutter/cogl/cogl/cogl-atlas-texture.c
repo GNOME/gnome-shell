@@ -40,6 +40,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-atlas.h"
 #include "cogl-journal-private.h"
+#include "cogl-material-opengl-private.h"
 
 #include <stdlib.h>
 

@@ -42,6 +42,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-xlib.h"
+#include "cogl-material-opengl-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>

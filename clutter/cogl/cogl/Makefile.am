@@ -120,6 +120,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-stack.h			\
 	$(srcdir)/cogl-material.c			\
 	$(srcdir)/cogl-material-private.h		\
+	$(srcdir)/cogl-material-opengl.c		\
+	$(srcdir)/cogl-material-opengl-private.h	\
 	$(srcdir)/cogl-material-glsl.c			\
 	$(srcdir)/cogl-material-glsl-private.h		\
 	$(srcdir)/cogl-material-arbfp.c			\
