@@ -144,5 +144,12 @@ _cogl_bind_gl_texture_transient (GLenum gl_target,
 void
 _cogl_delete_gl_texture (GLuint gl_texture);
 
+void
+_cogl_gl_use_program_wrapper (GLuint program);
+
+void
+_cogl_material_flush_gl_state (CoglMaterial *material,
+                               gboolean skip_gl_state);
+
 #endif /* __COGL_MATERIAL_OPENGL_PRIVATE_H */
 

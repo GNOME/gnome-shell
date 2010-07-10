@@ -137,6 +137,7 @@
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
+#include "cogl-material-opengl-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"

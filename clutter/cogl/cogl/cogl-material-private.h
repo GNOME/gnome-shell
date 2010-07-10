@@ -33,6 +33,7 @@
 #include "cogl-material.h"
 #include "cogl-matrix.h"
 #include "cogl-handle.h"
+#include "cogl-profile.h"
 
 #include <glib.h>
 
@@ -551,6 +552,9 @@ typedef enum
   COGL_MATERIAL_PROGRAM_TYPE_FIXED
 } CoglMaterialProgramType;
 
+extern const CoglMaterialBackend *
+_cogl_material_backends[COGL_MATERIAL_N_BACKENDS];
+
 void
 _cogl_material_init_default_material (void);
 
@@ -681,6 +685,8 @@ _cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type);
 unsigned int
 _cogl_get_n_args_for_combine_func (GLint func);
 
+void
+_cogl_material_set_backend (CoglMaterial *material, int backend);
 
 CoglMaterial *
 _cogl_material_get_parent (CoglMaterial *material);
@@ -689,9 +695,9 @@ void
 _cogl_material_get_colorubv (CoglMaterial *material,
                              guint8       *color);
 
-void
-_cogl_material_flush_gl_state (CoglMaterial *material,
-                               gboolean skip_gl_state);
+unsigned long
+_cogl_material_compare_differences (CoglMaterial *material0,
+                                    CoglMaterial *material1);
 
 gboolean
 _cogl_material_equal (CoglMaterial *material0,
@@ -705,6 +711,17 @@ void
 _cogl_material_journal_unref (CoglMaterial *material);
 
 void
+_cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
+                                     CoglMaterialWrapModeInternal *wrap_mode_s,
+                                     CoglMaterialWrapModeInternal *wrap_mode_t,
+                                     CoglMaterialWrapModeInternal *wrap_mode_r);
+
+void
+_cogl_material_layer_get_filters (CoglMaterialLayer *layer,
+                                  CoglMaterialFilter *min_filter,
+                                  CoglMaterialFilter *mag_filter);
+
+void
 _cogl_material_set_user_program (CoglMaterial *material,
                                  CoglHandle program);
 
@@ -713,9 +730,6 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture);
 
 void
 _cogl_material_apply_legacy_state (CoglMaterial *material);
-
-void
-_cogl_gl_use_program_wrapper (GLuint program);
 
 void
 _cogl_material_apply_overrides (CoglMaterial *material,
