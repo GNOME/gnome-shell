@@ -37,7 +37,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-journal-private.h"
-#include "cogl-material-private.h"
+#include "cogl-material-opengl-private.h"
 
 #include <string.h>
 #include <math.h>
