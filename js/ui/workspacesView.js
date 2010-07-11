@@ -691,13 +691,22 @@ SingleView.prototype = {
         this.actor.set_clip(x, y, width, height);
         this._activeWorkspaceX = 0; // x offset of active ws while dragging
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
-        this._scroll = null;
         this._lostWorkspaces = [];
         this._animating = false; // tweening
-        this._scrolling = false; // dragging scroll bar or desktop
-        this._animatingScroll = false; // programatically move the scroll bar
+        this._scrolling = false; // dragging desktop
+        this._animatingScroll = false; // programatically updating the adjustment
         this._inDrag = false; // dragging a window
         this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
+
+        let active = global.screen.get_active_workspace_index();
+        this._scrollAdjustment = new St.Adjustment({ value: active,
+                                                     lower: 0,
+                                                     page_increment: 1,
+                                                     page_size: 1,
+                                                     step_increment: 0,
+                                                     upper: this._workspaces.length });
+        this._scrollAdjustment.connect('notify::value',
+                                       Lang.bind(this, this._onScroll));
 
         this._dragIndex = -1;
 
@@ -800,7 +809,7 @@ SingleView.prototype = {
 
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(showAnimation);
-        this._scrollScrollBarToIndex(active, showAnimation);
+        this._updateScrollAdjustment(active, showAnimation);
     },
 
     // _setWorkspaceDraggable:
@@ -875,7 +884,7 @@ SingleView.prototype = {
                 // If the user has moved more than half a workspace, we want to "settle"
                 // to the new workspace even if the user stops dragging rather "throws"
                 // by releasing during the drag.
-                let noStop = Math.abs(activate - this._scroll.adjustment.value) > 0.5;
+                let noStop = Math.abs(activate - this._scrollAdjustment.value) > 0.5;
 
                 // We detect if the user is stopped by comparing the timestamp of the button
                 // release with the timestamp of the last motion. Experimentally, a difference
@@ -906,7 +915,7 @@ SingleView.prototype = {
                 let dx = this._dragX - stageX;
                 let primary = global.get_primary_monitor();
 
-                this._scroll.adjustment.value += (dx / primary.width);
+                this._scrollAdjustment.value += (dx / primary.width);
                 this._dragX = stageX;
                 this._lastMotionTime = event.get_time();
 
@@ -1078,14 +1087,14 @@ SingleView.prototype = {
         this._updateWorkspaceActors(false);
     },
 
-    _scrollScrollBarToIndex: function(index, showAnimation) {
-        if (!this._scroll || this._scrolling)
+    _updateScrollAdjustment: function(index, showAnimation) {
+        if (this._scrolling)
             return;
 
         this._animatingScroll = true;
 
         if (showAnimation) {
-            Tweener.addTween(this._scroll.adjustment, {
+            Tweener.addTween(this._scrollAdjustment, {
                value: index,
                time: WORKSPACE_SWITCH_TIME,
                transition: 'easeOutQuad',
@@ -1095,7 +1104,7 @@ SingleView.prototype = {
                    })
             });
         } else {
-            this._scroll.adjustment.value = index;
+            this._scrollAdjustment.value = index;
             this._animatingScroll = false;
         }
     },
@@ -1106,12 +1115,11 @@ SingleView.prototype = {
         for (let l = 0; l < lostWorkspaces.length; l++)
             lostWorkspaces[l].disconnectAll();
 
-        if (this._scroll != null)
-            Tweener.addTween(this._scroll.adjustment,
-                             { upper: newNumWorkspaces,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
+        Tweener.addTween(this._scrollAdjustment,
+                         { upper: newNumWorkspaces,
+                           time: WORKSPACE_SWITCH_TIME,
+                           transition: 'easeOutQuad'
+                         });
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
@@ -1129,12 +1137,9 @@ SingleView.prototype = {
         }
 
         this._scrollToActive(true);
-        this._updatePanelVisibility();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
-        this._updatePanelVisibility();
-
         if (this._scrolling)
             return;
 
@@ -1169,7 +1174,7 @@ SingleView.prototype = {
     },
 
     _dragBegin: function() {
-        if (!this._scroll || this._scrolling)
+        if (this._scrolling)
             return;
 
         this._inDrag = true;
@@ -1273,8 +1278,7 @@ SingleView.prototype = {
             this._workspaces[i].setReservedSlot(null);
     },
 
-    // handle changes to the scroll bar's adjustment:
-    // sync the workspaces' positions to the position of the scroll bar handle
+    // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
     _onScroll: function(adj) {
         if (this._animatingScroll)
@@ -1285,20 +1289,7 @@ SingleView.prototype = {
 
         if (active != current) {
             let metaWorkspace = this._workspaces[current].metaWorkspace;
-
-            if (!this._scrolling) {
-                // This here is a little tricky - we get here when StScrollBar
-                // animates paging; we switch the active workspace, but
-                // leave out any extra animation (just like we would do when
-                // the handle was dragged)
-                // If StScrollBar emitted scroll-start before and scroll-stop
-                // after the animation, this would not be necessary
-                this._scrolling = true;
-                metaWorkspace.activate(global.get_current_time());
-                this._scrolling = false;
-            } else {
-                metaWorkspace.activate(global.get_current_time());
-            }
+            metaWorkspace.activate(global.get_current_time());
         }
 
         let last = this._workspaces.length - 1;
@@ -1306,8 +1297,6 @@ SingleView.prototype = {
         let lastWorkspaceX = this._workspaces[last].actor.x;
         let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
 
-        // The scrollbar is hidden when there is only one workspace, so
-        // adj.upper should at least be 2 - but better be safe than sorry
         if (adj.upper == 1)
             return;
 
@@ -1320,12 +1309,6 @@ SingleView.prototype = {
             this._workspaces[i]._hideAllOverlays();
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.x += dx;
-        }
-
-        if (!this._scrolling && active == adj.value) {
-            // Again, work around the paging in StScrollBar: simulate
-            // the effect of scroll-stop
-            this._updateWorkspaceActors(false);
         }
     },
 
@@ -1353,37 +1336,6 @@ SingleView.prototype = {
                                        pack_start: true,
                                        vertical: true });
 
-        let active = global.screen.get_active_workspace_index();
-        let adj = new St.Adjustment({ value: active,
-                                      lower: 0,
-                                      page_increment: 1,
-                                      page_size: 1,
-                                      step_increment: 0,
-                                      upper: this._workspaces.length });
-        this._scroll = new St.ScrollBar({ adjustment: adj,
-                                          vertical: false,
-                                          name: 'SwitchScroll' });
-
-        // we have set adj.step_increment to 0, so all scroll wheel events
-        // are processed with this handler - this allows us to animate the
-        // workspace switch
-        this._scroll.connect('scroll-event',
-            Lang.bind(this, this._onScrollEvent));
-
-        this._scroll.adjustment.connect('notify::value',
-            Lang.bind(this, this._onScroll));
-
-
-        this._scroll.connect('scroll-start', Lang.bind(this,
-            function() {
-                this._scrolling = true;
-            }));
-        this._scroll.connect('scroll-stop', Lang.bind(this,
-            function() {
-                this._scrolling = false;
-                this._scrollToActive(true);
-            }));
-
         let indicator = new WorkspaceIndicator(Lang.bind(this, function(i) {
             if (this._workspaces[i] != undefined)
                 this._workspaces[i].metaWorkspace.activate(global.get_current_time());
@@ -1398,24 +1350,7 @@ SingleView.prototype = {
         }), Lang.bind(this, this._onScrollEvent));
 
         actor.add(indicator.actor, { expand: true, x_fill: true, y_fill: true });
-        actor.add(this._scroll, { expand: true,
-                                  x_fill: true,
-                                  y_fill: false,
-                                  y_align: St.Align.START });
-
-        this._updatePanelVisibility();
-
         return actor;
-    },
-
-    _updatePanelVisibility: function() {
-        let showSwitches = (global.screen.n_workspaces > 1);
-        if (this._scroll != null) {
-            Tweener.addTween(this._scroll,
-                             { opacity: showSwitches ? 255 : 0,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad' });
-        }
     },
 
     addWorkspace: function() {

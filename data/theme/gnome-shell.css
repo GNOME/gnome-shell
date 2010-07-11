@@ -323,10 +323,6 @@ StTooltip StLabel {
 }
 
 .workspaces-bar {
-    height: 48px;
-}
-
-.workspaces-bar {
     spacing: 5px;
 }
 
@@ -389,14 +385,6 @@ StTooltip StLabel {
 
 .workspace-controls.switch-mosaic:checked {
     background-image: url("mosaic-view-active.svg");
-}
-
-#SwitchScroll {
-    height: 14px;
-}
-
-#SwitchScroll #hhandle {
-    border-radius: 7px;
 }
 
 /* Dash */
