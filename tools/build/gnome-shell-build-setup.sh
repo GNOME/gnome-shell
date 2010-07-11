@@ -69,22 +69,13 @@ fi
 #
 # (*) only needed for --xephyr
 
-# Can this be simplified? Obvious ways don't handle handle packages
-# that have been installed then removed. ('purged' status, e.g.)
-dpkg_is_installed() {
-    status=`dpkg-query --show --showformat='${Status}' $1 2>/dev/null`
-    if [ $? = 0 ] ; then
-	set $status
-        if [ "$3" = installed ] ; then
-             return 0
-        fi
-    fi
-
-    return 1
-}
-
 if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
   reqd=""
+  if [ ! -x /usr/bin/dpkg-checkbuilddeps ]; then
+    echo "Please run 'sudo apt-get install dpkg-dev' and try again."
+    echo
+    exit 1
+  fi
   for pkg in \
     build-essential curl \
     automake bison flex gettext git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
@@ -94,7 +85,7 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
     python-dev python-gconf python-gobject xulrunner-dev xserver-xephyr gnome-terminal \
     libcroco3-dev libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
-      if ! dpkg_is_installed $pkg; then
+      if ! dpkg-checkbuilddeps -d $pkg /dev/null 2> /dev/null; then
         reqd="$pkg $reqd"
       fi
   done
