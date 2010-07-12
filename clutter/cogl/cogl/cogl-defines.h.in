@@ -25,7 +25,7 @@
 #define __COGL_DEFINES_H__
 
 #include <glib.h>
-#include <@CLUTTER_GL_HEADER@>
+@COGL_GL_HEADER_INCLUDES@
 
 G_BEGIN_DECLS
 

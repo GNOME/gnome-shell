@@ -131,7 +131,7 @@ FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
 CLUTTER_WINSYS=
-clutter_gl_header=""
+cogl_gl_headers=""
 glesversion=1.1
 use_gles2_wrapper=no
 experimental_backend=no
@@ -160,7 +160,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [glx],
         [
-          clutter_gl_header="GL/gl.h"
+          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
 
           SUPPORT_X11=1
@@ -184,7 +184,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [opengl-egl-xlib],
         [
-          clutter_gl_header="GL/gl.h"
+          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
 
           SUPPORT_X11=1
@@ -267,7 +267,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [osx],
         [
           experimental_backend="yes"
-          clutter_gl_header="OpenGL/gl.h"
+          cogl_gl_headers="OpenGL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
 
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
@@ -284,7 +284,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [win32],
         [
-          clutter_gl_header="GL/gl.h"
+          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WIN32"
           AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
           AC_DEFINE([COGL_HAS_WIN32_SUPPORT], [1], [Cogl supports the win32 window system])
@@ -370,7 +370,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
 
           [1*],
           [
-            clutter_gl_header="GLES/gl.h"
+            cogl_gl_headers="GLES/gl.h GLES/glext.h"
 
             AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
             AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
@@ -380,7 +380,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
                NEED_SEPARATE_EGL=yes
               ],
               [
-                AC_CHECK_HEADERS([$clutter_gl_header],
+                AC_CHECK_HEADERS([$cogl_gl_headers],
                                  [],
                                  [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
@@ -421,7 +421,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
 
           [2*],
           [
-            clutter_gl_header="GLES2/gl2.h"
+            cogl_gl_headers="GLES2/gl2.h GLES2/gl2ext.h"
             use_gles2_wrapper=yes
             AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
             AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
@@ -429,7 +429,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             PKG_CHECK_EXISTS([glesv2],
               [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
               [
-                AC_CHECK_HEADERS([$clutter_gl_header],
+                AC_CHECK_HEADERS([$cogl_gl_headers],
                                  [],
                                  [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
@@ -454,7 +454,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
 
           [fruity],
           [
-            clutter_gl_header="GLES/gl.h"
+            cogl_gl_headers="GLES/gl.h GLES/glext.h"
             AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
             AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
@@ -505,8 +505,17 @@ done;
 
 AC_SUBST(COGL_DEFINES)
 
-AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
-CLUTTER_GL_HEADER=$clutter_gl_header
+AS_IF([test "x$cogl_gl_headers" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
+
+dnl cogl_gl_headers is a space separate list of headers to
+dnl include. We'll now convert them to a single variable with a
+dnl #include line for each header
+COGL_GL_HEADER_INCLUDES=""
+for x in $cogl_gl_headers; do
+  COGL_GL_HEADER_INCLUDES="$COGL_GL_HEADER_INCLUDES
+#include <$x>"
+done;
+AC_SUBST(COGL_GL_HEADER_INCLUDES)
 
 
 dnl === Clutter substitutions =================================================
@@ -516,7 +525,6 @@ AC_SUBST([CLUTTER_WINSYS])
 # The same goes for the winsys-base...
 AC_SUBST([CLUTTER_WINSYS_BASE])
 AC_SUBST([CLUTTER_WINSYS_BASE_LIB])
-AC_SUBST(CLUTTER_GL_HEADER)
 AC_SUBST(CLUTTER_STAGE_TYPE)
 AC_SUBST(CLUTTER_SONAME_INFIX)
 
@@ -1108,7 +1116,7 @@ fi
 echo ""
 echo " • COGL Backend:"
 echo "        Driver: ${COGL_DRIVER}"
-echo "        GL header: ${CLUTTER_GL_HEADER}"
+echo "        GL header: ${cogl_gl_headers}"
 
 if test "x$COGL_DRIVER" = "xgles"; then
   if test "x$use_gles2_wrapper" = "xyes"; then
