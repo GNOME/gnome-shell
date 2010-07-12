@@ -27,14 +27,24 @@ fi
 
 ############################################################
 
+release_file=
+
 if which lsb_release > /dev/null 2>&1; then
   system=`lsb_release -is`
+  version=`lsb_release -rs`
 elif [ -f /etc/fedora-release ] ; then
   system=Fedora
+  release_file=/etc/fedora-release
 elif [ -f /etc/SuSE-release ] ; then
   system=SUSE
+  release_file=/etc/SuSE-release
 elif [ -f /etc/mandriva-release ]; then
   system=MandrivaLinux
+  release_file=/etc/mandriva-release
+fi
+
+if [ x$release_file != x ] ; then
+    version=`sed 's/[^0-9\.]*\([0-9\.]\+\).*/\1/' < $release_file`
 fi
 
 # Required software:
@@ -43,7 +53,7 @@ fi
 # binutils, curl, gcc, make, git
 #
 # General build stuff:
-# automake, bison, flex, git, gnome-common, gtk-doc, intltool,
+# automake, bison, flex, gettext, git, gnome-common, gtk-doc, intltool,
 # libtool, pkgconfig
 #
 # Devel packages needed by gnome-shell and its deps:
@@ -77,7 +87,7 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
   reqd=""
   for pkg in \
     build-essential curl \
-    automake bison flex git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
+    automake bison flex gettext git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
     libwnck-dev libgl1-mesa-dev libreadline5-dev libxml2-dev mesa-common-dev mesa-utils \
@@ -96,23 +106,28 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
 fi
 
 if test x$system = xFedora ; then
-  reqd=""
-  for pkg in \
-    binutils curl gcc gcc-c++ make \
-    automake bison flex git gnome-common gnome-doc-utils gvfs intltool \
-    libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel \
-    gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel \
-    libpng-devel libtiff-devel libwnck-devel mesa-libGL-devel \
-    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel \
-    libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
-    glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity \
-    ; do
+  reqd="
+    binutils curl gcc gcc-c++ make
+    automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
+    libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
+    gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel
+    libpng-devel libtiff-devel libwnck-devel mesa-libGL-devel
+    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
+    libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good
+    glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
+    "
+
+  if expr $version \>= 14 > /dev/null ; then
+      reqd="$reqd gettext-autopoint"
+  fi
+
+  for pkg in $reqd ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
-        reqd="$pkg $reqd"
+        missing="$pkg $missing"
       fi
   done
-  if test ! "x$reqd" = x; then
-    gpk-install-package-name $reqd
+  if test ! "x$missing" = x; then
+    gpk-install-package-name $missing
   fi
 fi
 
