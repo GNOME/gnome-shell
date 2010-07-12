@@ -30,6 +30,7 @@
 
 #include "clutter-x11.h"
 
+#include "clutter-keymap-x11.h"
 #include "xsettings/xsettings-client.h"
 
 G_BEGIN_DECLS
@@ -88,6 +89,8 @@ struct _ClutterBackendX11
 
   XSettingsClient *xsettings;
   Window xsettings_xwin;
+
+  ClutterKeymapX11 *keymap;
 };
 
 struct _ClutterBackendX11Class

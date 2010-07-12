@@ -46,6 +46,8 @@ libclutter_x11_la_SOURCES = \
 	$(srcdir)/clutter-event-x11.c 		\
 	$(srcdir)/clutter-input-device-x11.h 	\
 	$(srcdir)/clutter-input-device-x11.c 	\
+	$(srcdir)/clutter-keymap-x11.h		\
+	$(srcdir)/clutter-keymap-x11.c		\
 	$(srcdir)/clutter-settings-x11.h	\
 	$(srcdir)/clutter-stage-x11.h 		\
 	$(srcdir)/clutter-stage-x11.c 		\

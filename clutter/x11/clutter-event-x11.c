@@ -30,6 +30,7 @@
 
 #include "clutter-stage-x11.h"
 #include "clutter-backend-x11.h"
+#include "clutter-keymap-x11.h"
 #include "clutter-x11.h"
 
 #include "../clutter-backend.h"
@@ -343,19 +344,6 @@ translate_key_event (ClutterBackend   *backend,
   event_x11 = _clutter_event_x11_new ();
   _clutter_event_set_platform_data (event, event_x11);
 
-#ifdef HAVE_XKB
-  event_x11->key_group = XkbGroupForCoreState (xevent->xkey.state);
-
-  CLUTTER_NOTE (EVENT, "Key group: %d (xkb enabled: yes)",
-                event_x11->key_group);
-#else
-  /* we force the key group to 0 */
-  event_x11->key_group = 0;
-
-  CLUTTER_NOTE (EVENT, "Key group: %d (xkb enabled: no)",
-                event_x11->key_group);
-#endif /* HAVE_XKB */
-
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
   event->key.hardware_keycode = xevent->xkey.keycode;
@@ -365,6 +353,9 @@ translate_key_event (ClutterBackend   *backend,
     XKeycodeToKeysym (xevent->xkey.display,
                       xevent->xkey.keycode,
                       0);
+
+  event_x11->key_group =
+    _clutter_keymap_x11_get_key_group (event->key.modifier_state);
 
   /* unicode_value is the printable representation */
   n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);

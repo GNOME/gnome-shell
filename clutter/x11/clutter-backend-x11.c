@@ -319,6 +319,12 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
                       "backend", backend_x11,
                       NULL);
 
+      /* register keymap */
+      backend_x11->keymap =
+        g_object_new (CLUTTER_TYPE_KEYMAP_X11,
+                      "backend", backend_x11,
+                      NULL);
+
       /* create XSETTINGS client */
       backend_x11->xsettings =
         _clutter_xsettings_client_new (backend_x11->xdpy,
