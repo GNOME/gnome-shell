@@ -212,7 +212,7 @@ _alpha_ease_in_sextic (ClutterAlpha *alpha,
 
   </section>
 
-  <section>
+  <section id="animations-inversion">
     <title>Inverting Animations</title>
 
     <section>
@@ -225,13 +225,156 @@ _alpha_ease_in_sextic (ClutterAlpha *alpha,
     <section>
       <title>Solution</title>
 
-      <para>...</para>
+      <para>Reverse the direction of the <type>ClutterTimeline</type>
+      associated with the animation.</para>
+
+      <para>For example, here's how to invert an implicit
+      animation which moves an actor along the <varname>x</varname>
+      axis. The direction of the animation is inverted when the
+      movement along the <varname>x</varname> axis is completed; it is
+      also inverted if the mouse button is pressed on the actor.</para>
+
+      <para>First, set up the animation:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterAnimation *animation;
+
+/*
+ * animate actor to x = 300.0;
+ * the implicit animation functions return a ClutterAnimation
+ * which we can use to invert the timeline
+ */
+animation = clutter_actor_animate (actor,
+                                   CLUTTER_EASE_IN_OUT_CUBIC,
+                                   2000,
+                                   "x", 300.0,
+                                   NULL);
+
+/* callback for when the animation completes */
+g_signal_connect (animation,
+                  "completed",
+                  G_CALLBACK (_animation_done_cb),
+                  NULL);
+
+/*
+ * callback for when the mouse button is pressed on the actor;
+ * note the animation is passed as user data, so we can
+ * get at the timeline
+ */
+g_signal_connect (actor,
+                  "button-press-event",
+                  G_CALLBACK (_on_click_cb),
+                  animation);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Next, add a function for inverting the timeline:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+_invert_timeline (ClutterTimeline *timeline)
+{
+  ClutterTimelineDirection direction = clutter_timeline_get_direction (timeline);
+
+  if (direction == CLUTTER_TIMELINE_FORWARD)
+    direction = CLUTTER_TIMELINE_BACKWARD;
+  else
+    direction = CLUTTER_TIMELINE_FORWARD;
+
+  clutter_timeline_set_direction (timeline, direction);
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Then add a function which calls <function>_invert_timeline</function>
+      when the animation completes. More importantly, the callback should
+      stop emission of the "completed" signal by the animation. This
+      prevents the <type>ClutterAnimation</type> underlying the implicit
+      animation from being unreferenced; which in turn allows it to be
+      inverted:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+_animation_done_cb (ClutterAnimation *animation,
+                    gpointer          user_data)
+{
+  /* stop the completed signal before the ClutterAnimation is unreferenced */
+  g_signal_stop_emission_by_name (animation, "completed");
+
+  /* invert the timeline associated with the animation */
+  ClutterTimeline *timeline = clutter_animation_get_timeline (animation);
+  _invert_timeline (timeline);
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Finally, the click callback function uses the same
+      <function>_invert_timeline</function> function if the animation
+      is playing; but if the animation is stopped, it will
+      start it instead:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+_on_click_cb (ClutterActor *actor,
+              ClutterEvent *event,
+              gpointer      user_data)
+{
+  ClutterAnimation *animation = (ClutterAnimation *)user_data;
+
+  ClutterTimeline *timeline = clutter_animation_get_timeline (animation);
+
+  if (clutter_timeline_is_playing (timeline))
+    {
+      _invert_timeline (timeline);
+    }
+  else
+    {
+      clutter_timeline_start (timeline);
+    }
+}
+]]>
+        </programlisting>
+      </informalexample>
+
     </section>
 
     <section>
       <title>Discussion</title>
 
-      <para>...</para>
+      <para>If you are using <type>ClutterAnimator</type> rather than
+      implicit animations, <function>clutter_animator_get_timeline()</function>
+      enables you to get the underlying timeline; you could then use
+      the techniques shown above to invert it.</para>
+
+      <para><type>ClutterState</type> enables a different approach
+      to "inverting" an animation: rather than having a single animation
+      which you invert, you would define two or more
+      <emphasis>keys</emphasis> for an actor (or set of actors) and
+      transition between them.</para>
+
+      <para>For the example above, you would define two keys:
+      one for the actor's initial position; and a second for the actor
+      at <code>x = 300.0</code>. You would also define the
+      transition between them: 2000 milliseconds with a
+      <constant>CLUTTER_EASE_IN_OUT_CUBIC</constant> easing mode.</para>
+
+      <para>With the states defined, you would then use
+      <function>clutter_state_set_state()</function> inside callbacks to
+      animate the actor between the two <varname>x</varname> positions.
+      Behind the scenes, <type>ClutterState</type> would handle the
+      animations and timelines for you.</para>
+
     </section>
 
   </section>
