@@ -155,7 +155,7 @@ _on_click_cb (ClutterActor *actor,
     <section>
       <title>Discussion</title>
 
-      <para>If you are using <type>ClutterAnimator<type> rather than
+      <para>If you are using <type>ClutterAnimator</type> rather than
       implicit animations, <function>clutter_animator_get_timeline()</function>
       enables you to get the underlying timeline; you could then use
       the techniques shown above to invert it.</para>
