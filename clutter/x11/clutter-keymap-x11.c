@@ -26,6 +26,7 @@
 #endif
 
 #include "clutter-keymap-x11.h"
+#include "clutter-backend-x11.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
@@ -47,6 +48,17 @@ struct _ClutterKeymapX11
   GObject parent_instance;
 
   ClutterBackend *backend;
+
+  gint min_keycode;
+  gint max_keycode;
+
+  ClutterModifierType modmap[8];
+
+  ClutterModifierType num_lock_mask;
+
+#ifdef HAVE_XKB
+  XkbDescPtr xkb_desc;
+#endif
 };
 
 struct _ClutterKeymapX11Class
@@ -62,6 +74,143 @@ enum
 };
 
 G_DEFINE_TYPE (ClutterKeymapX11, clutter_keymap_x11, G_TYPE_OBJECT);
+
+#ifdef HAVE_XKB
+
+/* code adapted from gdk/x11/gdkkeys-x11.c - update_modmap */
+static void
+update_modmap (Display          *display,
+               ClutterKeymapX11 *keymap_x11)
+{
+  static struct {
+    const gchar *name;
+    Atom atom;
+    ClutterModifierType mask;
+  } vmods[] = {
+    { "Meta",  0, CLUTTER_META_MASK  },
+    { "Super", 0, CLUTTER_SUPER_MASK },
+    { "Hyper", 0, CLUTTER_HYPER_MASK },
+    { NULL, 0, 0 }
+  };
+
+  int i, j, k;
+
+  if (vmods[0].atom == 0)
+    for (i = 0; vmods[i].name; i++)
+      vmods[i].atom = XInternAtom (display, vmods[i].name, FALSE);
+
+  for (i = 0; i < 8; i++)
+    keymap_x11->modmap[i] = 1 << i;
+
+  for (i = 0; i < XkbNumVirtualMods; i++)
+    {
+      for (j = 0; vmods[j].atom; j++)
+        {
+          if (keymap_x11->xkb_desc->names->vmods[i] == vmods[j].atom)
+            {
+              for (k = 0; k < 8; k++)
+                {
+                  if (keymap_x11->xkb_desc->server->vmods[i] & (1 << k))
+                    keymap_x11->modmap[k] |= vmods[j].mask;
+                }
+            }
+        }
+    }
+}
+
+static XkbDescPtr
+get_xkb (ClutterKeymapX11 *keymap_x11)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (keymap_x11->backend);
+
+  if (keymap_x11->max_keycode == 0)
+    XDisplayKeycodes (backend_x11->xdpy,
+                      &keymap_x11->min_keycode,
+                      &keymap_x11->max_keycode);
+
+  if (keymap_x11->xkb_desc == NULL)
+    {
+      int flags = XkbKeySymsMask
+                | XkbKeyTypesMask
+                | XkbModifierMapMask
+                | XkbVirtualModsMask;
+
+      keymap_x11->xkb_desc = XkbGetMap (backend_x11->xdpy, flags, XkbUseCoreKbd);
+      if (G_UNLIKELY (keymap_x11->xkb_desc == NULL))
+        {
+          g_error ("Failed to get the keymap from XKB");
+          return NULL;
+        }
+
+      flags = XkbGroupNamesMask | XkbVirtualModNamesMask;
+      XkbGetNames (backend_x11->xdpy, flags, keymap_x11->xkb_desc);
+
+      update_modmap (backend_x11->xdpy, keymap_x11);
+    }
+
+  if (keymap_x11->num_lock_mask == 0)
+    keymap_x11->num_lock_mask = XkbKeysymToModifiers (backend_x11->xdpy,
+                                                      XK_Num_Lock);
+
+  return keymap_x11->xkb_desc;
+}
+#endif /* HAVE_XKB */
+
+static void
+clutter_keymap_x11_constructed (GObject *gobject)
+{
+  ClutterKeymapX11 *keymap_x11 = CLUTTER_KEYMAP_X11 (gobject);
+  ClutterBackendX11 *backend_x11;
+
+  g_assert (keymap_x11->backend != NULL);
+  backend_x11 = CLUTTER_BACKEND_X11 (keymap_x11->backend);
+
+#if HAVE_XKB
+  {
+    gint xkb_major = XkbMajorVersion;
+    gint xkb_minor = XkbMinorVersion;
+
+    if (XkbLibraryVersion (&xkb_major, &xkb_minor))
+      {
+        xkb_major = XkbMajorVersion;
+        xkb_minor = XkbMinorVersion;
+
+        if (XkbQueryExtension (backend_x11->xdpy,
+                               NULL, &backend_x11->xkb_event_base, NULL,
+                               &xkb_major, &xkb_minor))
+          {
+            Bool detectable_autorepeat_supported;
+
+            backend_x11->use_xkb = TRUE;
+
+#if 0
+            /* XXX - enable when we handle keymap-related events */
+            XkbSelectEvents (backend_x11->xdpy,
+                             XkbUseCoreKbd,
+                             XkbNewKeyboardNotifyMask | XkbMapNotifyMask | XkbStateNotifyMask,
+                             XkbNewKeyboardNotifyMask | XkbMapNotifyMask | XkbStateNotifyMask);
+
+            XkbSelectEventDetails (backend_x11->xdpy,
+                                   XkbUseCoreKbd, XkbStateNotify,
+                                   XkbAllStateComponentsMask,
+                                   XkbGroupLockMask|XkbModifierLockMask);
+#endif
+
+            /* enable XKB autorepeat */
+            XkbSetDetectableAutoRepeat (backend_x11->xdpy,
+                                        True,
+                                        &detectable_autorepeat_supported);
+
+            backend_x11->have_xkb_autorepeat = detectable_autorepeat_supported;
+
+            CLUTTER_NOTE (BACKEND, "Detectable autorepeat: %s",
+                          backend_x11->have_xkb_autorepeat ? "supported"
+                                                           : "not supported");
+          }
+      }
+  }
+#endif /* HAVE_XKB */
+}
 
 static void
 clutter_keymap_x11_set_property (GObject      *gobject,
@@ -95,6 +244,7 @@ clutter_keymap_x11_class_init (ClutterKeymapX11Class *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
+  gobject_class->constructed = clutter_keymap_x11_constructed;
   gobject_class->set_property = clutter_keymap_x11_set_property;
   gobject_class->finalize = clutter_keymap_x11_finalize;
 
@@ -113,9 +263,12 @@ clutter_keymap_x11_init (ClutterKeymapX11 *keymap)
 }
 
 gint
-_clutter_keymap_x11_get_key_group (ClutterModifierType state)
+_clutter_keymap_x11_get_key_group (ClutterKeymapX11    *keymap,
+                                   ClutterModifierType  state)
 {
 #ifdef HAVE_XKB
+  (void) get_xkb (keymap);
+
   return XkbGroupForCoreState (state);
 #else
   return 0;

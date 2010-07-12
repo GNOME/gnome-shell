@@ -91,6 +91,9 @@ struct _ClutterBackendX11
   Window xsettings_xwin;
 
   ClutterKeymapX11 *keymap;
+  int xkb_event_base;
+  gboolean use_xkb;
+  gboolean have_xkb_autorepeat;
 };
 
 struct _ClutterBackendX11Class

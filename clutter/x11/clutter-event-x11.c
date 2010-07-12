@@ -329,9 +329,9 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev,
 #endif /* HAVE_XINPUT */
 
 static void
-translate_key_event (ClutterBackend   *backend,
-                     ClutterEvent     *event,
-                     XEvent           *xevent)
+translate_key_event (ClutterBackendX11 *backend_x11,
+                     ClutterEvent      *event,
+                     XEvent            *xevent)
 {
   ClutterEventX11 *event_x11;
   char buffer[256 + 1];
@@ -355,7 +355,8 @@ translate_key_event (ClutterBackend   *backend,
                       0);
 
   event_x11->key_group =
-    _clutter_keymap_x11_get_key_group (event->key.modifier_state);
+    _clutter_keymap_x11_get_key_group (backend_x11->keymap,
+                                       event->key.modifier_state);
 
   /* unicode_value is the printable representation */
   n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);
@@ -712,7 +713,7 @@ event_translate (ClutterBackend *backend,
         clutter_device_manager_get_core_device (manager,
                                                 CLUTTER_KEYBOARD_DEVICE);
 
-      translate_key_event (backend, event, xevent);
+      translate_key_event (backend_x11, event, xevent);
 
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
@@ -728,8 +729,11 @@ event_translate (ClutterBackend *backend,
        * the next event and check if it's a KeyPress for the same key
        * and timestamp - and then ignore it if it matches the
        * KeyRelease
+       *
+       * if we have XKB, and autorepeat is enabled, then this becomes
+       * a no-op
        */
-      if (XPending (xevent->xkey.display))
+      if (!backend_x11->have_xkb_autorepeat && XPending (xevent->xkey.display))
         {
           XEvent next_event;
 
@@ -749,7 +753,7 @@ event_translate (ClutterBackend *backend,
         clutter_device_manager_get_core_device (manager,
                                                 CLUTTER_KEYBOARD_DEVICE);
 
-      translate_key_event (backend, event, xevent);
+      translate_key_event (backend_x11, event, xevent);
       break;
 
     default:
@@ -1029,7 +1033,7 @@ event_translate (ClutterBackend *backend,
                                           ? CLUTTER_KEY_PRESS
                                           : CLUTTER_KEY_RELEASE;
 
-          translate_key_event (backend, event, &xevent_converted);
+          translate_key_event (backend_x11, event, &xevent_converted);
 
           if (xevent->type == key_press)
             set_user_time (backend_x11, &xwindow, xkev->time);
