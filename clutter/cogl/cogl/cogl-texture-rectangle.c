@@ -151,7 +151,7 @@ static void
 _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
                                                   GLenum wrap_mode_s,
                                                   GLenum wrap_mode_t,
-                                                  GLenum wrap_mode_r)
+                                                  GLenum wrap_mode_p)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
 

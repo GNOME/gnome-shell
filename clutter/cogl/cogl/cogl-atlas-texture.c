@@ -234,7 +234,7 @@ static void
 _cogl_atlas_texture_set_wrap_mode_parameters (CoglTexture *tex,
                                               GLenum wrap_mode_s,
                                               GLenum wrap_mode_t,
-                                              GLenum wrap_mode_r)
+                                              GLenum wrap_mode_p)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
@@ -242,7 +242,7 @@ _cogl_atlas_texture_set_wrap_mode_parameters (CoglTexture *tex,
   _cogl_texture_set_wrap_mode_parameters (atlas_tex->sub_texture,
                                           wrap_mode_s,
                                           wrap_mode_t,
-                                          wrap_mode_r);
+                                          wrap_mode_p);
 }
 
 static void

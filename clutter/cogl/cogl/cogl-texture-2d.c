@@ -128,7 +128,7 @@ static void
 _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
                                            GLenum wrap_mode_s,
                                            GLenum wrap_mode_t,
-                                           GLenum wrap_mode_r)
+                                           GLenum wrap_mode_p)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 

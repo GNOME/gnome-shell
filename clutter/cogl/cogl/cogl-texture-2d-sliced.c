@@ -667,7 +667,7 @@ static void
 _cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
                                                   GLenum wrap_mode_s,
                                                   GLenum wrap_mode_t,
-                                                  GLenum wrap_mode_r)
+                                                  GLenum wrap_mode_p)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
 

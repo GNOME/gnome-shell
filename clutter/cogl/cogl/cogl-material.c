@@ -1544,7 +1544,7 @@ _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
     {
       dest->wrap_mode_s = src->wrap_mode_s;
       dest->wrap_mode_t = src->wrap_mode_t;
-      dest->wrap_mode_r = src->wrap_mode_r;
+      dest->wrap_mode_p = src->wrap_mode_p;
     }
 
   if (differences & COGL_MATERIAL_LAYER_STATE_NEEDS_BIG_STATE)
@@ -2223,14 +2223,14 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
                                      CoglMaterialLayer   *authority,
                                      CoglMaterialWrapModeInternal wrap_mode_s,
                                      CoglMaterialWrapModeInternal wrap_mode_t,
-                                     CoglMaterialWrapModeInternal wrap_mode_r)
+                                     CoglMaterialWrapModeInternal wrap_mode_p)
 {
   CoglMaterialLayer     *new;
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
 
   if (authority->wrap_mode_s == wrap_mode_s &&
       authority->wrap_mode_t == wrap_mode_t &&
-      authority->wrap_mode_r == wrap_mode_r)
+      authority->wrap_mode_p == wrap_mode_p)
     return;
 
   new = _cogl_material_layer_pre_change_notify (material, layer, change);
@@ -2251,7 +2251,7 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
 
           if (old_authority->wrap_mode_s == wrap_mode_s &&
               old_authority->wrap_mode_t == wrap_mode_t &&
-              old_authority->wrap_mode_r == wrap_mode_r)
+              old_authority->wrap_mode_p == wrap_mode_p)
             {
               layer->differences &= ~change;
 
@@ -2266,7 +2266,7 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
 
   layer->wrap_mode_s = wrap_mode_s;
   layer->wrap_mode_t = wrap_mode_t;
-  layer->wrap_mode_r = wrap_mode_r;
+  layer->wrap_mode_p = wrap_mode_p;
 
   /* If we weren't previously the authority on this state then we need
    * to extended our differences mask and so it's possible that some
@@ -2322,7 +2322,7 @@ cogl_material_set_layer_wrap_mode_s (CoglMaterial *material,
   _cogl_material_set_layer_wrap_modes (material, layer, authority,
                                        internal_mode,
                                        authority->wrap_mode_t,
-                                       authority->wrap_mode_r);
+                                       authority->wrap_mode_p);
 }
 
 void
@@ -2353,13 +2353,25 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
   _cogl_material_set_layer_wrap_modes (material, layer, authority,
                                        authority->wrap_mode_s,
                                        internal_mode,
-                                       authority->wrap_mode_r);
+                                       authority->wrap_mode_p);
 }
 
 /* TODO: this should be made public once we add support for 3D
    textures in Cogl */
+/* The rationale for naming the third texture coordinate 'p' instead
+   of OpenGL's usual 'r' is that 'r' conflicts with the usual naming
+   of the 'red' component when treating a vector as a color. Under
+   GLSL this is awkward because the texture swizzling for a vector
+   uses a single letter for each component and the names for colors,
+   textures and positions are synonymous. GLSL works around this by
+   naming the components of the texture s, t, p and q. Cogl already
+   effectively already exposes this naming because it exposes GLSL so
+   it makes sense to use that naming consistently. Another alternative
+   could be u, v and w. This is what Blender and Direct3D use. However
+   the w component conflicts with the w component of a position
+   vertex.  */
 void
-_cogl_material_set_layer_wrap_mode_r (CoglMaterial        *material,
+_cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
                                       int                  layer_index,
                                       CoglMaterialWrapMode mode)
 {
@@ -2493,18 +2505,18 @@ cogl_material_get_layer_wrap_mode_t (CoglMaterial *material, int layer_index)
 }
 
 CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_r (CoglMaterialLayer *layer)
+_cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
 {
   CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
   CoglMaterialLayer     *authority =
     _cogl_material_layer_get_authority (layer, change);
 
-  return internal_to_public_wrap_mode (authority->wrap_mode_r);
+  return internal_to_public_wrap_mode (authority->wrap_mode_p);
 }
 
 /* TODO: make this public when we expose 3D textures. */
 CoglMaterialWrapMode
-_cogl_material_get_layer_wrap_mode_r (CoglMaterial *material, int layer_index)
+_cogl_material_get_layer_wrap_mode_p (CoglMaterial *material, int layer_index)
 {
   CoglMaterialLayer *layer;
 
@@ -2518,14 +2530,14 @@ _cogl_material_get_layer_wrap_mode_r (CoglMaterial *material, int layer_index)
    * material. */
   layer = _cogl_material_get_layer (material, layer_index);
 
-  return _cogl_material_layer_get_wrap_mode_r (layer);
+  return _cogl_material_layer_get_wrap_mode_p (layer);
 }
 
 static void
 _cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
                                      CoglMaterialWrapModeInternal *wrap_mode_s,
                                      CoglMaterialWrapModeInternal *wrap_mode_t,
-                                     CoglMaterialWrapModeInternal *wrap_mode_r)
+                                     CoglMaterialWrapModeInternal *wrap_mode_p)
 {
   CoglMaterialLayer *authority =
     _cogl_material_layer_get_authority (layer,
@@ -2533,7 +2545,7 @@ _cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
 
   *wrap_mode_s = authority->wrap_mode_s;
   *wrap_mode_t = authority->wrap_mode_t;
-  *wrap_mode_r = authority->wrap_mode_r;
+  *wrap_mode_p = authority->wrap_mode_p;
 }
 
 gboolean
@@ -2673,7 +2685,7 @@ apply_wrap_mode_overrides_cb (CoglMaterialLayer *layer,
                                         COGL_MATERIAL_LAYER_STATE_WRAP_MODES);
   CoglMaterialWrapModeInternal wrap_mode_s;
   CoglMaterialWrapModeInternal wrap_mode_t;
-  CoglMaterialWrapModeInternal wrap_mode_r;
+  CoglMaterialWrapModeInternal wrap_mode_p;
 
   g_return_val_if_fail (state->i < 32, FALSE);
 
@@ -2683,16 +2695,16 @@ apply_wrap_mode_overrides_cb (CoglMaterialLayer *layer,
   wrap_mode_t = state->wrap_mode_overrides->values[state->i].t;
   if (wrap_mode_t == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
     wrap_mode_t = (CoglMaterialWrapModeInternal)authority->wrap_mode_t;
-  wrap_mode_r = state->wrap_mode_overrides->values[state->i].r;
-  if (wrap_mode_r == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_r = (CoglMaterialWrapModeInternal)authority->wrap_mode_r;
+  wrap_mode_p = state->wrap_mode_overrides->values[state->i].p;
+  if (wrap_mode_p == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
+    wrap_mode_p = (CoglMaterialWrapModeInternal)authority->wrap_mode_p;
 
   _cogl_material_set_layer_wrap_modes (state->material,
                                        layer,
                                        authority,
                                        wrap_mode_s,
                                        wrap_mode_t,
-                                       wrap_mode_r);
+                                       wrap_mode_p);
 
   state->i++;
 
@@ -2973,7 +2985,7 @@ _cogl_material_layer_wrap_modes_equal (CoglMaterialLayer *authority0,
 {
   if (authority0->wrap_mode_s != authority1->wrap_mode_s ||
       authority0->wrap_mode_t != authority1->wrap_mode_t ||
-      authority0->wrap_mode_r != authority1->wrap_mode_r)
+      authority0->wrap_mode_p != authority1->wrap_mode_p)
     return FALSE;
 
   return TRUE;
@@ -4515,7 +4527,7 @@ _cogl_material_init_default_layers (void)
 
   layer->wrap_mode_s = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
   layer->wrap_mode_t = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_r = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_p = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
 
   layer->big_state = big_state;
   layer->has_big_state = TRUE;
@@ -5828,8 +5840,8 @@ static void
 _cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
                                          CoglHandle texture)
 {
-  CoglMaterialWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_r;
-  GLenum gl_wrap_mode_s, gl_wrap_mode_t, gl_wrap_mode_r;
+  CoglMaterialWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_p;
+  GLenum gl_wrap_mode_s, gl_wrap_mode_t, gl_wrap_mode_p;
 
   if (texture == COGL_INVALID_HANDLE)
     return;
@@ -5837,7 +5849,7 @@ _cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
   _cogl_material_layer_get_wrap_modes (layer,
                                        &wrap_mode_s,
                                        &wrap_mode_t,
-                                       &wrap_mode_r);
+                                       &wrap_mode_p);
 
   /* Update the wrap mode on the texture object. The texture backend
      should cache the value so that it will be a no-op if the object
@@ -5860,15 +5872,15 @@ _cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
   else
     gl_wrap_mode_t = wrap_mode_t;
 
-  if (wrap_mode_r == COGL_MATERIAL_WRAP_MODE_INTERNAL_AUTOMATIC)
-    gl_wrap_mode_r = GL_CLAMP_TO_EDGE;
+  if (wrap_mode_p == COGL_MATERIAL_WRAP_MODE_INTERNAL_AUTOMATIC)
+    gl_wrap_mode_p = GL_CLAMP_TO_EDGE;
   else
-    gl_wrap_mode_r = wrap_mode_r;
+    gl_wrap_mode_p = wrap_mode_p;
 
   _cogl_texture_set_wrap_mode_parameters (texture,
                                           gl_wrap_mode_s,
                                           gl_wrap_mode_t,
-                                          gl_wrap_mode_r);
+                                          gl_wrap_mode_p);
 }
 
 /* OpenGL associates the min/mag filters and repeat modes with the
