@@ -177,7 +177,7 @@ scrollable_get_adjustments (StScrollable  *scrollable,
 
   priv = (ST_BOX_LAYOUT (scrollable))->priv;
 
-  if (priv->hadjustment)
+  if (hadjustment)
     *hadjustment = priv->hadjustment;
 
   if (vadjustment)
