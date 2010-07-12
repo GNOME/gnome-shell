@@ -227,14 +227,14 @@ static void
 _cogl_sub_texture_set_wrap_mode_parameters (CoglTexture *tex,
                                             GLenum wrap_mode_s,
                                             GLenum wrap_mode_t,
-                                            GLenum wrap_mode_r)
+                                            GLenum wrap_mode_p)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
 
   _cogl_texture_set_wrap_mode_parameters (sub_tex->full_texture,
                                           wrap_mode_s,
                                           wrap_mode_t,
-                                          wrap_mode_r);
+                                          wrap_mode_p);
 }
 
 static void

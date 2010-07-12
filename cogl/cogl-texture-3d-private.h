@@ -51,7 +51,7 @@ struct _CoglTexture3D
   GLenum          mag_filter;
   GLint           wrap_mode_s;
   GLint           wrap_mode_t;
-  GLint           wrap_mode_r;
+  GLint           wrap_mode_p;
   gboolean        auto_mipmap;
   gboolean        mipmaps_dirty;
 };

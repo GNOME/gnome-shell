@@ -337,7 +337,7 @@ struct _CoglMaterialLayer
 
   CoglMaterialWrapMode       wrap_mode_s;
   CoglMaterialWrapMode       wrap_mode_t;
-  CoglMaterialWrapMode       wrap_mode_r;
+  CoglMaterialWrapMode       wrap_mode_p;
 
   /* Infrequent differences aren't currently tracked in
    * a separate, dynamically allocated structure as they are
@@ -756,7 +756,7 @@ typedef struct _CoglMaterialWrapModeOverrides
   {
     CoglMaterialWrapModeOverride s;
     CoglMaterialWrapModeOverride t;
-    CoglMaterialWrapModeOverride r;
+    CoglMaterialWrapModeOverride p;
   } values[COGL_MATERIAL_MAX_LAYERS];
 } CoglMaterialWrapModeOverrides;
 
@@ -817,12 +817,12 @@ _cogl_material_journal_unref (CoglMaterial *material);
 /* TODO: These should be made public once we add support for 3D
    textures in Cogl */
 void
-_cogl_material_set_layer_wrap_mode_r (CoglMaterial *material,
+_cogl_material_set_layer_wrap_mode_p (CoglMaterial *material,
                                       int layer_index,
                                       CoglMaterialWrapMode mode);
 
 CoglMaterialWrapMode
-_cogl_material_layer_get_wrap_mode_r (CoglMaterialLayer *layer);
+_cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 
 void
 _cogl_material_set_user_program (CoglMaterial *material,

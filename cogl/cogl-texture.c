@@ -267,14 +267,14 @@ void
 _cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
                                         GLenum wrap_mode_s,
                                         GLenum wrap_mode_t,
-                                        GLenum wrap_mode_r)
+                                        GLenum wrap_mode_p)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
 
   tex->vtable->set_wrap_mode_parameters (tex,
                                          wrap_mode_s,
                                          wrap_mode_t,
-                                         wrap_mode_r);
+                                         wrap_mode_p);
 }
 
 /* This is like CoglSpanIter except it deals with floats and it

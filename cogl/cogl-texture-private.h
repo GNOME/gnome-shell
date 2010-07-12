@@ -124,7 +124,7 @@ struct _CoglTextureVtable
   void (* set_wrap_mode_parameters) (CoglTexture *tex,
                                      GLenum wrap_mode_s,
                                      GLenum wrap_mode_t,
-                                     GLenum wrap_mode_r);
+                                     GLenum wrap_mode_p);
 
   CoglPixelFormat (* get_format) (CoglTexture *tex);
   GLenum (* get_gl_format) (CoglTexture *tex);
@@ -198,7 +198,7 @@ void
 _cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
                                         GLenum wrap_mode_s,
                                         GLenum wrap_mode_t,
-                                        GLenum wrap_mode_r);
+                                        GLenum wrap_mode_p);
 
 
 void

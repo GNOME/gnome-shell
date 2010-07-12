@@ -137,7 +137,7 @@ static void
 _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
                                            GLenum wrap_mode_s,
                                            GLenum wrap_mode_t,
-                                           GLenum wrap_mode_r)
+                                           GLenum wrap_mode_p)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
 
@@ -145,18 +145,18 @@ _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
      to avoid too many GL calls. */
   if (tex_3d->wrap_mode_s != wrap_mode_s ||
       tex_3d->wrap_mode_t != wrap_mode_t ||
-      tex_3d->wrap_mode_r != wrap_mode_r)
+      tex_3d->wrap_mode_p != wrap_mode_p)
     {
       _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                        tex_3d->gl_texture,
                                        FALSE);
       GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
       GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
-      GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap_mode_r) );
+      GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap_mode_p) );
 
       tex_3d->wrap_mode_s = wrap_mode_s;
       tex_3d->wrap_mode_t = wrap_mode_t;
-      tex_3d->wrap_mode_r = wrap_mode_r;
+      tex_3d->wrap_mode_p = wrap_mode_p;
     }
 }
 
@@ -194,7 +194,7 @@ _cogl_texture_3d_create_base (unsigned int     width,
   /* Wrap mode not yet set */
   tex_3d->wrap_mode_s = GL_FALSE;
   tex_3d->wrap_mode_t = GL_FALSE;
-  tex_3d->wrap_mode_r = GL_FALSE;
+  tex_3d->wrap_mode_p = GL_FALSE;
 
   tex_3d->format = internal_format;
 

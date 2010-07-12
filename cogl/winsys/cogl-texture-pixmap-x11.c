@@ -1286,7 +1286,7 @@ static void
 _cogl_texture_pixmap_x11_set_wrap_mode_parameters (CoglTexture *tex,
                                                    GLenum       wrap_mode_s,
                                                    GLenum       wrap_mode_t,
-                                                   GLenum       wrap_mode_r)
+                                                   GLenum       wrap_mode_p)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
   CoglHandle child_tex;
@@ -1297,7 +1297,7 @@ _cogl_texture_pixmap_x11_set_wrap_mode_parameters (CoglTexture *tex,
   _cogl_texture_set_wrap_mode_parameters (child_tex,
                                           wrap_mode_s,
                                           wrap_mode_t,
-                                          wrap_mode_r);
+                                          wrap_mode_p);
 }
 
 static CoglPixelFormat
