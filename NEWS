@@ -1,7 +1,47 @@
+Clutter 1.3.8 (12/07/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.3.6
+
+    » Merge Cally, the Clutter Accessibility Library, in the Clutter tree.
+
+    » Take into consideration the source actor's position in the
+      AlignConstraint logic.
+
+    » Update the internal COGL tesselator with the latest GLU code.
+
+    » Fix CoglTexture data readback.
+
+    » Use GL_MAX_TEXTURE_SIZE on GLES when checking the supported texture size.
+
+    » Add missing public functions from COGL headers.
+
+    » Fix GLES build after the Cogl material changes.
+
+    » Rename the experimental CoglPixelBuffer API to CoglPixelArray.
+
+    » Split the clutter_state_change() method into two:
+    clutter_state_set_state(), for animated state changes; and
+    clutter_state_warp_to_state() for immediate state changes.
+
+    » Documentation and introspection fixes.
+
+    » Build fixes
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Elliot Smith
+  Alejandro Piñeiro
+  Øyvind Kolås
+  Damien Lespiau
+  Alexandros Frantzis
+
 Clutter 1.3.6 (30/06/2010)
 ===============================================================================
 
-  • List of changes since Clutter 1.34.
+  • List of changes since Clutter 1.3.4
 
     » Provide a fallback on GLX if the MESA_copy_sub_buffer extension is not
       available, by using EXT_framebuffer_blit. Both mechanisms are also
