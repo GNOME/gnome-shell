@@ -26,6 +26,7 @@ XSL_BASE_URI  = http://docbook.sourceforge.net/release/xsl/current
 XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 
 HTML_FILES = html/*.html
+CSS_FILES = html/*.css
 IMAGE_FILES = images/clutter-logo.png
 
 EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
@@ -43,6 +44,7 @@ pdf-build.stamp: clutter-cookbook.xml
 html-build.stamp: clutter-cookbook.xml
 	$(XSLTPROC) $(XSLTOPTS) -o clutter-cookbook.html $(XSL_XHTML_URI) $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
 	$(XSLTPROC) $(XSLTOPTS) -o html/ ref-html-style.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
+  cp $(top_srcdir)/doc/common/style.css html/ && \
 	echo timestamp > $(@F)
 
 if ENABLE_PDFS
@@ -71,7 +73,7 @@ install-data-local:
 	then echo '-- Nothing to install' ; \
 	else \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-	  for file in `ls $(HTML_FILES)`; do \
+	  for file in `ls $(HTML_FILES) $(CSS_FILES)`; do \
 	    if [ -f $$file ]; then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/$$basefile; \
@@ -89,7 +91,6 @@ install-data-local:
 	    fi \
 	  done; \
 	fi; \
-	$(INSTALL_DATA) $(top_srcdir)/doc/common/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
 	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc

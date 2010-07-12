@@ -70,8 +70,8 @@
         </listitem>
         <listitem>
           <para><emphasis>Solution 2:</emphasis> Use an actor's
-          ClutterBindingPool to declaratively assign actions to specific
-          key and modifier combinations.</para>
+          <type>ClutterBindingPool</type> to declaratively assign
+          actions to specific key and modifier combinations.</para>
         </listitem>
       </orderedlist>
 
@@ -80,12 +80,13 @@
       <section>
         <title>Solution 1</title>
 
-        <para>Connect the key-press-event signal for an actor to a callback;
-        then examine the event in the callback to determine which key and
-        modifiers were pressed.</para>
+        <para>Connect the <emphasis>key-press-event</emphasis>
+        signal for an actor to a callback; then examine the event
+        in the callback to determine which key and modifiers were
+        pressed.</para>
 
-        <para>First, connect an actor's key-press-event signal
-        to a callback:</para>
+        <para>First, connect an actor's
+        <emphasis>key-press-event</emphasis> signal to a callback:</para>
 
         <informalexample>
           <programlisting>
@@ -96,7 +97,8 @@ g_signal_connect (actor, "key-press-event", G_CALLBACK (_key_press_cb), NULL);
         <para>Then, in the callback, check which key was pressed and which
         modifiers were down at the same time. For example, this callback
         checks for a press on the up arrow key and whether
-        the Shift and/or Control key were down:</para>
+        the <keycap>Shift</keycap> and/or <keycap>Ctrl</keycap>
+        key were down:</para>
 
         <informalexample>
           <programlisting>
@@ -110,60 +112,67 @@ _key_press_cb (ClutterActor *actor,
   if (CLUTTER_Up == keyval)
     {
       ClutterModifierType modifiers = clutter_event_get_state (event);
-  
+
       switch (modifiers)
         {
         case CLUTTER_SHIFT_MASK:
           g_debug ("Up and shift pressed");
           break;
-  
+
         case CLUTTER_SHIFT_MASK + CLUTTER_CONTROL_MASK:
           g_debug ("Up and shift and control pressed");
           break;
-  
+
         default:
           g_debug ("Up pressed");
           break;
         }
-  
+
       /* The event was handled, and the emission should stop */
       return TRUE;
     }
-  
+
   /* The event was not handled, and the emission should continue */
   return FALSE;
 }
           </programlisting>
         </informalexample>
 
-        <para>Note that Clutter provides a range of key value definitions
-        (like CLUTTER_Up, used above). These are generated from the list in the
-        <ulink url="http://cgit.freedesktop.org/xorg/proto/x11proto/plain/keysymdef.h">X.Org source code</ulink>
-        (replace "XK" with "CLUTTER" in the definitions there to get the
-        CLUTTER equivalents; alternatively, look at the clutter-keysyms.h
-        header file for the list).</para>
+        <note>
+          <para>Clutter provides a range of key value definitions
+          (like <constant>CLUTTER_Up</constant>, used above). These are
+          generated from the list in the
+          <ulink url="http://cgit.freedesktop.org/xorg/proto/x11proto/plain/keysymdef.h">X.Org source code</ulink>
+          (replace "XK" with "CLUTTER" in the definitions there to get the
+          CLUTTER equivalents; alternatively, look at the
+          <filename>clutter-keysyms.h</filename> header file for the
+          list).</para>
 
-        <para>CLUTTER_SHIFT_MASK, CLUTTER_CONTROL_MASK and other modifiers are
-        defined in the ClutterModifierType enum.</para>
+          <para><constant>CLUTTER_SHIFT_MASK</constant>,
+          <constant>CLUTTER_CONTROL_MASK</constant> and other modifiers are
+          defined in the <type>ClutterModifierType</type> enum.</para>
+        </note>
 
       </section>
 
       <section>
         <title>Solution 2</title>
 
-        <para>Assign actions to an actor's ClutterBindingPool.
+        <para>Assign actions to an actor's <type>ClutterBindingPool</type>.
         A binding pool stores mappings from a key press (either a single key
         or a key plus modifiers) to actions; an action is simply a callback
         function with a specific signature.</para>
 
         <para>While this approach is trickier to implement, it is more
         flexible and removes the drudgery of writing branching code to
-        handle different key presses. See the Discussion section for
-        more details.</para>
+        handle different key presses. See the
+        <link linkend="events-handling-key-events-discussion">Discussion</link>
+        section for more details.</para>
 
         <para>To use this approach with an actor which will receive key press
         events, first get that actor's binding pool. In the example below,
-        we're using the binding pool for the default ClutterStage:</para>
+        we're using the binding pool for the default
+        <type>ClutterStage</type>:</para>
 
         <informalexample>
           <programlisting>
@@ -176,8 +185,9 @@ binding_pool = clutter_binding_pool_get_for_class (stage_class);
         </informalexample>
 
         <para>Next, install actions into the binding pool. For example, to
-        install an action bound to the up arrow key, which calls the _move_up
-        function when that key is pressed, you would do:</para>
+        install an action bound to the up arrow key, which calls the
+        <function>_move_up()</function> function when that key is pressed,
+        you would do:</para>
 
         <informalexample>
           <programlisting>
@@ -191,8 +201,10 @@ clutter_binding_pool_install_action (binding_pool,
           </programlisting>
         </informalexample>
 
-        <para>Another example, binding up + Shift + Control to an action which
-        calls _move_up_shift_control when activated:</para>
+        <para>Another example, binding up arrow +
+        <keycap>Shift</keycap> + <keycap>Ctrl</keycap> to an action
+        which calls <function>_move_up_shift_control()</function> when
+        activated:</para>
 
         <informalexample>
           <programlisting>
@@ -206,8 +218,8 @@ clutter_binding_pool_install_action (binding_pool,
           </programlisting>
         </informalexample>
 
-        <para>The function called when an action is activated looks like this
-        (for _move_up):</para>
+        <para>The function called when an action is activated looks
+        like this (for <function>_move_up()</function>):</para>
 
         <informalexample>
           <programlisting>
@@ -223,8 +235,8 @@ _move_up (GObject             *instance,
           </programlisting>
         </informalexample>
 
-        <para>Then bind the key-press-event for the actor (in our case,
-        the stage) to a callback:</para>
+        <para>Then bind the <emphasis>key-press-event</emphasis> signal
+        for the actor (in our case, the stage) to a callback:</para>
 
         <informalexample>
           <programlisting>
@@ -258,13 +270,13 @@ _key_press_cb (ClutterActor *actor,
           </programlisting>
         </informalexample>
 
-        <para>Now, when a key plus modifiers that has been bound to an action
-        is pressed on the actor, the appropriate action is activated.</para>
+        <para>Now, when a key + modifiers that have been bound to an action
+        are pressed on the actor, the appropriate action is activated.</para>
 
       </section>
     </section>
 
-    <section>
+    <section id="events-handling-key-events-discussion">
       <title>Discussion</title>
 
       <section>
@@ -285,9 +297,10 @@ _key_press_cb (ClutterActor *actor,
 
         <para>In addition, Solution 2 lets you write a single callback to
         handle all key press events for all actors. This callback could then
-        use clutter_binding_pool_find (as in the example code) to determine
-        which binding pool to activate (depending on which actor received the
-        key press event).</para>
+        use <function>clutter_binding_pool_find()</function>
+        (as in the example code) to determine which binding pool to
+        activate (depending on which actor received the key press
+        event).</para>
 
         <para>Finally, a binding pool allows you to block and unblock actions.
         This means you can make the response to a key press event conditional
@@ -305,17 +318,19 @@ _key_press_cb (ClutterActor *actor,
 
         <itemizedlist>
           <listitem>
-            <para>A ClutterKeyEvent contains only a <emphasis>single</emphasis>
-            key value, plus possibly one or more modifier keys (like Shift,
-            Control, Alt etc.). There are no functions in the
-            Clutter API which return events for tracking near-simultaneous
-            presses on multiple keys.</para>
+            <para>A <type>ClutterKeyEvent</type> contains only a
+            <emphasis>single</emphasis> key value, plus possibly one
+            or more modifier keys (like <keycap>Shift</keycap>,
+            <keycap>Ctrl</keycap>, <keycap>Alt</keycap> etc.).
+            There are no functions in the Clutter API which return
+            events for tracking near-simultaneous presses on multiple
+            keys.</para>
           </listitem>
 
           <listitem>
             <para>By default, the stage receives all key events.
             To make another actor receive key events, use
-            clutter_stage_set_key_focus:</para>
+            <function>clutter_stage_set_key_focus()</function>:</para>
 
             <informalexample>
               <programlisting>
