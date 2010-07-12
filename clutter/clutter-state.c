@@ -563,7 +563,7 @@ ClutterTimeline *
 clutter_state_set_state (ClutterState *state,
                          const gchar  *target_state_name)
 {
-  return clutter_state_change (state, target_state_name, FALSE);
+  return clutter_state_change (state, target_state_name, TRUE);
 }
 
 /**
@@ -583,7 +583,7 @@ ClutterTimeline *
 clutter_state_warp_to_state (ClutterState *state,
                              const gchar  *target_state_name)
 {
-  return clutter_state_change (state, target_state_name, TRUE);
+  return clutter_state_change (state, target_state_name, FALSE);
 }
 
 static GParamSpec *
