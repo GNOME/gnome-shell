@@ -40,11 +40,12 @@
 #include <X11/Xlib.h>   /* must explicitly be included for Solaris; #326746 */
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
+#ifdef WITH_VERBOSE_MODE
 static void
 meta_topic_real_valist (MetaDebugTopic topic,
                         const char    *format,
                         va_list        args);
-
+#endif
 
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
