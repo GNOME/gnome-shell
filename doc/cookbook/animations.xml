@@ -5,14 +5,211 @@
   <title>Animations</title>
 
   <epigraph>
-    <attribution>the author of the epigraph</attribution>
-    <para>a short epigraph</para>
+    <attribution>Walt Disney</attribution>
+    <para>Animation can explain whatever the mind of man can conceive.</para>
   </epigraph>
 
   <section id="animations-introduction">
     <title>Introduction</title>
 
-    <para>introduction</para>
+    <para>Clutter actors have a variety of <emphasis>properties</emphasis>
+    (position, size, rotation in 3D space, scale, opacity) which govern
+    their visual appearance in the UI. They may also have
+    <emphasis>constraints</emphasis> on how they are aligned
+    and/or positioned relative to each other.</para>
+
+    <para>The Clutter animation API provides a means of changing
+    properties and constraints as a function of time: moving, scaling,
+    rotating, changing opacity and colour, modifying postional
+    constraints, etc.</para>
+
+    <note><para>Clutter also makes it possible to animate non-visual
+    properties if desired.</para></note>
+
+    <section>
+      <title>High level overview</title>
+
+      <para>Here are the main concepts behind animation in Clutter:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>An <emphasis>animation</emphasis> changes one or more
+          properties of one or more actors over time: their rotation in
+          a particular dimension (<varname>x</varname>, <varname>y</varname>,
+          <varname>z</varname>), scale, size, opacity etc.</para>
+        </listitem>
+        <listitem>
+          <para>An animation has an associated <emphasis>timeline</emphasis>.
+          Think of this as analogous to the "thing" you're controlling when
+          you watch a video on the internet: it's what you control with
+          the play/pause button and what is measured by the bar
+          showing how far through the video you are. As with the
+          controls on a video player, you can play/pause/skip a Clutter
+          timeline; you can also rewind it, loop it, and play it
+          backwards.</para>
+          <note>
+            <para>If a timeline is reversed, the progress along the
+            timeline is still measured the same way as it is in the forward
+            direction: so if you start from the end of the timeline and run
+            it backwards for 75% of its length, the progress is reported
+            as 0.25 (i.e. 25% of the way from the start of the
+            timeline).</para>
+          </note>
+        </listitem>
+        <listitem>
+          <para>The <emphasis>duration</emphasis> of a timeline
+          (e.g. 500 milliseconds, 1 second, 10 seconds) specifies how
+          long its animation will last. The timeline can be inspected
+          to find out how much of it has elapsed, either as a value in
+          milliseconds or as a fraction (between 0 and 1) of the total
+          length of the timeline.</para>
+        </listitem>
+        <listitem>
+          <para>An animation is divided into <emphasis>frames</emphasis>.
+          The number of frames which make up the animation isn't
+          constant: it depends on various factors, like how powerful
+          your machine is, the state of the drivers for your hardware,
+          and the load on he system. So you won't always get the same
+          number of frames in an animation of a particular duration.</para>
+        </listitem>
+        <listitem>
+          <para>The change to a property in an animation occurs over
+          the course of the timeline: the start value of the property
+          heads toward some target value. When it reaches the end of
+          the timeline, the property should have reached the target
+          value.</para>
+        </listitem>
+        <listitem>
+          <para>Exactly how the property changes over the course of the
+          timeline is governed by an <emphasis>alpha</emphasis>. This
+          is the trickiest idea to explain, so it has its own section
+          below.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Alphas</title>
+
+      <para>An alpha is generated for each frame of the animation.
+      The alpha varies between -1.0 and 2.0, and changes during the
+      course of the animation's timeline; ideally, the value should
+      start at 0.0 and reach 1.0 by the end of the timeline.</para>
+
+      <para>The alpha for any given frame of the animation is determined
+      by an <emphasis>alpha function</emphasis>. Usually, the alpha
+      function will return a value based on progress along the timeline.
+      However, the alpha function doesn't have to respect or pay
+      attention to the timeline: it can be entirely random if desired.</para>
+
+      <para>To work out the value of a property at a given frame
+      somewhere along the timeline for a given alpha:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Determine the difference between the start value and
+          the target end value for the property.</para>
+        </listitem>
+        <listitem>
+          <para>Multiply the difference by the alpha for the current
+          frame.</para>
+        </listitem>
+        <listitem>
+          <para>Add the result to the start value.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>The shape of the plot of the alpha function over time is
+      called its <emphasis>easing mode</emphasis>. Clutter provides
+      various modes ranging from <constant>CLUTTER_LINEAR</constant>
+      (the alpha value is equal to progress along the timeline),
+      to modes based on various polynomial and exponential functions,
+      to modes providing elastic and bounce shapes. See the
+      ClutterAlpha documentation for examples of the shapes produced
+      by these functions. There is also a good interactive demo
+      of the modes on
+      <ulink url="http://www.robertpenner.com/easing/easing_demo.html">Robert Penner's site</ulink>.
+      </para>
+
+      <para>Most of the time, you can use the built-in Clutter easing
+      modes to get the kind of animation effect you want. However,
+      in some cases you may want to provide your own alpha function.
+      Here's an example (based on the quintic ease in mode from
+      <filename>clutter-alpha.c</filename>):</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static gdouble
+_alpha_ease_in_sextic (ClutterAlpha *alpha,
+                       gpointer      dummy G_GNUC_UNUSED)
+ {
+  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
+  gdouble p = clutter_timeline_get_progress (timeline);
+
+  return p * p * p * p * p * p;
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>An alpha function just has to have a specified method
+      signature and return a <type>gdouble</type> value when called.
+      As stated above, you'd typically base the return value on the
+      timeline progress; the function above shows how you get the
+      timeline associated with the alpha, so you can apply the alpha
+      function to it.</para>
+    </section>
+
+    <section>
+      <title>Clutter's animation API</title>
+
+      <para>All of the animation approaches in Clutter use the same
+      basic underpinnings (as explained above), but the API provides
+      varying levels of abstraction and/or ease of use on top of those
+      underpinnings.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Implicit animations</emphasis> (created using
+          <function>clutter_actor_animate()</function> and related
+          functions) are useful where you want to apply
+          a simple or one-off animation to an actor. They enable you
+          to animate one or more properties using a single easing mode;
+          however, you only specify the target values for the properties
+          you're animating, not the start values.</para>
+        </listitem>
+        <listitem>
+          <para><emphasis>ClutterAnimator</emphasis> provides support
+          for declarative animations (defined using <type>ClutterScript</type>).
+          You can animate multiple actors with this approach, and
+          have more control over the easing modes used during an
+          animation: while implicit animations only allow a single
+          easing mode for all properties, <type>ClutterAnimator</type>
+          supports <emphasis>multiple</emphasis> easing modes for
+          <emphasis>each</emphasis> property; <emphasis>key frames</emphasis>
+          are used to indicate where in the animation each easing mode
+          should be applied.</para>
+        </listitem>
+        <listitem>
+          <para><emphasis>ClutterState</emphasis> enables you to describe
+          <emphasis>states</emphasis>: property values across one or
+          more actors, plus the easing modes used to transition to
+          those values. It can also be combined with <type>ClutterAnimator</type>
+          for finer grained definition of transitions if desired.</para>
+          <para>States are particularly useful if you need actors to
+          animate between a known set of positions/sizes/opacities etc.
+          during their lifecycles (e.g. animating a list of items in
+          a menu, or for animations in a picture viewer where you
+          click on thumbnails to display a full view of a photograph).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The recipes in this section show when and where it is
+      appropriate to use each of these approaches.</para>
+
+    </section>
+
   </section>
 
   <section>
