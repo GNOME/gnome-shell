@@ -54,6 +54,8 @@ struct _CoglTexture3D
   GLint           wrap_mode_p;
   gboolean        auto_mipmap;
   gboolean        mipmaps_dirty;
+
+  CoglTexturePixel first_pixel;
 };
 
 GQuark

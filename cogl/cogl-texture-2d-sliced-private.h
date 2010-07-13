@@ -32,19 +32,6 @@
 #define COGL_TEXTURE_2D_SLICED(tex) ((CoglTexture2DSliced *)tex)
 
 typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
-typedef struct _CoglTexturePixel  CoglTexturePixel;
-
-/* This is used to store the first pixel of each slice. This is only
-   used when glGenerateMipmap is not available */
-struct _CoglTexturePixel
-{
-  /* We need to store the format of the pixel because we store the
-     data in the source format which might end up being different for
-     each slice if a subregion is updated with a different format */
-  GLenum gl_format;
-  GLenum gl_type;
-  guint8 data[4];
-};
 
 struct _CoglTexture2DSliced
 {
