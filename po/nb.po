@@ -5,11 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.31.x\n"
-"Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2010-06-20 11:39+0200\n"
-"PO-Revision-Date: 2010-06-20 11:41+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-13 18:53+0200\n"
+"PO-Revision-Date: 2010-07-13 18:54+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -221,7 +222,8 @@ msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 #: ../src/core/prefs.c:1202
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr "GConf-nøkkel %s er allerede i bruk og kan ikke brukes til å overstyre %s\n"
+msgstr ""
+"GConf-nøkkel %s er allerede i bruk og kan ikke brukes til å overstyre %s\n"
 
 #: ../src/core/prefs.c:1261
 #, c-format
@@ -313,7 +315,8 @@ msgstr ""
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
+msgstr ""
+"Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
 #: ../src/core/screen.c:675
 #, c-format
@@ -380,45 +383,45 @@ msgstr ""
 "Disse vinduene støtter ikke &quot;lagre aktiv konfigurasjon&quot;og vil "
 "måtte startes på nytt manuelt neste gang du logger inn."
 
-#: ../src/core/util.c:110
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Feil under åpning av feilsøkingslogg: %s\n"
 
-#: ../src/core/util.c:120
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Feil under fdopen() av loggfil %s: %s\n"
 
-#: ../src/core/util.c:126
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: ../src/core/util.c:145 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter er kompilert uten støtte for «verbose» modus\n"
 
-#: ../src/core/util.c:285
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: ../src/core/util.c:433
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: ../src/core/util.c:494
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
@@ -443,8 +446,8 @@ msgstr ""
 #: ../src/core/window.c:6891
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "Vindu %s setter et MWM-hint som indikerer at det ikke kan endre størrelse, "
 "men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
@@ -842,47 +845,47 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr " Bruk: %s\n"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1112
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1115
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1118
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1121
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: ../src/ui/frames.c:1151
+#: ../src/ui/frames.c:1124
 msgid "Restore Window"
 msgstr "Gjenopprett vindu"
 
-#: ../src/ui/frames.c:1154
+#: ../src/ui/frames.c:1127
 msgid "Roll Up Window"
 msgstr "Rull opp vindu"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1130
 msgid "Unroll Window"
 msgstr "Rull ned vindu"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1133
 msgid "Keep Window On Top"
 msgstr "Plasser vindu i forgrunnen"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1136
 msgid "Remove Window From Top"
 msgstr "Fjern vindu fra forgrunnen"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1139
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbeidsområde"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1142
 msgid "Put Window On Only One Workspace"
 msgstr "Plasser vindu kun på ett arbeidsområde"
 
@@ -992,7 +995,7 @@ msgstr "Flytt til et annet ar_beidsområde"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:106
+#: ../src/ui/metaaccellabel.c:75
 msgid "Shift"
 msgstr "Shift"
 
@@ -1001,7 +1004,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:112
+#: ../src/ui/metaaccellabel.c:81
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1010,7 +1013,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:118
+#: ../src/ui/metaaccellabel.c:87
 msgid "Alt"
 msgstr "Alt"
 
@@ -1019,7 +1022,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:124
+#: ../src/ui/metaaccellabel.c:93
 msgid "Meta"
 msgstr "Meta"
 
@@ -1028,7 +1031,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:130
+#: ../src/ui/metaaccellabel.c:99
 msgid "Super"
 msgstr "Super"
 
@@ -1037,7 +1040,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:136
+#: ../src/ui/metaaccellabel.c:105
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1046,7 +1049,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:142
+#: ../src/ui/metaaccellabel.c:111
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1055,7 +1058,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:148
+#: ../src/ui/metaaccellabel.c:117
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1064,7 +1067,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:154
+#: ../src/ui/metaaccellabel.c:123
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1073,7 +1076,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:160
+#: ../src/ui/metaaccellabel.c:129
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -1160,7 +1163,8 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i formatet"
+"Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i "
+"formatet"
 
 #: ../src/ui/theme.c:1227
 #, c-format
@@ -1176,7 +1180,8 @@ msgstr "Alpha-verdi «%s» i blandet farge er ikke mellom 0.0 og 1.0"
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Skyggeformatet er «shade/base_color/factor», «%s» passer ikke i formatet"
+msgstr ""
+"Skyggeformatet er «shade/base_color/factor», «%s» passer ikke i formatet"
 
 #: ../src/ui/theme.c:1295
 #, c-format
@@ -1297,14 +1302,15 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må spesifiseres "
-"for denne rammestilen"
+"<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må "
+"spesifiseres for denne rammestilen"
 
 #: ../src/ui/theme.c:4769 ../src/ui/theme.c:4794
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
+msgstr ""
+"Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
 
 #: ../src/ui/theme.c:4838
 #, c-format
@@ -1323,8 +1329,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window type=«%"
-"s» style_set=«ett-eller-annet»/>-element"
+"Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window "
+"type=«%s» style_set=«ett-eller-annet»/>-element"
 
 #: ../src/ui/theme.c:5449 ../src/ui/theme.c:5511 ../src/ui/theme.c:5574
 #, c-format
@@ -1408,8 +1414,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Ugyldig skalering av tittel «%s» (må være en av xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Ugyldig skalering av tittel «%s» (må være en av xx-small,x-small,small,"
+"medium,large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1008 ../src/ui/theme-parser.c:1071
 #: ../src/ui/theme-parser.c:1105 ../src/ui/theme-parser.c:1208
@@ -1467,8 +1473,8 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"Kan ikke spesifisere både «button_width»/«button_height» og «aspect_ratio» for "
-"knapper"
+"Kan ikke spesifisere både «button_width»/«button_height» og «aspect_ratio» "
+"for knapper"
 
 #: ../src/ui/theme-parser.c:1438
 #, c-format
@@ -1649,7 +1655,9 @@ msgstr "Ugyldig versjonspesifikasjon «%s»"
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
-msgstr "«version»-attributt kan ikke brukes i metacity-theme-1.xml eller metacity-theme-2.xml"
+msgstr ""
+"«version»-attributt kan ikke brukes i metacity-theme-1.xml eller metacity-"
+"theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3469
 #, c-format
@@ -1715,157 +1723,153 @@ msgstr "<%s> spesifisert to ganger for dette temaet"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Fant ikke en gyldig fil for tema %s\n"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Vinduer"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "_Vinduer"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Vinduer/avriving"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "_Dialog"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Vinduer/_Dialog"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "_Modal dialog"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Vinduer/_Modal dialog"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "_Verktøy"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Vinduer/_Verktøy"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "Opp_startskjerm"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Vinduer/Opp_startskjerm"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "_Toppdokk"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Vinduer/_Toppdokk"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "_Bunndokk"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Vinduer/_Bunndokk"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "_Venstre dokk"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Vinduer/_Venstre dokk"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "Høy_re dokk"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Vinduer/Høy_re dokk"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "_Alle dokker"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Vinduer/_Alle dokker"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "S_krivebord"
 
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Vinduer/S_krivebord"
-
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Åpne et til av disse vinduene"
 
-#: ../src/ui/theme-viewer.c:153
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknapp med et «åpne»-ikon"
 
-#: ../src/ui/theme-viewer.c:155
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknapp med et «avslutt»-ikon"
 
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falsk menyoppføring %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Vindu uten innhold"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Normalt programvindu"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Dialogboks"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Modal dialogboks"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Verktøypalett"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Avrevet meny"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Kant"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test av knappeplassering %d"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for å tegne en vindusramme"
 
-#: ../src/ui/theme-viewer.c:802
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:809
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Feil under lasting av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:815
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Lastet tema «%s» på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:866
 msgid "Normal Title Font"
 msgstr "Normal tittelskrift"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:872
 msgid "Small Title Font"
 msgstr "Liten tittelskrift"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:878
 msgid "Large Title Font"
 msgstr "Stor tittelskrift"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:883
 msgid "Button Layouts"
 msgstr "Knappeplasseringer"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:888
 msgid "Benchmark"
 msgstr "Ytelsestest"
 
-#: ../src/ui/theme-viewer.c:927
+#: ../src/ui/theme-viewer.c:935
 msgid "Window Title Goes Here"
 msgstr "Vindutittel skal her"
 
-#: ../src/ui/theme-viewer.c:1031
+#: ../src/ui/theme-viewer.c:1039
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1876,39 +1880,39 @@ msgstr ""
 "%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1258
 msgid "position expression test returned TRUE but set error"
 msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
-#: ../src/ui/theme-viewer.c:1256
+#: ../src/ui/theme-viewer.c:1264
 msgid "Error was expected but none given"
 msgstr "Feil var ventet men ingen ble gitt"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Feil %d var ventet men %d ble gitt"
 
-#: ../src/ui/theme-viewer.c:1264
+#: ../src/ui/theme-viewer.c:1272
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Feil ikke ventet men en ble returnert: %s"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1276
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1271
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1336
+#: ../src/ui/theme-viewer.c:1344
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
