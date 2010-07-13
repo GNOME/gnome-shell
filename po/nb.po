@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.28.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-19 16:41+0200\n"
-"PO-Revision-Date: 2010-06-19 16:43+0200\n"
+"POT-Creation-Date: 2010-07-13 15:27+0200\n"
+"PO-Revision-Date: 2010-07-13 15:28+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,7 +37,7 @@ msgstr "Tilpass klokken på panelet"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
+msgstr "Tillat tilgang til interne feilsøkings og overvåkingsverktøy ved å bruke Alt-F2-dialogen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Custom format of the clock"
@@ -172,13 +173,12 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
-#, fuzzy
 msgid "Uuids of extensions to disable"
-msgstr "Ingen utvidelser installert"
+msgstr "Uuider på utvidelser som skal slås av"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "Om det skal samles statistikk om bruk av programmer"
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
@@ -209,7 +209,7 @@ msgid "_24 hour format"
 msgstr "_24-timers format"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
+#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:777
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
@@ -217,19 +217,19 @@ msgstr "PROGRAMMER"
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:725
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:729
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:731
+#: ../js/ui/appDisplay.js:730
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:1038
+#: ../js/ui/appDisplay.js:1037
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
@@ -247,23 +247,23 @@ msgstr "%s ble fjernet fra dine favoritter."
 msgid "Find"
 msgstr "Finn"
 
-#: ../js/ui/dash.js:465
+#: ../js/ui/dash.js:475
 msgid "Searching..."
 msgstr "Søker..."
 
-#: ../js/ui/dash.js:479
+#: ../js/ui/dash.js:489
 msgid "No matching results."
 msgstr "Ingen treff."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:796 ../js/ui/placeDisplay.js:552
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:803 ../js/ui/docDisplay.js:497
 msgid "RECENT ITEMS"
 msgstr "SISTE OPPFØRINGER"
 
@@ -299,53 +299,53 @@ msgstr "Nettside"
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/panel.js:519
+#: ../js/ui/panel.js:517
 msgid "Preferences"
 msgstr "Brukervalg"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:603
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:606
+#: ../js/ui/panel.js:604
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:610
+#: ../js/ui/panel.js:608
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:611
+#: ../js/ui/panel.js:609
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:616
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:619
+#: ../js/ui/panel.js:617
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:621
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:622
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:726
+#: ../js/ui/panel.js:760
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -483,6 +483,3 @@ msgstr "Søk"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Quit %s"
-#~ msgstr "Avslutt %s"
