@@ -59,6 +59,9 @@ struct _ClutterKeymapX11
 #ifdef HAVE_XKB
   XkbDescPtr xkb_desc;
 #endif
+
+  guint caps_lock_state : 1;
+  guint num_lock_state  : 1;
 };
 
 struct _ClutterKeymapX11Class
@@ -156,6 +159,65 @@ get_xkb (ClutterKeymapX11 *keymap_x11)
 }
 #endif /* HAVE_XKB */
 
+#ifdef HAVE_XKB
+static void
+update_locked_mods (ClutterKeymapX11 *keymap_x11,
+                    gint              locked_mods)
+{
+  gboolean old_caps_lock_state, old_num_lock_state;
+
+  old_caps_lock_state = keymap_x11->caps_lock_state;
+  old_num_lock_state  = keymap_x11->num_lock_state;
+
+  keymap_x11->caps_lock_state = (locked_mods & CLUTTER_LOCK_MASK) != 0;
+  keymap_x11->num_lock_state  = (locked_mods & keymap_x11->num_lock_mask) != 0;
+
+  CLUTTER_NOTE (BACKEND, "Locks state changed - Num: %s, Caps: %s",
+                keymap_x11->num_lock_state ? "set" : "unset",
+                keymap_x11->caps_lock_state ? "set" : "unset");
+#if 0
+  /* Add signal to ClutterBackend? */
+  if ((keymap_x11->caps_lock_state != old_caps_lock_state) ||
+      (keymap_x11->num_lock_state != old_num_lock_state))
+    g_signal_emit_by_name (keymap_x11->backend, "key-lock-changed");
+#endif
+}
+
+static ClutterX11FilterReturn
+xkb_filter (XEvent       *xevent,
+            ClutterEvent *event,
+            gpointer      data)
+{
+  ClutterBackendX11 *backend_x11 = data;
+  ClutterKeymapX11 *keymap_x11 = backend_x11->keymap;
+
+  g_assert (keymap_x11 != NULL);
+
+  if (!backend_x11->use_xkb)
+    return CLUTTER_X11_FILTER_CONTINUE;
+
+  if (xevent->type == backend_x11->xkb_event_base)
+    {
+      XkbEvent *xkb_event = (XkbEvent *) xevent;
+
+      CLUTTER_NOTE (BACKEND, "Received XKB event [%d]",
+                    xkb_event->any.xkb_type);
+
+      switch (xkb_event->any.xkb_type)
+        {
+        case XkbStateNotify:
+          update_locked_mods (keymap_x11, xkb_event->state.locked_mods);
+          break;
+
+        default:
+          break;
+        }
+    }
+
+  return CLUTTER_X11_FILTER_CONTINUE;
+}
+#endif /* HAVE_XKB */
+
 static void
 clutter_keymap_x11_constructed (GObject *gobject)
 {
@@ -183,8 +245,6 @@ clutter_keymap_x11_constructed (GObject *gobject)
 
             backend_x11->use_xkb = TRUE;
 
-#if 0
-            /* XXX - enable when we handle keymap-related events */
             XkbSelectEvents (backend_x11->xdpy,
                              XkbUseCoreKbd,
                              XkbNewKeyboardNotifyMask | XkbMapNotifyMask | XkbStateNotifyMask,
@@ -194,7 +254,8 @@ clutter_keymap_x11_constructed (GObject *gobject)
                                    XkbUseCoreKbd, XkbStateNotify,
                                    XkbAllStateComponentsMask,
                                    XkbGroupLockMask|XkbModifierLockMask);
-#endif
+
+            clutter_x11_add_filter (xkb_filter, backend_x11);
 
             /* enable XKB autorepeat */
             XkbSetDetectableAutoRepeat (backend_x11->xdpy,
@@ -273,4 +334,20 @@ _clutter_keymap_x11_get_key_group (ClutterKeymapX11    *keymap,
 #else
   return 0;
 #endif /* HAVE_XKB */
+}
+
+gboolean
+_clutter_keymap_x11_get_num_lock_state (ClutterKeymapX11 *keymap)
+{
+  g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), FALSE);
+
+  return keymap->num_lock_state;
+}
+
+gboolean
+_clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11 *keymap)
+{
+  g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), FALSE);
+
+  return keymap->caps_lock_state;
 }

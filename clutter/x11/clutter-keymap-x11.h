@@ -37,8 +37,10 @@ typedef struct _ClutterKeymapX11        ClutterKeymapX11;
 
 GType clutter_keymap_x11_get_type (void) G_GNUC_CONST;
 
-gint _clutter_keymap_x11_get_key_group (ClutterKeymapX11    *keymap,
-                                        ClutterModifierType  state);
+gint     _clutter_keymap_x11_get_key_group       (ClutterKeymapX11    *keymap,
+                                                  ClutterModifierType  state);
+gboolean _clutter_keymap_x11_get_num_lock_state  (ClutterKeymapX11    *keymap);
+gboolean _clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11    *keymap);
 
 G_END_DECLS
 

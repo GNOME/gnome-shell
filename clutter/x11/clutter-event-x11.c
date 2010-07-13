@@ -94,6 +94,9 @@ struct _ClutterEventX11
 {
   /* additional fields for Key events */
   gint key_group;
+
+  guint num_lock_set  : 1;
+  guint caps_lock_set : 1;
 };
 
 ClutterEventX11 *
@@ -328,7 +331,7 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev,
 }
 #endif /* HAVE_XINPUT */
 
-static void
+static inline void
 translate_key_event (ClutterBackendX11 *backend_x11,
                      ClutterEvent      *event,
                      XEvent            *xevent)
@@ -336,9 +339,6 @@ translate_key_event (ClutterBackendX11 *backend_x11,
   ClutterEventX11 *event_x11;
   char buffer[256 + 1];
   int n;
-  
-  CLUTTER_NOTE (EVENT, "Translating key %s event",
-                xevent->xany.type == KeyPress ? "press" : "release");
 
   /* KeyEvents have platform specific data associated to them */
   event_x11 = _clutter_event_x11_new ();
@@ -357,6 +357,10 @@ translate_key_event (ClutterBackendX11 *backend_x11,
   event_x11->key_group =
     _clutter_keymap_x11_get_key_group (backend_x11->keymap,
                                        event->key.modifier_state);
+  event_x11->num_lock_set =
+    _clutter_keymap_x11_get_num_lock_state (backend_x11->keymap);
+  event_x11->caps_lock_set =
+    _clutter_keymap_x11_get_caps_lock_state (backend_x11->keymap);
 
   /* unicode_value is the printable representation */
   n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);
@@ -366,10 +370,13 @@ translate_key_event (ClutterBackendX11 *backend_x11,
       event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
       if ((event->key.unicode_value != -1) &&
           (event->key.unicode_value != -2))
-        return;
+        goto out;
     }
   else
     event->key.unicode_value = (gunichar)'\0';
+
+out:
+  return;
 }
 
 static gboolean
