@@ -429,10 +429,25 @@ cogl_blend_string_error_quark (void);
 
 /**
  * CoglError:
- * @COGL_ERROR_MISSING_FEATURE: You tried to use a feature not
- *    currently available; likely because of missing driver support.
+ * @COGL_ERROR_UNSUPPORTED: You tried to use a feature or
+ *    configuration not currently available.
  *
  * Error enumeration for Cogl
+ *
+ * The @COGL_ERROR_UNSUPPORTED error can be thrown for a variety of
+ * reasons. For example:
+ *
+ * <itemizedlist>
+ *  <listitem><para>You've tried to use a feature that is not
+ *   advertised by cogl_get_features(). This could happen if you create
+ *   a non-sliced texture with a non-power-of-two size when
+ *   %COGL_FEATURE_TEXTURE_NPOT is not advertised.</para></listitem>
+ *  <listitem><para>The GPU can not handle the configuration you have
+ *   requested. An example might be if you try to use too many texture
+ *   layers in a single #CoglMaterial</para></listitem>
+ *  <listitem><para>The driver does not support some
+ *   configuration.</para></listiem>
+ * </itemizedlist>
  *
  * Currently this is only used by Cogl API marked as experimental so
  * this enum should also be considered experimental.
@@ -440,7 +455,7 @@ cogl_blend_string_error_quark (void);
  * Since: 1.4
  */
 typedef enum { /*< prefix=COGL_ERROR >*/
-  COGL_ERROR_MISSING_FEATURE
+  COGL_ERROR_UNSUPPORTED
 } CoglError;
 
 GQuark
