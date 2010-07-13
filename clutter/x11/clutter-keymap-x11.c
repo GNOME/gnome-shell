@@ -175,6 +175,7 @@ update_locked_mods (ClutterKeymapX11 *keymap_x11,
   CLUTTER_NOTE (BACKEND, "Locks state changed - Num: %s, Caps: %s",
                 keymap_x11->num_lock_state ? "set" : "unset",
                 keymap_x11->caps_lock_state ? "set" : "unset");
+
 #if 0
   /* Add signal to ClutterBackend? */
   if ((keymap_x11->caps_lock_state != old_caps_lock_state) ||
@@ -296,6 +297,15 @@ clutter_keymap_x11_set_property (GObject      *gobject,
 static void
 clutter_keymap_x11_finalize (GObject *gobject)
 {
+  ClutterKeymapX11 *keymap;
+
+  keymap = CLUTTER_KEYMAP_X11 (gobject);
+
+#ifdef HAVE_XKB
+  if (keymap->xkb_desc != NULL)
+    XkbFreeKeyboard (keymap->xkb_desc, XkbAllComponentsMask, True);
+#endif
+
   G_OBJECT_CLASS (clutter_keymap_x11_parent_class)->finalize (gobject);
 }
 
@@ -328,8 +338,6 @@ _clutter_keymap_x11_get_key_group (ClutterKeymapX11    *keymap,
                                    ClutterModifierType  state)
 {
 #ifdef HAVE_XKB
-  (void) get_xkb (keymap);
-
   return XkbGroupForCoreState (state);
 #else
   return 0;
@@ -350,4 +358,65 @@ _clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11 *keymap)
   g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), FALSE);
 
   return keymap->caps_lock_state;
+}
+
+gint
+_clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
+                                         guint                hardware_keycode,
+                                         ClutterModifierType  modifier_state,
+                                         ClutterModifierType *mods_p)
+{
+  ClutterBackendX11 *backend_x11;
+  ClutterModifierType unconsumed_modifiers = 0;
+  gint retval;
+
+  g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), 0);
+
+  backend_x11 = CLUTTER_BACKEND_X11 (keymap->backend);
+
+#ifdef HAVE_XKB
+  if (backend_x11->use_xkb)
+    {
+      XkbDescRec *xkb = get_xkb (keymap);
+      KeySym tmp_keysym;
+
+      if (XkbTranslateKeyCode (xkb, hardware_keycode, modifier_state,
+                               &unconsumed_modifiers,
+                               &tmp_keysym))
+        {
+          retval = tmp_keysym;
+        }
+      else
+        retval = 0;
+    }
+  else
+#endif /* HAVE_XKB */
+    retval = XKeycodeToKeysym (backend_x11->xdpy, hardware_keycode, 0);
+
+  if (mods_p)
+    *mods_p = unconsumed_modifiers;
+
+  return retval;
+}
+
+gboolean
+_clutter_keymap_x11_get_is_modifier (ClutterKeymapX11 *keymap,
+                                     guint             keycode)
+{
+  g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), FALSE);
+
+  if (keycode < keymap->min_keycode || keycode > keymap->max_keycode)
+    return FALSE;
+
+#ifdef HAVE_XKB
+  if (CLUTTER_BACKEND_X11 (keymap->backend)->use_xkb)
+    {
+      XkbDescRec *xkb = get_xkb (keymap);
+
+      if (xkb->map->modmap && xkb->map->modmap[keycode] != 0)
+        return TRUE;
+    }
+#endif /* HAVE_XKB */
+
+  return FALSE;
 }

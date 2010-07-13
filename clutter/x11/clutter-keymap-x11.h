@@ -41,6 +41,12 @@ gint     _clutter_keymap_x11_get_key_group       (ClutterKeymapX11    *keymap,
                                                   ClutterModifierType  state);
 gboolean _clutter_keymap_x11_get_num_lock_state  (ClutterKeymapX11    *keymap);
 gboolean _clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11    *keymap);
+gint     _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
+                                                  guint                hardware_keycode,
+                                                  ClutterModifierType  modifier_state,
+                                                  ClutterModifierType *mods_p);
+gboolean _clutter_keymap_x11_get_is_modifier     (ClutterKeymapX11    *keymap,
+                                                  guint                keycode);
 
 G_END_DECLS
 

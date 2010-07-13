@@ -95,8 +95,9 @@ struct _ClutterEventX11
   /* additional fields for Key events */
   gint key_group;
 
-  guint num_lock_set  : 1;
-  guint caps_lock_set : 1;
+  guint key_is_modifier : 1;
+  guint num_lock_set    : 1;
+  guint caps_lock_set   : 1;
 };
 
 ClutterEventX11 *
@@ -350,13 +351,17 @@ translate_key_event (ClutterBackendX11 *backend_x11,
 
   /* keyval is the key ignoring all modifiers ('1' vs. '!') */
   event->key.keyval =
-    XKeycodeToKeysym (xevent->xkey.display,
-                      xevent->xkey.keycode,
-                      0);
+    _clutter_keymap_x11_translate_key_state (backend_x11->keymap,
+                                             event->key.hardware_keycode,
+                                             event->key.modifier_state,
+                                             NULL);
 
   event_x11->key_group =
     _clutter_keymap_x11_get_key_group (backend_x11->keymap,
                                        event->key.modifier_state);
+  event_x11->key_is_modifier =
+    _clutter_keymap_x11_get_is_modifier (backend_x11->keymap,
+                                         event->key.hardware_keycode);
   event_x11->num_lock_set =
     _clutter_keymap_x11_get_num_lock_state (backend_x11->keymap);
   event_x11->caps_lock_set =
