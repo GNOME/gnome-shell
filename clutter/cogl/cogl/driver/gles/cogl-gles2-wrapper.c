@@ -252,34 +252,40 @@ cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
   /* Compare layer combine operation for each active unit */
   if (fragment_tests)
     for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
-      if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (a->texture_units, i))
-        {
-          const CoglGles2WrapperTexEnv *tex_env_a = a->tex_env + i;
-          const CoglGles2WrapperTexEnv *tex_env_b = b->tex_env + i;
-          int arg, n_args;
-          GLenum func;
+      {
+        if (!!COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (a->texture_units, i) !=
+            !!COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (b->texture_units, i))
+          return FALSE;
 
-          if (tex_env_a->point_sprite_coords !=
-              tex_env_b->point_sprite_coords)
-            return FALSE;
+        if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (a->texture_units, i))
+          {
+            const CoglGles2WrapperTexEnv *tex_env_a = a->tex_env + i;
+            const CoglGles2WrapperTexEnv *tex_env_b = b->tex_env + i;
+            int arg, n_args;
+            GLenum func;
 
-          func = tex_env_a->texture_combine_rgb_func;
+            if (tex_env_a->point_sprite_coords !=
+                tex_env_b->point_sprite_coords)
+              return FALSE;
 
-          if (func != tex_env_b->texture_combine_rgb_func)
-            return FALSE;
+            func = tex_env_a->texture_combine_rgb_func;
 
-          n_args = cogl_gles2_get_n_args_for_combine_func (func);
+            if (func != tex_env_b->texture_combine_rgb_func)
+              return FALSE;
 
-          for (arg = 0; arg < n_args; arg++)
-            {
-              if (tex_env_a->texture_combine_rgb_src[arg] !=
-                  tex_env_b->texture_combine_rgb_src[arg])
-                return FALSE;
-              if (tex_env_a->texture_combine_rgb_op[arg] !=
-                  tex_env_b->texture_combine_rgb_op[arg])
-                return FALSE;
-            }
-        }
+            n_args = cogl_gles2_get_n_args_for_combine_func (func);
+
+            for (arg = 0; arg < n_args; arg++)
+              {
+                if (tex_env_a->texture_combine_rgb_src[arg] !=
+                    tex_env_b->texture_combine_rgb_src[arg])
+                  return FALSE;
+                if (tex_env_a->texture_combine_rgb_op[arg] !=
+                    tex_env_b->texture_combine_rgb_op[arg])
+                  return FALSE;
+              }
+          }
+      }
 
   return TRUE;
 }
