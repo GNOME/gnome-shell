@@ -518,6 +518,36 @@ _clutter_backend_get_units_per_em (ClutterBackend       *backend,
   return priv->units_per_em;
 }
 
+void
+_clutter_backend_copy_event_data (ClutterBackend *backend,
+                                  ClutterEvent   *src,
+                                  ClutterEvent   *dest)
+{
+  ClutterBackendClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  g_return_if_fail (src != NULL);
+  g_return_if_fail (dest != NULL);
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->copy_event_data != NULL)
+    klass->copy_event_data (backend, src, dest);
+}
+
+void
+_clutter_backend_free_event_data (ClutterBackend *backend,
+                                  ClutterEvent   *event)
+{
+  ClutterBackendClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  g_return_if_fail (event != NULL);
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->free_event_data != NULL)
+    klass->free_event_data (backend, event);
+}
+
 /**
  * clutter_get_default_backend:
  *

@@ -692,7 +692,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
 
                 [yes],
                 [
-                  AC_DEFINE(HAVE_XINPUT, 1, Use the XINPUT X extension)
+                  AC_DEFINE(HAVE_XINPUT, 1, [Use the XINPUT X extension])
 
                   X11_LIBS="$X11_LIBS -lXi"
                   X11_PC_FILES="$X11_PC_FILES xi"
@@ -701,6 +701,23 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
                 [no],
                 [],
         )
+
+        # XKB
+        clutter_save_CPPFLAGS="$CPPFLAGS"
+        CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
+
+        clutter_save_LIBS="$LIBS"
+        LIBS="$LIBS $X11_LIBS"
+
+        have_xkb=no
+        AC_CHECK_FUNC([XkbQueryExtension],
+                      [
+                        AC_DEFINE(HAVE_XKB, 1, [Define to use XKB extension])
+                        have_xkb=yes
+                      ])
+
+        CPPFLAGS="$clutter_save_CPPFLAGS"
+        LIBS="$clutter_save_LIBS"
 
         x11_tests=yes
         BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
@@ -1144,6 +1161,7 @@ fi
 
 if test "x$SUPPORT_XLIB" = "x1"; then
 echo "        Enable XInput 1.0: ${xinput}"
+echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"
 fi
 

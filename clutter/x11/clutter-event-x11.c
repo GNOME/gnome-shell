@@ -30,6 +30,7 @@
 
 #include "clutter-stage-x11.h"
 #include "clutter-backend-x11.h"
+#include "clutter-keymap-x11.h"
 #include "clutter-x11.h"
 
 #include "../clutter-backend.h"
@@ -52,6 +53,10 @@
 
 #ifdef HAVE_XINPUT
 #include <X11/extensions/XInput.h>
+#endif
+
+#ifdef HAVE_XKB
+#include <X11/XKBlib.h>
 #endif
 
 /* XEMBED protocol support for toolkit embedding */
@@ -84,6 +89,38 @@ struct _ClutterEventSource
   ClutterBackend *backend;
   GPollFD event_poll_fd;
 };
+
+struct _ClutterEventX11
+{
+  /* additional fields for Key events */
+  gint key_group;
+
+  guint key_is_modifier : 1;
+  guint num_lock_set    : 1;
+  guint caps_lock_set   : 1;
+};
+
+ClutterEventX11 *
+_clutter_event_x11_new (void)
+{
+  return g_slice_new0 (ClutterEventX11);
+}
+
+ClutterEventX11 *
+_clutter_event_x11_copy (ClutterEventX11 *event_x11)
+{
+  if (event_x11 != NULL)
+    return g_slice_dup (ClutterEventX11, event_x11);
+
+  return NULL;
+}
+
+void
+_clutter_event_x11_free (ClutterEventX11 *event_x11)
+{
+  if (event_x11 != NULL)
+    g_slice_free (ClutterEventX11, event_x11);
+}
 
 static gboolean clutter_event_prepare  (GSource     *source,
                                         gint        *timeout);
@@ -295,16 +332,18 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev,
 }
 #endif /* HAVE_XINPUT */
 
-static void
-translate_key_event (ClutterBackend   *backend,
-                     ClutterEvent     *event,
-                     XEvent           *xevent)
+static inline void
+translate_key_event (ClutterBackendX11 *backend_x11,
+                     ClutterEvent      *event,
+                     XEvent            *xevent)
 {
-  char buffer[256+1];
+  ClutterEventX11 *event_x11;
+  char buffer[256 + 1];
   int n;
-  
-  CLUTTER_NOTE (EVENT, "Translating key %s event",
-                xevent->xany.type == KeyPress ? "press" : "release");
+
+  /* KeyEvents have platform specific data associated to them */
+  event_x11 = _clutter_event_x11_new ();
+  _clutter_event_set_platform_data (event, event_x11);
 
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
@@ -312,9 +351,21 @@ translate_key_event (ClutterBackend   *backend,
 
   /* keyval is the key ignoring all modifiers ('1' vs. '!') */
   event->key.keyval =
-    XKeycodeToKeysym (xevent->xkey.display,
-                      xevent->xkey.keycode,
-                      0);
+    _clutter_keymap_x11_translate_key_state (backend_x11->keymap,
+                                             event->key.hardware_keycode,
+                                             event->key.modifier_state,
+                                             NULL);
+
+  event_x11->key_group =
+    _clutter_keymap_x11_get_key_group (backend_x11->keymap,
+                                       event->key.modifier_state);
+  event_x11->key_is_modifier =
+    _clutter_keymap_x11_get_is_modifier (backend_x11->keymap,
+                                         event->key.hardware_keycode);
+  event_x11->num_lock_set =
+    _clutter_keymap_x11_get_num_lock_state (backend_x11->keymap);
+  event_x11->caps_lock_set =
+    _clutter_keymap_x11_get_caps_lock_state (backend_x11->keymap);
 
   /* unicode_value is the printable representation */
   n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);
@@ -324,10 +375,13 @@ translate_key_event (ClutterBackend   *backend,
       event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
       if ((event->key.unicode_value != -1) &&
           (event->key.unicode_value != -2))
-        return;
+        goto out;
     }
-  
-  event->key.unicode_value = (gunichar)'\0';
+  else
+    event->key.unicode_value = (gunichar)'\0';
+
+out:
+  return;
 }
 
 static gboolean
@@ -509,7 +563,9 @@ event_translate (ClutterBackend *backend,
           if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) ||
               (stage_x11->xwin_width != xevent->xconfigure.width) ||
               (stage_x11->xwin_height != xevent->xconfigure.height))
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+            {
+              clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+            }
 
           /* If we're fullscreened, we want these variables to
            * represent the size of the window before it was set
@@ -669,7 +725,7 @@ event_translate (ClutterBackend *backend,
         clutter_device_manager_get_core_device (manager,
                                                 CLUTTER_KEYBOARD_DEVICE);
 
-      translate_key_event (backend, event, xevent);
+      translate_key_event (backend_x11, event, xevent);
 
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
@@ -685,8 +741,11 @@ event_translate (ClutterBackend *backend,
        * the next event and check if it's a KeyPress for the same key
        * and timestamp - and then ignore it if it matches the
        * KeyRelease
+       *
+       * if we have XKB, and autorepeat is enabled, then this becomes
+       * a no-op
        */
-      if (XPending (xevent->xkey.display))
+      if (!backend_x11->have_xkb_autorepeat && XPending (xevent->xkey.display))
         {
           XEvent next_event;
 
@@ -706,7 +765,7 @@ event_translate (ClutterBackend *backend,
         clutter_device_manager_get_core_device (manager,
                                                 CLUTTER_KEYBOARD_DEVICE);
 
-      translate_key_event (backend, event, xevent);
+      translate_key_event (backend_x11, event, xevent);
       break;
 
     default:
@@ -986,7 +1045,7 @@ event_translate (ClutterBackend *backend,
                                           ? CLUTTER_KEY_PRESS
                                           : CLUTTER_KEY_RELEASE;
 
-          translate_key_event (backend, event, &xevent_converted);
+          translate_key_event (backend_x11, event, &xevent_converted);
 
           if (xevent->type == key_press)
             set_user_time (backend_x11, &xwindow, xkev->time);
@@ -1031,9 +1090,7 @@ events_queue (ClutterBackend *backend)
 	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
-        {
-          clutter_event_free (event);
-        }
+        clutter_event_free (event);
     }
 }
 
@@ -1208,4 +1265,30 @@ clutter_x11_get_current_event_time (void)
   ClutterBackend *backend = clutter_get_default_backend ();
 
   return CLUTTER_BACKEND_X11 (backend)->last_event_time;
+}
+
+/**
+ * clutter_x11_event_get_key_group:
+ * @event: a #ClutterEvent of type %CLUTTER_KEY_PRESS or %CLUTTER_KEY_RELEASE
+ *
+ * Retrieves the group for the modifiers set in @event
+ *
+ * Return value: the group id
+ *
+ * Since: 1.4
+ */
+gint
+clutter_x11_event_get_key_group (const ClutterEvent *event)
+{
+  ClutterEventX11 *event_x11;
+
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
+                        event->type == CLUTTER_KEY_RELEASE, 0);
+
+  event_x11 = _clutter_event_get_platform_data (event);
+  if (event_x11 == NULL)
+    return 0;
+
+  return event_x11->key_group;
 }

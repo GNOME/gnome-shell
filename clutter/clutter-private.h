@@ -245,7 +245,6 @@ int      _clutter_stage_get_pending_swaps      (ClutterStage *stage);
 
 gboolean _clutter_stage_has_full_redraw_queued (ClutterStage *stage);
 
-
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
 
@@ -269,6 +268,12 @@ gboolean      _clutter_backend_pre_parse      (ClutterBackend  *backend,
 gboolean      _clutter_backend_post_parse     (ClutterBackend  *backend,
                                                GError         **error);
 void          _clutter_backend_init_events    (ClutterBackend  *backend);
+
+void          _clutter_backend_copy_event_data (ClutterBackend  *backend,
+                                                ClutterEvent    *src,
+                                                ClutterEvent    *dest);
+void          _clutter_backend_free_event_data (ClutterBackend  *backend,
+                                                ClutterEvent    *event);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
@@ -340,6 +345,10 @@ gboolean _clutter_effect_pre_paint  (ClutterEffect *effect);
 void     _clutter_effect_post_paint (ClutterEffect *effect);
 
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
+
+void     _clutter_event_set_platform_data (ClutterEvent       *event,
+                                           gpointer            data);
+gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
 G_END_DECLS
 

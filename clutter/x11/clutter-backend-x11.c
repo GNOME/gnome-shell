@@ -319,6 +319,12 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
                       "backend", backend_x11,
                       NULL);
 
+      /* register keymap */
+      backend_x11->keymap =
+        g_object_new (CLUTTER_TYPE_KEYMAP_X11,
+                      "backend", backend_x11,
+                      NULL);
+
       /* create XSETTINGS client */
       backend_x11->xsettings =
         _clutter_xsettings_client_new (backend_x11->xdpy,
@@ -475,6 +481,29 @@ clutter_backend_x11_get_features (ClutterBackend *backend)
   return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
+static void
+clutter_backend_x11_copy_event_data (ClutterBackend *backend,
+                                     ClutterEvent   *src,
+                                     ClutterEvent   *dest)
+{
+  gpointer event_x11;
+
+  event_x11 = _clutter_event_get_platform_data (src);
+  if (event_x11 != NULL)
+    _clutter_event_set_platform_data (dest, _clutter_event_x11_copy (event_x11));
+}
+
+static void
+clutter_backend_x11_free_event_data (ClutterBackend *backend,
+                                     ClutterEvent   *event)
+{
+  gpointer event_x11;
+
+  event_x11 = _clutter_event_get_platform_data (event);
+  if (event_x11 != NULL)
+    _clutter_event_x11_free (event_x11);
+}
+
 gboolean
 clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
                                   XEvent *xevent)
@@ -516,6 +545,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
   backend_class->get_device_manager = clutter_backend_x11_get_device_manager;
+  backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
+  backend_class->free_event_data = clutter_backend_x11_free_event_data;
 
   backendx11_class->handle_event = clutter_backend_x11_handle_event;
 }
