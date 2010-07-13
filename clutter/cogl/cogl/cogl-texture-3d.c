@@ -222,20 +222,6 @@ _cogl_texture_3d_can_create (unsigned int     width,
       return FALSE;
     }
 
-  /* If the driver doesn't support glGenerateMipmap then we need to
-     store a copy of the first pixels to cause an update. Instead of
-     duplicating the code here we'll just make it throw an error */
-  if ((flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0 &&
-      !cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "Auto mipmapping was requested but this is not supported "
-                   "by Cogl with this driver");
-      return FALSE;
-    }
-
   /* If NPOT textures aren't supported then the size must be a power
      of two */
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
@@ -358,6 +344,13 @@ _cogl_texture_3d_new_from_bitmap (CoglHandle       bmp_handle,
 
   tex_3d = _cogl_texture_3d_create_base (dst_bmp.width, height, depth,
                                          flags, internal_format);
+
+  /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
+     supported we can fallback to using GL_GENERATE_MIPMAP */
+  tex_3d->first_pixel.gl_format = gl_format;
+  tex_3d->first_pixel.gl_type = gl_type;
+  memcpy (tex_3d->first_pixel.data, dst_bmp.data,
+          _cogl_get_format_bpp (dst_bmp.format));
 
   _cogl_texture_driver_gen (GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
 
@@ -565,10 +558,31 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
       _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                        tex_3d->gl_texture,
                                        FALSE);
-      /* glGenerateMipmap is defined in the FBO extension. We only allow
-         CoglTexture3D instances to be created if this feature is
-         available so we don't need to check for the extension */
-      _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_3D);
+      /* glGenerateMipmap is defined in the FBO extension. If it's not
+         available we'll fallback to temporarily enabling
+         GL_GENERATE_MIPMAP and reuploading the first pixel */
+      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+        _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_3D);
+      else
+        {
+          GE( glTexParameteri (GL_TEXTURE_3D,
+                               GL_GENERATE_MIPMAP,
+                               GL_TRUE) );
+          GE( glTexSubImage3D (GL_TEXTURE_3D,
+                               0, /* level */
+                               0, /* xoffset */
+                               0, /* yoffset */
+                               0, /* zoffset */
+                               1, /* width */
+                               1, /* height */
+                               1, /* depth */
+                               tex_3d->first_pixel.gl_format,
+                               tex_3d->first_pixel.gl_type,
+                               tex_3d->first_pixel.data) );
+          GE( glTexParameteri (GL_TEXTURE_3D,
+                               GL_GENERATE_MIPMAP,
+                               GL_FALSE) );
+        }
 
       tex_3d->mipmaps_dirty = FALSE;
     }

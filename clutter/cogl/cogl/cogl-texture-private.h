@@ -151,6 +151,22 @@ typedef enum _CoglTextureChangeFlags
 
 } CoglTextureChangeFlags;
 
+typedef struct _CoglTexturePixel  CoglTexturePixel;
+
+/* This is used by the texture backends to store the first pixel of
+   each GL texture. This is only used when glGenerateMipmap is not
+   available so that we can temporarily set GL_GENERATE_MIPMAP and
+   reupload a pixel */
+struct _CoglTexturePixel
+{
+  /* We need to store the format of the pixel because we store the
+     data in the source format which might end up being different for
+     each slice if a subregion is updated with a different format */
+  GLenum gl_format;
+  GLenum gl_type;
+  guint8 data[4];
+};
+
 void
 _cogl_texture_free (CoglTexture *texture);
 

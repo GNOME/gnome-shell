@@ -166,13 +166,6 @@ _cogl_texture_2d_can_create (unsigned int width,
   GLenum gl_intformat;
   GLenum gl_type;
 
-  /* If the driver doesn't support glGenerateMipmap then we need to
-     store a copy of the first pixels to cause an update. Instead of
-     duplicating the code here we'll just make it fallback to
-     CoglTexture2DSliced */
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    return FALSE;
-
   /* If NPOT textures aren't supported then the size must be a power
      of two */
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
@@ -295,6 +288,13 @@ _cogl_texture_2d_new_from_bitmap (CoglHandle       bmp_handle,
                                          bmp->height,
                                          flags,
                                          internal_format);
+
+  /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
+     supported we can fallback to using GL_GENERATE_MIPMAP */
+  tex_2d->first_pixel.gl_format = gl_format;
+  tex_2d->first_pixel.gl_type = gl_type;
+  memcpy (tex_2d->first_pixel.data, dst_bmp.data,
+          _cogl_get_format_bpp (dst_bmp.format));
 
   _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_texture_driver_upload_to_gl (GL_TEXTURE_2D,
@@ -420,10 +420,25 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
       _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                        tex_2d->gl_texture,
                                        FALSE);
-      /* glGenerateMipmap is defined in the FBO extension. We only allow
-         CoglTexture2D instances to be created if this feature is
-         available so we don't need to check for the extension */
-      _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
+
+      /* glGenerateMipmap is defined in the FBO extension. If it's not
+         available we'll fallback to temporarily enabling
+         GL_GENERATE_MIPMAP and reuploading the first pixel */
+      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+        _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
+      else
+        {
+          GE( glTexParameteri (GL_TEXTURE_2D,
+                               GL_GENERATE_MIPMAP,
+                               GL_TRUE) );
+          GE( glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, 1, 1,
+                               tex_2d->first_pixel.gl_format,
+                               tex_2d->first_pixel.gl_type,
+                               tex_2d->first_pixel.data) );
+          GE( glTexParameteri (GL_TEXTURE_2D,
+                               GL_GENERATE_MIPMAP,
+                               GL_FALSE) );
+        }
 
       tex_2d->mipmaps_dirty = FALSE;
     }
@@ -453,6 +468,17 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
                             NULL, /* internal format */
                             &gl_format,
                             &gl_type);
+
+  /* If this touches the first pixel then we'll update our copy */
+  if (dst_x == 0 && dst_y == 0)
+    {
+      CoglPixelFormat bpp = _cogl_get_format_bpp (bmp->format);
+      tex_2d->first_pixel.gl_format = gl_format;
+      tex_2d->first_pixel.gl_type = gl_type;
+      memcpy (tex_2d->first_pixel.data,
+              bmp->data + bmp->rowstride * src_y + bpp * src_x,
+              bpp);
+    }
 
   /* Send data to GL */
   _cogl_texture_driver_upload_subregion_to_gl (GL_TEXTURE_2D,
