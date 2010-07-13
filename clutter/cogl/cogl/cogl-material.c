@@ -2556,7 +2556,7 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
     {
       if (error)
         {
-          g_set_error (error, COGL_ERROR, COGL_ERROR_MISSING_FEATURE,
+          g_set_error (error, COGL_ERROR, COGL_ERROR_UNSUPPORTED,
                        "Point sprite texture coordinates are enabled "
                        "for a layer but the GL driver does not support it.");
         }
@@ -4345,7 +4345,7 @@ cogl_material_set_depth_range (CoglMaterial *material,
 #else
   g_set_error (error,
                COGL_ERROR,
-               COGL_ERROR_MISSING_FEATURE,
+               COGL_ERROR_UNSUPPORTED,
                "glDepthRange not available on GLES 1");
   return FALSE;
 #endif
