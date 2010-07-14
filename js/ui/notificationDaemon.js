@@ -209,9 +209,13 @@ NotificationDaemon.prototype = {
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
-                    n.destroy();
                     this._emitNotificationClosed(n.id, NotificationClosedReason.DISMISSED);
                 }));
+            notification.connect('destroy', Lang.bind(this,
+                function(n) {
+                    delete this._currentNotifications[id];
+                }));
+            notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         } else {
             // passing in true as the last parameter will clear out extra actors,
             // such as actions
@@ -221,7 +225,6 @@ NotificationDaemon.prototype = {
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addButton(actions[i], actions[i + 1]);
-            notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         }
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
@@ -267,12 +270,11 @@ NotificationDaemon.prototype = {
     },
 
     _actionInvoked: function(notification, action, source, id) {
-        this._emitActionInvoked(id, action);
         source.destroy();
+        this._emitActionInvoked(id, action);
     },
 
     _emitNotificationClosed: function(id, reason) {
-        delete this._currentNotifications[id];
         DBus.session.emit_signal('/org/freedesktop/Notifications',
                                  'org.freedesktop.Notifications',
                                  'NotificationClosed', 'uu',

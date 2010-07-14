@@ -80,6 +80,8 @@ Notification.prototype = {
                 this.emit('dismissed');
             }));
 
+        source.connect('destroy', Lang.bind(this, this.destroy));
+
         this.actor = new St.Table({ name: 'notification',
                                     reactive: true });
         this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
