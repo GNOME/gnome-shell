@@ -986,10 +986,10 @@ _cogl_texture_2d_sliced_upload_from_data
   else
     {
       /* Find closest GL format match */
-      _cogl_pixel_format_to_gl (internal_format,
-                                &gl_intformat,
-                                &gl_format,
-                                &gl_type);
+      internal_format = _cogl_pixel_format_to_gl (internal_format,
+                                                  &gl_intformat,
+                                                  &gl_format,
+                                                  &gl_type);
 
       /* Create slices for the given format and size */
       if (!_cogl_texture_2d_sliced_slices_create (tex_2ds,
@@ -1004,7 +1004,7 @@ _cogl_texture_2d_sliced_upload_from_data
   tex_2ds->gl_format = gl_intformat;
   tex_2ds->width = bmp->width;
   tex_2ds->height = bmp->height;
-  tex_2ds->format = bmp->format;
+  tex_2ds->format = internal_format;
 
   return TRUE;
 }
