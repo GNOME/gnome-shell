@@ -393,6 +393,7 @@ Cally-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) Clutter-@CLUT
 		$(INCLUDES) \
 		$(AM_CPPFLAGS) \
 		--c-include='cally/cally.h' \
+		--add-include-path=$(top_builddir)/clutter \
 		--include=GObject-2.0 \
 		--include=Atk-1.0 \
 		--include=Pango-1.0 \
@@ -407,6 +408,8 @@ Cally-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) Clutter-@CLUT
 		$(top_srcdir)/clutter/cally/*.c
 
 BUILT_GIRSOURCES += Cally-@CLUTTER_API_VERSION@.gir
+
+Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
