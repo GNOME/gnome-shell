@@ -100,10 +100,11 @@ AppFavorites.prototype = {
     },
 
     removeFavorite: function(appId) {
+        let app = this._favorites[appId];
         if (!this._removeFavorite(appId))
             return;
 
-        Main.overview.infoBar.setMessage(_("%s has been removed from your favorites.").format(this._favorites[appId].get_name()),
+        Main.overview.infoBar.setMessage(_("%s has been removed from your favorites.").format(app.get_name()),
                                          Lang.bind(this, function () {
             this._addFavorite(appId);
         }));
