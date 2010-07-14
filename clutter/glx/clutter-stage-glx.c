@@ -476,8 +476,8 @@ wait_for_vblank (ClutterBackendGLX *backend_glx)
                                     (retraceCount + 1) % 2,
                                     &retraceCount);
     }
-  else
 #ifdef __linux__
+  else
     {
       drm_wait_vblank_t blank;
 
