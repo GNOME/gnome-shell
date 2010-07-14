@@ -636,7 +636,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   if (attrs->override_redirect)
     event_mask |= StructureNotifyMask;
 
-  XSelectInput (display->xdisplay, xwindow, event_mask);
+  /* If the window is from this client (a menu, say) we need to augment
+   * the event mask, not replace it. For windows from other clients,
+   * attrs->your_event_mask will be empty at this point.
+   */
+  XSelectInput (display->xdisplay, xwindow, attrs->your_event_mask | event_mask);
 
   has_shape = FALSE;
 #ifdef HAVE_SHAPE
@@ -1518,19 +1522,24 @@ meta_window_unmanage (MetaWindow  *window,
   XRemoveFromSaveSet (window->display->xdisplay,
                       window->xwindow);
 
-  /* Don't get events on not-managed windows */
-  XSelectInput (window->display->xdisplay,
-                window->xwindow,
-                NoEventMask);
+  /* Even though the window is now unmanaged, we can't unselect events. This
+   * window might be a window from this process, like a GdkMenu, in
+   * which case it will have pointer events and so forth selected
+   * for it by GDK. There's no way to disentangle those events from the events
+   * we've selected. Even for a window from a different X client,
+   * GDK could also have selected events for it for IPC purposes, so we
+   * can't unselect in that case either.
+   *
+   * Similarly, we can't unselected for events on window->user_time_window.
+   * It might be our own GDK focus window, or it might be a window that a
+   * different client is using for multiple different things:
+   * _NET_WM_USER_TIME_WINDOW and IPC, perhaps.
+   */
 
-  /* Stop getting events for the window's _NET_WM_USER_TIME_WINDOW too */
   if (window->user_time_window != None)
     {
       meta_display_unregister_x_window (window->display,
                                         window->user_time_window);
-      XSelectInput (window->display->xdisplay,
-                    window->user_time_window,
-                    NoEventMask);
       window->user_time_window = None;
     }
 
