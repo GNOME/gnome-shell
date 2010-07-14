@@ -32,7 +32,7 @@ struct _CoglShader
 {
   CoglHandleObject   _parent;
   GLuint             gl_handle;
-  GLenum             type;
+  CoglShaderType     type;
 };
 
 CoglShader *_cogl_shader_pointer_from_handle (CoglHandle handle);
