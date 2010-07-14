@@ -356,6 +356,13 @@ COGL_FEATURE_FUNCTION (void, glTexImage3D,
                         GLsizei depth, GLint border,
                         GLenum format, GLenum type,
                         const GLvoid *pixels))
+COGL_FEATURE_FUNCTION (void, glTexSubImage3D,
+                       (GLenum target, GLint level,
+                        GLint xoffset, GLint yoffset,
+                        GLint zoffset, GLsizei width,
+                        GLsizei height, GLsizei depth,
+                        GLenum format,
+                        GLenum type, const GLvoid *pixels))
 COGL_FEATURE_END ()
 
 /* Available in GL 1.3 or the multitexture extension. These are
