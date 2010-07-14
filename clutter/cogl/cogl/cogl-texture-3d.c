@@ -49,6 +49,7 @@
 #endif
 
 #define glTexImage3D ctx->drv.pf_glTexImage3D
+#define glTexSubImage3D ctx->drv.pf_glTexSubImage3D
 
 static void _cogl_texture_3d_free (CoglTexture3D *tex_3d);
 
