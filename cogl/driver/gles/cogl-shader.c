@@ -69,6 +69,7 @@ cogl_create_shader (CoglShaderType type)
 
   shader = g_slice_new (CoglShader);
   shader->gl_handle = glCreateShader (gl_type);
+  shader->type = type;
 
   return _cogl_shader_handle_new (shader);
 }
