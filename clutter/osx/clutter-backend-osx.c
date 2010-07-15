@@ -89,7 +89,6 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
                glGetString (GL_RENDERER),
                glGetString (GL_VERSION),
                glGetString (GL_EXTENSIONS));
-  [NSOpenGLContext clearCurrentContext];
 
   CLUTTER_OSX_POOL_RELEASE();
 
