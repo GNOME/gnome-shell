@@ -28,6 +28,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
+#include "cogl-buffer-private.h"
 
 #include <string.h>
 
@@ -44,10 +45,15 @@ struct _CoglBitmap
   void                    *destroy_fn_data;
 
   gboolean                 mapped;
+  gboolean                 bound;
 
   /* If this is non-null then 'data' is ignored and instead it is
      fetched from this shared bitmap. */
   CoglBitmap              *shared_bmp;
+
+  /* If this is non-null then 'data' is treated as an offset into the
+     buffer and map will divert to mapping the buffer */
+  CoglBuffer              *buffer;
 };
 
 static void _cogl_bitmap_free (CoglBitmap *bmp);
@@ -58,12 +64,16 @@ static void
 _cogl_bitmap_free (CoglBitmap *bmp)
 {
   g_assert (!bmp->mapped);
+  g_assert (!bmp->bound);
 
   if (bmp->destroy_fn)
     bmp->destroy_fn (bmp->data, bmp->destroy_fn_data);
 
   if (bmp->shared_bmp)
     cogl_object_unref (bmp->shared_bmp);
+
+  if (bmp->buffer)
+    cogl_object_unref (bmp->buffer);
 
   g_slice_free (CoglBitmap, bmp);
 }
@@ -237,7 +247,9 @@ _cogl_bitmap_new_from_data (guint8                  *data,
   bmp->destroy_fn = destroy_fn;
   bmp->destroy_fn_data = destroy_fn_data;
   bmp->mapped = FALSE;
+  bmp->bound = FALSE;
   bmp->shared_bmp = NULL;
+  bmp->buffer = NULL;
 
   return _cogl_bitmap_object_new (bmp);
 }
@@ -280,6 +292,32 @@ cogl_bitmap_new_from_file (const char  *filename,
           *error = NULL;
         }
     }
+
+  return bmp;
+}
+
+CoglBitmap *
+_cogl_bitmap_new_from_buffer (CoglBuffer      *buffer,
+                              CoglPixelFormat  format,
+                              int              width,
+                              int              height,
+                              int              rowstride,
+                              int              offset)
+{
+  CoglBitmap *bmp;
+
+  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+
+  bmp = _cogl_bitmap_new_from_data (NULL, /* data */
+                                    format,
+                                    width,
+                                    height,
+                                    rowstride,
+                                    NULL, /* destroy_fn */
+                                    NULL /* destroy_fn_data */);
+
+  bmp->buffer = cogl_object_ref (buffer);
+  bmp->data = GINT_TO_POINTER (offset);
 
   return bmp;
 }
@@ -331,11 +369,32 @@ _cogl_bitmap_map (CoglBitmap *bitmap,
     return _cogl_bitmap_map (bitmap->shared_bmp, access, hints);
 
   g_assert (!bitmap->mapped);
-  bitmap->mapped = TRUE;
 
-  /* Currently the bitmap is always in regular memory so we can just
-     directly return the pointer */
-  return bitmap->data;
+  if (bitmap->buffer)
+    {
+      guint8 *data = cogl_buffer_map (bitmap->buffer,
+                                      access,
+                                      hints);
+
+      COGL_NOTE (BITMAP, "A pixel array is being mapped from a bitmap. This "
+                 "usually means that some conversion on the pixel array is "
+                 "needed so a sub-optimal format is being used.");
+
+      if (data)
+        {
+          bitmap->mapped = TRUE;
+
+          return data + GPOINTER_TO_INT (bitmap->data);
+        }
+      else
+        return NULL;
+    }
+  else
+    {
+      bitmap->mapped = TRUE;
+
+      return bitmap->data;
+    }
 }
 
 void
@@ -348,6 +407,74 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap)
   g_assert (bitmap->mapped);
   bitmap->mapped = FALSE;
 
-  /* Currently the bitmap is always in regular memory so we don't need
-     to do anything */
+  if (bitmap->buffer)
+    cogl_buffer_unmap (bitmap->buffer);
+}
+
+guint8 *
+_cogl_bitmap_bind (CoglBitmap *bitmap,
+                   CoglBufferAccess access,
+                   CoglBufferMapHint hints)
+{
+  guint8 *ptr;
+
+  /* Divert to another bitmap if this data is shared */
+  if (bitmap->shared_bmp)
+    return _cogl_bitmap_bind (bitmap->shared_bmp, access, hints);
+
+  g_assert (!bitmap->bound);
+
+  /* If the bitmap wasn't created from a buffer then the
+     implementation of bind is the same as map */
+  if (bitmap->buffer == NULL)
+    {
+      guint8 *data = _cogl_bitmap_map (bitmap, access, hints);
+      if (data)
+        bitmap->bound = TRUE;
+      return data;
+    }
+
+  bitmap->bound = TRUE;
+
+  /* If buffer is using a malloc fallback then we'll just use the
+     pointer directly */
+  if (COGL_BUFFER_FLAG_IS_SET (bitmap->buffer, BUFFER_OBJECT))
+    {
+      ptr = NULL;
+
+      if (access == COGL_BUFFER_ACCESS_READ)
+        _cogl_buffer_bind (bitmap->buffer,
+                           COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
+      else if (access == COGL_BUFFER_ACCESS_WRITE)
+        _cogl_buffer_bind (bitmap->buffer,
+                           COGL_BUFFER_BIND_TARGET_PIXEL_PACK);
+      else
+        g_assert_not_reached ();
+    }
+  else
+    ptr = bitmap->buffer->data;
+
+  /* The data pointer actually stores the offset */
+  return GPOINTER_TO_INT (bitmap->data) + ptr;
+}
+
+void
+_cogl_bitmap_unbind (CoglBitmap *bitmap)
+{
+  /* Divert to another bitmap if this data is shared */
+  if (bitmap->shared_bmp)
+    return _cogl_bitmap_unbind (bitmap->shared_bmp);
+
+  g_assert (bitmap->bound);
+  bitmap->bound = FALSE;
+
+  /* If the bitmap wasn't created from a pixel array then the
+     implementation of unbind is the same as unmap */
+  if (bitmap->buffer)
+    {
+      if (COGL_BUFFER_FLAG_IS_SET (bitmap->buffer, BUFFER_OBJECT))
+        _cogl_buffer_unbind (bitmap->buffer);
+    }
+  else
+    _cogl_bitmap_unmap (bitmap);
 }
