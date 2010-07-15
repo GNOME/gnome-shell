@@ -27,7 +27,10 @@ XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 
 HTML_FILES = html/*.html
 CSS_FILES = html/*.css
-IMAGE_FILES = images/clutter-logo.png
+IMAGE_FILES = \
+	images/clutter-logo.png \
+	images/actors-opacity.png \
+	images/actors-opacity-container-affects-opacity.png
 
 EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
 
