@@ -82,6 +82,17 @@ _cogl_bitmap_new_shared (CoglBitmap      *shared_bmp,
                          int              height,
                          int              rowstride);
 
+/* This creates a cogl bitmap that internally references a pixel
+   array. The data is not copied. _cogl_bitmap_map will divert to
+   mapping the pixel array */
+CoglBitmap *
+_cogl_bitmap_new_from_buffer (CoglBuffer      *buffer,
+                              CoglPixelFormat  format,
+                              int              width,
+                              int              height,
+                              int              rowstride,
+                              int              offset);
+
 gboolean
 _cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
 
@@ -172,5 +183,19 @@ _cogl_bitmap_map (CoglBitmap *bitmap,
 
 void
 _cogl_bitmap_unmap (CoglBitmap *bitmap);
+
+/* These two are replacements for map and unmap that should used when
+   the pointer is going to be passed to GL for pixel packing or
+   unpacking. The address might not be valid for reading if the bitmap
+   was created with new_from_buffer but it will however be good to
+   pass to glTexImage2D for example. The access should be READ for
+   unpacking and WRITE for packing. It can not be both */
+guint8 *
+_cogl_bitmap_bind (CoglBitmap *bitmap,
+                   CoglBufferAccess access,
+                   CoglBufferMapHint hints);
+
+void
+_cogl_bitmap_unbind (CoglBitmap *bitmap);
 
 #endif /* __COGL_BITMAP_H */

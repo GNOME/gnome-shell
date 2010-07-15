@@ -150,19 +150,18 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                0, 0,
                                width, height);
 
-  if ((data = _cogl_bitmap_map (slice_bmp, COGL_BUFFER_ACCESS_READ, 0)))
-    {
-      _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
+  data = _cogl_bitmap_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
-      GE( glTexSubImage2D (gl_target, 0,
-                           dst_x, dst_y,
-                           width, height,
-                           source_gl_format,
-                           source_gl_type,
-                           data) );
+  _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-      _cogl_bitmap_unmap (slice_bmp);
-    }
+  GE( glTexSubImage2D (gl_target, 0,
+                       dst_x, dst_y,
+                       width, height,
+                       source_gl_format,
+                       source_gl_type,
+                       data) );
+
+  _cogl_bitmap_unbind (slice_bmp);
 
   cogl_object_unref (slice_bmp);
 }
@@ -209,18 +208,17 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  if ((data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)))
-    {
-      GE( glTexImage2D (gl_target, 0,
-                        internal_gl_format,
-                        bmp_width, bmp_height,
-                        0,
-                        source_gl_format,
-                        source_gl_type,
-                        data) );
+  data = _cogl_bitmap_bind (bmp, COGL_BUFFER_ACCESS_READ, 0);
 
-      _cogl_bitmap_unmap (bmp);
-    }
+  GE( glTexImage2D (gl_target, 0,
+                    internal_gl_format,
+                    bmp_width, bmp_height,
+                    0,
+                    source_gl_format,
+                    source_gl_type,
+                    data) );
+
+  _cogl_bitmap_unbind (bmp);
 
   cogl_object_unref (bmp);
 }
@@ -289,29 +287,30 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                        bmp_width,
                                        bmp_height);
 
-          if ((data = _cogl_bitmap_map (bmp,
-                                        COGL_BUFFER_ACCESS_READ, 0)))
-            {
-              GE( glTexSubImage3D (gl_target,
-                                   0, /* level */
-                                   0, /* xoffset */
-                                   0, /* yoffset */
-                                   i, /* zoffset */
-                                   bmp_width, /* width */
-                                   height, /* height */
-                                   1, /* depth */
-                                   source_gl_format,
-                                   source_gl_type,
-                                   data) );
+          data = _cogl_bitmap_bind (bmp,
+                                    COGL_BUFFER_ACCESS_READ, 0);
 
-              _cogl_bitmap_unmap (bmp);
-            }
+          GE( glTexSubImage3D (gl_target,
+                               0, /* level */
+                               0, /* xoffset */
+                               0, /* yoffset */
+                               i, /* zoffset */
+                               bmp_width, /* width */
+                               height, /* height */
+                               1, /* depth */
+                               source_gl_format,
+                               source_gl_type,
+                               data) );
+
+          _cogl_bitmap_unbind (bmp);
         }
 
       cogl_object_unref (bmp);
     }
-  else if ((data = _cogl_bitmap_map (source_bmp, COGL_BUFFER_ACCESS_READ, 0)))
+  else
     {
+      data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
+
       _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
 
       GE( glTexImage3D (gl_target,
@@ -325,7 +324,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                         source_gl_type,
                         data) );
 
-      _cogl_bitmap_unmap (source_bmp);
+      _cogl_bitmap_unbind (source_bmp);
     }
 }
 

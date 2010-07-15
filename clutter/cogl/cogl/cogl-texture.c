@@ -560,6 +560,7 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
   CoglHandle texture;
   CoglBuffer *cogl_buffer;
   CoglPixelArray *pixel_array;
+  CoglBitmap *bmp;
 
   g_return_val_if_fail (cogl_is_buffer (buffer), COGL_INVALID_HANDLE);
 
@@ -588,36 +589,16 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
       return COGL_INVALID_HANDLE;
     }
 
-#if !defined (COGL_HAS_GLES)
-  if (cogl_features_available (COGL_FEATURE_PBOS))
-    {
-      CoglBitmap *bmp;
+  /* Wrap the buffer into a bitmap */
+  bmp = _cogl_bitmap_new_from_buffer (cogl_buffer,
+                                      format,
+                                      width, height,
+                                      rowstride,
+                                      offset);
 
-      /* Wrap the data into a bitmap */
-      bmp = _cogl_bitmap_new_from_data (GUINT_TO_POINTER (offset),
-                                        format,
-                                        width, height,
-                                        rowstride,
-                                        NULL, NULL);
+  texture = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
 
-      _cogl_buffer_bind (cogl_buffer,
-                         COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
-      texture =  cogl_texture_new_from_bitmap (bmp, flags, internal_format);
-      _cogl_buffer_unbind (cogl_buffer);
-
-      cogl_object_unref (bmp);
-    }
-  else
-#endif
-    {
-      texture = cogl_texture_new_from_data (width,
-			                    height,
-                                            flags,
-                                            format,
-                                            internal_format,
-                                            rowstride,
-                                            cogl_buffer->data);
-    }
+  cogl_object_unref (bmp);
 
   return texture;
 }
