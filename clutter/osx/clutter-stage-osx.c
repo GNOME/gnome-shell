@@ -475,6 +475,19 @@ clutter_stage_osx_set_fullscreen (ClutterStageWindow *stage_window,
 
   CLUTTER_OSX_POOL_RELEASE();
 }
+static void
+clutter_stage_osx_set_cursor_visible (ClutterStageWindow *stage_window,
+                                      gboolean            cursor_visible)
+{
+  ;/* FIXME */
+}
+
+static void
+clutter_stage_osx_set_user_resizable (ClutterStageWindow *stage_window,
+                                      gboolean            is_resizable)
+{
+  ;/* FIXME */
+}
 
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
@@ -488,6 +501,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->unrealize      = clutter_stage_osx_unrealize;
   iface->get_geometry   = clutter_stage_osx_get_geometry;
   iface->resize         = clutter_stage_osx_resize;
+  iface->set_cursor_visible = clutter_stage_osx_set_cursor_visible;
+  iface->set_user_resizable = clutter_stage_osx_set_user_resizable;
 }
 
 /*************************************************************************/
