@@ -140,7 +140,10 @@ WindowClone.prototype = {
         if (this.inDrag || this._zooming)
             // We'll fix up the stack after the drag/zooming
             return;
-        this.actor.raise(this._stackAbove);
+        if (this._stackAbove == null)
+            this.actor.lower_bottom();
+        else
+            this.actor.raise(this._stackAbove);
     },
 
     destroy: function () {
@@ -247,11 +250,13 @@ WindowClone.prototype = {
         this.emit('zoom-end');
 
         this.actor.reparent(this._origParent);
+        if (this._stackAbove == null)
+            this.actor.lower_bottom();
         // If the workspace has been destroyed while we were reparented to
         // the stage, _stackAbove will be unparented and we can't raise our
         // actor above it - as we are bound to be destroyed anyway in that
         // case, we can skip that step
-        if (this._stackAbove && this._stackAbove.get_parent())
+        else if (this._stackAbove.get_parent())
             this.actor.raise(this._stackAbove);
 
         [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
@@ -283,80 +288,18 @@ WindowClone.prototype = {
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
         // with a new one on the target workspace.
-        if (this.actor.get_parent() != null)
-            this.actor.raise(this._stackAbove);
+        if (this.actor.get_parent() != null) {
+            if (this._stackAbove == null)
+                this.actor.lower_bottom();
+            else
+                this.actor.raise(this._stackAbove);
+        }
+
 
         this.emit('drag-end');
     }
 };
-
 Signals.addSignalMethods(WindowClone.prototype);
-
-
-function DesktopClone(window) {
-    this._init(window);
-}
-
-DesktopClone.prototype = {
-    _init : function(window) {
-        this.actor = new Clutter.Group({ reactive: true });
-
-        let background = new Clutter.Clone({ source: global.background_actor });
-        this.actor.add_actor(background);
-
-        if (window) {
-            this._desktop = new Clutter.Clone({ source: window.get_texture() });
-            this.actor.add_actor(this._desktop);
-            this._desktop.hide();
-        } else {
-            this._desktop = null;
-        }
-
-        this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onButtonRelease));
-    },
-
-    zoomFromOverview: function(fadeInIcons) {
-        if (this._desktop == null)
-            return;
-
-        if (fadeInIcons) {
-            this._desktop.opacity = 0;
-            this._desktop.show();
-            Tweener.addTween(this._desktop,
-                             { opacity: 255,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
-        }
-    },
-
-    zoomToOverview: function(fadeOutIcons) {
-        if (this._desktop == null)
-            return;
-
-        if (fadeOutIcons) {
-            this._desktop.opacity = 255;
-            this._desktop.show();
-            Tweener.addTween(this._desktop,
-                             { opacity: 0,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this._desktop.hide();
-                                   })
-                             });
-        } else {
-            this._desktop.hide();
-        }
-    },
-
-    _onButtonRelease : function (actor, event) {
-        this.emit('selected', event.get_time());
-    }
-};
-
-Signals.addSignalMethods(DesktopClone.prototype);
 
 
 /**
@@ -559,7 +502,6 @@ WindowOverlay.prototype = {
         this._parentActor.queue_relayout();
     }
 };
-
 Signals.addSignalMethods(WindowOverlay.prototype);
 
 const WindowPositionFlags = {
@@ -583,10 +525,20 @@ Workspace.prototype = {
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
 
-        this.actor = new Clutter.Group();
+        this.actor = new Clutter.Group({ reactive: true });
         this.actor._delegate = this;
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('button-release-event', Lang.bind(this,
+            function(actor, event) {
+                // Only switch to the workspace when there's no application
+                // windows open. The problem is that it's too easy to miss
+                // an app window and get the wrong one focused.
+                if (this._windows.length == 0) {
+                    this.metaWorkspace.activate(event.get_time());
+                    Main.overview.hide();
+                }
+            }));
 
         // Items in _windowOverlaysGroup should not be scaled, so we don't
         // add them to this.actor, but to its parent whenever it changes
@@ -602,35 +554,10 @@ Workspace.prototype = {
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
-        // Find the desktop window
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].meta_window.get_window_type() == Meta.WindowType.DESKTOP) {
-                this._desktop = new DesktopClone(windows[i]);
-                break;
-            }
-        }
-        // If there wasn't one, fake it
-        if (!this._desktop)
-            this._desktop = new DesktopClone();
-
-        this._desktop.connect('selected',
-                              Lang.bind(this,
-                                        function(clone, time) {
-                                            // Only switch to the workspace when there's no application windows
-                                            // open (we always have one window for the desktop).  The problem
-                                            // is that it's too easy to miss an app window and get the wrong
-                                            // one focused.
-                                            if (this._windows.length == 1) {
-                                                this.metaWorkspace.activate(time);
-                                                Main.overview.hide();
-                                            }
-                                        }));
-        this.actor.add_actor(this._desktop.actor);
-
         // Create clones for remaining windows that should be
         // visible in the Overview
-        this._windows = [this._desktop];
-        this._windowOverlays = [ null ];
+        this._windows = [];
+        this._windowOverlays = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i])) {
                 this._addWindowClone(windows[i]);
@@ -745,10 +672,10 @@ Workspace.prototype = {
             // FIXME: do something cooler-looking using clutter-cairo
             this._frame = new Clutter.Rectangle({ color: FRAME_COLOR });
             this.actor.add_actor(this._frame);
-            this._frame.set_position(this._desktop.actor.x - FRAME_SIZE / this.actor.scale_x,
-                                     this._desktop.actor.y - FRAME_SIZE / this.actor.scale_y);
-            this._frame.set_size(this._desktop.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                                 this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
+            this._frame.set_position(- FRAME_SIZE / this.actor.scale_x,
+                                     - FRAME_SIZE / this.actor.scale_y);
+            this._frame.set_size(this.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                                 this.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
             this._frame.lower_bottom();
 
             this._framePosHandler = this.actor.connect('notify::scale-x', Lang.bind(this, this._updateFramePosition));
@@ -768,14 +695,14 @@ Workspace.prototype = {
      * Set the workspace (desktop) reactive
      **/
     setReactive: function(reactive) {
-        this._desktop.actor.reactive = reactive;
+        this.actor.reactive = reactive;
     },
 
     _updateFramePosition : function() {
-        this._frame.set_position(this._desktop.actor.x - FRAME_SIZE / this.actor.scale_x,
-                                 this._desktop.actor.y - FRAME_SIZE / this.actor.scale_y);
-        this._frame.set_size(this._desktop.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                             this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
+        this._frame.set_position(- FRAME_SIZE / this.actor.scale_x,
+                                 - FRAME_SIZE / this.actor.scale_y);
+        this._frame.set_size(this.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                             this.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
     _isCloneVisible: function(clone) {
@@ -786,7 +713,7 @@ Workspace.prototype = {
      * _getVisibleClones:
      *
      * Returns a list WindowClone objects where the clone isn't filtered
-     * out by any application filter.  The clone for the desktop is excluded.
+     * out by any application filter.
      * The returned array will always be newly allocated; it is not in any
      * defined order, and thus it's convenient to call .sort() with your
      * choice of sorting function.
@@ -794,7 +721,7 @@ Workspace.prototype = {
     _getVisibleClones: function() {
         let visible = [];
 
-        for (let i = 1; i < this._windows.length; i++) {
+        for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
 
             if (!this._isCloneVisible(clone))
@@ -806,7 +733,7 @@ Workspace.prototype = {
     },
 
     _resetCloneVisibility: function () {
-        for (let i = 1; i < this._windows.length; i++) {
+        for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
 
@@ -1005,9 +932,9 @@ Workspace.prototype = {
         let buttonOuterHeight, captionHeight;
         let buttonOuterWidth = 0;
 
-        if (this._windowOverlays[1]) {
-            [buttonOuterHeight, captionHeight] = this._windowOverlays[1].chromeHeights();
-            buttonOuterWidth = this._windowOverlays[1].chromeWidth() / this.scale;
+        if (this._windowOverlays[0]) {
+            [buttonOuterHeight, captionHeight] = this._windowOverlays[0].chromeHeights();
+            buttonOuterWidth = this._windowOverlays[0].chromeWidth() / this.scale;
         } else
             [buttonOuterHeight, captionHeight] = [0, 0];
         buttonOuterHeight /= this.scale;
@@ -1126,8 +1053,6 @@ Workspace.prototype = {
     },
 
     syncStacking: function(stackIndices) {
-        let desktopClone = this._windows[0];
-
         let visibleClones = this._getVisibleClones();
         visibleClones.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
 
@@ -1135,7 +1060,7 @@ Workspace.prototype = {
             let clone = visibleClones[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
-                clone.setStackAbove(desktopClone.actor);
+                clone.setStackAbove(null);
             } else {
                 let previousClone = visibleClones[i - 1];
                 clone.setStackAbove(previousClone.actor);
@@ -1170,7 +1095,7 @@ Workspace.prototype = {
     },
 
     _fadeInAllOverlays: function() {
-        for (let i = 1; i < this._windows.length; i++) {
+        for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
             if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
@@ -1180,7 +1105,7 @@ Workspace.prototype = {
     },
 
     _hideAllOverlays: function() {
-        for (let i = 1; i< this._windows.length; i++) {
+        for (let i = 0; i < this._windows.length; i++) {
             let overlay = this._windowOverlays[i];
             overlay.hide();
         }
@@ -1307,8 +1232,8 @@ Workspace.prototype = {
     },
 
     // check for maximized windows on the workspace
-    _haveMaximizedWindows: function() {
-        for (let i = 1; i < this._windows.length; i++) {
+    hasMaximizedWindows: function() {
+        for (let i = 0; i < this._windows.length; i++) {
             let metaWindow = this._windows[i].metaWindow;
             if (metaWindow.showing_on_its_workspace() &&
                 metaWindow.maximized_horizontally &&
@@ -1329,12 +1254,6 @@ Workspace.prototype = {
         else
             this.positionWindows(WindowPositionFlags.ZOOM);
 
-        let active = global.screen.get_active_workspace();
-        let fadeInIcons = (Main.overview.animationInProgress &&
-                           active == this.metaWorkspace &&
-                           !this._haveMaximizedWindows());
-        this._desktop.zoomToOverview(fadeInIcons);
-
         this._visible = true;
     },
 
@@ -1352,7 +1271,7 @@ Workspace.prototype = {
                                                                            this._doneLeavingOverview));
 
         // Position and scale the windows.
-        for (let i = 1; i < this._windows.length; i++) {
+        for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
 
             clone.zoomFromOverview();
@@ -1380,11 +1299,6 @@ Workspace.prototype = {
                                  });
             }
         }
-
-        let active = global.screen.get_active_workspace();
-        let fadeOutIcons = (active == this.metaWorkspace &&
-                            !this._haveMaximizedWindows());
-        this._desktop.zoomFromOverview(fadeOutIcons);
 
         this._visible = false;
     },
@@ -1449,7 +1363,7 @@ Workspace.prototype = {
 
         // Don't let the user try to select this workspace as it's
         // making its exit.
-        this._desktop.reactive = false;
+        this.actor.reactive = false;
     },
 
     destroy : function() {
@@ -1473,7 +1387,7 @@ Workspace.prototype = {
         // their parent (this.actor), but we might have a zoomed window
         // which has been reparented to the stage - _windows[0] holds
         // the desktop window, which is never reparented
-        for (let w = 1; w < this._windows.length; w++)
+        for (let w = 0; w < this._windows.length; w++)
             this._windows[w].destroy();
         this._windows = [];
     },
@@ -1532,7 +1446,7 @@ Workspace.prototype = {
     },
 
     _onShowOverlayClose: function (windowOverlay) {
-        for (let i = 1; i < this._windowOverlays.length; i++) {
+        for (let i = 0; i < this._windowOverlays.length; i++) {
             let overlay = this._windowOverlays[i];
             if (overlay == windowOverlay)
                 continue;
