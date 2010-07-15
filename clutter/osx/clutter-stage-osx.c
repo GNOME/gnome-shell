@@ -479,7 +479,10 @@ static void
 clutter_stage_osx_set_cursor_visible (ClutterStageWindow *stage_window,
                                       gboolean            cursor_visible)
 {
-  ;/* FIXME */
+  if ( cursor_visible )
+    [NSCursor unhide];
+  else
+    [NSCursor hide]; 
 }
 
 static void

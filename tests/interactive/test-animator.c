@@ -121,8 +121,8 @@ test_animator_main (gint    argc,
   clutter_animator_property_set_interpolation (animator, G_OBJECT (rects[0]),
                                                "y", CLUTTER_INTERPOLATION_CUBIC);
 
+  clutter_stage_hide_cursor(CLUTTER_STAGE (stage));
   clutter_actor_show (stage);
-
   clutter_animator_set_duration (animator, 5000);
 
   g_signal_connect (clutter_animator_start (animator),
