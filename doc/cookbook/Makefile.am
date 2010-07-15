@@ -28,8 +28,14 @@ XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 HTML_FILES = html/*.html
 CSS_FILES = html/*.css
 IMAGE_FILES = images/clutter-logo.png
+VIDEO_FILES = \
+	$(NULL)
 
-EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
+EXTRA_DIST = \
+	clutter-cookbook.xml.in \
+	$(IMAGE_FILES) \
+	$(XML_FILES) \
+	$(VIDEO_FILES)
 
 CLEANFILES = \
 	pdf-build.stamp \
@@ -42,9 +48,18 @@ pdf-build.stamp: clutter-cookbook.xml
 	&& echo timestamp > $(@F)
 
 html-build.stamp: clutter-cookbook.xml
+	if [ ! -d html ] ; then mkdir html ; fi && \
+	if [ ! -d html/images ] ; then mkdir html/images ; fi && \
+	if [ ! -d html/videos ] ; then mkdir html/videos ; fi && \
 	$(XSLTPROC) $(XSLTOPTS) -o clutter-cookbook.html $(XSL_XHTML_URI) $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
-	$(XSLTPROC) $(XSLTOPTS) -o html/ ref-html-style.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
-  cp $(top_srcdir)/doc/common/style.css html/ && \
+	$(XSLTPROC) $(XSLTOPTS) -o html/ cookbook.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
+	cp $(top_srcdir)/doc/common/style.css html/ && \
+	if [[ "$(VIDEO_FILES)" != "" ]] ; then \
+		for file in `ls $(VIDEO_FILES)`; do \
+			cp $$file html/videos/ ; \
+		done \
+	fi && \
+	cp images/* html/images/ && \
 	echo timestamp > $(@F)
 
 if ENABLE_PDFS
@@ -90,6 +105,17 @@ install-data-local:
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/images/$$basefile; \
 	    fi \
 	  done; \
+	fi; \
+	if [ -d ./videos ] && [[ "$(VIDEO_FILES)" != "" ]] ; \
+	then \
+	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/videos ; \
+    for file in `ls $(VIDEO_FILES)`; do \
+      if [ -f $$file ]; \
+      then \
+        basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+        $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/videos/$$basefile; \
+      fi \
+    done; \
 	fi; \
 	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 

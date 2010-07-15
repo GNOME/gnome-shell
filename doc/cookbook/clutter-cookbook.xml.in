@@ -60,7 +60,7 @@
       <listitem>
         <para>If adding a new recipe, use the
         <filename>recipe-template.xml</filename> XML file as a basis.
-        You can find it in the <filename>&lt;clutter_source&gt;/doc/cookbook/</filename>
+        You can find it in the <filename>&lt;clutter source&gt;/doc/cookbook/</filename>
         directory.</para>
       </listitem>
       <listitem>
@@ -102,6 +102,70 @@
       <listitem>
         <para>Use the &lt;note&gt; element for asides which might
         otherwise interrupt the flow of the recipe.</para>
+      </listitem>
+      <listitem>
+        <para>To include a video in a recipe, do the following:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Make the video as short as is practical, and only include
+            the relevant Clutter window(s).</para>
+          </listitem>
+
+          <listitem>
+            <para>Use Ogg Theora for the encoding.</para>
+          </listitem>
+
+          <listitem>
+            <para>Put the file into the
+            <filename>&lt;clutter source&gt;/doc/cookbook/videos</filename>
+            directory. The name should be in the format
+            <filename>&lt;section&gt;-&lt;recipe&gt;-&lt;identifier&gt;.ogv</filename>.
+            For example: <filename>animations-fading-fade-out.ogv</filename>.</para>
+          </listitem>
+
+          <listitem>
+            <para>Add the name of the file to the <varname></varname>
+            in the cookbook's <filename>Makefile.am</filename>, e.g.</para>
+
+            <informalexample>
+              <programlisting>
+<![CDATA[
+VIDEO_FILES = \
+	videos/animations-fading-fade-out.ogv \
+	$(NULL)
+]]>
+              </programlisting>
+            </informalexample>
+
+            <para>This ensures it gets included in the distribution and
+            installation.</para>
+          </listitem>
+
+          <listitem>
+            <para>Use an &lt;inlinemediaobject&gt; to include it in the
+            Docbook recipe file. It should look something like this:</para>
+
+            <informalexample>
+              <programlisting>
+<![CDATA[
+<inlinemediaobject>
+  <videoobject>
+    <videodata fileref="videos/cookbook-animations-fading-in-then-out.ogv"/>
+  </videoobject>
+  <alt>
+    <para>Video showing an actor fading in then out using
+    <type>ClutterState</type></para>
+  </alt>
+</inlinemediaobject>
+]]>
+              </programlisting>
+            </informalexample>
+
+            <para>The &lt;alt&gt; tag provides the text which
+            is presented as a link to the file for users whose browser
+            doesn't support HTML 5 embedded video.</para>
+          </listitem>
+        </itemizedlist>
       </listitem>
     </itemizedlist>
 
