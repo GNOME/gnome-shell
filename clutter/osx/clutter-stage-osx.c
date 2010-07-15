@@ -276,7 +276,8 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
                   initWithView: self->view
                      UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
                          stage: self];
-
+  /* all next operations will cause draw operation and viewport should be setup now */
+  _clutter_stage_maybe_setup_viewport(self->wrapper);
   /* looks better than positioning to 0,0 (bottom right) */
   [self->window center];
 
@@ -322,6 +323,16 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
   clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
 
   clutter_stage_osx_set_frame (self);
+  /* draw view should be avoided and it is the reason why
+     we should hide OpenGL view while we showing the stage.
+  */
+  BOOL isViewHidden = [self->view isHidden];
+  if ( isViewHidden == NO)
+    {
+      [self->view setHidden:YES];
+    }
+  [self->window makeKeyAndOrderFront: nil];
+  [self->view setHidden:isViewHidden];
 
   [self->window makeKeyAndOrderFront: nil];
 
