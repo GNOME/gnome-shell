@@ -24,9 +24,9 @@ typedef struct
 
 #define GLES2_VARS \
   "precision mediump float;\n" \
-  "varying vec2 tex_coord;\n" \
+  "varying vec2 tex_coord[1];\n" \
   "varying vec4 frag_color;\n"
-#define TEX_COORD "tex_coord"
+#define TEX_COORD "tex_coord[0]"
 #define COLOR_VAR "frag_color"
 
 #else /* COGL_HAS_GLES2 */
