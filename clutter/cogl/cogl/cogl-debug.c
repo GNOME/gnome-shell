@@ -52,7 +52,8 @@ static const GDebugKey cogl_log_debug_keys[] = {
   { "pango", COGL_DEBUG_PANGO },
   { "show-source", COGL_DEBUG_SHOW_SOURCE},
   { "offscreen", COGL_DEBUG_OFFSCREEN },
-  { "texture-pixmap", COGL_DEBUG_TEXTURE_PIXMAP }
+  { "texture-pixmap", COGL_DEBUG_TEXTURE_PIXMAP },
+  { "bitmap", COGL_DEBUG_BITMAP }
 };
 static const int n_cogl_log_debug_keys =
   G_N_ELEMENTS (cogl_log_debug_keys);

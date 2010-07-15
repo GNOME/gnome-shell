@@ -52,7 +52,8 @@ typedef enum {
   COGL_DEBUG_DISABLE_GLSL     = 1 << 21,
   COGL_DEBUG_SHOW_SOURCE      = 1 << 22,
   COGL_DEBUG_DISABLE_BLENDING = 1 << 23,
-  COGL_DEBUG_TEXTURE_PIXMAP   = 1 << 24
+  COGL_DEBUG_TEXTURE_PIXMAP   = 1 << 24,
+  COGL_DEBUG_BITMAP           = 1 << 25
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG
