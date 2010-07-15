@@ -24,6 +24,10 @@ General notes and rules on clutter core hacking;
    positional properties can also use ClutterParamSpecUnits to define
    the units-based logical values with a unit type.
 
+ - The nick and blurb of properties in public classes should be marked for
+   translation by using the P_() macro defined in the clutter-private.h
+   header file.
+
  - Public entry points must always check their arguments with
    g_return_if_fail() or g_return_val_if_fail().
 
