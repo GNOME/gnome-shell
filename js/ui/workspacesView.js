@@ -117,6 +117,11 @@ GenericWorkspacesView.prototype = {
         }
     },
 
+    getActiveWorkspace: function() {
+        let active = global.screen.get_active_workspace_index();
+        return this._workspaces[active];
+    },
+
     _clearApplicationWindowSelection: function(reposition) {
         if (this._windowSelectionAppId == null)
             return;
@@ -826,7 +831,7 @@ SingleView.prototype = {
         if (index < 0 || index >= global.n_workspaces)
             return;
 
-        let dragActor = this._workspaces[index]._desktop.actor;
+        let dragActor = this._workspaces[index].actor;
 
         if (draggable) {
             this._workspaces[index].actor.reactive = true;
@@ -856,6 +861,9 @@ SingleView.prototype = {
 
     // start dragging the active workspace
     _onButtonPress: function(actor, event) {
+        if (actor != event.get_source())
+            return;
+
         if (this._dragIndex == -1)
             return;
 

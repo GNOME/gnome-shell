@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Meta = imports.gi.Meta;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Lang = imports.lang;
@@ -172,7 +173,16 @@ function Overview() {
 
 Overview.prototype = {
     _init : function() {
-        this._group = new St.Group({ style_class: 'overview' });
+        this._desktopFade = new St.Bin();
+        global.overlay_group.add_actor(this._desktopFade);
+
+        // The actual global.background_actor is inside global.window_group,
+        // which is hidden when displaying the overview, so we display a clone.
+        this._background = new Clutter.Clone({ source: global.background_actor });
+        this._background.hide();
+        global.overlay_group.add_actor(this._background);
+
+        this._group = new St.Group({ name: 'overview' });
         this._group._delegate = this;
         this._group.connect('destroy', Lang.bind(this,
             function() {
@@ -209,10 +219,6 @@ Overview.prototype = {
                                                               reactive: true });
         this._group.add_actor(this._transparentBackground);
 
-        // Background color for the Overview
-        this._backOver = new St.Label();
-        this._group.add_actor(this._backOver);
-
         this._group.hide();
         global.overlay_group.add_actor(this._group);
 
@@ -236,6 +242,20 @@ Overview.prototype = {
         this._coverPane.lower_bottom();
 
         this.workspaces = null;
+    },
+
+    _getDesktopClone: function() {
+        let windows = global.get_window_actors().filter(function(w) {
+            return w.meta_window.get_window_type() == Meta.WindowType.DESKTOP;
+        });
+        if (windows.length == 0)
+            return null;
+
+        let clone = new Clutter.Clone({ source: windows[0].get_texture() });
+        clone.source.connect('destroy', Lang.bind(this, function() {
+            clone.destroy();
+        }));
+        return clone;
     },
 
     _onViewChanged: function() {
@@ -313,11 +333,6 @@ Overview.prototype = {
         this._workspacesBarX = this._workspacesX;
         this._workspacesBarWidth = this._workspacesWidth;
         this._workspacesBarY = primary.height - displayGridRowHeight;
-
-        // The parent (this._group) is positioned at the top left of the primary monitor
-        // while this._backOver occupies the entire screen.
-        this._backOver.set_position(- primary.x, - primary.y);
-        this._backOver.set_size(global.screen_width, global.screen_height);
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
                                          this._workspacesY);
@@ -456,6 +471,19 @@ Overview.prototype = {
         this._group.add_actor(this._workspacesBar);
         this._workspacesBar.raise(this.workspaces.actor);
 
+        if (!this._desktopFade.child)
+            this._desktopFade.child = this._getDesktopClone();
+
+        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+            this._desktopFade.opacity = 255;
+            this._desktopFade.show();
+            Tweener.addTween(this._desktopFade,
+                             { opacity: 0,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
+
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
         // increases performance of the Overview especially when there are many
@@ -465,6 +493,7 @@ Overview.prototype = {
         // clones of them, this would obviously no longer be necessary.
         global.window_group.hide();
         this._group.show();
+        this._background.show();
 
         // Create a zoom out effect. First scale the Overview group up and
         // position it so that the active workspace fills up the whole screen,
@@ -502,6 +531,16 @@ Overview.prototype = {
 
         this.animationInProgress = true;
         this._hideInProgress = true;
+
+        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+            this._desktopFade.opacity = 0;
+            this._desktopFade.show();
+            Tweener.addTween(this._desktopFade,
+                             { opacity: 255,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        }
+
         if (this._activeDisplayPane != null)
             this._activeDisplayPane.close();
         this.workspaces.hide();
@@ -559,6 +598,7 @@ Overview.prototype = {
             return;
 
         this.animationInProgress = false;
+        this._desktopFade.hide();
         this._coverPane.lower_bottom();
 
         this.emit('shown');
@@ -576,6 +616,8 @@ Overview.prototype = {
         this._workspacesManager = null;
 
         this._dash.hide();
+        this._desktopFade.hide();
+        this._background.hide();
         this._group.hide();
 
         this.visible = false;

@@ -257,10 +257,6 @@ StTooltip StLabel {
 
 /* Overview */
 
-.overview {
-    background-color: #111;
-}
-
 .new-workspace-area {
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 10px;
