@@ -264,6 +264,19 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 
   backend_osx = CLUTTER_BACKEND_OSX (self->backend);
 
+  /* Bring our app to foreground, background apps don't appear in dock or
+   * accept keyboard focus.
+   */
+  const ProcessSerialNumber psn = { 0, kCurrentProcess };
+  TransformProcessType (&psn, kProcessTransformToForegroundApplication);
+
+  /* Also raise our app to front, otherwise our window will remain under the
+   * terminal.
+   */
+  SetFrontProcess (&psn);
+
+  [NSApplication sharedApplication];
+
   NSRect rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
 
   self->view = [[ClutterGLView alloc]

@@ -37,61 +37,6 @@ static gboolean
 clutter_backend_osx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendOSX *self = CLUTTER_BACKEND_OSX (backend);
-
-  CLUTTER_NOTE (BACKEND, "post_parse");
-
-  CLUTTER_OSX_POOL_ALLOC();
-
-  /* Bring our app to foreground, background apps don't appear in dock or
-   * accept keyboard focus.
-   */
-  const ProcessSerialNumber psn = { 0, kCurrentProcess };
-  TransformProcessType (&psn, kProcessTransformToForegroundApplication);
-
-  /* Also raise our app to front, otherwise our window will remain under the
-   * terminal.
-   */
-  SetFrontProcess (&psn);
-
-  [NSApplication sharedApplication];
-
-  /* Allocate ourselves a GL context. Since we're supposed to have only one per
-   * backend we can just as well create it now.
-   */
-  NSOpenGLPixelFormatAttribute attrs[] = {
-    NSOpenGLPFADoubleBuffer,
-    NSOpenGLPFADepthSize, 24,
-    NSOpenGLPFAStencilSize, 8,
-    0
-  };
-  self->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-  self->context = [[NSOpenGLContext alloc]
-                   initWithFormat: self->pixel_format
-                     shareContext: nil];
-
-  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
-  #ifdef MAC_OS_X_VERSION_10_5
-	const int sw = 1;
-  #else
-    const long sw = 1;
-  #endif
-  [self->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
-
-  /* FIXME: move the debugging bits to cogl */
-  [self->context makeCurrentContext];
-  CLUTTER_NOTE(BACKEND, "GL information\n"
-               "    GL_VENDOR: %s\n"
-               "  GL_RENDERER: %s\n"
-               "   GL_VERSION: %s\n"
-               "GL_EXTENSIONS: %s\n",
-               glGetString (GL_VENDOR),
-               glGetString (GL_RENDERER),
-               glGetString (GL_VERSION),
-               glGetString (GL_EXTENSIONS));
-
-  CLUTTER_OSX_POOL_RELEASE();
-
   return TRUE;
 }
 
@@ -127,6 +72,42 @@ clutter_backend_osx_init_events (ClutterBackend *backend)
   CLUTTER_NOTE (BACKEND, "init_events");
 
   _clutter_events_osx_init ();
+}
+
+static gboolean
+clutter_backend_osx_create_context (ClutterBackend  *backend,
+                                    GError         **error)
+{
+  ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
+  CLUTTER_OSX_POOL_ALLOC();
+
+  /* Allocate ourselves a GL context. Since we're supposed to have only one per
+   * backend we can just as well create it now.
+   */
+  NSOpenGLPixelFormatAttribute attrs[] = {
+    NSOpenGLPFADoubleBuffer,
+    NSOpenGLPFADepthSize, 24,
+    NSOpenGLPFAStencilSize, 8,
+    0
+  };
+
+  backend_osx->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+  backend_osx->context = [[NSOpenGLContext alloc]
+                          initWithFormat: backend_osx->pixel_format
+                          shareContext: nil];
+  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
+  #ifdef MAC_OS_X_VERSION_10_5
+	const int sw = 1;
+  #else
+    const long sw = 1;
+  #endif
+  [backend_osx->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+  [backend_osx->context makeCurrentContext];
+  CLUTTER_NOTE (BACKEND, "Context was created");
+
+  CLUTTER_OSX_POOL_RELEASE();
+
+  return TRUE;
 }
 
 static void
@@ -206,6 +187,7 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
   backend_class->post_parse       = clutter_backend_osx_post_parse;
   backend_class->get_features     = clutter_backend_osx_get_features;
   backend_class->create_stage     = clutter_backend_osx_create_stage;
+  backend_class->create_context   = clutter_backend_osx_create_context;
   backend_class->ensure_context   = clutter_backend_osx_ensure_context;
   backend_class->init_events      = clutter_backend_osx_init_events;
   backend_class->redraw           = clutter_backend_osx_redraw;
