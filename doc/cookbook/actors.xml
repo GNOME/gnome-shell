@@ -257,4 +257,233 @@ on_paint (ClutterActor *actor)
 
   </section>
 
+  <section id="actors-opacity">
+      <title>Making an actor transparent by changing its opacity</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para>You want an actor to be transparent so that other
+        actors are visible through it.</para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para>Change the actor's <emphasis>opacity</emphasis> so that
+        it is partially (or even fully) transparent:</para>
+
+        <informalexample>
+          <programlisting>
+/* 25% transparency */
+clutter_actor_set_opacity (actor, 191.25);
+
+/* 50% transparency */
+clutter_actor_set_opacity (actor, 122.5);
+
+/* completely transparent */
+clutter_actor_set_opacity (actor, 0);
+          </programlisting>
+        </informalexample>
+
+        <para>Any actor covered or overlapped by the transparent actor
+        should be visible through it; the Discussion section gives
+        some examples of how visible you can expect the covered or
+        overlapped actor to be.</para>
+
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para>Opacity is a property of every <type>ClutterActor</type>.
+        It is a float on a scale from 0 (invisible) to 255 (completely
+        opaque). Actors with <code>0 &lt; opacity &lt; 255</code> will
+        have a varying amount of solidity on the stage, so other actors
+        may be visible through them.</para>
+
+        <para>For example, below are 4 yellow rectangles overlapping
+        a white rectangle on a blue stage:</para>
+
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG"
+                         fileref="images/actors-opacity.png" />
+            </imageobject>
+            <alt>
+              <para>The effect of different opacities levels on
+              an actor's appearance</para>
+            </alt>
+          </mediaobject>
+        </screenshot>
+
+        <para>The rectangles have the following opacities:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>top-left: <code>255</code> (0% transparency)</para>
+          </listitem>
+          <listitem>
+            <para>top-right: <code>191.25</code> (25% transparency)</para>
+          </listitem>
+          <listitem>
+            <para>bottom-right: <code>122.5</code> (50% transparency)</para>
+          </listitem>
+          <listitem>
+            <para>bottom-left: <code>61.25</code> (75% transparency)</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Notice how both the stage and the white rectangle are
+        visible through the yellow rectangles.</para>
+
+        <para>As opacity is a property of every actor, it can
+        be animated like any other GObject property, using any of
+        the approaches in the animation API.</para>
+
+        <para>The following sections cover some other considerations
+        when working with actor opacity.</para>
+
+        <section>
+          <title>Container and color opacity</title>
+
+          <para>If a container has its opacity set, any children of the
+          container have their opacity combined with their parent's opacity.
+          For example, if a parent has an opacity of <code>122.5</code>
+          (50% transparent) and the child also has an opacity of
+          <code>122.5</code>, the child's <emphasis>effective</emphasis>
+          opacity is 25% (<code>opacity = 61.25</code>, and it is
+          75% transparent).</para>
+
+          <para>To demonstrate the visual effect of this, here are
+          three rectangles with the same color but different opacity settings,
+          inside parents which also have different opacity settings:</para>
+
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata format="PNG"
+                           fileref="images/actors-opacity-container-affects-opacity.png" />
+              </imageobject>
+              <alt>
+                <para>How a container's opacity affects the opacity of
+                its children</para>
+              </alt>
+            </mediaobject>
+          </screenshot>
+
+          <itemizedlist>
+            <listitem>
+              <para>The left-hand rectangle has <code>opacity = 255</code>
+              and is in a <type>ClutterGroup</type> with
+              <code>opacity = 255</code>. This means it is fully opaque.</para>
+            </listitem>
+            <listitem>
+              <para>The middle rectangle has <code>opacity = 255</code>
+              and is in a <type>ClutterGroup</type> with
+              <code>opacity = 122.5</code>. Notice that the parent opacity
+              makes the rectangle appear darker, as the stage colour is showing
+              through from behind.</para>
+            </listitem>
+            <listitem>
+              <para>The right-hand rectangle has <code>opacity = 122.5</code>
+              and is in a <type>ClutterGroup</type> with
+              <code>opacity = 122.5</code>. Notice that the rectangle appears
+              to be even darker, as the stage colour is showing
+              through both the rectangle and its parent.</para>
+            </listitem>
+          </itemizedlist>
+
+          <para>Similarly, <type>ClutterColor</type> also contains an
+          <varname>alpha</varname> property which governs the transparency
+          of the color. Where an actor can have a color set (e.g.
+          <type>ClutterRectangle</type>) the alpha value of the color also
+          affects the transparency of the actor, for example:</para>
+
+          <informalexample>
+            <programlisting>
+<![CDATA[
+/* color with 50% transparency */
+ClutterColor half_transparent_color = { 255, 0, 0, 122.5 };
+
+ClutterRectangle *actor = clutter_rectangle_new ();
+
+/* set actor's transparency to 50% */
+clutter_actor_set_opacity (actor, 122.5);
+
+/* rectangle will be 25% opaque/75% transparent */
+clutter_rectangle_set_color (CLUTTER_RECTANGLE (actor),
+                             &half_transparent_color);
+]]>
+            </programlisting>
+          </informalexample>
+
+        </section>
+
+        <section>
+          <title>Depth and depth order</title>
+
+          <para>Each actor has two more aspects which affect its
+          apparent opacity:</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>An actor's <emphasis>depth</emphasis> can have an
+              effect if the stage has fog (a depth cueing effect) turned on.
+              As an actor's depth increases, the actor apparently "recedes" from
+              view and gradually blends into the colour of the stage. This
+              produces an effect similar to making the actor transparent.
+              See the <type>ClutterStage</type> documentation for
+              more details about fog.</para>
+
+              <para>Depth also needs to be considered if you want
+              one actor to be visible through another: the actor you want
+              to see through a transparent actor must be "deeper" than (or at
+              the same depth as) the transparent actor.</para>
+            </listitem>
+            <listitem>
+              <para>The <emphasis>depth order</emphasis> governs how
+              actors within a <type>ClutterContainer</type> implementation
+              are placed with respect to each other.</para>
+
+              <note>
+                <para>Depth ordering is not the same thing as depth: depth
+                ordering records relationships between actors at the same
+                depth.</para>
+              </note>
+
+              <para>If you have two overlapping actors <code>actorA</code> and
+              <code>actorB</code> in a container, and you want <code>actorA</code>
+              (opaque) to be visible through <code>actorB</code> (transparent),
+              you should ensure that <code>actorB</code> is "above" <code>actorA</code>
+              in the depth ordering. You could do this as follows:</para>
+
+              <informalexample>
+                <programlisting>
+/*
+ * raise actorB so it is above actorA in the depth order;
+ * NB actorA and actorB both need to be in the same container
+ * for this to work
+ */
+clutter_actor_raise (actorB, actorA);
+                </programlisting>
+              </informalexample>
+
+              <para><function>clutter_actor_raise()</function>,
+              <function>clutter_actor_lower()</function> and related
+              <type>ClutterActor</type> functions set
+              depth ordering on actors; see also <type>ClutterContainer</type>'s
+              <function>clutter_container_raise_child()</function> and
+              <function>clutter_container_lower_child()</function>
+              functions.</para>
+            </listitem>
+          </itemizedlist>
+
+        </section>
+
+      </section>
+
+    </section>
+
 </chapter>

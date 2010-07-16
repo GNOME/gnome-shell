@@ -30,6 +30,8 @@ CSS_FILES = html/*.css
 IMAGE_FILES = \
 	images/clutter-logo.png \
 	images/textures-reflection.png \
+	images/actors-opacity.png \
+	images/actors-opacity-container-affects-opacity.png \
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \
