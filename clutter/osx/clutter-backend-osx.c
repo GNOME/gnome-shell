@@ -80,31 +80,32 @@ clutter_backend_osx_create_context (ClutterBackend  *backend,
 {
   ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
   CLUTTER_OSX_POOL_ALLOC();
-
-  /* Allocate ourselves a GL context. Since we're supposed to have only one per
-   * backend we can just as well create it now.
-   */
-  NSOpenGLPixelFormatAttribute attrs[] = {
-    NSOpenGLPFADoubleBuffer,
-    NSOpenGLPFADepthSize, 24,
-    NSOpenGLPFAStencilSize, 8,
-    0
-  };
-
-  backend_osx->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-  backend_osx->context = [[NSOpenGLContext alloc]
-                          initWithFormat: backend_osx->pixel_format
-                          shareContext: nil];
-  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
-  #ifdef MAC_OS_X_VERSION_10_5
-	const int sw = 1;
-  #else
-    const long sw = 1;
-  #endif
-  [backend_osx->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+  if ( backend_osx->context == nil)
+    {
+      /* Allocate ourselves a GL context. Since we're supposed to have only one per
+       * backend we can just as well create it now.
+       */
+      NSOpenGLPixelFormatAttribute attrs[] = {
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 24,
+        NSOpenGLPFAStencilSize, 8,
+        0
+      };
+      
+      backend_osx->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+      backend_osx->context = [[NSOpenGLContext alloc]
+                              initWithFormat: backend_osx->pixel_format
+                              shareContext: nil];
+      /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
+#ifdef MAC_OS_X_VERSION_10_5
+      const int sw = 1;
+#else
+      const long sw = 1;
+#endif
+      [backend_osx->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+    }
   [backend_osx->context makeCurrentContext];
   CLUTTER_NOTE (BACKEND, "Context was created");
-
   CLUTTER_OSX_POOL_RELEASE();
 
   return TRUE;
@@ -156,8 +157,10 @@ clutter_backend_osx_redraw (ClutterBackend *backend, ClutterStage *wrapper)
 /*************************************************************************/
 
 static void
-clutter_backend_osx_init (ClutterBackendOSX *self)
+clutter_backend_osx_init (ClutterBackendOSX *backend_osx)
 {
+  backend_osx->context = nil;
+  backend_osx->pixel_format = nil;
 }
 
 static void
