@@ -638,6 +638,13 @@ Panel.prototype = {
                                         reactive: true });
         this.actor._delegate = this;
 
+        Main.overview.connect('shown', Lang.bind(this, function () {
+            this.actor.add_style_class_name('in-overview');
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function () {
+            this.actor.remove_style_class_name('in-overview');
+        }));
+
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
