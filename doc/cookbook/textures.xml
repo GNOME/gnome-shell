@@ -5,14 +5,25 @@
   <title>Textures</title>
 
   <epigraph>
-    <attribution>the author of the epigraph</attribution>
-    <para>a short epigraph</para>
+    <attribution>Antoine de Saint-Exupery</attribution>
+    <para>A rock pile ceases to be a rock pile the moment a single man
+    contemplates it, bearing within him the image of a cathedral.</para>
   </epigraph>
 
   <section id="textures-introduction">
     <title>Introduction</title>
 
-    <para>introduction</para>
+    <para>Textures are one of the most important actors in Clutter. Whether
+    they are employed as the background for a user interface control, or
+    to show the picture of a kitten, a big part of any Clutter-based
+    application is going to involve textures.</para>
+
+    <para>A ClutterTexture is an actor that can hold any raw image data and
+    paint it. ClutterTexture can also load image data from a file on disk and
+    convert it.</para>
+
+    <note><para>The actual formats supported by ClutterTexture depend on the
+    platform on which Clutter is being used.</para></note>
   </section>
 
   <section id="textures-drawing-with-cairo">
