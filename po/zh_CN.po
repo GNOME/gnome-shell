@@ -24,7 +24,7 @@ msgstr ""
 #.
 #: ../clutter/clutter-main.c:747
 msgid "default:LTR"
-msgstr "默认：LTR"
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1624
 msgid "Show frames per second"
