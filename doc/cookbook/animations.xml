@@ -88,7 +88,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="animations-introduction-alphas">
       <title>Alphas</title>
 
       <para>An alpha is generated for each frame of the animation.
@@ -374,6 +374,132 @@ _on_click_cb (ClutterActor *actor,
       animate the actor between the two <varname>x</varname> positions.
       Behind the scenes, <type>ClutterState</type> would handle the
       animations and timelines for you.</para>
+
+    </section>
+
+  </section>
+
+  <section id="animations-fading">
+    <title>Fading an actor out of or into view</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to animate an actor so that it fades out of or into
+      view.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Animate the actor's opacity property.</para>
+
+      <para>You can do this using any of the approaches provided
+      by the animation API. Here's how to fade out an actor (until it's
+      completely transparent) using implicit animations:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+/* fade out actor over 4000 milliseconds */
+clutter_actor_animate (actor,
+                       CLUTTER_EASE_OUT_CUBIC,
+                       4000,
+                       "opacity", 0,
+                       NULL);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Here's an example of a rectangle fading out using this
+      animation:</para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-fading-out.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing an actor fading out using implicit
+          animations</para>
+        </alt>
+      </inlinemediaobject>
+
+      <para><constant>CLUTTER_EASE_OUT_CUBIC</constant> is one of the
+      Clutter easing modes; see
+      <link linkend="animations-introduction-alphas">the introduction</link>
+      for more details about what these are and how to choose one.</para>
+
+      <para>Here's an example of the transitions you could use to
+      fade an actor in and out using <type>ClutterState</type>:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterState *transitions = clutter_state_new ();
+
+/* all transitions last for 2000 milliseconds */
+clutter_state_set_duration (transitions, NULL, NULL, 2000);
+
+/* transition from any state to "fade-out" state */
+clutter_state_set (transitions,
+                   NULL,        /* from state (NULL means "any") */
+                   "fade-out",  /* to state */
+                   actor, "opacity", CLUTTER_EASE_OUT_QUAD, 0,
+                   NULL);
+
+/* transition from any state to "fade-in" state */
+clutter_state_set (transitions, NULL, "fade-in",
+                   actor, "opacity", CLUTTER_EASE_OUT_QUAD, 255,
+                   NULL);
+
+/* put the actor into the "fade-out" state with no animation */
+clutter_state_warp_to_state (transitions, "fade-out");
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>You would then trigger an animated state change as events
+      occur in the application (e.g. mouse button clicks):</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+clutter_state_set_state (transitions, "fade-in");
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Here's an example of this animation fading in then out again:</para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-fading-in-then-out.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing an actor fading in then out using
+          <type>ClutterState</type></para>
+        </alt>
+      </inlinemediaobject>
+
+      <note>
+        <para><type>ClutterState</type> is most useful where you
+        need to animate an actor backwards and forwards between multiple
+        states (e.g. fade an actor in and out of view). Where you just
+        want to fade an actor in or out once,
+        <function>clutter_actor_animate()</function> is adequate.</para>
+      </note>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Reducing an actor's transparency to zero does not make it
+      inactive: the actor will still be reactive even if it's not
+      visible (responding to key events, mouse clicks etc.).
+      To make it really "disappear", you could use
+      <function>clutter_actor_hide()</function> once you'd made the actor
+      fully transparent.</para>
 
     </section>
 

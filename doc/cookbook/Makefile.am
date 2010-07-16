@@ -28,6 +28,10 @@ XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 HTML_FILES = html/*.html
 CSS_FILES = html/*.css
 IMAGE_FILES = images/clutter-logo.png
+VIDEO_FILES = \
+	videos/animations-fading-out.ogv \
+	videos/animations-fading-in-then-out.ogv \
+	$(NULL)
 
 EXTRA_DIST = clutter-cookbook.xml.in $(IMAGE_FILES) $(XML_FILES)
 
