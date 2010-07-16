@@ -27,7 +27,10 @@ XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 
 HTML_FILES = html/*.html
 CSS_FILES = html/*.css
-IMAGE_FILES = images/clutter-logo.png
+IMAGE_FILES = \
+	images/clutter-logo.png \
+	images/textures-reflection.png \
+	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \
 	videos/animations-fading-in-then-out.ogv \
