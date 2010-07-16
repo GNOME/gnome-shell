@@ -500,4 +500,202 @@ main (int argc, char *argv[])
     </section>
   </section>
 
+  <section id="textures-reflection">
+    <title>Creating a reflection of a texture</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to create the reflection of a texture.</para>
+
+      <para>The reflection is going to be positioned below the original
+      texture, and is going to fade out as if the original was placed on
+      a glassy surface.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>You can use a ClutterClone actor and override its paint
+      implementation with a custom one:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+_clone_paint_cb (ClutterActor *actor)
+{
+  ClutterActor *source;
+  ClutterActorBox box;
+  CoglHandle material;
+  gfloat width, height;
+  guint8 opacity;
+  CoglColor color_1, color_2;
+  CoglTextureVertex vertices[4];
+
+  /* if we don't have a source actor, don't paint */
+  source = clutter_clone_get_source (CLUTTER_CLONE (actor));
+  if (source == NULL)
+    goto out;
+
+  /* if the source texture does not have any content, don't paint */
+  material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (source));
+  if (material == NULL)
+    goto out;
+
+  /* set the size of the reflection to be the same as the source */
+  clutter_actor_get_allocation_box (actor, &box);
+  clutter_actor_box_get_size (&box, &width, &height);
+
+  /* get the composite opacity of the actor */
+  opacity = clutter_actor_get_paint_opacity (actor);
+
+  /* figure out the two colors for the reflection: the first is
+   * full color and the second is the same, but at 0 opacity
+   */
+  cogl_color_set_from_4f (&color_1, 1.0, 1.0, 1.0, opacity / 255.);
+  cogl_color_premultiply (&color_1);
+  cogl_color_set_from_4f (&color_2, 1.0, 1.0, 1.0, 0.0);
+  cogl_color_premultiply (&color_2);
+
+  /* now describe the four vertices of the quad; since it has
+   * to be a reflection, we need to invert it as well
+   */
+  vertices[0].x = 0; vertices[0].y = 0; vertices[0].z = 0;
+  vertices[0].tx = 0.0; vertices[0].ty = 1.0;
+  vertices[0].color = color_1;
+
+  vertices[1].x = width; vertices[1].y = 0; vertices[1].z = 0;
+  vertices[1].tx = 1.0; vertices[1].ty = 1.0;
+  vertices[1].color = color_1;
+
+  vertices[2].x = width; vertices[2].y = height; vertices[2].z = 0;
+  vertices[2].tx = 1.0; vertices[2].ty = 0.0;
+  vertices[2].color = color_2;
+
+  vertices[3].x = 0; vertices[3].y = height; vertices[3].z = 0;
+  vertices[3].tx = 0.0; vertices[3].ty = 0.0;
+  vertices[3].color = color_2;
+
+  /* paint the same texture but with a different geometry */
+  cogl_set_source (material);
+  cogl_polygon (vertices, 4, TRUE);
+
+out:
+  /* prevent the default clone handler from running */
+  g_signal_stop_emission_by_name (actor, "paint");
+}
+
+int
+main (int argc, char *argv[])
+{
+  clutter_init (&argc, &argv);
+
+  /* ... get stage etc. */
+
+  ClutterActor *texture;
+  GError *error = NULL;
+
+  texture = clutter_texture_new ();
+
+  /* load the image from a file */
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                                 image_path,
+                                 &error);
+
+  ClutterActor *clone;
+
+  clone = clutter_clone_new (texture);
+
+  g_signal_connect (clone,
+                    "paint",
+                    G_CALLBACK (_clone_paint_cb),
+                    NULL);
+
+  /* ... clutter_main () etc. */
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <figure id="textures-reflection-image">
+        <title>Reflection of a texture</title>
+        <graphic fileref="images/textures-reflection.png" format="PNG"/>
+      </figure>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>The essence of painting a reflection of a texture lies in reusing
+      the same material used by the original. This not only allows painting
+      always an up to date version of the original, but it also saves
+      resources.</para>
+
+      <para>In the code example above we take the <type>CoglMaterial</type>
+      out of the source <type>ClutterTexture</type> and we ask the Cogl
+      pipeline to paint it by using <function>cogl_set_source()</function>. The
+      main difference between this code and the equivalent code inside the
+      <type>ClutterTexture</type> <function>paint()</function> implementation
+      is that we also specify the texture vertices and their color by using the
+      <type>CoglTextureVertex</type> structure and the
+      <function>cogl_polygon()</function> function.</para>
+
+      <para>The <type>CoglTextureVertex</type> structure contains three fields
+      for the position of the vertex in 3D space:</para>
+
+      <informalexample>
+        <programlisting><![CDATA[
+typedef struct _CoglTextureVertex {
+  float x;
+  float y;
+  float z;
+  ...
+        ]]></programlisting>
+      </informalexample>
+
+      <para>It also contains the normalized texture coordinate (also known as
+      texture element, or <emphasis>texel</emphasis>):</para>
+
+      <informalexample>
+        <programlisting><![CDATA[
+  ...
+  float tx;
+  float ty;
+  ...
+        ]]></programlisting>
+      </informalexample>
+
+      <para>And, finally, the color of the vertex, expressed as a
+      <type>CoglColor</type>:</para>
+
+<informalexample>
+  <programlisting><![CDATA[
+  ...
+  CoglColor color;
+} CoglTextureVertex;
+  ]]></programlisting>
+</informalexample>
+
+    <para>The example code sets the position of the vertices in clockwise
+    order starting from the top left corner, and sets the coordinate of the
+    texels in counter-clockwise order, starting with the bottom left corner.
+    This makes sure that the copy of the original texture appears as being
+    flipped vertically.</para>
+
+    <para>The gradual fading out to the background color is done by setting
+    the color of the top vertices to be fully opaque, and the color of the
+    bottom ones to be fully transparent; GL will then automatically create a
+    gradient that will be applied when painting the material.</para>
+
+    <note><para>The color values must be pre-multiplied with their alpha
+    component, otherwise the bleding will not be correct. You can either
+    multiply the values by yourself when creating the color or, better yet,
+    use the <function>cogl_color_premultiply()</function> that Cogl provides
+    for this operation.</para></note>
+
+    </section>
+  </section>
+
 </chapter>
