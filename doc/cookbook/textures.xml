@@ -618,10 +618,17 @@ main (int argc, char *argv[])
         </programlisting>
       </informalexample>
 
-      <figure id="textures-reflection-image">
-        <title>Reflection of a texture</title>
-        <graphic fileref="images/textures-reflection.png" format="PNG"/>
-      </figure>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata format="PNG"
+                       fileref="images/textures-reflection.png" />
+          </imageobject>
+          <alt>
+            <para>A texture and its reflection below</para>
+          </alt>
+        </mediaobject>
+      </screenshot>
 
     </section>
 
