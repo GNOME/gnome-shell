@@ -525,18 +525,24 @@ setup_arg (CoglMaterial *material,
         CoglMaterialLayer *authority =
           _cogl_material_layer_get_authority (layer, state);
         CoglMaterialLayerBigState *big_state = authority->big_state;
+        char buf[G_ASCII_DTOSTR_BUF_SIZE];
 
         arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
         arg->name = "constant%d";
         arg->constant_id = priv->next_constant_id++;
+
         g_string_append_printf (priv->source,
                                 "PARAM constant%d = "
-                                "  {%f, %f, %f, %f};\n",
+                                "  {%s, %s, %s, %s};\n",
                                 arg->constant_id,
-                                big_state->texture_combine_constant[0],
-                                big_state->texture_combine_constant[1],
-                                big_state->texture_combine_constant[2],
-                                big_state->texture_combine_constant[3]);
+                                g_ascii_dtostr (buf, sizeof (buf),
+                                                big_state->texture_combine_constant[0]),
+                                g_ascii_dtostr (buf, sizeof (buf),
+                                                big_state->texture_combine_constant[1]),
+                                g_ascii_dtostr (buf, sizeof (buf),
+                                                big_state->texture_combine_constant[2]),
+                                g_ascii_dtostr (buf, sizeof (buf),
+                                                big_state->texture_combine_constant[3]));
         break;
       }
     case GL_PRIMARY_COLOR:
