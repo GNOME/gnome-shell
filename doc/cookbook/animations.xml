@@ -394,7 +394,7 @@ _on_click_cb (ClutterActor *actor,
 
       <para>Animate the actor's opacity property.</para>
 
-      <para>You can do this using any of the three approaches provided
+      <para>You can do this using any of the approaches provided
       by the animation API. Here's how to fade out an actor (until it's
       completely transparent) using implicit animations:</para>
 
