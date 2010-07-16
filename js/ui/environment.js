@@ -82,11 +82,6 @@ function init() {
     Clutter.Actor.prototype.toString = function() {
         return St.describe_actor(this);
     };
-    Clutter.Actor.prototype.contains = function(child) {
-        while (child != null && child != this)
-            child = child.get_parent();
-        return child != null;
-    };
 
     _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
                  'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');
