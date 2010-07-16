@@ -277,18 +277,6 @@ StTooltip StLabel {
     background-gradient-end: rgba(16, 16, 16, 0.9);
 }
 
-.left-workspaces-shadow {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(16, 16, 16, 1.0);
-    background-gradient-end: rgba(16, 16, 16, 0.0);
-}
-
-.right-workspaces-shadow {
-    background-gradient-direction: horizontal;
-    background-gradient-end: rgba(16, 16, 16, 1.0);
-    background-gradient-start: rgba(16, 16, 16, 0);
-}
-
 .workspaces {
     color: white;
 }

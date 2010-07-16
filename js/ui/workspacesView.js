@@ -636,43 +636,10 @@ SingleView.prototype = {
     __proto__: GenericWorkspacesView.prototype,
 
     _init: function(width, height, x, y, workspaces) {
-        let shadowWidth = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
 
         this._newWorkspaceArea = new NewWorkspaceArea();
         this._newWorkspaceArea.actor._delegate = {
             acceptDrop: Lang.bind(this, this._acceptNewWorkspaceDrop)
-        };
-        this._leftShadow = new St.Bin({ style_class: 'left-workspaces-shadow',
-                                        width: shadowWidth,
-                                        height: global.screen_height,
-                                        x: global.screen_width });
-        this._leftShadow._delegate = {
-            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
-                let active = global.screen.get_active_workspace_index();
-                let leftWorkspace = this._workspaces[active - 1];
-                if (leftWorkspace &&
-                    leftWorkspace.acceptDrop(source, actor, x, y, time)) {
-                    leftWorkspace.metaWorkspace.activate(time);
-                    return true;
-                }
-                return false;
-            })
-        };
-        this._rightShadow = new St.Bin({ style_class: 'right-workspaces-shadow',
-                                         width: shadowWidth,
-                                         height: global.screen_height,
-                                         x: global.screen_width });
-        this._rightShadow._delegate = {
-            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
-                let active = global.screen.get_active_workspace_index();
-                let rightWorkspace = this._workspaces[active + 1];
-                if (rightWorkspace &&
-                    rightWorkspace.acceptDrop(source, actor, x, y, time)) {
-                    rightWorkspace.metaWorkspace.activate(time);
-                    return true;
-                }
-                return false;
-            })
         };
 
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
@@ -689,8 +656,6 @@ SingleView.prototype = {
         }
 
         this.actor.add_actor(this._newWorkspaceArea.actor);
-        this.actor.add_actor(this._leftShadow);
-        this.actor.add_actor(this._rightShadow);
 
         this.actor.add_style_class_name('single');
         this.actor.set_clip(x, y, width, height);
@@ -757,16 +722,6 @@ SingleView.prototype = {
         this._newWorkspaceArea.gridX = this._x + this._activeWorkspaceX
                                        + (this._workspaces.length - active) * (_width + this._spacing);
         this._newWorkspaceArea.gridY = this._y + this._activeWorkspaceY;
-
-        this._leftShadow.scale = scale;
-        this._leftShadow.gridX = this._x + this._activeWorkspaceX
-                                 - (this._leftShadow.width * scale + this._spacing);
-        this._leftShadow.gridY = this._y + this._activeWorkspaceY;
-
-        this._rightShadow.scale = scale;
-        this._rightShadow.gridX = this._x + this._activeWorkspaceX
-                                  + (_width + this._spacing);
-        this._rightShadow.gridY = this._y + this._activeWorkspaceY;
     },
 
     _transitionWorkspaces: function() {
@@ -992,8 +947,6 @@ SingleView.prototype = {
         }
 
         Tweener.removeTweens(this._newWorkspaceArea.actor);
-        Tweener.removeTweens(this._leftShadow);
-        Tweener.removeTweens(this._rightShadow);
 
         this._newWorkspaceArea.gridX += dx;
         if (showAnimation) {
@@ -1014,35 +967,11 @@ SingleView.prototype = {
                                    this._updateVisibility();
                                })
                              });
-            this._leftShadow.x = this._leftShadow.gridX;
-            Tweener.addTween(this._leftShadow,
-                             { y: this._leftShadow.gridY,
-                               scale_x: this._leftShadow.scale,
-                               scale_y: this._leftShadow.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
-            this._rightShadow.x = this._rightShadow.gridX;
-            Tweener.addTween(this._rightShadow,
-                             { y: this._rightShadow.gridY,
-                               scale_x: this._rightShadow.scale,
-                               scale_y: this._rightShadow.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
         } else {
             this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale,
                                                    this._newWorkspaceArea.scale);
             this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX,
                                                       this._newWorkspaceArea.gridY);
-            this._leftShadow.set_scale(this._leftShadow.scale,
-                                       this._leftShadow.scale);
-            this._leftShadow.set_position(this._leftShadow.gridX,
-                                          this._leftShadow.gridY);
-            this._rightShadow.set_scale(this._rightShadow.scale,
-                                        this._rightShadow.scale);
-            this._rightShadow.set_position(this._rightShadow.gridX,
-                                           this._rightShadow.gridY);
             this._updateVisibility();
         }
     },
@@ -1062,24 +991,6 @@ SingleView.prototype = {
                 else
                     workspace.actor.visible = (w == active);
             }
-        }
-
-        if (this._inDrag) {
-            this._leftShadow.raise_top();
-            this._rightShadow.raise_top();
-
-            if (active > 0)
-                this._leftShadow.show();
-            else
-                this._leftShadow.hide();
-
-            if (active < this._workspaces.length - 1)
-                this._rightShadow.show();
-            else
-                this._rightShadow.hide();
-        } else {
-            this._leftShadow.hide();
-            this._rightShadow.hide();
         }
     },
 
@@ -1227,7 +1138,7 @@ SingleView.prototype = {
 
         // check hover state of new workspace area / inactive workspaces
         if (leftWorkspace) {
-            if (dragEvent.targetActor == this._leftShadow) {
+            if (leftWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = leftWorkspace;
                 leftWorkspace.opacity = leftWorkspace.actor.opacity = 255;
                 result = leftWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
@@ -1237,7 +1148,7 @@ SingleView.prototype = {
         }
 
         if (rightWorkspace) {
-            if (dragEvent.targetActor == this._rightShadow) {
+            if (rightWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = rightWorkspace;
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 255;
                 result = rightWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
