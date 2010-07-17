@@ -3016,6 +3016,14 @@ _cogl_material_point_size_equal (CoglMaterial *authority0,
 }
 
 static gboolean
+_cogl_material_user_shader_equal (CoglMaterial *authority0,
+                                  CoglMaterial *authority1)
+{
+  return (authority0->big_state->user_program ==
+          authority1->big_state->user_program);
+}
+
+static gboolean
 _cogl_material_layers_equal (CoglMaterial *authority0,
                              CoglMaterial *authority1)
 {
@@ -3242,6 +3250,12 @@ _cogl_material_equal (CoglMaterial *material0,
                               materials_difference,
                               COGL_MATERIAL_STATE_POINT_SIZE,
                               _cogl_material_point_size_equal))
+    return FALSE;
+
+  if (!simple_property_equal (material0, material1,
+                              materials_difference,
+                              COGL_MATERIAL_STATE_USER_SHADER,
+                              _cogl_material_user_shader_equal))
     return FALSE;
 
   if (!simple_property_equal (material0, material1,
