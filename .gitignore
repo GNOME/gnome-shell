@@ -96,6 +96,7 @@ TAGS
 /tests/tools/disable-npots.sh
 /po/POTFILES
 /po/*.pot
+/po/*.gmo
 *.swn
 *.swo
 *.swp
