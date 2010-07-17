@@ -52,6 +52,7 @@ units_sources += \
 	test-cogl-vertex-buffer-mutability.c 	\
 	test-cogl-wrap-modes.c          	\
 	test-cogl-primitive.c			\
+	test-cogl-just-vertex-shader.c		\
 	$(NULL)
 
 # actors tests

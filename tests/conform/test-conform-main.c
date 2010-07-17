@@ -236,6 +236,8 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/cogl/vertex-array", test_cogl_primitive);
 
+  TEST_CONFORM_SIMPLE ("/cogl/shaders", test_cogl_just_vertex_shader);
+
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
