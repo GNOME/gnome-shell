@@ -1,7 +1,8 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<chapter id="text">
+<chapter id="text"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
   <title>Text</title>
 
   <epigraph>
@@ -28,11 +29,36 @@
     <section>
       <title>Solution</title>
 
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata format="PNG"
+                       fileref="images/text-shadow.png" />
+          </imageobject>
+          <alt>
+            <para>A ClutterText actor painting a shadow underneath its
+            contents</para>
+          </alt>
+        </mediaobject>
+      </screenshot>
     </section>
 
     <section>
       <title>Discussion</title>
 
+    </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="text-shadow-example">
+        <title>Creating a shadow of a text</title>
+        <programlisting>
+          <xi:include href="examples/text-shadow.c" parse="text">
+            <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+          </xi:include>
+        </programlisting>
+      </example>
     </section>
 
   </section>
