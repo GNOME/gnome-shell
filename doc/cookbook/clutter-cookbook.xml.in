@@ -43,6 +43,7 @@
   <xi:include href="events.xml" />
   <xi:include href="textures.xml" />
   <xi:include href="animations.xml" />
+  <xi:include href="text.xml" />
 
   <appendix id="contributing">
     <title>Contributing to this document</title>

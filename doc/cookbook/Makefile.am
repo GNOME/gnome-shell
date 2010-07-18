@@ -34,6 +34,7 @@ IMAGE_FILES = \
 	images/textures-reflection.png \
 	images/actors-opacity.png \
 	images/actors-opacity-container-affects-opacity.png \
+	images/text-shadow.png \
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \

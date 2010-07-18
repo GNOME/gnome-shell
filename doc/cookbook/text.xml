@@ -1,0 +1,40 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<chapter id="text">
+  <title>Text</title>
+
+  <epigraph>
+    <attribution>Antoine de Saint-Exupery</attribution>
+    <para>A rock pile ceases to be a rock pile the moment a single man
+    contemplates it, bearing within him the image of a cathedral.</para>
+  </epigraph>
+
+  <section id="text-introduction">
+    <title>Introduction</title>
+
+  </section>
+
+  <section id="text-shadow">
+    <title>Drawing a shadow under the text</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to draw a shadow under the text displayed by a
+      ClutterText actor.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+    </section>
+
+  </section>
+
+</chapter>
