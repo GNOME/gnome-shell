@@ -1,7 +1,8 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<chapter id="textures">
+<chapter id="textures"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
   <title>Textures</title>
 
   <epigraph>
@@ -525,25 +526,12 @@ main (int argc, char *argv[])
 static void
 _clone_paint_cb (ClutterActor *actor)
 {
-  ClutterActor *source;
-  ClutterActorBox box;
-  CoglHandle material;
-  gfloat width, height;
-  guint8 opacity;
-  CoglColor color_1, color_2;
-  CoglTextureVertex vertices[4];
+  /* ... */
 
-  /* if we don't have a source actor, don't paint */
-  source = clutter_clone_get_source (CLUTTER_CLONE (actor));
-  if (source == NULL)
-    goto out;
-
-  /* if the source texture does not have any content, don't paint */
+  /* get the Cogl material of the source texture */
   material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (source));
-  if (material == NULL)
-    goto out;
 
-  /* set the size of the reflection to be the same as the source */
+  /* get the size of the actor, which will be used to size the reflection */
   clutter_actor_get_allocation_box (actor, &box);
   clutter_actor_box_get_size (&box, &width, &height);
 
@@ -558,7 +546,7 @@ _clone_paint_cb (ClutterActor *actor)
   cogl_color_set_from_4f (&color_2, 1.0, 1.0, 1.0, 0.0);
   cogl_color_premultiply (&color_2);
 
-  /* now describe the four vertices of the quad; since it has
+  /* describe the four vertices of the quad; since it has
    * to be a reflection, we need to invert it as well
    */
   vertices[0].x = 0; vertices[0].y = 0; vertices[0].z = 0;
@@ -581,9 +569,7 @@ _clone_paint_cb (ClutterActor *actor)
   cogl_set_source (material);
   cogl_polygon (vertices, 4, TRUE);
 
-out:
-  /* prevent the default clone handler from running */
-  g_signal_stop_emission_by_name (actor, "paint");
+  /* ... */
 }
 
 int
@@ -703,6 +689,20 @@ typedef struct _CoglTextureVertex {
     for this operation.</para></note>
 
     </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="textures-reflection-example">
+        <title>Creating a glassy reflection of a texture</title>
+        <programlisting>
+          <xi:include href="examples/textures-reflection.c" parse="text">
+            <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+          </xi:include>
+        </programlisting>
+      </example>
+    </section>
+
   </section>
 
 </chapter>
