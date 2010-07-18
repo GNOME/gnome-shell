@@ -459,7 +459,7 @@ AppMenuButton.prototype = {
 
             this._label.setText(targetApp.get_name());
             // TODO - _quit() doesn't really work on apps in state STARTING yet
-            this._quitMenu.label.set_text(_('Quit %s').format(targetApp.get_name()));
+            this._quitMenu.label.set_text(_("Quit %s").format(targetApp.get_name()));
 
             this.actor.reactive = true;
             this._iconBox.set_child(icon);
