@@ -1,3 +1,5 @@
+SUBDIRS = examples
+
 NULL =
 
 HTML_DIR = $(datadir)/gtk-doc/html
@@ -58,6 +60,7 @@ html-build.stamp: clutter-cookbook.xml
 	if [ ! -d html ] ; then mkdir html ; fi && \
 	if [ ! -d html/images ] ; then mkdir html/images ; fi && \
 	if [ ! -d html/videos ] ; then mkdir html/videos ; fi && \
+	if [ ! -d html/examples ] ; then mkdir html/examples ; fi && \
 	$(XSLTPROC) $(XSLTOPTS) -o clutter-cookbook.html $(XSL_XHTML_URI) $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
 	$(XSLTPROC) $(XSLTOPTS) -o html/ cookbook.xsl $(top_builddir)/doc/cookbook/clutter-cookbook.xml && \
 	cp $(top_srcdir)/doc/common/style.css html/ && \
@@ -67,6 +70,7 @@ html-build.stamp: clutter-cookbook.xml
 		done \
 	fi && \
 	cp images/* html/images/ && \
+	cp examples/*.c html/examples/ && \
 	echo timestamp > $(@F)
 
 if ENABLE_PDFS

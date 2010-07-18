@@ -1083,6 +1083,7 @@ AC_CONFIG_FILES([
         doc/manual/clutter-manual.xml
         doc/cookbook/Makefile
         doc/cookbook/clutter-cookbook.xml
+        doc/cookbook/examples/Makefile
         po/Makefile.in
         clutter.pc
 ])
