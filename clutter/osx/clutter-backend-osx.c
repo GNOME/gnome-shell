@@ -161,6 +161,19 @@ clutter_backend_osx_init (ClutterBackendOSX *backend_osx)
 {
   backend_osx->context = nil;
   backend_osx->pixel_format = nil;
+
+/* Bring our app to foreground, background apps don't appear in dock or
+   * accept keyboard focus.
+   */
+  const ProcessSerialNumber psn = { 0, kCurrentProcess };
+  TransformProcessType (&psn, kProcessTransformToForegroundApplication);
+
+  /* Also raise our app to front, otherwise our window will remain under the
+   * terminal.
+   */
+  SetFrontProcess (&psn);
+
+  [NSApplication sharedApplication];
 }
 
 static void
