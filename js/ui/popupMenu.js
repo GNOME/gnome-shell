@@ -499,13 +499,14 @@ PopupMenuManager.prototype = {
         let src = event.get_source();
         return this._activeMenu != null
                 && (this._activeMenu.actor.contains(src) ||
-                    this._activeMenu.sourceActor.contains(src));
+                    (this._activeMenu.sourceActor && this._activeMenu.sourceActor.contains(src)));
     },
 
     _eventIsOnAnyMenuSource: function(event) {
         let src = event.get_source();
         for (let i = 0; i < this._menus.length; i++) {
-            if (this._menus[i].sourceActor.contains(src))
+            let menu = this._menus[i];
+            if (menu.sourceActor && menu.sourceActor.contains(src))
                 return true;
         }
         return false;
