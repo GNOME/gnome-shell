@@ -230,7 +230,7 @@ test_cogl_point_sprites_main (int argc, char *argv[])
 
   data.material = cogl_material_new ();
   data.last_spark_time = g_timer_new ();
-
+  data.next_spark_num = 0;
   cogl_material_set_point_size (data.material, TEXTURE_SIZE);
 
   tex = generate_round_texture ();
