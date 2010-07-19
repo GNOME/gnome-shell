@@ -102,31 +102,26 @@ g_signal_connect (actor, "key-press-event", G_CALLBACK (_key_press_cb), NULL);
 
         <informalexample>
           <programlisting>
+<![CDATA[
 static gboolean
 _key_press_cb (ClutterActor *actor,
-             ClutterEvent *event,
-             gpointer      user_data)
+               ClutterEvent *event,
+               gpointer      user_data)
 {
   guint keyval = clutter_event_get_key_symbol (event);
 
+  ClutterModifierType state = clutter_event_get_state (event);
+  gboolean shift_pressed = (state & CLUTTER_SHIFT_MASK ? TRUE : FALSE);
+  gboolean ctrl_pressed = (state & CLUTTER_CONTROL_MASK ? TRUE : FALSE);
+
   if (CLUTTER_Up == keyval)
     {
-      ClutterModifierType modifiers = clutter_event_get_state (event);
-
-      switch (modifiers)
-        {
-        case CLUTTER_SHIFT_MASK:
-          g_debug ("Up and shift pressed");
-          break;
-
-        case CLUTTER_SHIFT_MASK + CLUTTER_CONTROL_MASK:
-          g_debug ("Up and shift and control pressed");
-          break;
-
-        default:
-          g_debug ("Up pressed");
-          break;
-        }
+      if (shift_pressed & ctrl_pressed)
+        g_debug ("Up and shift and control pressed");
+      else if (shift_pressed)
+        g_debug ("Up and shift pressed");
+      else
+        g_debug ("Up pressed");
 
       /* The event was handled, and the emission should stop */
       return TRUE;
@@ -135,6 +130,7 @@ _key_press_cb (ClutterActor *actor,
   /* The event was not handled, and the emission should continue */
   return FALSE;
 }
+]]>
           </programlisting>
         </informalexample>
 
