@@ -2922,36 +2922,6 @@ meta_draw_op_free (MetaDrawOp *op)
   g_free (op);
 }
 
-static GdkGC*
-get_gc_for_primitive (GtkWidget          *widget,
-                      GdkDrawable        *drawable,
-                      MetaColorSpec      *color_spec,
-                      const GdkRectangle *clip,
-                      int                 line_width)
-{
-  GdkGC *gc;
-  GdkGCValues values;
-  GdkColor color;
-
-  meta_color_spec_render (color_spec, widget, &color);
-
-  values.foreground = color;
-
-  gdk_rgb_find_color (gdk_drawable_get_colormap (drawable),
-                      &values.foreground);
-
-  values.line_width = line_width;
-
-  gc = gdk_gc_new_with_values (drawable, &values,
-                               GDK_GC_FOREGROUND | GDK_GC_LINE_WIDTH);
-
-  if (clip)
-    gdk_gc_set_clip_rectangle (gc,
-                               (GdkRectangle*) clip); /* const cast */
-
-  return gc;
-}
-
 static GdkPixbuf*
 apply_alpha (GdkPixbuf             *pixbuf,
              MetaAlphaGradientSpec *spec,
@@ -2986,54 +2956,6 @@ apply_alpha (GdkPixbuf             *pixbuf,
   meta_gradient_add_alpha (pixbuf, spec->alphas, spec->n_alphas, spec->type);
   
   return pixbuf;
-}
-
-static void
-render_pixbuf (GdkDrawable        *drawable,
-               const GdkRectangle *clip,
-               GdkPixbuf          *pixbuf,
-               int                 x,
-               int                 y)
-{
-  /* grumble, render_to_drawable_alpha does not accept a clip
-   * mask, so we have to go through some BS
-   */
-  /* FIXME once GTK 1.3.13 has been out a while we can use
-   * render_to_drawable() which now does alpha with clip.
-   *
-   * Though the gdk_rectangle_intersect() check may be a useful
-   * optimization anyway.
-   */
-  GdkRectangle pixbuf_rect;
-  GdkRectangle draw_rect;
-
-  pixbuf_rect.x = x;
-  pixbuf_rect.y = y;
-  pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
-  pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
-
-  if (clip)
-    {
-      if (!gdk_rectangle_intersect ((GdkRectangle*)clip,
-                                    &pixbuf_rect, &draw_rect))
-        return;
-    }
-  else
-    {
-      draw_rect = pixbuf_rect;
-    }
-
-  gdk_draw_pixbuf (drawable,
-                   NULL,
-                   pixbuf,
-                   draw_rect.x - pixbuf_rect.x,
-                   draw_rect.y - pixbuf_rect.y,
-                   draw_rect.x, draw_rect.y,
-                   draw_rect.width,
-                   draw_rect.height,
-                   GDK_RGB_DITHER_NORMAL,
-                   draw_rect.x - pixbuf_rect.x,
-                   draw_rect.y - pixbuf_rect.y);
 }
 
 static GdkPixbuf*
@@ -3476,6 +3398,17 @@ fill_env (MetaPositionExprEnv *env,
   env->theme = meta_current_theme;
 }
 
+/* This code was originally rendering anti-aliased using X primitives, and
+ * now has been switched to draw anti-aliased using cairo. In general, the
+ * closest correspondence between X rendering and cairo rendering is given
+ * by offsetting the geometry by 0.5 pixels in both directions before rendering
+ * with cairo. This is because X samples at the upper left corner of the
+ * pixel while cairo averages over the entire pixel. However, in the cases
+ * where the X rendering was an exact rectangle with no "jaggies"
+ * we need to be a bit careful about applying the offset. We want to produce
+ * the exact same pixel-aligned rectangle, rather than a rectangle with
+ * fuzz around the edges.
+ */
 static void
 meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                             GtkStyle            *style_gtk,
@@ -3486,7 +3419,18 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                             MetaRectangle        rect,
                             MetaPositionExprEnv *env)
 {
-  GdkGC *gc;
+  GdkColor color;
+  cairo_t *cr;
+
+  cr = gdk_cairo_create (drawable);
+
+  cairo_set_line_width (cr, 1.0);
+
+  if (clip)
+    {
+      gdk_cairo_rectangle (cr, clip);
+      cairo_clip (cr);
+    }
   
   switch (op->type)
     {
@@ -3494,18 +3438,19 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       {
         int x1, x2, y1, y2;
 
-        gc = get_gc_for_primitive (widget, drawable,
-                                   op->data.line.color_spec,
-                                   clip,
-                                   op->data.line.width);
+        meta_color_spec_render (op->data.line.color_spec, widget, &color);
+        gdk_cairo_set_source_color (cr, &color);
+
+        if (op->data.line.width > 0)
+          cairo_set_line_width (cr, op->data.line.width);
 
         if (op->data.line.dash_on_length > 0 &&
             op->data.line.dash_off_length > 0)
           {
-            gint8 dash_list[2];
+            double dash_list[2];
             dash_list[0] = op->data.line.dash_on_length;
             dash_list[1] = op->data.line.dash_off_length;
-            gdk_gc_set_dashes (gc, 0, dash_list, 2);
+            cairo_set_dash (cr, dash_list, 2, 0);
           }
 
         x1 = parse_x_position_unchecked (op->data.line.x1, env);
@@ -3514,7 +3459,10 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         if (!op->data.line.x2 &&
             !op->data.line.y2 &&
             op->data.line.width==0)
-          gdk_draw_point (drawable, gc, x1, y1);
+          {
+            cairo_rectangle (cr, x1, y1, 1, 1);
+            cairo_fill (cr);
+          }
         else
           {
             if (op->data.line.x2)
@@ -3527,10 +3475,34 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             else
               y2 = y1;
 
-            gdk_draw_line (drawable, gc, x1, y1, x2, y2);
-          }
+            /* This is one of the cases where we are matching the exact
+             * pixel aligned rectangle produced by X.
+             */
+            if (y1 == y2 || x1 == x2)
+              {
+                double offset = (op->data.line.width == 0 ||
+                                 op->data.line.width % 2) ? .5 : 0;
+                /* X includes end points for lines of width 0 */
+                double line_extend = op->data.line.width == 0 ? 1. : 0.;
 
-        g_object_unref (G_OBJECT (gc));
+                if (y1 == y2)
+                  {
+                    cairo_move_to (cr, x1, y1 + offset);
+                    cairo_line_to (cr, x2 + line_extend, y2 + offset);
+                  }
+                else
+                  {
+                    cairo_move_to (cr, x1 + offset, y1);
+                    cairo_line_to (cr, x2 + offset, y2 + line_extend);
+                  }
+              }
+            else
+              {
+                cairo_move_to (cr, x1 + .5, y1 + .5);
+                cairo_line_to (cr, x2 + .5, y2 + .5);
+              }
+            cairo_stroke (cr);
+          }
       }
       break;
 
@@ -3538,45 +3510,69 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       {
         int rx, ry, rwidth, rheight;
 
-        gc = get_gc_for_primitive (widget, drawable,
-                                   op->data.rectangle.color_spec,
-                                   clip, 0);
+        meta_color_spec_render (op->data.rectangle.color_spec, widget, &color);
+        gdk_cairo_set_source_color (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.rectangle.x, env);
         ry = parse_y_position_unchecked (op->data.rectangle.y, env);
         rwidth = parse_size_unchecked (op->data.rectangle.width, env);
         rheight = parse_size_unchecked (op->data.rectangle.height, env);
 
-        gdk_draw_rectangle (drawable, gc,
-                            op->data.rectangle.filled,
-                            rx, ry, rwidth, rheight);
-
-        g_object_unref (G_OBJECT (gc));
+        /* Filled and stroked rectangles are the other cases
+         * we pixel-align to X rasterization
+         */
+        if (op->data.rectangle.filled)
+          {
+            cairo_rectangle (cr, rx, ry, rwidth, rheight);
+            cairo_fill (cr);
+          }
+        else
+          {
+            cairo_rectangle (cr, rx + .5, ry + .5, rwidth, rheight);
+            cairo_stroke (cr);
+          }
       }
       break;
 
     case META_DRAW_ARC:
       {
         int rx, ry, rwidth, rheight;
+        double start_angle, end_angle;
+        double center_x, center_y;
 
-        gc = get_gc_for_primitive (widget, drawable,
-                                   op->data.arc.color_spec,
-                                   clip, 0);
+        meta_color_spec_render (op->data.arc.color_spec, widget, &color);
+        gdk_cairo_set_source_color (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.arc.x, env);
         ry = parse_y_position_unchecked (op->data.arc.y, env);
         rwidth = parse_size_unchecked (op->data.arc.width, env);
         rheight = parse_size_unchecked (op->data.arc.height, env);
 
-        gdk_draw_arc (drawable,
-                      gc,
-                      op->data.arc.filled,
-                      rx, ry, rwidth, rheight,
-                      op->data.arc.start_angle * (360.0 * 64.0) -
-                      (90.0 * 64.0), /* start at 12 instead of 3 oclock */
-                      op->data.arc.extent_angle * (360.0 * 64.0));
+        start_angle = op->data.arc.start_angle * (M_PI / 180.)
+                      - (.25 * M_PI); /* start at 12 instead of 3 oclock */
+        end_angle = start_angle + op->data.arc.extent_angle * (M_PI / 180.);
+        center_x = rx + (double)rwidth / 2. + .5;
+        center_y = ry + (double)rheight / 2. + .5;
 
-        g_object_unref (G_OBJECT (gc));
+        cairo_save (cr);
+
+        cairo_translate (cr, center_x, center_y);
+        cairo_scale (cr, (double)rwidth / 2., (double)rheight / 2.);
+
+        if (op->data.arc.extent_angle >= 0)
+          cairo_arc (cr, 0, 0, 1, start_angle, end_angle);
+        else
+          cairo_arc_negative (cr, 0, 0, 1, start_angle, end_angle);
+
+        cairo_restore (cr);
+
+        if (op->data.arc.filled)
+          {
+            cairo_line_to (cr, center_x, center_y);
+            cairo_fill (cr);
+          }
+        else
+          cairo_stroke (cr);
       }
       break;
 
@@ -3599,15 +3595,11 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
         if (!needs_alpha)
           {
-            gc = get_gc_for_primitive (widget, drawable,
-                                       op->data.tint.color_spec,
-                                       clip, 0);
+            meta_color_spec_render (op->data.tint.color_spec, widget, &color);
+            gdk_cairo_set_source_color (cr, &color);
 
-            gdk_draw_rectangle (drawable, gc,
-                                TRUE,
-                                rx, ry, rwidth, rheight);
-
-            g_object_unref (G_OBJECT (gc));
+            cairo_rectangle (cr, rx + .5, ry + .5, rwidth, rheight);
+            cairo_fill (cr);
           }
         else
           {
@@ -3618,7 +3610,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
             if (pixbuf)
               {
-                render_pixbuf (drawable, clip, pixbuf, rx, ry);
+                gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
+                cairo_paint (cr);
 
                 g_object_unref (G_OBJECT (pixbuf));
               }
@@ -3641,7 +3634,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
         if (pixbuf)
           {
-            render_pixbuf (drawable, clip, pixbuf, rx, ry);
+            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
+            cairo_paint (cr);
 
             g_object_unref (G_OBJECT (pixbuf));
           }
@@ -3670,7 +3664,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             rx = parse_x_position_unchecked (op->data.image.x, env);
             ry = parse_y_position_unchecked (op->data.image.y, env);
 
-            render_pixbuf (drawable, clip, pixbuf, rx, ry);
+            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
+            cairo_paint (cr);
 
             g_object_unref (G_OBJECT (pixbuf));
           }
@@ -3753,7 +3748,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             rx = parse_x_position_unchecked (op->data.icon.x, env);
             ry = parse_y_position_unchecked (op->data.icon.y, env);
 
-            render_pixbuf (drawable, clip, pixbuf, rx, ry);
+            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
+            cairo_paint (cr);
 
             g_object_unref (G_OBJECT (pixbuf));
           }
@@ -3766,9 +3762,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           int rx, ry;
           PangoRectangle ink_rect, logical_rect;
 
-          gc = get_gc_for_primitive (widget, drawable,
-                                     op->data.title.color_spec,
-                                     clip, 0);
+          meta_color_spec_render (op->data.title.color_spec, widget, &color);
+          gdk_cairo_set_source_color (cr, &color);
 
           rx = parse_x_position_unchecked (op->data.title.x, env);
           ry = parse_y_position_unchecked (op->data.title.y, env);
@@ -3790,7 +3785,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                * correct for this, by reducing the ellipsization width by the overflow
                * of the un-ellipsized text on the right... it's always the visual
                * right we want regardless of bidi, since since the X we pass in to
-               * gdk_draw_layout() is always the left edge of the line.
+               * cairo_move_to() is always the left edge of the line.
                */
               right_bearing = (ink_rect.x + ink_rect.width) - (logical_rect.x + logical_rect.width);
               right_bearing = MAX (right_bearing, 0);
@@ -3806,15 +3801,12 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                 pango_layout_set_width (info->title_layout, PANGO_SCALE * ellipsize_width);
             }
 
-          gdk_draw_layout (drawable, gc,
-                           rx, ry,
-                           info->title_layout);
+          cairo_move_to (cr, rx, ry);
+          pango_cairo_show_layout (cr, info->title_layout);
 
           /* Remove any ellipsization we might have set; will short-circuit
            * if the width is already -1 */
           pango_layout_set_width (info->title_layout, -1);
-
-          g_object_unref (G_OBJECT (gc));
         }
       break;
 
@@ -3882,6 +3874,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       }
       break;
     }
+
+  cairo_destroy (cr);
 }
 
 void
@@ -6637,7 +6631,8 @@ draw_bg_gradient_composite (const MetaTextureSpec *bg,
                               GDK_INTERP_BILINEAR,
                               255 * alpha);
 
-        render_pixbuf (drawable, clip, composited, x, y);
+        gdk_cairo_set_source_pixbuf (cr, composited, x, y);
+        cairo_paint (cr);
 
         g_object_unref (G_OBJECT (bg_pixbuf));
         g_object_unref (G_OBJECT (fg_pixbuf));

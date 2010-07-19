@@ -2004,15 +2004,12 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   return TRUE;
 }
 
-/* Cut and paste from GDK */
-static GdkGC *
-get_bg_gc (GdkWindow *window, int x_offset, int y_offset)
+static void
+setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
 {
   GdkWindow *parent = gdk_window_get_parent (window);
   GdkPixmap *back_pixmap;
   gboolean parent_relative;
-  guint gc_mask = 0;
-  GdkGCValues gc_values;
 
   gdk_window_get_back_pixmap (window, &back_pixmap, &parent_relative);
   if (parent_relative && parent)
@@ -2020,30 +2017,19 @@ get_bg_gc (GdkWindow *window, int x_offset, int y_offset)
       gint window_x, window_y;
 
       gdk_window_get_position (window, &window_x, &window_y);
-      return get_bg_gc (parent,
-                        x_offset + window_x,
-                        y_offset + window_y);
+      setup_bg_cr (cr, parent, x_offset + window_x, y_offset + window_y);
     }
   else if (back_pixmap)
     {
-      gc_values.fill = GDK_TILED;
-      gc_values.tile = back_pixmap;
-      gc_values.ts_x_origin = x_offset;
-      gc_values.ts_y_origin = y_offset;
-      
-      gc_mask = GDK_GC_FILL | GDK_GC_TILE | GDK_GC_TS_X_ORIGIN | GDK_GC_TS_Y_ORIGIN;
-
-      return gdk_gc_new_with_values (window, &gc_values, gc_mask);
+      gdk_cairo_set_source_pixmap (cr, back_pixmap, x_offset, y_offset);
+      cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
     }
   else
     {
       GdkColor bg_color;
-      GdkGC *gc = gdk_gc_new (window);
 
       gdk_window_get_background (window, &bg_color);
-      gdk_gc_set_foreground (gc, &bg_color);
-
-      return gc;
+      gdk_cairo_set_source_color (cr, &bg_color);
     }
 }
 
@@ -2052,12 +2038,16 @@ clear_backing (GdkPixmap *pixmap,
                GdkWindow *window,
                int xoffset, int yoffset)
 {
-  GdkGC *tmp_gc = get_bg_gc (window, xoffset, yoffset);
+  int width, height;
+  cairo_t *cr = gdk_cairo_create (pixmap);
 
-  gdk_draw_rectangle (pixmap, tmp_gc, TRUE,
-                      0, 0, -1, -1);
+  setup_bg_cr (cr, window, xoffset, yoffset);
+
+  gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
+  cairo_rectangle (cr, 0, 0, width, height);
+  cairo_fill (cr);
   
-  g_object_unref (tmp_gc);
+  cairo_destroy (cr);
 }
 
 /* Returns a pixmap with a piece of the windows frame painted on it.
@@ -2220,10 +2210,10 @@ cached_pixels_draw (CachedPixels *pixels,
                     GdkWindow    *window,
                     MetaRegion   *region)
 {
-  GdkGC *gc;
+  cairo_t *cr;
   int i;
 
-  gc = gdk_gc_new (window);
+  cr = gdk_cairo_create (window);
 
   for (i = 0; i < 4; i++)
     {
@@ -2232,16 +2222,15 @@ cached_pixels_draw (CachedPixels *pixels,
       
       if (piece->pixmap)
         {
-          gdk_draw_drawable (window, gc, piece->pixmap,
-                             0, 0,
-                             piece->rect.x, piece->rect.y,
-                             -1, -1);
+          gdk_cairo_set_source_pixmap (cr, piece->pixmap,
+                                       piece->rect.x, piece->rect.y);
+          cairo_paint (cr);
           subtract_from_region (region, piece->pixmap,
           piece->rect.x, piece->rect.y);
         }
     }
   
-  g_object_unref (gc);
+  cairo_destroy (cr);
 }
 
 static gboolean
@@ -2549,11 +2538,6 @@ meta_frames_set_window_background (MetaFrames   *frames,
       meta_color_spec_render (style->window_background_color,
                               GTK_WIDGET (frames),
                               &color);
-
-      /* Fill in color.pixel */
-
-      gdk_rgb_find_color (gtk_widget_get_colormap (GTK_WIDGET (frames)),
-                          &color);
 
       /* Set A in ARGB to window_background_alpha, if we have ARGB */
 

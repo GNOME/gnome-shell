@@ -83,6 +83,7 @@ outline_window_expose (GtkWidget      *widget,
   TabEntry *te;
   GtkStyle *style;
   GdkWindow *window;
+  cairo_t *cr;
   
   popup = data;
 
@@ -92,20 +93,24 @@ outline_window_expose (GtkWidget      *widget,
   te = popup->current_selected_entry;
   window = gtk_widget_get_window (widget);
   style = gtk_widget_get_style (widget);
-  
-  gdk_draw_rectangle (window,
-                      style->white_gc,
-                      FALSE,
-                      0, 0,
-                      te->rect.width - 1,
-                      te->rect.height - 1);
+  cr = gdk_cairo_create (window);
 
-  gdk_draw_rectangle (window,
-                      style->white_gc,
-                      FALSE,
-                      te->inner_rect.x - 1, te->inner_rect.y - 1,
-                      te->inner_rect.width + 1,
-                      te->inner_rect.height + 1);
+  cairo_set_line_width (cr, 1.0);
+  gdk_cairo_set_source_color (cr, &style->white);
+
+  cairo_rectangle (cr,
+                   0.5, 0.5,
+                   te->rect.width - 1,
+                   te->rect.height - 1);
+  cairo_stroke (cr);
+
+  cairo_rectangle (cr,
+                   te->inner_rect.x - 0.5, te->inner_rect.y - 0.5,
+                   te->inner_rect.width + 1,
+                   te->inner_rect.height + 1);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   return FALSE;
 }
@@ -710,6 +715,7 @@ meta_select_image_expose_event (GtkWidget      *widget,
       int x, y, w, h;
       gint xpad, ypad;
       gfloat xalign, yalign;
+      cairo_t *cr;
 
       misc = GTK_MISC (widget);
 
@@ -734,27 +740,28 @@ meta_select_image_expose_event (GtkWidget      *widget,
       window = gtk_widget_get_window (widget);
       style = gtk_widget_get_style (widget);
       state = gtk_widget_get_state (widget);
+      cr = gdk_cairo_create (window);
 
-      gdk_draw_rectangle (window,
-                          style->fg_gc[state],
-                          FALSE,
-                          x, y, w, h);
-      gdk_draw_rectangle (window,
-                          style->fg_gc[state],
-                          FALSE,
-                          x - 1, y - 1, w + 2, h + 2);
-      
+      cairo_set_line_width (cr, 2.0);
+      gdk_cairo_set_source_color (cr, &style->fg[state]);
+
+      cairo_rectangle (cr, x, y, w + 1, h + 1);
+      cairo_stroke (cr);
+
+      cairo_set_line_width (cr, 1.0);
 #if 0
-      gdk_draw_rectangle (widget->window,
-                          widget->style->bg_gc[GTK_STATE_SELECTED],
-                          TRUE,
-                          x, y, w, h);
+      gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+      cairo_rectangle (cr, x, y, w, h);
+      cairo_fill (cr);
 #endif
+
 #if 0      
       gtk_paint_focus (widget->style, widget->window,
                        &event->area, widget, "meta-tab-image",
                        x, y, w, h);
 #endif
+
+      cairo_destroy (cr);
     }
 
   return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
@@ -906,6 +913,7 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   GtkAllocation allocation;
   GtkStyle *style;
   GdkWindow *window;
+  cairo_t *cr;
   int i, n_windows;
   GList *tmp, *list;
 
@@ -965,20 +973,19 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   if (META_SELECT_WORKSPACE (widget)->selected)
     {
       style = gtk_widget_get_style (widget);
-      i = SELECT_OUTLINE_WIDTH - 1;
+      cr = gdk_cairo_create (window);
 
-      while (i >= 0)
-        {
-          gdk_draw_rectangle (window,
-                              style->fg_gc[gtk_widget_get_state (widget)],
-                              FALSE,
-                              i, 
-                              i,
-                              allocation.width - i * 2 - 1,
-                              allocation.height - i * 2 - 1);
+      gdk_cairo_set_source_color (cr,
+                                  &style->fg[gtk_widget_get_state (widget)]);
+      cairo_set_line_width (cr, SELECT_OUTLINE_WIDTH);
 
-          --i;
-        }
+      cairo_rectangle (cr,
+                       SELECT_OUTLINE_WIDTH / 2.0, SELECT_OUTLINE_WIDTH / 2.0,
+                       allocation.width - SELECT_OUTLINE_WIDTH,
+                       allocation.height - SELECT_OUTLINE_WIDTH);
+      cairo_stroke (cr);
+
+      cairo_destroy (cr);
     }
 
   return TRUE;
