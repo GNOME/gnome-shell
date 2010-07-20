@@ -387,11 +387,12 @@ cogl_material_get_specular (CoglMaterial *material,
 /**
  * cogl_material_set_shininess:
  * @material: A #CoglMaterial object
- * @shininess: The desired shininess; range: [0.0, 1.0]
+ * @shininess: The desired shininess; must be >= 0.0
  *
- * Sets the materials shininess, in the standard OpenGL lighting model,
- * which determines how specular highlights are calculated. A higher
- * @shininess will produce smaller brigher highlights.
+ * Sets the shininess of the material, in the standard OpenGL lighting
+ * model, which determines the size of the specular highlights. A
+ * higher @shininess will produce smaller highlights which makes the
+ * object appear more shiny.
  *
  * The default value is 0.0
  *
