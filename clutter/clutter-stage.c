@@ -771,6 +771,13 @@ gboolean
 _clutter_stage_has_full_redraw_queued (ClutterStage *stage)
 {
   ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  gboolean in_destruction;
+
+  in_destruction =
+    ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION) != FALSE);
+
+  if (in_destruction || stage_window == NULL)
+    return FALSE;
 
   if (stage->priv->redraw_pending &&
       !_clutter_stage_window_has_redraw_clips (stage_window))
