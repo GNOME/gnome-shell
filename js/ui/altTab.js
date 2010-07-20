@@ -221,9 +221,6 @@ AltTabPopup.prototype = {
 
         this._disableHover();
 
-        // The WASD stuff is for debugging in Xephyr, where the arrow
-        // keys aren't mapped correctly
-
         if (keysym == Clutter.grave)
             this._select(this._currentApp, this._nextWindow());
         else if (keysym == Clutter.asciitilde)
@@ -241,22 +238,22 @@ AltTabPopup.prototype = {
                     this._select(this._previousApp());
                 else
                     this._select(this._currentApp, this._previousWindow());
-            } else if (keysym == Clutter.Left || keysym == Clutter.a)
+            } else if (keysym == Clutter.Left)
                 this._select(this._currentApp, this._previousWindow());
-            else if (keysym == Clutter.Right || keysym == Clutter.d)
+            else if (keysym == Clutter.Right)
                 this._select(this._currentApp, this._nextWindow());
-            else if (keysym == Clutter.Up || keysym == Clutter.w)
+            else if (keysym == Clutter.Up)
                 this._select(this._currentApp, null, true);
         } else {
             if (keysym == Clutter.Tab)
                 this._select(this._nextApp());
             else if (keysym == Clutter.ISO_Left_Tab)
                 this._select(this._previousApp());
-            else if (keysym == Clutter.Left || keysym == Clutter.a)
+            else if (keysym == Clutter.Left)
                 this._select(this._previousApp());
-            else if (keysym == Clutter.Right || keysym == Clutter.d)
+            else if (keysym == Clutter.Right)
                 this._select(this._nextApp());
-            else if (keysym == Clutter.Down || keysym == Clutter.s)
+            else if (keysym == Clutter.Down)
                 this._select(this._currentApp, 0);
         }
 
