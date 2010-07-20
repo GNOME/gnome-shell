@@ -507,14 +507,12 @@ _cogl_material_flush_color_blend_alpha_depth_state (
       CoglMaterialLightingState *lighting_state =
         &authority->big_state->lighting_state;
 
-      /* FIXME - we only need to set these if lighting is enabled... */
-      GLfloat shininess = lighting_state->shininess * 128.0f;
-
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, lighting_state->ambient));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, lighting_state->diffuse));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, lighting_state->specular));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, lighting_state->emission));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, &shininess));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                        &lighting_state->shininess));
     }
 
   if (materials_difference & COGL_MATERIAL_STATE_BLEND)
