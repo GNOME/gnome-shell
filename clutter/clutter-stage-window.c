@@ -112,20 +112,29 @@ _clutter_stage_window_get_geometry (ClutterStageWindow *window,
 int
 _clutter_stage_window_get_pending_swaps (ClutterStageWindow *window)
 {
-  if (!CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_pending_swaps)
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), 0);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->get_pending_swaps == NULL)
     {
       g_assert (!clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS));
       return 0;
     }
 
-  return CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_pending_swaps (window);
+  return iface->get_pending_swaps (window);
 }
 
 void
 _clutter_stage_window_add_redraw_clip (ClutterStageWindow *window,
                                        ClutterGeometry    *stage_clip)
 {
-  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
   if (iface->add_redraw_clip)
     iface->add_redraw_clip (window, stage_clip);
 }
@@ -133,20 +142,28 @@ _clutter_stage_window_add_redraw_clip (ClutterStageWindow *window,
 gboolean
 _clutter_stage_window_has_redraw_clips (ClutterStageWindow *window)
 {
-  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), FALSE);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
   if (iface->has_redraw_clips)
     return iface->has_redraw_clips (window);
-  else
-    return FALSE;
+
+  return FALSE;
 }
 
 gboolean
 _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window)
 {
-  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), FALSE);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
   if (iface->ignoring_redraw_clips)
     return iface->ignoring_redraw_clips (window);
-  else
-    return TRUE;
+
+  return TRUE;
 }
 
