@@ -263,7 +263,17 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
   CLUTTER_OSX_POOL_ALLOC();
 
   backend_osx = CLUTTER_BACKEND_OSX (self->backend);
-
+  /* Call get_size - this will either get the geometry size (which
+   * before we create the window is set to 640x480), or if a size
+   * is set, it will get that. This lets you set a size on the
+   * stage before it's realized.
+   */
+  gfloat width, height;
+  clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper),
+                          &width,
+                          &height);
+  self->requisition_width = width; 
+  self->requisition_height= height;
   NSRect rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
 
   self->view = [[ClutterGLView alloc]
