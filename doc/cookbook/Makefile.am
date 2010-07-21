@@ -39,6 +39,15 @@ IMAGE_FILES = \
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \
 	videos/animations-fading-in-then-out.ogv \
+	videos/animations-rotating-x-minus-45.ogv \
+	videos/animations-rotating-y-45.ogv \
+	videos/animations-rotating-z-90.ogv \
+	videos/animations-rotating-x-minus-180-with-y-minus-96.ogv \
+	videos/animations-rotating-x-minus-180-with-z-minus-96.ogv \
+	videos/animations-rotating-x-centered.ogv \
+	videos/animations-rotating-y-centered.ogv \
+	videos/animations-rotating-z-centered.ogv \
+	videos/animations-rotating-container-reverses-direction.ogv \
 	$(NULL)
 
 EXTRA_DIST = \
