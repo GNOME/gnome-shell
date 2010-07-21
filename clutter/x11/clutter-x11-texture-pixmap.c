@@ -73,6 +73,7 @@ enum
 {
   UPDATE_AREA,
   QUEUE_DAMAGE_REDRAW,
+
   /* FIXME: Pixmap lost signal? */
   LAST_SIGNAL
 };
@@ -100,23 +101,22 @@ struct _ClutterX11TexturePixmapPrivate
   guint         pixmap_width, pixmap_height;
   guint         depth;
 
-  gboolean      automatic_updates;
   Damage        damage;
 
-  /* FIXME: lots of gbooleans. coalesce into bitfields */
-  gboolean      window_redirect_automatic;
-  gboolean      window_mapped;
-  gboolean      destroyed;
-  gboolean      owns_pixmap;
-  gboolean      override_redirect;
   gint          window_x, window_y;
+
+  guint window_redirect_automatic : 1;
+  guint window_mapped             : 1;
+  guint destroyed                 : 1;
+  guint owns_pixmap               : 1;
+  guint override_redirect         : 1;
+  guint automatic_updates         : 1;
 };
 
 static int _damage_event_base = 0;
 
-/* FIXME: Ultimatly with current cogl we should subclass clutter actor */
-G_DEFINE_TYPE (ClutterX11TexturePixmap, \
-               clutter_x11_texture_pixmap, \
+G_DEFINE_TYPE (ClutterX11TexturePixmap,
+               clutter_x11_texture_pixmap,
                CLUTTER_TYPE_TEXTURE);
 
 static gboolean
@@ -1161,6 +1161,7 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
 
   priv = texture->priv;
 
+  setting = !!setting;
   if (setting == priv->automatic_updates)
     return;
 
@@ -1173,4 +1174,3 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
 
   priv->automatic_updates = setting;
 }
-
