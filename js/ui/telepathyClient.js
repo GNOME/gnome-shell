@@ -579,7 +579,6 @@ Notification.prototype = {
         MessageTray.Notification.prototype._init.call(this, id, source, source.title);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
-        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, this.grabFocus));
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
         this.setActionArea(this._responseEntry);
 
@@ -620,10 +619,10 @@ Notification.prototype = {
         }
     },
 
-    grabFocus: function() {
+    grabFocus: function(lockTray) {
         // Need to call the base class function first so that
         // it saves where the key focus was before.
-        MessageTray.Notification.prototype.grabFocus.call(this);
+        MessageTray.Notification.prototype.grabFocus.call(this, lockTray);
         global.stage.set_key_focus(this._responseEntry.clutter_text);
     },
 

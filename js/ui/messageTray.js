@@ -76,6 +76,7 @@ Notification.prototype = {
         this.urgent = false;
 
         this._hasFocus = false;
+        this._lockTrayOnFocusGrab = false;
         // We use this._prevFocusedWindow and this._prevKeyFocusActor to return the
         // focus where it previously belonged after a focus grab, unless the user
         // has explicitly changed that.
@@ -98,6 +99,15 @@ Notification.prototype = {
                                     reactive: true });
         this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.update(title, banner, true);
+
+        Main.overview.connect('showing', Lang.bind(this,
+            function() {
+                this._toggleFocusGrabMode();
+            }));
+        Main.overview.connect('hidden', Lang.bind(this,
+            function() {
+                this._toggleFocusGrabMode();
+            }));
     },
 
     // update:
@@ -371,9 +381,11 @@ Notification.prototype = {
         return true;
     },
 
-    grabFocus: function() {
+    grabFocus: function(lockTray) {
         if (this._hasFocus)
             return;
+
+        this._lockTrayOnFocusGrab = lockTray;
 
         let metaDisplay = global.screen.get_display();
 
@@ -402,7 +414,8 @@ Notification.prototype = {
         this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
 
         this._hasFocus = true;
-        Main.messageTray.lock();
+        if (lockTray)
+            Main.messageTray.lock();
     },
 
     _focusWindowChanged: function() {
@@ -488,7 +501,16 @@ Notification.prototype = {
             if (focusedActor && this.actor.contains(focusedActor))
                 global.stage.set_key_focus(null);
         }
+    },
 
+    // Because we grab focus differently in the overview
+    // and in the main view, we need to change how it is
+    // done when we move between the two.
+    _toggleFocusGrabMode: function() {
+        if (this._hasFocus) {
+            this.ungrabFocus();
+            this.grabFocus(this._lockTrayOnFocusGrab);
+        }
     },
 
     destroy: function() {
@@ -727,7 +749,7 @@ MessageTray.prototype = {
         this._notificationTimeoutId = 0;
         this._summaryNotificationState = State.HIDDEN;
         this._summaryNotificationTimeoutId = 0;
-        this._overviewVisible = false;
+        this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
 
         Main.chrome.addActor(this.actor, { affectsStruts: false,
@@ -742,12 +764,18 @@ MessageTray.prototype = {
         Main.overview.connect('showing', Lang.bind(this,
             function() {
                 this._overviewVisible = true;
-                this.unlock();
+                if (this._locked)
+                    this.unlock();
+                else
+                    this._updateState();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
-                this.unlock();
+                if (this._locked)
+                    this.unlock();
+                else
+                    this._updateState();
             }));
 
         this._summaryItems = {};
@@ -911,6 +939,8 @@ MessageTray.prototype = {
     },
 
     unlock: function() {
+        if (!this._locked)
+            return;
         this._locked = false;
         this._clickedSummaryItem = null;
         this._updateState();
@@ -1000,6 +1030,8 @@ MessageTray.prototype = {
                 this._hideNotification();
             else if (notificationPinned && !notificationExpanded)
                 this._expandNotification();
+            else if (notificationPinned)
+                this._ensureNotificationFocused();
         }
 
         // Summary
@@ -1141,6 +1173,7 @@ MessageTray.prototype = {
     },
 
     _hideNotification: function() {
+        this._notification.ungrabFocus();
         this._notification.popIn();
 
         if (this._reExpandNotificationId) {
@@ -1167,6 +1200,9 @@ MessageTray.prototype = {
 
     _expandNotification: function() {
         if (this._notification && this._notification.popOut()) {
+            // Don't grab focus in urgent notifications that are auto-expanded.
+            if (!this._notification.urgent)
+                this._notification.grabFocus(false);
             this._tween(this._notificationBin, '_notificationState', State.SHOWN,
                         { y: this.actor.height - this._notificationBin.height,
                           time: ANIMATION_TIME,
@@ -1176,6 +1212,12 @@ MessageTray.prototype = {
             if (!this._reExpandNotificationId)
                 this._reExpandNotificationId = this._notificationBin.connect('notify::height', Lang.bind(this, this._expandNotification));
         }
+    },
+
+    // We use this function to grab focus when the user moves the pointer
+    // to an urgent notification that was already auto-expanded.
+    _ensureNotificationFocused: function() {
+        this._notification.grabFocus(false);
     },
 
     _showSummary: function(withTimeout) {
@@ -1226,8 +1268,8 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
 
         this._summaryNotificationBin.child = this._summaryNotification.actor;
-        this._summaryNotification.grabFocus();
         this._summaryNotification.popOut();
+        this._summaryNotification.grabFocus(true);
 
         this._summaryNotificationBin.opacity = 0;
         this._summaryNotificationBin.y = this.actor.height;
