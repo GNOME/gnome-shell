@@ -158,6 +158,10 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gsettings-desktop-schemas">
+    <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
+  </autotools>
+
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -168,6 +172,7 @@
         <dep package="gconf"/>
         <dep package="glib"/>
         <dep package="gnome-desktop-3"/>
+        <dep package="gsettings-desktop-schemas"/>
     </dependencies>
   </autotools>
 

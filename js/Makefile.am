@@ -39,6 +39,7 @@ nobase_dist_js_DATA = 	\
 	ui/search.js		\
 	ui/shellDBus.js		\
 	ui/statusMenu.js	\
+	ui/status/accessibility.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
 	ui/windowAttentionHandler.js	\

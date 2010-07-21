@@ -30,21 +30,15 @@ const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_UPDATE_TIMEOUT = 130;
 const SPINNER_SPEED = 0.02;
 
-const STANDARD_TRAY_ICON_ORDER = ['keyboard', 'volume', 'bluetooth', 'network', 'battery'];
+const STANDARD_TRAY_ICON_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
 const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
     'gnome-volume-control-applet': 'volume',
     'nm-applet': 'network',
     'gnome-power-manager': 'battery'
 };
-
-/* Holds constructors for shell-implemented SystemStatusButtons
- * example:
- * const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
- *     'network': imports.ui.network.NMApplet
- * };
- */
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
+    'a11y': imports.ui.status.accessibility.ATIndicator
 };
 
 const CLOCK_FORMAT_KEY        = 'format';

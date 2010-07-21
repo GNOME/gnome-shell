@@ -6,6 +6,8 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Signals = imports.signals;
+
 const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
 
@@ -112,6 +114,9 @@ Magnifier.prototype = {
         // invisible.
         if (!activate)
             this._xfixesCursor.show();
+
+        // Notify interested parties of this change
+        this.emit('active-changed', activate);
     },
 
     /**
@@ -560,6 +565,7 @@ Magnifier.prototype = {
         }
     }
 };
+Signals.addSignalMethods(Magnifier.prototype);
 
 function ZoomRegion(magnifier, mouseRoot) {
     this._init(magnifier, mouseRoot);

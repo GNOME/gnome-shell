@@ -124,6 +124,7 @@ function start() {
     placesManager = new PlaceDisplay.PlacesManager();
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
+    magnifier = new Magnifier.Magnifier();
     panel = new Panel.Panel();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();
@@ -172,9 +173,6 @@ function start() {
     display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
-
-    // Install magnifier.
-    magnifier = new Magnifier.Magnifier();
 
     // Perform initial relayout here
     _relayout();
