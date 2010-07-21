@@ -890,14 +890,13 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+  g_return_val_if_fail (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
 
   actor = CLUTTER_ACTOR (stage);
 
-  impl = _clutter_stage_get_window (stage);
-  stage_x11 = CLUTTER_STAGE_X11 (impl);
-
   xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  g_return_val_if_fail (xvisinfo != NULL, FALSE);
 
   clutter_x11_trap_x_errors ();
 
@@ -916,6 +915,9 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
       g_warning ("Unable to retrieve the new window geometry");
       return FALSE;
     }
+
+  impl = _clutter_stage_get_window (stage);
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
 
   fwd.stage_x11 = stage_x11;
   fwd.xwindow = xwindow;
