@@ -382,11 +382,24 @@ Inspector.prototype = {
         this._borderPaintTarget = null;
         this._borderPaintId = null;
         eventHandler.connect('destroy', Lang.bind(this, this._onDestroy));
-
         eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
-
+        eventHandler.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         eventHandler.connect('motion-event', Lang.bind(this, this._onMotionEvent));
         Clutter.grab_pointer(eventHandler);
+
+        // this._target is the actor currently shown by the inspector.
+        // this._pointerTarget is the actor directly under the pointer.
+        // Normally these are the same, but if you use the scroll wheel
+        // to drill down, they'll diverge until you either scroll back
+        // out, or move the pointer outside of _pointerTarget.
+        this._target = null;
+        this._pointerTarget = null;
+    },
+
+    _close: function() {
+        Clutter.ungrab_pointer(this._eventHandler);
+        this._eventHandler.destroy();
+        this.emit('closed');
     },
 
     _onDestroy: function() {
@@ -395,31 +408,70 @@ Inspector.prototype = {
     },
 
     _onButtonPressEvent: function (actor, event) {
-        Clutter.ungrab_pointer(this._eventHandler);
+        if (this._target) {
+            let [stageX, stageY] = event.get_coords();
+            this.emit('target', this._target, stageX, stageY);
+        }
+        this._close();
+        return true;
+    },
 
-        let [stageX, stageY] = event.get_coords();
-        let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                   stageX,
-                                                   stageY);
-        this.emit('target', target, stageX, stageY);
-        this._eventHandler.destroy();
-        this.emit('closed');
+    _onScrollEvent: function (actor, event) {
+        switch (event.get_scroll_direction()) {
+        case Clutter.ScrollDirection.UP:
+            // select parent
+            let parent = this._target.get_parent();
+            if (parent != null) {
+                this._target = parent;
+                this._update(event);
+            }
+            break;
+
+        case Clutter.ScrollDirection.DOWN:
+            // select child
+            if (this._target != this._pointerTarget) {
+                let child = this._pointerTarget;
+                while (child) {
+                    let parent = child.get_parent();
+                    if (parent == this._target)
+                        break;
+                    child = parent;
+                }
+                if (child) {
+                    this._target = child;
+                    this._update(event);
+                }
+            }
+            break;
+
+        default:
+            break;
+        }
         return true;
     },
 
     _onMotionEvent: function (actor, event) {
+        this._update(event);
+        return true;
+    },
+
+    _update: function(event) {
         let [stageX, stageY] = event.get_coords();
         let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
                                                    stageX,
                                                    stageY);
+
+        if (target != this._pointerTarget)
+            this._target = target;
+        this._pointerTarget = target;
+
         let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
         this._displayText.text = '';
-        this._displayText.text = position + ' ' + target;
+        this._displayText.text = position + ' ' + this._target;
         if (this._borderPaintTarget != null)
             this._borderPaintTarget.disconnect(this._borderPaintId);
-        this._borderPaintTarget = target;
-        this._borderPaintId = Shell.add_hook_paint_red_border(target);
-        return true;
+        this._borderPaintTarget = this._target;
+        this._borderPaintId = Shell.add_hook_paint_red_border(this._target);
     }
 };
 
