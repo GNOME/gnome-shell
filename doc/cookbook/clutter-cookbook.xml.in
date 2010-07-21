@@ -151,7 +151,7 @@ VIDEO_FILES = \
 <![CDATA[
 <inlinemediaobject>
   <videoobject>
-    <videodata fileref="videos/cookbook-animations-fading-in-then-out.ogv"/>
+    <videodata fileref="videos/animations-fading-in-then-out.ogv"/>
   </videoobject>
   <alt>
     <para>Video showing an actor fading in then out using
