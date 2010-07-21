@@ -87,6 +87,7 @@ Notification.prototype = {
         this._focusActorChangedId = 0;
         this._stageInputModeChangedId = 0;
         this._capturedEventId = 0;
+        this._keyPressId = 0;
 
         source.connect('clicked', Lang.bind(this,
             function() {
@@ -405,6 +406,8 @@ Notification.prototype = {
 
             this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
             this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
+
+            this._keyPressId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPress));
         }
 
         // We need to listen to this signal in the overview, as well as in the main view, to make the key bindings such as
@@ -454,8 +457,29 @@ Notification.prototype = {
 
     _onCapturedEvent: function(actor, event) {
         let source = event.get_source();
-        if (event.type() == Clutter.EventType.BUTTON_PRESS && !this.actor.contains(source))
-            this.ungrabFocus();
+        switch (event.type()) {
+            case Clutter.EventType.BUTTON_PRESS:
+                if (!this.actor.contains(source))
+                    this.ungrabFocus();
+                break;
+            case Clutter.EventType.KEY_PRESS:
+                let symbol = event.get_key_symbol();
+                if (symbol == Clutter.Escape) {
+                    Main.messageTray.escapeTray();
+                    return true;
+                }
+                break;
+        }
+
+        return false;
+    },
+
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.Escape) {
+            Main.messageTray.escapeTray();
+            return true;
+        }
         return false;
     },
 
@@ -483,6 +507,11 @@ Notification.prototype = {
             Main.popModal(this.actor);
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
+        }
+
+        if (this._keyPressId > 0) {
+            global.stage.disconnect(this._keyPressId);
+            this._keyPressId = 0;
         }
 
         this._hasFocus = false;
@@ -1008,6 +1037,17 @@ MessageTray.prototype = {
         this._pointerInSummary = false;
         this._updateState();
         return false;
+    },
+
+    escapeTray: function() {
+        this.unlock();
+        this._pointerInTray = false;
+        this._pointerInSummary = false;
+        if (this._notificationTimeoutId) {
+            Mainloop.source_remove(this._notificationTimeoutId);
+            this._notificationTimeoutId = 0;
+        }
+        this._updateState();
     },
 
     // All of the logic for what happens when occurs here; the various
