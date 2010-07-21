@@ -12,6 +12,7 @@ const _ = Gettext.gettext;
 
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
+const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
@@ -20,8 +21,7 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 
-const APPICON_SIZE = 48;
-const WELL_MAX_COLUMNS = 8;
+const WELL_MAX_COLUMNS = 16;
 const WELL_MAX_SEARCH_ROWS = 1;
 const MENU_POPUP_TIMEOUT = 600;
 
@@ -32,7 +32,7 @@ function AlphabeticalView() {
 AlphabeticalView.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
-        this._grid = new WellGrid();
+        this._grid = new IconGrid.IconGrid();
         this._appSystem = Shell.AppSystem.get_default();
         this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
     },
@@ -222,7 +222,7 @@ AppSearchResultDisplay.prototype = {
 
     _init: function (provider) {
         Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this._grid = new WellGrid({ rowLimit: WELL_MAX_SEARCH_ROWS });
+        this._grid = new IconGrid.IconGrid({ rowLimit: WELL_MAX_SEARCH_ROWS });
         this.actor = new St.Bin({ name: 'dashAppSearchResults',
                                   x_align: St.Align.START });
         this.actor.set_child(this._grid.actor);
@@ -368,23 +368,18 @@ function AppIcon(app) {
 }
 
 AppIcon.prototype = {
+    __proto__:  IconGrid.BaseIcon.prototype,
+
     _init : function(app) {
         this.app = app;
 
-        this.actor = new St.Bin({ style_class: 'app-icon',
-                                  x_fill: true,
-                                  y_fill: true });
-        this.actor._delegate = this;
+        let label = this.app.get_name();
 
-        let box = new St.BoxLayout({ vertical: true });
-        this.actor.set_child(box);
+        IconGrid.BaseIcon.prototype._init.call(this, label);
+    },
 
-        this.icon = this.app.create_icon_texture(APPICON_SIZE);
-
-        box.add(this.icon, { expand: true, x_fill: false, y_fill: false });
-
-        this._name = new St.Label({ text: this.app.get_name() });
-        box.add_actor(this._name);
+    createIcon: function(iconSize) {
+        return this.app.create_icon_texture(iconSize);
     }
 };
 
@@ -587,7 +582,7 @@ AppWellIcon.prototype = {
     },
 
     getDragActor: function() {
-        return this.app.create_icon_texture(APPICON_SIZE);
+        return this.app.create_icon_texture(this._icon.iconSize);
     },
 
     // Returns the original actor that should align with the actor
@@ -763,157 +758,6 @@ AppIconMenu.prototype = {
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
 
-function WellGrid(params) {
-    this._init(params);
-}
-
-WellGrid.prototype = {
-    _init: function(params) {
-        params = Params.parse(params, { rowLimit: null });
-        this._rowLimit = params.rowLimit;
-
-        this.actor = new St.BoxLayout({ name: 'dashAppWell', vertical: true });
-        // Pulled from CSS, but hardcode some defaults here
-        this._spacing = 0;
-        this._item_size = 48;
-        this._grid = new Shell.GenericContainer();
-        this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-
-        this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._grid.connect('allocate', Lang.bind(this, this._allocate));
-    },
-
-    _getPreferredWidth: function (grid, forHeight, alloc) {
-        let children = this._grid.get_children();
-        let nColumns = children.length;
-        let totalSpacing = Math.max(0, nColumns - 1) * this._spacing;
-        // Kind of a lie, but not really an issue right now.  If
-        // we wanted to support some sort of hidden/overflow that would
-        // need higher level design
-        alloc.min_size = this._item_size;
-        alloc.natural_size = nColumns * this._item_size + totalSpacing;
-    },
-
-    _getPreferredHeight: function (grid, forWidth, alloc) {
-        let children = this._grid.get_children();
-        let [nColumns, usedWidth] = this._computeLayout(forWidth);
-        let nRows;
-        if (nColumns > 0)
-            nRows = Math.ceil(children.length / nColumns);
-        else
-            nRows = 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
-        let totalSpacing = Math.max(0, nRows - 1) * this._spacing;
-        let height = nRows * this._item_size + totalSpacing;
-        alloc.min_size = height;
-        alloc.natural_size = height;
-    },
-
-    _allocate: function (grid, box, flags) {
-        let children = this._grid.get_children();
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-
-        let [nColumns, usedWidth] = this._computeLayout(availWidth);
-
-        let overallPaddingX = Math.floor((availWidth - usedWidth) / 2);
-
-        let x = box.x1 + overallPaddingX;
-        let y = box.y1;
-        let columnIndex = 0;
-        let rowIndex = 0;
-        for (let i = 0; i < children.length; i++) {
-            let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight]
-                = children[i].get_preferred_size();
-
-            /* Center the item in its allocation horizontally */
-            let width = Math.min(this._item_size, childNaturalWidth);
-            let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
-            let height = Math.min(this._item_size, childNaturalHeight);
-            let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
-
-            let childBox = new Clutter.ActorBox();
-            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-                let _x = box.x2 - (x + width);
-                childBox.x1 = Math.floor(_x - childXSpacing);
-            } else {
-                childBox.x1 = Math.floor(x + childXSpacing);
-            }
-            childBox.y1 = Math.floor(y + childYSpacing);
-            childBox.x2 = childBox.x1 + width;
-            childBox.y2 = childBox.y1 + height;
-
-            if (this._rowLimit && rowIndex >= this._rowLimit) {
-                this._grid.set_skip_paint(children[i], true);
-            } else {
-                children[i].allocate(childBox, flags);
-                this._grid.set_skip_paint(children[i], false);
-            }
-
-            columnIndex++;
-            if (columnIndex == nColumns) {
-                columnIndex = 0;
-                rowIndex++;
-            }
-
-            if (columnIndex == 0) {
-                y += this._item_size + this._spacing;
-                x = box.x1 + overallPaddingX;
-            } else {
-                x += this._item_size + this._spacing;
-            }
-        }
-    },
-
-    _computeLayout: function (forWidth) {
-        let children = this._grid.get_children();
-        let nColumns = 0;
-        let usedWidth = 0;
-        while (nColumns < WELL_MAX_COLUMNS &&
-                (usedWidth + this._item_size <= forWidth)) {
-            usedWidth += this._item_size + this._spacing;
-            nColumns += 1;
-        }
-
-        if (nColumns > 0)
-            usedWidth -= this._spacing;
-
-        return [nColumns, usedWidth];
-    },
-
-    _onStyleChanged: function() {
-        let themeNode = this.actor.get_theme_node();
-        let [success, len] = themeNode.get_length('spacing', false);
-        if (success)
-            this._spacing = len;
-        [success, len] = themeNode.get_length('-shell-grid-item-size', false);
-        if (success)
-            this._item_size = len;
-        this._grid.queue_relayout();
-    },
-
-    removeAll: function () {
-        this._grid.get_children().forEach(Lang.bind(this, function (child) {
-            child.destroy();
-        }));
-    },
-
-    addItem: function(actor) {
-        this._grid.add_actor(actor);
-    },
-
-    getItemAtIndex: function(index) {
-        return this._grid.get_children()[index];
-    },
-
-    visibleItemsCount: function() {
-        return this._grid.get_children().length - this._grid.get_n_skip_paint();
-    }
-};
-
 function AppWell() {
     this._init();
 }
@@ -926,7 +770,7 @@ AppWell.prototype = {
 
         this._favorites = [];
 
-        this._grid = new WellGrid();
+        this._grid = new IconGrid.IconGrid();
         this.actor = this._grid.actor;
         this.actor._delegate = this;
 

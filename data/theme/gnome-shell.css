@@ -547,7 +547,7 @@ StTooltip {
     width: 440px;
 }
 
-#dashAppWell {
+.icon-grid {
     spacing: 6px;
     -shell-grid-item-size: 70px;
 }

@@ -11,7 +11,6 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const AppDisplay = imports.ui.appDisplay;
 const Calendar = imports.ui.calendar;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
@@ -219,10 +218,11 @@ AppMenuButton.prototype = {
 
         this._updateId = 0;
         this._animationStep = 0;
-        this._clipWidth = AppDisplay.APPICON_SIZE / 2;
+        this._clipWidth = PANEL_ICON_SIZE;
         this._direction = SPINNER_SPEED;
 
-        this._spinner = new AnimatedIcon('process-working.png', 24);
+        this._spinner = new AnimatedIcon('process-working.png',
+                                         PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.lower_bottom();
 
@@ -304,7 +304,7 @@ AppMenuButton.prototype = {
         }
         if (this._animationStep > 1)
             this._animationStep = 1;
-        this._clipWidth = this._label.actor.width - (this._label.actor.width - AppDisplay.APPICON_SIZE / 2) * (1 - this._animationStep);
+        this._clipWidth = this._label.actor.width - (this._label.actor.width - PANEL_ICON_SIZE) * (1 - this._animationStep);
         if (this.actor.get_direction() == St.TextDirection.LTR) {
             this._label.actor.set_clip(0, 0, this._clipWidth + this._shadow.width, this.actor.height);
         } else {
@@ -454,7 +454,7 @@ AppMenuButton.prototype = {
 
         let targetApp = this._focusedApp != null ? this._focusedApp : this._lastStartedApp;
         if (targetApp != null) {
-            let icon = targetApp.get_faded_icon(AppDisplay.APPICON_SIZE);
+            let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
 
             this._label.setText(targetApp.get_name());
             // TODO - _quit() doesn't really work on apps in state STARTING yet
