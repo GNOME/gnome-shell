@@ -577,10 +577,9 @@ Notification.prototype = {
 
     _init: function(id, source) {
         MessageTray.Notification.prototype._init.call(this, id, source, source.title);
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
-        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, this._onEntryFocused));
+        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, this.grabFocus));
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
         this.setActionArea(this._responseEntry);
 
@@ -621,60 +620,20 @@ Notification.prototype = {
         }
     },
 
-    _onButtonPress: function(notification, event) {
-        if (!this._active)
-            return false;
-
-        let source = event.get_source ();
-        if (source && notification.contains(source))
-            return false;
-
-        // @source is outside @notification, which has to mean that
-        // we have a pointer grab, and the user clicked outside the
-        // notification, so we should deactivate.
-        this._deactivate();
-        return true;
-    },
-
-    _onEntryFocused: function() {
-        if (this._active)
-            return;
-
-        if (!Main.pushModal(this.actor))
-            return;
-        Clutter.grab_pointer(this.actor);
-
-        this._active = true;
-        Main.messageTray.lock();
+    grabFocus: function() {
+        // Need to call the base class function first so that
+        // it saves where the key focus was before.
+        MessageTray.Notification.prototype.grabFocus.call(this);
+        global.stage.set_key_focus(this._responseEntry.clutter_text);
     },
 
     _onEntryActivated: function() {
         let text = this._responseEntry.get_text();
-        if (text == '') {
-            this._deactivate();
+        if (text == '')
             return;
-        }
 
         this._responseEntry.set_text('');
         this._append(text, 'chat-sent');
         this.source.respond(text);
-    },
-
-    _deactivate: function() {
-        if (this._active) {
-            Clutter.ungrab_pointer(this.actor);
-            Main.popModal(this.actor);
-            global.stage.set_key_focus(null);
-
-            // We have to do this after calling popModal(), because
-            // that will return the keyboard focus to
-            // this._responseEntry (because that's where it was when
-            // pushModal() was called), which will cause
-            // _onEntryFocused() to be called again, but we don't want
-            // it to do anything.
-            this._active = false;
-
-            Main.messageTray.unlock();
-        }
     }
 };

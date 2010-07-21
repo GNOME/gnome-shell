@@ -75,6 +75,18 @@ Notification.prototype = {
         this._bannerBody = bannerBody;
         this.urgent = false;
 
+        this._hasFocus = false;
+        // We use this._prevFocusedWindow and this._prevKeyFocusActor to return the
+        // focus where it previously belonged after a focus grab, unless the user
+        // has explicitly changed that.
+        this._prevFocusedWindow = null;
+        this._prevKeyFocusActor = null;
+
+        this._focusWindowChangedId = 0;
+        this._focusActorChangedId = 0;
+        this._stageInputModeChangedId = 0;
+        this._capturedEventId = 0;
+
         source.connect('clicked', Lang.bind(this,
             function() {
                 this.emit('dismissed');
@@ -359,6 +371,126 @@ Notification.prototype = {
         return true;
     },
 
+    grabFocus: function() {
+        if (this._hasFocus)
+            return;
+
+        let metaDisplay = global.screen.get_display();
+
+        this._prevFocusedWindow = metaDisplay.focus_window;
+        this._prevKeyFocus = global.stage.get_key_focus();
+
+        // We need to use the captured event in the overview, because we don't want to change the stage input mode to
+        // FOCUSED there. On the other hand, using the captured event doesn't work correctly in the main view because
+        // it doesn't allow focusing the windows again correctly. So we are using the FOCUSED stage input mode in the
+        // main view.
+        if (Main.overview.visible) {
+            if (!Main.pushModal(this.actor))
+                return;
+            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        } else {
+            global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
+
+            this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
+            this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
+        }
+
+        // We need to listen to this signal in the overview, as well as in the main view, to make the key bindings such as
+        // Alt+F2 work. When a notification has key focus, which is the case with chat notifications, all captured KEY_PRESS
+        // events have the actor with the key focus as their source. This makes it impossible to distinguish between the chat
+        // window input and the key bindings based solely on the KEY_PRESS event.
+        this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
+
+        this._hasFocus = true;
+        Main.messageTray.lock();
+    },
+
+    _focusWindowChanged: function() {
+        let metaDisplay = global.screen.get_display();
+        // this._focusWindowChanged() will be called when we call
+        // global.set_stage_input_mode(Shell.StageInputMode.FOCUSED) ,
+        // however metaDisplay.focus_window will be null in that case. We only
+        // want to ungrab focus if the focus has been moved to an application
+        // window.
+        if (metaDisplay.focus_window) {
+            this._prevFocusedWindow = null;
+            this.ungrabFocus();
+        }
+    },
+
+    _focusActorChanged: function() {
+        let focusedActor = global.stage.get_key_focus();
+        if (!focusedActor || !this.actor.contains(focusedActor)) {
+            this._prevKeyFocusActor = null;
+            this.ungrabFocus();
+        }
+    },
+
+    _stageInputModeChanged: function() {
+        let focusedActor = global.stage.get_key_focus();
+        // TODO: We need to set this._prevFocusedWindow to null in order to
+        // get the cursor in the run dialog. However, that also means it's
+        // set to null when the application menu is activated, which defeats
+        // the point of keeping the name of the previously focused application
+        // in the panel. It'd be good to be able to distinguish between these
+        // two cases.
+        this._prevFocusedWindow = null;
+        this._prevKeyFocusActor = null;
+        this.ungrabFocus();
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        let source = event.get_source();
+        if (event.type() == Clutter.EventType.BUTTON_PRESS && !this.actor.contains(source))
+            this.ungrabFocus();
+        return false;
+    },
+
+    ungrabFocus: function() {
+        if (!this._hasFocus)
+            return;
+
+        let metaDisplay = global.screen.get_display();
+        if (this._focusWindowChangedId > 0) {
+            metaDisplay.disconnect(this._focusWindowChangedId);
+            this._focusWindowChangedId = 0;
+        }
+
+        if (this._focusActorChangedId > 0) {
+            global.stage.disconnect(this._focusActorChangedId);
+            this._focusActorChangedId = 0;
+        }
+
+        if (this._stageInputModeChangedId) {
+            global.disconnect(this._stageInputModeChangedId);
+            this._stageInputModeChangedId = 0;
+        }
+
+        if (this._capturedEventId > 0) {
+            Main.popModal(this.actor);
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
+        this._hasFocus = false;
+        Main.messageTray.unlock();
+
+        if (this._prevFocusedWindow) {
+            metaDisplay.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
+            this._prevFocusedWindow = null;
+        }
+        if (this._prevKeyFocusActor) {
+            global.stage.set_key_focus(this._prevKeyFocusActor);
+            this._prevKeyFocusActor = null;
+        } else {
+            // We don't want to keep the actor inside the notification focused.
+            let focusedActor = global.stage.get_key_focus();
+            if (focusedActor && this.actor.contains(focusedActor))
+                global.stage.set_key_focus(null);
+        }
+
+    },
+
     destroy: function() {
         this.emit('destroy');
     }
@@ -585,6 +717,7 @@ MessageTray.prototype = {
         this._clickedSummaryItem = null;
 
         this._trayState = State.HIDDEN;
+        this._locked = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._summaryState = State.HIDDEN;
@@ -609,12 +742,12 @@ MessageTray.prototype = {
         Main.overview.connect('showing', Lang.bind(this,
             function() {
                 this._overviewVisible = true;
-                this._updateState();
+                this.unlock();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
-                this._updateState();
+                this.unlock();
             }));
 
         this._summaryItems = {};
@@ -779,10 +912,7 @@ MessageTray.prototype = {
 
     unlock: function() {
         this._locked = false;
-
-        this.actor.sync_hover();
-        this._summary.sync_hover();
-
+        this._clickedSummaryItem = null;
         this._updateState();
     },
 
@@ -874,7 +1004,7 @@ MessageTray.prototype = {
 
         // Summary
         let summarySummoned = this._pointerInSummary || this._overviewVisible;
-        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned;
+        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned || this._locked;
 
         let notificationsVisible = (this._notificationState == State.SHOWING ||
                                     this._notificationState == State.SHOWN);
@@ -1096,6 +1226,7 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
 
         this._summaryNotificationBin.child = this._summaryNotification.actor;
+        this._summaryNotification.grabFocus();
         this._summaryNotification.popOut();
 
         this._summaryNotificationBin.opacity = 0;
@@ -1125,6 +1256,7 @@ MessageTray.prototype = {
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
             this._clickedSummaryItem = null;
+        this._summaryNotification.ungrabFocus();
         this._summaryNotification.popIn();
 
         this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.HIDDEN,
