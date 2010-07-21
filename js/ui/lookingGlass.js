@@ -371,48 +371,55 @@ Inspector.prototype = {
                                               vertical: false,
                                               y: primary.y + Math.floor(primary.height / 2),
                                               reactive: true });
+        this._eventHandler = eventHandler;
         eventHandler.connect('notify::allocation', Lang.bind(this, function () {
             eventHandler.x = primary.x + Math.floor((primary.width - eventHandler.width) / 2);
         }));
         Main.uiGroup.add_actor(eventHandler);
-        let displayText = new St.Label();
-        eventHandler.add(displayText, { expand: true });
+        this._displayText = new St.Label();
+        eventHandler.add(this._displayText, { expand: true });
 
-        let borderPaintTarget = null;
-        let borderPaintId = null;
-        eventHandler.connect('destroy', Lang.bind(this, function() {
-            if (borderPaintTarget != null)
-                borderPaintTarget.disconnect(borderPaintId);
-        }));
+        this._borderPaintTarget = null;
+        this._borderPaintId = null;
+        eventHandler.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        eventHandler.connect('button-press-event', Lang.bind(this, function (actor, event) {
-            Clutter.ungrab_pointer(eventHandler);
+        eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
 
-            let [stageX, stageY] = event.get_coords();
-            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                       stageX,
-                                                       stageY);
-            this.emit('target', target, stageX, stageY);
-            eventHandler.destroy();
-            this.emit('closed');
-            return true;
-        }));
-
-        eventHandler.connect('motion-event', Lang.bind(this, function (actor, event) {
-            let [stageX, stageY] = event.get_coords();
-            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                       stageX,
-                                                       stageY);
-            let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
-            displayText.text = '';
-            displayText.text = position + ' ' + target;
-            if (borderPaintTarget != null)
-                borderPaintTarget.disconnect(borderPaintId);
-            borderPaintTarget = target;
-            borderPaintId = Shell.add_hook_paint_red_border(target);
-            return true;
-        }));
+        eventHandler.connect('motion-event', Lang.bind(this, this._onMotionEvent));
         Clutter.grab_pointer(eventHandler);
+    },
+
+    _onDestroy: function() {
+        if (this._borderPaintTarget != null)
+            this._borderPaintTarget.disconnect(this._borderPaintId);
+    },
+
+    _onButtonPressEvent: function (actor, event) {
+        Clutter.ungrab_pointer(this._eventHandler);
+
+        let [stageX, stageY] = event.get_coords();
+        let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
+                                                   stageX,
+                                                   stageY);
+        this.emit('target', target, stageX, stageY);
+        this._eventHandler.destroy();
+        this.emit('closed');
+        return true;
+    },
+
+    _onMotionEvent: function (actor, event) {
+        let [stageX, stageY] = event.get_coords();
+        let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
+                                                   stageX,
+                                                   stageY);
+        let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
+        this._displayText.text = '';
+        this._displayText.text = position + ' ' + target;
+        if (this._borderPaintTarget != null)
+            this._borderPaintTarget.disconnect(this._borderPaintId);
+        this._borderPaintTarget = target;
+        this._borderPaintId = Shell.add_hook_paint_red_border(target);
+        return true;
     }
 };
 
