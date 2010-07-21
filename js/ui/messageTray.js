@@ -883,7 +883,7 @@ MessageTray.prototype = {
         if (this._summaryState == State.HIDDEN) {
             if (notificationsDone && this._summaryNeedsToBeShown)
                 this._showSummary(true);
-            else if (!notificationsVisible && summarySummoned)
+            else if (summarySummoned)
                 this._showSummary(false);
         } else if (this._summaryState == State.SHOWN) {
             if (!summaryPinned)
