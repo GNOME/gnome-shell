@@ -382,10 +382,12 @@ Inspector.prototype = {
         this._borderPaintTarget = null;
         this._borderPaintId = null;
         eventHandler.connect('destroy', Lang.bind(this, this._onDestroy));
+        eventHandler.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
         eventHandler.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         eventHandler.connect('motion-event', Lang.bind(this, this._onMotionEvent));
         Clutter.grab_pointer(eventHandler);
+        Clutter.grab_keyboard(eventHandler);
 
         // this._target is the actor currently shown by the inspector.
         // this._pointerTarget is the actor directly under the pointer.
@@ -398,6 +400,7 @@ Inspector.prototype = {
 
     _close: function() {
         Clutter.ungrab_pointer(this._eventHandler);
+        Clutter.ungrab_keyboard(this._eventHandler);
         this._eventHandler.destroy();
         this.emit('closed');
     },
@@ -405,6 +408,12 @@ Inspector.prototype = {
     _onDestroy: function() {
         if (this._borderPaintTarget != null)
             this._borderPaintTarget.disconnect(this._borderPaintId);
+    },
+
+    _onKeyPressEvent: function (actor, event) {
+        if (event.get_key_symbol() == Clutter.Escape)
+            this._close();
+        return true;
     },
 
     _onButtonPressEvent: function (actor, event) {
