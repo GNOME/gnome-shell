@@ -375,7 +375,9 @@ AppIcon.prototype = {
 
         let label = this.app.get_name();
 
-        IconGrid.BaseIcon.prototype._init.call(this, label);
+        IconGrid.BaseIcon.prototype._init.call(this,
+                                               label,
+                                               { setSizeManually: true });
     },
 
     createIcon: function(iconSize) {
@@ -396,8 +398,8 @@ AppWellIcon.prototype = {
                                          y_fill: true });
         this.actor._delegate = this;
 
-        this._icon = new AppIcon(app);
-        this.actor.set_child(this._icon.actor);
+        this.icon = new AppIcon(app);
+        this.actor.set_child(this.icon.actor);
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
 
@@ -581,13 +583,13 @@ AppWellIcon.prototype = {
     },
 
     getDragActor: function() {
-        return this.app.create_icon_texture(this._icon.iconSize);
+        return this.app.create_icon_texture(this.icon.iconSize);
     },
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource: function() {
-        return this._icon.icon;
+        return this.icon.icon;
     }
 };
 Signals.addSignalMethods(AppWellIcon.prototype);
@@ -756,135 +758,3 @@ AppIconMenu.prototype = {
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
-
-function AppWell() {
-    this._init();
-}
-
-AppWell.prototype = {
-    _init : function() {
-        this._placeholderText = null;
-        this._menus = [];
-        this._menuDisplays = [];
-
-        this._favorites = [];
-
-        this._grid = new IconGrid.IconGrid();
-        this.actor = this._grid.actor;
-        this.actor._delegate = this;
-
-        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
-
-        this._tracker = Shell.WindowTracker.get_default();
-        this._appSystem = Shell.AppSystem.get_default();
-
-        this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
-        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
-        this._tracker.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
-    },
-
-    _appIdListToHash: function(apps) {
-        let ids = {};
-        for (let i = 0; i < apps.length; i++)
-            ids[apps[i].get_id()] = apps[i];
-        return ids;
-    },
-
-    _queueRedisplay: function () {
-        Main.queueDeferredWork(this._workId);
-    },
-
-    _redisplay: function () {
-        this._grid.removeAll();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        /* hardcode here pending some design about how exactly desktop contexts behave */
-        let contextId = '';
-
-        let running = this._tracker.get_running_apps(contextId);
-        let runningIds = this._appIdListToHash(running);
-
-        let nFavorites = 0;
-        for (let id in favorites) {
-            let app = favorites[id];
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-            nFavorites++;
-        }
-
-        for (let i = 0; i < running.length; i++) {
-            let app = running[i];
-            if (app.get_id() in favorites)
-                continue;
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-        }
-        if (this._placeholderText) {
-            this._placeholderText.destroy();
-            this._placeholderText = null;
-        }
-
-        if (running.length == 0 && nFavorites == 0) {
-            this._placeholderText = new St.Label({ text: _("Drag here to add favorites") });
-            this.actor.add_actor(this._placeholderText);
-        }
-    },
-
-    handleDragOver : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppWellIcon)
-            app = this._appSystem.get_app(source.getId());
-        else if (source instanceof Workspace.WindowClone)
-            app = this._tracker.get_window_app(source.metaWindow);
-
-        // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient())
-            return DND.DragMotionResult.NO_DROP;
-
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
-
-        if (srcIsFavorite)
-            return DND.DragMotionResult.NO_DROP;
-
-        return DND.DragMotionResult.COPY_DROP;
-    },
-
-    // Draggable target interface
-    acceptDrop : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppWellIcon) {
-            app = this._appSystem.get_app(source.getId());
-        } else if (source instanceof Workspace.WindowClone) {
-            app = this._tracker.get_window_app(source.metaWindow);
-        }
-
-        // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient()) {
-            return false;
-        }
-
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
-
-        if (srcIsFavorite) {
-            return false;
-        } else {
-            Mainloop.idle_add(Lang.bind(this, function () {
-                AppFavorites.getAppFavorites().addFavorite(id);
-                return false;
-            }));
-        }
-
-        return true;
-    }
-};
-
-Signals.addSignalMethods(AppWell.prototype);
