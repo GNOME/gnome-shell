@@ -426,7 +426,7 @@ clutter_backend_win32_ensure_context (ClutterBackend *backend,
   ClutterStageWindow  *impl;
 
   if (stage == NULL ||
-      (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
+      !CLUTTER_ACTOR_IN_DESTRUCTION (stage) ||
       ((impl = _clutter_stage_get_window (stage)) == NULL))
     {
       CLUTTER_NOTE (MULTISTAGE, "Clearing all context");

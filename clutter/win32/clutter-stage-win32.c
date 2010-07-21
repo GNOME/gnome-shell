@@ -192,7 +192,7 @@ clutter_stage_win32_resize (ClutterStageWindow *stage_window,
         }
 
       CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
-                                 CLUTTER_ACTOR_SYNC_MATRICES);
+                                 CLUTTER_SYNC_MATRICES);
     }
 }
 
@@ -349,7 +349,7 @@ clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
         }
 
       CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
-				 CLUTTER_ACTOR_SYNC_MATRICES);
+				 CLUTTER_SYNC_MATRICES);
     }
 
   /* Report the state change */
@@ -553,8 +553,6 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
   stage->wtitle = NULL;
   stage->is_cursor_visible = TRUE;
   stage->wrapper = NULL;
-  	 
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IS_TOPLEVEL);
 }
 
 static void

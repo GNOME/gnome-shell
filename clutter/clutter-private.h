@@ -56,32 +56,44 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterMainContext      ClutterMainContext;
 
-typedef enum {
-  CLUTTER_ACTOR_UNUSED_FLAG    = 0,
+#define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
+#define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))
+#define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) (CLUTTER_PRIVATE_FLAGS (a) &= ~(f))
 
-  CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
-  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
-  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
+#define CLUTTER_ACTOR_IS_TOPLEVEL(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IS_TOPLEVEL) != FALSE)
+#define CLUTTER_ACTOR_IS_INTERNAL_CHILD(a)      ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_INTERNAL_CHILD) != FALSE)
+#define CLUTTER_ACTOR_IN_DESTRUCTION(a)         ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_DESTRUCTION) != FALSE)
+#define CLUTTER_ACTOR_IN_REPARENT(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_REPARENT) != FALSE)
+#define CLUTTER_ACTOR_IN_PAINT(a)               ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_PAINT) != FALSE)
+#define CLUTTER_ACTOR_IN_RELAYOUT(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RELAYOUT) != FALSE)
+#define CLUTTER_STAGE_IN_RESIZE(a)              ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RESIZE) != FALSE)
+
+typedef enum {
+  CLUTTER_ACTOR_UNUSED_FLAG = 0,
+
+  CLUTTER_IN_DESTRUCTION = 1 << 0,
+  CLUTTER_IS_TOPLEVEL    = 1 << 1,
+  CLUTTER_IN_REPARENT    = 1 << 2,
 
   /* Used by the stage to indicate GL viewport / perspective etc needs
    * (re)setting.
    */
-  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3,
+  CLUTTER_SYNC_MATRICES  = 1 << 3,
 
   /* Used to avoid recursion */
-  CLUTTER_ACTOR_IN_PAINT       = 1 << 4,
+  CLUTTER_IN_PAINT       = 1 << 4,
 
   /* Used to avoid recursion */
-  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5,
+  CLUTTER_IN_RELAYOUT    = 1 << 5,
 
   /* Used by the stage if resizing is an asynchronous operation (like on
    * X11) to delay queueing relayouts until we got a notification from the
    * event handling
    */
-  CLUTTER_STAGE_IN_RESIZE      = 1 << 6,
+  CLUTTER_IN_RESIZE      = 1 << 6,
 
   /* a flag for internal children of Containers */
-  CLUTTER_ACTOR_INTERNAL_CHILD = 1 << 7
+  CLUTTER_INTERNAL_CHILD = 1 << 7
 } ClutterPrivateFlags;
 
 struct _ClutterInputDevice
@@ -183,10 +195,6 @@ ClutterMainContext *_clutter_context_get_default (void);
 gboolean            _clutter_context_is_initialized (void);
 PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
 PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
-
-#define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
-#define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))
-#define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) (CLUTTER_PRIVATE_FLAGS (a) &= ~(f))
 
 #define CLUTTER_PARAM_READABLE  \
         G_PARAM_READABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB

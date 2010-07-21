@@ -582,7 +582,7 @@ event_translate (ClutterBackend *backend,
                                   xevent->xconfigure.height);
 
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper,
-                                       CLUTTER_STAGE_IN_RESIZE);
+                                       CLUTTER_IN_RESIZE);
 
           /* the resize process is complete, so we can ask the stage
            * to set up the GL viewport with the new size

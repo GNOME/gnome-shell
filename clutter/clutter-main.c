@@ -236,12 +236,12 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
                         0 /* no application private data */);
 
   /* avoid reentrancy */
-  if (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_RELAYOUT))
+  if (!CLUTTER_ACTOR_IN_RELAYOUT (stage))
     {
       CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
       CLUTTER_NOTE (ACTOR, "Recomputing layout");
 
-      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
 
       natural_width = natural_height = 0;
       clutter_actor_get_preferred_size (stage,
@@ -259,7 +259,7 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 
       clutter_actor_allocate (stage, &box, CLUTTER_ALLOCATION_NONE);
 
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
     }
 }
@@ -267,8 +267,8 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 void
 _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
-  if ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES) &&
-      !(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_STAGE_IN_RESIZE))
+  if ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_SYNC_MATRICES) &&
+      !CLUTTER_STAGE_IN_RESIZE (stage))
     {
       ClutterPerspective perspective;
       gfloat width, height;
@@ -288,7 +288,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
                             perspective.z_near,
                             perspective.z_far);
 
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
     }
 }
 

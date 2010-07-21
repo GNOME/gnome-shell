@@ -432,7 +432,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
       if (current_context_stage)
         {
           CLUTTER_SET_PRIVATE_FLAGS (current_context_stage,
-                                     CLUTTER_ACTOR_SYNC_MATRICES);
+                                     CLUTTER_SYNC_MATRICES);
         }
     }
   else

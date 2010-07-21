@@ -157,7 +157,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
   clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
                           (int)aSize.width, (int)aSize.height);
 
-  CLUTTER_SET_PRIVATE_FLAGS(self->stage_osx->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (self->stage_osx->wrapper, CLUTTER_SYNC_MATRICES);
 }
 
 /* Simply forward all events that reach our view to clutter. */
@@ -407,7 +407,7 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
   CLUTTER_OSX_POOL_RELEASE ();
 
   /* make sure that the viewport is updated */
-  CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_SYNC_MATRICES);
 }
 
 /*************************************************************************/
@@ -499,8 +499,6 @@ clutter_stage_osx_init (ClutterStageOSX *self)
 {
   self->requisition_width  = 640;
   self->requisition_height = 480;
-
-  CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_IS_TOPLEVEL);
 }
 
 static void

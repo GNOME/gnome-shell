@@ -676,11 +676,11 @@ clutter_actor_verify_map_state (ClutterActor *self)
       /* all bets are off during reparent when we're potentially realized,
        * but should not be according to invariants
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+      if (!CLUTTER_ACTOR_IN_REPARENT (self))
         {
           if (priv->parent_actor == NULL)
             {
-              if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+              if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
                 {
                 }
               else
@@ -706,14 +706,14 @@ clutter_actor_verify_map_state (ClutterActor *self)
       /* remaining bets are off during reparent when we're potentially
        * mapped, but should not be according to invariants
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+      if (!CLUTTER_ACTOR_IN_REPARENT (self))
         {
           if (priv->parent_actor == NULL)
             {
-              if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+              if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
                 {
                   if (!CLUTTER_ACTOR_IS_VISIBLE (self) &&
-                      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+                      !CLUTTER_ACTOR_IN_DESTRUCTION (self))
                     {
                       g_warning ("Toplevel actor '%s' is mapped "
                                  "but not visible",
@@ -759,8 +759,7 @@ clutter_actor_verify_map_state (ClutterActor *self)
                              get_actor_debug_name (priv->parent_actor));
                 }
 
-              if (!(CLUTTER_PRIVATE_FLAGS (priv->parent_actor) &
-                    CLUTTER_ACTOR_IS_TOPLEVEL))
+              if (!CLUTTER_ACTOR_IS_TOPLEVEL (priv->parent_actor))
                 {
                   if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent_actor))
                     g_warning ("Actor '%s' is mapped but its non-toplevel "
@@ -805,7 +804,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
 
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       /* the mapped flag on top-level actors must be set by the
        * per-backend implementation because it might be asynchronous.
@@ -855,7 +854,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
 
       if (CLUTTER_ACTOR_IS_MAPPED (self) &&
           !CLUTTER_ACTOR_IS_VISIBLE (self) &&
-          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+          !CLUTTER_ACTOR_IN_DESTRUCTION (self))
         {
           g_warning ("Clutter toplevel of type '%s' is not visible, but "
                      "it is somehow still mapped",
@@ -914,8 +913,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
               gboolean parent_is_visible_realized_toplevel;
 
               parent_is_visible_realized_toplevel =
-                (((CLUTTER_PRIVATE_FLAGS (parent) &
-                   CLUTTER_ACTOR_IS_TOPLEVEL) != 0) &&
+                (CLUTTER_ACTOR_IS_TOPLEVEL (parent) &&
                  CLUTTER_ACTOR_IS_VISIBLE (parent) &&
                  CLUTTER_ACTOR_IS_REALIZED (parent));
 
@@ -967,11 +965,8 @@ clutter_actor_update_map_state (ClutterActor  *self,
        */
 
       /* Unmap */
-      if (!should_be_mapped &&
-          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
-        {
-          clutter_actor_set_mapped (self, FALSE);
-        }
+      if (!should_be_mapped && !CLUTTER_ACTOR_IN_REPARENT (self))
+        clutter_actor_set_mapped (self, FALSE);
 
       /* Realize */
       if (must_be_realized)
@@ -981,8 +976,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
       g_assert (!(must_be_realized && !may_be_realized));
 
       /* Unrealize */
-      if (!may_be_realized &&
-          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+      if (!may_be_realized && !CLUTTER_ACTOR_IN_REPARENT (self))
         clutter_actor_unrealize_not_hiding (self);
 
       /* Map */
@@ -1078,7 +1072,7 @@ clutter_actor_real_unmap (ClutterActor *self)
   g_object_notify (G_OBJECT (self), "mapped");
 
   /* relinquish keyboard focus if we were unmapped while owning it */
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+  if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       ClutterActor *stage;
 
@@ -1353,7 +1347,7 @@ clutter_actor_realize (ClutterActor *self)
   if (priv->parent_actor != NULL)
     clutter_actor_realize (priv->parent_actor);
 
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       /* toplevels can be realized at any time */
     }
@@ -1762,7 +1756,7 @@ clutter_actor_queue_redraw_with_origin (ClutterActor *self,
                                         ClutterActor *origin)
 {
   /* no point in queuing a redraw on a destroyed actor */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
   /* NB: We can't bail out early here if the actor is hidden in case
@@ -1786,7 +1780,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
                                : "same actor");
 
   /* no point in queuing a redraw on a destroyed actor */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
   /* If the actor isn't visible, we still had to emit the signal
@@ -1831,7 +1825,7 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
   ClutterActorPrivate *priv = self->priv;
 
   /* no point in queueing a redraw on a destroyed actor */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
   priv->needs_width_request  = TRUE;
@@ -2661,7 +2655,7 @@ clutter_actor_paint (ClutterActor *self)
    * actors with 0 opacity to be a NOP... */
   if (context->pick_mode == CLUTTER_PICK_NONE &&
       /* ignore top-levels, since they might be transparent */
-      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+      !CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       /* If the actor is being painted from a clone then check the
          clone's opacity instead */
       (priv->opacity_parent ? priv->opacity_parent->priv : priv)->opacity == 0)
@@ -2677,7 +2671,7 @@ clutter_actor_paint (ClutterActor *self)
     return;
 
   /* mark that we are in the paint process */
-  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
 
   cogl_push_matrix();
 
@@ -2743,7 +2737,7 @@ clutter_actor_paint (ClutterActor *self)
   cogl_pop_matrix();
 
   /* paint sequence complete */
-  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
+  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
 }
 
 /* internal helper function set the rotation angle without affecting
@@ -3351,7 +3345,7 @@ clutter_actor_dispose (GObject *object)
        * is an internal child and has been marked as such
        */
       if (CLUTTER_IS_CONTAINER (parent) &&
-          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
+          !CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         {
           clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
         }
@@ -3362,7 +3356,7 @@ clutter_actor_dispose (GObject *object)
   /* parent should be gone */
   g_assert (priv->parent_actor == NULL);
 
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+  if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       /* can't be mapped or realized with no parent */
       g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
@@ -4900,19 +4894,19 @@ clutter_actor_destroy (ClutterActor *self)
   g_object_ref (self);
 
   /* avoid recursion while destroying */
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+  if (!CLUTTER_ACTOR_IN_DESTRUCTION (self))
     {
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_DESTRUCTION);
 
       /* if we are destroying we want to unrealize ourselves
        * first before the dispose run removes the parent
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
         clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
 
       g_object_run_dispose (G_OBJECT (self));
 
-      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_DESTRUCTION);
     }
 
   g_object_unref (self);
@@ -5036,8 +5030,8 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
    *  avoid needlessly traversing the actors ancestors to derive an
    *  incorrect modelview matrix.)
    */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_SYNC_MATRICES) &&
-      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_STAGE_IN_RESIZE))
+  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_SYNC_MATRICES) &&
+      !CLUTTER_STAGE_IN_RESIZE (self))
     {
       clutter_actor_queue_redraw (self);
       return;
@@ -5094,8 +5088,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
     return; /* save some cpu cycles */
 
 #if CLUTTER_ENABLE_DEBUG
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
-      (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_RELAYOUT))
+  if (!CLUTTER_ACTOR_IS_TOPLEVEL (self) && CLUTTER_ACTOR_IN_RELAYOUT (self))
     {
       g_warning ("The actor '%s' is currently inside an allocation "
                  "cycle; calling clutter_actor_queue_relayout() is "
@@ -5553,12 +5546,12 @@ clutter_actor_allocate (ClutterActor           *self,
   if (child_moved)
     flags |= CLUTTER_ABSOLUTE_ORIGIN_CHANGED;
 
-  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_RELAYOUT);
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   klass->allocate (self, box, flags);
 
-  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_RELAYOUT);
+  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
 }
 
 /**
@@ -5727,7 +5720,7 @@ clutter_actor_set_min_width (ClutterActor *self,
    * then we ignore the passed value and we override it with
    * the stage implementation's preferred size.
    */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
@@ -5762,7 +5755,7 @@ clutter_actor_set_min_height (ClutterActor *self,
    * then we ignore the passed value and we override it with
    * the stage implementation's preferred size.
    */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
@@ -5796,7 +5789,7 @@ clutter_actor_set_natural_width (ClutterActor *self,
    * then we ignore the passed value and we override it with
    * the stage implementation's preferred size.
    */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
@@ -5831,7 +5824,7 @@ clutter_actor_set_natural_height (ClutterActor *self,
    * then we ignore the passed value and we override it with
    * the stage implementation's preferred size.
    */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
@@ -6002,7 +5995,7 @@ clutter_actor_set_width_internal (ClutterActor *self,
        * width to be resized to, so we should not be setting it
        * along with the :natural-width
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
         clutter_actor_set_min_width (self, width);
 
       clutter_actor_set_natural_width (self, width);
@@ -6010,7 +6003,7 @@ clutter_actor_set_width_internal (ClutterActor *self,
   else
     {
       /* we only unset the :natural-width for the Stage */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
         clutter_actor_set_min_width_set (self, FALSE);
 
       clutter_actor_set_natural_width_set (self, FALSE);
@@ -6027,7 +6020,7 @@ clutter_actor_set_height_internal (ClutterActor *self,
   if (height >= 0)
     {
       /* see the comment above in set_width_internal() */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
         clutter_actor_set_min_height (self, height);
 
       clutter_actor_set_natural_height (self, height);
@@ -6035,7 +6028,7 @@ clutter_actor_set_height_internal (ClutterActor *self,
   else
     {
       /* see the comment above in set_width_internal() */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
         clutter_actor_set_min_height_set (self, FALSE);
 
       clutter_actor_set_natural_height_set (self, FALSE);
@@ -6829,7 +6822,7 @@ clutter_actor_get_paint_opacity_internal (ClutterActor *self)
    * case of ClutterStage:use-alpha being TRUE we want the rest
    * of the scene to be painted
    */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     return 255;
 
   if (priv->opacity_parent != NULL)
@@ -7351,13 +7344,13 @@ clutter_actor_set_parent (ClutterActor *self,
       return;
     }
 
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       g_warning ("Cannot set a parent on a toplevel actor\n");
       return;
     }
 
-  if (CLUTTER_PRIVATE_FLAGS (parent) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     {
       g_warning ("Cannot set a parent currently being destroyed");
       return;
@@ -7370,10 +7363,10 @@ clutter_actor_set_parent (ClutterActor *self,
    * the flag on the actor
    */
   if (parent->priv->internal_child)
-    CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_INTERNAL_CHILD);
+    CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_INTERNAL_CHILD);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+  if (!CLUTTER_ACTOR_IN_REPARENT (self))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
   /* If parent is mapped or realized, we need to also be mapped or
@@ -7488,7 +7481,7 @@ clutter_actor_unparent (ClutterActor *self)
   priv->parent_actor = NULL;
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+  if (!CLUTTER_ACTOR_IN_REPARENT (self))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   /* Queue a redraw on old_parent only if we were painted in the first
@@ -7525,13 +7518,13 @@ clutter_actor_reparent (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (new_parent));
   g_return_if_fail (self != new_parent);
 
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
       g_warning ("Cannot set a parent on a toplevel actor");
       return;
     }
 
-  if (CLUTTER_PRIVATE_FLAGS (new_parent) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     {
       g_warning ("Cannot set a parent currently being destroyed");
       return;
@@ -7543,7 +7536,7 @@ clutter_actor_reparent (ClutterActor *self,
     {
       ClutterActor *old_parent;
 
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_REPARENT);
 
       old_parent = priv->parent_actor;
 
@@ -7553,7 +7546,7 @@ clutter_actor_reparent (ClutterActor *self,
        * child and not an internal one
        */
       if (CLUTTER_IS_CONTAINER (priv->parent_actor) &&
-          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_INTERNAL_CHILD))
+          !CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         {
           ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
 
@@ -7574,7 +7567,7 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_unref (self);
 
-      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_REPARENT);
 
       /* the IN_REPARENT flag suspends state updates */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
@@ -9803,7 +9796,7 @@ clutter_actor_is_scaled (ClutterActor *self)
 static ClutterActor *
 clutter_actor_get_stage_internal (ClutterActor *actor)
 {
-  while (actor && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL))
+  while (actor && !CLUTTER_ACTOR_IS_TOPLEVEL (actor))
     actor = actor->priv->parent_actor;
 
   return actor;

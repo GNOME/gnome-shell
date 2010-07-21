@@ -275,7 +275,7 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                         height);
 
           CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper,
-                                     CLUTTER_STAGE_IN_RESIZE);
+                                     CLUTTER_IN_RESIZE);
 
           XResizeWindow (backend_x11->xdpy,
                          stage_x11->xwin,
@@ -436,7 +436,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "%ssetting fullscreen", is_fullscreen ? "" : "un");
 
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
 
   if (is_fullscreen)
     {
@@ -711,8 +711,6 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->title = NULL;
 
   stage->wrapper = NULL;
-
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IS_TOPLEVEL);
 }
 
 static void
@@ -890,7 +888,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-  g_return_val_if_fail (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION), FALSE);
+  g_return_val_if_fail (!CLUTTER_ACTOR_IN_DESTRUCTION (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
 
   actor = CLUTTER_ACTOR (stage);

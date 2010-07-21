@@ -96,7 +96,7 @@ enum
 
 #ifdef CLUTTER_ENABLE_DEBUG
 #define clutter_warn_if_paint_fail(obj)                 G_STMT_START {  \
-  if (CLUTTER_PRIVATE_FLAGS ((obj)) & CLUTTER_ACTOR_IN_PAINT) {         \
+  if (CLUTTER_ACTOR_IN_PAINT (obj)) {                                   \
     g_warning ("%s should not be called during the paint sequence "     \
                "of a ClutterCairoTexture as it will likely cause "      \
                "performance issues.", G_STRFUNC);                       \
