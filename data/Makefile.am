@@ -32,6 +32,7 @@ dist_theme_DATA =				\
 	theme/move-window-on-new.svg		\
 	theme/process-working.png		\
 	theme/remove-workspace.svg		\
+	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\
 	theme/scroll-button-up-hover.png	\

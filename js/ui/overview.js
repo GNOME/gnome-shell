@@ -319,15 +319,12 @@ Overview.prototype = {
         this._workspacesY = Math.floor(displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width));
 
         if (rtl) {
-            this._dash.actor.set_position(primary.width - displayGridColumnWidth, contentY);
+            this._dash.actor.set_position(primary.width - displayGridColumnWidth - WORKSPACE_GRID_PADDING / 2,
+                                          this._workspacesY);
         } else {
-            this._dash.actor.set_position(0, contentY);
+            this._dash.actor.set_position(0, this._workspacesY);
         }
-
-        this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
-        this._dash.searchArea.height = this._workspacesY - contentY;
-        this._dash.sectionArea.height = this._workspacesHeight;
-        this._dash.searchResults.actor.height = this._workspacesHeight;
+        this._dash.actor.height = this._workspacesHeight;
 
         // place the 'Add Workspace' button in the bottom row of the grid
         this._workspacesBarX = this._workspacesX;
@@ -444,8 +441,6 @@ Overview.prototype = {
 
         this.visible = true;
         this.animationInProgress = true;
-
-        this._dash.show();
 
         /* TODO: make this stuff dynamic */
         this._workspacesManager =
@@ -615,7 +610,6 @@ Overview.prototype = {
 
         this._workspacesManager = null;
 
-        this._dash.hide();
         this._desktopFade.hide();
         this._background.hide();
         this._group.hide();
