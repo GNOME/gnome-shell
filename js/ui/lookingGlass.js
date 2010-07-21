@@ -365,17 +365,16 @@ function Inspector() {
 
 Inspector.prototype = {
     _init: function() {
-        let width = 150;
-        let primary = global.get_primary_monitor();
+        let container = new Shell.GenericContainer({ width: 0,
+                                                     height: 0 });
+        container.connect('allocate', Lang.bind(this, this._allocate));
+        Main.uiGroup.add_actor(container);
+
         let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
                                               vertical: false,
-                                              y: primary.y + Math.floor(primary.height / 2),
                                               reactive: true });
         this._eventHandler = eventHandler;
-        eventHandler.connect('notify::allocation', Lang.bind(this, function () {
-            eventHandler.x = primary.x + Math.floor((primary.width - eventHandler.width) / 2);
-        }));
-        Main.uiGroup.add_actor(eventHandler);
+        container.add_actor(eventHandler);
         this._displayText = new St.Label();
         eventHandler.add(this._displayText, { expand: true });
 
@@ -396,6 +395,20 @@ Inspector.prototype = {
         // out, or move the pointer outside of _pointerTarget.
         this._target = null;
         this._pointerTarget = null;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let primary = global.get_primary_monitor();
+
+        let [minWidth, minHeight, natWidth, natHeight] =
+            this._eventHandler.get_preferred_size();
+
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = primary.x + Math.floor((primary.width - natWidth) / 2);
+        childBox.x2 = childBox.x1 + natWidth;
+        childBox.y1 = primary.y + Math.floor((primary.height - natHeight) / 2);
+        childBox.y2 = childBox.y1 + natHeight;
+        this._eventHandler.allocate(childBox, flags);
     },
 
     _close: function() {
