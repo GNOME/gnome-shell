@@ -311,17 +311,6 @@ _cogl_gl_use_program_wrapper (GLuint program)
 }
 
 static void
-disable_glsl (void)
-{
-#ifdef COGL_MATERIAL_BACKEND_GLSL
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_GLSL)
-    _cogl_gl_use_program_wrapper (0);
-#endif
-}
-
-static void
 disable_arbfp (void)
 {
 #ifdef COGL_MATERIAL_BACKEND_ARBFP
@@ -367,7 +356,7 @@ _cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type)
       /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
        * so we can't bailout without making sure we glUseProgram (0)
        * first. */
-      disable_glsl ();
+      _cogl_gl_use_program_wrapper (0);
 
       if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
         break;
@@ -387,7 +376,7 @@ _cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type)
       /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
        * so we can't bailout without making sure we glUseProgram (0)
        * first. */
-      disable_glsl ();
+      _cogl_gl_use_program_wrapper (0);
 
       if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_FIXED)
         break;
