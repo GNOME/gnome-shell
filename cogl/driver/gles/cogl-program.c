@@ -66,6 +66,8 @@ _cogl_program_free (CoglProgram *program)
   for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
     if (program->custom_uniform_names[i])
       g_free (program->custom_uniform_names[i]);
+
+  g_slice_free (CoglProgram, program);
 }
 
 CoglHandle
