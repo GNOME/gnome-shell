@@ -278,7 +278,7 @@ _cogl_bitmap_from_file (const char   *filename,
                                      pixel_format,
                                      width,
                                      height,
-                                     rowstride,
+                                     n_channels * width,
                                      (CoglBitmapDestroyNotify) g_free,
                                      NULL);
 }
