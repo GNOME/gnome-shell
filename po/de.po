@@ -1,0 +1,104 @@
+# Translation of clutter-1.0 to German
+# Copyright Copyright (C) 2006-2008 OpenedHand Ltd., 2009 Intel Corp.
+# This file is distributed under the same license as the clutter-1.0 package.
+# Chris Leick <c.leick@vollbio.de>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: clutter_1.0 1.0.8\n"
+"Report-Msgid-Bugs-To: Matthew Allum <mallum@o-hand.com>\n"
+"POT-Creation-Date: 2009-10-19 15:38+0100\n"
+"PO-Revision-Date: 2009-11-24 21:04+0100\n"
+"Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+
+#. Translate to default:RTL if you want your widgets
+#. * to be RTL, otherwise translate to default:LTR.
+#. *
+#. * Do *not* translate it to "predefinito:LTR": if it
+#. * isn't default:LTR or default:RTL it will not work
+#.
+#. LTR --> Left to right
+#.
+#: clutter/clutter-main.c:455
+msgid "default:LTR"
+msgstr "default:LTR"
+
+#: clutter/clutter-main.c:1277
+msgid "Show frames per second"
+msgstr "Bilder pro Sekunde anzeigen"
+
+#: clutter/clutter-main.c:1279
+msgid "Default frame rate"
+msgstr "Vorgabebildfrequenz"
+
+#: clutter/clutter-main.c:1281
+msgid "Make all warnings fatal"
+msgstr "Alle Warnungen fatal machen"
+
+#: clutter/clutter-main.c:1284
+msgid "Direction for the text"
+msgstr "Richtung des Textes"
+
+#. http://de.wikipedia.org/wiki/Mip_Mapping
+#: clutter/clutter-main.c:1287
+msgid "Disable mipmapping on text"
+msgstr "Mip-Mapping für Text ausschalten"
+
+#: clutter/clutter-main.c:1290
+msgid "Use 'fuzzy' picking"
+msgstr "»Unscharfes« Herausgreifen benutzen"
+
+#: clutter/clutter-main.c:1293
+msgid "Clutter debugging flags to set"
+msgstr "zu setzende Clutter-Fehlersuchmerkmale"
+
+#: clutter/clutter-main.c:1295
+msgid "Clutter debugging flags to unset"
+msgstr "zu entfernende Clutter-Fehlersuchmerkmale"
+
+#: clutter/clutter-main.c:1451
+msgid "Clutter Options"
+msgstr "Clutter-Optionen"
+
+#: clutter/clutter-main.c:1452
+msgid "Show Clutter Options"
+msgstr "Clutter-Optionen anzeigen"
+
+#: clutter/clutter-shader.c:464
+#, c-format
+msgid "%s compilation failed: %s"
+msgstr "%s-Kompilierung fehlgeschlagen: %s"
+
+#: clutter/clutter-shader.c:465
+msgid "Vertex shader"
+msgstr "Vertex-Shader"
+
+#: clutter/clutter-shader.c:466
+msgid "Fragment shader"
+msgstr "Fragment-Shader"
+
+#: clutter/glx/clutter-backend-glx.c:155
+msgid "VBlank method to be used (none, dri or glx)"
+msgstr "zu benutzende VBlank-Methode (none, dri oder glx)"
+
+#: clutter/x11/clutter-backend-x11.c:247
+msgid "X display to use"
+msgstr "zu benutzende X-Anzeige"
+
+#: clutter/x11/clutter-backend-x11.c:253
+msgid "X screen to use"
+msgstr "zu benutzender X-Bildschirm"
+
+#: clutter/x11/clutter-backend-x11.c:258
+msgid "Make X calls synchronous"
+msgstr "X-Aufrufe synchronisieren"
+
+#: clutter/x11/clutter-backend-x11.c:265
+msgid "Enable XInput support"
+msgstr "XInput-Unterstützung einschalten"
