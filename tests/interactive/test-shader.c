@@ -277,6 +277,8 @@ set_shader_num (ClutterActor *actor, gint new_no)
 					            1.0f / tex_height);
   	    }
         }
+
+      g_object_unref (shader);
     }
 }
 
@@ -401,6 +403,8 @@ test_shader_main (gint argc, gchar *argv[])
 
   clutter_actor_set_shader (actor, shader);
   clutter_actor_set_position (actor, 100, 100);
+
+  g_object_unref (shader);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
 
