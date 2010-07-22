@@ -4,8 +4,9 @@ const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -163,6 +164,163 @@ PopupSeparatorMenuItem.prototype = {
         cr.fill();
     }
 };
+
+function PopupSliderMenuItem() {
+    this._init.apply(this, arguments);
+}
+
+PopupSliderMenuItem.prototype = {
+    __proto__: PopupBaseMenuItem.prototype,
+
+    _init: function(value) {
+        PopupBaseMenuItem.prototype._init.call(this, { activate: false });
+
+        if (isNaN(value))
+            // Avoid spreading NaNs around
+            throw TypeError('The slider value must be a number');
+        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+
+        this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
+        this.actor.set_child(this._slider);
+        this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
+        this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
+
+        this._releaseId = this._motionId = 0;
+        this._dragging = false;
+    },
+
+    setValue: function(value) {
+        if (isNaN(value))
+            throw TypeError('The slider value must be a number');
+
+        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+        this._slider.queue_repaint();
+    },
+
+    _sliderRepaint: function(area) {
+        let cr = area.get_context();
+        let themeNode = area.get_theme_node();
+        let [width, height] = area.get_surface_size();
+
+        let found, handleRadius;
+        [found, handleRadius] = themeNode.get_length('-slider-handle-radius', false);
+
+        let sliderWidth = width - 2 * handleRadius;
+        let sliderHeight;
+        [found, sliderHeight] = themeNode.get_length('-slider-height', false);
+
+        let sliderBorderWidth;
+        [found, sliderBorderWidth] = themeNode.get_length('-slider-border-width', false);
+
+        let sliderBorderColor = new Clutter.Color();
+        themeNode.get_color('-slider-border-color', false, sliderBorderColor);
+        let sliderColor = new Clutter.Color();
+        themeNode.get_color('-slider-background-color', false, sliderColor);
+
+        cr.setSourceRGBA (
+            sliderColor.red / 255,
+            sliderColor.green / 255,
+            sliderColor.blue / 255,
+            sliderColor.alpha / 255);
+        cr.rectangle(handleRadius, (height - sliderHeight) / 2, sliderWidth, sliderHeight);
+        cr.fillPreserve();
+        cr.setSourceRGBA (
+            sliderBorderColor.red / 255,
+            sliderBorderColor.green / 255,
+            sliderBorderColor.blue / 255,
+            sliderBorderColor.alpha / 255);
+        cr.setLineWidth(sliderBorderWidth);
+        cr.stroke();
+
+        let handleY = height / 2;
+        let handleX = handleRadius + (width - 2 * handleRadius) * this._displayValue;
+
+        let color = new Clutter.Color();
+        themeNode.get_foreground_color(color);
+        cr.setSourceRGBA (
+            color.red / 255,
+            color.green / 255,
+            color.blue / 255,
+            color.alpha / 255);
+        cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
+        cr.fill();
+    },
+
+    _startDragging: function(actor, event) {
+        if (this._dragging) // don't allow two drags at the same time
+            return;
+
+        this._dragging = true;
+
+        // FIXME: we should only grab the specific device that originated
+        // the event, but for some weird reason events are still delivered
+        // outside the slider if using clutter_grab_pointer_for_device
+        Clutter.grab_pointer(this._slider);
+        this._releaseId = this._slider.connect('button-release-event', Lang.bind(this, this._endDragging));
+        this._motionId = this._slider.connect('motion-event', Lang.bind(this, this._motionEvent));
+        let absX, absY;
+        [absX, absY] = event.get_coords();
+        this._moveHandle(absX, absY);
+    },
+
+    _endDragging: function() {
+        if (this._dragging) {
+            this._slider.disconnect(this._releaseId);
+            this._slider.disconnect(this._motionId);
+
+            Clutter.ungrab_pointer();
+            this._dragging = false;
+
+            this._value = this._displayValue;
+            this.emit('value-changed', this._value);
+        }
+        return true;
+    },
+
+    _motionEvent: function(actor, event) {
+        let absX, absY;
+        [absX, absY] = event.get_coords();
+        this._moveHandle(absX, absY)
+        return true;
+    },
+
+    _moveHandle: function(absX, absY) {
+        let relX, relY, sliderX, sliderY;
+        [sliderX, sliderY] = this._slider.get_transformed_position();
+        relX = absX - sliderX;
+        relY = absY - sliderY;
+
+        let width = this._slider.width;
+        let found, handleRadius;
+        [found, handleRadius] = this._slider.get_theme_node().get_length('-slider-handle-radius', false);
+
+        let newvalue;
+        if (relX < handleRadius)
+            newvalue = 0;
+        else if (relX > width - handleRadius)
+            newvalue = 1;
+        else
+            newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
+        this._displayValue = newvalue;
+        this._slider.queue_repaint();
+    },
+
+    get value() {
+        return this._value;
+    },
+
+    handleKeyPress: function(event) {
+        let key = event.get_key_symbol();
+        if (key == Clutter.Right || key == Clutter.Left) {
+            let delta = key == Clutter.Right ? 0.1 : -0.1;
+            this._value = this._displayValue = Math.max(0, Math.min(this._value + delta, 1));
+            this._slider.queue_repaint();
+            this.emit('value-changed', this._value);
+            return true;
+        }
+        return false;
+    }
+}
 
 function PopupSwitchMenuItem() {
     this._init.apply(this, arguments);

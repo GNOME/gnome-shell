@@ -148,6 +148,15 @@ StTooltip {
     height: 1em;
 }
 
+.popup-slider-menu-item {
+    height: 1em;
+    -slider-height: 0.3em;
+    -slider-background-color: #333333;
+    -slider-border-color: #5f5f5f;
+    -slider-border-width: 1px;
+    -slider-handle-radius: 0.5em;
+}
+
 /* Switches (to be used in menus) */
 .toggle-switch {
     width: 4.5em;
