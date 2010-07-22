@@ -363,6 +363,8 @@ dnl === COGL driver backend ====================================================
 AS_IF([test "x$COGL_DRIVER" = "xgl"],
       [ AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering]) ])
 
+cogl_gles_version_define=""
+
 AS_IF([test "x$COGL_DRIVER" = "xgles"],
 
       [
@@ -373,7 +375,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             cogl_gl_headers="GLES/gl.h GLES/glext.h"
 
             AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+            cogl_gles_version_define="COGL_HAS_GLES1"
 
             PKG_CHECK_EXISTS([glesv1_cm],
               [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv1_cm"
@@ -424,7 +426,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             cogl_gl_headers="GLES2/gl2.h GLES2/gl2ext.h"
             use_gles2_wrapper=yes
             AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
+            cogl_gles_version_define="COGL_HAS_GLES2"
 
             PKG_CHECK_EXISTS([glesv2],
               [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
@@ -456,7 +458,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
           [
             cogl_gl_headers="GLES/gl.h GLES/glext.h"
             AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-            AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
+            cogl_gles_version_define="COGL_HAS_GLES1"
 
             AC_CHECK_HEADERS([GLES/egl.h],
                              [],
@@ -493,7 +495,9 @@ AS_CASE([$COGL_DRIVER],
          COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GL"],
         [gles],
         [COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES"
-         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GLES"],
+         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GLES"
+         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS $cogl_gles_version_define"
+         ],
         [AC_MSG_ERROR([Unknown cogl driver $COGL_DRIVER])])
 
 dnl Copy all of the words in COGL_DEFINES_SYMBOLS as separate #define
