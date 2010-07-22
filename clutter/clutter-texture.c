@@ -2670,7 +2670,7 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
  * clutter_texture_get_keep_aspect_ratio:
  * @texture: a #ClutterTexture
  *
- * Retrieves the value set using clutter_texture_get_keep_aspect_ratio()
+ * Retrieves the value set using clutter_texture_set_keep_aspect_ratio()
  *
  * Return value: %TRUE if the #ClutterTexture should maintain the
  *   aspect ratio of the underlying image
@@ -2726,7 +2726,7 @@ clutter_texture_set_load_async (ClutterTexture *texture,
  * clutter_texture_get_load_async:
  * @texture: a #ClutterTexture
  *
- * Retrieves the value set using clutter_texture_get_load_async()
+ * Retrieves the value set using clutter_texture_set_load_async()
  *
  * Return value: %TRUE if the #ClutterTexture should load the data from
  *   disk asynchronously
