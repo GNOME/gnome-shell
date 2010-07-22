@@ -2515,7 +2515,7 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
  * clutter_texture_get_sync_size:
  * @texture: a #ClutterTexture
  *
- * Retrieves the value set with clutter_texture_get_sync_size()
+ * Retrieves the value set with clutter_texture_set_sync_size()
  *
  * Return value: %TRUE if the #ClutterTexture should have the same
  *   preferred size of the underlying image data
