@@ -474,7 +474,7 @@ AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
 dnl The value of this variable will directly go in the install
 dnl cogl-defines.h header
-COGL_DEFINES_="";
+COGL_DEFINES="";
 dnl Space-separated list of symbols that should be defined in
 dnl cogl-defines.h
 COGL_DEFINES_SYMBOLS="";
