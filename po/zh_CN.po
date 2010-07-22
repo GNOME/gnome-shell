@@ -5,15 +5,16 @@
 # jiero <lililjlj@gmail.com>, 2010.
 # YunQiang Su <wzssyqa@gmail.com>, 2010.
 # Aron Xu <aronxu@gnome.org>, 2010.
+# Jessica Ban <bancage@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-06-25 20:49+0000\n"
-"PO-Revision-Date: 2010-06-27 11:06+0800\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
-"Language-Team: Simplified Chinese <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2010-07-21 16:31+0000\n"
+"PO-Revision-Date: 2010-07-22 20:37+0800\n"
+"Last-Translator: Jessica Ban <bancage@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
@@ -106,6 +107,12 @@ msgid ""
 "to an empty value, the default pipeline will be used. This is currently "
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
+"设置 GStreamer 管道用来编码录音。它遵循 gst-launch 的语法。该管道应当有一个未"
+"连接的 sink 衬垫(pad)，录制的视频就是在此录制的。该管道一般还会有一个未连接"
+"的 source 衬垫(pad)；这个衬垫的输出将被写入输出文件中。但是管道还能够处理自己"
+"的输出 - 这将用来通过 shout2send 或者类似方法把输出发送到一个 icecast 服务"
+"器。当管道未被设置或者设置为空值时，默认的管道将被启用。其值当前"
+"为“videorate ! theoraenc ! oggmux”并记录为 Ogg Theora 格式。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -226,27 +233,27 @@ msgid "_24 hour format"
 msgstr "_24 小时格式"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:420
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "首选项"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:729
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: ../js/ui/appDisplay.js:1037
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "拖到这里加入收藏夹"
 
@@ -255,32 +262,32 @@ msgstr "拖到这里加入收藏夹"
 msgid "%s has been added to your favorites."
 msgstr "%s 已经添加到了您的收藏夹。"
 
-#: ../js/ui/appFavorites.js:106
+#: ../js/ui/appFavorites.js:107
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已经从您的收藏夹移除。"
 
-#: ../js/ui/dash.js:146
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "查找"
 
-#: ../js/ui/dash.js:465
+#: ../js/ui/dash.js:471
 msgid "Searching..."
 msgstr "正在搜索..."
 
-#: ../js/ui/dash.js:479
+#: ../js/ui/dash.js:485
 msgid "No matching results."
 msgstr "无匹配结果。"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
 msgid "PLACES & DEVICES"
 msgstr "位置和设备"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "最近的项目"
 
@@ -312,78 +319,84 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/overview.js:165
+#: ../js/ui/overview.js:159
 msgid "Undo"
 msgstr "撤销"
 
-#: ../js/ui/panel.js:519
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "退出 %s"
+
+#: ../js/ui/panel.js:498
 msgid "Preferences"
 msgstr "首选项"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:584
 msgid "%a %b %e, %R:%S"
 msgstr "%A %b %e, %R:%S"
 
-#: ../js/ui/panel.js:606
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R"
 msgstr "%A %m月%d日 %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:610
+#: ../js/ui/panel.js:589
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/panel.js:611
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:597
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A %m月%d日 %p%I:%M:%S"
 
-#: ../js/ui/panel.js:619
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A %m月%d日 %p%I:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:602
 msgid "%a %l:%M:%S %p"
 msgstr "%A %p%I:%M:%S"
 
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:762
+#: ../js/ui/panel.js:741
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:107
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "卸载 %s 失败"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:110
 msgid "Retry"
 msgstr "重试"
 
-#: ../js/ui/placeDisplay.js:157
+#: ../js/ui/placeDisplay.js:155
 msgid "Connect to..."
 msgstr "连接到..."
 
-#: ../js/ui/runDialog.js:234
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "请输入一个命令："
 
-#: ../js/ui/runDialog.js:379
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
@@ -424,48 +437,48 @@ msgstr "退出..."
 msgid "Shut Down..."
 msgstr "关机..."
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s 已启动"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:47
 #, c-format
 msgid "'%s' is ready"
 msgstr "%s 已就绪"
 
-#: ../js/ui/workspacesView.js:237
+#: ../js/ui/workspacesView.js:230
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "无法添加新工作区，因为已经达到了工作区数量限制。"
 
-#: ../js/ui/workspacesView.js:254
+#: ../js/ui/workspacesView.js:247
 msgid "Can't remove the first workspace."
 msgstr "不能移除第一个工作区。"
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1043
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1048
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1053
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1058
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
