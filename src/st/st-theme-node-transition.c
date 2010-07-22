@@ -33,13 +33,13 @@ struct _StThemeNodeTransitionPrivate {
   StThemeNode *old_theme_node;
   StThemeNode *new_theme_node;
 
-  CoglHandle *old_texture;
-  CoglHandle *new_texture;
+  CoglHandle old_texture;
+  CoglHandle new_texture;
 
-  CoglHandle *old_offscreen;
-  CoglHandle *new_offscreen;
+  CoglHandle old_offscreen;
+  CoglHandle new_offscreen;
 
-  CoglHandle *material;
+  CoglHandle material;
 
   ClutterAlpha    *alpha;
   ClutterTimeline *timeline;

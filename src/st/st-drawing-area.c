@@ -30,8 +30,8 @@
 G_DEFINE_TYPE(StDrawingArea, st_drawing_area, ST_TYPE_WIDGET);
 
 struct _StDrawingAreaPrivate {
-  CoglHandle *texture;
-  CoglHandle *material;
+  CoglHandle texture;
+  CoglHandle material;
   cairo_t *context;
   guint needs_repaint : 1;
   guint in_repaint : 1;
