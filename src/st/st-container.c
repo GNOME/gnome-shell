@@ -35,6 +35,8 @@
 struct _StContainerPrivate
 {
   GList *children;
+  ClutterActor *first_child;
+  ClutterActor *last_child;
 };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
@@ -42,6 +44,54 @@ static void clutter_container_iface_init (ClutterContainerIface *iface);
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (StContainer, st_container, ST_TYPE_WIDGET,
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                          clutter_container_iface_init));
+
+static void
+st_container_update_pseudo_classes (StContainer *container)
+{
+  GList *first_item, *last_item;
+  ClutterActor *first_child, *last_child;
+  StContainerPrivate *priv = container->priv;
+
+  first_item = priv->children;
+  first_child = first_item ? first_item->data : NULL;
+  if (first_child != priv->first_child)
+    {
+      if (priv->first_child && ST_IS_WIDGET (priv->first_child))
+        st_widget_remove_style_pseudo_class (ST_WIDGET (priv->first_child),
+                                             "first-child");
+      if (priv->first_child)
+        {
+          g_object_unref (priv->first_child);
+          priv->first_child = NULL;
+        }
+
+      if (first_child && ST_IS_WIDGET (first_child))
+        st_widget_add_style_pseudo_class (ST_WIDGET (first_child),
+                                          "first-child");
+      if (first_child)
+        priv->first_child = g_object_ref (first_child);
+    }
+
+  last_item = g_list_last (priv->children);
+  last_child = last_item ? last_item->data : NULL;
+  if (last_child != priv->last_child)
+    {
+      if (priv->last_child && ST_IS_WIDGET (priv->last_child))
+        st_widget_remove_style_pseudo_class (ST_WIDGET (priv->last_child),
+                                             "last-child");
+      if (priv->last_child)
+        {
+          g_object_unref (priv->last_child);
+          priv->last_child = NULL;
+        }
+
+      if (last_child && ST_IS_WIDGET (last_child))
+        st_widget_add_style_pseudo_class (ST_WIDGET (last_child),
+                                          "last-child");
+      if (last_child)
+        priv->last_child = g_object_ref (last_child);
+    }
+}
 
 /**
  * st_container_remove_all:
@@ -62,6 +112,7 @@ st_container_remove_all (StContainer *container)
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (container), child);
     }
+  st_container_update_pseudo_classes (container);
 }
 
 /**
@@ -104,6 +155,9 @@ st_container_move_child (StContainer  *container,
 
   priv->children = g_list_delete_link (priv->children, item);
   priv->children = g_list_insert (priv->children, actor, pos);
+
+  st_container_update_pseudo_classes (container);
+
   clutter_actor_queue_relayout ((ClutterActor*) container);
 }
 
@@ -159,6 +213,7 @@ st_container_add (ClutterContainer *container,
   g_signal_emit_by_name (container, "actor-added", actor);
 
   clutter_container_sort_depth_order (container);
+  st_container_update_pseudo_classes (ST_CONTAINER (container));
 
   g_object_unref (actor);
 }
@@ -184,6 +239,8 @@ st_container_remove (ClutterContainer *container,
    * are holding a reference on it, it's still valid
    */
   g_signal_emit_by_name (container, "actor-removed", actor);
+
+  st_container_update_pseudo_classes (ST_CONTAINER (container));
 
   if (CLUTTER_ACTOR_IS_VISIBLE (container))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
@@ -248,6 +305,8 @@ st_container_raise (ClutterContainer *container,
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
 
+  st_container_update_pseudo_classes (ST_CONTAINER (container));
+
   if (CLUTTER_ACTOR_IS_VISIBLE (container))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
@@ -289,6 +348,8 @@ st_container_lower (ClutterContainer *container,
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
 
+  st_container_update_pseudo_classes (ST_CONTAINER (container));
+
   if (CLUTTER_ACTOR_IS_VISIBLE (container))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
@@ -316,6 +377,14 @@ st_container_dispose (GObject *object)
 
       priv->children = NULL;
     }
+
+  if (priv->first_child)
+    g_object_unref (priv->first_child);
+  priv->first_child = NULL;
+
+  if (priv->last_child)
+    g_object_unref (priv->last_child);
+  priv->last_child = NULL;
 
   G_OBJECT_CLASS (st_container_parent_class)->dispose (object);
 }
