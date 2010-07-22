@@ -34,7 +34,7 @@ Switch.prototype = {
         this.setToggleState(state);
     },
 
-    setToogleState: function(state) {
+    setToggleState: function(state) {
         if (state) {
             this._on.remove_style_pseudo_class('checked');
             this._on.text = _("ON");
