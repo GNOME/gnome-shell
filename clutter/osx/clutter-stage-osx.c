@@ -392,18 +392,8 @@ clutter_stage_osx_get_geometry (ClutterStageWindow *stage_window,
     }
   else
     {
-      resize = clutter_stage_get_user_resizable (self->wrapper);
-
-      if (resize)
-        {
-          geometry->width = 1;
-          geometry->height = 1;
-        }
-      else
-        {
           geometry->width = self->requisition_width;
           geometry->height = self->requisition_height;
-        }
     }
 
   CLUTTER_OSX_POOL_RELEASE ();
