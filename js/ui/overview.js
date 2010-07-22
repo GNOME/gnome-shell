@@ -11,6 +11,7 @@ const _ = Gettext.gettext;
 const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
 const Dash = imports.ui.dash;
 const Tweener = imports.ui.tweener;
@@ -71,41 +72,45 @@ const SHADOW_WIDTH = 6;
 
 const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
 
-const INFO_BAR_HIDE_TIMEOUT = 10;
+const SHELL_INFO_HIDE_TIMEOUT = 10;
 
 let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
 
-function InfoBar() {
+function Source() {
     this._init();
 }
 
-InfoBar.prototype = {
+Source.prototype = {
+    __proto__:  MessageTray.Source.prototype,
+
     _init: function() {
-        this.actor = new St.Bin({ style_class: 'info-bar-panel',
-                                  x_fill: true,
-                                  y_fill: false });
-        this._label = new St.Label();
-        this._undo = new St.Button({ style_class: 'info-bar-link-button' });
+        MessageTray.Source.prototype._init.call(this,
+                                                "System Information");
+        this._setSummaryIcon(this.createNotificationIcon());
+    },
 
-        let bin = new St.Bin({ x_fill: false,
-                               y_fill: false,
-                               x_align: St.Align.MIDDLE,
-                               y_align: St.Align.MIDDLE });
-        this.actor.set_child(bin);
+    createNotificationIcon: function() {
+        return new St.Icon({ icon_name: 'info',
+                             icon_type: St.IconType.FULLCOLOR,
+                             icon_size: this.ICON_SIZE });
+    },
 
-        let box = new St.BoxLayout({ style_class: 'info-bar' });
-        bin.set_child(box);
+    _notificationClicked: function() {
+        this.destroy();
+    }
+}
+
+function ShellInfo() {
+    this._init();
+}
+
+ShellInfo.prototype = {
+    _init: function() {
+        this._source = null;
         this._timeoutId = 0;
-
-        box.add(this._label, {'y-fill' : false, 'y-align' : St.Align.MIDDLE});
-        box.add(this._undo);
-
-        this.actor.set_opacity(0);
-
         this._undoCallback = null;
-        this._undo.connect('clicked', Lang.bind(this, this._onUndoClicked));
     },
 
     _onUndoClicked: function() {
@@ -114,27 +119,16 @@ InfoBar.prototype = {
 
         if (this._undoCallback)
             this._undoCallback();
-        this.actor.set_opacity(0);
         this._undoCallback = null;
-    },
 
-    _hideDone: function() {
-        this._undoCallback = null;
-    },
-
-    _hide: function() {
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
-                           onComplete: this._hideDone,
-                           onCompleteScope: this
-                         });
+        if (this._source)
+            this._source.destroy();
     },
 
     _onTimeout: function() {
         this._timeoutId = 0;
-        this._hide();
+        if (this._source)
+            this._source.destroy();
         return false;
     },
 
@@ -142,28 +136,33 @@ InfoBar.prototype = {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
 
-        this._timeout = false;
+        this._timeoutId = Mainloop.timeout_add_seconds(SHELL_INFO_HIDE_TIMEOUT,
+                                                       Lang.bind(this, this._onTimeout));
 
-        this._label.text = text;
+        if (this._source == null) {
+            this._source = new Source();
+            this._source.connect('destroy', Lang.bind(this,
+                function() {
+                    this._source = null;
+                }));
+            Main.messageTray.add(this._source);
+        }
 
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME
-                         });
-
-        this._timeoutId = Mainloop.timeout_add_seconds(INFO_BAR_HIDE_TIMEOUT, Lang.bind(this, this._onTimeout));
-
-        if (undoLabel)
-            this._undo.label = undoLabel;
+        let notification = this._source.notification;
+        if (notification == null)
+            notification = new MessageTray.Notification(this._source, text, null);
         else
-            this._undo.label = _("Undo");
+            notification.update(text, null, { clear: true });
 
         this._undoCallback = undoCallback;
-        if (undoCallback)
-            this._undo.show();
-        else
-            this._undo.hide();
+        if (undoCallback) {
+            notification.addButton('system-undo',
+                                   undoLabel ? undoLabel : _("Undo"));
+            notification.connect('action-invoked',
+                                 Lang.bind(this, this._onUndoClicked));
+        }
+
+        this._source.notify(notification);
     }
 };
 
@@ -183,8 +182,7 @@ Overview.prototype = {
                 }
             }));
 
-        this.infoBar = new InfoBar();
-        this._group.add_actor(this.infoBar.actor);
+        this.shellInfo = new ShellInfo();
 
         this._workspacesManager = null;
         this._lightbox = null;
@@ -310,10 +308,6 @@ Overview.prototype = {
         this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
         this._dash.searchResults.actor.height = this._workspacesHeight;
-
-        this.infoBar.actor.set_position(displayGridColumnWidth, Panel.PANEL_HEIGHT);
-        this.infoBar.actor.set_size(primary.width - displayGridColumnWidth, this._workspacesY - Panel.PANEL_HEIGHT);
-        this.infoBar.actor.raise_top();
 
         // place the 'Add Workspace' button in the bottom row of the grid
         this._workspacesBarX = this._workspacesX;

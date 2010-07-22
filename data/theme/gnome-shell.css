@@ -261,23 +261,6 @@ StTooltip StLabel {
     background-color: #111;
 }
 
-.info-bar {
-    color: #fff;
-    font-size: 14px;
-    spacing: 20px;
-}
-
-.info-bar-link-button {
-    background-color: #2d2d2d;
-    padding: 2px 14px;
-    border-radius: 10px;
-    border: 1px solid #181818;
-}
-
-.info-bar-link-button:hover {
-    border: 1px solid #666666;
-}
-
 .new-workspace-area {
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 10px;

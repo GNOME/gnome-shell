@@ -226,7 +226,7 @@ GenericWorkspacesView.prototype = {
 
     addWorkspace: function() {
         if (!this.canAddWorkspace()) {
-            Main.overview.infoBar.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
+            Main.overview.shellInfo.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
             return null;
         }
 
@@ -243,7 +243,7 @@ GenericWorkspacesView.prototype = {
 
     removeWorkspace: function() {
         if (!this.canRemoveWorkspace()) {
-            Main.overview.infoBar.setMessage(_("Can't remove the first workspace."));
+            Main.overview.shellInfo.setMessage(_("Can't remove the first workspace."));
             return;
         }
         let index = this._getWorkspaceIndexToRemove();
