@@ -673,12 +673,17 @@ clutter_x11_enable_xinput (void)
 }
 
 /**
- * clutter_x11_disable_event_retrieval
+ * clutter_x11_disable_event_retrieval:
  *
- * Disables retrieval of X events in the main loop. Use to create event-less
- * canvas or in conjunction with clutter_x11_handle_event.
+ * Disables the internal handling of X11 events in the main loop.
  *
- * This function can only be called before calling clutter_init().
+ * Libraries or applications calling this function will be responsible of
+ * handling all X11 events.
+ *
+ * You also must call clutter_x11_handle_event() to let Clutter process
+ * events and maintain its internal state.
+ *
+ * <note>This function can only be called before calling clutter_init().</note>
  *
  * Since: 0.8
  */
@@ -696,7 +701,7 @@ clutter_x11_disable_event_retrieval (void)
 }
 
 /**
- * clutter_x11_has_event_retrieval
+ * clutter_x11_has_event_retrieval:
  *
  * Queries the X11 backend to check if event collection has been disabled.
  *
