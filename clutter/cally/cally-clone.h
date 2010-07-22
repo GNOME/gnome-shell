@@ -26,7 +26,7 @@
 #define __CALLY_CLONE_H__
 
 #include <cally/cally-actor.h>
-#include <clutter/clutter-clone.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

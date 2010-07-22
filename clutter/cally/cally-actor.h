@@ -30,7 +30,7 @@
 #define __CALLY_ACTOR_H__
 
 #include <atk/atk.h>
-#include <clutter/clutter-actor.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

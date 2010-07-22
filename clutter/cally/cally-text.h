@@ -26,7 +26,7 @@
 #define __CALLY_TEXT_H__
 
 #include <cally/cally-actor.h>
-#include <clutter/clutter-text.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

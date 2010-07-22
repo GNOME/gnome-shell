@@ -26,7 +26,7 @@
 #define __CALLY_STAGE_H__
 
 #include <cally/cally-group.h>
-#include <clutter/clutter-stage.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

@@ -26,7 +26,7 @@
 #define __CALLY_TEXTURE_H__
 
 #include <cally/cally-actor.h>
-#include <clutter/clutter-texture.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

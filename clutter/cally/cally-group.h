@@ -29,7 +29,7 @@
 #define __CALLY_GROUP_H__
 
 #include <cally/cally-actor.h>
-#include <clutter/clutter-group.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
