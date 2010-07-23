@@ -107,6 +107,14 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 
   clutter_stage_osx_state_update (self->stage_osx, CLUTTER_STAGE_STATE_ACTIVATED, 0);
 }
+
+- (NSSize) windowWillResize:(NSWindow *) sender toSize:(NSSize) frameSize
+{
+    if ( clutter_stage_get_user_resizable (self->stage_osx->wrapper) )
+      return frameSize;
+    else 
+      return [self frame].size;
+}
 @end
 
 /*************************************************************************/
