@@ -84,15 +84,14 @@ struct _ClutterColorizeEffectClass
  *   Addison-Wesley
  */
 static const gchar *colorize_glsl_shader =
-"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform vec3 tint;\n"
 "\n"
 "void main ()\n"
 "{\n"
-"  vec4 color = gl_Color * texture2D (tex, vec2 (gl_TexCoord[0].xy));\n"
+"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord[0].xy));\n"
 "  float gray = dot (color.rgb, vec3 (0.299, 0.587, 0.114));\n"
-"  gl_FragColor = vec4 (gray * tint, color.a);\n"
+"  cogl_color_out = vec4 (gray * tint, color.a);\n"
 "}\n";
 
 /* a lame sepia */

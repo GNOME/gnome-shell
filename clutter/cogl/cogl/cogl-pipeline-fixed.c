@@ -73,7 +73,8 @@ _cogl_pipeline_backend_fixed_get_max_texture_units (void)
 static gboolean
 _cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long pipelines_difference)
+                                    unsigned long pipelines_difference,
+                                    int n_tex_coord_attribs)
 {
   _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
   return TRUE;

@@ -18,25 +18,6 @@ typedef struct
   gchar *source;
 } ShaderSource;
 
-/* These variables are used instead of the standard GLSL variables on
-   GLES 2 */
-#ifdef COGL_HAS_GLES2
-
-#define GLES2_VARS \
-  "precision mediump float;\n" \
-  "varying vec2 tex_coord[1];\n" \
-  "varying vec4 frag_color;\n"
-#define TEX_COORD "tex_coord[0]"
-#define COLOR_VAR "frag_color"
-
-#else /* COGL_HAS_GLES2 */
-
-#define GLES2_VARS ""
-#define TEX_COORD "gl_TexCoord[0]"
-#define COLOR_VAR "gl_Color"
-
-#endif /* COGL_HAS_GLES2 */
-
 /* a couple of boilerplate defines that are common amongst all the
  * sample shaders
  */
@@ -45,13 +26,12 @@ typedef struct
  * initialized, from a sampler2D in a variable tex.
  */
 #define FRAGMENT_SHADER_VARS					\
-  GLES2_VARS                                                    \
   "uniform sampler2D tex;"					\
   "uniform float x_step, y_step;"				\
 
 #define FRAGMENT_SHADER_BEGIN					\
   "void main (){"						\
-  "  vec4 color = texture2D (tex, vec2(" TEX_COORD "));"
+  "  vec4 color = texture2D (tex, vec2(cogl_tex_coord_in[0]));"
 
 /* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly
  * blended with the gl specified color (makes the opacity of actors work
@@ -59,7 +39,7 @@ typedef struct
  */
 #define FRAGMENT_SHADER_END                    \
       "  gl_FragColor = color;"    \
-      "  gl_FragColor = gl_FragColor * " COLOR_VAR ";" \
+      "  gl_FragColor = gl_FragColor * cogl_color_in;" \
       "}"
 
 static ShaderSource shaders[]=
@@ -87,8 +67,8 @@ static ShaderSource shaders[]=
      "  for (v=-radius;v<radius;v++)"
      "    {"
      "      color += texture2D(tex, "
-     "          vec2(" TEX_COORD ".s + u * 2.0 * x_step, "
-     "               " TEX_COORD ".t + v * 2.0 * y_step));"
+     "          vec2(cogl_tex_coord_in[0].s + u * 2.0 * x_step, "
+     "               cogl_tex_coord_in[0].t + v * 2.0 * y_step));"
      "      count ++;"
      "    }"
      "color = color / float(count);"
@@ -96,7 +76,7 @@ static ShaderSource shaders[]=
 #else
      "vec4 get_rgba_rel(sampler2D tex, float dx, float dy)"
      "{"
-     "  return texture2D (tex, " TEX_COORD ".st "
+     "  return texture2D (tex, cogl_tex_coord_in[0].st "
      "                         + vec2(dx, dy) * 2.0);"
      "}"
 
@@ -151,7 +131,7 @@ static ShaderSource shaders[]=
     {"combined-mirror",
      FRAGMENT_SHADER_VARS
      FRAGMENT_SHADER_BEGIN 
-     "  vec4 colorB = texture2D (tex, vec2(" TEX_COORD ".ts));"
+     "  vec4 colorB = texture2D (tex, vec2(cogl_tex_coord_in[0].ts));"
      "  float avg = (color.r + color.g + color.b) / 3.0;"
      "  color.r = avg;"
      "  color.g = avg;"
@@ -164,7 +144,7 @@ static ShaderSource shaders[]=
      FRAGMENT_SHADER_VARS
      "float get_avg_rel(sampler2D texB, float dx, float dy)"
      "{"
-     "  vec4 colorB = texture2D (texB, " TEX_COORD ".st + vec2(dx, dy));"
+     "  vec4 colorB = texture2D (texB, cogl_tex_coord_in.st + vec2(dx, dy));"
      "  return (colorB.r + colorB.g + colorB.b) / 3.0;"
      "}"
      FRAGMENT_SHADER_BEGIN

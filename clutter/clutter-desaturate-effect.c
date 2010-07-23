@@ -88,7 +88,6 @@ struct _ClutterDesaturateEffectClass
  *   Addison-Wesley
  */
 static const gchar *desaturate_glsl_shader =
-"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform float factor;\n"
 "\n"
@@ -101,9 +100,9 @@ static const gchar *desaturate_glsl_shader =
 "\n"
 "void main ()\n"
 "{\n"
-"  vec4 color = gl_Color * texture2D (tex, vec2 (gl_TexCoord[0].xy));\n"
+"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord[0].xy));\n"
 "  color.rgb = desaturate (color.rgb, factor);\n"
-"  gl_FragColor = color;\n"
+"  cogl_color_out = color;\n"
 "}\n";
 
 enum

@@ -57,18 +57,17 @@ typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
  * horizontal/vertical two pass shader for the gaussian blur
  */
 static const gchar *box_blur_glsl_shader =
-"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform float x_step, y_step;\n"
 "\n"
 "vec4 get_rgba_rel (sampler2D source, float dx, float dy)\n"
 "{\n"
-"  return texture2D (tex, gl_TexCoord[0].st + vec2 (dx, dy) * 2.0);\n"
+"  return texture2D (tex, cogl_tex_coord[0].st + vec2 (dx, dy) * 2.0);\n"
 "}\n"
 "\n"
 "void main ()\n"
 "{\n"
-"  vec4 color = gl_Color * texture2D (tex, vec2 (gl_TexCoord[0].xy));\n"
+"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord[0].xy));\n"
 "  color += get_rgba_rel (tex, -x_step, -y_step);\n"
 "  color += get_rgba_rel (tex,  0.0,    -y_step);\n"
 "  color += get_rgba_rel (tex,  x_step, -y_step);\n"
@@ -78,7 +77,7 @@ static const gchar *box_blur_glsl_shader =
 "  color += get_rgba_rel (tex, -x_step,  y_step);\n"
 "  color += get_rgba_rel (tex,  0.0,     y_step);\n"
 "  color += get_rgba_rel (tex,  x_step,  y_step);\n"
-"  gl_FragColor = color / 9.0;\n"
+"  cogl_color_out = color / 9.0;\n"
 "}";
 
 struct _ClutterBlurEffect

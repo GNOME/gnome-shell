@@ -552,7 +552,8 @@ typedef struct _CoglPipelineBackend
 
   gboolean (*start) (CoglPipeline *pipeline,
                      int n_layers,
-                     unsigned long pipelines_difference);
+                     unsigned long pipelines_difference,
+                     int n_tex_coord_attribs);
   gboolean (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference);

@@ -218,6 +218,79 @@ validate_gl_attribute (const char *gl_attribute,
   return type;
 }
 
+/* There are a number of standard OpenGL attributes that we deal with
+ * specially. These attributes are all namespaced with a "gl_" prefix
+ * so we should catch any typos instead of silently adding a custom
+ * attribute.
+ */
+static CoglVertexBufferAttribFlags
+validate_cogl_attribute (const char *cogl_attribute,
+		         guint8 n_components,
+		         guint8 *texture_unit)
+{
+  CoglVertexBufferAttribFlags type;
+  char *detail_seperator = NULL;
+  int name_len;
+
+  detail_seperator = strstr (cogl_attribute, "::");
+  if (detail_seperator)
+    name_len = detail_seperator - cogl_attribute;
+  else
+    name_len = strlen (cogl_attribute);
+
+  if (strncmp (cogl_attribute, "position_in", name_len) == 0)
+    {
+      if (G_UNLIKELY (n_components == 1))
+        g_critical ("glVertexPointer doesn't allow 1 component vertex "
+                    "positions so we currently only support "
+                    "\"cogl_position_in\" attributes where "
+                    "n_components == 2, 3 or 4");
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY;
+    }
+  else if (strncmp (cogl_attribute, "color_in", name_len) == 0)
+    {
+      if (G_UNLIKELY (n_components != 3 && n_components != 4))
+        g_critical ("glColorPointer expects 3 or 4 component colors so we "
+                    "currently only support \"cogl_color_in\" attributes "
+                    "where n_components == 3 or 4");
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY;
+    }
+  else if (strncmp (cogl_attribute,
+		    "cogl_tex_coord",
+		    strlen ("cogl_tex_coord")) == 0)
+    {
+      unsigned int unit;
+
+      if (strcmp (cogl_attribute, "cogl_tex_coord_in") == 0)
+        unit = 0;
+      else if (sscanf (cogl_attribute, "cogl_tex_coord%u_in", &unit) != 1)
+	{
+	  g_warning ("texture coordinate attributes should either be "
+                     "referenced as \"cogl_tex_coord_in\" or with a"
+                     "texture unit number like \"cogl_tex_coord1_in\"");
+	  unit = 0;
+	}
+      /* FIXME: validate any '::' delimiter for this case */
+      *texture_unit = unit;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY;
+    }
+  else if (strncmp (cogl_attribute, "normal_in", name_len) == 0)
+    {
+      if (G_UNLIKELY (n_components != 3))
+        g_critical ("glNormalPointer expects 3 component normals so we "
+                    "currently only support \"cogl_normal_in\" attributes "
+                    "where n_components == 3");
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY;
+    }
+  else
+    {
+      g_warning ("Unknown cogl_* attribute name cogl_%s\n", cogl_attribute);
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID;
+    }
+
+  return type;
+}
+
 /* This validates that a custom attribute name is a valid GLSL variable name
  *
  * NB: attribute names may have a detail component delimited using '::' E.g.
@@ -402,8 +475,9 @@ cogl_vertex_buffer_add (CoglHandle         handle,
 
 	  attribute = submitted_attribute;
 
-	  /* since we will skip validate_gl_attribute in this case, we need
-	   * to pluck out the attribute type before overwriting the flags: */
+	  /* since we will skip validate_gl/cogl_attribute in this case, we
+           * need to pluck out the attribute type before overwriting the
+           * flags: */
 	  flags |=
             attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
 	  break;
@@ -421,6 +495,14 @@ cogl_vertex_buffer_add (CoglHandle         handle,
 	  flags |= validate_gl_attribute (attribute_name + 3,
 					  n_components,
 					  &texture_unit);
+	  if (flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID)
+	    return;
+	}
+      else if (strncmp (attribute_name, "cogl_", 5) == 0)
+	{
+	  flags |= validate_cogl_attribute (attribute_name + 5,
+					    n_components,
+					    &texture_unit);
 	  if (flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID)
 	    return;
 	}
