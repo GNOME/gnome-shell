@@ -1030,6 +1030,11 @@ listify_hash_values_hfunc (gpointer key,
         *list = g_slist_prepend (*list, value);
 }
 
+/**
+ * gdm_user_manager_list_users:
+ *
+ * Return value: (element-type GdmUser) (transfer container): list of #GdmUser elements
+ */
 GSList *
 gdm_user_manager_list_users (GdmUserManager *manager)
 {
