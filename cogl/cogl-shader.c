@@ -27,6 +27,7 @@
 
 #include "cogl.h"
 #include "cogl-shader-private.h"
+#include "cogl-shader-boilerplate.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
@@ -100,9 +101,33 @@ cogl_create_shader (CoglShaderType type)
   shader = g_slice_new (CoglShader);
   shader->language = COGL_SHADER_LANGUAGE_GLSL;
   shader->gl_handle = 0;
+#ifdef HAVE_COGL_GLES2
+  shader->n_tex_coord_attribs = 0;
+#endif
   shader->type = type;
 
   return _cogl_shader_handle_new (shader);
+}
+
+static void
+delete_shader (CoglShader *shader)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+#ifdef HAVE_COGL_GL
+  if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
+    {
+      if (shader->gl_handle)
+        GE (glDeletePrograms (1, &shader->gl_handle));
+    }
+  else
+#endif
+    {
+      if (shader->gl_handle)
+        GE (glDeleteShader (shader->gl_handle));
+    }
+
+  shader->gl_handle = 0;
 }
 
 void
@@ -127,28 +152,54 @@ cogl_shader_source (CoglHandle   handle,
     language = COGL_SHADER_LANGUAGE_GLSL;
 
   /* Delete the old object if the language is changing... */
-  if (G_UNLIKELY (language != shader->language))
-    {
-#ifdef HAVE_COGL_GL
-      if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
-        {
-          if (shader->gl_handle)
-            GE (glDeletePrograms (1, &shader->gl_handle));
-        }
-      else
-#endif
-        {
-          if (shader->gl_handle)
-            GE (glDeleteShader (shader->gl_handle));
-        }
-    }
+  if (G_UNLIKELY (language != shader->language) &&
+      shader->gl_handle)
+    delete_shader (shader);
+
+  shader->source = g_strdup (source);
+
+  shader->language = language;
+}
+
+void
+cogl_shader_compile (CoglHandle handle)
+{
+  CoglShader *shader = handle;
+
+  if (!cogl_is_shader (handle))
+    return;
 
 #ifdef HAVE_COGL_GL
-  if (language == COGL_SHADER_LANGUAGE_ARBFP)
+  _cogl_shader_compile_real (shader, 0 /* ignored */);
+#endif
+
+  /* XXX: For GLES2 we don't actually compile anything until the
+   * shader gets used so we have an opportunity to add some
+   * boilerplate to the shader.
+   *
+   * At the end of the day this is obviously a badly designed API
+   * given that we are having to lie to the user. It was a mistake to
+   * so thinly wrap the OpenGL shader API and the current plan is to
+   * replace it with a pipeline snippets API. */
+}
+
+void
+_cogl_shader_compile_real (CoglHandle handle,
+                           int n_tex_coord_attribs)
+{
+  CoglShader *shader = handle;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+#ifdef HAVE_COGL_GL
+  if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
 #ifdef COGL_GL_DEBUG
       GLenum gl_error;
 #endif
+
+      if (shader->gl_handle)
+        return;
 
       GE (glGenPrograms (1, &shader->gl_handle));
 
@@ -160,8 +211,8 @@ cogl_shader_source (CoglHandle   handle,
 #endif
       glProgramString (GL_FRAGMENT_PROGRAM_ARB,
                        GL_PROGRAM_FORMAT_ASCII_ARB,
-                       strlen (source),
-                       source);
+                       strlen (shader->source),
+                       shader->source);
 #ifdef COGL_GL_DEBUG
       gl_error = glGetError ();
       if (gl_error != GL_NO_ERROR)
@@ -169,7 +220,7 @@ cogl_shader_source (CoglHandle   handle,
           g_warning ("%s: GL error (%d): Failed to compile ARBfp:\n%s\n%s",
                      G_STRLOC,
                      gl_error,
-                     source,
+                     shader->source,
                      glGetString (GL_PROGRAM_ERROR_STRING_ARB));
         }
 #endif
@@ -177,44 +228,70 @@ cogl_shader_source (CoglHandle   handle,
   else
 #endif
     {
-      if (!shader->gl_handle)
+      char *sourcev[4];
+      int count = 0;
+      GLenum gl_type;
+
+      if (shader->gl_handle
+#ifdef HAVE_COGL_GLES2
+          && shader->n_tex_coord_attribs >= n_tex_coord_attribs
+#endif
+         )
+        return;
+
+      if (shader->gl_handle)
+        delete_shader (shader);
+
+      switch (shader->type)
         {
-          GLenum gl_type;
-
-          switch (shader->type)
-            {
-            case COGL_SHADER_TYPE_VERTEX:
-              gl_type = GL_VERTEX_SHADER;
-              break;
-            case COGL_SHADER_TYPE_FRAGMENT:
-              gl_type = GL_FRAGMENT_SHADER;
-              break;
-            default:
-              g_assert_not_reached ();
-              break;
-            }
-
-          shader->gl_handle = glCreateShader (gl_type);
+        case COGL_SHADER_TYPE_VERTEX:
+          gl_type = GL_VERTEX_SHADER;
+          break;
+        case COGL_SHADER_TYPE_FRAGMENT:
+          gl_type = GL_FRAGMENT_SHADER;
+          break;
+        default:
+          g_assert_not_reached ();
+          break;
         }
-      glShaderSource (shader->gl_handle, 1, &source, NULL);
+
+      shader->gl_handle = glCreateShader (gl_type);
+
+      sourcev[count++] = _COGL_COMMON_SHADER_BOILERPLATE;
+      if (shader->type == COGL_SHADER_TYPE_VERTEX)
+        sourcev[count++] = _COGL_VERTEX_SHADER_BOILERPLATE;
+      else
+        sourcev[count++] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
+
+#ifdef HAVE_COGL_GLES2
+      if (n_tex_coord_attribs)
+        sourcev[count++] =
+          g_strdup_printf ("varying vec2 _cogl_tex_coord[%d];\n",
+                           n_tex_coord_attribs);
+      shader->n_tex_coord_attribs = n_tex_coord_attribs;
+#endif
+
+      sourcev[count++] = shader->source;
+
+      glShaderSource (shader->gl_handle, count, (const char **)sourcev, NULL);
+
+#ifdef HAVE_COGL_GLES2
+      if (count == 4)
+        g_free (sourcev[2]);
+#endif
+
+      GE (glCompileShader (shader->gl_handle));
+
+#ifdef COGL_GL_DEBUG
+      if (!cogl_shader_is_compiled (handle))
+        {
+          char *log = cogl_shader_get_info_log (handle);
+          g_warning ("Failed to compile GLSL program:\nsrc:\n%s\nerror:\n%s\n",
+                     shader->source,
+                     log);
+        }
+#endif
     }
-
-  shader->language = language;
-}
-
-void
-cogl_shader_compile (CoglHandle handle)
-{
-  CoglShader *shader;
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!cogl_is_shader (handle))
-    return;
-
-  shader = _cogl_shader_pointer_from_handle (handle);
-
-  if (shader->language == COGL_SHADER_LANGUAGE_GLSL)
-    GE (glCompileShader (shader->gl_handle));
 }
 
 char *
@@ -242,6 +319,21 @@ cogl_shader_get_info_log (CoglHandle handle)
     {
       char buffer[512];
       int len = 0;
+
+      /* We don't normally compile the shader when the user calls
+       * cogl_shader_compile() because we want to be able to add
+       * boilerplate code that depends on how it ends up finally being
+       * used.
+       *
+       * Here we force an early compile if the user is interested in
+       * log information to increase the chance that the log will be
+       * useful! We have to guess the number of texture coordinate
+       * attributes that may be used (normally less than 4) since that
+       * affects the boilerplate.
+       */
+      if (!shader->gl_handle)
+        _cogl_shader_compile_real (handle, 4);
+
       glGetShaderInfoLog (shader->gl_handle, 511, &len, buffer);
       buffer[len] = '\0';
       return g_strdup (buffer);
@@ -284,6 +376,24 @@ cogl_shader_is_compiled (CoglHandle handle)
   else
 #endif
     {
+      /* FIXME: We currently have an arbitrary limit of 4 texture
+       * coordinate attributes since our API means we have to add
+       * some boilerplate to the users GLSL program (for GLES2)
+       * before we actually know how many attributes are in use.
+       *
+       * 4 will probably be enough (or at least that limitation should
+       * be enough until we can replace this API with the pipeline
+       * snippets API) but if it isn't then the shader won't compile,
+       * through no fault of the user.
+       *
+       * To some extent this is just a symptom of bad API design; it
+       * was a mistake for Cogl to so thinly wrap the OpenGL shader
+       * API. Eventually we plan for this whole API will be deprecated
+       * by the pipeline snippets framework.
+       */
+      if (!shader->gl_handle)
+        _cogl_shader_compile_real (handle, 4);
+
       GE (glGetShaderiv (shader->gl_handle, GL_COMPILE_STATUS, &status));
       if (status == GL_TRUE)
         return TRUE;

@@ -327,7 +327,8 @@ get_arbfp_program_state (CoglPipeline *pipeline)
 static gboolean
 _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long pipelines_difference)
+                                    unsigned long pipelines_difference,
+                                    int n_tex_coord_attribs)
 {
   CoglPipelineBackendARBfpPrivate *priv;
   CoglPipeline *authority;

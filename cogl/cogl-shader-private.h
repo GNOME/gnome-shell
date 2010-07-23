@@ -40,11 +40,16 @@ struct _CoglShader
 {
   CoglHandleObject   _parent;
   GLuint             gl_handle;
+  int                n_tex_coord_attribs;
   CoglShaderType     type;
   CoglShaderLanguage language;
+  char              *source;
 };
 
 CoglShader *_cogl_shader_pointer_from_handle (CoglHandle handle);
+
+void
+_cogl_shader_compile_real (CoglHandle handle, int n_tex_coord_attribs);
 
 CoglShaderLanguage
 _cogl_program_get_language (CoglHandle handle);

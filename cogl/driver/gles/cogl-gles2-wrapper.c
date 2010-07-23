@@ -318,7 +318,7 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
       g_string_append_printf (shader_source,
-			      "attribute vec4 multi_tex_coord_attrib%d;\n",
+			      "attribute vec4 cogl_tex_coord%d_in;\n",
 			      i);
 
   /* Find the biggest enabled texture unit index */
@@ -332,11 +332,11 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   if (n_texture_units > 0)
     {
       g_string_append_printf (shader_source,
-                              "uniform mat4	      texture_matrix[%d];\n",
+                              "uniform mat4 cogl_texture_matrix[%d];\n",
                               n_texture_units);
 
       g_string_append_printf (shader_source,
-                              "varying vec2       tex_coord[%d];",
+                              "varying vec2 _cogl_tex_coord[%d];",
                               n_texture_units);
     }
 
@@ -349,11 +349,11 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
       {
         g_string_append_printf (shader_source,
                                 "transformed_tex_coord = "
-                                "texture_matrix[%d] "
-                                " * multi_tex_coord_attrib%d;\n",
+                                "cogl_texture_matrix[%d] "
+                                " * cogl_tex_coord%d_in;\n",
                                 i, i);
         g_string_append_printf (shader_source,
-                                "tex_coord[%d] = transformed_tex_coord.st "
+                                "_cogl_tex_coord[%d] = transformed_tex_coord.st "
                                 " / transformed_tex_coord.q;\n",
                                 i);
       }
@@ -410,19 +410,21 @@ cogl_gles2_add_texture_lookup (int unit,
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
   if (w->settings.tex_env[unit].texture_target == GL_TEXTURE_3D_OES)
-    g_string_append_printf (shader_source, "texture3D (texture_unit[%d], ",
+    g_string_append_printf (shader_source,
+                            "texture3D (_cogl_texture_unit[%d], ",
                             unit);
   else
-    g_string_append_printf (shader_source, "texture2D (texture_unit[%d], ",
+    g_string_append_printf (shader_source,
+                            "texture2D (_cogl_texture_unit[%d], ",
                             unit);
 
   /* If point sprite coord generation is being used then divert to the
      built-in varying var for that instead of the texture
      coordinates */
   if (w->settings.tex_env[unit].point_sprite_coords)
-    g_string_append (shader_source, "gl_PointCoord");
+    g_string_append (shader_source, "_cogl_point_coord");
   else
-    g_string_append_printf (shader_source, "tex_coord[%d]", unit);
+    g_string_append_printf (shader_source, "_cogl_tex_coord[%d]", unit);
 
   g_string_append_printf (shader_source, ").%s", swizzle);
 }
@@ -458,7 +460,7 @@ cogl_gles2_add_arg (int unit,
       break;
 
     case GL_CONSTANT:
-      g_string_append_printf (shader_source, "combine_constant[%d].%s",
+      g_string_append_printf (shader_source, "_cogl_combine_constant[%d].%s",
                               unit, swizzle);
       break;
 
@@ -470,7 +472,7 @@ cogl_gles2_add_arg (int unit,
         }
       /* flow through */
     case GL_PRIMARY_COLOR:
-      g_string_append_printf (shader_source, "frag_color.%s", swizzle);
+      g_string_append_printf (shader_source, "_cogl_color.%s", swizzle);
       break;
 
     default:
@@ -635,13 +637,13 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
   if (n_texture_units > 0)
     {
       g_string_append_printf (shader_source,
-                              "varying vec2       tex_coord[%d];\n",
+                              "varying vec2 _cogl_tex_coord[%d];\n",
                               n_texture_units);
 
       g_string_append (shader_source,
                        _cogl_fixed_fragment_shader_texturing_options);
       g_string_append_printf (shader_source,
-                              "uniform sampler2D  texture_unit[%d];\n",
+                              "uniform sampler2D _cogl_texture_unit[%d];\n",
                               n_texture_units);
     }
 
@@ -655,12 +657,12 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
      apparent bug in the PowerVR drivers. Without it the alpha
      blending seems to stop working */
   g_string_append (shader_source,
-                   "vec4 frag_color_copy = frag_color;\n");
+                   "vec4 frag_color_copy = _cogl_color;\n");
 
   /* If there are no textures units enabled then we can just directly
      use the color from the vertex shader */
   if (n_texture_units == 0)
-    g_string_append (shader_source, "gl_FragColor = frag_color;\n");
+    g_string_append (shader_source, "gl_FragColor = _cogl_color;\n");
   else
     /* Otherwise we need to calculate the value based on the layer
        combine settings */
@@ -769,17 +771,17 @@ cogl_gles2_wrapper_get_locations (GLuint program,
   int i;
 
   uniforms->mvp_matrix_uniform
-    = glGetUniformLocation (program, "mvp_matrix");
+    = glGetUniformLocation (program, "cogl_modelview_projection_matrix");
   uniforms->modelview_matrix_uniform
-    = glGetUniformLocation (program, "modelview_matrix");
+    = glGetUniformLocation (program, "cogl_modelview_matrix");
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
     if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
       {
-        char *matrix_var_name = g_strdup_printf ("texture_matrix[%d]", i);
-        char *sampler_var_name = g_strdup_printf ("texture_unit[%d]", i);
+        char *matrix_var_name = g_strdup_printf ("cogl_texture_matrix[%d]", i);
+        char *sampler_var_name = g_strdup_printf ("_cogl_texture_unit[%d]", i);
         char *tex_coord_var_name =
-          g_strdup_printf ("multi_tex_coord_attrib%d", i);
+          g_strdup_printf ("cogl_tex_coord%d_in", i);
 
         uniforms->texture_matrix_uniforms[i]
           = glGetUniformLocation (program, matrix_var_name);
@@ -800,30 +802,30 @@ cogl_gles2_wrapper_get_locations (GLuint program,
       }
 
   uniforms->fog_density_uniform
-    = glGetUniformLocation (program, "fog_density");
+    = glGetUniformLocation (program, "_cogl_fog_density");
   uniforms->fog_start_uniform
-    = glGetUniformLocation (program, "fog_start");
+    = glGetUniformLocation (program, "_cogl_fog_start");
   uniforms->fog_end_uniform
-    = glGetUniformLocation (program, "fog_end");
+    = glGetUniformLocation (program, "_cogl_fog_end");
   uniforms->fog_color_uniform
-    = glGetUniformLocation (program, "fog_color");
+    = glGetUniformLocation (program, "_cogl_fog_color");
 
   uniforms->alpha_test_ref_uniform
-    = glGetUniformLocation (program, "alpha_test_ref");
+    = glGetUniformLocation (program, "_cogl_alpha_test_ref");
 
   uniforms->point_size_uniform
-    = glGetUniformLocation (program, "point_size");
+    = glGetUniformLocation (program, "cogl_point_size_in");
 }
 
 static void
 cogl_gles2_wrapper_bind_attributes (GLuint program)
 {
   glBindAttribLocation (program, COGL_GLES2_WRAPPER_VERTEX_ATTRIB,
-			"vertex_attrib");
+			"cogl_position_in");
   glBindAttribLocation (program, COGL_GLES2_WRAPPER_COLOR_ATTRIB,
-			"color_attrib");
+			"cogl_color_in");
   glBindAttribLocation (program, COGL_GLES2_WRAPPER_NORMAL_ATTRIB,
-			"normal_attrib");
+			"cogl_normal_in");
 }
 
 static CoglGles2WrapperProgram *

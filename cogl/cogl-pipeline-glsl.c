@@ -73,6 +73,17 @@ typedef struct _GlslProgramState
   unsigned int user_program_age;
   GLuint gl_program;
 
+#ifdef HAVE_COGL_GLES2
+  /* To allow writing shaders that are portable between GLES 2 and
+   * OpenGL Cogl prepends a number of boilerplate #defines and
+   * declarations to user shaders. One of those declarations is an
+   * array of texture coordinate varyings, but to know how to emit the
+   * declaration we need to know how many texture coordinate
+   * attributes are in use.  The boilerplate also needs to be changed
+   * if this increases. */
+  int n_tex_coord_attribs;
+#endif
+
   /* This is set to TRUE if the program has changed since we last
      flushed the uniforms */
   gboolean gl_program_changed;
@@ -252,7 +263,8 @@ link_program (GLint gl_program)
 static gboolean
 _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
-                                   unsigned long pipelines_difference)
+                                   unsigned long pipelines_difference,
+                                   int n_tex_coord_attribs)
 {
   CoglPipelineBackendGlslPrivate *priv;
   CoglPipeline *authority;
@@ -285,8 +297,17 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
   if (priv->glsl_program_state)
     {
       /* However if the program has changed since the last link then we do
-         need to relink */
-      if (priv->glsl_program_state->user_program_age == user_program->age)
+       * need to relink
+       *
+       * Also if the number of texture coordinate attributes in use has
+       * increased, then delete the program so we can prepend a new
+       * _cogl_tex_coord[] varying array declaration. */
+      if (priv->glsl_program_state->user_program_age == user_program->age
+#ifdef HAVE_COGL_GLES2
+          && priv->glsl_program_state->n_tex_coord_attribs >=
+             n_tex_coord_attribs
+#endif
+         )
         return TRUE;
 
       /* Destroy the existing program. We can't just dirty the whole
@@ -340,6 +361,18 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
 
   GE_RET( gl_program, glCreateProgram () );
 
+#ifdef HAVE_COGL_GLES2
+  /* Find the largest count of texture coordinate attributes
+   * associated with each of the shaders so we can ensure a consistent
+   * _cogl_tex_coord[] array declaration across all of the shaders.*/
+  for (l = user_program->attached_shaders; l; l = l->next)
+    {
+      CoglShader *shader = l->data;
+      n_tex_coord_attribs = MAX (shader->n_tex_coord_attribs,
+                                 n_tex_coord_attribs);
+    }
+#endif
+
   /* Add all of the shaders from the user program */
   for (l = user_program->attached_shaders; l; l = l->next)
     {
@@ -347,11 +380,16 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
 
       g_assert (shader->language == COGL_SHADER_LANGUAGE_GLSL);
 
+      _cogl_shader_compile_real (shader, n_tex_coord_attribs);
+
       GE( glAttachShader (gl_program, shader->gl_handle) );
     }
 
   priv->glsl_program_state->gl_program = gl_program;
   priv->glsl_program_state->user_program_age = user_program->age;
+#ifdef HAVE_COGL_GLES2
+  priv->glsl_program_state->n_tex_coord_attribs = n_tex_coord_attribs;
+#endif
 
   link_program (gl_program);
 

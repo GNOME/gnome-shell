@@ -7,8 +7,8 @@ precision highp float;
 /*** _cogl_fixed_fragment_shader_inputs ***/
 
 /* Inputs from the vertex shader */
-varying vec4       frag_color;
-varying float      fog_amount;
+varying vec4 _cogl_color;
+varying float _cogl_fog_amount;
 
 /*** _cogl_fixed_fragment_shader_texturing_options ***/
 
@@ -17,10 +17,10 @@ varying float      fog_amount;
 /*** _cogl_fixed_fragment_shader_fogging_options ***/
 
 /* Fogging options */
-uniform vec4       fog_color;
+uniform vec4 _cogl_fog_color;
 
 /* Alpha test options */
-uniform float      alpha_test_ref;
+uniform float _cogl_alpha_test_ref;
 
 /*** _cogl_fixed_fragment_shader_main_declare ***/
 
@@ -33,30 +33,32 @@ main (void)
   /*** _cogl_fixed_fragment_shader_fog ***/
 
   /* Mix the calculated color with the fog color */
-  gl_FragColor.rgb = mix (fog_color.rgb, gl_FragColor.rgb, fog_amount);
+  gl_FragColor.rgb = mix (_cogl_fog_color.rgb, gl_FragColor.rgb,
+                          _cogl_fog_amount);
 
   /* Alpha testing */
 
   /*** _cogl_fixed_fragment_shader_alpha_never ***/
   discard;
   /*** _cogl_fixed_fragment_shader_alpha_less ***/
-  if (gl_FragColor.a >= alpha_test_ref)
+  if (gl_FragColor.a >= _cogl_alpha_test_ref)
     discard;
   /*** _cogl_fixed_fragment_shader_alpha_equal ***/
-  if (gl_FragColor.a != alpha_test_ref)
+  if (gl_FragColor.a != _cogl_alpha_test_ref)
     discard;
   /*** _cogl_fixed_fragment_shader_alpha_lequal ***/
-  if (gl_FragColor.a > alpha_test_ref)
+  if (gl_FragColor.a > _cogl_alpha_test_ref)
     discard;
   /*** _cogl_fixed_fragment_shader_alpha_greater ***/
-  if (gl_FragColor.a <= alpha_test_ref)
+  if (gl_FragColor.a <= _cogl_alpha_test_ref)
     discard;
   /*** _cogl_fixed_fragment_shader_alpha_notequal ***/
-  if (gl_FragColor.a == alpha_test_ref)
+  if (gl_FragColor.a == _cogl_alpha_test_ref)
     discard;
   /*** _cogl_fixed_fragment_shader_alpha_gequal ***/
-  if (gl_FragColor.a < alpha_test_ref)
+  if (gl_FragColor.a < _cogl_alpha_test_ref)
     discard;
 
   /*** _cogl_fixed_fragment_shader_end ***/
 }
+

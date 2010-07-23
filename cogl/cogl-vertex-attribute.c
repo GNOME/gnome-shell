@@ -435,6 +435,7 @@ enable_gl_state (CoglVertexAttribute **attributes,
   gboolean skip_gl_color = FALSE;
   CoglPipeline *source;
   CoglPipeline *copy = NULL;
+  int n_tex_coord_attribs = 0;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -490,6 +491,7 @@ enable_gl_state (CoglVertexAttribute **attributes,
                                  base + attribute->offset));
           _cogl_bitmask_set (&ctx->temp_bitmask,
                              attribute->texture_unit, TRUE);
+          n_tex_coord_attribs++;
           break;
         case COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
           enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
@@ -578,7 +580,7 @@ enable_gl_state (CoglVertexAttribute **attributes,
       _cogl_pipeline_apply_legacy_state (source);
     }
 
-  _cogl_pipeline_flush_gl_state (source, skip_gl_color);
+  _cogl_pipeline_flush_gl_state (source, skip_gl_color, n_tex_coord_attribs);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

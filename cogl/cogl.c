@@ -745,6 +745,7 @@ void
 cogl_begin_gl (void)
 {
   unsigned long enable_flags = 0;
+  CoglPipeline *pipeline;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -777,8 +778,21 @@ cogl_begin_gl (void)
    *
    * A user should instead call cogl_set_source_color4ub() before
    * cogl_begin_gl() to simplify the state flushed.
+   *
+   * XXX: note defining n_tex_coord_attribs using
+   * cogl_pipeline_get_n_layers is a hack, but the problem is that
+   * n_tex_coord_attribs is usually defined when drawing a primitive
+   * which isn't happening here.
+   *
+   * Maybe it would be more useful if this code did flush the
+   * opaque_color_pipeline and then call into cogl-pipeline-opengl.c to then
+   * restore all state for the material's backend back to default OpenGL
+   * values.
    */
-  _cogl_pipeline_flush_gl_state (cogl_get_source (), FALSE);
+  pipeline = cogl_get_source ();
+  _cogl_pipeline_flush_gl_state (pipeline,
+                                 FALSE,
+                                 cogl_pipeline_get_n_layers (pipeline));
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
