@@ -125,7 +125,6 @@ cogl_shader_get_info_log (CoglHandle handle)
 CoglShaderType
 cogl_shader_get_type (CoglHandle  handle)
 {
-  GLint type;
   CoglShader *shader;
 
   if (!cogl_is_shader (handle))
@@ -135,17 +134,7 @@ cogl_shader_get_type (CoglHandle  handle)
     }
 
   shader = _cogl_shader_pointer_from_handle (handle);
-
-  GE (glGetShaderiv (shader->gl_handle, GL_SHADER_TYPE, &type));
-  if (type == GL_VERTEX_SHADER)
-    return COGL_SHADER_TYPE_VERTEX;
-  else if (type == GL_FRAGMENT_SHADER)
-    return COGL_SHADER_TYPE_VERTEX;
-  else
-    {
-      g_warning ("Unexpected shader type 0x%08lX", (unsigned long)type);
-      return COGL_SHADER_TYPE_VERTEX;
-    }
+  return shader->type;
 }
 
 gboolean
