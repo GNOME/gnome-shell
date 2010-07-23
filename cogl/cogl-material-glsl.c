@@ -68,9 +68,6 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
   if (!cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     return FALSE;
 
-  /* FIXME: This will likely conflict with the GLES 2 backends use of
-   * glUseProgram.
-   */
   if (materials_difference & COGL_MATERIAL_STATE_USER_SHADER)
     {
       CoglMaterial *authority =

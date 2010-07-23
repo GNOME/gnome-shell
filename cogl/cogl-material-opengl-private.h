@@ -145,7 +145,7 @@ void
 _cogl_delete_gl_texture (GLuint gl_texture);
 
 void
-_cogl_gl_use_program_wrapper (GLuint program);
+_cogl_gl_use_program_wrapper (CoglHandle program);
 
 void
 _cogl_material_flush_gl_state (CoglMaterial *material,

@@ -169,7 +169,7 @@ cogl_program_uniform_1f (int uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program->gl_handle);
+  _cogl_gl_use_program_wrapper (program);
 
   GE (glUniform1f (uniform_no, value));
 }
@@ -186,7 +186,7 @@ cogl_program_uniform_1i (int uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program->gl_handle);
+  _cogl_gl_use_program_wrapper (program);
 
   GE (glUniform1i (uniform_no, value));
 }
@@ -205,7 +205,7 @@ cogl_program_uniform_float (int  uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program->gl_handle);
+  _cogl_gl_use_program_wrapper (program);
 
   switch (size)
     {
@@ -240,7 +240,7 @@ cogl_program_uniform_int (int  uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program->gl_handle);
+  _cogl_gl_use_program_wrapper (program);
 
   switch (size)
     {
@@ -276,7 +276,7 @@ cogl_program_uniform_matrix (int   uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program->gl_handle);
+  _cogl_gl_use_program_wrapper (program);
 
   switch (size)
     {
