@@ -24,6 +24,7 @@
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 #include <gjs/gjs.h>
+#include <canberra.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -67,6 +68,9 @@ struct _ShellGlobal {
   guint work_count;
   GSList *leisure_closures;
   guint leisure_function_id;
+
+  /* For sound notifications */
+  ca_context *sound_context;
 };
 
 enum {
@@ -214,6 +218,10 @@ shell_global_init (ShellGlobal *global)
 
   global->last_change_screen_width = 0;
   global->last_change_screen_height = 0;
+
+  ca_context_create (&global->sound_context);
+  ca_context_change_props (global->sound_context, CA_PROP_APPLICATION_NAME, PACKAGE_NAME, CA_PROP_APPLICATION_ID, "org.gnome.Shell", NULL);
+  ca_context_open (global->sound_context);
 }
 
 static void
@@ -1787,4 +1795,19 @@ shell_global_run_at_leisure (ShellGlobal         *global,
 
   if (global->work_count == 0)
     schedule_leisure_functions (global);
+}
+
+/**
+ * shell_global_play_theme_sound:
+ * @global: the #ShellGlobal
+ * @name: the sound name
+ *
+ * Plays a simple sound picked according to Freedesktop sound theme.
+ * Really just a workaround for libcanberra not being introspected.
+ */
+void
+shell_global_play_theme_sound (ShellGlobal *global,
+                               const char  *name)
+{
+  ca_context_play (global->sound_context, 0, CA_PROP_EVENT_ID, name, NULL);
 }

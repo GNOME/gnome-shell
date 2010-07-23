@@ -75,7 +75,8 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
 				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                  libstartup-notification-1.0
-                                 gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION)
+                                 gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
+				 libcanberra)
 
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS

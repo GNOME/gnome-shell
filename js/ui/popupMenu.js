@@ -176,7 +176,7 @@ PopupSliderMenuItem.prototype = {
         if (isNaN(value))
             // Avoid spreading NaNs around
             throw TypeError('The slider value must be a number');
-        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+        this._value = Math.max(Math.min(value, 1), 0);
 
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
         this.actor.set_child(this._slider);
@@ -191,7 +191,7 @@ PopupSliderMenuItem.prototype = {
         if (isNaN(value))
             throw TypeError('The slider value must be a number');
 
-        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+        this._value = Math.max(Math.min(value, 1), 0);
         this._slider.queue_repaint();
     },
 
@@ -231,7 +231,7 @@ PopupSliderMenuItem.prototype = {
         cr.stroke();
 
         let handleY = height / 2;
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._displayValue;
+        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
 
         let color = new Clutter.Color();
         themeNode.get_foreground_color(color);
@@ -269,8 +269,7 @@ PopupSliderMenuItem.prototype = {
             Clutter.ungrab_pointer();
             this._dragging = false;
 
-            this._value = this._displayValue;
-            this.emit('value-changed', this._value);
+            this.emit('drag-end');
         }
         return true;
     },
@@ -299,8 +298,9 @@ PopupSliderMenuItem.prototype = {
             newvalue = 1;
         else
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
-        this._displayValue = newvalue;
+        this._value = newvalue;
         this._slider.queue_repaint();
+        this.emit('value-changed', this._value);
     },
 
     get value() {
@@ -311,9 +311,10 @@ PopupSliderMenuItem.prototype = {
         let key = event.get_key_symbol();
         if (key == Clutter.Right || key == Clutter.Left) {
             let delta = key == Clutter.Right ? 0.1 : -0.1;
-            this._value = this._displayValue = Math.max(0, Math.min(this._value + delta, 1));
+            this._value = Math.max(0, Math.min(this._value + delta, 1));
             this._slider.queue_repaint();
             this.emit('value-changed', this._value);
+            this.emit('drag-end');
             return true;
         }
         return false;
