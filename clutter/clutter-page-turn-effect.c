@@ -91,7 +91,7 @@ clutter_page_turn_effect_deform_vertex (ClutterDeformEffect *effect,
   if (self->period == 0.0)
     return;
 
-  radians = self->angle * 180.0f / G_PI;
+  radians = self->angle / (180.0f / G_PI);
 
   /* Rotate the point around the centre of the page-curl ray to align it with
    * the y-axis.
