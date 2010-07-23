@@ -282,21 +282,30 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture)
 }
 
 void
-_cogl_gl_use_program_wrapper (GLuint program)
+_cogl_gl_use_program_wrapper (CoglHandle program_handle)
 {
 #ifdef COGL_MATERIAL_BACKEND_GLSL
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->current_gl_program == program)
+#ifndef HAVE_COGL_GLES2
+  CoglProgram *program = (CoglProgram *)program_handle;
+  GLuint gl_program;
+
+  if (program_handle != COGL_INVALID_HANDLE)
+    gl_program = program->gl_handle;
+  else
+    gl_program = 0;
+
+  if (ctx->current_gl_program == gl_program)
     return;
 
-  if (program)
+  if (gl_program != 0)
     {
       GLenum gl_error;
 
       while ((gl_error = glGetError ()) != GL_NO_ERROR)
         ;
-      glUseProgram (program);
+      glUseProgram (gl_program);
       if (glGetError () != GL_NO_ERROR)
         {
           GE (glUseProgram (0));
@@ -307,7 +316,12 @@ _cogl_gl_use_program_wrapper (GLuint program)
   else
     GE (glUseProgram (0));
 
-  ctx->current_gl_program = program;
+  ctx->current_gl_program = gl_program;
+#else /* HAVE_COGL_GLES2 */
+  ctx->drv.gles2.settings.user_program = program_handle;
+  ctx->drv.gles2.settings_dirty = TRUE;
+#endif /* HAVE_COGL_GLES2 */
+
 #endif
 }
 
@@ -332,16 +346,8 @@ _cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type)
 #ifdef COGL_MATERIAL_BACKEND_GLSL
     case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
       {
-        /* The GLES2 backend currently manages its own codegen for
-         * fixed function API fallbacks and manages its own shader
-         * state.  */
-#ifndef HAVE_COGL_GLES2
-        CoglProgram *program =
-          _cogl_program_pointer_from_handle (program_handle);
-
-        _cogl_gl_use_program_wrapper (program->gl_handle);
+        _cogl_gl_use_program_wrapper (program_handle);
         disable_arbfp ();
-#endif
 
         ctx->current_use_program_type = type;
         break;
