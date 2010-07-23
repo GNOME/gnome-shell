@@ -40,10 +40,10 @@
   </autotools>
 
   <autotools id="cairo" autogenargs="--enable-xlib">
-    <branch module="snapshots/cairo-1.9.10.tar.gz" version="1.9.10"
+    <branch module="snapshots/cairo-1.9.12.tar.gz" version="1.9.12"
             repo="cairo.org"
-            hash="sha256:0341190e16e40670503fb2bd815692ebbe66a2843241c3d8e02f75bfb1b76ff4"
-            md5sum="737d533e15302ae355ff9a3cf16bc467" size="23153906">
+            hash="sha256:61879cb8d5e0f785251bd663b825a52754017f53eef3a25fbbf7799d19b765ba"
+            md5sum="0a264bb080af8346f7ae25581f59f661" size="23402463">
     </branch>
     <dependencies>
       <dep package="fontconfig"/>
@@ -51,6 +51,25 @@
       <dep package="pixman"/>
     </dependencies>
   </autotools>
+
+  <tarball id="poppler" version="0.14.0" autogenargs="--disable-poppler-cpp">
+  <!--Remove disable-poppler-cpp if bumping up poppler version.
+      See GNOME bug 622859 -->
+    <source href="http://poppler.freedesktop.org/poppler-0.14.0.tar.gz"
+            hash="sha256:aba6fff01a90b44ac6f4ed570d52a43c9790e0445ceaab59abe23d0c7c87bcaf"
+            md5sum="76f003b8fa2b905674088c306aa857c5" size="1782119"/>
+    <dependencies>
+      <dep package="cairo"/>
+    </dependencies>
+    <suggests>
+      <dep package="glib"/>
+      <dep package="poppler-data"/>
+    </suggests>
+    <after>
+      <dep package="gtk+"/>
+      <dep package="gdk-pixbuf"/>
+    </after>
+  </tarball>
 
 <!--
   <autotools id="libXft" supports-non-srcdir-builds="no">
