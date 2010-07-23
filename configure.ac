@@ -433,7 +433,9 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
               [
                 AC_CHECK_HEADERS([$cogl_gl_headers],
                                  [],
-                                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
+                                 [AC_MSG_ERROR([Unable to locate required GLES headers])],
+                                 [[#include <GLES2/gl2.h>
+                                 ]])
 
                 FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2"
               ])
