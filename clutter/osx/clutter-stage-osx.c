@@ -333,7 +333,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
   clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
 
   clutter_stage_osx_set_frame (self);
-  /* draw view should be avoided and it is the reason why
+  /* Draw view should be avoided and it is the reason why
      we should hide OpenGL view while we showing the stage.
   */
   BOOL isViewHidden = [self->view isHidden];
@@ -343,8 +343,10 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
     }
   [self->window makeKeyAndOrderFront: nil];
   [self->view setHidden:isViewHidden];
-
-  [self->window makeKeyAndOrderFront: nil];
+  /*
+   * After hiding we cease to be first responder.
+   */
+  [self->window makeFirstResponder: self->view];
 
   CLUTTER_OSX_POOL_RELEASE();
 }
