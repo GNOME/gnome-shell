@@ -29,191 +29,14 @@
 */
 
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
 #include "st-shadow.h"
+#include "st-private.h"
 #include "st-theme-private.h"
 #include "st-theme-context.h"
 #include "st-texture-cache.h"
 #include "st-theme-node-private.h"
-
-/*****
- * Shadows
- *****/
-
-static gdouble *
-calculate_gaussian_kernel (gdouble   sigma,
-                           guint     n_values)
-{
-  gdouble *ret, sum;
-  gdouble exp_divisor;
-  gint half, i;
-
-  g_return_val_if_fail (sigma > 0, NULL);
-
-  half = n_values / 2;
-
-  ret = g_malloc (n_values * sizeof (gdouble));
-  sum = 0.0;
-
-  exp_divisor = 2 * sigma * sigma;
-
-  /* n_values of 1D Gauss function */
-  for (i = 0; i < n_values; i++)
-    {
-      ret[i] = exp (-(i - half) * (i - half) / exp_divisor);
-      sum += ret[i];
-    }
-
-  /* normalize */
-  for (i = 0; i < n_values; i++)
-    ret[i] /= sum;
-
-  return ret;
-}
-
-static CoglHandle
-create_shadow_material (StThemeNode  *node,
-                        CoglHandle    src_texture)
-{
-  CoglHandle  material;
-  CoglHandle  texture;
-  StShadow   *shadow_spec;
-  guchar     *pixels_in, *pixels_out;
-  gint        width_in, height_in, rowstride_in;
-  gint        width_out, height_out, rowstride_out;
-  float       sigma;
-
-  shadow_spec = st_theme_node_get_shadow (node);
-  if (!shadow_spec)
-    return COGL_INVALID_HANDLE;
-
-  /* we use an approximation of the sigma - blur radius relationship used
-     in Firefox for doing SVG blurs; see
-     http://mxr.mozilla.org/mozilla-central/source/gfx/thebes/src/gfxBlur.cpp#280
-  */
-  sigma = shadow_spec->blur / 1.9;
-
-  width_in  = cogl_texture_get_width  (src_texture);
-  height_in = cogl_texture_get_height (src_texture);
-  rowstride_in = (width_in + 3) & ~3;
-
-  pixels_in  = g_malloc0 (rowstride_in * height_in);
-
-  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
-                         rowstride_in, pixels_in);
-
-  if ((guint) shadow_spec->blur == 0)
-    {
-      width_out  = width_in;
-      height_out = height_in;
-      rowstride_out = rowstride_in;
-      pixels_out = g_memdup (pixels_in, rowstride_out * height_out);
-    }
-  else
-    {
-      gdouble *kernel;
-      guchar  *line;
-      gint     n_values, half;
-      gint     x_in, y_in, x_out, y_out, i;
-
-      n_values = (gint) 5 * sigma;
-      half = n_values / 2;
-
-      width_out  = width_in  + 2 * half;
-      height_out = height_in + 2 * half;
-      rowstride_out = (width_out + 3) & ~3;
-
-      pixels_out = g_malloc0 (rowstride_out * height_out);
-      line       = g_malloc0 (rowstride_out);
-
-      kernel = calculate_gaussian_kernel (sigma, n_values);
-
-      /* vertical blur */
-      for (x_in = 0; x_in < width_in; x_in++)
-        for (y_out = 0; y_out < height_out; y_out++)
-          {
-            guchar *pixel_in, *pixel_out;
-            gint i0, i1;
-
-            y_in = y_out - half;
-
-            /* We read from the source at 'y = y_in + i - half'; clamp the
-             * full i range [0, n_values) so that y is in [0, height_in).
-             */
-            i0 = MAX (half - y_in, 0);
-            i1 = MIN (height_in + half - y_in, n_values);
-
-            pixel_in  =  pixels_in + (y_in + i0 - half) * rowstride_in + x_in;
-            pixel_out =  pixels_out + y_out * rowstride_out + (x_in + half);
-
-            for (i = i0; i < i1; i++)
-              {
-                *pixel_out += *pixel_in * kernel[i];
-                pixel_in += rowstride_in;
-              }
-          }
-
-      /* horizontal blur */
-      for (y_out = 0; y_out < height_out; y_out++)
-        {
-          memcpy (line, pixels_out + y_out * rowstride_out, rowstride_out);
-
-          for (x_out = 0; x_out < width_out; x_out++)
-            {
-              gint i0, i1;
-              guchar *pixel_out, *pixel_in;
-
-              /* We read from the source at 'x = x_out + i - half'; clamp the
-               * full i range [0, n_values) so that x is in [0, width_out).
-               */
-              i0 = MAX (half - x_out, 0);
-              i1 = MIN (width_out + half - x_out, n_values);
-
-              pixel_in  = line + x_out + i0 - half;
-              pixel_out = pixels_out + rowstride_out * y_out + x_out;
-
-              *pixel_out = 0;
-              for (i = i0; i < i1; i++)
-                {
-                  *pixel_out += *pixel_in * kernel[i];
-                  pixel_in++;
-                }
-            }
-        }
-      g_free (kernel);
-      g_free (line);
-    }
-
-  texture = cogl_texture_new_from_data (width_out,
-                                        height_out,
-                                        COGL_TEXTURE_NONE,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        rowstride_out,
-                                        pixels_out);
-
-  g_free (pixels_in);
-  g_free (pixels_out);
-
-  material = cogl_material_new ();
-
-  cogl_material_set_layer (material, 0, texture);
-
-  /* We set up the material to blend the shadow texture with the combine
-   * constant, but defer setting the latter until painting, so that we can
-   * take the actor's overall opacity into account. */
-  cogl_material_set_layer_combine (material, 0,
-                                   "RGBA = MODULATE (CONSTANT, TEXTURE[A])",
-                                   NULL);
-
-
-  cogl_handle_unref (texture);
-
-  return material;
-}
-
 
 /****
  * Rounded corners
@@ -750,7 +573,8 @@ st_theme_node_render_resources (StThemeNode   *node,
   if (shadow_spec)
     {
       if (node->border_texture != COGL_INVALID_HANDLE)
-        node->border_shadow_material = create_shadow_material (node, node->border_texture);
+        node->border_shadow_material = _st_create_shadow_material (shadow_spec,
+                                                                   node->border_texture);
       else if (node->background_color.alpha > 0 ||
                node->border_width[ST_SIDE_TOP] > 0 ||
                node->border_width[ST_SIDE_LEFT] > 0 ||
@@ -775,8 +599,8 @@ st_theme_node_render_resources (StThemeNode   *node,
               cogl_pop_framebuffer ();
               cogl_handle_unref (offscreen);
 
-              node->border_shadow_material = create_shadow_material (node,
-                                                                     buffer);
+              node->border_shadow_material = _st_create_shadow_material (shadow_spec,
+                                                                         buffer);
             }
           cogl_handle_unref (buffer);
         }
@@ -790,7 +614,8 @@ st_theme_node_render_resources (StThemeNode   *node,
 
       if (shadow_spec)
         {
-          node->background_shadow_material = create_shadow_material (node, node->background_texture);
+          node->background_shadow_material = _st_create_shadow_material (shadow_spec,
+                                                                         node->background_texture);
         }
     }
 
@@ -821,32 +646,6 @@ paint_texture_with_opacity (CoglHandle       texture,
   cogl_rectangle (box->x1, box->y1, box->x2, box->y2);
 
   cogl_handle_unref (material);
-}
-
-static void
-paint_shadow_with_opacity (CoglHandle       shadow_material,
-                           StShadow        *shadow_spec,
-                           ClutterActorBox *box,
-                           guint8           paint_opacity)
-{
-  ClutterActorBox shadow_box;
-  CoglColor       color;
-
-  st_shadow_get_box (shadow_spec, box, &shadow_box);
-
-  cogl_color_set_from_4ub (&color,
-                           shadow_spec->color.red   * paint_opacity / 255,
-                           shadow_spec->color.green * paint_opacity / 255,
-                           shadow_spec->color.blue  * paint_opacity / 255,
-                           shadow_spec->color.alpha * paint_opacity / 255);
-  cogl_color_premultiply (&color);
-
-  cogl_material_set_layer_combine_constant (shadow_material, 0, &color);
-
-  cogl_set_source (shadow_material);
-  cogl_rectangle_with_texture_coords (shadow_box.x1, shadow_box.y1,
-                                      shadow_box.x2, shadow_box.y2,
-                                      0, 0, 1, 1);
 }
 
 static void
@@ -1162,10 +961,10 @@ st_theme_node_paint (StThemeNode           *node,
    */
 
   if (node->border_shadow_material)
-    paint_shadow_with_opacity (node->border_shadow_material,
-                               node->shadow,
-                               &allocation,
-                               paint_opacity);
+    _st_paint_shadow_with_opacity (node->shadow,
+                                   node->border_shadow_material,
+                                   &allocation,
+                                   paint_opacity);
 
   if (node->border_texture != COGL_INVALID_HANDLE)
     {
@@ -1199,10 +998,10 @@ st_theme_node_paint (StThemeNode           *node,
        * like boder and background color into account).
        */
       if (node->background_shadow_material != COGL_INVALID_HANDLE)
-        paint_shadow_with_opacity (node->background_shadow_material,
-                                   node->shadow,
-                                   &background_box,
-                                   paint_opacity);
+        _st_paint_shadow_with_opacity (node->shadow,
+                                       node->background_shadow_material,
+                                       &background_box,
+                                       paint_opacity);
 
       paint_texture_with_opacity (node->background_texture, &background_box, paint_opacity);
     }

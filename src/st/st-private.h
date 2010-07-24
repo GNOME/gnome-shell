@@ -27,6 +27,7 @@
 #include <glib.h>
 #include "st-widget.h"
 #include "st-bin.h"
+#include "st-shadow.h"
 
 G_BEGIN_DECLS
 
@@ -71,5 +72,15 @@ void _st_allocate_fill (StWidget        *parent,
 
 void _st_set_text_from_style (ClutterText *text,
                               StThemeNode *theme_node);
+
+/* Helper for widgets which need to draw additional shadows */
+CoglHandle _st_create_shadow_material (StShadow   *shadow_spec,
+                                       CoglHandle  src_texture);
+CoglHandle _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
+                                                  ClutterActor *actor);
+void _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
+                                    CoglHandle       shadow_material,
+                                    ClutterActorBox *box,
+                                    guint8           paint_opacity);
 
 #endif /* __ST_PRIVATE_H__ */
