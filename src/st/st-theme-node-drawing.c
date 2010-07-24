@@ -50,7 +50,7 @@ calculate_gaussian_kernel (gdouble   sigma,
   gdouble exp_divisor;
   gint half, i;
 
-  g_return_val_if_fail ((int) sigma > 0, NULL);
+  g_return_val_if_fail (sigma > 0, NULL);
 
   half = n_values / 2;
 
