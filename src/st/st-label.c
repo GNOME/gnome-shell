@@ -59,6 +59,10 @@ enum
 struct _StLabelPrivate
 {
   ClutterActor *label;
+
+  CoglHandle    text_shadow_material;
+  float         shadow_width;
+  float         shadow_height;
 };
 
 G_DEFINE_TYPE (StLabel, st_label, ST_TYPE_WIDGET);
@@ -111,6 +115,12 @@ static void
 st_label_style_changed (StWidget *self)
 {
   StLabelPrivate *priv = ST_LABEL(self)->priv;
+
+  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->text_shadow_material);
+      priv->text_shadow_material = COGL_INVALID_HANDLE;
+    }
 
   _st_set_text_from_style ((ClutterText *)priv->label, st_widget_get_theme_node (self));
 
@@ -182,6 +192,12 @@ st_label_dispose (GObject   *object)
       priv->label = NULL;
     }
 
+  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->text_shadow_material);
+      priv->text_shadow_material = COGL_INVALID_HANDLE;
+    }
+
   G_OBJECT_CLASS (st_label_parent_class)->dispose (object);
 }
 
@@ -190,9 +206,46 @@ st_label_paint (ClutterActor *actor)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
   ClutterActorClass *parent_class;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  StShadow *shadow_spec = st_theme_node_get_text_shadow (theme_node);
 
   parent_class = CLUTTER_ACTOR_CLASS (st_label_parent_class);
   parent_class->paint (actor);
+
+  if (shadow_spec)
+    {
+      ClutterActorBox allocation;
+      float width, height;
+
+      clutter_actor_get_allocation_box (priv->label, &allocation);
+      clutter_actor_box_get_size (&allocation, &width, &height);
+
+      allocation.x1 = allocation.y1 = 0;
+      allocation.x2 = width;
+      allocation.y2 = height;
+
+      if (priv->text_shadow_material == COGL_INVALID_HANDLE ||
+          width != priv->shadow_width ||
+          height != priv->shadow_height)
+        {
+          CoglHandle material;
+
+          if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+            cogl_handle_unref (priv->text_shadow_material);
+
+          material = _st_create_shadow_material_from_actor (shadow_spec,
+                                                            priv->label);
+
+          priv->shadow_width = width;
+          priv->shadow_height = height;
+          priv->text_shadow_material = material;
+        }
+
+      _st_paint_shadow_with_opacity (shadow_spec,
+                                     priv->text_shadow_material,
+                                     &allocation,
+                                     clutter_actor_get_paint_opacity (priv->label));
+    }
 
   clutter_actor_paint (priv->label);
 }
@@ -265,6 +318,9 @@ st_label_init (StLabel *label)
   label->priv->label = g_object_new (CLUTTER_TYPE_TEXT,
                                      "ellipsize", PANGO_ELLIPSIZE_END,
                                      NULL);
+  label->priv->text_shadow_material = COGL_INVALID_HANDLE;
+  label->priv->shadow_width = -1.;
+  label->priv->shadow_height = -1.;
 
   clutter_actor_set_parent (priv->label, CLUTTER_ACTOR (label));
 }
@@ -321,6 +377,12 @@ st_label_set_text (StLabel     *label,
   g_return_if_fail (text != NULL);
 
   priv = label->priv;
+
+  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->text_shadow_material);
+      priv->text_shadow_material = COGL_INVALID_HANDLE;
+    }
 
   clutter_text_set_text (CLUTTER_TEXT (priv->label), text);
 
