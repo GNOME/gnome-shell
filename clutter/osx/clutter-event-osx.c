@@ -186,10 +186,10 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       event->motion.modifier_state = [nsevent clutterModifierState];
       [nsevent clutterX:&(event->button.x) y:&(event->button.y)];
 
-      CLUTTER_NOTE (EVENT, "button %d %s at %d,%d clicks=%d",
-                    [nsevent buttonNumber],
+      CLUTTER_NOTE (EVENT, "button %d %s at %f,%f clicks=%d",
+                    (int)[nsevent buttonNumber],
                     event->type == CLUTTER_BUTTON_PRESS ? "press" : "release",
-                    event->button.x, event->button.y,
+                    (float)event->button.x, (float)event->button.y,
                     event->button.click_count);
       return TRUE;
 
@@ -202,9 +202,9 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       [nsevent clutterX:&(event->motion.x) y:&(event->motion.y)];
       event->motion.modifier_state = [nsevent clutterModifierState];
 
-      CLUTTER_NOTE (EVENT, "motion %d at %d,%d",
-                    [nsevent buttonNumber],
-                    event->button.x, event->button.y);
+      CLUTTER_NOTE (EVENT, "motion %d at %f,%f",
+                    (int)[nsevent buttonNumber],
+                    (float)event->button.x, (float)event->button.y);
       return TRUE;
 
     case NSKeyDown:
@@ -228,7 +228,7 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       return TRUE;
 
     default:
-      CLUTTER_NOTE (EVENT, "unhandled event %d", [nsevent type]);
+      CLUTTER_NOTE (EVENT, "unhandled event %d", (int)[nsevent type]);
       break;
     }
 
