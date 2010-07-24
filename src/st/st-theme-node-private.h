@@ -47,6 +47,7 @@ struct _StThemeNode {
   char *background_image;
   StBorderImage *border_image;
   StShadow *shadow;
+  StShadow *text_shadow;
 
   GType element_type;
   char *element_id;
@@ -66,6 +67,7 @@ struct _StThemeNode {
   guint foreground_computed : 1;
   guint border_image_computed : 1;
   guint shadow_computed : 1;
+  guint text_shadow_computed : 1;
   guint link_type : 2;
 
   /* Graphics state */

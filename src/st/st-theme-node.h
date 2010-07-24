@@ -167,6 +167,7 @@ const PangoFontDescription *st_theme_node_get_font (StThemeNode *node);
 
 StBorderImage *st_theme_node_get_border_image (StThemeNode *node);
 StShadow      *st_theme_node_get_shadow       (StThemeNode *node);
+StShadow      *st_theme_node_get_text_shadow  (StThemeNode *node);
 
 /* Helpers for get_preferred_width()/get_preferred_height() ClutterActor vfuncs */
 void st_theme_node_adjust_for_height       (StThemeNode  *node,

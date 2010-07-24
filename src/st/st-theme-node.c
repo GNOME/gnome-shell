@@ -103,6 +103,12 @@ st_theme_node_finalize (GObject *object)
       node->shadow = NULL;
     }
 
+  if (node->text_shadow)
+    {
+      st_shadow_unref (node->text_shadow);
+      node->text_shadow = NULL;
+    }
+
   if (node->background_image)
     g_free (node->background_image);
 
@@ -2452,6 +2458,72 @@ st_theme_node_get_vertical_padding (StThemeNode *node)
   return padding;
 }
 
+static void
+parse_shadow_property (StThemeNode   *node,
+                       CRDeclaration *decl,
+                       ClutterColor  *color,
+                       gdouble       *xoffset,
+                       gdouble       *yoffset,
+                       gdouble       *blur,
+                       gdouble       *spread)
+{
+  /* Set value for width/color/blur in any order */
+  CRTerm *term;
+  int n_offsets = 0;
+
+  /* default values */
+  color->red = 0x0; color->green = 0x0; color->blue = 0x0; color->alpha = 0xff;
+  *xoffset = 0.;
+  *yoffset = 0.;
+  *blur = 0.;
+  *spread = 0.;
+
+  for (term = decl->value; term; term = term->next)
+    {
+      GetFromTermResult result;
+
+      if (term->type == TERM_NUMBER)
+        {
+          gdouble value;
+          gdouble multiplier;
+
+          multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
+          result = get_length_from_term (node, term, FALSE, &value);
+          if (result != VALUE_NOT_FOUND)
+            {
+              switch (n_offsets++)
+                {
+                case 0:
+                  *xoffset = multiplier * value;
+                  break;
+                case 1:
+                  *yoffset = multiplier * value;
+                  break;
+                case 2:
+                  if (multiplier < 0)
+                      g_warning ("Negative blur values are "
+                                 "not allowed");
+                  *blur = value;
+                  break;
+                case 3:
+                  if (multiplier < 0)
+                      g_warning ("Negative spread values are "
+                                 "not allowed");
+                  *spread = value;
+                  break;
+                }
+              continue;
+            }
+        }
+
+      result = get_color_from_term (node, term, color);
+      if (result != VALUE_NOT_FOUND)
+        {
+          continue;
+        }
+    }
+}
+
 /**
  * st_theme_node_get_shadow:
  * @node: a #StThemeNode
@@ -2480,59 +2552,15 @@ st_theme_node_get_shadow (StThemeNode *node)
 
       if (strcmp (decl->property->stryng->str, "-st-shadow") == 0)
         {
-          /* Set value for width/color/blur in any order */
-          CRTerm *term;
-          ClutterColor color = { 0x0, 0x0, 0x0, 0xff };
-          gdouble xoffset = 0.;
-          gdouble yoffset = 0.;
-          gdouble blur = 0.;
-          gdouble spread = 0.;
-          int n_offsets = 0;
+          ClutterColor color;
+          gdouble xoffset;
+          gdouble yoffset;
+          gdouble blur;
+          gdouble spread;
 
-          for (term = decl->value; term; term = term->next)
-            {
-              GetFromTermResult result;
+          parse_shadow_property (node, decl,
+                                 &color, &xoffset, &yoffset, &blur, &spread);
 
-              if (term->type == TERM_NUMBER)
-                {
-                  gdouble value;
-                  gdouble multiplier;
-
-                  multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
-                  result = get_length_from_term (node, term, FALSE, &value);
-                  if (result != VALUE_NOT_FOUND)
-                    {
-                      switch (n_offsets++)
-                        {
-                        case 0:
-                          xoffset = multiplier * value;
-                          break;
-                        case 1:
-                          yoffset = multiplier * value;
-                          break;
-                        case 2:
-                          if (multiplier < 0)
-                              g_warning ("Negative blur values are "
-                                         "not allowed");
-                          blur = value;
-                          break;
-                        case 3:
-                          if (multiplier < 0)
-                              g_warning ("Negative spread values are "
-                                         "not allowed");
-                          spread = value;
-                          break;
-                        }
-                      continue;
-                    }
-                }
-
-              result = get_color_from_term (node, term, &color);
-              if (result != VALUE_NOT_FOUND)
-                {
-                  continue;
-                }
-            }
           node->shadow = st_shadow_new (&color,
                                         xoffset, yoffset,
                                         blur, spread);
@@ -2541,6 +2569,62 @@ st_theme_node_get_shadow (StThemeNode *node)
         }
     }
   return NULL;
+}
+
+/**
+ * st_theme_node_get_text_shadow:
+ * @node: a #StThemeNode
+ *
+ * Gets the value for the text-shadow style property
+ *
+ * Return value: (transfer none): the node's text-shadow, or %NULL
+ *   if node has no text-shadow
+ */
+StShadow *
+st_theme_node_get_text_shadow (StThemeNode *node)
+{
+  StShadow *result = NULL;
+  int i;
+
+  if (node->text_shadow_computed)
+    return node->text_shadow;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, "text-shadow") == 0)
+        {
+          ClutterColor color;
+          gdouble xoffset;
+          gdouble yoffset;
+          gdouble blur;
+          gdouble spread;
+
+          parse_shadow_property (node, decl,
+                                 &color, &xoffset, &yoffset, &blur, &spread);
+
+          result = st_shadow_new (&color,
+                                  xoffset, yoffset,
+                                  blur, spread);
+
+          break;
+        }
+    }
+
+  if (!result && node->parent_node)
+    {
+      result = st_theme_node_get_text_shadow (node->parent_node);
+      if (result)
+        st_shadow_ref (result);
+    }
+
+  node->text_shadow = result;
+  node->text_shadow_computed = TRUE;
+
+  return result;
 }
 
 static float
