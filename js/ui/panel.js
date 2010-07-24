@@ -12,6 +12,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const Calendar = imports.ui.calendar;
+const Config = imports.misc.config;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -35,6 +36,9 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator
 };
+
+if (Config.HAVE_BLUETOOTH)
+    STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
 const CLOCK_FORMAT_KEY        = 'format';
 const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
@@ -815,24 +819,8 @@ Panel.prototype = {
         this._rightBox.add(trayBox);
         this._rightBox.add(statusBox);
 
-        for (let i = 0; i < STANDARD_TRAY_ICON_ORDER.length; i++) {
-            let role = STANDARD_TRAY_ICON_ORDER[i];
-            let constructor = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role];
-            if (!constructor) {
-                // This icon is not implemented (this is a bug)
-                continue;
-            }
-            let indicator = new constructor();
-            statusBox.add(indicator.actor);
-            this._menus.addMenu(indicator.menu);
-        }
-
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
-
-        this._statusmenu = new StatusMenu.StatusMenuButton();
-        this._menus.addMenu(this._statusmenu.menu);
-        this._rightBox.add(this._statusmenu.actor);
 
         // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
@@ -857,6 +845,24 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
+    },
+
+    startStatusArea: function() {
+        for (let i = 0; i < STANDARD_TRAY_ICON_ORDER.length; i++) {
+            let role = STANDARD_TRAY_ICON_ORDER[i];
+            let constructor = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role];
+            if (!constructor) {
+                // This icon is not implemented (this is a bug)
+                continue;
+            }
+            let indicator = new constructor();
+            this._statusBox.add(indicator.actor);
+            this._menus.addMenu(indicator.menu);
+        }
+
+        this._statusmenu = new StatusMenu.StatusMenuButton();
+        this._menus.addMenu(this._statusmenu.menu);
+        this._rightBox.add(this._statusmenu.actor);
     },
 
     hideCalendar: function() {

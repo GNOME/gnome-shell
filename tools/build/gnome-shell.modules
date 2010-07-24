@@ -230,6 +230,7 @@
         <dep package="gnome-icon-theme-symbolic"/>
         <dep package="libcanberra"/>
 	<dep package="gnome-settings-daemon"/>
+	<dep package="gnome-bluetooth"/>
     </dependencies>
   </autotools>
 
@@ -250,6 +251,15 @@
       <dep package="gnome-power-manager"/>
     </dependencies>
   </metamodule>
+
+  <autotools id="gnome-bluetooth" autogenargs="--disable-nautilus-sendto">
+    <branch repo="git.gnome.org" module="gnome-bluetooth" />
+    <dependencies>
+       <dep package="gobject-introspection"/>
+       <dep package="gnome-control-center"/>
+       <dep package="libnotify"/>
+    </dependencies>
+  </autotools>
 
   <tarball id="polkit" version="0.99">
     <source href="http://hal.freedesktop.org/releases/polkit-0.99.tar.gz"

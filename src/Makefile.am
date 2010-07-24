@@ -218,10 +218,12 @@ libgnome_shell_la_LIBADD =	\
 	-lm			\
 	$(MUTTER_PLUGIN_LIBS)	\
 	$(LIBGNOMEUI_LIBS)      \
+	$(BLUETOOTH_LIBS)	\
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
 	libtray.la		\
 	libgvc.la
+
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)

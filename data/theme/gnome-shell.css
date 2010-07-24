@@ -883,7 +883,7 @@ StTooltip StLabel {
     color: #bbbbbb;
 }
 
-.chat-response {
+#notification StEntry {
     padding: 4px;
     border-radius: 4px;
     border: 1px solid #565656;
@@ -893,7 +893,7 @@ StTooltip StLabel {
     caret-size: 1px;
 }
 
-.chat-response:focus {
+#notification StEntry:focus {
     border: 1px solid #3a3a3a;
     color: #545454;
     background-color: #e8e8e8;

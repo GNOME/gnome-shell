@@ -1,0 +1,3 @@
+/* mode: js2; indent-tabs-mode: nil; tab-size: 4 */
+const HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
+

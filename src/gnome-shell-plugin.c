@@ -357,6 +357,10 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                                "GL buffer swap complete event received (with timestamp of completion)",
                                "x");
 
+#if HAVE_BLUETOOTH
+  g_irepository_prepend_search_path (BLUETOOTH_DIR);
+#endif
+
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   shell_js = g_getenv("GNOME_SHELL_JS");
