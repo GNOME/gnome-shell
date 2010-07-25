@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-18 13:09+0200\n"
-"PO-Revision-Date: 2010-03-18 11:30+0200\n"
+"POT-Creation-Date: 2010-07-25 18:40+0300\n"
+"PO-Revision-Date: 2010-07-25 18:35+0300\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,32 +25,260 @@ msgstr "Обвивка на GNOME"
 msgid "Window management and application launching"
 msgstr "Управление на прозорци и стартиране на програми"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Часовник"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "Персонализиране на часовника в панела"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Разрешава достъпа до вътрешни инструменти за наблюдение и изчистване грешки "
+"чрез Alt-F2."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "Личен формат за часовника"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Включване на вътрешни инструменти полезни за разработчици и изпитатели чрез "
+"Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "Разширение на файла за съхранение на записите"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "Честота на кадрите за създаваните записи"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"Разширенията на Обвивката на GNOME имат идентификатор (uuid). Този ключ "
+"съдържа списък на разширенията, които да не се зареждат."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "История на командата Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "Формат на часа"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"Показване на дата в допълнение към времето, ако е зададено „истина“ и "
+"форматът е  „12-hour“ или  „24-hour“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"Показване на секунди към времето, ако е зададено „истина“ и форматът е  „12-"
+"hour“ или  „24-hour“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Показване на деня от седмицата по ISO, ако е зададено „истина“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+"Списък на идентификаторите на файловете във формат .desktop за любими "
+"програми"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "Цялостен преглед на режима на изглед на работния плот"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"Задава конвейера на GStreamer, който ще се използва за кодиране на записите. "
+"Използвайте синтаксиса на gst-launch. Конвейерът трябва да бъде с несвързан "
+"блок-приемник, където се записва видеото. Обикновено конвейерът е с "
+"несвързан блок-източник. Изходът от този блок ще бъде записан в изходния "
+"файл. Въпреки това конвейерът може да задава собствен изход — това може да "
+"се използва за изпращане на изхода към icecast сървър чрез „shout2send“ или "
+"подобен елемент. Когато този ключ не е зададен или стойността му e празна, "
+"се използва стандартния конвейер. За момента това е „videorate ! theoraenc ! "
+"oggmux“ и записва видео във формат Ogg Theora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "Показване на дата в часовника"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "Показване на деня от седмицата в календара"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "Показване на секунди към времето"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Програмите, които отговарят на тези идентификатор, ще бъдат показани в "
+"областта „Любими“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Разширението ще се използва към името на файла за създадените записи на "
+"екрана, което ще бъде уникално и ще зависи от текущата дата. Трябва да го "
+"промените, когато записвате в различен формат на контейнера."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Честота на кадрите за записа на екрана създаден от записващата програма на "
+"Обвивката на GNOME в кадри за секунда."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Конвейерът на gstreamer използван за кодиране на записа на екрана"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"Избраният режим на изглед на работния плот в прозореца за цялостен преглед. "
+"Поддържаните стойности са „single“ и „grid“"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Обикновено обвивката наблюдава работещите програми, за да представя най-"
+"често използваните (например в стартери). Въпреки, че тази информация се "
+"пази в тайна, може да желаете да изключите тази функционалност, за да "
+"защитите личните си данни. Забележете, че дори да го направите, това няма да "
+"премахне вече запазените данни."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"Този ключ определя форма̀та използван от часовника в панела, когато ключът за "
+"форма̀та е настроен на „custom“ (личен). Може да използвате форматиращите "
+"знаци ползвани от strftime(), за да получите определен формат. За повече "
+"информация погледнете страницата от ръководството за strftime()."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"Този ключ определя форма̀та на часа използван от часовника в панела. "
+"Възможните стойности са „12-hour“, „24-hour“, „unix“ и „custom“. Ако е "
+"настроен на „unix“, часовникът ще показва времето от епохата, примерно: "
+"1970-01-01. Ако е настроен на „custom“, часовникът ще показва времето според "
+"форма̀та определен в ключа custom_format. Ако е настроен на „unix“ или "
+"„custom“, ключовете show_data и show_seconds се пренебрегват."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+msgid "Uuids of extensions to disable"
+msgstr "Идентификатори (uuid) на приставки, които да бъдат изключени"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "Дали да се събира статистика за използването на програми"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Формат на часовника"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Настройки на часовника"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Изглед на панела"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Показване на _секундите"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Показване на _датата"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "12-_часов формат"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "24-ч_асов формат"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "ПРЕДПОЧИТАНИЯ"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "Нов прозорец"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "Премахване от „Любими“"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "Добавяне в „Любими“"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "Довлачете до тук обектите за да ги добавите към „Любими“"
 
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:88
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "Програмата „%s“ беше добавена в „Любими“"
@@ -59,179 +288,235 @@ msgstr "Програмата „%s“ беше добавена в „Любим
 msgid "%s has been removed from your favorites."
 msgstr "Програмата „%s“ беше премахната от „Любими“"
 
-#: ../js/ui/dash.js:194
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "Търсене"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:471
 msgid "Searching..."
 msgstr "Търсене…"
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:485
 msgid "No matching results."
 msgstr "Няма съвпадения."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:536
+#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
 msgid "PLACES & DEVICES"
 msgstr "МЕСТА И УСТРОЙСТВА"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "СКОРО ОТВАРЯНИ"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:471
 msgid "No extensions installed"
 msgstr "Няма инсталирани разширения"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:508
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:510
 msgid "Disabled"
 msgstr "Изключено"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:512
 msgid "Error"
 msgstr "Грешка"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:514
 msgid "Out of date"
 msgstr "Остаряло"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:539
 msgid "View Source"
 msgstr "Преглед на програмния код"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:545
 msgid "Web Page"
 msgstr "Домашна страница"
 
-#: ../js/ui/overview.js:182
+#: ../js/ui/overview.js:159
 msgid "Undo"
 msgstr "Отмяна"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:385
-msgid "Activities"
-msgstr "Дейности"
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "Спиране на програмата „%s“"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:616
+#: ../js/ui/panel.js:498
+msgid "Preferences"
+msgstr "Настройки"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:584
+msgid "%a %b %e, %R:%S"
+msgstr "%a, %e %b, %R:%S"
+
+#: ../js/ui/panel.js:585
+msgid "%a %b %e, %R"
+msgstr "%a, %e %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:589
+msgid "%a %R:%S"
+msgstr "%a, %R:%S"
+
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%a, %R"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:619
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:597
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a, %e %b, %l:%M:%S %p"
+
+#: ../js/ui/panel.js:598
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a, %e %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:602
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/placeDisplay.js:103
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:741
+msgid "Activities"
+msgstr "Дейности"
+
+#: ../js/ui/placeDisplay.js:107
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Неуспех при демонтиране на „%s“"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:110
 msgid "Retry"
 msgstr "Повторен опит"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:155
 msgid "Connect to..."
 msgstr "Свързване към…"
 
-#: ../js/ui/runDialog.js:221
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "ВКЛ"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "ИЗКЛ"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "Въведете команда:"
 
-#: ../js/ui/runDialog.js:344
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Неуспешно изпълнение на „%s“:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "Налично"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "Заето"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "Невидимо"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "Информация за настройките на потребителя…"
 
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "Странична лента"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "Системни настройки…"
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "Заключване на екрана"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "Смяна на потребител"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "Изход…"
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "Изключване на компютъра…"
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../js/ui/windowAttentionHandler.js:45
+#, c-format
+msgid "%s has finished starting"
+msgstr "Програмата „%s“ стартира успешно"
 
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Програми"
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "'%s' is ready"
+msgstr "Програмата „%s“ е готова за употреба"
 
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Скоро отваряни документи"
+#: ../js/ui/workspacesView.js:230
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"Неуспех при добавяне на нов работен плот. Достигнат е максималният брой на "
+"възможните работни плотове."
 
-#: ../src/shell-global.c:967
+#: ../js/ui/workspacesView.js:247
+msgid "Can't remove the first workspace."
+msgstr "Премахването на първия работен плот не е възможно."
+
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "Преди по-малко от минута"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "преди %d минута"
 msgstr[1] "преди %d минути"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "преди %d час"
 msgstr[1] "преди %d часа"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "преди %d ден"
 msgstr[1] "преди %d дни"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
