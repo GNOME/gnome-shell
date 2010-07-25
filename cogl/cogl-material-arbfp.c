@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-debug.h"
 #include "cogl-material-private.h"
 
 #ifdef COGL_MATERIAL_BACKEND_ARBFP

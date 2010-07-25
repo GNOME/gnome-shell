@@ -31,6 +31,7 @@
 
 #include "cogl.h"
 
+#include "cogl-debug.h"
 #include "cogl-material-opengl-private.h"
 #include "cogl-material-private.h"
 #include "cogl-context.h"

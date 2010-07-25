@@ -34,6 +34,7 @@
 #include <pango/pango-renderer.h>
 #include <cairo.h>
 
+#include "cogl/cogl-debug.h"
 #include "cogl-pango-private.h"
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-display-list.h"

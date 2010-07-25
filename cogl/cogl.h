@@ -34,7 +34,6 @@
 #include <cogl/cogl-object.h>
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
-#include <cogl/cogl-debug.h>
 #include <cogl/cogl-fixed.h>
 #include <cogl/cogl-material.h>
 #include <cogl/cogl-matrix.h>
