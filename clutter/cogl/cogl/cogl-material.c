@@ -30,6 +30,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-object.h"

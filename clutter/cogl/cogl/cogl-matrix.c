@@ -27,6 +27,7 @@
 #define USE_MESA_MATRIX_API
 
 #include <cogl.h>
+#include "cogl-debug.h"
 #include <cogl-matrix.h>
 #include <cogl-matrix-private.h>
 #ifdef USE_MESA_MATRIX_API

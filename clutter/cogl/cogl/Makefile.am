@@ -57,7 +57,6 @@ cogl_public_h = \
 	$(srcdir)/cogl-bitmap.h 		\
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
-	$(srcdir)/cogl-debug.h 			\
 	$(srcdir)/cogl-fixed.h 			\
 	$(srcdir)/cogl-material.h 		\
 	$(srcdir)/cogl-vector.h 		\
@@ -75,6 +74,7 @@ cogl_public_h = \
 	$(NULL)
 
 cogl_sources_c = \
+	$(srcdir)/cogl-debug.h 				\
 	$(srcdir)/winsys/cogl-winsys.h			\
 	$(srcdir)/winsys/cogl-context-winsys.h          \
 	$(srcdir)/winsys/cogl-context-winsys.c          \
