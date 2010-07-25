@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-06-19 19:36+0000\n"
-"PO-Revision-Date: 2010-06-20 20:54+0100\n"
+"POT-Creation-Date: 2010-07-25 15:41+0000\n"
+"PO-Revision-Date: 2010-07-25 21:26+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -174,28 +174,28 @@ msgid "_24 hour format"
 msgstr "_24-urni zapis časa"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388
-#: ../js/ui/dash.js:767
+#: ../js/ui/appDisplay.js:384
+#: ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:420
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "Možnosti"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:731
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1038
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
@@ -204,34 +204,34 @@ msgstr "S potegom na to mesto se izbor doda med priljubljene"
 msgid "%s has been added to your favorites."
 msgstr "Program \"%s\" je dodan med priljubljeno."
 
-#: ../js/ui/appFavorites.js:106
+#: ../js/ui/appFavorites.js:107
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/dash.js:146
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "Najdi"
 
-#: ../js/ui/dash.js:465
+#: ../js/ui/dash.js:471
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/dash.js:479
+#: ../js/ui/dash.js:485
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:786
-#: ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:792
+#: ../js/ui/placeDisplay.js:550
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:793
-#: ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:799
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "Nedavni predmeti"
 
@@ -263,78 +263,98 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/overview.js:165
+#: ../js/ui/overview.js:159
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/panel.js:519
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "Končaj %s"
+
+#: ../js/ui/panel.js:498
 msgid "Preferences"
 msgstr "Možnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:584
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:606
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:610
+#: ../js/ui/panel.js:589
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:611
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:597
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:619
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:602
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:726
+#: ../js/ui/panel.js:741
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:107
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Ni mogoče odklopiti '%s'"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:110
 msgid "Retry"
 msgstr "Poskusi znova"
 
-#: ../js/ui/placeDisplay.js:157
+#: ../js/ui/placeDisplay.js:155
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/runDialog.js:234
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30
+#: ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "⚪"
+
+#: ../js/ui/popupMenu.js:31
+#: ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "⚫"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/runDialog.js:379
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
@@ -375,29 +395,29 @@ msgstr "Odjava ..."
 msgid "Shut Down..."
 msgstr "Izklopi ..."
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s je končal začenjanje"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:47
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
 
-#: ../js/ui/workspacesView.js:237
+#: ../js/ui/workspacesView.js:230
 msgid "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje dovoljeno število."
 
-#: ../js/ui/workspacesView.js:254
+#: ../js/ui/workspacesView.js:247
 msgid "Can't remove the first workspace."
 msgstr "Ni mogoče odstraniti prve delovne površine."
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:1043
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -406,7 +426,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:1048
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -415,7 +435,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:1053
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -424,7 +444,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:1058
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -457,8 +477,6 @@ msgstr "Poišči"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Quit %s"
-#~ msgstr "Končaj %s"
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
 #~ msgid "%H:%M"
