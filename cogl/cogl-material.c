@@ -3323,14 +3323,27 @@ _cogl_material_equal (CoglMaterial *material0,
                       gboolean skip_gl_color)
 {
   unsigned long  materials_difference;
+  gboolean ret;
+  COGL_STATIC_TIMER (material_equal_timer,
+                     "Mainloop", /* parent */
+                     "_cogl_material_equal",
+                     "The time spent comparing cogl materials",
+                     0 /* no application private data */);
+
+  COGL_TIMER_START (_cogl_uprof_context, material_equal_timer);
 
   if (material0 == material1)
-    return TRUE;
+    {
+      ret = TRUE;
+      goto done;
+    }
+
+  ret = FALSE;
 
   /* First check non-sparse properties */
 
   if (material0->real_blend_enable != material1->real_blend_enable)
-    return FALSE;
+    goto done;
 
   /* Then check sparse properties */
 
@@ -3347,20 +3360,20 @@ _cogl_material_equal (CoglMaterial *material0,
         _cogl_material_get_authority (material1, state);
 
       if (!cogl_color_equal (&authority0->color, &authority1->color))
-        return FALSE;
+        goto done;
     }
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_LIGHTING,
                               _cogl_material_lighting_state_equal))
-    return FALSE;
+    goto done;
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_ALPHA_FUNC,
                               _cogl_material_alpha_state_equal))
-    return FALSE;
+    goto done;
 
   /* We don't need to compare the detailed blending state if we know
    * blending is disabled for both materials. */
@@ -3374,7 +3387,7 @@ _cogl_material_equal (CoglMaterial *material0,
         _cogl_material_get_authority (material1, state);
 
       if (!_cogl_material_blend_state_equal (authority0, authority1))
-        return FALSE;
+        goto done;
     }
 
   /* XXX: we don't need to compare the BLEND_ENABLE state because it's
@@ -3391,33 +3404,36 @@ _cogl_material_equal (CoglMaterial *material0,
                               materials_difference,
                               COGL_MATERIAL_STATE_DEPTH,
                               _cogl_material_depth_state_equal))
-    return FALSE;
+    goto done;
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_FOG,
                               _cogl_material_fog_state_equal))
-    return FALSE;
+    goto done;
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_POINT_SIZE,
                               _cogl_material_point_size_equal))
-    return FALSE;
+    goto done;
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_USER_SHADER,
                               _cogl_material_user_shader_equal))
-    return FALSE;
+    goto done;
 
   if (!simple_property_equal (material0, material1,
                               materials_difference,
                               COGL_MATERIAL_STATE_LAYERS,
                               _cogl_material_layers_equal))
-    return FALSE;
+    goto done;
 
-  return TRUE;
+  ret = TRUE;
+done:
+  COGL_TIMER_STOP (_cogl_uprof_context, material_equal_timer);
+  return ret;
 }
 
 void
