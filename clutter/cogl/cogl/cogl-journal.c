@@ -196,7 +196,14 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                            int               batch_len,
                                            void             *data)
 {
+  COGL_STATIC_TIMER (time_flush_modelview_and_entries,
+                     "flush: material+entries", /* parent */
+                     "flush: modelview+entries",
+                     "The time spent flushing modelview + entries",
+                     0 /* no application private data */);
   CoglJournalFlushState *state = data;
+
+  COGL_TIMER_START (_cogl_uprof_context, time_flush_modelview_and_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
@@ -279,6 +286,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     }
 
   state->vertex_offset += (4 * batch_len);
+
+  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_modelview_and_entries);
 }
 
 static gboolean
@@ -311,8 +320,15 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
                                           void             *data)
 {
   unsigned long enable_flags = 0;
+  COGL_STATIC_TIMER (time_flush_material_entries,
+                     "flush: texcoords+material+entries", /* parent */
+                     "flush: material+entries",
+                     "The time spent flushing material + entries",
+                     0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context, time_flush_material_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:   material batch len = %d\n", batch_len);
@@ -339,6 +355,8 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
     }
   else
     _cogl_journal_flush_modelview_and_entries (batch_start, batch_len, data);
+
+  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_material_entries);
 }
 
 static gboolean
@@ -369,8 +387,16 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 {
   CoglJournalFlushState *state = data;
   int                    i;
+  COGL_STATIC_TIMER (time_flush_texcoord_material_entries,
+                     "flush: vbo+texcoords+material+entries", /* parent */
+                     "flush: texcoords+material+entries",
+                     "The time spent flushing texcoord offsets + material "
+                     "+ entries",
+                     0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context, time_flush_texcoord_material_entries);
 
   for (i = 0; i < batch_start->n_layers; i++)
     {
@@ -400,6 +426,7 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                   compare_entry_materials,
                   _cogl_journal_flush_material_and_entries,
                   data);
+  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_texcoord_material_entries);
 }
 
 static gboolean
@@ -425,8 +452,17 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   CoglHandle               indices_handle;
   CoglVertexBufferIndices *indices;
 #endif
+  COGL_STATIC_TIMER (time_flush_vbo_texcoord_material_entries,
+                     "Journal Flush", /* parent */
+                     "flush: vbo+texcoords+material+entries",
+                     "The time spent flushing vbo + texcoord offsets + "
+                     "material + entries",
+                     0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context,
+                    time_flush_vbo_texcoord_material_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:  vbo offset batch len = %d\n", batch_len);
@@ -495,6 +531,9 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   state->vbo_offset += (stride * 4 * batch_len);
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     g_print ("new vbo offset = %lu\n", (unsigned long)state->vbo_offset);
+
+  COGL_TIMER_STOP (_cogl_uprof_context,
+                   time_flush_vbo_texcoord_material_entries);
 }
 
 static gboolean
