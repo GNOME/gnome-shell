@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-07-02 06:59+0000\n"
-"PO-Revision-Date: 2010-07-03 12:50+0200\n"
+"POT-Creation-Date: 2010-07-22 13:07+0000\n"
+"PO-Revision-Date: 2010-07-26 21:15+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -172,6 +172,10 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
+"La «shell» normalmente monitoriza todas las aplicaciones activas para "
+"presentar las más usadas (ej. en los lanzadores). Aunque estos datos se "
+"mantienen de forma privada, puede querer desactivarlo por razones de "
+"privacidad. Note que haciéndolo no eliminará los datos ya guardados."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid ""
@@ -195,6 +199,13 @@ msgid ""
 "in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
 "the show_date and show_seconds keys are ignored."
 msgstr ""
+"Esta clave especifica el formato de la hora especificado por el reloj del "
+"panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+"«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará la "
+"hora en segundos desde la época (1 de enero de 1970). Si se establece a "
+"«custom» el reloj mostrará la hora según el formato especificado en la clave "
+"«custom_format». Note que si se establece a «unix» o «custom» se ignoran las "
+"claves «show_date» y «show_seconds»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Uuids of extensions to disable"
@@ -234,27 +245,27 @@ msgid "_24 hour format"
 msgstr "Formato _24 horas"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:777
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:420
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:729
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:1037
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
@@ -263,32 +274,32 @@ msgstr "Arrastrar aquí para añadir a los favoritos"
 msgid "%s has been added to your favorites."
 msgstr "Se ha añadido %s a sus favoritos."
 
-#: ../js/ui/appFavorites.js:106
+#: ../js/ui/appFavorites.js:107
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
-#: ../js/ui/dash.js:146
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "Buscar"
 
-#: ../js/ui/dash.js:475
+#: ../js/ui/dash.js:471
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/dash.js:489
+#: ../js/ui/dash.js:485
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:796 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:803 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
@@ -320,78 +331,96 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/overview.js:165
+#: ../js/ui/overview.js:159
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/panel.js:519
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "Salir de %s"
+
+#: ../js/ui/panel.js:498
 msgid "Preferences"
 msgstr "Preferencias"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:584
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:606
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:610
+#: ../js/ui/panel.js:589
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:611
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:597
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:619
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:602
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:762
+#: ../js/ui/panel.js:741
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:107
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Falló al desmontar «%s»"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:110
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../js/ui/placeDisplay.js:157
+#: ../js/ui/placeDisplay.js:155
 msgid "Connect to..."
 msgstr "Conectar a…"
 
-#: ../js/ui/runDialog.js:234
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "ENCENDIDO"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "APAGADO"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/runDialog.js:379
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
@@ -432,53 +461,53 @@ msgstr "Salir…"
 msgid "Shut Down..."
 msgstr "Apagar…"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s finalizó su lanzamiento"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:47
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:237
+#: ../js/ui/workspacesView.js:230
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "No se puede añadir un área de trabajo nueva porque se ha llegado al límite "
 "de áreas de trabajo."
 
-#: ../js/ui/workspacesView.js:254
+#: ../js/ui/workspacesView.js:247
 msgid "Can't remove the first workspace."
 msgstr "No se puede quitar el primer área de trabajo."
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1043
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1048
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1053
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1058
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -508,10 +537,6 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~| msgid "Quit"
-#~ msgid "Quit %s"
-#~ msgstr "Salir de %s"
 
 #~ msgid "Sidebar"
 #~ msgstr "Barra lateral"
