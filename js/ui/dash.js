@@ -583,6 +583,9 @@ MoreLink.prototype = {
     },
 
     activate: function() {
+        if (!this.actor.visible)
+            return true; // If the link isn't visible we don't want the header to react
+                         // to clicks
         if (this.pane == null) {
             // Ensure the pane is created; the activated handler will call setPane
             this.emit('activated');
