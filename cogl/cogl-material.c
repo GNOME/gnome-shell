@@ -5237,6 +5237,14 @@ _cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
     }
 }
 
+void
+_cogl_material_pre_paint_for_layer (CoglMaterial *material,
+                                    int layer_id)
+{
+  CoglMaterialLayer *layer = _cogl_material_get_layer (material, layer_id);
+  _cogl_material_layer_pre_paint (layer);
+}
+
 CoglMaterialFilter
 cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
 {

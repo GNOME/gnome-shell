@@ -607,6 +607,15 @@ void
 _cogl_material_layer_pre_paint (CoglMaterialLayer *layerr);
 
 /*
+ * Calls the pre_paint method on the layer texture if there is
+ * one. This will determine whether mipmaps are needed based on the
+ * filter settings.
+ */
+void
+_cogl_material_pre_paint_for_layer (CoglMaterial *material,
+                                    int layer_id);
+
+/*
  * CoglMaterialFlushFlag:
  * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: The fallback_layers member is set to
  *      a guint32 mask of the layers that can't be supported with the user
