@@ -106,6 +106,25 @@ Notification.prototype = {
                     this.source.clicked();
             }));
 
+        // The first line should have the title, followed by the
+        // banner text, but ellipsized if they won't both fit. We can't
+        // make St.Table or St.BoxLayout do this the way we want (don't
+        // show banner at all if title needs to be ellipsized), so we
+        // use Shell.GenericContainer.
+        this._bannerBox = new Shell.GenericContainer();
+        this._bannerBox.connect('get-preferred-width', Lang.bind(this, this._bannerBoxGetPreferredWidth));
+        this._bannerBox.connect('get-preferred-height', Lang.bind(this, this._bannerBoxGetPreferredHeight));
+        this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
+        this.actor.add(this._bannerBox, { row: 0,
+                                          col: 1,
+                                          y_expand: false,
+                                          y_fill: false });
+
+        this._titleLabel = new St.Label();
+        this._bannerBox.add_actor(this._titleLabel);
+        this._bannerLabel = new St.Label();
+        this._bannerBox.add_actor(this._bannerLabel);
+
         this.update(title, banner, true);
 
         Main.overview.connect('showing', Lang.bind(this,
@@ -129,8 +148,6 @@ Notification.prototype = {
     update: function(title, banner, clear) {
         if (this._icon)
             this._icon.destroy();
-        if (this._bannerBox)
-            this._bannerBox.destroy();
         if (this._scrollArea && (this._bannerBody || clear)) {
             this._scrollArea.destroy();
             this._scrollArea = null;
@@ -149,34 +166,17 @@ Notification.prototype = {
                                      y_expand: false,
                                      y_fill: false });
 
-        // The first line should have the title, followed by the
-        // banner text, but ellipsized if they won't both fit. We can't
-        // make St.Table or St.BoxLayout do this the way we want (don't
-        // show banner at all if title needs to be ellipsized), so we
-        // use Shell.GenericContainer.
-        this._bannerBox = new Shell.GenericContainer();
-        this._bannerBox.connect('get-preferred-width', Lang.bind(this, this._bannerBoxGetPreferredWidth));
-        this._bannerBox.connect('get-preferred-height', Lang.bind(this, this._bannerBoxGetPreferredHeight));
-        this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
-        this.actor.add(this._bannerBox, { row: 0,
-                                          col: 1,
-                                          y_expand: false,
-                                          y_fill: false });
-
-        this._titleLabel = new St.Label();
         title = title ? _cleanMarkup(title.replace(/\n/g, ' ')) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
-        this._bannerBox.add_actor(this._titleLabel);
 
         if (this._bannerBody)
             this._bannerBodyText = banner;
         else
             this._bannerBodyText = null;
 
-        this._bannerLabel = new St.Label();
         banner = banner ? _cleanMarkup(banner.replace(/\n/g, '  ')) : '';
         this._bannerLabel.clutter_text.set_markup(banner);
-        this._bannerBox.add_actor(this._bannerLabel);
+        this._bannerLabel.queue_relayout();
 
         // Add the bannerBody now if we know for sure we'll need it
         if (this._bannerBodyText && this._bannerBodyText.indexOf('\n') > -1)
@@ -376,6 +376,7 @@ Notification.prototype = {
     popIn: function() {
         if (this.actor.row_count <= 1)
             return false;
+
         Tweener.addTween(this._bannerLabel,
                          { opacity: 255,
                            time: ANIMATION_TIME,
