@@ -85,7 +85,7 @@
   </autotools>
 
   <autotools id="gtk3">
-    <branch checkoutdir="gtk3" repo="git.gnome.org" module="gtk+"/>
+    <branch checkoutdir="gtk3" repo="git.gnome.org" module="gtk%2b"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="pango"/>
