@@ -149,9 +149,18 @@ def start_dconf_await_service():
     print "Starting dconf-service... ",
     sys.stdout.flush()
 
+    # dconf is linked without libtool, so unlike other GNOME modules,
+    # won't have an embedded rpath for its library directory.
+    env = dict(os.environ)
+    if 'LD_LIBRARY_PATH' in env:
+        ld_library_path = '@libdir@:' + env['LD_LIBRARY_PATH']
+    else:
+        ld_library_path = '@libdir@'
+    env['LD_LIBRARY_PATH'] = ld_library_path
+
     dconf_path = os.path.join('@libexecdir@', 'dconf-service')
     try:
-        subprocess.Popen([dconf_path, '--keep-alive'])
+        subprocess.Popen([dconf_path, '--keep-alive'], env=env)
     except OSError, e:
         print "\nFailed to start %s: %s" % (dconf_path, e)
         sys.exit(1)
