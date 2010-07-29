@@ -37,7 +37,19 @@ static gboolean
 clutter_backend_osx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  return TRUE;
+  CLUTTER_OSX_POOL_ALLOC();
+  /* getting standart dpi for main screen */
+  NSDictionary* prop = [[NSScreen mainScreen] deviceDescription];
+  NSSize size;
+  [[prop valueForKey:@"NSDeviceResolution"] getValue:&size];
+  CLUTTER_OSX_POOL_RELEASE();
+  /* setting dpi for backend, it needs by font rendering library */
+  if (size.height > 0)
+    {
+      clutter_backend_set_resolution (backend, size.height);
+      return TRUE;
+    }
+  return FALSE;
 }
 
 static ClutterFeatureFlags
