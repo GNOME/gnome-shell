@@ -971,7 +971,7 @@ AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
-GOBJECT_INTROSPECTION_CHECK([0.9.0])
+GOBJECT_INTROSPECTION_CHECK([0.6.14])
 
 dnl === GTK Doc check =========================================================
 
