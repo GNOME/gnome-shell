@@ -10368,6 +10368,7 @@ clutter_actor_set_flags (ClutterActor      *self,
     return;
 
   obj = G_OBJECT (self);
+  g_object_ref (obj);
   g_object_freeze_notify (obj);
 
   old_flags = self->flags;
@@ -10397,6 +10398,7 @@ clutter_actor_set_flags (ClutterActor      *self,
     g_object_notify (obj, "visible");
 
   g_object_thaw_notify (obj);
+  g_object_unref (obj);
 }
 
 /**
