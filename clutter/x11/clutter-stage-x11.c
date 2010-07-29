@@ -905,12 +905,26 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
                          &border,
                          &depth);
 
-  if (clutter_x11_untrap_x_errors () ||
-      !status ||
-      width == 0 || height == 0 ||
-      depth != xvisinfo->depth)
+  if (clutter_x11_untrap_x_errors () || !status)
     {
-      g_warning ("Unable to retrieve the new window geometry");
+      g_critical ("Unable to retrieve the geometry of the foreign window: "
+                  "XGetGeometry() failed (status code: %d)", status);
+      return FALSE;
+    }
+
+  if (width == 0 || height == 0)
+    {
+      g_warning ("The size of the foreign window is 0x0");
+      return FALSE;
+    }
+
+  if (depth != xvisinfo->depth)
+    {
+      g_warning ("The depth of the visual of the foreign window is %d, but "
+                 "Clutter has been initialized to require a visual depth "
+                 "of %d",
+                 depth,
+                 xvisinfo->depth);
       return FALSE;
     }
 
