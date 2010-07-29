@@ -1028,30 +1028,20 @@ WorkspaceControlsContainer.prototype = {
     }
 };
 
-function WorkspacesDisplay(width, height, x, y) {
-    this._init(width, height, x, y);
+function WorkspacesDisplay() {
+    this._init();
 }
 
 WorkspacesDisplay.prototype = {
-    _init: function(width, height, x, y) {
-        this._workspacesWidth = width;
-        this._workspacesHeight = height;
-        this._workspacesX = x;
-        this._workspacesY = y;
-
-        this._workspaces = [];
-        for (let w = 0; w < global.screen.n_workspaces; w++) {
-            let metaWorkspace = global.screen.get_workspace_by_index(w);
-            this._workspaces[w] = new Workspace.Workspace(metaWorkspace);
-        }
-
+    _init: function() {
         this.actor = new St.BoxLayout();
 
         let workspacesBox = new St.BoxLayout({ vertical: true });
         this.actor.add(workspacesBox, { expand: true });
 
         // placeholder for window previews
-        workspacesBox.add(new St.Bin(), { expand: true });
+        this._workspacesBin = new St.Bin();
+        workspacesBox.add(this._workspacesBin, { expand: true });
 
         this._workspaceIndicatorPanel = new WorkspaceIndicatorPanel();
         workspacesBox.add(this._workspaceIndicatorPanel.actor);
@@ -1086,16 +1076,45 @@ WorkspacesDisplay.prototype = {
         controls.add(this._addButton, { expand: true });
 
         this.workspacesView = null;
+        this._nWorkspacesNotifyId = 0;
     },
 
    show: function() {
         this._controlsContainer.show();
 
-        let newView = new WorkspacesView(this._workspacesWidth,
-                                         this._workspacesHeight,
-                                         this._workspacesX,
-                                         this._workspacesY,
-                                         this._workspaces);
+        this._workspaces = [];
+        for (let i = 0; i < global.screen.n_workspaces; i++) {
+            let metaWorkspace = global.screen.get_workspace_by_index(i);
+            this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
+        }
+
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces',
+                                  Lang.bind(this, this._workspacesChanged));
+
+        let binAllocation = this._workspacesBin.allocation;
+        let binWidth = binAllocation.x2 - binAllocation.x1;
+        let binHeight = binAllocation.y2 - binAllocation.y1;
+
+        // Workspaces expect to have the same ratio as the screen, so take
+        // this into account when fitting the workspace into the bin
+        let width, height;
+        let binRatio = binWidth / binHeight;
+        let wsRatio = global.screen_width / global.screen_height;
+        if (wsRatio > binRatio) {
+            width = binWidth;
+            height = Math.floor(binWidth / wsRatio);
+        } else {
+            width = Math.floor(binHeight * wsRatio);
+            height = binHeight;
+        }
+
+        // Position workspaces as if they were parented to this._workspacesBin
+        let [x, y] = this._workspacesBin.get_transformed_position();
+        x = Math.floor(x + Math.abs(binWidth - width) / 2);
+        y = Math.floor(y + Math.abs(binHeight - height) / 2);
+
+        let newView = new WorkspacesView(width, height, x, y, this._workspaces);
 
         if (this.workspacesView)
             this.workspacesView.destroy();
