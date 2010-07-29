@@ -453,6 +453,29 @@ ViewSelector.prototype = {
 
         if (!tab.visible)
             tab.show();
+
+        // Pull a Meg Ryan:
+        if (Main.overview && Main.overview.workspaces) {
+            if (tab != this._tabs[0]) {
+                Tweener.addTween(Main.overview.workspaces.actor,
+                                 { opacity: 0,
+                                   time: 0.1,
+                                   transition: 'easeOutQuad',
+                                   onComplete: Lang.bind(this,
+                                       function() {
+                                           Main.overview.workspaces.actor.hide();
+                                           Main.overview.workspaces.actor.opacity = 255;
+                                       })
+                                });
+            } else {
+                Main.overview.workspaces.actor.opacity = 0;
+                Main.overview.workspaces.actor.show();
+                Tweener.addTween(Main.overview.workspaces.actor,
+                                 { opacity: 255,
+                                   time: 0.1,
+                                   transition: 'easeOutQuad' });
+            }
+        }
     },
 
     _switchDefaultTab: function() {
