@@ -257,6 +257,11 @@ StTooltip StLabel {
 
 /* Overview */
 
+#overview {
+    spacing: 12px;
+    background-color: rgba(0,0,0,0.6);
+}
+
 .new-workspace-area {
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 10px;
@@ -376,10 +381,6 @@ StTooltip StLabel {
     border: 2px solid rgba(128, 128, 128, 0.4);
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
-}
-
-#dashSections {
-    spacing: 12px;
 }
 
 #viewSelector {
