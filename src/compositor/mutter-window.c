@@ -358,10 +358,6 @@ mutter_window_constructed (GObject *object)
     {
       priv->actor = mutter_shaped_texture_new ();
 
-      if (!clutter_glx_texture_pixmap_using_extension (
-                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
-        g_warning ("NOTE: Not using GLX TFP!\n");
-
       clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
       /*
@@ -1621,6 +1617,14 @@ check_needs_pixmap (MutterWindow *self)
       clutter_x11_texture_pixmap_set_pixmap
                        (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
                         priv->back_pixmap);
+      /*
+       * This only works *after* actually setting the pixmap, so we have to
+       * do it here.
+       * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
+       */
+      if (!clutter_glx_texture_pixmap_using_extension (
+                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+        g_warning ("NOTE: Not using GLX TFP!\n");
 
       g_object_get (priv->actor,
                     "pixmap-width", &pxm_width,
