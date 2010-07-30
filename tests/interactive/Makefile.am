@@ -13,7 +13,6 @@ UNIT_TESTS = \
 	test-rotate.c \
 	test-depth.c \
 	test-threads.c \
-	test-score.c \
 	test-script.c \
 	test-model.c \
 	test-grab.c \

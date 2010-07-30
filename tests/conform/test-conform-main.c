@@ -111,6 +111,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
 
+  TEST_CONFORM_SIMPLE ("/score", test_score);
+
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
   TEST_CONFORM_SIMPLE ("/text", test_text_utf8_validation);
