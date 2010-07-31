@@ -80,14 +80,11 @@ struct _ClutterAnimatableIface
                                      gdouble            progress,
                                      GValue            *value);
   GParamSpec *(* find_property)     (ClutterAnimatable *animatable,
-                                     ClutterAnimation  *animation,
                                      const gchar       *property_name);
   void        (* get_initial_state) (ClutterAnimatable *animatable,
-                                     ClutterAnimation  *animation,
                                      const gchar       *property_name,
                                      GValue            *value);
   void        (* set_final_state)   (ClutterAnimatable *animatable,
-                                     ClutterAnimation  *animation,
                                      const gchar       *property_name,
                                      const GValue      *value);
 };
@@ -103,14 +100,11 @@ gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
                                                   GValue            *value);
 
 GParamSpec *clutter_animatable_find_property     (ClutterAnimatable *animatable,
-                                                  ClutterAnimation  *animation,
                                                   const gchar       *property_name);
 void        clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
-                                                  ClutterAnimation  *animation,
                                                   const gchar       *property_name,
                                                   GValue            *value);
 void        clutter_animatable_set_final_state   (ClutterAnimatable *animatable,
-                                                  ClutterAnimation  *animation,
                                                   const gchar       *property_name,
                                                   const GValue      *value);
 

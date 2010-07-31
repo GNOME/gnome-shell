@@ -8613,7 +8613,6 @@ get_meta_from_animation_property (ClutterActor  *actor,
 
 static GParamSpec *
 clutter_actor_find_property (ClutterAnimatable *animatable,
-                             ClutterAnimation  *animation,
                              const gchar       *property_name)
 {
   ClutterActorMeta *meta = NULL;
@@ -8645,7 +8644,6 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
 
 static void
 clutter_actor_get_initial_state (ClutterAnimatable *animatable,
-                                 ClutterAnimation  *animation,
                                  const gchar       *property_name,
                                  GValue            *initial)
 {
@@ -8666,7 +8664,6 @@ clutter_actor_get_initial_state (ClutterAnimatable *animatable,
 
 static void
 clutter_actor_set_final_state (ClutterAnimatable *animatable,
-                               ClutterAnimation  *animation,
                                const gchar       *property_name,
                                const GValue      *final)
 {

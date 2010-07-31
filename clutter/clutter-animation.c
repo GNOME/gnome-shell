@@ -241,9 +241,7 @@ clutter_animation_real_completed (ClutterAnimation *self)
         p_value = clutter_interval_peek_initial_value (interval);
 
       if (animatable != NULL)
-        clutter_animatable_set_final_state (animatable, self,
-                                            p_name,
-                                            p_value);
+        clutter_animatable_set_final_state (animatable, p_name, p_value);
       else
         g_object_set_property (priv->object, p_name, p_value);
     }
@@ -662,9 +660,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
     {
       ClutterAnimatable *animatable = CLUTTER_ANIMATABLE (priv->object);
 
-      pspec = clutter_animatable_find_property (animatable,
-                                                animation,
-                                                property_name);
+      pspec = clutter_animatable_find_property (animatable, property_name);
     }
   else
     {
@@ -789,7 +785,6 @@ clutter_animation_bind (ClutterAnimation *animation,
 
   if (CLUTTER_IS_ANIMATABLE (priv->object))
     clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (priv->object),
-                                          animation,
                                           property_name,
                                           &initial);
   else
@@ -901,9 +896,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
     {
       ClutterAnimatable *animatable = CLUTTER_ANIMATABLE (priv->object);
 
-      pspec = clutter_animatable_find_property (animatable,
-                                                animation,
-                                                property_name);
+      pspec = clutter_animatable_find_property (animatable, property_name);
     }
   else
     {
@@ -1101,9 +1094,7 @@ on_alpha_notify (GObject          *gobject,
       if (apply)
         {
           if (is_animatable)
-            clutter_animatable_set_final_state (animatable, animation,
-                                                p_name,
-                                                &value);
+            clutter_animatable_set_final_state (animatable, p_name, &value);
           else
             g_object_set_property (priv->object, p_name, &value);
         }
@@ -1747,7 +1738,6 @@ done:
 
       if (CLUTTER_IS_ANIMATABLE (priv->object))
         clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (priv->object),
-                                              animation,
                                               property_name,
                                               &cur_value);
       else
@@ -1773,7 +1763,6 @@ done:
     {
       if (CLUTTER_IS_ANIMATABLE (priv->object))
         clutter_animatable_set_final_state (CLUTTER_ANIMATABLE (priv->object),
-                                            animation,
                                             property_name,
                                             &real_value);
       else
@@ -1812,9 +1801,7 @@ clutter_animation_setupv (ClutterAnimation    *animation,
         }
 
       if (animatable != NULL)
-        pspec = clutter_animatable_find_property (animatable,
-                                                  animation,
-                                                  property_name);
+        pspec = clutter_animatable_find_property (animatable, property_name);
       else
         pspec = g_object_class_find_property (klass, property_name);
 
@@ -1914,7 +1901,6 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
 
           if (animatable != NULL)
             pspec = clutter_animatable_find_property (animatable,
-                                                      animation,
                                                       property_name);
           else
             pspec = g_object_class_find_property (klass, property_name);
