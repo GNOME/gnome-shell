@@ -60,6 +60,7 @@
  * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
  * clutter_actor_add_constraint_with_name (rect[2], "blue-x", constraint);
  * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
+ * clutter_actor_add_constraint_with_name (rect[2], "blue-y", constraint);
  * ]|
  *
  * The following code animates the second and third rectangles to "expand"
