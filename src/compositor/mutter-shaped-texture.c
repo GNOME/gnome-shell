@@ -67,9 +67,6 @@ struct _MutterShapedTexturePrivate
   CoglHandle mask_texture;
   CoglHandle material;
   CoglHandle material_unshaped;
-#if 1 /* see workaround comment in mutter_shaped_texture_paint */
-  CoglHandle material_workaround;
-#endif
 
   MetaRegion *clip_region;
 
@@ -132,13 +129,6 @@ mutter_shaped_texture_dispose (GObject *object)
       cogl_handle_unref (priv->material_unshaped);
       priv->material_unshaped = COGL_INVALID_HANDLE;
     }
-#if 1 /* see comment in mutter_shaped_texture_paint */
-  if (priv->material_workaround != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->material_workaround);
-      priv->material_workaround = COGL_INVALID_HANDLE;
-    }
-#endif
 
   mutter_shaped_texture_set_clip_region (self, NULL);
 
