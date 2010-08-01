@@ -226,7 +226,8 @@ Calendar.prototype = {
         iter.setDate(1);
         iter.setSeconds(0);
         iter.setHours(12);
-        iter.setTime(iter.getTime() - (iter.getDay() - this._weekStart) * MSECS_IN_DAY);
+        let daysToWeekStart = (7 + iter.getDay() - this._weekStart) % 7;
+        iter.setTime(iter.getTime() - daysToWeekStart * MSECS_IN_DAY);
 
         let now = new Date();
 
