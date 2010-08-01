@@ -1033,6 +1033,23 @@ cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index);
 
 /**
+ * cogl_material_get_layer_wrap_mode_s:
+ * @material: A #CoglMaterial object
+ * @layer_index: the layer number to change.
+ *
+ * Returns the wrap mode for the 's' coordinate of texture lookups on this
+ * layer.
+ *
+ * Return value: the wrap mode for the 's' coordinate of texture lookups on
+ * this layer.
+ *
+ * Since: 1.6
+ */
+CoglMaterialWrapMode
+cogl_material_get_layer_wrap_mode_s (CoglMaterial *material,
+                                     int           layer_index);
+
+/**
  * cogl_material_set_layer_wrap_mode_s:
  * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
@@ -1048,6 +1065,24 @@ cogl_material_set_layer_wrap_mode_s (CoglMaterial        *material,
                                      CoglMaterialWrapMode mode);
 
 /**
+ * cogl_material_get_layer_wrap_mode_t:
+ * @material: A #CoglMaterial object
+ * @layer_index: the layer number to change.
+ *
+ * Returns the wrap mode for the 't' coordinate of texture lookups on this
+ * layer.
+ *
+ * Return value: the wrap mode for the 't' coordinate of texture lookups on
+ * this layer.
+ *
+ * Since: 1.6
+ */
+CoglMaterialWrapMode
+cogl_material_get_layer_wrap_mode_t (CoglMaterial *material,
+                                     int           layer_index);
+
+
+/**
  * cogl_material_set_layer_wrap_mode_t:
  * @material: A #CoglMaterial object
  * @layer_index: the layer number to change.
@@ -1061,6 +1096,23 @@ void
 cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                      int                  layer_index,
                                      CoglMaterialWrapMode mode);
+
+/**
+ * cogl_material_get_layer_wrap_mode_p:
+ * @material: A #CoglMaterial object
+ * @layer_index: the layer number to change.
+ *
+ * Returns the wrap mode for the 'p' coordinate of texture lookups on this
+ * layer.
+ *
+ * Return value: the wrap mode for the 'p' coordinate of texture lookups on
+ * this layer.
+ *
+ * Since: 1.6
+ */
+CoglMaterialWrapMode
+cogl_material_get_layer_wrap_mode_p (CoglMaterial *material,
+                                     int           layer_index);
 
 /**
  * cogl_material_set_layer_wrap_mode_p:
