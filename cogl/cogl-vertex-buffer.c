@@ -1088,7 +1088,7 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
       else
 	memcpy (cogl_vbo->vbo_name, pointer, cogl_vbo->vbo_bytes);
     }
-  else if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK)
+  else /* MULTIPACK */
     {
       /* First we make it obvious to the driver that we want to update the
        * whole buffer (without this, the driver is more likley to block
@@ -1110,24 +1110,6 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
 
       if (!upload_multipack_vbo_via_map_buffer (cogl_vbo))
 	upload_multipack_vbo_via_buffer_sub_data  (cogl_vbo);
-    }
-  else
-    {
-      CoglVertexBufferAttrib *attribute = cogl_vbo->attributes->data;
-      if (!fallback)
-	{
-	  GE (glBufferData (GL_ARRAY_BUFFER,
-			    cogl_vbo->vbo_bytes,
-			    attribute->u.pointer,
-			    usage));
-	}
-      else
-	memcpy (cogl_vbo->vbo_name, attribute->u.pointer, cogl_vbo->vbo_bytes);
-
-      /* We forget this pointer now since the client will be free
-       * to re-use this memory */
-      attribute->u.pointer = NULL;
-      attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
     }
 
   cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED;
@@ -1247,15 +1229,12 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
    * be re-used) to determine what other CBOs can be re-used, due to being
    * superseded, and what new GL VBOs need to be created.
    *
-   * We have three kinds of CBOs:
-   * - Unstrided CBOs
-   *    These contain a single tightly packed attribute
-   *    These are currently the only ones ever marked as FREQUENT_SUBMIT
+   * We have two kinds of CBOs:
+   * - Multi Pack CBOs
+   *     These contain multiple attributes tightly packed back to back)
    * - Strided CBOs
    *	 These typically contain multiple interleved sets of attributes,
    *	 though they can contain just one attribute with a stride
-   * - Multi Pack CBOs
-   *     These contain multiple attributes tightly packed back to back)
    *
    * First create a new-CBOs entry "new-multipack-CBO"
    * Tag "new-multipack-CBO" as MULTIPACK + INFREQUENT_RESUBMIT
@@ -1280,7 +1259,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
    *	 else if not found:
    *	   create a new-CBOs entry tagged STRIDED + INFREQUENT_RESUBMIT
    *   else if unstrided && tagged with FREQUENT_RESUBMIT:
-   *     create a new-CBOs entry tagged UNSTRIDED + FREQUENT_RESUBMIT
+   *     create a new-CBOs entry tagged MULTIPACK + FREQUENT_RESUBMIT
    *   else
    *     add to the new-multipack-CBO
    * free list of unsorted-attribs
@@ -1403,7 +1382,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 
 	  cogl_vbo->vbo_name = NULL;
 	  cogl_vbo->flags =
-            COGL_VERTEX_BUFFER_VBO_FLAG_UNSTRIDED
+            COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
 	    | COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
 	  cogl_vbo->attributes = NULL;
 	  cogl_vbo->attributes = g_list_prepend (cogl_vbo->attributes,

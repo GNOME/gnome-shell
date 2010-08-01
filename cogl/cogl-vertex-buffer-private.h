@@ -110,9 +110,8 @@ typedef struct _CoglVertexBufferAttrib
 
 typedef enum _CoglVertexBufferVBOFlags
 {
-  COGL_VERTEX_BUFFER_VBO_FLAG_UNSTRIDED	= 1<<0,
-  COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED	= 1<<1,
-  COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK	= 1<<2,
+  COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED	= 1<<0,
+  COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK	= 1<<1,
 
   /* FIXME - flatten into one flag, since its used as a boolean */
   COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT  = 1<<3,
