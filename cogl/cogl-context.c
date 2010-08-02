@@ -214,7 +214,7 @@ cogl_create_context (void)
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
-  _context->atlas = NULL;
+  _context->rectangle_map = NULL;
   _context->atlas_texture = COGL_INVALID_HANDLE;
 
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
@@ -273,8 +273,9 @@ _cogl_destroy_context (void)
   if (_context->default_layer_0)
     cogl_handle_unref (_context->default_layer_0);
 
-  if (_context->atlas)
-    _cogl_atlas_free (_context->atlas);
+  if (_context->rectangle_map)
+    _cogl_rectangle_map_free (_context->rectangle_map);
+
   if (_context->atlas_texture)
     cogl_handle_unref (_context->atlas_texture);
 

@@ -31,7 +31,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-material-private.h"
-#include "cogl-atlas.h"
+#include "cogl-rectangle-map.h"
 #include "cogl-buffer-private.h"
 #include "cogl-bitmask.h"
 
@@ -143,7 +143,7 @@ typedef struct
 
   CoglMaterial     *texture_download_material;
 
-  CoglAtlas        *atlas;
+  CoglRectangleMap *rectangle_map;
   CoglHandle        atlas_texture;
 
   /* This debugging variable is used to pick a colour for visually

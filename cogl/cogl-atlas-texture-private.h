@@ -26,7 +26,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-texture-private.h"
-#include "cogl-atlas.h"
+#include "cogl-rectangle-map.h"
 
 #define COGL_ATLAS_TEXTURE(tex) ((CoglAtlasTexture *) tex)
 
@@ -34,23 +34,23 @@ typedef struct _CoglAtlasTexture CoglAtlasTexture;
 
 struct _CoglAtlasTexture
 {
-  CoglTexture        _parent;
+  CoglTexture           _parent;
 
   /* The format that the texture is in. This isn't necessarily the
      same format as the atlas texture because we can store
      pre-multiplied and non-pre-multiplied textures together */
-  CoglPixelFormat    format;
+  CoglPixelFormat       format;
 
   /* The rectangle that was used to add this texture to the
      atlas. This includes the 1-pixel border */
-  CoglAtlasRectangle rectangle;
+  CoglRectangleMapEntry rectangle;
 
   /* The texture might need to be migrated out in which case this will
      be set to TRUE and sub_texture will actually be a real texture */
-  gboolean           in_atlas;
+  gboolean              in_atlas;
 
   /* A CoglSubTexture representing the region for easy rendering */
-  CoglHandle         sub_texture;
+  CoglHandle            sub_texture;
 };
 
 GQuark
