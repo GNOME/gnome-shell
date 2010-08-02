@@ -23,8 +23,6 @@ libclutter_cogl_driver_la_CPPFLAGS = \
 libclutter_cogl_driver_la_SOURCES = \
 	cogl.c \
 	cogl-texture-driver.c \
-	cogl-shader-private.h \
-	cogl-shader.c \
 	cogl-program.h \
 	cogl-program.c \
 	cogl-context-driver.h \
