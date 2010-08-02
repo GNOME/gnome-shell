@@ -160,6 +160,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-profile.c 			\
 	$(srcdir)/cogl-bitmask.h                        \
 	$(srcdir)/cogl-bitmask.c                        \
+	$(srcdir)/cogl-shader-private.h			\
+	$(srcdir)/cogl-shader.c                        	\
 	$(NULL)
 
 # glib-mkenums rules

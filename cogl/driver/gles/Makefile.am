@@ -28,8 +28,6 @@ libclutter_cogl_driver_la_SOURCES = \
 	cogl-gles2-wrapper.h \
 	cogl-program.h \
 	cogl-program.c \
-	cogl-shader-private.h \
-	cogl-shader.c \
 	cogl-feature-functions.h
 
 if USE_GLES2_WRAPPER

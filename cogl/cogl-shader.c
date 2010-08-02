@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,13 +26,26 @@
 #endif
 
 #include "cogl.h"
-
 #include "cogl-shader-private.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
-#ifdef HAVE_COGL_GLES2
+#include <glib.h>
+
+#ifdef HAVE_COGL_GL
+#define glCreateShader      ctx->drv.pf_glCreateShader
+#define glGetShaderiv       ctx->drv.pf_glGetShaderiv
+#define glGetShaderInfoLog  ctx->drv.pf_glGetShaderInfoLog
+#define glCompileShader     ctx->drv.pf_glCompileShader
+#define glShaderSource      ctx->drv.pf_glShaderSource
+#define glDeleteShader      ctx->drv.pf_glDeleteShader
+#define GET_CONTEXT         _COGL_GET_CONTEXT
+#else
+#define GET_CONTEXT(CTXVAR,RETVAL) G_STMT_START { } G_STMT_END
+#endif
+
+#ifndef HAVE_COGL_GLES
 
 static void _cogl_shader_free (CoglShader *shader);
 
@@ -55,6 +68,8 @@ cogl_create_shader (CoglShaderType type)
 {
   CoglShader *shader;
   GLenum gl_type;
+
+  GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   if (type == COGL_SHADER_TYPE_VERTEX)
     gl_type = GL_VERTEX_SHADER;
@@ -109,7 +124,8 @@ cogl_shader_get_info_log (CoglHandle handle)
   CoglShader *shader;
   char buffer[512];
   int len = 0;
-  _COGL_GET_CONTEXT (ctx, NULL);
+
+  GET_CONTEXT (ctx, NULL);
 
   if (!cogl_is_shader (handle))
     return NULL;
@@ -127,6 +143,8 @@ cogl_shader_get_type (CoglHandle  handle)
 {
   CoglShader *shader;
 
+  GET_CONTEXT (ctx, COGL_SHADER_TYPE_VERTEX);
+
   if (!cogl_is_shader (handle))
     {
       g_warning ("Non shader handle type passed to cogl_shader_get_type");
@@ -143,6 +161,8 @@ cogl_shader_is_compiled (CoglHandle handle)
   GLint status;
   CoglShader *shader;
 
+  GET_CONTEXT (ctx, FALSE);
+
   if (!cogl_is_shader (handle))
     return FALSE;
 
@@ -155,7 +175,7 @@ cogl_shader_is_compiled (CoglHandle handle)
     return FALSE;
 }
 
-#else /* HAVE_COGL_GLES2 */
+#else /* HAVE_COGL_GLES */
 
 /* No support on regular OpenGL 1.1 */
 
@@ -211,4 +231,5 @@ cogl_shader_is_compiled (CoglHandle handle)
   return FALSE;
 }
 
-#endif /* HAVE_COGL_GLES2 */
+#endif /* HAVE_COGL_GLES */
+
