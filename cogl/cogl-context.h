@@ -31,9 +31,9 @@
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-material-private.h"
-#include "cogl-rectangle-map.h"
 #include "cogl-buffer-private.h"
 #include "cogl-bitmask.h"
+#include "cogl-atlas.h"
 
 typedef struct
 {
@@ -143,8 +143,7 @@ typedef struct
 
   CoglMaterial     *texture_download_material;
 
-  CoglRectangleMap *rectangle_map;
-  CoglHandle        atlas_texture;
+  CoglAtlas        *atlas;
 
   /* This debugging variable is used to pick a colour for visually
      displaying the quad batches. It needs to be global so that it can
