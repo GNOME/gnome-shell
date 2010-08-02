@@ -144,8 +144,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-texture-3d.c                     \
 	$(srcdir)/cogl-texture-rectangle-private.h      \
 	$(srcdir)/cogl-texture-rectangle.c              \
-	$(srcdir)/cogl-atlas.h                          \
-	$(srcdir)/cogl-atlas.c                          \
+	$(srcdir)/cogl-rectangle-map.h                  \
+	$(srcdir)/cogl-rectangle-map.c                  \
 	$(srcdir)/cogl-atlas-texture-private.h          \
 	$(srcdir)/cogl-atlas-texture.c                  \
 	$(srcdir)/cogl-spans.h				\
