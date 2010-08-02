@@ -214,8 +214,7 @@ cogl_create_context (void)
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
-  _context->rectangle_map = NULL;
-  _context->atlas_texture = COGL_INVALID_HANDLE;
+  _context->atlas = NULL;
 
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
      unless GL_COORD_REPLACE is enabled for an individual
@@ -273,11 +272,8 @@ _cogl_destroy_context (void)
   if (_context->default_layer_0)
     cogl_handle_unref (_context->default_layer_0);
 
-  if (_context->rectangle_map)
-    _cogl_rectangle_map_free (_context->rectangle_map);
-
-  if (_context->atlas_texture)
-    cogl_handle_unref (_context->atlas_texture);
+  if (_context->atlas)
+    _cogl_atlas_free (_context->atlas);
 
   _cogl_bitmask_destroy (&_context->texcoord_arrays_enabled);
   _cogl_bitmask_destroy (&_context->temp_bitmask);
