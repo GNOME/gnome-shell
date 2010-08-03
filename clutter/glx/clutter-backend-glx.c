@@ -455,7 +455,8 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
                        vinfo->blue_mask  == 0x0000ff))
                     {
                       CLUTTER_NOTE (BACKEND,
-                                    "Found GLX visual ARGB [index:%d]", i);
+                                    "Found an ARGB FBConfig [index:%d]",
+                                    i);
 
                       backend_glx->found_fbconfig = TRUE;
                       backend_glx->fbconfig = configs[i];
@@ -471,6 +472,7 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
 
           if (n_configs >= 1)
             {
+              CLUTTER_NOTE (BACKEND, "Using the first available FBConfig");
               backend_glx->found_fbconfig = TRUE;
               backend_glx->fbconfig = configs[0];
             }
@@ -480,14 +482,14 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
         }
     }
 
-  if (backend_glx->found_fbconfig)
+  if (G_LIKELY (backend_glx->found_fbconfig))
     {
       *config = backend_glx->fbconfig;
 
       return TRUE;
     }
-  else
-    return FALSE;
+
+  return FALSE;
 }
 
 void
