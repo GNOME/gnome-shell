@@ -675,15 +675,23 @@ clutter_x11_enable_xinput (void)
 /**
  * clutter_x11_disable_event_retrieval:
  *
- * Disables the internal handling of X11 events in the main loop.
+ * Disables the internal polling of X11 events in the main loop.
  *
  * Libraries or applications calling this function will be responsible of
- * handling all X11 events.
+ * polling all X11 events.
  *
  * You also must call clutter_x11_handle_event() to let Clutter process
  * events and maintain its internal state.
  *
- * <note>This function can only be called before calling clutter_init().</note>
+ * <warning>This function can only be called before calling
+ * clutter_init().</warning>
+ *
+ * <note>Even with event handling disabled, Clutter will still select
+ * all the events required to maintain its internal state on the stage
+ * Window; compositors using Clutter should not rely on an empty input
+ * region, and should instead clear it themselves explicitly.</note>
+ *
+ * This function should not be normally used by applications.
  *
  * Since: 0.8
  */
