@@ -688,8 +688,10 @@ clutter_x11_enable_xinput (void)
  *
  * <note>Even with event handling disabled, Clutter will still select
  * all the events required to maintain its internal state on the stage
- * Window; compositors using Clutter should not rely on an empty input
- * region, and should instead clear it themselves explicitly.</note>
+ * Window; compositors using Clutter and input regions to pass events
+ * through to application windows should not rely on an empty input
+ * region, and should instead clear it themselves explicitly using the
+ * XFixes extension.</note>
  *
  * This function should not be normally used by applications.
  *
