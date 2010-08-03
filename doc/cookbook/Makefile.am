@@ -10,6 +10,7 @@ XML_FILES = \
 	animations.xml		\
 	events.xml		\
 	introduction.xml	\
+	text.xml		\
 	textures.xml		\
 	$(NULL)
 
