@@ -5,6 +5,7 @@ NULL =
 noinst_PROGRAMS = \
 	textures-reflection	\
 	text-shadow		\
+	animations-rotating \
 	$(NULL)
 
 INCLUDES = \
@@ -29,3 +30,5 @@ AM_LDFLAGS = $(CLUTTER_LIBS)
 textures_reflection_SOURCES 	= textures-reflection.c
 
 text_shadow_SOURCES 		= text-shadow.c
+
+animations_rotating_SOURCE = animations-rotating.c

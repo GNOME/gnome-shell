@@ -151,7 +151,7 @@ VIDEO_FILES = \
 <![CDATA[
 <inlinemediaobject>
   <videoobject>
-    <videodata fileref="videos/cookbook-animations-fading-in-then-out.ogv"/>
+    <videodata fileref="videos/animations-fading-in-then-out.ogv"/>
   </videoobject>
   <alt>
     <para>Video showing an actor fading in then out using
@@ -166,6 +166,101 @@ VIDEO_FILES = \
             is presented as a link to the file for users whose browser
             doesn't support HTML 5 embedded video.</para>
           </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>To include a full code sample in a recipe (which can
+        be compiled into a runnable binary), do the following:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Create a C code file in the
+            <filename>&lt;clutter source&gt;/doc/cookbook/examples</filename>
+            directory. It should be a standalone C application (with
+            a <function>main()</function> etc.). The filename should be
+            in the format
+            <filename>&lt;section&gt;-&lt;recipe&gt;.c</filename>; you
+            can add an optional identifier to the end if you have more
+            than one example for a recipe.</para>
+
+            <para>If you want to load image files into the application
+            (e.g. to demonstrate something with a texture), you can use
+            the <constant>TESTS_DATA_DIR</constant> variable in your C
+            code to reuse images in the Clutter <filename>tests</filename>
+            directory; this will be replaced with
+            <filename>&lt;clutter source&gt;/tests/data</filename>
+            during the build. For example:</para>
+
+            <informalexample>
+              <programlisting>
+<![CDATA[
+clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
+                               TESTS_DATA_DIR "/redhand.png",
+                               &error);
+]]>
+              </programlisting>
+            </informalexample>
+          </listitem>
+
+          <listitem>
+            <para>Edit <filename>Makefile.am</filename>
+            in the <filename>cookbook/examples</filename> directory
+            so that the build recognises the new code; e.g. if
+            your C source file were called
+            <filename>fooing-barring.c</filename> you would do:</para>
+
+            <informalexample>
+              <programlisting>
+<![CDATA[
+noinst_PROGRAMS = \
+	textures-reflection	\
+	text-shadow		\
+	animations-rotating \
+	fooing-barring \
+	$(NULL)
+
+fooing_barring_SOURCE = fooing-barring.c
+]]>
+              </programlisting>
+            </informalexample>
+
+            <note>
+              <para>Note the second line is a new one to tell the
+              build where the source file is for your example.</para>
+            </note>
+          </listitem>
+
+          <listitem>
+            <para>Add a section at the end of your recipe which
+            XIncludes the sample code, e.g.:</para>
+
+            <informalexample>
+              <programlisting>
+<![CDATA[
+<section>
+  <title>Full example</title>
+
+  <example id="fooing-barring-example">
+    <title>Fooing with a bar</title>
+    <programlisting>
+<xi:include href="examples/fooing-barring.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+    </programlisting>
+  </example>
+</section>
+]]>
+              </programlisting>
+            </informalexample>
+
+            <note>
+              <para>The <code>&lt;xi:include&gt;</code> element
+              should be aligned to the left-hand margin of the text
+              (no whitespace on the line before it), to prevent any
+              stray whitespace appearing in the program listing.</para>
+            </note>
+          </listitem>
+
         </itemizedlist>
       </listitem>
     </itemizedlist>
