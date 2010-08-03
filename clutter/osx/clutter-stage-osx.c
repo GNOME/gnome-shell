@@ -42,6 +42,8 @@ static void
 clutter_stage_osx_state_update (ClutterStageOSX   *self,
                                 ClutterStageState  unset_flags,
                                 ClutterStageState  set_flags);
+static ClutterActor *
+clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 #define CLUTTER_OSX_FULLSCREEN_WINDOW_LEVEL (NSMainMenuWindowLevel + 1)
 
@@ -110,10 +112,17 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 
 - (NSSize) windowWillResize:(NSWindow *) sender toSize:(NSSize) frameSize
 {
-    if ( clutter_stage_get_user_resizable (self->stage_osx->wrapper) )
+  if ( clutter_stage_get_user_resizable (self->stage_osx->wrapper) )
+    {
+      guint min_width, min_height;
+      clutter_stage_get_minimum_size (self->stage_osx->wrapper,
+                                      &min_width,
+                                      &min_height);
+      [self setContentMinSize:NSMakeSize(min_width, min_height)];
       return frameSize;
-    else 
-      return [self frame].size;
+    }
+  else 
+    return [self frame].size;
 }
 @end
 
@@ -155,16 +164,13 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
   return YES;
 }
 
-- (void) setFrameSize: (NSSize) aSize
+- (void) reshape
 {
-  CLUTTER_NOTE (BACKEND, "[%p] setFrameSize: %dx%d", self->stage_osx,
-                (int)aSize.width, (int)aSize.height);
-
-  [super setFrameSize: aSize];
-
+  stage_osx->requisition_width = [self bounds].size.width;
+  stage_osx->requisition_height = [self bounds].size.height;
   clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
-                          (int)aSize.width, (int)aSize.height);
-
+                          (int)[self bounds].size.width, (int)[self bounds].size.height);
+  /* make sure that the viewport is updated */
   CLUTTER_SET_PRIVATE_FLAGS (self->stage_osx->wrapper, CLUTTER_SYNC_MATRICES);
 }
 
@@ -382,31 +388,11 @@ clutter_stage_osx_get_geometry (ClutterStageWindow *stage_window,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
-  gboolean is_fullscreen, resize;
 
   g_return_if_fail (CLUTTER_IS_BACKEND_OSX (backend));
 
-  CLUTTER_OSX_POOL_ALLOC ();
-
-  is_fullscreen = FALSE;
-  g_object_get (G_OBJECT (self->wrapper),
-                "fullscreen-set", &is_fullscreen,
-                NULL);
-
-  if (is_fullscreen)
-    {
-      NSSize size = [[NSScreen mainScreen] frame].size;
-
-      geometry->width = size.width;
-      geometry->height = size.height;
-    }
-  else
-    {
-          geometry->width = self->requisition_width;
-          geometry->height = self->requisition_height;
-    }
-
-  CLUTTER_OSX_POOL_RELEASE ();
+  geometry->width = self->requisition_width;
+  geometry->height = self->requisition_height;
 }
 
 static void
@@ -415,6 +401,16 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
                           gint                height)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+  ClutterActor *actor = clutter_stage_osx_get_wrapper (stage_window);
+
+  guint min_width, min_height;
+  clutter_stage_get_minimum_size (actor,
+                                  &min_width,
+                                  &min_height);
+  [self->window setContentMinSize:NSMakeSize(min_width, min_height)];
+  
+  width = width < min_width ? min_width : width;
+  height = height < min_height ? min_height : height;
 
   self->requisition_width = width;
   self->requisition_height = height;
@@ -426,7 +422,7 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
   [self->window setContentSize: size];
 
   CLUTTER_OSX_POOL_RELEASE ();
-
+  
   /* make sure that the viewport is updated */
   CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_SYNC_MATRICES);
 }
@@ -489,17 +485,22 @@ static void
 clutter_stage_osx_set_cursor_visible (ClutterStageWindow *stage_window,
                                       gboolean            cursor_visible)
 {
+  CLUTTER_OSX_POOL_ALLOC();
   if ( cursor_visible )
     [NSCursor unhide];
   else
     [NSCursor hide]; 
+  CLUTTER_OSX_POOL_RELEASE();
 }
 
 static void
 clutter_stage_osx_set_user_resizable (ClutterStageWindow *stage_window,
                                       gboolean            is_resizable)
 {
-  ;/* FIXME */
+  CLUTTER_OSX_POOL_ALLOC();
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+  [self->window setShowsResizeIndicator:is_resizable];
+  CLUTTER_OSX_POOL_RELEASE();
 }
 
 static void
