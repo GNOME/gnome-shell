@@ -132,6 +132,7 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   ClutterBackendX11 *backend_x11;
   ClutterBackendGLX *backend_glx;
   ClutterBackend *backend;
+  int event_flags;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_window),
@@ -218,43 +219,62 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
         }
     }
 
-  if (clutter_x11_has_event_retrieval ())
-    {
-      if (clutter_x11_has_xinput ())
-        {
-          XSelectInput (backend_x11->xdpy, stage_x11->xwin,
-                        StructureNotifyMask |
-                        FocusChangeMask |
-                        ExposureMask |
-                        KeyPressMask | KeyReleaseMask |
-                        EnterWindowMask | LeaveWindowMask |
-                        PropertyChangeMask);
+  /* the masks for the events we want to select on a stage window;
+   * KeyPressMask and KeyReleaseMask are necessary even with XI1
+   * because key events are broken with that extension, and will
+   * be fixed by XI2
+   */
+  event_flags = StructureNotifyMask
+              | FocusChangeMask
+              | ExposureMask
+              | PropertyChangeMask
+              | EnterWindowMask
+              | LeaveWindowMask
+              | KeyPressMask
+              | KeyReleaseMask;
+
+  /* if we don't use XI1 then we also want core pointer events */
+  if (!clutter_x11_has_xinput ())
+    event_flags |= (ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
 #ifdef HAVE_XINPUT
-          _clutter_x11_select_events (stage_x11->xwin);
+  else
+    _clutter_x11_select_events (stage_x11->xwin);
 #endif
-        }
-      else
-        XSelectInput (backend_x11->xdpy, stage_x11->xwin,
-                      StructureNotifyMask |
-                      FocusChangeMask |
-                      ExposureMask |
-                      PointerMotionMask |
-                      KeyPressMask | KeyReleaseMask |
-                      ButtonPressMask | ButtonReleaseMask |
-                      EnterWindowMask | LeaveWindowMask |
-                      PropertyChangeMask);
+
+  /* we unconditionally select input events even with event retrieval
+   * disabled because we need to guarantee that the Clutter internal
+   * state is maintained when calling clutter_x11_handle_event() without
+   * requiring applications or embedding toolkits to select events
+   * themselves. if we did that, we'd have to document the events to be
+   * selected, and also update applications and embedding toolkits each
+   * time we added a new mask, or a new class of events.
+   *
+   * see: http://bugzilla.clutter-project.org/show_bug.cgi?id=998
+   * for the rationale of why we did conditional selection. it is now
+   * clear that a compositor should clear out the input region, since
+   * it cannot assume a perfectly clean slate coming from us.
+   *
+   * see: http://bugzilla.clutter-project.org/show_bug.cgi?id=2228
+   * for an example of things that break if we do conditional event
+   * selection.
+   */
+  XSelectInput (backend_x11->xdpy, stage_x11->xwin, event_flags);
 
 #ifdef GLX_INTEL_swap_event
-      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
-        {
-          GLXDrawable drawable =
-            stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
-          glXSelectEvent (backend_x11->xdpy,
-                          drawable,
-                          GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
-        }
-#endif /* GLX_INTEL_swap_event */
+  if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
+    {
+      GLXDrawable drawable =
+        stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+
+      /* similarly to above, we unconditionally select this event
+       * because we rely on it to advance the master clock, and
+       * drive redraw/relayout, animations and event handling.
+       */
+      glXSelectEvent (backend_x11->xdpy,
+                      drawable,
+                      GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
     }
+#endif /* GLX_INTEL_swap_event */
 
   /* no user resize.. */
   clutter_stage_x11_fix_window_size (stage_x11,
