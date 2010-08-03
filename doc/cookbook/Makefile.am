@@ -10,7 +10,6 @@ XML_FILES = \
 	animations.xml		\
 	events.xml		\
 	introduction.xml	\
-	recipe-template.xml	\
 	textures.xml		\
 	$(NULL)
 
@@ -52,6 +51,7 @@ VIDEO_FILES = \
 
 EXTRA_DIST = \
 	clutter-cookbook.xml.in \
+	recipe-template.xml	\
 	$(IMAGE_FILES) \
 	$(XML_FILES) \
 	$(VIDEO_FILES)
@@ -60,13 +60,13 @@ CLEANFILES = \
 	pdf-build.stamp \
 	html-build.stamp
 
-pdf-build.stamp: clutter-cookbook.xml
+pdf-build.stamp: clutter-cookbook.xml $(XML_FILES)
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
 	$(JW) -b pdf $(top_builddir)/doc/cookbook/clutter-cookbook.xml \
 	&& mv -f clutter-cookbook.pdf clutter-cookbook-@CLUTTER_API_VERSION@.pdf \
 	&& echo timestamp > $(@F)
 
-html-build.stamp: clutter-cookbook.xml
+html-build.stamp: clutter-cookbook.xml $(XML_FILES)
 	if [ ! -d html ] ; then mkdir html ; fi && \
 	if [ ! -d html/images ] ; then mkdir html/images ; fi && \
 	if [ ! -d html/videos ] ; then mkdir html/videos ; fi && \
