@@ -25,13 +25,20 @@
 #define __COGL_PROGRAM_H
 
 #include "cogl-handle.h"
+#include "cogl-shader-private.h"
 
 typedef struct _CoglProgram CoglProgram;
 
+/* The ARBfp spec says at least 24 indices are available */
+#define COGL_PROGRAM_MAX_ARBFP_LOCAL_PARAMS 24
+
 struct _CoglProgram
 {
-  CoglHandleObject   _parent;
-  GLuint             gl_handle;
+  CoglHandleObject _parent;
+  CoglShaderLanguage language;
+  float arbfp_local_params[COGL_PROGRAM_MAX_ARBFP_LOCAL_PARAMS][4];
+  GLuint gl_handle;
+  gboolean is_linked;
 };
 
 CoglProgram *_cogl_program_pointer_from_handle (CoglHandle handle);

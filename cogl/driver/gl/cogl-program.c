@@ -16,9 +16,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  *
+ * Authors:
+ *  Robert Bragg <robert@linux.intel.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -35,6 +38,8 @@
 #include "cogl-material-opengl-private.h"
 
 #include <glib.h>
+
+#include <string.h>
 
 #define glCreateProgram              ctx->drv.pf_glCreateProgram
 #define glAttachShader               ctx->drv.pf_glAttachShader
@@ -62,6 +67,13 @@
 #define glUniformMatrix4fv           ctx->drv.pf_glUniformMatrix4fv
 #define glDeleteProgram              ctx->drv.pf_glDeleteProgram
 
+#define glProgramString ctx->drv.pf_glProgramString
+#define glBindProgram ctx->drv.pf_glBindProgram
+#define glDeletePrograms ctx->drv.pf_glDeletePrograms
+#define glGenPrograms ctx->drv.pf_glGenPrograms
+#define glProgramLocalParameter4fv ctx->drv.pf_glProgramLocalParameter4fv
+
+
 static void _cogl_program_free (CoglProgram *program);
 
 COGL_HANDLE_DEFINE (Program, program);
@@ -73,7 +85,14 @@ _cogl_program_free (CoglProgram *program)
   /* Frees program resources but its handle is not
      released! Do that separately before this! */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  GE (glDeleteProgram (program->gl_handle));
+
+  if (program->gl_handle)
+    {
+      if (program->language == COGL_SHADER_LANGUAGE_ARBFP)
+        GE (glDeletePrograms (1, &program->gl_handle));
+      else
+        GE (glDeleteProgram (program->gl_handle));
+    }
 
   g_slice_free (CoglProgram, program);
 }
@@ -84,8 +103,7 @@ cogl_create_program (void)
   CoglProgram *program;
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  program = g_slice_new (CoglProgram);
-  program->gl_handle = glCreateProgram ();
+  program = g_slice_new0 (CoglProgram);
 
   return _cogl_program_handle_new (program);
 }
@@ -96,16 +114,63 @@ cogl_program_attach_shader (CoglHandle program_handle,
 {
   CoglProgram *program;
   CoglShader *shader;
+  CoglShaderLanguage language;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!cogl_is_program (program_handle) || !cogl_is_shader (shader_handle))
-    return;
+  g_return_if_fail (cogl_is_program (program_handle));
+  g_return_if_fail (cogl_is_shader (shader_handle));
 
   program = _cogl_program_pointer_from_handle (program_handle);
   shader = _cogl_shader_pointer_from_handle (shader_handle);
 
-  GE (glAttachShader (program->gl_handle, shader->gl_handle));
+  language = shader->language;
+
+  /* We only allow attaching one ARBfp shader to a program */
+  if (language == COGL_SHADER_LANGUAGE_ARBFP)
+    g_return_if_fail (program->gl_handle == 0);
+
+  program->language = language;
+
+  if (language == COGL_SHADER_LANGUAGE_ARBFP)
+    {
+#ifdef COGL_GL_DEBUG
+      GLenum gl_error;
+#endif
+
+      GE (glGenPrograms (1, &program->gl_handle));
+
+      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, program->gl_handle));
+
+#ifdef COGL_GL_DEBUG
+      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+        ;
+#endif
+      glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                       GL_PROGRAM_FORMAT_ASCII_ARB,
+                       strlen (shader->arbfp_source),
+                       shader->arbfp_source);
+#ifdef COGL_GL_DEBUG
+      gl_error = glGetError ();
+      if (gl_error != GL_NO_ERROR)
+        {
+          g_warning ("%s: GL error (%d): Failed to compile ARBfp:\n%s\n%s",
+                     G_STRLOC,
+                     gl_error,
+                     shader->arbfp_source,
+                     glGetString (GL_PROGRAM_ERROR_STRING_ARB));
+        }
+#endif
+    }
+  else
+    {
+      if (!program->gl_handle)
+        program->gl_handle = glCreateProgram ();
+      GE (glAttachShader (program->gl_handle, shader->gl_handle));
+    }
+
+  /* NB: There is no separation between shader objects and program
+   * objects for ARBfp */
 }
 
 void
@@ -119,7 +184,11 @@ cogl_program_link (CoglHandle handle)
 
   program = _cogl_program_pointer_from_handle (handle);
 
-  GE (glLinkProgram (program->gl_handle));
+  if (program->language == COGL_SHADER_LANGUAGE_GLSL &&
+      program->gl_handle)
+    GE (glLinkProgram (program->gl_handle));
+
+  program->is_linked = TRUE;
 }
 
 void
@@ -129,6 +198,12 @@ cogl_program_use (CoglHandle handle)
 
   g_return_if_fail (handle == COGL_INVALID_HANDLE ||
                     cogl_is_program (handle));
+
+  if (handle != COGL_INVALID_HANDLE)
+    {
+      CoglProgram *program = handle;
+      g_return_if_fail (program->is_linked);
+    }
 
   if (ctx->current_program == 0 && handle != 0)
     ctx->legacy_state_set++;
@@ -140,6 +215,39 @@ cogl_program_use (CoglHandle handle)
   if (ctx->current_program != COGL_INVALID_HANDLE)
     cogl_handle_unref (ctx->current_program);
   ctx->current_program = handle;
+}
+
+/* ARBfp local parameters can be referenced like:
+ *
+ * "program.local[5]"
+ *                ^14char offset (after whitespace is stripped)
+ */
+static int
+get_local_param_index (const char *uniform_name)
+{
+  char *input = g_strdup (uniform_name);
+  int i;
+  char *p = input;
+  char *endptr;
+  int _index;
+
+  for (i = 0; input[i] != '\0'; i++)
+    if (input[i] != '_' && input[i] != '\t')
+      *p++ = input[i];
+  input[i] = '\0';
+
+  g_return_val_if_fail (strncmp ("program.local[", input, 14) == 0, -1);
+
+  _index = g_ascii_strtoull (input + 14, &endptr, 10);
+  g_return_val_if_fail (endptr != input + 14, -1);
+  g_return_val_if_fail (*endptr == ']', -1);
+
+  g_return_val_if_fail (_index >= 0 &&
+                        _index < COGL_PROGRAM_MAX_ARBFP_LOCAL_PARAMS, -1);
+
+  g_free (input);
+
+  return _index;
 }
 
 int
@@ -154,7 +262,10 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 
   program = _cogl_program_pointer_from_handle (handle);
 
-  return glGetUniformLocation (program->gl_handle, uniform_name);
+  if (program->language == COGL_SHADER_LANGUAGE_ARBFP)
+    return get_local_param_index (uniform_name);
+  else
+    return glGetUniformLocation (program->gl_handle, uniform_name);
 }
 
 void
@@ -168,6 +279,8 @@ cogl_program_uniform_1f (int uniform_no,
   program = ctx->current_program;
 
   g_return_if_fail (program != NULL);
+
+  g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
 
   _cogl_gl_use_program_wrapper (program);
 
@@ -186,15 +299,17 @@ cogl_program_uniform_1i (int uniform_no,
 
   g_return_if_fail (program != NULL);
 
+  g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
+
   _cogl_gl_use_program_wrapper (program);
 
   GE (glUniform1i (uniform_no, value));
 }
 
 void
-cogl_program_uniform_float (int  uniform_no,
-                            int     size,
-                            int     count,
+cogl_program_uniform_float (int uniform_no,
+                            int size,
+                            int count,
                             const GLfloat *value)
 {
   CoglProgram *program;
@@ -205,24 +320,47 @@ cogl_program_uniform_float (int  uniform_no,
 
   g_return_if_fail (program != NULL);
 
-  _cogl_gl_use_program_wrapper (program);
-
-  switch (size)
+  if (program->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
-    case 1:
-      GE (glUniform1fv (uniform_no, count, value));
-      break;
-    case 2:
-      GE (glUniform2fv (uniform_no, count, value));
-      break;
-    case 3:
-      GE (glUniform3fv (uniform_no, count, value));
-      break;
-    case 4:
-      GE (glUniform4fv (uniform_no, count, value));
-      break;
-    default:
-      g_warning ("%s called with invalid size parameter", G_STRFUNC);
+      unsigned int _index = uniform_no;
+      unsigned int index_end = _index + count;
+      int i;
+      int j;
+
+      g_return_if_fail (size == 4);
+
+      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, program->gl_handle));
+
+      for (i = _index; i < index_end; i++)
+        for (j = 0; j < 4; j++)
+          program->arbfp_local_params[i][j] = *(value++);
+
+      for (i = _index; i < index_end; i++)
+        GE (glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB,
+                                        i,
+                                        &program->arbfp_local_params[i][0]));
+    }
+  else
+    {
+      _cogl_gl_use_program_wrapper (program);
+
+      switch (size)
+        {
+        case 1:
+          GE (glUniform1fv (uniform_no, count, value));
+          break;
+        case 2:
+          GE (glUniform2fv (uniform_no, count, value));
+          break;
+        case 3:
+          GE (glUniform3fv (uniform_no, count, value));
+          break;
+        case 4:
+          GE (glUniform4fv (uniform_no, count, value));
+          break;
+        default:
+          g_warning ("%s called with invalid size parameter", G_STRFUNC);
+        }
     }
 }
 
@@ -276,6 +414,8 @@ cogl_program_uniform_matrix (int   uniform_no,
 
   g_return_if_fail (program != NULL);
 
+  g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
+
   _cogl_gl_use_program_wrapper (program);
 
   switch (size)
@@ -293,3 +433,11 @@ cogl_program_uniform_matrix (int   uniform_no,
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
     }
 }
+
+CoglShaderLanguage
+_cogl_program_get_language (CoglHandle handle)
+{
+  CoglProgram *program = handle;
+  return program->language;
+}
+

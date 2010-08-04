@@ -79,6 +79,7 @@ typedef struct _CoglMaterialBackendARBfpPrivate
   CoglMaterial *authority_cache;
   unsigned long authority_cache_age;
 
+  CoglHandle user_program;
   GString *source;
   GLuint gl_program;
   gboolean *sampled;
@@ -160,7 +161,7 @@ layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
  * generate.
  */
 static CoglMaterial *
-find_arbfp_authority (CoglMaterial *material)
+find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
 {
   CoglMaterial *authority0;
   CoglMaterial *authority1;
@@ -170,6 +171,9 @@ find_arbfp_authority (CoglMaterial *material)
 
   /* XXX: we'll need to update this when we add fog support to the
    * arbfp codegen */
+
+  if (user_program != COGL_INVALID_HANDLE)
+    return material;
 
   /* Find the first material that modifies state that affects the
    * arbfp codegen... */
@@ -253,8 +257,12 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   CoglMaterial *authority;
   CoglMaterialBackendARBfpPrivate *priv;
   CoglMaterialBackendARBfpPrivate *authority_priv;
+  CoglHandle user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
+
+  /* First validate that we can handle the current state using ARBfp
+   */
 
   if (!cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
     return FALSE;
@@ -263,11 +271,23 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   if (ctx->legacy_fog_state.enabled)
     return FALSE;
 
+  user_program = cogl_material_get_user_program (material);
+  if (user_program != COGL_INVALID_HANDLE &&
+      _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_ARBFP)
+    return FALSE;
+
+  /* Now lookup our ARBfp backend private state (allocating if
+   * necessary) that may contain a cache pointer refering us to the
+   * material's "arbfp-authority".
+   *
+   * The arbfp-authority is the oldest ancestor whos state will result in
+   * the same program being generated.
+   */
+
   /* Note: we allocate ARBfp private state for both the given material
-   * and the authority. (The oldest ancestor whos state will result in
-   * the same program being generated) The former will simply cache a
-   * pointer to the authority and the later will track the arbfp
-   * program that we will generate.
+   * and the arbfp-authority. The former will simply cache a pointer
+   * to the authority and the later will track the arbfp program that
+   * we will generate.
    */
 
   if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
@@ -285,15 +305,23 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
    * may invalidate authority_cache pointers.
    */
 
+  /* If the given material has changed since we last cached its
+   * arbfp-authority then invalidate our cache and then search the
+   * material's ancestors for one with matching fragment processing
+   * state. */
+
   if (priv->authority_cache &&
       priv->authority_cache_age != _cogl_material_get_age (material))
     invalidate_arbfp_authority_cache (material);
 
   if (!priv->authority_cache)
     {
-      priv->authority_cache = find_arbfp_authority (material);
+      priv->authority_cache = find_arbfp_authority (material, user_program);
       priv->authority_cache_age = _cogl_material_get_age (material);
     }
+
+  /* Now we have our arbfp-authority fetch the ARBfp backend private
+   * state from it (allocting if necessary) */
 
   authority = priv->authority_cache;
   if (!(authority->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
@@ -304,7 +332,9 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
     }
   authority_priv = authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
-  if (authority_priv->gl_program == 0)
+  authority_priv->user_program = user_program;
+
+  if (user_program == COGL_INVALID_HANDLE && authority_priv->gl_program == 0)
     {
       /* We reuse a single grow-only GString for ARBfp code-gen */
       g_string_set_size (ctx->arbfp_source_buffer, 0);
@@ -912,6 +942,7 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
   CoglMaterial *arbfp_authority = get_arbfp_authority (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+  GLuint gl_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -954,9 +985,16 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
       g_free (priv->sampled);
       priv->sampled = NULL;
     }
-  else
-    GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, priv->gl_program));
 
+  if (priv->user_program != COGL_INVALID_HANDLE)
+    {
+      CoglProgram *program = (CoglProgram *)priv->user_program;
+      gl_program = program->gl_handle;
+    }
+  else
+    gl_program = priv->gl_program;
+
+  GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
   _cogl_use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
 
   return TRUE;
@@ -968,17 +1006,23 @@ _cogl_material_backend_arbfp_material_pre_change_notify (
                                                    CoglMaterialState change,
                                                    const CoglColor *new_color)
 {
-  CoglMaterialBackendARBfpPrivate *priv =
-    material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+  CoglMaterialBackendARBfpPrivate *priv;
   static const unsigned long fragment_op_changes =
-    COGL_MATERIAL_STATE_LAYERS;
+    COGL_MATERIAL_STATE_LAYERS |
+    COGL_MATERIAL_STATE_USER_SHADER;
     /* TODO: COGL_MATERIAL_STATE_FOG */
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK &&
-      priv->gl_program &&
-      change & fragment_op_changes)
+  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK) ||
+      !(change & fragment_op_changes))
+    return;
+
+  priv = material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+
+  priv->user_program = COGL_INVALID_HANDLE;
+
+  if (priv->gl_program)
     {
       GE (glDeletePrograms (1, &priv->gl_program));
       priv->gl_program = 0;

@@ -28,13 +28,26 @@
 
 typedef struct _CoglShader CoglShader;
 
+typedef enum
+{
+  COGL_SHADER_LANGUAGE_GLSL,
+#ifdef HAVE_COGL_GL
+  COGL_SHADER_LANGUAGE_ARBFP
+#endif
+} CoglShaderLanguage;
+
 struct _CoglShader
 {
   CoglHandleObject   _parent;
   GLuint             gl_handle;
+  char              *arbfp_source;
   CoglShaderType     type;
+  CoglShaderLanguage language;
 };
 
 CoglShader *_cogl_shader_pointer_from_handle (CoglHandle handle);
+
+CoglShaderLanguage
+_cogl_program_get_language (CoglHandle handle);
 
 #endif /* __COGL_SHADER_H */
