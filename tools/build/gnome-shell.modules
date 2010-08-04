@@ -23,10 +23,10 @@
     <branch repo="git.gnome.org" module="glib"/>
   </autotools>
 
-  <tarball id="vala" version="0.9.3" autogenargs="--enable-vapigen">
-    <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.9/vala-0.9.3.tar.bz2"
-            hash="sha256:6e343df80b8919486599f863d00f26b1be8ae1952422f91784d6542bed3afa98"
-            md5sum="b2e905921d695d0bd85c5e114e2b3d84" size="2395639"/>
+  <tarball id="vala" version="0.9.4" autogenargs="--enable-vapigen">
+    <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.9/vala-0.9.4.tar.bz2"
+            hash="sha256:1fd008dfe835538b52409c3624472a220bbb00c14446f7fd2af00d837922cd3e"
+            md5sum="c863712acd127891e21fe153f9bc7709" size="2419008"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
