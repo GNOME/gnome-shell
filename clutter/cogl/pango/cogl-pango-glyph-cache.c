@@ -29,76 +29,33 @@
 
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-private.h"
-
-/* Minimum width/height for each texture */
-#define MIN_TEXTURE_SIZE  256
-/* All glyph with heights within this margin from each other can be
-   put in the same band */
-#define BAND_HEIGHT_ROUND 4
+#include "cogl/cogl-atlas.h"
+#include "cogl/cogl-callback-list.h"
 
 typedef struct _CoglPangoGlyphCacheKey     CoglPangoGlyphCacheKey;
-typedef struct _CoglPangoGlyphCacheTexture CoglPangoGlyphCacheTexture;
-typedef struct _CoglPangoGlyphCacheBand    CoglPangoGlyphCacheBand;
 
 struct _CoglPangoGlyphCache
 {
   /* Hash table to quickly check whether a particular glyph in a
      particular font is already cached */
-  GHashTable                    *hash_table;
+  GHashTable       *hash_table;
 
-  /* List of textures */
-  CoglPangoGlyphCacheTexture *textures;
+  /* List of CoglAtlases */
+  GSList           *atlases;
 
-  /* List of horizontal bands of glyphs */
-  CoglPangoGlyphCacheBand    *bands;
+  /* List of callbacks to invoke when an atlas is reorganized */
+  CoglCallbackList  reorganize_callbacks;
+
+  /* True if some of the glyphs are dirty. This is used as an
+     optimization in _cogl_pango_glyph_cache_set_dirty_glyphs to avoid
+     iterating the hash table if we know none of them are dirty */
+  gboolean          has_dirty_glyphs;
 };
 
 struct _CoglPangoGlyphCacheKey
 {
   PangoFont  *font;
   PangoGlyph  glyph;
-};
-
-/* Represents one texture that will be used to store glyphs. The
-   texture is divided into horizontal bands which all contain glyphs
-   of approximatly the same height */
-struct _CoglPangoGlyphCacheTexture
-{
-  /* The width and height of the texture which should always be a
-     power of two. This can vary so that glyphs larger than
-     MIN_TEXTURE_SIZE can use a bigger texture */
-  int        texture_size;
-
-  /* The remaining vertical space not taken up by any bands */
-  int        space_remaining;
-
-  /* The actual texture */
-  CoglHandle texture;
-
-  CoglPangoGlyphCacheTexture *next;
-};
-
-/* Represents one horizontal band of a texture. Each band contains
-   glyphs of a similar height */
-struct _CoglPangoGlyphCacheBand
-{
-  /* The y position of the top of the band */
-  int        top;
-
-  /* The height of the band */
-  int        height;
-
-  /* The remaining horizontal space not taken up by any glyphs */
-  int        space_remaining;
-
-  /* The size of the texture. Needed to calculate texture
-     coordinates */
-  int        texture_size;
-
-  /* The texture containing this band */
-  CoglHandle texture;
-
-  CoglPangoGlyphCacheBand *next;
 };
 
 static void
@@ -144,34 +101,6 @@ cogl_pango_glyph_cache_equal_func (gconstpointer a,
     && key_a->glyph == key_b->glyph;
 }
 
-static void
-cogl_pango_glyph_cache_free_textures (CoglPangoGlyphCacheTexture *node)
-{
-  CoglPangoGlyphCacheTexture *next;
-
-  while (node)
-    {
-      next = node->next;
-      cogl_handle_unref (node->texture);
-      g_slice_free (CoglPangoGlyphCacheTexture, node);
-      node = next;
-    }
-}
-
-static void
-cogl_pango_glyph_cache_free_bands (CoglPangoGlyphCacheBand *node)
-{
-  CoglPangoGlyphCacheBand *next;
-
-  while (node)
-    {
-      next = node->next;
-      cogl_handle_unref (node->texture);
-      g_slice_free (CoglPangoGlyphCacheBand, node);
-      node = next;
-    }
-}
-
 CoglPangoGlyphCache *
 cogl_pango_glyph_cache_new (void)
 {
@@ -185,8 +114,10 @@ cogl_pango_glyph_cache_new (void)
      (GDestroyNotify) cogl_pango_glyph_cache_key_free,
      (GDestroyNotify) cogl_pango_glyph_cache_value_free);
 
-  cache->textures = NULL;
-  cache->bands = NULL;
+  cache->atlases = NULL;
+  _cogl_callback_list_init (&cache->reorganize_callbacks);
+
+  cache->has_dirty_glyphs = FALSE;
 
   return cache;
 }
@@ -194,10 +125,10 @@ cogl_pango_glyph_cache_new (void)
 void
 cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache)
 {
-  cogl_pango_glyph_cache_free_textures (cache->textures);
-  cache->textures = NULL;
-  cogl_pango_glyph_cache_free_bands (cache->bands);
-  cache->bands = NULL;
+  g_slist_foreach (cache->atlases, (GFunc) _cogl_atlas_free, NULL);
+  g_slist_free (cache->atlases);
+  cache->atlases = NULL;
+  cache->has_dirty_glyphs = FALSE;
 
   g_hash_table_remove_all (cache->hash_table);
 }
@@ -209,144 +140,168 @@ cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 
   g_hash_table_unref (cache->hash_table);
 
+  _cogl_callback_list_destroy (&cache->reorganize_callbacks);
+
   g_free (cache);
+}
+
+static void
+cogl_pango_glyph_cache_update_position_cb (void *user_data,
+                                           CoglHandle new_texture,
+                                           const CoglRectangleMapEntry *rect)
+{
+  CoglPangoGlyphCacheValue *value = user_data;
+  float tex_width, tex_height;
+
+  if (value->texture)
+    cogl_handle_unref (value->texture);
+  value->texture = cogl_handle_ref (new_texture);
+
+  tex_width = cogl_texture_get_width (new_texture);
+  tex_height = cogl_texture_get_height (new_texture);
+
+  value->tx1 = rect->x / tex_width;
+  value->ty1 = rect->y / tex_height;
+  value->tx2 = (rect->x + value->draw_width) / tex_width;
+  value->ty2 = (rect->y + value->draw_height) / tex_height;
+
+  value->tx_pixel = rect->x;
+  value->ty_pixel = rect->y;
+
+  /* The glyph has changed position so it will need to be redrawn */
+  value->dirty = TRUE;
+}
+
+static void
+cogl_pango_glyph_cache_reorganize_cb (void *user_data)
+{
+  CoglPangoGlyphCache *cache = user_data;
+
+  _cogl_callback_list_invoke (&cache->reorganize_callbacks);
 }
 
 CoglPangoGlyphCacheValue *
 cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
-				  PangoFont              *font,
-				  PangoGlyph              glyph)
+                               gboolean             create,
+                               PangoFont           *font,
+                               PangoGlyph           glyph)
 {
-  CoglPangoGlyphCacheKey key;
-
-  key.font = font;
-  key.glyph = glyph;
-
-  return (CoglPangoGlyphCacheValue *)
-    g_hash_table_lookup (cache->hash_table, &key);
-}
-
-CoglPangoGlyphCacheValue *
-cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
-			    PangoFont           *font,
-			    PangoGlyph           glyph,
-			    gconstpointer        pixels,
-			    int                  width,
-			    int                  height,
-			    int                  stride,
-			    int                  draw_x,
-			    int                  draw_y)
-{
-  int                       band_height;
-  CoglPangoGlyphCacheBand  *band;
-  CoglPangoGlyphCacheKey   *key;
+  CoglPangoGlyphCacheKey lookup_key;
   CoglPangoGlyphCacheValue *value;
 
-  /* Reserve an extra pixel gap around the glyph so that it can pull
-     in blank pixels when linear filtering is enabled */
-  width++;
-  height++;
+  lookup_key.font = font;
+  lookup_key.glyph = glyph;
 
-  /* Round the height up to the nearest multiple of
-     BAND_HEIGHT_ROUND */
-  band_height = (height + BAND_HEIGHT_ROUND - 1) & ~(BAND_HEIGHT_ROUND - 1);
+  value = g_hash_table_lookup (cache->hash_table, &lookup_key);
 
-  /* Look for a band with the same height and enough width available */
-  for (band = cache->bands;
-       band && (band->height != band_height || band->space_remaining < width);
-       band = band->next);
-  if (band == NULL)
+  if (create && value == NULL)
     {
-      CoglPangoGlyphCacheTexture *texture;
+      CoglPangoGlyphCacheKey *key;
+      PangoRectangle ink_rect;
+      CoglAtlas *atlas = NULL;
+      GSList *l;
 
-      /* Look for a texture with enough vertical space left for a band
-	 with this height */
-      for (texture = cache->textures;
-	   texture && (texture->space_remaining < band_height
-		       || texture->texture_size < width);
-	   texture = texture->next);
-      if (texture == NULL)
-	{
-	  guchar *clear_data;
+      pango_font_get_glyph_extents (font, glyph, &ink_rect, NULL);
+      pango_extents_to_pixels (&ink_rect, NULL);
 
-	  /* Allocate a new texture that is the nearest power of two
-	     greater than the band height or the minimum size,
-	     whichever is lower */
-	  texture = g_slice_new (CoglPangoGlyphCacheTexture);
+      value = g_slice_new (CoglPangoGlyphCacheValue);
+      value->texture = COGL_INVALID_HANDLE;
+      value->draw_x = ink_rect.x;
+      value->draw_y = ink_rect.y;
+      value->draw_width = ink_rect.width;
+      value->draw_height = ink_rect.height;
+      value->dirty = TRUE;
 
-	  texture->texture_size = MIN_TEXTURE_SIZE;
-	  while (texture->texture_size < band_height ||
-                 texture->texture_size < width)
+      /* Look for an atlas that can reserve the space */
+      for (l = cache->atlases; l; l = l->next)
+        if (_cogl_atlas_reserve_space (l->data,
+                                       ink_rect.width + 1, ink_rect.height + 1,
+                                       value))
+          {
+            atlas = l->data;
+            break;
+          }
+
+      /* If we couldn't find one then start a new atlas */
+      if (atlas == NULL)
+        {
+          atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_A_8,
+                                   TRUE,
+                                   cogl_pango_glyph_cache_update_position_cb);
+          /* If we still can't reserve space then something has gone
+             seriously wrong so we'll just give up */
+          if (!_cogl_atlas_reserve_space (atlas,
+                                          ink_rect.width + 1,
+                                          ink_rect.height + 1, value))
             {
-	      texture->texture_size *= 2;
+              _cogl_atlas_free (atlas);
+              cogl_pango_glyph_cache_value_free (value);
+              return NULL;
             }
 
-	  /* Allocate an empty buffer to clear the texture */
-	  clear_data =
-            g_malloc0 (texture->texture_size * texture->texture_size);
+          _cogl_atlas_add_reorganize_callback
+            (atlas, cogl_pango_glyph_cache_reorganize_cb, cache);
 
-	  texture->texture =
-            cogl_texture_new_from_data (texture->texture_size,
-                                        texture->texture_size,
-                                        COGL_TEXTURE_NONE,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        texture->texture_size,
-                                        clear_data);
+          cache->atlases = g_slist_prepend (cache->atlases, atlas);
+        }
 
-	  g_free (clear_data);
+      key = g_slice_new (CoglPangoGlyphCacheKey);
+      key->font = g_object_ref (font);
+      key->glyph = glyph;
 
-	  texture->space_remaining = texture->texture_size;
-	  texture->next = cache->textures;
-	  cache->textures = texture;
-	}
+      g_hash_table_insert (cache->hash_table, key, value);
 
-      band = g_slice_new (CoglPangoGlyphCacheBand);
-      band->top = texture->texture_size - texture->space_remaining;
-      band->height = band_height;
-      band->space_remaining = texture->texture_size;
-      band->texture = cogl_handle_ref (texture->texture);
-      band->texture_size = texture->texture_size;
-      band->next = cache->bands;
-      cache->bands = band;
-      texture->space_remaining -= band_height;
+      cache->has_dirty_glyphs = TRUE;
     }
 
-  band->space_remaining -= width;
-
-  width--;
-  height--;
-
-  cogl_texture_set_region (band->texture,
-			   0, 0,
-			   band->space_remaining,
-			   band->top,
-			   width, height,
-			   width, height,
-			   COGL_PIXEL_FORMAT_A_8,
-			   stride,
-			   pixels);
-
-  key = g_slice_new (CoglPangoGlyphCacheKey);
-  key->font = g_object_ref (font);
-  key->glyph = glyph;
-
-  value = g_slice_new (CoglPangoGlyphCacheValue);
-  value->texture = cogl_handle_ref (band->texture);
-  value->tx1 = (float)(band->space_remaining)
-             / band->texture_size;
-  value->tx2 = (float)(band->space_remaining + width)
-             / band->texture_size;
-  value->ty1 = (float)(band->top)
-             / band->texture_size;
-  value->ty2 = (float)(band->top + height)
-             / band->texture_size;
-  value->draw_x = draw_x;
-  value->draw_y = draw_y;
-  value->draw_width = width;
-  value->draw_height = height;
-
-  g_hash_table_insert (cache->hash_table, key, value);
-
   return value;
+}
+
+static void
+_cogl_pango_glyph_cache_set_dirty_glyphs_cb (gpointer key_ptr,
+                                             gpointer value_ptr,
+                                             gpointer user_data)
+{
+  CoglPangoGlyphCacheKey *key = key_ptr;
+  CoglPangoGlyphCacheValue *value = value_ptr;
+  CoglPangoGlyphCacheDirtyFunc func = user_data;
+
+  if (value->dirty)
+    {
+      func (key->font, key->glyph, value);
+
+      value->dirty = FALSE;
+    }
+}
+
+void
+_cogl_pango_glyph_cache_set_dirty_glyphs (CoglPangoGlyphCache *cache,
+                                          CoglPangoGlyphCacheDirtyFunc func)
+{
+  /* If we know that there are no dirty glyphs then we can shortcut
+     out early */
+  if (!cache->has_dirty_glyphs)
+    return;
+
+  g_hash_table_foreach (cache->hash_table,
+                        _cogl_pango_glyph_cache_set_dirty_glyphs_cb,
+                        func);
+
+  cache->has_dirty_glyphs = FALSE;
+}
+
+void
+_cogl_pango_glyph_cache_add_reorganize_callback (CoglPangoGlyphCache *cache,
+                                                 CoglCallbackListFunc func,
+                                                 void *user_data)
+{
+  _cogl_callback_list_add (&cache->reorganize_callbacks, func, user_data);
+}
+
+void
+_cogl_pango_glyph_cache_remove_reorganize_callback (CoglPangoGlyphCache *cache,
+                                                    CoglCallbackListFunc func,
+                                                    void *user_data)
+{
+  _cogl_callback_list_remove (&cache->reorganize_callbacks, func, user_data);
 }

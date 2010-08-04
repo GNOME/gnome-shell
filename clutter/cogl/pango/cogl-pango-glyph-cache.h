@@ -26,6 +26,7 @@
 
 #include <glib.h>
 #include <cogl/cogl.h>
+#include <cogl/cogl-callback-list.h>
 #include <pango/pango-font.h>
 
 G_BEGIN_DECLS
@@ -37,16 +38,27 @@ struct _CoglPangoGlyphCacheValue
 {
   CoglHandle texture;
 
-  float  tx1;
-  float  ty1;
-  float  tx2;
-  float  ty2;
+  float      tx1;
+  float      ty1;
+  float      tx2;
+  float      ty2;
+
+  int        tx_pixel;
+  int        ty_pixel;
 
   int        draw_x;
   int        draw_y;
   int        draw_width;
   int        draw_height;
+
+  /* This will be set to TRUE when the glyph atlas is reorganized
+     which means the glyph will need to be redrawn */
+  gboolean   dirty;
 };
+
+typedef void (* CoglPangoGlyphCacheDirtyFunc) (PangoFont *font,
+                                               PangoGlyph glyph,
+                                               CoglPangoGlyphCacheValue *value);
 
 CoglPangoGlyphCache *
 cogl_pango_glyph_cache_new (void);
@@ -56,22 +68,26 @@ cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache);
 
 CoglPangoGlyphCacheValue *
 cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
+                               gboolean             create,
                                PangoFont           *font,
                                PangoGlyph           glyph);
 
-CoglPangoGlyphCacheValue *
-cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
-                            PangoFont           *font,
-                            PangoGlyph           glyph,
-                            gconstpointer        pixels,
-                            int                  width,
-			    int                  height,
-			    int                  stride,
-			    int                  draw_x,
-			    int                  draw_y);
-
 void
 cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache);
+
+void
+_cogl_pango_glyph_cache_add_reorganize_callback (CoglPangoGlyphCache *cache,
+                                                 CoglCallbackListFunc func,
+                                                 void *user_data);
+
+void
+_cogl_pango_glyph_cache_remove_reorganize_callback (CoglPangoGlyphCache *cache,
+                                                    CoglCallbackListFunc func,
+                                                    void *user_data);
+
+void
+_cogl_pango_glyph_cache_set_dirty_glyphs (CoglPangoGlyphCache *cache,
+                                          CoglPangoGlyphCacheDirtyFunc func);
 
 G_END_DECLS
 
