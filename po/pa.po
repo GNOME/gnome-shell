@@ -14,10 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=mutter&component=general\n"
-"POT-Creation-Date: 2010-06-07 13:51+0000\n"
-"PO-Revision-Date: 2010-06-14 08:09+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
+"POT-Creation-Date: 2010-07-02 13:54+0000\n"
+"PO-Revision-Date: 2010-08-04 15:16+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -37,32 +36,31 @@ msgid "Unknown window information request: %d"
 msgstr "ਅਣਜਾਣ ਵਿੰਡੋ ਜਾਣਕਾਰੀ ਮੰਗ: %d"
 
 #. Translators: %s is a window title
-#: ../src/core/delete.c:95
+#: ../src/core/delete.c:94
 #, c-format
-#| msgid "\"%s\" is not responding."
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> ਜਵਾਬ ਨਹੀ ਦਿੰਦਾ।"
 
-#: ../src/core/delete.c:100
+#: ../src/core/delete.c:99
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "ਤੁਸੀਂ ਇਸ ਲਈ ਕੁਝ ਸਮੇਂ ਵਾਸਤੇ ਉਡੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਕਾਰਜ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ।"
 
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:108
 msgid "_Wait"
 msgstr "ਉਡੀਕੋ(_W)"
 
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:108
 msgid "_Force Quit"
 msgstr "ਧੱਕੇ ਨਾਲ ਬੰਦ(_F)"
 
-#: ../src/core/display.c:362
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ਕੰਪੋਜ਼ਿਸ਼ਨਿੰਗ ਲਈ %s ਐਕਸਟੈਨਸ਼ਨ ਗੁੰਮ ਹੈ"
 
-#: ../src/core/display.c:448
+#: ../src/core/display.c:451
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ਵਿੰਡੋ ਸਿਸਟਮ ਡਿਸਪਲੇਅ '%s' ਨੂੰ ਖੋਲਣ ਵਿੱਚ ਅਸਮਰਥ\n"
@@ -116,12 +114,6 @@ msgstr "ਕੋਈ ਟਰਮੀਨਲ ਕਮਾਂਡ ਪ੍ਰਭਾਸ਼ਿਤ �
 
 #: ../src/core/main.c:130
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -139,7 +131,6 @@ msgid "Disable connection to session manager"
 msgstr "ਸ਼ੈਸ਼ਨ ਮੈਨੇਜਰ ਨਾਲ ਕੁਨੈਕਸ਼ਨ ਅਯੋਗ"
 
 #: ../src/core/main.c:267
-#| msgid "Replace the running window manager with Metacity"
 msgid "Replace the running window manager with Mutter"
 msgstr "ਚੱਲ ਰਹੇ ਵਿੰਡੋ ਮੈਨੇਜਰ ਨੂੰ ਮੱਟਰ ਨਾਲ ਬਦਲੋ"
 
@@ -244,9 +235,7 @@ msgstr "GConf ਕੁੰਜੀ ਅਣਡਿੱਠੀ ਨਹੀਂ ਕੀਤੀ �
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr ""
-"ਖਰਾਬ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜੁਗਾੜ ਬੰਦ ਕੀਤਾ ਹੈ। ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਚੰਗੀ ਤਰਾਂ ਕੰਮ ਨਹੀਂ "
-"ਕਰ ਸਕਦੇ ਹਨ।\n"
+msgstr "ਖਰਾਬ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜੁਗਾੜ ਬੰਦ ਕੀਤਾ ਹੈ। ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਚੰਗੀ ਤਰਾਂ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੇ ਹਨ।\n"
 
 #: ../src/core/prefs.c:1534
 #, c-format
@@ -289,19 +278,16 @@ msgstr "ਕੰਪੋਜ਼ਟਰ ਹਾਲਤ ਸੈਟ ਕਰਨ ਦੌਰਾ�
 
 #: ../src/core/prefs.c:3021
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "ਕਲੁੱਟਰ ਪਲੱਗਇਨ ਸੈਟਿੰਗ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s\n"
 
 #: ../src/core/prefs.c:3065
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "ਲਾਈਵ ਲੁਕਵੀਂ ਵਿੰਡੋ ਹਾਲਤ ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s\n"
 
 #: ../src/core/prefs.c:3093
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting no tab popup status: %s\n"
 msgstr "ਕੋਈ ਟੈਬ ਪੋਪਅੱਪ ਨਹੀਂ ਹਾਲਤ ਸੈਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s\n"
 
@@ -361,7 +347,6 @@ msgstr "ਸੰਭਾਲੀ ਸ਼ੈਸ਼ਨ ਫਾਇਲ ਨੂੰ ਪਾਰ�
 
 #: ../src/core/session.c:1198
 #, c-format
-#| msgid "<metacity_session> attribute seen but we already have the session ID"
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "<mutter_session>  ਗੁਣ ਦਿਖਿਆ, ਪਰ ਸਾਡੇ ਕੋਲ ਸ਼ੈਸ਼ਨ ID ਪਹਿਲਾਂ ਹੀ ਹੈ"
 
@@ -383,16 +368,12 @@ msgid "Unknown element %s"
 msgstr "ਅਣਜਾਣ ਐਲੀਮੈਂਟ %s"
 
 #: ../src/core/session.c:1822
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
 "ਇਹ ਵਿੰਡੋ &quot;ਮੌਜੂਦਾ ਸੈਟਅੱਪ ਸੰਭਾਲੋ&quot; ਵਾਸਤੇ ਸਹਾਇਕ ਨਹੀਂ ਅਤੇ ਅਗਲੀ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਲਾਗਇਨ "
-"ਕਰੋਗੇ "
-"ਤਾਂ ਮੁੜ ਸ਼ੁਰੂ ਕਰਨਾ ਪਵੇਗਾ।"
+"ਕਰੋਗੇ ਤਾਂ ਮੁੜ ਸ਼ੁਰੂ ਕਰਨਾ ਪਵੇਗਾ।"
 
 #: ../src/core/util.c:110
 #, c-format
@@ -411,7 +392,6 @@ msgstr "ਖੁੱਲ੍ਹੀ ਲਾਗ ਫਾਇਲ %s\n"
 
 #: ../src/core/util.c:145 ../src/tools/mutter-message.c:176
 #, c-format
-#| msgid "Metacity was compiled without support for verbose mode\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "ਮੱਟਰ, ਵਰਬੋਜ਼ ਮੋਡ ਲਈ ਸਹਾਰੇ ਤੋਂ ਬਿਨਾਂ ਕੰਪਾਇਲ ਹੋਇਆ\n"
 
@@ -821,16 +801,14 @@ msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
-"ਦੱਸੋ ਕਿ ਕੀ ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਚਾਲੂ ਰੱਖਣੀਆਂ ਹਨ (ਜਿਵੇਂ ਕਿ ਘੱਟੋ-ਘੱਟ ਕੀਤੀ ਵਿੰਡੋਜ਼ ਤੇ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ "
-"ਤੋਂ ਬਿਨਾਂ ਹੋਰ "
-"ਤੋਂ ਵਿੰਡੋਜ਼)।"
+"ਦੱਸੋ ਕਿ ਕੀ ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਚਾਲੂ ਰੱਖਣੀਆਂ ਹਨ (ਜਿਵੇਂ ਕਿ ਘੱਟੋ-ਘੱਟ ਕੀਤੀ ਵਿੰਡੋਜ਼ ਤੇ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਤੋਂ "
+"ਬਿਨਾਂ ਹੋਰ ਤੋਂ ਵਿੰਡੋਜ਼)।"
 
 #: ../src/mutter.schemas.in.h:3
 msgid "Live Hidden Windows"
 msgstr "ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਲਾਈਵ"
 
 #: ../src/mutter.schemas.in.h:4
-#| msgid "Modifier to use for modified window click actions"
 msgid "Modifier to use for extended window management operations"
 msgstr "ਵਾਧੂ ਵਿੰਡੋ ਪਰਬੰਧ ਓਪਰੇਸ਼ਨਾਂ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਮੋਡੀਫਾਇਰ"
 
@@ -846,55 +824,55 @@ msgid ""
 "default or set to the empty string."
 msgstr ""
 "ਇਹ ਸਵਿੱਚ \"ਓਵਰਲੇ\" ਸ਼ੁਰੂ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਵਿੰਡੋ ਸੰਖੇਪ ਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣ ਸਿਸਟਮ ਦੀ ਜੋੜ ਹੈ। "
-"ਡਿਫਾਲਟ ਇਹ PC ਹਾਰਡਵੇਅਰ ਉੱਤੇ \"ਵਿੰਡੋਜ਼ ਸਵਿੱਚ\" ਨਾਲ ਵਰਤਣ ਲਈ ਹੈ। ਇਹ ਉਮੀਦ ਕੀਤੀ "
-"ਜਾਂਦੀ ਹੈ ਕਿ ਜਾਂ ਤਾਂ ਡਿਫਾਲਟ ਬਾਈਡਿੰਗ ਰੱਖੀ ਜਾਵੇ ਜਾਂ ਖਾਲੀ ਲਾਈਨ ਵਰਤੀ ਜਾਵੇ।"
+"ਡਿਫਾਲਟ ਇਹ PC ਹਾਰਡਵੇਅਰ ਉੱਤੇ \"ਵਿੰਡੋਜ਼ ਸਵਿੱਚ\" ਨਾਲ ਵਰਤਣ ਲਈ ਹੈ। ਇਹ ਉਮੀਦ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਕਿ "
+"ਜਾਂ ਤਾਂ ਡਿਫਾਲਟ ਬਾਈਡਿੰਗ ਰੱਖੀ ਜਾਵੇ ਜਾਂ ਖਾਲੀ ਲਾਈਨ ਵਰਤੀ ਜਾਵੇ।"
 
 #: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "ਵਰਤੋਂ: %s\n"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1112
 msgid "Close Window"
 msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1115
 msgid "Window Menu"
 msgstr "ਵਿੰਡੋ ਮੇਨੂ"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1118
 msgid "Minimize Window"
 msgstr "ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1121
 msgid "Maximize Window"
 msgstr "ਵਿੰਡੋ ਵੱਧੋ-ਵੱਧ"
 
-#: ../src/ui/frames.c:1151
+#: ../src/ui/frames.c:1124
 msgid "Restore Window"
 msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
 
-#: ../src/ui/frames.c:1154
+#: ../src/ui/frames.c:1127
 msgid "Roll Up Window"
 msgstr "ਵਿੰਡੋ ਸਮੇਟੋ"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1130
 msgid "Unroll Window"
 msgstr "ਵਿੰਡੋ ਫੈਲਾਓ"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1133
 msgid "Keep Window On Top"
 msgstr "ਵਿੰਡੋ ਉੱਤੇ ਰੱਖੋ"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1136
 msgid "Remove Window From Top"
 msgstr "ਵਿੰਡੋ ਉੱਤੇ ਤੋਂ ਹਟਾਓ"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1139
 msgid "Always On Visible Workspace"
 msgstr "ਹਮੇਸ਼ਾ ਉਪਲੱਬਧ ਵਰਕਸਪੇਸ 'ਚ"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1142
 msgid "Put Window On Only One Workspace"
 msgstr "ਵਿੰਡੋ ਨੂੰ ਸਿਰਫ਼ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਰੱਖੋ"
 
@@ -1004,7 +982,7 @@ msgstr "ਹੋਰ ਵਰਕਸਪੇਸ ਉੱਤੇ ਭੇਜੋ(_W)"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:106
+#: ../src/ui/metaaccellabel.c:75
 msgid "Shift"
 msgstr "Shift"
 
@@ -1013,7 +991,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:112
+#: ../src/ui/metaaccellabel.c:81
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1022,7 +1000,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:118
+#: ../src/ui/metaaccellabel.c:87
 msgid "Alt"
 msgstr "Alt"
 
@@ -1031,7 +1009,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:124
+#: ../src/ui/metaaccellabel.c:93
 msgid "Meta"
 msgstr "Meta"
 
@@ -1040,7 +1018,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:130
+#: ../src/ui/metaaccellabel.c:99
 msgid "Super"
 msgstr "Super"
 
@@ -1049,7 +1027,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:136
+#: ../src/ui/metaaccellabel.c:105
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1058,7 +1036,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:142
+#: ../src/ui/metaaccellabel.c:111
 msgid "Mod2"
 msgstr "ਮਾਡ੨"
 
@@ -1067,7 +1045,7 @@ msgstr "ਮਾਡ੨"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:148
+#: ../src/ui/metaaccellabel.c:117
 msgid "Mod3"
 msgstr "ਮਾਡ੩"
 
@@ -1076,7 +1054,7 @@ msgstr "ਮਾਡ੩"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:154
+#: ../src/ui/metaaccellabel.c:123
 msgid "Mod4"
 msgstr "ਮਾਡ੪"
 
@@ -1085,7 +1063,7 @@ msgstr "ਮਾਡ੪"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:160
+#: ../src/ui/metaaccellabel.c:129
 msgid "Mod5"
 msgstr "ਮਾਡ੫"
 
@@ -1144,8 +1122,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK ਰੰਗ ਹਦਾਇਤਾਂ ਦੀ ਹਾਲਤ ਬਰੈਕਟਾਂ ਵਿੱਚ ਜਰੂਰੀ ਹੈ, ਉਦਾਹਰਨ ਵਜੋਂ gtk:fg[ਸਾਧਾਰਨ] ਜਿੱਥੇ "
-"ਸਾਧਾਰਨ  ਇੱਕ ਹਾਲਤ ਹੈ; \"%s\" ਦੀ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ"
+"GTK ਰੰਗ ਹਦਾਇਤਾਂ ਦੀ ਹਾਲਤ ਬਰੈਕਟਾਂ ਵਿੱਚ ਜਰੂਰੀ ਹੈ, ਉਦਾਹਰਨ ਵਜੋਂ gtk:fg[ਸਾਧਾਰਨ] ਜਿੱਥੇ ਸਾਧਾਰਨ  "
+"ਇੱਕ ਹਾਲਤ ਹੈ; \"%s\" ਦੀ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ"
 
 #: ../src/ui/theme.c:1162
 #, c-format
@@ -1153,8 +1131,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"ਹਾਲਤ ਤੋਂ ਬਾਅਦ GTK ਰੰਗ ਹਦਾਇਤ ਬਰੈਕਟਾਂ ਵਿੱਚ ਬੰਦ ਕਰਨੀ ਜ਼ਰੂਰੀ ਹੈ, ਉਦਾਹਰਨ ਵਜੋਂ gtk:fg"
-"[ਸਾਧਾਰਨ] ਜਿੱਥੇ ਸਾਧਾਰਨ ਇੱਕ ਹਾਲਤ ਹੈ; \"%s\" ਦੀ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ"
+"ਹਾਲਤ ਤੋਂ ਬਾਅਦ GTK ਰੰਗ ਹਦਾਇਤ ਬਰੈਕਟਾਂ ਵਿੱਚ ਬੰਦ ਕਰਨੀ ਜ਼ਰੂਰੀ ਹੈ, ਉਦਾਹਰਨ ਵਜੋਂ gtk:fg[ਸਾਧਾਰਨ] "
+"ਜਿੱਥੇ ਸਾਧਾਰਨ ਇੱਕ ਹਾਲਤ ਹੈ; \"%s\" ਦੀ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ"
 
 #: ../src/ui/theme.c:1173
 #, c-format
@@ -1641,8 +1619,8 @@ msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
-"\"version\" ਗੁਣ metacity-theme-1.xml ਜਾਂ metacity-theme-2.xml "
-"ਵਿੱਚ ਵਰਤਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
+"\"version\" ਗੁਣ metacity-theme-1.xml ਜਾਂ metacity-theme-2.xml ਵਿੱਚ ਵਰਤਿਆ ਨਹੀਂ ਜਾ "
+"ਸਕਦਾ"
 
 #: ../src/ui/theme-parser.c:3469
 #, c-format
@@ -1697,7 +1675,6 @@ msgstr "<%s> ਐਲੀਮੈਂਟ ਵਿੱਚ ਕਿਸੇ ਪਾਠ ਨੂੰ
 #: ../src/ui/theme-parser.c:3989 ../src/ui/theme-parser.c:4001
 #: ../src/ui/theme-parser.c:4013
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "ਇਸ ਥੀਮ ਲਈ <%s> ਦੋ ਵਾਰ ਦਿੱਤਾ ਗਿਆ"
 
@@ -1706,157 +1683,164 @@ msgstr "ਇਸ ਥੀਮ ਲਈ <%s> ਦੋ ਵਾਰ ਦਿੱਤਾ ਗਿਆ"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "ਥੀਮ %s ਲਈ ਇੱਕ ਢੁੱਕਵੀਂ ਫਾਇਲ ਲੱਭਣ ਲਈ ਫੇਲ੍ਹ\n"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/ਵਿੰਡੋ(_W)"
+#: ../src/ui/theme-viewer.c:99
+#| msgid "/_Windows"
+msgid "_Windows"
+msgstr "ਵਿੰਡੋ(_W)"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/ਵਿੰਡੋ/ਵੱਖ ਕਰੋ"
+#: ../src/ui/theme-viewer.c:100
+#| msgid "Dialog Box"
+msgid "_Dialog"
+msgstr "ਡਾਈਲਾਗ(_D)"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/ਵਿੰਡੋ/ਡਾਈਲਾਗ(_D)"
+#: ../src/ui/theme-viewer.c:101
+#| msgid "Modal Dialog Box"
+msgid "_Modal dialog"
+msgstr "ਮਾਡਲ ਡਾਈਲਾਗ(_M)"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/ਵਿੰਡੋ/ਮਾਡਲ ਡਾਈਲਾਗ(_M)"
+#: ../src/ui/theme-viewer.c:102
+#| msgid "/Windows/_Utility"
+msgid "_Utility"
+msgstr "ਸਹੂਲਤ(_U)"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/ਵਿੰਡੋ/ਸਹੂਲਤ(_U)"
+#: ../src/ui/theme-viewer.c:103
+#| msgid "/Windows/_Splashscreen"
+msgid "_Splashscreen"
+msgstr "ਸਵਾਗਤੀ ਸਕਰੀਨ(_S)"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/ਵਿੰਡੋ/ਸਵਾਗਤੀ ਸਕਰੀਨ(_S)"
+#: ../src/ui/theme-viewer.c:104
+#| msgid "/Windows/_Top dock"
+msgid "_Top dock"
+msgstr "ਉੱਤੇ ਡੌਕ(_T)"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/ਵਿੰਡੋ/ਉੱਤੇ ਡੌਕ(_T)"
+#: ../src/ui/theme-viewer.c:105
+#| msgid "/Windows/_Bottom dock"
+msgid "_Bottom dock"
+msgstr "ਹੇਠਾਂ ਡੌਕ(_B)"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/ਵਿੰਡੋ/ਹੇਠਾਂ ਡੌਕ(_B)"
+#: ../src/ui/theme-viewer.c:106
+#| msgid "/Windows/_Left dock"
+msgid "_Left dock"
+msgstr "ਖੱਬੇ ਡੌਕ(_L)"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/ਵਿੰਡੋ/ਖੱਬਾ ਡੌਕ(_L)"
+#: ../src/ui/theme-viewer.c:107
+#| msgid "/Windows/_Right dock"
+msgid "_Right dock"
+msgstr "ਸੱਜੇ ਡੌਕ(_R)"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/ਵਿੰਡੋ/ਸੱਜਾ ਡੌਕ(_R)"
+#: ../src/ui/theme-viewer.c:108
+#| msgid "/Windows/_All docks"
+msgid "_All docks"
+msgstr "ਸਭ ਡੌਕ(_A)"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/ਵਿੰਡੋ/ਸਾਰੇ ਡੌਕ(_A)"
+#: ../src/ui/theme-viewer.c:109
+#| msgid "Desktop"
+msgid "Des_ktop"
+msgstr "ਡੈਸਕਟਾਪ(_k)"
 
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/ਵਿੰਡੋ/ਡੈਸਕਟਾਪ(_k)"
-
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "ਇਹਨਾਂ ਵਿੰਡੋਜ਼ ਵਿੱਚੋਂ ਕੋਈ ਹੋਰ ਖੋਲ੍ਹੋ"
 
-#: ../src/ui/theme-viewer.c:153
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "ਇਹ 'ਖੋਲ੍ਹੋ' ਆਈਕਾਨ ਨਾਲ ਡੈਮੋ ਬਟਨ ਹੈ"
 
-#: ../src/ui/theme-viewer.c:155
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "ਇਹ 'ਬਾਹਰ ਜਾਓ' ਆਈਕਾਨ ਨਾਲ ਡੈਮੋ ਬਟਨ ਹੈ"
 
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "ਇਹ ਸੈਂਪਲ ਡਾਈਲਾਗ ਵਿੱਚ ਸੈਂਪਲ ਸੁਨੇਹਾ ਹੈ"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "ਨਕਲੀ ਮੇਨੂ ਆਈਟਮ %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "ਕੇਵਲ ਬਾਰਡਰ ਵਿੰਡੋ"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "ਬਾਰ"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "ਸਾਧਾਰਨ ਐਪਲੀਕੇਸ਼ਨ ਵਿੰਡੋ"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "ਡਾਈਲਾਗ ਡੱਬਾ"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "ਮਾਡਲ ਡਾਈਲਾਗ ਡੱਬਾ"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "ਸਹੂਲਤ ਪਲੇਅਟ"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "ਮੇਨੂ ਵੱਖ ਕਰੋ"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "ਬਾਰਡਰ"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "ਬਟਨ ਲੇਆਉਟ ਟੈਸਟ %d"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "ਇੱਕ ਵਿੰਡੋ ਫਰੇਮ ਉਲੀਕਣ ਲਈ %g ਮਿਲੀ ਸਕਿੰਟ"
 
-#: ../src/ui/theme-viewer.c:802
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ਵਰਤੋਂ: metacity-theme-viewer [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:809
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "ਥੀਮ ਲੋਡ ਕਰਨ ਵਿੱਚ ਗਲਤੀ: %s\n"
 
-#: ../src/ui/theme-viewer.c:815
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "ਥੀਮ \"%s\" ਨੂੰ ਲੋਡ ਕਰਨ ਵਿੱਚ ਲੱਗਾ ਸਮਾਂ %g ਸਕਿੰਟਾਂ ਵਿੱਚ \n"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:866
 msgid "Normal Title Font"
 msgstr "ਸਾਧਾਰਨ ਟਾਇਟਲ ਫੋਂਟ"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:872
 msgid "Small Title Font"
 msgstr "ਛੋਟੇ ਟਾਇਟਲ ਫੋਂਟ"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:878
 msgid "Large Title Font"
 msgstr "ਵੱਡੇ ਟਾਇਟਲ ਫੋਂਟ"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:883
 msgid "Button Layouts"
 msgstr "ਬਟਨ ਲੇਆਉਟ"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:888
 msgid "Benchmark"
 msgstr "ਬੈਂਚਮਾਰਕ"
 
-#: ../src/ui/theme-viewer.c:927
+#: ../src/ui/theme-viewer.c:935
 msgid "Window Title Goes Here"
 msgstr "ਵਿੰਡੋ ਟਾਇਟਲ ਇੱਥੇ ਹੋਵੇਗਾ"
 
-#: ../src/ui/theme-viewer.c:1031
+#: ../src/ui/theme-viewer.c:1039
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1866,45 +1850,54 @@ msgstr ""
 "%d ਫਰੇਮ ਉਲੀਕੇ %g ਕਲਾਈਂਟ ਸਾਈਡ ਸਕਿੰਟਾਂ ਵਿੱਚ (%g ਮਿਲੀ ਸਕਿੰਟ ਪ੍ਰਤੀ ਫਰੇਮ) ਅਤੇ X ਸਰਵਰ ਸਮੇਤ %g "
 "ਸਕਿੰਟ ਕੰਧ ਘੜੀ ਸਮਾਂ (%g ਮਿਲੀ ਸਕਿੰਟ ਪ੍ਰਤੀ ਫਰੇਮ)\n"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1258
 msgid "position expression test returned TRUE but set error"
 msgstr "ਸਥਿਤੀ ਕਥਨ ਜਾਂਚ ਨੇ ਜਵਾਬ ਠੀਕ(TRUE) ਦਿੱਤਾ ਪਰ ਗਲਤੀ ਕੱਢੀ ਹੈ"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "ਸਥਿਤੀ ਕਥਨ ਜਾਂਚ ਨੇ ਜਵਾਬ ਗਲਤ(FALSE) ਦਿੱਤਾ ਪਰ ਗਲਤੀ ਨਹੀਂ ਕੱਢੀ ਹੈ"
 
-#: ../src/ui/theme-viewer.c:1256
+#: ../src/ui/theme-viewer.c:1264
 msgid "Error was expected but none given"
 msgstr "ਗਲਤੀ ਦੀ ਉਮੀਦ ਸੀ ਪਰ ਕੋਈ ਵਿਖਾਈ ਨਹੀਂ"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "ਗਲਤੀ %d ਦੀ ਉਮੀਦ ਸੀ ਪਰ ਵਿਖਾਈ %d"
 
-#: ../src/ui/theme-viewer.c:1264
+#: ../src/ui/theme-viewer.c:1272
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "ਗਲਤੀ ਦੀ ਉਮੀਦ ਨਹੀਂ ਸੀ ਪਰ ਇੱਕ ਨਿਕਲੀ: %s"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1276
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x ਕੀਮਤ %d ਹੈ, %d ਦੀ ਉਮੀਦ ਸੀ"
 
-#: ../src/ui/theme-viewer.c:1271
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y ਕੀਮਤ %d ਸੀ, %d ਦੀ ਉਮੀਦ ਸੀ"
 
-#: ../src/ui/theme-viewer.c:1336
+#: ../src/ui/theme-viewer.c:1344
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸਕਿੰਟਾਂ ਵਿੱਚ ਕੀਤੀ (ਔਸਤਨ %g ਸਕਿੰਟ)\n"
 
-#~ msgid "Desktop"
-#~ msgstr "ਡੈਸਕਟਾਪ"
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/ਵਿੰਡੋ/ਵੱਖ ਕਰੋ"
+
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/ਵਿੰਡੋ/ਡਾਈਲਾਗ(_D)"
+
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/ਵਿੰਡੋ/ਮਾਡਲ ਡਾਈਲਾਗ(_M)"
+
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/ਵਿੰਡੋ/ਡੈਸਕਟਾਪ(_k)"
 
 #~ msgid "Window Management"
 #~ msgstr "ਵਿੰਡੋ ਮੈਨੇਜ਼ਮਿੰਟ"
