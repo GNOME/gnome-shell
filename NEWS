@@ -1,3 +1,49 @@
+Clutter 1.3.10 (04/08/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.3.8
+
+    » Fix a locale-dependent conversion from double to string when
+      generating ARBfp programs for the materials.
+
+    » Use the XKB extension on X11 platforms to convert between hardware
+      keys to key symbols.
+
+    » Documentation fixes in the API reference.
+
+    » More recipes, with videos and full examples, in the Cookbook.
+
+    » Add localization support and initial translations of error messages
+      that might be visualized in a user interface.
+
+    » Improve debugging output.
+
+    » Fix build of the GLX backend on OSX.
+
+    » Multiple fixes to the native OSX backend.
+
+    » Add support for 3D textures in Cogl.
+
+    » Fix shader-related issues and leaks in the new Material code.
+
+    » Unify GLSL support in the GL and GLES 2.0 drivers.
+
+    » Allow specifying an hint to disable clearing the stage before each
+      paint cycle.
+
+Many thanks to:
+
+  Neil Roberts
+  Roman Kudiyarov
+  Elliot Smith
+  Robert Bragg
+  Chris Kühl
+  Chris Leick
+  Nate Stedman
+  happyaron
+  raven
+  Øyvind Kolås
+
 Clutter 1.3.8 (12/07/2010)
 ===============================================================================
 
