@@ -66,12 +66,16 @@ typedef struct _CoglPangoRendererQdata CoglPangoRendererQdata;
    cache the VBO and to detect changes to the layout */
 struct _CoglPangoRendererQdata
 {
+  CoglPangoRenderer *renderer;
   /* The cache of the geometry for the layout */
   CoglPangoDisplayList *display_list;
   /* A reference to the first line of the layout. This is just used to
      detect changes */
   PangoLayoutLine *first_line;
 };
+
+static void
+_cogl_pango_ensure_glyph_cache_for_layout_line (PangoLayoutLine *line);
 
 static void
 cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
@@ -202,10 +206,25 @@ cogl_pango_render_get_qdata_key (void)
 }
 
 static void
-cogl_pango_render_qdata_destroy (CoglPangoRendererQdata *qdata)
+cogl_pango_render_qdata_forget_display_list (CoglPangoRendererQdata *qdata)
 {
   if (qdata->display_list)
-    _cogl_pango_display_list_free (qdata->display_list);
+    {
+      _cogl_pango_glyph_cache_remove_reorganize_callback
+        (qdata->renderer->glyph_cache,
+         (CoglCallbackListFunc) cogl_pango_render_qdata_forget_display_list,
+         qdata);
+
+      _cogl_pango_display_list_free (qdata->display_list);
+
+      qdata->display_list = NULL;
+    }
+}
+
+static void
+cogl_pango_render_qdata_destroy (CoglPangoRendererQdata *qdata)
+{
+  cogl_pango_render_qdata_forget_display_list (qdata);
   if (qdata->first_line)
     pango_layout_line_unref (qdata->first_line);
   g_slice_free (CoglPangoRendererQdata, qdata);
@@ -245,6 +264,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   if (qdata == NULL)
     {
       qdata = g_slice_new0 (CoglPangoRendererQdata);
+      qdata->renderer = priv;
       g_object_set_qdata_full (G_OBJECT (layout),
                                cogl_pango_render_get_qdata_key (),
                                qdata,
@@ -257,14 +277,20 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
      http://mail.gnome.org/archives/gtk-i18n-list/2009-May/msg00019.html */
   if (qdata->display_list && qdata->first_line
       && qdata->first_line->layout != layout)
-    {
-      _cogl_pango_display_list_free (qdata->display_list);
-      qdata->display_list = NULL;
-    }
+    cogl_pango_render_qdata_forget_display_list (qdata);
 
   if (qdata->display_list == NULL)
     {
+      cogl_pango_ensure_glyph_cache_for_layout (layout);
+
       qdata->display_list = _cogl_pango_display_list_new ();
+
+      /* Register for notification of when the glyph cache changes so
+         we can rebuild the display list */
+      _cogl_pango_glyph_cache_add_reorganize_callback
+        (priv->glyph_cache,
+         (CoglCallbackListFunc) cogl_pango_render_qdata_forget_display_list,
+         qdata);
 
       priv->display_list = qdata->display_list;
       pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, 0, 0);
@@ -346,6 +372,8 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
 
   priv->display_list = _cogl_pango_display_list_new ();
 
+  _cogl_pango_ensure_glyph_cache_for_layout_line (line);
+
   pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
 
   _cogl_pango_display_list_render (priv->display_list,
@@ -390,105 +418,144 @@ _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer)
 
 static CoglPangoGlyphCacheValue *
 cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
+                                      gboolean       create,
                                       PangoFont     *font,
                                       PangoGlyph     glyph)
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
-  CoglPangoGlyphCacheValue *value;
 
-  value = cogl_pango_glyph_cache_lookup (priv->glyph_cache, font, glyph);
-  if (value == NULL)
+  return cogl_pango_glyph_cache_lookup (priv->glyph_cache, create, font, glyph);
+}
+
+static void
+cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
+                                     PangoGlyph glyph,
+                                     CoglPangoGlyphCacheValue *value)
+{
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  cairo_scaled_font_t *scaled_font;
+  cairo_glyph_t cairo_glyph;
+
+  COGL_NOTE (PANGO, "redrawing glyph %i", glyph);
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_A8,
+                                        value->draw_width,
+                                        value->draw_height);
+  cr = cairo_create (surface);
+
+  scaled_font = pango_cairo_font_get_scaled_font (PANGO_CAIRO_FONT (font));
+  cairo_set_scaled_font (cr, scaled_font);
+
+  cairo_glyph.x = -value->draw_x;
+  cairo_glyph.y = -value->draw_y;
+  /* The PangoCairo glyph numbers directly map to Cairo glyph
+     numbers */
+  cairo_glyph.index = glyph;
+  cairo_show_glyphs (cr, &cairo_glyph, 1);
+
+  cairo_destroy (cr);
+  cairo_surface_flush (surface);
+
+  /* Copy the glyph to the texture */
+  cogl_texture_set_region (value->texture,
+                           0, /* src_x */
+                           0, /* src_y */
+                           value->tx_pixel, /* dst_x */
+                           value->ty_pixel, /* dst_y */
+                           value->draw_width, /* dst_width */
+                           value->draw_height, /* dst_height */
+                           value->draw_width, /* width */
+                           value->draw_height, /* height */
+                           COGL_PIXEL_FORMAT_A_8,
+                           cairo_image_surface_get_stride (surface),
+                           cairo_image_surface_get_data (surface));
+
+  cairo_surface_destroy (surface);
+}
+
+static void
+_cogl_pango_ensure_glyph_cache_for_layout_line_internal (PangoLayoutLine *line)
+{
+  PangoContext *context;
+  PangoRenderer *renderer;
+  GSList *l;
+
+  context = pango_layout_get_context (line->layout);
+  renderer =
+    PANGO_RENDERER (cogl_pango_get_renderer_from_context (context));
+
+  for (l = line->runs; l; l = l->next)
     {
-      cairo_surface_t *surface;
-      cairo_t *cr;
-      cairo_scaled_font_t *scaled_font;
-      PangoRectangle ink_rect;
-      cairo_glyph_t cairo_glyph;
+      PangoLayoutRun *run = l->data;
+      PangoGlyphString *glyphs = run->glyphs;
+      int i;
 
-      pango_font_get_glyph_extents (font, glyph, &ink_rect, NULL);
-      pango_extents_to_pixels (&ink_rect, NULL);
+      for (i = 0; i < glyphs->num_glyphs; i++)
+        {
+          PangoGlyphInfo *gi = &glyphs->glyphs[i];
 
-      surface = cairo_image_surface_create (CAIRO_FORMAT_A8,
-					    ink_rect.width,
-					    ink_rect.height);
-      cr = cairo_create (surface);
-
-      scaled_font = pango_cairo_font_get_scaled_font (PANGO_CAIRO_FONT (font));
-      cairo_set_scaled_font (cr, scaled_font);
-
-      cairo_glyph.x = -ink_rect.x;
-      cairo_glyph.y = -ink_rect.y;
-      /* The PangoCairo glyph numbers directly map to Cairo glyph
-	 numbers */
-      cairo_glyph.index = glyph;
-      cairo_show_glyphs (cr, &cairo_glyph, 1);
-
-      cairo_destroy (cr);
-      cairo_surface_flush (surface);
-
-      /* Copy the glyph to the cache */
-      value =
-        cogl_pango_glyph_cache_set (priv->glyph_cache, font, glyph,
-                                    cairo_image_surface_get_data (surface),
-                                    cairo_image_surface_get_width (surface),
-                                    cairo_image_surface_get_height (surface),
-                                    cairo_image_surface_get_stride (surface),
-                                    ink_rect.x, ink_rect.y);
-
-      cairo_surface_destroy (surface);
-
-      COGL_NOTE (PANGO, "cache fail    %i", glyph);
+          /* If the glyph isn't cached then this will reserve
+             space for it now. We won't actually draw the glyph
+             yet because reserving space could cause all of the
+             other glyphs to be moved so we might as well redraw
+             them all later once we know that the position is
+             settled */
+          cogl_pango_renderer_get_cached_glyph (renderer, TRUE,
+                                                run->item->analysis.font,
+                                                gi->glyph);
+        }
     }
-  else
-    {
-      COGL_NOTE (PANGO, "cache success %i", glyph);
-    }
+}
 
-  return value;
+static void
+_cogl_pango_ensure_glyph_cache_for_layout_line (PangoLayoutLine *line)
+{
+  PangoContext *context;
+  CoglPangoRenderer *priv;
+
+  context = pango_layout_get_context (line->layout);
+  priv = cogl_pango_get_renderer_from_context (context);
+
+  _cogl_pango_ensure_glyph_cache_for_layout_line_internal (line);
+
+  /* Now that we know all of the positions are settled we'll fill in
+     any dirty glyphs */
+  _cogl_pango_glyph_cache_set_dirty_glyphs
+    (priv->glyph_cache, cogl_pango_renderer_set_dirty_glyph);
 }
 
 void
 cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
 {
-  PangoContext    *context;
-  PangoRenderer   *renderer;
+  PangoContext *context;
+  CoglPangoRenderer *priv;
   PangoLayoutIter *iter;
+
+  context = pango_layout_get_context (layout);
+  priv = cogl_pango_get_renderer_from_context (context);
 
   g_return_if_fail (PANGO_IS_LAYOUT (layout));
 
   if ((iter = pango_layout_get_iter (layout)) == NULL)
     return;
 
-  context = pango_layout_get_context (layout);
-  renderer =
-    PANGO_RENDERER (cogl_pango_get_renderer_from_context (context));
-
   do
     {
       PangoLayoutLine *line;
-      GSList *l;
 
       line = pango_layout_iter_get_line_readonly (iter);
 
-      for (l = line->runs; l; l = l->next)
-        {
-          PangoLayoutRun *run = l->data;
-          PangoGlyphString *glyphs = run->glyphs;
-	  int i;
-
-          for (i = 0; i < glyphs->num_glyphs; i++)
-            {
-              PangoGlyphInfo *gi = &glyphs->glyphs[i];
-
-	      cogl_pango_renderer_get_cached_glyph (renderer,
-						    run->item->analysis.font,
-						    gi->glyph);
-            }
-        }
+      _cogl_pango_ensure_glyph_cache_for_layout_line_internal (line);
     }
   while (pango_layout_iter_next_line (iter));
 
   pango_layout_iter_free (iter);
+
+  /* Now that we know all of the positions are settled we'll fill in
+     any dirty glyphs */
+  _cogl_pango_glyph_cache_set_dirty_glyphs
+    (priv->glyph_cache, cogl_pango_renderer_set_dirty_glyph);
 }
 
 static void
@@ -668,12 +735,17 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 	}
       else
 	{
-	  /* Get the texture containing the glyph. This will create
-	     the cache entry if there isn't already one */
+	  /* Get the texture containing the glyph */
 	  cache_value =
             cogl_pango_renderer_get_cached_glyph (renderer,
+                                                  FALSE,
                                                   font,
                                                   gi->glyph);
+
+          /* cogl_pango_ensure_glyph_cache_for_layout should always be
+             called before rendering a layout so we should never have
+             a dirty glyph here */
+          g_assert (cache_value == NULL || !cache_value->dirty);
 
 	  if (cache_value == NULL)
             {
