@@ -496,6 +496,9 @@ cogl_get_features (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_PBOS))
     ctx->feature_flags &= ~COGL_FEATURE_PBOS;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
+    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
 
@@ -520,9 +523,6 @@ _cogl_features_available_private (CoglFeatureFlagsPrivate features)
 
   if (!ctx->features_cached)
     _cogl_features_init ();
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
-    ctx->feature_flags_private &= ~COGL_FEATURE_SHADERS_ARBFP;
 
   return (ctx->feature_flags_private & features) == features;
 }

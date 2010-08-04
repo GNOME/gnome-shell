@@ -63,28 +63,20 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
                                    int n_layers,
                                    unsigned long materials_difference)
 {
+  CoglHandle program;
+
   _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     return FALSE;
 
-  if (materials_difference & COGL_MATERIAL_STATE_USER_SHADER)
-    {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material,
-                                      COGL_MATERIAL_STATE_USER_SHADER);
-      CoglHandle program = authority->big_state->user_program;
+  program = cogl_material_get_user_program (material);
+  if (program == COGL_INVALID_HANDLE ||
+      _cogl_program_get_language (program) != COGL_SHADER_LANGUAGE_GLSL)
+    return FALSE; /* XXX: change me when we support code generation here */
 
-      if (program == COGL_INVALID_HANDLE)
-        return FALSE; /* XXX: change me when we support code generation here */
-
-      _cogl_use_program (program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
-      return TRUE;
-    }
-
-  /* TODO: also support code generation */
-
-  return FALSE;
+  _cogl_use_program (program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
+  return TRUE;
 }
 
 gboolean

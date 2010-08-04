@@ -365,3 +365,10 @@ cogl_program_uniform_matrix (int   uniform_no,
 
 
 #endif /* HAVE_COGL_GLES2 */
+
+CoglShaderLanguage
+_cogl_program_get_language (CoglHandle handle)
+{
+  return COGL_SHADER_LANGUAGE_GLSL;
+}
+
