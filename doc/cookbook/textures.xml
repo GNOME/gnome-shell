@@ -501,6 +501,142 @@ main (int argc, char *argv[])
     </section>
   </section>
 
+  <section id="textures-sub-textures">
+    <title>Creating sub-textures from an existing texture</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to create a new <type>ClutterTexture</type> that only
+      displays a rectangular sub-region of an existing texture.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>A possible way of achieving this is to retrieve the
+      <type>CoglHandle</type> of the underlying Cogl texture of the existing
+      <type>ClutterTexture</type>, create a new handle representing the
+      sub-region with <function>cogl_texture_new_from_sub_texture()</function>
+      and finally populate a new <type>ClutterTexture</type> with that handle.
+      </para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+/* Create a new ClutterTexture that shows smiley.png */
+image = clutter_texture_new_from_file ("smiley.png", NULL);
+clutter_actor_get_size (image, &image_width, &image_height);
+
+/* Grab the CoglHandle of the underlying Cogl texture */
+texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (image));
+
+/* Create a new Cogl texture from the handle above. That new texture is a
+ * rectangular region from image, more precisely the north ouest corner
+ * of the image */
+sub_texture = cogl_texture_new_from_sub_texture (texture,
+                                                 0, 0,
+                                                 image_width / 2,
+                                                 image_height / 2);
+
+/* Finally, use the newly created Cogl texture to feed a new ClutterTexture
+ * and thus create a new actor that displays sub_texture */
+ sub_image = clutter_texture_new ();
+ clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (sub_image), sub_texture);
+
+/*
+ * You could have used the more straightforward g_object_new() function that
+ * can create an object and set some properties on it at the same time:
+ * sub_image = g_object_new (CLUTTER_TYPE_TEXTURE,
+ *                           "cogl-texture", sub_texture,
+ *                           NULL);
+ */
+]]>    </programlisting>
+      </informalexample>
+
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata format="PNG"
+                       fileref="images/textures-sub-texture.png" />
+          </imageobject>
+          <alt>
+            <para>A texture and its sub-texture next to it</para>
+          </alt>
+        </mediaobject>
+      </screenshot>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>The key of this recipe is the Cogl handle that represents the
+      underlying texture, the actual array of pixels the GPU will use
+      when it's told to texture geometry.</para>
+
+      <para>From this handle, it's possible to create a new texture handle
+      that represents a rectangular region of the former texture. To do this
+      one must call <function>cogl_texture_new_from_sub_texture()</function>
+      with the position and size of the said region. The interesting bit
+      about this function is that, when drawing either with the original
+      texture or with the new one, it's still the same GPU resource (pixels)
+      being used, meaning that creating a sub-texture doesn't use extra GPU
+      memory.</para>
+
+      <para>Once the sub-texture handle is created, the next step is
+      to create a new actor that will be able to draw it, namely a new
+      <type>ClutterTexture</type>. You then need to tell the texture to
+      draw from the sub-texture.</para>
+
+      <note><para>The handle you can get from
+      <function>clutter_texture_get_cogl_texture()</function> is effectively
+      the same texture than the first layer of the material retrieved by
+      <function>clutter_texture_get_cogl_material()</function></para></note>
+
+    </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="textures-sub-texture">
+        <title>Creating a sub-texture from an existing texture</title>
+        <programlisting
+          ><xi:include href="examples/textures-sub-texture.c" parse="text">
+            <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+          </xi:include></programlisting>
+      </example>
+    </section>
+
+    <section>
+      <title>Going further</title>
+
+      <para>Now that we know how to create sub-textures, it's time to make
+      something a bit more shiny with them. Let's animate them! In case you
+      have not heard about implicit animations in Clutter yet, it's a good
+      time to have a look at the animation section of this cookbook.
+      </para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/textures-split-go.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing 4 sub-textures being animated</para>
+        </alt>
+      </inlinemediaobject>
+
+      <example id="textures-split-go">
+        <title>Creating a sub-texture from an existing texture</title>
+        <programlisting
+          ><xi:include href="examples/textures-split-go.c" parse="text">
+            <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+          </xi:include></programlisting>
+      </example>
+    </section>
+
+  </section>
+
   <section id="textures-reflection">
     <title>Creating a reflection of a texture</title>
 

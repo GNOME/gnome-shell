@@ -35,6 +35,7 @@ IMAGE_FILES = \
 	images/actors-opacity.png \
 	images/actors-opacity-container-affects-opacity.png \
 	images/text-shadow.png \
+	images/textures-sub-texture.png \
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \
@@ -48,6 +49,7 @@ VIDEO_FILES = \
 	videos/animations-rotating-y-centered.ogv \
 	videos/animations-rotating-z-centered.ogv \
 	videos/animations-rotating-container-reverses-direction.ogv \
+	videos/textures-split-go.ogv \
 	$(NULL)
 
 EXTRA_DIST = \

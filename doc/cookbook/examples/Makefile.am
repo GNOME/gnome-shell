@@ -3,9 +3,11 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 NULL =
 
 noinst_PROGRAMS = \
-	textures-reflection	\
+	animations-rotating	\
 	text-shadow		\
-	animations-rotating \
+	textures-reflection	\
+	textures-split-go	\
+	textures-sub-texture	\
 	$(NULL)
 
 INCLUDES = \
@@ -27,8 +29,8 @@ AM_CFLAGS = \
 
 AM_LDFLAGS = $(CLUTTER_LIBS)
 
-textures_reflection_SOURCES 	= textures-reflection.c
-
-text_shadow_SOURCES 		= text-shadow.c
-
-animations_rotating_SOURCE = animations-rotating.c
+animations_rotating_SOURCES   = animations-rotating.c
+text_shadow_SOURCES           = text-shadow.c
+textures_reflection_SOURCES   = textures-reflection.c
+textures_split_go_SOURCES     = textures-split-go.c
+textures_sub_texture_SOURCES  = textures-sub-texture.c
