@@ -18,6 +18,7 @@ UNIT_TESTS = \
 	test-grab.c \
 	test-fullscreen.c \
 	test-shader.c \
+	test-cogl-shader-arbfp.c \
 	test-animator.c \
 	test-state.c \
 	test-state-animator.c \
