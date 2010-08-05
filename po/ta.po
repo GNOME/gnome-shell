@@ -1,0 +1,550 @@
+# Tamil translation for gnome-shell.
+# Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2010-08-04 19:41+0000\n"
+"PO-Revision-Date: 2010-08-05 21:37+0530\n"
+"Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
+"Language-Team: Tamil <<Ubuntu-l10n-tam@lists.ubuntu.com>>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "க்னோம் ஷெல்"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "சாளர மேலாண்மை மற்றும் பயன்பாடு துவக்கம்"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "கடிகாரம்"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "பலக கடிகாரத்தை தனிப்பயனாக்கும்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"உள்ளமை வழி நீக்கம் மற்றும் Alt-F2 உரையாடல் மூலம் கருவிகள் கண்காணிப்பு "
+"ஆகியவற்றை அணுக உதவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "கடிகாரத்தின் தனிப்பயன் வடிவமைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"உருவாக்குவோர் மற்றூம் சோதிப்போருக்கு பயன்படுமாறு Alt-F2 வழியாக உள்ளமை "
+"கருவிகளை செயலாக்கு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "திரைவெட்டை சேமிக்க கோப்பு பின்னொட்டு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "திரைநிகழ்வை பதிவு செய்ய சட்டவிகிதம் ."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"க்னோம் ஷெல் நீட்சிகளுக்கு ஒரு யூயூஐடி பண்பு உண்டு. இந்த விசை எந்த நீட்சிகள் "
+"ஏற்றப்பட வேண்டும் என பட்டியலிடுகிறது."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "(Alt-F2) கட்டளை உரையாடல் க்கு வரலாறு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "மணி வடிவமைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"உண்மையெனில், அமைப்பு \"12 மணி\" அல்லது \"24 மணி\" என இருப்பின் நேரத்துடன் "
+"நாளையும் காட்டு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"உண்மையெனில், அமைப்பு \"12 மணி\" அல்லது \"24 மணி\" என இருப்பின் நேரத்தில் "
+"வினாடிகளையும் காட்டு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr "உண்மையானால் நாட்காட்டியில் ஐஎஸ்ஓ வார எண்களை காட்டவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr "விருப்ப பயன்பாடுகளுக்கு மேல்மேசை கோப்பு அடையாளங்கள்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "பணி இட மேல்பார்வை காட்சிப் பாங்கு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"பதிவுகளை குறியாக்க ஜிஸ்ட்ரீமர் குழாயை அமைக்கிறது. ஜிஎஸ்டி லான்ஸ் க்கு "
+"பயன்படும் அதே இலக்கணத்தை பின் பற்றும். குழாய்க்கு இணைப்பில்லா பதிவுக்குழி "
+"இருத்தல் வேண்டும். இதில் விடியோ பதிவாகும். சாதாரணமாக இதில் ஒரு மூல பதிவேடு "
+"இருக்கும்; இதன் வெளியீடு வெளியீட்டு கோப்பாக பதிவாகும். எனினும் குழாய் தன் "
+"வெளியீட்டை தானே கவனித்துக்கொள்ள இயலும். இது வெளியீட்டை ஐஸ்காஸ்ட் அல்லது "
+"ஷௌட்2சென்ட் போன்றவற்றுக்கு நேரடியாக அனுப்ப இயலும். அமைப்பை அன்செட் "
+"செய்தாலல்லது காலி மதிப்புக்கு அமைத்தாலும் முன்னிருப்பு குழாய் "
+"பயன்படுத்தப்படும். நடப்பில் இது 'விடியோரேட்!தியோரேங்க்!ஆக்மக்ஸ்' ஆகும்; இது "
+"ஆக் தியோராவுக்கு பதிவுசெய்யும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "தேதியை கடிகாரத்தில் காட்டுக"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "நாட்காட்டியில் வார நாளை காட்டவும்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "நொடிகளுடன் நேரம் காட்டுக"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"இந்த அடையாளங் காட்டிகளுக்கு பொருத்தமான பயன்பாடுகள் விருப்ப இடத்தில் "
+"காட்டப்படும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"ஸ்க்ரீன்காஸ்ட் இல் பதிவாவனக்கான கோப்புப்பெயர் தனித்தன்மை வாய்ந்தது. இது "
+"நடப்பு தேதியை அடிப்படையாக கொண்டது; இந்த பின்னொட்டை பயன்படுத்தும். பதிவதை "
+"வேறு கொள்கலத்தின் ஒழுங்கில் மாற்றுகையில் இதையும் மாற்ற வேண்டும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"க்னோம்ஷெல் இன் ஸ்க்ரீன்காஸ்ட் பதிவரில் ஸ்க்ரீன்காட் ஐ பதிகையில் வினாடிக்கு "
+"சட்டங்களின் விகிதம்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "ஸ்க்ரீன்காஸ்டை குறியாக்க பயனாகும் ஜிஸ்ட்ரீமர் குழாய்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"மேல்பார்வையில் தேர்ந்தெடுத்த பணீட காட்சி பாங்கு. ஆதரவுள்ள மதிப்புகள் 'ஒன்று' "
+"மற்றும் 'வலை'"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"ஷெல் சாதாரணமாக செயலிலுள்ள நிரல்களை மேற்பார்வை இடுகிறது. அதனால் அடிக்கடி "
+"பயனாகும் நிரல்கள் (எ-டு: துவக்கிகள்) முன் வைக்கப்படும். இந்த தரவு "
+"அந்தரங்கமாக வைக்கப்பட்டாலும் நீங்கள் இதை நீக்க விரும்பலாம். அப்படிச் செய்வது "
+"முன்னே சேகரித்த தரவை நீக்காஅது என் அறியவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"வடிவமைப்பு விசை \"தனிப்பயன்\" என்று அமைக்கப்படும் போது பலக கடிகாரம் இந்த "
+"விசையை "
+"பயன்படுத்தும். குறிப்பிட்ட அமைப்பை பெற்றுக்கொள்ள strftime() ஆல் "
+"புரிந்துகொள்ளக்கூடிய மாற்று "
+"குறிப்புகளை தரவும். மேலும் அதிக விவரங்களுக்கு strftime() கையேட்டை "
+"பார்க்கவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"இந்த விசை பலக கடிகாரம் பயன்படுத்த வேண்டிய மணி ஒழுங்கை குறிக்கிறது. தரக்கூடிய "
+"மதிப்புகள் \"12-மணி\", \"24-மணி\", \"யூனிக்ஸ்\" மற்றும் \"தனிப்பயன்\". "
+"\"யூனிக்ஸ்\" எனில் அது எபோக் அதாவது 1970-01-01 முதல் நடந்த காலத்தை "
+"வினாடிகளில் காட்டும். \"தனிப்பயன்\" எனில் தனிப்பயன்_ஒழுங்கு இல் காட்டப்பட்ட "
+"ஒழுங்கில் நேரத்தைக் காட்டும். \"யூனிக்ஸ்\" அல்லது \"தனிப்பயன்\" என "
+"மைக்கும்போது தேதி_காட்டு, வினாடிகளை_காட்டு விசைகள் உதாசீனப்படுத்தப்படும் என "
+"அறிக."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+msgid "Uuids of extensions to disable"
+msgstr "செயல்நீக்க வேண்டிய நீட்சிகளின் யூயூஐடிக்கள்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "நிரல்களின் பயன்பாடு குறித்த புள்ளிவிவரம் சேகரிக்க வேண்டுமா"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "கடிகார வடிவம்"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "கடிகாரம் விருப்பங்கள்"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "பலக காட்சி"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "(_n) நொடிகளை காட்டுக"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "(_d)  தேதியை காட்டுக"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12 மணி வடிவமைப்பு"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24 மணி வடிவமைப்பு"
+
+#. **** Applications ****
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:776
+msgid "APPLICATIONS"
+msgstr "பயன்பாடுகள்"
+
+#: ../js/ui/appDisplay.js:416
+msgid "PREFERENCES"
+msgstr "விருப்பங்கள்"
+
+#: ../js/ui/appDisplay.js:721
+msgid "New Window"
+msgstr "புதிய சாளரம்"
+
+#: ../js/ui/appDisplay.js:725
+msgid "Remove from Favorites"
+msgstr "விருப்பத்தில் இருந்து நீக்கு"
+
+#: ../js/ui/appDisplay.js:726
+msgid "Add to Favorites"
+msgstr "விருப்பங்களுக்கு சேர்"
+
+#: ../js/ui/appDisplay.js:1033
+msgid "Drag here to add favorites"
+msgstr "விருப்பங்களுக்கு சேர்க்க இங்கு இழுத்துவிடு"
+
+#: ../js/ui/appFavorites.js:88
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s உங்கள் விருப்பங்களில் சேர்க்கப்பட்டது"
+
+#: ../js/ui/appFavorites.js:107
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s உங்கள் விருப்பங்களில் இருந்து நீக்கப்பட்டது"
+
+#: ../js/ui/dash.js:142
+msgid "Find"
+msgstr "தேடு"
+
+#: ../js/ui/dash.js:471
+msgid "Searching..."
+msgstr "தேடுகிறது..."
+
+#: ../js/ui/dash.js:485
+msgid "No matching results."
+msgstr "பொருத்தமான விடைகள் இல்லை"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:795 ../js/ui/placeDisplay.js:550
+msgid "PLACES & DEVICES"
+msgstr "PLACES & DEVICES"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:802 ../js/ui/docDisplay.js:494
+msgid "RECENT ITEMS"
+msgstr "RECENT ITEMS"
+
+#: ../js/ui/lookingGlass.js:471
+msgid "No extensions installed"
+msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
+
+#: ../js/ui/lookingGlass.js:508
+msgid "Enabled"
+msgstr "செயலாக்கப்பட்டது"
+
+#: ../js/ui/lookingGlass.js:510
+msgid "Disabled"
+msgstr "செயல்நீக்கப்பட்டது"
+
+#: ../js/ui/lookingGlass.js:512
+msgid "Error"
+msgstr "பிழை"
+
+#: ../js/ui/lookingGlass.js:514
+msgid "Out of date"
+msgstr "காலாவதியானது"
+
+#: ../js/ui/lookingGlass.js:539
+msgid "View Source"
+msgstr "மூலத்தை பார்க்க"
+
+#: ../js/ui/lookingGlass.js:545
+msgid "Web Page"
+msgstr "இணைய பக்கம்"
+
+#: ../js/ui/overview.js:159
+msgid "Undo"
+msgstr "மறை"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "%s லிருந்து வெளியேறு"
+
+#: ../js/ui/panel.js:498
+msgid "Preferences"
+msgstr "விருப்பங்கள்"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:584
+msgid "%a %b %e, %R:%S"
+msgstr "%a %b %e, %R:%S"
+
+#: ../js/ui/panel.js:585
+msgid "%a %b %e, %R"
+msgstr "%a %b %e, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:589
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/panel.js:590
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:597
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %b %e, %l:%M:%S %p"
+
+#: ../js/ui/panel.js:598
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %b %e, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:602
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/panel.js:603
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:741
+msgid "Activities"
+msgstr "செயல்பாடுகள்"
+
+#: ../js/ui/placeDisplay.js:107
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "'%s' ஐ இறக்க முடியவில்லை"
+
+#: ../js/ui/placeDisplay.js:110
+msgid "Retry"
+msgstr "மறு முயற்சி"
+
+#: ../js/ui/placeDisplay.js:155
+msgid "Connect to..."
+msgstr "இணைக்கவும்..."
+
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "இயக்கத்தில்"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "செயல் நீக்கு"
+
+#: ../js/ui/runDialog.js:233
+msgid "Please enter a command:"
+msgstr "தயை செய்து ஒரு கட்டளையை உள்ளிடுக:"
+
+#: ../js/ui/runDialog.js:378
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "'%s' ஐ நிறைவேற்றுதல் தோல்வி அடைந்தது:"
+
+#: ../js/ui/statusMenu.js:91
+msgid "Available"
+msgstr "இருப்பவை"
+
+#: ../js/ui/statusMenu.js:95
+msgid "Busy"
+msgstr "வேலையில்"
+
+#: ../js/ui/statusMenu.js:99
+msgid "Invisible"
+msgstr "பார்க்கமுடியாதது"
+
+#: ../js/ui/statusMenu.js:106
+msgid "Account Information..."
+msgstr "கணக்கு தகவல்..."
+
+#: ../js/ui/statusMenu.js:110
+msgid "System Preferences..."
+msgstr "கணினி முன்னுரிமைகள்..."
+
+#: ../js/ui/statusMenu.js:117
+msgid "Lock Screen"
+msgstr "திரையைப் பூட்டுக."
+
+#: ../js/ui/statusMenu.js:121
+msgid "Switch User"
+msgstr "பயனர் மாற்று"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Log Out..."
+msgstr "வெளியேறு..."
+
+#: ../js/ui/statusMenu.js:130
+msgid "Shut Down..."
+msgstr "நிறுத்தவும்... "
+
+#: ../js/ui/windowAttentionHandler.js:45
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s இன் துவக்கம் முடிந்துவிட்டது"
+
+#: ../js/ui/windowAttentionHandler.js:47
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' தயாராக உள்ளது"
+
+#: ../js/ui/workspacesView.js:230
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"பணிக்களத்தை சேர்க்க முடியாது; ஏனெனில் பணிக்களங்களின் உச்ச வரம்பு "
+"எட்டப்பட்டுவிட்டது."
+
+#: ../js/ui/workspacesView.js:247
+msgid "Can't remove the first workspace."
+msgstr "முதல் பணிக்களத்தை நீக்க முடியாது"
+
+#: ../src/shell-global.c:1105
+msgid "Less than a minute ago"
+msgstr "ஒரு நிமிடத்திற்கும் குறைவாக"
+
+#: ../src/shell-global.c:1109
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minutes ago"
+msgstr[1] "%d நிமிடங்களுக்கு முன்"
+
+#: ../src/shell-global.c:1114
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d மணிநேரத்துக்கு முன்"
+msgstr[1] "%d மணிகள் முன்"
+
+#: ../src/shell-global.c:1119
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d நாளைக்கு முன்"
+msgstr[1] "%d நாட்களுக்கு முன்"
+
+#: ../src/shell-global.c:1124
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d வாரம் முன்"
+msgstr[1] "%d வாரங்கள் முன்"
+
+#: ../src/shell-uri-util.c:89
+msgid "Home Folder"
+msgstr "இல்ல அடைவு"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:104
+msgid "File System"
+msgstr "கோப்பு அமைப்பு"
+
+#: ../src/shell-uri-util.c:250
+msgid "Search"
+msgstr "தேடு"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
