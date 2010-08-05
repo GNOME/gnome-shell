@@ -43,6 +43,40 @@ queue_redraw (gpointer stage)
   return TRUE;
 }
 
+static gunichar
+get_character (int ch)
+{
+  int total_letters = 0;
+  int i;
+
+  static const struct
+  {
+    gunichar first_letter;
+    int n_letters;
+  }
+  ranges[] =
+    {
+      { 'a', 26 }, /* lower case letters */
+      { 'A', 26 }, /* upper case letters */
+      { '0', 10 }, /* digits */
+      { 0x410, 0x40 }, /* cyrillic alphabet */
+      { 0x3b1, 18 } /* greek alphabet */
+    };
+
+  for (i = 0; i < G_N_ELEMENTS (ranges); i++)
+    total_letters += ranges[i].n_letters;
+
+  ch %= total_letters;
+
+  for (i = 0; i < G_N_ELEMENTS (ranges) - 1; i++)
+    if (ch < ranges[i].n_letters)
+      return ch + ranges[i].first_letter;
+    else
+      ch -= ranges[i].n_letters;
+
+  return ch + ranges[i].first_letter;
+}
+
 static ClutterActor *
 create_label (void)
 {
@@ -56,7 +90,7 @@ create_label (void)
 
   str = g_string_new (NULL);
   for (i = 0; i < n_chars; i++)
-    g_string_append_c (str, 'A' + (i % 26));
+    g_string_append_unichar (str, get_character (i));
 
   label = clutter_text_new_with_text (font_name, str->str);
   clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
