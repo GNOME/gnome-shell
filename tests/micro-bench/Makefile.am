@@ -3,7 +3,8 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 noinst_PROGRAMS = \
 	test-text \
 	test-picking \
-	test-text-perf
+	test-text-perf \
+	test-random-text
 
 INCLUDES = \
 	-I$(top_srcdir)/ \
@@ -23,4 +24,5 @@ AM_LDFLAGS = $(CLUTTER_LIBS)
 test_text_SOURCES = test-text.c
 test_picking_SOURCES = test-picking.c
 test_text_perf_SOURCES = test-text-perf.c
+test_random_text_SOURCES = test-random-text.c
 

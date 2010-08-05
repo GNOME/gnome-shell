@@ -36,7 +36,6 @@ UNIT_TESTS = \
 	test-cogl-tex-polygon.c \
 	test-cogl-multitexture.c \
 	test-stage-read-pixels.c \
-	test-random-text.c \
 	test-clip.c \
 	test-paint-wrapper.c \
 	test-texture-quality.c \

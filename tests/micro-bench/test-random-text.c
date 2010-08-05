@@ -23,12 +23,14 @@ on_idle (gpointer data)
   char font_name[64];
   int i;
   GList *children, *node;
+  static GTimer *timer = NULL;
+  static int frame_count = 0;
 
   /* Remove all of the children of the stage */
   children = clutter_container_get_children (CLUTTER_CONTAINER (stage));
   for (node = children; node; node = node->next)
     clutter_container_remove_actor (CLUTTER_CONTAINER (stage),
-				    CLUTTER_ACTOR (node->data));
+                                    CLUTTER_ACTOR (node->data));
   g_list_free (children);
 
   /* Fill the stage with new random labels */
@@ -38,24 +40,24 @@ on_idle (gpointer data)
       ClutterActor *label;
 
       for (i = 0; i < text_len; i++)
-	text[i] = rand () % (128 - 32) + 32;
+        text[i] = rand () % (128 - 32) + 32;
       text[text_len] = '\0';
 
       sprintf (font_name, "%s %i",
-	       font_names[rand () % FONT_NAME_COUNT],
-	       rand () % (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
+               font_names[rand () % FONT_NAME_COUNT],
+               rand () % (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
 
       label = clutter_text_new_with_text (font_name, text);
 
       if (clutter_actor_get_height (label) > line_height)
-	line_height = clutter_actor_get_height (label);
+        line_height = clutter_actor_get_height (label);
 
       if (xpos + clutter_actor_get_width (label) > stage_width)
-	{
-	  xpos = 0;
-	  ypos += line_height;
-	  line_height = 0;
-	}
+        {
+          xpos = 0;
+          ypos += line_height;
+          line_height = 0;
+        }
 
       clutter_actor_set_position (label, xpos, ypos);
 
@@ -64,16 +66,29 @@ on_idle (gpointer data)
       xpos += clutter_actor_get_width (label);
     }
 
+  if (timer == NULL)
+    timer = g_timer_new ();
+  else
+    {
+      if (++frame_count >= 10)
+        {
+          printf ("10 frames in %f seconds\n",
+                  g_timer_elapsed (timer, NULL));
+          g_timer_start (timer);
+          frame_count = 0;
+        }
+    }
+
   return TRUE;
 }
 
-G_MODULE_EXPORT int
-test_random_text_main (int argc, char **argv)
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage;
-  
+
   clutter_init (&argc, &argv);
-  
+
   stage = clutter_stage_get_default ();
 
   clutter_actor_show (stage);
