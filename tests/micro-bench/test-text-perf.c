@@ -75,6 +75,7 @@ main (int argc, char *argv[])
   ClutterActor    *label;
   int              w, h;
   int              row, col;
+  float            scale = 1.0f;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
   g_setenv ("CLUTTER_DEFAULT_FPS", "1000", FALSE);
@@ -101,21 +102,43 @@ main (int argc, char *argv[])
   label = create_label ();
   w = clutter_actor_get_width (label);
   h = clutter_actor_get_height (label);
-  cols = STAGE_WIDTH / w;
-  rows = STAGE_HEIGHT / h;
-  clutter_actor_destroy (label);
 
-  if (cols == 0 || rows == 0)
+  /* If the label is too big to fit on the stage then scale it so that
+     it will fit */
+  if (w > STAGE_WIDTH || h > STAGE_HEIGHT)
     {
-      g_printerr("Too many characters to fit in stage\n");
-      exit(1);
+      float x_scale = STAGE_WIDTH / (float) w;
+      float y_scale = STAGE_HEIGHT / (float) h;
+
+      if (x_scale < y_scale)
+        {
+          scale = x_scale;
+          cols = 1;
+          rows = STAGE_HEIGHT / (h * scale);
+        }
+      else
+        {
+          scale = y_scale;
+          cols = STAGE_WIDTH / (w * scale);
+          rows = 1;
+        }
+
+      g_print ("Text scaled by %f to fit on the stage\n", scale);
     }
+  else
+    {
+      cols = STAGE_WIDTH / w;
+      rows = STAGE_HEIGHT / h;
+    }
+
+  clutter_actor_destroy (label);
 
   for (row=0; row<rows; row++)
     for (col=0; col<cols; col++)
       {
 	label = create_label();
-	clutter_actor_set_position (label, w * col, h * row);
+        clutter_actor_set_scale (label, scale, scale);
+	clutter_actor_set_position (label, w * col * scale, h * row * scale);
 	clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
       }
 
