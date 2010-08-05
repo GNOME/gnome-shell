@@ -12,6 +12,7 @@ XML_FILES = \
 	introduction.xml	\
 	text.xml		\
 	textures.xml		\
+	layouts.xml		\
 	$(NULL)
 
 XSLTOPTS = \
