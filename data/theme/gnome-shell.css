@@ -938,19 +938,23 @@ StTooltip {
  * icons, because then the summary would be 0x0 when there were no
  * icons in it, and so you wouldn't be able to hover over it to
  * activate it.
- *
- * The padding-right on the non-rightmost icons is noticeable and
- * slightly annoying. If StBoxLayout implemented the ":last-child"
- * pseudo-class we could fix that...
  */
 #summary-mode {
-    spacing: 6px;
-    padding: 2px 12px 0px 4px;
+    padding: 2px 0px 0px 4px;
     height: 36px;
 }
 
 .summary-source {
     spacing: 4px;
+}
+
+.summary-source-button {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.summary-source-button:last-child {
+    padding-right: 12px;
 }
 
 .source-title {
