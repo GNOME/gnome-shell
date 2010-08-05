@@ -637,6 +637,70 @@ float
 cogl_material_get_point_size (CoglHandle  material);
 
 /**
+ * cogl_material_get_user_program:
+ * @material: a #CoglMaterial object.
+ *
+ * Queries what user program has been associated with the given
+ * @material using cogl_material_set_user_program().
+ *
+ * Return value: The current user program or %COGL_INVALID_HANDLE.
+ *
+ * Since: 1.4
+ */
+CoglHandle
+cogl_material_get_user_program (CoglMaterial *material);
+
+/**
+ * cogl_material_set_user_program:
+ * @material: a #CoglMaterial object.
+ * @program: A #CoglHandle to a linked CoglProgram
+ *
+ * Associates a linked CoglProgram with the given material so that the
+ * program can take full control of vertex and/or fragment processing.
+ *
+ * This is an example of how it can be used to associate an ARBfp
+ * program with a #CoglMaterial:
+ * |[
+ * CoglHandle shader;
+ * CoglHandle program;
+ * CoglMaterial *material;
+ *
+ * shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+ * cogl_shader_source (shader,
+ *                     "!!ARBfp1.0\n"
+ *                     "MOV result.color,fragment.color;\n"
+ *                     "END\n");
+ * cogl_shader_compile (shader);
+ *
+ * program = cogl_create_program ();
+ * cogl_program_attach_shader (program, shader);
+ * cogl_program_link (program);
+ *
+ * material = cogl_material_new ();
+ * cogl_material_set_user_program (material, program);
+ *
+ * cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
+ * cogl_rectangle (0, 0, 100, 100);
+ * ]|
+ *
+ * It is possibly worth keeping in mind that this API is not part of
+ * the long term design for how we want to expose shaders to Cogl
+ * developers (We are planning on deprecating the cogl_program and
+ * cogl_shader APIs in favour of a "snippet" framework) but in the
+ * meantime we hope this will handle most practical GLSL and ARBfp
+ * requirements.
+ *
+ * Also remember you need to check for either the
+ * %COGL_FEATURE_SHADERS_GLSL or %COGL_FEATURE_SHADERS_ARBFP before
+ * using the cogl_program or cogl_shader API.
+ *
+ * Since: 1.4
+ */
+void
+cogl_material_set_user_program (CoglMaterial *material,
+                                CoglHandle program);
+
+/**
  * cogl_material_set_layer:
  * @material: A #CoglMaterial object
  * @layer_index: the index of the layer

@@ -3975,6 +3975,19 @@ cogl_material_set_blend_constant (CoglMaterial *material,
 #endif
 }
 
+CoglHandle
+cogl_material_get_user_program (CoglMaterial *material)
+{
+  CoglMaterial *authority;
+
+  g_return_val_if_fail (cogl_is_material (material), COGL_INVALID_HANDLE);
+
+  authority =
+    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_USER_SHADER);
+
+  return authority->big_state->user_program;
+}
+
 /* XXX: for now we don't mind if the program has vertex shaders
  * attached but if we ever make a similar API public we should only
  * allow attaching of programs containing fragment shaders. Eventually
@@ -3982,8 +3995,8 @@ cogl_material_set_blend_constant (CoglMaterial *material,
  * processing.
  */
 void
-_cogl_material_set_user_program (CoglMaterial *material,
-                                 CoglHandle program)
+cogl_material_set_user_program (CoglMaterial *material,
+                                CoglHandle program)
 {
   CoglMaterialState state = COGL_MATERIAL_STATE_USER_SHADER;
   CoglMaterial *authority;
@@ -5125,8 +5138,11 @@ _cogl_material_apply_legacy_state (CoglMaterial *material)
    * the cogl_material API instead.
    */
 
-  if (ctx->current_program)
-    _cogl_material_set_user_program (material, ctx->current_program);
+  /* A program explicitly set on the material has higher precedence than
+   * one associated with the context using cogl_program_use() */
+  if (ctx->current_program &&
+      cogl_material_get_user_program (material) == COGL_INVALID_HANDLE)
+    cogl_material_set_user_program (material, ctx->current_program);
 
   if (ctx->legacy_depth_test_enabled)
     cogl_material_set_depth_test_enabled (material, TRUE);
