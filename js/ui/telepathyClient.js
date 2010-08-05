@@ -475,10 +475,13 @@ Source.prototype = {
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
 
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
+
+        this._setSummaryIcon(this.createNotificationIcon());
     },
 
-    createIcon: function(size) {
-        return contactManager.createAvatar(this._conn, this._targetHandle, size);
+    createNotificationIcon: function() {
+        return contactManager.createAvatar(this._conn, this._targetHandle,
+                                           this.ICON_SIZE);
     },
 
     clicked: function() {

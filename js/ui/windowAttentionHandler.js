@@ -94,10 +94,11 @@ Source.prototype = {
         MessageTray.Source.prototype._init.call(this, app.get_name());
         this._window = window;
         this._app = app;
+        this._setSummaryIcon(this.createNotificationIcon());
     },
 
-    createIcon : function(size) {
-        return this._app.create_icon_texture(size);
+    createNotificationIcon : function() {
+        return this._app.create_icon_texture(this.ICON_SIZE);
     },
 
     clicked : function() {

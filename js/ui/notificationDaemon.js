@@ -141,6 +141,37 @@ NotificationDaemon.prototype = {
         }
     },
 
+    _iconForNotificationData: function(icon, hints, size) {
+        let textureCache = St.TextureCache.get_default();
+
+        if (icon) {
+            if (icon.substr(0, 7) == 'file://')
+                return textureCache.load_uri_async(icon, size, size);
+            else if (icon[0] == '/') {
+                let uri = GLib.filename_to_uri(icon, null);
+                return textureCache.load_uri_async(uri, size, size);
+            } else
+                return textureCache.load_icon_name(icon, size);
+        } else if (hints.icon_data) {
+            let [width, height, rowStride, hasAlpha,
+                 bitsPerSample, nChannels, data] = hints.icon_data;
+            return textureCache.load_from_raw(data, data.length, hasAlpha,
+                                              width, height, rowStride, size);
+        } else {
+            let stockIcon;
+            switch (hints.urgency) {
+                case Urgency.LOW:
+                case Urgency.NORMAL:
+                    stockIcon = 'gtk-dialog-info';
+                    break;
+                case Urgency.CRITICAL:
+                    stockIcon = 'gtk-dialog-error';
+                    break;
+            }
+            return textureCache.load_icon_name(stockIcon, size);
+        }
+    },
+
     Notify: function(appName, replacesId, icon, summary, body,
                      actions, hints, timeout) {
         let source = this._sources[appName];
@@ -164,7 +195,7 @@ NotificationDaemon.prototype = {
         // been acknowledged.
         if (source == null) {
             let title = appNameMap[appName] || appName;
-            source = new Source(title, icon, hints);
+            source = new Source(title);
             Main.messageTray.add(source);
             this._sources[appName] = source;
 
@@ -184,8 +215,6 @@ NotificationDaemon.prototype = {
                 if (app)
                     source.setApp(app);
             });
-        } else {
-            source.update(icon, hints);
         }
 
         summary = GLib.markup_escape_text(summary, -1);
@@ -205,10 +234,12 @@ NotificationDaemon.prototype = {
             notification = this._currentNotifications[id];
         }
 
+        let iconActor = this._iconForNotificationData(icon, hints, source.ICON_SIZE);
         if (notification == null) {
             id = nextNotificationId++;
             notification = new MessageTray.Notification(source, summary, body,
-                                                        { bannerBody: true });
+                                                        { bannerBody: true,
+                                                          icon: iconActor });
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
@@ -220,7 +251,8 @@ NotificationDaemon.prototype = {
                 }));
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         } else {
-            notification.update(summary, body, { clear: true });
+            notification.update(summary, body, { icon: iconActor,
+                                                 clear: true });
         }
 
         if (actions.length) {
@@ -230,7 +262,8 @@ NotificationDaemon.prototype = {
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
 
-        source.notify(notification);
+        let sourceIconActor = this._iconForNotificationData(icon, hints, source.ICON_SIZE);
+        source.notify(sourceIconActor, notification);
         return id;
     },
 
@@ -300,57 +333,23 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
-function Source(title, icon, hints) {
-    this._init(title, icon, hints);
+function Source(title) {
+    this._init(title);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(title, icon, hints) {
+    _init: function(title) {
         MessageTray.Source.prototype._init.call(this, title);
 
         this.app = null;
         this._openAppRequested = false;
-
-        this.update(icon, hints);
     },
 
-    update: function(icon, hints) {
-        this._icon = icon;
-        this._iconData = hints.icon_data;
-        this._urgency = hints.urgency;
-    },
-
-    createIcon: function(size) {
-        let textureCache = St.TextureCache.get_default();
-
-        if (this._icon) {
-            if (this._icon.substr(0, 7) == 'file://')
-                return textureCache.load_uri_async(this._icon, size, size);
-            else if (this._icon[0] == '/') {
-                let uri = GLib.filename_to_uri(this._icon, null);
-                return textureCache.load_uri_async(uri, size, size);
-            } else
-                return textureCache.load_icon_name(this._icon, size);
-        } else if (this._iconData) {
-            let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = this._iconData;
-            return textureCache.load_from_raw(data, data.length, hasAlpha,
-                                              width, height, rowStride, size);
-        } else {
-            let stockIcon;
-            switch (this._urgency) {
-                case Urgency.LOW:
-                case Urgency.NORMAL:
-                    stockIcon = 'gtk-dialog-info';
-                    break;
-                case Urgency.CRITICAL:
-                    stockIcon = 'gtk-dialog-error';
-                    break;
-            }
-            return textureCache.load_icon_name(stockIcon, size);
-        }
+    notify: function(icon, notification) {
+        this._setSummaryIcon(icon);
+        MessageTray.Source.prototype.notify.call(this, notification);
     },
 
     clicked: function() {

@@ -19,7 +19,6 @@ const SUMMARY_TIMEOUT = 1;
 
 const HIDE_TIMEOUT = 0.2;
 
-const ICON_SIZE = 24;
 const BUTTON_ICON_SIZE = 36;
 
 const MAX_SOURCE_TITLE_WIDTH = 180;
@@ -46,9 +45,13 @@ function _cleanMarkup(text) {
 // @banner: the banner text
 // @params: optional additional params
 //
-// Creates a notification. In banner mode, it will show
-// @source's icon, @title (in bold) and @banner, all on a single line
+// Creates a notification. In banner mode, it will show an
+// icon, @title (in bold) and @banner, all on a single line
 // (with @banner ellipsized if necessary).
+//
+// By default, the icon shown is created by calling
+// source.createNotificationIcon(). However, you can override this
+// by passing an 'icon' parameter in @params.
 //
 // Additional notification details can be added, in which case the
 // notification can be expanded by moving the pointer into it. In
@@ -150,6 +153,7 @@ Notification.prototype = {
     update: function(title, banner, params) {
         params = Params.parse(params, { bannerBody: this._bannerBody,
                                         body: null,
+                                        icon: null,
                                         clear: false });
 
         if (this._icon)
@@ -167,7 +171,7 @@ Notification.prototype = {
 
         this._bannerBody = params.bannerBody;
 
-        this._icon = this.source.createIcon(ICON_SIZE);
+        this._icon = params.icon || this.source.createNotificationIcon();
         this.actor.add(this._icon, { row: 0,
                                      col: 0,
                                      x_expand: false,
@@ -560,21 +564,30 @@ Notification.prototype = {
 };
 Signals.addSignalMethods(Notification.prototype);
 
-function Source(title, createIcon) {
-    this._init(title, createIcon);
+function Source(title) {
+    this._init(title);
 }
 
 Source.prototype = {
-    _init: function(title, createIcon) {
+    ICON_SIZE: 24,
+
+    _init: function(title) {
         this.title = title;
-        if (createIcon)
-            this.createIcon = createIcon;
+        this._iconBin = new St.Bin({ width: this.ICON_SIZE,
+                                     height: this.ICON_SIZE });
     },
 
-    // This can be overridden by a subclass, or by the createIcon
-    // parameter to _init()
-    createIcon: function(size) {
-        throw new Error('no implementation of createIcon in ' + this);
+    // Called to create a new icon actor (of size this.ICON_SIZE).
+    // Must be overridden by the subclass if you do not pass icons
+    // explicitly to the Notification() constructor.
+    createNotificationIcon: function() {
+        throw new Error('no implementation of createNotificationIcon in ' + this);
+    },
+
+    // Unlike createNotificationIcon, this always returns the same actor;
+    // there is only one summary icon actor for a Source.
+    getSummaryIcon: function() {
+        return this._iconBin;
     },
 
     notify: function(notification) {
@@ -600,6 +613,15 @@ Source.prototype = {
 
     destroy: function() {
         this.emit('destroy');
+    },
+
+    //// Protected methods ////
+
+    // The subclass must call this at least once to set the summary icon.
+    _setSummaryIcon: function(icon) {
+        if (this._iconBin.child)
+            this._iconBin.child.destroy();
+        this._iconBin.child = icon;
     }
 };
 Signals.addSignalMethods(Source.prototype);
@@ -626,7 +648,7 @@ SummaryItem.prototype = {
         this._sourceBox.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._sourceBox.connect('allocate', Lang.bind(this, this._allocate));
 
-        this._sourceIcon = source.createIcon(ICON_SIZE);
+        this._sourceIcon = source.getSummaryIcon();
         this._sourceTitleBin = new St.Bin({ y_align: St.Align.MIDDLE, x_fill: true });
         this._sourceTitle = new St.Label({ style_class: 'source-title',
                                            text: source.title });
