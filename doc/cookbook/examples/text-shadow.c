@@ -11,22 +11,26 @@ _text_paint_cb (ClutterActor *actor)
 {
   ClutterText *text = CLUTTER_TEXT (actor);
 
-  ClutterActorBox alloc = { 0, };
-  clutter_actor_get_allocation_box (actor, &alloc);
-
+  /* Get the PangoLayout that the Text actor is going to paint */
   PangoLayout *layout;
   layout = clutter_text_get_layout (text);
 
+  /* Get the color of the text, to extract the alpha component */
   ClutterColor text_color = { 0, };
   clutter_text_get_color (text, &text_color);
 
+  /* Composite the opacity so that the shadow is correctly blended */
   guint8 real_opacity;
   real_opacity = clutter_actor_get_paint_opacity (actor)
                * text_color.alpha
                / 255;
 
+  /* Create a #ccc color and premultiply it */
   CoglColor color;
   cogl_color_set_from_4ub (&color, 0xcc, 0xcc, 0xcc, real_opacity);
+  cogl_color_premultiply (&color);
+
+  /* Finally, render the Text layout at a given offset using the color */
   cogl_pango_render_layout (layout, SHADOW_X_OFFSET, SHADOW_Y_OFFSET, &color, 0);
 }
 

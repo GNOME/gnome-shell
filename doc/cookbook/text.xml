@@ -29,6 +29,11 @@
     <section>
       <title>Solution</title>
 
+      <para>Override the <function>paint</function> signal of
+      <type>ClutterText</type> and use the CoglPango API to paint the
+      <type>PangoLayout</type> of the actor with the color of the
+      shadow at a given offset.</para>
+
       <screenshot>
         <mediaobject>
           <imageobject>
@@ -45,6 +50,72 @@
 
     <section>
       <title>Discussion</title>
+
+      <para>The <type>ClutterText</type> class provides an actor that
+      transforms the <type>PangoLayout</type> object into an element of
+      the Clutter scene graph. The underlying layout is painted, though,
+      through a subset of the Cogl API, called
+      <emphasis>CoglPango</emphasis>.</para>
+
+      <para>It is possible to paint <type>PangoLayout</type> created by a
+      <type>ClutterText</type> by invoking
+      <function>cogl_pango_render_layout()</function>:</para>
+
+      <informalexample><programlisting>
+<![CDATA[
+void
+cogl_pango_render_layout (PangoLayout *layout,
+                          int          x_offset,
+                          int          y_offset,
+                          CoglColor   *text_color,
+                          int          flags);
+]]>
+      </programlisting></informalexample>
+
+      <para>This function will paint the layout at the given offsets using the
+      provided color.</para>
+
+      <warning><para>The <function>cogl_pango_render_layout()<function>
+      function will only work with <type>PangoLayout</type>s created by
+      Clutter.</para></warning>
+
+      <para>Since the shadow of the text is literally the same text but painted
+      with a different color and at an offset, we can use the
+      <function>paint</function> signal of <type>ClutterText</type> to paint
+      the shadow, and then let <type>ClutterText</type> paint its contents on
+      top:</para>
+
+      <informalexample><programlisting>
+<![CDATA[
+static void
+_text_paint_cb (ClutterActor *actor)
+{
+  ClutterText *text = CLUTTER_TEXT (actor);
+
+  /* Get the PangoLayout that the Text actor is going to paint... */
+  PangoLayout *layout;
+  layout = clutter_text_get_layout (text);
+
+  /* ... Create the color of the shadow... */
+
+  /* ... Finally, render the Text layout at a given
+   * offset using the color of the shadow
+   */
+  cogl_pango_render_layout (layout,
+                            SHADOW_X_OFFSET, SHADOW_Y_OFFSET,
+                            &color, 0);
+}
+]]>
+      </programlisting></informalexample>
+
+      <para>Note that we are using the <type>PangoLayout</type> of the
+      <type>ClutterText</type> because the <type>ClutterText</type> actor
+      always keeps an updated layout internally. It is, however, possible for
+      any <type>ClutterActor</type> to create a <type>PangoLayout</type> using
+      <function>clutter_actor_create_pango_layout()</function>, and then paint
+      that layout using <function>cogl_pango_render_layout()</function> in
+      their implementation of the <function>paint</function> virtual
+      function.</para>
 
     </section>
 
