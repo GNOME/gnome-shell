@@ -81,6 +81,8 @@ struct _ClutterTexturePrivate
 
   CoglHandle pick_material;
 
+  gchar *filename;
+
   ClutterTextureAsyncData *async_data;
 
   guint no_slice : 1;
@@ -753,6 +755,8 @@ clutter_texture_finalize (GObject *object)
       priv->pick_material = COGL_INVALID_HANDLE;
     }
 
+  g_free (priv->filename);
+
   G_OBJECT_CLASS (clutter_texture_parent_class)->finalize (object);
 }
 
@@ -900,6 +904,10 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_boolean (value, priv->pick_with_alpha);
       break;
 
+    case PROP_FILENAME:
+      g_value_set_string (value, priv->filename);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -986,21 +994,30 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                               P_("COGL Texture"),
                               P_("The underlying COGL texture handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
-                              G_PARAM_READWRITE);
+                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COGL_TEXTURE, pspec);
 
   pspec = g_param_spec_boxed ("cogl-material",
                               P_("COGL Material"),
                               P_("The underlying COGL material handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
-                              G_PARAM_READWRITE);
+                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COGL_MATERIAL, pspec);
 
+  /**
+   * ClutterTexture:filename:
+   *
+   * The path of the file containing the image data to be displayed by
+   * the texture.
+   *
+   * This property is unset when using the clutter_texture_set_from_*_data()
+   * family of functions.
+   */
   pspec = g_param_spec_string ("filename",
                                P_("Filename"),
-                               P_("The full path of the file containing the texture"),
+                               P_("The path of the file containing the image data"),
                                NULL,
-                               G_PARAM_WRITABLE);
+                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
 
   pspec = g_param_spec_boolean ("keep-aspect-ratio",
@@ -1373,10 +1390,10 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* rename signal */
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
-  g_object_notify (G_OBJECT (texture), "cogl-texture");
-
   /* If resized actor may need resizing but paint() will do this */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+
+  g_object_notify (G_OBJECT (texture), "cogl-texture");
 }
 
 static gboolean
@@ -1423,6 +1440,9 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
       return FALSE;
     }
+
+  g_free (priv->filename);
+  priv->filename = NULL;
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1913,11 +1933,16 @@ clutter_texture_set_from_file (ClutterTexture *texture,
       return FALSE;
     }
 
+  g_free (priv->filename);
+  priv->filename = g_strdup (filename);
+
   clutter_texture_set_cogl_texture (texture, new_texture);
 
   cogl_handle_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
+
+  g_object_notify (G_OBJECT (texture), "filename");
 
   return TRUE;
 }
@@ -1963,9 +1988,9 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
       cogl_material_set_layer_filters (priv->material, 0,
                                        min_filter, mag_filter);
 
-      g_object_notify (G_OBJECT (texture), "filter-quality");
-
       clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+
+      g_object_notify (G_OBJECT (texture), "filter-quality");
     }
 }
 
@@ -2205,6 +2230,9 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 		   "Failed to upload COGL texture data");
       return FALSE;
     }
+
+  g_free (texture->priv->filename);
+  texture->priv->filename = NULL;
 
   /* rename signal */
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);

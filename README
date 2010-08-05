@@ -288,8 +288,13 @@ features).
 Release Notes for Clutter 1.4
 -------------------------------------------------------------------------------
 
-* ClutterLayoutManager sub-classes overriding the set_container() virtual
+• ClutterLayoutManager sub-classes overriding the set_container() virtual
   function should chain up to the parent class's implementation.
+
+• The ClutterTexture:filename property is now readable, as well as writable;
+  this allows querying the Texture for the filename storing the image data.
+  The value will be unset when using the set_from_*_data() family of
+  functions.
 
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
