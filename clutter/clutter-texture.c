@@ -1384,7 +1384,30 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
                      priv->image_height);
 
       if (priv->sync_actor_size)
-        clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+        {
+          ClutterActor *actor = CLUTTER_ACTOR (texture);
+
+          /* we have been requested to keep the actor size in
+           * sync with the texture data; if we also want to
+           * maintain the aspect ratio we want to change the
+           * requisition mode depending on the orientation of
+           * the texture, so that the parent container can do
+           * the right thing
+           */
+          if (priv->keep_aspect_ratio)
+            {
+              ClutterRequestMode request;
+
+              if (priv->image_width > priv->image_height)
+                request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
+              else
+                request = CLUTTER_REQUEST_WIDTH_FOR_HEIGHT;
+
+              clutter_actor_set_request_mode (actor, request);
+            }
+
+          clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+        }
     }
 
   /* rename signal */
