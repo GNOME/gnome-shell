@@ -321,6 +321,53 @@ static GQuark quark_layout_alpha = 0;
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
 static void
+layout_manager_freeze_layout_change (ClutterLayoutManager *manager)
+{
+  gpointer is_frozen;
+
+  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  if (is_frozen == NULL)
+    g_object_set_data (G_OBJECT (manager), "freeze-change",
+                       GUINT_TO_POINTER (1));
+  else
+    {
+      guint level = GPOINTER_TO_UINT (is_frozen) + 1;
+
+      g_object_set_data (G_OBJECT (manager), "freeze-change",
+                         GUINT_TO_POINTER (level));
+    }
+}
+
+static void
+layout_manager_thaw_layout_change (ClutterLayoutManager *manager)
+{
+  gpointer is_frozen;
+
+  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  if (is_frozen == NULL)
+    g_critical (G_STRLOC ": Mismatched thaw; you have to call "
+                "clutter_layout_manager_freeze_layout_change() prior to "
+                "calling clutter_layout_manager_thaw_layout_change()");
+  else
+    {
+      guint level = GPOINTER_TO_UINT (is_frozen);
+
+      g_assert (level > 0);
+
+      level -= 1;
+      if (level == 0)
+        {
+          g_object_set_data (G_OBJECT (manager), "freeze-change", NULL);
+          clutter_layout_manager_layout_changed (manager);
+        }
+      else
+        g_object_set_data (G_OBJECT (manager), "freeze-change",
+                           GUINT_TO_POINTER (level));
+    }
+
+}
+
+static void
 layout_manager_real_get_preferred_width (ClutterLayoutManager *manager,
                                          ClutterContainer     *container,
                                          gfloat                for_height,
@@ -661,9 +708,13 @@ clutter_layout_manager_allocate (ClutterLayoutManager   *manager,
 void
 clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
 {
+  gpointer is_frozen;
+
   g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
 
-  g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
+  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  if (is_frozen == NULL)
+    g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
 }
 
 /**
@@ -706,12 +757,17 @@ create_child_meta (ClutterLayoutManager *manager,
                    ClutterActor         *actor)
 {
   ClutterLayoutManagerClass *klass;
+  ClutterLayoutMeta *meta = NULL;
+
+  layout_manager_freeze_layout_change (manager);
 
   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
   if (klass->get_child_meta_type (manager) != G_TYPE_INVALID)
-    return klass->create_child_meta (manager, container, actor);
+    meta = klass->create_child_meta (manager, container, actor);
 
-  return NULL;
+  layout_manager_thaw_layout_change (manager);
+
+  return meta;
 }
 
 static inline ClutterLayoutMeta *
