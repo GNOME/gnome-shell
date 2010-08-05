@@ -218,13 +218,21 @@ test_bin_layout_main (int argc, char *argv[])
   action = clutter_click_action_new ();
   clutter_actor_add_action (rect, action);
   g_signal_connect (action, "clicked", G_CALLBACK (on_rect_clicked), box);
-
   g_signal_connect (box,
                     "enter-event", G_CALLBACK (on_box_enter),
                     rect);
   g_signal_connect (box,
                     "leave-event", G_CALLBACK (on_box_leave),
                     rect);
+
+  rect = clutter_text_new ();
+  clutter_text_set_text (CLUTTER_TEXT (rect), "A simple test");
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout), rect,
+                                    CLUTTER_BIN_ALIGNMENT_CENTER,
+                                    CLUTTER_BIN_ALIGNMENT_START);
+  clutter_actor_raise_top (rect);
+  clutter_actor_set_name (rect, "text");
 
   clutter_actor_show_all (stage);
 
