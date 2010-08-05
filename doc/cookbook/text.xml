@@ -75,7 +75,7 @@ cogl_pango_render_layout (PangoLayout *layout,
       <para>This function will paint the layout at the given offsets using the
       provided color.</para>
 
-      <warning><para>The <function>cogl_pango_render_layout()<function>
+      <warning><para>The <function>cogl_pango_render_layout()</function>
       function will only work with <type>PangoLayout</type>s created by
       Clutter.</para></warning>
 
