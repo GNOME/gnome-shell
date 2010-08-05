@@ -119,8 +119,8 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (arbfp, 255, 255,
                     "ARB\0",
                     "fragment_program\0",
-                    0,
-                    COGL_FEATURE_PRIVATE_ARB_FP)
+                    COGL_FEATURE_SHADERS_ARBFP,
+                    0)
 COGL_FEATURE_FUNCTION (void, glGenPrograms,
                        (GLsizei               n,
                         GLuint               *programs))

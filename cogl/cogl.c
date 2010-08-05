@@ -522,7 +522,7 @@ _cogl_features_available_private (CoglFeatureFlagsPrivate features)
     _cogl_features_init ();
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
-    ctx->feature_flags_private &= ~COGL_FEATURE_PRIVATE_ARB_FP;
+    ctx->feature_flags_private &= ~COGL_FEATURE_SHADERS_ARBFP;
 
   return (ctx->feature_flags_private & features) == features;
 }
