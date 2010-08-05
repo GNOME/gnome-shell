@@ -199,13 +199,17 @@ _cogl_atlas_blit_end (CoglAtlasBlitData *data)
 }
 
 CoglAtlas *
-_cogl_atlas_new (CoglAtlasUpdatePositionCallback update_position_cb)
+_cogl_atlas_new (CoglPixelFormat texture_format,
+                 CoglAtlasFlags flags,
+                 CoglAtlasUpdatePositionCallback update_position_cb)
 {
   CoglAtlas *atlas = g_new (CoglAtlas, 1);
 
   atlas->update_position_cb = update_position_cb;
   atlas->map = NULL;
   atlas->texture = NULL;
+  atlas->flags = flags;
+  atlas->texture_format = texture_format;
   _cogl_callback_list_init (&atlas->reorganize_callbacks);
 
   return atlas;
@@ -244,29 +248,40 @@ _cogl_atlas_migrate (CoglAtlas               *atlas,
   unsigned int i;
   CoglAtlasBlitData blit_data;
 
-  _cogl_atlas_blit_begin (&blit_data, new_texture, old_texture);
-
-  for (i = 0; i < n_textures; i++)
-    {
-      /* Skip the texture that is being added because it doesn't contain
-         any data yet */
-      if (textures[i].user_data != skip_user_data)
-        {
-          _cogl_atlas_blit (&blit_data,
-                            textures[i].old_position.x,
-                            textures[i].old_position.y,
-                            textures[i].new_position.x,
-                            textures[i].new_position.y,
-                            textures[i].new_position.width,
-                            textures[i].new_position.height);
-        }
+  /* If the 'disable migrate' flag is set then we won't actually copy
+     the textures to their new location. Instead we'll just invoke the
+     callback to update the position */
+  if ((atlas->flags & COGL_ATLAS_DISABLE_MIGRATION))
+    for (i = 0; i < n_textures; i++)
       /* Update the texture position */
       atlas->update_position_cb (textures[i].user_data,
                                  new_texture,
                                  &textures[i].new_position);
-    }
+  else
+    {
+      _cogl_atlas_blit_begin (&blit_data, new_texture, old_texture);
 
-  _cogl_atlas_blit_end (&blit_data);
+      for (i = 0; i < n_textures; i++)
+        {
+          /* Skip the texture that is being added because it doesn't contain
+             any data yet */
+          if (textures[i].user_data != skip_user_data)
+            _cogl_atlas_blit (&blit_data,
+                              textures[i].old_position.x,
+                              textures[i].old_position.y,
+                              textures[i].new_position.x,
+                              textures[i].new_position.y,
+                              textures[i].new_position.width,
+                              textures[i].new_position.height);
+
+          /* Update the texture position */
+          atlas->update_position_cb (textures[i].user_data,
+                                     new_texture,
+                                     &textures[i].new_position);
+        }
+
+      _cogl_atlas_blit_end (&blit_data);
+    }
 }
 
 typedef struct _CoglAtlasGetRectanglesData
@@ -345,6 +360,40 @@ _cogl_atlas_create_map (unsigned int             map_width,
      the rectangles */
 
   return NULL;
+}
+
+static CoglHandle
+_cogl_atlas_create_texture (CoglAtlas *atlas,
+                            int width,
+                            int height)
+{
+  CoglHandle tex;
+
+  if ((atlas->flags & COGL_ATLAS_CLEAR_TEXTURE))
+    {
+      guint8 *clear_data;
+      CoglBitmap *clear_bmp;
+      int bpp = _cogl_get_format_bpp (atlas->texture_format);
+
+      /* Create a buffer of zeroes to initially clear the texture */
+      clear_data = g_malloc0 (width * height * bpp);
+      clear_bmp = _cogl_bitmap_new_from_data (clear_data,
+                                              atlas->texture_format,
+                                              width,
+                                              height,
+                                              width * bpp,
+                                              (CoglBitmapDestroyNotify) g_free,
+                                              NULL);
+
+      tex = _cogl_texture_2d_new_from_bitmap (clear_bmp, COGL_TEXTURE_NONE,
+                                              atlas->texture_format);
+      cogl_object_unref (clear_bmp);
+    }
+  else
+    tex = _cogl_texture_2d_new_with_size (width, height, COGL_TEXTURE_NONE,
+                                          atlas->texture_format);
+
+  return tex;
 }
 
 static int
@@ -464,11 +513,10 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
       ret = FALSE;
     }
   /* We need to migrate the existing textures into a new texture */
-  else if ((new_tex = _cogl_texture_2d_new_with_size
-            (_cogl_rectangle_map_get_width (new_map),
-             _cogl_rectangle_map_get_height (new_map),
-             COGL_TEXTURE_NONE,
-             COGL_PIXEL_FORMAT_RGBA_8888)) == COGL_INVALID_HANDLE)
+  else if ((new_tex = _cogl_atlas_create_texture
+            (atlas,
+             _cogl_rectangle_map_get_width (new_map),
+             _cogl_rectangle_map_get_height (new_map))) == COGL_INVALID_HANDLE)
     {
       COGL_NOTE (ATLAS, "Could not create a CoglTexture2D");
       _cogl_rectangle_map_free (new_map);

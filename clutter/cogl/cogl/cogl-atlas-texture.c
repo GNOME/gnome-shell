@@ -121,7 +121,9 @@ _cogl_atlas_texture_get_atlas (void)
 
   if (ctx->atlas == COGL_INVALID_HANDLE)
     {
-      ctx->atlas = _cogl_atlas_new (_cogl_atlas_texture_update_position_cb);
+      ctx->atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_RGBA_8888,
+                                    0,
+                                    _cogl_atlas_texture_update_position_cb);
 
       _cogl_atlas_add_reorganize_callback (ctx->atlas,
                                            _cogl_atlas_texture_reorganize_cb,

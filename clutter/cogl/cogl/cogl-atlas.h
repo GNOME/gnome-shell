@@ -32,6 +32,12 @@ typedef void
                                      CoglHandle new_texture,
                                      const CoglRectangleMapEntry *rect);
 
+typedef enum
+{
+  COGL_ATLAS_CLEAR_TEXTURE     = (1 << 0),
+  COGL_ATLAS_DISABLE_MIGRATION = (1 << 1)
+} CoglAtlasFlags;
+
 typedef struct _CoglAtlas CoglAtlas;
 
 struct _CoglAtlas
@@ -39,6 +45,8 @@ struct _CoglAtlas
   CoglRectangleMap *map;
 
   CoglHandle texture;
+  CoglPixelFormat texture_format;
+  CoglAtlasFlags flags;
 
   CoglAtlasUpdatePositionCallback update_position_cb;
 
@@ -46,7 +54,9 @@ struct _CoglAtlas
 };
 
 CoglAtlas *
-_cogl_atlas_new (CoglAtlasUpdatePositionCallback update_position_cb);
+_cogl_atlas_new (CoglPixelFormat texture_format,
+                 CoglAtlasFlags flags,
+                 CoglAtlasUpdatePositionCallback update_position_cb);
 
 gboolean
 _cogl_atlas_reserve_space (CoglAtlas             *atlas,
