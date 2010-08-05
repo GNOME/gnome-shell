@@ -34,6 +34,8 @@
 /test-cogl-multitexture
 /test-cogl-offscreen
 /test-cogl-primitives
+/test-cogl-shader-arbfp
+/test-cogl-shader-glsl
 /test-cogl-tex-convert
 /test-cogl-tex-foreign
 /test-cogl-tex-getset
