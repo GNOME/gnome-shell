@@ -722,10 +722,6 @@ _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
                                   CoglMaterialFilter *mag_filter);
 
 void
-_cogl_material_set_user_program (CoglMaterial *material,
-                                 CoglHandle program);
-
-void
 _cogl_material_texture_storage_change_notify (CoglHandle texture);
 
 void
