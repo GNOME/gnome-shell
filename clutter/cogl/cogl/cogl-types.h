@@ -226,6 +226,7 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  * @COGL_FEATURE_TEXTURE_YUV: ycbcr conversion support
  * @COGL_FEATURE_TEXTURE_READ_PIXELS: glReadPixels() support
  * @COGL_FEATURE_SHADERS_GLSL: GLSL support
+ * @COGL_FEATURE_SHADERS_ARBFP: ARBFP support
  * @COGL_FEATURE_OFFSCREEN: FBO support
  * @COGL_FEATURE_OFFSCREEN_MULTISAMPLE: Multisample support on FBOs
  * @COGL_FEATURE_OFFSCREEN_BLIT: Blit support on FBOs
@@ -276,7 +277,8 @@ typedef enum
   COGL_FEATURE_TEXTURE_NPOT_MIPMAP    = (1 << 16),
   COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 << 17),
   COGL_FEATURE_POINT_SPRITE           = (1 << 18),
-  COGL_FEATURE_TEXTURE_3D             = (1 << 19)
+  COGL_FEATURE_TEXTURE_3D             = (1 << 19),
+  COGL_FEATURE_SHADERS_ARBFP          = (1 << 20)
 } CoglFeatureFlags;
 
 /**

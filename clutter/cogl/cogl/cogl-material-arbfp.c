@@ -256,7 +256,7 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!_cogl_features_available_private (COGL_FEATURE_PRIVATE_ARB_FP))
+  if (!cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
     return FALSE;
 
   /* TODO: support fog */

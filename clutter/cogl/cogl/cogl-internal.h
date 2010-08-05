@@ -219,7 +219,7 @@ _cogl_xlib_remove_filter (CoglXlibFilterFunc func,
 
 typedef enum _CoglFeatureFlagsPrivate
 {
-  COGL_FEATURE_PRIVATE_ARB_FP = (1 << 0)
+  COGL_FEATURE_PRIVATE_PLACE_HOLDER = (1 << 0)
 } CoglFeatureFlagsPrivate;
 
 gboolean
