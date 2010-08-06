@@ -338,6 +338,9 @@ _cogl_atlas_create_map (unsigned int             map_width,
                                                              NULL);
       unsigned int i;
 
+      COGL_NOTE (ATLAS, "Trying to resize the atlas to %ux%u",
+                 map_width, map_height);
+
       /* Add all of the textures and keep track of the new position */
       for (i = 0; i < n_textures; i++)
         if (!_cogl_rectangle_map_add (new_atlas,
@@ -351,6 +354,10 @@ _cogl_atlas_create_map (unsigned int             map_width,
          winner */
       if (i >= n_textures)
         return new_atlas;
+      else
+        COGL_NOTE (ATLAS, "Atlas size abandoned after trying "
+                   "%u out of %u textures",
+                   i, n_textures);
 
       _cogl_rectangle_map_free (new_atlas);
       _cogl_atlas_get_next_size (&map_width, &map_height);
