@@ -223,6 +223,12 @@ _shell_embedded_window_allocate (ShellEmbeddedWindow *window,
 
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 
+  if (window->priv->position.x == x &&
+      window->priv->position.y == y &&
+      window->priv->position.width == width &&
+      window->priv->position.height == height)
+    return;
+
   window->priv->position.x = x;
   window->priv->position.y = y;
   window->priv->position.width = width;
