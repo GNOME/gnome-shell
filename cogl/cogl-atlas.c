@@ -498,9 +498,21 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
     }
   else
     {
-      /* Start with an initial size of 256x256 */
-      map_width = 256;
-      map_height = 256;
+      /* At least on Intel hardware, the texture size will be rounded
+         up to at least 1MB so we might as well try to aim for that as
+         an initial minimum size. If the format is only 1 byte per
+         pixel we can use 1024x1024, otherwise we'll assume it will
+         take 4 bytes per pixel and use 512x512. */
+      if (_cogl_get_format_bpp (atlas->texture_format) == 1)
+        {
+          map_width = 1024;
+          map_height = 1024;
+        }
+      else
+        {
+          map_width = 512;
+          map_height = 512;
+        }
     }
 
   new_map = _cogl_atlas_create_map (map_width, map_height,
