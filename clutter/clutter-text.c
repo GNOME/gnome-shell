@@ -101,8 +101,11 @@ struct _ClutterTextPrivate
 {
   PangoFontDescription *font_desc;
 
+  /* the displayed text */
   gchar *text;
+
   gchar *font_name;
+
   gchar *preedit_str;
 
   ClutterColor text_color;
@@ -307,7 +310,7 @@ clutter_text_ensure_effective_attributes (ClutterText *self)
      do anything */
   if (priv->effective_attrs == NULL)
     {
-      if (priv->attrs)
+      if (priv->attrs != NULL)
         {
           /* If there are no markup attributes then we can just use
              these attributes directly */
@@ -338,9 +341,11 @@ clutter_text_ensure_effective_attributes (ClutterText *self)
               while (pango_attr_iterator_next (iter));
             }
         }
-      else if (priv->markup_attrs)
-        /* We can just use the markup attributes directly */
-        priv->effective_attrs = pango_attr_list_ref (priv->markup_attrs);
+      else if (priv->markup_attrs != NULL)
+        {
+          /* We can just use the markup attributes directly */
+          priv->effective_attrs = pango_attr_list_ref (priv->markup_attrs);
+        }
     }
 }
 
@@ -405,7 +410,7 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
          property if needed */
       clutter_text_ensure_effective_attributes (text);
 
-      if (priv->effective_attrs)
+      if (priv->effective_attrs != NULL)
         pango_layout_set_attributes (layout, priv->effective_attrs);
     }
 
@@ -1051,17 +1056,19 @@ clutter_text_set_markup_internal (ClutterText *self,
                      strlen (text), &tmp_pos);
 
       clutter_text_set_text_internal (self, text);
+
       g_free (text);
     }
 
   /* Store the new markup attributes */
-  if (priv->markup_attrs)
+  if (priv->markup_attrs != NULL)
     pango_attr_list_unref (priv->markup_attrs);
+
   priv->markup_attrs = attrs;
 
   /* Clear the effective attributes so they will be regenerated when a
      layout is created */
-  if (priv->effective_attrs)
+  if (priv->effective_attrs != NULL)
     {
       pango_attr_list_unref (priv->effective_attrs);
       priv->effective_attrs = NULL;
@@ -2726,8 +2733,15 @@ clutter_text_class_init (ClutterTextClass *klass)
   /**
    * ClutterText:use-markup:
    *
-   * Whether the text includes Pango markup. See pango_layout_set_markup()
-   * in the Pango documentation.
+   * Whether the text includes Pango markup.
+   *
+   * For more informations about the Pango markup format, see
+   * pango_layout_set_markup() in the Pango documentation.
+   *
+   * <note>It is not possible to round-trip this property between
+   * %TRUE and %FALSE. Once a string with markup has been set on
+   * a #ClutterText actor with :use-markup set to %TRUE, the markup
+   * is stripped from the string.</note>
    *
    * Since: 1.0
    */
@@ -3870,6 +3884,21 @@ clutter_text_set_use_markup_internal (ClutterText *self,
     {
       priv->use_markup = use_markup;
 
+      /* reset the attributes lists so that they can be
+       * re-generated
+       */
+      if (priv->effective_attrs != NULL)
+        {
+          pango_attr_list_unref (priv->effective_attrs);
+          priv->effective_attrs = NULL;
+        }
+
+      if (priv->markup_attrs)
+        {
+          pango_attr_list_unref (priv->markup_attrs);
+          priv->markup_attrs = NULL;
+        }
+
       g_object_notify (G_OBJECT (self), "use-markup");
     }
 }
@@ -4308,7 +4337,9 @@ clutter_text_get_line_alignment (ClutterText *self)
  * in <link linkend="PangoMarkupFormat">Pango's text markup language</link>.
  *
  * Setting #ClutterText:use-markup on an editable #ClutterText will
- * make the actor discard any markup.
+ * not have any effect except hiding the markup.
+ *
+ * See also #ClutterText:use-markup.
  *
  * Since: 1.0
  */
@@ -4316,10 +4347,23 @@ void
 clutter_text_set_use_markup (ClutterText *self,
 			     gboolean     setting)
 {
+  ClutterTextPrivate *priv;
+  gchar *str;
+
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
+  priv = self->priv;
+
+  str = g_strdup (priv->text);
+
   clutter_text_set_use_markup_internal (self, setting);
-  clutter_text_set_markup_internal (self, self->priv->text);
+
+  if (setting)
+    clutter_text_set_markup_internal (self, str);
+  else
+    clutter_text_set_text_internal (self, str);
+
+  g_free (str);
 
   clutter_text_dirty_cache (self);
 
