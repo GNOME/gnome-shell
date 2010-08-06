@@ -243,22 +243,15 @@ fooing_barring_SOURCE = fooing-barring.c
   <example id="fooing-barring-example">
     <title>Fooing with a bar</title>
     <programlisting>
-<xi:include href="examples/fooing-barring.c" parse="text">
-  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
-</xi:include>
+      <xi:include href="examples/fooing-barring.c" parse="text">
+        <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+      </xi:include>
     </programlisting>
   </example>
 </section>
 ]]>
               </programlisting>
             </informalexample>
-
-            <note>
-              <para>The <code>&lt;xi:include&gt;</code> element
-              should be aligned to the left-hand margin of the text
-              (no whitespace on the line before it), to prevent any
-              stray whitespace appearing in the program listing.</para>
-            </note>
           </listitem>
 
         </itemizedlist>
