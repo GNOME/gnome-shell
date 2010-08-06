@@ -496,11 +496,13 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
       map_width = _cogl_rectangle_map_get_width (atlas->map);
       map_height = _cogl_rectangle_map_get_height (atlas->map);
 
-      /* If there is enough space in the existing for the new
-         rectangle in the existing atlas we'll start with the same
-         size, otherwise we'll immediately double it */
-      if (_cogl_rectangle_map_get_remaining_space (atlas->map) <
-          width * height)
+      /* If there is enough space in for the new rectangle in the
+         existing atlas with at least 6% waste we'll start with the
+         same size, otherwise we'll immediately double it */
+      if ((map_width * map_height -
+           _cogl_rectangle_map_get_remaining_space (atlas->map) +
+           width * height) * 53 / 50 >
+          map_width * map_height)
         _cogl_atlas_get_next_size (&map_width, &map_height);
     }
   else
