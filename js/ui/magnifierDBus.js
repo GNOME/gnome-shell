@@ -109,14 +109,14 @@ ShellMagnifier.prototype = {
      *                  ZoomRegion.
      * @roi             Array of integers defining the region of the
      *                  screen/desktop to magnify.  The array has the form
-     *                  [x, y, width, height].
-     * @viewPort        Array of integers, [ x, y, width, height ] that defines
+     *                  [left, top, right, bottom].
+     * @viewPort        Array of integers, [left, top, right, bottom] that defines
      *                  the position of the ZoomRegion on screen.
      * @return          The newly created ZoomRegion.
      */
     createZoomRegion: function(xMagFactor, yMagFactor, roi, viewPort) {
-        let ROI = { x: roi[0], y: roi[1], width: roi[2], height: roi[3] };
-        let viewBox = { x: viewPort[0], y: viewPort[1], width: viewPort[2], height: viewPort[3] };
+        let ROI = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
+        let viewBox = { x: viewPort[0], y: viewPort[1], width: viewPort[2] - viewPort[0], height: viewPort[3] - viewPort[1] };
         let realZoomRegion = Main.magnifier.createZoomRegion(xMagFactor, yMagFactor, ROI, viewBox);
         let objectPath = ZOOM_SERVICE_PATH + '/zoomer' + _zoomRegionInstanceCount;
         _zoomRegionInstanceCount++;
@@ -325,12 +325,12 @@ ShellMagnifierZoomRegion.prototype = {
     /**
      * setRoi:
      * Sets the "region of interest" that the ZoomRegion is magnifying.
-     * @roi     Array, [x, y, width, height], defining the region of the screen to
-     *          magnify. The values are in screen (unmagnified) coordinate
-     *          space.
+     * @roi     Array, [left, top, right, bottom], defining the region of the
+     *          screen to magnify. The values are in screen (unmagnified)
+     *          coordinate space.
      */
     setRoi: function(roi) {
-        let roiObject = { x: roi[0], y: roi[1], width: roi[2], height: roi[3] };
+        let roiObject = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
         this._zoomRegion.setROI(roiObject);
     },
 
@@ -339,11 +339,14 @@ ShellMagnifierZoomRegion.prototype = {
      * Retrieves the "region of interest" -- the rectangular bounds of that part
      * of the desktop that the magnified view is showing (x, y, width, height).
      * The bounds are given in non-magnified coordinates.
-     * @return  an array, [x, y, width, height], representing the bounding
+     * @return  an array, [left, top, right, bottom], representing the bounding
      *          rectangle of what is shown in the magnified view.
      */
     getRoi: function() {
-        return this._zoomRegion.getROI();
+        let roi = this._zoomRegion.getROI();
+        roi[2] += roi[0];
+        roi[3] += roi[1];
+        return roi;
     },
 
     /**
@@ -362,11 +365,11 @@ ShellMagnifierZoomRegion.prototype = {
     /**
      * moveResize
      * Sets the position and size of the ZoomRegion on screen.
-     * @viewPort    Array, [x, y, width, height], defining the position and size
-     *              on screen to place the zoom region.
+     * @viewPort    Array, [left, top, right, bottom], defining the position and
+     *              size on screen to place the zoom region.
      */
     moveResize: function(viewPort) {
-        let viewRect = { x: viewPort[0], y: viewPort[1], width: viewPort[2], height: viewPort[3] };
+        let viewRect = { x: viewPort[0], y: viewPort[1], width: viewPort[2] - viewPort[0], height: viewPort[3] - viewPort[1] };
         this._zoomRegion.setViewPort(viewRect);
     }
 };
