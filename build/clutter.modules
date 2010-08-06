@@ -11,6 +11,8 @@
       href="git://git.clutter-project.org/"/>
   <repository type="git" name="git.moblin.org"
       href="git://git.moblin.org/"/>
+  <repository type="git" name="github.com/rib"
+      href="git://github.com/rib/"/>
 
   <!-- tarballs -->
   <repository type="tarball" name="cairo.org"
@@ -97,8 +99,8 @@
   </autotools>
 
   <autotools id="uprof">
-    <branch repo="git.moblin.org"
-            module="uprof"
+    <branch repo="github.com/rib"
+            module="UProf"
             revision="master"/>
   </autotools>
 
