@@ -1900,6 +1900,9 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
             {
               layer->differences &= ~change;
 
+              if (layer->texture != COGL_INVALID_HANDLE)
+                cogl_handle_unref (layer->texture);
+
               g_assert (layer->owner == material);
               if (layer->differences == 0)
                 _cogl_material_prune_empty_layer_difference (material,
