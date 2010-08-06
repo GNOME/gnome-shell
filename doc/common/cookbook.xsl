@@ -2,6 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:include href="ref-html-style.xsl"/>
 
+  <!-- Make the ToC be of depth 2 -->
+  <xsl:param name="toc.max.depth" select="2"/>
+
   <!-- Strip leading and trailing space from text children of programlisting -->
 
   <xsl:template match="programlisting/text()">
