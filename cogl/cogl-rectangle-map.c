@@ -70,6 +70,11 @@ struct _CoglRectangleMap
   unsigned int n_rectangles;
 
   GDestroyNotify value_destroy_func;
+
+  /* Stack used for walking the structure. This is only used during
+     the lifetime of a single function call but it is kept here as an
+     optimisation to avoid reallocating it every time it is needed */
+  GArray *stack;
 };
 
 struct _CoglRectangleMapNode
@@ -103,8 +108,6 @@ struct _CoglRectangleMapStackEntry
   /* Index of next branch of this node to explore. Basically either 0
      to go left or 1 to go right */
   gboolean next_index;
-  /* Next entry in the stack */
-  CoglRectangleMapStackEntry *next;
 };
 
 static CoglRectangleMapNode *
@@ -139,32 +142,38 @@ _cogl_rectangle_map_new (unsigned int width,
   map->n_rectangles = 0;
   map->value_destroy_func = value_destroy_func;
 
+  map->stack = g_array_new (FALSE, FALSE, sizeof (CoglRectangleMapStackEntry));
+
   return map;
 }
 
-static CoglRectangleMapStackEntry *
-_cogl_rectangle_map_stack_push (CoglRectangleMapStackEntry *stack,
+static void
+_cogl_rectangle_map_stack_push (GArray *stack,
                                 CoglRectangleMapNode *node,
                                 gboolean next_index)
 {
-  CoglRectangleMapStackEntry *new_entry =
-    g_slice_new (CoglRectangleMapStackEntry);
+  CoglRectangleMapStackEntry *new_entry;
+
+  g_array_set_size (stack, stack->len + 1);
+
+  new_entry = &g_array_index (stack, CoglRectangleMapStackEntry,
+                              stack->len - 1);
 
   new_entry->node = node;
   new_entry->next_index = next_index;
-  new_entry->next = stack;
+}
 
-  return new_entry;
+static void
+_cogl_rectangle_map_stack_pop (GArray *stack)
+{
+  g_array_set_size (stack, stack->len - 1);
 }
 
 static CoglRectangleMapStackEntry *
-_cogl_rectangle_map_stack_pop (CoglRectangleMapStackEntry *stack)
+_cogl_rectangle_map_stack_get_top (GArray *stack)
 {
-  CoglRectangleMapStackEntry *next = stack->next;
-
-  g_slice_free (CoglRectangleMapStackEntry, stack);
-
-  return next;
+  return &g_array_index (stack, CoglRectangleMapStackEntry,
+                         stack->len - 1);
 }
 
 static CoglRectangleMapNode *
@@ -306,7 +315,7 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
 {
   unsigned int rectangle_size = width * height;
   /* Stack of nodes to search in */
-  CoglRectangleMapStackEntry *node_stack;
+  GArray *stack = map->stack;
   CoglRectangleMapNode *found_node = NULL;
 
   /* Zero-sized rectangles break the algorithm for removing rectangles
@@ -314,15 +323,21 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
   g_return_val_if_fail (width > 0 && height > 0, FALSE);
 
   /* Start with the root node */
-  node_stack = _cogl_rectangle_map_stack_push (NULL, map->root, FALSE);
+  g_array_set_size (stack, 0);
+  _cogl_rectangle_map_stack_push (stack, map->root, FALSE);
 
   /* Depth-first search for an empty node that is big enough */
-  while (node_stack)
+  while (stack->len > 0)
     {
+      CoglRectangleMapStackEntry *stack_top;
+      CoglRectangleMapNode *node;
+      int next_index;
+
       /* Pop an entry off the stack */
-      CoglRectangleMapNode *node = node_stack->node;
-      int next_index = node_stack->next_index;
-      node_stack = _cogl_rectangle_map_stack_pop (node_stack);
+      stack_top = _cogl_rectangle_map_stack_get_top (stack);
+      node = stack_top->node;
+      next_index = stack_top->next_index;
+      _cogl_rectangle_map_stack_pop (stack);
 
       /* Regardless of the type of the node, there's no point
          descending any further if the new rectangle won't fit within
@@ -341,31 +356,24 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
             {
               if (next_index)
                 /* Try the right branch */
-                node_stack =
-                  _cogl_rectangle_map_stack_push (node_stack,
-                                                  node->d.branch.right,
-                                                  0);
+                _cogl_rectangle_map_stack_push (stack,
+                                                node->d.branch.right,
+                                                0);
               else
                 {
                   /* Make sure we remember to try the right branch once
                      we've finished descending the left branch */
-                  node_stack =
-                    _cogl_rectangle_map_stack_push (node_stack,
-                                                    node,
-                                                    1);
+                  _cogl_rectangle_map_stack_push (stack,
+                                                  node,
+                                                  1);
                   /* Try the left branch */
-                  node_stack =
-                    _cogl_rectangle_map_stack_push (node_stack,
-                                                    node->d.branch.left,
-                                                    0);
+                  _cogl_rectangle_map_stack_push (stack,
+                                                  node->d.branch.left,
+                                                  0);
                 }
             }
         }
     }
-
-  /* Free the stack */
-  while (node_stack)
-    node_stack = _cogl_rectangle_map_stack_pop (node_stack);
 
   if (found_node)
     {
@@ -535,57 +543,60 @@ _cogl_rectangle_map_internal_foreach (CoglRectangleMap *map,
                                       void *data)
 {
   /* Stack of nodes to search in */
-  CoglRectangleMapStackEntry *node_stack;
+  GArray *stack = map->stack;
 
   /* Start with the root node */
-  node_stack = _cogl_rectangle_map_stack_push (NULL, map->root, 0);
+  g_array_set_size (stack, 0);
+  _cogl_rectangle_map_stack_push (stack, map->root, 0);
 
   /* Iterate all nodes depth-first */
-  while (node_stack)
+  while (stack->len > 0)
     {
-      CoglRectangleMapNode *node = node_stack->node;
+      CoglRectangleMapStackEntry *stack_top =
+        _cogl_rectangle_map_stack_get_top (stack);
+      CoglRectangleMapNode *node = stack_top->node;
 
       switch (node->type)
         {
         case COGL_RECTANGLE_MAP_BRANCH:
-          if (node_stack->next_index == 0)
+          if (stack_top->next_index == 0)
             {
               /* Next time we come back to this node, go to the right */
-              node_stack->next_index = 1;
+              stack_top->next_index = 1;
 
               /* Explore the left branch next */
-              node_stack = _cogl_rectangle_map_stack_push (node_stack,
-                                                           node->d.branch.left,
-                                                           0);
+              _cogl_rectangle_map_stack_push (stack,
+                                              node->d.branch.left,
+                                              0);
             }
-          else if (node_stack->next_index == 1)
+          else if (stack_top->next_index == 1)
             {
               /* Next time we come back to this node, stop processing it */
-              node_stack->next_index = 2;
+              stack_top->next_index = 2;
 
               /* Explore the right branch next */
-              node_stack = _cogl_rectangle_map_stack_push (node_stack,
-                                                           node->d.branch.right,
-                                                           0);
+              _cogl_rectangle_map_stack_push (stack,
+                                              node->d.branch.right,
+                                              0);
             }
           else
             {
               /* We're finished with this node so we can call the callback */
               func (node, data);
-              node_stack = _cogl_rectangle_map_stack_pop (node_stack);
+              _cogl_rectangle_map_stack_pop (stack);
             }
           break;
 
         default:
           /* Some sort of leaf node, just call the callback */
           func (node, data);
-          node_stack = _cogl_rectangle_map_stack_pop (node_stack);
+          _cogl_rectangle_map_stack_pop (stack);
           break;
         }
     }
 
   /* The stack should now be empty */
-  g_assert (node_stack == NULL);
+  g_assert (stack->len == 0);
 }
 
 typedef struct _CoglRectangleMapForeachClosure
@@ -635,6 +646,9 @@ _cogl_rectangle_map_free (CoglRectangleMap *map)
   _cogl_rectangle_map_internal_foreach (map,
                                         _cogl_rectangle_map_free_cb,
                                         map);
+
+  g_array_free (map->stack, TRUE);
+
   g_free (map);
 }
 
