@@ -4931,7 +4931,7 @@ _cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
           || min_filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR)
         flags |= COGL_TEXTURE_NEEDS_MIPMAP;
 
-      _cogl_texture_pre_paint (layer->texture, flags);
+      _cogl_texture_pre_paint (texture_authority->texture, flags);
     }
 }
 
