@@ -416,38 +416,40 @@ SearchResults.prototype = {
         this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
-        for (let i = 0; i < this._providers.length; i++) {
-            let provider = this._providers[i];
-            let providerBox = new St.BoxLayout({ style_class: 'dash-search-section',
-                                                  vertical: true });
-            let titleButton = new St.Button({ style_class: 'dash-search-section-header',
-                                              reactive: true,
-                                              x_fill: true,
-                                              y_fill: true });
-            titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
-            providerBox.add(titleButton);
-            let titleBox = new St.BoxLayout();
-            titleButton.set_child(titleBox);
-            let title = new St.Label({ text: provider.title });
-            let count = new St.Label();
-            titleBox.add(title, { expand: true });
-            titleBox.add(count);
+        for (let i = 0; i < this._providers.length; i++)
+            this.createProviderMeta(this._providers[i]);
+    },
 
-            let resultDisplayBin = new St.Bin({ style_class: 'dash-search-section-results',
-                                                x_fill: true,
-                                                y_fill: true });
-            providerBox.add(resultDisplayBin, { expand: true });
-            let resultDisplay = provider.createResultContainerActor();
-            if (resultDisplay == null) {
-                resultDisplay = new OverflowSearchResults(provider);
-            }
-            resultDisplayBin.set_child(resultDisplay.actor);
+    createProviderMeta: function(provider) {
+        let providerBox = new St.BoxLayout({ style_class: 'dash-search-section',
+                                             vertical: true });
+        let titleButton = new St.Button({ style_class: 'dash-search-section-header',
+                                          reactive: true,
+                                          x_fill: true,
+                                          y_fill: true });
+        titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
+        providerBox.add(titleButton);
+        let titleBox = new St.BoxLayout();
+        titleButton.set_child(titleBox);
+        let title = new St.Label({ text: provider.title });
+        let count = new St.Label();
+        titleBox.add(title, { expand: true });
+        titleBox.add(count);
 
-            this._providerMeta.push({ actor: providerBox,
-                                      resultDisplay: resultDisplay,
-                                      count: count });
-            this.actor.add(providerBox);
+        let resultDisplayBin = new St.Bin({ style_class: 'dash-search-section-results',
+                                            x_fill: true,
+                                            y_fill: true });
+        providerBox.add(resultDisplayBin, { expand: true });
+        let resultDisplay = provider.createResultContainerActor();
+        if (resultDisplay == null) {
+            resultDisplay = new OverflowSearchResults(provider);
         }
+        resultDisplayBin.set_child(resultDisplay.actor);
+
+        this._providerMeta.push({ actor: providerBox,
+                                  resultDisplay: resultDisplay,
+                                  count: count });
+        this.actor.add(providerBox);
     },
 
     _clearDisplay: function() {
@@ -862,6 +864,13 @@ Dash.prototype = {
         this.searchResults.updateSearch(text);
 
         return false;
+    },
+
+    addSearchProvider: function(provider) {
+        //Add a new search provider to the dash.
+
+        this._searchSystem.registerProvider(provider);
+        this.searchResults.createProviderMeta(provider);
     },
 
     show: function() {
