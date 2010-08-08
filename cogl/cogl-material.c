@@ -1444,8 +1444,19 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
   /* We only allow a NULL required_owner for new layers */
   g_return_val_if_fail (required_owner != NULL, layer);
 
+  /* Chain up:
+   * A modification of a layer is indirectly also a modification of
+   * its owner so first make sure to flush the journal of any
+   * references to the current owner state and if necessary perform
+   * a copy-on-write for the required_owner if it has dependants.
+   */
+  _cogl_material_pre_change_notify (required_owner,
+                                    COGL_MATERIAL_STATE_LAYERS,
+                                    NULL);
+
   /* Unlike materials; layers are simply considered immutable once
-   * they have dependants - either children or another material owner.
+   * they have dependants - either direct children, or another
+   * material as an owner.
    */
   if (COGL_MATERIAL_NODE (layer)->has_children ||
       layer->owner != required_owner)
@@ -1462,9 +1473,6 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
   /* Note: At this point we know there is only one material dependant on
    * this layer (required_owner), and there are no other layers
    * dependant on this layer so it's ok to modify it. */
-
-  if (required_owner->journal_ref_count)
-    _cogl_journal_flush ();
 
   _cogl_material_backend_layer_change_notify (layer, change);
 
