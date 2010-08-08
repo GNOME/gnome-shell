@@ -147,7 +147,7 @@ GType                 clutter_state_key_get_type              (void) G_GNUC_CONS
 gdouble               clutter_state_key_get_pre_delay         (const ClutterStateKey *state_key);
 gdouble               clutter_state_key_get_post_delay        (const ClutterStateKey *state_key);
 gulong                clutter_state_key_get_mode              (const ClutterStateKey *state_key);
-void                  clutter_state_key_get_value             (const ClutterStateKey *state_key,
+gboolean              clutter_state_key_get_value             (const ClutterStateKey *state_key,
                                                                GValue                *value);
 GType                 clutter_state_key_get_property_type     (const ClutterStateKey *key);
 GObject *             clutter_state_key_get_object            (const ClutterStateKey *state_key);

@@ -1403,20 +1403,26 @@ clutter_state_key_get_mode (const ClutterStateKey *state_key)
  * @state_key: a #ClutterStateKey
  * @value: a #GValue initialized with the correct type for the @state_key
  *
- * Copies of the value for a #ClutterStateKey into @value
+ * Retrieves a copy of the value for a #ClutterStateKey.
  *
  * The #GValue needs to be already initialized for the value type
- * of the property or to a transformable type
+ * of the property or to a type that allow transformation from the value
+ * type of the key.
+ *
+ * Use g_value_unset() when done.
+ *
+ * Return value: %TRUE if the value was successfully retrieved,
+ *   and %FALSE otherwise
  *
  * Since: 1.4
  */
-void
+gboolean
 clutter_state_key_get_value (const ClutterStateKey *state_key,
                              GValue                *value)
 {
-  g_return_if_fail (state_key != NULL);
-  g_return_if_fail (value != NULL);
-  g_return_if_fail (G_VALUE_TYPE (value) != G_TYPE_INVALID);
+  g_return_val_if_fail (state_key != NULL, FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
+  g_return_val_if_fail (G_VALUE_TYPE (value) != G_TYPE_INVALID, FALSE);
 
   if (!g_type_is_a (G_VALUE_TYPE (&state_key->value), G_VALUE_TYPE (value)))
     {
@@ -1424,14 +1430,14 @@ clutter_state_key_get_value (const ClutterStateKey *state_key,
                                    G_VALUE_TYPE (value)))
         {
           g_value_copy (&state_key->value, value);
-          return;
+          return TRUE;
         }
 
       if (g_value_type_transformable (G_VALUE_TYPE (&state_key->value),
                                       G_VALUE_TYPE (value)))
         {
           if (g_value_transform (&state_key->value, value))
-            return;
+            return TRUE;
         }
 
       g_warning ("%s: Unable to convert from %s to %s for the "
@@ -1441,9 +1447,13 @@ clutter_state_key_get_value (const ClutterStateKey *state_key,
                  g_type_name (G_VALUE_TYPE (value)),
                  state_key->property_name,
                  G_OBJECT_TYPE_NAME (state_key->object));
+
+      return FALSE;
     }
   else
     g_value_copy (&state_key->value, value);
+
+  return TRUE;
 }
 
 /**
