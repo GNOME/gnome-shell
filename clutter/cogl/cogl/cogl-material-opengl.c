@@ -258,7 +258,7 @@ _cogl_delete_gl_texture (GLuint gl_texture)
 /* Whenever the underlying GL texture storage of a CoglTexture is
  * changed (e.g. due to migration out of a texture atlas) then we are
  * notified. This lets us ensure that we reflush that texture's state
- * if it reused again with the same texture unit.
+ * if it is reused again with the same texture unit.
  */
 void
 _cogl_material_texture_storage_change_notify (CoglHandle texture)
@@ -273,7 +273,7 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture)
         &g_array_index (ctx->texture_units, CoglTextureUnit, i);
 
       if (unit->layer &&
-          unit->layer->texture == texture)
+          _cogl_material_layer_get_texture (unit->layer) == texture)
         unit->texture_storage_changed = TRUE;
 
       /* NB: the texture may be bound to multiple texture units so
