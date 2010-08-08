@@ -2115,23 +2115,38 @@ gboolean
 clutter_animator_key_get_value (const ClutterAnimatorKey *key,
                                 GValue                   *value)
 {
-  GType gtype;
-
   g_return_val_if_fail (key != NULL, FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
+  g_return_val_if_fail (G_VALUE_TYPE (value) != G_TYPE_INVALID, FALSE);
 
-  gtype = G_VALUE_TYPE (&key->value);
-
-  if (g_value_type_compatible (gtype, G_VALUE_TYPE (value)))
+  if (!g_type_is_a (G_VALUE_TYPE (&key->value), G_VALUE_TYPE (value)))
     {
-      g_value_copy (&key->value, value);
-      return TRUE;
-    }
+      if (g_value_type_compatible (G_VALUE_TYPE (&key->value),
+                                   G_VALUE_TYPE (value)))
+        {
+          g_value_copy (&key->value, value);
+          return TRUE;
+        }
 
-  if (g_value_type_transformable (gtype, G_VALUE_TYPE (value)))
-    {
-      if (g_value_transform (&key->value, value))
-        return TRUE;
-    }
+      if (g_value_type_transformable (G_VALUE_TYPE (&key->value),
+                                      G_VALUE_TYPE (value)))
+        {
+          if (g_value_transform (&key->value, value))
+            return TRUE;
+        }
 
-  return FALSE;
+      g_warning ("%s: Unable to convert from %s to %s for the "
+                 "property '%s' of object %s in the animator key",
+                 G_STRLOC,
+                 g_type_name (G_VALUE_TYPE (&key->value)),
+                 g_type_name (G_VALUE_TYPE (value)),
+                 key->property_name,
+                 G_OBJECT_TYPE_NAME (key->object));
+
+      return FALSE;
+    }
+  else
+    g_value_copy (&key->value, value);
+
+  return TRUE;
 }
