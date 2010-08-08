@@ -1451,6 +1451,8 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
       layer->owner != required_owner)
     {
       CoglMaterialLayer *new = _cogl_material_layer_copy (layer);
+      if (layer->owner == required_owner)
+        _cogl_material_remove_layer_difference (required_owner, layer, FALSE);
       _cogl_material_add_layer_difference (required_owner, new, FALSE);
       cogl_object_unref (new);
       layer = new;
