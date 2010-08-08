@@ -1,15 +1,15 @@
 # Low German translation for mutter.
 # Copyright (C) 2009 mutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter package.
-# Nils-Christoph Fiedler <fiedler@medienkompanie.de>, 2009.
+# Nils-Christoph Fiedler <ncfiedler@gnome.org>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
 "POT-Creation-Date: 2009-11-24 21:04+0000\n"
-"PO-Revision-Date: 2010-02-25 16:58+0100\n"
-"Last-Translator: Nils-Christoph Fiedler <fiedler@medienkompanie.de>\n"
+"PO-Revision-Date: 2010-08-08 15:45+0100\n"
+"Last-Translator: Nils-Christoph Fiedler <ncfiedler@gnome.org>\n"
 "Language-Team: Low German <nds-lowgerman@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,7 +163,7 @@ msgstr ""
 #: ../src/core/main.c:704
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "Künn nich nej starten: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -376,7 +376,7 @@ msgstr ""
 
 #: ../src/core/util.c:452
 msgid "Window manager error: "
-msgstr ""
+msgstr "Finsteroppasserfehler:"
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
@@ -412,7 +412,7 @@ msgstr ""
 #: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
-msgstr ""
+msgstr "%s (op %s)"
 
 #: ../src/core/window-props.c:1440
 #, c-format
@@ -569,11 +569,11 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Billschirmbill scheten"
 
 #: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Billschirmbill vun ee'm Finster scheten"
 
 #: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
@@ -581,7 +581,7 @@ msgstr "Een Terminal lööpen laten"
 
 #: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
-msgstr ""
+msgstr "Finstermenü aktiveren"
 
 #: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
@@ -814,7 +814,7 @@ msgstr ""
 
 #: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
-msgstr ""
+msgstr "Jümmers op opwiestem Schrievdisk"
 
 #: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
@@ -1220,7 +1220,7 @@ msgstr ""
 #: ../src/ui/theme.c:4764
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Künn Thema nich laden \"%s\": %s\n"
 
 #: ../src/ui/theme.c:4894
 #: ../src/ui/theme.c:4901
