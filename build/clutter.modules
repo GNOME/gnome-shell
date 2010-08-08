@@ -98,7 +98,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="uprof">
+  <autotools id="UProf">
     <branch repo="github.com/rib"
             module="UProf"
             revision="master"/>
