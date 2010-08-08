@@ -827,9 +827,6 @@ _cogl_material_copy_differences (CoglMaterial *dest,
           g_list_free (dest->layer_differences);
         }
 
-      dest->n_layers = src->n_layers;
-      dest->layer_differences = g_list_copy (src->layer_differences);
-
       for (l = src->layer_differences; l; l = l->next)
         {
           /* NB: a layer can't have more than one ->owner so we can't
@@ -840,6 +837,11 @@ _cogl_material_copy_differences (CoglMaterial *dest,
           _cogl_material_add_layer_difference (dest, copy, FALSE);
           cogl_object_unref (copy);
         }
+
+      /* Note: we initialize n_layers after adding the layer differences
+       * since the act of adding the layers will initialize n_layers to 0
+       * because dest isn't initially a STATE_LAYERS authority. */
+      dest->n_layers = src->n_layers;
     }
 
   if (differences & COGL_MATERIAL_STATE_NEEDS_BIG_STATE)
