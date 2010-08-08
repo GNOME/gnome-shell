@@ -916,12 +916,14 @@ check_for_blending_change:
 }
 
 static void
-_cogl_material_initialize_state (CoglMaterial *dest,
-                                 CoglMaterial *src,
-                                 CoglMaterialState state)
+_cogl_material_initialize_sparse_state (CoglMaterial *dest,
+                                        CoglMaterial *src,
+                                        CoglMaterialState state)
 {
   if (dest == src)
     return;
+
+  g_return_if_fail (state & COGL_MATERIAL_STATE_ALL_SPARSE);
 
   if (state != COGL_MATERIAL_STATE_LAYERS)
     _cogl_material_copy_differences (dest, src, state);
@@ -1087,14 +1089,15 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
 
   material->age++;
 
-  /* If the material isn't already an authority for the state group
-   * being modified then we need to initialize the corresponding
-   * state. */
-  if (change & COGL_MATERIAL_STATE_ALL_SPARSE)
-    authority = _cogl_material_get_authority (material, change);
-  else
-    authority = material;
-  _cogl_material_initialize_state (material, authority, change);
+  /* If changing a sparse property and if the material isn't already an
+   * authority for the state group being modified then we need to
+   * initialize the corresponding state. */
+  if (change & COGL_MATERIAL_STATE_ALL_SPARSE &&
+      !(material->differences & change))
+    {
+      authority = _cogl_material_get_authority (material, change);
+      _cogl_material_initialize_sparse_state (material, authority, change);
+    }
 
   /* Each material has a sorted cache of the layers it depends on
    * which will need updating via _cogl_material_update_layers_cache
