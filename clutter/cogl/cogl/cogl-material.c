@@ -5147,29 +5147,37 @@ dump_layer_cb (CoglMaterialNode *node, void *user_data)
   gboolean changes = FALSE;
 
   if (state->parent_id >= 0)
-    g_string_append_printf (state->graph, "%*slayer%d -> layer%d;\n",
+    g_string_append_printf (state->graph, "%*slayer%p -> layer%p;\n",
                             state->indent, "",
-                            state->parent_id,
-                            layer_id);
+                            layer->_parent.parent,
+                            layer);
 
   g_string_append_printf (state->graph,
-                          "%*slayer%d [label=\"layer=0x%p\\n"
+                          "%*slayer%p [label=\"layer=0x%p\\n"
                           "ref count=%d\" "
                           "color=\"blue\"];\n",
                           state->indent, "",
-                          layer_id,
+                          layer,
                           layer,
                           COGL_OBJECT (layer)->ref_count);
 
   changes_label = g_string_new ("");
   g_string_append_printf (changes_label,
-                          "%*slayer%d -> layer_state%d [weight=100];\n"
+                          "%*slayer%p -> layer_state%d [weight=100];\n"
                           "%*slayer_state%d [shape=box label=\"",
                           state->indent, "",
-                          layer_id,
+                          layer,
                           layer_id,
                           state->indent, "",
                           layer_id);
+
+  if (layer->differences & COGL_MATERIAL_LAYER_STATE_UNIT)
+    {
+      changes = TRUE;
+      g_string_append_printf (changes_label,
+                              "\\lunit=%u\\n",
+                              layer->unit_index);
+    }
 
   if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE)
     {
@@ -5208,13 +5216,7 @@ dump_layer_ref_cb (CoglMaterialLayer *layer, void *data)
   int material_id = *state->node_id_ptr;
 
   g_string_append_printf (state->graph,
-                          "%*smaterial_state%d -> layer_ref%d [weight=200];\n",
-                          state->indent, "",
-                          material_id,
-                          material_id);
-  g_string_append_printf (state->graph,
-                          "%*slayer_ref%d [label=\"addr=0x%p\" "
-                          "shape=box color=blue];\n",
+                          "%*smaterial_state%d -> layer%p;\n",
                           state->indent, "",
                           material_id,
                           layer);
