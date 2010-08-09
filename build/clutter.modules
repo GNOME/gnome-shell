@@ -226,7 +226,7 @@
   </autotools>
 
   <autotools id="mx" autogenargs="--without-clutter-imcontext --without-clutter-gesture">
-    <branch repo="git.moblin.org"
+    <branch repo="git.clutter-project.org"
             module="mx"
             revision="master"/>
     <dependencies>
