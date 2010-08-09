@@ -116,7 +116,7 @@
   </autotools>
 
   <autotools id="clutter">
-    <branch repo="git.clutter-project.org" module="clutter" revision="clutter-1.2"/>
+    <branch repo="git.clutter-project.org" module="clutter"/>
     <dependencies>
         <dep package="json-glib"/>
         <dep package="gobject-introspection"/>
