@@ -1380,7 +1380,7 @@ clutter_animator_get_keys (ClutterAnimator *animator,
       ClutterAnimatorKey *key = k->data;
 
       if ((object == NULL || (object == key->object)) &&
-          (property_name == NULL || ((property_name == key->property_name))) &&
+          (property_name == NULL || (property_name == key->property_name)) &&
           (progress < 0  || fabs (progress - key->progress) < PROGRESS_EPSILON))
         {
           keys = g_list_prepend (keys, key);
