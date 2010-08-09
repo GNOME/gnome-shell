@@ -14,10 +14,12 @@ function WindowAttentionHandler() {
 
 WindowAttentionHandler.prototype = {
     _init : function() {
+        this._startupIds = {};
+        this._sources = {};
+
         let display = global.screen.get_display();
         display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
         let tracker = Shell.WindowTracker.get_default();
-        this._startupIds = {};
         tracker.connect('startup-sequence-changed', Lang.bind(this, this._onStartupSequenceChanged));
     },
 
@@ -27,10 +29,6 @@ WindowAttentionHandler.prototype = {
         for(let i = 0; i < sequences.length; i++) {
             this._startupIds[sequences[i].get_id()] = true;
         }
-    },
-
-    _sourceId : function(appId) {
-        return 'attention-' + appId;
     },
 
     _getTitle : function(app, window) {
@@ -61,12 +59,15 @@ WindowAttentionHandler.prototype = {
 
         let tracker = Shell.WindowTracker.get_default();
         let app = tracker.get_window_app(window);
+        let appId = app.get_id();
 
-        let source = Main.messageTray.getSource(this._sourceId(app.get_id()));
+        let source = this._sources[appId];
         if (source == null) {
-            source = new Source(this._sourceId(app.get_id()), app, window);
+            source = new Source(app, window);
+            this._sources[appId] = source;
             Main.messageTray.add(source);
             source.connect('clicked', Lang.bind(this, function() { source.destroy(); }));
+            source.connect('destroy', Lang.bind(this, function() { delete this._sources[appId]; }));
         }
 
         let notification = new MessageTray.Notification(window.get_startup_id(), source, this._getTitle(app, window), this._getBanner(app, window), true);
@@ -82,15 +83,15 @@ WindowAttentionHandler.prototype = {
     }
 };
 
-function Source(sourceId, app, window) {
-    this._init(sourceId, app, window);
+function Source(app, window) {
+    this._init(app, window);
 }
 
 Source.prototype = {
     __proto__ : MessageTray.Source.prototype,
 
-    _init: function(sourceId, app, window) {
-        MessageTray.Source.prototype._init.call(this, sourceId, app.get_name());
+    _init: function(app, window) {
+        MessageTray.Source.prototype._init.call(this, app.get_name());
         this._window = window;
         this._app = app;
     },

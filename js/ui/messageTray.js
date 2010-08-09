@@ -550,13 +550,12 @@ Notification.prototype = {
 };
 Signals.addSignalMethods(Notification.prototype);
 
-function Source(id, title, createIcon) {
-    this._init(id, title, createIcon);
+function Source(title, createIcon) {
+    this._init(title, createIcon);
 }
 
 Source.prototype = {
-    _init: function(id, title, createIcon) {
-        this.id = id;
+    _init: function(title, createIcon) {
         this.title = title;
         if (createIcon)
             this.createIcon = createIcon;
@@ -809,7 +808,7 @@ MessageTray.prototype = {
                     this._updateState();
             }));
 
-        this._summaryItems = {};
+        this._summaryItems = [];
         this._longestSummaryItem = null;
     },
 
@@ -827,12 +826,20 @@ MessageTray.prototype = {
     },
 
     contains: function(source) {
-        return this._summaryItems.hasOwnProperty(source.id);
+        return this._getIndexOfSummaryItemForSource(source) >= 0;
+    },
+
+    _getIndexOfSummaryItemForSource: function(source) {
+        for (let i = 0; i < this._summaryItems.length; i++) {
+            if (this._summaryItems[i].source == source)
+                return i;
+        }
+        return -1;
     },
 
     add: function(source) {
         if (this.contains(source)) {
-            log('Trying to re-add source ' + source.id);
+            log('Trying to re-add source ' + source.title);
             return;
         }
 
@@ -844,14 +851,14 @@ MessageTray.prototype = {
 
         let newItemTitleWidth = summaryItem.getTitleNaturalWidth();
         if (newItemTitleWidth > minTitleWidth) {
-            for (sourceId in this._summaryItems) {
-                this._summaryItems[sourceId].setMinTitleWidth(newItemTitleWidth);
+            for (let i = 0; i < this._summaryItems.length; i++) {
+                this._summaryItems[i].setMinTitleWidth(newItemTitleWidth);
             }
             summaryItem.setMinTitleWidth(newItemTitleWidth);
             this._longestSummaryItem = summaryItem;
         }
 
-        this._summaryItems[source.id] = summaryItem;
+        this._summaryItems.push(summaryItem);
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
@@ -872,7 +879,8 @@ MessageTray.prototype = {
     },
 
     removeSource: function(source) {
-        if (!this.contains(source))
+        let index = this._getIndexOfSummaryItemForSource(source);
+        if (index == -1)
             return;
 
         // remove all notifications with this source from the queue
@@ -883,26 +891,26 @@ MessageTray.prototype = {
         }
         this._notificationQueue = newNotificationQueue;
 
-        this._summary.remove_actor(this._summaryItems[source.id].actor);
+        this._summary.remove_actor(this._summaryItems[index].actor);
         if (this._summary.get_children().length > 0)
             this._summaryNeedsToBeShown = true;
         else
             this._summaryNeedsToBeShown = false;
 
-        delete this._summaryItems[source.id];
+        this._summaryItems.splice(index, 1);
         if (this._longestSummaryItem.source == source) {
 
             let maxTitleWidth = 0;
             this._longestSummaryItem = null;
-            for (sourceId in this._summaryItems) {
-                let summaryItem = this._summaryItems[sourceId];
+            for (let i = 0; i < this._summaryItems.length; i++) {
+                let summaryItem = this._summaryItems[i];
                 if (summaryItem.getTitleNaturalWidth() > maxTitleWidth) {
                     maxTitleWidth = summaryItem.getTitleNaturalWidth();
                     this._longestSummaryItem = summaryItem;
                 }
             }
-            for (sourceId in this._summaryItems) {
-                this._summaryItems[sourceId].setMinTitleWidth(maxTitleWidth);
+            for (let i = 0; i < this._summaryItems.length; i++) {
+                this._summaryItems[i].setMinTitleWidth(maxTitleWidth);
             }
         }
 
@@ -925,12 +933,6 @@ MessageTray.prototype = {
             this._updateState();
     },
 
-    removeSourceByApp: function(app) {
-        for (let sourceId in this._summaryItems)
-            if (this._summaryItems[sourceId].source.app == app)
-                this.removeSource(this._summaryItems[sourceId].source);
-    },
-
     removeNotification: function(notification) {
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
             if (this._notificationTimeoutId) {
@@ -945,12 +947,6 @@ MessageTray.prototype = {
         let index = this._notificationQueue.indexOf(notification);
         if (index != -1)
             this._notificationQueue.splice(index, 1);
-    },
-
-    getSource: function(id) {
-        if (this._summaryItems[id])
-            return this._summaryItems[id].source;
-        return null;
     },
 
     _getNotification: function(id, source) {

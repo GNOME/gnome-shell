@@ -107,6 +107,7 @@ NotificationDaemon.prototype = {
                                   Lang.bind(this, this._acquiredName),
                                   Lang.bind(this, this._lostName));
 
+        this._sources = {};
         this._currentNotifications = {};
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
@@ -140,13 +141,9 @@ NotificationDaemon.prototype = {
         }
     },
 
-    _sourceId: function(id) {
-        return 'source-' + id;
-    },
-
     Notify: function(appName, replacesId, icon, summary, body,
                      actions, hints, timeout) {
-        let source = Main.messageTray.getSource(this._sourceId(appName));
+        let source = this._sources[appName];
         let id = null;
 
         // Filter out notifications from Empathy, since we
@@ -167,12 +164,17 @@ NotificationDaemon.prototype = {
         // been acknowledged.
         if (source == null) {
             let title = appNameMap[appName] || appName;
-            source = new Source(this._sourceId(appName), title, icon, hints);
+            source = new Source(title, icon, hints);
             Main.messageTray.add(source);
+            this._sources[appName] = source;
 
             source.connect('clicked', Lang.bind(this,
                 function() {
                     source.destroy();
+                }));
+            source.connect('destroy', Lang.bind(this,
+                function() {
+                    delete this._sources[appName];
                 }));
 
             let sender = DBus.getCurrentMessageContext().sender;
@@ -265,8 +267,16 @@ NotificationDaemon.prototype = {
 
     _onFocusAppChanged: function() {
         let tracker = Shell.WindowTracker.get_default();
-        if (tracker.focus_app)
-            Main.messageTray.removeSourceByApp(tracker.focus_app);
+        if (!tracker.focus_app)
+            return;
+
+        for (let id in this._sources) {
+            let source = this._sources[id];
+            if (source.app == tracker.focus_app) {
+                source.destroy();
+                return;
+            }
+        }
     },
 
     _actionInvoked: function(notification, action, source, id) {
@@ -291,15 +301,15 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
-function Source(sourceId, title, icon, hints) {
-    this._init(sourceId, title, icon, hints);
+function Source(title, icon, hints) {
+    this._init(title, icon, hints);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(sourceId, title, icon, hints) {
-        MessageTray.Source.prototype._init.call(this, sourceId, title);
+    _init: function(title, icon, hints) {
+        MessageTray.Source.prototype._init.call(this, title);
 
         this.app = null;
         this._openAppRequested = false;

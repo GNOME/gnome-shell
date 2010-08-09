@@ -445,7 +445,7 @@ Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
     _init: function(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
-        MessageTray.Source.prototype._init.call(this, targetId, targetId);
+        MessageTray.Source.prototype._init.call(this, targetId);
 
         this._accountPath = accountPath;
 
