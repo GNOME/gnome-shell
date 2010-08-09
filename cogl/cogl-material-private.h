@@ -388,6 +388,17 @@ typedef struct
   CoglMaterialLayer *layer;
 } CoglMaterialLayerCacheEntry;
 
+/*
+ * CoglMaterialDestroyCallback
+ * @material: The #CoglMaterial that has been destroyed
+ * @user_data: The private data associated with the callback
+ *
+ * Notifies when a weak material has been destroyed because one
+ * of its ancestors has been freed or modified.
+ */
+typedef void (*CoglMaterialDestroyCallback)(CoglMaterial *material,
+                                            void *user_data);
+
 struct _CoglMaterial
 {
   /* XXX: Please think twice about adding members that *have* be
@@ -414,6 +425,14 @@ struct _CoglMaterial
    * because we can't allow modification to these materials without
    * flushing the journal first */
   unsigned long    journal_ref_count;
+
+  /* When weak materials are destroyed the user is notified via this
+   * callback */
+  CoglMaterialDestroyCallback destroy_callback;
+
+  /* When notifying that a weak material has been destroyed this
+   * private data is passed to the above callback */
+  void *destroy_data;
 
   /* A mask of which sparse state groups are different in this
    * material in comparison to its parent. */
@@ -684,6 +703,129 @@ _cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type);
 
 unsigned int
 _cogl_get_n_args_for_combine_func (GLint func);
+
+/*
+ * _cogl_material_weak_copy:
+ * @material: A #CoglMaterial object
+ * @callback: A callback to notify when your weak material is destroyed
+ * @user_data: Private data to pass to your given callback.
+ *
+ * Returns a weak copy of the given source @material. Unlike a normal
+ * copy no internal reference is taken on the source @material and you
+ * can expect that later modifications of the source material (or in
+ * fact any other material) can result in the weak material being
+ * destroyed.
+ *
+ * To understand this better its good to know a bit about the internal
+ * design of #CoglMaterial...
+ *
+ * Internally #CoglMaterial<!-- -->s are represented as a graph of
+ * property diff's, where each node is a diff of properties that gets
+ * applied on top of its parent. Copying a material creates an empty
+ * diff and a child->parent relationship between the empty diff and
+ * the source @material, parent.
+ *
+ * Because of this internal graph design a single #CoglMaterial may
+ * indirectly depend on a chain of ancestors to fully define all of
+ * its properties. Because a node depends on its ancestors it normally
+ * owns a reference to its parent to stop it from being freed. Also if
+ * you try to modify a material with children we internally use a
+ * copy-on-write mechanism to ensure that you don't indirectly change
+ * the properties those children.
+ *
+ * Weak materials avoid the use of copy-on-write to preserve the
+ * integrity of weak dependants and instead weak dependants are
+ * simply destroyed allowing the parent to be modified directly. Also
+ * because weak materials don't own a reference to their parent they
+ * won't stop the source @material from being freed when the user
+ * releases their reference on it.
+ *
+ * Because weak materials don't own a reference on their parent they
+ * are the recommended mechanism for creating derived materials that you
+ * want to cache as a private property of the original material
+ * because they won't result in a circular dependency.
+ *
+ * An example use case:
+ *
+ * Consider for example you are implementing a custom primitive that is
+ * not compatible with certain source materials. To handle this you
+ * implement a validation stage that given an arbitrary material as
+ * input will create a derived material that is suitable for drawing
+ * your primitive.
+ *
+ * Because you don't want to have to repeat this validation every time
+ * the same incompatible material is given as input you want to cache
+ * the result as a private property of the original material. If the
+ * derived material were created using cogl_material_copy that would
+ * create a circular dependency so the original material can never be
+ * freed.
+ *
+ * If you instead create a weak copy you won't stop the original material
+ * from being freed if it's no longer needed, and you will instead simply
+ * be notified that your weak material has been destroyed.
+ *
+ * This is the recommended coding pattern for validating an input
+ * material and caching a derived result:
+ * |[
+ * static CoglUserDataKey _cogl_my_cache_key;
+ *
+ * typedef struct {
+ *   CoglMaterial *validated_source;
+ * } MyValidatedMaterialCache;
+ *
+ * static void
+ * destroy_cache_cb (CoglObject *object, void *user_data)
+ * {
+ *   g_slice_free (MyValidatedMaterialCache, user_data);
+ * }
+ *
+ * static void
+ * invalidate_cache_cb (CoglMaterial *destroyed, void *user_data)
+ * {
+ *   MyValidatedMaterialCache *cache = user_data;
+ *   cogl_object_unref (cache->validated_source);
+ *   cache->validated_source = NULL;
+ * }
+ *
+ * static CoglMaterial *
+ * get_validated_material (CoglMaterial *source)
+ * {
+ *   MyValidatedMaterialCache *cache =
+ *     cogl_object_get_user_data (COGL_OBJECT (source),
+ *                                &_cogl_my_cache_key);
+ *   if (G_UNLIKELY (cache == NULL))
+ *     {
+ *       cache = g_slice_new (MyValidatedMaterialCache);
+ *       cogl_object_set_user_data (COGL_OBJECT (source),
+ *                                  &_cogl_my_cache_key,
+ *                                  cache, destroy_cache_cb);
+ *       cache->validated_source = source;
+ *     }
+ *
+ *   if (G_UNLIKELY (cache->validated_source == NULL))
+ *     {
+ *       cache->validated_source = source;
+ *
+ *       /&nbsp;* Start validating source... *&nbsp;/
+ *
+ *       /&nbsp;* If you find you need to change something... *&nbsp;/
+ *       if (cache->validated_source == source)
+ *         cache->validated_source =
+ *           cogl_material_weak_copy (source,
+ *                                    invalidate_cache_cb,
+ *                                    cache);
+ *
+ *       /&nbsp;* Modify cache->validated_source *&nbsp;/
+ *     }
+ *
+ *    return cache->validated_source;
+ * }
+ * ]|
+ */
+CoglMaterial *
+_cogl_material_weak_copy (CoglMaterial *material,
+                          CoglMaterialDestroyCallback callback,
+                          void *user_data);
 
 void
 _cogl_material_set_backend (CoglMaterial *material, int backend);
