@@ -737,7 +737,9 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
        */
       if (unit->gl_texture != gl_texture || unit->is_foreign)
         {
-          if (unit_index != 1)
+          if (unit_index == 1)
+            unit->dirty_gl_texture = TRUE;
+          else
             GE (glBindTexture (gl_target, gl_texture));
           unit->gl_texture = gl_texture;
         }
