@@ -155,6 +155,9 @@ cogl_shader_source (CoglHandle   handle,
             case COGL_SHADER_TYPE_FRAGMENT:
               gl_type = GL_FRAGMENT_SHADER;
               break;
+            default:
+              g_assert_not_reached ();
+              break;
             }
 
           shader->gl_handle = glCreateShader (gl_type);
