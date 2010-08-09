@@ -62,6 +62,7 @@ static void _cogl_material_add_layer_difference (CoglMaterial *material,
 static void handle_automatic_blend_enable (CoglMaterial *material,
                                            CoglMaterialState changes);
 static void recursively_free_layer_caches (CoglMaterial *material);
+static gboolean _cogl_material_is_weak (CoglMaterial *material);
 
 const CoglMaterialBackend *_cogl_material_backends[COGL_MATERIAL_N_BACKENDS];
 
@@ -99,10 +100,18 @@ _cogl_material_node_init (CoglMaterialNode *node)
 static void
 _cogl_material_node_set_parent_real (CoglMaterialNode *node,
                                      CoglMaterialNode *parent,
-                                     CoglMaterialNodeUnparentVFunc unparent)
+                                     CoglMaterialNodeUnparentVFunc unparent,
+                                     gboolean take_strong_reference)
 {
-  /* NB: the old parent may indirectly be keeping the new parent alive so we
-   * have to ref the new parent before unrefing the old */
+  /* NB: the old parent may indirectly be keeping the new parent alive
+   * so we have to ref the new parent before unrefing the old.
+   *
+   * Note: we take a reference here regardless of
+   * take_strong_reference because weak children may need special
+   * handling when the parent disposes itself which relies on a
+   * consistent link to all weak nodes. Once the node is linked to its
+   * parent then we remove the reference at the end if
+   * take_strong_reference == FALSE. */
   cogl_object_ref (parent);
 
   if (node->parent)
@@ -118,6 +127,13 @@ _cogl_material_node_set_parent_real (CoglMaterialNode *node,
     }
 
   node->parent = parent;
+
+  /* Now that there is a consistent parent->child link we can remove
+   * the parent reference if no reference was requested. If it turns
+   * out that the new parent was only being kept alive by the old
+   * parent then it will be disposed of here. */
+  if (!take_strong_reference)
+    cogl_object_unref (parent);
 }
 
 static void
@@ -312,12 +328,15 @@ recursively_free_layer_caches (CoglMaterial *material)
 }
 
 static void
-_cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
+_cogl_material_set_parent (CoglMaterial *material,
+                           CoglMaterial *parent,
+                           gboolean take_strong_reference)
 {
   /* Chain up */
   _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (material),
                                        COGL_MATERIAL_NODE (parent),
-                                       _cogl_material_unparent);
+                                       _cogl_material_unparent,
+                                       take_strong_reference);
 
   /* Since we just changed the ancestry of the material its cache of
    * layers could now be invalid so free it... */
@@ -337,16 +356,56 @@ _cogl_material_set_parent (CoglMaterial *material, CoglMaterial *parent)
     }
 }
 
+static void
+_cogl_material_promote_weak_ancestors (CoglMaterial *strong)
+{
+  CoglMaterialNode *n;
+
+  g_return_if_fail (!strong->is_weak);
+
+  for (n = COGL_MATERIAL_NODE (strong)->parent; n; n = n->parent)
+    {
+      CoglMaterial *material = COGL_MATERIAL (n);
+
+      cogl_object_ref (material);
+
+      if (!material->is_weak)
+        return;
+    }
+}
+
+static void
+_cogl_material_revert_weak_ancestors (CoglMaterial *strong)
+{
+  CoglMaterial *parent = _cogl_material_get_parent (strong);
+  CoglMaterialNode *n;
+
+  g_return_if_fail (!strong->is_weak);
+
+  if (!parent || !parent->is_weak)
+    return;
+
+  for (n = COGL_MATERIAL_NODE (strong)->parent; n; n = n->parent)
+    {
+      CoglMaterial *material = COGL_MATERIAL (n);
+
+      cogl_object_unref (material);
+
+      if (!material->is_weak)
+        return;
+    }
+}
+
 /* XXX: Always have an eye out for opportunities to lower the cost of
  * cogl_material_copy. */
-CoglMaterial *
-cogl_material_copy (CoglMaterial *src)
+static CoglMaterial *
+_cogl_material_copy (CoglMaterial *src, gboolean is_weak)
 {
   CoglMaterial *material = g_slice_new (CoglMaterial);
 
   _cogl_material_node_init (COGL_MATERIAL_NODE (material));
 
-  material->is_weak = FALSE;
+  material->is_weak = is_weak;
 
   material->journal_ref_count = 0;
 
@@ -375,26 +434,35 @@ cogl_material_copy (CoglMaterial *src)
 
   material->age = 0;
 
-  _cogl_material_set_parent (material, src);
+  _cogl_material_set_parent (material, src, !is_weak);
+
+  /* The semantics for copying a weak material are that we promote all
+   * weak ancestors to temporarily become strong materials until the
+   * copy is freed. */
+  if (!is_weak)
+    _cogl_material_promote_weak_ancestors (material);
 
   return _cogl_material_object_new (material);
 }
 
-/* XXX: we should give this more thought before making anything like
- * this API public! */
 CoglMaterial *
-_cogl_material_weak_copy (CoglMaterial *material)
+cogl_material_copy (CoglMaterial *src)
+{
+  return _cogl_material_copy (src, FALSE);
+}
+
+CoglMaterial *
+_cogl_material_weak_copy (CoglMaterial *material,
+                          CoglMaterialDestroyCallback callback,
+                          void *user_data)
 {
   CoglMaterial *copy;
   CoglMaterial *copy_material;
 
-  /* If we make a public API we might want want to allow weak copies
-   * of weak material? */
-  g_return_val_if_fail (!material->is_weak, NULL);
-
-  copy = cogl_material_copy (material);
+  copy = _cogl_material_copy (material, TRUE);
   copy_material = COGL_MATERIAL (copy);
-  copy_material->is_weak = TRUE;
+  copy_material->destroy_callback = callback;
+  copy_material->destroy_data = user_data;
 
   return copy;
 }
@@ -423,9 +491,38 @@ _cogl_material_backend_free_priv (CoglMaterial *material)
     }
 }
 
+static gboolean
+destroy_weak_children_cb (CoglMaterialNode *node,
+                          void *user_data)
+{
+  CoglMaterial *material = COGL_MATERIAL (node);
+
+  if (_cogl_material_is_weak (material))
+    {
+      _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                         destroy_weak_children_cb,
+                                         NULL);
+
+      material->destroy_callback (material, material->destroy_data);
+      _cogl_material_unparent (COGL_MATERIAL_NODE (material));
+    }
+
+  return TRUE;
+}
+
 static void
 _cogl_material_free (CoglMaterial *material)
 {
+  if (!material->is_weak)
+    _cogl_material_revert_weak_ancestors (material);
+
+  /* Weak materials don't take a reference on their parent */
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     destroy_weak_children_cb,
+                                     NULL);
+
+  g_assert (!COGL_MATERIAL_NODE (material)->has_children);
+
   _cogl_material_backend_free_priv (material);
 
   _cogl_material_unparent (COGL_MATERIAL_NODE (material));
@@ -940,11 +1037,12 @@ check_if_strong_cb (CoglMaterialNode *node, void *user_data)
   CoglMaterial *material = COGL_MATERIAL (node);
   gboolean *has_strong_child = user_data;
 
-  if (!material->is_weak)
+  if (!_cogl_material_is_weak (material))
     {
       *has_strong_child = TRUE;
       return FALSE;
     }
+
   return TRUE;
 }
 
@@ -959,16 +1057,22 @@ has_strong_children (CoglMaterial *material)
 }
 
 static gboolean
-reparent_strong_children_cb (CoglMaterialNode *node,
-                             void *user_data)
+_cogl_material_is_weak (CoglMaterial *material)
+{
+  if (material->is_weak && !has_strong_children (material))
+    return TRUE;
+  else
+    return FALSE;
+}
+
+static gboolean
+reparent_children_cb (CoglMaterialNode *node,
+                      void *user_data)
 {
   CoglMaterial *material = COGL_MATERIAL (node);
   CoglMaterial *parent = user_data;
 
-  if (material->is_weak)
-    return TRUE;
-
-  _cogl_material_set_parent (material, parent);
+  _cogl_material_set_parent (material, parent, TRUE);
 
   return TRUE;
 }
@@ -1029,18 +1133,28 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       backend->material_pre_change_notify (material, change, new_color);
     }
 
-  /*
-   * There is an arbitrary tree of descendants of this material; any of
-   * which may indirectly depend on this material as the authority for
-   * some set of properties. (Meaning for example that one of its
-   * descendants derives its color or blending state from this
-   * material.)
+  /* There may be an arbitrary tree of descendants of this material;
+   * any of which may indirectly depend on this material as the
+   * authority for some set of properties. (Meaning for example that
+   * one of its descendants derives its color or blending state from
+   * this material.)
    *
    * We can't modify any property that this material is the authority
    * for unless we create another material to take its place first and
    * make sure descendants reference this new material instead.
    */
-  if (has_strong_children (material))
+
+  /* The simplest descendants to handle are weak materials; we simply
+   * destroy them if we are modifying a material they depend on. This
+   * means weak materials never cause us to do a copy-on-write. */
+  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+                                     destroy_weak_children_cb,
+                                     NULL);
+
+  /* If there are still children remaining though we'll need to
+   * perform a copy-on-write and reparent the dependants as children
+   * of the copy. */
+  if (COGL_MATERIAL_NODE (material)->has_children)
     {
       CoglMaterial *new_authority;
 
@@ -1072,10 +1186,10 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       _cogl_material_copy_differences (new_authority, material,
                                        material->differences);
 
-      /* Reparent the strong children of material to be children of
+      /* Reparent the dependants of material to be children of
        * new_authority instead... */
       _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
-                                         reparent_strong_children_cb,
+                                         reparent_children_cb,
                                          new_authority);
 
       /* The children will keep the new authority alive so drop the
@@ -1513,7 +1627,8 @@ _cogl_material_layer_set_parent (CoglMaterialLayer *layer,
   /* Chain up */
   _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (layer),
                                        COGL_MATERIAL_NODE (parent),
-                                       _cogl_material_layer_unparent);
+                                       _cogl_material_layer_unparent,
+                                       TRUE);
 }
 
 /* XXX: This is duplicated logic; the same as for
@@ -3342,7 +3457,11 @@ _cogl_material_prune_redundant_ancestry (CoglMaterial *material)
           material->differences)
     new_parent = _cogl_material_get_parent (new_parent);
 
-  _cogl_material_set_parent (material, new_parent);
+  if (new_parent != _cogl_material_get_parent (material))
+    {
+      gboolean is_weak = _cogl_material_is_weak (material);
+      _cogl_material_set_parent (material, new_parent, is_weak ? FALSE : TRUE);
+    }
 }
 
 static void
