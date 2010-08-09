@@ -53,32 +53,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#ifdef __linux__
-#define DRM_VBLANK_RELATIVE 0x1;
-
-struct drm_wait_vblank_request {
-    int           type;
-    unsigned int  sequence;
-    unsigned long signal;
-};
-
-struct drm_wait_vblank_reply {
-    int          type;
-    unsigned int sequence;
-    long         tval_sec;
-    long         tval_usec;
-};
-
-typedef union drm_wait_vblank {
-    struct drm_wait_vblank_request request;
-    struct drm_wait_vblank_reply reply;
-} drm_wait_vblank_t;
-
-#define DRM_IOCTL_BASE                  'd'
-#define DRM_IOWR(nr,type)               _IOWR(DRM_IOCTL_BASE,nr,type)
-#define DRM_IOCTL_WAIT_VBLANK           DRM_IOWR(0x3a, drm_wait_vblank_t)
-
-#endif /* __linux__ */
+#ifdef HAVE_DRM
+#include <drm.h>
+#endif
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
@@ -462,7 +439,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   /* the rest is inherited from ClutterStageX11 */
 }
 
-#ifdef __linux__
+#ifdef HAVE_DRM
 static int
 drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
 {
@@ -471,14 +448,14 @@ drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
     do
       {
         ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-        vbl->request.type &= ~DRM_VBLANK_RELATIVE;
+        vbl->request.type &= ~_DRM_VBLANK_RELATIVE;
         rc = errno;
       }
     while (ret && rc == EINTR);
 
     return rc;
 }
-#endif /* __linux__ */
+#endif /* HAVE_DRM */
 
 static void
 wait_for_vblank (ClutterBackendGLX *backend_glx)
@@ -496,18 +473,20 @@ wait_for_vblank (ClutterBackendGLX *backend_glx)
                                     (retraceCount + 1) % 2,
                                     &retraceCount);
     }
-#ifdef __linux__
   else
     {
+#ifdef HAVE_DRM
       drm_wait_vblank_t blank;
 
       CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
-      blank.request.type     = DRM_VBLANK_RELATIVE;
+      blank.request.type     = _DRM_VBLANK_RELATIVE;
       blank.request.sequence = 1;
       blank.request.signal   = 0;
       drm_wait_vblank (backend_glx->dri_fd, &blank);
+#else
+      CLUTTER_NOTE (BACKEND, "No vblank mechanism found");
+#endif /* HAVE_DRM */
     }
-#endif
 }
 
 void

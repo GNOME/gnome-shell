@@ -180,6 +180,14 @@ AS_CASE([$CLUTTER_FLAVOUR],
                            # if a pkg-config file isn't found just add -lGL
                            # and hope for the best.
                            [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"])
+
+          # We might fall back to DRM for sync-to-vblank on GLX
+          PKG_CHECK_EXISTS([libdrm],
+                           [
+                             AC_DEFINE([HAVE_DRM], [1], [Have libdrm support])
+                             BACKEND_PC_FILES="$BACKEND_PC_FILES libdrm"
+                           ],
+                           [])
         ],
 
         [opengl-egl-xlib],
