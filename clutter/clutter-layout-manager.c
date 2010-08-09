@@ -325,6 +325,10 @@ layout_manager_freeze_layout_change (ClutterLayoutManager *manager)
 {
   gpointer is_frozen;
 
+  CLUTTER_NOTE (LAYOUT, "Freezing changes for manager '%s'[%p]",
+                G_OBJECT_TYPE_NAME (manager),
+                manager);
+
   is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
   if (is_frozen == NULL)
     g_object_set_data (G_OBJECT (manager), "freeze-change",
@@ -354,12 +358,13 @@ layout_manager_thaw_layout_change (ClutterLayoutManager *manager)
 
       g_assert (level > 0);
 
+      CLUTTER_NOTE (LAYOUT, "Thawing changes for manager '%s'[%p]",
+                    G_OBJECT_TYPE_NAME (manager),
+                    manager);
+
       level -= 1;
       if (level == 0)
-        {
-          g_object_set_data (G_OBJECT (manager), "freeze-change", NULL);
-          clutter_layout_manager_layout_changed (manager);
-        }
+        g_object_set_data (G_OBJECT (manager), "freeze-change", NULL);
       else
         g_object_set_data (G_OBJECT (manager), "freeze-change",
                            GUINT_TO_POINTER (level));
@@ -715,6 +720,10 @@ clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
   is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
   if (is_frozen == NULL)
     g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
+  else
+    CLUTTER_NOTE (LAYOUT, "Layout manager '%s'[%p] has been frozen",
+                  G_OBJECT_TYPE_NAME (manager),
+                  manager);
 }
 
 /**
