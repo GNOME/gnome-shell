@@ -245,6 +245,16 @@
     </dependencies>
   </autotools>
 
+  <autotools id="cluttersmith">
+    <branch repo="git.clutter-project.org"
+            module="cluttersmith"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+      <dep package="mx"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="pygobject">
     <branch repo="git.gnome.org"
             module="pygobject"
