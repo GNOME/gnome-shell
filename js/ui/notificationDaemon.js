@@ -104,6 +104,9 @@ NotificationDaemon.prototype = {
         this._notifications = {};
         this._busProxy = new Bus();
 
+        Main.statusIconDispatcher.connect('message-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        Main.statusIconDispatcher.connect('message-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));
         Main.overview.connect('hidden',
@@ -164,6 +167,23 @@ NotificationDaemon.prototype = {
             }
             return textureCache.load_icon_name(stockIcon, size);
         }
+    },
+
+    _newSource: function(title, pid) {
+        let source = new Source(title, pid);
+        this._sources[pid] = source;
+
+        source.connect('clicked', Lang.bind(this,
+            function() {
+                source.destroy();
+            }));
+        source.connect('destroy', Lang.bind(this,
+            function() {
+                delete this._sources[pid];
+            }));
+
+        Main.messageTray.add(source);
+        return source;
     },
 
     Notify: function(appName, replacesId, icon, summary, body,
@@ -238,21 +258,12 @@ NotificationDaemon.prototype = {
                 this._senderToPid[sender] = pid;
                 source = this._sources[pid];
 
-                if (!source) {
-                    source = new Source(appName, pid);
-                    source.connect('clicked', Lang.bind(this,
-                        function() {
-                            source.destroy();
-                        }));
-                    source.connect('destroy', Lang.bind(this,
-                        function() {
-                            delete this._sources[pid];
-                            delete this._senderToPid[sender];
-                        }));
-
-                    this._sources[pid] = source;
-                    Main.messageTray.add(source);
-                }
+                if (!source)
+                    source = this._newSource(appName, pid);
+                source.connect('destroy', Lang.bind(this,
+                    function() {
+                        delete this._senderToPid[sender];
+                    }));
 
                 this._notifyForSource(source, ndata);
             }));
@@ -291,7 +302,7 @@ NotificationDaemon.prototype = {
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
 
-        let sourceIconActor = source.app ? null : this._iconForNotificationData(icon, hints, source.ICON_SIZE);
+        let sourceIconActor = source.useNotificationIcon ? this._iconForNotificationData(icon, hints, source.ICON_SIZE) : null;
         source.notify(notification, sourceIconActor);
     },
 
@@ -359,6 +370,19 @@ NotificationDaemon.prototype = {
                                  'org.freedesktop.Notifications',
                                  'ActionInvoked', 'us',
                                  [id, action]);
+    },
+
+    _onTrayIconAdded: function(o, icon) {
+        let source = this._sources[icon.pid];
+        if (!source)
+            source = this._newSource(icon.title, icon.pid);
+        source.setTrayIcon(icon);
+    },
+
+    _onTrayIconRemoved: function(o, icon) {
+        let source = this._sources[icon.pid];
+        if (source)
+            source.destroy();
     }
 };
 
@@ -374,17 +398,38 @@ Source.prototype = {
     _init: function(title, pid) {
         MessageTray.Source.prototype._init.call(this, title);
 
-        this.app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
-        if (this.app) {
+        this._pid = pid;
+        this._setApp();
+        if (this.app)
             this.title = this.app.get_name();
-            this._setSummaryIcon(this.app.create_icon_texture(this.ICON_SIZE));
-        }
+        else
+            this.useNotificationIcon = true;
     },
 
     notify: function(notification, icon) {
-        if (icon)
+        if (!this.app)
+            this._setApp();
+        if (!this.app && icon)
             this._setSummaryIcon(icon);
         MessageTray.Source.prototype.notify.call(this, notification);
+    },
+
+    _setApp: function() {
+        this.app = Shell.WindowTracker.get_default().get_app_from_pid(this._pid);
+        if (!this.app)
+            return;
+
+        // Only override the icon if we were previously using
+        // notification-based icons (ie, not a trayicon)
+        if (this.useNotificationIcon) {
+            this.useNotificationIcon = false;
+            this._setSummaryIcon(this.app.create_icon_texture (this.ICON_SIZE));
+        }
+    },
+
+    setTrayIcon: function(icon) {
+        this._setSummaryIcon(icon);
+        this.useNotificationIcon = false;
     },
 
     clicked: function() {

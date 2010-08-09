@@ -507,6 +507,21 @@ gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
     }
 #endif
 
+  /* When the pointer leaves the stage to enter a child of the stage
+   * (like a notification icon), we don't want to produce Clutter leave
+   * events. But Clutter treats all leave events identically, so we
+   * need hide the detail = NotifyInferior events from it.
+   *
+   * Since Clutter doesn't see any event at all, this does mean that
+   * it won't produce an enter event on a Clutter actor that surrounds
+   * the child (unless it gets a MotionNotify before the Enter event).
+   * Other weirdness is likely also possible.
+   */
+  if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify)
+      && xev->xcrossing.detail == NotifyInferior
+      && xev->xcrossing.window == clutter_x11_get_stage_window (CLUTTER_STAGE (clutter_stage_get_default ())))
+    return TRUE;
+
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 

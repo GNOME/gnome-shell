@@ -34,6 +34,7 @@ const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
+const StatusIconDispatcher = imports.ui.statusIconDispatcher;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -55,6 +56,7 @@ let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
+let statusIconDispatcher = null;
 let _errorLogStack = [];
 let _startDate;
 
@@ -125,6 +127,7 @@ function start() {
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     magnifier = new Magnifier.Magnifier();
+    statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();

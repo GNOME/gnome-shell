@@ -31,12 +31,6 @@ const SPINNER_UPDATE_TIMEOUT = 130;
 const SPINNER_SPEED = 0.02;
 
 const STANDARD_TRAY_ICON_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
-const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
-    'bluetooth-applet': 'bluetooth',
-    'gnome-volume-control-applet': 'volume',
-    'nm-applet': 'network',
-    'gnome-power-manager': 'battery'
-};
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator
 };
@@ -799,14 +793,6 @@ Panel.prototype = {
 
         /* right */
 
-        // Yet-another-Ubuntu-workaround - we have to kill their
-        // app-indicators, so that applications fall back to normal
-        // status icons
-        // http://bugzilla.gnome.org/show_bug.cgi=id=621382
-        let p = new Shell.Process({ args: ['pkill', '-f',
-                                           '^([^ ]*/)?indicator-application-service$']});
-        p.run();
-
         // System status applets live in statusBox, while legacy tray icons
         // live in trayBox
         // The trayBox is hidden when there are no tray icons.
@@ -831,17 +817,8 @@ Panel.prototype = {
             this._menus.addMenu(indicator.menu);
         }
 
-        this._traymanager = new Shell.TrayManager();
-        this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        this._traymanager.connect('tray-icon-removed',
-            Lang.bind(this, function(o, icon) {
-                trayBox.remove_actor(icon);
-
-                if (trayBox.get_children().length == 0)
-                    trayBox.hide();
-                this._recomputeTraySize();
-            }));
-        this._traymanager.manage_stage(global.stage);
+        Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
         this._statusmenu = new StatusMenu.StatusMenuButton();
         this._menus.addMenu(this._statusmenu.menu);
@@ -885,56 +862,39 @@ Panel.prototype = {
                          });
     },
 
-    _onTrayIconAdded: function(o, icon) {
-        let wmClass = icon.wm_class.toLowerCase();
-
+    _onTrayIconAdded: function(o, icon, role) {
         icon.height = PANEL_ICON_SIZE;
 
-        let role = STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass];
-        if (!role) {
-            // Unknown icons go first in undefined order
+        if (STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role]) {
+            // This icon is legacy, and replaced by a Shell version
+            // Hide it
+            return;
+        }
+        // Figure out the index in our well-known order for this icon
+        let position = STANDARD_TRAY_ICON_ORDER.indexOf(role);
+        icon._rolePosition = position;
+        let children = this._trayBox.get_children();
+        let i;
+        // Walk children backwards, until we find one that isn't
+        // well-known, or one where we should follow
+        for (i = children.length - 1; i >= 0; i--) {
+            let rolePosition = children[i]._rolePosition;
+            if (!rolePosition || position > rolePosition) {
+                this._trayBox.insert_actor(icon, i + 1);
+                break;
+            }
+        }
+        if (i == -1) {
+            // If we didn't find a position, we must be first
             this._trayBox.insert_actor(icon, 0);
-        } else {
-            if (STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role]) {
-                // This icon is legacy, and replaced by a Shell version
-                // Hide it
-                return;
-            }
-            icon._role = role;
-            // Figure out the index in our well-known order for this icon
-            let position = STANDARD_TRAY_ICON_ORDER.indexOf(role);
-            icon._rolePosition = position;
-            let children = this._trayBox.get_children();
-            let i;
-            // Walk children backwards, until we find one that isn't
-            // well-known, or one where we should follow
-            for (i = children.length - 1; i >= 0; i--) {
-                let rolePosition = children[i]._rolePosition;
-                if (!rolePosition || position > rolePosition) {
-                    this._trayBox.insert_actor(icon, i + 1);
-                    break;
-                }
-            }
-            if (i == -1) {
-                // If we didn't find a position, we must be first
-                this._trayBox.insert_actor(icon, 0);
-            }
         }
 
         // Make sure the trayBox is shown.
         this._trayBox.show();
-        this._recomputeTraySize();
     },
 
-    // By default, tray icons have a spacing of TRAY_SPACING.  However this
-    // starts to fail if we have too many as can sadly happen; just jump down
-    // to a spacing of 8 if we're over 6.
-    // http://bugzilla.gnome.org/show_bug.cgi?id=590495
-    _recomputeTraySize: function () {
-        if (this._trayBox.get_children().length > 6)
-            this._trayBox.add_style_pseudo_class('compact');
-        else
-            this._trayBox.remove_style_pseudo_class('compact');
+    _onTrayIconRemoved: function(o, icon) {
+        this._trayBox.remove_actor(icon);
     },
 
     _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
