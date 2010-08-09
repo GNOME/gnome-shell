@@ -1,0 +1,590 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<chapter id="layouts"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Layout management</title>
+
+  <epigraph>
+    <attribution>Abigail Adams, wife of John Adams, in a letter to John
+    Thaxter (1778-09-29)</attribution>
+    <para>If we do not lay out ourselves in the service of mankind,
+    whom should we serve?</para>
+  </epigraph>
+
+  <section id="layouts-introduction">
+    <title>Introduction</title>
+
+    <para>Layout management in Clutter controls how an actor and
+    children "inside" that actor are sized and positioned. More
+    specifically, layouts are managed by associating a parent with a
+    <type>ClutterLayoutManager</type>; the parent is usually either a
+    composite <type>ClutterActor</type> (composed of several
+    <type>ClutterActors</type>) or a <type>ClutterContainer</type>
+    (containing child <type>ClutterActors</type>). The
+    <type>ClutterLayoutManager</type> then manages:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>The <emphasis>size requisition</emphasis>
+        (determination of the desired height and width) of the
+        parent.</para>
+      </listitem>
+      <listitem>
+        <para>The <emphasis>allocation</emphasis> (size and position)
+        assigned to each composed or child ClutterActor.</para>
+      </listitem>
+    </orderedlist>
+
+    <note>
+      <para>To make this more concrete, imagine you have a sheet of
+      paper and some coloured squares to place on it. Someone stands
+      next to you telling you how big the piece of paper should be,
+      how big the squares should be, and where to put each square on the
+      piece of paper.</para>
+      <para>The sheet of paper is analogous to the container or
+      composite actor; the squares are analogous to the child
+      <type>ClutterActors</type>; and the person giving you instructions
+      is analogous to the layout manager.</para>
+    </note>
+
+    <para>The following sections give an overview of how layout
+    management works in Clutter.</para>
+
+    <section>
+      <title>Using layouts</title>
+
+      <para>Although Clutter provides plenty of flexibility in how you
+      can use layout management, the simplest way to get started is to
+      use the built-in <type>ClutterBox</type> class with one of the
+      provided <type>ClutterLayoutManager</type> implementations.</para>
+
+      <para>The pattern for doing this is:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Create an instance of one of the
+          <type>ClutterLayoutManager</type> implementations (see
+          <link linkend="layouts-introduction-manager-types">the
+          following section</link>).</para>
+        </listitem>
+        <listitem>
+          <para>Configure the layout manager's default policies
+          (e.g. how actors are aligned by default, whether to pack
+          actors horizontally or vertically, spacing between actors
+          in the layout).</para>
+        </listitem>
+        <listitem>
+          <para>Create a <type>ClutterBox</type>, setting its layout
+          manager to the one you just created.</para>
+        </listitem>
+        <listitem>
+          <para>Pack actors into the <type>ClutterBox</type>,
+          setting layout properties (if required) as each is added.</para>
+        </listitem>
+        <listitem>
+          <para>Modify layout properties of child actors using
+          <function>clutter_layout_manager_child_set()</function>
+          (if required).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Individual recipes in this section give more examples of
+      how to make use of the different layout manager
+      implementations.</para>
+
+      <note>
+        <para>It is not possible to use a layout manager with an arbitrary
+        <type>ClutterContainer</type>: you must use a <type>ClutterActor</type>
+        subclass which can delegate its layout to a layout manager (either
+        use <type>ClutterBox</type> or write your own).</para>
+      </note>
+
+    </section>
+
+    <section id="layouts-introduction-manager-types">
+      <title>Types of layout manager</title>
+
+      <para>Clutter provides a range of layout managers suitable
+      for different use cases:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><type>ClutterFixedLayout</type> arranges actors
+          at fixed positions on the stage. No alignment options are
+          available, so you have to manually compute and manage the
+          coordinates (or use <type>ClutterConstraints</type>) which
+          will align actors how you want them.</para>
+        </listitem>
+        <listitem>
+          <para><type>ClutterBinLayout</type> arranges actors in a
+          depth-ordered stack on top of each other, aligned to the container.
+          This is useful for arranging actors inside composites (e.g.
+          creating a button widget from a <type>ClutterTexture</type>
+          with a <type>ClutterText</type> on top of it).</para>
+        </listitem>
+        <listitem>
+          <para><type>ClutterBoxLayout</type> arranges actors in a
+          single horizontal row or vertical column. This type of layout is
+          common in UI elements like toolbars and menus.</para>
+        </listitem>
+        <listitem>
+          <para><type>ClutterFlowLayout</type> arranges actors
+          in reflowing columns and rows. If the container's allocation
+          changes, the child actors are rearranged to fit inside its
+          new allocation. This can be useful for arranging actors
+          where you're not sure how many there might be; or where
+          new ones are going to be added into the UI, perhaps displacing
+          others. An example might be a photo viewer or an
+          RSS feed display.</para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <section id="layouts-introduction-layout-properties">
+      <title>Layout properties</title>
+
+      <para>How actors are sized and positioned inside a container
+      associated with a layout manager depends on two things:</para>
+
+      <orderedlist>
+        <listitem>
+          <formalpara>
+            <title>Properties which apply to all actors added to the layout</title>
+            <para>There will be one setting at the layout level which can't
+            be overridden per actor. This includes properties like spacing
+            between rows and columns, whether the layout is homogenous
+            (each actor gets the same allocation), etc.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Properties for each actor added to the layout</title>
+            <para>These are properties of the relationship between the
+            layout, the container associated with the layout, and the
+            children of the container. Each layout/container/actor
+            combination can have different settings for each of these
+            properties.</para>
+          </formalpara>
+        </listitem>
+      </orderedlist>
+
+      <para>Each layout manager implementation supports a subset of the
+      following layout properties; different managers may have different
+      names or functions for setting them, but the functionality remains
+      the same. Individual recipes give more details about which
+      properties can be set for each layout manager implementation.</para>
+
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>Alignment</title>
+            <para>How an actor aligns to the container's axes, e.g.
+            aligned to the container's left, right, or center. For some
+            layouts (like <type>ClutterBinLayout</type>) alignment
+            is also used to set expand and fill properties.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Horizontal/vertical orientation</title>
+            <para>Whether actors are arranged in a horizontal row or
+            vertical column.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Homogenous rows and columns</title>
+            <para>Grid-like layouts (e.g. <type>ClutterFlowLayout</type>)
+            can be configured to have uniform rows and/or columns,
+            expanding to fit the largest actor they contain.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Row height and column width</title>
+            <para>Grid-like layouts arranged in rows and columns
+            can be configured with maximum and minimum row height and
+            column width.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Row and column spacing</title>
+            <para>Grid-like layouts enable you to define a space (in pixels)
+            between rows and columns.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Expand</title>
+            <para>Some layouts can be configured to minimize their size request
+            to fit the actors they contain (<emphasis>expand is FALSE</emphasis>);
+            or to increase the allocation of actors they contain so
+            that all available space in the layout is used
+            (<emphasis>expand is TRUE</emphasis>). In the latter case, you'd
+            also need to set a size for the container associated with
+            the layout, otherwise the container will just fit itself to the
+            actors inside it.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Fill</title>
+            <para>This property only has an effect when
+            <emphasis>expand</emphasis> is on. The <emphasis>fill</emphasis>
+            setting controls whether actors are resized to fill their
+            allocation (<emphasis>fill is TRUE</emphasis>); or if the
+            space around the actor is increased (<emphasis>fill is
+            FALSE</emphasis>).</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Pack at start/end</title>
+            <para>This controls whether actors at prepended or appended
+            to the layout.</para>
+            <itemizedlist>
+              <listitem>
+                <para>If the orientation is vertical, prepended
+                actors are added to the top of the layout and appended
+                actors to the bottom.</para>
+              </listitem>
+              <listitem>
+                <para>If the orientation is horizontal, prepended
+                actors are added at the left of the layout and appended actors
+                on the right.</para>
+              </listitem>
+            </itemizedlist>
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+
+      <section>
+        <title>Setting layout properties</title>
+
+        <para>Layout properties can be set in one or more of the following ways
+        (depending on the type of property and the layout manager):</para>
+
+        <orderedlist>
+          <listitem>
+            <para>By setting a default value for the property on the
+            layout manager (e.g. using
+            <function>clutter_bin_layout_set_alignment()</function>,
+            <function>clutter_box_layout_set_expand()</function>). Any
+            actor added to the layout gets this value for the property,
+            unless it is overridden for that actor.</para>
+          </listitem>
+          <listitem>
+            <para>When adding an actor to a <type>ClutterBox</type> container
+            using <function>clutter_box_pack()</function>, you can set
+            properties on the actor which you're adding.</para>
+          </listitem>
+          <listitem>
+            <para>When adding an actor to a layout you can use a function
+            which enables setting properties simultaneously (e.g.
+            <function>clutter_box_layout_pack()</function>,
+            <function>clutter_bin_layout_add()</function>).</para>
+          </listitem>
+          <listitem>
+            <para>By using
+            <function>clutter_layout_manager_child_set()</function> on
+            the child of a layout.</para>
+          </listitem>
+        </orderedlist>
+
+      </section>
+
+    </section>
+
+    <section id="layouts-introduction-not-using-layout-managers">
+      <title>Not using layout managers</title>
+
+      <para>It is perfectly possible to arrange <type>ClutterActors</type>
+      without using layout managers; however, you may have to do
+      more of your own calculations about actor sizes and positions.</para>
+
+      <para>There are two (not mutually-exclusive) approaches you can
+      take to do this, described below.</para>
+
+      <section>
+        <title>Manual positioning and alignment</title>
+
+        <para>This basically means using the <type>ClutterActor</type>
+        bounding box mechanism (see the <type>ClutterActor</type>
+        documentation for details) to set actor sizes and positions.
+        This is the approach you will see in a lot of older Clutter
+        code (written before layout managers were available).</para>
+
+        <para>This approach is simplest where the UI is relatively static
+        and is composed of a few known actors. It will work in larger,
+        more complex scenarios, but in those sorts of cases it is better
+        to make use of layout managers and constraints (see below) instead.</para>
+      </section>
+
+      <section>
+        <title>Using <type>ClutterConstraint</type></title>
+
+        <para>Constraints provide mechanisms for:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Aligning actors with each other
+            (<type>ClutterAlignConstraint</type>). For example, you
+            can align the top, bottom or center of one actor with the
+            top, bottom or center of another (on the <code>y</code>
+            axis). Similarly, you can align one actor to another
+            on the <code>x</code> axis.</para>
+          </listitem>
+          <listitem>
+            <para>Binding properties of one actor to those of
+            another. For example, you could ensure that two actors
+            always remain the same width; or you could specify
+            that two actors always have the same <code>x</code>
+            coordinate. In both these cases and others, you can
+            specify that the properties should be the same, or the same
+            +/- some offset.</para>
+          </listitem>
+        </itemizedlist>
+
+        <note>
+          <para><type>ClutterConstraints</type> can be used in combination
+          with some layout managers, but you need to be careful that
+          constraints don't fight with the layout manager policies.
+          Unpredictable results could ensue.</para>
+        </note>
+
+      </section>
+
+    </section>
+
+  </section>
+
+  <section id="layouts-stacking">
+    <title>Stacking actors on top of each other</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to lay out several actors so that they are in
+      layers on top of each other (e.g. to create a button widget
+      composed from a rectangle with text on top of it).</para>
+    </section>
+
+    <section id="layouts-stacking-solution">
+      <title>Solution</title>
+
+      <para>The most flexible approach is to use a <type>ClutterBinLayout</type>
+      associated with a <type>ClutterBox</type>:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+/* define some colors */
+const ClutterColor background_color = { 0xaa, 0x99, 0x00, 0xff };
+const ClutterColor text_color = { 0xff, 0xff, 0xff, 0xff };
+
+ClutterLayoutManager *layout;
+ClutterActor *box;
+ClutterActor *background;
+ClutterActor *text;
+
+/*
+ * create a layout, setting the default x and y alignment;
+ * actors fill the whole allocation of the layout's container
+ * by default
+ */
+layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
+                                 CLUTTER_BIN_ALIGNMENT_FILL);
+
+/* create the box whose children the layout will manage */
+box = clutter_box_new (layout);
+
+/*
+ * fill doesn't have much effect here
+ * unless the container has height and/or width
+ */
+clutter_actor_set_size (box, 100, 30);
+
+/*
+ * background for the button; could equally be a texture
+ * with an image loaded into it or any other ClutterActor
+ */
+background = clutter_rectangle_new_with_color (&background_color);
+
+/*
+ * add the background to the container;
+ * as it should use the default alignment, it can be added
+ * direct to the container, rather than via the layout
+ */
+clutter_container_add_actor (CLUTTER_CONTAINER (box), background);
+
+/* text for the button */
+text = clutter_text_new_full ("Sans 15px", "Click me", &text_color);
+
+/*
+ * the text requires a different alignment from the background
+ * (centered on the box)
+ * so we add it via the layout so the default
+ * alignment can be overridden
+ */
+clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout),
+                        text,
+                        CLUTTER_BIN_ALIGNMENT_CENTER,
+                        CLUTTER_BIN_ALIGNMENT_CENTER);
+
+/*
+ * ensure the actors are arranged in the correct depth order;
+ * in this case, the text is on top
+ * (NB this is not strictly necesary here as text is added after
+ * background)
+ */
+clutter_actor_raise_top (text);
+]]>
+        </programlisting>
+      </informalexample>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>This section covers some other aspects of using a
+      <type>ClutterBinLayout</type>.</para>
+
+      <section>
+        <title>Setting and changing alignment</title>
+
+        <para>Alignment is the only
+        <link linkend="layouts-introduction-layout-properties">layout
+        property</link> available for <type>ClutterBinLayout</type>. Each
+        actor can have a different setting for its alignment in one or both
+        of the <code>x</code> or <code>y</code> axes. However, as shown in the
+        solution above, alignment can also be used to expand an actor to
+        fill the container (<constant>CLUTTER_BIN_ALIGNMENT_FILL</constant>)
+        in one or both axes.</para>
+
+        <para>Setting alignment does not have any effect if the container
+        is the same size as all of the actors inside it: in this case,
+        every alignment produces the same layout. But if the container
+        associated with the layout is larger than the actor being aligned,
+        alignment will have an effect; see
+        <link linkend="layouts-stacking-size-requisitioning">this
+        section</link> for more details.</para>
+
+        <para>Changing an actor's alignment after it has been added
+        to a <type>ClutterBinLayout</type> may make the actor "jump"
+        (without animation) to a new position and/or change its size.
+        The exception is changing from some other alignment to
+        <constant>CLUTTER_BIN_ALIGNMENT_FIXED</constant>:
+        in this case, the actor will retain the position and size it
+        had before its alignment was fixed.</para>
+      </section>
+
+      <section id="layouts-stacking-size-requisitioning">
+        <title>Size requisitioning</title>
+
+        <para>A container with a <type>ClutterBinLayout</type> will by
+        default request the width of the widest actor in it, and the
+        height of the tallest. If you add actors smaller than those
+        dimensions, they will be aligned inside the container according
+        to the layout's policies. Here's an example where a
+        <type>ClutterBinLayout</type> requests a size to encompass the
+        tallest (light grey rectangle) and widest (dark grey rectangle)
+        actors inside it, with other actors aligned within
+        those bounds:</para>
+
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG"
+                         fileref="images/layouts-stacking-diff-actor-sizes.png" />
+            </imageobject>
+            <alt>
+              <para>Size requisition in a <type>ClutterBinLayout</type></para>
+            </alt>
+          </mediaobject>
+        </screenshot>
+
+        <note>
+          <para>The screenshot also shows the 9 possible combinations
+          of start, center and end alignments on the <code>x</code> and
+          <code>y</code> axes. See
+          <link linkend="layouts-stacking-example-1">the sample
+          code</link> for more details.</para>
+        </note>
+
+        <para>The white space is the stage visible behind the
+        <type>ClutterBox</type> holding the coloured rectangles.
+        Notice that the layout is the width of the widest actor
+        within it and the height of the tallest.</para>
+
+        <para>You can also manually set a size on the container associated
+        with a layout to override the automatically-computed size
+        requisition.</para>
+
+      </section>
+
+      <section>
+        <title>Depth ordering</title>
+
+        <para>Another important consideration is the
+        <emphasis>depth ordering</emphasis> of actors inside a
+        <type>ClutterBinLayout</type>. By default, the depth ordering
+        mirrors the order in which actors are added to the layout: the
+        earlier an actor is added, the lower down in the depth order it
+        is. If this isn't what you want, you can fix the depth ordering using
+        <function>clutter_actor_raise()</function>,
+        <function>clutter_actor_lower()</function> and their relatives.</para>
+      </section>
+
+      <section>
+        <title>Other ways to stack actors</title>
+
+        <para><type>ClutterBinLayout</type> makes it simple to lay out
+        large numbers of actors in a stack and align them to the
+        container; see <link linkend="layouts-stacking-example-2">the
+        example below</link> which shows layering of many actors on
+        top of each other.</para>
+
+        <para>However, if you have a small number of actors and you
+        need some simple alignment, an alternative is to use
+        manual positioning inside a <type>ClutterFixedLayout</type>
+        (or even a <type>ClutterGroup</type>), possibly combined with
+        <type>ClutterConstraints</type> to align actors with each other
+        and bind their widths and heights together. See
+        <link linkend="layouts-introduction-not-using-layout-managers">this
+        section</link> for more details.</para>
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="layouts-stacking-example-1">
+        <title><type>ClutterBinLayout</type>, with actors in 9
+        combinations of start, center and end alignment combinations</title>
+        <programlisting>
+<xi:include href="examples/layouts-stacking-diff-sized-actors.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="layouts-stacking-example-2">
+        <title>Layering multiple textures on top of each other
+        inside a <type>ClutterBinLayout</type></title>
+        <programlisting>
+<xi:include href="examples/layouts-stacking.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
+</chapter>

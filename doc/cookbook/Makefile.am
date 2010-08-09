@@ -12,6 +12,7 @@ XML_FILES = \
 	introduction.xml	\
 	text.xml		\
 	textures.xml		\
+	layouts.xml		\
 	$(NULL)
 
 XSLTOPTS = \
@@ -36,6 +37,7 @@ IMAGE_FILES = \
 	images/actors-opacity-container-affects-opacity.png \
 	images/text-shadow.png \
 	images/textures-sub-texture.png \
+	images/layouts-stacking-diff-actor-sizes.png \
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \

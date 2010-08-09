@@ -8,6 +8,8 @@ noinst_PROGRAMS = \
 	textures-reflection	\
 	textures-split-go	\
 	textures-sub-texture	\
+	layouts-stacking \
+	layouts-stacking-diff-sized-actors	\
 	$(NULL)
 
 INCLUDES = \
@@ -29,8 +31,10 @@ AM_CFLAGS = \
 
 AM_LDFLAGS = $(CLUTTER_LIBS)
 
-animations_rotating_SOURCES   = animations-rotating.c
-text_shadow_SOURCES           = text-shadow.c
-textures_reflection_SOURCES   = textures-reflection.c
-textures_split_go_SOURCES     = textures-split-go.c
-textures_sub_texture_SOURCES  = textures-sub-texture.c
+animations_rotating_SOURCES                = animations-rotating.c
+text_shadow_SOURCES                        = text-shadow.c
+textures_reflection_SOURCES                = textures-reflection.c
+textures_split_go_SOURCES                  = textures-split-go.c
+textures_sub_texture_SOURCES               = textures-sub-texture.c
+layouts_stacking_SOURCES                   = layouts-stacking.c
+layouts_stacking_diff_sized_actors_SOURCES = layouts-stacking-diff-sized-actors.c
