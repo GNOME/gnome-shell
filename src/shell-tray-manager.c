@@ -160,8 +160,9 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
                   G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_added),
                   NULL, NULL,
                   gi_cclosure_marshal_generic,
-                  G_TYPE_NONE, 2,
+                  G_TYPE_NONE, 3,
                   CLUTTER_TYPE_ACTOR,
+                  G_TYPE_STRING,
                   G_TYPE_STRING);
   shell_tray_manager_signals[TRAY_ICON_REMOVED] =
     g_signal_new ("tray-icon-removed",
@@ -274,44 +275,13 @@ shell_tray_manager_child_on_realize (GtkWidget             *widget,
     }
 }
 
-static char *
-get_lowercase_wm_class_from_socket (ShellTrayManager  *manager,
-                                    GtkSocket         *socket)
-{
-  GdkWindow *window;
-  MetaScreen *screen;
-  MetaDisplay *display;
-  XClassHint class_hint;
-  gboolean success;
-  char *result;
-
-  window = gtk_socket_get_plug_window (socket);
-  g_return_val_if_fail (window != NULL, NULL);
-
-  screen = shell_global_get_screen (shell_global_get ());
-  display = meta_screen_get_display (screen);
-
-  gdk_error_trap_push ();
-
-  success = XGetClassHint (meta_display_get_xdisplay (display), GDK_WINDOW_XWINDOW (window), &class_hint);
-
-  gdk_error_trap_pop ();
-
-  if (!success)
-    return NULL;
-
-  result = g_ascii_strdown (class_hint.res_class, -1);
-  XFree (class_hint.res_name);
-  XFree (class_hint.res_class);
-  return result;
-}
-
 static void
 on_plug_added (GtkSocket        *socket,
                ShellTrayManager *manager)
 {
   ShellTrayManagerChild *child;
-  char *wm_class;
+  char *wm_class, *lower_wm_class;
+  char *title;
 
   child = g_hash_table_lookup (manager->priv->icons, socket);
   /* Only emit this signal once; the point of waiting until we
@@ -323,13 +293,18 @@ on_plug_added (GtkSocket        *socket,
     return;
   child->emitted_plugged = TRUE;
 
-  wm_class = get_lowercase_wm_class_from_socket (manager, socket);
+  na_tray_child_get_wm_class (NA_TRAY_CHILD (socket), NULL, &wm_class);
   if (!wm_class)
     return;
 
+  title = na_tray_child_get_title (NA_TRAY_CHILD (socket));
+
+  lower_wm_class = g_ascii_strdown (wm_class, -1);
   g_signal_emit (manager, shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
-                 child->actor, wm_class);
+                 child->actor, lower_wm_class, title);
+  g_free (lower_wm_class);
   g_free (wm_class);
+  g_free (title);
 }
 
 static void
