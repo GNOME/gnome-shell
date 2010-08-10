@@ -568,7 +568,7 @@ st_widget_enter (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (_st_actor_contains (actor, event->source))
+      if (clutter_actor_contains (actor, event->source))
         st_widget_set_hover (ST_WIDGET (actor), TRUE);
       else
         {
@@ -594,7 +594,7 @@ st_widget_leave (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (!_st_actor_contains (actor, event->related))
+      if (!clutter_actor_contains (actor, event->related))
         st_widget_set_hover (ST_WIDGET (actor), FALSE);
     }
 
@@ -1589,7 +1589,10 @@ st_widget_sync_hover (StWidget *widget)
   pointer = clutter_device_manager_get_core_device (device_manager,
                                                     CLUTTER_POINTER_DEVICE);
   pointer_actor = clutter_input_device_get_pointer_actor (pointer);
-  st_widget_set_hover (widget, _st_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
+  if (pointer_actor)
+    st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
+  else
+    st_widget_set_hover (widget, FALSE);
 }
 
 /**

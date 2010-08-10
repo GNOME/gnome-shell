@@ -121,7 +121,7 @@ st_clickable_button_press_event (ClutterActor       *actor,
   if (self->priv->held)
     return TRUE;
 
-  if (!_st_actor_contains (actor, event->source))
+  if (!clutter_actor_contains (actor, event->source))
     return FALSE;
 
   self->priv->held = TRUE;
@@ -148,7 +148,7 @@ st_clickable_button_release_event (ClutterActor       *actor,
   self->priv->held = FALSE;
   clutter_ungrab_pointer ();
 
-  if (!_st_actor_contains (actor, event->source))
+  if (!clutter_actor_contains (actor, event->source))
     return FALSE;
 
   set_pressed (self, FALSE);

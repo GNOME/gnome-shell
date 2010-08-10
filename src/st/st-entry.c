@@ -584,7 +584,7 @@ st_entry_enter_event (ClutterActor         *actor,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
-  if (_st_actor_contains (actor, event->source)
+  if (clutter_actor_contains (actor, event->source)
       && priv->hint && priv->hint_visible)
     {
       st_widget_set_hover (ST_WIDGET (actor), TRUE);
@@ -597,7 +597,7 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  if (!_st_actor_contains (actor, event->related))
+  if (!clutter_actor_contains (actor, event->related))
     st_widget_set_hover (ST_WIDGET (actor), FALSE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);

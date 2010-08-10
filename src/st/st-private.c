@@ -320,12 +320,3 @@ _st_set_text_from_style (ClutterText *text,
     clutter_text_set_line_alignment (text, (PangoAlignment) align);
   }
 }
-
-gboolean
-_st_actor_contains (ClutterActor *actor,
-                    ClutterActor *child)
-{
-  while (child != NULL && child != actor)
-    child = clutter_actor_get_parent (child);
-  return child != NULL;
-}
