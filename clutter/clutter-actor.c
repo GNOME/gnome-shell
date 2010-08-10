@@ -9977,6 +9977,145 @@ clutter_actor_allocate_preferred_size (ClutterActor           *self,
 }
 
 /**
+ * clutter_actor_allocate_align_fill:
+ * @self: a #ClutterActor
+ * @box: a #ClutterActorBox, containing the available width and height
+ * @x_align: the horizontal alignment, between 0 and 1
+ * @y_align: the vertical alignment, between 0 and 1
+ * @x_fill: whether the actor should fill horizontally
+ * @y_fill: whether the actor should fill vertically
+ * @flags: allocation flags to be passed to clutter_actor_allocate()
+ *
+ * Allocates @self by taking into consideration the available allocation
+ * area; an alignment factor on either axis; and whether the actor should
+ * fill the allocation on either axis.
+ *
+ * The @box should contain the available allocation width and height;
+ * if the x1 and y1 members of #ClutterActorBox are not set to 0, the
+ * allocation will be offset by their value.
+ *
+ * This function takes into consideration the geometry request specified by
+ * the #ClutterActor:request-mode property, and the text direction.
+ *
+ * This function is useful for fluid layout managers, like #ClutterBinLayout
+ * or #ClutterTableLayout
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_allocate_align_fill (ClutterActor           *self,
+                                   const ClutterActorBox  *box,
+                                   gdouble                 x_align,
+                                   gdouble                 y_align,
+                                   gboolean                x_fill,
+                                   gboolean                y_fill,
+                                   ClutterAllocationFlags  flags)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorBox allocation = { 0, };
+  gfloat x_offset, y_offset;
+  gfloat available_width, available_height;
+  gfloat child_width, child_height;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (box != NULL);
+  g_return_if_fail (x_align >= 0.0 && x_align <= 1.0);
+  g_return_if_fail (y_align >= 0.0 && y_align <= 1.0);
+
+  priv = self->priv;
+
+  clutter_actor_box_get_origin (box, &x_offset, &y_offset);
+  clutter_actor_box_get_size (box, &available_width, &available_height);
+
+  if (available_width < 0)
+    available_width = 0;
+
+  if (available_height < 0)
+    available_height = 0;
+
+  if (x_fill)
+    {
+      allocation.x1 = x_offset;
+      allocation.x2 = allocation.x1 + available_width;
+    }
+
+  if (y_fill)
+    {
+      allocation.y1 = y_offset;
+      allocation.y2 = allocation.y1 + available_height;
+    }
+
+  /* if we are filling horizontally and vertically then we're done */
+  if (x_fill && y_fill)
+    goto out;
+
+  child_width = child_height = 0.0f;
+
+  if (priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+    {
+      gfloat min_width, natural_width;
+      gfloat min_height, natural_height;
+
+      clutter_actor_get_preferred_width (self, available_height,
+                                         &min_width,
+                                         &natural_width);
+
+      child_width = CLAMP (natural_width, min_width, available_width);
+
+      if (!y_fill)
+        {
+          clutter_actor_get_preferred_height (self, child_width,
+                                              &min_height,
+                                              &natural_height);
+
+          child_height = CLAMP (natural_height, min_height, available_height);
+        }
+    }
+  else
+    {
+      gfloat min_width, natural_width;
+      gfloat min_height, natural_height;
+
+      clutter_actor_get_preferred_height (self, available_width,
+                                          &min_height,
+                                          &natural_height);
+
+      child_height = CLAMP (natural_height, min_height, available_height);
+
+      if (!x_fill)
+        {
+          clutter_actor_get_preferred_width (self, child_height,
+                                             &min_width,
+                                             &natural_width);
+
+          child_width = CLAMP (natural_width, min_width, available_width);
+        }
+    }
+
+  /* invert the horizontal alignment for RTL languages */
+  if (priv->text_direction == CLUTTER_TEXT_DIRECTION_RTL)
+    x_align = 1.0 - x_align;
+
+  if (!x_fill)
+    {
+      allocation.x1 = box->x1
+                    + ((available_width - child_width) * x_align);
+      allocation.x2 = allocation.x1 + child_width;
+    }
+
+  if (!y_fill)
+    {
+      allocation.y1 = box->y1
+                    + ((available_height - child_height) * y_align);
+      allocation.y2 = allocation.y1 + child_height;
+    }
+
+out:
+  clutter_actor_box_clamp_to_pixel (&allocation);
+  clutter_actor_allocate (self, &allocation, flags);
+}
+
+/**
  * clutter_actor_grab_key_focus:
  * @self: a #ClutterActor
  *
