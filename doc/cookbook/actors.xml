@@ -258,23 +258,23 @@ on_paint (ClutterActor *actor)
   </section>
 
   <section id="actors-opacity">
-      <title>Making an actor transparent by changing its opacity</title>
+    <title>Making an actor transparent by changing its opacity</title>
 
-      <section>
-        <title>Problem</title>
+    <section>
+      <title>Problem</title>
 
-        <para>You want an actor to be transparent so that other
-        actors are visible through it.</para>
-      </section>
+      <para>You want an actor to be transparent so that other
+      actors are visible through it.</para>
+    </section>
 
-      <section>
-        <title>Solution</title>
+    <section>
+      <title>Solution</title>
 
-        <para>Change the actor's <emphasis>opacity</emphasis> so that
-        it is partially (or even fully) transparent:</para>
+      <para>Change the actor's <emphasis>opacity</emphasis> so that
+      it is partially (or even fully) transparent:</para>
 
-        <informalexample>
-          <programlisting>
+      <informalexample>
+        <programlisting>
 /* 25% transparency */
 clutter_actor_set_opacity (actor, 191.25);
 
@@ -283,126 +283,126 @@ clutter_actor_set_opacity (actor, 122.5);
 
 /* completely transparent */
 clutter_actor_set_opacity (actor, 0);
-          </programlisting>
-        </informalexample>
+        </programlisting>
+      </informalexample>
 
-        <para>Any actor covered or overlapped by the transparent actor
-        should be visible through it; the Discussion section gives
-        some examples of how visible you can expect the covered or
-        overlapped actor to be.</para>
+      <para>Any actor covered or overlapped by the transparent actor
+      should be visible through it; the Discussion section gives
+      some examples of how visible you can expect the covered or
+      overlapped actor to be.</para>
 
-      </section>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Opacity is a property of every <type>ClutterActor</type>.
+      It is a float on a scale from 0 (invisible) to 255 (completely
+      opaque). Actors with <code>0 &lt; opacity &lt; 255</code> will
+      have a varying amount of solidity on the stage, so other actors
+      may be visible through them.</para>
+
+      <para>For example, below are 4 yellow rectangles overlapping
+      a white rectangle on a blue stage:</para>
+
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata format="PNG"
+                       fileref="images/actors-opacity.png" />
+          </imageobject>
+          <alt>
+            <para>The effect of different opacities levels on
+            an actor's appearance</para>
+          </alt>
+        </mediaobject>
+      </screenshot>
+
+      <para>The rectangles have the following opacities:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>top-left: <code>255</code> (0% transparency)</para>
+        </listitem>
+        <listitem>
+          <para>top-right: <code>191.25</code> (25% transparency)</para>
+        </listitem>
+        <listitem>
+          <para>bottom-right: <code>122.5</code> (50% transparency)</para>
+        </listitem>
+        <listitem>
+          <para>bottom-left: <code>61.25</code> (75% transparency)</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Notice how both the stage and the white rectangle are
+      visible through the yellow rectangles.</para>
+
+      <para>As opacity is a property of every actor, it can
+      be animated like any other GObject property, using any of
+      the approaches in the animation API.</para>
+
+      <para>The following sections cover some other considerations
+      when working with actor opacity.</para>
 
       <section>
-        <title>Discussion</title>
+        <title>Container and color opacity</title>
 
-        <para>Opacity is a property of every <type>ClutterActor</type>.
-        It is a float on a scale from 0 (invisible) to 255 (completely
-        opaque). Actors with <code>0 &lt; opacity &lt; 255</code> will
-        have a varying amount of solidity on the stage, so other actors
-        may be visible through them.</para>
+        <para>If a container has its opacity set, any children of the
+        container have their opacity combined with their parent's opacity.
+        For example, if a parent has an opacity of <code>122.5</code>
+        (50% transparent) and the child also has an opacity of
+        <code>122.5</code>, the child's <emphasis>effective</emphasis>
+        opacity is 25% (<code>opacity = 61.25</code>, and it is
+        75% transparent).</para>
 
-        <para>For example, below are 4 yellow rectangles overlapping
-        a white rectangle on a blue stage:</para>
+        <para>To demonstrate the visual effect of this, here are
+        three rectangles with the same color but different opacity settings,
+        inside parents which also have different opacity settings:</para>
 
         <screenshot>
           <mediaobject>
             <imageobject>
               <imagedata format="PNG"
-                         fileref="images/actors-opacity.png" />
+                         fileref="images/actors-opacity-container-affects-opacity.png" />
             </imageobject>
             <alt>
-              <para>The effect of different opacities levels on
-              an actor's appearance</para>
+              <para>How a container's opacity affects the opacity of
+              its children</para>
             </alt>
           </mediaobject>
         </screenshot>
 
-        <para>The rectangles have the following opacities:</para>
-
         <itemizedlist>
           <listitem>
-            <para>top-left: <code>255</code> (0% transparency)</para>
+            <para>The left-hand rectangle has <code>opacity = 255</code>
+            and is in a <type>ClutterGroup</type> with
+            <code>opacity = 255</code>. This means it is fully opaque.</para>
           </listitem>
           <listitem>
-            <para>top-right: <code>191.25</code> (25% transparency)</para>
+            <para>The middle rectangle has <code>opacity = 255</code>
+            and is in a <type>ClutterGroup</type> with
+            <code>opacity = 122.5</code>. Notice that the parent opacity
+            makes the rectangle appear darker, as the stage colour is showing
+            through from behind.</para>
           </listitem>
           <listitem>
-            <para>bottom-right: <code>122.5</code> (50% transparency)</para>
-          </listitem>
-          <listitem>
-            <para>bottom-left: <code>61.25</code> (75% transparency)</para>
+            <para>The right-hand rectangle has <code>opacity = 122.5</code>
+            and is in a <type>ClutterGroup</type> with
+            <code>opacity = 122.5</code>. Notice that the rectangle appears
+            to be even darker, as the stage colour is showing
+            through both the rectangle and its parent.</para>
           </listitem>
         </itemizedlist>
 
-        <para>Notice how both the stage and the white rectangle are
-        visible through the yellow rectangles.</para>
+        <para>Similarly, <type>ClutterColor</type> also contains an
+        <varname>alpha</varname> property which governs the transparency
+        of the color. Where an actor can have a color set (e.g.
+        <type>ClutterRectangle</type>) the alpha value of the color also
+        affects the transparency of the actor, for example:</para>
 
-        <para>As opacity is a property of every actor, it can
-        be animated like any other GObject property, using any of
-        the approaches in the animation API.</para>
-
-        <para>The following sections cover some other considerations
-        when working with actor opacity.</para>
-
-        <section>
-          <title>Container and color opacity</title>
-
-          <para>If a container has its opacity set, any children of the
-          container have their opacity combined with their parent's opacity.
-          For example, if a parent has an opacity of <code>122.5</code>
-          (50% transparent) and the child also has an opacity of
-          <code>122.5</code>, the child's <emphasis>effective</emphasis>
-          opacity is 25% (<code>opacity = 61.25</code>, and it is
-          75% transparent).</para>
-
-          <para>To demonstrate the visual effect of this, here are
-          three rectangles with the same color but different opacity settings,
-          inside parents which also have different opacity settings:</para>
-
-          <screenshot>
-            <mediaobject>
-              <imageobject>
-                <imagedata format="PNG"
-                           fileref="images/actors-opacity-container-affects-opacity.png" />
-              </imageobject>
-              <alt>
-                <para>How a container's opacity affects the opacity of
-                its children</para>
-              </alt>
-            </mediaobject>
-          </screenshot>
-
-          <itemizedlist>
-            <listitem>
-              <para>The left-hand rectangle has <code>opacity = 255</code>
-              and is in a <type>ClutterGroup</type> with
-              <code>opacity = 255</code>. This means it is fully opaque.</para>
-            </listitem>
-            <listitem>
-              <para>The middle rectangle has <code>opacity = 255</code>
-              and is in a <type>ClutterGroup</type> with
-              <code>opacity = 122.5</code>. Notice that the parent opacity
-              makes the rectangle appear darker, as the stage colour is showing
-              through from behind.</para>
-            </listitem>
-            <listitem>
-              <para>The right-hand rectangle has <code>opacity = 122.5</code>
-              and is in a <type>ClutterGroup</type> with
-              <code>opacity = 122.5</code>. Notice that the rectangle appears
-              to be even darker, as the stage colour is showing
-              through both the rectangle and its parent.</para>
-            </listitem>
-          </itemizedlist>
-
-          <para>Similarly, <type>ClutterColor</type> also contains an
-          <varname>alpha</varname> property which governs the transparency
-          of the color. Where an actor can have a color set (e.g.
-          <type>ClutterRectangle</type>) the alpha value of the color also
-          affects the transparency of the actor, for example:</para>
-
-          <informalexample>
-            <programlisting>
+        <informalexample>
+          <programlisting>
 <![CDATA[
 /* color with 50% transparency */
 ClutterColor half_transparent_color = { 255, 0, 0, 122.5 };
@@ -414,76 +414,431 @@ clutter_actor_set_opacity (actor, 122.5);
 
 /* rectangle will be 25% opaque/75% transparent */
 clutter_rectangle_set_color (CLUTTER_RECTANGLE (actor),
-                             &half_transparent_color);
+                           &half_transparent_color);
 ]]>
-            </programlisting>
-          </informalexample>
+          </programlisting>
+        </informalexample>
 
-        </section>
+      </section>
 
-        <section>
-          <title>Depth and depth order</title>
+      <section>
+        <title>Depth and depth order</title>
 
-          <para>Each actor has two more aspects which affect its
-          apparent opacity:</para>
+        <para>Each actor has two more aspects which affect its
+        apparent opacity:</para>
 
-          <itemizedlist>
-            <listitem>
-              <para>An actor's <emphasis>depth</emphasis> can have an
-              effect if the stage has fog (a depth cueing effect) turned on.
-              As an actor's depth increases, the actor apparently "recedes" from
-              view and gradually blends into the colour of the stage. This
-              produces an effect similar to making the actor transparent.
-              See the <type>ClutterStage</type> documentation for
-              more details about fog.</para>
+        <itemizedlist>
+          <listitem>
+            <para>An actor's <emphasis>depth</emphasis> can have an
+            effect if the stage has fog (a depth cueing effect) turned on.
+            As an actor's depth increases, the actor apparently "recedes" from
+            view and gradually blends into the colour of the stage. This
+            produces an effect similar to making the actor transparent.
+            See the <type>ClutterStage</type> documentation for
+            more details about fog.</para>
 
-              <para>Depth also needs to be considered if you want
-              one actor to be visible through another: the actor you want
-              to see through a transparent actor must be "deeper" than (or at
-              the same depth as) the transparent actor.</para>
-            </listitem>
-            <listitem>
-              <para>The <emphasis>depth order</emphasis> governs how
-              actors within a <type>ClutterContainer</type> implementation
-              are placed with respect to each other.</para>
+            <para>Depth also needs to be considered if you want
+            one actor to be visible through another: the actor you want
+            to see through a transparent actor must be "deeper" than (or at
+            the same depth as) the transparent actor.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis>depth order</emphasis> governs how
+            actors within a <type>ClutterContainer</type> implementation
+            are placed with respect to each other.</para>
 
-              <note>
-                <para>Depth ordering is not the same thing as depth: depth
-                ordering records relationships between actors at the same
-                depth.</para>
-              </note>
+            <note>
+              <para>Depth ordering is not the same thing as depth: depth
+              ordering records relationships between actors at the same
+              depth.</para>
+            </note>
 
-              <para>If you have two overlapping actors <code>actorA</code> and
-              <code>actorB</code> in a container, and you want <code>actorA</code>
-              (opaque) to be visible through <code>actorB</code> (transparent),
-              you should ensure that <code>actorB</code> is "above" <code>actorA</code>
-              in the depth ordering. You could do this as follows:</para>
+            <para>If you have two overlapping actors <code>actorA</code> and
+            <code>actorB</code> in a container, and you want <code>actorA</code>
+            (opaque) to be visible through <code>actorB</code> (transparent),
+            you should ensure that <code>actorB</code> is "above" <code>actorA</code>
+            in the depth ordering. You could do this as follows:</para>
 
-              <informalexample>
-                <programlisting>
+            <informalexample>
+              <programlisting>
 /*
- * raise actorB so it is above actorA in the depth order;
- * NB actorA and actorB both need to be in the same container
- * for this to work
- */
+* raise actorB so it is above actorA in the depth order;
+* NB actorA and actorB both need to be in the same container
+* for this to work
+*/
 clutter_actor_raise (actorB, actorA);
-                </programlisting>
-              </informalexample>
+              </programlisting>
+            </informalexample>
 
-              <para><function>clutter_actor_raise()</function>,
-              <function>clutter_actor_lower()</function> and related
-              <type>ClutterActor</type> functions set
-              depth ordering on actors; see also <type>ClutterContainer</type>'s
-              <function>clutter_container_raise_child()</function> and
-              <function>clutter_container_lower_child()</function>
-              functions.</para>
-            </listitem>
-          </itemizedlist>
-
-        </section>
+            <para><function>clutter_actor_raise()</function>,
+            <function>clutter_actor_lower()</function> and related
+            <type>ClutterActor</type> functions set
+            depth ordering on actors; see also <type>ClutterContainer</type>'s
+            <function>clutter_container_raise_child()</function> and
+            <function>clutter_container_lower_child()</function>
+            functions.</para>
+          </listitem>
+        </itemizedlist>
 
       </section>
 
     </section>
+
+  </section>
+
+  <section id="actors-non-rectangular">
+    <title>Creating an actor with a non-rectangular shape</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to create a <type>ClutterActor</type> subclass,
+      but don't want it to be rectangular; for example, you want a
+      star-shaped actor.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Use Cogl primitives to draw the actor.</para>
+
+      <para>Below is an example of the pick and paint implementations for a
+      star-shaped <type>StarActor</type> class (an extension of
+      <type>ClutterActor</type>).</para>
+
+      <para>Like <type>ClutterRectangle</type>, it has a private
+      struct internally, which contains a <type>ClutterColor</type>
+      denoting the color it should be painted. This is used to set the Cogl
+      source color.</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+star_actor_paint (ClutterActor *actor)
+{
+  ClutterActorBox allocation = { 0, };
+  gfloat width, height;
+  guint tmp_alpha;
+
+  /* priv is a private internal struct */
+  ClutterColor color = STAR_ACTOR (actor)->priv->color;
+
+  clutter_actor_get_allocation_box (actor, &allocation);
+  clutter_actor_box_get_size (&allocation, &width, &height);
+
+  tmp_alpha = clutter_actor_get_paint_opacity (actor)
+                * color.alpha
+                / 255;
+
+  cogl_path_new ();
+
+  cogl_set_source_color4ub (color.red,
+                            color.green,
+                            color.blue,
+                            tmp_alpha);
+
+  /* create and store a path describing a star */
+  cogl_path_move_to (width * 0.5, 0);
+  cogl_path_line_to (width, height * 0.75);
+  cogl_path_line_to (0, height * 0.75);
+  cogl_path_move_to (width * 0.5, height);
+  cogl_path_line_to (0, height * 0.25);
+  cogl_path_line_to (width, height * 0.25);
+  cogl_path_line_to (width * 0.5, height);
+
+  cogl_path_fill ();
+}
+
+static void
+star_actor_pick (ClutterActor *actor,
+                 const ClutterColor *pick_color)
+{
+  if (!clutter_actor_should_pick_paint (actor))
+    return;
+
+  ClutterActorBox allocation = { 0, };
+  gfloat width, height;
+
+  clutter_actor_get_allocation_box (actor, &allocation);
+  clutter_actor_box_get_size (&allocation, &width, &height);
+
+  cogl_path_new ();
+
+  cogl_set_source_color4ub (pick_color->red,
+                            pick_color->green,
+                            pick_color->blue,
+                            pick_color->alpha);
+
+  /* create and store a path describing a star */
+  cogl_path_move_to (width * 0.5, 0);
+  cogl_path_line_to (width, height * 0.75);
+  cogl_path_line_to (0, height * 0.75);
+  cogl_path_move_to (width * 0.5, height);
+  cogl_path_line_to (0, height * 0.25);
+  cogl_path_line_to (width, height * 0.25);
+  cogl_path_line_to (width * 0.5, height);
+
+  cogl_path_fill ();
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>If you need more information about how to implement your own
+      <type>ClutterActor</type>, see the Clutter reference
+      manual.</para>
+
+      <para>Note that the code in these two functions is virtually identical:
+      the Discussion section suggests how to remove this redundancy.</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>The above is one approach to creating a non-rectangular
+      actor. But it's also possible to get a similar effect by
+      subclassing an existing actor (like <type>ClutterRectangle</type>)
+      and giving it a non-rectangular appearance. You could do this by
+      making the underlying rectangle transparent and then drawing on
+      top of it (e.g. using Cairo or Cogl).</para>
+
+      <para>However, if you then made such an actor reactive, events
+      like mouse button presses would be triggered from anywhere on
+      the underlying rectangle. This is true even if the visible part
+      of the actor only partially fills the rectangle (underneath, it's
+      still a rectangle).</para>
+
+      <para>The advantage of using Cogl paths is that the reactive area
+      of the actor is defined by the Cogl path. So if you have a
+      star-shaped actor, only clicks (or other events) directly on the
+      star will have any effect on it.</para>
+
+      <section>
+        <title>Cogl path coordinates</title>
+
+        <para>In the example shown, <function>cogl_path_move_to()</function>
+        and <function>cogl_path_line_to()</function> are used. These
+        take absolute <code>x</code> and <code>y</code> coordinates as
+        arguments, relative to the GL 'modelview' transform matrix; in
+        the case of an actor's <function>paint</function> implementation,
+        relative to the bounding box for the actor. So if an actor has
+        width and height of 50 pixels, and you used
+        <function>cogl_move_to (25, 25)</function> in its
+        <function>paint</function> implementation, the "pen"
+        moves to the centre of the actor, regardless of where the actor
+        is positioned on the stage. Similarly, using
+        <function>cogl_path_line_to()</function> creates a line segment
+        from the current pen position to the absolute coordinates
+        (<code>x</code>, <code>y</code>) specified.</para>
+
+        <para>The Cogl API also provides various "rel" variants of the path
+        functions (e.g. <function>cogl_path_rel_line_to()</function>), which
+        create path segments relative to the current pen position (i.e.
+        <code>pen_x + x</code>, <code>pen_y + y</code>).</para>
+
+        <para>It's important to note that the path isn't drawn until you
+        call <function>cogl_path_stroke()</function> (to draw the path segments)
+        or <function>cogl_path_fill()</function> (to fill the area enclosed by
+        the path). The path is cleared once it's been drawn.
+        Using the <function>*_preserve</function> variants of these functions draws
+        the path and retains it (so it could be drawn again).</para>
+
+      </section>
+
+      <section>
+        <title>Other Cogl primitives</title>
+
+        <para>Note that the Cogl primitives API provides other types of path
+        segment beyond straight lines that we didn't use here, including:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Bezier curves (<function>cogl_path_curve_to()</function>)</para>
+          </listitem>
+          <listitem>
+            <para>Arcs (<function>cogl_path_arc()</function>)</para>
+          </listitem>
+          <listitem>
+            <para>Polygons (<function>cogl_path_polygon()</function>)</para>
+          </listitem>
+          <listitem>
+            <para>Rectangles (<function>cogl_path_rectangle()</function>)</para>
+          </listitem>
+          <listitem>
+            <para>Rectangles with rounded corners
+            (<function>cogl_path_round_rectangle()</function>)</para>
+          </listitem>
+          <listitem>
+            <para>Ellipses (<function>cogl_path_ellipse()</function>)</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>If you need more flexibility than is available in the Cogl path
+        API, you can make direct use of the <type>CoglVertexBuffer</type>
+        API instead. This is a lower-level API, but could potentially
+        be used to draw more complex shapes.</para>
+      </section>
+
+      <section>
+        <title>Using <type>ClutterPath</type> to store the path</title>
+
+        <para>The disadvantage of the code above is that the paths are stored in two
+        places: once for <function>pick</function>, and once for
+        <function>paint</function>. It would make sense to store the
+        path in one place and reference it from both of these functions to
+        prevent duplication.</para>
+
+        <para>Clutter provides a <type>ClutterPath</type> API for storing
+        generic path descriptions. It can be used to describe paths
+        which translate to Cogl or Cairo paths, and can also be used to
+        describe animation paths.</para>
+
+        <para>We can use a <type>ClutterPath</type> instance stored
+        inside the actor to define the path for <function>pick</function> and
+        <function>paint</function>; then, inside those functions, we
+        translate the <type>ClutterPath</type> into Cogl path function calls
+        (NB <type>ClutterPath</type> is effectively a declarative method
+        for defining a path, while the Cogl path API is imperative).</para>
+
+        <para>First we add a <varname>path</varname> member to the private
+        struct for the <type>StarActor</type> class (using standard
+        GObject mechanisms). The <function>init</function> implementation for
+        <type>StarActor</type> creates an empty path:</para>
+
+        <informalexample>
+          <programlisting>
+static void
+star_actor_init (StarActor *self)
+{
+  self->priv = STAR_ACTOR_GET_PRIVATE (self);
+
+  self->priv->path = clutter_path_new ();
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+}
+          </programlisting>
+        </informalexample>
+
+        <para>One consideration is that the path coordinates need to
+        fit inside the actor's bounding box. So as the actor's allocation
+        changes, <varname>path</varname> also needs to change. We can do this
+        by implementing <function>allocate</function> for the
+        <type>StarActor</type> class:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+static void
+star_actor_allocate (ClutterActor           *actor,
+                     const ClutterActorBox  *box,
+                     ClutterAllocationFlags  flags)
+{
+  ClutterPath *path = STAR_ACTOR (actor)->priv->path;
+  gfloat width, height;
+
+  clutter_actor_box_get_size (box, &width, &height);
+
+  /* create and store a path describing a star */
+  clutter_path_clear (path);
+
+  clutter_path_add_move_to (path, width * 0.5, 0);
+  clutter_path_add_line_to (path, width, height * 0.75);
+  clutter_path_add_line_to (path, 0, height * 0.75);
+  clutter_path_add_move_to (path, width * 0.5, height);
+  clutter_path_add_line_to (path, 0, height * 0.25);
+  clutter_path_add_line_to (path, width, height * 0.25);
+  clutter_path_add_line_to (path, width * 0.5, height);
+
+  CLUTTER_ACTOR_CLASS (star_actor_parent_class)->allocate (actor, box, flags);
+}
+]]>
+          </programlisting>
+        </informalexample>
+
+      <para>This clears then adds segments to the
+      <type>ClutterPath</type> stored with the
+      <type>StarActor</type> instance. The positioning and
+      lengths of the segments are relative to the size of the actor when
+      its allocation changes.</para>
+
+      <para>The <function>pick</function> and <function>paint</function>
+      functions now reference the <type>ClutterPath</type> (only the
+      <function>pick</function> is shown below); and
+      to turn the path into drawing operations, we implement a
+      <function>star_actor_convert_clutter_path_node()</function> function
+      which takes a <type>ClutterPathNode</type> and converts it
+      into its Cogl equivalent:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static void
+star_actor_convert_clutter_path_node (const ClutterPathNode *node,
+                                      gpointer               data)
+{
+  g_return_if_fail (node != NULL);
+
+  ClutterKnot knot;
+
+  switch (node->type)
+    {
+    case CLUTTER_PATH_MOVE_TO:
+      knot = node->points[0];
+      cogl_path_move_to (knot.x, knot.y);
+      break;
+    case CLUTTER_PATH_LINE_TO:
+      knot = node->points[0];
+      cogl_path_line_to (knot.x, knot.y);
+      break;
+    default:
+      break;
+    }
+}
+
+static void
+star_actor_pick (ClutterActor       *actor,
+                 const ClutterColor *pick_color)
+{
+  if (!clutter_actor_should_pick_paint (actor))
+    return;
+
+  ClutterActorBox allocation = { 0, };
+  gfloat width, height;
+  ClutterPath *path = STAR_ACTOR (actor)->priv->path;
+
+  clutter_actor_get_allocation_box (actor, &allocation);
+  clutter_actor_box_get_size (&allocation, &width, &height);
+
+  cogl_path_new ();
+
+  cogl_set_source_color4ub (pick_color->red,
+                            pick_color->green,
+                            pick_color->blue,
+                            pick_color->alpha);
+
+  clutter_path_foreach (path, star_actor_convert_clutter_path_node, NULL);
+
+  cogl_path_fill ();
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <note>
+        <para>The conversion function only covers
+        <type>ClutterPathNode</type> types encountered in this
+        actor.</para>
+      </note>
+
+      <para>Instead of converting to Cogl path operations, another alternative
+      would be to use the <function>clutter_path_to_cairo_path()</function>
+      function to write directly from the <type>ClutterPath</type>
+      onto a Cairo context.</para>
+
+      </section>
+    </section>
+
+  </section>
 
 </chapter>
