@@ -429,102 +429,36 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       ClutterLayoutMeta *meta;
       ClutterBinLayer *layer;
       ClutterActorBox child_alloc = { 0, };
-      gfloat child_width, child_height;
-      ClutterRequestMode request;
+      gdouble x_align, y_align;
+      gboolean x_fill, y_fill;
 
       meta = clutter_layout_manager_get_child_meta (manager,
                                                     container,
                                                     child);
       layer = CLUTTER_BIN_LAYER (meta);
 
-      if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL)
-        {
-          child_alloc.x1 = 0;
-          child_alloc.x2 = ceilf (available_w);
-        }
-
-      if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL)
-        {
-          child_alloc.y1 = 0;
-          child_alloc.y2 = ceilf (available_h);
-        }
-
-      /* if we are filling horizontally and vertically then we
-       * can break here because we already have a full allocation
-       */
-      if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL &&
-          layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL)
-        {
-          clutter_actor_allocate (child, &child_alloc, flags);
-          continue;
-        }
-
-      child_width = child_height = 0;
-      request = clutter_actor_get_request_mode (child);
-      if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
-        {
-          gfloat min_width, nat_width;
-          gfloat min_height, nat_height;
-
-          clutter_actor_get_preferred_width (child, available_h,
-                                             &min_width,
-                                             &nat_width);
-          child_width = CLAMP (nat_width, min_width, available_w);
-
-          clutter_actor_get_preferred_height (child, child_width,
-                                              &min_height,
-                                              &nat_height);
-          child_height = CLAMP (nat_height, min_height, available_h);
-        }
-      else if (request == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
-        {
-          gfloat min_width, nat_width;
-          gfloat min_height, nat_height;
-
-          clutter_actor_get_preferred_height (child, available_w,
-                                              &min_height,
-                                              &nat_height);
-          child_height = CLAMP (nat_height, min_height, available_h);
-
-          clutter_actor_get_preferred_width (child, child_height,
-                                             &min_width,
-                                             &nat_width);
-          child_width = CLAMP (nat_width, min_width, available_w);
-        }
-
       if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
-        {
-          child_alloc.x1 = ceilf (clutter_actor_get_x (child));
-          child_alloc.x2 = ceilf (child_alloc.x1 + child_width);
-        }
+        child_alloc.x1 = clutter_actor_get_x (child);
       else
-        {
-          gdouble x_align = get_bin_alignment_factor (layer->x_align);
-
-          if (layer->x_align != CLUTTER_BIN_ALIGNMENT_FILL)
-            {
-              child_alloc.x1 = ceilf ((available_w - child_width) * x_align);
-              child_alloc.x2 = ceilf (child_alloc.x1 + child_width);
-            }
-        }
+        child_alloc.x1 = 0.0f;
 
       if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
-        {
-          child_alloc.y1 = ceilf (clutter_actor_get_y (child));
-          child_alloc.y2 = ceilf (child_alloc.y1 + child_height);
-        }
+        child_alloc.y1 = clutter_actor_get_y (child);
       else
-        {
-          gdouble y_align = get_bin_alignment_factor (layer->y_align);
+        child_alloc.y1 = 0.0f;
 
-          if (layer->y_align != CLUTTER_BIN_ALIGNMENT_FILL)
-            {
-              child_alloc.y1 = ceilf ((available_h - child_height) * y_align);
-              child_alloc.y2 = ceilf (child_alloc.y1 + child_height);
-            }
-        }
+      child_alloc.x2 = available_w;
+      child_alloc.y2 = available_h;
 
-      clutter_actor_allocate (child, &child_alloc, flags);
+      x_fill = (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL);
+      y_fill = (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL);
+      x_align = get_bin_alignment_factor (layer->x_align);
+      y_align = get_bin_alignment_factor (layer->y_align);
+
+      clutter_actor_allocate_align_fill (child, &child_alloc,
+                                         x_align, y_align,
+                                         x_fill, y_fill,
+                                         flags);
     }
 
   g_list_free (children);
