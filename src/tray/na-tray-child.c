@@ -132,17 +132,15 @@ na_tray_child_size_allocate (GtkWidget      *widget,
                              GtkAllocation  *allocation)
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
-
-  GdkWindow *window;
   GtkAllocation widget_allocation;
   gboolean moved, resized;
 
   gtk_widget_get_allocation (widget, &widget_allocation);
-  moved = allocation->x != widget_allocation.x ||
-          allocation->y != widget_allocation.y;
-  resized = allocation->width != widget_allocation.width ||
-            allocation->height != widget_allocation.height;
-  window = gtk_widget_get_window (widget);
+
+  moved = (allocation->x != widget_allocation.x ||
+	   allocation->y != widget_allocation.y);
+  resized = (allocation->width != widget_allocation.width ||
+	     allocation->height != widget_allocation.height);
 
   /* When we are allocating the widget while mapped we need special handling
    * for both real and fake transparency.
@@ -157,7 +155,7 @@ na_tray_child_size_allocate (GtkWidget      *widget,
   if ((moved || resized) && gtk_widget_get_mapped (widget))
     {
       if (na_tray_child_has_alpha (child))
-        gdk_window_invalidate_rect (gdk_window_get_parent (window),
+        gdk_window_invalidate_rect (gdk_window_get_parent (gtk_widget_get_window (widget)),
                                     &widget_allocation, FALSE);
     }
 
@@ -167,7 +165,7 @@ na_tray_child_size_allocate (GtkWidget      *widget,
   if ((moved || resized) && gtk_widget_get_mapped (widget))
     {
       if (na_tray_child_has_alpha (NA_TRAY_CHILD (widget)))
-        gdk_window_invalidate_rect (gdk_window_get_parent (window),
+        gdk_window_invalidate_rect (gdk_window_get_parent (gtk_widget_get_window (widget)),
                                     &widget_allocation, FALSE);
       else if (moved && child->parent_relative_bg)
         na_tray_child_force_redraw (child);
@@ -286,9 +284,10 @@ na_tray_child_new (GdkScreen *screen,
   gdk_visual_get_green_pixel_details (visual, NULL, NULL, &green_prec);
   gdk_visual_get_blue_pixel_details (visual, NULL, NULL, &blue_prec);
   depth = gdk_visual_get_depth (visual);
+
   visual_has_alpha = red_prec + blue_prec + green_prec < depth;
   child->has_alpha = (visual_has_alpha &&
-		      gdk_display_supports_composite (gdk_screen_get_display (screen)));
+                      gdk_display_supports_composite (gdk_screen_get_display (screen)));
 
   child->composited = child->has_alpha;
 
@@ -384,15 +383,17 @@ na_tray_child_has_alpha (NaTrayChild *child)
  */
 void
 na_tray_child_set_composited (NaTrayChild *child,
-			      gboolean     composited)
+                              gboolean     composited)
 {
-  GdkWindow *window;
   g_return_if_fail (NA_IS_TRAY_CHILD (child));
 
+  if (child->composited == composited)
+    return;
+
   child->composited = composited;
-  window = gtk_widget_get_window (GTK_WIDGET (child));
-  if (window)
-    gdk_window_set_composited (window, composited);
+  if (gtk_widget_get_realized (GTK_WIDGET (child)))
+    gdk_window_set_composited (gtk_widget_get_window (GTK_WIDGET (child)),
+                               composited);
 }
 
 /* If we are faking transparency with a window-relative background, force a
@@ -404,7 +405,7 @@ na_tray_child_force_redraw (NaTrayChild *child)
 {
   GtkWidget *widget = GTK_WIDGET (child);
 
-  if (gtk_widget_get_mapped (GTK_WIDGET (child)) && child->parent_relative_bg)
+  if (gtk_widget_get_mapped (widget) && child->parent_relative_bg)
     {
 #if 1
       /* Sending an ExposeEvent might cause redraw problems if the
@@ -412,13 +413,15 @@ na_tray_child_force_redraw (NaTrayChild *child)
        * the redraw. It should be ok for GtkStatusIcon or EggTrayIcon.
        */
       Display *xdisplay = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget));
-      GtkAllocation allocation;
       XEvent xev;
+      GdkWindow *plug_window;
+      GtkAllocation allocation;
 
+      plug_window = gtk_socket_get_plug_window (GTK_SOCKET (child));
       gtk_widget_get_allocation (widget, &allocation);
 
       xev.xexpose.type = Expose;
-      xev.xexpose.window = GDK_WINDOW_XWINDOW (gtk_socket_get_plug_window (GTK_SOCKET (child)));
+      xev.xexpose.window = GDK_WINDOW_XWINDOW (plug_window);
       xev.xexpose.x = 0;
       xev.xexpose.y = 0;
       xev.xexpose.width = allocation.width;
@@ -443,4 +446,89 @@ na_tray_child_force_redraw (NaTrayChild *child)
       gdk_window_show (widget->window);
 #endif
     }
+}
+
+/* from libwnck/xutils.c, comes as LGPLv2+ */
+static char *
+latin1_to_utf8 (const char *latin1)
+{
+  GString *str;
+  const char *p;
+
+  str = g_string_new (NULL);
+
+  p = latin1;
+  while (*p)
+    {
+      g_string_append_unichar (str, (gunichar) *p);
+      ++p;
+    }
+
+  return g_string_free (str, FALSE);
+}
+
+/* derived from libwnck/xutils.c, comes as LGPLv2+ */
+static void
+_get_wmclass (Display *xdisplay,
+              Window   xwindow,
+              char   **res_class,
+              char   **res_name)
+{
+  XClassHint ch;
+
+  ch.res_name = NULL;
+  ch.res_class = NULL;
+
+  gdk_error_trap_push ();
+  XGetClassHint (xdisplay, xwindow, &ch);
+  gdk_error_trap_pop ();
+
+  if (res_class)
+    *res_class = NULL;
+
+  if (res_name)
+    *res_name = NULL;
+
+  if (ch.res_name)
+    {
+      if (res_name)
+        *res_name = latin1_to_utf8 (ch.res_name);
+
+      XFree (ch.res_name);
+    }
+
+  if (ch.res_class)
+    {
+      if (res_class)
+        *res_class = latin1_to_utf8 (ch.res_class);
+
+      XFree (ch.res_class);
+    }
+}
+
+/**
+ * na_tray_child_get_wm_class;
+ * @child: a #NaTrayChild
+ * @res_name: return location for a string containing the application name of
+ * @child, or %NULL
+ * @res_class: return location for a string containing the application class of
+ * @child, or %NULL
+ *
+ * Fetches the resource associated with @child.
+ */
+void
+na_tray_child_get_wm_class (NaTrayChild  *child,
+                            char        **res_name,
+                            char        **res_class)
+{
+  GdkDisplay *display;
+
+  g_return_if_fail (NA_IS_TRAY_CHILD (child));
+
+  display = gtk_widget_get_display (GTK_WIDGET (child));
+
+  _get_wmclass (GDK_DISPLAY_XDISPLAY (display),
+                child->icon_window,
+                res_class,
+                res_name);
 }

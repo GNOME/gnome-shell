@@ -538,17 +538,18 @@ na_tray_manager_unmanage (NaTrayManager *manager)
 {
 #ifdef GDK_WINDOWING_X11
   GdkDisplay *display;
-  GdkWindow  *window;
   guint32     timestamp;
   GtkWidget  *invisible;
+  GdkWindow  *window;
 
   if (manager->invisible == NULL)
     return;
 
   invisible = manager->invisible;
   window = gtk_widget_get_window (invisible);
+
   g_assert (GTK_IS_INVISIBLE (invisible));
-  g_assert (gtk_widget_get_realized (GTK_WIDGET (invisible)));
+  g_assert (gtk_widget_get_realized (invisible));
   g_assert (GDK_IS_WINDOW (window));
   
   display = gtk_widget_get_display (invisible);
@@ -580,16 +581,14 @@ static void
 na_tray_manager_set_orientation_property (NaTrayManager *manager)
 {
 #ifdef GDK_WINDOWING_X11
-  GdkDisplay *display;
   GdkWindow  *window;
+  GdkDisplay *display;
   Atom        orientation_atom;
   gulong      data[1];
 
   if (!manager->invisible)
     return;
-
-  window = gtk_widget_get_window (GTK_WIDGET (manager->invisible));
-
+  window = gtk_widget_get_window (manager->invisible);
   if (!window)
     return;
 
@@ -614,17 +613,15 @@ static void
 na_tray_manager_set_visual_property (NaTrayManager *manager)
 {
 #ifdef GDK_WINDOWING_X11
-  GdkDisplay *display;
   GdkWindow  *window;
+  GdkDisplay *display;
   Visual     *xvisual;
   Atom        visual_atom;
   gulong      data[1];
 
   if (!manager->invisible)
     return;
-
-  window = gtk_widget_get_window (GTK_WIDGET (manager->invisible));
-
+  window = gtk_widget_get_window (manager->invisible);
   if (!window)
     return;
 
@@ -675,9 +672,9 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
 				   GdkScreen     *screen)
 {
   GdkDisplay *display;
-  GdkWindow  *window;
   Screen     *xscreen;
   GtkWidget  *invisible;
+  GdkWindow  *window;
   char       *selection_atom_name;
   guint32     timestamp;
   
@@ -699,8 +696,6 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
   
   invisible = gtk_invisible_new_for_screen (screen);
   gtk_widget_realize (invisible);
-
-  window = gtk_widget_get_window (GTK_WIDGET (invisible));
   
   gtk_widget_add_events (invisible,
                          GDK_PROPERTY_CHANGE_MASK | GDK_STRUCTURE_MASK);
@@ -716,6 +711,8 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
   na_tray_manager_set_orientation_property (manager);
   na_tray_manager_set_visual_property (manager);
   
+  window = gtk_widget_get_window (invisible);
+
   timestamp = gdk_x11_get_server_time (window);
 
   /* Check if we could set the selection owner successfully */
