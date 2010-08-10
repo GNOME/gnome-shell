@@ -67,22 +67,6 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
-static void
-on_stage_resize (ClutterActor *stage,
-                 const ClutterActorBox *allocation,
-                 ClutterAllocationFlags flags,
-                 ClutterActor *box)
-{
-  gfloat width, height;
-
-  clutter_actor_box_get_size (allocation, &width, &height);
-
-  if (vertical)
-    clutter_actor_set_height (box, height);
-  else
-    clutter_actor_set_width (box, width);
-}
-
 G_MODULE_EXPORT int
 test_flow_layout_main (int argc, char *argv[])
 {
@@ -124,6 +108,13 @@ test_flow_layout_main (int argc, char *argv[])
   box = clutter_box_new (layout);
   clutter_box_set_color (CLUTTER_BOX (box), &box_color);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+
+  if (fit_to_stage)
+    {
+      clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_WIDTH, 0.0));
+      clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_HEIGHT, 0.0));
+    }
+
   clutter_actor_set_position (box, 0, 0);
 
   clutter_actor_set_name (box, "box");
@@ -160,11 +151,6 @@ test_flow_layout_main (int argc, char *argv[])
 
       g_free (name);
     }
-
-  if (fit_to_stage)
-    g_signal_connect (stage,
-                      "allocation-changed", G_CALLBACK (on_stage_resize),
-                      box);
 
   clutter_actor_show_all (stage);
 
