@@ -739,33 +739,38 @@ clutter_shader_set_uniform (ClutterShader *shader,
       const GLfloat *floats;
 
       floats = clutter_value_get_shader_float (value, &size);
-      cogl_program_uniform_float (location, size, 1, floats);
+      cogl_program_set_uniform_float (priv->program,
+                                      location, size, 1, floats);
     }
   else if (CLUTTER_VALUE_HOLDS_SHADER_INT (value))
     {
       const int *ints;
 
       ints = clutter_value_get_shader_int (value, &size);
-      cogl_program_uniform_int (location, size, 1, ints);
+      cogl_program_set_uniform_int (priv->program,
+                                    location, size, 1, ints);
     }
   else if (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value))
     {
       const GLfloat *matrix;
 
       matrix = clutter_value_get_shader_matrix (value, &size);
-      cogl_program_uniform_matrix (location, size, 1, FALSE, matrix);
+      cogl_program_set_uniform_matrix (priv->program,
+                                       location, size, 1, FALSE, matrix);
     }
   else if (G_VALUE_HOLDS_FLOAT (value))
     {
       GLfloat float_val = g_value_get_float (value);
 
-      cogl_program_uniform_float (location, 1, 1, &float_val);
+      cogl_program_set_uniform_float (priv->program,
+                                      location, 1, 1, &float_val);
     }
   else if (G_VALUE_HOLDS_INT (value))
     {
       int int_val = g_value_get_int (value);
 
-      cogl_program_uniform_int (location, 1, 1, &int_val);
+      cogl_program_set_uniform_int (priv->program,
+                                    location, 1, 1, &int_val);
     }
   else
     g_assert_not_reached ();
