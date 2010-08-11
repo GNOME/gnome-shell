@@ -52,6 +52,7 @@ VIDEO_FILES = \
 	videos/animations-rotating-z-centered.ogv \
 	videos/animations-rotating-container-reverses-direction.ogv \
 	videos/textures-split-go.ogv \
+	videos/events-mouse-scroll.ogv \
 	$(NULL)
 
 EXTRA_DIST = \
