@@ -137,6 +137,18 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
   if (self->actor == NULL)
     return FALSE;
 
+  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    {
+      /* if we don't have support for GLSL shaders then we
+       * forcibly disable the ActorMeta
+       */
+      g_warning ("Unable to use the ShaderEffect: the graphics hardware "
+                 "or the current GL driver does not implement support "
+                 "for the GLSL shading language.");
+      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
+      return FALSE;
+    }
+
   clutter_actor_get_allocation_box (self->actor, &allocation);
   clutter_actor_box_get_size (&allocation, &width, &height);
 
